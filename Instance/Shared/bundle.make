@@ -188,7 +188,7 @@ shared-instance-bundle-all: $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH) \
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_COPYING_RESOURCES)for f in $(RESOURCE_FILES); do \
 	  if [ -f $$f -o -d $$f ]; then \
-	    cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH); \
+	    cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$f; \
 	  else \
 	    echo "Warning: $$f not found - ignoring"; \
 	  fi; \
@@ -213,7 +213,7 @@ ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
 	      if [ -f $$l.lproj/$$f -o -d $$l.lproj/$$f ]; then \
 	        cp -r $$l.lproj/$$f \
-	              $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
+	              $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj/$$f; \
 	      else \
 	        echo "Warning: $$l.lproj/$$f not found - ignoring"; \
 	      fi; \
