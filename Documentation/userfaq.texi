@@ -378,6 +378,7 @@ Windows).
 * Problems with Alt key::       
 * Problems with gcc3::          
 * Problems with fonts::         
+* No Makefile::                 
 @end menu
 
 @node Problems compiling (loading shared libs), Problems compiling (GNUstep Internal Error), Troubleshooting, Troubleshooting
@@ -447,7 +448,7 @@ Mouse Preferences. Then use another value for the "Mouse grab modifier"
 
 Don't forget you need to update binutils and libc also.
 
-@node Problems with fonts,  , Problems with gcc3, Troubleshooting
+@node Problems with fonts, No Makefile, Problems with gcc3, Troubleshooting
 @subsection Problems with fonts
 
 Why do the characters get changed to asterisks ('*')?
@@ -479,7 +480,7 @@ better. When compiling gnustep-back, start with
 ./configure --enable-graphics=art
 @end example
 
-@node No Makefile,  , Problems with gcc3, Troubleshooting
+@node No Makefile,  , Problems with fonts, Troubleshooting
 @subsection No Makefile
 
 I tried to compile something and I get:
