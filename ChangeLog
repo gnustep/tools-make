@@ -1,3 +1,7 @@
+Wed Dec 12 11:04:29 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* service.make (internal-service-clean): Unused target - removed.
+
 Wed Dec 12 11:02:14 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* config.make.in (RCEXT): Unused variable - removed.
