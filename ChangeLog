@@ -1,3 +1,20 @@
+Wed Feb 27 16:33:03 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* palette.make: Broken into Master and Instance.
+	* Instance/palette.make: New file.
+	* Master/palette.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added palette.make.
+	(INSTANCE_MAKE_FILES): Added palette.make.
+	
+Wed Feb 27 16:28:16 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* framework.make: Broken into Master and Instance.
+	* Instance/framework.make: New file.
+	* Master/framework.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added framework.make.
+	(INSTANCE_MAKE_FILES): Added framework.make.
+	* rules.make (DERIVED_SOURCES): Define.
+	
 Wed Feb 27 13:54:53 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Documentation/install.texi: Document the --disable-import flag.
