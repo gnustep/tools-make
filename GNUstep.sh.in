@@ -67,6 +67,7 @@ if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
   GNUSTEP_PATHPREFIX_LIST=$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
   export GNUSTEP_PATHPREFIX_LIST
 fi
+tmp_IFS="$IFS"
 IFS=:
 temp_path=
 for dir in $GNUSTEP_PATHPREFIX_LIST; do
@@ -74,6 +75,7 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
   temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
 done
 PATH=$temp_path$PATH
+IFS="$tmp_IFS"
 
 if [ -z "$MANPATH" ]; then
   MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:/usr/local/man:/usr/man

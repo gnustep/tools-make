@@ -1,3 +1,8 @@
+1999-07-26  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* GNUstep.sh.in: Safe and restor value of IFS as suggested by
+	prashant singh
+
 1999-07-15  Adam Fedor  <fedor@gnu.org>
 
 	* application.make: Force Info-gnustep.plist to be remade everytime
