@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   application.make
 #
 #   Instance Makefile rules to build GNUstep-based applications.
@@ -25,7 +25,7 @@
 # Include in the common makefile rules
 #
 ifeq ($(RULES_MAKE_LOADED),)
-include $(GNUSTEP_MAKEFILES)/rules.make
+  include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
 #
@@ -44,6 +44,7 @@ endif
 .PHONY: internal-app-all_ \
         internal-app-install_ \
         internal-app-uninstall_ \
+        internal-app-copy_into_dir \
         internal-application-build-template \
         _FORCE
 
@@ -173,6 +174,8 @@ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 	@pl2link $^ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop
 
 _FORCE::
+
+internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
 # install/uninstall targets
 
