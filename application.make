@@ -189,7 +189,7 @@ app-localized-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-
 	    done; \
 	  done; \
 	fi)
-	
+
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = NSApplication
@@ -219,7 +219,7 @@ _FORCE::
 
 internal-app-install:: internal-app-all internal-install-dirs
 	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)
-	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
+	$(INSTALL_COMPLETE_DIR) $(APP_DIR_NAME) $(GNUSTEP_APPS)
 
 internal-install-dirs::
 	$(MKDIRS) $(GNUSTEP_APPS)

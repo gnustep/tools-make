@@ -244,7 +244,7 @@ internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 	  fi; \
         fi; \
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
-	$(TAR) cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
+	$(INSTALL_COMPLETE_DIR) $(BUNDLE_DIR_NAME) $(BUNDLE_INSTALL_DIR)
 
 $(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::
 	@$(MKDIRS) $@
