@@ -12,6 +12,12 @@ Wed Mar 31 11:44:21 2004  Willem Rein Oudshoorn <woudshoo@xs4all.nl>
 
 2004-03-31 Richard Frith-Macdonald <rfm@gnu.org>
 
+	* Instance/Documentation/autogsdoc.make: Make doc subdirectory if
+	necessary.
+
+2004-03-28  David Ayers  <d.ayers@inode.at>
+2004-03-31 Richard Frith-Macdonald <rfm@gnu.org>
+
 	* jni.make: Add support for MacOS-X ... use the java 1.3.1 headers
 	fromt the JavaVM framework.
 
