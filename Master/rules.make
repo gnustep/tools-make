@@ -176,7 +176,7 @@ after-strings::
 
 # Prevent make from trying to remove stuff like
 # libcool.library.all.subprojects thinking that it is a temporary file
-.PRECIOUS: %.variables %.tools %.subprojects
+.PRECIOUS: %.variables %.subprojects
 
 #
 ## The magical %.variables rules, thank you GNU make!
@@ -198,7 +198,7 @@ after-strings::
 
 # the rule then calls a submake, which runs the real code
 
-# the following is the code used in %.variables, %.tools and %.subprojects
+# the following is the code used in %.variables and %.subprojects
 # to extract the instance, operation and type from the $* (the stem) of the 
 # rule.  with GNU make => 3.78, we could define the following as macros 
 # and use $(call ...) to call them; but because we have users who are using 
@@ -217,16 +217,13 @@ after-strings::
 # NB: INTERNAL_$${type}_NAME and TARGET are deprecated - use
 # GNUSTEP_INSTANCE instead.
 
-# Before building the real thing, we must build framework tools if
-# any, then subprojects (FIXME - remove framework tools and replace
-# this with a better API which works for everything and not only
-# frameworks and not only tools)
+# Before building the real thing, we must build the subprojects
 
 # If you change the subprojects code here, make sure to update the
 # %.subprojects rule below too!  The code from the %.subprojects rule
 # below is 'inlined' here for speed (so that we don't run a separate
 # shell just to execute that code).
-%.variables: %.tools
+%.variables:
 	@ \
 instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
@@ -258,43 +255,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
     GNUSTEP_INSTANCE=$$instance \
     INTERNAL_$${type}_NAME=$$instance \
     TARGET=$$instance
-
-ifneq ($(FRAMEWORK_NAME),)
-#
-# This rule is executed only for frameworks to build the framework tools.
-#
-%.tools:
-	@ \
-instance=$(basename $(basename $*)); \
-operation=$(subst .,,$(suffix $(basename $*))); \
-type=$(subst -,_,$(subst .,,$(suffix $*))); \
-if [ "$$operation" != "build-headers" ]; then \
-  if [ "$($(basename $(basename $*))_TOOLS)" != "" ]; then \
-    echo Building tools for $$type $$instance...; \
-    for f in $($(basename $(basename $*))_TOOLS) __done; do \
-      if [ $$f != __done ]; then       \
-        mf=$(MAKEFILE_NAME); \
-        if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-          mf=Makefile; \
-          echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
-        fi; \
-        if $(MAKE) -C $$f -f $$mf --no-print-directory --no-keep-going $$operation \
-             FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-             FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-             FRAMEWORK_OPERATION="$$operation" \
-             TOOL_OPERATION="$$operation" \
-             DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-           ; then \
-           :; \
-        else exit $$?; \
-        fi; \
-      fi; \
-    done; \
-  fi; \
-fi
-else # no FRAMEWORK
-%.tools: ;
-endif # end of FRAMEWORK code
 
 #
 # This rule provides exactly the same code as the %.variables one with
