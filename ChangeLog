@@ -6,6 +6,7 @@ Fri Sep  3 21:52:00 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 	* GNUsteprc.in: New file.
 	* GNUmakefile.in (install): Install the system GNUsteprc into
 	GNUSTEP_SYSTEM_ROOT.  (uninstall): Uninstall the same file.
+	(distclean): Remove GNUsteprc.
 	* user_home.c: Do not segfault if the environment variable
 	GNUSTEP_SYSTEM_ROOT is not set when the tool is executed.
 	
