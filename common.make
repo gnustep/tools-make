@@ -20,6 +20,9 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+ifeq ($(COMMON_MAKE_LOADED),)
+COMMON_MAKE_LOADED = yes
+
 SHELL = /bin/sh
 
 # Default version
@@ -540,6 +543,8 @@ endif
 ifeq ($(JAVADOC),)
   JAVADOC = $(JAVA_HOME)/bin/javadoc
 endif
+
+endif # COMMON_MAKE_LOADED
 
 ## Local variables:
 ## mode: makefile
