@@ -245,7 +245,7 @@ $(BUNDLE_DIR)/Contents/Info.plist: $(BUNDLE_DIR)/Contents \
 	  echo "<plist version='0.9'>";\
 	  echo "  <dict>";\
 	  echo "    <key>CFBundleExecutable</key>";\
-	  echo "    <string>$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}</string>";\
+	  echo "    <string>$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)</string>";\
 	  echo "    <key>CFBundleInfoDictionaryVersion</key>";\
 	  echo "    <string>6.0</string>";\
 	  echo "    <key>CFBundlePackageType</key>";\
@@ -279,7 +279,7 @@ ifneq ($(OBJ_FILES_TO_LINK),)
 $(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
                                                  $(GNUSTEP_STAMP_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
+	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@$(END_ECHO)
