@@ -391,6 +391,8 @@ $(GNUSTEP_MAKEFILES)/Master/*.make: ;
 
 $(GNUSTEP_MAKEFILES)/Instance/*.make: ;
 
+$(GNUSTEP_MAKEFILES)/Instance/Shared/*.make: ;
+
 # The rule to create the objects file directory.
 $(GNUSTEP_OBJ_DIR):
 	@($(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
