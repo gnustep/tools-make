@@ -90,6 +90,13 @@ CONFIG_SYSTEM_INCL = @CPPFLAGS@
 CONFIG_SYSTEM_LIBS = @LIBS@
 CONFIG_SYSTEM_DEFS = 
 
+#
+# Whether the C/ObjC/C++ compiler supports auto-dependencies
+# (generating dependencies of the object files from the include files
+# used to compile them) via -MMD -MP flags
+#
+AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
+
 ## Local variables:
 ## mode: makefile
 ## End:

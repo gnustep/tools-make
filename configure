@@ -2103,10 +2103,43 @@ ac_cv_objc_threaded="$objc_threaded"
 
 
 #--------------------------------------------------------------------
+# Check compiler version... turn on autodep flags only for gcc => 3.x
+#--------------------------------------------------------------------
+
+echo $ac_n "checking if the compiler supports autodependencies""... $ac_c" 1>&6
+echo "configure:2111: checking if the compiler supports autodependencies" >&5
+
+if test ! ${GCC} = "yes" ; then
+  AUTO_DEPENDENCIES=""
+  echo "$ac_t""no: it's not gcc" 1>&6
+else
+  # Running gcc --version we get something like 2.95.4 or
+  #  egcs-2.91.66 or 3.0.2 or 3.1 20011211
+  # We want to discard anything but the major number.
+  # Explanation of the regexp -
+  # \(^[^0-9]*\) matches beginning of line and following non numeric chars
+  # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 2^nd
+  #  subpattern)
+  # \([^0-9].*\) matches a non numeric char followed by anything
+  # /\2/ replace the whole lot with the 2^nd subpattern
+  gs_cv_gcc_major_version=`${CC} --version | sed "s/\(^[^0-9]*\)\([0-9][0-9]*\)\([^0-9].*\)/\2/"`;
+
+  if test "${gs_cv_gcc_major_version}" -ge "3" ; then
+    AUTO_DEPENDENCIES=yes
+    echo "$ac_t""yes: gcc major version is ${gs_cv_gcc_major_version}" 1>&6
+  else
+    AUTO_DEPENDENCIES=""
+    echo "$ac_t""no: gcc major version is ${gs_cv_gcc_major_version}" 1>&6
+  fi
+fi
+
+
+
+#--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------
 echo $ac_n "checking for the version of gnustep-make we are compiling""... $ac_c" 1>&6
-echo "configure:2110: checking for the version of gnustep-make we are compiling" >&5
+echo "configure:2143: checking for the version of gnustep-make we are compiling" >&5
 . ./Version
 if test -f "../Version"; then
   . ../Version
@@ -2298,6 +2331,7 @@ s%@FORCE_CPPFLAGS@%$FORCE_CPPFLAGS%g
 s%@GCC_SO_DIR@%$GCC_SO_DIR%g
 s%@objc_threaded@%$objc_threaded%g
 s%@ac_cv_objc_threaded@%$ac_cv_objc_threaded%g
+s%@AUTO_DEPENDENCIES@%$AUTO_DEPENDENCIES%g
 s%@GNUSTEP_MAKE_VERSION@%$GNUSTEP_MAKE_VERSION%g
 s%@GNUSTEP_MAKE_MAJOR_VERSION@%$GNUSTEP_MAKE_MAJOR_VERSION%g
 s%@GNUSTEP_MAKE_MINOR_VERSION@%$GNUSTEP_MAKE_MINOR_VERSION%g

@@ -370,6 +370,40 @@ AC_SUBST(objc_threaded)
 AC_SUBST(ac_cv_objc_threaded)
 
 #--------------------------------------------------------------------
+# Check if compiler supports -MMD -MP to generate %.d files ...
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING(if the compiler supports autodependencies)
+
+# What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x
+
+if test ! ${GCC} = "yes" ; then
+  AUTO_DEPENDENCIES=""
+  AC_MSG_RESULT(no: it's not gcc)
+else
+  # Running gcc --version we get something like 2.95.4 or
+  #  egcs-2.91.66 or 3.0.2 or 3.1 20011211
+  # We want to discard anything but the major number.
+  # Explanation of the regexp -
+  # \(^[^0-9]*\) matches beginning of line and following non numeric chars
+  # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 2^nd
+  #  subpattern)
+  # \([^0-9].*\) matches a non numeric char followed by anything
+  # /\2/ replace the whole lot with the 2^nd subpattern
+  gs_cv_gcc_major_version=`${CC} --version | sed "s/\(^[[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/"`;
+
+  if test "${gs_cv_gcc_major_version}" -ge "3" ; then
+    AUTO_DEPENDENCIES=yes
+    AC_MSG_RESULT(yes: gcc major version is ${gs_cv_gcc_major_version})
+  else
+    AUTO_DEPENDENCIES=""
+    AC_MSG_RESULT(no: gcc major version is ${gs_cv_gcc_major_version})
+  fi
+fi
+
+AC_SUBST(AUTO_DEPENDENCIES)
+
+#--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for the version of gnustep-make we are compiling)
