@@ -137,6 +137,9 @@ endif
 
 internal-ctool-uninstall::
 	rm -f $(CTOOL_INSTALLATION_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
+endif
 
 endif
 
