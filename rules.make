@@ -391,6 +391,10 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
 
+# The following rule is needed because in frameworks you might need
+# the .h files before the .c files are compiled.
+%.h : %.psw
+	pswrap -h $@ -o $*.c $<
 
 # Prevent make from trying to remove stuff like
 # libcool.library.all.subprojects thinking that it is a temporary file
