@@ -36,7 +36,7 @@
     "SavePanel" = {
 	backingType = 2;
 	contentView = "SavePanelView";
-	frame = "{x = 100; y = 100; width = 300; height = 350}";
+	frame = "{x = 100; y = 100; width = 380; height = 350}";
 	isVisible = YES;
 	level = 0;
 	isa = NSSavePanel;
@@ -56,8 +56,8 @@
     "SavePanelView" = {
 	autoresizesSubviews = YES;
 	autoresizingMask = 0;
-	bounds = "{x = 0; y = 0; width = 300; height = 350}";
-	frame = "{x = 0; y = 0; width = 300; height = 350}";
+	bounds = "{x = 0; y = 0; width = 380; height = 350}";
+	frame = "{x = 0; y = 0; width = 380; height = 350}";
 	isa = NSView;
 	nextResponder = "SavePanel";
 	postBoundsChangedNotifications = YES;
@@ -68,18 +68,98 @@
     };
 
     "SavePanelSubviews" = {
-	elements = ("HomeButton", "MountButton", "UnmountButton", "OkButton");
+	elements = (
+		    "HomeButton",
+		    "MountButton",
+		    "UnmountButton",
+		    "CancelButton",
+		    "OkButton",
+		    "FileName",
+		    "PromptLabel");
 	isa = NSMutableArray;
+    };
+
+    "FileName" = {
+	autoresizesSubviews = NO;
+	autoresizingMask = 0;
+	drawsBackground = YES;
+	errorAction = nil;
+	isEditable = YES;
+	isa = NSTextField;
+	isSelectable = YES;
+	importsGraphics = NO;
+	allowEditingTextAttributes = YES;
+	isBezeled = YES;
+	isBordered = YES;
+	isContinuous = NO;
+	isScrollable = YES;
+	delegate = nil;
+	ignoresMultiClick = NO;
+	isEnabled = YES;
+	alignment = 0;
+	action = nil;
+	target = nil;
+	tag = 666;
+	bounds = "{x = 0; y = 0; width = 326; height = 18}";
+	frame = "{x = 44; y = 40; width = 326; height = 18}";
+	postsBoundsChangedNotifications = YES;
+	postsFrameChangedNotifications = YES;
+	showsStateBy = 0;
+	state = 0;
+	subviews = nil;
+	nextResponder = "SavePanelView";
+	nextText = "HomeButton";
+	previousText = "OkButton";
+	superview = "SavePanelView";
+	textColor = "TextColor";
+	backgroundColor = "TextBkColor";
+    };
+
+    "PromptLabel" = {
+	autoresizesSubviews = NO;
+	autoresizingMask = 0;
+	drawsBackground = NO;
+	errorAction = nil;
+	isEditable = NO;
+	isa = NSTextField;
+	isSelectable = NO;
+	importsGraphics = NO;
+	allowEditingTextAttributes = NO;
+	isBezeled = NO;
+	isBordered = NO;
+	isContinuous = NO;
+	isScrollable = NO;
+	delegate = nil;
+	ignoresMultiClick = NO;
+	isEnabled = NO;
+	alignment = 0;
+	action = nil;
+	target = nil;
+	tag = 0;
+	bounds = "{x = 0; y = 0; width = 38; height = 18}";
+	frame = "{x = 8; y = 36; width = 38; height = 18}";
+	postsBoundsChangedNotifications = YES;
+	postsFrameChangedNotifications = YES;
+	showsStateBy = 0;
+	state = 0;
+	subviews = nil;
+	nextResponder = "SavePanelView";
+	nextText = "HomeButton";
+	previousText = "OkButton";
+	superview = "SavePanelView";
+	textColor = "TextColor";
+	stringValue = "Name";
+	//backgroundColor = "TextBkColor";
     };
 
     "HomeButton" = {
 	alignment = 2;
 	alternateImage = nil;
-	alternateTitle = "Home";
+	alternateTitle = "";
 	autoresizesSubviews = NO;
 	autoresizingMask = 0;
-	bounds = "{x = 0; y = 0; width = 50; height = 32}";
-	frame = "{x = 8; y = 312; width = 50; height = 32}";
+	bounds = "{x = 0; y = 0; width = 24; height = 24}";
+	frame = "{x = 124; y = 8; width = 24; height = 24}";
 	delay = 0.2;
 	highlightsBy = 14;
 	ignoresMultiClick = NO;
@@ -100,17 +180,17 @@
 	subviews = nil;
 	superview = "SavePanelView";
 	tag = 0;
-	title = "Home";
+	title = "";
     };
 
     "MountButton" = {
 	alignment = 2;
 	alternateImage = nil;
-	alternateTitle = "Mount";
+	alternateTitle = "";
 	autoresizesSubviews = NO;
 	autoresizingMask = 0;
-	bounds = "{x = 0; y = 0; width = 50; height = 32}";
-	frame = "{x = 66; y = 312; width = 50; height = 32}";
+	bounds = "{x = 0; y = 0; width = 24; height = 24}";
+	frame = "{x = 156; y = 8; width = 24; height = 24}";
 	delay = 0.2;
 	highlightsBy = 14;
 	ignoresMultiClick = NO;
@@ -131,17 +211,17 @@
 	subviews = nil;
 	superview = "SavePanelView";
 	tag = 0;
-	title = "Mount";
+	title = "";
     };
 
     "UnmountButton" = {
 	alignment = 2;
 	alternateImage = nil;
-	alternateTitle = "Unmount";
+	alternateTitle = "";
 	autoresizesSubviews = NO;
 	autoresizingMask = 0;
-	bounds = "{x = 0; y = 0; width = 50; height = 32}";
-	frame = "{x = 124; y = 312; width = 50; height = 32}";
+	bounds = "{x = 0; y = 0; width = 24; height = 24}";
+	frame = "{x = 188; y = 8; width = 24; height = 24}";
 	delay = 0.2;
 	highlightsBy = 14;
 	ignoresMultiClick = NO;
@@ -162,7 +242,38 @@
 	subviews = nil;
 	superview = "SavePanelView";
 	tag = 0;
-	title = "Unmount";
+	title = "";
+    };
+
+    "CancelButton" = {
+	alignment = 2;
+	alternateImage = nil;
+	alternateTitle = "Cancel";
+	autoresizesSubviews = NO;
+	autoresizingMask = 0;
+	bounds = "{x = 0; y = 0; width = 70; height = 24}";
+	frame = "{x = 220; y = 8; width = 70; height = 24}";
+	delay = 0.2;
+	highlightsBy = 14;
+	ignoresMultiClick = NO;
+	image = nil;
+	imagePosition = 0;
+	interval = 0.025;
+	isBordered = YES;
+	isContinuous = NO;
+	isEnabled = YES;
+	isTransparent = NO;
+	isa = NSButton;
+	keyEquivalent = "";
+	nextResponder = "SavePanelView";
+	postsBoundsChangedNotifications = YES;
+	postsFrameChangedNotifications = YES;
+	showsStateBy = 0;
+	state = 0;
+	subviews = nil;
+	superview = "SavePanelView";
+	tag = 0;
+	title = "Cancel";
     };
 
     "OkButton" = {
@@ -171,8 +282,8 @@
 	alternateTitle = "Ok";
 	autoresizesSubviews = NO;
 	autoresizingMask = 0;
-	bounds = "{x = 0; y = 0; width = 50; height = 32}";
-	frame = "{x = 182; y = 312; width = 50; height = 32}";
+	bounds = "{x = 0; y = 0; width = 70; height = 24}";
+	frame = "{x = 300; y = 8; width = 70; height = 24}";
 	delay = 0.2;
 	highlightsBy = 14;
 	ignoresMultiClick = NO;
@@ -194,5 +305,33 @@
 	superview = "SavePanelView";
 	tag = 0;
 	title = "Ok";
+    };
+
+
+    //
+    // Colors
+    //
+    "TextColor" = {
+	alpha = 1.0;
+	blue = 0.0;
+	brightness = 0.0;
+	colorSpaceName = NSCalibratedRGBColorSpace;
+	green = 0.0;
+	hue = 0.0;
+	isa = NSColor;
+	red = 0.0;
+	saturation = 0.0;
+    };
+
+    "TextBkColor" = {
+	alpha = 1.0;
+	blue = 1.0;
+	brightness = 1.0;
+	colorSpaceName = NSCalibratedRGBColorSpace;
+	green = 1.0;
+	hue = 0.0;
+	isa = NSColor;
+	red = 1.0;
+	saturation = 0.0;
     };
 };
