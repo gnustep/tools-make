@@ -1,3 +1,7 @@
+Fri May 30 23:28:55 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (OBJC_FLAGS): Added -fno-strict-aliasing.
+
 2003-05-29  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (TARGET_SYSTEM_LIBS): Remove -ldl (added when necessary
