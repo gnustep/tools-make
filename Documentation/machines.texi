@@ -1,8 +1,8 @@
 @c \input texinfo   @c -*-texinfo-*-
 @setfilename machines.info
 @ifclear HOWTO
-@c Machine Specific, Darwin 1.0/PowerPC, , (DIR)
-@node Machine Specific, Darwin 1.0/PowerPC, , (DIR)
+@c Machine Specific, Darwin 1.x/PowerPC, , (DIR)
+@node Machine Specific, Darwin 1.x/PowerPC, , (DIR)
 @chapter Machines
 @end ifclear
 
@@ -12,7 +12,7 @@ more popular operating systems. Some machines marked with
 @emph{Unstable} may have some trouble or may not work at all.
 
 @menu
-* Darwin 1.0/PowerPC::          
+* Darwin 1.x/PowerPC::          
 * Debian/DEC-Alpha::            
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
@@ -51,8 +51,8 @@ configuring, @samp{CFLAGS="" ./configure}. Or when building,
 @samp{make OPTFLAG=""}.
 
 @c -----------------------------------------
-@node Darwin 1.0/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
-@section Darwin 1.0/PowerPC (@emph{Unstable!})
+@node Darwin 1.x/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
+@section Darwin 1.x/PowerPC (@emph{Unstable!})
 
 @table @samp
 @item Recommended compiler
@@ -65,10 +65,11 @@ Don't use gnustep-objc or ffcall.
 @end table
 
 GNUstep is being ported to Darwin. The current Darwin compiler doesn't
-handle __builtin functions. Other than that it mostly compiles. Expect
-some other irritations that haven't been found yet.
-You need to use the ObjC runtime that comes with
-Darwin. To do this configure (gnustep-make) like this:
+handle __builtin functions, so these are diabled, which may cause
+problems with invocations and DO. Other than that it mostly
+compiles. Expect some other irritations that haven't been found yet.
+You need to use the ObjC runtime that comes with Darwin. To do this
+configure (gnustep-make) like this:
 
 @example
 ./configure --with-library-combo=nx-gnu-gnu
@@ -76,7 +77,7 @@ Darwin. To do this configure (gnustep-make) like this:
 
 
 @c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 3.x, Darwin 1.0/PowerPC, Machine Specific
+@node Debian/DEC-Alpha, FreeBSD 3.x, Darwin 1.x/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp

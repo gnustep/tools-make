@@ -6,7 +6,7 @@ Last update: 24 November 2001
 
 I have installed GNUstep on NetBSD/i386 1.5.2.
 I will not be responsible for any damage implicitly or explicitly
-caused by thisinformation. Use at your own risk.
+caused by this information. Use at your own risk.
 Please submit any comments or suggestions to jnqt@fbe.freeserve.ne.jp.
 For more information about installation, see the `GNUstep-HOWTO' file
 located in the gnustep-make package.
@@ -22,7 +22,7 @@ Good Luck! :-)
 su root
 
 
-[Add /etc/ld.so.conf]
+[Add `/etc/ld.so.conf']
 /usr/local/lib
 /usr/X11R6/lib
 
@@ -111,13 +111,13 @@ gmake install
 mkdir ~/GNUstep
 
 
-[Add /etc/rc.local]
+[Add `/etc/rc.local']
 if [ -f /usr/local/GNUstep/System/Tools/ix86/netbsdelf1.5.2/gdomap ]; then
     /usr/local/GNUstep/System/Tools/ix86/netbsdelf1.5.2/gdomap
 fi
 
 
-[Add ~/.cshrc]
+[Add `~/.cshrc']
 setenv GNUSTEP_TZ Japan
 source /usr/local/GNUstep/System/Makefiles/GNUstep.csh
 if (`gdomap -L GDNCServer | grep -c Found` == '0') then

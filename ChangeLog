@@ -1,3 +1,9 @@
+2001-12-29  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.NetBSD: Typos.
+	* Documentation/faq.texi: Update.
+	* Documentation/machines.texi: Likewise.
+
 2001-12-26  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (darwin1): Use NeXT Compiler when using NeXT
