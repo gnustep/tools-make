@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.3.4 is now available.
+The GNUstep Makefile Package version 1.4.0 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -12,23 +12,29 @@ write a project without having to deal with the complex issues
 associated with configuration, building, installation, and packaging.
 It also allows the user to easily create cross-compiled binaries.
 
-Changes in version `1.3.4'
+Changes in version `1.4.0'
 ==========================
 
-   This is a first prerelease version for 1.4.
+  Since the last stable release, the package has gone through an
+extensive reorganization to break up each sub-make into two separate
+components. This allows for much simplified code and lots of code
+sharing between components. As a side effect, it also increased the
+speed of the code by at least a factor of 2.
+
+   * Update Darwin/GNU gcc and Irix targets
 
    * Use gnugc-gnu-gnu library combo for garbage collecting version.
 
-   * Add support for -library-combo in opentool
-
-   * Change GNUSTEP_PATHPREFIX_LIST to	GNUSTEP_PATHLIST
-
    * Add verbosity levels. Use make messages=yes for full messages.
+
+   * Instructions for building on Windows with MSYS
+
+   * Changed Apps directory to Applications
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.3.4.tar.gz distribution file at
+   You can get the gstep-make-1.4.0.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please send bug reports to <bug-gnustep@gnu.org>.
