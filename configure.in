@@ -147,6 +147,8 @@ if test "$ac_cv_library_combo" = ""; then
 fi
 AC_SUBST(ac_cv_library_combo)
 
+OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | tr '-' ' ' | awk '{print $1}'`
+
 #--------------------------------------------------------------------
 # specific target_os options
 #--------------------------------------------------------------------
@@ -291,8 +293,11 @@ case "${target_os}" in
         ;;
 esac
 saved_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -x objective-c"
 saved_LIBS="$LIBS"
+CFLAGS="$CFLAGS -x objective-c"
+if test "$OBJC_RUNTIME_LIB" = "nx"; then
+  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+fi
 if test "$host_os" = linux-gnu; then
   LIBS="-lobjc -lpthread"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",

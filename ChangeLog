@@ -1,3 +1,9 @@
+2001-04-25  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Check OBJC_RUNTIME_LIB from library_combo and set
+	NeXT_RUNTIME if appropriate (only for thread test).
+	* config_thread.m: Don't include NSConstStr if NeXT_RUNTIME.
+
 2001-04-25 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* documentation.make: Revert last change ... it broke javadoc makes
