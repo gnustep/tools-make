@@ -22,9 +22,7 @@
 # which, when appended to the first one, gives the second one ... more
 # precisely, the path of minimum length with this property.
 #
-# <NB: the paths must be absolute, and can only contain empty path components
-# (ie, as in /usr/./GNUstep/) only in the final part of the paths.  This is
-# a restriction in the implementation ... but it is enough for our needs.>
+# <NB: the paths must be absolute.>
 #
 # for example,
 #
@@ -45,8 +43,8 @@
 # it's not obvious what the relationship is between the two paths, and
 # you only have the absolute paths) we do -
 #
-# cd /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so
-# $(LN_S) `$(RELATIVE_PATH_SCRIPT) /usr/GNUstep/System/Frameworks/nicola.framework/Versions/Current/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/`
+# cd /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/
+# $(LN_S) `$(RELATIVE_PATH_SCRIPT) /usr/GNUstep/System/Frameworks/nicola.framework/Versions/Current/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/` libnicola.so
 #
 # which creates the link.  We need to use the minimum path because
 # that is the most relocatable possible path.  I consider all this a
@@ -77,12 +75,45 @@ fi
 # Our second argument is a path like /xxx/yyy/kkk/nnn/ppp
 #
 
-# We first want to remove the common root -- we want to get into having
-# /zzz/ccc/tt and /kkk/nnn/ppp.
+# Step zero is normalizing the paths by removing any /./ component
+# inside the given paths (these components can occur for example when
+# enable-flattened is used).
+tmp_IFS="$IFS"
+IFS=/
+
+# Normalize a by removing any '.' path component.
+normalized_a=""
+for component in $a; do
+  if [ -n "$component" ]; then
+    if [ "$component" != "." ]; then
+      normalized_a="$normalized_a/$component"
+    fi
+  fi
+done
+a="$normalized_a"
+
+# Normalize b by removing any '.' path component.
+normalized_b=""
+for component in $b; do
+  if [ -n "$component" ]; then
+    if [ "$component" != "." ]; then
+      normalized_b="$normalized_b/$component"
+    fi
+  fi
+done
+b="$normalized_b"
+
+IFS="$tmp_IFS"
+
+
+
+# Step one: we first want to remove the common root -- we want to get
+# into having /zzz/ccc/tt and /kkk/nnn/ppp.
 
 # We first try to match as much as possible between the first and the second
 # So we loop on the fields in the second.  The common root must not contain
-# empty path components (/./) for this to work.
+# empty path components (/./) for this to work, but we have already filtered
+# those out at step zero.
 tmp_IFS="$IFS"
 IFS=/
 partial_b=""
