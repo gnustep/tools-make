@@ -96,41 +96,60 @@ LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
 LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 
-# Allow the user GNUmakefile to define xxx_SOVERSION to replace the
-# default SOVERSION for this library.
+# Allow the user GNUmakefile to define xxx_INTERFACE_VERSION to
+# replace the default INTERFACE_VERSION for this library.
 
-# Effect of the value of SOVERSION - 
+# Effect of the value of xxx_INTERFACE_VERSION - 
 
 #  suppose your library is libgnustep-base.1.0.0 - if you do nothing,
-#  SOVERSION=1, and we prepare the symlink libgnustep-base.so.1 -->
-#  libgnustep-base.so.1.0.0 and tell the linker that it should
-#  remember that any application compiled against this library need to
-#  use version .1 of the library.  So at runtime, the dynamical linker
-#  will search for libgnustep-base.so.1.  This is important if you
-#  install multiple versions of the same library.  The default is that
-#  if you install a new version of a library with the same major
-#  number, the new version replaces the old one, and all applications
-#  which were using the old one now use the new one.  If you install a
-#  library with a different major number, the old apps will still use
-#  the old library, while newly compiled apps will use the new one.
+#  INTERFACE_VERSION=1, and we prepare the symlink
+#  libgnustep-base.so.1 --> libgnustep-base.so.1.0.0 and tell the
+#  linker that it should remember that any application compiled
+#  against this library need to use version .1 of the library.  So at
+#  runtime, the dynamical linker will search for libgnustep-base.so.1.
+#  This is important if you install multiple versions of the same
+#  library.  The default is that if you install a new version of a
+#  library with the same major number, the new version replaces the
+#  old one, and all applications which were using the old one now use
+#  the new one.  If you install a library with a different major
+#  number, the old apps will still use the old library, while newly
+#  compiled apps will use the new one.
 
-#  If you redefine SOVERSION to be for example 1.0, then we prepare
-#  the symlink libgnustep-base.so.1.0 --> libgnustep-base.so.1.0.0
-#  instead, and tell the linker to remember 1.0.  So at runtime, the
-#  dynamic linker will search for libgnustep-base.so.1.0.  The
-#  effect of changing SOVERSION to major.minor as in this example is
-#  that if you install a new version with the same major.minor
-#  version, that replaces the old one also for old applications, but
-#  if you install a new library with the same major version but a
-#  *different* minor version, that is used in new apps, but old apps
-#  still use the old version.
+#  If you redefine xxx_INTERFACE_VERSION to be for example 1.0, then
+#  we prepare the symlink libgnustep-base.so.1.0 -->
+#  libgnustep-base.so.1.0.0 instead, and tell the linker to remember
+#  1.0.  So at runtime, the dynamic linker will search for
+#  libgnustep-base.so.1.0.  The effect of changing
+#  xxx_INTERFACE_VERSION to major.minor as in this example is that if
+#  you install a new version with the same major.minor version, that
+#  replaces the old one also for old applications, but if you install
+#  a new library with the same major version but a *different* minor
+#  version, that is used in new apps, but old apps still use the old
+#  version.
 
-ifeq ($($(GNUSTEP_INSTANCE)_SOVERSION),)
-  SOVERSION = $(word 1,$(subst ., ,$(VERSION)))
+ifeq ($($(GNUSTEP_INSTANCE)_INTERFACE_VERSION),)
+
+  # Backwards compatibility: xxx_SOVERSION was the old name for
+  # xxx_INTERFACE_VERSION.  There was no support for setting SOVERSION
+  # (without xxx_), like there is no support for setting
+  # INTERFACE_VERSION (without xxx_) now.
+
+  # TODO: Remove xxx_SOVERSION at some point in the next few
+  # years.  NB: Likely the only user of this is Helge Hess, so once he's
+  # upgraded, let's remove the backwards compatibility code. :-)
+  ifneq ($($(GNUSTEP_INSTANCE)_SOVERSION),)
+    INTERFACE_VERSION = $($(GNUSTEP_INSTANCE)_SOVERSION)
+  else
+
+    # This is the current code - by default, if VERSION is
+    # 1.0.0, INTERFACE_VERSION is 1
+    INTERFACE_VERSION = $(word 1,$(subst ., ,$(VERSION)))
+
+  endif
 else
-  SOVERSION = $($(GNUSTEP_INSTANCE)_SOVERSION)
+  INTERFACE_VERSION = $($(GNUSTEP_INSTANCE)_INTERFACE_VERSION)
 endif
-SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(SOVERSION)
+SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(INTERFACE_VERSION)
 
 else # BUILD_DLL
 
