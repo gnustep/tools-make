@@ -1,3 +1,7 @@
+Tues Aug 4 1998  Felipe A. Rodriguez  <far@ix.netcom.com>
+
+	* test-application.make set $(TEST_APP_NAME) to be a double colon target. 
+
 Sat Jul 31 21:20:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
 	*common.make: Modified to set LDFLAGS to use '-pg' when compiling
