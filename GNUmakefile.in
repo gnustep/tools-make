@@ -164,7 +164,8 @@ endif
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir))
+	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
+	  $(INSTALL_PROGRAM) -m 755 strip_makefiles.sh $(makedir))
 	 $(EC)(echo "Installing makefiles"; \
 	   for f in $(MAKE_FILES); do \
 	     $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
@@ -187,6 +188,10 @@ endif
 	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR))
 	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
 	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
+	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
+	   echo "Stripping makefiles and shell scripts..."; \
+	   cd $(makedir); ./strip_makefiles.sh; \
+	   fi)
 
 #
 # NICOLA - Need to clean the following message and print it at the end
