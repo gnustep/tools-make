@@ -310,7 +310,7 @@ AC_SUBST(GCC_SO_DIR)
 #--------------------------------------------------------------------
 AC_HEADER_DIRENT
 AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
-		sys/stat.h sys/errno.h)
+		sys/stat.h)
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
