@@ -27,16 +27,13 @@ RESOURCE_SET_NAME := $(strip $(RESOURCE_SET_NAME))
 
 # Only install and uninstall are actually performed for this project type
 
-internal-all:: $(RESOURCE_SET_NAME:=.all.resource-set.subprojects)
+internal-all:: 
 
 internal-install:: $(RESOURCE_SET_NAME:=.install.resource-set.variables)
 
 internal-uninstall:: $(RESOURCE_SET_NAME:=.uninstall.resource-set.variables)
 
-internal-clean:: $(RESOURCE_SET_NAME:=.clean.resource-set.subprojects)
+internal-clean:: 
 
-internal-distclean:: $(RESOURCE_SET_NAME:=.distclean.resource-set.subprojects)
+internal-distclean:: 
 
-$(RESOURCE_SET_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.bundle.variables
