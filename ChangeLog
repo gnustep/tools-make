@@ -1,3 +1,19 @@
+Wed Feb 20 11:37:55 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/rules.make (internal-distclean): Remove core files.
+	
+Wed Feb 20 10:48:04 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/source-distribution.make (VERTAG): Replace efficiently
+	using make function.
+	* Master/source-distribution.make: Implemented allowing to change
+	the compression program used, and define a standard set of handy
+	compressions. (Patch by Stefan Urbanek <stefanurbanek@yahoo.fr>
+	modified).
+	* Master/source-distribution.make: Added support for a 
+	.dist-ignore file specifying files to not include in distribution
+	files.  (Suggestion by Stefan Urbanek).
+	
 2002-02-14 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.in: New option to specify GNUSTEP_DEFAULTS_ROOT
