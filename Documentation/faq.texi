@@ -472,6 +472,10 @@ you have take on too large/complex a project.  It's much better to
 'resign' and take on a smaller job than to just stop without telling
 anyone.
 
+Please document the code you add or change (using autogsdoc comments
+that begin with a slash and two asterices). But PLEASE, do not copy from
+the Apple documentation or any other copyrighted documentation.
+
 
 @node How do I start writing code?, How do I start writing documentation?, How can I help with GNUstep?, Compiling and Developing
 @subsection  How do I start writing code?

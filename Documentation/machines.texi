@@ -395,15 +395,18 @@ set to 'posix' not 'solaris'.
 
 @table @samp
 @item Recommended compiler
-egcs 1.1.2
+egcs 1.1.2, unknown
 
 @item Extra libs needed 
 Unknown
 
 @item Special Instructions 
-Make sure there are no -g compiler flags (specify @samp{CFLAGS=
-./configure}, when configuring) or remove it from @samp{OPTFLAG}
-make/config.make. You will probable get a lot of text relocation
+Make sure there are no -g compiler flags (i.e. compiling with debug=yes
+might be a problem). Unsure of correct bundle flags - You might need
+to use the alternate flags listed in target.make, line 989. Also, 
+configuring gnustep-make with @samp{--disable-backend-bundle} might be
+necessary if you can't get bundles to work.
+You will probable get a lot of text relocation
 warnings, which probably can be ignored. See the other Solaris
 instructions above for more information.
 

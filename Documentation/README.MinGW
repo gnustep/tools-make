@@ -94,8 +94,8 @@ LD=`which ld` RANLIB=/usr/bin/ranlib ./configure --target=i386-mingw32 \
 	--prefix=`cygpath -u $GNUSTEP_SYSTEM_ROOT`
 
 which installs the libraries in the GNUstep directory structure (There is
-a script called compile-mingw that automatically configures ffcall
-and installs it, but you need to find it on the web). Then
+a script in ffcall-1.8d and higher that automatically configures ffcall
+and installs, called compile-mingw). Then
 
   make
   make install

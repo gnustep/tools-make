@@ -1,3 +1,10 @@
+2002-02-27  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.MinGW: Update.
+	* Documentation/faq.texi: Likewise.
+	* Documentation/machines.texi: Likewise.
+	* Documentation/userfaq.texi: Likewise.
+
 Wed Feb 27 16:51:34 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* subproject.make: Broken into Master and Instance.

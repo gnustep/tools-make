@@ -91,5 +91,26 @@ using it for itself. To check, open Window Maker's WPrefs and go to the
 Mouse Preferences. Then use another value for the "Mouse grab modifier"
 (bottom right). That will allow you to alt-drag things.
 
+@node Problems compiling,  , Troubleshooting, Troubleshooting
+@subsection Problems compiling
+
+If you get something like
+
+@example
+plmerge: error while loading shared libraries:
+libgnustep-base.so.1: cannot open shared object file: No such file or directory
+@end example
+
+This means your GNU make is broken on your system. Try this:
+
+
+@example
+make LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+@end example
+
+You could also be having problems with gcc. gcc 2.96 does not work
+(Mandrake 8.1, perhaps others). Use a different compiler, like gcc 3.x.
+
+
 @bye
 \bye
