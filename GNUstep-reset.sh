@@ -29,11 +29,12 @@
 # GNUstep.sh file.
 
 # This function resets a path.
-# The only argument is the name of the path variable to be reset.  All
-# paths beginning with GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT,
-# GNUSTEP_NETWORK_ROOT and GNUSTEP_USER_ROOT are removed from the path
-# variable (yes, we are rather crude).  All other paths are kept
-# unchanged.
+# It takes two arguments: the name of the path variable to reset,
+# and a path fragment which is used to make our guess at what should
+# be removed more accurate.  All paths beginning with GNUSTEP_SYSTEM_ROOT, 
+# GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT and GNUSTEP_USER_ROOT 
+# followed by the specified path fragment are removed from the path
+# variable.  All other paths are kept unchanged.
 function reset_path 
 {
   # Declare local variables
@@ -51,9 +52,9 @@ function reset_path
     # a path in GNUSTEP_PATHLIST as prefix
     found=no;
     for gnustep_dir in $GNUSTEP_PATHLIST; do
-      if [ -n "$gnustep_dir" ]; then
+      if [ -n "$gnustep_dir$2" ]; then
         case "$dir" in
-          $gnustep_dir*)  found=yes; break;;
+          $gnustep_dir$2*)  found=yes; break;;
           *);;
         esac;
       fi;
@@ -80,12 +81,12 @@ function reset_path
   fi
 }
 
-reset_path CLASSPATH
-reset_path GUILE_LOAD_PATH
-reset_path LD_LIBRARY_PATH
-reset_path DYLD_LIBRARY_PATH
-reset_path DYLD_FRAMEWORK_PATH
-reset_path PATH
+reset_path CLASSPATH /Library/Libraries/Java
+reset_path GUILE_LOAD_PATH /Library/Libraries/Guile
+reset_path LD_LIBRARY_PATH /Library/Libraries
+reset_path DYLD_LIBRARY_PATH /Library/Libraries
+reset_path DYLD_FRAMEWORK_PATH /Library/Frameworks
+reset_path PATH /Tools
 
 # Make sure we destroy the reset_path function after using it - we don't
 # want to pollute the environment with it.

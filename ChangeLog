@@ -1,3 +1,10 @@
+2005-01-14  Armando Di Cianno <fafhrd@gentoo.org>
+
+	* GNUstep-reset.sh (reset-path): Add new argument with a path
+	fragment to make the path removal more accurate.  Use it with
+	appropriate arguments for each variable. (with small changes by
+	Nicola).
+
 2005-01-05  Sergii Stoian <stoian255@ukr.net>
 
 	* Instance/Shared/bundle.make (shared-instance-bundle-all): Fixed
