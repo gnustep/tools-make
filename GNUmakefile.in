@@ -91,6 +91,7 @@ all: generated-files which_lib$(EXEEXT)
 which_lib$(EXEEXT): which_lib.c
 	$(CC) @CFLAGS@ -Wall -o $@ $^
 
+
 install: all
 	$(srcdir)/mkinstalldirs  $(GNUSTEP_SYSTEM_ROOT) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
@@ -99,20 +100,37 @@ install: all
 		$(tooldir) \
 		$(GNUSTEP_SYSTEM_ROOT)/share \
 		$(GNUSTEP_SYSTEM_ROOT)/Apps \
-		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
 		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Libraries/Resources \
+		$(GNUSTEP_SYSTEM_ROOT)/Libraries/Java \
 		$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-		$(GNUSTEP_SYSTEM_ROOT)/Tools/$(GNUSTEP_TARGET_DIR) \
 		$(GNUSTEP_SYSTEM_ROOT)/Tools/$(GNUSTEP_TARGET_LDIR) \
-		$(GNUSTEP_SYSTEM_ROOT)/Library \
+		$(GNUSTEP_SYSTEM_ROOT)/Tools/Java \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/Bundles \
 		$(GNUSTEP_SYSTEM_ROOT)/Library/Colors \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/Frameworks \
 		$(GNUSTEP_SYSTEM_ROOT)/Library/PostScript \
 		$(GNUSTEP_SYSTEM_ROOT)/Library/Services \
 		$(GNUSTEP_SYSTEM_ROOT)/Documentation/Developer \
 		$(GNUSTEP_SYSTEM_ROOT)/Documentation/User \
 		$(GNUSTEP_SYSTEM_ROOT)/Documentation/info \
 		$(GNUSTEP_SYSTEM_ROOT)/Documentation/man \
-		$(GNUSTEP_LOCAL_ROOT) \
+		$(GNUSTEP_SYSTEM_ROOT)/Developer/Palettes \
+		$(GNUSTEP_LOCAL_ROOT)/Apps \
+		$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+		$(GNUSTEP_LOCAL_ROOT)/Libraries/Resources \
+		$(GNUSTEP_LOCAL_ROOT)/Libraries/Java \
+		$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_LOCAL_ROOT)/Tools/$(GNUSTEP_TARGET_LDIR) \
+		$(GNUSTEP_LOCAL_ROOT)/Tools/Java \
+		$(GNUSTEP_LOCAL_ROOT)/Library/Bundles \
+		$(GNUSTEP_LOCAL_ROOT)/Library/Colors \
+		$(GNUSTEP_LOCAL_ROOT)/Library/Frameworks \
+		$(GNUSTEP_LOCAL_ROOT)/Library/PostScript \
+		$(GNUSTEP_LOCAL_ROOT)/Library/Services \
+		$(GNUSTEP_LOCAL_ROOT)/Documentation/Developer \
+		$(GNUSTEP_LOCAL_ROOT)/Documentation/User \
+		$(GNUSTEP_LOCAL_ROOT)/Developer/Palettes \
 		$(GNUSTEP_LOCAL_ROOT)/Users \
 		$(GNUSTEP_LOCAL_ROOT)/Users/Administrator \
 		$(GNUSTEP_NETWORK_ROOT) 
