@@ -194,8 +194,9 @@ internal-doc-all:: before-$(TARGET)-all \
                    generate-autogsdoc \
                    after-$(TARGET)-all
 
+# If autogsdoc is not present, simply continue
 generate-autogsdoc:
-	$(MKDIRS) $(INTERNAL_doc_NAME); \
+	-$(MKDIRS) $(INTERNAL_doc_NAME); \
 	autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
 
 endif # AGSDOC_FILES
