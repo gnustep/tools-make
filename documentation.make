@@ -188,6 +188,8 @@ ifneq ($(AGSDOC_FILES),)
 
 ifeq ($(GNUSTEP_BASE_HAVE_LIBXML), 1)
 
+ifeq ($(AGSDOC_EXPERIMENTAL), 1)
+
 INTERNAL_AGSDOCFLAGS = $(AGSDOC_FLAGS)
 INTERNAL_AGSDOCFLAGS += -IgnoreDependencies YES
 INTERNAL_AGSDOCFLAGS += -Project $(INTERNAL_doc_NAME)
@@ -220,14 +222,41 @@ $(INTERNAL_doc_NAME)/%.gsdoc: $($(INTERNAL_doc_NAME)_HEADER_FILES_DIR)/%.h
 $(INTERNAL_doc_NAME)/%.gsdoc: %.m
 	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
 
-$(INTERNAL_doc_NAME)/%.html: $(INTERNAL_doc_NAME)/%.gsdoc
+$(INTERNAL_doc_NAME)/%.html: $(INTERNAL_doc_NAME)/%.gsdoc $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).igsdoc
 	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml YES $<
+
+$(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).igsdoc: $(AGSDOC_GSDOC_FILES)
+	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $(AGSDOC_GSDOC_FILES)
 
 internal-doc-all:: before-$(TARGET)-all \
                      $(AGSDOC_HTML_FILES) \
                      after-$(TARGET)-all
 
 before-$(TARGET)-all:: $(INTERNAL_doc_NAME)
+
+else
+
+#
+# Stable/working rules
+#
+
+INTERNAL_AGSDOCFLAGS = $(AGSDOC_FLAGS)
+INTERNAL_AGSDOCFLAGS += -Project $(INTERNAL_doc_NAME)
+INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(INTERNAL_doc_NAME)
+
+# The autogsdoc program has built-in dependency handling, so we can
+# simply run it and it will work out what needs to be rebuilt.
+internal-doc-all:: before-$(TARGET)-all \
+                   generate-autogsdoc \
+                   after-$(TARGET)-all
+
+$(INTERNAL_doc_NAME):
+	$(MKDIRS) $@
+
+generate-autogsdoc: $(INTERNAL_doc_NAME)
+	autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
+
+endif # AGSDOC_EXPERIMENTAL
 
 else
 
