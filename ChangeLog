@@ -1,5 +1,14 @@
 2005-04-06  Nicola Pero <n.pero@mi.flashnet.it>
 
+	* Instance/framework.make: Create header directories and copy them
+	even if HEADER_FILES is empty.  This fixes problems when
+	subprojects have headers, but the top-level framework does not.
+	* Instance/Shared/headers.make (HEADER_FILES_DIR,
+	HEADER_FILES_INSTALL_DIR): Always compute those two variables
+	even if HEADER_FILES is empty.
+
+2005-04-06  Nicola Pero <n.pero@mi.flashnet.it>
+
 	* Instance/framework.make ($(FRAMEWORK_HEADER_FILES)): Fixed
 	depending on HEADER_FILES, which wasn't taking HEADER_FILES_DIR
 	into account (Fix suggested by Matt Rice <ratmice@yahoo.com>).

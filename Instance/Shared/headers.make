@@ -45,14 +45,14 @@ HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 shared-instance-headers-install \
 shared-instance-headers-uninstall
 
-ifeq ($(HEADER_FILES),)
-
-shared-instance-headers-install:
-
-shared-instance-headers-uninstall:
-
-else # we have some HEADER_FILES
-
+# We always compute HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR.
+# The reason is that frameworks might have headers in subprojects (and
+# not in the top framework makefile!).  Those headers are
+# automatically used and installed, but in the top-level makefile,
+# HEADER_FILES = '', still you might want to have a special
+# HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR even in this case.
+# NB: Header installation for frameworks is done by the framework
+# code.
 HEADER_FILES_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_DIR)
 
 ifeq ($(HEADER_FILES_DIR),)
@@ -65,6 +65,14 @@ HEADER_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_INSTALL_DIR)
 ifeq ($(HEADER_FILES_INSTALL_DIR),)
   HEADER_FILES_INSTALL_DIR = $(GNUSTEP_INSTANCE)
 endif
+
+ifeq ($(HEADER_FILES),)
+
+shared-instance-headers-install:
+
+shared-instance-headers-uninstall:
+
+else # we have some HEADER_FILES
 
 #
 # We provide two different algorithms of installing headers.
@@ -81,7 +89,7 @@ shared-instance-headers-install: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
 	$(ECHO_INSTALLING_HEADERS)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	              $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file; \
+	          $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file; \
 	  fi; \
 	done$(END_ECHO)
 

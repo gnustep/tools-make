@@ -111,10 +111,12 @@ FRAMEWORK_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_DIR_NAME)
 FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
 FRAMEWORK_VERSION_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
 
-# This is not doing much at the moment, but at least is defining
+# This is not doing much at the moment, it is only defining
 # HEADER_FILES, HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR in the
-# standard way.  NB: If HEADER_FILES is empty, HEADER_FILES_DIR and
-# HEADER_FILES_INSTALL_DIR are going to be undefined!
+# standard way.  Please note that HEADER_FILES might be empty even if
+# we have headers in subprojects that we need to manage and install.
+# So we assume by default that we have some headers even if
+# HEADER_FILES is empty.
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 # FIXME - do we really want to link the framework against all libs ?
@@ -275,14 +277,12 @@ build-framework-dirs:: $(DERIVED_SOURCES_DIR) \
 	    $(RM_LN_S) Headers; \
 	    $(LN_S) Versions/Current/Headers Headers; \
 	  fi$(END_ECHO)
-ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)cd $(DERIVED_SOURCES_DIR); \
 	  if [ ! -h "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    $(RM_LN_S) ./$(HEADER_FILES_INSTALL_DIR); \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
                     ./$(HEADER_FILES_INSTALL_DIR); \
 	  fi$(END_ECHO)
-endif
 
 $(FRAMEWORK_LIBRARY_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -487,15 +487,13 @@ ifeq ($(strip),yes)
 	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE_NAME)$(END_ECHO)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  $(RM_LN_S) $(HEADER_FILES_INSTALL_DIR); \
-	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(HEADER_FILES_INSTALL_DIR); \
-	fi;$(END_ECHO)
+	$(RM_LN_S) $(HEADER_FILES_INSTALL_DIR); \
+	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(HEADER_FILES_INSTALL_DIR); \
+	$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)cd $(GNUSTEP_HEADERS); \
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  $(CHOWN) $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
-	fi$(END_ECHO)
+	$(CHOWN) $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
+	$(END_ECHO)
 endif
 	$(ECHO_NOTHING)cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
 	$(RM_LN_S) $(FRAMEWORK_LIBRARY_FILE); \
@@ -546,20 +544,18 @@ ifeq ($(strip),yes)
 	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE_NAME)$(END_ECHO)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  if test -d "$(HEADER_FILES_INSTALL_DIR)"; then \
-	    rm -Rf $(HEADER_FILES_INSTALL_DIR); \
-	  fi; \
-          $(MKINSTALLDIRS) $(HEADER_FILES_INSTALL_DIR); \
-	  cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
-            $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list . | (cd  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR); \
-            $(TAR) xf - ); \
-	fi;$(END_ECHO)
+	if test -d "$(HEADER_FILES_INSTALL_DIR)"; then \
+	  rm -Rf $(HEADER_FILES_INSTALL_DIR); \
+	fi; \
+        $(MKINSTALLDIRS) $(HEADER_FILES_INSTALL_DIR); \
+	cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
+          $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list . | (cd  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR); \
+          $(TAR) xf - ); \
+	$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)cd $(GNUSTEP_HEADERS); \
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  $(CHOWN) -R $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
-	fi$(END_ECHO)
+	$(CHOWN) -R $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
+	$(END_ECHO)
 endif
 	$(ECHO_NOTHING)cd $(DLL_INSTALLATION_DIR); \
 	if test -r "$(FRAMEWORK_FILE_NAME)"; then \
@@ -595,9 +591,7 @@ internal-framework-uninstall_::
 	    fi; \
 	  done; \
 	fi; \
-	if [ -n "$(HEADER_FILES)" ]; then \
-	  $(RM_LN_S) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) ; \
-	fi; \
+	$(RM_LN_S) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) ; \
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME) ; \
 	cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
 	$(RM_LN_S) $(FRAMEWORK_LIBRARY_FILE); \
