@@ -140,13 +140,12 @@ install: all
 	     $(makedir)/$(GNUSTEP_TARGET_DIR))
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
-		clean_vendor.sh cpu.sh \
+		clean_vendor.sh cpu.sh GNUstep-reset.sh \
 		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
 		ld_lib_path.csh fixpath.sh relative_path.sh ; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)
 	$(EC)($(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
-	  $(INSTALL_PROGRAM) -m 755 GNUstep-reset.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \

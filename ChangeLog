@@ -1,3 +1,8 @@
+Sun Apr  6 02:25:07 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Bug fix - install GNUstep-reset.sh
+	from the source directory, not from the local directory.
+
 Mon Mar 31 18:43:07 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make (build-framework-dirs): Do not create
