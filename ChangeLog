@@ -1,8 +1,9 @@
-Wed Jan 17 16:39:13 2001  Nicola Pero  <nicola@brainstorm.co.uk>
-
+Wed Jan 17 16:49:54 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+ 
 	* rpm.make (rpm): Fixed typo in copying tar gz file.
-	($(SPEC_FILE)): Fixed typo in checking RPM_DISABLE_RELOCATABLE.
-
+	($(SPEC_FILE)): Fixed typo in checking RPM_DISABLE_RELOCATABLE
+	and in PACKAGE_NEEDS_CONFIGURE.
+	
 Wed Jan 17 13:58:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* GNUmakefile.in (cvs-snapshot), (rpm): New targets.

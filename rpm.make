@@ -287,7 +287,7 @@ $(SPEC_FILE): $(SPEC_IN)
 	@echo "%define gs_install_dir  $(GNUSTEP_INSTALLATION_DIR)" >> $@
 	@echo "%define gs_name         $(PACKAGE_NAME)" >> $@
 	@echo "%define gs_version      $(VERSION)" >> $@
-	@ if [ "$(PACKAGE_NEEDS_CONFIGURE)" = "yes" ]; then \
+	@ if [ "$(PACKAGE_NEEDS_CONFIGURE)" = "YES" ]; then \
 	    echo "%define gs_configure    YES" >> $@;       \
 	  else                                              \
 	    echo "%define gs_configure    NO" >> $@;        \
