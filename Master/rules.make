@@ -53,8 +53,8 @@ all:: before-all internal-all after-all
 # installed (see rpm.make); it must come after *all* the installation 
 # rules have been executed.
 # internal-check-installation-permissions comes before everything so
-# that we don't even run `make all' if we wouldn't be allowed to
-# install afterwards
+# that we run any command if we aren't allowed to install
+# install depends on all as per GNU/Unix habits, conventions and standards.
 ifeq ($(MAKELEVEL),0)
 install:: internal-check-install-permissions all \
           before-install internal-install after-install internal-after-install
