@@ -624,7 +624,6 @@ ifeq ($(FOUNDATION_LIB),nx)
 endif
 
 TARGET_LIB_DIR = \
-   
 Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
 
 ifneq ($(OBJC_COMPILER), NeXT)
@@ -649,8 +648,7 @@ SHARED_LIB_LINK_CMD     = \
 		-compatibility_version 1 -current_version 1 \
 		-read_only_relocs suppress \
 		-undefined suppress \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
-\
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) \
 		-o $@ \
 		$(ALL_LIB_DIRS) \
 		$(LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \

@@ -1,3 +1,7 @@
+1999-09-11  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Remove two erronous newlines in the MacOSX section.
+
 1999-09-07  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 0.6.0
