@@ -1,3 +1,23 @@
+2001-01-08  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in (MAKE_FILES): Add rpm.make and template.spec.in
+	* rules.make: Include rpm.make
+	* rpm.make: New file
+	* template.spec.in: New file.
+
+	* config.make.in: Set CONFIG_SYSTEM_INCL to CPPFLAGS (since most
+	CPPFLAGS are really include directives).
+	* brain.make (SYSTEM_INCLUDES): Include CONFIG_SYSTEM_INCL.
+	This makes sure these includes can be overriden in GNUmakefiles
+
+	* config_thread.m: Include impl of NXConstantString for shared libobjc
+	that doesn't include it.
+	
+	* configure.in: Check for alternate shared libobjc library also.
+	Compile config_thread.m as objective-c program.
+	Set enable-ffcall to be yes by default (unless libs aren't installed).
+	* Version: New file.
+
 2001-01-03  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Change test for objc forwarding hook to match gcc

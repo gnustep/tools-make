@@ -1,8 +1,9 @@
 # This package is not relocatable
-%define ver	0.6.5
-%define date	20000217
+%define ver	@GNUSTEP_VERSION@
+%define date	@DATE@
 %define prefix 	/usr
-%define gsr 	%{prefix}/GNUstep
+%define gir 	%{prefix}/GNUstep
+%define gsr 	%{prefix}/GNUstep/System
 %define libcombo gnu-gnu-gnu-xgps
 Name: 		gnustep-make
 Version: 	%{ver}
@@ -11,9 +12,9 @@ Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/gstep-make-%{ver}.tar.gz
 Copyright: 	GPL
 Group: 		System Environment/Base
 Summary: 	GNUstep Makefile package
-Packager:	Christopher Seawood <cls@seawood.org>
-Distribution:	Seawood's Random RPMS (%{_buildsym})
-Vendor:		The Seawood Project
+Packager:	Adam Fedor <fedor@gnu.org>
+Distribution:	The GNUstep Project Presents (%{_buildsym})
+Vendor:		The GNUstep Project
 URL:		http://www.gnustep.org/
 BuildRoot: 	/var/tmp/build-%{name}
 Conflicts:	gnustep-core
@@ -40,15 +41,14 @@ Library combo is %{libcombo}.
 
 %prep
 %setup -q -n gstep-%{ver}/make
-%patch -p2 -b .nodupsh
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gsr} --with-library-combo=%{libcombo}
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gir} --with-library-combo=%{libcombo}
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install GNUSTEP_INSTALLATION_DIR=${RPM_BUILD_ROOT}%{gsr}
+make install prefix=${RPM_BUILD_ROOT}%{gsr}
 
 tmp1=`./config.guess`
 tmp2=`./cpu.sh $tmp1`
@@ -84,6 +84,7 @@ cat > filelist.rpm.in << EOF
 %config /etc/profile.d/GNUstep.sh
 %endif
 
+%dir %{gir}
 %dir %{gsr}
 %dir %{gsr}/share
 %dir %{gsr}/Apps
@@ -91,11 +92,18 @@ cat > filelist.rpm.in << EOF
 %dir %{gsr}/Makefiles/GSARCH
 %dir %{gsr}/Makefiles/GSARCH/GSOS
 %dir %{gsr}/Library
-%dir %{gsr}/Library/info
+%dir %{gsr}/Library/Colors
 %dir %{gsr}/Library/PostScript
 %dir %{gsr}/Library/Services
-%dir %{gsr}/Library/man
+%dir %{gsr}/Documentation/Developer
+%dir %{gsr}/Documentation/User
+%dir %{gsr}/Documentation/info
+%dir %{gsr}/Documentation/man
 %dir %{gsr}/Tools
+%dir %{gir}/Local
+%dir %{gir}/Local/Users
+%dir %{gir}/Local/Users/Administrator
+%dir %{gir}/Network
 
 %{gsr}/Makefiles/config*
 %{gsr}/Makefiles/*.csh
@@ -116,6 +124,7 @@ cat > filelist-devel.rpm.in << EOF
 %{gsr}/Makefiles/*.func
 %{gsr}/Makefiles/*.make
 %{gsr}/Makefiles/*.template
+%{gsr}/Makefiles/*.in
 %{gsr}/Makefiles/install-sh
 %{gsr}/Makefiles/mkinstalldirs
 

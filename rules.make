@@ -435,6 +435,11 @@ $(GNUSTEP_OBJ_DIR):
 	@$(MKDIRS) ./$(GNUSTEP_OBJ_DIR)
 endif
 
+#
+# Rules for building RPM packages
+#
+include $(GNUSTEP_MAKEFILES)/rpm.make
+
 endif
 # rules.make loaded
 

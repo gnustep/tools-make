@@ -1,0 +1,18 @@
+# Generated automatically by GNUstep
+%define ver	@VERSION@
+%define date	@DATE@
+%define gsr 	@GID@
+%define libcombo @LIBRARY_COMBO@
+Name: 		@PACKAGE_NAME@
+Version: 	%{ver}
+Release: 	@RPM_RELEASE@
+Prefix:		%{gsr}
+Source: 	@PACKAGE_SOURCE@
+Copyright: 	@PACKAGE_COPYRIGHT@
+Group: 		@RPM_GROUP@
+Summary: 	@PACKAGE_SUMMARY@
+Packager:	@PACKAGER@
+Distribution:	@RPM_DIST@
+Vendor:		@RPM_VENDOR@
+URL:		@PACKAGE_URL@
+BuildRoot: 	/var/tmp/build-%{name}
