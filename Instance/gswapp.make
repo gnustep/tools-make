@@ -133,10 +133,6 @@ internal-gswapp-all_:: \
 	gswapp-resource-files \
 	$(GSWAPP_DIR)/$(GNUSTEP_INSTANCE).sh
 
-$(GNUSTEP_INSTANCE).iconheader:
-	$(ECHO_CREATING)(echo "F	$(GNUSTEP_INSTANCE).$(GSWAPP_EXTENSION)	$(GNUSTEP_INSTANCE)	$(GSWAPP_EXTENSION)"; \
-	  echo "F	$(GNUSTEP_INSTANCE)	$(GNUSTEP_INSTANCE)	app") >$@$(END_ECHO)
-
 $(GSWAPP_DIR):
 	$(ECHO_CREATING)mkdir $@$(END_ECHO)
 else
