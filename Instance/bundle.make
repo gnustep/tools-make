@@ -56,11 +56,14 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 # difficult when the bundle is loaded (eg, if the application and the
 # bundle end up being linked to different versions of the system
 # libraries ...)
-#BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
-#   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-#   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-#   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
+# On windows, this is unfortunately required.
+ifeq ($(WITH_DLL),yes)
+BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
+   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
+   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+endif
 
 ALL_BUNDLE_LIBS =						\
     $(shell $(WHICH_LIB_SCRIPT)					\
