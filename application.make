@@ -205,10 +205,10 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
-	    cat $(INTERNAL_app_NAME)Info.plist; \
-	  fi; \
 	  echo "}") >$@
+	  @(if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
+	    plmerge $@ $(INTERNAL_app_NAME)Info.plist; \
+	  fi)
 
 $(APP_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
