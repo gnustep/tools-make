@@ -51,6 +51,10 @@ ifeq ($(LN_S), ln -s)
   HAS_LN_S = yes
 endif
 
+ifeq (@target_os@,mingw32)
+  HAS_LN_S = no
+endif
+
 LD = $(CC)
 LDOUT =
 LDFLAGS = @LDFLAGS@ 
