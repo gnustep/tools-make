@@ -1,5 +1,5 @@
 #
-#   core.make
+#   brain.make
 #
 #   Determine the core libraries.
 #
