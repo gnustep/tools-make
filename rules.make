@@ -281,8 +281,9 @@ ifneq ($(FRAMEWORK_NAME),)
 	done; \
 	fi
 endif # end of FRAMEWORK code
+endif # end of code not executed by before-all
 	@ if [ "$($*_SUBPROJECTS)" != "" ]; then \
-	echo Building subprojects for $(TARGET_TYPE) $*...; \
+	echo Making $(OPERATION) in subprojects of $(TARGET_TYPE) $*...; \
 	for f in $($*_SUBPROJECTS); do \
 	  mf=$(MAKEFILE_NAME); \
 	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
@@ -300,7 +301,6 @@ endif # end of FRAMEWORK code
 	  fi; \
 	done; \
 	fi
-endif # end of code not executed by before-all
 	@ echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
