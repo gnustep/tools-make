@@ -241,7 +241,10 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(S
 	      classlist="$$classlist, @\"$$f\""; \
 	    fi; \
 	  done; \
-	  classlist="$$classlist, NULL"; \
+	  if [ "$$classlist" = "" ]; then \
+	    classlist="NULL"; \
+	  else \
+	    classlist="$$classlist, NULL"; \
 	else \
 	  classlist="NULL"; \
 	fi; \

@@ -1,3 +1,9 @@
+2001-05-12  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* framework.make ($(DUMMY_FRAMEWORK_FILE)): does not append NULL if
+	classlist does not contains classes.
+	(patch by Stephen Brandon <stephen@pyrusmalus.com>)
+
 2001-05-10  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* target.make (SHARED_FRAMEWORK_LINK_CMD): fix framework soname for
