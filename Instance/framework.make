@@ -199,8 +199,8 @@ endif
 	  if [ ! -L "Current" ]; then \
 	    rm -f Current; \
 	    $(LN_S) $(CURRENT_VERSION_NAME) Current; \
-	  fi;)
-	@(cd $(FRAMEWORK_DIR_NAME); \
+	  fi; \
+	  cd ../; \
 	  if [ ! -L "Resources" ]; then \
 	    rm -f Resources; \
 	    $(LN_S) Versions/Current/Resources Resources; \
