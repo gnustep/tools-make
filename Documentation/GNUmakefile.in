@@ -39,7 +39,7 @@ GNUSTEP_DVIPS_FLAGS     =
 include ../Version
 
 # The documents to be generated
-DOCUMENT_NAME = make
+DOCUMENT_NAME = make gnustep-howto
 
 # The text documents to be generated
 DOCUMENT_TEXT_NAME = \

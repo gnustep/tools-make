@@ -2,7 +2,7 @@
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Debian/DEC-Alpha, , (DIR)
-@node Machine Specific, Debian/DEC-Alpha, , (DIR)
+@node Machine Specific
 @chapter Machines
 @end ifclear
 
@@ -31,6 +31,7 @@ more popular operating systems. Some machines marked with
 * Suse 7.x/Intel::              
 * Unixware-2.1.3/Intel::        
 * Windows with CYGWIN::         
+* Windows with MinGW::          
 @end menu
 
 A recommended compiler is listed for each machine, if known. You should try
@@ -547,7 +548,7 @@ If you don't set gdomap up correctly, Distributed Objects will not
 work.
 
 @c -----------------------------------------
-@node Windows with CYGWIN,  , Unixware-2.1.3/Intel, Machine Specific
+@node Windows with CYGWIN, Windows with MinGW, Unixware-2.1.3/Intel, Machine Specific
 @section Windows with CYGWIN (@emph{Unstable!})
 
 @table @samp
@@ -572,7 +573,7 @@ Base library only. No native GUI backend.
 @end table
 
 @c -----------------------------------------
-@node Windows with MinGW,  , Unixware-2.1.3/Intel, Machine Specific
+@node Windows with MinGW,  , Windows with CYGWIN, Machine Specific
 @section Windows with MinGW (@emph{Unstable!})
 
 @table @samp
