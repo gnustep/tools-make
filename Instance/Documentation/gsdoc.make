@@ -20,8 +20,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-
-
 # The only thing we know is that each %.gsdoc file should generate a
 # %.html file.  If any of the %.gsdoc files is newer than a corresponding
 # %.html file, we rebuild them all.
@@ -32,13 +30,6 @@ internal-doc-all_:: $(GSDOC_OBJECT_FILES)
 $(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
 	gsdoc $(GSDOC_FILES)
 
-endif # GSDOC_FILES
-
-#
-# gsdoc installation
-#
-ifneq ($(GSDOC_FILES),)
-
 internal-doc-install_:: \
 	$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 	$(INSTALL_DATA) $(GSDOC_OBJECT_FILES) \
@@ -47,8 +38,6 @@ internal-doc-uninstall_::
 	rm -f \
 	  $(addprefix $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/\
 	    $(GNUSTEP_INSTANCE)/,$(GSDOC_OBJECT_FILES))
-endif # GSDOC_FILES
-
 
 internal-doc-clean::
 	@ -rm -f $(GSDOC_OBJECT_FILES)
