@@ -1,3 +1,12 @@
+Fri Dec 20 17:27:16 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library-combo.make (LIBRARIES_DEPEND_UPON, BUNDLE_LIBS): For nx
+	foundation or gui, add necessary -framework flags.
+	* target.make (DYLIB_INSTALL_NAME): For darwin, define using
+	FINAL_LIBRARY_INSTALL_DIR rather than hardcoding
+	GNUSTEP_SYSTEM_ROOT, so that it works no matter where a library is
+	installed.
+	
 Fri Dec 20 16:21:40 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/tool.make (FINAL_TOOL_INSTALL_DIR): New variable;
