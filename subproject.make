@@ -157,7 +157,7 @@ endif
 
 framework-resource-files::
 ifneq ($(RESOURCE_FILES),)
-	echo "Copying resources into the framework wrapper..."; \
+	@ echo "Copying resources into the framework wrapper..."; \
 	for f in "$(RESOURCE_FILES)"; do \
 	  cp -r $$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
 	done;
@@ -165,7 +165,7 @@ endif
 
 localized-framework-resource-files::
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
-	echo "Copying localized resources into the framework wrapper..."; \
+	@ echo "Copying localized resources into the framework wrapper..."; \
 	for l in $(LANGUAGES) __done; do \
 	  if [ $$l != __done ]; then \
 	    if [ ! -f $$l.lproj ]; then \
@@ -194,7 +194,7 @@ framework-webresource-dir::
 
 framework-webresource-files:: framework-webresource-dir
 ifneq ($(WEBSERVER_RESOURCE_FILES),)
-	echo "Copying webserver resources into the framework wrapper..."; \
+	@ echo "Copying webserver resources into the framework wrapper..."; \
 	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
 	for ff in $(WEBSERVER_RESOURCE_FILES) __done; do \
 	  if [ $$ff != __done ]; then \
@@ -207,7 +207,7 @@ endif
 
 framework-localized-webresource-files:: framework-webresource-dir
 ifneq ($(LOCALIZED_WEBSERVER_RESOURCE_FILES),)
-	echo "Copying localized webserver resources into the framework wrapper..."; \
+	@ echo "Copying localized webserver resources into the framework wrapper..."; \
 	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
 	for l in $(LANGUAGES) __done; do \
 	  if [ $$l != __done ]; then \
