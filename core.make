@@ -80,6 +80,11 @@ FND_LDFLAGS =
 FND_LIBS = -lFoundation
 endif
 
+ifeq ($(FOUNDATION_LIB),nx)
+FND_LDFLAGS = -framework Foundation
+FND_LIBS =
+endif
+
 GUI_LDFLAGS =
 GUI_LIBS = 
 #
@@ -88,6 +93,11 @@ GUI_LIBS =
 ifeq ($(GUI_LIB),gnu)
 GUI_LDFLAGS =
 GUI_LIBS = -lgnustep-gui
+endif
+
+ifeq ($(GUI_LIB),nx)
+GUI_LDFLAGS = -framework AppKit
+GUI_LIBS =
 endif
 
 BACKEND_LDFLAGS =

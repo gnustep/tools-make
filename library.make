@@ -28,9 +28,13 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 # The name of the library is in the LIBRARY_NAME variable.
 #
 
+ifeq ($(shared), yes)
+LIBRARY_FILE = $(LIBRARY_NAME)$(SHARED_LIBEXT)
+else
 LIBRARY_FILE = $(LIBRARY_NAME)$(LIBEXT)
-SHARED_LIBRARY_NAME = $(LIBRARY_NAME)$(SHARED_LIBEXT)
-SHARED_LIBRARY_FILE = $(LIBRARY_NAME)$(SHARED_LIBEXT).$(VERSION)
+endif
+
+VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 
 #
 # Internal targets
@@ -39,19 +43,10 @@ SHARED_LIBRARY_FILE = $(LIBRARY_NAME)$(SHARED_LIBEXT).$(VERSION)
 #
 # Compilation targets
 #
-internal-all:: object-dir static-library shared-library import-library
+internal-all:: $(GNUSTEP_OBJ_DIR) $(LIBRARY_FILE) import-library
 
-object-dir::
-	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		./$(GNUSTEP_OBJ_DIR)
-
-static-library:: $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(AR) $(ARFLAGS) $(AROUT)$(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) \
-		 $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(RANLIB) $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
-
-shared-library:: $(SHARED_C_OBJ_FILES) $(SHARED_OBJC_OBJ_FILES)
-	$(SHARED_LIB_LINK_CMD)
+$(LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+	$(LIB_LINK_CMD)
 
 import-library::
 
@@ -59,7 +54,7 @@ import-library::
 # Install and uninstall targets
 #
 internal-install:: internal-install-dirs internal-install-headers \
-   internal-install-libs
+   internal-install-lib
 
 internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
@@ -76,23 +71,14 @@ internal-install-headers::
 	    $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	done
 
-internal-install-libs:: internal-install-static-lib \
-   internal-install-shared-lib internal-install-import-lib
+internal-install-libs:: internal-install-lib \
+    internal-install-import-lib
 
-internal-install-static-lib::
+internal-install-lib::
 	if [ -e $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) \
 	    $(GNUSTEP_LIBRARIES) ; \
-	  $(RANLIB) $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE) ; \
-	fi
-
-internal-install-shared-lib::
-	if [ -e $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_FILE) ]; then \
-	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_FILE) \
-	    $(GNUSTEP_LIBRARIES) ; \
-	  (cd $(GNUSTEP_LIBRARIES); \
-	   rm -f $(SHARED_LIBRARY_NAME); \
-	   $(LN_S) $(SHARED_LIBRARY_FILE) $(SHARED_LIBRARY_NAME)) \
+	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
 
 internal-install-import-lib::
@@ -108,8 +94,8 @@ internal-clean::
 	rm -f $(PSWRAP_C_FILES)
 	rm -f $(PSWRAP_H_FILES)
 	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
-	rm -f $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_NAME)
-	rm -f $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_FILE)
+	rm -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
 
 internal-distclean:: clean
 	rm -rf objs

@@ -1,3 +1,43 @@
+Thu Sep 25 17:32:37 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* DESIGN: Updated to contain the latest changes in the package.
+	* Makefile.in: Use a for loop to install the files.
+	* aggregate.make: Commpress all the internal-* targets into a single
+	rule to make the maintanance easier.
+
+	* rules.make: Add rule for creating the object files directory here
+	instead of having the same rule in several files.
+	* application.make: Remove creation of the object files directory. Just
+	add the dependency to the targets.
+	* tool.make: Likewise.
+
+	* clean.make: Optimize cannonicalization of host/target cpu/os/vendor
+	by adding a flag that says if they are already cannoical or not.
+	* target.make: Use the variable defined above to speed up the building
+	process.
+
+	* common.make: Added support for building separate versions of
+	libraries for debugging, profiling and/or static or shared. Use
+	different object file directories instead of using a suffix to the
+	file name. Building a shared library is now the default for systems
+	that support shared libraries.
+	* library.make: Removed the two variables for specifying the shared
+	library and the static one. Added two new target variables which
+	define commands to be run after the installation of either the static
+	or of the shared library.
+	* target.make: Define the two new variables above for the different
+	supported systems.
+
+	* common.make: Added a partial support for the NeXT compiler. We also
+	need a way to determine what compiler is used, which is simple because
+	our tools only partially work with the NeXT runtime/compiler.
+	* core.make: Support for the NeXT Foundation and AppKit added.
+	* rules.make: Use flags to specify the include paths while compiling to
+	support NeXT frameworks. Cleanup in the shared libraries support.
+
+	* rules.make: .PRECIOUS target added to disable removing of
+	intermediate files (Scott's idea).
+
 Thu Sep 25 11:25:36 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* Makefile.in: Include config.make to get the definition for the

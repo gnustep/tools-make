@@ -58,9 +58,9 @@ install:
 	for f in config.guess config.sub install-sh mkinstalldirs *.sh; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
-	for f in application.make bundle.make clean.make common.make \
-		core.make library.make rules.make target.make tool.make \
-		config.site MediaBook.func; do \
+	for f in aggregate.make application.make bundle.make clean.make \
+		common.make core.make library.make rules.make target.make \
+		tool.make config.site MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)

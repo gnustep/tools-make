@@ -19,12 +19,18 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+
+ifneq ($(internal_names_clean), yes)
 # Clean up the host names
-GNUSTEP_HOST_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU))
-GNUSTEP_HOST_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR))
-GNUSTEP_HOST_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS))
+export GNUSTEP_HOST_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU))
+export GNUSTEP_HOST_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR))
+export GNUSTEP_HOST_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS))
 
 # Clean up the target names
-GNUSTEP_TARGET_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_TARGET_CPU))
-GNUSTEP_TARGET_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_TARGET_VENDOR))
-GNUSTEP_TARGET_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_TARGET_OS))
+export GNUSTEP_TARGET_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_TARGET_CPU))
+export GNUSTEP_TARGET_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_TARGET_VENDOR))
+export GNUSTEP_TARGET_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_TARGET_OS))
+
+export internal_names_clean=yes
+
+endif

@@ -32,38 +32,10 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 #
 # Internal targets
 #
-internal-all::
-	@(for f in $(SUBPROJECTS); do \
-		echo Making all in $$f...;\
-		(cd $$f; $(MAKE) all); \
-	done)
-
-internal-install::
-	@(for f in $(SUBPROJECTS); do \
-		echo Making install in $$f...;\
-		(cd $$f; $(MAKE) install); \
-	done)
-
-internal-uninstall::
-	@(for f in $(SUBPROJECTS); do \
-		echo Making uninstall in $$f...;\
-		(cd $$f; $(MAKE) uninstall); \
-	done)
-
-internal-clean::
-	@(for f in $(SUBPROJECTS); do \
-		echo Making clean in $$f...;\
-		(cd $$f; $(MAKE) clean); \
-	done)
-
-internal-distclean::
-	@(for f in $(SUBPROJECTS); do \
-		echo Making distclean in $$f...;\
-		(cd $$f; $(MAKE) distclean); \
-	done)
-
-internal-check::
-	@(for f in $(SUBPROJECTS); do \
-		echo Making check in $$f...;\
-		(cd $$f; $(MAKE) check); \
+internal-all internal-install internal-uninstall internal-clean \
+  internal-distclean internal-check::
+	@(target=`echo $@ | sed 's/internal-//'`; \
+	for f in $(SUBPROJECTS); do \
+		echo Making $$target in $$f...;\
+		(cd $$f; $(MAKE) $$target); \
 	done)

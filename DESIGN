@@ -53,23 +53,23 @@ be compiled for these combinations:
 Objective-C runtime: NeXT, GNU
 Foundation library: NeXT, PDO, gnustep-base, libFoundation
 GUI library: NeXT, gnustep-gui
-Back-end library: none, XDPS, Win32
+Back-end library: nil, XDPS, Win32
 
 The back-end library is required if the GUI library used is
-gnustep-gui. It is "none" if the GUI library is NeXT's AppKit. We'll
+gnustep-gui. It is "nil" if the GUI library is NeXT's AppKit. We'll
 use the following abbreviations to identify different parts:
 
 Objective-C runtime: nx (for NeXT), gnu (for GNU)
 Foundation library: nx (for NeXT), pdo (for PDO), gnu (for gnustep-base),
 		fd (for libFoundation)
 GUI library: nx (for NeXT), gnu (for gnustep-gui)
-Back-end library: non (for none), xdp (for XDPS), w32 (for Win32)
+Back-end library: nil (for none), xdp (for XDPS), w32 (for Win32)
 
 We'll denote the fact that an application was compiled for a certain
 combination of the above values by using the abbreviations of the
 different subsystems and placing underscores between them. For example
 an application compiled for NeXT Foundation using NeXT AppKit will
-have the compile attribute nx_nx_nx_non. An application compiled for
+have the compile attribute nx_nx_nx_nil. An application compiled for
 PDO with the gnustep-gui library under Unix will be denoted by
 nx_pdo_gnu_xdp and another one compiled for gnustep-base using
 gnustep-gui under Unix will be denoted by gnu_gnu_gnu_xdp. Here is a
@@ -77,8 +77,8 @@ list of some of the possible combinations:
 
 ObjC runtime	Foundation	GUI	Backend
 ------------	----------	---	--------
-    nx		    nx		nx	non
-    nx		    pdo		nx	non
+    nx		    nx		nx	nil
+    nx		    pdo		nx	nil
     nx		    pdo		gnu	xdp
     gnu		    gnu		gnu	xdp
     gnu		    gnu		gnu	w32
@@ -347,7 +347,9 @@ project needs to be built. This is defined by including a certain
 makefile package file. For example if the package to be built is an
 application then a possible Makefile can look like this:
 
-OBJC_FILES = test.m
+APP_NAME = test1 test2
+test1_OBJC_FILES = test1.m
+test2_OBJC_FILES = test2.m test21.m
 
 -include Makefile.preamble
 include application.make
@@ -366,3 +368,6 @@ targets.
 The makefile package is installed under $(GNUSTEP_SYSTEM_ROOT)/Makefiles.
 
 
+Ovidiu Predescu
+
+Last updated: September, 1997

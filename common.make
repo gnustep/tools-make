@@ -54,8 +54,6 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/core.make
 
-GNUSTEP_OBJ_DIR = objs/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
-
 #
 # Variables specifying the installation directory paths
 #
@@ -70,36 +68,44 @@ GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 #
 # Determine Foundation header subdirectory based upon library combo
 #
-FND_HEADER =
-
 ifeq ($(FOUNDATION_LIB),gnu)
-FND_HEADER = /gnustep/base
+GNUSTEP_HEADERS_FND = $(GNUSTEP_HEADERS)/gnustep/base
+GNUSTEP_HEADERS_FND_FLAG = -I$(GNUSTEP_HEADERS_FND)
 endif
 
 ifeq ($(FOUNDATION_LIB),fd)
-FND_HEADER = /libFoundation
+GNUSTEP_HEADERS_FND = $(GNUSTEP_HEADERS)/libFoundation
+GNUSTEP_HEADERS_FND_FLAG = -I$(GNUSTEP_HEADERS_FND)
 endif
 
-GNUSTEP_HEADERS_FND = $(GNUSTEP_HEADERS)$(FND_HEADER)
+ifeq ($(OBJC_COMPILER), NeXT)
+  ifeq ($(FOUNDATION_LIB),nx)
+    GNUSTEP_HEADERS_FND =
+    GNUSTEP_HEADERS_FND_FLAG = -framework Foundation
+  endif
+endif
 
 #
 # Determine AppKit header subdirectory based upon library combo
 #
-APP_HEADER =
-
 ifeq ($(GUI_LIB),gnu)
-APP_HEADER = /gnustep/gui
+GNUSTEP_HEADERS_GUI = $(GNUSTEP_HEADERS)/gnustep/gui
+GNUSTEP_HEADERS_GUI_FLAG = -I$(GNUSTEP_HEADERS_GUI)
 endif
 
-GNUSTEP_HEADERS_GUI = $(GNUSTEP_HEADERS)$(APP_HEADER)
+ifeq ($(OBJC_COMPILER), NeXT)
+  ifeq ($(FOUNDATION_LIB),nx)
+    GNUSTEP_HEADERS_GUI =
+    GNUSTEP_HEADERS_GUI_FLAG = -framework AppKit
+  endif
+endif
 
 #
 # Overridable compilation flags
 #
-DEBUGFLAG = -g
-OPTFLAG = -O2
 OBJCFLAGS = -Wno-implicit -Wno-import
-CFLAGS = 
+CFLAGS =
+OBJ_DIR_PREFIX =
 
 ifeq ($(OBJC_RUNTIME_LIB),gnu)
 RUNTIME_FLAG = -fgnu-runtime
@@ -109,6 +115,46 @@ ifeq ($(OBJC_RUNTIME_LIB),nx)
 RUNTIME_FLAG = -fnext-runtime
 endif
 
-INTERNAL_OBJCFLAGS = $(DEBUGFLAG) $(OPTFLAG) $(OBJCFLAGS) $(RUNTIME_FLAG)
-INTERNAL_CFLAGS = $(DEBUGFLAG) $(OPTFLAG) $(CFLAGS) $(RUNTIME_FLAG)
-INTERNAL_LDFLAGS = $(LDFLAGS)
+OPTFLAG = -O2
+
+# Enable building shared libraries by default. If the user wants to build a
+# static library, he/she has to specify shared=no explicitly.
+ifeq ($(HAVE_SHARED_LIBS), yes)
+  ifeq ($(shared), no)
+    shared=no
+  else
+    shared=yes
+  endif
+endif
+
+ifeq ($(shared), yes)
+  LIB_LINK_CMD = $(SHARED_LIB_LINK_CMD)
+  OBJ_DIR_PREFIX += shared_
+  INTERNAL_OBJCFLAGS = $(SHARED_CFLAGS)
+  INTERNAL_CFLAGS = $(SHARED_CFLAGS)
+  AFTER_INSTALL_LIBRARY_CMD = $(AFTER_INSTALL_SHARED_LIB_COMMAND)
+else
+  LIB_LINK_CMD = $(STATIC_LIB_LINK_CMD)
+  OBJ_DIR_PREFIX += static_
+  AFTER_INSTALL_LIBRARY_CMD = $(AFTER_INSTALL_STATIC_LIB_COMMAND)
+endif
+
+ifeq ($(profile), yes)
+ADDITIONAL_FLAGS += -pg
+OBJ_DIR_PREFIX += profile_
+endif
+
+ifeq ($(debug), yes)
+ADDITIONAL_FLAGS += -g
+OBJ_DIR_PREFIX += debug_
+endif
+
+OBJ_DIR_PREFIX += obj
+
+INTERNAL_OBJCFLAGS += $(ADDITIONAL_FLAGS) $(OPTFLAG) $(OBJCFLAGS) \
+			$(RUNTIME_FLAG)
+INTERNAL_CFLAGS += $(ADDITIONAL_FLAGS) $(CFLAGS) $(OPTFLAG) $(RUNTIME_FLAG)
+INTERNAL_LDFLAGS += $(LDFLAGS)
+
+GNUSTEP_OBJ_DIR = $(shell echo $(OBJ_DIR_PREFIX) | sed 's/ //g')/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+
