@@ -1,3 +1,9 @@
+Tue May  6 11:30:19 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make (shared-instance-bundle-all):
+	Reverted last change for resource files, but not localized
+	resource files.
+
 Mon May  5 00:52:20 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/bundle.make (shared-instance-bundle-all): Fixed

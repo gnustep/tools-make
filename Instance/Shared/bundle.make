@@ -182,13 +182,25 @@ $(FULL_RESOURCE_DIRS):
 # $$subproject/Resources/Subproject/* the * expands to itself.  So we
 # check if that is true before trying to copy.
 
+# Please note that if xxx/yyy is specified in RESOURCE_FILES, we
+# create the file {bundle}/yyy (not {bundle}/xxx/yyy), because people
+# usually can put resource files in subdirs, and want to copy them
+# just top-level.  That is what currently happens, but often enough
+# you might want the other behaviour ({bundle}/xxx/yyy to be created),
+# and TODO: devise a way to support it.
+#
+# If instead xxx/yyy is specified in LOCALIZED_RESOURCE_FILES, we
+# create the file {bundle}/Language.lproj/xxx/yyy, because we want to
+# mirror the Language.lproj directory faithfully.  There is no
+# possible confusion here.
+
 shared-instance-bundle-all: $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH) \
                       $(FULL_RESOURCE_DIRS) \
                       shared-instance-bundle-all-gsweb
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_COPYING_RESOURCES)for f in $(RESOURCE_FILES); do \
 	  if [ -f $$f -o -d $$f ]; then \
-	    cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$f; \
+	    cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
 	  else \
 	    echo "Warning: $$f not found - ignoring"; \
 	  fi; \
