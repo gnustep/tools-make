@@ -54,7 +54,7 @@ if test "$bindir" = "\${exec_prefix}/bin" ; then
    bindirtop="\${exec_prefix}/Tools"
 fi
 if test "$DIR_BIN" = "/usr/local/bin" ; then
-   DIR_BIN="${prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   DIR_BIN="\${prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
    bindirtop="\${exec_prefix}/Tools"
 fi
 
@@ -63,7 +63,7 @@ fi
 
 # Change the data directory default
 if test "$datadir" = "\${prefix}/share" ; then
-   datadir="${prefix}/Libraries/share"
+   datadir="\${prefix}/Libraries/share"
 fi
 
 # xxx What about sysconfdir?
@@ -84,11 +84,11 @@ fi
 
 # Change the info directory default
 if test "$infodir" = "\${prefix}/info" ; then
-   infodir="${prefix}/Library/info"
+   infodir="\${prefix}/Library/info"
 fi
 
 # Change the man directory default
 if test "$mandir" = "\${prefix}/man" ; then
-   mandir="${prefix}/Library/man"
+   mandir="\${prefix}/Library/man"
 fi
 

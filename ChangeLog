@@ -1,3 +1,8 @@
+Wed Nov 19 13:07:37 1997  Scott Christley  <scottc@net-community.com>
+
+	* COPYING: New file.
+	* config.site: Escape $ characters.
+
 Wed Nov 19 10:58:28 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* debugapp.in: Changed library_combo variable to LIBRARY_COMBO.
