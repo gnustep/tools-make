@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 11 November 2001
+   Last Update: 10 December 2001
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -358,10 +358,11 @@ Darwin 1.0/PowerPC (_Unstable!_)
      Don't use gnustep-objc or ffcall.
 
 `Special Instructions'
-   GNUstep has not been ported to Darwin. Expect some minor irritations
-and possibly one or two major ones if your trying to do this. Darwin
-doesn't have a GCC ObjC Compiler, so you need to use the ObjC runtime
-that comes with Darwin. To do this configure (gnustep-make) like this:
+   GNUstep is being ported to Darwin. The current Darwin compiler
+doesn't handle __builtin functions. Other than that it mostly compiles.
+Expect some other irritations that haven't been found yet.  You need to
+use the ObjC runtime that comes with Darwin. To do this configure
+(gnustep-make) like this:
 
      ./configure --with-library-combo=nx-gnu-gnu
 
