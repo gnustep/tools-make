@@ -166,8 +166,10 @@ $(APP_DIR_NAME)/$(INTERNAL_app_NAME):
 endif
 endif
 
-app-resource-dir::
-	@$(MKDIRS) $(APP_RESOURCE_DIRS)
+$(APP_RESOURCE_DIRS):
+	$(MKDIRS) $(APP_RESOURCE_DIRS)
+
+app-resource-dir:: $(APP_RESOURCE_DIRS)
 
 app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
@@ -221,7 +223,9 @@ internal-app-install:: internal-app-all internal-install-dirs
 	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)
 	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
 
-internal-install-dirs::
+internal-install-dirs:: $(GNUSTEP_APPS)
+
+$(GNUSTEP_APPS):
 	$(MKDIRS) $(GNUSTEP_APPS)
 
 internal-app-uninstall::
