@@ -81,6 +81,47 @@ AC_HEADER_DIRENT
 AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
 		sys/stat.h sys/errno.h)
 
+
+#--------------------------------------------------------------------
+# Find for DPS
+#--------------------------------------------------------------------
+if test -f clean_cpu.sh; then
+  transformed_host_cpu=`clean_cpu.sh $host_cpu`
+  transformed_target_cpu=`clean_cpu.sh $target_cpu`
+else if test -f ${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_cpu.sh; then
+  transformed_host_cpu=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_cpu.sh $host_cpu`
+  transformed_target_cpu=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_cpu.sh $target_cpu`
+fi
+fi
+
+if test -f clean_os.sh; then
+  transformed_host_os=`clean_os.sh $host_os`
+  transformed_target_os=`clean_os.sh $target_os`
+else if test -f ${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_os.sh; then
+  transformed_host_os=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_os.sh $host_os`
+  transformed_target_os=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_os.sh $target_os`
+fi
+fi
+
+ac_cv_file_output_directory=Source/$transformed_host_cpu/$transformed_host_os
+
+# Add the target header file directory as an include path so that the
+# check for dpsNXargs.h below looks at the appropriate target includes
+ORIG_CPPFLAGS=${CPPFLAGS}
+CPPFLAGS="-I${GNUSTEP_SYSTEM_ROOT}/Headers/$transformed_target_cpu/$transformed_target_os ${CPPFLAGS}"
+CPPFLAGS="-I${GNUSTEP_LOCAL_ROOT}/Headers/$transformed_target_cpu/$transformed_target_os ${CPPFLAGS}"
+CPPFLAGS="-I${GNUSTEP_USER_ROOT}/Headers/$transformed_target_cpu/$transformed_target_os ${CPPFLAGS}"
+CPPFLAGS="${CPPFLAGS} ${X_INCLUDE}"
+
+# We care about this header file on the target not host system
+AC_HAVE_HEADERS(DPS/dpsclient.h, DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=1',
+	DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=0')
+
+# Restore back to the original
+CPPFLAGS=${ORIG_CPPFLAGS}
+
+AC_SUBST(DPS_DEFINE)
+
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------

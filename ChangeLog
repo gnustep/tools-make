@@ -1,3 +1,8 @@
+Thu Sep  3 15:19:57 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* configure.in: Check for DPS.
+	* config.make.in: Add DPS_DEFINE.
+
 Tue Aug 25 10:02:03 1998  Adam Fedor  <fedor@doc.com>
 
 	* openapp.in, debugapp.in: Fix typo. (patch from

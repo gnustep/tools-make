@@ -74,6 +74,8 @@ ifeq ($(X_LIBS),-LNONE)
 	X_LIBS=
 endif
 
+DPS_DEFINE=@DPS_DEFINE@
+
 # Any user specified libs, like thread libraries
 CONFIG_SYSTEM_LIBS = @LIBS@
 
