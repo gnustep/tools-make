@@ -1,3 +1,7 @@
+2000-09-25  Adam Fedor  <fedor@gnu.org>
+
+	* common.make (JAVA_HOME): Revert previous change.
+
 2000-09-20  Adam Fedor  <fedor@gnu.org>
 
 	* bundle.make (internal-bundle-install): Fix previous fix.
