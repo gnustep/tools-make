@@ -1,3 +1,8 @@
+Tue Apr  2 13:39:17 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (GNUSTEP_MAKEINFO_FLAGS): Do not use --no-headers.
+	* Documentation/GNUmakefile.in (GNUSTEP_MAKEINFO_FLAGS): Idem.
+	
 Tue Apr  2 13:23:58 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/documentation.make (internal-doc-install_,

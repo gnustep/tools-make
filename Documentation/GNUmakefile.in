@@ -27,7 +27,7 @@ MAKEFILE_NAME = GNUmakefile
 include ../Version
 
 GNUSTEP_MAKEINFO        = makeinfo
-GNUSTEP_MAKEINFO_FLAGS  = -D NO-TEXI2HTML --no-header
+GNUSTEP_MAKEINFO_FLAGS  = -D NO-TEXI2HTML
 GNUSTEP_MAKETEXT        = makeinfo
 GNUSTEP_MAKETEXT_FLAGS  = -D NO-TEXI2HTML -D TEXT-ONLY --no-header --no-split
 GNUSTEP_TEXI2DVI        = texi2dvi
