@@ -59,7 +59,13 @@ ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
   endif
 endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  ifeq ("$(objc_threaded)","")
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  else
+    INTERNAL_CFLAGS = -D_REENTRANT
+    INTERNAL_OBJCFLAGS = -D_REENTRANT
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
+  endif
 endif
 ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
@@ -1088,35 +1094,6 @@ endif
 # end HP-UX
 #
 ####################################################
-
-####################################################
-#
-# IRIX
-#
-ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
-#HAVE_SHARED_LIBS        = yes
-STATIC_LIB_LINK_CMD = \
-	(cd $(GNUSTEP_OBJ_DIR); $(AR) $(ARFLAGS) \
-	$(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
-	$(RANLIB) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
-SHARED_LIB_LINK_CMD     = \
-        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` ;\
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-
-SHARED_CFLAGS     += -fPIC
-SHARED_LIBEXT   = .sl
-
-HAVE_BUNDLES    = yes
-BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS   += -fPIC
-BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
-endif
-
-# end IRIX
-#
-####################################################
-
 
 ## Local variables:
 ## mode: makefile
