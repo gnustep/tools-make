@@ -75,6 +75,50 @@ JAVADOC_SOURCEPATH = $($(GNUSTEP_INSTANCE)_JAVADOC_SOURCEPATH)
 DOC_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_DOC_INSTALL_DIR)
 TEXT_MAIN = $($(GNUSTEP_INSTANCE)_TEXT_MAIN)
 
+#
+# Common variables for building documentation
+#
+
+# To override GNUSTEP_MAKEINFO, define it differently in
+# GNUmakefile.preamble
+ifeq ($(GNUSTEP_MAKEINFO),)
+  GNUSTEP_MAKEINFO = makeinfo
+endif
+
+# To override GNUSTEP_MAKEINFO_FLAGS, define it differently in
+# GNUmakefile.premable.  To only add new flags to the existing ones,
+# set ADDITIONAL_MAKEINFO_FLAGS in GNUmakefile.preamble.
+ifeq ($(GNUSTEP_MAKEINFO_FLAGS),)
+  GNUSTEP_MAKEINFO_FLAGS = -D NO-TEXI2HTML
+endif
+
+ifeq ($(GNUSTEP_MAKETEXT),)
+  GNUSTEP_MAKETEXT = makeinfo
+endif
+ifeq ($(GNUSTEP_MAKETEXT_FLAGS),)
+  GNUSTEP_MAKETEXT_FLAGS = -D NO-TEXI2HTML -D TEXT-ONLY --no-header --no-split
+endif
+
+ifeq ($(GNUSTEP_TEXI2DVI),)
+  GNUSTEP_TEXI2DVI = texi2dvi
+endif
+ifeq ($(GNUSTEP_TEXI2DVI_FLAGS),)
+  GNUSTEP_TEXI2DVI_FLAGS =
+endif
+
+ifeq ($(GNUSTEP_TEXI2HTML),)
+  GNUSTEP_TEXI2HTML = texi2html
+endif
+ifeq ($(GNUSTEP_TEXI2HTML_FLAGS),)
+  GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
+endif
+
+ifeq ($(GNUSTEP_DVIPS),)
+  GNUSTEP_DVIPS = dvips
+endif
+ifeq ($(GNUSTEP_DVIPS_FLAGS),)
+  GNUSTEP_DVIPS_FLAGS =
+endif
 
 .PHONY: internal-doc-all_ \
         internal-textdoc-all_ \
@@ -108,14 +152,15 @@ internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
 $(GNUSTEP_INSTANCE).info: $(TEXI_FILES)
-	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
+	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) $(ADDITIONAL_MAKEINFO_FLAGS) \
 		-o $@ $(GNUSTEP_INSTANCE).texi
 
 $(GNUSTEP_INSTANCE).dvi: $(TEXI_FILES)
-	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(GNUSTEP_INSTANCE).texi
+	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(ADDITIONAL_TEXI2DVI_FLAGS) \
+	        $(GNUSTEP_INSTANCE).texi
 
 $(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
-	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
+	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
 		$(GNUSTEP_INSTANCE).dvi -o $@
 
 # Some systems don't have GNUSTEP_TEXI2HTML.  Simply don't build the
@@ -123,11 +168,11 @@ $(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
 # don't install the result if it doesn't exist.
 
 $(GNUSTEP_INSTANCE)_toc.html: $(TEXI_FILES)
-	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
+	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi
 
 $(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
-	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
+	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) $(ADDITIONAL_MAKETEXT_FLAGS) \
 		-o $@ $(TEXT_MAIN)
 
 endif # TEXI_FILES
@@ -156,6 +201,10 @@ endif # GSDOC_FILES
 ifneq ($(AGSDOC_FILES),)
 
 ifeq ($(GNUSTEP_BASE_HAVE_LIBXML), 1)
+
+ifeq ($(AUTOGSDOC),)
+  AUTOGSDOC = autogsdoc
+endif
 
 INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
@@ -192,7 +241,7 @@ $(GNUSTEP_INSTANCE).dvi: $(LATEX_FILES)
 	latex $(GNUSTEP_INSTANCE).tex
 
 $(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
-	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
+	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
 		$(GNUSTEP_INSTANCE).dvi -o $@
 
 $(GNUSTEP_INSTANCE).ps.gz: $(GNUSTEP_INSTANCE).ps 
@@ -228,11 +277,18 @@ endif # LATEX_FILES
 #
 ifneq ($(JAVADOC_FILES),)
 
+ifeq ($(JAVADOC),)
+  JAVADOC = $(JAVA_HOME)/bin/javadoc
+endif
+
 ifeq ($(JAVADOC_SOURCEPATH),)
   INTERNAL_JAVADOCFLAGS = -sourcepath ./
 else
   INTERNAL_JAVADOCFLAGS = -sourcepath ./:$(strip $(JAVADOC_SOURCEPATH))
 endif
+
+ALL_JAVADOCFLAGS = $(INTERNAL_CLASSPATHFLAGS) $(INTERNAL_JAVADOCFLAGS) \
+$(ADDITIONAL_JAVADOCFLAGS) $(AUXILIARY_JAVADOCFLAGS)
 
 # incremental compilation with javadoc is not supported - you can only
 # build once, or always.  by default we build only once - use
@@ -350,9 +406,6 @@ internal-doc-install_::
 	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 	$(TAR) cf - $(GNUSTEP_INSTANCE) | \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
-#ifeq ($(GNUSTEP_BASE_HAVE_LIBXML),1)
-#	-$(AUTOGSDOC) $(INTERNAL_AGSLINKFLAGS) $(notdir $(AGSDOC_HTML_FILES))
-#endif
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) \
 	      $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)

@@ -467,20 +467,6 @@ else
 endif
 
 #
-# Common variables for building documentation
-#
-GNUSTEP_MAKEINFO        = makeinfo
-GNUSTEP_MAKEINFO_FLAGS  = -D NO-TEXI2HTML
-GNUSTEP_MAKETEXT        = makeinfo
-GNUSTEP_MAKETEXT_FLAGS  = -D NO-TEXI2HTML -D TEXT-ONLY --no-header --no-split
-GNUSTEP_TEXI2DVI        = texi2dvi
-GNUSTEP_TEXI2DVI_FLAGS  =
-GNUSTEP_TEXI2HTML       = texi2html
-GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
-GNUSTEP_DVIPS           = dvips
-GNUSTEP_DVIPS_FLAGS     = 
-
-#
 # Common variables for subprojects
 #
 SUBPROJECT_PRODUCT = subproject$(OEXT)
@@ -514,20 +500,6 @@ endif
 #
 ifeq ($(JAVAH),)
   JAVAH = $(JAVA_HOME)/bin/javah
-endif
-
-#
-# The java doc tool.
-#
-ifeq ($(JAVADOC),)
-  JAVADOC = $(JAVA_HOME)/bin/javadoc
-endif
-
-#
-# The autogsdoc tool.
-#
-ifeq ($(AUTOGSDOC),)
-  AUTOGSDOC = autogsdoc
 endif
 
 #
