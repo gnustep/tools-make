@@ -85,9 +85,9 @@ Pretty good. Recommended.
 @item gcc 3.3.x
 Recommended. Fixes some bugs relating to protocols as well as other
 improvements.
-@item gcc 3.4
-Not recommended. There are several reports that GNUstep programs compiled
-with this compiler will segfault when unarchiving data.
+@item gcc 3.4.x
+Recommended. The #import directive is no longer deprecated as of this
+version of the compiler.
 @end table
 
 If your having mysterious trouble with a machine, try compiling GNUstep
