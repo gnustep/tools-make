@@ -1,3 +1,9 @@
+Sat Jan 26 15:02:49 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library.make: Recognize xxx_SOVERSION to be used to override the
+	default SOVERSION (From an idea by Helge Hess).  Added explanation
+	of why this is an interesting option to have.
+	
 Sat Jan 26 14:29:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* executable.template.in (appname): Minor tidyup of the sed code
