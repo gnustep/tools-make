@@ -78,9 +78,21 @@ endif
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
 
 #
-# Determine the core libraries
+# Get flags/config options for core libraries
 #
+
+# First, work out precisely library combos etc
 include $(GNUSTEP_MAKEFILES)/brain.make
+# Then include custom makefiles with flags/config options
+# This is meant to be used by the core libraries to override loading
+# of the system makefiles from $(GNUSTEP_MAKEFILES)/Additional/*.make
+# with their local copy (presumable more up-to-date)
+ifneq ($(GNUSTEP_LOCAL_ADDITIONAL_MAKEFILES),)
+include $(GNUSTEP_LOCAL_ADDITIONAL_MAKEFILES)
+endif
+# Then include makefiles with flags/config options installed by the 
+# libraries themselves
+-include $(GNUSTEP_MAKEFILES)/Additional/*.make
 
 #
 # Determine target specific settings
