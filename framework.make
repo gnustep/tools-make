@@ -65,7 +65,7 @@ ifeq ($(INTERNAL_framework_NAME),)
 
 # A framework has a special task to do before-all, which is to build 
 # the public framework headers.
-before-all:: $(FRAMEWORK_NAME:=.before-all.framework.variables)
+before-all:: $(FRAMEWORK_NAME:=.build-headers.framework.variables)
 
 internal-all:: $(FRAMEWORK_NAME:=.all.framework.variables)
 
@@ -198,10 +198,9 @@ build-framework-dir::
 	  $(LN_S) Versions/Current/Resources .; \
 	fi;)
 
-internal-framework-before-all:: build-framework-dir \
-                                $(DERIVED_SOURCES) \
-                                $(FRAMEWORK_HEADER_FILES)
-	@echo Building public headers of framework $(INTERNAL_framework_NAME)...
+internal-framework-build-headers:: build-framework-dir \
+                                   $(DERIVED_SOURCES) \
+                                   $(FRAMEWORK_HEADER_FILES)
 
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES) 
 	if [ "$(HEADER_FILES)" != "" ]; then \
