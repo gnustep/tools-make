@@ -50,11 +50,7 @@ internal-install:: $(SERVICE_NAME:=.install.service.variables)
 internal-uninstall:: $(SERVICE_NAME:=.uninstall.service.variables)
 
 internal-clean:: $(SERVICE_NAME:=.clean.service.subprojects)
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
-endif
+	rm -rf $(GNUSTEP_OBJ_DIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.service; do \
