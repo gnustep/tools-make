@@ -1,3 +1,8 @@
+Fri Jan 25 12:08:30 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make: Added long comment explaining the difference between
+	ADDITIONAL_XXX and AUXILIARY_XXX.
+
 2002-01-25 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUstep.sh.in: Add some quoting to make paths to user GNUstep.sh

@@ -299,6 +299,42 @@ ifeq ($(AUTO_DEPENDENCIES_FLAGS),)
 endif
 endif
 
+# The difference between ADDITIONAL_XXXFLAGS and AUXILIARY_XXXFLAGS is the
+# following:
+#
+#  ADDITIONAL_XXXFLAGS are set freely by the user GNUmakefile
+#
+#  AUXILIARY_XXXFLAGS are set freely by makefile fragments installed by
+#                     auxiliary packages.  For example, gnustep-db installs
+#                     a gdl.make file.  If you want to use gnustep-db in
+#                     your tool, you `include $(GNUSTEP_MAKEFILES)/gdl.make'
+#                     and that will add the appropriate flags to link against
+#                     gnustep-db.  Those flags are added to AUXILIARY_XXXFLAGS.
+#
+# Why can't ADDITIONAL_XXXFLAGS and AUXILIARY_XXXFLAGS be the same variable ?
+# Good question :-) I'm not sure but I think the original reason is that 
+# users tend to think they can do whatever they want with ADDITIONAL_XXXFLAGS,
+# like writing 
+# ADDITIONAL_XXXFLAGS = -Verbose
+# (with a '=' instead of a '+=', thus discarding the previous value of
+# ADDITIONAL_XXXFLAGS) without caring for the fact that other makefiles 
+# might need to add something to ADDITIONAL_XXXFLAGS.
+#
+# So the idea is that ADDITIONAL_XXXFLAGS is reserved for the users to
+# do whatever mess they like with them, while in makefile fragments
+# from packages we use a different variable, which is subject to a stricter 
+# control, requiring package authors to always write
+#
+#  AUXILIARY_XXXFLAGS += -Verbose
+#
+# in their auxiliary makefile fragments, to make sure they don't
+# override flags from different packages, just add to them.
+#
+# When building up command lines inside gnustep-make, we always need
+# to add both AUXILIARY_XXXFLAGS and ADDITIONAL_XXXFLAGS to all
+# compilation/linking/etc command.
+#
+
 ALL_CPPFLAGS = $(AUTO_DEPENDENCIES_FLAGS) $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) \
                $(AUXILIARY_CPPFLAGS)
 
