@@ -200,18 +200,9 @@ CPPFLAGS="$1 $2 ${CPPFLAGS}"
 LIBS="$3 $LIBS"
 
 # Check for RFillImage which is only in version 2.0 or libwraster
-AC_CHECK_LIB(wraster, RFillImage, wraster_ok=yes, wraster_ok=no)
-if test "$wraster_ok" = yes; then
-  AC_CHECK_HEADERS(wraster.h, wraster_ok=yes, wraster_ok=no)
-fi
-if test "$wraster_ok" = yes; then
-  SYSTEM_DEFS="-DHAVE_WRASTER_H $SYSTEM_DEFS"
-  gs_cv_have_wraster=yes
-else
-  GRAPHIC_LIBS=
-  GRAPHIC_CFLAGS=
-  GRAPHIC_LFLAGS=
-  gs_cv_have_wraster=no
+AC_CHECK_LIB(wraster, RFillImage, gs_cv_have_wraster=yes, gs_cv_have_wraster=no)
+if test "$gs_cv_have_wraster" = yes; then
+  AC_CHECK_HEADERS(wraster.h, gs_cv_have_wraster=yes, gs_cv_have_wraster=no)
 fi
 CPPFLAGS="${wraster_check_save_header}"
 LIBS="${wraster_check_save_libs}"
@@ -220,6 +211,13 @@ AC_MSG_RESULT($gs_cv_have_wraster)
 ])
 
 AC_CHECK_WRASTER(${GRAPHIC_CFLAGS}, ${GRAPHIC_LFLAGS}, ${GRAPHIC_LIBS})
+if test $gs_cv_have_wraster = yes; then
+  SYSTEM_DEFS="-DHAVE_WRASTER_H $SYSTEM_DEFS"
+else
+  GRAPHIC_LIBS=
+  GRAPHIC_CFLAGS=
+  GRAPHIC_LFLAGS=
+fi
 
 AC_SUBST(GRAPHIC_LIBS)
 AC_SUBST(GRAPHIC_CFLAGS)
@@ -493,6 +491,24 @@ else
       AC_SUBST(LIBS)
     fi
   fi
+fi
+
+
+#--------------------------------------------------------------------
+# Check for iconv support (for Unicode conversion).
+#--------------------------------------------------------------------
+# Check in the glibc library
+AC_CHECK_FUNCS(iconv)
+if test $ac_cv_func_iconv = no; then
+  # Check if we have a libiconv library
+  AC_CHECK_LIB(iconv, main)
+  if test $av_cv_lib_iconv_main = yes; then
+    LIBS="$LIBS -liconv"
+    AC_SUBST(LIBS)
+    SYSTEM_DEFS="-DHAVE_ICONV $SYSTEM_DEFS"
+  fi
+else
+  SYSTEM_DEFS="-DHAVE_ICONV $SYSTEM_DEFS"
 fi
 
 #--------------------------------------------------------------------
