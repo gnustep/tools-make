@@ -143,7 +143,7 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NibFile = \"\";"; \
 	  else \
-	    echo "  NibFile = \"`echo $(MAIN_MODEL_FILE) | sed -e 's/.gmodel//' -e 's/.gorm//' -e 's/.nib//'`\";"; \
+	    echo "  NibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
 	  fi; \
 	  echo "  Class = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "  Icon = \"$(PALETTE_ICON)\";"; \
