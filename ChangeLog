@@ -1,3 +1,9 @@
+2005-04-06  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make ($(FRAMEWORK_HEADER_FILES)): Fixed
+	depending on HEADER_FILES, which wasn't taking HEADER_FILES_DIR
+	into account (Fix suggested by Matt Rice <ratmice@yahoo.com>).
+	
 2005-03-22  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Instance/application.make (ALL_LDFLAGS): When on a platform
