@@ -1,3 +1,15 @@
+Tue Jul 10 17:09:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* framework.make (build-framework-headers): Renamed to
+	internal-framework-before-all.
+	(internal-framework-before-all): Print a message that we are
+	building the framework public headers.
+	(before-all): New rule.
+	* rules.make (%.build): Removed code running manually a submake
+	invocation to run the build-framework-headers operation.  Do not
+	process SUBPROJECTS or TOOLS when the operation is before-all.
+	Fixed typo/bug - $ff was used insted of $$f in warning messages.
+		
 Tue Jul 10 15:46:38 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.build): Reverted some makefile conditionals to
