@@ -1,0 +1,36 @@
+#!/usr/bin/make -f
+
+tmpdir		= $(shell pwd)/debian/tmp
+prefix          = /usr/GNUstep/
+library_combo   = gnu-gnu-gnu-xgps
+
+build: stamp-build
+
+stamp-build:
+	make -f debian/rules clean
+	./configure --prefix=$(prefix) --with-library-combo=$(library_combo)
+	make
+	touch stamp-build
+
+clean: checkroot
+	rm -f stamp-build
+	./configure # so that `make distclean' works
+	make distclean
+	rm -f debian/files debian/substvars
+	rm -rf debian/tmp
+
+binary: binary-indep binary-arch
+
+binary-indep: build
+
+binary-arch: build checkroot
+	make install prefix=$(tmpdir)/$(prefix)/System
+	dpkg-shlibdeps `find -perm -100 -type f`
+	-mkdir $(tmpdir)/DEBIAN
+	chmod 0755 $(tmpdir)/DEBIAN
+	dpkg-gencontrol -isp
+	chown -R root.root $(tmpdir)
+	dpkg --build debian/tmp ..
+
+checkroot:
+	test root = "`whoami`"

@@ -1,0 +1,15 @@
+Source: gnustep-make
+Section: libs
+Priority: optional
+Maintainer: Looking forOne
+Standards-Version: 3.0.1
+
+Package: gnustep-make
+Architecture: any
+Depends: ${shlibs:Depends}
+Suggests: gnustep-base
+Description: Basic GNUstep scripts and makefiles
+ This package contains the basic scripts, makefiles and
+ directory layout needed to run and compile any GNUstep
+ software.  
+
