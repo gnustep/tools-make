@@ -1,3 +1,14 @@
+Thu Mar  4 13:06:22 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make (xxx_DEPLOY_WITH_CURRENT_VERSION):
+	Variable renamed to xxx_MAKE_CURRENT_VERSION.
+	(update-current-symlink): New optional rule, executed only if
+	MAKE_CURRENT_VERSION is yes, to create the symlink from Current to
+	the current version.
+	(build-framework-dirs): Moved code into the new rule.
+	(xxx.framework/xxx): On Apple, build the symlink xxx.framework/xxx
+	to the current instance only when MAKE_CURRENT_VERSION is yes.
+	
 Thu Mar  4 12:09:27 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make (SOVERSION): Variable removed, replaced
