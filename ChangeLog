@@ -1,3 +1,8 @@
+Tue Nov 13 16:27:45 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (internal-check-install-permissions): Only check for
+	permission to write if the installation directory exists.
+
 Tue Nov 13 14:02:06 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rpm.make: Fixed check for debug variable so that it correctly 
