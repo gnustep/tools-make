@@ -465,7 +465,7 @@ AC_SUBST(clean_target_vendor)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_CONFIG_FILES([config.h config.make openapp debugapp opentool 
+AC_CONFIG_FILES([config.make openapp debugapp opentool 
 executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh
 gnustep-make.spec Documentation/GNUmakefile])
 AC_CONFIG_COMMANDS([default],
