@@ -84,11 +84,11 @@ fi
 
 # Change the info directory default
 if test "$infodir" = "\${prefix}/info" ; then
-   infodir="\${prefix}/Library/info"
+   infodir="\${prefix}/Documentation/info"
 fi
 
 # Change the man directory default
 if test "$mandir" = "\${prefix}/man" ; then
-   mandir="\${prefix}/Library/man"
+   mandir="\${prefix}/Documentation/man"
 fi
 

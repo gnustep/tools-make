@@ -1,3 +1,17 @@
+1999-10-11 Adam Fedor <fedor@gnu.org>
+
+	* Allow for separate System root directory and other changes
+	suggested by Dennis Leeuw <adl@casema.net>.
+	* configure.in: Add test for separate system root directory.
+	* GNUmakefile.in (GNUSTEP_PREFIX): Absolute GNUstep root. Move
+	man and info dirs to separate Documentation dir.
+	* GNUstep.csh.in: (GNUSTEP_ROOT): Absolute root. Define Local dir
+	interms of this. Add Network dir.
+	* GNUstep.sh.in: Likewise.
+	* common.make: Move documentation dirs. Add Network dir info.
+	Look for gui Headers in gnustep/AppKit. 
+	* rules.make: Add Network dir info.
+
 Tue Sep 28 19:05:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* brain.make: Define GS_WITH_GC and link with gc version of objc

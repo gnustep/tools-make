@@ -36,6 +36,26 @@ fi`)
 if test "x$prefix" = "xNONE"; then
   prefix=$ac_default_prefix ;
 fi
+GNUSTEP_ROOT=$prefix
+GNUSTEP_PREFIX='$(prefix)'
+AC_ARG_ENABLE(system-root, 
+  [  --enable-system-root    Use separate system root directory], 
+  [ 
+    if test `basename $prefix` = System; then
+      GNUSTEP_ROOT=`dirname $prefix`
+      GNUSTEP_PREFIX='$(prefix)/..'
+    else
+      prefix=$prefix/System
+    fi
+  ],
+  [
+    if test `basename $prefix` = System; then
+      GNUSTEP_ROOT=`dirname $prefix`
+      GNUSTEP_PREFIX="$(prefix)/.."
+    fi
+  ])
+AC_SUBST(GNUSTEP_ROOT)
+AC_SUBST(GNUSTEP_PREFIX)
 
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
@@ -106,10 +126,10 @@ fi
 # Find for DPS
 #--------------------------------------------------------------------
 AC_ARG_WITH(dps_library, 
-           [  --with-dps-library=DIR DPS library file are in DIR], ,
+           [  --with-dps-library=DIR  DPS library file are in DIR], ,
            with_dps_library=)
 AC_ARG_WITH(dps_include,  
-	[  --with-dps-include=DIR DPS include files are in DIR], ,
+	[  --with-dps-include=DIR  DPS include files are in DIR], ,
         with_dps_include=)
 
 # Add the target header file directory as an include path so that the
@@ -146,10 +166,10 @@ AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
 # Find for JPEG
 #--------------------------------------------------------------------
 AC_ARG_WITH(jpeg_library, 
-           [  --with-jpeg-library=DIR  JPEG library file are in DIR], ,
+           [  --with-jpeg-library=DIR JPEG library file are in DIR], ,
            with_jpeg_library=/usr/local/lib)
 AC_ARG_WITH(jpeg_include,  
-	[  --with-jpeg-include=DIR  JPEG include files are in DIR], ,
+	[  --with-jpeg-include=DIR JPEG include files are in DIR], ,
         with_jpeg_include=/usr/local/include)
 
 AC_DEFUN(AC_CHECK_JPEGLIB,
@@ -193,7 +213,7 @@ AC_ARG_WITH(tiff_library,
            [  --with-tiff-library=DIR TIFF library file are in DIR], ,
            with_tiff_library=/usr/local/lib)
 AC_ARG_WITH(tiff_include,  
-	[  --with-tiff-include=DIR  TIFF include files are in DIR], ,
+	[  --with-tiff-include=DIR TIFF include files are in DIR], ,
         with_tiff_include=/usr/local/include)
 
 AC_DEFUN(AC_CHECK_TIFFLIB,
