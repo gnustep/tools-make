@@ -334,7 +334,7 @@ DGS (Display Ghostscript) is usable but slow.
 * How can I help with the GNUstep website?::  
 * How do I compile GNUstep on my machine? ::  
 * Are there any precompiled packages available?::  
-* I get an error compiling mframe.m in gnustep-base::  
+* What are these type and size warnings?::  
 @end menu
 
 @node Can I run NeXT OPENSTEP or Apple Rhapsody programs on GNUstep?, Is it easy to port OPENSTEP and Rhapsody programs to GNUstep?, Compiling and Developing, Compiling and Developing
@@ -612,7 +612,7 @@ distribution, and also is available separately on the GNUstep ftp
 sites. A PDF version also exists on the web site called
 @file{GnustepInstall.pdf}. 
 
-@node Are there any precompiled packages available?, I get an error compiling mframe.m in gnustep-base, How do I compile GNUstep on my machine? , Compiling and Developing
+@node Are there any precompiled packages available?, What are these type and size warnings?, How do I compile GNUstep on my machine? , Compiling and Developing
 @subsection Are there any precompiled packages available?
 
 Check @url{http://www.gnustep.org/resources/sources.html} for links
@@ -620,14 +620,16 @@ to sites with RPMS, and perhaps in the future, Debian packages.
 In some cases. You can check the debian site for preconfigured GNUstep
 packages.
 
-@node I get an error compiling mframe.m in gnustep-base,  , Are there any precompiled packages available?, Compiling and Developing
-@subsection I get an error compiling mframe.m in gnustep-base.
+@node What are these type and size warnings?,  , Are there any precompiled packages available?, Compiling and Developing
+@subsection What are these type and size warnings?
 
-This occurs on some GNU/Linux systems.  You'll need to change the
-optimization level, usually like this:
+These warnings:
 @example
-make OPTFLAG=-O
+/usr/bin/ld: warning: type and size of dynamic symbol
+`__objc_class_name_NSConstantString' are not defined
 @end example
+
+are a common occurence and are do to a mismatch between gcc and ld. They don't do any harm so they can be safely ignored. Apparently no one has bothered to fix them yet.
 
 @c -------------------------------------------------------------------
 

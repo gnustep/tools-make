@@ -101,8 +101,8 @@ endif
 #
 # Perform any user initialization
 #
-if ( -e ~/.GNUstep/GNUstep.csh ) then
-  . ~/.GNUstep/GNUstep.csh
+if ( -e ~/GNUstep/GNUstep.csh ) then
+  . ~/GNUstep/GNUstep.csh
 endif
 
 if ( ${?GNUSTEP_FLATTENED} ) then

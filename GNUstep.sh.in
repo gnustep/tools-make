@@ -115,9 +115,9 @@ export CLASSPATH
 #
 # Perform any user initialization
 #
-if [ -f ~/.GNUstep/GNUstep.sh ]
+if [ -f ~/GNUstep/GNUstep.sh ]
 then
-  . ~/.GNUstep/GNUstep.sh
+  . ~/GNUstep/GNUstep.sh
 fi
 
 #
