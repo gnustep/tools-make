@@ -167,7 +167,7 @@ if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   fi
 
   IFS=" "
-  $full_appname/$appname $@
+  $full_appname/$appname "$@"
 
 else
   # Determine if the application has a binary for this operating system
@@ -182,6 +182,6 @@ else
   fi
 
   IFS=" "
-  $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $@
+  $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname "$@"
 
 fi
