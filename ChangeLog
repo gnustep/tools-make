@@ -1,3 +1,12 @@
+Tue Jul 10 11:13:47 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (internal-doc-clean): Use a single rm command
+	for removing most files.  Remove *.aux when latex is used.
+	(internal-doc-distclean): Do not remove *.aux for latex as it is
+	done by clean now.  Do not remove *~ as it is already done by
+	clean in rules.make.  If latex and latex2html are used, and if
+	$(INTERNAL_doc_NAME) is a directory, then rm -rf it.
+	
 Tue Jul 10 10:49:59 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* woapp.make: Removed.
