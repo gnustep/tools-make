@@ -116,9 +116,10 @@ switch ( "${host_os}" )
 
 endsw
 
+unset tool_path_part last_path_part host_os additional dir lib_paths
+
 if ( $?GUILE_LOAD_PATH == 0 ) then
     setenv GUILE_LOAD_PATH "${GNUSTEP_USER_ROOT}/Libraries/Guile:${GNUSTEP_LOCAL_ROOT}/Libraries/Guile:${GNUSTEP_SYSTEM_ROOT}/Libraries/Guile"
 else
     setenv GUILE_LOAD_PATH "${GNUSTEP_USER_ROOT}/Libraries/Guile:${GNUSTEP_LOCAL_ROOT}/Libraries/Guile:${GNUSTEP_SYSTEM_ROOT}/Libraries/Guile:${GUILE_LOAD_PATH}"
 endif
-
