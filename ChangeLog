@@ -1,3 +1,9 @@
+2003-05-02  Adam Fedor  <fedor@gnu.org>
+
+	* common.make (GNUSTEP_PALLETES): Put in ApplicationSupport/Palettes
+	* move_obsolete_paths.sh: Remove Developer dir.
+	* Documentat/GNUmakefile.in: Install docs in Library/Documentation
+
 2003-04-28  Nicola Pero  <nicola@nicola.brainstorm.co.uk>
 
 	* Instance/resource-set.make (RESOURCE_FILES_FULL_INSTALL_DIR): Reverted

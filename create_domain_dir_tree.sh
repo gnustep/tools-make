@@ -46,7 +46,6 @@ basepath="$1"
 
 ${mydir}/mkinstalldirs  "$basepath" \
 		"$basepath"/Applications \
-		"$basepath"/Developer/Palettes \
 		"$basepath"/Tools/${GNUSTEP_TARGET_LDIR} \
 		"$basepath"/Tools/Resources \
 		"$basepath"/Tools/Java \

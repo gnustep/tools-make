@@ -179,4 +179,12 @@ for dir in $@; do
     echo Removed $resourcedir/$subpath
   fi
 
+  # 
+  # Remove these - obsolete
+  #
+  if [ -d $dir/Developer ]; then
+    rm -rf $dir/Developer
+    echo Removed $dir/Developer
+  fi
+
 done

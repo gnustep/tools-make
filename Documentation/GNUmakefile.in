@@ -21,7 +21,7 @@
 # Install into the system root by default
 prefix = @prefix@
 GNUSTEP_INSTALLATION_DIR = $(prefix)
-GNUSTEP_DOCUMENTATION = $(GNUSTEP_INSTALLATION_DIR)/Documentation
+GNUSTEP_DOCUMENTATION = $(GNUSTEP_INSTALLATION_DIR)/Library/Documentation
 GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOCUMENTATION)/info
 MAKEFILE_NAME = GNUmakefile
 
