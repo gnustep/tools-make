@@ -1,3 +1,8 @@
+Fri Feb  8 12:37:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/rules.make (JAVA_JNI_OBJS): Fixed typo/bug - underscore
+	in excess.
+
 Fri Feb  8 11:43:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* java-tool.make: Broken into Master and Instance.
