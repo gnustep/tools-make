@@ -271,12 +271,18 @@ SHARED_LIB_LINK_CMD     = \
           rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+          if [ x$(LIBRARY_NAME_SUFFIX) = x_d ]; then \
+             $(LN_S) $(LIBRARY_FILE) `echo $(LIBRARY_FILE) | sed -e 's/_d//'`; \
+          fi; \
 	)
 AFTER_INSTALL_SHARED_LIB_COMMAND = \
 	(cd $(GNUSTEP_LIBRARIES); \
           rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+          if [ x$(LIBRARY_NAME_SUFFIX) = x_d ]; then \
+             $(LN_S) $(LIBRARY_FILE) `echo $(LIBRARY_FILE) | sed -e 's/_d//'`; \
+          fi; \
 	)
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
