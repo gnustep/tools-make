@@ -53,7 +53,7 @@ ifeq ($(FRAMEWORK_NAME),)
 # WARNING - if you type `make install' in a framework's subproject dir
 # you are going to install the headers in the wrong place - can't fix
 # that - but you can prevent it by adding `FRAMEWORK_NAME = xxx' to
-# all subprojects' GNUmakefiles.
+# your subprojects' GNUmakefiles.
 internal-install:: $(SUBPROJECT_NAME:=.install.subproject.variables)
 
 internal-uninstall:: $(SUBPROJECT_NAME:=.uninstall.subproject.variables)
@@ -81,6 +81,12 @@ FRAMEWORK_HEADER_FILES = $(patsubst %.h,$(FRAMEWORK_HEADERS_DIR)%.h,$(HEADER_FIL
 #
 # Compilation targets
 #
+ifeq ($(FRAMEWORK_NAME),)
+internal-subproject-all:: before-$(TARGET)-all \
+                       $(GNUSTEP_OBJ_DIR) \
+                       $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
+                       after-$(TARGET)-all
+else
 internal-subproject-all:: before-$(TARGET)-all \
                        $(GNUSTEP_OBJ_DIR) \
                        $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
@@ -90,6 +96,7 @@ internal-subproject-all:: before-$(TARGET)-all \
                        framework-webresource-files \
                        framework-localized-webresource-files \
                        after-$(TARGET)-all
+endif
 
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
@@ -103,6 +110,9 @@ after-$(TARGET)-all::
 ifneq ($(FRAMEWORK_NAME),)
 internal-subproject-build-headers:: $(FRAMEWORK_HEADER_FILES)
 
+# We need to build the FRAMEWORK_HEADERS_DIR directory here because
+# this rule could be executed before the top-level framework has built
+# his dirs
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES) $(FRAMEWORK_HEADERS_DIR)
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
@@ -114,72 +124,65 @@ endif
 
 $(FRAMEWORK_HEADERS_DIR):
 	$(MKDIRS) $@
-endif
 
 framework-components::
-	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
-	  if [ "$(COMPONENTS)" != "" ]; then \
-	    echo "Copying components into the framework wrapper..."; \
-	    cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	    for component in $(COMPONENTS) __done; do \
-	      if [ $$component != __done ]; then \
-	        if [ -d ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ]; then \
-		  cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ./; \
-	        fi; \
-	      fi; \
-	    done; \
-	    echo "Copying localized components into the framework wrapper..."; \
-	    for l in $(LANGUAGES) __done; do \
-	      if [ $$l != __done ]; then \
-	        if [ ! -f $$l.lproj ]; then \
-		  $(MKDIRS) $$l.lproj; \
-	        fi; \
-	      fi; \
-	      cd $$l.lproj; \
-	      for f in $(COMPONENTS) __done; do \
-	        if [ $$f != __done ]; then \
-		  if [ -d ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f ]; then \
-		    cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f .; \
-		  fi; \
-	        fi; \
-	      done; \
-	      cd ..; \
-	    done;\
+ifneq ($(COMPONENTS),)
+	@ echo "Copying components into the framework wrapper..."; \
+	cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
+	for component in $(COMPONENTS) __done; do \
+	  if [ $$component != __done ]; then \
+	    if [ -d ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ]; then \
+	      cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ./; \
+	    fi; \
 	  fi; \
-	fi;)
+	done; \
+	echo "Copying localized components into the framework wrapper..."; \
+	for l in $(LANGUAGES) __done; do \
+	  if [ $$l != __done ]; then \
+	    if [ ! -f $$l.lproj ]; then \
+	      $(MKDIRS) $$l.lproj; \
+	    fi; \
+	  fi; \
+	  cd $$l.lproj; \
+	  for f in $(COMPONENTS) __done; do \
+	    if [ $$f != __done ]; then \
+	      if [ -d ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f ]; then \
+	        cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f .; \
+	      fi; \
+	     fi; \
+	   done; \
+	   cd ..; \
+	  done
+endif
 
 framework-resource-files::
-	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
-	  if [ "$(RESOURCE_FILES)" != "" ]; then \
-	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	    echo "Copying resources into the framework wrapper..."; \
-	    for f in "$(RESOURCE_FILES)"; do \
-	      cp -r $$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	    done; \
-	  fi; \
-	fi;)
+ifneq ($(RESOURCE_FILES),)
+	echo "Copying resources into the framework wrapper..."; \
+	for f in "$(RESOURCE_FILES)"; do \
+	  cp -r $$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
+	done;
+endif
 
 localized-framework-resource-files::
-	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
-	  if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
-	    echo "Copying localized resources into the framework wrapper..."; \
-	    for l in $(LANGUAGES) __done; do \
-	      if [ $$l != __done ]; then \
-	        if [ ! -f $$l.lproj ]; then \
-	          $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-	        fi; \
-	      fi; \
-	      for f in $(LOCALIZED_RESOURCE_FILES) __done; do \
-	        if [ $$f != __done ]; then \
-		  if [ -f $$l.lproj/$$f ]; then \
-		    cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-		  fi; \
-	        fi; \
-	      done; \
-	    done; \
-	  fi; \
-	fi;)
+ifneq ($(LOCALIZED_RESOURCE_FILES),)
+	echo "Copying localized resources into the framework wrapper..."; \
+	for l in $(LANGUAGES) __done; do \
+	  if [ $$l != __done ]; then \
+	    if [ ! -f $$l.lproj ]; then \
+	      $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+	     fi; \
+	   fi; \
+	   for f in $(LOCALIZED_RESOURCE_FILES) __done; do \
+	     if [ $$f != __done ]; then \
+	       if [ -f $$l.lproj/$$f ]; then \
+	         cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj/; \
+	       fi; \
+	     fi; \
+	   done; \
+	 done
+endif
 
+# FIXME - FRAMEWORK_WEBSERVER_RESOURCE_DIRS is not defined ...
 framework-webresource-dir::
 	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ] || [ "$(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)" != "" ]; then \
 	  $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
@@ -190,41 +193,43 @@ framework-webresource-dir::
 	fi;)
 
 framework-webresource-files:: framework-webresource-dir
-	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying webserver resources into the framework wrapper..."; \
-	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
-	  for ff in $(WEBSERVER_RESOURCE_FILES) __done; do \
-	    if [ $$ff != __done ]; then \
-	      if [ -f ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff ]; then \
-	        cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff .; \
-	      fi; \
+ifneq ($(WEBSERVER_RESOURCE_FILES),)
+	echo "Copying webserver resources into the framework wrapper..."; \
+	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	for ff in $(WEBSERVER_RESOURCE_FILES) __done; do \
+	  if [ $$ff != __done ]; then \
+	    if [ -f ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff ]; then \
+	      cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff .; \
 	    fi; \
-	  done; \
-	fi;)
+	  fi; \
+	done
+endif
 
 framework-localized-webresource-files:: framework-webresource-dir
-	@(if [ "$(LOCALIZED_WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying localized webserver resources into the framework wrapper..."; \
-	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
-	  for l in $(LANGUAGES) __done; do \
-	    if [ $$l != __done ]; then \
-	      if [ ! -f $$l.lproj ]; then \
-	        $(MKDIRS) $$l.lproj; \
-	      fi; \
+ifneq ($(LOCALIZED_WEBSERVER_RESOURCE_FILES),)
+	echo "Copying localized webserver resources into the framework wrapper..."; \
+	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	for l in $(LANGUAGES) __done; do \
+	  if [ $$l != __done ]; then \
+	    if [ ! -f $$l.lproj ]; then \
+	      $(MKDIRS) $$l.lproj; \
 	    fi; \
-	    cd $$l.lproj; \
-	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES) __done; do \
-	      if [ $$f != __done ]; then \
-	        if [ -f ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f ]; then \
-		  if [ ! -r $$f ]; then \
-		    cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f $$f; \
-		  fi; \
-	        fi;\
+	  fi; \
+	  cd $$l.lproj; \
+	  for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES) __done; do \
+	    if [ $$f != __done ]; then \
+	      if [ -f ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f ]; then \
+	        if [ ! -r $$f ]; then \
+		  cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f $$f; \
+		fi; \
 	      fi;\
-	    done;\
-	    cd ..; \
+	    fi;\
 	  done;\
-	fi;)
+	  cd ..; \
+	done
+endif
+
+endif # FRAMEWORK code
 
 #
 # Installation targets - we only need to install headers and only 
@@ -254,7 +259,7 @@ ifneq ($(HEADER_FILES),)
 	      $(HEADER_FILES_DIR)/$$file \
 	      $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
-	done;
+	done
 endif
 
 internal-subproject-uninstall::
