@@ -1,3 +1,7 @@
+Wed Jun 19 15:39:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (internal-distclean): Reverted last change.
+
 2002-06-18  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep-reset.sh: Change GNUSTEP_PATHPREFIX_LIST to
