@@ -1,3 +1,27 @@
+Thu Oct 31 13:51:41 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Warning: removed framework's xxx_TOOLS API; replaced it with
+	a new xxx_COPY_INTO_DIR API.
+	* Instance/framework.make: Emit a long warning if xxx_TOOLS is
+	used.
+	* Master/rules.make (.PHONY): Removed %.tools.
+	(%.tools): Rule removed.
+	* Instance/tool.make: Removed custom FRAMEWORK code; the same
+	result can now be obtained by using the xxx_COPY_INTO_DIR API,
+	which simplifies framework code, and will soon work for all
+	project types.
+	* Instance/tool.make (internal-tool-copy_into_dir): Implemented.
+	* Instance/rules.make: Recognize new xxx_COPY_INTO_DIR variable.
+	Strip it and put it into COPY_INTO_DIR variable.  If non-empty,
+	centrally disable installation and execute the new
+	internal-$(GNUSTEP_TYPE)-copy_into_dir target at the end of
+	compilation.  Added bare implementation of this :: target, which
+	creates the COPY_INTO_DIR directory if it does not exist yet.
+	* Instance/Shared/bundle.make
+	(shared-instance-bundle-copy_into_dir): Implemented.
+	* messages.make (ECHO_COPYING_INTO_DIR,
+	ECHO_COPYING_BUNDLE_INTO_DIR): New variables.
+	
 Wed Oct 30 13:16:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Unified link commands for libraries and frameworks.
