@@ -37,7 +37,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
 #
-# The name of the library is in the LIBRARY_NAME variable.
+# The name of the library is in the CLIBRARY_NAME variable.
 # The Objective-C files that gets included in the library are in
 # xxx_OBJC_FILES (you normally don't have these - they are used - it's
 # sort of a hack - by gnustep-objc though)
@@ -110,7 +110,7 @@ SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(SOVERSION)
 
 else # BUILD_DLL
 
-LIBRARY_FILE     = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
+LIBRARY_FILE     = $(INTERNAL_clibrary_NAME)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
 LIBRARY_FILE_EXT = $(DLL_LIBEXT)
 DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
 DLL_EXP_LIB      = $(INTERNAL_clibrary_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
