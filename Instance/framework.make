@@ -179,7 +179,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
 	@ classes=""; \
 	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
 	  if [ "$$f" != "__dummy__" ]; then \
-	    sym=`nm -Pg $$f | awk '/__objc_class_name_/ {if($$2 == "$(OBJC_CLASS_SECTION)") print $$1}' | sed 's/__objc_class_name_//'`; \
+	    sym=`nm -Pg $$f | awk '/__objc_class_name_/ {if($$2 != "U") print $$1}' | sed 's/__objc_class_name_//'`; \
 	    classes="$$classes $$sym"; \
 	  fi; \
 	done; \
