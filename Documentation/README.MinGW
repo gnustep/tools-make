@@ -160,7 +160,7 @@ Ignore any other instructions for building this ...
 First, in the shell window in which you have set up your GNUstep
 environment, type
 
-RANLIB=touch ./configure --prefix=$GNUSTEP_SYSTEM_ROOT
+RANLIB=touch; ./configure --prefix=$GNUSTEP_SYSTEM_ROOT
 
 We use 'touch' as a substitute for 'ranlib', as windows does not have
 (and does not need) ranlib.
