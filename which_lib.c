@@ -137,14 +137,20 @@ void get_arguments (int argc, char** argv)
 
   for (i = 0; i < argc; i++) {
     if (!strncmp (argv[i], "-l", 2)) {
-      all_libraries = realloc (all_libraries,
+      if (all_libraries)
+        all_libraries = realloc (all_libraries,
 			       (libraries_no + 1) * sizeof (char*));
+      else
+        all_libraries = malloc ((libraries_no + 1) * sizeof (char*));
       all_libraries[libraries_no] = malloc (strlen (argv[i]) - 1);
       strcpy (all_libraries[libraries_no], argv[i] + 2);
       libraries_no++;
     }
     else if (!strncmp (argv[i], "-L", 2)) {
-      library_paths = realloc (library_paths, (paths_no + 1) * sizeof (char*));
+      if (library_paths)
+        library_paths = realloc (library_paths, (paths_no + 1) * sizeof(char*));
+      else
+        library_paths = malloc ((paths_no + 1) * sizeof(char*));
       library_paths[paths_no] = malloc (strlen (argv[i]) - 1);
       strcpy (library_paths[paths_no], argv[i] + 2);
       paths_no++;
