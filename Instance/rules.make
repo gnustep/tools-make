@@ -168,9 +168,11 @@ OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 # OBJ_FILES_TO_LINK is the set of all .o files which will be linked
 # into the result - please note that you can add to OBJ_FILES_TO_LINK
 # by defining manually some special xxx_OBJ_FILES for your
-# tool/app/whatever
-OBJ_FILES_TO_LINK = $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) \
-                    $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+# tool/app/whatever.  Strip the variable so that by comparing
+# OBJ_FILES_TO_LINK to '' we know if there is a link stage to be
+# performed at all (useful for example in bundles which can contain an
+# object file, or not).
+OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
 
 ifeq ($(AUTO_DEPENDENCIES),yes)
   ifneq ($(strip $(OBJ_FILES_TO_LINK)),)
