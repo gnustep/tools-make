@@ -1,3 +1,10 @@
+Wed Jul 11 11:34:48 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.build): When passing xxx_SUBPROJECTS to a submake,
+	call the passed variable _SUBPROJECTS to avoid conflicts with
+	SUBPROJECTS as used by aggregate.make.
+	(SUBPROJECT_OBJ_FILES): Set this variable using _SUBPROJECTS.
+
 2001-07-10  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Quote $gcc_shared_libobjc in test.
