@@ -43,6 +43,7 @@ ifeq ($(filelist),yes)
   INSTALL_LN_S     = $(GNUSTEP_MAKEFILES)/log_install_ln_s.sh
   # Disabled not to remove anything
   REMOVE_INSTALLED_LN_S = echo > /dev/null 
+  REMOVE_INSTALLED_DIR  = echo > /dev/null
 
   # Mkdirs does no harm, rather it allows our log_install.sh to determine
   # whether something is a directory or a file, and this is needed
@@ -53,13 +54,18 @@ ifeq ($(filelist),yes)
 
   # Set it once for all at the top-level
   ifeq ($(MAKELEVEL),0)
-    FILE_LIST = $(shell pwd)/file-list
+    ifeq ($(debug),yes)
+      FILE_LIST = $(shell pwd)/file-list-debug
+    else
+      FILE_LIST = $(shell pwd)/file-list
+    endif
     # and then pass it down to sub-makes and to the logging programs
     export FILE_LIST
 
-    # Finally, remove file-list at the very beginning
+    # Finally, remove file-list at the very beginning, and set attr
     before-install::
 	-rm -f file-list
+	echo "%attr (-, root, root)" >> $(FILE_LIST)
 
   endif # MAKELEVEL == 0
 endif # filelist == yes
