@@ -2,8 +2,9 @@
 
 	* common.make: Remove -fno-strict-aliasing (Doesn't work on old
 	compilers).
-
 	* target.make: Add posix4 back to Solaris when threaded
+	* configure.in: Cache search for libwraster, fix searching for
+	other graphics libs.
 
 2000-06-22  Adam Fedor  <fedor@gnu.org>
 

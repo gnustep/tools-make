@@ -188,6 +188,9 @@ GRAPHIC_CFLAGS=`${wprefix}get-wraster-flags --cflags`
 GRAPHIC_LFLAGS=`${wprefix}get-wraster-flags --ldflags`
 
 AC_DEFUN(AC_CHECK_WRASTER,
+[dnl
+AC_MSG_CHECKING(for current libwraster support)
+AC_CACHE_VAL(gs_cv_have_wraster,
 [wraster_check_save_header=${CPPFLAGS}
 wraster_check_save_libs=${LIBS}
 CPPFLAGS="$1 $2 ${CPPFLAGS}"
@@ -200,13 +203,17 @@ if test "$wraster_ok" = yes; then
 fi
 if test "$wraster_ok" = yes; then
   SYSTEM_DEFS="-DHAVE_WRASTER_H $SYSTEM_DEFS"
+  gs_cv_have_wraster=yes
 else
   GRAPHIC_LIBS=
   GRAPHIC_CFLAGS=
   GRAPHIC_LFLAGS=
+  gs_cv_have_wraster=no
 fi
 CPPFLAGS="${wraster_check_save_header}"
 LIBS="${wraster_check_save_libs}"
+])
+AC_MSG_RESULT($gs_cv_have_wraster)
 ])
 
 if test "x$GRAPHIC_LIBS" != x; then
@@ -223,7 +230,7 @@ AC_SUBST(SYSTEM_DEFS)
 #--------------------------------------------------------------------
 AC_PATH_XTRA
 
-if test "x$GRAPHIC_LIBS" = x; then
+if test $gs_cv_have_wraster = no; then
   GRAPHIC_CFLAGS="$X_CFLAGS"
   GRAPHIC_LFLAGS="$X_LIBS"
   GRAPHIC_LIBS="-lXext -lX11 $X_EXTRA_LIBS"
@@ -312,7 +319,7 @@ if test "$jpeg_ok" = yes; then
 fi
 CPPFLAGS="${jpeg_check_lib_save_header}"])
 
-if test "x$GRAPHIC_LIBS" = x; then
+if test $gs_cv_have_wraster = no; then
   AC_CHECK_JPEGLIB(${with_jpeg_library}, ${with_jpeg_include})
 fi
 
@@ -390,7 +397,7 @@ if test "$tiff_ok" = yes; then
 fi
 CPPFLAGS="${tiff_check_lib_save_header}"])
 
-if test "x$GRAPHIC_LIBS" = x; then
+if test $gs_cv_have_wraster = no; then
   AC_CHECK_TIFFLIB(${with_tiff_library}, ${with_tiff_include})
 fi
 
