@@ -62,7 +62,7 @@ esac
 user_CPPFLAGS="$CPPFLAGS"
 # This is just for configuring. Later, in config.make, INCLUDE_FLAGS
 # goes in CONFIG_SYSTEM_INCL and the original CPPFLAGS goes in unaltered
-$CPPFLAGS="$CPPFLAGS $INCLUDE_FLAGS"
+CPPFLAGS="$CPPFLAGS $INCLUDE_FLAGS"
 
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
