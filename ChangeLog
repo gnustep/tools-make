@@ -1,3 +1,9 @@
+Sat Jan  5 06:55:54 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* documentation.make (internal-doc-install,
+	internal-doc-uninstall): New rules with support for
+	xxx_INSTALL_FILES, which can be used for non-preprocessed files.
+
 2002-01-05 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* ld_lib_path.sh: Setup GUILE_LOAD_PATH
