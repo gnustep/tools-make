@@ -1,8 +1,12 @@
 2000-12-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* openapp.in:
-	* opentool.in:
-	Fixed for flattened directory structure.
+	* opentool.in: Updated for flattened directory structure.
+	* application.make:
+	* gswapp.make:
+	* service.make:
+	* woapp.make:
+	* wobundle.make: Fix 'clean' for flattened structure.
 
 2000-12-04 Georg Fleischmann <georg@vhf.de>
 
