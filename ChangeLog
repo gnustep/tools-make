@@ -1,3 +1,10 @@
+Wed Nov  7 23:43:19 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: Moved check that GNUSTEP_SYSTEM_ROOT/Tools is in
+	PATH after including names.make.  In the same check, for windows,
+	when calling cygpath.sh, use the full path so it should find it
+	even if PATH - which we are just checking - is messed up.
+	
 Wed Nov  7 08:49:18 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make ($(GNUSTEP_OBJ_DIR)/%${OEXT}): Put the $<_FILE_FLAGS
