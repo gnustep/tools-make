@@ -83,6 +83,8 @@ install: all
 		$(prefix)/Library/Colors \
 		$(prefix)/Library/PostScript \
 		$(prefix)/Library/Services \
+		$(prefix)/Documentation/Developer \
+		$(prefix)/Documentation/User \
 		$(prefix)/Documentation/info \
 		$(prefix)/Documentation/man \
 		$(GNUSTEP_PREFIX)/Local \
