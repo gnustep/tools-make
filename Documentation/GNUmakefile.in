@@ -36,9 +36,10 @@ GNUSTEP_TEXI2HTML       = texi2html
 GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
 GNUSTEP_DVIPS           = dvips
 GNUSTEP_DVIPS_FLAGS     =
+TAR                     = @TAR@
 
 # The documents to be generated
-DOCUMENT_NAME = make gnustep-howto machines faq
+DOCUMENT_NAME = make gnustep-howto machines faq internals
 
 # The text documents to be generated
 DOCUMENT_TEXT_NAME = INSTALL README NEWS GNUstep-HOWTO
@@ -64,6 +65,9 @@ machines.texi
 gnustep-howto_TEXI_FILES = \
 gnustep-howto.texi \
 version.texi
+
+internals_LATEX_FILES = \
+internals.tex
 
 INSTALL_TEXI_FILES = version.texi
 INSTALL_TEXT_MAIN = install.texi
