@@ -1,3 +1,7 @@
+Thu Jan 18 18:07:36 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* spec-debug-rules.template: Speed up filtering.
+
 2001-01-18  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* tool.make: modified to build framework tools. (installed in the
