@@ -42,7 +42,7 @@ SUBPROJECTS:=$(strip $(SUBPROJECTS))
 #
 internal-all internal-install internal-uninstall internal-clean \
   internal-distclean internal-check::
-	@target=$(subst internal-,,$@); \
+	@ target=$(subst internal-,,$@); \
 	for f in $(SUBPROJECTS) __done; do \
 	  if [ $$f != __done ]; then       \
 	    echo Making $$target in $$f...; \
