@@ -71,6 +71,17 @@ ifeq ($(HEADER_FILES_INSTALL_DIR),)
 override HEADER_FILES_INSTALL_DIR = $(GNUSTEP_INSTANCE)
 endif
 
+#
+# We provide two different algorithms of installing headers.
+#
+
+ifeq ($(GNUSTEP_DEVELOPER),)
+
+# 
+# The first one is the standard one.  We run a subshell, loop on all the
+# header files, and install all of them.  This is the default one.
+#
+
 shared-instance-headers-install: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
@@ -78,6 +89,29 @@ shared-instance-headers-install: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
 	              $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file; \
 	  fi; \
 	done
+
+else
+
+# 
+# The second one (which you activate by setting GNUSTEP_DEVELOPER to
+# YES in your shell) is the one specifically optimized for faster
+# development.  We only install headers which are newer than the
+# installed version.  This is much faster if you are developing and
+# need to install headers often, and normally with just few changes.
+# It is slower the first time you install the headers, because we
+# install them using a lot of subshell processes (which is why it is not
+# the default - `users' install headers only once - the default
+# setup is for users).
+#
+
+shared-instance-headers-install: \
+  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
+  $(addprefix $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/,$(HEADER_FILES))
+
+$(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/% : $(HEADER_FILES_DIR)/%
+	$(INSTALL_DATA) $< $@
+
+endif
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
