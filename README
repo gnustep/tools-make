@@ -6,16 +6,16 @@ Here is some introductory info to get you started:
 What is the GNUstep makefile package?
 =====================================
 
-   The makefile package is a simple, powerful and extensible way to
-write makefiles for a GNUstep-based project.  It allows the user to
-write a project without having to deal with the complex issues
-associated with configuration, building, installation, and packaging.
-It also allows the user to easily create cross-compiled binaries.
+The makefile package is a simple, powerful and extensible way to write
+makefiles for a GNUstep-based project.  It allows the user to write a
+project without having to deal with the complex issues associated with
+configuration, building, installation, and packaging.  It also allows
+the user to easily create cross-compiled binaries.
 
 Information
 ===========
 
-   The file `NEWS' has this packages feature history.
+The file `NEWS' has this packages feature history.
 
    The files `INSTALL' or `GNUstep-HOWTO' give instructions for
 installing the packages. Also see the `machines' documentation and
@@ -28,12 +28,11 @@ work with it.
 License
 =======
 
-   The GNUstep libraries are covered under the GNU Lesser Public
-License.  This means you can use these libraries in any program (even
-non-free programs). If you distribute the libraries along with your
-program, you must make the improvements you have made to the libraries
-freely available. You should read the COPYING.LIB file for more
-information.
+The GNUstep libraries are covered under the GNU Lesser Public License.
+This means you can use these libraries in any program (even non-free
+programs). If you distribute the libraries along with your program, you
+must make the improvements you have made to the libraries freely
+available. You should read the COPYING.LIB file for more information.
 
    GNUstep tools, test programs, and other files are covered under the
 GNU General Public License. The GNU GPL is a free software license,
@@ -49,7 +48,7 @@ are under GNU LGPL" (Text in quotes provided by the author of ffcall).
 History
 =======
 
-   The GNUstep makefile package was designed by Scott Christley
+The GNUstep makefile package was designed by Scott Christley
 <scottc@net-community.com> and Ovidiu Predescu
 <ovidiu@net-community.com>.
 

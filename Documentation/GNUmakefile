@@ -130,6 +130,8 @@ MAN7_PAGES = GNUstep.7
 
 include $(GNUSTEP_MAKEFILES)/documentation.make
 
+include ../Version
+
 GNUSTEP_TEXI2HTML_FLAGS += -init_file gnustep.init
 
 # Typing 'make regenerate' should build all, then install the files

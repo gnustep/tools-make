@@ -109,6 +109,9 @@ The libxml library (Version 2) is used to translate some of the
 documentation for GNUstep and to provide suport for MacOS-X compatible
 XML-based property-lists. It is recommended but not currently required.
 
+@item libxslt (OPTIONAL)
+Stylesheet support for use with XML.
+
 @item openssl (OPTIONAL)
 The openssl library is used to provide support for https connections by
 the NSURL and HSURLHandle classes.  This functionality is
@@ -140,7 +143,7 @@ The GUI library uses this for the sound server
 @item freetype2 (RECOMMENDED, REQUIRED for art backend)
 This is used for font information
 
-@item libart_lgpl2 (REQUIRED for are backend only)
+@item libart_lgpl2 (REQUIRED for art backend only)
 Drawing library for the art backend.
 
 @item WindowMaker (Version >= 0.62) (OPTIONAL)
@@ -186,10 +189,11 @@ Get the following individual packages:
 See @url{http://www.gnustep.org} for information on where to get these
 packages. 
 
-Make sure you install all the previously mentioned libraries first
-before configuring and building GNUstep.
+Make sure you install (if necessary) all the previously mentioned
+libraries first before configuring and building GNUstep.
 
-You should be able to install these packages as root.
+You should install these packages as root (read special note for the
+gnustep-base library, below, if you cannot do this).
 
 For installation on specific systems, read the machine specific
 instructions at the end of this document or appropriate README files in

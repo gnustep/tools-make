@@ -13,6 +13,7 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
 @itemize @bullet
 @item Application and Bundles use the latest convention on Apple.
+@item Improve/Simplify dependency checking when making docs
 @end itemize
 
 @ifclear ANNOUNCE-ONLY

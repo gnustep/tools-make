@@ -20,8 +20,10 @@ For the moment GNUstep can be built with GUI support. (Native Win32
 GUI, not X11) The gui library is only partially ported to run under
 Win32 API so be warned.
 
-Generally Cygwin port of GNUstep has a lot of issues and therefore is not 
-suitable for end-users yet but only for [experienced] programmers.
+Several people have reported that GNUstep installation on Cygwin works
+fine, but as always, a slightly different Window's setup can cause
+unforseen problems. Yo should be relatively confident at working with
+Cygwin before attempting to install GNUstep.
 
 ADDITIONAL COMMENTS
 -------------------

@@ -4,7 +4,7 @@ GNUstep makefile package installation
 Introduction
 ============
 
-   If you are installing this package as part of the GNUstep core
+If you are installing this package as part of the GNUstep core
 libraries, read the file GNUstep-HOWTO for more complete instructions on
 how to install the entire GNUstep package (including this package).
 GNUstep-HOWTO comes with this distribution.
@@ -38,8 +38,8 @@ GNUstep-HOWTO and are also located at the GNUstep web site at
 Configuration
 =============
 
-   The GNUstep packages uses the Autoconf mechanism for configuration;
-it checks some host capabilties which are used by all GNUstep software.
+The GNUstep packages uses the Autoconf mechanism for configuration; it
+checks some host capabilties which are used by all GNUstep software.
 To configure just type:
 
      ./configure
@@ -73,7 +73,7 @@ also when you install).
 Backend Bundles
 ---------------
 
-   By default, the gnustep-make package specifies that GUI backends are
+By default, the gnustep-make package specifies that GUI backends are
 built as a bundle and loaded in at runtime. This allows one to switch
 backends by simply redefining a user default. If you do not want this
 behavior (for instance, if bundles do not work on your platform), it
@@ -86,7 +86,7 @@ can be disabled using
 Alternate Library Setup
 -----------------------
 
-   You can specify compilation of alternate libraries by using the
+You can specify compilation of alternate libraries by using the
 with-library-combo option.
 
      ./configure --with-library-combo=apple-gnu-gnu
@@ -97,8 +97,8 @@ DESIGN document for more examples of the variety of library combos.
 Alternate Thread Library
 ------------------------
 
-   You can specify compilation of an alternate thread library from the
-one that is normally used (or if GNUstep does not know what your normal
+You can specify compilation of an alternate thread library from the one
+that is normally used (or if GNUstep does not know what your normal
 library is) with the with-thread-lib option.
 
      ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
@@ -115,19 +115,19 @@ variable when calling configure:
 Warnings for #import
 --------------------
 
-   Up until gcc 3.4, the #import directive was not implemented
-correctly.  As a result, the GCC compiler automatically emitted a
-warning whenever #import was used.  As of gcc 3.4, this problem has
-been fixed, so presumable, this warning is no longer emitted when code
-is compiled. If you are using an early compiler, you can supress these
-warnings by adding `-Wno-import' to `CPPFLAGS' in the config.make file.
+Up until gcc 3.4, the #import directive was not implemented correctly.
+As a result, the GCC compiler automatically emitted a warning whenever
+#import was used.  As of gcc 3.4, this problem has been fixed, so
+presumable, this warning is no longer emitted when code is compiled. If
+you are using an early compiler, you can supress these warnings by
+adding `-Wno-import' to `CPPFLAGS' in the config.make file.
 
 Configuring for a non-flattened structure
 -----------------------------------------
 
-   GNUstep is normally configured to support a single target/combo. If
-you are interested in supporting more than one target and/or combo,
-it's possible to configure GNUstep to use a non-'flattened' directory
+GNUstep is normally configured to support a single target/combo. If you
+are interested in supporting more than one target and/or combo, it's
+possible to configure GNUstep to use a non-'flattened' directory
 structure.  You do this by supplying the `--disable-flattened' argument
 to configure.  You might also want to supply the
 `--enable-multi-platform' option.
@@ -138,7 +138,7 @@ than in a `$(GNUSTEP_CPU)/$(GNUSTEP_OS)/$(LIBRARY_COMBO)' subdirectory.
 Configuring for a cross-compile target
 --------------------------------------
 
-   By default when you run configure, it assumes that you want to create
+By default when you run configure, it assumes that you want to create
 executables for the same host that you are compiling on; however, the
 GNUstep makefile package has been designed to support cross-compiling
 just as easily as normal compiling.  In order to add a cross-compile
@@ -168,7 +168,7 @@ the make package several times.
 Installation
 ============
 
-   After you configure the GNUstep makefile package, then you need to
+After you configure the GNUstep makefile package, then you need to
 compile the programs that come with the package.  Currently there is
 only a single C program which needs to be compiled; all of the other
 files are either shell scripts or makefile fragments, so you can
@@ -187,9 +187,9 @@ Setting up the GNUstep environment
 Setting up the GNUstep environment for all users
 ------------------------------------------------
 
-   The GNUstep environment and thus usage of the makefile package is
-based almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.
-So essentially the setup involved is to make sure that the variable is
+The GNUstep environment and thus usage of the makefile package is based
+almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.  So
+essentially the setup involved is to make sure that the variable is
 defined for all users.  The GNUstep.sh file within the makefile package
 contains all of the environment variable settings required, so you want
 to call that shell.  Some systems, like GNU/Linux have an
@@ -222,9 +222,9 @@ NSSearchPathForDirectoriesInDomains() to locate files instead.
 Setting up the GNUstep environment for a single user
 ----------------------------------------------------
 
-   The GNUstep environment and thus usage of the makefile package is
-based almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.
-So essentially the setup involved is to make sure that the variable is
+The GNUstep environment and thus usage of the makefile package is based
+almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.  So
+essentially the setup involved is to make sure that the variable is
 defined for the user.  The GNUstep.sh file within the makefile package
 contains all of the environment variable settings required, so you want
 to call that shell when the user logs in to the system.  Most shells
