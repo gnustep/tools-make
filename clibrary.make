@@ -93,6 +93,11 @@ ifeq ($(CLIBRARY_INSTALL_DIR),)
   CLIBRARY_INSTALL_DIR = $(GNUSTEP_LIBRARIES)
 endif
 
+# And this is used internally - it is the final directory where we put
+# the library - it includes target arch, os dir but not the
+# library_combo - this variable is PRIVATE to gnustep-make
+FINAL_LIBRARY_INSTALL_DIR = $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)
+
 ifeq ($(shared), yes)
 
 ifneq ($(BUILD_DLL),yes)
@@ -207,14 +212,14 @@ internal-clibrary-install:: internal-install-dirs \
                             internal-install-headers
 
 # Depend on creating all the dirs
-internal-install-dirs:: $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR) \
+internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
                           $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
                           $(DLL_INSTALLATION_DIR) \
                           $(ADDITIONAL_INSTALL_DIRS)
 
 # Now the rule to create each dir.  NB: Nothing gets executed if the dir 
 # already exists
-$(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR):
+$(FINAL_LIBRARY_INSTALL_DIR):
 	$(MKDIRS) $@
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
@@ -246,7 +251,7 @@ internal-install-lib::
 	fi
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) \
-	                     $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR) ; \
+	                     $(FINAL_LIBRARY_INSTALL_DIR) ; \
 	fi
 
 else
@@ -254,7 +259,7 @@ else
 internal-install-lib::
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
-	                     $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR) ; \
+	                     $(FINAL_LIBRARY_INSTALL_DIR) ; \
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
 
@@ -274,14 +279,14 @@ ifeq ($(BUILD_DLL),yes)
 
 internal-uninstall-lib::
 	rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME) \
-	      $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)/$(DLL_EXP_LIB)
+	      $(FINAL_LIBRARY_INSTALL_DIR)/$(DLL_EXP_LIB)
 
 else
 
 internal-uninstall-lib::
-	rm -f $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)/$(VERSION_LIBRARY_FILE) \
-	      $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_FILE)\
-	      $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)/$(SONAME_LIBRARY_FILE)
+	rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
+	      $(FINAL_LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE)\
+	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)
 endif
 
 #
