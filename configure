@@ -18,7 +18,7 @@ ac_default_prefix=`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then
     echo /usr/GNUstep ;
   fi
 else
-  echo $GNUSTEP_SYSTEM_ROOT ;
+  echo "$GNUSTEP_SYSTEM_ROOT" ;
 fi`
 ac_help="$ac_help
 --without-system-root		Don't use separate system root directory"
@@ -594,18 +594,18 @@ fi
 #--------------------------------------------------------------------
 
 if test "x$prefix" = "xNONE"; then
-  prefix=$ac_default_prefix ;
+  prefix="$ac_default_prefix" ;
 fi
 # Check whether --with-system-root or --without-system-root was given.
 if test "${with_system_root+set}" = set; then
   withval="$with_system_root"
-  ac_cv_system_root=$withval
+  ac_cv_system_root="$withval"
 else
   ac_cv_system_root=yes
 fi
 
 
-GNUSTEP_ROOT=$prefix
+GNUSTEP_ROOT="$prefix"
 root_prefix='${prefix}'
 if test $ac_cv_system_root = yes; then
   if test "x`basename $prefix`" = xSystem; then
@@ -614,7 +614,7 @@ if test $ac_cv_system_root = yes; then
     if test "x$prefix" = "x/"; then
       prefix=/System
     else
-      prefix=$prefix/System
+      prefix="$prefix/System"
     fi
   fi
   root_prefix='${prefix}/..'
@@ -629,9 +629,9 @@ fi
 # Check whether --with-local-root or --without-local-root was given.
 if test "${with_local_root+set}" = set; then
   withval="$with_local_root"
-  GNUSTEP_LOCAL_ROOT=$withval
+  GNUSTEP_LOCAL_ROOT="$withval"
 else
-  GNUSTEP_LOCAL_ROOT=$GNUSTEP_ROOT/Local
+  GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
 
 fi
 
@@ -639,9 +639,9 @@ fi
 # Check whether --with-network-root or --without-network-root was given.
 if test "${with_network_root+set}" = set; then
   withval="$with_network_root"
-  GNUSTEP_NETWORK_ROOT=$withval
+  GNUSTEP_NETWORK_ROOT="$withval"
 else
-  GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Network
+  GNUSTEP_NETWORK_ROOT="$GNUSTEP_ROOT/Network"
 
 fi
 
@@ -649,7 +649,7 @@ fi
 # Check whether --with-user-root or --without-user-root was given.
 if test "${with_user_root+set}" = set; then
   withval="$with_user_root"
-  GNUSTEP_USER_ROOT=$withval
+  GNUSTEP_USER_ROOT="$withval"
 else
   GNUSTEP_USER_ROOT=""
 
@@ -1606,9 +1606,9 @@ test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
 # found.
 
 if test "$INSTALL" = "$ac_install_sh"; then
-  HOST_INSTALL=$prefix/Makefiles/$INSTALL
+  HOST_INSTALL="$prefix/Makefiles/$INSTALL"
 else
-  HOST_INSTALL=$INSTALL
+  HOST_INSTALL="$INSTALL"
 fi
 
 echo $ac_n "checking whether ln -s works""... $ac_c" 1>&6
@@ -1671,7 +1671,7 @@ test -n "$TAR" || TAR="tar"
 # Check whether --with-tar or --without-tar was given.
 if test "${with_tar+set}" = set; then
   withval="$with_tar"
-  TAR=$withval
+  TAR="$withval"
 fi
 
 
@@ -1724,14 +1724,14 @@ fi
 
 
 # Set location of GNUstep dirs for later use
-GNUSTEP_HDIR=$prefix/Headers
+GNUSTEP_HDIR="$prefix/Headers"
 if test "$GNUSTEP_FLATTENED" = yes; then
-  GNUSTEP_LDIR=$prefix/Libraries
+  GNUSTEP_LDIR="$prefix/Libraries"
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
-  obj_dir=$clean_target_cpu/$clean_target_os
-  GNUSTEP_LDIR=$prefix/Libraries/$obj_dir
+  obj_dir="$clean_target_cpu/$clean_target_os"
+  GNUSTEP_LDIR="$prefix/Libraries/$obj_dir"
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
@@ -1743,9 +1743,9 @@ if eval "test \"`echo '$''{'gs_cv_objc_libdir'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   gs_cv_objc_libdir=NONE
-if test -f $GNUSTEP_HDIR/objc/objc.h; then
-  if test -f $GNUSTEP_LDIR/libobjc.a -o -f $GNUSTEP_LDIR/libobjc.so; then
-    gs_cv_objc_libdir=$GNUSTEP_LDIR
+if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
+  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so"; then
+    gs_cv_objc_libdir="$GNUSTEP_LDIR"
   else
     gs_cv_objc_libdir=NONE
   fi
@@ -1770,7 +1770,7 @@ GCC_SO_DIR=NONE
   if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
     CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
   else
-    GCC_SO_DIR=$gs_cv_objc_libdir
+    GCC_SO_DIR="$gs_cv_objc_libdir"
   fi
   LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 
