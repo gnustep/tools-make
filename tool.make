@@ -3,9 +3,10 @@
 #
 #   Makefile rules to build GNUstep-based command line tools.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -52,9 +53,13 @@ internal-install:: $(TOOL_NAME:=.install.tool.variables)
 
 internal-uninstall:: $(TOOL_NAME:=.uninstall.tool.variables)
 
-internal-clean:: $(TOOL_NAME:=.clean.tool.variables)
+internal-clean:: $(TOOL_NAME:=.clean.tool.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(TOOL_NAME:=.distclean.tool.variables)
+internal-distclean:: $(TOOL_NAME:=.distclean.tool.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 $(TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
@@ -63,8 +68,6 @@ $(TOOL_NAME):
 else # second pass
 
 .PHONY: internal-tool-all       \
-        internal-tool-clean     \
-        internal-tool-distclean \
         internal-tool-install   \
         internal-tool-uninstall \
         before-$(TARGET)-all    \
@@ -143,7 +146,6 @@ internal-install-dirs:: $(TOOL_INSTALLATION_DIR)
 $(TOOL_INSTALLATION_DIR):
 	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
 
-
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 \
 		$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
@@ -166,13 +168,9 @@ internal-tool-uninstall::
 #
 # Cleaning targets
 #
-internal-tool-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-tool-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+# we don't have any cleaning targets for tools here, because we clean
+# at the first make invocation.
 
 endif
 

@@ -3,9 +3,10 @@
 #
 #   Makefile rules to build GNUstep-based command line ctools.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -52,9 +53,13 @@ internal-install:: $(CTOOL_NAME:=.install.ctool.variables)
 
 internal-uninstall:: $(CTOOL_NAME:=.uninstall.ctool.variables)
 
-internal-clean:: $(CTOOL_NAME:=.clean.ctool.variables)
+internal-clean:: $(CTOOL_NAME:=.clean.ctool.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(CTOOL_NAME:=.distclean.ctool.variables)
+internal-distclean:: $(CTOOL_NAME:=.distclean.ctool.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 $(CTOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
@@ -63,8 +68,6 @@ $(CTOOL_NAME):
 else
 
 .PHONY: internal-ctool-all \
-        internal-ctool-clean \
-        internal-ctool-distclean \
         internal-ctool-install \
         internal-ctool-uninstall \
         before-$(TARGET)-all \
@@ -109,8 +112,8 @@ internal-ctool-all:: before-$(TARGET)-all \
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT): $(C_OBJ_FILES) \
                                                     $(SUBPROJECT_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
-		$(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
+	      $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+	      $(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
 
 before-$(TARGET)-all::
 
@@ -133,17 +136,6 @@ endif
 
 internal-ctool-uninstall::
 	rm -f $(CTOOL_INSTALLATION_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)
-
-#
-# Cleaning targets
-#
-internal-ctool-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
-
-internal-ctool-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
 
 endif
 
