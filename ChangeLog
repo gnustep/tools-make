@@ -1,3 +1,10 @@
+Tue Nov  6 20:35:23 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: When checking that GNUSTEP_SYSTEM_ROOT/Tools is in
+	the PATH, fix - if needed - the tools path on mingw before doing
+	the check (Suggestion originally from Stephen Brandon
+	<stephen@brandonitconsulting.co.uk>).
+
 2001-11-03  Adam Fedor  <fedor@gnu.org>
 
 	* bundle.make ($(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist): 
