@@ -8,7 +8,8 @@
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
-#   Rewrite: Richard Frith-Macdoanld <richard@brainstorm.co.uk>
+#   Rewrite: Richard Frith-Macdonald <richard@brainstorm.co.uk>
+#   Author: Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
