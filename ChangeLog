@@ -1,3 +1,41 @@
+Mon Dec 30 16:38:16 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	A new library-combo apple-apple-apple has been added, and made the
+	default on Apple OSX systems.
+	* library-combo.make (OBJC_RUNTIME): Variable removed, it's
+	redundant with OBJC_RUNTIME_LIB.
+	* target.make: Check OBJC_RUNTIME_LIB, not OBJC_RUNTIME.
+	* common.make: For libFoundation, added backward compatibility
+	fixup for header locations.
+	* configure.ac: Map gnu library combo to gnu-gnu-gnu, nx library
+	combo to nx-nx-nx, apple library combo to apple-apple-apple.  Use
+	apple-apple-apple library-combo on darwin by default.  Use
+	-DNeXT_RUNTIME for OBJC_RUNTIME_LIB = apple.  Print out a message
+	that we are checking for the library-combo, and which one we
+	choose.
+	* configure: Regenerated.
+	* common.make: To check that we are on an Apple system,
+	check FOUNDATION_LIB against apple, not nx.
+	* debugapp.in: Recognize apple library combo.
+	* executable.template.in: Idem.
+	* library-combo.make (RUNTIME_FLAG): For NeXT and Apple runtime,
+	always set to -fnext-runtime, regardless of the value of
+	OBJC_COMPILER, because OBJC_COMPILER is set in target.make, which
+	is read after library-combo.make, so we can't use it here.
+	* library-combo.make: Map apple library-combo to
+	apple-apple-apple.  Added code for apple OBJC_RUNTIME_LIB,
+	FOUNDATION_LIB and GUI_LIB, copied from the one for nx
+	library-combo.
+	* target.make: For darwin systems, replace all checks for 'nx'
+	runtime and foundation lib with checks for 'apple'.
+	* Instance/application.make: Apple code is now executed for
+	'apple' runtime/foundation/gui lib, not 'nx'.  Removed checks for
+	OBJC_COMPILER == NeXT; replace them with checks for FOUNDATION_LIB
+	== apple.
+	* Instance/bundle.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/gswapp.make: idem.
+	
 Wed Dec 25 03:09:34 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/application.make: Implemented support for Apple native
