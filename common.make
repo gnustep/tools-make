@@ -6,6 +6,7 @@
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -35,7 +36,7 @@ CONFIG_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/os.sh
 CLEAN_CPU_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_cpu.sh
 CLEAN_VENDOR_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_vendor.sh
 CLEAN_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_os.sh
-WHICH_LIB_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/which_lib
+WHICH_LIB_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/which_lib
 LD_LIB_PATH_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/ld_lib_path.sh
 
 #

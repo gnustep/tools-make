@@ -127,8 +127,8 @@ History
 The GNUstep makefile package was designed by Scott Christley
 <scottc@net-community.com> and Ovidiu Predescu <ovidiu@net-community.com>.
 
-Flags for building shared libraries on several systems were originally
-identified by Mircea Oancea <mircea@pathcom.com>.
+Flags for building shared libraries and bundles on several systems were
+originally identified by Mircea Oancea <mircea@pathcom.com>.
 
 Richard Frith-Macdonald <richard@brainstorm.co.uk> also contributed with ideas.
 

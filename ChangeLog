@@ -1,3 +1,10 @@
+Sun Oct  5 20:30:01 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make: Take the which_lib script from the host_cpu/host_os
+	directory.
+	* target.make: Create the target library to be a link to the versioned
+	one for OS 4.x.
+
 Sat Oct  4 23:08:01 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* target.make: Set the extension of shared libraries under OS 4.x to be

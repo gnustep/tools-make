@@ -6,6 +6,7 @@
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -115,7 +116,9 @@ SHARED_LIB_LINK_CMD     = \
         /bin/libtool -dynamic -read_only_relocs suppress -o $@ \
                 /NextLibrary/Frameworks/System.framework/System \
                 $(GNUSTEP_LIBRARIES)/libobjc$(SHARED_LIBEXT) \
-                $(GNUSTEP_LIBRARIES)/libgcc$(SHARED_LIBEXT) $^
+                $(GNUSTEP_LIBRARIES)/libgcc$(SHARED_LIBEXT) $^; \
+	(rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
 STATIC_LIB_LINK_CMD	= /bin/libtool -static -o $@ $^
 LDFLAGS += -Wl,-read_only_relocs,suppress
