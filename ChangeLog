@@ -1,8 +1,10 @@
-Thu Sep 26 02:56:50 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+Thu Sep 26 03:08:04 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/bundle.make: Implemented rules to install and
 	uninstall.
 	* Instance/application.make: Use them.
+	* messages.make (ECHO_INSTALLING_BUNDLE): New message used by
+	Instance/Shared/bundle.make.
 	
 Thu Sep 26 02:50:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
