@@ -25,6 +25,8 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
+
 #
 # The name of the library is in the LIBRARY_NAME variable.
 # The Objective-C files that gets included in the library are in xxx_OBJC_FILES
@@ -45,10 +47,7 @@ endif
         before-$(GNUSTEP_INSTANCE)-all \
         after-$(GNUSTEP_INSTANCE)-all \
         internal-install-lib \
-        internal-install-dirs \
-        internal-install-headers \
-        internal-uninstall-lib \
-        internal-uninstall-headers 
+        internal-install-dirs
 
 # This is the directory where the libs get installed.  This should *not*
 # include the target arch, os directory or library_combo.
@@ -59,7 +58,14 @@ endif
 # And this is used internally - it is the final directory where we put the 
 # library - it includes target arch, os dir and library_combo - this variable
 # is PRIVATE to gnustep-make
-FINAL_LIBRARY_INSTALL_DIR = $(LIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
+#
+# Do not set this variable if it is already set ... this allows other
+# makefiles (Instance/clibrary.make) to use the code in this file with
+# a different FINAL_LIBRARY_INSTALL_DIR !
+#
+ifeq ($(FINAL_LIBRARY_INSTALL_DIR),)
+  FINAL_LIBRARY_INSTALL_DIR = $(LIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
+endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
   $(shell $(WHICH_LIB_SCRIPT)					\
@@ -213,11 +219,10 @@ after-$(GNUSTEP_INSTANCE)-all::
 #
 internal-library-install:: internal-install-dirs \
                            internal-install-lib \
-                           internal-install-headers
+                           shared-instance-headers-install
 
 # Depend on creating all the dirs
 internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
-                          $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
                           $(DLL_INSTALLATION_DIR) \
                           $(ADDITIONAL_INSTALL_DIRS)
 
@@ -226,25 +231,12 @@ internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
 $(FINAL_LIBRARY_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
 
-$(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
-	$(MKINSTALLDIRS) $@
-
 $(DLL_INSTALLATION_DIR):
 	$(MKINSTALLDIRS) $@
 
 $(ADDITIONAL_INSTALL_DIRS):
 	$(MKINSTALLDIRS) $@
 
-
-internal-install-headers::
-ifneq ($(HEADER_FILES),)
-	for file in $(HEADER_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	         $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	  fi; \
-	done;
-endif
 
 ifeq ($(BUILD_DLL),yes)
 
@@ -269,25 +261,15 @@ internal-install-lib::
 
 endif
 
-internal-library-uninstall:: internal-uninstall-headers \
-                             internal-uninstall-lib
-
-internal-uninstall-headers::
-	for file in $(HEADER_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	  fi; \
-	done
-
 ifeq ($(BUILD_DLL),yes)
 
-internal-uninstall-lib::
+internal-library-uninstall:: shared-instance-headers-uninstall
 	rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(DLL_EXP_LIB)
 
 else
 
-internal-uninstall-lib::
+internal-library-uninstall:: shared-instance-headers-uninstall
 	rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)
