@@ -43,16 +43,12 @@ libdir = @libdir@
 includedir = @includedir@
 datadir = @datadir@
 
-GNUSTEP_FLATTENED := @GNUSTEP_FLATTENED@
-GNUSTEP_TARGET_CPU := @target_cpu@
-GNUSTEP_TARGET_OS := @target_os@
-GNUSTEP_TARGET_VENDOR := @target_vendor@
+GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
+GNUSTEP_TARGET_CPU = @clean_target_cpu@
+GNUSTEP_TARGET_VENDOR = @clean_target_vendor@
+GNUSTEP_TARGET_OS = @clean_target_os@
 
-GNUSTEP_TARGET_CPU := $(shell $(srcdir)/clean_cpu.sh $(GNUSTEP_TARGET_CPU))
-GNUSTEP_TARGET_VENDOR := $(shell $(srcdir)/clean_vendor.sh $(GNUSTEP_TARGET_VENDOR))
-GNUSTEP_TARGET_OS := $(shell $(srcdir)/clean_os.sh $(GNUSTEP_TARGET_OS))
-
-GNUSTEP_LIB_COMBO := @ac_cv_library_combo@
+GNUSTEP_LIB_COMBO = @ac_cv_library_combo@
 
 ifeq ($(GNUSTEP_FLATTENED),)
   GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
@@ -70,7 +66,7 @@ INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
 
-VERTAG = `echo $(GNUSTEP_MAKE_VERSION) | tr '.' '_'`
+VERTAG = $(subst .,_,$(GNUSTEP_MAKE_VERSION))
 
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	common.make library-combo.make java.make jni.make library.make \

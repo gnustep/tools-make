@@ -447,6 +447,21 @@ AC_SUBST(GNUSTEP_MAKE_MAJOR_VERSION)
 AC_SUBST(GNUSTEP_MAKE_MINOR_VERSION)
 AC_SUBST(GNUSTEP_MAKE_SUBMINOR_VERSION)
 
+#-------------------------------------------------------------------
+# Record the 'clean' target_os, target_cpu and target_vendor
+#-------------------------------------------------------------------
+# This is just for efficiency, so that core/make/GNUmakefile does not
+# have to compute clean_target_os from target_os (and similar) by
+# running shell scripts each time you 'make' something inside
+# gnustep-make.  We basically compute them once now, and cache them
+# forever.
+clean_target_os=`$srcdir/clean_os.sh $target_os`
+clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
+clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
+AC_SUBST(clean_target_os)
+AC_SUBST(clean_target_cpu)
+AC_SUBST(clean_target_vendor)
+
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------

@@ -1,3 +1,14 @@
+Fri Oct  4 14:45:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac (clean_target_os, clean_target_cpu,
+	clean_target_vendor): New variables: compute them, and subst them
+	in the generated files.
+	* GNUmakefile.in (GNUSTEP_TARGET_CPU, GNUSTEP_TARGET_OS,
+	GNUSTEP_TARGET_VENDOR): Just set to be clean_target_cpu,
+	clean_target_os, clean_target_vendor.
+	(VERTAG): Compute efficiently.
+	* configure: Regenerated
+	
 2002-10-01 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/documentation.make: commented out bogus extra running
