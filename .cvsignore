@@ -2,7 +2,7 @@ config.log
 config.make
 config.cache
 which_lib
-Makefile
+GNUmakefile
 GNUstep.sh
 config.h
 config.status
