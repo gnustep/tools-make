@@ -126,6 +126,11 @@ FND_LDFLAGS =
 FND_LIBS = -lgnustep-base
 FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
 GNUSTEP_DEFINE = -DGNUSTEP
+# If gc=yes was passed, use the appropriate library and defines
+ifeq ($(gc), yes)
+  OBJC_LIBS = -lobjc_gc
+  AUXILIARY_CPPFLAGS += -DGS_WITH_GC=1
+endif
 endif
 
 ifeq ($(FOUNDATION_LIB),fd)

@@ -1,3 +1,8 @@
+Tue Sep 28 19:05:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* brain.make: Define GS_WITH_GC and link with gc version of objc
+	runtime if 'gc=yes' on command line.
+
 Fri Sep 24 19:30:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* GNUstep.csh.in: Fix so that paths are set up correctly again.
