@@ -1,3 +1,46 @@
+Tue Sep  4 16:23:12 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make (bundle-localized-resource-files): Use -d instead of
+	! -f to check for existence of .lproj dirs; emit a warning if a
+	required .lproj directory is not found; run the localizable
+	resource copying code only if the .lproj directory actually
+	exists.
+	* application.make (app-localized-resource-files): Idem.
+	* framework.make (framework-components): Idem (but no warning
+	here).
+	(framework-localized-resource-files): Idem.
+	(framework-localized-webresource-files): Idem.
+	* subproject.make (framework-components): Idem, plus fixed wrong
+	dirs and missing fi.
+	(framework-localized-resource-files): Idem, plus fixed misplaced
+	fi.
+	* gswapp.make (gswapp-components): Idem (no warning here), plus
+	fixed wrong dir.
+	(gswapp-localized-resource-files): Idem, plus fixed wrong dir.
+	(gswapp-localized-webresource-files): Idem, plus fixed wrong dir.
+	* gswbundle.make (gswbundle-components): Idem (no warning here),
+	plus fixed wrong dir.
+	(gswbundle-localized-resource-files): Idem, plus fixed wrong dir.
+	(gswbundle-localized-webresource-files): Idem, plus fixed wrong
+	dir.
+	
+	* framework.make (framework-localized-webresource-files):
+	Rearranged code; always install the new localized webresource
+	files over the old ones if any.  
+	* gswapp.make (gswapp-localized-webresource-files): Do not echo
+	the full shell commands.
+	(gswapp-localized-resource-files): Idem.
+	(gswapp-resource-files): Idem.
+	(gswapp-webresource-files): Idem (also removed final semicolon
+	here).
+	(gswapp-components): Idem.
+	(gswapp-components): Depend on $(GSWAPP_DIR_NAME)/Resources rather
+	than $(GSWAPP_DIR_NAME).
+	* gswbundle.make (internal-clean): Use GSWBUNDLE_NAME rather than
+	BUNDLE_NAME.
+	(GSWBUNDLE_EXTENSION): Define as it wasn't defined anywhere.  I
+	used .gswbundle as a guess of what it should be.
+
 Mon Sep  3 17:24:43 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* gswbundle.make (gswbundle-webresource-files): Fixed misplaced
