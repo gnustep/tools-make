@@ -130,12 +130,13 @@ if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
 #        zero or more spaces, followed by 'NSExecutable', followed by zero or
 #        more spaces, followed by '='
 #   to this line we apply the following commands:
-#   s/^[ ]*NSExecutable[ ]*=[ ]*"\?\([^ ]*\)"\?[ ]*;/\1/p;
-#     which replaces 'NSExecutable = "Gorm";' with Gorm, then, because
+#   s/^[ ]*NSExecutable[ ]*=[ ]*"\?\([^ "]*\)"\?[ ]*;.*/\1/p;
+#     which replaces 'NSExecutable = "Gorm";' with 'Gorm', then, because
 #     of the 'p' at the end, prints out the result 
-#   q; which quits sed since we know there must be a single line to replace.
+#   q; which quits sed since we know there must be only a single line 
+#      to replace.
   appname=`sed -n -e '/^[ ]*NSExecutable[ ]*=/ \
-           {s/^[ ]*NSExecutable[ ]*=[ ]*"\?\([^ ]*\)"\?[ ]*;/\1/p; q;}' \
+           {s/^[ ]*NSExecutable[ ]*=[ ]*"\?\([^ "]*\)"\?[ ]*;.*/\1/p; q;}' \
                 "$full_appname/Resources/Info-gnustep.plist"`
 fi
 if [ -z "$appname" ]; then
