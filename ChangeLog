@@ -1,3 +1,12 @@
+Mon Oct 13 13:09:53 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/application.make (internal-clean): Do the entire
+	clean in a single shell command.
+	* Master/gswapp.make (internal-clean): Same change.
+	* Master/palette.make (internal-clean): Same change.
+	* Master/service.make (internal-clean): Same change.
+	* Master/test-application.make (internal-clean): Same change.
+	
 Mon Oct 13 12:55:50 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/application.make (internal-distclean): Do not remove
