@@ -131,15 +131,19 @@ case "$host_os" in
       fi
     fi
     export DYLD_LIBRARY_PATH
-    if [ -z "$DYLD_FRAMEWORK_PATH" ]; then
-      DYLD_FRAMEWORK_PATH="$fw_paths"
-    else
-      if ( echo ${DYLD_FRAMEWORK_PATH}|
-           fgrep -v "${fw_paths}" >/dev/null ); then
-        DYLD_FRAMEWORK_PATH="$fw_paths:$DYLD_FRAMEWORK_PATH"
+    if [ "$LIBRARY_COMBO" = "apple-apple-apple" -o \
+         "$LIBRARY_COMBO" = "apple" ]; then
+      if [ -z "$DYLD_FRAMEWORK_PATH" ]; then
+        DYLD_FRAMEWORK_PATH="$fw_paths"
+      else
+        if ( echo ${DYLD_FRAMEWORK_PATH}|
+             fgrep -v "${fw_paths}" >/dev/null ); then
+          DYLD_FRAMEWORK_PATH="$fw_paths:$DYLD_FRAMEWORK_PATH"
+        fi
       fi
+      export DYLD_FRAMEWORK_PATH
     fi
-    export DYLD_FRAMEWORK_PATH;;
+    ;;
 
   *hpux*)
     if [ -z "$SHLIB_PATH" ]; then

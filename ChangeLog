@@ -1,3 +1,7 @@
+2004-06-06  Adam Fedor  <fedor@gnu.org>
+
+	* ld_lib_path.[c]sh: Revert last.
+
 2004-06-05  Adam Fedor  <fedor@gnu.org>
 
 	* ld_lib_path.[c]sh: Allow seting of GNUstep framework location on
