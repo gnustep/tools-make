@@ -315,6 +315,8 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) \
 
 endif # WITH_DLL
 
+# NB: In the following rule we do not print a warning if we don't find
+# a .lproj dir here - to avoid spurious or duplicated warnings
 framework-components::
 ifneq ($(strip $(COMPONENTS)),)
 	@ echo "Copying components into the framework wrapper..."; \
@@ -326,16 +328,16 @@ ifneq ($(strip $(COMPONENTS)),)
 	done; \
 	echo "Copying localized components into the framework wrapper..."; \
 	for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then \
+	  if [ -d $$l.lproj ]; then \
 	    $(MKDIRS) $$l.lproj; \
-	  fi; \
-	  cd $$l.lproj; \
-	  for f in $(COMPONENTS); do \
-	    if [ -d ../../../../../$$l.lproj/$$f ]; then \
-	      cp -r ../../../../../$$l.lproj/$$f .;\
-	    fi; \
-	  done;\
-	  cd ..; \
+	    cd $$l.lproj; \
+	    for f in $(COMPONENTS); do \
+	      if [ -d ../../../../../$$l.lproj/$$f ]; then \
+	        cp -r ../../../../../$$l.lproj/$$f .;\
+	      fi; \
+	    done;\
+	    cd ..; \
+	  fi;\
 	done
 endif
 
@@ -352,14 +354,16 @@ framework-localized-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Inf
 ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	@ echo "Copying localized resources into the framework wrapper..."; \
 	for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then \
+	  if [ -d $$l.lproj ]; then \
 	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+	    for f in $(LOCALIZED_RESOURCE_FILES); do \
+	      if [ -f $$l.lproj/$$f ]; then \
+	        cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+	      fi; \
+	    done; \
+	  else \
+	    echo "Warning: $$l.lproj not found - ignoring"; \
 	  fi; \
-	  for f in $(LOCALIZED_RESOURCE_FILES); do \
-	    if [ -f $$l.lproj/$$f ]; then \
-	      cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-	    fi; \
-	  done; \
 	done
 endif
 
@@ -394,20 +398,19 @@ framework-localized-webresource-files::
 ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 framework-localized-webresource-files:: framework-webresource-dir
 	@ echo "Copying localized webserver resources into the framework wrapper..."; \
-	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
 	for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then \
-	    $(MKDIRS) $$l.lproj; \
-	  fi; \
-	  cd $$l.lproj; \
-	  for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-	    if [ -f ../../../../../WebServerResources/$$l.lproj/$$f ]; then \
-	      if [ ! -r $$f ]; then \
-	        cp -r ../../../../../WebServerResources/$$l.lproj/$$f $$f;\
+	  if [ -d WebServerResources/$$l.lproj ]; then \
+	    $(MKDIRS) \
+	        $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$$l.lproj;\
+	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
+	      if [ -f WebServerResources/$$l.lproj/$$f ]; then \
+	        cp -r WebServerResources/$$l.lproj/$$f \
+	              $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$$l.lproj/$$f; \
 	      fi;\
-	    fi;\
-	  done;\
-	  cd ..; \
+	    done;\
+	  else \
+	   echo "Warning: WebServerResources/$$l.lproj not found - ignoring"; \
+	  fi; \
 	done
 endif
 
