@@ -1,3 +1,19 @@
+Fri Feb 22 01:10:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (TEXI_FILES, GSDOC_FILES, AGSDOC_FILES,
+	AGSDOC_FLAGS, LATEX_FILES, JAVADOC_FILES, JAVADOC_SOURCEPATH,
+	DOC_INSTALL_DIR, TEXT_MAIN): Do not manually pass these variables
+	down to the Instance submake invocation.
+	* Instance/documentation.make: Set them here instead.
+	
+Fri Feb 22 01:04:04 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* documentation.make: Broken into Master and Instance.
+	* Master/documentation.make: New file.
+	* Instance/documentation.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added documentation.make.
+	(INSTANCE_MAKE_FILES): Added documentation.make.
+
 Fri Feb 22 00:42:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/objc.make (internal-clean): Remove GNUSTEP_OBJ_DIR, not
