@@ -325,7 +325,7 @@ endif
 # FreeBSD a.out (2.2.x)
 #
 ifeq ($(findstring freebsd2, $(GNUSTEP_TARGET_OS)), freebsd2)
-HAVE_SHARED_LIBS	= yes
+HAVE_SHARED_LIBS	= no
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
 	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
