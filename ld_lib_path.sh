@@ -35,10 +35,6 @@ if [ -z "$host_os" ]; then
   host_os=$1
 fi
 
-old_IFS="$IFS"
-IFS=" 
-"
-
 if [ -z "$GNUSTEP_FLATTENED" ]; then
   last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO
   tool_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
@@ -50,6 +46,9 @@ else
 fi
 
 if [ -n "$additional_library_paths" ]; then
+  old_IFS="$IFS"
+  IFS=" 
+"
   additional=""
   for dir in $additional_library_paths; do
     additional="${additional}${dir}:"
@@ -57,7 +56,10 @@ if [ -n "$additional_library_paths" ]; then
   unset dir
 
   lib_paths="${additional}${lib_paths}"
+
   unset additional
+  IFS="$old_IFS"
+  unset old_IFS
 fi
 
 case "$host_os" in
@@ -120,6 +122,3 @@ else
 fi
 export GUILE_LOAD_PATH
 unset guile_paths
-
-IFS="$old_IFS"
-unset old_IFS
