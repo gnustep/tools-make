@@ -1,3 +1,19 @@
+Mon Jul  9 17:02:22 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* java-tool.make (.PHONY): Added.
+	(internal-java_tool-install): Do not depend on
+	internal-java_tool-all.
+	(internal-install-java_tool-dirs): Turned shell conditional into
+	makefile conditional.
+	($(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)):
+	Force rebuilding always to take into account changes in
+	PRINCIPAL_CLASS.
+	(install-java_tool): Turned shell conditionals into makefile ones;
+	strip the variables when checking, and don't use the __done trick.
+	(internal-java_tool-clean): Use a single rm command.
+	* java-executable.template (java_vm): Fixed bug in evaluating 
+	shell variables.
+	
 Mon Jul  9 16:45:09 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* gswbundle.make (localized-gswbundle-resource-files): Renamed to
