@@ -1,3 +1,7 @@
+2001-11-11  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.2.0
+
 Tue Nov 13 16:27:45 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (internal-check-install-permissions): Only check for
@@ -13,10 +17,6 @@ Tue Nov 13 13:57:13 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 	* common.make: In the check that GNUSTEP_SYSTEM_ROOT/Tools is in
 	the PATH, for windows use cygpath not cygpath.sh (Suggested by
 	Stephen Brandon).
-
-2001-11-11  Adam Fedor  <fedor@gnu.org>
-
-	* Version: 1.2.0
 
 Fri Nov  9 13:34:50 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
