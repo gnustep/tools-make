@@ -1,3 +1,9 @@
+2003-08-07 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/Documentation/autogsdoc.make: Rewrite dependency rules
+	to avoid regeneration of documentation when we are going to clean.
+	Also, use autogsdoc -Clean argument to get all files.
+
 Wed Jul 30 09:52:16 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (BUNDLE_LDFLAGS): openbsd: use -fPIC instead of
