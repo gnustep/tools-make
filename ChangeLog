@@ -1,3 +1,10 @@
+Mon Nov 23 14:00:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	GNUmakefile.in: mod for services
+	services.make: new build target for services bundle.
+	application.make: Improved generation of Info-gnustep.plist
+	bundle.make: Improved generation of Info-gnustep.plist
+
 1998-11-19 14:20  Lyndon Tremblay  <tremblay2@home.com>
 
 	* GNUmakefile.in: Added model (un)installation (SavePanel.gmodel), 
