@@ -175,6 +175,15 @@ OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # FIXME - I don't think we can depend on GNUmakefile - rather we should 
 # FORCE then because GNUmakefile might include other arbitrary files outside
 # our control
+#
+# To get the list of all classes, we run 'nm' on the object files, and
+# retrieve all symbols of the form __objc_class_name_NSObject which
+# are not 'U' (undefined) ... an __objc_class_name_NSObject is defined
+# in the module implementing the class, and referenced by all other
+# modules needing to use the class.  So if we have an
+# __objc_class_name_XXX which is not 'U' (which would be a reference
+# to a class implemented elsewhere), it must be a class implemented in
+# this module.
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
 	@ classes=""; \
 	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
