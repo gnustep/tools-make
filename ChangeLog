@@ -1,3 +1,27 @@
+2000-06-12  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in: Use  perl which_lib script on machines that have it.
+	* GNUstep.csh.in: Remove GNUSTEP_NETWORK_ROOT from PATHPREFIX_LIST.
+	* GNUstep.sh.in: Likewise.
+
+	* common.make: Add some new default directories. Support for 
+	runtime with GC.
+	* config.guess: Add check for mingw32.
+	* configure.in: Likewise. Check for perl.
+
+	* brain.make: Add flags for libFoundation with GC. Add WO library flags.
+	* bundle.make: Add support for DLLs on Windows.
+	* ctool.make: Likewise.
+	* library.make: Likewise.
+	* rules.make: Likewise. Handle subdirs better. WO Resources
+	* tool.make: Likewise.
+
+	* target.make: Handle mingw32.
+
+	* which_lib.c: Handle \r\n on Windows.
+	(pathes from Helge Hess  <helge.hess@mdlink.de>, modified by
+	fedor@gnu.org).
+
 Wed May  3 18:07:54 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* library.make: Use 'override' flag to force substitution of

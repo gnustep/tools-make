@@ -60,10 +60,55 @@ AC_SUBST(GNUSTEP_ROOT)
 AC_SUBST(GNUSTEP_PREFIX)
 
 #--------------------------------------------------------------------
+# Setup the library combination
+#--------------------------------------------------------------------
+AC_ARG_WITH(library-combo,[
+--with-library-combo
+    Define the default library combinations that will be used when you
+type 'make'. You can still change the library combination at runtime
+by specifying the 'library_combo' make variable. For example:
+    
+      $ make library_combo=nx-pdo-nx-nil
+],
+ac_cv_library_combo=$withval,
+ac_cv_library_combo=$ac_cv_library_combo
+)
+
+if test "$ac_cv_library_combo" = ""; then
+  if test $host_os = nextstep4; then
+    ac_cv_library_combo=nx-nx-nx-nil
+  elif test $host_os = cygwin; then
+    ac_cv_library_combo=gnu-gnu-gnu-win32
+    if test "x$program_suffix" = "xNONE"; then
+      program_suffix=.exe
+    fi
+  else
+    ac_cv_library_combo=gnu-gnu-gnu-xgps
+  fi
+fi
+AC_SUBST(ac_cv_library_combo)
+
+#--------------------------------------------------------------------
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
 targetArgument=${target}
 AC_CANONICAL_SYSTEM
+
+if test "x`echo x$host|grep mingw32`" != x; then
+  echo "hosted on mingw32 .."
+  export MINGW32=1
+  export SHELL=zsh
+  export CC=${CC:-gcc}
+  export AR=${AR:-ar}
+  export RANLIB=${RANLIB:-ranlib}
+  export DLLTOOL=${DLLTOOL:-dlltool}
+  export program_suffix=${program_suffix:-.exe}
+  if test "x$program_suffix" = "xNONE"; then
+    export program_suffix=.exe
+  fi
+else
+  export MINGW32=0
+fi
 
 EXEEXT=
 if test "x$program_suffix" != "xNONE"; then
@@ -93,7 +138,7 @@ fi
 
 AC_PROG_CC
 AC_PROG_CPP
-AC_PATH_PROG(PERL, perl, /usr/local/bin/perl)
+AC_PATH_PROG(PERL, perl, none)
 
 AC_PROG_INSTALL
 # HOST_INSTALL is the name of the install program in config.make so set it up
@@ -342,41 +387,17 @@ fi
 # Look for Java stuff
 #--------------------------------------------------------------------
 AC_ARG_WITH(javac,
-			[  --with-javac=CMD        Java compiler], ,
+			[  --with-javac=CMD        Java compiler], 
+                        JAVAC=${withval},
 			JAVAC=/usr/bin/javac)
 AC_ARG_WITH(java_include,
-			[  --with-java-include=DIR Java include files are in DIR], ,
+			[  --with-java-include=DIR Java include files are in DIR], 
+                        JAVA_INCLUDE=${withval},
 			JAVA_INCLUDE=-I/usr/include/kaffe)
 
 AC_SUBST(JAVAC)
 AC_SUBST(JAVA_INCLUDE)
 #AC_CHECK_HEADER(jni.h, JNI_CreateJavaVM, JAVA_INCLUDE=$with_hava_include, java_ok=no)
-
-#--------------------------------------------------------------------
-# Setup the library combination
-#--------------------------------------------------------------------
-AC_ARG_WITH(library-combo,[
---with-library-combo
-    Define the default library combinations that will be used when you
-type 'make'. You can still change the library combination at runtime
-by specifying the 'library_combo' make variable. For example:
-    
-      $ make library_combo=nx-pdo-nx-nil
-],
-ac_cv_library_combo=$withval,
-ac_cv_library_combo=$ac_cv_library_combo
-)
-
-if test "$ac_cv_library_combo" = ""; then
-  if test $host_os = nextstep4; then
-    ac_cv_library_combo=nx-nx-nx-nil
-  elif test $host_os = cygwin32; then
-    ac_cv_library_combo=gnu-gnu-gnu-w32gui
-  else
-    ac_cv_library_combo=gnu-gnu-gnu-xgps
-  fi
-fi
-AC_SUBST(ac_cv_library_combo)
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

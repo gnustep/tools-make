@@ -68,6 +68,24 @@ ALL_TOOL_LIBS := \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
+ifeq ($(WITH_DLL),yes)
+TTMP_LIBS := $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) \
+   $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)
+TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
+# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
+TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
+TTMP_LIBS := $(filter-out -l%_s,  $(TTMP_LIBS))
+TTMP_LIBS := $(filter-out -l%_dps,$(TTMP_LIBS))
+TTMP_LIBS := $(filter-out -l%_ps, $(TTMP_LIBS))
+# strip away -l, _p and _d ..
+TTMP_LIBS := $(TTMP_LIBS:-l%=%)
+TTMP_LIBS := $(TTMP_LIBS:%_d=%)
+TTMP_LIBS := $(TTMP_LIBS:%_p=%)
+TTMP_LIBS := $(TTMP_LIBS:%_dp=%)
+TTMP_LIBS := $(TTMP_LIBS:%=-Dlib%_ISDLL=1)
+ALL_CPPFLAGS += $(TTMP_LIBS)
+endif
+
 #
 # Compilation targets
 #
@@ -91,6 +109,8 @@ internal-install-dirs::
 install-ctool::
 	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
 	    $(TOOL_INSTALLATION_DIR);
+	cp $(GNUSTEP_MAKEFILES)/executable.template $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
+	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
 
 internal-ctool-uninstall::
 	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)

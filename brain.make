@@ -146,22 +146,35 @@ FND_LIBS = -lFoundation
 
 ifeq ($(gc), yes)
   ifeq ($(LIBFOUNDATION_WITH_GC), yes)
-    OBJC_LIBS = -lobjc_gc $(LIBFOUNDATION_GC_LIBRARY)
-    AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_BOEHM_GC=1
+    OBJC_LIBS = -lobjc $(LIBFOUNDATION_GC_LIBRARY)
+    ifeq ($(leak), yes)
+      AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_LEAK_GC=1
+    else
+      AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_BOEHM_GC=1
+    endif
   endif
 endif
 
 endif
 
 ifeq ($(FOUNDATION_LIB),nx)
-FND_LDFLAGS =
-FND_LIBS = -framework Foundation
+FND_LDFLAGS = -framework Foundation
+FND_LIBS   = 
 FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
 endif
 
 ifeq ($(FOUNDATION_LIB), sun)
 FND_DEFINE = -DSun_Foundation_LIBRARY=1
 endif
+
+#
+# Set the WO library flags
+#
+WO_LDFLAGS =
+WO_LIBS    = -lNGObjWeb -lNGHttp -lNGMime -lNGZlib \
+	     -lNGNet -lNGStreams -lNGExtensions
+WO_DEFINE  = -DNGObjWeb_LIBRARY=1
+
 
 GUI_LDFLAGS =
 GUI_LIBS = 

@@ -73,10 +73,9 @@ if [ -z "$GNUSTEP_BUILD_ROOT" ]; then
 # Add the GNUstep tools directories to the path
 #
 if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
-  GNUSTEP_PATHPREFIX_LIST=$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT:$GNUSTEP_NETWORK_ROOT
+  GNUSTEP_PATHPREFIX_LIST=$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
   export GNUSTEP_PATHPREFIX_LIST
-fi # [ -z "$GNUSTEP_PATHPREFIX_LIST" ]
-
+fi
 tmp_IFS="$IFS"
 IFS=:
 temp_path=
@@ -85,17 +84,8 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
   temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
 done
 IFS="$tmp_IFS"
-if ( echo ${PATH}|fgrep -v "${temp_path}" >/dev/null ); then
-  PATH=$temp_path$PATH
-fi
-
-if [ -z "$MANPATH" ]; then
-  MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:/usr/local/man:/usr/man
-else
-  if ( echo ${MANPATH}|fgrep -v "${GNUSTEP_SYSTEM_ROOT}/Library/man" >/dev/null ); then
-    MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:${MANPATH}
-  fi
-fi
+PATH=${temp_path}${PATH}
+export PATH
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
@@ -111,9 +101,15 @@ fi
 # Run 'make_services' in background if possible - updates cache of services
 # and applications/file-extensions known to the applications.
 #
-if [ -x $GNUSTEP_SYSTEM_ROOT/Tools/make_services ]
+TDIR=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+if [ -f $TDIR/$LIBRARY_COMBO/make_services ]
 then
-  $GNUSTEP_SYSTEM_ROOT/Tools/make_services &
+  $TDIR/$LIBRARY_COMBO/make_services &
+else
+  if [ -f $TDIR/make_services ]
+  then
+    $TDIR/make_services &
+  fi
 fi
 
 fi # [ -z "$GNUSTEP_BUILD_ROOT" ]
@@ -127,7 +123,7 @@ if [ -z "$CLASSPATH" ]; then
   MY_CLASSPATH=.
 else
   MY_CLASSPATH=$CLASSPATH:.
-fi # [ -z "$CLASSPATH" ]
+fi
 
 CLASSPATH=$GNUSTEP_SYSTEM_ROOT/Java/:$GNUSTEP_USER_ROOT/Java/:$GNUSTEP_LOCAL_ROOT/Java/:$GNUSTEP_NETWORK_ROOT/Java/:$MY_CLASSPATH
 export CLASSPATH

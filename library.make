@@ -38,6 +38,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The directory where the header files are located is xxx_HEADER_FILES_DIR
 # The directory where to install the header files inside the library
 # installation directory is xxx_HEADER_FILES_INSTALL_DIR
+# The DLL export file is in xxx_DLL_DEF
 #
 #	Where xxx is the name of the library
 #
@@ -46,6 +47,30 @@ LIBRARY_NAME:=$(strip $(LIBRARY_NAME))
 
 ifeq ($(INTERNAL_library_NAME),)
 # This part is included the first time make is invoked.
+
+# Short explanation of how gstep-make works: (hh)
+#
+# The
+#   internal-all:: $(LIBRARY_NAME:=.all.library.variables)
+# eg expands to:
+#   internal-all ::
+#     libobjc.all.library.variables libFoundation.all.library.variables
+# that is,
+#   $target.$operation.$type.variables
+# for each target (word in the LIBRARY_NAME (list) variable)
+#
+# The %.variables is matched in rules.make which then invokes
+# it's $target.build rule which does the actual work. The %.build
+# rule is a pattern rule extracting the variable set matching for
+# the appropriate target. Eg when
+#   libobjc.build
+# is invoked, $($*_C_FILES) expands to the value of the variable
+# libobjc_C_FILES which in turn is mapped in the nested invocation
+# of make to the the plain C_FILES variable. In this step also
+# which_lib is invoked to determine to correct library bindings.
+# In other words, each target is run in it's own make process which
+# has an environment only containing the variable bindings for that
+# target (eg all libobjc_C_FILES, but not libFoundation_C_FILES).
 
 internal-all:: $(LIBRARY_NAME:=.all.library.variables)
 
@@ -65,17 +90,33 @@ else
 # This part gets included the second time make is invoked.
 
 ifeq ($(shared), yes)
+
+ifneq ($(BUILD_DLL),yes)
+
 LIBRARY_FILE = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
-LIBRARY_FILE_EXT=$(SHARED_LIBEXT)
+LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
-SOVERSION = `echo $(VERSION)|awk -F. '{print $$1}'`
-SONAME_LIBRARY_FILE=$(LIBRARY_FILE).$(SOVERSION)
-else
-LIBRARY_FILE = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
-LIBRARY_FILE_EXT=$(LIBEXT)
+SOVERSION            = `echo $(VERSION)|awk -F. '{print $$1}'`
+SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(SOVERSION)
+
+else # BUILD_DLL
+
+LIBRARY_FILE     = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
+LIBRARY_FILE_EXT = $(DLL_LIBEXT)
+DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
+DLL_EXP_LIB      = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
+DLL_EXP_DEF      = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX).def
+
+endif # BUILD_DLL
+
+else # shared
+
+LIBRARY_FILE         = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
+LIBRARY_FILE_EXT     = $(LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
-SONAME_LIBRARY_FILE=$(LIBRARY_FILE)
-endif
+SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
+
+endif # shared
 
 ifeq ($(strip $(HEADER_FILES_DIR)),)
 override HEADER_FILES_DIR = .
@@ -88,12 +129,60 @@ endif
 #
 # Compilation targets
 #
+
+ifeq ($(BUILD_DLL),yes)
+
+DERIVED_SOURCES = derived_src
+
+ifneq ($(strip $(DLL_DEF)),)
+DLL_DEF_FLAG = --input-def $(DLL_DEF)
+endif
+
+SHARED_CFLAGS += -DBUILD_$(INTERNAL_library_NAME)_DLL=1
+
+internal-library-all :: \
+	before-all				\
+	before-$(TARGET)-all			\
+	$(GNUSTEP_OBJ_DIR)			\
+	$(DERIVED_SOURCES)			\
+	$(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def	\
+	$(GNUSTEP_OBJ_DIR)/$(DLL_NAME)		\
+	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)	\
+	after-$(TARGET)-all			\
+	after-all
+
+internal-library-clean ::
+	rm -rf $(DERIVED_SOURCES)
+
+$(DERIVED_SOURCES) :
+	$(MKDIRS) $@
+
+DLL_OFILES = $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+
+$(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def : $(DLL_OFILES) $(DLL_DEF)
+	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(DLL_OFILES)
+
+$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) : $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
+	$(DLLTOOL) --dllname $(DLL_NAME) --def $< --output-lib $@
+
+$(GNUSTEP_OBJ_DIR)/$(DLL_NAME) : $(DLL_OFILES) $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
+	$(DLLWRAP) --driver-name $(CC) \
+	  $(SHARED_LD_PREFLAGS) \
+	  --def $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def \
+	  -o $@ $(DLL_OFILES) \
+	  $(ALL_LIB_DIRS) \
+	  $(LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) $(SHARED_LD_POSTFLAGS) 
+
+else # BUILD_DLL
+
 internal-library-all:: before-all before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 		$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) import-library \
 		after-$(TARGET)-all after-all
 
-$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(LIB_LINK_CMD)
+
+endif # BUILD_DLL
 
 before-$(TARGET)-all::
 
@@ -124,8 +213,19 @@ internal-install-headers::
 	  done; \
 	fi
 
-internal-install-libs:: internal-install-lib \
-    internal-install-import-lib
+ifeq ($(BUILD_DLL),yes)
+
+internal-install-lib::
+	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) \
+	      $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/$(LIBRARY_COMBO) ; \
+	fi
+	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) \
+	      $(GNUSTEP_LIBRARIES) ; \
+	fi
+
+else
 
 internal-install-lib::
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
@@ -134,7 +234,7 @@ internal-install-lib::
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
 
-internal-install-import-lib::
+endif
 
 internal-library-uninstall:: before-uninstall internal-uninstall-headers internal-uninstall-lib after-uninstall
 
@@ -147,16 +247,19 @@ internal-uninstall-headers::
 	  fi; \
 	done
 
-internal-uninstall-libs:: internal-uninstall-lib \
-    internal-uninstall-import-lib
+ifeq ($(BUILD_DLL),yes)
+
+internal-uninstall-lib::
+	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/$(LIBRARY_COMBO)/$(DLL_NAME)
+	rm -f $(GNUSTEP_LIBRARIES)/$(DLL_EXP_LIB)
+
+else
 
 internal-uninstall-lib::
 	rm -f $(GNUSTEP_LIBRARIES)/$(VERSION_LIBRARY_FILE)
-	rm -f $(GNUSTEP_LIBRARIES)/$(SONAME_LIBRARY_FILE)
 	rm -f $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE)
-	if [ ! -e $(GNUSTEP_LIBRARIES)/$(INTERNAL_library_NAME)$(SHARED_LIBEXT) ]; then \
-		rm -f $(GNUSTEP_LIBRARIES)/$(INTERNAL_library_NAME)$(SHARED_LIBEXT); \
-	fi
+
+endif
 
 internal-uninstall-import-lib::
 

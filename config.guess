@@ -1006,6 +1006,12 @@ EOF
 	exit 0 ;;
 esac
 
+tmp=`gcc -dumpmachine|grep mingw32`
+if test "x$tmp" != "x"; then
+  echo i386-pc-mingw32
+  exit 0
+fi
+
 #echo '(No uname command or uname output not recognized.)' 1>&2
 #echo "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" 1>&2
 

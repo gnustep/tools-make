@@ -139,6 +139,22 @@ char* libext = ".a";
 char* shared_libext = ".so";
 char* extension;
 
+static void stripstr(unsigned char *s)
+{
+  /* 
+     Strips off carriage returns, newlines and spaces 
+     at the end of the string. (this removes some \r\n issues on Windows)
+  */
+  unsigned len;
+  if (s == NULL) return;
+  if ((len = strlen(s)) == 0) return;
+
+  while (len > 0) {
+    len--;
+    if (s[len] < 33) s[len] = '\0';
+  }
+}
+
 void get_arguments (int argc, char** argv)
 {
   int i;
@@ -152,6 +168,7 @@ void get_arguments (int argc, char** argv)
         all_libraries = malloc ((libraries_no + 1) * sizeof (char*));
       all_libraries[libraries_no] = malloc (strlen (argv[i]) - 1);
       strcpy (all_libraries[libraries_no], argv[i] + 2);
+      stripstr(all_libraries[libraries_no]);
       libraries_no++;
     }
     else if (!strncmp (argv[i], "-L", 2)) {
@@ -161,6 +178,7 @@ void get_arguments (int argc, char** argv)
         library_paths = malloc ((paths_no + 1) * sizeof(char*));
       library_paths[paths_no] = malloc (strlen (argv[i]) - 1);
       strcpy (library_paths[paths_no], argv[i] + 2);
+      stripstr(library_paths[paths_no]);
       paths_no++;
     }
     else if (!strncmp (argv[i], "shared=", 7)) {
@@ -394,7 +412,7 @@ int search_for_library_in_directory (char* path)
     return 1;
 
   /* Return a static library that matches the 'library_name' */
-  if (search_for_library_with_type_in_directory ('s', path, libext))
+  if (search_for_library_with_type_in_directory (0, path, libext))
     return 1;
 
   return 0;
@@ -403,6 +421,11 @@ int search_for_library_in_directory (char* path)
 int main(int argc, char** argv)
 {
   int i, j, found;
+
+#ifdef __WIN32__
+  setmode(1, O_BINARY);
+  setmode(2, O_BINARY);
+#endif
 
   if (argc == 1) {
     printf ("usage: %s [-Lpath ...] -llibrary shared=yes|no debug=yes|no "
@@ -415,7 +438,7 @@ int main(int argc, char** argv)
   if (!libraries_no)
     exit (0);
 
-/*  show_all ();*/
+  //  show_all ();
 
   for (i = 0; i < libraries_no; i++) {
     library_name = all_libraries[i];

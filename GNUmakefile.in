@@ -54,11 +54,28 @@ GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
+PERL = @PERL@
+
+MAKE_FILES = aggregate.make application.make bundle.make service.make \
+	common.make brain.make library.make rules.make target.make \
+	tool.make ctool.make test-library.make names.make objc.make \
+	test-application.make test-tool.make subproject.make \
+	palette.make gswapp.make gswbundle.make woapp.make wobundle.make  \
+	documentation.make MediaBook.func executable.template
 
 all: generated-files which_lib$(EXEEXT)
 
+ifeq ($(GNUSTEP_TARGET_OS),mingw32)
+  PERL=none
+endif
+ifeq ($(PERL),none)
 which_lib$(EXEEXT): which_lib.c
 	$(CC) @CFLAGS@ -Wall -o $@ $^
+else
+which_lib$(EXEEXT): which_lib.pl
+	cp which_lib.pl which_lib$(EXEEXT)
+	chmod +x which_lib$(EXEEXT)
+endif
 
 install: all
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
@@ -93,12 +110,7 @@ install: all
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	$(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
 	$(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
-	for f in aggregate.make application.make bundle.make service.make \
-		common.make brain.make library.make rules.make target.make \
-		tool.make ctool.make test-library.make names.make objc.make \
-		test-application.make test-tool.make subproject.make \
-		palette.make gswapp.make gswbundle.make \
-		documentation.make MediaBook.func executable.template; do \
+	for f in $(MAKE_FILES); do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
@@ -117,12 +129,7 @@ uninstall:
 	rm -f $(tooldir)/openapp; \
 	rm -f $(tooldir)/debugapp; \
 	rm -f $(tooldir)/opentool; \
-	for f in aggregate.make application.make bundle.make \
-		common.make brain.make library.make rules.make target.make \
-		tool.make ctool.make test-library.make names.make objc.make \
-		test-application.make test-tool.make subproject.make \
-		palette.make gswapp.make gswbundle.make \
-		documentation.make MediaBook.func executable.template; do \
+	for f in $(MAKE_FILES); do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(prefix)/share/config.site

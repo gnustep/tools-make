@@ -30,9 +30,9 @@ BUNDLE_MAKE_LOADED=yes
 include $(GNUSTEP_MAKEFILES)/rules.make
 
 # The name of the bundle is in the BUNDLE_NAME variable.
+# The list of languages the bundle is localized in are in xxx_LANGUAGES
 # The list of bundle resource file are in xxx_RESOURCE_FILES
-# The list of localized bundle resource files is in xxx_LOCALIZED_RESOURCE_FILES
-# The list of languages the bundle supports is in xxx_LANGUAGES
+# The list of localized bundle resource file are in xxx_LOCALIZED_RESOURCE_FILES
 # The list of bundle resource directories are in xxx_RESOURCE_DIRS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
 # The header files are in xxx_HEADER_FILES
@@ -102,12 +102,20 @@ internal-bundle-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 
 before-$(TARGET)-all::
 
-after-$(TARGET)-all::
+after-$(TARGET)-all:: 
 
 BUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := \
     $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)$(BUNDLE_OBJ_EXT)
 BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resources/$(d))
+
+ifeq ($(strip $(HEADER_FILES_DIR)),)
+HEADER_FILES_DIR = .
+endif
+
+ifeq ($(strip $(COMPONENTS)),)
+  override COMPONENTS=""
+endif
 ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
 endif
@@ -117,9 +125,6 @@ endif
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
-ifeq ($(BUNDLE_INSTALL_DIR),)
-  BUNDLE_INSTALL_DIR := $(GNUSTEP_BUNDLES)
-endif
 
 build-bundle-dir::
 	@$(MKDIRS) \
@@ -127,7 +132,7 @@ build-bundle-dir::
 		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
 		$(BUNDLE_RESOURCE_DIRS)
 
-build-bundle:: $(BUNDLE_FILE) bundle-resource-files localized-bundle-resource-files
+build-bundle:: $(BUNDLE_FILE) bundle-components bundle-resource-files localized-bundle-resource-files
 
 ifeq ($(WITH_DLL),yes)
 
@@ -139,62 +144,65 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_
 
 else # WITH_DLL
 
-$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
-		-o $(LDOUT)$(BUNDLE_FILE) \
+		$(LDOUT)$(BUNDLE_FILE) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_BUNDLE_LIBS)
 
-endif # WITH_DLL
+endif
 
-bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info.plist $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist $(RESOURCE_FILES)
+bundle-components :: $(BUNDLE_DIR_NAME)
+	@(if [ "$(COMPONENTS)" != "" ]; then \
+	  echo "Syntax checking components ..."; \
+          for component in $(COMPONENTS); do \
+	    wodfile=`basename $$component .wo`;\
+	    wod "$${component}/$${wodfile}.wod";\
+	  done; \
+	  echo "Linking components into the bundle wrapper..."; \
+          cd $(BUNDLE_DIR_NAME); \
+          for component in $(COMPONENTS); do \
+	    $(LN_S) -f ../$$component .;\
+          done; \
+	fi)
+
+bundle-resource-files:: $(BUNDLE_DIR_NAME)/bundle-info.plist $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying resources into the bundle wrapper..."; \
-	  for f in "$(RESOURCE_FILES)"; do \
-	    cp -r $$f $(BUNDLE_DIR_NAME)/Resources; \
-	  done \
+	  echo "Linking resources into the bundle wrapper..."; \
+          cd $(BUNDLE_DIR_NAME)/Resources; \
+          for ff in $(RESOURCE_FILES); do \
+	    $(LN_S) -f ../../$$ff .;\
+          done; \
 	fi)
 
 localized-bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying localized resources into the bundle wrapper..."; \
-	  for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then \
-	      $(MKDIRS) $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
-	    fi; \
+	  echo "Linking localized resources into the bundle wrapper..."; \
+          cd $(BUNDLE_DIR_NAME)/Resources; \
+          for l in $(LANGUAGES); do \
+	    if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
+	    cd $$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
-	      fi; \
-	    done; \
-	  done; \
+              if [ -f ../../../$$l.lproj/$$f ]; then \
+		$(LN_S) -f ../../../$$l.lproj/$$f .;\
+              fi;\
+            done;\
+	    cd ..; \
+          done;\
 	fi)
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(INTERNAL_bundle_NAME)
 endif
 
-# MacOSX-S bundles
-$(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
-	  fi; \
-	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
+$(BUNDLE_DIR_NAME)/bundle-info.plist: $(BUNDLE_DIR_NAME)
+	@(cd $(BUNDLE_DIR_NAME); \
+	  $(LN_S) -f ../bundle-info.plist . \
+	)
 
-# GNUstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(INTERNAL_bundle_NAME)${BUNDLE_OBJ_EXT}\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
-	  fi; \
+	  echo "  NSExecutable = \"$(INTERNAL_bundle_NAME)$(BUNDLE_OBJ_EXT)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
@@ -209,7 +217,8 @@ internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 	      fi; \
 	    done; \
 	  fi; \
-        fi; \
+        fi
+	$(MKDIRS) $(BUNDLE_INSTALL_DIR)
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 	$(TAR) ch --exclude=CVS --to-stdout $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
 

@@ -39,7 +39,7 @@ ifeq ($(INTERNAL_subproj_NAME),)
 
 internal-all:: $(SUBPROJECT_NAME:=.all.subproj.variables)
 
-internal-install:: $(SUBPROJECT_NAME:=.install.subproj.variables)
+internal-install:: all
 
 internal-clean:: $(SUBPROJECT_NAME:=.clean.subproj.variables)
 
@@ -63,8 +63,7 @@ internal-subproj-all:: before-all before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
                    $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
                    after-$(TARGET)-all after-all
 
-$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-					  $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES)
 	$(OBJ_MERGE_CMD)
 
 before-$(TARGET)-all::
@@ -74,7 +73,7 @@ after-$(TARGET)-all::
 after-all::
 
 #
-# Installation and Uninstallation targets
+# Installation targets
 #
 
 internal-subproj-install:: internal-install-subproj-dirs \

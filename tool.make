@@ -58,7 +58,7 @@ internal-distclean:: $(TOOL_NAME:=.distclean.tool.variables)
 $(TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going $@.all.tool.variables
 
-else
+else # second pass
 
 ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) \
    $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
@@ -69,15 +69,32 @@ ALL_TOOL_LIBS := \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
+ifeq ($(WITH_DLL),yes)
+TTMP_LIBS := $(ALL_TOOL_LIBS)
+TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
+# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
+TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
+TTMP_LIBS := $(filter-out -l%_s,  $(TTMP_LIBS))
+TTMP_LIBS := $(filter-out -l%_dps,$(TTMP_LIBS))
+TTMP_LIBS := $(filter-out -l%_ps, $(TTMP_LIBS))
+# strip away -l, _p and _d ..
+TTMP_LIBS := $(TTMP_LIBS:-l%=%)
+TTMP_LIBS := $(TTMP_LIBS:%_d=%)
+TTMP_LIBS := $(TTMP_LIBS:%_p=%)
+TTMP_LIBS := $(TTMP_LIBS:%_dp=%)
+TTMP_LIBS := $(TTMP_LIBS:%=-Dlib%_ISDLL=1)
+ALL_CPPFLAGS += $(TTMP_LIBS)
+endif
+
 #
 # Compilation targets
 #
 internal-tool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) after-$(TARGET)-all
 
-$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
 
 before-$(TARGET)-all::
@@ -97,7 +114,6 @@ install-tool::
 
 internal-tool-uninstall::
 	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)
-	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
 
 #
 # Cleaning targets

@@ -110,6 +110,15 @@ internal-check::
 
 after-check::
 
+# declare targets as PHONY
+
+.PHONY = all before-all internal-all after-all \
+	 install before-install internal-install after-install \
+	 uninstall before-uninstall internal-uninstall after-uninstall \
+	 clean before-clean internal-clean after-clean \
+	 distclean before-distclean internal-distclean after-distclean \
+	 check before-check internal-check after-check
+
 ifeq ($(PROCESS_SECOND_TIME),yes)
 
 ALL_CPPFLAGS = $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) $(AUXILIARY_CPPFLAGS)
@@ -182,29 +191,32 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 # The magical application rules, thank you GNU make!
 %.build:
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
-        tmp="$($*_SUBPROJECTS)"; \
-        if test "x$$tmp" != x ; then \
-          for f in $$tmp; do \
+	if [ "$($*_SUBPROJECTS)" != "" ]; then subprjs="$($*_SUBPROJECTS)"; \
+        else subprjs="__dummy__";\
+	fi;\
+	if [ "$$subprjs" != "__dummy__" ]; then \
+	  for f in $$subprjs; do \
 	    mf=$(MAKEFILE_NAME); \
 	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
 	      mf=Makefile; \
-	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	        echo "WARNING: No $(MAKEFILE_NAME) found for subproject $ff; using 'Makefile'"; \
 	    fi; \
 	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION); then \
 	      :; \
 	    else exit $$?; \
-	    fi; \
+            fi; \
 	  done; \
-        fi; \
+	fi; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
 	    SUBPROJECTS="$($*_SUBPROJECTS)" \
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
-		JAVA_FILES="$($*_JAVA_FILES)" \
-		JAVA_JOBS_FILES="$($*_JOBS_FILES)" \
-		JAVA_WRAPPER_FRAMEWORK="$($*_WRAPPER_FRAMEWORK)" \
+	    JAVA_FILES="$($*_JAVA_FILES)" \
+	    JAVA_JOBS_FILES="$($*_JOBS_FILES)" \
+	    JAVA_WRAPPER_FRAMEWORK="$($*_WRAPPER_FRAMEWORK)" \
+	    OBJ_FILES="$($*_OBJ_FILES)" \
 	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 	    HEADER_FILES="$($*_HEADER_FILES)" \
 	    TEXI_FILES="$($*_TEXI_FILES)" \
@@ -212,31 +224,33 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 	    TEXT_MAIN="$($*_TEXT_MAIN)" \
 	    HEADER_FILES_DIR="$($*_HEADER_FILES_DIR)" \
 	    HEADER_FILES_INSTALL_DIR="$($*_HEADER_FILES_INSTALL_DIR)" \
-	    RESOURCE_FILES="$($*_RESOURCE_FILES)" \
+	    COMPONENTS="$($*_COMPONENTS)" \
+	    LANGUAGES="$($*_LANGUAGES)" \
+	    HAS_GSWCOMPONENTS="$($*_HAS_GSWCOMPONENTS)" \
+	    GSWAPP_INFO_PLIST="$($*_GSWAPP_INFO_PLIST)" \
 	    WEBSERVER_RESOURCE_FILES="$($*_WEBSERVER_RESOURCE_FILES)" \
-		LOCALIZED_RESOURCE_FILES="$($*_LOCALIZED_RESOURCE_FILES)" \
-		LOCALIZED_WEBSERVER_RESOURCE_FILES="$($*_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
+	    LOCALIZED_WEBSERVER_RESOURCE_FILES="$($*_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
+	    WEBSERVER_RESOURCE_DIRS="$($*_WEBSERVER_RESOURCE_DIRS)" \
+	    LOCALIZED_RESOURCE_FILES="$($*_LOCALIZED_RESOURCE_FILES)" \
+	    RESOURCE_FILES="$($*_RESOURCE_FILES)" \
 	    MAIN_MODEL_FILE="$($*_MAIN_MODEL_FILE)" \
-	    APPLICATION_ICON="$($*_APPLICATION_ICON)" \
 	    RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
-		COMPONENTS="$($*_COMPONENTS)" \
-		LANGUAGES="$($*_LANGUAGES)" \
-		HAS_GSWCOMPONENTS="$($*_HAS_GSWCOMPONENTS)" \
-		GSWAPP_INFO_PLIST="$($*_GSWAPP_INFO_PLIST)" \
 	    BUNDLE_LIBS="$($*_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
 	    SERVICE_INSTALL_DIR="$($*_SERVICE_INSTALL_DIR)" \
 	    PALETTE_ICON="$($*_PALETTE_ICON)" \
 	    PRINCIPAL_CLASS="$($*_PRINCIPAL_CLASS)" \
+	    DLL_DEF="$($*_DLL_DEF)" \
 	    ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
 					$($*_INCLUDE_DIRS)" \
 	    ADDITIONAL_GUI_LIBS="$($*_GUI_LIBS) $(ADDITIONAL_GUI_LIBS)" \
 	    ADDITIONAL_TOOL_LIBS="$($*_TOOL_LIBS) $(ADDITIONAL_TOOL_LIBS)" \
 	    ADDITIONAL_OBJC_LIBS="$($*_OBJC_LIBS) $(ADDITIONAL_OBJC_LIBS)" \
-	    ADDITIONAL_LIBRARY_LIBS="$($*_LIBS)" \
+	    ADDITIONAL_LIBRARY_LIBS="$($*_LIBS) $($*_LIBRARY_LIBS) $(ADDITIONAL_LIBRARY_LIBS)" \
 	    ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS)" \
 	    ADDITIONAL_LDFLAGS="$($*_LDFLAGS) $(ADDITIONAL_LDFLAGS)" \
 	    LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
-		$(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON) \
+		$(LIB_DIRS_NO_SYSTEM) $($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS) \
+		$(LIBRARIES_DEPEND_UPON) \
 		$($*_LIBRARIES_DEPEND_UPON) debug=$(debug) profile=$(profile) \
 		shared=$(shared) libext=$(LIBEXT) \
 		shared_libext=$(SHARED_LIBEXT))" \
@@ -258,10 +272,20 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 # are in the JAVA_FILES variable.
 #
 
-ifneq ($(SUBPROJECTS),)
-  SUBPROJECT_OBJ_FILES = $(foreach d, $(SUBPROJECTS), \
+ifneq ($($*_SUBPROJECTS),)
+  SUBPROJECT_OBJ_FILES = $(foreach d, $($*_SUBPROJECTS), \
     $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
+else
+  ifneq ($(SUBPROJECTS),)
+    SUBPROJECT_OBJ_FILES = $(foreach d, $(SUBPROJECTS), \
+      $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
+  endif
 endif
+
+#ifneq ($(SUBPROJECTS),)
+#  SUBPROJECT_OBJ_FILES = $(foreach d, $(SUBPROJECTS), \
+#    $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
+#endif
 
 OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
@@ -280,6 +304,23 @@ PSWRAP_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(PSWRAP_OBJS))
 
 C_OBJS = $(C_FILES:.c=${OEXT})
 C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
+
+ifeq ($(WITH_DLL),yes)
+TMP_LIBS := $(LIBRARIES_DEPEND_UPON) $(BUNDLE_LIBS) $(ADDITIONAL_GUI_LIBS) $(ADDITIONAL_OBJC_LIBS) $(ADDITIONAL_LIBRARY_LIBS)
+TMP_LIBS := $(filter -l%, $(TMP_LIBS))
+# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
+TMP_LIBS := $(filter-out -l%_ds, $(TMP_LIBS))
+TMP_LIBS := $(filter-out -l%_s,  $(TMP_LIBS))
+TMP_LIBS := $(filter-out -l%_dps,$(TMP_LIBS))
+TMP_LIBS := $(filter-out -l%_ps, $(TMP_LIBS))
+# strip away -l, _p and _d ..
+TMP_LIBS := $(TMP_LIBS:-l%=%)
+TMP_LIBS := $(TMP_LIBS:%_d=%)
+TMP_LIBS := $(TMP_LIBS:%_p=%)
+TMP_LIBS := $(TMP_LIBS:%_dp=%)
+ALL_CPPFLAGS += $(TMP_LIBS:%=-Dlib%_ISDLL=1)
+endif
+
 # Rules processed second time
 endif
 

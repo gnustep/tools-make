@@ -2,7 +2,12 @@
 
 $| = 1;
 
-$shared_extension = "so";
+if ($ENV{'GNUSTEP_HOST_OS'} eq "rhapsody5.3" || $ENV{'GNUSTEP_HOST_OS'} eq "rhapsody5.5") {
+  $shared_extension = "dylib";
+}
+else {
+  $shared_extension = "so";
+}
 $lib_extension = "a";
 
 @L = ();
@@ -111,6 +116,10 @@ foreach $j (0..$#l) {
 				# startindex to be justified for libraries not starting with 'lib'
 				$file2 = substr($file, 3, $k - 3);
 			}
+            else {
+                $file2 = substr($file, 3, length($file));
+            }
+
 			if ($file2 ne $l) { next; }
 
 			if ($file =~ /$l/) {
