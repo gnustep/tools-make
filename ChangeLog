@@ -1,3 +1,7 @@
+Fri Jun 29 14:22:33 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* java.make: Removed old obsolete JAVA_PACKAGE_PREFIX support.
+
 2001-06-28  Adam Fedor  <fedor@gnu.org>
 
 	* common.make (GNUSTEP_USER_FRAMEWORKS_LIBRARIES_FLAG): Typo
