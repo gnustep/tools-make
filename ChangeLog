@@ -1,3 +1,12 @@
+Thu Oct 17 17:49:51 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/aggregate.make: Execute nothing is SUBPROJECTS is empty.
+	Removed __done hack; do not pass GNUSTEP_INSTALLATION_DIR to
+	submakes on the command line.  Renamed 'target' to 'operation'.
+	Use 'aggregate project', not 'subproject', in warning messages.
+	Commented extensively.
+	* common.make: Export GNUSTEP_INSTALLATION_DIR
+
 Thu Oct 17 02:17:01 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	A further speedup for make all/install/uninstall.
