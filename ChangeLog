@@ -8,6 +8,7 @@
 	* configure.in: Add opentool.in.
 	* configure: Regenerate.
 	* GNUmakefile.in: Install/uninstall new files.
+	* make/GNUmakefile.in (install, uninstall, opentool): Add new files.
 
 Tun Feb 16 16:26:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
