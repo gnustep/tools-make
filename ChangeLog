@@ -1,3 +1,8 @@
+Mon Dec 10 22:04:09 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make (internal-bundle-install): Yet another rephrasing of
+	tar options to get wider portability.
+
 Mon Dec 10 17:32:52 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make (internal-bundle-install): Use `f -' instead 
