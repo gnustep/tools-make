@@ -96,39 +96,12 @@ export GNUSTEP_USER_ROOT
 if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
   if [ "$convert_win_paths" = "yes" ]; then
 
-    # Find cygpath
-    save_ifs="$IFS"; IFS=":"
-
-    cygpath=
-    word=cygpath.exe
-    dummy="$PATH"
-    for dir in $dummy; do
-      test -z "$dir" && dir=.
-      if test -f $dir/$word; then
-        cygpath=$word
-        break
-      fi
-    done
-
-    unset word
-    unset dummy
-    unset dir
-
-    IFS="$save_ifs"
-    unset save_ifs
-
-    if [ -z "$cygpath" ]; then
-      cygpath=$GNUSTEP_MAKEFILES/cygpath.sh
-    fi
-
-    # Now use it to convert the paths
-    G_U_R=`$cygpath -u "$GNUSTEP_USER_ROOT"`
-    G_L_R=`$cygpath -u "$GNUSTEP_LOCAL_ROOT"`
-    G_N_R=`$cygpath -u "$GNUSTEP_NETWORK_ROOT"`
-    G_S_R=`$cygpath -u "$GNUSTEP_SYSTEM_ROOT"`
+    G_U_R=`$GNUSTEO_MAKEFILES/fixpath.sh -u "$GNUSTEP_USER_ROOT"`
+    G_L_R=`$GNUSTEO_MAKEFILES/fixpath.sh -u "$GNUSTEP_LOCAL_ROOT"`
+    G_N_R=`$GNUSTEO_MAKEFILES/fixpath.sh -u "$GNUSTEP_NETWORK_ROOT"`
+    G_S_R=`$GNUSTEO_MAKEFILES/fixpath.sh -u "$GNUSTEP_SYSTEM_ROOT"`
     GNUSTEP_PATHPREFIX_LIST=$G_U_R:$G_L_R:$G_N_R:$G_S_R
 
-    unset cygpath
   else
     GNUSTEP_PATHPREFIX_LIST=$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_NETWORK_ROOT:$GNUSTEP_SYSTEM_ROOT
   fi

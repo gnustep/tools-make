@@ -3,6 +3,9 @@
 	* target.make: Force shared=yes for cygwin and mingw as stuff simply
 	doesn't work under windows when built static.
 	* configure.in: If hosted under mingw, use 'install' program and 'sh'
+	* fixpath.sh: new path fixup script for mingw/msys as well as cygwin
+	* GNUstep.sh.in: use fixpath
+	* common.make: ditto
 
 Sat Mar  9 09:52:51 2002  Adam Fedor  <fedor@yogi.doc.com>
 
