@@ -1,3 +1,7 @@
+Mon Mar 19 00:14:24 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* transform_paths.sh: Fixed, rewritten.
+
 Sun Mar 18 17:49:59 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* application.make ($(APP_DIR_NAME)/Resources/Info-gnustep.plist):
