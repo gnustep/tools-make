@@ -47,6 +47,17 @@ endif
         internal-application-build-template \
         _FORCE
 
+#
+# Determine where to install.  By default, install into GNUSTEP_APPS.
+#
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
+  APP_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
+endif
+
+ifeq ($(APP_INSTALL_DIR),)
+  APP_INSTALL_DIR = $(GNUSTEP_APPS)
+endif
+
 ALL_GUI_LIBS =								     \
     $(shell $(WHICH_LIB_SCRIPT)						     \
      $(ALL_LIB_DIRS)							     \
@@ -158,22 +169,22 @@ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 
 _FORCE::
 
-internal-app-install_:: $(GNUSTEP_APPS)
-	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME); \
-	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)$(END_ECHO)
+internal-app-install_:: $(APP_INSTALL_DIR)
+	$(ECHO_INSTALLING)rm -rf $(APP_INSTALL_DIR)/$(APP_DIR_NAME); \
+	$(TAR) cf - $(APP_DIR_NAME) | (cd $(APP_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
-	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_APPS)/$(APP_DIR_NAME)
+	$(CHOWN) -R $(CHOWN_TO) $(APP_INSTALL_DIR)/$(APP_DIR_NAME)
 endif
 ifeq ($(strip),yes)
-	$(STRIP) $(GNUSTEP_APPS)/$(APP_FILE)
+	$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE)
 endif
 
 
-$(GNUSTEP_APPS):
+$(APP_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
 
 internal-app-uninstall_::
-	(cd $(GNUSTEP_APPS); rm -rf $(APP_DIR_NAME))
+	(cd $(APP_INSTALL_DIR); rm -rf $(APP_DIR_NAME))
 
 ## Local variables:
 ## mode: makefile
