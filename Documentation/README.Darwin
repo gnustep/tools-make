@@ -208,7 +208,7 @@ with c shell like tcsh (Mac OS X 10.2):
 
 echo 'setenv CC <gcc install dir>/bin/gcc' >> ~/.tcshrc
 
-else use [CC='<gcc install dir>/bin/gcc'] when running configure.
+else use [CC='<gcc install dir>/bin/gcc'] option when running configure.
 
 then:
 
@@ -258,12 +258,12 @@ install doesn't work with the 3.4 snapshot.
 
 mkdir libffi-build
 cd libffi-build
-<pyobjc dir>/libffi-src/configure
+<pyobjc dir>/libffi-src/configure [CC='<gcc install dir>/bin/gcc']
 make
 make install
 
 Warning ! Don't install libffi in <gcc install dir>, let it just install in
-/usr/local.
+/usr/local
 
 Building and installing ffcall (on Darwin x86 only !!!)
 ------------------------------
