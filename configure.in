@@ -62,6 +62,9 @@ AC_SUBST(GNUSTEP_PREFIX)
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
+targetArgument=${target}
+AC_CANONICAL_SYSTEM
+
 AC_ARG_WITH(library-combo,[
 --with-library-combo
     Define the default library combinations that will be used when you
@@ -91,13 +94,21 @@ AC_SUBST(ac_cv_library_combo)
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
-targetArgument=${target}
-AC_CANONICAL_SYSTEM
-
-if test "x`echo x$host|grep mingw32`" != x; then
+if test $host_os = mingw32 ; then
   echo "hosted on mingw32 .."
   export MINGW32=1
   export SHELL=zsh
+  export CC=${CC:-gcc}
+  export AR=${AR:-ar}
+  export RANLIB=${RANLIB:-ranlib}
+  export DLLTOOL=${DLLTOOL:-dlltool}
+  export program_suffix=${program_suffix:-.exe}
+  if test "x$program_suffix" = "xNONE"; then
+    export program_suffix=.exe
+  fi
+elif test $host_os = cygwin; then
+  echo "hosted on cygwin .."
+  export MINGW32=0
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}

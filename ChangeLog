@@ -1,3 +1,10 @@
+2000-06-19  Adam Fedor  <fedor@gnu.org>
+
+	* bundle.make (bundle-resource-files): Remove dependancy on 
+	RESOURCE_FILES, which may not exist
+
+	* configure.in: Add test for cygwin
+
 2000-06-12  Adam Fedor  <fedor@gnu.org>
 
 	* GNUmakefile.in: Use  perl which_lib script on machines that have it.

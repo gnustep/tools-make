@@ -147,7 +147,7 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_
 
 endif # WITH_DLL
 
-bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info.plist $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist $(RESOURCE_FILES)
+bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info.plist $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the bundle wrapper..."; \
 	  for f in "$(RESOURCE_FILES)"; do \
