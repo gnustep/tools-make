@@ -1,3 +1,8 @@
+Wed Oct  8 11:57:48 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* library.make: Define the `before-install' target to depend on `all'.
+	* rules.make: `install' no longer depends on all.
+
 Tue Oct  7 15:59:28 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* common.make: New FOUNDATION_LIBRARY_NAME, FOUNDATION_LIBRARY_DEFINE

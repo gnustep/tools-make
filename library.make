@@ -63,6 +63,8 @@ import-library::
 internal-install:: internal-install-dirs internal-install-headers \
    internal-install-lib
 
+before-install:: all
+
 internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		$(GNUSTEP_LIBRARIES_ROOT) \

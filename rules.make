@@ -262,7 +262,7 @@ C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
 #
 all:: before-all internal-all after-all
 
-install:: all before-install internal-install after-install
+install:: before-install internal-install after-install
 
 uninstall:: before-uninstall internal-uninstall after-uninstall
 
