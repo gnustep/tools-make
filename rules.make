@@ -269,9 +269,34 @@ endif
 # General rules
 VPATH = .
 
+# Disable all built-in suffixes for performance.
+.SUFFIXES:
+
+# Then define our own.
 .SUFFIXES: .m .c .psw .java .h .cpp .cxx .C .cc .cp
 
 .PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
+
+# Disable all built-in rules with a vague % as target, for performance.
+%: %.c
+
+%: %.cpp
+
+%: %.cc
+
+%: %.C
+
+(%): %
+
+%:: %,v
+
+%:: RCS/%,v
+
+%:: RCS/%
+
+%:: s.%
+
+%:: SCCS/s.%
 
 #
 # In exceptional conditions, you might need to want to use different compiler
