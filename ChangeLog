@@ -1,3 +1,8 @@
+Mon Jul 21 10:31:08 2003  Andrew Ruder <aeruder@ksu.edu>
+
+	* debugapp.in: Pass debugapp arguments to gdb to use when running
+	the application.
+
 Wed Jul 16 09:46:16 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (INTERNAL_OBJCFLAGS): On darwin with library-combo

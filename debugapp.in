@@ -195,14 +195,14 @@ fi
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
     "$GDB" -connect TextEdit "$file_appname" "$corefile"
   else
-    "$GDB" "$file_appname" "$corefile"
+    if [ -z "$corefile" ]; then
+
+       # Arguments passed to debugapp are passed over to the
+       # application, in the same way as it happens for openapp.
+       "$GDB" --args "$file_appname" "$@"
+     else
+       "$GDB" "$file_appname" "$corefile"
+     fi
   fi
 
 fi
-
-
-
-
-
-
-
