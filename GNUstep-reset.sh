@@ -2,7 +2,7 @@
 #
 #   GNUstep-reset.sh
 #
-#   Shell resetting the GNUstep environment variables
+#   Shell script resetting the GNUstep environment variables
 #
 #   Copyright (C) 2002 Free Software Foundation, Inc.
 #
