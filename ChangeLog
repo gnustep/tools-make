@@ -1,3 +1,9 @@
+Mon Feb 10 13:42:54 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/source-distribution.make: Define a CVS variable, and use
+	it in place of `cvs', so that it can be overridden with a
+	different value (example: make cvs-snapshot CVS='runsocks cvs').
+
 2003-02-06 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/subproject.make: Build dll exported symbols def file.
