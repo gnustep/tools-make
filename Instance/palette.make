@@ -41,10 +41,7 @@ endif
 .PHONY: internal-palette-all \
         internal-palette-install \
         internal-palette-uninstall \
-        internal-palette-distclean \
-        build-palette-dir \
-        build-palette \
-        palette-resource-files
+        internal-palette-distclean
 
 # On Solaris we don't need to specifies the libraries the palette needs.
 # How about the rest of the systems? ALL_PALETTE_LIBS is temporary empty.
@@ -58,42 +55,30 @@ endif
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
+PALETTE_DIR_NAME = $(GNUSTEP_INSTANCE).palette
+PALETTE_FILE = $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
+
+# Copy any resources into $(PALETTE_DIR_NAME)/Resources
+GNUSTEP_SHARED_INSTANCE_BUNDLE_PATH = $(PALETTE_DIR_NAME)/Resources
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
+
 internal-palette-all:: before-$(GNUSTEP_INSTANCE)-all \
                        $(GNUSTEP_OBJ_DIR) \
-                       build-palette-dir \
-                       build-palette \
+                       $(PALETTE_DIR_NAME)/Resources \
+                       $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                       $(PALETTE_FILE) \
+                       $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
+                       $(PALETTE_DIR_NAME)/Resources/palette.table \
+                       shared-instance-bundle-all \
                        after-$(GNUSTEP_INSTANCE)-all
-
-PALETTE_DIR_NAME := $(GNUSTEP_INSTANCE).palette
-PALETTE_FILE := $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
-PALETTE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(PALETTE_DIR_NAME)/Resources/$(d))
-
-build-palette-dir::$(PALETTE_DIR_NAME)/Resources \
-                   $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-                   $(PALETTE_RESOURCE_DIRS)
-
 $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	$(MKDIRS) $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
-
-$(PALETTE_RESOURCE_DIRS):
-	$(MKDIRS) $(PALETTE_RESOURCE_DIRS)
-
-build-palette:: $(PALETTE_FILE) palette-resource-files
 
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
 	  $(OBJ_FILES_TO_LINK) \
 	  $(ALL_PALETTE_LIBS)
-
-palette-resource-files:: $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
-                         $(PALETTE_DIR_NAME)/Resources/palette.table
-ifneq ($(strip $(RESOURCE_FILES)),)
-	echo "Copying resources into the palette wrapper..."; \
-	for f in "$(RESOURCE_FILES)"; do \
-	  cp -r $$f $(PALETTE_DIR_NAME)/Resources; \
-	done
-endif
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
@@ -134,7 +119,11 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	  fi; \
 	  ) >$@
 
-internal-palette-install:: internal-install-dirs
+#
+# Install, clean targets
+#
+
+internal-palette-install:: $(PALETTE_INSTALL_DIR)
 	tar cf - $(PALETTE_DIR_NAME) | (cd $(PALETTE_INSTALL_DIR); tar xf -)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
@@ -143,13 +132,8 @@ ifeq ($(strip),yes)
 	$(STRIP) $(PALETTE_INSTALL_DIR)/$(PALETTE_FILE) 
 endif
 
-internal-install-dirs:: $(PALETTE_INSTALL_DIR)
-
 $(PALETTE_INSTALL_DIR):
 	$(MKINSTALLDIRS) $(PALETTE_INSTALL_DIR)
-
-$(PALETTE_DIR_NAME)/Resources:
-	$(MKDIRS) $@
 
 internal-palette-uninstall::
 	rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
