@@ -61,6 +61,24 @@ case "$host_os" in
     export DYLD_LIBRARY_PATH
     ;;
 
+  *hpux*)
+    if [ -z "$SHLIB_PATH" ]; then
+      SHLIB_PATH="$lib_paths"
+    else
+      if ( echo ${SHLIB_PATH}|fgrep -v "${lib_paths}" >/dev/null ); then
+	SHLIB_PATH="$lib_paths:$SHLIB_PATH"
+      fi
+    fi
+    export SHLIB_PATH;
+    if [ -z "$LD_LIBRARY_PATH" ]; then
+      LD_LIBRARY_PATH="$lib_paths"
+    else
+      if ( echo ${LD_LIBRARY_PATH}|fgrep -v "${lib_paths}" >/dev/null ); then
+	LD_LIBRARY_PATH="$lib_paths:$LD_LIBRARY_PATH"
+      fi
+    fi
+    export LD_LIBRARY_PATH;;
+
   *)
     if [ -z "$LD_LIBRARY_PATH" ]; then
       LD_LIBRARY_PATH="$lib_paths"
