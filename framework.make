@@ -236,47 +236,35 @@ ifneq ($(HEADER_FILES),)
 	done
 endif
 
+OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+
 # FIXME - I don't think we can depend on GNUmakefile - rather we should 
 # FORCE then because GNUmakefile might include other arbitrary files outside
 # our control
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) \
                          $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
                          $(OBJ_FILES) GNUmakefile
-	@(if [ "$(OBJC_OBJ_FILES)" != "" ]; \
-	    then objcfiles="$(OBJC_OBJ_FILES)"; \
-	fi; \
-	if [ "$(SUBPROJECT_OBJ_FILES)" != "" ]; \
-	    then objcfiles="$$objcfiles $(SUBPROJECT_OBJ_FILES)"; \
-	fi; \
-	if [ "$$objcfiles" = "" ]; \
-	    then objcfiles="__dummy__"; \
-	fi;\
-	classes=""; \
-	if [ "$$objcfiles" != "__dummy__" ]; then \
-	  for f in $$objcfiles; do \
+	@ classes=""; \
+	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
+	  if [ "$$f" != "__dummy__" ]; then \
 	    sym=`nm -Pg $$f | awk '/__objc_class_name_/ {if($$2 == "$(OBJC_CLASS_SECTION)") print $$1}' | sed 's/__objc_class_name_//'`; \
 	    classes="$$classes $$sym"; \
-	  done; \
-	fi; \
-	first="yes"; \
-	if [ "$$classes" = "" ]; then classes="__dummy__"; \
-	fi;\
-	if [ "$$classes" != "__dummy__" ]; then \
-	  for f in $$classes; do \
-	    if [ "$$first" = "yes" ]; then \
+	  fi; \
+	done; \
+	classlist=""; \
+	for f in $$classes __dummy__ ; do \
+	  if [ "$$f" != "__dummy__" ]; then \
+	    if [ "$$classlist" = "" ]; then \
 	      classlist="@\"$$f\""; \
-	      first="no"; \
 	    else \
 	      classlist="$$classlist, @\"$$f\""; \
 	    fi; \
-	  done; \
-	  if [ "$$classlist" = "" ]; then \
-	    classlist="NULL"; \
-	  else \
-	    classlist="$$classlist, NULL"; \
 	  fi; \
-	else \
+	done; \
+	if [ "$$classlist" = "" ]; then \
 	  classlist="NULL"; \
+	else \
+	  classlist="$$classlist, NULL"; \
 	fi; \
 	if [ "`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_USER_ROOT))//'`" != "$(FRAMEWORK_INSTALL_DIR)" ]; then \
 	  fw_env="@\"GNUSTEP_USER_ROOT\""; \
@@ -309,7 +297,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) \
 	echo "+ (NSString *)frameworkVersion { return @\"$(CURRENT_VERSION_NAME)\"; }" >> $@; \
 	echo "static NSString *allClasses[] = {$$classlist};" >> $@; \
 	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@; \
-	echo "@end" >> $@;)
+	echo "@end" >> $@
 
 $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
