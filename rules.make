@@ -342,7 +342,7 @@ ifneq ($(OPERATION), build-framework-headers)
 endif
 endif
 endif # end of FRAMEWORK code
-ifneq ($($*_SUBPROJECTS),) # but the following looks like FRAMEWORK code ... ?
+ifneq ($($*_SUBPROJECTS),)
 	@ echo Building subprojects for $(TARGET_TYPE) $*...; \
 	for f in $($*_SUBPROJECTS); do \
 	  mf=$(MAKEFILE_NAME); \
