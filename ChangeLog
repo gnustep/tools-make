@@ -1,3 +1,8 @@
+2003-10-25 00:50  Alexander Malmberg <alexander@malmberg.org>
+
+	* debugapp.in: Only pass --args to gdb if its new enough to handle
+	it. Based on patch from Ian Jones.
+
 Fri Oct 24 15:54:41 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Documentation/texi.make (internal-doc-clean): Remove

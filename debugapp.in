@@ -205,11 +205,18 @@ fi
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
     "$GDB" -connect TextEdit "$file_appname" "$corearg"
   else
+    # Old versions of gdb don't support --args, so we only use it if
+    # 'gdb --help' lists it.
+    args=
+    if (gdb --help | grep -e --args > /dev/null); then
+	args="--args"
+    fi
+
     if [ -z "$corearg" ]; then
 
        # Arguments passed to debugapp are passed over to the
        # application, in the same way as it happens for openapp.
-       "$GDB" --args "$file_appname" "$@"
+       "$GDB" $args "$file_appname" "$@"
      else
        "$GDB" "$file_appname" "$corearg"
      fi
