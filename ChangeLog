@@ -1,3 +1,8 @@
+2000-08-02  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.sh.in: Add GNUSTEP_NETWORK_ROOT back into prefix list.
+	* GNUstep.csh.in: Likewise.
+
 Sat Jul 29 22:49:23 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make: Added again rule for APPLICATION_ICON which had 
