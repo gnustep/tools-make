@@ -376,7 +376,7 @@ CFLAGS="$saved_CFLAGS"
 if test x"$objc_threaded" = x""; then
   AC_MSG_RESULT(no)
 else
-  AC_MSG_RESULT(yes)
+  AC_MSG_RESULT(yes: $objc_threaded)
   if test x"$objc_threaded" = x"works"; then
     objc_threaded=""
   fi
