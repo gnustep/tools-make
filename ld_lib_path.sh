@@ -47,7 +47,8 @@ case "$host_os" in
       done
     fi
     DYLD_LIBRARY_PATH="${additional}${DYLD_LIBRARY_PATH}"
-    export DYLD_LIBRARY_PATH;;
+    export DYLD_LIBRARY_PATH
+    ;;
 
   *solaris*)
     LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part;$GNUSTEP_LOCAL_ROOT/$last_path_part;$GNUSTEP_SYSTEM_ROOT/$last_path_part;$LD_LIBRARY_PATH"

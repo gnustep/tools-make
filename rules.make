@@ -44,7 +44,7 @@ RULES_MAKE_LOADED=yes
 	type=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\3/' | tr - _`; \
 	$(MAKE) --no-print-directory --no-keep-going TARGET_TYPE=$$type \
 	    OPERATION=$${operation} TARGET=$${target} \
-	    PROCESSED_FIRST_TIME=yes $${target}.build)
+	    PROCESS_SECOND_TIME=yes $${target}.build)
 
 #
 # Global targets
@@ -102,7 +102,7 @@ internal-check::
 
 after-check::
 
-ifeq ($(PROCESSED_FIRST_TIME),yes)
+ifeq ($(PROCESS_SECOND_TIME),yes)
 
 ALL_CPPFLAGS = $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) $(AUXILIARY_CPPFLAGS)
 

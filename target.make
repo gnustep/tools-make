@@ -89,8 +89,8 @@ TARGET_LIB_DIR = \
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
-        /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
-		-framework System \
+        /bin/libtool -dynamic -read_only_relocs suppress \
+		$(ARCH_FLAGS) -o $@ -framework System \
                 -L$(GNUSTEP_USER_ROOT)/$(TARGET_LIB_DIR) \
 		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
 		-L$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR) \
