@@ -1,3 +1,15 @@
+Thu Sep 26 01:47:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make: Renamed all
+	GNUSTEP_SHARED_INSTANCE_XXX variables to be shorter -
+	GNUSTEP_SHARED_XXX.
+	* Instance/application.make: Updated for change.
+	* Instance/bundle.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/palette.make: Idem.
+	* Instance/service.make: Idem.
+	* Instance/subproject.make: Idem.
+	
 Mon Sep 23 05:58:52 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Made message about checking for a shared libobjc
