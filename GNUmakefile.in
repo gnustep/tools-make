@@ -77,7 +77,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
 	documentation.make \
 	java-executable.template java-tool.make framework.make \
-        spec-rules.template spec-debug-rules.template \
+	native-library.make spec-rules.template spec-debug-rules.template \
         spec-debug-alone-rules.template
 
 MASTER_MAKE_FILES = \
