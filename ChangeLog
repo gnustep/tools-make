@@ -1,3 +1,7 @@
+2001-11-26  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.NetBSD: Update from jnqt@fbe.freeserve.ne.jp.
+
 Thu Nov 22 13:28:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in (AUTO_DEPENDENCIES): New configure check which
@@ -57,7 +61,7 @@ Wed Nov 21 15:34:15 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 2001-11-19  Adam Fedor  <fedor@gnu.org>
 
-	* Documentation/REAMDE.NetBSD: Update from jnqt@fbe.freeserve.ne.jp.
+	* Documentation/README.NetBSD: Update from jnqt@fbe.freeserve.ne.jp.
 
 2001-11-11  Adam Fedor  <fedor@gnu.org>
 

@@ -1,14 +1,18 @@
-Installing "GNUstep" on NetBSD
-(C) 1999-2001 JNQT jnqt@fbe.freeserve.ne.jp
+Installing GNUstep on NetBSD
 
-I have installed GNUstep on NetBSD/i386 1.5.2. I will not be
-responsible for any damage implicitly or explicitly caused by this
-information.  Use at your own risk.  Please submit any comments or
-suggestions to jnqt@fbe.freeserve.ne.jp.  For more information about
-installation, check out this "HOWTO" document:
-(http://hp.vector.co.jp/authors/VA019253/step/inst.html)
+(C) 2001 JNQT <jnqt@fbe.freeserve.ne.jp>
+
+Last update: 24 November 2001
+
+I have installed GNUstep on NetBSD/i386 1.5.2.
+I will not be responsible for any damage implicitly or explicitly
+caused by thisinformation. Use at your own risk.
+Please submit any comments or suggestions to jnqt@fbe.freeserve.ne.jp.
+For more information about installation, see the `GNUstep-HOWTO' file
+located in the gnustep-make package.
 
 Good Luck! :-)
+
 
 //
 // Install GNUstep
@@ -63,7 +67,7 @@ tar zxvf gnustep-objc-1.0.1.tar.gz
 cd gnustep-objc-1.0.1
 
 [Edit `./GNUmakefile' Line:39]
-THREADING = posix -> THREADING = single
+    THREADING = posix -> THREADING = single
 
 gmake
 gmake install
@@ -84,7 +88,7 @@ ln -s /usr/local/bin/xml2-config /usr/local/bin/xml-config
 gmake
 
 [Ahhh...Error...and Edit `./Source/dynamic-load.h' Line:94]
-sym = dlsym(RTLD_NEXT, symbol); -> sym = dlsym(handle, symbol);
+    sym = dlsym(RTLD_NEXT, symbol); -> sym = dlsym(handle, symbol);
 
 gmake
 gmake install
@@ -109,7 +113,7 @@ mkdir ~/GNUstep
 
 [Add /etc/rc.local]
 if [ -f /usr/local/GNUstep/System/Tools/ix86/netbsdelf1.5.2/gdomap ]; then
-/usr/local/GNUstep/System/Tools/ix86/netbsdelf1.5.2/gdomap
+    /usr/local/GNUstep/System/Tools/ix86/netbsdelf1.5.2/gdomap
 fi
 
 
@@ -117,15 +121,14 @@ fi
 setenv GNUSTEP_TZ Japan
 source /usr/local/GNUstep/System/Makefiles/GNUstep.csh
 if (`gdomap -L GDNCServer | grep -c Found` == '0') then
-echo 'Starting GNUstep services.'
-gdnc
-gpbs
+    echo 'Starting GNUstep services.'
+    gdnc
+    gpbs
 endif
 alias gmake gmake CC=/usr/local/gcc-2.95.2/bin/cc CPP=/usr/local/gcc-2.95.2/bin/cpp
 
 
 reboot
-
 
 
 //
@@ -142,7 +145,13 @@ gmake
 gmake install
 
 
-© 1999-2001 JNQT jnqt@fbe.freeserve.ne.jp
+startx
+
+
+openapp CurrencyConverter.app
+
+
+(http://hp.vector.co.jp/authors/VA019253/step/inst.html)
 
 
 =========================================================================

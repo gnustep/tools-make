@@ -64,9 +64,10 @@ Don't use gnustep-objc or ffcall.
 @item Special Instructions 
 @end table
 
-GNUstep has not been ported to Darwin. Expect some minor irritations and
-possibly one or two major ones if your trying to do this. Darwin doesn't
-have a GCC ObjC Compiler, so you need to use the ObjC runtime that comes with
+GNUstep is being ported to Darwin. The current Darwin compiler doesn't
+handle __builtin functions. Other than that it mostly compiles. Expect
+some other irritations that haven't been found yet.
+You need to use the ObjC runtime that comes with
 Darwin. To do this configure (gnustep-make) like this:
 
 @example
