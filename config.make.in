@@ -32,10 +32,11 @@ GNUSTEP_MAKE_VERSION=@GNUSTEP_MAKE_VERSION@
 #
 # Binary and compile tools
 #
-CC      = @CC@
-OPTFLAG = @CFLAGS@
+CC       = @CC@
+OPTFLAG  = @CFLAGS@
 CPPFLAGS = @CPPFLAGS@
 OBJC_NO_IMPORT_FLAGS = @OBJC_NO_IMPORT_FLAGS@
+CPP      = @CPP@
 
 EXEEXT = @EXEEXT@
 OEXT   = .@OBJEXT@
@@ -79,7 +80,6 @@ FLEX            = flex
 LEX             = lex
 CHOWN           = chown
 STRIP           = strip
-GENERAL_CPP     = cpp
 
 INSTALL		= @HOST_INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
