@@ -836,7 +836,7 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
---enable-flattened		Use flattened directory structure
+--disable-flattened		Disable flattened directory structure
 --enable-multi-platform		Use run time multi-platform support
 
 --disable-backend-bundle	Compile gui backend as a library
@@ -2955,6 +2955,8 @@ echo "${ECHO_T}$GNUSTEP_NETWORK_ROOT" >&6
 #--------------------------------------------------------------------
 # Is the system flattened?
 #--------------------------------------------------------------------
+echo "$as_me:$LINENO: checking for flattened directory structure" >&5
+echo $ECHO_N "checking for flattened directory structure... $ECHO_C" >&6
 # Check whether --enable-flattened or --disable-flattened was given.
 if test "${enable_flattened+set}" = set; then
   enableval="$enable_flattened"
@@ -2963,14 +2965,20 @@ else
   ac_cv_flattened="undefined"
 fi;
 
-if test "$ac_cv_flattened" = "yes"; then
-  GNUSTEP_FLATTENED=yes;
+if test "$ac_cv_flattened" = "no"; then
+  GNUSTEP_FLATTENED=;
 else
-  if test "$ac_cv_flattened" = "no"; then
-    GNUSTEP_FLATTENED=;
-  else
-    GNUSTEP_FLATTENED=$GNUSTEP_FLATTENED;
-  fi
+  GNUSTEP_FLATTENED=yes;
+fi
+
+
+
+if test "$GNUSTEP_FLATTENED" = "yes"; then
+  echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6;
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6;
 fi
 
 
