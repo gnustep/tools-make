@@ -40,6 +40,7 @@ ifeq ($(INTERNAL_subproject_NAME),)
 # This part is included the first time make is invoked.
 
 ifneq ($(FRAMEWORK_NAME),)
+.PHONY: build-headers
 build-headers:: $(SUBPROJECT_NAME:=.build-headers.subproject.variables)
 endif
 
@@ -71,6 +72,12 @@ $(SUBPROJECT_NAME):
 else
 # This part gets included the second time make is invoked.
 
+.PHONY: internal-subproject-all       \
+        internal-subproject-install   \
+        internal-subproject-uninstall \
+        before-$(TARGET)-all    \
+        after-$(TARGET)-all
+
 FRAMEWORK_HEADERS_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Headers/
 FRAMEWORK_HEADER_FILES = $(patsubst %.h,$(FRAMEWORK_HEADERS_DIR)%.h,$(HEADER_FILES))
 
@@ -92,7 +99,7 @@ internal-subproject-all:: before-$(TARGET)-all \
                        $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
                        framework-components \
                        framework-resource-files \
-                       localized-framework-resource-files \
+                       framework-localized-resource-files \
                        framework-webresource-files \
                        framework-localized-webresource-files \
                        after-$(TARGET)-all
@@ -108,6 +115,14 @@ before-$(TARGET)-all::
 after-$(TARGET)-all::
 
 ifneq ($(FRAMEWORK_NAME),)
+.PHONY: internal-subproject-build-headers       \
+        framework-components \
+        framework-resource-files \
+        framework-localized-resource-files \
+        framework-webresource-dir \
+        framework-webresource-files \
+        framework-localized-webresource-files
+
 internal-subproject-build-headers:: $(FRAMEWORK_HEADER_FILES)
 
 # We need to build the FRAMEWORK_HEADERS_DIR directory here because
@@ -163,7 +178,7 @@ ifneq ($(RESOURCE_FILES),)
 	done;
 endif
 
-localized-framework-resource-files::
+framework-localized-resource-files::
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	@ echo "Copying localized resources into the framework wrapper..."; \
 	for l in $(LANGUAGES) __done; do \
@@ -240,6 +255,10 @@ ifeq ($(FRAMEWORK_NAME),)
 ifeq ($(strip $(HEADER_FILES_DIR)),)
 override HEADER_FILES_DIR = .
 endif
+
+.PHONY: internal-subproject-install \
+        internal-install-headers \
+        internal-subproject-uninstall
 
 internal-subproject-install:: $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
                               $(ADDITIONAL_INSTALL_DIRS) \
