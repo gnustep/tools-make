@@ -50,6 +50,10 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 # This is the directory where the libs get installed.  This should *not*
 # include the target arch, os directory or library_combo.
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
+  LIBRARY_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
+endif
+
 ifeq ($(LIBRARY_INSTALL_DIR),)
   LIBRARY_INSTALL_DIR = $(GNUSTEP_LIBRARIES)
 endif

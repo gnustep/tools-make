@@ -44,6 +44,10 @@
         internal-clibrary-uninstall_
 
 # This is the directory where the lib get installed. 
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
+  CLIBRARY_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
+endif
+
 ifeq ($(CLIBRARY_INSTALL_DIR),)
   CLIBRARY_INSTALL_DIR = $(GNUSTEP_LIBRARIES)
 endif

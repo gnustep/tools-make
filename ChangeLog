@@ -1,3 +1,18 @@
+Fri Jan 16 17:01:55 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/bundle.make: Recognize xxx_INSTALL_DIR and use it if
+	set.
+	* Instance/clibrary.make: Same change.
+	* Instance/ctool.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/java.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/objc.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/service.make: Same change.
+	* Instance/tool.make: Same change.
+
 2004-01-15  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Add check for Apple cc

@@ -37,6 +37,10 @@ endif
 # This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the Tools
 # directory in GNUSTEP_LOCAL_ROOT.
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
+  OBJC_PROGRAM_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
+endif
+
 ifeq ($(OBJC_PROGRAM_INSTALL_DIR),)
 OBJC_PROGRAM_INSTALL_DIR = $(GNUSTEP_TOOLS)
 endif

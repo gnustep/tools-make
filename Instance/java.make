@@ -66,6 +66,10 @@ endif
 #
 # For backwards compatibility ... will be removed!
 #
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
+  JAVA_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
+endif
+
 ifneq ($(JAVA_INSTALLATION_DIR),)
 JAVA_INSTALL_DIR = $(JAVA_INSTALLATION_DIR)
 endif

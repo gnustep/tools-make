@@ -114,6 +114,13 @@ ifneq ($(OBJ_FILES_TO_LINK),)
   BUNDLE_FILE = $(GNUSTEP_BUILD_DIR)/$(BUNDLE_FILE_NAME)
 endif
 
+#
+# Determine where to install.  By default, install into GNUSTEP_BUNDLES.
+#
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
+  BUNDLE_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
+endif
+
 ifeq ($(BUNDLE_INSTALL_DIR),)
   BUNDLE_INSTALL_DIR = $(GNUSTEP_BUNDLES)
 endif
