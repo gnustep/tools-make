@@ -1,5 +1,9 @@
 2003-09-15  Adam Fedor  <fedor@gnu.org>
 
+	* Version 1.7.4
+
+2003-09-15  Adam Fedor  <fedor@gnu.org>
+
         * Version: Add VERSION
         * gnustep-make.spec.in: Update packager.
 

@@ -9,14 +9,18 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.7.4}
+
+Bug fixes.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.7.3}
 
 @itemize @bullet
 @item Adds library combo to Headers directory if not flattened.
 @item Add Markup file (Renaissance) support.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.7.2}
 
