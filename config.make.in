@@ -39,8 +39,6 @@ CPPFLAGS = @FORCE_CPPFLAGS@
 EXEEXT = @EXEEXT@
 OEXT   = .@OBJEXT@
 LIBEXT = .a
-RESEXT = .res
-RCEXT  = .rc
 
 LN_S = @LN_S@
 
@@ -53,7 +51,6 @@ AROUT   =
 ARFLAGS = rc
 RANLIB  = @RANLIB@
 
-RC      = @RC@
 DLLTOOL = @DLLTOOL@
 
 YACC            = yacc
