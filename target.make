@@ -706,19 +706,26 @@ ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 # constructor functions in the shared lib failed to get called
 # when the lib is loaded in. I don't know why. ASF.
 HAVE_SHARED_LIBS        = no
-SHARED_LD		= ld
-SHARED_LIB_LINK_CMD     = \
-        $(SHARED_LD) $(SHARED_LD_PREFLAGS) -x -Bshareable -Bforcearchive \
-           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o \
-	   $(SHARED_LD_POSTFLAGS); \
-        (cd $(LIB_LINK_OBJ_DIR); \
-          rm -f $(LIB_LINK_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
+SHARED_LIB_LINK_CMD = \
+	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
+	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+	   $(SHARED_LD_POSTFLAGS);\
+	(cd $(LIB_LINK_OBJ_DIR); \
+	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE))
+AFTER_INSTALL_SHARED_LIB_CMD = \
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
+	)
 
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
-SHARED_CFLAGS   += -shared -fpic
+SHARED_CFLAGS   += -fpic
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = no

@@ -1,3 +1,8 @@
+2003-06-15  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (openbsd/SHARED_LIB_LINK_CMD): Use gcc to link
+	the library.
+
 2003-06-11  Adam Fedor  <fedor@gnu.org>
 
 	* move_obsolete_paths.sh: Don't remove the Developer dir.
