@@ -412,7 +412,7 @@ TARGET_LIB_DIR = \
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
-        /bin/libtool $(SHARED_LD_PREFLAGS) -dynamic -read_only_relocs suppress
+        /bin/libtool $(SHARED_LD_PREFLAGS) -dynamic -read_only_relocs suppress \
 		 $(ARCH_FLAGS) -o $@ -framework System \
 		$(LIBRARIES_DEPEND_UPON) -lobjc -lgcc -undefined warning $^ \
 		$(SHARED_LD_POSTFLAGS); \
