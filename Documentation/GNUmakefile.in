@@ -20,8 +20,8 @@
 
 # Install into the system root by default
 prefix = @prefix@
-GNUSTEP_INSTALLATION_DIR=$(prefix)
-GNUSTEP_PREFIX = @GNUSTEP_PREFIX@
+GNUSTEP_INSTALLATION_DIR = $(prefix)
+GNUSTEP_DOCUMENTATION = $(GNUSTEP_INSTALLATION_DIR)/Documentation
 MAKEFILE_NAME = GNUmakefile
 
 include ../Version
@@ -37,53 +37,63 @@ GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
 GNUSTEP_DVIPS           = dvips
 GNUSTEP_DVIPS_FLAGS     =
 TAR                     = @TAR@
+INSTALL	                = @INSTALL@
+INSTALL_DATA            = @INSTALL_DATA@
+MKDIRS	                = ../mkinstalldirs
 
 # The documents to be generated
 DOCUMENT_NAME = make gnustep-howto machines faq internals
 
 # The text documents to be generated
-DOCUMENT_TEXT_NAME = INSTALL README NEWS GNUstep-HOWTO
+DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS GNUstep-HOWTO
 
-TOP_DOC_FILES = INSTALL README NEWS GNUstep-HOWTO
+TOP_DOC_FILES = FAQ INSTALL README NEWS GNUstep-HOWTO
 
 GNUstep-HOWTO_TEXI_FILES = version.texi
 GNUstep-HOWTO_TEXT_MAIN = gnustep-howto.texi
+GNUstep-HOWTO_DOC_INSTALL_DIR = User/GNUstep/
 
 FAQ_TEXI_FILES = version.texi
 FAQ_TEXT_MAIN = faq.texi
+FAQ_DOC_INSTALL_DIR = User/GNUstep/
 
 make_TEXI_FILES = \
 make.texi
+make_DOC_INSTALL_DIR = Developer/Make/Manual/
 
 faq_TEXI_FILES = \
 faq.texi \
 version.texi
+faq_DOC_INSTALL_DIR = User/GNUstep/
 
 machines_TEXI_FILES = \
 machines.texi 
+machines_DOC_INSTALL_DIR = User/GNUstep/
 
 gnustep-howto_TEXI_FILES = \
 gnustep-howto.texi \
 version.texi
+gnustep-howto_DOC_INSTALL_DIR = User/GNUstep/
 
 internals_LATEX_FILES = \
 internals.tex
+internals_DOC_INSTALL_DIR = Developer/Make/Manual/Internals/
 
 INSTALL_TEXI_FILES = version.texi
 INSTALL_TEXT_MAIN = install.texi
-INSTALL_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+INSTALL_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
 NEWS_TEXI_FILES = version.texi
 NEWS_TEXT_MAIN = news.texi
-NEWS_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+NEWS_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
 README_TEXI_FILES = version.texi
 README_TEXT_MAIN = readme.texi
-README_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+README_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
 ANNOUNCE_TEXI_FILES = version.texi
 ANNOUNCE_TEXT_MAIN = announce.texi
-ANNOUNCE_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+ANNOUNCE_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
 include makerules.make
 include makedoc.make
@@ -95,3 +105,9 @@ version.texi: ../Version
 	rm -f version.texi
 	echo '@set GNUSTEP-MAKE-VERSION' $(GNUSTEP_MAKE_VERSION) \
 	 > version.texi
+
+after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
+	$(INSTALL_DATA) DESIGN $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
+
+after-uninstall::
+	rm -f $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual/DESIGN
