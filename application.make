@@ -168,7 +168,9 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
 	  echo "  NSPrincipalClass = NSApplication;"; \
-	  cat $(INTERNAL_app_NAME)Info.plist; \
+	  if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
+	    cat $(INTERNAL_app_NAME)Info.plist; \
+	  fi; \
 	  echo "}") >$@
 
 $(APP_DIR_NAME)/Resources:
