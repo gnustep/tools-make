@@ -461,6 +461,9 @@ AFTER_INSTALL_SHARED_LIB_COMMAND = \
           $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
 	)
 
+OBJ_MERGE_CMD = \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
 
