@@ -216,7 +216,7 @@ $(DERIVED_SOURCES) :
 	$(MKDIRS) $@
 
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES) GNUmakefile
-	(if [ "$(OBJC_OBJ_FILES)" != "" ]; then objcfiles="$(OBJC_OBJ_FILES)"; \
+	@(if [ "$(OBJC_OBJ_FILES)" != "" ]; then objcfiles="$(OBJC_OBJ_FILES)"; \
 	fi; \
 	if [ "$(SUBPROJECT_OBJ_FILES)" != "" ]; then objcfiles="$$objcfiles $(SUBPROJECT_OBJ_FILES)"; \
 	fi; \
