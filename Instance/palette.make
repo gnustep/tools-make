@@ -113,7 +113,8 @@ internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
 $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
-ifeq ($(BUILD_DLL),yes)
+# OLD_DLL_SUPPORT should really be deprecated and dropped.
+ifeq ($(OLD_DLL_SUPPORT),yes)
 
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
@@ -122,7 +123,7 @@ $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 		$(ALL_LDFLAGS) \
 		$(ALL_PALETTE_LIBS)$(END_ECHO)
 
-else # BUILD_DLL
+else # Standard bundle build using the rules for this target
 
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
@@ -130,7 +131,7 @@ $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	  $(OBJ_FILES_TO_LINK) \
 	  $(ALL_PALETTE_LIBS)$(END_ECHO)
 
-endif # BUILD_DLL
+endif # OLD_DLL_SUPPORT
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
@@ -146,7 +147,7 @@ endif
 
 $(PALETTE_DIR)/Resources/Info-gnustep.plist: $(PALETTE_DIR)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
+	  echo "  NSExecutable = \"$(PALETTE_NAME)$(PALETTE_OBJ_EXT)\";"; \
 	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	    cat $(GNUSTEP_INSTANCE)Info.plist; \
 	  fi; \
