@@ -1,3 +1,8 @@
+Wed Jan 23 02:53:51 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.csh.in: Fixed setting GNUSTEP_USER_ROOT when it's empty
+	from configuration.
+
 Tue Jan 22 21:46:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* names.make: Removed unused conditional for internal_name_clean.
