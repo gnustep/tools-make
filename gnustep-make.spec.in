@@ -20,24 +20,22 @@ Vendor:		The GNUstep Project
 URL:		http://www.gnustep.org/
 BuildRoot: 	/var/tmp/build-%{gs_name}
 #
-# NB: This package is configured for use with:
+# NB: This package will be configured for use with:
 #
 # libxml.so.2 >= 2.2.3
 # openssl => 0.9.5
 # libwraster
 # libtiff
-# <FIXME: Fill in all the requirements>
+# etc... <the ones available on the machine when the package is compiled>
 #
-# `Requires' lines for this packages have to be included into gnustep-base 
-# gnustep-gui and gnustep-xgps.  Also, gnustep-base, gnustep-gui and 
-# gnustep-xgps have to be packaged at the same time as this gnustep-make, 
-# and must depend on this version of gnustep-make.
+# `Requires' lines for these packages will be automatically included
+# into gnustep-base gnustep-gui and gnustep-xgps - since these contain 
+# tools, applications etc which are linked against those libraries.  
 #
-# We don't add the Requires here because - while the thing is configured 
-# for those libraries - it doesn't need them - gnustep-base, gnustep-xgps 
-# etc will need them - and we don't want to force people to install 
-# eg gui libraries if they are only going to use gnustep-base.
-#
+# But it's very important that gnustep-base, gnustep-gui and
+# gnustep-xgps to be packaged at the same time/machine as this
+# gnustep-make, and so they must depend on this particular version of
+# gnustep-make.
 
 %description
 This package contains the basic scripts, makefiles and directory layout
