@@ -1,3 +1,21 @@
+Tue Jul 10 18:13:51 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+	
+	* rules.make (%.build): Modified message when processing
+	subprojects, as the operation might not necessarily be building.
+	* subproject.make (internal-subproj-all): Do not depend on
+	before-all and after-all.
+	(build-framework-headers): Renamed to internal-subproj-before-all.
+	Only include this rule for frameworks.
+	(internal-subproj-before-all): Print a message saying that we are
+	building the public headers.
+	(before-all): New rule used only with frameworks.
+	(before-$(TARGET)-all): Do not depend on $(FRAMEWORK_HEADER_FILES)
+	because internal-subproj-before-all does it already.
+	(after-all): Removed.
+	($(FRAMEWORK_HEADER_FILES)): Use makefile conditional on
+	FRAMEWORK_NAME rather than shell one. Fixed bug:
+	INTERNAL_framework_NAME was used instead of FRAMEWORK_NAME.
+	
 Tue Jul 10 17:09:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* framework.make (build-framework-headers): Renamed to
@@ -7,8 +25,8 @@ Tue Jul 10 17:09:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 	(before-all): New rule.
 	* rules.make (%.build): Removed code running manually a submake
 	invocation to run the build-framework-headers operation.  Do not
-	process SUBPROJECTS or TOOLS when the operation is before-all.
-	Fixed typo/bug - $ff was used insted of $$f in warning messages.
+	process TOOLS when the operation is before-all.  Fixed typo/bug -
+	$ff was used insted of $$f in warning messages.
 		
 Tue Jul 10 15:46:38 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
