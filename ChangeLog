@@ -1,3 +1,7 @@
+2000-02-11 Manuel Guesdon <mguesdon@orange-concept.com>
+
+	common.make: added $(FOUNDATION_LIBRARY_DEFINE) to AUXILIARY_CPPFLAGS
+	
 2001-02-08 Richard Frith-Macdonald <rfm@gnu.org>
 
 	Fix by David Wetzel to framework.make
