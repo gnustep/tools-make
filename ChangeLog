@@ -1,3 +1,8 @@
+2001-02-24  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.in (GNUSTEP_NETWORK_ROOT): Fixed typo.
+	* configure: Regenerated.
+	
 2001-02-22  Adam Fedor  <fedor@gnu.org>
 
 	* which_lib.c (main): Add back the -L paths.
