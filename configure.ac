@@ -515,6 +515,30 @@ fi
 AC_SUBST(OBJC_NO_IMPORT_FLAGS)
 
 #--------------------------------------------------------------------
+# Shall we strip makefiles upon installation ?
+#--------------------------------------------------------------------
+
+# Stripping makefiles removes comments and newlines from them.  The
+# resulting stripped makefiles execute around 5% faster on average.
+# Too little for it to be worth for the common user who's more
+# interested in the comments :-) so it's disabled by default.
+AC_MSG_CHECKING(if we should strip makefiles after installation)
+AC_ARG_ENABLE(strip-makefiles, 
+[--enable-strip-makefiles	Enable stripping makefiles after installation], 
+  ac_cv_strip_makefiles=$enableval,
+  ac_cv_strip_makefiles="undefined")
+
+if test "$ac_cv_strip_makefiles" = "yes"; then
+  GNUSTEP_STRIP_MAKEFILES=strip;
+  AC_MSG_RESULT(yes);
+else
+  GNUSTEP_STRIP_MAKEFILES=;
+  AC_MSG_RESULT(no);
+fi
+AC_SUBST(GNUSTEP_STRIP_MAKEFILES)
+
+
+#--------------------------------------------------------------------
 # Disable updating the obsolete directory structure
 #--------------------------------------------------------------------
 gs_move_obsolete=yes
