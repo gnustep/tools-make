@@ -105,7 +105,8 @@ $(PALETTE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS)
 
-palette-resource-files:: $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist
+palette-resource-files:: $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
+$(PALETTE_DIR_NAME)/Resources/palette.table
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the palette wrapper..."; \
 	  for f in "$(RESOURCE_FILES)"; do \
