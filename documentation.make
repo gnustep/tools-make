@@ -42,6 +42,8 @@ endif
 # The names of text documents are in the DOCUMENT_TEXT_NAME variable.
 #
 # The main file for text document is in the xxx_TEXT_MAIN variable.
+# Files already ready to be installed without pre-processing (eg, html, rtf)
+#                                         are in the xxx_INSTALL_FILES
 # The Texinfo files that needs pre-processing are in xxx_TEXI_FILES
 # The GSDoc files that needs pre-processing are in xxx_GSDOC_FILES
 # The files for processing by autogsdoc are in xxx_AGSDOC_FILES
@@ -362,6 +364,26 @@ internal-doc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+
+# xxx_INSTALL_FILES
+ifneq ($($(INTERNAL_doc_NAME)_INSTALL_FILES)$($(INTERNAL_textdoc_NAME)_INSTALL_FILES),)
+internal-doc-install::
+	for file in $($(INTERNAL_doc_NAME)_INSTALL_FILES) \
+	            $($(INTERNAL_textdoc_NAME)_INSTALL_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $$file \
+	               $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
+	  fi; \
+	done
+
+internal-doc-uninstall::
+	for file in $($(INTERNAL_doc_NAME)_INSTALL_FILES) \
+	            $($(INTERNAL_textdoc_NAME)_INSTALL_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
+	  fi; \
+	done
+endif
 
 #
 # texi installation
