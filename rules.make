@@ -182,7 +182,7 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 %.build:
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
         tmp="$($*_SUBPROJECTS)"; \
-        if test "x$$(tmp)" != x ; then \
+        if test "x$$tmp" != x ; then \
           for f in $$tmp; do \
 	    mf=$(MAKEFILE_NAME); \
 	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
