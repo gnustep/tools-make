@@ -2,6 +2,7 @@ Thu Nov 13 15:08:13 1997  Scott Christley  <scottc@net-community.com>
 
 	* rules.make: Replace dash with underscore for type not target.
 	* openapp.in: Determine host information if necessary.
+	* debugapp.in: Determine host information if necessary.
 	* MediaBook.sh: Save original variables.
 	* config.site (bindirtop): Define.
 	* MediaBook.func (hostinfo, assignpaths): New functions.

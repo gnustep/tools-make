@@ -70,6 +70,29 @@ if [ -f "$full_appname/library_paths.openapp" ]; then
   additional_library_paths="`cat $full_appname/library_paths.openapp`"
 fi
 
+#
+# Determine the host information
+#
+if [ -z "$GNUSTEP_HOST" ]; then
+    GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess`
+    export GNUSTEP_HOST
+fi
+if [ -z "$GNUSTEP_HOST_CPU" ]; then
+    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
+    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
+    export GNUSTEP_HOST_CPU
+fi
+if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
+    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
+    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
+    export GNUSTEP_HOST_VENDOR
+fi
+if [ -z "$GNUSTEP_HOST_OS" ]; then
+    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
+    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
+   export GNUSTEP_HOST_OS
+fi
+
 appname=`echo $app | sed 's/\.[a-z]*$//'`
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
