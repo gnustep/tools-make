@@ -621,6 +621,10 @@ SHARED_LIBEXT   = .sl
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+ADDITIONAL_LDFLAGS += -Xlinker +s
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 endif
 
 # end HP-UX
