@@ -49,10 +49,10 @@ endif
 #
 # Compilation targets
 #
-internal-all:: $(GNUSTEP_OBJ_DIR) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
+internal-all:: $(GNUSTEP_OBJ_DIR) $(VERSION_LIBRARY_FILE) \
 		import-library
 
-$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LIB_LINK_CMD)
 
 import-library::
@@ -83,9 +83,8 @@ internal-install-libs:: internal-install-lib \
     internal-install-import-lib
 
 internal-install-lib::
-	if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
-	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
-	    $(GNUSTEP_LIBRARIES) ; \
+	if [ -f $(VERSION_LIBRARY_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(VERSION_LIBRARY_FILE) $(GNUSTEP_LIBRARIES) ; \
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
 

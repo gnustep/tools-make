@@ -1,3 +1,11 @@
+Sat Oct  4 23:08:01 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* target.make: Set the extension of shared libraries under OS 4.x to be
+	.a because the compiler/linker does not handle other extensions.
+	* library.make: Output the library in the current directory to be able
+	to solve problems with different library paths under systems with 
+	shared libraries.
+
 Fri Oct  3 14:48:15 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* Support the host install program if any.
