@@ -1,3 +1,14 @@
+Thu Dec 13 12:27:18 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* java-tool.make
+	($(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)):
+	Run chown on the installed executable template.
+
+Thu Dec 13 12:00:31 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Create more GNUSTEP_SYSTEM_ROOT 
+	and GNUSTEP_LOCAL_ROOT directories.
+
 Thu Dec 13 10:23:19 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (INSTALL_AS_USER, INSTALL_AS_GROUP): Export 
