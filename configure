@@ -2569,8 +2569,8 @@ if test $cc_bundle = 0; then
 else
   cc_bundle=no
 fi
-echo "$as_me:$LINENO: result: done" >&5
-echo "${ECHO_T}done" >&6
+echo "$as_me:$LINENO: result: $cc_bundle" >&5
+echo "${ECHO_T}$cc_bundle" >&6
 
 
 
@@ -4711,8 +4711,6 @@ fi;
 
 if test "$gs_move_obsolete" = "yes"; then
   GNUSTEP_MOVE_OBSOLETE=move_obsolete;
-  { echo "$as_me:$LINENO: *** WARNING any old GNUstep directories installed before gnustep-make 1.7.0 will be moved to the new locations unless disabled in configure" >&5
-echo "$as_me: *** WARNING any old GNUstep directories installed before gnustep-make 1.7.0 will be moved to the new locations unless disabled in configure" >&6;}
 else
   GNUSTEP_MOVE_OBSOLETE=
   { echo "$as_me:$LINENO: Old GNUstep directories will not be moved" >&5

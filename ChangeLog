@@ -1,3 +1,8 @@
+2004-08-07  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Remove warning about moving old directories into
+	new directory structure (been there since 1.7.0).
+
 2004-07-31  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Add checks for specific Apple compiler flags.

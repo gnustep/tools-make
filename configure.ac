@@ -619,7 +619,6 @@ AC_ARG_ENABLE(move-obsolete,
 
 if test "$gs_move_obsolete" = "yes"; then
   GNUSTEP_MOVE_OBSOLETE=move_obsolete;
-  AC_MSG_NOTICE(*** WARNING any old GNUstep directories installed before gnustep-make 1.7.0 will be moved to the new locations unless disabled in configure)
 else
   GNUSTEP_MOVE_OBSOLETE=
   AC_MSG_NOTICE(Old GNUstep directories will not be moved)
