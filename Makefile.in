@@ -1,0 +1,68 @@
+#
+#   Makefile.in
+#
+#   Main makefile for the GNUstep Makefile Package.
+#
+#   Copyright (C) 1997 Free Software Foundation, Inc.
+#
+#   Author:  Scott Christley <scottc@net-community.com>
+#
+#   This file is part of the GNUstep Makefile Package.
+#
+#   This library is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License
+#   as published by the Free Software Foundation; either version 2
+#   of the License, or (at your option) any later version.
+#   
+#   You should have received a copy of the GNU General Public
+#   License along with this library; see the file COPYING.LIB.
+#   If not, write to the Free Software Foundation,
+#   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+#
+# I've thought about using the makefile package files
+# to install the makefile package, a cool little recursion,
+# but there is nothing to made, and the files get installed
+# in a special directory, so it was simpler this way.
+#
+
+srcdir = @srcdir@
+prefix = @prefix@
+
+makedir = $(prefix)/Makefiles
+
+all:
+	@echo Nothing needs to be made, just install with
+	@echo make install
+
+install:
+	$(srcdir)/mkinstalldirs $(prefix) $(makedir)
+	cp config.sub $(makedir)
+	cp cpu.sh $(makedir)
+	cp vendor.sh $(makedir)
+	cp os.sh $(makedir)
+	cp install-sh $(makedir)
+	cp mkinstalldirs $(makedir)
+	cp aggregate.make $(makedir)
+	cp application.make $(makedir)
+	cp bundle.make $(makedir)
+	cp common.make $(makedir)
+	cp config.make $(makedir)
+	cp core.make $(makedir)
+	cp library.make $(makedir)
+	cp rules.make $(makedir)
+	cp target.make $(makedir)
+	cp tool.make $(makedir)
+
+uninstall:
+	rm -rf $(makedir)
+
+clean:
+	rm -f *~
+
+distclean: clean
+	rm -f Makefile config.make
+	rm -f config.cache config.log config.status
+
+Makefile: Makefile.in config.status
+	$(SHELL) config.status
