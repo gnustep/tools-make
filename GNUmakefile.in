@@ -252,11 +252,25 @@ test-RPM_TOPDIR:
 	  exit 1;                                                          \
 	fi)
 
+# The check for rpmbuild is for old RPM versions which didn't have
+# rpmbuild and used 'rpm -ba' instead.  It can be removed when we are
+# reasonably sure no more old RPM versions (not having rpmbuild), are
+# still around.
 rpm: test-RPM_TOPDIR tgz
 	cp ../gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/
 	cp gnustep-make.spec $(RPM_TOPDIR)/SPECS/
 	cd $(RPM_TOPDIR)/SPECS/
-	rpm -ba gnustep-make.spec
+	if which rpmbuild > /dev/null 2>/dev/null; then \
+	  rpmbuild="rpmbuild"; \
+	else \
+	  if which rpm > /dev/null 2>/dev/null; then \
+	    rpmbuild="rpm"; \
+	  else \
+	    echo "Error: You don't have rpm installed!"; \
+	    rpmbuild="rpmbuild"; \
+	  fi; \
+	fi; \
+	$${rpmbuild} -ba gnustep-make.spec
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh config.h config.make debugapp openapp opentool gnustep-make.spec executable.template
 

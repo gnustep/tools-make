@@ -326,6 +326,13 @@ check-RPM_TOPDIR:
 	  exit 1; \
 	fi;
 
+# In old RPM versions, building was done using 'rpm -ba'; in newer RPM
+# versions, it can only be done using 'rpmbuild -ba'.  Try to support
+# the old RPM versions by using 'rpm' instead of 'rpmbuild', if
+# 'rpmbuild' is not available.  This hack can presumably be removed
+# when all RPM versions on earth will have been updated to the new
+# setup (it might take a while).
+
 rpm: check-RPM_TOPDIR dist specfile
 	@echo "Generating the rpm...";
 ifneq ($(RELEASE_DIR),)
@@ -334,9 +341,19 @@ ifneq ($(RELEASE_DIR),)
 else
 	@cp ../$(PACKAGE_NAME)-$(VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/;
 endif	
-	cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/; \
+	@cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/; \
 	cd $(RPM_TOPDIR)/SPECS/; \
-	rpm -ba $(SPEC_FILE)
+	if which rpmbuild > /dev/null 2>/dev/null; then \
+	  rpmbuild="rpmbuild"; \
+	else \
+	  if which rpm > /dev/null 2>/dev/null; then \
+	    rpmbuild="rpm"; \
+	  else \
+	    echo "Error: You don't have rpm installed!"; \
+	    rpmbuild="rpmbuild"; \
+	  fi; \
+	fi; \
+	$${rpmbuild} -ba $(SPEC_FILE)
 
 ifneq ($(PACKAGE_NAME),)
 internal-distclean::
