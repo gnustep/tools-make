@@ -126,8 +126,16 @@ case $tool in
 	full_toolname=`(cd $tool; pwd)`;;
   *)	# A path that should be searched into GNUstep tool paths
 	GNUSTEP_HOST_DIR=$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-	SPATH=./$GNUSTEP_HOST_DIR
-	SPATH=./$GNUSTEP_HOST_DIR/$LIBRARY_COMBO
+	
+	# search for a local one
+	for file in */$GNUSTEP_HOST_DIR/$LIBRARY_COMBO/$tool; do
+	  if [ -x $file ]; then
+	    full_toolname=$file;
+	    break;
+          fi
+        done
+
+	# search in the user/local/system
 	SPATH=$SPATH:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_DIR
 	SPATH=$SPATH:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_DIR/$LIBRARY_COMBO
 	SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_DIR
