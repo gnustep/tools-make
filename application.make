@@ -80,6 +80,7 @@ ALL_GUI_LIBS := \
 # included when make is invoked the second time from the %.build rule (see
 # rules.make).
 APP_DIR_NAME = $(INTERNAL_app_NAME:=.$(APP_EXTENSION))
+APP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(APP_DIR_NAME)/Resources/$(d))
 
 # Support building NeXT applications
 ifneq ($(OBJC_COMPILER), NeXT)
@@ -140,10 +141,14 @@ $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 endif
 
-app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist
+app-resource-dir::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		$(APP_RESOURCE_DIRS)
+
+app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the application wrapper..."; \
-	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
+	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources/$(RESOURCE_FILES); \
 	fi)
 
 $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources

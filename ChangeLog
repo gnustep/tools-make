@@ -1,3 +1,10 @@
+Fri May 15 12:00:27 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* application.make (APP_RESOURCE_DIRS): New variable.
+	(app-resource-dir): New target.
+	(app-resource-files): Include full RESOURCE_FILES path in cp
+	to-file. 
+	
 Wed May 13 16:00:37 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* GNUmakefile.in: Create GNUSTEP_LIB_COMBO directory.
