@@ -3,9 +3,13 @@
 #
 #   Makefile rules to build GNUstep-based texinfo documentation.
 #
-#   Copyright (C) 1998 Free Software Foundation, Inc.
+#   Copyright (C) 1998, 2000 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#  
+#   Author:  Nicola Pero <n.pero@mi.flashnet.it> 
+#   Date: November 2000 
+#   Changes: Support for installing documentation, and for LaTeX projects
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -37,6 +41,12 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The main file for text document is in the xxx_TEXT_MAIN variable.
 # The Texinfo files that needs pre-processing are in xxx_TEXI_FILES
 # The GSDoc files that needs pre-processing are in xxx_GSDOC_FILES
+# The LaTeX files that needs pre-processing are in xxx_LATEX_FILES
+#
+# The installation directory is in the xxx_DOC_INSTALL_DIR variable
+# (eg, Gui_DOC_INSTALL_DIR = Developer/Gui/Reference
+#  Things should be installed under `Developer/YourProjectName' or 
+#  `User/YourProjectName')
 #
 #	Where xxx is the name of the document
 #
@@ -75,6 +85,10 @@ else
 
 #
 # Compilation targets
+#
+
+#
+# Compilation of texinfo files
 #
 ifneq ($(TEXI_FILES),)
 
@@ -123,13 +137,16 @@ $(INTERNAL_textdoc_NAME): $(TEXI_FILES) $(TEXT_MAIN)
 	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
 		-o $@ `basename $(TEXT_MAIN) .tmpl.texi`.texi
 
-endif
+endif # TEXI_FILES
 
 before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
 
+#
+# Compilation of gsdoc files
+#
 ifneq ($(GSDOC_FILES),)
 
 internal-doc-all:: before-all before-$(TARGET)-all \
@@ -139,22 +156,130 @@ internal-doc-all:: before-all before-$(TARGET)-all \
 $(INTERNAL_doc_NAME).html: $(GSDOC_FILES)
 	gsdoc $(GSDOC_FILES)
 
-endif
+endif # GSDOC_FILES
 
+#
+# Compilation of LaTeX files
+#
+ifneq ($(LATEX_FILES),)
+#
+# Targets which are always built
+#
+$(INTERNAL_doc_NAME).dvi: $(INTERNAL_doc_NAME).tex 
+	latex $(INTERNAL_doc_NAME).tex
+	latex $(INTERNAL_doc_NAME).tex
+
+$(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
+	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
+		$(INTERNAL_doc_NAME).dvi -o $@
+
+$(INTERNAL_doc_NAME).ps.gz: $(INTERNAL_doc_NAME).ps 
+	gzip $(INTERNAL_doc_NAME).ps -c > $(INTERNAL_doc_NAME).ps.gz
+
+internal-doc-all:: before-all before-$(TARGET)-all \
+                   $(INTERNAL_doc_NAME).ps.gz
+
+#
+# Targets built only if we can find `latex2html'
+#
+# NB: you may set LATEX2HTML on the command line if the following doesn't work
+LATEX2HTML = $(shell which latex2html)
+
+ifneq ($(LATEX2HTML),)
+internal-doc-all:: $(INTERNAL_doc_NAME).tar.gz 
+
+$(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html: $(INTERNAL_doc_NAME).dvi 
+	$(LATEX2HTML) $(INTERNAL_doc_NAME)
+
+$(INTERNAL_doc_NAME).tar.gz: $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html
+	$(TAR) cf $(INTERNAL_doc_NAME).tar.gz $(INTERNAL_doc_NAME)
+
+endif # LATEX2HTML
+
+internal-doc-all:: after-$(TARGET)-all after-all
+
+endif # LATEX_FILES
 
 #
 # Install and uninstall targets
 #
+
+#
+# Installation directory - always created
+#
 internal-doc-install:: internal-install-dirs
 
-internal-textdoc-install::
-   
 internal-install-dirs::
-	$(MKDIRS) $(GNUSTEP_DOCUMENTATION)
+	$(MKDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
+#
+# texi installation
+#
+ifneq ($(TEXI_FILES),)
+internal-doc-install::
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME).ps \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME).info \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME)_*.html \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 internal-doc-uninstall:: 
+	rm -f \
+          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
+	rm -f \
+          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).info
+	rm -f \
+          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)_*.html
+endif # TEXI_FILES
 
-internal-textdoc-uninstall:: 
+#
+# gsdoc installation
+#
+ifneq ($(GSDOC_FILES),)
+
+GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
+
+internal-doc-install::
+	$(INSTALL_DATA) $(GSDOC_OBJECT_FILES) \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+internal-doc-uninstall:: 
+	rm -f \
+	  $(addprefix $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/,\
+	              $(GSDOC_OBJECT_FILES))
+endif # GSDOC_FILES
+
+#
+# LaTeX installation
+#
+ifneq ($(LATEX_FILES),)
+internal-doc-install:: 
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME).ps \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+internal-doc-uninstall:: 
+	rm -f \
+	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
+
+ifneq ($(LATEX2HTML),)
+internal-doc-install:: 
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME)/* \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+# Yeah - I know - the following is dangerous if you have misused the 
+# DOC_INSTALL_DIR - but it's the only way to do it
+internal-doc-uninstall:: 
+	rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*
+endif # LATEX2HTML
+endif # LATEX_FILES
+
+#
+# text file installation
+#
+internal-textdoc-install:: internal-install-dirs
+	$(INSTALL_DATA) $(INTERNAL_textdoc_NAME) \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+
+internal-textdoc-uninstall::
+	rm -f \
+          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_textdoc_NAME)
 
 #
 # Cleaning targets
@@ -175,6 +300,9 @@ internal-doc-clean::
 	rm -f $(INTERNAL_doc_NAME).vr
 	rm -f $(INTERNAL_doc_NAME).vrs
 	rm -f $(INTERNAL_doc_NAME)_*.html
+	rm -f $(INTERNAL_doc_NAME).ps.gz
+	rm -f $(INTERNAL_doc_NAME).tar.gz
+	rm -f $(INTERNAL_doc_NAME)/*
 ifneq ($(TEXI_FILES),)
 	for i in $(TEXI_FILES); do \
 		rm -f `basename $$i .tmpl.texi`.texi ; \
@@ -199,7 +327,15 @@ ifneq ($(GSDOC_FILES),)
 	done
 endif
 
+ifneq ($(LATEX_FILES),)
+
 internal-doc-distclean::
+	rm -Rf $(INTERNAL_doc_NAME)
+	rm -Rf *~ 
+else # ! LATEX_FILES
+internal-doc-distclean::
+	rm -Rf *~ 
+endif # LATEX_FILES
 
 internal-textdoc-distclean::
 
