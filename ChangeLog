@@ -1,9 +1,10 @@
 2000-12-12  Adam Fedor  <fedor@gnu.org>
 
-	* GNUmakefile.in (install): Make Tools ...LDIR (For win32 machines).
 	* bundle.make (build-macosx-bundle): Build suitable files for
 	MacOSX bundle (fixes from Helge Hess <helge.hess@skyrix.com>).
-	* setlocaltz.sh: Correct location of NSTimeZones
+	* GNUmakefile.in (install): Make Tools ...LDIR (For win32 machines).
+	* setlocaltz.sh: Correct location of NSTimeZones (fixes from 
+        Tomas Hurka <tom@hukatronic.cz>.).
 
 2000-12-08  Adam Fedor  <fedor@gnu.org>
 
