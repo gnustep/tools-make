@@ -34,6 +34,14 @@ VERSION          = ${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}
 
 # GNUSTEP_BASE_INSTALL by default is `' - this is correct
 
+# GNUSTEP_BUILD_DIR is the directory in which anything generated
+# during the build will be placed.  '.' means it's the same as the
+# source directory; this case is the default/common and we optimize
+# for it whenever possible.
+ifeq ($(GNUSTEP_BUILD_DIR),)
+  GNUSTEP_BUILD_DIR = .
+endif
+
 #
 # Scripts to run for parsing canonical names
 #
@@ -455,10 +463,12 @@ else
 endif
 
 ifeq ($(GNUSTEP_FLATTENED),)
-  GNUSTEP_OBJ_DIR = $(GNUSTEP_OBJ_PREFIX)/$(ARCH_OBJ_DIR)/$(LIBRARY_COMBO)
+  GNUSTEP_OBJ_DIR_NAME = $(GNUSTEP_OBJ_PREFIX)/$(ARCH_OBJ_DIR)/$(LIBRARY_COMBO)
 else
-  GNUSTEP_OBJ_DIR = $(GNUSTEP_OBJ_PREFIX)
+  GNUSTEP_OBJ_DIR_NAME = $(GNUSTEP_OBJ_PREFIX)
 endif
+
+GNUSTEP_OBJ_DIR = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_OBJ_DIR_NAME)
 
 #
 # Common variables for subprojects
