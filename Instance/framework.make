@@ -242,15 +242,15 @@ build-framework:: $(FRAMEWORK_FILE) \
 ifeq ($(WITH_DLL),yes)
 
 $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
-	$(DLLWRAP) --driver-name $(CC) \
+	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(FRAMEWORK_FILE) \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_FRAMEWORK_LIBS)
+		$(ALL_FRAMEWORK_LIBS)$(END_ECHO)
 
 else # without DLL
 
 $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
-	$(FRAMEWORK_LINK_CMD)
+	$(ECHO_LINKING)$(FRAMEWORK_LINK_CMD)$(END_ECHO)
 	@(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
 	  rm -f $(GNUSTEP_INSTANCE); \
 	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) \
@@ -291,21 +291,21 @@ ifneq ($(WITH_DLL),yes)
 internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_HEADERS)
-	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
-	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
+	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
+	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 endif
 ifeq ($(strip),yes)
 	$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE) 
 endif
-	(cd $(GNUSTEP_HEADERS); \
+	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  if test -L "$(GNUSTEP_INSTANCE)"; then \
 	    rm -f $(GNUSTEP_INSTANCE); \
 	  fi; \
 	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(GNUSTEP_INSTANCE); \
-	fi;)
+	fi;$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	@(cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
@@ -342,15 +342,15 @@ internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_HEADERS) \
                       $(DLL_INSTALLATION_DIR)
-	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
-	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
+	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
+	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 endif
 ifeq ($(strip),yes)
 	$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE) 
 endif
-	(cd $(GNUSTEP_HEADERS); \
+	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  if test -d "$(GNUSTEP_INSTANCE)"; then \
 	    rm -Rf $(GNUSTEP_INSTANCE); \
@@ -359,7 +359,7 @@ endif
 	  cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
             $(TAR) cf - . | (cd  $(GNUSTEP_HEADERS)/$(GNUSTEP_INSTANCE); \
             $(TAR) xf - ); \
-	fi;)
+	fi;$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	@(cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \

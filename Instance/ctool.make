@@ -57,14 +57,14 @@ internal-ctool-all_:: $(GNUSTEP_OBJ_DIR) \
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(C_OBJ_FILES) \
                                                  $(SUBPROJECT_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
+	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 	      $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-	      $(ALL_TOOL_LIBS)
+	      $(ALL_TOOL_LIBS)$(END_ECHO)
 
 internal-ctool-install_:: $(CTOOL_INSTALLATION_DIR)
-	$(INSTALL_PROGRAM) -m 0755 \
+	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \
 	                   $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-	                   $(CTOOL_INSTALLATION_DIR)
+	                   $(CTOOL_INSTALLATION_DIR)$(END_ECHO)
 
 $(CTOOL_INSTALLATION_DIR):
 	$(MKINSTALLDIRS) $(CTOOL_INSTALLATION_DIR)
