@@ -1,3 +1,12 @@
+2001-07-19  Adam Fedor  <fedor@gnu.org>
+
+	* documentation.make (LATEX2HTML): Filter out which error messages.
+	* Documentation/makedoc.make: Likewise.
+
+	* Documentation/readme.texi: Explain license more clearly.
+	* Documentation/gnustep-howto.texi: Likewise.
+	* Documentation/README.MinGW: Update.
+
 Thu Jul 19 10:35:22 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* application.make: Removed annoying debugging message.

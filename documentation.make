@@ -205,7 +205,7 @@ internal-doc-all:: before-$(TARGET)-all \
 # Targets built only if we can find `latex2html'
 #
 # NB: you may set LATEX2HTML on the command line if the following doesn't work
-LATEX2HTML = $(shell which latex2html)
+LATEX2HTML = $(shell which latex2html | awk '{print $$1}' |  sed -e 's/which://')
 
 ifneq ($(LATEX2HTML),)
 internal-doc-all:: $(INTERNAL_doc_NAME).tar.gz 

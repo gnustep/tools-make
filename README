@@ -15,15 +15,36 @@ It also allows the user to easily create cross-compiled binaries.
 Information
 ===========
 
-   The file `NEWS' has the library's feature history.
+   The file `NEWS' has this packages feature history.
 
    The files `INSTALL' or `GNUstep-HOWTO' give instructions for
-installing the library. Also see the `machines' documentation and
+installing the packages. Also see the `machines' documentation and
 various machine specific READMEs in the Documentation directory.
 
    Files in the `Documentation' directory have information on the
 design of the Makefile system and how to write your own makefiles that
 work with it.
+
+License
+=======
+
+   The GNUstep libraries are covered under the GNU Lesser Public
+License.  This means you can use these libraries in any program (even
+non-free programs). If you distribute the libraries along with your
+program, you must make the improvements you have made to the libraries
+freely available. You should read the COPYING.LIB file for more
+information.
+
+   GNUstep tools, test programs, and other files are covered under the
+GNU Public License. This means if you make changes to these programs,
+you cannot charge a fee, other than distribution fees, for others to
+use the program. You should read the COPYING file for more information.
+
+   With GNUstep-Base, we strongly recommend the use of the ffcall
+libraries, which provides stack frame handling for NSInvocation and
+NSConnection.  "Ffcall is under GNU GPL. As a special exception, if used
+in GNUstep or in derivate works of GNUstep, the included parts of ffcall
+are under GNU LGPL" (Text in quotes provided by the author of ffcall).
 
 History
 =======
@@ -37,6 +58,9 @@ were originally identified by Mircea Oancea <mircea@pathcom.com>.
 
    Richard Frith-Macdonald <richard@brainstorm.co.uk> also contributed
 with ideas.
+
+   Nicola Pero <nicola@brainstorm.co.uk> rewrote much of the rule
+procedures to increase the speed of the package by over a factor of 7.
 
 How can you help?
 =================

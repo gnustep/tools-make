@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 16 June 2001
+   Last Update: 19 July 2001
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -116,12 +116,14 @@ depending on the type of system you are using, include:
      This is a library that provides stack frame handling for
      NSInvocation and NSConnection. This library is highly recommended.
      The previous builtin method for stack frame handling is no longer
-     supported and may be removed in the future.
+     supported and may be removed in the future.  ffcall is under GNU
+     GPL. As a special exception, if used in GNUstep or in derivate
+     works of GNUstep, the included parts of ffcall are under GNU LGPL.
 
 `gnustep-objc package (for gcc version < 3.0)'
      This is a special version of the Objective-C runtime that include
-     several bug fixes and features that have not been officially
-     released yet.  It is available at
+     several bug fixes and features that were not in gcc versions
+     previous to 3.0.  It is available at
      <ftp://ftp.gnustep.org/pub/gnustep/libs> which compiles using the
      GNUstep Makefile package (so you don't have to get the entire gcc
      dist). Make sure to set the THREADING variable in the GNUmakefile.
