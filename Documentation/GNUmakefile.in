@@ -43,7 +43,7 @@ INSTALL_DATA            = @INSTALL_DATA@
 MKDIRS	                = ../mkinstalldirs
 
 # The documents to be generated
-DOCUMENT_NAME = gnustep-howto faq internals machines make
+DOCUMENT_NAME = gnustep-howto faq internals machines make userfaq
 
 # The text documents to be generated
 DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE
@@ -66,6 +66,11 @@ faq_TEXI_FILES = \
 faq.texi \
 version.texi
 faq_DOC_INSTALL_DIR = User/GNUstep/
+
+userfaq_TEXI_FILES = \
+userfaq.texi \
+version.texi
+userfaq_DOC_INSTALL_DIR = User/GNUstep/
 
 filesystem_TEXI_FILES = \
 filesystem.texi
