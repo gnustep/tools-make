@@ -118,7 +118,7 @@ install: all
 		$(makedir)/Instance/Shared \
 		$(tooldir) \
 		$(GNUSTEP_SYSTEM_ROOT)/share \
-		$(GNUSTEP_SYSTEM_ROOT)/Apps \
+		$(GNUSTEP_SYSTEM_ROOT)/Applications \
 		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
 		$(GNUSTEP_SYSTEM_ROOT)/Libraries/Resources \
 		$(GNUSTEP_SYSTEM_ROOT)/Libraries/Java \
@@ -135,7 +135,7 @@ install: all
 		$(GNUSTEP_SYSTEM_ROOT)/Documentation/info \
 		$(GNUSTEP_SYSTEM_ROOT)/Documentation/man \
 		$(GNUSTEP_SYSTEM_ROOT)/Developer/Palettes \
-		$(GNUSTEP_LOCAL_ROOT)/Apps \
+		$(GNUSTEP_LOCAL_ROOT)/Applications \
 		$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
 		$(GNUSTEP_LOCAL_ROOT)/Libraries/Resources \
 		$(GNUSTEP_LOCAL_ROOT)/Libraries/Java \

@@ -105,8 +105,8 @@ case $app in
 	    full_appname=`(cd $path_dir/$dir; pwd)`
 	    break;
 	  fi
-	  if [ -d $path_dir/Apps/$dir ]; then
-	    full_appname=`(cd $path_dir/Apps/$dir; pwd)`
+	  if [ -d $path_dir/Applications/$dir ]; then
+	    full_appname=`(cd $path_dir/Applications/$dir; pwd)`
 	    break;
 	  fi
 	done;;

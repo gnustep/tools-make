@@ -95,8 +95,8 @@ case $app in
 	SPATH=.:$SPATH
 	IFS=:
 	for dir in $SPATH; do
-	  if [ -d $dir/Apps/$app ]; then
-	    full_appname=`(cd $dir/Apps/$app; pwd)`
+	  if [ -d $dir/Applications/$app ]; then
+	    full_appname=`(cd $dir/Applications/$app; pwd)`
 	    break;
 	  fi
 	  if [ -d $dir/$app ]; then
