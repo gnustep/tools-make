@@ -1,3 +1,9 @@
+Thu Mar 11 18:36:59 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/gswapp.make: Rewritten to use the new
+	Instance/Shared/bundle.make, so that for example subprojects with
+	resources now should be possible.
+
 Thu Mar 11 02:26:20 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/gswapp.make: Do not create library_paths.openapp on
