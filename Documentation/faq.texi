@@ -23,7 +23,8 @@ at the user FAQ for more user oriented questions.
 @section Compatibility
 
 @menu
-* Is it easy to port OPENSTEP and Rhapsody programs to GNUstep?::  
+* Is it easy to port OPENSTEP programs to GNUstep?::  
+* How about porting between Cocoa and GNUstep?::  
 * Can I transfer archived data from GNUstep to Cocoa?::  
 * Does distributed objects work between GNUstep and Cocoa?::  
 * Is there an Interface Builder for GNUstep?::  
@@ -35,17 +36,37 @@ at the user FAQ for more user oriented questions.
 * How about implementing parts of the Application Kit with GTK?::  
 @end menu
 
-@node Is it easy to port OPENSTEP and Rhapsody programs to GNUstep?, Can I transfer archived data from GNUstep to Cocoa?, Compatibility, Compatibility
-@subsection Is it easy to port OPENSTEP and Rhapsody programs to GNUstep?
+@node Is it easy to port OPENSTEP programs to GNUstep?, How about porting between Cocoa and GNUstep?, Compatibility, Compatibility
+@subsection Is it easy to port OPENSTEP programs to GNUstep?
 
 It is probably easy for simple programs. There are some portability
-tools
-to make this easier (@url{http://www.gnustep.org/resources/source_port.html}),
-or rewrite the Makefiles yourself.  You will also have to
-translate the NIB files (if there are any) to GNUstep model files using
-the nib2gmodel program (from @url{ftp://ftp.gnustep.org/pub/gnustep/dev-apps}).
+tools to make this easier
+(@url{http://www.gnustep.org/resources/source_port.html}), or rewrite
+the Makefiles yourself.  You will also have to translate the NIB files
+(if there are any) to GNUstep model files using the nib2gmodel program
+(from @url{ftp://ftp.gnustep.org/pub/gnustep/dev-apps}).
 
-@node Can I transfer archived data from GNUstep to Cocoa?, Does distributed objects work between GNUstep and Cocoa?, Is it easy to port OPENSTEP and Rhapsody programs to GNUstep?, Compatibility
+@node How about porting between Cocoa and GNUstep?, Can I transfer archived data from GNUstep to Cocoa?, Is it easy to port OPENSTEP programs to GNUstep?, Compatibility
+@subsection How about porting between Cocoa and GNUstep?
+
+It's easier from GNUstep to Cocoa than Cocoa to GNUstep. Cocoa is
+constantly changing, much faster than GNUstep could hope to keep
+up. The have added extensions and new classes that aren't available in
+GNUstep yet. Plus there are some other issues. If you start with
+Cocoa:
+
+@itemize @bullet
+@item Be careful with Cocoa.h includes
+@item Do not use CoreFoundation
+@item Do not use C++
+@item Do not use Quicktime or other propriatory extention
+@item You need to convert .nib (IB if you use it) to .gmodel or .gorm
+and Gorm is good enough for most of the work
+@item Do not use NSToolBar (not finished in GNUstep)
+@item Do not use Drawer (not implmented in GNUstep)
+@end itemize
+
+@node Can I transfer archived data from GNUstep to Cocoa?, Does distributed objects work between GNUstep and Cocoa?, How about porting between Cocoa and GNUstep?, Compatibility
 @subsection Can I transfer archived data from GNUstep to Cocoa?
 
 Apple's archiving format is proprietary and not documented, so this
@@ -435,7 +456,7 @@ portion of the OpenStep standard (the Foundation library).
 @subsection What is its current state of development?
 
 GNUstep base is currently stable and implements probably 99% of the
-functionality of the OpenStep classes and most all of the new Carbon
+functionality of the OpenStep classes and most all of the new Cocoa
 classes.
 Normal work can already be done using the library since the
 missing 1 percent are the least-often-used features or are simply not

@@ -1,0 +1,233 @@
+Date:	17-Sep-2002 (tested under windows-xp)
+Author: Ildar Mulyukov <ildar@users.sourceforge.net>
+
+PURPOSE
+-------
+
+This document may be treated as just an appendix to GNUstep-HOWTO. You
+can find GNUstep-HOWTO link here:
+http://gnustep.org/experience/documentation.html
+
+This document is intended to provide a step by step instruction on how
+to get the GNUstep base library into a usable state on a recent windows
+operating system (XP, 2000, and probably NT) within Cygwin environment.
+
+Cygwin is unix-like environment working on top of Win32 (Windows, Windows 
+NT/2k/XP). You can find complete information about it on the website
+http://cygwin.org
+
+For the moment GNUstep can be built with GUI support. (Native Win32
+GUI, not X11) The gui library is only partially ported to run under
+Win32 API so be warned.
+
+Generally Cygwin port of GNUstep has a lot of issues and therefore is not 
+suitable for end-users yet but only for [experienced] programmers.
+
+ADDITIONAL COMMENTS
+-------------------
+
+Note: These comments are just my experience. You don't need these to build 
+GNUstep. If you don't understand something don't worry.
+
+Cygwin project is now in a very advanced stage. It's ready to be used by 
+end-users and in commercial purposes and very convenient for programmers.
+
+Cygwin provides "General UNIX" environment and APIs. In fact
+GNUstep-base is compiled using Unix alternatives of classes (like
+NSConcreteUnixTask). But it has several particularities that must been
+taken into consideration. There is a very good documentation on Cygwin
+website on these questions. See e.g.
+http://cygwin.com/cygwin-ug-net/cygwin-ug-net.html I would like to
+mention two of them:
+
+1. Filesystem is case-insensitive. Now it's (luckily) supports
+soft-links. But case-insensitivity hinders quite a lot.
+
+2. Dynamic libraries mechanism is not so good. (Windows DLL). It does
+not support several features (and this makes so hard to port some
+software e.g. licq) And it has those ugly __declspec(dllexport) /
+__declspec(dllimport) . But (Cygwin hackers are just cool!) in later
+releases of binutils ld is capable to link wrongly declared exports!
+This eliminates a lot of problems when dealing with DLLs (including
+objc.dll and gnustep-*.dll)
+
+PRELIMINARIES
+-------------
+
+Before you start, you need Cygwin in some programming-oriented
+configuration (full configuration is OK but it's VERY big
+now). Installation instructions are on Cygwin site.
+
+In fact Cygwin already contains every package needed for GNUstep
+except GCC and GDB. Please see below.
+
+Building GCC and GDB
+--------------------
+
+Cygwin contains it's own GCC and GDB packages that work very good in Cygwin 
+environment. But they lack Objective-C language support so for us these are
+completely unusable. See http://cygwin.com/faq/faq_4.html#SEC90
+
+So you have to build these two from sources.
+
+Please note that generally GDB is optional! It's up to you whether to
+use it or not. If you don't use it you don't need to build it.
+
+1. GCC. Get sources from http://gcc.gnu.org . I suggest version 2.xx.x
+(last stable in gcc-2 branch e.g. 2.95.3) because gnustep-objc suits
+to version 2 of GCC. Get sources (including languages you need),
+unpack, build. Before installing uninstall previous version of GCC via
+setup.exe program.  
+
+Note: GCC provided in Cygwin was patched to behave better in
+Windows/Cygwin environment. Cygwin team has done some changes that
+were not committed to GCC CVS tree and they lost Objective-C
+support. That's why you can't use even Cygwin GCC source. But don't
+worry: newly built GCC works fine and I believe can do all those
+"-mno-cygwin" and "-shared" things by fixing specs file.  
+
+Note2: You can make packages from programs you built with utility
+provided in APPENDIX A. These packages can be installed with setup.exe
+
+2. GDB. Sources are here: http://www.gnu.org/software/gdb/ . See
+http://mail.gnu.org/pipermail/discuss-gnustep/2002-August/017238.html
+Adam Fedor has made wonderful patch for current CVS GDB. It's probable
+that you may use Cygwin GDB sources but I don't know really. Unpack,
+apply patch, make, install. This may be non-trivial. Good luck.
+
+Obtaining GNUstep
+-----------------
+
+The main GNUstep project pages tell you how to get hold of this. You
+can get the latest release of the following libraries. However, since
+Cygwin support is currently evolving, I recommend that you get the
+latest snapshot or code from CVS.
+
+You need things in the following order:
+
+GNUstep-make (release, snapshot, or cvs core module)
+libffcall (http://ftp.gnustep.org/pub/gnustep/lib)
+GNUstep-libobjc (release, snapshot, or cvs dev-apps module)
+GNUstep-base (snapshot, or cvs core module)
+
+For gui ... GNUstep-gui and GNUstep-back (snapshot, or cvs core module)
+
+
+
+
+Building and installing libraries
+---------------------------------
+
+FFCALL: Unpack, configure, make, make install. See GNUstep-HOWTO for details.
+Note again: you can make package. See APPENDIX A
+
+libiconv, libtiff, libjpeg, zlib, libxml2 and openssl are all in
+Cygwin distro.  Don't forget to install respective *-devel packages.
+
+
+Building and installing gnustep-make
+------------------------------------
+
+As ususal. E.g. I use ../clear.cvs/gnustep/core/make/configure
+--prefix=/usr/GNUstep --with-thread-lib=-lkernel32 && make && make
+install
+
+Building and installing libobjc
+-------------------------------
+
+You need to install gnustep-objc as it properly exports symbols for
+DLLs and it's DLL (I don't know whether it works OK in static form)
+
+Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
+
+  make install
+
+This should build and install the ObjectiveC runtime and headers for you.
+Note: I strongly suggest removing gcc's own objc/*.h and libobjc.a files.
+
+
+Building and installing GNUstep-base
+------------------------------------
+
+Go to gnustep-base (or from CVS into the core/base directory), and type
+
+  make install
+
+This should automatically run the configure script for you, build the
+base library and some tools, and install the whole lot (along with some
+system resources).
+
+
+
+Building and installing GNUstep-gui
+-----------------------------------
+
+To build the gui, you need to have libtiff installed ...
+
+Go to gnustep-gui (or from CVS into the core/gui directory), and type
+
+  make install
+
+
+
+
+Building and installing GNUstep-back
+------------------------------------
+
+This software is PRE-ALPHA ... it is present in CVS for people who which to
+help porting the GNUstep backend to windows!
+
+In the back directory, type
+
+  make install
+
+
+
+
+Troubleshooting
+---------------
+
+Pre-Compiled Binaries
+---------------------
+
+I don't currently know about any resource. I have ones but don't have
+a place to put them.
+
+ACKNOWLEDGMENTS
+---------------
+
+Thanks to all the GNUstep hackers for this wonderful project.  Thanks
+to Richard Frith-Macdonald <rfm@gnu.org> for his README.MinGW as I
+have copy-pasted structure of this document from his README.MinGW
+
+
+APPENDIX A
+----------
+
+This is mkpkg.sh script for making packages from sources.
+
+#!/bin/bash
+# make a cygwin package
+#   launch this script in the building dir
+
+TMPDIR=/tmp/__TMP_$RANDOM
+FLIST=$TMPDIR/files.list
+
+rm -rf $TMPDIR
+mkdir $TMPDIR
+
+touch /usr/time.stamp
+make install
+
+pushd .
+cd /
+find usr ! -type d -newer /usr/time.stamp > $FLIST
+rm /usr/time.stamp
+
+# Don't forget to rename it to real package name
+tar cjf $TMPDIR/package.tar.bz2 `cat $FLIST`
+popd
+
+unset TMPDIR FLIST
+
+--- *** CUT *** ---

@@ -245,8 +245,8 @@ complete GNUstep is at the time.
 
 Yes, gnustep-base already contains the documented changes in the
 Foundation library.  GNUstep aims to be compatible with both the
-OpenStep specification and with MacOS-X It should be easy to write
-an application that compiles cleanly under both GNUstep and Cocao.
+OpenStep specification and with MacOS-X. It should be easy to write
+an application that compiles cleanly under both GNUstep and Cocoa.
 
 @node Do we have to have the NeXTstep look and feel?, What's up with the directory structure?, Is GNUstep following Changes to OpenStep and MacOSX?, Compatibility and Layout
 @subsection  Do we have to have the NeXTstep look and feel?
@@ -387,24 +387,32 @@ Don't forget you need to update binutils and libc also.
 
 Why do the characters get changed to asterisks ('*')?
 
-The problem you are getting come from the fact that the xgps backend
+The problem you are getting come from the fact that the xlib backend
  (when not using Xft) will only use one fixed X font for a given
 font name. If the font "helvetica" is used inside of GNUstep the
 one selected X font, in your case
 "-*-helvetica-medium-r-normal--12-*-*-*-p-*-iso8859-1" is used. So
 only characters (or glyphs) that are available in that font can be
-displayed. The selection which font name to use happens inside the
+displayed. The selection of which font name to use happens inside the
 font_cacher and is more or less at random (the order fonts are
 listed by the X system).
 
 You can influence the fonts that are available by setting:
 
-defaults write NSGlobalDomain GSFontMask "*iso8859-13*"
+@example
+defaults write NSGlobalDomain GSFontMask "*iso8859-13"
+font_cacher
+@end example
 
-(or using a different character set) and recreating your font cache
-(by running font_cacher). This is really a bug in GNUstep, but it
-hasn't been fixed yet.
+(or using a different character set, like iso8859-2). This is really a
+bug in GNUstep, but it hasn't been fixed yet.
 
+The other option is the use the art backend, which handles fonts much
+better. When compiling gnustep-back, start with
+
+@example
+./configure --enable-graphics=art
+@end example
 
 @bye
 \bye
