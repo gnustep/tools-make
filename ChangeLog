@@ -1,3 +1,11 @@
+Mon Dec 10 23:02:24 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make (internal-bundle-install): Do not remake the
+	Contents/Resources --> Resources symbolic link in the installation
+	directory if Contents/Resources already exists and is a directory
+	- so that we can hopefully work correctly even if tar is broken
+	and passing the --exclude and/or h option to it doesn't work.
+
 Mon Dec 10 22:04:09 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make (internal-bundle-install): Yet another rephrasing of
