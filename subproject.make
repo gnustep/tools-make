@@ -36,28 +36,24 @@ endif
 
 SUBPROJECT_NAME:=$(strip $(SUBPROJECT_NAME))
 
-ifeq ($(INTERNAL_subproj_NAME),)
+ifeq ($(INTERNAL_subproject_NAME),)
 # This part is included the first time make is invoked.
 
-# if we are part of a framework, we need to build the public headers 
-# before all 
-# FIXME - before-all might be called twice when you compile from top level, 
-# is that correct ?
 ifneq ($(FRAMEWORK_NAME),)
-before-all:: $(SUBPROJECT_NAME:=.before-all.subproj.variables)
+build-headers:: $(SUBPROJECT_NAME:=.build-headers.subproject.variables)
 endif
 
-internal-all:: $(SUBPROJECT_NAME:=.all.subproj.variables)
+internal-all:: $(SUBPROJECT_NAME:=.all.subproject.variables)
 
 internal-install::
 
-internal-clean:: $(SUBPROJECT_NAME:=.clean.subproj.variables)
+internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.variables)
 
-internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproj.variables)
+internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproject.variables)
 
 $(SUBPROJECT_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.subproj.variables
+		$@.all.subproject.variables
 
 else
 # This part gets included the second time make is invoked.
@@ -71,7 +67,7 @@ FRAMEWORK_HEADER_FILES := $(patsubst %.h,$(FRAMEWORK_VERSION_DIR_NAME)/Headers/%
 #
 # Compilation targets
 #
-internal-subproj-all:: before-$(TARGET)-all \
+internal-subproject-all:: before-$(TARGET)-all \
                        $(GNUSTEP_OBJ_DIR) \
                        $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
                        framework-components \
@@ -89,8 +85,7 @@ before-$(TARGET)-all::
 after-$(TARGET)-all::
 
 ifneq ($(FRAMEWORK_NAME),)
-internal-subproj-before-all:: $(FRAMEWORK_HEADER_FILES)
-	@ echo Building public headers for subproject $(INTERNAL_subproj_NAME)
+internal-subproject-build-headers:: $(FRAMEWORK_HEADER_FILES)
 
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
 	  if [ "$(HEADER_FILES)" != "" ]; then \
@@ -222,15 +217,15 @@ framework-localized-webresource-files:: framework-webresource-dir
 # Installation targets
 #
 
-internal-subproj-install:: internal-install-subproj-dirs \
-                           internal-install-subproj-headers
+internal-subproject-install:: internal-install-subproject-dirs \
+                           internal-install-subproject-headers
 
-internal-install-subproj-dirs::
+internal-install-subproject-dirs::
 	$(MKDIRS) \
 		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
 		$(ADDITIONAL_INSTALL_DIRS)
 
-internal-install-subproj-headers::
+internal-install-subproject-headers::
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
 	    if [ $$file != __done ]; then \
@@ -263,10 +258,10 @@ internal-uninstall-headers::
 #
 # Cleaning targets
 #
-internal-subproj-clean::
+internal-subproject-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-subproj-distclean::
+internal-subproject-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
