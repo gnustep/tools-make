@@ -291,27 +291,6 @@ else
  GNUSTEP_LIBRARIES_FLAGS = $(addprefix -L,$(GNUSTEP_LIBRARIES_DIRS))
 endif
 
-#
-# Determine Foundation header subdirectory based upon library combo
-#
-# TODO: remove those as now all headers are in a LIBRARY_COMBO
-# directory if the system is not flattened; and if the system is
-# flattened, support for multiple foundation libs is simply not built
-# in.
-ifeq ($(GNUSTEP_FLATTENED),yes)
-GNUSTEP_HEADERS_FND_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR)
-else
-GNUSTEP_HEADERS_FND_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR)
-endif
-
 ifeq ($(FOUNDATION_LIB), fd)
 
 # Map OBJC_RUNTIME_LIB values to OBJC_RUNTIME values as used by
@@ -334,11 +313,36 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), gnugc)
   OBJC_RUNTIME = GNU
 endif
-  GNUSTEP_HEADERS_FND_DIRS += \
-    $(GNUSTEP_USER_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-    $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-    $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-    $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
+
+# If all of the following really needed ?  If the system is not
+# flattened, multiple Foundation libraries are not permitted anyway,
+# so libFoundation could just put his headers in Foundation/.  If
+# library combos are used, all headers are in a library-combo
+# directory, so libFoundation could still put his headers in
+# Foundation/ and no conflict should arise.  As for the
+# GNUSTEP_TARGET_DIR, maybe we should key all of our headers in a
+# GNUSTEP_TARGET_LDIR directory (rather than just a LIBRARY_COMBO
+# directory).  But does it really matter in practice anyway ?
+ifeq ($(GNUSTEP_FLATTENED),yes)
+GNUSTEP_HEADERS_FND_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Library/Headers/libFoundation \
+  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/libFoundation \
+  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/libFoundation \
+  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/libFoundation \
+  $(GNUSTEP_USER_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
+else
+GNUSTEP_HEADERS_FND_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
 endif
 
 ifeq ($(REMOVE_EMPTY_DIRS), yes)
@@ -350,6 +354,12 @@ else
  # default case - simply prepend -I
  GNUSTEP_HEADERS_FND_FLAG = $(addprefix -I,$(GNUSTEP_HEADERS_FND_DIRS))
 endif
+
+# Just add the result of all this to the standard header flags.
+GNUSTEP_HEADERS_FLAGS += $(GNUSTEP_HEADERS_FND_FLAG)
+
+endif
+
 
 #
 # Overridable compilation flags
