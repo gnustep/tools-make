@@ -35,7 +35,7 @@ if [ -z "$GNUSTEP_FLATTENED" ]; then
 fi
 
 # trap the --library-combo parameter
-case $1 in
+case "$1" in
   --help)
     echo usage: `basename $0` application [--library-combo=...] [arguments...]
     echo
@@ -46,44 +46,98 @@ case $1 in
     exit 0
     ;;
   *)
-    app=$1; shift;;
+    app="$1"; shift;;
 esac
 
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
 
-case $app in
-  /*)	# An absolute path.
-	full_appname=$app;;
-  */*)	# A relative path
-	full_appname=`(cd $app; pwd)`;;
-  *)	# A path that should be searched into the GNUstep paths
-	if [ -n $GNUSTEP_PATHLIST ]; then
-	    SPATH=$GNUSTEP_PATHLIST
-	else
-	    SPATH=$PATH
-	fi
-	SPATH=.:$SPATH
-	IFS=:
-	for dir in $SPATH; do
-	  if [ -d $dir/Applications/$app ]; then
-	    full_appname=`(cd $dir/Applications/$app; pwd)`
-	    break;
-	  fi
-	  if [ -d $dir/$app ]; then
-	    full_appname=`(cd $dir/$app; pwd)`
-	    break;
-	  fi
-	done;;
+# Now build the list of directory names we look for.  If the user has
+# given us a full application directory name (for example, Gorm.app)
+# then we only search for the given directory name; if instead the
+# user has given us the application name without the suffix (for
+# example, 'Gorm') we want to search for Gorm.app, then for
+# Gorm.debug, then for Gorm.profile (in that order).
+# If the appname is known, save it to avoid running a grep later to get it.
+case "$app" in
+  *.app)     app_list="$app"; appname="";;
+  *.debug)   app_list="$app"; appname="";;
+  *.profile) app_list="$app"; appname="";;
+  *)         app_list="$app.app:$app.debug:$app.profile"; appname="$app";
 esac
+
+old_IFS="$IFS"
+IFS=:
+case "$app" in
+  /*) # An absolute path.
+      for appdir in $app_list; do
+	#echo "$appdir"
+        if [ -d "$appdir" ]; then
+	   full_appname="$appdir"
+	   break
+        fi
+      done;;
+    */*) # A relative path
+      for appdir in $app_list; do
+	#echo "$appdir"
+         if [ -d "$appdir" ]; then
+	   full_appname=`(cd $appdir; pwd)`
+	   break
+	 fi
+      done;;
+    *)  # A path that should be searched into the GNUstep paths
+      if [ -n "$GNUSTEP_PATHLIST" ]; then
+        SPATH="$GNUSTEP_PATHLIST"
+      else
+        SPATH="$PATH"
+      fi
+        SPATH=".:$SPATH"
+
+      for dir in $SPATH; do
+        for appdir in $app_list; do
+          # First, search in $dir/Applications/any_path_here/$appdir
+          #echo "$dir/Applications/"'*'"/$appdir"
+ 	  for d in $dir/Applications/*/$appdir ; do
+	    # If nothing is found, * expands to '*'.  Check that it's
+	    # not the case, and that we have a real match.
+	    if [ "$d" != "$dir/Applications/"'*'"/$appdir" ]; then
+	      #echo "  $d"
+	      if [ -d "$d" ]; then
+	        full_appname=`(cd "$d"; pwd)`
+	        break 3
+	      fi
+	    fi
+	  done
+	  # Now, in $dir/Applications/$appdir
+	  #echo "$dir/Applications/$appdir"
+	  if [ -d "$dir/Applications/$appdir" ]; then
+	    full_appname=`(cd $dir/Applications/$appdir; pwd)`
+	    break 2
+	  fi
+	  # Finally, in $dir/$appdir
+	  #echo "$dir/$appdir"
+	  if [ -d "$dir/$appdir" ]; then
+	    full_appname=`(cd $dir/$appdir; pwd)`
+	    break 2
+	  fi
+	done
+      done;;
+esac
+IFS="$old_IFS"
+unset app_list
+unset appdir
 
 if [ -z "$full_appname" ]; then
   echo "Can't find the required application: $app!"
   exit 1
 fi
 
+#echo "found: $full_appname"
+
 # get base app name
-appname=`echo $app | sed 's/\.[a-z]*$//'`
+if [ -z "$appname" ]; then
+  appname=`echo $app | sed 's/\.[a-z]*$//'`
+fi;
 appname=`basename $appname`
 
 if [ -n "$GNUSTEP_FLATTENED" ]; then
@@ -104,6 +158,5 @@ if [ ! -f "$full_appname/$appname" ]; then
   exit 1
 fi
 
-IFS=" "
 exec "$full_appname/$appname" "$@"
 
