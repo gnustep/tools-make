@@ -99,10 +99,10 @@ export CLASSPATH
 # Find java
 #
 java_vm=java
-if ! [ -z "$JAVA_HOME" ]; then
+if [ ! -z "$JAVA_HOME" ]; then
   java_vm=$(JAVA_HOME)/bin/java
 else
-  if ! [ -z "$JDK_HOME" ]; then
+  if [ ! -z "$JDK_HOME" ]; then
     java_vm=$(JDK_HOME)/bin/java
   fi
 fi
