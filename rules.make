@@ -164,6 +164,7 @@ after-uninstall::
 before-clean::
 
 internal-clean::
+	rm -f *~
 
 after-clean::
 

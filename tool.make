@@ -32,12 +32,13 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 TOOL_LIST := $(foreach tool,$(TOOL_NAME),$(tool).tool)
 TOOL_FILE = $(TOOL_LIST)
 TOOL_STAMPS := $(foreach tool,$(TOOL_NAME),stamp-tool-$(tool))
+TOOL_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TOOL_STAMPS))
 
 #
 # Internal targets
 #
 
-stamp-tool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/stamp-tool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TOOL_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
@@ -50,7 +51,7 @@ internal-all:: $(TOOL_LIST)
 
 internal-tool-all:: object_dir build-tool
 
-build-tool:: stamp-tool-$(TOOL_NAME)
+build-tool:: $(GNUSTEP_OBJ_DIR)/stamp-tool-$(TOOL_NAME)
 
 object_dir::
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
@@ -61,7 +62,8 @@ object_dir::
 #
 internal-clean::
 	rm -f $(TOOL_NAME)
-	rm -f $(TOOL_STAMPS)
+	@rm -f $(TOOL_STAMPS)
 
 internal-distclean:: clean
+	rm -rf objs
 

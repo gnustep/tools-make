@@ -80,13 +80,20 @@ internal-install-libs:: internal-install-static-lib \
    internal-install-shared-lib internal-install-import-lib
 
 internal-install-static-lib::
-	if [ -e $(LIBRARY_FILE) ]; then \
+	if [ -e $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) \
 	    $(GNUSTEP_LIBRARIES) ; \
 	  $(RANLIB) $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE) ; \
 	fi
 
 internal-install-shared-lib::
+	if [ -e $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_FILE) \
+	    $(GNUSTEP_LIBRARIES) ; \
+	  (cd $(GNUSTEP_LIBRARIES); \
+	   rm -f $(SHARED_LIBRARY_NAME); \
+	   $(LN_S) $(SHARED_LIBRARY_FILE) $(SHARED_LIBRARY_NAME)) \
+	fi
 
 internal-install-import-lib::
 
@@ -95,10 +102,14 @@ internal-install-import-lib::
 #
 internal-clean::
 	rm -f $(OBJC_OBJ_FILES)
+	rm -f $(SHARED_OBJC_OBJ_FILES)
 	rm -f $(C_OBJ_FILES)
+	rm -f $(SHARED_C_OBJ_FILES)
 	rm -f $(PSWRAP_C_FILES)
 	rm -f $(PSWRAP_H_FILES)
 	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
+	rm -f $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_NAME)
+	rm -f $(GNUSTEP_OBJ_DIR)/$(SHARED_LIBRARY_FILE)
 
 internal-distclean:: clean
 	rm -rf objs

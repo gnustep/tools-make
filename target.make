@@ -75,7 +75,6 @@ endif
 #
 HAVE_SHARED_LIBS = no
 SHARED_LIB_LINK_CMD =
-INSTALL_SHARED_LIB_CMD =
 SHARED_CFLAGS =
 SHARE_LIBEXT =
 
@@ -90,10 +89,6 @@ SHARED_LIB_LINK_CMD     = \
                 $(GNUSTEP_LIBRARIES)/libobjc$(SHARED_LIBEXT) \
                 $(GNUSTEP_LIBRARIES)/libgcc$(SHARED_LIBEXT) $^ \
                 >/dev/null
-
-INSTALL_SHARED_LIB_CMD  = \
-        cp $(LIB_FOUNDATION_NAME) \
-                $(SHARED_LIB_DIR)/$(LIB_FOUNDATION_NAME)
 
 SHARED_CFLAGS     += -dynamic
 SHARED_LIBEXT   = .a
@@ -111,13 +106,6 @@ SHARED_LIB_LINK_CMD     = \
           rm -f $(SHARED_LIBRARY_NAME); \
           $(LN_S) $(SHARED_LIBRARY_FILE) $(SHARED_LIBRARY_NAME))
 
-INSTALL_SHARED_LIB_CMD  = \
-        cp $(LIB_FOUNDATION_NAME) \
-           $(SHARED_LIB_DIR)/$(LIB_FOUNDATION_NAME).$(VERSION); \
-        (cd $(SHARED_LIB_DIR); \
-         rm $(LIB_FOUNDATION_NAME); \
-         ln -sf $(LIB_FOUNDATION_NAME).$(VERSION) $(LIB_FOUNDATION_NAME))
-
 SHARED_CFLAGS     += -fPIC
 SHARED_LIBEXT   = .so
 endif
@@ -130,13 +118,6 @@ ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         $(CC) -G -o $@ $^
-
-INSTALL_SHARED_LIB_CMD  = \
-        cp $(LIB_FOUNDATION_NAME) \
-           $(SHARED_LIB_DIR)/$(LIBRARY_NAME).$(VERSION); \
-        (cd $(SHARED_LIB_DIR); \
-         rm $(LIB_FOUNDATION_NAME); \
-         ln -sf $(LIB_FOUNDATION_NAME).$(VERSION) $(LIB_FOUNDATION_NAME))
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARE_LIBEXT   = .so

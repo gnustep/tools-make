@@ -1,4 +1,14 @@
-Fri Sep 22 17:57:50 2017  Scott Christley  <scottc@speedy.net-community.com>
+Tue Sep 23 13:48:02 1997  Scott Christley  <scottc@speedy.net-community.com>
+
+	* DESIGN: New file.
+	* README: New file.
+	* common.make: Add variable for the Resources directory.
+	* library.make: Properly install the shared library.
+	* rules.make: Delete temporary files.
+	* target.make: Remove unneeded code.
+	* tool.make: Put the stamps in the object directory.
+
+Mon Sep 22 17:57:50 1997  Scott Christley  <scottc@speedy.net-community.com>
 
 	* common.make: Add support for putting object files in a different
 	directory.
@@ -7,6 +17,6 @@ Fri Sep 22 17:57:50 2017  Scott Christley  <scottc@speedy.net-community.com>
 	* library.make: Add support for shared libraries.
 	* target.make: Likewise.
 
-Fri Sep 22 15:12:14 2017  Scott Christley  <scottc@speedy.net-community.com>
+Mon Sep 22 15:12:14 1997  Scott Christley  <scottc@speedy.net-community.com>
 
 	* ChangeLog: New file.

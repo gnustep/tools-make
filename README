@@ -1,0 +1,131 @@
+GNUstep makefile package
+========================
+
+This document discusses the configuration and installation tasks for
+the GNUstep makefile package.
+
+Read the DESIGN documentation for detailed information about the
+design and implementation of the GNUstep makefile package.
+
+What is the GNUstep makefile package?
+=====================================
+
+The makefile package is a simplistic, powerful and extensible way to
+write makefiles for a GNUstep-based project.  It allows the user to
+write a GNUstep-based project without having to deal with the complex
+issues associated with the configuration and installation of the core
+GNUstep libraries.  It also allows the user to easily create
+cross-compiled binaries.
+
+Configuring the GNUstep makefile package
+========================================
+
+The GNUstep makefile package uses the Autoconf mechanism for
+configuration; it checks some host capabilties which are used by
+all GNUstep software.  To configure just type:
+
+./configure
+
+The GNUstep makefile package needs a root directory.  If the
+GNUSTEP_SYSTEM_ROOT environment variable is set then configure will
+use its value as the root directory.  You can also specify the root
+directory when you run configure with the prefix paramter; the
+following command makes /usr/local/GNUstep the root directory:
+
+./configure --prefix=/usr/local/GNUstep
+
+If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
+and you do not specify a root directory when running configure, then
+configure will use /usr/GNUstep as the default root directory.
+
+Installing the GNUstep makefile package
+=======================================
+
+After you configure the GNUstep makefile package, then you are ready
+to install it.  There is nothing to be "made"; the GNUstep makefile
+package is a set of predefined makefile and shell scripts, so they
+just need to be installed into the appropriate place.  To install the
+makefile package into the configured root directory type:
+
+make install
+
+After you have installed the GNUstep makefile package, there is still
+some minor administration to be performed.  Based upon whether you are
+setting up the GNUstep environment for a single user or all users on
+your system, perform the appropriate step below.
+
+Setting up the GNUstep environment for all users
+================================================
+
+The GNUstep environment and thus usage of the makefile package is
+based almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.
+So essentially the setup involved is to make sure that the variable is
+defined for all users.  The GNUstep.sh file within the makefile
+package contains all of the environment variable settings required, so
+you want to call that shell.  For most UNIX systems, the easiest way
+to do that is to modify the system rc.local file which is executed
+upon system startup; add lines similar to these:
+
+# Setup for the GNUstep environment
+. /usr/GNUstep/Makefiles/GNUstep.sh
+
+This will source in the GNUstep.sh file and set the environment
+variables; thus making them available for all users.
+
+Setting up the GNUstep environment for a single user
+====================================================
+
+The GNUstep environment and thus usage of the makefile package is
+based almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.
+So essentially the setup involved is to make sure that the variable is
+defined for the user.  The GNUstep.sh file within the makefile package
+contains all of the environment variable settings required, so you
+want to call that shell when the user logs in to the system.  Most
+shells have some file that you read upon login, for example the BASH
+shell reads the .bash_profile file in the user's home directory.  So
+you can add the following lines to that file:
+
+# Setup for the GNUstep environment
+. /usr/GNUstep/Makefiles/GNUstep.sh
+
+This will source in the GNUstep.sh file and set the environment
+variables; thus making them available for the user.
+
+Configuring the GNUstep makefile package for a cross-compile target
+===================================================================
+
+By default when you run configure, it assumes that you want to create
+executables for the same host that you are compiling on; however, the
+GNUstep makefile package has been designed to support cross-compiling
+just as easily as normal compiling.  In order to add a cross-compile
+target to the GNUstep makefile package, you must rerun configure for
+that target and reinstall the makefile package.  By rerunning
+configure, the appropriate target settings are determined, and
+reinstalling the makefile package installs the appropriate files for
+that target.  The target parameter is used to specify the target
+platform for cross-compiling:
+
+./configure --target=i386-mingw32
+make install
+
+Note that configuring and installing for a cross-compile target does
+not eliminate or overwrite the files for any other targets that you
+may have configured.  So if you wish to setup the GNUstep makefile
+package for multiple targets then just perform the above steps
+multiple times.
+
+./configure --target=i386-mingw32
+make install
+./configure --target=sparc-solaris2.5
+make install
+./configure --target=alpha-linux-gnu
+make install
+
+Questions and/or Bug Reports
+============================
+
+The GNUstep makefile package was designed by the GNUstep developers;
+the initial implementation was performed by Scott Christley
+<scottc@net-community.com>, so you may send questions and/or bug
+reports to him or to the GNUstep discussion mailing list at
+<discussion@gnustep.org>
