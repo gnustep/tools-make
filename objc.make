@@ -55,14 +55,22 @@ $(OBJC_PROGRAM_NAME):
 
 else
 
+.PHONY: internal-objc_program-all \
+        internal-objc_program-install \
+        internal-objc_program-uninstall \
+        internal-objc_program-clean \
+        internal-objc_program-distclean \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        install-objc_program
+
 # This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the GNUstep
 # system root.
-OBJC_PROGRAM_INSTALLATION_DIR = \
-    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
+OBJC_PROGRAM_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 
 ALL_OBJC_LIBS = $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-	 $(TARGET_SYSTEM_LIBS)
+	        $(TARGET_SYSTEM_LIBS)
 
 ALL_OBJC_LIBS := \
     $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_OBJC_LIBS) \
@@ -92,7 +100,7 @@ endif
 #
 
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT): \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+                $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_OBJC_LIBS)
@@ -100,16 +108,18 @@ $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT): \
 #
 # Compilation targets
 #
-internal-objc_program-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT) after-$(TARGET)-all
+internal-objc_program-all:: \
+                  before-$(TARGET)-all \
+                  $(GNUSTEP_OBJ_DIR) \
+                  $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT) \
+                  after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-internal-objc_program-install:: internal-install-objc-dirs install-objc_program
-
-internal-install-objc-dirs:: $(OBJC_PROGRAM_INSTALLATION_DIR)
+internal-objc_program-install:: $(OBJC_PROGRAM_INSTALLATION_DIR) \
+                                install-objc_program
 
 $(OBJC_PROGRAM_INSTALLATION_DIR):
 	$(MKDIRS) $(OBJC_PROGRAM_INSTALLATION_DIR)
@@ -117,13 +127,12 @@ $(OBJC_PROGRAM_INSTALLATION_DIR):
 install-objc_program::
 	$(INSTALL_PROGRAM) -m 0755 \
 	    $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT) \
-	    $(OBJC_PROGRAM_INSTALLATION_DIR);
+	    $(OBJC_PROGRAM_INSTALLATION_DIR)
 
 #
 # Cleaning targets
 #
 internal-objc_program-clean::
-	rm -f $(OBJC_PROGRAM_NAME)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)
 
 internal-objc_program-distclean::
