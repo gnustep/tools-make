@@ -1,3 +1,10 @@
+Fri Dec 20 16:21:40 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/tool.make (FINAL_TOOL_INSTALL_DIR): New variable;
+	support it.  By setting this variable before including the
+	makefile, you can fine control where you want the tool executable
+	to be installed.
+
 Sun Dec 15 16:22:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/stamp-string.make: New file providing
