@@ -71,9 +71,9 @@ if [ -f "$full_appname/library_paths.openapp" ]; then
 fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`
-export_variable=yes . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
+. $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
-if [ "$library_combo" = nx_nx_nx_nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+if [ "$library_combo" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   if [ ! -f $full_appname/$appname ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1

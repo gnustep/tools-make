@@ -23,11 +23,9 @@
 #
 
 # The first (and only) parameter to this script is the canonical
-# operating system name. If the environment variable export_variable
-# is not set to `yes' it prints the name of the variable whose
-# value keeps the paths searched for libraries
+# operating system name.
 
-last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo
+last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO
 
 host_os=$GNUSTEP_HOST_OS
 
@@ -42,7 +40,6 @@ IFS="
 case "$host_os" in
 
   *nextstep4*)
-    ld_lib_path="DYLD_LIBRARY_PATH"
     DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$DYLD_LIBRARY_PATH"
     if [ -n "$additional_library_paths" ]; then
       for dir in $additional_library_paths; do
@@ -53,7 +50,6 @@ case "$host_os" in
     export DYLD_LIBRARY_PATH;;
 
   *solaris*)
-    ld_lib_path="LD_LIBRARY_PATH"
     LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part;$GNUSTEP_LOCAL_ROOT/$last_path_part;$GNUSTEP_SYSTEM_ROOT/$last_path_part;$LD_LIBRARY_PATH"
     if [ -n "$additional_library_paths" ]; then
       for dir in $additional_library_paths; do
@@ -64,7 +60,6 @@ case "$host_os" in
     export LD_LIBRARY_PATH;;
 
   *)
-    ld_lib_path="LD_LIBRARY_PATH"
     LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$LD_LIBRARY_PATH"
     if [ -n "$additional_library_paths" ]; then
       for dir in $additional_library_paths; do
@@ -75,10 +70,5 @@ case "$host_os" in
     export LD_LIBRARY_PATH;;
 
 esac
-
-
-if [ "$export_variable" != yes ]; then
-  echo $ld_lib_path
-fi
 
 IFS="$old_IFS"

@@ -20,20 +20,20 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 # Handle abbreviations for library combinations
-ifeq ($(libcombo),nx)
+ifeq ($(library_combo),nx)
   the_library_combo=nx-nx-nx-nil
 endif
 
-ifeq ($(libcombo),gnu-xdps)
+ifeq ($(library_combo),gnu-xdps)
   the_library_combo=gnu-gnu-gnu-xdps
 endif
 
-ifeq ($(libcombo),fd-xdps)
+ifeq ($(library_combo),fd-xdps)
   the_library_combo=gnu-fd-gnu-xdps
 endif
 
 ifeq ($(the_library_combo),)
-  the_library_combo=$(libcombo)
+  the_library_combo=$(library_combo)
 endif
 
 

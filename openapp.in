@@ -27,11 +27,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-library_combo=@ac_cv_library_combo@
+LIBRARY_COMBO=@ac_cv_library_combo@
 
 case $1 in
   --library-combo=*)
-    library_combo=`echo $1 | sed 's/--library-combo=//'`
+    LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
     if [ -z "$2" ]; then
       echo usage: `basename $0` [--library-combo=...] application [arguments...]
       exit 1
@@ -71,9 +71,9 @@ if [ -f "$full_appname/library_paths.openapp" ]; then
 fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`
-export_variable=yes . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
+. $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
-if [ "$library_combo" = nx_nx_nx_nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   if [ ! -f $full_appname/$appname ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
@@ -90,13 +90,13 @@ else
     exit 1
   fi
 
-  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo ]; then
-    echo "$full_appname application does not have a binary for this combination of libraries: $library_combo."
+  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO ]; then
+    echo "$full_appname application does not have a binary for this combination of libraries: $LIBRARY_COMBO."
     exit 1
   fi
 
   # From some reasons $@ does not correctly pass the arguments to the binary
   # so I use xargs to do this.
-  echo $@ | xargs $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+  echo $@ | xargs $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
 
 fi

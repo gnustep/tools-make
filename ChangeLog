@@ -1,3 +1,21 @@
+Tue Oct 28 09:32:23 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make: Define the system, local and user headers variables.
+	Also define the compilation flags based upon these variables.
+	* ld_lib_path.sh: Use LIBRARY_COMBO instead of library_combo because
+	the first one is automatically exported by both GNUmake and the shell.
+	No longer use the export_variable to print out the name of the dynamic
+	linker environment variable.
+	* openapp.in: Changed underscores to dashes in the library combo names.
+	* debugapp.in: Likewise.
+	* rules.make: Add search paths for include files to the user, local and
+	system header directories. The same with the libraries.
+	* test.make: Create the unix.exp file to search for the configuration
+	files in all the user, local and system directories. Use
+	ld_library_path.sh to setup the dynamic linker's environment variable
+	since we can't rely on how different paths are separated in this
+	variable.
+
 Mon Oct 27 18:01:38 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* Makefile: Renamed to GNUmakefile.
@@ -7,7 +25,6 @@ Mon Oct 27 18:01:38 1997  Ovidiu Predescu <ovidiu@net-community.com>
 Mon Oct 27 17:18:39 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* core.make: Use dashes instead of underscores in the library combo.
-	Changed the library_combo variable name to libcombo.
 	* DESIGN: Updated.
 
 Mon Oct 27 15:46:56 1997  Ovidiu Predescu <ovidiu@net-community.com>

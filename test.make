@@ -93,8 +93,6 @@ CHECK_APP_LIST := $(TEST_APP_NAME:=.checkapp)
 TEST_APP_STAMPS := $(foreach app,$(TEST_APP_NAME),stamp-testapp-$(app))
 TEST_APP_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_APP_STAMPS))
 
-ALL_LD_LIB_DIRS = $(ADDITIONAL_LD_LIB_DIRS)$(GNUSTEP_LD_LIB_DIRS)
-
 ifeq ($(SCRIPTS_DIRECTORY),)
 SCRIPTS_DIRECTORY = .
 endif
@@ -134,20 +132,26 @@ internal-all:: $(GNUSTEP_OBJ_DIR) internal-test-build
 
 $(SCRIPTS_DIRECTORY)/config/unix.exp::
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $(SCRIPTS_DIRECTORY)/config
-	@echo "Creating the $@ file..."
-	@echo "## Do Not Edit ##" > $@
-	@echo "# Contents generated automatically by Makefile" >> $@
-	@echo "#" >> $@
-	@echo "" >> $@
-	@echo "set OBJC_RUNTIME $(OBJC_RUNTIME)" >> $@
-	@echo "set FOUNDATION_LIBRARY $(FOUNDATION_LIB)" >> $@
-	@echo "" >> $@
-	@echo "set OBJCTEST_DIR $(GNUSTEP_LIBRARIES_ROOT)/ObjCTest" >> $@
-	@echo "set objdir `pwd`" >> $@
-	@echo "source \"\$$OBJCTEST_DIR/common.exp\"" >> $@
-	@echo "" >> $@
-	@echo "# Maintain your own code in local.exp" >> $@
-	@echo "source \"config/local.exp\"" >> $@
+	@(echo "Creating the $@ file..."; \
+	echo "## Do Not Edit ##" > $@; \
+	(echo "# Contents generated automatically by Makefile"; \
+	echo "#"; \
+	echo ""; \
+	echo "set OBJC_RUNTIME $(OBJC_RUNTIME)"; \
+	echo "set FOUNDATION_LIBRARY $(FOUNDATION_LIB)"; \
+	echo ""; \
+	echo "if {[file isdirectory $(GNUSTEP_USER_LIBRARIES_ROOT)/ObjCTest]} {"; \
+	echo "  set OBJCTEST_DIR $(GNUSTEP_USER_LIBRARIES_ROOT)/ObjCTest"; \
+	echo "} elseif {[file isdirectory $(GNUSTEP_LOCAL_LIBRARIES_ROOT)/ObjCTest]} {"; \
+	echo "  set OBJCTEST_DIR $(GNUSTEP_LOCAL_LIBRARIES_ROOT)/ObjCTest"; \
+	echo "} elseif {[file isdirectory $(GNUSTEP_SYSTEM_LIBRARIES_ROOT)/ObjCTest]} {"; \
+	echo "  set OBJCTEST_DIR $(GNUSTEP_SYSTEM_LIBRARIES_ROOT)/ObjCTest"; \
+	echo "}"; \
+	echo "set objdir `pwd`"; \
+	echo "source \"\$$OBJCTEST_DIR/common.exp\""; \
+	echo ""; \
+	echo "# Maintain your own code in local.exp"; \
+	echo "source \"config/local.exp\"") >>$@)
 
 internal-test-build:: test-libs test-bundles test-tools test-apps
 
@@ -187,7 +191,8 @@ dejagnu_vars = "FOUNDATION_LIBRARY=$(FOUNDATION_LIB)" \
 
 internal-check-%:: $(SCRIPTS_DIRECTORY)/config/unix.exp
 	@(for f in $(CHECK_SCRIPT_DIRS); do \
-	  $(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
+	  additional_library_paths=$(ALL_LD_LIB_DIRS) \
+		. $(GNUSTEP_SYSTEM_ROOT)/Makefiles/ld_lib_path.sh; \
 	  if [ "$(SCRIPTS_DIRECTORY)" != "" ]; then \
 	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)"; \
 	    (cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)); \

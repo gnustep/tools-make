@@ -274,13 +274,13 @@ The makefile package will allow the user to choose between different
 library combinations. To specify a combination you want to compile for
 just type:
 
-  $ make libcombo="library combination"
+  $ make library_combo="library combination"
 
 For instance if you want to choose to compile using the NeXT's PDO
 Foundation and use the GNUstep GUI library on a Unix machine you can
 do like this:
 
-  $ make libcombo=nx-pdo-gnu-xdps
+  $ make library_combo=nx-pdo-gnu-xdps
 
 
 Projects that require running configure before compiling
