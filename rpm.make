@@ -130,7 +130,7 @@
 
 #
 # At this point, typing 
-#  `make tgz' will generate the .tgz (can be used outside rpm.make)
+#  `make dist' will generate the .tgz (can be used outside rpm.make)
 #  `make specfile' will generate the (matching) specfile.
 #
 
@@ -330,7 +330,7 @@ check-RPM_TOPDIR:
 	  exit 1; \
 	fi;
 
-rpm: check-RPM_TOPDIR tgz specfile
+rpm: check-RPM_TOPDIR dist specfile
 	@echo "Generating the rpm...";
 ifneq ($(RELEASE_DIR),)
 	@cp $(RELEASE_DIR)/$(PACKAGE_NAME)-$(VERSION).tar.gz \
