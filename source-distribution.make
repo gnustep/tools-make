@@ -35,6 +35,8 @@ TGZ_MAKE_LOADED=yes
 PDIR_NAME = $(subst gnustep-,,$(PACKAGE_NAME))
 VERTAG = `echo $(VERSION) | tr '.' '_'`
 
+.PHONY: tgz cvs-tag cvs-dist cvs-snapshot
+
 #
 # Build a .tgz with the whole directory tree
 #
