@@ -1,3 +1,18 @@
+Wed Apr 25 11:05:49 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Version: Use the standard names GNUSTEP_MAKE_MAJOR_VERSION,
+	GNUSTEP_MAKE_MINOR_VERSION, GNUSTEP_MAKE_SUBMINOR_VERSION rather
+	than MAKE_MAJOR_VERSION, MAKE_MINOR_VERSION and
+	MAKE_SUBMINOR_VERSION.
+	* configure.in: Substitute the new variables; do not output
+	GNUSTEP_VERSION any longer.
+	* configure: Regenerated.
+	* config.make.in: Define GNUSTEP_MAKE_VERSION,
+	GNUSTEP_MAKE_MAJOR_VERSION, GNUSTEP_MINOR_VERSION,
+	GNUSTEP_SUBMINOR_VERSION so that client code can easily get
+	the version of gnustep-make which is used by reading these
+	variables in their makefiles.
+	
 2001-04-25 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* documentation.make: For Java,
