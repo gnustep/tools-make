@@ -3,10 +3,11 @@
 #
 #   All of the common makefile rules.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -26,50 +27,36 @@
 # But for perfomance reasons, you might want to check the
 # RULES_MAKE_LOADED variable yourself and include this file only if it
 # is empty.  That allows make to skip reading the file entirely when it 
-# has already been read.
+# has already been read.  We use this trick for all system makefiles.
 ifeq ($(RULES_MAKE_LOADED),)
 RULES_MAKE_LOADED=yes
 
-# This part is included the first time make is invoked. This part defines the
-# global targets and the following implicit rule which determines the
-# TARGET_TYPE of the next thing to be build in the following make invocation
-# (a library, application, tool etc.), the current name of the target from a
-# specific library/application/tool/etc list and the OPERATION to be performed
-# (all, install, clean, distclean etc.).
-
-# This target has to be called with the name of the actual target, followed
-# by the operation, then the makefile fragment to be called and then the
-# variables word. Suppose for example we build the library libgmodel, the
-# target should look like:
 #
-#	libgmodel.all.library.variables
+# Quick explanation - 
 #
-# when the rule is executed, $* is libgmodel.all.libray;
-#  target=libgmodel
-#  operation=all
-#  type=library 
+# Say that you run `make all'.  The rule for `all' is below here, and
+# depends on internal-all.  Rules for internal-all are found in
+# tool.make, library.make etc; there, internal-all will depend on a
+# list of appropriate %.variables targets, such as
+# gsdoc.tool.all.variables <which means we need to make `all' for the
+# `tool' called `gsdoc'> - to process these prerequisites, the
+# %.variables rule below is used.  this rule gets an appropriate make
+# subprocess going, with the task of building that specific
+# target-type-operation prerequisite.  The make subprocess will be run
+# as in `make internal-tool-all INTERNAL_tool_NAME=gsdoc ...<and other
+# variables>' and this make subprocess wil find the internal-tool-all
+# rule in tool.make, and execute that, building the tool.
 #
-# this rule might be executed many times, for different targets to build.
-
-# it then calls a submake, which runs the %.build rule below with 
-# the specified target
-%.variables:
-	@(target=$(basename $(basename $*)); \
-	operation=$(subst .,,$(suffix $(basename $*))); \
-	type=$(subst -,_,$(subst .,,$(suffix $*))); \
-	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-	    TARGET_TYPE=$${type} \
-	    OPERATION=$${operation} TARGET=$${target} \
-	    PROCESS_SECOND_TIME=yes $${target}.build \
-	    OBJCFLAGS="$(OBJCFLAGS)" CFLAGS="$(CFLAGS)" \
-	    OPTFLAG="$(OPTFLAG)" )
+# Hint: run make with `make -n' to see the recursive method invocations 
+#       with the parameters used
+#
 
 #
 # Global targets
 #
 
 # The first time you invoke `make', if you have not given a target,
-# `all' is executed as it is the first one
+# `all' is executed as it is the first one.
 all:: before-all internal-all after-all
 
 # internal-after-install is used by packaging to get the list of files 
@@ -159,8 +146,6 @@ $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make: ;
 
 $(GNUSTEP_MAKEFILES)/Additional/*.make: ;
 
-
-ifeq ($(PROCESS_SECOND_TIME),yes)
 
 ALL_CPPFLAGS = $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) $(AUXILIARY_CPPFLAGS)
 
@@ -255,107 +240,142 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
 
-# The magical application rules, thank you GNU make!
-%.build:
+
+#
+## The magical %.variables rules, thank you GNU make!
+#
+
+# The %.variables target has to be called with the name of the actual
+# target, followed by the operation, then the makefile fragment to be
+# called and then the variables word. Suppose for example we build the
+# library libgmodel, the target should look like:
+#
+#	libgmodel.all.library.variables
+#
+# when the rule is executed, $* is libgmodel.all.libray;
+#  target will be libgmodel
+#  operation will be all
+#  type will be library 
+#
+# this rule might be executed many times, for different targets to build.
+
+# the rule then calls a submake, which runs the real code
+
+# These functions are used in the following %.variables rule to extract
+# the target, operation and type from the $* (the stem) of the rule.
+# for example, $(call target,$*) will be the target.
+target=$(basename $(basename $(1)))
+operation=$(subst .,,$(suffix $(basename $(1))))
+type=$(subst -,_,$(subst .,,$(suffix $(1))))
+
+%.variables:
 ifneq ($(FRAMEWORK_NAME),)
-ifneq ($(OPERATION), build-headers) # this is only an optimization
-	@ if [ "$($*_TOOLS)" != "" ]; then \
-	echo Building tools for $(TARGET_TYPE) $*...; \
-	for f in $($*_TOOLS); do \
-	  mf=$(MAKEFILE_NAME); \
-	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
+	@ if [ "$(call operation,$*)" != "build-headers" ]; then \
+	  if [ "$($(call target,$*)_TOOLS)" != "" ]; then \
+	    echo Building tools for $(call type,$*) $(call target,$*)...; \
+	    for f in $($(call target,$*)_TOOLS); do \
+	      mf=$(MAKEFILE_NAME); \
+	      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	        mf=Makefile; \
+	        echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
+	      fi; \
+	      if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
+	           FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+	           FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+	           FRAMEWORK_OPERATION="$(call operation,$*)" \
+	           TOOL_OPERATION="$(call operation,$*)" \
+	           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+	           SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	         ; then \
+	         :; \
+	      else exit $$?; \
+	      fi; \
+	    done; \
 	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
-	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-	        FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-	        FRAMEWORK_OPERATION="$(OPERATION)" \
-	        TOOL_OPERATION="$(OPERATION)" \
-	        DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-	        SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	      ; then \
-	          :; \
-	  else exit $$?; \
-	  fi; \
-	done; \
 	fi
-endif # end of build-headers optimization
 endif # end of FRAMEWORK code
-	@ if [ "$($*_SUBPROJECTS)" != "" ]; then \
-	echo Making $(OPERATION) in subprojects of $(TARGET_TYPE) $*...; \
-	for f in $($*_SUBPROJECTS); do \
+	@ if [ "$($(call target,$*)_SUBPROJECTS)" != "" ]; then \
+	echo Making $(call operation,$*) in subprojects of $(call type,$*) $(call target,$*)...; \
+	for f in $($(call target,$*)_SUBPROJECTS); do \
 	  mf=$(MAKEFILE_NAME); \
 	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
 	    mf=Makefile; \
 	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
 	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
+	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
 	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
 	        FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
 	        DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
 	        SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
 	      ; then \
-	         :; \
+	      :; \
 	  else exit $$?; \
 	  fi; \
 	done; \
 	fi
-	@ echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
+	@ echo Making $(call operation,$*) for $(call type,$*) $(call target,$*)...; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-	    internal-$(TARGET_TYPE)-$(OPERATION) \
-	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
-	    _SUBPROJECTS="$($*_SUBPROJECTS)" \
-	    OBJC_FILES="$($*_OBJC_FILES)" \
-	    C_FILES="$($*_C_FILES)" \
-	    JAVA_FILES="$($*_JAVA_FILES)" \
-	    JAVA_JNI_FILES="$($*_JAVA_JNI_FILES)" \
-	    OBJ_FILES="$($*_OBJ_FILES)" \
-	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
-	    HEADER_FILES="$($*_HEADER_FILES)" \
-	    TEXI_FILES="$($*_TEXI_FILES)" \
-	    GSDOC_FILES="$($*_GSDOC_FILES)" \
-	    LATEX_FILES="$($*_LATEX_FILES)" \
-	    JAVADOC_FILES="$($*_JAVADOC_FILES)" \
-	    JAVADOC_SOURCEPATH="$($*_JAVADOC_SOURCEPATH)" \
-	    DOC_INSTALL_DIR="$($*_DOC_INSTALL_DIR)" \
-	    TEXT_MAIN="$($*_TEXT_MAIN)" \
-	    HEADER_FILES_DIR="$($*_HEADER_FILES_DIR)" \
-	    HEADER_FILES_INSTALL_DIR="$($*_HEADER_FILES_INSTALL_DIR)" \
-	    COMPONENTS="$($*_COMPONENTS)" \
-	    LANGUAGES="$($*_LANGUAGES)" \
-	    HAS_GSWCOMPONENTS="$($*_HAS_GSWCOMPONENTS)" \
-	    GSWAPP_INFO_PLIST="$($*_GSWAPP_INFO_PLIST)" \
-	    WEBSERVER_RESOURCE_FILES="$($*_WEBSERVER_RESOURCE_FILES)" \
-	    LOCALIZED_WEBSERVER_RESOURCE_FILES="$($*_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
-	    WEBSERVER_RESOURCE_DIRS="$($*_WEBSERVER_RESOURCE_DIRS)" \
-	    LOCALIZED_RESOURCE_FILES="$($*_LOCALIZED_RESOURCE_FILES)" \
-	    RESOURCE_FILES="$($*_RESOURCE_FILES)" \
-	    MAIN_MODEL_FILE="$($*_MAIN_MODEL_FILE)" \
-	    RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
-	    BUNDLE_LIBS="$($*_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
-	    SERVICE_INSTALL_DIR="$($*_SERVICE_INSTALL_DIR)" \
-	    APPLICATION_ICON="$($*_APPLICATION_ICON)" \
-	    PALETTE_ICON="$($*_PALETTE_ICON)" \
-	    PRINCIPAL_CLASS="$($*_PRINCIPAL_CLASS)" \
-	    DLL_DEF="$($*_DLL_DEF)" \
+	    internal-$(call type,$*)-$(call operation,$*) \
+	    INTERNAL_$(call type,$*)_NAME=$(call target,$*) \
+	    _SUBPROJECTS="$($(call target,$*)_SUBPROJECTS)" \
+	    OBJC_FILES="$($(call target,$*)_OBJC_FILES)" \
+	    C_FILES="$($(call target,$*)_C_FILES)" \
+	    JAVA_FILES="$($(call target,$*)_JAVA_FILES)" \
+	    JAVA_JNI_FILES="$($(call target,$*)_JAVA_JNI_FILES)" \
+	    OBJ_FILES="$($(call target,$*)_OBJ_FILES)" \
+	    PSWRAP_FILES="$($(call target,$*)_PSWRAP_FILES)" \
+	    HEADER_FILES="$($(call target,$*)_HEADER_FILES)" \
+	    TEXI_FILES="$($(call target,$*)_TEXI_FILES)" \
+	    GSDOC_FILES="$($(call target,$*)_GSDOC_FILES)" \
+	    LATEX_FILES="$($(call target,$*)_LATEX_FILES)" \
+	    JAVADOC_FILES="$($(call target,$*)_JAVADOC_FILES)" \
+	    JAVADOC_SOURCEPATH="$($(call target,$*)_JAVADOC_SOURCEPATH)" \
+	    DOC_INSTALL_DIR="$($(call target,$*)_DOC_INSTALL_DIR)" \
+	    TEXT_MAIN="$($(call target,$*)_TEXT_MAIN)" \
+	    HEADER_FILES_DIR="$($(call target,$*)_HEADER_FILES_DIR)" \
+	    HEADER_FILES_INSTALL_DIR="$($(call target,$*)_HEADER_FILES_INSTALL_DIR)" \
+	    COMPONENTS="$($(call target,$*)_COMPONENTS)" \
+	    LANGUAGES="$($(call target,$*)_LANGUAGES)" \
+	    HAS_GSWCOMPONENTS="$($(call target,$*)_HAS_GSWCOMPONENTS)" \
+	    GSWAPP_INFO_PLIST="$($(call target,$*)_GSWAPP_INFO_PLIST)" \
+	    WEBSERVER_RESOURCE_FILES="$($(call target,$*)_WEBSERVER_RESOURCE_FILES)" \
+	    LOCALIZED_WEBSERVER_RESOURCE_FILES="$($(call target,$*)_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
+	    WEBSERVER_RESOURCE_DIRS="$($(call target,$*)_WEBSERVER_RESOURCE_DIRS)" \
+	    LOCALIZED_RESOURCE_FILES="$($(call target,$*)_LOCALIZED_RESOURCE_FILES)" \
+	    RESOURCE_FILES="$($(call target,$*)_RESOURCE_FILES)" \
+	    MAIN_MODEL_FILE="$($(call target,$*)_MAIN_MODEL_FILE)" \
+	    RESOURCE_DIRS="$($(call target,$*)_RESOURCE_DIRS)" \
+	    BUNDLE_LIBS="$($(call target,$*)_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
+	    SERVICE_INSTALL_DIR="$($(call target,$*)_SERVICE_INSTALL_DIR)" \
+	    APPLICATION_ICON="$($(call target,$*)_APPLICATION_ICON)" \
+	    PALETTE_ICON="$($(call target,$*)_PALETTE_ICON)" \
+	    PRINCIPAL_CLASS="$($(call target,$*)_PRINCIPAL_CLASS)" \
+	    DLL_DEF="$($(call target,$*)_DLL_DEF)" \
 	    ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
-					$($*_INCLUDE_DIRS)" \
-	    ADDITIONAL_GUI_LIBS="$($*_GUI_LIBS) $(ADDITIONAL_GUI_LIBS)" \
-	    ADDITIONAL_TOOL_LIBS="$($*_TOOL_LIBS) $(ADDITIONAL_TOOL_LIBS)" \
-	    ADDITIONAL_OBJC_LIBS="$($*_OBJC_LIBS) $(ADDITIONAL_OBJC_LIBS)" \
-	    ADDITIONAL_LIBRARY_LIBS="$($*_LIBS) $($*_LIBRARY_LIBS) $(ADDITIONAL_LIBRARY_LIBS)" \
-	    ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS)" \
-	    ADDITIONAL_LDFLAGS="$($*_LDFLAGS) $(ADDITIONAL_LDFLAGS)" \
-	    ADDITIONAL_CLASSPATH="$($*_CLASSPATH) $(ADDITIONAL_CLASSPATH)" \
+					$($(call target,$*)_INCLUDE_DIRS)" \
+	    ADDITIONAL_GUI_LIBS="$($(call target,$*)_GUI_LIBS) \
+                                 $(ADDITIONAL_GUI_LIBS)" \
+	    ADDITIONAL_TOOL_LIBS="$($(call target,$*)_TOOL_LIBS) \
+                                  $(ADDITIONAL_TOOL_LIBS)" \
+	    ADDITIONAL_OBJC_LIBS="$($(call target,$*)_OBJC_LIBS) \
+                                  $(ADDITIONAL_OBJC_LIBS)" \
+	    ADDITIONAL_LIBRARY_LIBS="$($(call target,$*)_LIBS) \
+                                     $($(call target,$*)_LIBRARY_LIBS) \
+                                     $(ADDITIONAL_LIBRARY_LIBS)" \
+	    ADDITIONAL_LIB_DIRS="$($(call target,$*)_LIB_DIRS) \
+                                 $(ADDITIONAL_LIB_DIRS)" \
+	    ADDITIONAL_LDFLAGS="$($(call target,$*)_LDFLAGS) \
+                                $(ADDITIONAL_LDFLAGS)" \
+	    ADDITIONAL_CLASSPATH="$($(call target,$*)_CLASSPATH) \
+                                  $(ADDITIONAL_CLASSPATH)" \
 	    LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
-		$($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS) $(ALL_LIB_DIRS) \
-		$(LIBRARIES_DEPEND_UPON) \
-		$($*_LIBRARIES_DEPEND_UPON) debug=$(debug) profile=$(profile) \
-		shared=$(shared) libext=$(LIBEXT) \
+		$($(call target,$*)_LIB_DIRS) $(ADDITIONAL_LIB_DIRS) \
+                $(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) \
+		$($(call target,$*)_LIBRARIES_DEPEND_UPON) debug=$(debug) \
+                profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 		shared_libext=$(SHARED_LIBEXT))" \
-	    SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)" \
-	    CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+	    SCRIPTS_DIRECTORY="$($(call target,$*)_SCRIPTS_DIRECTORY)" \
+	    CHECK_SCRIPT_DIRS="$($(call target,$*)_SCRIPT_DIRS)"
 
 #
 # The list of Objective-C source files to be compiled
@@ -425,9 +445,6 @@ TMP_LIBS := $(TMP_LIBS:%_p=%)
 TMP_LIBS := $(TMP_LIBS:%_dp=%)
 TMP_LIBS := $(shell echo $(TMP_LIBS)|tr '-' '_')
 ALL_CPPFLAGS += $(TMP_LIBS:%=-Dlib%_ISDLL=1)
-endif
-
-# Rules processed second time
 endif
 
 #
