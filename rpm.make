@@ -223,6 +223,9 @@ ifeq ($(filelist),yes)
   # instead of $(INSTALL_DATA) page.html /usr/local/MySoftware/
 
   # Get the list of files inside GNUSTEP_INSTALL_BASE
+  ### FIXME - using after-install:: means if someone installs something
+  ### in his after-install:: in the GNUmakefile.postamble, that could be 
+  ### executed after this, and then we miss that file/something from the list
   after-install::
 	for file in `$(TAR) Pcf - $(INSTALL_ROOT_DIR) | $(TAR) t`; do \
 	  if [ -d "$$file" ]; then                                \
