@@ -1,3 +1,9 @@
+Wed Jan 30 17:53:03 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make: Always include Instance/rules.make, even if in the
+	Master invocation, to allow master rules in GNUmakefile.postamble
+	to be written as instance rules.
+
 Wed Jan 30 17:52:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.in (PERL): Do not check for PERL; do not generate
