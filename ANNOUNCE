@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.2.0 is now available.
+The GNUstep Makefile Package version 1.2.1 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -12,38 +12,28 @@ write a project without having to deal with the complex issues
 associated with configuration, building, installation, and packaging.
 It also allows the user to easily create cross-compiled binaries.
 
-Changes in version `1.2.0'
+Changes in version `1.2.1'
 ==========================
 
-   * The core rules and internals of gnustep-make have been
-     fundamentally redesigned and rewritten.  notably, gnustep-make now
-     works using only a single recursive sub-make invocation rather
-     than two, which makes it consistently faster and simpler in all
-     circumstances.
+   * the source distribution code has been rewritten to be more general
+     and extended.  Packages built using gnustep-make now automatically
+     have handy targets building tarballs from sources or from CVS
+     imports.
 
-   * The clean rules have been heavily optimized - they no longer use
-     recursive sub-make invocations at all and so they are really fast.
+   * implemented support for auto-dependencies, which means that any
+     object file automatically depends on all the header files which
+     were used to build it.  Only works with newer compilers.
 
-   * Many improvements to java support. Optimized management of nested
-     classes
+   * implemented INSTALL_AS_USER and INSTALL_AS_GROUP.
 
-   * Better conformance to make conventions.
+   * implemented a strip=yes option.
 
-   * File specific compilation flags
-
-   * Fixed darwin support
-
-   * Support for C++ files.
-
-   * Made use of library installation dir consistent with other
-     installation.
-
-   * Much improved Windows path support
+   * various bug fixes and minor improvements.
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.2.0.tar.gz distribution file at
+   You can get the gstep-make-1.2.1.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please send bug reports to <bug-gnustep@gnu.org>.

@@ -45,9 +45,9 @@ MKDIRS	                = ../mkinstalldirs
 DOCUMENT_NAME = make gnustep-howto machines faq internals
 
 # The text documents to be generated
-DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS GNUstep-HOWTO
+DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE
 
-TOP_DOC_FILES = FAQ INSTALL README NEWS GNUstep-HOWTO
+TOP_DOC_FILES = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE
 
 GNUstep-HOWTO_TEXI_FILES = version.texi
 GNUstep-HOWTO_TEXT_MAIN = gnustep-howto.texi

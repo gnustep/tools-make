@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 10 December 2001
+   Last Update: 1 January 2002
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -99,11 +99,11 @@ depending on the type of system you are using, include:
 
 `openssl'
      The openssl library is used to provide support for https
-     connections by the NSURL and HSURLHandle classes. To enable this
-     option you need to have the openssl libraries installed and add
-     the option `--enable-openssl' when running the `configure' script.
-     Note that the OpenSSL license is not compatible with GPL, so do
-     not use this option if you want your programs to be GPL compatible.
+     connections by the NSURL and HSURLHandle classes.  This
+     functionality is compiled as a separate bundle since the OpenSSL
+     license is not compatible with GPL, and in the hopes that if
+     someone writes an openssl replacement, it can quickly be used by
+     creating another bundle.
 
 `libiconv'
      Unicode support functions (iconv) come with glibc version 2.1 or
@@ -249,7 +249,8 @@ GNUstep Home
 ============
 
    Set up your home GNUstep directory. This is where user defaults are
-kept, and in the future, other files may be kept there.
+kept as well as other user configuration files. User installed apps,
+libraries, etc are also here (if the default user directory is used).
 
      cd
      mkdir GNUstep
@@ -292,8 +293,8 @@ app:
    * gdomap - Put this in a system startup file, like `/etc/rc.local'
      or `/etc/rc.d/rc.local' (customize for your system)
           GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
-          if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/powerpc/linux-gnu/gdomap ]; then
-            $GNUSTEP_SYSTEM_ROOT/Tools/powerpc/linux-gnu/gdomap
+          if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap ]; then
+            $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap
           fi
 
    * gdnc - Put this after executing `GNUstep.sh' in your local .profile
@@ -348,7 +349,7 @@ optimization can break some code. The easiest way to do this is when
 configuring, `CFLAGS="" ./configure'. Or when building, `make
 OPTFLAG=""'.
 
-Darwin 1.0/PowerPC (_Unstable!_)
+Darwin 1.x/PowerPC (_Unstable!_)
 ================================
 
 `Recommended compiler'
@@ -359,10 +360,11 @@ Darwin 1.0/PowerPC (_Unstable!_)
 
 `Special Instructions'
    GNUstep is being ported to Darwin. The current Darwin compiler
-doesn't handle __builtin functions. Other than that it mostly compiles.
-Expect some other irritations that haven't been found yet.  You need to
-use the ObjC runtime that comes with Darwin. To do this configure
-(gnustep-make) like this:
+doesn't handle __builtin functions, so these are diabled, which may
+cause problems with invocations and DO. Other than that it mostly
+compiles. Expect some other irritations that haven't been found yet.
+You need to use the ObjC runtime that comes with Darwin. To do this
+configure (gnustep-make) like this:
 
      ./configure --with-library-combo=nx-gnu-gnu
 

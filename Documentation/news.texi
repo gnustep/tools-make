@@ -9,6 +9,22 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.2.1}
+
+@itemize @bullet
+@item the source distribution code has been rewritten to be more general
+and extended.  Packages built using gnustep-make now automatically
+have handy targets building tarballs from sources or from CVS imports.
+@item implemented support for auto-dependencies, which means that any object
+file automatically depends on all the header files which were used to
+build it.  Only works with newer compilers.
+@item implemented INSTALL_AS_USER and INSTALL_AS_GROUP.
+@item implemented a strip=yes option.
+@item various bug fixes and minor improvements.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.2.0}
 
 @itemize @bullet
@@ -26,8 +42,6 @@ recursive sub-make invocations at all and so they are really fast.
 @item Made use of library installation dir consistent with other installation.
 @item Much improved Windows path support
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.0.1}
 

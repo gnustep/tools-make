@@ -1,7 +1,25 @@
 NEWS
 ****
 
-The currently released version is `1.2.0'.
+The currently released version is `1.2.1'.
+
+Changes in version `1.2.1'
+==========================
+
+   * the source distribution code has been rewritten to be more general
+     and extended.  Packages built using gnustep-make now automatically
+     have handy targets building tarballs from sources or from CVS
+     imports.
+
+   * implemented support for auto-dependencies, which means that any
+     object file automatically depends on all the header files which
+     were used to build it.  Only works with newer compilers.
+
+   * implemented INSTALL_AS_USER and INSTALL_AS_GROUP.
+
+   * implemented a strip=yes option.
+
+   * various bug fixes and minor improvements.
 
 Changes in version `1.2.0'
 ==========================

@@ -248,10 +248,12 @@ shells have some file that you read upon login, for example the BASH
 shell reads the .bash_profile file in the user's home directory.  So
 you can add the following lines to that file:
 
+@example
 # Setup for the GNUstep environment
 if [ -f $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh ]; then
   . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 fi
+@end example
 
 This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for the user.

@@ -144,11 +144,10 @@ XML-based property-lists. It is recommended but not currently required.
 
 @item openssl
 The openssl library is used to provide support for https connections by
-the NSURL and HSURLHandle classes. To enable this option
-you need to have the openssl libraries installed and add the option
-@code{--enable-openssl} when running the @file{configure} script. Note that
-the OpenSSL license is not compatible with GPL, so do not use this option
-if you want your programs to be GPL compatible.
+the NSURL and HSURLHandle classes.  This functionality is
+compiled as a separate bundle since the OpenSSL license is not
+compatible with GPL, and in the hopes that if someone writes an openssl
+replacement, it can quickly be used by creating another bundle.
 
 @item libiconv
 Unicode support functions (iconv) come with glibc version 2.1 or greater. If
@@ -320,8 +319,9 @@ source $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.csh
 @node GNUstep Home, Time Zone, Environment Setup, Additional Installation
 @section GNUstep Home
 
-Set up your home GNUstep directory. This is where user defaults are
-kept, and in the future, other files may be kept there.
+Set up your home GNUstep directory. This is where user defaults are kept
+as well as other user configuration files. User installed apps,
+libraries, etc are also here (if the default user directory is used).
 
 @example
 cd
@@ -364,8 +364,8 @@ app:
 @item gdomap - Put this in a system startup file, like @file{/etc/rc.local} or @file{/etc/rc.d/rc.local} (customize for your system)
 @example
 GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
-if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/powerpc/linux-gnu/gdomap ]; then
-  $GNUSTEP_SYSTEM_ROOT/Tools/powerpc/linux-gnu/gdomap
+if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap ]; then
+  $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap
 fi
 @end example
 @item gdnc - Put this after executing @file{GNUstep.sh} in your local .profile
