@@ -1,3 +1,21 @@
+Wed Jan 30 17:11:34 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make All global rules, and all %.variables, %.subprojects,
+	%.tools rules and everything obviously used only in the Master
+	invocation stage moved into Master/rules.make.  All compilation
+	rules and everything obviously used only in the Instance
+	invocation stage moved into Instance/rules.make.
+	* rules.make ($(GNUSTEP_MAKEFILES)/Master/*.make): New rule.
+	($(GNUSTEP_MAKEFILES)/Instance/*.make): New rule.
+
+Wed Jan 30 17:00:21 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/rules.make: New file.
+	* GNUmakefile.in (INSTANCE_MAKE_FILES): Install the new file.
+	* rules.make ($(GNUSTEP_OBJ_DIR)): Rule moved to
+	Instance/rules.make.  Include Instance/rules.make if at the
+	instance invocation.
+	
 Wed Jan 30 16:39:41 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	Started a major reorganization of the package.
