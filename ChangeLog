@@ -1,3 +1,17 @@
+Thu Feb 28 11:06:51 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make (GNUSTEP_WOAPPS): Removed.
+	
+Thu Feb 28 11:01:34 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* GNUmakefile.in: Changed everywhere 'Apps' (used as directory
+	name) into 'Applications'.
+	* common.make: Idem.
+	* debugapp.in: Idem.
+	* executable.template.in: Idem.
+	* openapp.in: Idem.
+	* Documentation/DESIGN: Idem.
+	
 Thu Feb 28 10:57:14 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Documentation/install.texi (Warnings for deprecated #import):
