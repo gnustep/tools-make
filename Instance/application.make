@@ -73,7 +73,16 @@ APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
 #
 # Now include the standard resource-bundle routines from Shared/bundle.make
 #
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Resources
+
+ifneq ($(FOUNDATION_LIB),nx)
+  # GNUstep bundle
+  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Resources
+  APP_INFO_PLIST_FILE = $(APP_DIR_NAME)/Resources/Info-gnustep.plist
+else
+  # OSX bundle
+  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Contents/Resources
+  APP_INFO_PLIST_FILE = $(APP_DIR_NAME)/Contents/Info.plist
+endif
 GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(APP_DIR_NAME)
 GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(APP_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
@@ -105,11 +114,12 @@ endif
 # Compilation targets
 #
 
-ifeq ($(OBJC_COMPILER), NeXT)
+ifeq ($(FOUNDATION_LIB), nx)
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_DIR_NAME) \
                     $(APP_FILE) \
-                    shared-instance-bundle-all
+                    shared-instance-bundle-all \
+                    $(APP_INFO_PLIST_FILE)
 
 $(APP_DIR_NAME):
 	@$(MKDIRS) $@
@@ -121,7 +131,7 @@ internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_FILE) \
                     internal-application-build-template \
                     $(APP_DIR_NAME)/Resources \
-                    $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
+                    $(APP_INFO_PLIST_FILE) \
                     $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop \
                     shared-instance-bundle-all
 
@@ -167,8 +177,18 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 
-
-$(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(GNUSTEP_STAMP_DEPEND)
+ifeq ($(FOUNDATION_LIB), nx)
+$(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
+	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
+	  if [ "$(APPLICATION_ICON)" != "" ]; then \
+	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
+	  fi; \
+	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
+	  echo "}") >$@
+else
+$(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -180,6 +200,7 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(GNUSTEP_STAMP_DEPEND)
 	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	   plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
 	 fi
+endif
 
 $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 		$(APP_DIR_NAME)/Resources/Info-gnustep.plist
