@@ -329,7 +329,7 @@ ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_DIRS),)
 	  fi; \
 	done$(END_ECHO)
 endif
-ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_FILES)
+ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_FILES),)
 	$(ECHO_COPYING_WEBSERVER_LOC_RESOURCES)for l in $(LANGUAGES); do \
 	 if [ -d ./WebServerResources/$$l.lproj ]; then \
 	  $(MKDIRS) \
