@@ -1,3 +1,22 @@
+Thu Feb 25 03:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* configure.in: Added macros to check existence of jpeg and tiff.
+        Stolen from gimp-1.0.0/configure.in.
+
+	* config.make.in (TIFF_INCLUDE): New variable definitions.
+	(TIFF_LIB): Likewise.
+	(JPEG_INCLUDE): Likewise.
+	(JPEG_LIB): Likewise.
+
+	* brain.make (SYSTEM_INCLUDES): Added $(TIFF_INCLUDE) $(JPEG_INCLUDE)
+	(SYSTEM_LIB_DIR): Added $(TIFF_LIB) $(JPEG_LIB).
+
+1999-02-24  Matthias Klose  <doko@cs.tu-berlin.de>
+
+	* Makefiles/rules.make (%.build): evaluate LIBRARIES_DEPEND_UPON
+	  in this target, not when the file is read, else library names in
+	  foo_LIBRARIES_DEPEND_UPON macros are not transformed.
+
 1999-02-22  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Substitute version info.

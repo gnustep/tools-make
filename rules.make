@@ -144,7 +144,12 @@ LIBRARIES_DEPEND_UPON := \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 endif
-
+ifneq ($(LIBRARIES_DEPEND_UPON),)
+LIBRARIES_DEPEND_UPON := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON)\
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+endif
 
 #
 # The bundle extension (default is .bundle) is defined by BUNDLE_EXTENSION.
@@ -213,8 +218,11 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	    ADDITIONAL_LIBRARY_LIBS="$($*_LIBS)" \
 	    ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS)" \
 	    ADDITIONAL_LDFLAGS="$($*_LDFLAGS) $(ADDITIONAL_LDFLAGS)" \
-	    LIBRARIES_DEPEND_UPON="$($*_LIBRARIES_DEPEND_UPON) \
-					$(LIBRARIES_DEPEND_UPON)" \
+	    LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
+		$(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON) \
+		$($*_LIBRARIES_DEPEND_UPON) debug=$(debug) profile=$(profile) \
+		shared=$(shared) libext=$(LIBEXT) \
+		shared_libext=$(SHARED_LIBEXT))" \
 	    SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)" \
 	    CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
 	)
