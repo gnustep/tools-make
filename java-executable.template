@@ -27,17 +27,22 @@
 tool=$0
 
 #
+# The directory we are in
+#
+tool_dir=`dirname $tool`
+
+#
 # The java class to execute - harcoded when the template is intalled 
-# by java-tool.make
+# by java-tool.make.
 #
 java_obj_file=JAVA_OBJ_FILE
 
 #
 # Check that the java class exists
 #
-full_java_obj_file=`dirname $tool`${java_obj_file}
+full_java_obj_file=${tool_dir}/Java/${java_obj_file}.class
 
-if [ -z "$full_java_obj_file" ]; then
+if [ ! -f "$full_java_obj_file" ]; then
   echo "$tool: Installation problem: Can't find java class $java_obj_file !"
   exit 1
 fi
@@ -84,6 +89,10 @@ else
   fi
 fi
 
+if ( echo ${CLASSPATH} | grep -v "\./" >/dev/null ); then
+  CLASSPATH="$CLASSPATH:./"
+fi
+
 export CLASSPATH
 
 #
@@ -101,5 +110,6 @@ fi
 #
 # Run java on the object file
 #
+cd ${tool_dir}/Java
 exec $java_vm $java_obj_file "$@"
 
