@@ -1,3 +1,8 @@
+Sun Nov  7 04:18:39 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* tar-exclude-list: Use *.svn instead of .svn to have
+	.svn dirs excluded.
+
 Sun Nov  7 04:07:50 2004  David Wetzel <dave@turbocat.de>
 
 	* Instance/Shared/bundle.make: Everywhere use the '-f' flag to 'cp
