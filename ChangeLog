@@ -1,3 +1,14 @@
+Sun Jan 26 04:54:09 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: New --enable-multi-platform option, off by
+	default.  Substitute GNUSTEP_MULTI_PLATFORM and target when
+	processing .in files.
+	* configure: Regenereated.
+	* GNUstep.sh.in: If GNUSTEP_MULTI_PLATFORM is empty, use hardcoded
+	GNUSTEP_HOST, GNUSTEP_HOST_OS, GNUSTEP_HOST_CPU,
+	GNUSTEP_HOST_VENDOR as provided by configure.
+	* GNUstep.csh.in: Idem.
+	
 Fri Jan 10 05:48:06 GMT 2003 Nicola Pero <n.pero@mi.flashnet.it>
 
 	* target.make (INTERNAL_CFLAGS): On darwin, apple foundation, add
