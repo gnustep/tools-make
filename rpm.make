@@ -201,6 +201,9 @@ RPM_MAKE_LOADED=yes
 
 ifeq ($(filelist),yes)
 
+  # Build the file-list only at top level
+  ifeq ($(MAKELEVEL),0)
+
   # Determine which file list to build
   ifeq ($(debug),yes)
     FILE_LIST = $(shell pwd)/file-list-debug
@@ -230,6 +233,8 @@ ifeq ($(filelist),yes)
 	done                                                    
 	sed -e "s|$(INSTALL_ROOT_DIR)||" $(FILE_LIST) > file-list.tmp
 	mv file-list.tmp $(FILE_LIST)                             
+
+  endif # MAKELEVEL
 
 endif # filelist == yes
 
