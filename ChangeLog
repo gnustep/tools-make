@@ -1,3 +1,8 @@
+2002-01-05 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* ld_lib_path.sh: Setup GUILE_LOAD_PATH
+	* ld_lib_path.csh: ditto
+
 2002-01-04 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* documentation.make: revert to old autogsdoc rules as standard,

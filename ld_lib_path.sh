@@ -97,4 +97,18 @@ case "$host_os" in
 
 esac
 
+#
+# Setup path for loading guile modules too.
+#
+guile_paths="$GNUSTEP_USER_ROOT/Libraries/Guile:$GNUSTEP_LOCAL_ROOT/Libraries/Guile:$GNUSTEP_SYSTEM_ROOT/Libraries/Guile"
+
+if [ -z "$GUILE_LOAD_PATH" ]; then
+  GUILE_LOAD_PATH="$guile_paths"
+else
+  if ( echo ${GUILE_LOAD_PATH}| grep -v "${guile_paths}" >/dev/null ); then
+    GUILE_LOAD_PATH="$guile_paths:$GUILE_LOAD_PATH"
+  fi
+fi
+export GUILE_LOAD_PATH
+
 IFS="$old_IFS"
