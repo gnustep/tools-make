@@ -1,4 +1,9 @@
-2003-04-027  Adam Fedor  <fedor@gnu.org>
+2003-04-28  Nicola Pero  <nicola@nicola.brainstorm.co.uk>
+
+	* Instance/resource-set.make (RESOURCE_FILES_FULL_INSTALL_DIR): Reverted
+	last change.  This file is of general use, not just for libraries.
+
+2003-04-27  Adam Fedor  <fedor@gnu.org>
 
 	* New filesystem structure.
 	Use @MAKEFILE_SUFFIX@ instead of Makefiles.
