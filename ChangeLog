@@ -1,5 +1,9 @@
 2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
 
+	* GNUmakefile: add gswapp.make and gswbundle.make
+	
+2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
+
 	* rules.make and bundle.make: changes for GNUstepWeb
 	* gswapp.make and gswbundle.make: added
 	

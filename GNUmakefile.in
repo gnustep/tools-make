@@ -97,7 +97,7 @@ install: all
 		common.make brain.make library.make rules.make target.make \
 		tool.make ctool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
-		palette.make \
+		palette.make gswapp.make gswbundle.make \
 		documentation.make MediaBook.func executable.template; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
@@ -121,7 +121,7 @@ uninstall:
 		common.make brain.make library.make rules.make target.make \
 		tool.make ctool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
-		palette.make \
+		palette.make gswapp.make gswbundle.make \
 		documentation.make MediaBook.func executable.template; do \
 	  rm -f $(makedir)/$$f; \
 	done
