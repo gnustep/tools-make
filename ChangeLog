@@ -1,3 +1,19 @@
+Mon Jan 29 16:57:53 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* GNUmakefile.in (install): Create the
+	$GNUSTEP_MAKEFILES/Additional directory.
+	* brain.make: Moved base, gui, xgps and xdps specific code into
+	makefiles created and installed into $GNUSTEP_MAKEFILES/Additional
+	by the base, gui, xgps and xdps packages themselves.
+	* common.make: Include all makefiles found in
+	$GNUSTEP_LOCAL_ADDITIONAL_MAKEFILES and
+	$GNUSTEP_MAKEFILES/Additional.
+	* config.make.in: (GRAPHIC_LIBS), (GRAPHIC_CFLAGS),
+	(GRAPHIC_LFLAGS), (X_PRE_LIBS): Removed.
+	(CONFIG_SYSTEM_DEFS): Removed SYSTEM_DEFS and DPS_DEFINE.
+	* configure.in: Moved base, gui, xgps and xdps specific code 
+	into the configure.in inside each library.
+	
 2001-01-25 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.in: Added check for recent versions of GMP
