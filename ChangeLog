@@ -1,3 +1,9 @@
+Mon Jun 17 18:56:39 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (internal-distclean): Remove program.core as
+	well, for BSD systems (Suggestion by Chris B. Vetter
+	<chrisv@web4inc.com>).
+
 Thu Jun 13 14:38:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	First attempt at user-friendly messages and verbosity levels.  Run
