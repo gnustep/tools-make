@@ -32,16 +32,11 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 BUNDLE_DIR_NAME := $(BUNDLE_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)
-BUNDLE_STAMPS := $(foreach bundle,$(BUNDLE_NAME),stamp-bundle-$(bundle))
-BUNDLE_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(BUNDLE_STAMPS))
 BUNDLE_RESOURCE_DIRS = $(foreach d,$(RESOURCE_DIRS),$(BUNDLE_DIR_NAME)/$(d))
 
 #
 # Internal targets
 #
-
-$(GNUSTEP_OBJ_DIR)/stamp-bundle-% : $(BUNDLE_FILE) bundle-resource-files
-	touch $@
 
 $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
@@ -63,12 +58,10 @@ build-bundle-dir::
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		$(BUNDLE_DIR_NAME) \
 		$(BUNDLE_DIR_NAME)/Resources \
-		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_CPU) \
-		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR) \
 		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
 		$(BUNDLE_RESOURCE_DIRS)
 
-build-bundle:: $(GNUSTEP_OBJ_DIR)/stamp-bundle-$(BUNDLE_NAME)
+build-bundle:: $(BUNDLE_FILE) bundle-resource-files
 
 bundle-resource-files::
 	for f in $(RESOURCE_FILES); do \

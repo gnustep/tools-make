@@ -1,3 +1,21 @@
+Thu Oct 30 13:23:31 1997  Scott Christley  <scottc@net-community.com>
+
+	* objc.make: New file.
+	* GNUmakefile.in: Install new file.  Add targets to regenerate
+	automatically generated files.
+	* aggregate.make: Have make stop when error occurs.
+	* bundle.make: Elminate stamp files.
+	* config.make.in: Save any LIBS specified by user.
+	* configure.in: Correct default library combo.
+	* configure: Regenerate for configure.in changes.
+	* rules.make: Add ObjC program support.  Have make stop when
+	error occurs.  Correct variables that are being passed to
+	recursive makes.
+	* target.make: Do not specify the thread library; instead the
+	user should define it when running configure with the LIBS
+	environment variable.
+	* test.make: Eliminate stamp files.  Correct bundle rules.
+
 Thu Oct 30 09:35:34 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* common.make: Add the cpu/os/runtime include flag only for

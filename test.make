@@ -75,23 +75,18 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 TEST_LIBRARY_LIST := $(TEST_LIBRARY_NAME:=.testlib)
 CHECK_LIBRARY_LIST := $(TEST_LIBRARY_NAME:=.checklib)
-TEST_LIBRARY_STAMPS := $(foreach lib,$(TEST_LIBRARY_NAME),stamp-testlib-$(lib))
-TEST_LIBRARY_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_LIBRARY_STAMPS))
 
 TEST_BUNDLE_LIST := $(TEST_BUNDLE_NAME:=.testbundle)
 CHECK_BUNDLE_LIST := $(TEST_BUNDLE_NAME:=.checkbundle)
-TEST_BUNDLE_STAMPS := $(foreach b,$(TEST_BUNDLE_NAME),stamp-testbundle-$(b))
-TEST_BUNDLE_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_BUNDLE_STAMPS))
+TEST_BUNDLE_DIR_NAME := $(TEST_BUNDLE_NAME:=$(BUNDLE_EXTENSION))
+TEST_BUNDLE_FILE := $(TEST_BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(TEST_BUNDLE_NAME)
+TEST_BUNDLE_RESOURCE_DIRS = $(foreach d,$(RESOURCE_DIRS),$(TEST_BUNDLE_DIR_NAME)/$(d))
 
 TEST_TOOL_LIST := $(TEST_TOOL_NAME:=.testtool)
 CHECK_TOOL_LIST := $(TEST_TOOL_NAME:=.checktool)
-TEST_TOOL_STAMPS := $(foreach tool,$(TEST_TOOL_NAME),stamp-testtool-$(tool))
-TEST_TOOL_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_TOOL_STAMPS))
 
 TEST_APP_LIST := $(TEST_APP_NAME:=.testapp)
 CHECK_APP_LIST := $(TEST_APP_NAME:=.checkapp)
-TEST_APP_STAMPS := $(foreach app,$(TEST_APP_NAME),stamp-testapp-$(app))
-TEST_APP_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_APP_STAMPS))
 
 ifeq ($(SCRIPTS_DIRECTORY),)
 SCRIPTS_DIRECTORY = .
@@ -101,29 +96,33 @@ endif
 # Internal targets
 #
 
-$(GNUSTEP_OBJ_DIR)/stamp-testlib-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+ifneq ($(TEST_LIBRARY_NAME),)
+$(GNUSTEP_OBJ_DIR)/$(TEST_LIBRARY_NAME) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_LIBRARY_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TEST_LIBRARY_LIBS)
-	touch $@
+endif
 
-$(GNUSTEP_OBJ_DIR)/stamp-testbundle-%: $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+ifneq ($(TEST_BUNDLE_NAME),)
+$(TEST_BUNDLE_NAME): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
-		$(LDOUT)$(BUNDLE_FILE) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(BUNDLE_LIBS)
-	touch $@
+		$(LDOUT)$(TEST_BUNDLE_FILE) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+		$(ALL_LIB_DIRS) $(ALL_TEST_BUNDLE_LIBS)
+endif
 
-$(GNUSTEP_OBJ_DIR)/stamp-testtool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_TOOL_NAME) \
+ifneq ($(TEST_TOOL_NAME),)
+$(TEST_TOOL_NAME) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TEST_TOOL_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TEST_TOOL_LIBS)
-	touch $@
+endif
 
-$(GNUSTEP_OBJ_DIR)/stamp-testapp-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_APP_NAME) \
+ifneq ($(TEST_APP_NAME),)
+$(TEST_APP_NAME) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TEST_APP_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TEST_APP_LIBS)
-	touch $@
+endif
 
 #
 # Compilation targets
@@ -163,14 +162,27 @@ test-tools:: $(TEST_TOOL_LIST)
 
 test-apps:: $(TEST_APP_LIST)
 
-internal-testlib-all:: $(GNUSTEP_OBJ_DIR)/stamp-testlib-$(TEST_LIBRARY_NAME)
+internal-testlib-all:: $(GNUSTEP_OBJ_DIR)/$(TEST_LIBRARY_NAME)
 
-internal-testbundle-all:: \
-	$(GNUSTEP_OBJ_DIR)/stamp-testbundle-$(TEST_BUNDLE_NAME)
+internal-testbundle-all:: build-testbundle-dir build-testbundle
 
-internal-testtool-all:: $(GNUSTEP_OBJ_DIR)/stamp-testtool-$(TEST_TOOL_NAME)
+build-testbundle-dir::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+	  $(TEST_BUNDLE_DIR_NAME) \
+	  $(TEST_BUNDLE_DIR_NAME)/Resources \
+	  $(TEST_BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+	  $(TEST_BUNDLE_RESOURCE_DIRS)
 
-internal-testapp-all:: $(GNUSTEP_OBJ_DIR)/stamp-testapp-$(TEST_APP_NAME)
+build-testbundle:: $(TEST_BUNDLE_NAME) testbundle-resource-files
+
+testbundle-resource-files::
+	for f in $(RESOURCE_FILES); do \
+	  $(INSTALL_DATA) $$f $(TEST_BUNDLE_DIR_NAME)/$$f ;\
+	done
+
+internal-testtool-all:: $(TEST_TOOL_NAME)
+
+internal-testapp-all:: $(TEST_APP_NAME)
 
 #
 # Check targets (actually running the tests)
@@ -201,3 +213,20 @@ internal-check-%:: $(SCRIPTS_DIRECTORY)/config/unix.exp
 		  $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS); \
 	  fi; \
 	done)
+
+#
+# Cleaning targets
+#
+internal-clean::
+	rm -f $(TEST_LIBRARY_NAME)
+	for f in $(TEST_BUNDLE_DIR_NAME); do \
+	  rm -rf $$f ; \
+	done
+	rm -f $(TEST_TOOL_NAME)
+	rm -f $(TEST_APP_NAME)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+
+internal-distclean::
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj

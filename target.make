@@ -36,15 +36,10 @@ endif
 # Target specific libraries
 #
 ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
-ifeq ($(GNUSTEP_TARGET_CPU),ix86)
-TARGET_SYSTEM_LIBS := -lpcthread -ldl -lm
-endif
-ifeq ($(GNUSTEP_TARGET_CPU),alpha)
-TARGET_SYSTEM_LIBS := -ldl -lm
-endif
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -ldl -lm
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-TARGET_SYSTEM_LIBS := -lthread -lsocket -lnsl -ldl -lm
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
 endif
 
 #
@@ -132,7 +127,7 @@ SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .a
 
 ifneq ($(OBJC_COMPILER), NeXT)
-TARGET_SYSTEM_LIBS += -lgcc
+TARGET_SYSTEM_LIBS += $(CONFIG_SYSTEM_LIBS) -lgcc
 endif
 
 BUNDLE_LD	= ld

@@ -45,6 +45,8 @@ internal-all:: $(LIBRARY_NAME:=.buildlib)
 
 internal-install:: all $(LIBRARY_NAME:=.installlib)
 
+internal-uninstall:: $(LIBRARY_NAME:=.uninstalllib)
+
 #
 # Cleaning targets
 #

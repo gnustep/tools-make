@@ -63,3 +63,6 @@ library_combo = @ac_cv_library_combo@
 #
 X_INCLUDE := @X_INCLUDE@
 X_LIBS := @X_LIBS@
+
+# Any user specified libs, like thread libraries
+CONFIG_SYSTEM_LIBS = @LIBS@

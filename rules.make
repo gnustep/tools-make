@@ -46,6 +46,9 @@ ALL_LIB_DIRS = $(ADDITIONAL_LIB_DIRS) \
    -L$(GNUSTEP_SYSTEM_LIBRARIES) -L$(GNUSTEP_SYSTEM_LIBRARIES_ROOT) \
    $(SYSTEM_LIB_DIR)
 
+ALL_OBJC_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
+   $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
+
 ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) \
    $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
 
@@ -57,6 +60,11 @@ LIB_DIRS_NO_SYSTEM = $(ADDITIONAL_LIB_DIRS) \
    -L$(GNUSTEP_USER_LIBRARIES) -L$(GNUSTEP_USER_LIBRARIES_ROOT) \
    -L$(GNUSTEP_LOCAL_LIBRARIES) -L$(GNUSTEP_LOCAL_LIBRARIES_ROOT) \
    -L$(GNUSTEP_SYSTEM_LIBRARIES) -L$(GNUSTEP_SYSTEM_LIBRARIES_ROOT)
+
+ALL_OBJC_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_OBJC_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
 
 ALL_TOOL_LIBS := \
     $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TOOL_LIBS) \
@@ -88,10 +96,10 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
 
-# The magical app rule, thank you GNU make!
+# The magical application rules, thank you GNU make!
 %.buildapp:
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-all \
 		  INTERNAL_APP_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
@@ -99,9 +107,10 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 		  RESOURCE_FILES="$($*_RESOURCES)" \
 		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)"
 
+# library recursive make rules
 %.buildlib:
 	@echo Making $*...
-	@$(MAKE) internal-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-all \
 		  INTERNAL_LIBRARY_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
@@ -112,7 +121,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
  
 %.installlib:
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-install \
+	@$(MAKE) --no-print-directory --no-keep-going internal-install \
 		  INTERNAL_LIBRARY_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
@@ -121,10 +130,31 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 		  HEADER_FILES_DIR="$($*_HEADER_FILES_DIR)" \
 		  HEADER_FILES_INSTALL_DIR="$($*_HEADER_FILES_INSTALL_DIR)"
 
+%.uninstalllib:
+	@echo Making $*...
+	@$(MAKE) --no-print-directory --no-keep-going internal-uninstall \
+		  INTERNAL_LIBRARY_NAME=$* \
+		  OBJC_FILES="$($*_OBJC_FILES)" \
+		  C_FILES="$($*_C_FILES)" \
+		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
+		  HEADER_FILES="$($*_HEADER_FILES)" \
+		  HEADER_FILES_DIR="$($*_HEADER_FILES_DIR)" \
+		  HEADER_FILES_INSTALL_DIR="$($*_HEADER_FILES_INSTALL_DIR)"
+
+# tool recursive make rules
 %.buildtool : FORCE
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-tool-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-tool-all \
 		  TOOL_NAME=$* \
+		  OBJC_FILES="$($*_OBJC_FILES)" \
+		  C_FILES="$($*_C_FILES)" \
+		  PSWRAP_FILES="$($*_PSWRAP_FILES)"
+
+# ObjC program recursive make rules
+%.buildobjc : FORCE
+	@echo Making $*...
+	@$(MAKE) --no-print-directory --no-keep-going internal-objc-all \
+		  OBJC_PROGRAM_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)"
@@ -136,9 +166,10 @@ ifeq ($(strip $(BUNDLE_EXTENSION)),)
 BUNDLE_EXTENSION = .bundle
 endif
 
+# bundle recursive make rules
 %$(BUNDLE_EXTENSION) : FORCE
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-bundle-all \
+	$(MAKE) --no-print-directory --no-keep-going internal-bundle-all \
 		  BUNDLE_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
@@ -156,8 +187,7 @@ ALL_TEST_LIBRARY_LIBS = $(ADDITIONAL_LIBRARY_LIBS) $(AUXILIARY_LIBS) \
     -lobjc-test \
     $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
 
-ALL_TEST_BUNDLE_LIBS = $(ADDITIONAL_BUNDLE_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
+ALL_TEST_BUNDLE_LIBS = $(ADDITIONAL_BUNDLE_LIBS)
 
 ALL_TEST_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
    $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
@@ -188,61 +218,61 @@ ALL_TEST_GUI_LIBS := \
 
 %.testlib : FORCE
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-testlib-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-testlib-all \
 		  TEST_LIBRARY_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
-		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) $($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_LIBRARY_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$(ADDITIONAL_LIB_DIRS) $($*_LIB_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.testbundle : FORCE
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-testbundle-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-testbundle-all \
 		  TEST_BUNDLE_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 		  RESOURCE_FILES="$($*_RESOURCES)" \
 		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
-		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) $($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_BUNDLE_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$(ADDITIONAL_LIB_DIRS) $($*_LIB_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.testtool : FORCE
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-testtool-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-testtool-all \
 		  TEST_TOOL_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
-		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) $($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_TOOL_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$(ADDITIONAL_LIB_DIRS) $($*_LIB_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.testapp : FORCE
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-testapp-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-testapp-all \
 		  TEST_APP_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 		  RESOURCE_FILES="$($*_RESOURCES)" \
 		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
-		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) $($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_GUI_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$(ADDITIONAL_LIB_DIRS) $($*_LIB_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 # These are for running the tests
 
 %.checklib : FORCE
 	@echo Checking $*...
-	@$(MAKE) --no-print-directory internal-check-LIBRARY \
+	@$(MAKE) --no-print-directory --no-keep-going internal-check-LIBRARY \
 		  TEST_LIBRARY_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
@@ -250,7 +280,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.checkbundle : FORCE
 	@echo Checking $*...
-	@$(MAKE) --no-print-directory internal-check-BUNDLE \
+	@$(MAKE) --no-print-directory --no-keep-going internal-check-BUNDLE \
 		  TEST_BUNDLE_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
@@ -258,7 +288,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.checktool : FORCE
 	@echo Checking $*...
-	@$(MAKE) --no-print-directory internal-check-TOOL \
+	@$(MAKE) --no-print-directory --no-keep-going internal-check-TOOL \
 		  TEST_TOOL_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
@@ -266,7 +296,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.checkapp : FORCE
 	@echo Checking $*...
-	@$(MAKE) --no-print-directory internal-check-APP \
+	@$(MAKE) --no-print-directory --no-keep-going internal-check-APP \
 		  TEST_APP_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
@@ -304,7 +334,7 @@ uninstall:: before-uninstall internal-uninstall after-uninstall
 
 clean:: before-clean internal-clean after-clean
 
-distclean:: before-distclean internal-distclean after-distclean
+distclean:: clean before-distclean internal-distclean after-distclean
 
 check:: before-check internal-check after-check
 

@@ -1468,7 +1468,7 @@ if test "$ac_cv_library_combo" = ""; then
   if test $host_os = nextstep4; then
     ac_cv_library_combo=nx-nx-nx-nil
   else
-    ac_cv_library_combo=gnu-gnu-gnu-xdp
+    ac_cv_library_combo=gnu-gnu-gnu-xdps
   fi
 fi
 

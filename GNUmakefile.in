@@ -51,7 +51,7 @@ INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
 
-all: which_lib
+all: generated-files which_lib
 
 which_lib: which_lib.c
 	$(CC) -O2 -Wall -o $@ $^
@@ -70,7 +70,7 @@ install: all
 	$(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
 	for f in aggregate.make application.make bundle.make clean.make \
 		common.make brain.make library.make rules.make target.make \
-		tool.make test.make names.make MediaBook.func; do \
+		tool.make test.make names.make objc.make MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
@@ -86,5 +86,22 @@ distclean: clean
 	rm -f GNUmakefile config.make
 	rm -f config.cache config.log config.status
 
+generated-files: GNUmakefile GNUstep.sh config.h config.make debugapp openapp
+
 GNUmakefile: GNUmakefile.in config.status
+	$(SHELL) config.status
+
+GNUstep.sh: GNUstep.sh.in
+	$(SHELL) config.status
+
+config.h: config.h.in
+	$(SHELL) config.status
+
+config.make: config.make.in
+	$(SHELL) config.status
+
+debugapp: debugapp.in
+	$(SHELL) config.status
+
+openapp: openapp.in
 	$(SHELL) config.status
