@@ -1,3 +1,9 @@
+Mon Nov 16 15:09:47 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* application.make: Change RESOURCE_FILES="none" to ""
+	* bunlder.make: Likewise.
+	* target.make: Second try on NetBSD.
+
 Thu Nov 12 1998  Felipe A. Rodriguez  <far@ix.netcom.com>
 
 	* test-application.make add support for building individual subprojects
