@@ -1,3 +1,7 @@
+Sun Sep  7 12:43:59 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* config.site: Fixed Headers directory, it is now in Library/.
+
 Wed Sep  3 10:29:26 2003  Matt Rice <ratmice@yahoo.com>,
                           Nicola Pero  <n.pero@mi.flashnet.it>
 
