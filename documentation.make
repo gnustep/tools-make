@@ -386,13 +386,16 @@ internal-doc-clean::
 	         $(INTERNAL_doc_NAME).vrs  \
 	         $(INTERNAL_doc_NAME)_*.html \
 	         $(INTERNAL_doc_NAME).ps.gz  \
-	         $(INTERNAL_doc_NAME).tar.gz; \
+	         $(INTERNAL_doc_NAME).tar.gz \
 	         $(INTERNAL_doc_NAME)/*
 ifneq ($(GSDOC_FILES),)
 	@ -rm -f $(GSDOC_OBJECT_FILES)
 endif
 ifneq ($(LATEX_FILES),)
 	@ rm -f *.aux
+endif
+ifneq ($(JAVADOC_FILES),)
+	@ -rm -Rf $(INTERNAL_doc_NAME)
 endif
 
 internal-textdoc-clean::
