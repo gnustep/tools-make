@@ -49,9 +49,9 @@ AC_ARG_ENABLE(xmltest,
     xml_config_micro_version=`$XML_CONFIG $xml_config_args --version | \
       sed 's/\([[0-9]]*\).\([[0-9]]*\).\([[0-9]]*\)/\3/'`
     if test "x$enable_xmltest" = "xyes" ; then
-      ac_save_CFLAGS="$CFLAGS"
+      ac_save_CPPFLAGS="$CPPFLAGS"
       ac_save_LIBS="$LIBS"
-      CFLAGS="$CFLAGS $XML_CFLAGS"
+      CPPFLAGS="$CPPFLAGS $XML_CFLAGS"
       LIBS="$XML_LIBS $LIBS"
 dnl
 dnl Now check if the installed libxml is sufficiently new.
@@ -130,7 +130,7 @@ main()
 }
 ],, no_xml=yes,[echo $ac_n "cross compiling; assumed OK... $ac_c"])
 
-      CFLAGS="$ac_save_CFLAGS"
+      CPPFLAGS="$ac_save_CPPFLAGS"
       LIBS="$ac_save_LIBS"
     fi
   fi
@@ -150,7 +150,7 @@ main()
         :
       else
         echo "*** Could not run libxml test program, checking why..."
-        CFLAGS="$CFLAGS $XML_CFLAGS"
+        CPPFLAGS="$CPPFLAGS $XML_CFLAGS"
         LIBS="$LIBS $XML_LIBS"
         dnl FIXME: AC_TRY_LINK
       fi

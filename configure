@@ -3560,9 +3560,9 @@ echo "configure:3550: checking for libxml - version >= $min_xml_version" >&5
     xml_config_micro_version=`$XML_CONFIG $xml_config_args --version | \
       sed 's/\([0-9]*\).\([0-9]*\).\([0-9]*\)/\3/'`
     if test "x$enable_xmltest" = "xyes" ; then
-      ac_save_CFLAGS="$CFLAGS"
+      ac_save_CPPFLAGS="$CPPFLAGS"
       ac_save_LIBS="$LIBS"
-      CFLAGS="$CFLAGS $XML_CFLAGS"
+      CPPFLAGS="$CPPFLAGS $XML_CFLAGS"
       LIBS="$XML_LIBS $LIBS"
       rm -f conf.xmltest
       if test "$cross_compiling" = yes; then
@@ -3657,7 +3657,7 @@ rm -fr conftest*
 fi
 
 
-      CFLAGS="$ac_save_CFLAGS"
+      CPPFLAGS="$ac_save_CPPFLAGS"
       LIBS="$ac_save_LIBS"
     fi
   fi
@@ -3677,7 +3677,7 @@ fi
         :
       else
         echo "*** Could not run libxml test program, checking why..."
-        CFLAGS="$CFLAGS $XML_CFLAGS"
+        CPPFLAGS="$CPPFLAGS $XML_CFLAGS"
         LIBS="$LIBS $XML_LIBS"
               fi
     fi

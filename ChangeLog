@@ -4,6 +4,7 @@
 
 	* Documentation/GNUmakfile.in: New targets to make documentation.
 	* Documentation/make.texi: New file
+	* aclocal.m4: Set CPPFLAGS not CFLAGS
 
 2001-01-08  Adam Fedor  <fedor@gnu.org>
 
