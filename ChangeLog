@@ -1,3 +1,9 @@
+Mon Mar 31 18:43:07 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make (build-framework-dirs): Do not create
+	the symlink from inside derived_src to the headers if there are no
+	headers; remove the file before creating the symlink.
+	
 2003-03-23 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Merged 1.6.0 branch changes in
