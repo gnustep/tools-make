@@ -1,3 +1,10 @@
+Sat Nov  8 22:41:03 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make: Use $(ALL_LDFLAGS) when linking shared stuff.
+	Otherwise there is no way to add linker flags when libraries and
+	frameworks are linked.  Change applied to all shared link commands
+	on all platforms.
+
 Sat Nov  8 16:40:59 2003  Matt Rice <ratmice@yahoo.com>
 
 	* Documentation/DESIGN: Updated makefiles location.

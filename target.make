@@ -174,7 +174,7 @@ SHARED_LIB_LINK_CMD     = \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
 		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
-		-o $@ \
+		$(ALL_LDFLAGS) -o $@ \
 		-framework Foundation \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
@@ -188,7 +188,7 @@ SHARED_LIB_LINK_CMD     = \
 		-compatibility_version 1 -current_version 1 \
 		-read_only_relocs warning -undefined warning \
 		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
-		-o $@ \
+		$(ALL_LDFLAGS) -o $@ \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		-framework Foundation \
 		$^ $(SHARED_LD_POSTFLAGS); \
@@ -197,10 +197,10 @@ SHARED_LIB_LINK_CMD     = \
 endif # OBJC_COMPILER
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r -d -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
-	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
+	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
 	$(STATIC_LD_POSTFLAGS)
 
 # This doesn't work with 4.1, what about others?
@@ -275,7 +275,7 @@ SHARED_LIB_LINK_CMD     = \
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
 		-install_name $(LIB_LINK_INSTALL_NAME)	\
-		-o $@					\
+		$(ALL_LDFLAGS) -o $@					\
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$^ $(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$(SHARED_LD_POSTFLAGS); \
@@ -302,7 +302,7 @@ SHARED_LIB_LINK_CMD     = \
 		$(DYLIB_CURRENT_VERSION)		\
 		-install_name $(LIB_LINK_INSTALL_NAME)	\
 		$(DYLIB_EXTRA_FLAGS)			\
-		-o $@					\
+		$(ALL_LDFLAGS) -o $@					\
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$^ $(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); \
@@ -324,10 +324,10 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE) )
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r -d -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
-	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
+	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
 	$(STATIC_LD_POSTFLAGS)
 
 AFTER_INSTALL_STATIC_LIB_CMD = \
@@ -373,7 +373,7 @@ SHARED_LIB_LINK_CMD     = \
 	/bin/libtool $(SHARED_LD_PREFLAGS) \
 		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
 		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
-		-o $@ \
+		$(ALL_LDFLAGS) -o $@ \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		-lobjc -lgcc $^ $(SHARED_LD_POSTFLAGS); \
@@ -383,7 +383,8 @@ else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool $(SHARED_LD_PREFLAGS) \
 		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) $(ALL_LDFLAGS) $@ \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
+		$(ALL_LDFLAGS) $@ \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) \
 		$(LIBRARIES_FOUNDATION_DEPEND_UPON) $^ \
@@ -393,7 +394,7 @@ SHARED_LIB_LINK_CMD     = \
 endif
 
 STATIC_LIB_LINK_CMD	= \
-	/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
+	/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
 	$(STATIC_LD_POSTFLAGS)
 
 # This doesn't work with 4.1, what about others?
@@ -441,7 +442,7 @@ TARGET_LIB_DIR = \
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool $(SHARED_LD_PREFLAGS) -dynamic -read_only_relocs suppress \
-		 $(ARCH_FLAGS) -o $@ -framework System \
+		 $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ -framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) -lobjc -lgcc -undefined warning $^ \
 		$(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
@@ -449,7 +450,7 @@ SHARED_LIB_LINK_CMD     = \
 else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool $(SHARED_LD_PREFLAGS) \
-		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
+		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $^ \
 		$(SHARED_LD_POSTFLAGS); \
@@ -459,7 +460,7 @@ endif
 
 STATIC_LIB_LINK_CMD	= \
 	/bin/libtool $(STATIC_LD_PREFLAGS) \
-	-static $(ARCH_FLAGS) -o $@ $^ $(STATIC_LD_POSTFLAGS)
+	-static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ $(STATIC_LD_POSTFLAGS)
 
 ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
 
@@ -484,7 +485,7 @@ ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
-           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
+           $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
@@ -504,7 +505,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS      += -fPIC
 SHARED_LIBEXT      =  .so
@@ -531,7 +532,7 @@ freebsdaout = yes
 HAVE_SHARED_LIBS	= no
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
-	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o;\
+	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o;\
 	(cd $(LIB_LINK_OBJ_DIR); \
 	  rm -f $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
@@ -559,7 +560,7 @@ ifneq ($(freebsdaout), yes)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
-	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
+	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
@@ -577,7 +578,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -607,7 +608,7 @@ HAVE_SHARED_LIBS        = no
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
         $(SHARED_LD) -x -Bshareable -Bforcearchive \
-           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o;\
+           $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o;\
         (cd $(LIB_LINK_OBJ_DIR); \
           rm -f $(LIB_LINK_FILE); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
@@ -635,14 +636,14 @@ HAVE_SHARED_LIBS    = yes
 SHARED_LD_POSTFLAGS = -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
-              -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+              $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
                  $^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
                  $(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); \
 	  rm -f $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -671,7 +672,7 @@ ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
-	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
+	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
@@ -686,7 +687,7 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
 	)
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
@@ -710,12 +711,12 @@ ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
-	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ ;\
+	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ ;\
 	(cd $(LIB_LINK_OBJ_DIR); \
 	  rm -f $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -742,7 +743,7 @@ HAVE_SHARED_LIBS        = yes
 
 SHARED_LIB_LINK_CMD     = \
         $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
-           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
+           $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
            -Wl,-rpath,$(LIB_LINK_INSTALL_DIR) \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
@@ -766,7 +767,7 @@ SHARED_CFLAGS     += -fPIC
 SHARED_LIBEXT   = .so
 
 OBJ_MERGE_CMD		= \
-	/usr/bin/ld -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	/usr/bin/ld -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 ADDITIONAL_LDFLAGS +=
 STATIC_LDFLAGS +=
@@ -796,7 +797,7 @@ DLLWRAP		 = dllwrap
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
@@ -823,7 +824,7 @@ DLLWRAP		 = dllwrap
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
@@ -843,7 +844,7 @@ ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) -G -Wl,-h,$(LIB_LINK_SONAME_FILE) \
-	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
+	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
@@ -863,7 +864,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
@@ -886,7 +887,7 @@ endif
 ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(LIB_LINK_VERSION_FILE) $^ \
+        $(CC) $(SHARED_LD_PREFLAGS) -shared $(ALL_LDFLAGS) -o $(LIB_LINK_VERSION_FILE) $^ \
 	  $(SHARED_LD_POSTFLAGS);\
         mv $(LIB_LINK_VERSION_FILE) $(LIB_LINK_OBJ_DIR);\
         (cd $(LIB_LINK_OBJ_DIR); \
@@ -917,7 +918,7 @@ SHARED_LIB_LINK_CMD     = \
         (cd $(LIB_LINK_OBJ_DIR); \
 	  $(CC) $(SHARED_LD_PREFLAGS) \
 	    -v $(SHARED_CFLAGS) -shared \
-	    -o $(LIB_LINK_VERSION_FILE) `ls -1 *\.o */*\.o` \
+	    $(ALL_LDFLAGS) -o $(LIB_LINK_VERSION_FILE) `ls -1 *\.o */*\.o` \
 	    $(SHARED_LD_POSTFLAGS) ;\
           rm -f $(LIB_LINK_FILE); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
