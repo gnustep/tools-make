@@ -131,6 +131,12 @@ install-java_package:: internal-install-java-dirs
 	    for file in $(JAVA_OBJ_FILES) __done; do \
 	      if [ $$file != __done ]; then \
 	        $(INSTALL_DATA) $$file $(_WE_INSTALL_INTO)/$$file ; \
+		base=`dirname $$file`/`basename $$file .class` ; \
+		for sub in $${base}[$$]*.class __done; do \
+	          if [ $$sub != __done ]; then \
+		    $(INSTALL_DATA) $$sub $(_WE_INSTALL_INTO)/$$sub ; \
+		  fi; \
+		done; \
 	      fi; \
 	    done; \
 	  fi
@@ -140,6 +146,16 @@ install-java_package:: internal-install-java-dirs
 #
 internal-java_package-clean::
 	rm -f $(JAVA_OBJ_FILES)
+	for file in $(JAVA_OBJ_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    base=`dirname $$file`/`basename $$file .class` ; \
+	    for sub in $${base}[$$]*.class __done; do \
+	      if [ $$sub != __done ]; then \
+		rm -f $$sub; \
+	      fi; \
+	    done; \
+	  fi; \
+	done;
 	rm -f $(JAVA_JNI_OBJ_FILES)
 
 internal-java_package-distclean::

@@ -1,3 +1,8 @@
+2001-06-18 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* java.make: Added code to cope with install and clean for inner
+	classes (extra class files generated from .java files)
+
 2001-05-29  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.0.1
