@@ -1,3 +1,7 @@
+Tue May 27 10:54:36 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/ctool.make: Old deprecation warning removed.
+	
 Tue May 27 10:02:46 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* relative_path.sh: Added code to normalize input paths by
