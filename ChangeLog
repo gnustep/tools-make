@@ -1,3 +1,7 @@
+Sat Jan  2 12:26:20 1999  Adam Fedor  <fedor@ultra.doc.com>
+
+	* configure.in: Check for DPS/dpsNXargs.h header.
+
 Wed Dec 30 15:08:14 1998  Adam Fedor  <fedor@doc.com>
 
 	* target.make (TARGET_SYSTEM_LIBS): Add FreeBSD specific libs. Use

@@ -28,7 +28,8 @@ AC_CONFIG_HEADER(config.h)
 # defined, but if not then we have a global default.
 #--------------------------------------------------------------------
 AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
-echo /usr/GNUstep ;
+GNUSTEP_SYSTEM_ROOT=/usr/GNUstep ;
+echo $GNUSTEP_SYSTEM_ROOT ;
 else
 echo $GNUSTEP_SYSTEM_ROOT ;
 fi`)
@@ -122,6 +123,9 @@ CPPFLAGS="${CPPFLAGS} ${X_INCLUDE}"
 # We care about this header file on the target not host system
 AC_HAVE_HEADERS(DPS/dpsclient.h, DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=1',
 	DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=0')
+AC_HAVE_HEADERS(DPS/dpsNXargs.h, 
+	DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS=1",
+	DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS=0")
 
 # Restore back to the original
 CPPFLAGS=${ORIG_CPPFLAGS}
