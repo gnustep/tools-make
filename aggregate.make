@@ -33,6 +33,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The list of directory names with the subprojects 
 # are in the makefile variable SUBPROJECTS
 #
+SUBPROJECTS:=$(strip $(SUBPROJECTS))
 
 #
 # Internal targets

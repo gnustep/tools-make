@@ -37,6 +37,8 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # where xxx is the service name
 #
 
+SERVICE_NAME:=$(strip $(SERVICE_NAME))
+
 ifeq ($(INTERNAL_svc_NAME),)
 # This part gets included by the first invoked make process.
 internal-all:: $(SERVICE_NAME:=.all.svc.variables)

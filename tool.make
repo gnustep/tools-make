@@ -29,6 +29,8 @@
 ifeq ($(TOOL_MAKE_LOADED),)
 TOOL_MAKE_LOADED=yes
 
+TOOL_NAME:=$(strip $(TOOL_NAME))
+
 #
 # Include in the common makefile rules
 #

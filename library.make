@@ -42,6 +42,8 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 #	Where xxx is the name of the library
 #
 
+LIBRARY_NAME:=$(strip $(LIBRARY_NAME))
+
 ifeq ($(INTERNAL_library_NAME),)
 # This part is included the first time make is invoked.
 

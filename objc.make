@@ -29,6 +29,8 @@ OBJC_PROGRAM_MAKE_LOADED=yes
 # xxx We need to prefix the target name when cross-compiling
 #
 
+OBJC_PROGRAM_NAME:=$(strip $(OBJC_PROGRAM_NAME))
+
 #
 # Include in the common makefile rules
 #

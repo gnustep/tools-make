@@ -23,6 +23,8 @@
 ifeq ($(TEST_TOOL_MAKE_LOADED),)
 TEST_TOOL_MAKE_LOADED=yes
 
+TEST_TOOL_NAME:=$(strip $(TEST_TOOL_NAME))
+
 #
 # Include in the common makefile rules
 #

@@ -23,6 +23,8 @@
 ifeq ($(TEST_APPLICATION_MAKE_LOADED),)
 TEST_APPLICATION_MAKE_LOADED=yes
 
+TEST_APP_NAME:=$(strip $(TEST_APP_NAME))
+
 #
 # Include in the common makefile rules
 #

@@ -36,6 +36,8 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # where xxx is the bundle name
 #
 
+BUNDLE_NAME:=$(strip $(BUNDLE_NAME))
+
 ifeq ($(INTERNAL_bundle_NAME),)
 # This part is included the first time make is invoked.
 

@@ -1,3 +1,17 @@
+Mon Feb 15  8:48:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* aggregate.make: Strip space from name variable before use.
+	* application.make: ditto
+	* bundle.make: ditto
+	* documentation.make: ditto
+	* library.make: ditto
+	* objc.make: ditto
+	* service.make: ditto
+	* test-application.make: ditto
+	* test-library.make: ditto
+	* test-tool.make: ditto
+	* tool.make: ditto
+
 Mon Feb  8 08:24:39 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
         * ld_lib_path.csh: Rename additional_library_paths to

@@ -36,6 +36,8 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # where xxx is the application name
 #
 
+APP_NAME:=$(strip $(APP_NAME))
+
 # Determine the application directory extension
 ifeq ($(profile), yes)
   APP_EXTENSION = profile

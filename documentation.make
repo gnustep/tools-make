@@ -40,6 +40,9 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 #	Where xxx is the name of the document
 #
 
+DOCUMENT_NAME:=$(strip $(DOCUMENT_NAME))
+DOCUMENT_TEXT_NAME:=$(strip $(DOCUMENT_TEXT_NAME))
+
 ifeq ($(INTERNAL_doc_NAME)$(INTERNAL_textdoc_NAME),)
 # This part is included the first time make is invoked.
 
