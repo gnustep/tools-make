@@ -63,7 +63,10 @@ install: all
 		$(tooldir) \
 		$(prefix)/share
 	$(INSTALL_PROGRAM) -m 755 which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
-	for f in config.guess config.sub install-sh mkinstalldirs *.sh; do \
+	for f in config.guess config.sub install-sh mkinstalldirs \
+		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
+		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
+		transform_paths.sh vendor.sh ; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
@@ -78,7 +81,23 @@ install: all
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
-	rm -rf $(makedir)
+	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib
+	for f in config.guess config.sub install-sh mkinstalldirs \
+		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
+		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
+		transform_paths.sh vendor.sh ; do \
+	  rm -f $(makedir)/$$f; \
+	done
+	rm -f $(tooldir)/openapp; \
+	rm -f $(tooldir)/debugapp; \
+	for f in aggregate.make application.make bundle.make \
+		common.make brain.make library.make rules.make target.make \
+		tool.make test-library.make names.make objc.make \
+		MediaBook.func; do \
+	  rm -f $(makedir)/$$f; \
+	done
+	rm -f $(prefix)/share/config.site
+	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
 
 clean:
 	rm -f *~ which_lib

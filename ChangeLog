@@ -1,3 +1,10 @@
+Thu Nov 13 11:35:31 1997  Scott Christley  <scottc@net-community.com>
+
+	* GNUstep.sh.in: Add user and local to PATH.  Make user root
+	be GNUstep directory in home directory.
+	* GNUmakefile.in (uninstall): Only uninstall files that we
+	have installed.
+
 Thu Nov 13 09:27:33 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* test.make: Renamed to test-library.make.
