@@ -47,7 +47,7 @@ $(GNUSTEP_INSTANCE)/dependencies:
 
 internal-doc-install_:: 
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \
-	$(TAR) cf - $(GNUSTEP_INSTANCE) | \
+	$(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_INSTANCE) | \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \

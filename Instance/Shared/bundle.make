@@ -362,9 +362,23 @@ endif
 # files; and the symlinks are dereferenced when the bundle is
 # installed (which is why the 'h' option is there).  I've never used
 # this feature, but it was requested by some of our users.
+#
+
+# Another common request is to ignore/drop CVS and .svn
+# directories/files from the bundle when installing.  You don't really
+# want to install those in case they ended up in the bundle when you
+# recursively copied some resources in it from your source code.
+# This is obtained by using the 'X' flag.
+# 
+# Because of compatibility issues with older versions of GNU tar (not
+# to speak of non-GNU tars), we use the X option rather than the
+# --exclude= option.  The X option requires as argument a file listing
+# files to exclude.  We use a standard exclude file list which we store
+# in GNUSTEP_MAKEFILES.
+#
 shared-instance-bundle-install:: $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)
 	$(ECHO_INSTALLING_BUNDLE)rm -rf $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
-	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
 	  | (cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
@@ -373,7 +387,7 @@ endif
 
 shared-instance-bundle-copy_into_dir::
 	$(ECHO_COPYING_BUNDLE_INTO_DIR)rm -rf $(COPY_INTO_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
-	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
 	  | (cd $(COPY_INTO_DIR); $(TAR) xf -)$(END_ECHO)
 
 shared-instance-bundle-uninstall::

@@ -1,3 +1,15 @@
+Thu Sep 02 17:01:11 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* tar-exclude-list: New file currently containing CVS and .svn.
+	* GNUmakefile.in: Install the new file.
+	* Instance/Shared/bundle.make: Modified TAR commands to exclude
+	files listed in the tar-exclude-list file.
+	* Instance/framework.make: Same changes.
+	* Instance/gswbundle.make: Same changes.
+	* Instance/Documentation/autogsdoc.make: Same changes.
+	* Instance/Documentation/javadoc.make: Same changes.
+	* Instance/Documentation/latex.make: Same changes.
+	
 Tue Aug 31 16:21:41 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/library.make: If xxx_INTERFACE_VERSION or xxx_SOVERSION

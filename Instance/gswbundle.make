@@ -252,7 +252,7 @@ $(GSWBUNDLE_DIR)/Resources/WebServer:
 
 internal-gswbundle-install_:: $(GSWBUNDLE_INSTALL_DIR) shared-instance-headers-install
 	$(ECHO_INSTALLING)rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
-	(cd $(GNUSTEP_BUILD_DIR); $(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME)) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GSWBUNDLE_DIR_NAME)) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)$(END_ECHO)
 endif
