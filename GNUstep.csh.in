@@ -96,7 +96,7 @@ unset temp_path dir
 
 source ${GNUSTEP_MAKEFILES}/ld_lib_path.csh
 
-#
+# FIXME/TODO - use GNUSTEP_PATHPREFIX_LIST here
 set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
 
 if ( ! ${?CLASSPATH} ) then
