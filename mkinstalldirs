@@ -11,22 +11,13 @@ else
   CHOWN_TO=""
 fi
 
+MKDIR="mkdir"
+
 defaultIFS=' 	
 '
 IFS="${IFS-${defaultIFS}}"
 
 errstatus=0
-# Test mkdir -p
-mkdir -p .test-mkdir || errstatus=$?
-rmdir .test-mkdir
-if test $errstatus != 0 -o -d "-p"; then
-  if test -d "-p"; then
-    rmdir -p
-  fi
-  MKDIR="mkdir"
-else
-  MKDIR="mkdir -p"
-fi
 
 for file in ${1+"$@"} ; do 
    oIFS="${IFS}"
@@ -41,9 +32,9 @@ for file in ${1+"$@"} ; do
      pathcomp="${pathcomp}${d}"
 
      if test ! -d "${pathcomp}"; then
-        echo "$MKDIR $pathcomp" 1>&2
+        #echo "$MKDIR $pathcomp" 1>&2
 	if test ! -z "${CHOWN_TO}"; then
-          echo "chown $CHOWN_TO $pathcomp" 1>&2
+          #echo "chown $CHOWN_TO $pathcomp" 1>&2
           ($MKDIR "${pathcomp}" && chown $CHOWN_TO "${pathcomp}") || errstatus=$?
 	else
           $MKDIR "${pathcomp}" || errstatus=$?
