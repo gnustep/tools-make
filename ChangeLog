@@ -1,3 +1,13 @@
+Wed Mar  6 10:15:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (MAIN_MODEL_FILE): Do not pass down to submakes here.
+	* Instance/application.make (MAIN_MODEL_FILE): Define here.  Also,
+	simplified code to add it to the info plist.
+	* Instance/bundle.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/gswapp.make: Idem.
+	* Instance/palette.make: Idem.
+	
 Wed Mar  6 09:45:01 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* clean_os.sh: Remove minor version number for Darwin 5 (Patch
