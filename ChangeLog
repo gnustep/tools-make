@@ -1,3 +1,10 @@
+Wed Feb 26 18:34:37 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make ($(APP_INFO_PLIST_FILE)): Implemented
+	merging the xxxInfo.plist into Info.plist on Apple.  Use
+	CFBundleIconFile, and not NSIcon, on Apple.  Quote full path of
+	xxxInfo.plist file.
+
 2003-02-16  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.5.2
