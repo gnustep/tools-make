@@ -1,3 +1,10 @@
+2003-02-14  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (Darwin/SHARED_LIBRARY_LINK_CMD): Include object files
+	before library depends.
+
+	* Documentation/gnustep-howto.texi, install.texi: Updates.
+
 Mon Feb 10 13:42:54 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/source-distribution.make: Define a CVS variable, and use
