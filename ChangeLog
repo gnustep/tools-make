@@ -1,5 +1,10 @@
 1999-10-01  Lyndon Tremblay  <ltremblay@mezzanine.xnot.com>
 
+	* openapp.in: Added working Java application support
+	* rules.make: Likewise, and general Java changes.
+	
+1999-10-01  Lyndon Tremblay  <ltremblay@mezzanine.xnot.com>
+
 	* java-wrapper.make: Removed.
 	* java-application.make: Removed.
 	* java-executable.template: Removed.
