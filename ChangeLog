@@ -1,7 +1,8 @@
 2000-08-02  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.sh.in: Add GNUSTEP_NETWORK_ROOT back into prefix list.
-	* GNUstep.csh.in: Likewise.
+	* GNUstep.csh.in: Likewise. (patches from Jeff Teunissen 
+	<deek@dusknet.dhs.org>).
 
 Sat Jul 29 22:49:23 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
