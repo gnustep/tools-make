@@ -66,8 +66,13 @@ internal-install:: $(APP_NAME:=.install.app.variables)
 
 internal-uninstall:: $(APP_NAME:=.uninstall.app.variables)
 
+# Compute them manually to avoid having to do a recursive make
+# invocation just to remove them.
+_PSWRAP_C_FILES = $(foreach app,$(APP_NAME),$($(app)_PSWRAP_FILES:.psw=.c))
+_PSWRAP_H_FILES = $(foreach app,$(APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
+
 internal-clean:: $(APP_NAME:=.clean.app.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(APP_EXTENSION); do \
