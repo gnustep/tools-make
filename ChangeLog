@@ -1,3 +1,10 @@
+Tue Jan 15 00:42:23 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* which_lib.c: Reorganized and rewritten most code again.
+
+	* configure.in (AC_HAVE_HEADERS): Do not check for sys/errno.h.
+	* configure: Regenerated.
+	
 Mon Jan 14 20:06:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* which_lib.c (search_for_library_with_type): Bug fix - check that
