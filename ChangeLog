@@ -1,3 +1,13 @@
+Wed Apr 10 14:18:29 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* relative_path.sh: Fixed bug when looping - ignore path
+	components which are '.' - fixing problem with frameworks and
+	gnustep flattened. (Patch from Sir Raorn (<raorn@binec.ru>).
+	* Instance/documentation.make (internal-doc-install_): Depend on creating
+	GNUSTEP_DOCUMENTATION_INFO.
+	($(GNUSTEP_DOCUMENTATION_INFO): Rule to create the dir added.
+	(Patch from Sir Raorn modified)
+	
 Wed Apr 10 14:02:55 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Documentation/makedoc.make (internal-doc-install): Depend on
