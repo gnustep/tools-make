@@ -1,3 +1,14 @@
+Thu Apr  4 13:14:35 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	This should fix RPM builds on virgin envs -
+	* GNUstep.sh.in: Removed convert_win_paths and other window
+	specific variables; simply set GNUSTEP_PATHPREFIX_LIST and use
+	that to set CLASSPATH as well.  Made sure we never call unset for
+	an unknown variable.  Added verbose comments about technical
+	pitfalls of sourced files.
+	* ld_lib_path.sh: Make sure we don't unset variables unless we set
+	them.
+
 Thu Apr  4 13:10:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in: Quoted paths.
