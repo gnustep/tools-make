@@ -314,14 +314,15 @@ AC_SUBST(BACKEND_BUNDLE)
 CFLAGS=`echo $CFLAGS | sed -e 's/-g //'`
 
 # Set location of GNUstep dirs for later use
-GNUSTEP_HDIR="$prefix/Library/Headers"
 if test "$GNUSTEP_FLATTENED" = yes; then
   GNUSTEP_LDIR="$prefix/Library/Libraries"
+  GNUSTEP_HDIR="$prefix/Library/Headers"
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir="$clean_target_cpu/$clean_target_os"
   GNUSTEP_LDIR="$prefix/Library/Libraries/$obj_dir"
+  GNUSTEP_HDIR="$prefix/Library/Headers/${ac_cv_library_combo}"
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
@@ -347,7 +348,11 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 
 # The following are needed to compile the test programs
 if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
-  OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Library/Headers"
+  if test "$GNUSTEP_FLATTENED" = yes; then
+    OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Library/Headers"
+  else
+    OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Library/Headers/${ac_cv_library_combo}"
+  fi
   OBJC_LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 fi
 

@@ -60,7 +60,7 @@ ${mydir}/mkinstalldirs  "$basepath" \
 		"$basepath"/Library/Documentation/man \
 		"$basepath"/Library/Fonts \
 		"$basepath"/Library/Frameworks \
-		"$basepath"/Library/Headers/${GNUSTEP_TARGET_DIR} \
+		"$basepath"/Library/Headers/${MAYBE_LIBRARY_COMBO}/${GNUSTEP_TARGET_DIR} \
 		"$basepath"/Library/Images \
 		"$basepath"/Library/KeyBindings \
 		"$basepath"/Library/Libraries/${GNUSTEP_TARGET_LDIR} \

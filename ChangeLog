@@ -1,3 +1,18 @@
+Tue Jul 29 12:06:02 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: If flattened, add library combo to headers
+	directory.
+	* configure: Regenerated.
+	* config.site (includedir): If flattened, add library combo.
+	* GNUmakefile.in (MAYBE_LIBRARY_COMBO): Define.
+	Export GNUSTEP_TARGET_DIR, GNUSTEP_TARGET_LDIR and
+	MAYBE_LIBRARY_COMBO.
+	* create_domain_dir_tree.sh: Use MAYBE_LIBRARY_COMBO when creating
+	the headers dir.
+	* common.make (GNUSTEP_HEADERS): Define using library combo if
+	not flattened.
+	(GNUSTEP_HEADERS_DIRS): Use library combo if not flattened.
+
 Mon Jul 28 11:49:18 2003  Pete French <pete@twisted.org.uk>
 
 	* Instance/application.make (MAIN_MARKUP_FILE): New variable.

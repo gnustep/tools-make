@@ -89,7 +89,11 @@ fi
 
 # Change the include directory default
 if test "$includedir" = "\${prefix}/include" ; then
+  if [ -z "$GNUSTEP_FLATTENED" ]; then
+   includedir="\${prefix}/Headers/${LIBRARY_COMBO}"
+  else
    includedir="\${prefix}/Headers"
+  fi
 fi
 
 # xxx What about oldincludedir?

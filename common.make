@@ -188,7 +188,11 @@ GNUSTEP_APPS                 = $(GNUSTEP_INSTALLATION_DIR)/Applications
 GNUSTEP_TOOLS                = $(GNUSTEP_INSTALLATION_DIR)/Tools
 GNUSTEP_LIBRARY              = $(GNUSTEP_INSTALLATION_DIR)/Library
 GNUSTEP_SERVICES             = $(GNUSTEP_INSTALLATION_DIR)/Library/Services
-GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers
+ifeq ($(GNUSTEP_FLATTENED),yes)
+  GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers
+else
+  GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers/$(LIBRARY_COMBO)
+endif
 GNUSTEP_BUNDLES 	     = $(GNUSTEP_INSTALLATION_DIR)/Library/Bundles
 GNUSTEP_FRAMEWORKS	     = $(GNUSTEP_INSTALLATION_DIR)/Library/Frameworks
 GNUSTEP_PALETTES 	     = $(GNUSTEP_LIBRARY)/ApplicationSupport/Palettes
@@ -210,14 +214,14 @@ endif
 ifeq ($(GNUSTEP_FLATTENED),)
 
 GNUSTEP_HEADERS_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_USER_ROOT)/Library/Headers \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers
+  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO) \
+  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR)\
+  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO) \
+  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR)\
+  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO) \
+  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR)\
+  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)
 
 GNUSTEP_LIBRARIES_DIRS = \
   $(GNUSTEP_USER_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
@@ -281,17 +285,31 @@ endif
 #
 # Determine Foundation header subdirectory based upon library combo
 #
+# TODO: remove those as now all headers are in a LIBRARY_COMBO
+# directory if the system is not flattened; and if the system is
+# flattened, support for multiple foundation libs is simply not built
+# in.
+ifeq ($(GNUSTEP_FLATTENED),yes)
 GNUSTEP_HEADERS_FND_DIRS = \
   $(GNUSTEP_USER_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR) \
   $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR) \
   $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR) \
   $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(GNUSTEP_FND_DIR)
+else
+GNUSTEP_HEADERS_FND_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR) \
+  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR) \
+  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR) \
+  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_FND_DIR)
+endif
 
 ifeq ($(FOUNDATION_LIB), fd)
 
 # Map OBJC_RUNTIME_LIB values to OBJC_RUNTIME values as used by
 # libFoundation.  TODO/FIXME: Drop all this stuff and have
 # libFoundation use OBJC_RUNTIME_LIB directly.
+
+# TODO: Remove all this cruft.  Standardize.
 ifeq ($(OBJC_RUNTIME_LIB), nx)
   OBJC_RUNTIME = NeXT
 endif
@@ -327,9 +345,10 @@ endif
 #
 # Overridable compilation flags
 #
-# FIXME: We use -fno-strict-aliasing to prevent annoying gcc3.3 compiler warnings.
-# But we really need to investigate why the warning appear in the first place,
-# if they are serious or not, and what can be done about it.
+# FIXME: We use -fno-strict-aliasing to prevent annoying gcc3.3
+# compiler warnings.  But we really need to investigate why the
+# warning appear in the first place, if they are serious or not, and
+# what can be done about it.
 OBJCFLAGS = $(OBJC_NO_IMPORT_FLAGS) -fno-strict-aliasing
 CFLAGS =
 OBJ_DIR_PREFIX =
