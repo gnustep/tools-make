@@ -1,3 +1,8 @@
+Thu Oct 30 15:49:53 1997  Scott Christley  <scottc@stetson.net-community.com>
+
+	* rules.make: Fix variables when building test applications.
+	* test.make: Fix rules for building test applications.
+
 Thu Oct 30 13:23:31 1997  Scott Christley  <scottc@net-community.com>
 
 	* objc.make: New file.

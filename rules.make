@@ -169,7 +169,7 @@ endif
 # bundle recursive make rules
 %$(BUNDLE_EXTENSION) : FORCE
 	@echo Making $*...
-	$(MAKE) --no-print-directory --no-keep-going internal-bundle-all \
+	@$(MAKE) --no-print-directory --no-keep-going internal-bundle-all \
 		  BUNDLE_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
@@ -192,7 +192,7 @@ ALL_TEST_BUNDLE_LIBS = $(ADDITIONAL_BUNDLE_LIBS)
 ALL_TEST_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
    $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
 
-ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
+ALL_TEST_APP_LIBS = $(ADDITIONAL_APP_LIBS) $(AUXILIARY_GUI_LIBS) \
    $(BACKEND_LIBS) $(GUI_LIBS) $(AUXILIARY_TOOL_LIBS) \
    $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
@@ -211,8 +211,8 @@ ALL_TEST_TOOL_LIBS := \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
-ALL_TEST_GUI_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_GUI_LIBS) \
+ALL_TEST_APP_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_APP_LIBS) \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
@@ -257,14 +257,14 @@ ALL_TEST_GUI_LIBS := \
 %.testapp : FORCE
 	@echo Making $*...
 	@$(MAKE) --no-print-directory --no-keep-going internal-testapp-all \
-		  TEST_APP_NAME=$* \
+		  INTERNAL_TEST_APP_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 		  RESOURCE_FILES="$($*_RESOURCES)" \
 		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
 		  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) $($*_INCLUDE_DIRS)" \
-		  ADDITIONAL_GUI_LIBS="$($*_LIBS)" \
+		  ADDITIONAL_APP_LIBS="$($*_LIBS)" \
 		  ADDITIONAL_LIB_DIRS="$(ADDITIONAL_LIB_DIRS) $($*_LIB_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
