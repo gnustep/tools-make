@@ -64,6 +64,17 @@ $(PALETTE_NAME):
 else
 # This part gets included the second time make is invoked.
 
+.PHONY: internal-palette-all \
+        internal-palette-install \
+        internal-palette-uninstall \
+        internal-palette-clean \
+        internal-palette-distclean \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        build-palette-dir \
+        build-palette \
+        palette-resource-files
+
 # On Solaris we don't need to specifies the libraries the palette needs.
 # How about the rest of the systems? ALL_PALETTE_LIBS is temporary empty.
 #ALL_PALETTE_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
@@ -76,23 +87,23 @@ else
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
-internal-palette-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-		build-palette-dir build-palette \
-		after-$(TARGET)-all
+internal-palette-all:: before-$(TARGET)-all \
+                       $(GNUSTEP_OBJ_DIR) \
+                       build-palette-dir \
+                       build-palette \
+                       after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
 PALETTE_DIR_NAME := $(INTERNAL_palette_NAME).palette
-PALETTE_FILE := \
-    $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
+PALETTE_FILE := $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
 PALETTE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(PALETTE_DIR_NAME)/Resources/$(d))
-ifeq ($(strip $(RESOURCE_FILES)),)
-  override RESOURCE_FILES=""
-endif
 
-build-palette-dir::$(PALETTE_DIR_NAME)/Resources $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(PALETTE_RESOURCE_DIRS)
+build-palette-dir::$(PALETTE_DIR_NAME)/Resources \
+                   $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                   $(PALETTE_RESOURCE_DIRS)
 
 $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	$(MKDIRS) $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
@@ -104,18 +115,18 @@ build-palette:: $(PALETTE_FILE) palette-resource-files
 
 $(PALETTE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
-		-o $(LDOUT)$(PALETTE_FILE) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS)
+	  -o $(LDOUT)$(PALETTE_FILE) \
+	  $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+	  $(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS)
 
 palette-resource-files:: $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
-$(PALETTE_DIR_NAME)/Resources/palette.table
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying resources into the palette wrapper..."; \
-	  for f in "$(RESOURCE_FILES)"; do \
-	    cp -r $$f $(PALETTE_DIR_NAME)/Resources; \
-	  done \
-	fi)
+                         $(PALETTE_DIR_NAME)/Resources/palette.table
+ifneq $(strip $(RESOURCE_FILES)
+	echo "Copying resources into the palette wrapper..."; \
+	for f in "$(RESOURCE_FILES)"; do \
+	  cp -r $$f $(PALETTE_DIR_NAME)/Resources; \
+	done
+endif
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(INTERNAL_palette_NAME)
