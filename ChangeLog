@@ -1,3 +1,10 @@
+Fri Oct 11 11:54:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make ($(DUMMY_FRAMEWORK_FILE)): Rewritten the
+	shell code to extract the class names to be faster by using a
+	single sed process with multiple commands rather than piping
+	through awk.
+
 Fri Oct 11 11:14:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (OBJC_CLASS_SECTION): Removed.
