@@ -631,8 +631,7 @@ SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
-\
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) \
 		-o $@ \
 		-framework Foundation \
 		-framework System \
