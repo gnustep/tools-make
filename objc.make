@@ -20,9 +20,33 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #
+# The name of the ObjC program is in the OBJC_PROGRAM_NAME variable.
+#
+# xxx We need to prefix the target name when cross-compiling
+#
+
+#
 # Include in the common makefile rules
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
+
+ifeq ($(INTERNAL_objc_program_NAME),)
+
+# This part gets included by the first invoked make process.
+internal-all:: $(OBJC_PROGRAM_NAME:=.all.objc-program.variables)
+
+internal-install:: $(OBJC_PROGRAM_NAME:=.install.objc-program.variables)
+
+internal-uninstall:: $(OBJC_PROGRAM_NAME:=.uninstall.objc-program.variables)
+
+internal-clean:: $(OBJC_PROGRAM_NAME:=.clean.objc-program.variables)
+
+internal-distclean:: $(OBJC_PROGRAM_NAME:=.distclean.objc-program.variables)
+
+$(OBJC_PROGRAM_NAME):
+	@$(MAKE) --no-print-directory $@.all.objc-program.variables
+
+else
 
 # This is the directory where the objc programss get installed. If you
 # don't specify a directory they will get installed in the GNUstep
@@ -30,50 +54,53 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 OBJC_PROGRAM_INSTALLATION_DIR = \
     $(GNUSTEP_INSTALLATION_DIR)/Tools
 
-#
-# The name of the ObjC program is in the OBJC_PROGRAM_NAME variable.
-#
-# xxx We need to prefix the target name when cross-compiling
-#
-OBJC_PROGRAM_LIST := $(OBJC_PROGRAM_NAME:=.buildobjc)
-OBJC_PROGRAM_FILE = $(OBJC_PROGRAM_LIST)
+ALL_OBJC_LIBS = $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+	 $(TARGET_SYSTEM_LIBS)
+
+ALL_OBJC_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_OBJC_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
 
 #
 # Internal targets
 #
 
-$(OBJC_PROGRAM_NAME) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(OBJC_PROGRAM_NAME) \
+$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME): \
+		$(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+	$(LD) $(ALL_LDFLAGS) $(LDOUT)$@ \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_OBJC_LIBS)
 
 #
 # Compilation targets
 #
-internal-all:: $(GNUSTEP_OBJ_DIR) $(OBJC_PROGRAM_LIST)
+internal-objc-program-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME) after-$(TARGET)-all
 
-internal-objc-all:: build-objc-program
+before-$(TARGET)-all::
 
-internal-install:: all internal-install-objc-dirs internal-install-objc-program
+after-$(TARGET)-all::
+
+internal-objc-program-install:: internal-install-objc-dirs install-objc-program
 
 internal-install-objc-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs $(OBJC_PROGRAM_INSTALLATION_DIR)
 
-internal-install-objc-program::
-	for f in $(OBJC_PROGRAM_NAME); do \
-	  $(INSTALL_PROGRAM) -m 0755 $$f $(OBJC_PROGRAM_INSTALLATION_DIR); \
-	done
-
-build-objc-program:: $(OBJC_PROGRAM_NAME)
+install-objc-program::
+	$(INSTALL_PROGRAM) -m 0755 $(INTERNAL_objc_program_NAME) \
+	    $(OBJC_PROGRAM_INSTALLATION_DIR);
 
 #
 # Cleaning targets
 #
-internal-clean::
+internal-objc-program-clean::
 	rm -f $(OBJC_PROGRAM_NAME)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)
 
-internal-distclean::
+internal-objc-program-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+endif

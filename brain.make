@@ -107,11 +107,8 @@ FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
 endif
 
 ifeq ($(FOUNDATION_LIB),nx)
-FND_LDFLAGS = -framework Foundation
-FND_LIBS =
-endif
-
-ifeq ($(FOUNDATION_LIB), nx)
+FND_LDFLAGS =
+FND_LIBS = -framework Foundation
 FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
 endif
 
@@ -130,14 +127,13 @@ GUI_LIBS = -lgnustep-gui
 endif
 
 ifeq ($(GUI_LIB),nx)
-  ifneq ($(INTERNAL_APP_NAME),)
+  ifneq ($(INTERNAL_app_NAME),)
     # If we're building an application pass the following additional flags to
     # the linker
-    GUI_LDFLAGS = -sectcreate __ICON __header $(INTERNAL_APP_NAME).iconheader \
+    GUI_LDFLAGS = -sectcreate __ICON __header $(INTERNAL_app_NAME).iconheader \
 		  -segprot __ICON r r -sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff \
-		-framework AppKit
-    GUI_LIBS =
-
+		  -framework AppKit
+  GUI_LIBS =
   endif
 endif
 

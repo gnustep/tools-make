@@ -168,7 +168,7 @@ endif
 #
 # Overridable compilation flags
 #
-OBJCFLAGS = -Wno-implicit -Wno-import
+OBJCFLAGS = -Wno-import
 CFLAGS =
 OBJ_DIR_PREFIX =
 

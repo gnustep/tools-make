@@ -207,8 +207,10 @@ build-testbundle-dir::
 build-testbundle:: $(TEST_BUNDLE_NAME) testbundle-resource-files
 
 testbundle-resource-files::
-	for f in $(RESOURCE_FILES); do \
-	  $(INSTALL_DATA) $$f $(TEST_BUNDLE_DIR_NAME)/$$f ;\
+	for f in $(RESOURCE_FILES) __done; do \
+	  if [ $$f != __done ]; then \
+	    $(INSTALL_DATA) $$f $(TEST_BUNDLE_DIR_NAME)/$$f ;\
+	  fi; \
 	done
 
 internal-testtool-all:: $(TEST_TOOL_NAME)

@@ -1,6 +1,30 @@
+Wed Nov 12 13:29:24 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make (OBJCFLAGS): Removed the -Wno-implicit flag since it
+	could hide some programming errors.
+
 Tue Nov 11 14:43:56 1997  Adam Fedor  <fedor@doc.com>
 
 	* target.make (Solaris/BUNDLE_LDFLAGS): Change the flags.
+
+Fri Nov  7 16:33:22 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	Reworked a bunch of files to be more general and faster.
+	* clean.make: File removed.
+	* GNUmakefile.in: Removed the clean.make.
+	* rules.make: Reworked to be simpler and faster.
+	* library.make: Reworked for the new rules.make.
+	* names.make: Likewise.
+	* objc.make: Likewise.
+	* tool.make: Likewise.
+	* application.make: Likewise. Wrote the install target support.
+
+	* config.make.in: New definition for TAR.
+	* test.make (testbundle-resource-files): Added __done at the end of the
+	for list command so the shell doesn't crash if the list is empty.
+	* brain.make: Small changes on the OPENSTEP support.
+	* target.make: Added LIBRARIES_DEPEND_UPON to the list of libraries
+	for OPENSTEP.
 
 Sat Nov  1 13:17:07 1997  Scott Christley  <scottc@net-community.com>
 

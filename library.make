@@ -38,38 +38,31 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 #	Where xxx is the name of the library
 #
 
-ifeq ($(INTERNAL_LIBRARY_NAME),)
+ifeq ($(INTERNAL_library_NAME),)
 # This part is included the first time make is invoked.
 
-internal-all:: $(LIBRARY_NAME:=.buildlib)
+internal-all:: $(LIBRARY_NAME:=.all.library.variables)
 
-internal-install:: all $(LIBRARY_NAME:=.installlib)
+internal-install:: $(LIBRARY_NAME:=.install.library.variables)
 
-internal-uninstall:: $(LIBRARY_NAME:=.uninstalllib)
+internal-uninstall:: $(LIBRARY_NAME:=.uninstall.library.variables)
 
-#
-# Cleaning targets
-#
-internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
+internal-clean:: $(LIBRARY_NAME:=.clean.library.variables)
 
-internal-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+internal-distclean:: $(LIBRARY_NAME:=.distclean.library.variables)
 
 $(LIBRARY_NAME):
-	@$(MAKE) --no-print-directory $@.buildlib
+	@$(MAKE) --no-print-directory $@.all.library.variables
 
 else
 # This part gets included the second time make is invoked.
 
 ifeq ($(shared), yes)
-LIBRARY_FILE = $(INTERNAL_LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
+LIBRARY_FILE = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
 LIBRARY_FILE_EXT=$(SHARED_LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 else
-LIBRARY_FILE = $(INTERNAL_LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
+LIBRARY_FILE = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
 LIBRARY_FILE_EXT=$(LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
 endif
@@ -85,22 +78,25 @@ endif
 #
 # Compilation targets
 #
-internal-all:: $(GNUSTEP_OBJ_DIR) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
-		import-library
+internal-library-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
+		$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) import-library \
+		after-$(TARGET)-all
 
 $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LIB_LINK_CMD)
+
+before-$(TARGET)-all::
+
+after-$(TARGET)-all::
 
 import-library::
 
 #
 # Install and uninstall targets
 #
-internal-install:: internal-install-dirs internal-install-lib \
+internal-library-install:: internal-install-dirs internal-install-lib \
 	internal-install-headers
    
-before-install:: all
-
 internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
@@ -130,7 +126,7 @@ internal-install-lib::
 
 internal-install-import-lib::
 
-internal-uninstall:: internal-uninstall-headers internal-uninstall-lib
+internal-library-uninstall:: internal-uninstall-headers internal-uninstall-lib
 
 internal-uninstall-headers::
 	for file in $(HEADER_FILES); do \
@@ -149,10 +145,10 @@ internal-uninstall-import-lib::
 #
 # Cleaning targets
 #
-internal-clean::
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
+internal-library-clean::
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean::
+internal-library-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
@@ -160,6 +156,6 @@ internal-distclean::
 #
 # Testing targets
 #
-internal-check::
+internal-library-check::
 
 endif

@@ -23,10 +23,16 @@
 # Run config.guess to guess the host
 
 ifneq ($(internal_names_clean), yes)
-export GNUSTEP_HOST := $(shell $(CONFIG_GUESS_SCRIPT))
-export GNUSTEP_HOST_CPU := $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST))
-export GNUSTEP_HOST_VENDOR := $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST))
-export GNUSTEP_HOST_OS := $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST))
+  ifeq ($(GNUSTEP_HOST),)
+    GNUSTEP_HOST := $(shell $(CONFIG_GUESS_SCRIPT))
+    GNUSTEP_HOST_CPU := $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST))
+    GNUSTEP_HOST_VENDOR := $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST))
+    GNUSTEP_HOST_OS := $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST))
+
+    GNUSTEP_HOST_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU))
+    GNUSTEP_HOST_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR))
+    GNUSTEP_HOST_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS))
+  endif
 endif
 
 #
@@ -52,9 +58,12 @@ GNUSTEP_TARGET_CPU := $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_TARGET))
 GNUSTEP_TARGET_VENDOR := $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_TARGET))
 GNUSTEP_TARGET_OS := $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_TARGET))
 
+GNUSTEP_TARGET_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_TARGET_CPU))
+GNUSTEP_TARGET_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_TARGET_VENDOR))
+GNUSTEP_TARGET_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_TARGET_OS))
+
 endif
 
-#
-# Clean up the host and target names
-#
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean.make
+ifneq ($(arch),)
+export CLEANED_ARCH = $(foreach a, $(arch), $(shell $(CLEAN_CPU_SCRIPT) $(a)))
+endif
