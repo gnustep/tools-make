@@ -89,16 +89,16 @@ MASTER_MAKE_FILES = \
         application.make bundle.make clibrary.make ctool.make \
         documentation.make framework.make gswapp.make gswbundle.make \
         library.make objc.make java.make java-tool.make palette.make \
-        service.make test-application.make test-library.make test-tool.make \
-        tool.make
+        service.make subproject.make test-application.make \
+        test-library.make test-tool.make tool.make
 
 INSTANCE_MAKE_FILES = \
         rules.make \
         application.make bundle.make clibrary.make ctool.make \
         documentation.make framework.make gswapp.make gswbundle.make \
         library.make objc.make java.make java-tool.make palette.make \
-        service.make test-application.make test-library.make test-tool.make \
-        tool.make
+        service.make subproject.make test-application.make \
+        test-library.make test-tool.make tool.make
 
 INSTANCE_SHARED_MAKE_FILES = headers.make java.make
 
