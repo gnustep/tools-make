@@ -135,7 +135,7 @@ endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
-	      $(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
+	      $(ALL_FRAMEWORK_DIRS) $(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
 ifeq ($(OBJC_COMPILER), NeXT)
 	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 		>$(APP_DIR_NAME)/library_paths.openapp
