@@ -1,3 +1,7 @@
+Thu Apr  4 14:19:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* ld_lib_path.sh: Only set IFS for the little part which needs it.
+
 Thu Apr  4 14:02:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in: Rewritten code setting GNUSTEP_PATHPREFIX_LIST so
