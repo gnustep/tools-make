@@ -11,8 +11,9 @@
 if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
   . %{gs_root}/Makefiles/GNUstep.sh 
 fi
-# Argh - this doesn't work
-CFLAGS=$RPM_OPT_FLAGS 
+if [ "%{gs_configure}" = "YES" ]; then 
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_root}
+fi
 make debug=no
 make debug=yes
 
@@ -26,8 +27,8 @@ fi
 # build the non debugging file list
 mkdir tmp-rpm-build-%{gs_name}
 make debug=no \
-  GNUSTEP_INSTALL_BASE=tpm/ \
-  GNUSTEP_INSTALLATION_DIR=tpm/%{gs_install_dir} \
+  GNUSTEP_INSTALL_BASE=`pwd`/tmp-rpm-build-%{gs_name}/ \
+  GNUSTEP_INSTALLATION_DIR=`pwd`/tmp-rpm-build-%{gs_name}/%{gs_install_dir} \
   filelist=yes install
 rm -rf tmp-rpm-build-%{gs_name}
 
@@ -40,14 +41,16 @@ make debug=yes \
 # Now filter the debugging file list against the non debugging one
 #
 # We use `grep':
-# `-f file-list-debug' gets the lines to match from file-list-debug
+# `-f file-list' gets the lines to match from file-list
 # `-x' gets only matches which match whole lines
 # `-v' inverts the matching, so lines which do not match are outputted
 #
-#mv file-list-debug file-list.tmp
-#grep -f file-list.tmp -v -x file-list >> file-list-debug.tmp
-#echo "%attr (-, root, root)" > file-list-debug
-#cat file-list-debug.tmp >> file-list-debug
+mv file-list-debug file-list.tmp
+grep -f file-list -v -x file-list.tmp >> file-list-debug.tmp
+rm -f file-list.tmp
+echo "%attr (-, root, root)" > file-list-debug
+cat file-list-debug.tmp >> file-list-debug
+rm -f file-list-debug.tmp
 
 #
 # Clean commands
