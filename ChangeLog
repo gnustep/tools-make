@@ -1,3 +1,9 @@
+2001-04-25 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* documentation.make: For Java,
+	$(INTERNAL_doc_NAME)/index.html depends on *any* of the Java source
+	files used.  Rebuilds entire javadoc tree if any file is changed.
+
 2001-04-21  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* framework.make ($(DUMMY_FRAMEWORK_FILE)): fix for empty $classlist.
