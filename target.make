@@ -283,11 +283,12 @@ ifeq ($(FOUNDATION_LIB), apple)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
-
 ifeq ($(CC_BUNDLE), no)
 # GNU compiler
-SHARED_LD_PREFLAGS += -noall_load -read_only_relocs warning \
-	-flat_namespace -undefined warning
+
+INTERNAL_LDFLAGS += -flat_namespace -undefined warning
+
+SHARED_LD_PREFLAGS += -noall_load -read_only_relocs warning
 # Useful flag: -Wl,-single_module.  This flag only
 # works starting with 10.3. libs w/ffcall don't link on darwin/ix86 without it.
 ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
@@ -313,7 +314,7 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 BUNDLE_LD       =  /usr/bin/ld
-BUNDLE_LDFLAGS  += -bundle  -flat_namespace -undefined suppress /usr/lib/bundle1.o
+BUNDLE_LDFLAGS  += -bundle /usr/lib/bundle1.o
 
 else 
 # Apple Compiler

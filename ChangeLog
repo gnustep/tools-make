@@ -1,3 +1,10 @@
+2004-12-19 Richard Frith-Macdonald <rfm@gnu.org>
+
+        * target.make: For gnu compiler on darwin, use flat namespace and
+	undefined warning for executables as well as libraries/bundles so
+	that we can link with libraries/bundles without havint to explictly
+	name all the libraries that thay depend upon.
+
 2004-12-06  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/machines.texi (MacOSX): Update (info from Markus
