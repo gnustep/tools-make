@@ -230,7 +230,7 @@ ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
 	      if [ -f $$l.lproj/$$f -o -d $$l.lproj/$$f ]; then \
 	        cp -fr $$l.lproj/$$f \
-	              $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj/$$f; \
+	              $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj/; \
 	      else \
 	        echo "Warning: $$l.lproj/$$f not found - ignoring"; \
 	      fi; \

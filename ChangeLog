@@ -1,3 +1,9 @@
+2005-01-05  Sergii Stoian <stoian255@ukr.net>
+
+	* Instance/Shared/bundle.make (shared-instance-bundle-all): Fixed
+	copying resource files and localized resource files into the
+	bundle when they are in subdirs.
+	
 2004-12-27  Quentin Mathe <qmathe@club-internet.fr>
        
         * Documentation/README.Darwin: Rewritten the base library install
