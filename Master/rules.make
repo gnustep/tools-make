@@ -74,6 +74,8 @@ endif
 
 check:: before-check internal-check after-check
 
+strings:: before-strings internal-strings after-strings
+
 #
 # Placeholders for internal targets
 #
@@ -155,6 +157,12 @@ internal-check::
 
 after-check::
 
+before-strings::
+
+internal-strings::
+
+after-strings::
+
 # declare targets as PHONY
 
 .PHONY: all before-all internal-all after-all \
@@ -163,7 +171,8 @@ after-check::
 	 uninstall before-uninstall internal-uninstall after-uninstall \
 	 clean before-clean internal-clean after-clean \
 	 distclean before-distclean internal-distclean after-distclean \
-	 check before-check internal-check after-check
+	 check before-check internal-check after-check \
+	 strings before-strings internal-strings after-strings
 
 # Prevent make from trying to remove stuff like
 # libcool.library.all.subprojects thinking that it is a temporary file
