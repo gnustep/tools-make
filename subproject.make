@@ -274,10 +274,10 @@ internal-subproject-install:: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
                               internal-install-headers
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 $(ADDITIONAL_INSTALL_DIRS):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 internal-install-headers::
 ifneq ($(HEADER_FILES),)

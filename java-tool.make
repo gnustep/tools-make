@@ -84,11 +84,11 @@ after-$(TARGET)-all::
 internal-java_tool-install:: install-java_tool
 
 $(JAVA_TOOL_INSTALLATION_DIR):
-	$(MKDIRS) $(JAVA_TOOL_INSTALLATION_DIR)
+	$(MKINSTALLDIRS) $(JAVA_TOOL_INSTALLATION_DIR)
 
 internal-install-java_tool-dirs:: $(JAVA_TOOL_INSTALLATION_DIR)
 ifneq ($(JAVA_OBJ_FILES),)
-	$(MKDIRS) $(addprefix $(JAVA_TOOL_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES)));
+	$(MKINSTALLDIRS) $(addprefix $(JAVA_TOOL_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES)));
 endif
 
 ifeq ($(PRINCIPAL_CLASS),)

@@ -174,7 +174,7 @@ internal-palette-install:: internal-install-dirs
 internal-install-dirs:: $(PALETTE_INSTALL_DIR)
 
 $(PALETTE_INSTALL_DIR):
-	$(MKDIRS) $(PALETTE_INSTALL_DIR)
+	$(MKINSTALLDIRS) $(PALETTE_INSTALL_DIR)
 
 $(PALETTE_DIR_NAME)/Resources:
 	$(MKDIRS) $@

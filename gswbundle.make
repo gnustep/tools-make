@@ -275,7 +275,7 @@ $(GSWBUNDLE_DIR_NAME)/WebServerResources:
 
 internal-bundle-install:: $(GSWBUNDLE_INSTALL_DIR)
 ifneq ($(HEADER_FILES_INSTALL_DIR),)
-	$(MKDIRS) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR);
+	$(MKINSTALLDIRS) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR);
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
@@ -287,9 +287,12 @@ endif
 endif
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
+endif
 
 $(GSWBUNDLE_INSTALL_DIR)::
-	@$(MKDIRS) $@
+	@$(MKINSTALLDIRS) $@
 
 internal-bundle-uninstall::
 ifneq ($(HEADER_FILES),)

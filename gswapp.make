@@ -340,9 +340,12 @@ $(GSWAPP_DIR_NAME)/WebServerResources:
 	@$(MKDIRS) $@
 
 internal-gswapp-install::
-	@($(MKDIRS) $(GNUSTEP_GSWAPPS); \
+	@($(MKINSTALLDIRS) $(GNUSTEP_GSWAPPS); \
 	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -))
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME)
+endif
 
 internal-gswapp-uninstall::
 	(cd $(GNUSTEP_GSWAPPS); rm -rf $(GSWAPP_DIR_NAME))

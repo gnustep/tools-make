@@ -238,16 +238,16 @@ internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
 # Now the rule to create each dir.  NB: Nothing gets executed if the dir 
 # already exists
 $(FINAL_LIBRARY_INSTALL_DIR):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 $(DLL_INSTALLATION_DIR):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 $(ADDITIONAL_INSTALL_DIRS):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 
 internal-install-headers::

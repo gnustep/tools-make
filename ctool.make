@@ -123,14 +123,14 @@ after-$(TARGET)-all::
 internal-ctool-install:: $(CTOOL_INSTALLATION_DIR) install-ctool
 
 $(CTOOL_INSTALLATION_DIR):
-	$(MKDIRS) $(CTOOL_INSTALLATION_DIR)
+	$(MKINSTALLDIRS) $(CTOOL_INSTALLATION_DIR)
 
 install-ctool::
 	$(INSTALL_PROGRAM) -m 0755 \
 	                   $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
 	                   $(CTOOL_INSTALLATION_DIR)
 ifeq ($(GNUSTEP_FLATTENED),)
-	cp $(GNUSTEP_MAKEFILES)/executable.template \
+	$(INSTALL_DATA) $(GNUSTEP_MAKEFILES)/executable.template \
 	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME); \
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
 endif

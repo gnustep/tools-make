@@ -174,11 +174,14 @@ $(SERVICE_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
 
 $(GNUSTEP_SERVICES):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 internal-service-install:: $(GNUSTEP_SERVICES)
 	rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME); \
 	$(TAR) cf - $(SERVICE_DIR_NAME) | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)
+endif
 
 internal-service-uninstall::
 	(cd $(GNUSTEP_SERVICES); rm -rf $(SERVICE_DIR_NAME))

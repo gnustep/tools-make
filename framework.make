@@ -445,6 +445,9 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_FRAMEWORKS_HEADERS)
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
+endif
 	@(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  if test -L "$(INTERNAL_framework_NAME)"; then \
@@ -452,6 +455,12 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 	  fi; \
 	  $(LN_S) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers $(INTERNAL_framework_NAME); \
 	fi;)
+ifneq ($(CHOWN_TO),)
+	@(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
+	if [ "$(HEADER_FILES)" != "" ]; then \
+	  $(CHOWN) $(CHOWN_TO) $(INTERNAL_framework_NAME); \
+	fi;)
+endif
 	@(cd $(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
 	if test -f "$(FRAMEWORK_LIBRARY_FILE)"; then \
 	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
@@ -467,6 +476,14 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 	  $(LN_S) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE) $(SONAME_FRAMEWORK_FILE); \
 	fi; \
 	$(LN_S) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) $(VERSION_FRAMEWORK_LIBRARY_FILE);)
+ifneq ($(CHOWN_TO),)
+	(cd $(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
+	$(CHOWN) $(CHOWN_TO) $(FRAMEWORK_LIBRARY_FILE); \
+	if test -f "$(SONAME_FRAMEWORK_FILE)"; then \
+	  $(CHOWN) $(CHOWN_TO) $(SONAME_FRAMEWORK_FILE); \
+	fi; \
+	$(CHOWN) $(CHOWN_TO) $(VERSION_FRAMEWORK_LIBRARY_FILE))
+endif
 
 else # install DLL
 
@@ -476,16 +493,25 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
                       $(DLL_INSTALLATION_DIR)
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
+endif
 	(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  if test -d "$(INTERNAL_framework_NAME)"; then \
 	    rm -Rf $(INTERNAL_framework_NAME); \
 	  fi; \
-          $(MKDIRS) $(INTERNAL_framework_NAME); \
+          $(MKINSTALLDIRS) $(INTERNAL_framework_NAME); \
 	  cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
             $(TAR) cf - . | (cd  $(GNUSTEP_FRAMEWORKS_HEADERS)/$(INTERNAL_framework_NAME); \
             $(TAR) xf - ); \
 	fi;)
+ifneq ($(CHOWN_TO),)
+	@(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
+	if [ "$(HEADER_FILES)" != "" ]; then \
+	  $(CHOWN) -R $(CHOWN_TO) $(INTERNAL_framework_NAME); \
+	fi;)
+endif
 	(cd $(DLL_INSTALLATION_DIR); \
 	if test -f "$(FRAMEWORK_FILE)"; then \
 	  rm -f $(FRAMEWORK_FILE); \
@@ -496,16 +522,19 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 endif
 
 $(DLL_INSTALLATION_DIR)::
+	$(MKINSTALLDIRS) $@
+
+$(FRAMEWORK_DIR_NAME)/Resources::
 	$(MKDIRS) $@
 
-$(FRAMEWORK_DIR_NAME)/Resources $(FRAMEWORK_INSTALL_DIR)::
-	@$(MKDIRS) $@
+$(FRAMEWORK_INSTALL_DIR)::
+	@$(MKINSTALLDIRS) $@
 
 $(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 $(GNUSTEP_FRAMEWORKS_HEADERS) :
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 internal-framework-uninstall::
 	if [ "$(HEADER_FILES)" != "" ]; then \

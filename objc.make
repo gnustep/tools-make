@@ -126,7 +126,7 @@ internal-objc_program-install:: $(OBJC_PROGRAM_INSTALLATION_DIR) \
                                 install-objc_program
 
 $(OBJC_PROGRAM_INSTALLATION_DIR):
-	$(MKDIRS) $(OBJC_PROGRAM_INSTALLATION_DIR)
+	$(MKINSTALLDIRS) $(OBJC_PROGRAM_INSTALLATION_DIR)
 
 install-objc_program::
 	$(INSTALL_PROGRAM) -m 0755 \

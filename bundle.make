@@ -286,7 +286,7 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 ifneq ($(HEADER_FILES_INSTALL_DIR),)
-	$(MKDIRS) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR);
+	$(MKINSTALLDIRS) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR);
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
@@ -304,12 +304,15 @@ endif
 	    if [ ! -d Resources ]; then \
 	      rm -f Resources; $(LN_S) ../Resources .; \
 	    fi;)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
+endif
 
 $(BUNDLE_DIR_NAME)/Resources:
 	$(MKDIRS) $@
 
 $(BUNDLE_INSTALL_DIR):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 internal-bundle-uninstall::
 ifneq ($(HEADER_FILES),)

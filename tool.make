@@ -152,7 +152,7 @@ install-tool::
 		$(TOOL_INSTALLATION_DIR)
 ifeq ($(GNUSTEP_FLATTENED),)
 ifeq ($(FRAMEWORK_NAME),)
-	cp $(GNUSTEP_MAKEFILES)/executable.template \
+	$(INSTALL_DATA) $(GNUSTEP_MAKEFILES)/executable.template \
 	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME);
 else

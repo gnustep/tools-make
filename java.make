@@ -115,12 +115,12 @@ internal-java_package-install:: install-java_package
 
 internal-install-java-dirs:: $(JAVA_INSTALLATION_DIR)
 ifneq ($(JAVA_OBJ_FILES),)
-	$(MKDIRS) \
+	$(MKINSTALLDIRS) \
            $(addprefix $(JAVA_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES)))
 endif
 
 $(JAVA_INSTALLATION_DIR):
-	$(MKDIRS) $(JAVA_INSTALLATION_DIR)
+	$(MKINSTALLDIRS) $(JAVA_INSTALLATION_DIR)
 
 # Say that you have a Pisa.java source file.  Here we install both
 # Pisa.class (the main class) and also, if they exist, all class files

@@ -258,9 +258,13 @@ _FORCE::
 internal-app-install:: $(GNUSTEP_APPS)
 	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME); \
 	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_APPS)/$(APP_DIR_NAME)
+endif
+
 
 $(GNUSTEP_APPS):
-	$(MKDIRS) $(GNUSTEP_APPS)
+	$(MKINSTALLDIRS) $(GNUSTEP_APPS)
 
 internal-app-uninstall::
 	(cd $(GNUSTEP_APPS); rm -rf $(APP_DIR_NAME))
