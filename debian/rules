@@ -1,36 +1,70 @@
 #!/usr/bin/make -f
 
-tmpdir		= $(shell pwd)/debian/tmp
-prefix          = /usr/GNUstep/
+# Uncomment this to turn on verbose mode.
+#export DH_VERBOSE=1
+
+# This is the debhelper compatibility version to use.
+export DH_COMPAT=2
+
+pkg		= gnustep-make
+tmpdir		= $(shell pwd)/debian/$(pkg)
+prefix          = usr/lib/GNUstep
 library_combo   = gnu-gnu-gnu-xgps
 
 build: stamp-build
 
 stamp-build:
-	make -f debian/rules clean
+	dh_testdir
 	./configure --prefix=$(prefix) --with-library-combo=$(library_combo)
-	make
+	$(MAKE)
 	touch stamp-build
 
-clean: checkroot
+clean:
+	dh_testdir
+	dh_testroot
 	rm -f stamp-build
-	./configure # so that `make distclean' works
-	make distclean
-	rm -f debian/files debian/substvars
-	rm -rf debian/tmp
+	: # configure, so that `make distclean' works
+	[ -f GNUmakefile ] || ./configure \
+		--prefix=/$(prefix) --with-library-combo=$(library_combo)
+	$(MAKE) distclean
+	dh_clean
+
+install: build
+	dh_testdir
+	dh_testroot
+	dh_clean -k
+	dh_installdirs
+	$(MAKE) install prefix=$(tmpdir)/$(prefix)/System
+
+# Build architecture-independent files here.
+binary-indep: build install
+# We have nothing to do by default.
+
+
+# Build architecture-dependent files here.
+binary-arch: build install
+	dh_testversion 2
+	dh_testdir
+	dh_testroot
+#	dh_installdebconf	
+	dh_installdocs NEWS README
+	dh_installexamples
+#	dh_installmime
+#	dh_installinit
+	dh_installcron
+	dh_installmanpages
+	dh_installinfo
+#	dh_undocumented
+	dh_installchangelogs ChangeLog
+	dh_strip
+	dh_compress
+	dh_fixperms
+#	dh_makeshlibs
+	dh_installdeb
+	dh_shlibdeps
+	dh_gencontrol
+	dh_md5sums
+	dh_builddeb
 
 binary: binary-indep binary-arch
-
-binary-indep: build
-
-binary-arch: build checkroot
-	make install prefix=$(tmpdir)/$(prefix)/System
-	dpkg-shlibdeps `find -perm -100 -type f`
-	-mkdir $(tmpdir)/DEBIAN
-	chmod 0755 $(tmpdir)/DEBIAN
-	dpkg-gencontrol -isp
-	chown -R root.root $(tmpdir)
-	dpkg --build debian/tmp ..
-
-checkroot:
-	test root = "`whoami`"
+.PHONY: build clean binary-indep binary-arch binary install
