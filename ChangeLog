@@ -1,7 +1,14 @@
+Tue May 21 17:07:23 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/rules.make (internal-$(GNUSTEP_TYPE)-install):
+	Recognize XXX_STANDARD_INSTALL=no to mean we shouldn't perform the
+	standard installation procedure and assume the makefile writer has
+	provided his own (or none).
+	
 Tue May 21 00:37:03 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
-	* Instance/Shared/bundle.make (shared-instance-bundle-all): Fixed quoting
-	in code to copy subproject's resources.
+	* Instance/Shared/bundle.make (shared-instance-bundle-all): Fixed
+	quoting in code to copy subproject's resources.
 
 Mon May 20 11:11:29 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
