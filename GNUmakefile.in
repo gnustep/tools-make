@@ -27,7 +27,6 @@
 #
 
 include config.make
-include Version
 
 # To install everything inside a temporary directory (say as part of
 # building a binary package - deb or rpm), use something like `make
@@ -173,7 +172,7 @@ clean:
 	rm -f *~ which_lib$(EXEEXT)
 
 distclean: clean
-	rm -f GNUmakefile config.make
+	rm -f GNUmakefile config.make config.h
 	rm -f config.cache config.log config.status
 	rm -f openapp
 	rm -f debugapp
