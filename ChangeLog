@@ -11,6 +11,8 @@
 	* palette.make: Likewise.
 	* tool.make: Likewise.
 
+	* GNUstep.csh.in: Use pushd/popd to changes dirs.
+
 2000-02-08  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess: New version
