@@ -1,3 +1,8 @@
+Tue Oct 14 11:26:15 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* openapp.in: Add the possibility of passing arguments to the
+	application.
+
 Tue Oct 14 10:03:04 1997  Scott Christley  <scottc@net-community.com>
 
 	* README: Update installation instructions.

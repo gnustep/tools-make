@@ -19,22 +19,28 @@
 
 # Try to execute the application passed as argument. The application is
 # searched through the GNUstep directories if a complete or relative path name
-# is not specified.
+# is not specified. The arguments passed after the application name are passed
+# unmodified to the application.
 
 if [ -z "$1" ]; then
-  echo usage: `basename $0` [--library-combo=...] application
+  echo usage: `basename $0` [--library-combo=...] application [arguments...]
   exit 1
 fi
 
 library_combo=@ac_cv_library_combo@
 
-while [ -n "$*" ]; do
-  case $1 in
-    --library-combo=*)	library_combo=`echo $1 | sed 's/--library-combo=//'`;;
-    *)			app=$1;;
-  esac
-  shift
-done
+case $1 in
+  --library-combo=*)
+    library_combo=`echo $1 | sed 's/--library-combo=//'`
+    if [ -z "$2" ]; then
+      echo usage: `basename $0` [--library-combo=...] application [arguments...]
+      exit 1
+    fi
+    app=$2; shift; shift
+    ;;
+  *)
+    app=$1; shift;;
+esac
 
 case $app in
   /*)	# An absolute path.
@@ -61,7 +67,9 @@ if [ "$library_combo" = nx_nx_nx_nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
     exit 1
   fi
 
-  exec $full_appname/$appname
+  # From some reasons $@ does not correctly pass the arguments to the binary
+  # so I use xargs to do this.
+  echo $@ | xargs $full_appname/$appname
 
 else
   # Determine if the application has a binary for this operating system
@@ -71,12 +79,12 @@ else
   fi
 
   if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo ]; then
-    echo "$full_appname application does not have a binary for this combination of libraries ($library_combo)."
+    echo "$full_appname application does not have a binary for this combination of libraries: $library_combo."
     exit 1
   fi
 
-  exec $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+  # From some reasons $@ does not correctly pass the arguments to the binary
+  # so I use xargs to do this.
+  echo $@ | xargs $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
 
 fi
-
-echo "Cannot exec the specified application!"
