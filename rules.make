@@ -137,20 +137,6 @@ LIB_DIRS_NO_SYSTEM = $(ADDITIONAL_LIB_DIRS) \
    $(GNUSTEP_LOCAL_LIBRARIES_FLAG) $(GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAG) \
    -L$(GNUSTEP_SYSTEM_LIBRARIES) -L$(GNUSTEP_SYSTEM_TARGET_LIBRARIES)
 
-
-ifneq ($(LIBRARIES_DEPEND_UPON),)
-LIBRARIES_DEPEND_UPON := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON)\
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
-endif
-ifneq ($(LIBRARIES_DEPEND_UPON),)
-LIBRARIES_DEPEND_UPON := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON)\
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
-endif
-
 #
 # The bundle extension (default is .bundle) is defined by BUNDLE_EXTENSION.
 #
