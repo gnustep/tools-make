@@ -1,3 +1,7 @@
+Sun Oct 12 13:09:12 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make ($(GNUSTEP_OBJ_DIR)): Use ECHO_NOTHING.
+
 2003-10-09  Adam Fedor  <fedor@gnu.org>
 
 	* Correct problem where *bsd lib flags were not getting used.
