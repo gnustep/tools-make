@@ -1,3 +1,10 @@
+2001-03-28  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Remove spurious ','.
+
+	* which_lib.c (search_for_library_in_directory): Translate Windows
+	//c paths to c: so MingW functions can find them.
+
 2001-03-27  Adam Fedor  <fedor@gnu.org>
 
 	* target.make: Add darwin target.

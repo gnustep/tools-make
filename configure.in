@@ -325,7 +325,7 @@ if test x"$objc_threaded" = x""; then
 else
   AC_MSG_RESULT(yes)
   if test x"$objc_threaded" = x"works"; then
-    objc_threaded="",
+    objc_threaded=""
   fi
 fi
 ac_cv_objc_threaded="$objc_threaded"

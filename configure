@@ -2019,7 +2019,7 @@ if test x"$objc_threaded" = x""; then
 else
   echo "$ac_t""yes" 1>&6
   if test x"$objc_threaded" = x"works"; then
-    objc_threaded="",
+    objc_threaded=""
   fi
 fi
 ac_cv_objc_threaded="$objc_threaded"
