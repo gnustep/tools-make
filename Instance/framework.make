@@ -91,6 +91,15 @@ ifeq ($(MAKE_CURRENT_VERSION),)
   MAKE_CURRENT_VERSION = yes
 endif
 
+# Set VERSION from xxx_VERSION
+ifneq ($($(GNUSTEP_INSTANCE)_VERSION),)
+  VERSION = $($(GNUSTEP_INSTANCE)_VERSION)
+endif
+
+ifeq ($(VERSION),)
+  VERSION = 0.0.1
+endif
+
 # This is used on Apple to build frameworks which can be embedded into
 # applications.  You usually set it to something like
 # @executable_path/../Frameworks and then you can embed the framework

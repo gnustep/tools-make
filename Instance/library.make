@@ -70,6 +70,15 @@ ifeq ($(FINAL_LIBRARY_INSTALL_DIR),)
   FINAL_LIBRARY_INSTALL_DIR = $(LIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 endif
 
+# Set VERSION from xxx_VERSION
+ifneq ($($(GNUSTEP_INSTANCE)_VERSION),)
+  VERSION = $($(GNUSTEP_INSTANCE)_VERSION)
+endif
+
+ifeq ($(VERSION),)
+  VERSION = 0.0.1
+endif
+
 # 
 # Manage the case that LIBRARY_NAME starts with 'lib', and the case
 # that it doesn't start with 'lib'.  In both cases, we need to create
