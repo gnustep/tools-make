@@ -117,9 +117,9 @@ with the with-thread-lib option.
 @end example
 
 to use libgthread as your threading library. Note that the Objective-C
-runtime (gnustep-objc) must have a compatible threading backend in order to
+runtime (libobjc) must have a compatible threading backend in order to
 use this threading library and you must set the appropriate threading backend
-by hand in the GNUmakefile when compiling gnustep-objc. If you also need
+by hand in the GNUmakefile if you are using gnustep-objc. If you also need
 to set compiler flags, use the CFLAGS variable when calling configure:
 
 @example

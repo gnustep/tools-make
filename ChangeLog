@@ -1,3 +1,9 @@
+2002-07-03  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.3.4
+	* Documentation/news.texi: Update.
+	* Documentation/machines.texi: Update.
+
 Sat Jun 29 12:35:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.csh.in: Use source, not `.', to execute the user

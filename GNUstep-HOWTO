@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 10 June 2002
+   Last Update: 3 July 2002
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -54,9 +54,9 @@ are required.
 `libffi library (OPTIONAL)'
      This is a library that provides stack frame handling for
      NSInvocation and NSConnection similar to ffcall. However, libffi
-     is still somewhat experimental so you should not use it unless you
-     are familiar with potential problems. Use this instead of ffcall.
-     You don't need both.
+     is not as well tested as ffcall so you should not use it unless
+     you are familiar with potential problems. Use this instead of
+     ffcall. You don't need both.
 
 `WindowMaker (Version >= 0.62) (OPTIONAL)'
      GNUstep and WindowMaker work together to provide a consistant
@@ -525,11 +525,12 @@ GNU-Linux/Intel (RedHat 5.x, 6.x, and 7.0)
           CC=egcs LDFLAGS="-u shmctl@GLIBC_2.2 -L/lib -lc -u getpwuid_r@GLIBC_2.1.2
           -L/lib -lc -u getpwnam_r@GLIBC_2.1.2 -L/lib -lc" ./configure
 
-GNU-Linux/PowerPC (LinuxPPC 5.x)
-================================
+GNU-Linux/PowerPC (LinuxPPC, Yellowdog)
+=======================================
 
 `Recommended compiler'
-     egcs-1.1.2 (default compiler), or gcc-2.95
+     egcs-1.1.2 (default compiler), or gcc-2.95. gcc-3.x works, but gdb
+     can't debug GNUstep executables.
 
 `Extra libs needed'
      None.
@@ -541,7 +542,8 @@ GNU-Linux/PowerPC (LinuxPPC 5.x)
      this problem.  There may be a problem with the X server that
      causes programs to crash with a X_QueryColors error. If so, get a
      newer X server at
-     <ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm>.
+     <ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm>
+     (or better).
 
    Invocations (and DO) do not work well. The major problem is sending
 data with data sizes less than 4 bytes (chars, shorts, etc).  To fix
@@ -643,6 +645,20 @@ OSF Alpha  (_Unstable!_)
      extra -lgnustep-gui in ADDTIONAL_TOOL_LIBS in the
      GNUmakefile(.preamble).
 
+Slackware/Intel
+===============
+
+   GNUstep has been tested on version 8.0 of Suse
+
+`Recommended compiler'
+     Unknown.
+
+`Extra libs needed'
+     Unknown.
+
+`Special Instructions'
+     Unknown.
+
 Solaris 2.5.1/Sparc
 ===================
 
@@ -672,6 +688,10 @@ Solaris 2.[67]/Sparc
      with are -lpthread -lrt (read man libposix4 for more details). You
      have to call configure -with-thread-lib=-lpthread to avoid using
      -lthread which doesn't work!
+
+     Using a POSIX shell (zsh or bash, which should come with Solaris)
+     is highly recommended. In fact, some functions, such as compiling
+     frameworks, will not work without it.
 
    Older Instructions: If you are using threads, make sure the
 Objective-C runtime (libobjc that comes with gcc) is compiled with
@@ -716,10 +736,10 @@ Suse 6.x/Intel
      gdnc doesn't work.  If you recompile the kernel then it starts
      working.
 
-Suse 7.x/Intel
-==============
+Suse/Intel
+==========
 
-   GNUstep has been tested on version 7.0 of Suse
+   GNUstep has been tested on version 7.0 and 8.0 of Suse
 
 `Recommended compiler'
      Standard. gcc2.95.x, gcc3.0.x and gc3.1 work, but 2.95 is faster.
@@ -729,7 +749,7 @@ Suse 7.x/Intel
      None
 
 `Special Instructions'
-     See the instructions for Suse 6.x
+     Unknown.
 
 Suse 7.x/PPC
 ============

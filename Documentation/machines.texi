@@ -18,18 +18,19 @@ more popular operating systems. Some machines marked with
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
 * GNU-Linux/Intel::             
-* GNU-Linux/PowerPC 5::         
+* GNU-Linux/PowerPC::           
 * Irix 6.5/MIPS::               
 * MkLinux/PowerPC::             
 * NetBSD::                      
 * Netwinder::                   
 * OpenBSD 2.x::                 
 * OSF/Alpha::                   
+* Slackware/Intel::             
 * Solaris 2.5.1/Sparc::         
-* Solaris 2.6/Sparc::           
+* Solaris/Sparc::               
 * Solaris 2.7/Intel::           
 * Suse 6.x/Intel::              
-* Suse 7.x/Intel::              
+* Suse/Intel::                  
 * Suse 7.x/PPC::                
 * Unixware-2.1.3/Intel::        
 * Windows with CYGWIN::         
@@ -203,7 +204,7 @@ You need to use gmake not make to compile the GNUstep packages.
 @end table
 
 @c -----------------------------------------
-@node GNU-Linux/Intel, GNU-Linux/PowerPC 5, FreeBSD 2.x, Machine Specific
+@node GNU-Linux/Intel, GNU-Linux/PowerPC, FreeBSD 2.x, Machine Specific
 @section GNU-Linux/Intel (RedHat 5.x, 6.x, and 7.0)
 
 @table @samp
@@ -239,13 +240,13 @@ CC=egcs LDFLAGS="-u shmctl@@GLIBC_2.2 -L/lib -lc -u getpwuid_r@@GLIBC_2.1.2
 @end table
 
 @c -----------------------------------------
-@node GNU-Linux/PowerPC 5, Irix 6.5/MIPS, GNU-Linux/Intel, Machine Specific
-@section GNU-Linux/PowerPC (LinuxPPC 5.x)
+@node GNU-Linux/PowerPC, Irix 6.5/MIPS, GNU-Linux/Intel, Machine Specific
+@section GNU-Linux/PowerPC (LinuxPPC, Yellowdog)
 
 @table @samp
 @item Recommended compiler
 egcs-1.1.2 (default compiler), or
-gcc-2.95 
+gcc-2.95. gcc-3.x works, but gdb can't debug GNUstep executables.
 
 @item Extra libs needed 
 None.
@@ -256,7 +257,7 @@ able to compile several files (CFLAGS="" ./configure). Compiling with
 CFLAGS="-O" also works. The gcc-2.95 compiler fixes this problem.  There
 may be a problem with the X server that causes programs to crash with a
 X_QueryColors error. If so, get a newer X server at
-@url{ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm}.
+@url{ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm} (or better).
 
 @end table
 
@@ -266,7 +267,7 @@ recommend using the ffcall libraries (Read the instructions on this in the
 configuration section).
 
 @c -----------------------------------------
-@node Irix 6.5/MIPS, MkLinux/PowerPC, GNU-Linux/PowerPC 5, Machine Specific
+@node Irix 6.5/MIPS, MkLinux/PowerPC, GNU-Linux/PowerPC, Machine Specific
 @section Irix 6.5/MIPS
 
 @table @samp
@@ -358,7 +359,7 @@ Can only compile with static libraries. Gives a lot of warnings
 @end table
 
 @c -----------------------------------------
-@node OSF/Alpha, Solaris 2.5.1/Sparc, OpenBSD 2.x, Machine Specific
+@node OSF/Alpha, Slackware/Intel, OpenBSD 2.x, Machine Specific
 @section OSF Alpha  (@emph{Unstable!})
 @c Contact: suzukis@file.phys.tohoku.ac.jp
 
@@ -382,7 +383,25 @@ ADDTIONAL_TOOL_LIBS in the GNUmakefile(.preamble).
 @end table
 
 @c -----------------------------------------
-@node Solaris 2.5.1/Sparc, Solaris 2.6/Sparc, OSF/Alpha, Machine Specific
+@node Slackware/Intel, Solaris 2.5.1/Sparc, OSF/Alpha, Machine Specific
+@section Slackware/Intel 
+
+GNUstep has been tested on version 8.0 of Suse
+
+@table @samp
+@item Recommended compiler
+Unknown.
+
+@item Extra libs needed 
+Unknown.
+
+@item Special Instructions 
+Unknown.
+
+@end table
+
+@c -----------------------------------------
+@node Solaris 2.5.1/Sparc, Solaris/Sparc, Slackware/Intel, Machine Specific
 @section Solaris 2.5.1/Sparc
 
 @table @samp
@@ -397,7 +416,7 @@ See the Solaris 2.6 section for more instructions.
 @end table
 
 @c -----------------------------------------
-@node Solaris 2.6/Sparc, Solaris 2.7/Intel, Solaris 2.5.1/Sparc, Machine Specific
+@node Solaris/Sparc, Solaris 2.7/Intel, Solaris 2.5.1/Sparc, Machine Specific
 @section Solaris 2.[67]/Sparc
 
 @table @samp
@@ -416,6 +435,10 @@ have to link with are -lpthread -lrt (read man libposix4 for more
 details). You have to call configure --with-thread-lib=-lpthread to avoid
 using -lthread which doesn't work!
 
+Using a POSIX shell (zsh or bash, which should come with Solaris) is
+highly recommended. In fact, some functions, such as compiling frameworks,
+will not work without it. 
+
 @end table 
 
 Older Instructions:
@@ -426,7 +449,7 @@ true by default). Or use the gnustep-objc package. Also make sure THREADS is
 set to 'posix' not 'solaris'.
 
 @c -----------------------------------------
-@node Solaris 2.7/Intel, Suse 6.x/Intel, Solaris 2.6/Sparc, Machine Specific
+@node Solaris 2.7/Intel, Suse 6.x/Intel, Solaris/Sparc, Machine Specific
 @section Solaris 2.7/Intel 
 @c Contact?: Sebastian Niesen <sniesen@niesen.net>
 
@@ -450,9 +473,8 @@ instructions above for more information.
 @end table
 
 @c -----------------------------------------
-@node Suse 6.x/Intel, Suse 7.x/Intel, Solaris 2.7/Intel, Machine Specific
+@node Suse 6.x/Intel, Suse/Intel, Solaris 2.7/Intel, Machine Specific
 @section Suse 6.x/Intel 
-@c Contact?: colin@news.sift.co.uk
 
 GNUstep has been tested on version 6.2-6.4 of Suse
 
@@ -471,10 +493,10 @@ gdnc doesn't work.  If you recompile the kernel then it starts working.
 @end table
 
 @c -----------------------------------------
-@node Suse 7.x/Intel, Suse 7.x/PPC, Suse 6.x/Intel, Machine Specific
-@section Suse 7.x/Intel 
+@node Suse/Intel, Suse 7.x/PPC, Suse 6.x/Intel, Machine Specific
+@section Suse/Intel 
 
-GNUstep has been tested on version 7.0 of Suse
+GNUstep has been tested on version 7.0 and 8.0 of Suse
 
 @table @samp
 @item Recommended compiler
@@ -485,12 +507,12 @@ Compile with --threads-enabled (non-standard).
 None
 
 @item Special Instructions 
-See the instructions for Suse 6.x
+Unknown.
 
 @end table
 
 @c -----------------------------------------
-@node Suse 7.x/PPC, Unixware-2.1.3/Intel, Suse 7.x/Intel, Machine Specific
+@node Suse 7.x/PPC, Unixware-2.1.3/Intel, Suse/Intel, Machine Specific
 @section Suse 7.x/PPC 
 
 GNUstep has been tested on version 7.0 of Suse

@@ -30,7 +30,7 @@ at the user FAQ for more user oriented questions.
 * Can I use my original NIB files?::  
 * Can one use the hybrid "Objective-C++"::  
 * Is there a plan to support Java/YellowBox Bindings?::  
-* What if I compile GNUstep under OPENSTEP/MacOS X Server?::  
+* What if I compile GNUstep under OPENSTEP/MacOS X?::  
 * Is the Objective C API for GTK related?::  
 * How about implementing parts of the Application Kit with GTK?::  
 @end menu
@@ -98,7 +98,7 @@ the GCC steering commitee to decide if they want to add them. If you
 would like to see this, please politely and respectfully lobby them at
 @email{gcc@@gnu.org}.
 
-@node Is there a plan to support Java/YellowBox Bindings?, What if I compile GNUstep under OPENSTEP/MacOS X Server?, Can one use the hybrid "Objective-C++", Compatibility
+@node Is there a plan to support Java/YellowBox Bindings?, What if I compile GNUstep under OPENSTEP/MacOS X?, Can one use the hybrid "Objective-C++", Compatibility
 @subsection  Is there a plan to support the Java/YellowBox Bindings?
 
 Yes. The GNustep Java library/bridge called JIGS is available now.  JIGS
@@ -111,8 +111,8 @@ virtual machines inside GNUstep Objective-C code and access java objects
 in the java virtual machine transparently, as if they were objective-C
 objects.
 
-@node What if I compile GNUstep under OPENSTEP/MacOS X Server?, Is the Objective C API for GTK related?, Is there a plan to support Java/YellowBox Bindings?, Compatibility
-@subsection  What if I compile GNUstep under OPENSTEP/MacOS X Server?
+@node What if I compile GNUstep under OPENSTEP/MacOS X?, Is the Objective C API for GTK related?, Is there a plan to support Java/YellowBox Bindings?, Compatibility
+@subsection  What if I compile GNUstep under OPENSTEP/MacOS X?
 
 GNUstep uses the X-windows display postscript extension.
 The interface to that is not the same as the interface to the
@@ -122,7 +122,7 @@ date.
 
 Also, the GNUstep base library is still being ported to Darwin.
 
-@node Is the Objective C API for GTK related?, How about implementing parts of the Application Kit with GTK?, What if I compile GNUstep under OPENSTEP/MacOS X Server?, Compatibility
+@node Is the Objective C API for GTK related?, How about implementing parts of the Application Kit with GTK?, What if I compile GNUstep under OPENSTEP/MacOS X?, Compatibility
 @subsection  Is the Objective C API for GTK related?
 
   No.  GNUstep applications provide their GUI via the OpenStep
@@ -166,6 +166,7 @@ asset - volunteers are, as always, wecome.
 * How do I start writing tests?::  
 * How do I start writing applications?::  
 * How can I help with the GNUstep website?::  
+* Why doesn't GDB support Objective-C?::  
 @end menu
 
 @node How can I get started programming?, How can I help with GNUstep?, Compiling and Developing, Compiling and Developing
@@ -304,7 +305,7 @@ built, and installed the 'guile' package from the GNUstep CVS repository.
 applications that have been started, and email their owners to
 volunteer to help, or you can start your own project.
 
-@node How can I help with the GNUstep website?,  , How do I start writing applications?, Compiling and Developing
+@node How can I help with the GNUstep website?, Why doesn't GDB support Objective-C?, How do I start writing applications?, Compiling and Developing
 @subsection  How can I help with the GNUstep website?
 
  Talk to Adam Fedor @email{fedor@@gnu.org}, the maintainer.
@@ -325,6 +326,19 @@ to do that.
 
 The main task with the website is to figure out which bits are
 out-of-date (or wrong) and update/mark-as-outdated as required.
+
+@node Why doesn't GDB support Objective-C?,  , How can I help with the GNUstep website?, Compiling and Developing
+@subsection Why doesn't GDB support Objective-C?
+
+Apple has submitted their patches to make GDB work with Objective-C
+programs, and the GDB maintainer has said that he is interested in
+integrating them. Now it appears that that there is just a lack of
+time and priority to get this done. You can ask about or lobby for this - 
+see @url{http://sources.redhat.com/gdb/}.
+
+There are patches available on the gnustep web site if you want
+to compile your own gdb (see @url{http://www.gnustep.org/pub/gnustep/patches}).
+
 
 @c -------------------------------------------------------------------
 

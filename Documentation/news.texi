@@ -9,14 +9,25 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.3.4}
+
+This is a first prerelease version for 1.4.
+
+@itemize @bullet
+@item Use gnugc-gnu-gnu library combo for garbage collecting version.
+@item Add support for --library-combo in opentool
+@item Change GNUSTEP_PATHPREFIX_LIST to	GNUSTEP_PATHLIST 
+@item Add verbosity levels. Use make messages=yes for full messages.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.3.3}
 
 @itemize @bullet
 @item Recognizes XXX_STANDARD_INSTALL=no to not do installation.
 @item Updated instructions for MingW/MSYS installation.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.3.2}
 

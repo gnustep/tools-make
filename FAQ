@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-   Last updated 10 June 2002.  Please send corrections to
+   Last updated 3 July 2002.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -84,8 +84,8 @@ start java virtual machines inside GNUstep Objective-C code and access
 java objects in the java virtual machine transparently, as if they were
 objective-C objects.
 
-What if I compile GNUstep under OPENSTEP/MacOS X Server?
---------------------------------------------------------
+What if I compile GNUstep under OPENSTEP/MacOS X?
+-------------------------------------------------
 
    GNUstep uses the X-windows display postscript extension.  The
 interface to that is not the same as the interface to the
@@ -282,6 +282,18 @@ do that.
 
    The main task with the website is to figure out which bits are
 out-of-date (or wrong) and update/mark-as-outdated as required.
+
+Why doesn't GDB support Objective-C?
+------------------------------------
+
+   Apple has submitted their patches to make GDB work with Objective-C
+programs, and the GDB maintainer has said that he is interested in
+integrating them. Now it appears that that there is just a lack of time
+and priority to get this done. You can ask about or lobby for this -
+see <http://sources.redhat.com/gdb/>.
+
+   There are patches available on the gnustep web site if you want to
+compile your own gdb (see <http://www.gnustep.org/pub/gnustep/patches>).
 
 GNU Objective C Compiler and Runtime
 ====================================
