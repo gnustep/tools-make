@@ -55,11 +55,15 @@ and install it.
 
 Next, download MinGW-1.1 or later from
 http://sourceforge.net/projects/mingw
-and extract this into c:/msys/version-number/mingw
+and extract this into the msys hierarchy
+(usually c:/msys/<version-number>/mingw)
 
 This will unpack the mingw source tree within the msys hierarchy.
 Unpacking mingw into the correct location within msys will ensure that the
 path set up in /etc/profile in msys picks up the mingw tools too.
+
+Delete or rename the file bin/make.exe so that the mingw make program will
+not be used, and the msys make program will be used instead.
 
 You may need to edit /mingw/include/winsock2.h to change the size of the
 sa_data field in the sockaddr structure from 14 to 22 ... this is because
@@ -87,7 +91,7 @@ to the home directory is C:\MyHome).
 From this window we can now start building things.
 
 IMPORTANT NOTE
-The mingw make program sometimes crashes and core-dumps (usually while
+The msys make program sometimes crashes and core-dumps (usually while
 installing software).  If this happens, repeat the make command a few
 times until it works ... the crash in make is not reliably repeatable
 (which is probably why it has not been tracked down and fixed yet),

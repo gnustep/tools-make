@@ -1,3 +1,8 @@
+2002-05-08 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Mention need to ensure we use
+	MSYS make rather than MinGW make.
+
 2002-05-07 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Updated to reflect experience of a full
