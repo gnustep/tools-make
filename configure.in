@@ -45,6 +45,39 @@ AC_PROG_RANLIB
 AC_LN_S
 
 #--------------------------------------------------------------------
+# Find for X windows
+#--------------------------------------------------------------------
+AC_PATH_X
+X_INCLUDE=""
+if test -n "$x_includes"; then
+    X_INCLUDE="-I$x_includes"
+fi
+X_LIBS=""
+if test -n "$x_libraries"; then
+    X_LIBS="-L$x_libraries"
+fi
+
+# You'd think something standard like X11 would come with standard libraries!
+AC_CHECKING(for specific X-Windows libraries we might need)
+# add Xmu library if we have it
+for xfile in $x_libraries/libXmu.*; do
+    if (test -r $xfile); then
+        WIDGET_LIBS="${WIDGET_LIBS} -lXmu"
+        break
+    fi
+done
+# add Xext library if we have it
+for xfile in $x_libraries/libXext.*; do
+    if (test -r $xfile); then
+        WIDGET_LIBS="${WIDGET_LIBS} -lXext"
+        break
+    fi
+done
+
+AC_SUBST(X_INCLUDE)
+AC_SUBST(X_LIBS)
+
+#--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
 AC_OUTPUT(config.make Makefile)

@@ -27,18 +27,8 @@ include $(GNUSTEP_ROOT)/Makefiles/rules.make
 #
 # The name of the library is in the LIBRARY_NAME variable.
 #
-# The list of Objective-C source files to be compiled and put
-# in the librar are in the OBJC_FILES variable.
-#
-# The list of C source files to be compiled and put
-# in the librar are in the C_FILES variable.
-#
 
 LIBRARY_FILE = $(LIBRARY_NAME)$(LIBEXT)
-
-OBJC_OBJ_FILES = $(OBJC_FILES:.m=${OEXT})
-
-C_OBJ_FILES = $(C_FILES:.c=${OEXT})
 
 #
 # Internal targets
@@ -47,20 +37,50 @@ C_OBJ_FILES = $(C_FILES:.c=${OEXT})
 #
 # Compilation targets
 #
-internal-all:: shared-library static-library import-library
+internal-all:: static-library shared-library import-library
+
+static-library:: $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+	$(AR) $(ARFLAGS) $(AROUT)$(LIBRARY_FILE) \
+		 $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+	$(RANLIB) $(LIBRARY_FILE)
 
 shared-library::
-
-static-library:: $(OBJC_OBJ_FILES) $(C_OBJ_FILES)
-	$(AR) $(ARFLAGS) $(AROUT)$(LIBRARY_FILE) \
-		 $(OBJC_OBJ_FILES) $(C_OBJ_FILES)
-	$(RANLIB) $(LIBRARY_FILE)
 
 import-library::
 
 #
 # Install and uninstall targets
 #
+internal-install:: internal-install-dirs internal-install-headers \
+   internal-install-libs
+
+internal-install-dirs::
+	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		$(GNUSTEP_LIBRARIES_ROOT) \
+		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_CPU) \
+		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_LIBRARIES) \
+		$(GNUSTEP_HEADERS) \
+		$(ADDITIONAL_INSTALL_DIRS)
+
+internal-install-headers::
+	for file in $(HEADER_FILES); do \
+	  $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
+	    $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	done
+
+internal-install-libs:: internal-install-static-lib \
+   internal-install-shared-lib internal-install-import-lib
+
+internal-install-static-lib::
+	if [ -e $(LIBRARY_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(LIBRARY_FILE) $(GNUSTEP_LIBRARIES) ; \
+	  $(RANLIB) $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE) ; \
+	fi
+
+internal-install-shared-lib::
+
+internal-install-import-lib::
 
 #
 # Cleaning targets
@@ -68,6 +88,8 @@ import-library::
 internal-clean::
 	rm -f $(OBJC_OBJ_FILES)
 	rm -f $(C_OBJ_FILES)
+	rm -f $(PSWRAP_C_FILES)
+	rm -f $(PSWRAP_H_FILES)
 	rm -f $(LIBRARY_FILE)
 
 internal-distclean:: clean

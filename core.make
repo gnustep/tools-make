@@ -53,3 +53,81 @@ GUI_BACKEND_LIB = $(word 4,$(combo_list))
 endif
 
 LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)_$(FOUNDATION_LIB)_$(GUI_LIB)_$(GUI_BACKEND_LIB)
+
+OBJC_LDFLAGS =
+OBJC_LIBS =
+#
+# Set the appropriate ObjC runtime library
+#
+ifeq ($(OBJC_RUNTIME_LIB),gnu)
+OBJC_LDFLAGS =
+OBJC_LIB_DIR =
+OBJC_LIBS = -lobjc
+endif
+
+FND_LDFLAGS =
+FND_LIBS =
+#
+# Set the appropriate Foundation library
+#
+ifeq ($(FOUNDATION_LIB),gnu)
+FND_LDFLAGS =
+FND_LIBS = -lgnustep-base
+endif
+
+ifeq ($(FOUNDATION_LIB),fd)
+FND_LDFLAGS =
+FND_LIBS = -lFoundation
+endif
+
+GUI_LDFLAGS =
+GUI_LIBS = 
+#
+# Set the GUI library
+#
+ifeq ($(GUI_LIB),gnu)
+GUI_LDFLAGS =
+GUI_LIBS = -lgnustep-gui
+endif
+
+BACKEND_LDFLAGS =
+BACKEND_LIBS =
+#
+# Set the GUI Backend library
+#
+ifeq ($(GUI_BACKEND_LIB),xdp)
+BACKEND_LDFLAGS =
+BACKEND_LIBS = -lgnustep-xdps
+endif
+
+ifeq ($(GUI_BACKEND_LIB),w32)
+BACKEND_LDFLAGS =
+BACKEND_LIBS = -lMBKit
+endif
+
+SYSTEM_INCLUDES =
+SYSTEM_LDFLAGS = 
+SYSTEM_LIB_DIR =
+SYSTEM_LIBS =
+#
+# If the backend GUI library is X based
+# then add X headers and libraries
+#
+ifeq ($(GUI_BACKEND_LIB),xdp)
+SYSTEM_INCLUDES = $(X_INCLUDE)
+SYSTEM_LDFLAGS =
+SYSTEM_LIB_DIR = $(X_LIBS)
+SYSTEM_LIBS = -ltiff -ldpstk -ldps -lpsres -lX11
+endif
+
+#
+# If the backend GUI library is Win32 based
+# then add Win32 headers and libraries
+#
+ifeq ($(GUI_BACKEND_LIB),w32)
+SYSTEM_INCLUDES =
+SYSTEM_LDFLAGS = 
+SYSTEM_LIB_DIR =
+SYSTEM_LIBS = -ltiff -lwsock32 -ladvapi32 -lcomctl32 -luser32 \
+   -lgdi32 -lcomdlg32
+endif

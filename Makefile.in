@@ -29,14 +29,23 @@
 srcdir = @srcdir@
 prefix = @prefix@
 
+GNUSTEP_TARGET_CPU = @target_cpu@
+GNUSTEP_TARGET_OS = @target_os@
+
+include clean.make
+
 makedir = $(prefix)/Makefiles
+GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
 all:
 	@echo Nothing needs to be made, just install with
 	@echo make install
 
 install:
-	$(srcdir)/mkinstalldirs $(prefix) $(makedir)
+	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
+		$(makedir)/$(GNUSTEP_TARGET_CPU) \
+		$(makedir)/$(GNUSTEP_TARGET_DIR)
+	cp config.guess $(makedir)
 	cp config.sub $(makedir)
 	cp cpu.sh $(makedir)
 	cp vendor.sh $(makedir)
@@ -46,13 +55,14 @@ install:
 	cp aggregate.make $(makedir)
 	cp application.make $(makedir)
 	cp bundle.make $(makedir)
+	cp clean.make $(makedir)
 	cp common.make $(makedir)
-	cp config.make $(makedir)
 	cp core.make $(makedir)
 	cp library.make $(makedir)
 	cp rules.make $(makedir)
 	cp target.make $(makedir)
 	cp tool.make $(makedir)
+	cp config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
 	rm -rf $(makedir)

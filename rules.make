@@ -21,21 +21,36 @@
 
 ALL_CPPFLAGS = $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS)
 
-ALL_OBJCFLAGS = $(OBJCFLAGS) $(ADDITIONAL_OBJCFLAGS) \
-   $(ADDITIONAL_INCLUDE_DIRS) \
-   -I$(GNUSTEP_HEADER) -I$(GNUSTEP_HEADERS_ROOT)
+ALL_OBJCFLAGS = $(INTERNAL_OBJCFLAGS) $(ADDITIONAL_OBJCFLAGS) \
+   $(ADDITIONAL_INCLUDE_DIRS) $(SYSTEM_INCLUDES) \
+   -I$(GNUSTEP_HEADERS_FND) -I$(GNUSTEP_HEADERS_GUI) -I$(GNUSTEP_HEADERS)
 
-ALL_CFLAGS = $(CFLAGS) $(ADDITIONAL_CFLAGS) \
-   $(ADDITIONAL_INCLUDE_DIRS) \
-   -I$(GNUSTEP_HEADER) -I$(GNUSTEP_HEADERS_ROOT)
+ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
+   $(ADDITIONAL_INCLUDE_DIRS) $(SYSTEM_INCLUDES) \
+   -I$(GNUSTEP_HEADERS_FND) -I$(GNUSTEP_HEADERS_GUI) -I$(GNUSTEP_HEADERS) 
 
-.SUFFIXES: .m .c
+ALL_LDFLAGS = $(INTERNAL_LDFLAGS) $(ADDITIONAL_LDFLAGS) \
+   $(FND_LDFLAGS) $(GUI_LDFLAGS) $(BACKEND_LDFLAGS) \
+   $(SYSTEM_LDFLAGS)
+
+ALL_LIB_DIRS = $(ADDITIONAL_LIB_DIRS) -L$(GNUSTEP_LIBRARIES) $(SYSTEM_LIB_DIR)
+
+ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) \
+   $(TARGET_SYSTEM_LIBS)
+
+ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
+   $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+
+.SUFFIXES: .m .c .psw
 
 %${OEXT} : %.m
 	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@ $<
 
 %${OEXT} : %.c
 	$(CC) -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+
+%.c : %.psw
+	pswrap -h $*.h -o $@ $<
 
 %_pic${OEXT}: %.m
 	$(CC) -c $(ALL_CPPFLAGS) -fPIC -DPIC \
@@ -44,6 +59,33 @@ ALL_CFLAGS = $(CFLAGS) $(ADDITIONAL_CFLAGS) \
 %_pic${OEXT}: %.c
 	$(CC) -c $(ALL_CPPFLAGS) -fPIC -DPIC \
 		$(ALL_CFLAGS) -o $@ $<
+
+# The magical app rule, thank you GNU make!
+%.app : FORCE
+	@echo Making $*...
+	$(MAKE) internal-app-all $(MAKEFLAGS) \
+	APP_NAME=$* \
+	OBJC_FILES="$($*_OBJC_FILES)" \
+	C_FILES="$($*_C_FILES)" \
+	PSWRAP_FILES="$($*_PSWRAP_FILES)"
+
+#
+# The list of Objective-C source files to be compiled
+# are in the OBJC_FILES variable.
+#
+# The list of C source files to be compiled
+# are in the C_FILES variable.
+#
+# The list of PSWRAP source files to be compiled
+# are in the PSWRAP_FILES variable.
+
+OBJC_OBJ_FILES = $(OBJC_FILES:.m=${OEXT})
+
+PSWRAP_C_FILES = $(PSWRAP_FILES:.psw=.c)
+PSWRAP_H_FILES = $(PSWRAP_FILES:.psw=.h)
+PSWRAP_OBJ_FILES = $(PSWRAP_FILES:.psw=${OEXT})
+
+C_OBJ_FILES = $(C_FILES:.c=${OEXT}) $(PSWRAP_OBJ_FILES)
 
 #
 # Global targets
@@ -99,3 +141,5 @@ before-check::
 internal-check::
 
 after-check::
+
+FORCE:

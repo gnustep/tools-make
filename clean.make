@@ -1,8 +1,7 @@
 #
-#   config.make.in
+#   clean.make
 #
-#   All of the settings required by the makefile package
-#   that are determined by configure.
+#   Clean up the target names
 #
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
@@ -20,37 +19,16 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#
-# Binary and compile tools
-#
-CC = @CC@
-
-EXEEXT = 
-OEXT = .o
-LIBEXT = .a
-RESEXT = .res
-RCEXT = .rc
-
-LN_S = @LN_S@
-
-LD = gcc
-LDOUT =
-LDFLAGS = @LDFLAGS@ -o
-
-AR = ar
-AROUT =
-ARFLAGS = rc
-RANLIB = @RANLIB@
-
-RC = @RC@
-DLLTOOL = @DLLTOOL@
-
-INSTALL = @INSTALL@
-INSTALL_DATA = @INSTALL_DATA@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@
-
-#
-# X Window System headers and libraries
-#
-X_INCLUDE := @X_INCLUDE@
-X_LIBS := @X_LIBS@
+# Intel processors are made equivalent
+ifeq ($(GNUSTEP_TARGET_CPU),i386)
+GNUSTEP_TARGET_CPU=ix86
+endif
+ifeq ($(GNUSTEP_TARGET_CPU),i486)
+GNUSTEP_TARGET_CPU=ix86
+endif
+ifeq ($(GNUSTEP_TARGET_CPU),i586)
+GNUSTEP_TARGET_CPU=ix86
+endif
+ifeq ($(GNUSTEP_TARGET_CPU),i686)
+GNUSTEP_TARGET_CPU=ix86
+endif

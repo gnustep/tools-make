@@ -19,17 +19,24 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# Run config.guess to guess the host
+
+GNUSTEP_HOST = $(shell $(CONFIG_GUESS_SCRIPT))
+GNUSTEP_HOST_CPU = $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST))
+GNUSTEP_HOST_VENDOR = $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST))
+GNUSTEP_HOST_OS = $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST))
+
 #
 # The user can specify a `target' variable when running make
 #
 
 ifeq ($(strip $(target)),)
 
-# The default target
-GNUSTEP_TARGET = $(CONFIG_TARGET)
-GNUSTEP_TARGET_CPU = $(CONFIG_TARGET_CPU)
-GNUSTEP_TARGET_VENDOR = $(CONFIG_TARGET_VENDOR)
-GNUSTEP_TARGET_OS = $(CONFIG_TARGET_OS)
+# The host is the default target
+GNUSTEP_TARGET = $(GNUSTEP_HOST)
+GNUSTEP_TARGET_CPU = $(GNUSTEP_HOST_CPU)
+GNUSTEP_TARGET_VENDOR = $(GNUSTEP_HOST_VENDOR)
+GNUSTEP_TARGET_OS = $(GNUSTEP_HOST_OS)
 
 else
 
@@ -47,4 +54,18 @@ endif
 #
 # Clean up the target names
 #
+include $(GNUSTEP_ROOT)/Makefiles/clean.make
 
+#
+# Host and target specific settings
+#
+ifeq ($(GNUSTEP_TARGET_OS),solaris2)
+X_INCLUDES := $(X_INCLUDES)/X11
+endif
+
+#
+# Target specific libraries
+#
+ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
+TARGET_SYSTEM_LIBS := -lpcthread -ldl -lm
+endif
