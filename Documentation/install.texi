@@ -66,12 +66,13 @@ information. (Make sure you use the same switches for every package you
 compile, and also when you install).
 
 @menu
+* Backend Bundles::             
 * Alternate Libraries::         
 * Cross-Compiling::             
 * Flat Structure::              
 @end menu
 
-@node Backend Bundles, Cross-Compiling, Configuration, Configuration
+@node Backend Bundles, Alternate Libraries, Configuration, Configuration
 @subsection Backend Bundles
 
 By default, the gnustep-make package specifies that GUI backends are built
@@ -81,11 +82,11 @@ instance, if bundles do not work on your platform), it can be disabled using
 
 @example
 --disable-backend-bundle
-@end
+@end example
 
 in the arguments to configure.
 
-@node Alternate Libraries, Cross-Compiling, Configuration, Configuration
+@node Alternate Libraries, Cross-Compiling, Backend Bundles, Configuration
 @subsection Alternate Library Setup
 
 You can specify compilation of alternate libraries by using the

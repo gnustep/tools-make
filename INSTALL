@@ -52,6 +52,19 @@ debug=yes" compiles using static libraries with debugging information.
 (Make sure you use the same switches for every package you compile, and
 also when you install).
 
+Backend Bundles
+---------------
+
+   By default, the gnustep-make package specifies that GUI backends are
+built as a bundle and loaded in at runtime. This allows one to switch
+backends by simply redefining a user default. If you do not want this
+behavior (for instance, if bundles do not work on your platform), it
+can be disabled using
+
+     --disable-backend-bundle
+
+   in the arguments to configure.
+
 Alternate Library Setup
 -----------------------
 
@@ -59,12 +72,9 @@ Alternate Library Setup
 with-library-combo option. You need to have these libraries unpacked in
 a subdirectory under the gstep directory, then you can say
 
-     ./configure --with-library-combo=gnu-gnu-gnu-xdps
+     ./configure --with-library-combo=nx-gnu-gnu
 
-   to compile with the xdps library rather than the default xgps
-backend.  IMPORTANT: The xdps backend is still experimental. Do not use
-it unless you are willing to deal with PostScript problems and other
-bugs.
+   to compile with Apple's (NexT's) runtime on Darwin, for example.
 
 Configuring the GNUstep makefile package for a cross-compile target
 -------------------------------------------------------------------

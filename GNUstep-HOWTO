@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 5 April 2001
+   Last Update: 13 April 2001
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -179,16 +179,6 @@ configure will use /usr/GNUstep/System as the default root directory.
 
 Alternate Library Setup
 -----------------------
-
-   You can specify compilation of alternate libraries by using the
--with-library-combo option:
-
-     ./configure --with-library-combo=gnu-gnu-gnu-xdps
-
-   to compile with the xdps library rather than the default xgps
-backend.  IMPORTANT: The xdps backend is still experimental. Do not use
-it unless you are willing to deal with PostScript problems and other
-bugs.
 
    Read the installation instructions in the Makefile package (make)
 for more installation options. Make sure you use the same configuration
@@ -368,7 +358,7 @@ and possibly one or two major ones if your trying to do this. Darwin
 doesn't have a GCC ObjC Compiler, so you need to use the ObjC runtime
 that comes with Darwin. To do this configure (gnustep-make) like this:
 
-     ./configure --with-library-combo=nx-gnu-gnu-xgps
+     ./configure --with-library-combo=nx-gnu-gnu
 
 Debian/DEC-Alpha
 ================
