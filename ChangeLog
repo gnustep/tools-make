@@ -1,3 +1,9 @@
+Mon Sep 23 05:58:52 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Made message about checking for a shared libobjc
+	more explanatory.
+	* configure: Regenerated.
+	
 Mon Sep 23 05:51:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Documentation/gnustep-howto.texi: Fixed/updated documentation on
