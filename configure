@@ -1231,14 +1231,14 @@ echo "$ac_t""$ac_cv_objext" 1>&6
 OBJEXT=$ac_cv_objext
 ac_objext=$ac_cv_objext
 
-if test $MINGW32 = yes; then
+if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
   export SHELL=zsh
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
-elif $CYGWIN = yes; then
+elif test "$CYGWIN" = yes; then
   echo "hosted on cygwin .."
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
@@ -1966,7 +1966,7 @@ rm -fr conftest*
 fi
 
   fi
-elif test $MINGW32 = yes; then
+elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
   LIBS="-lobjc $LIBS $extra_LIBS"
   if test "$cross_compiling" = yes; then
