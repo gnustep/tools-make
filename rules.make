@@ -73,8 +73,6 @@ check:: before-check internal-check after-check
 #
 
 before-all::
-	rm -f obj
-	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj
 
 internal-all::
 
@@ -95,7 +93,7 @@ after-uninstall::
 before-clean::
 
 internal-clean::
-	rm -rf *~
+	rm -rf *~ obj
 
 after-clean::
 
@@ -466,6 +464,8 @@ OBJ_DIR_RULE = defined
 # can be accessed from the global before and after targets as well.
 $(GNUSTEP_OBJ_DIR):
 	@$(MKDIRS) ./$(GNUSTEP_OBJ_DIR)
+	rm -f obj
+	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj
 endif
 
 #
