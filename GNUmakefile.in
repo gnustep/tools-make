@@ -2,9 +2,10 @@
 #
 #   Main GNUmakefile for the GNUstep GNUmakefile Package.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2002 Free Software Foundation, Inc.
 #
-#   Author:  Scott Christley <scottc@net-community.com>
+#   Author: Scott Christley <scottc@net-community.com>
+#   Author: Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -102,89 +103,66 @@ which_lib$(EXEEXT): which_lib.c config.h
 	$(CC) @CFLAGS@ -Wall -I. -o $@ $<
 
 user_home$(EXEEXT): user_home.c config.h
-	$(CC) @CFLAGS@ \
-	  -DGNUSTEP_SYSTEM_ROOT=$(GNUSTEP_SYSTEM_ROOT) \
-	  -Wall -I. -o $@ $<
+	$(CC) @CFLAGS@ -DGNUSTEP_SYSTEM_ROOT=$(GNUSTEP_SYSTEM_ROOT) \
+	      -Wall -I. -o $@ $<
+
+ifeq ($(messages),yes)
+  EC = 
+else
+  EC = @
+endif
 
 install: all
-	$(srcdir)/mkinstalldirs  $(GNUSTEP_SYSTEM_ROOT) $(makedir) \
+	$(EC)(echo "Creating system domain: $(GNUSTEP_SYSTEM_ROOT)"; \
+	 $(srcdir)/create_domain_dir_tree.sh $(GNUSTEP_SYSTEM_ROOT); \
+	 echo "Creating local and network dirs: $(GNUSTEP_LOCAL_ROOT), $(GNUSTEP_NETWORK_ROOT)"; \
+	$(srcdir)/mkinstalldirs $(GNUSTEP_LOCAL_ROOT) $(GNUSTEP_NETWORK_ROOT);\
+	 echo "Creating makefile directories in: $(makedir)"; \
+	 $(srcdir)/mkinstalldirs \
+		$(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(makedir)/Additional \
 		$(makedir)/Auxiliary \
 		$(makedir)/Master \
 		$(makedir)/Instance \
-		$(makedir)/Instance/Shared \
-		$(tooldir) \
-		$(GNUSTEP_SYSTEM_ROOT)/share \
-		$(GNUSTEP_SYSTEM_ROOT)/Applications \
-		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-		$(GNUSTEP_SYSTEM_ROOT)/Libraries/Resources \
-		$(GNUSTEP_SYSTEM_ROOT)/Libraries/Java \
-		$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-		$(GNUSTEP_SYSTEM_ROOT)/Tools/$(GNUSTEP_TARGET_LDIR) \
-		$(GNUSTEP_SYSTEM_ROOT)/Tools/Java \
-		$(GNUSTEP_SYSTEM_ROOT)/Library/Bundles \
-		$(GNUSTEP_SYSTEM_ROOT)/Library/Colors \
-		$(GNUSTEP_SYSTEM_ROOT)/Library/Frameworks \
-		$(GNUSTEP_SYSTEM_ROOT)/Library/PostScript \
-		$(GNUSTEP_SYSTEM_ROOT)/Library/Services \
-		$(GNUSTEP_SYSTEM_ROOT)/Documentation/Developer \
-		$(GNUSTEP_SYSTEM_ROOT)/Documentation/User \
-		$(GNUSTEP_SYSTEM_ROOT)/Documentation/info \
-		$(GNUSTEP_SYSTEM_ROOT)/Documentation/man \
-		$(GNUSTEP_SYSTEM_ROOT)/Developer/Palettes \
-		$(GNUSTEP_LOCAL_ROOT)/Applications \
-		$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-		$(GNUSTEP_LOCAL_ROOT)/Libraries/Resources \
-		$(GNUSTEP_LOCAL_ROOT)/Libraries/Java \
-		$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-		$(GNUSTEP_LOCAL_ROOT)/Tools/$(GNUSTEP_TARGET_LDIR) \
-		$(GNUSTEP_LOCAL_ROOT)/Tools/Java \
-		$(GNUSTEP_LOCAL_ROOT)/Library/Bundles \
-		$(GNUSTEP_LOCAL_ROOT)/Library/Colors \
-		$(GNUSTEP_LOCAL_ROOT)/Library/Frameworks \
-		$(GNUSTEP_LOCAL_ROOT)/Library/PostScript \
-		$(GNUSTEP_LOCAL_ROOT)/Library/Services \
-		$(GNUSTEP_LOCAL_ROOT)/Documentation/Developer \
-		$(GNUSTEP_LOCAL_ROOT)/Documentation/User \
-		$(GNUSTEP_LOCAL_ROOT)/Developer/Palettes \
-		$(GNUSTEP_LOCAL_ROOT)/Users \
-		$(GNUSTEP_LOCAL_ROOT)/Users/Administrator \
-		$(GNUSTEP_NETWORK_ROOT) 
-	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
-	  $(makedir)/$(GNUSTEP_TARGET_DIR)
-	$(INSTALL_PROGRAM) -m 755 user_home$(EXEEXT) \
-	  $(makedir)/$(GNUSTEP_TARGET_DIR)
-	for f in config.guess config.sub install-sh mkinstalldirs \
+		$(makedir)/Instance/Shared)
+	 $(EC)(echo "Installing gnustep-make support software"; \
+	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
+	     $(makedir)/$(GNUSTEP_TARGET_DIR); \
+	   $(INSTALL_PROGRAM) -m 755 user_home$(EXEEXT) \
+	     $(makedir)/$(GNUSTEP_TARGET_DIR))
+	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh \
 		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
 		ld_lib_path.csh fixpath.sh relative_path.sh ; do \
-	  $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
-	done
-	$(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
-	$(INSTALL_PROGRAM) -m 755 GNUstep-reset.sh $(makedir); \
-	$(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
-	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
-	$(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
-	$(INSTALL_PROGRAM) -m 755 opentool $(tooldir);
-	for f in $(MAKE_FILES); do \
-	  $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
-	done
-	for f in $(MASTER_MAKE_FILES); do \
-	  $(INSTALL_DATA) $(srcdir)/Master/$$f $(makedir)/Master; \
-	done
-	for f in $(INSTANCE_MAKE_FILES); do \
-	  $(INSTALL_DATA) $(srcdir)/Instance/$$f $(makedir)/Instance; \
-	done
-	for f in $(INSTANCE_SHARED_MAKE_FILES); do \
-	  $(INSTALL_DATA) $(srcdir)/Instance/Shared/$$f \
-	                  $(makedir)/Instance/Shared; \
-	done
-	$(INSTALL_DATA) executable.template $(makedir)
-	$(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share
-	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
+	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
+	   done)
+	$(EC)($(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
+	  $(INSTALL_PROGRAM) -m 755 GNUstep-reset.sh $(makedir); \
+	  $(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
+	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
+	  $(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
+	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir))
+	 $(EC)(echo "Installing makefiles"; \
+	   for f in $(MAKE_FILES); do \
+	     $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
+	   done; \
+	   for f in $(MASTER_MAKE_FILES); do \
+	     $(INSTALL_DATA) $(srcdir)/Master/$$f $(makedir)/Master; \
+	   done; \
+	   for f in $(INSTANCE_MAKE_FILES); do \
+	     $(INSTALL_DATA) $(srcdir)/Instance/$$f $(makedir)/Instance; \
+	   done; \
+	   for f in $(INSTANCE_SHARED_MAKE_FILES); do \
+	     $(INSTALL_DATA) $(srcdir)/Instance/Shared/$$f \
+	                     $(makedir)/Instance/Shared; \
+	   done; \
+	   $(INSTALL_DATA) executable.template $(makedir); \
+	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR))
+	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/shared; \
+	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/shared)
 
 #
 # NICOLA - Need to clean the following message and print it at the end
@@ -219,6 +197,8 @@ uninstall:
 	rm -f $(makedir)/executable.template
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
+
+# To really uninstall all of GNUstep, a 'rm -Rf ${GNUSTEP_ROOT}' should do.
 
 clean:
 	rm -f *~ which_lib$(EXEEXT) user_home$(EXEEXT) \
