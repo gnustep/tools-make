@@ -90,35 +90,34 @@ endif # WITH_DLL
 
 internal-bundle-all:: before-$(GNUSTEP_INSTANCE)-all \
                       $(GNUSTEP_OBJ_DIR) \
-                      build-bundle-dir \
                       build-bundle \
                       build-macosx-bundle \
                       after-$(GNUSTEP_INSTANCE)-all
 
-BUNDLE_DIR_NAME := $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
-BUNDLE_FILE := \
-    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)
-BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resources/$(d))
-ifeq ($(strip $(LANGUAGES)),)
-  override LANGUAGES="English"
-endif
+BUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
+
+GNUSTEP_SHARED_INSTANCE_BUNDLE_PATH = $(BUNDLE_DIR_NAME)/Resources
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
+
+BUNDLE_FILE = \
+$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)
+
 ifeq ($(BUNDLE_INSTALL_DIR),)
   BUNDLE_INSTALL_DIR := $(GNUSTEP_BUNDLES)
 endif
 
-build-bundle-dir:: $(BUNDLE_DIR_NAME)/Resources \
-                   $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-                   $(BUNDLE_RESOURCE_DIRS)
+build-bundle:: $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+               $(BUNDLE_FILE) \
+               $(BUNDLE_DIR_NAME)/Resources \
+               $(BUNDLE_DIR_NAME)/Resources/Info.plist \
+               $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist \
+               shared-instance-bundle-all
+
+# The rule to build $(BUNDLE_DIR_NAME)/Resources is already provided
+# by Instance/Shared/bundle.make
 
 $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	$(MKDIRS) $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
-
-$(BUNDLE_RESOURCE_DIRS):
-	$(MKDIRS) $(BUNDLE_RESOURCE_DIRS)
-
-build-bundle:: $(BUNDLE_FILE) \
-               bundle-resource-files \
-               bundle-localized-resource-files
+	$(MKDIRS) $@
 
 ifeq ($(WITH_DLL),yes)
 
@@ -137,32 +136,6 @@ $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 		$(ALL_BUNDLE_LIBS)
 
 endif # WITH_DLL
-
-bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info.plist \
-                        $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
-ifneq ($(strip $(RESOURCE_FILES)),)
-	@(echo "Copying resources into the bundle wrapper..."; \
-	for f in "$(RESOURCE_FILES)"; do \
-	  cp -r $$f $(BUNDLE_DIR_NAME)/Resources; \
-	done)
-endif
-
-bundle-localized-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
-ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-	@(echo "Copying localized resources into the bundle wrapper..."; \
-	for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
-	    $(MKDIRS) $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
-	      fi; \
-	    done; \
-	  else \
-	    echo "Warning: $$l.lproj not found - ignoring"; \
-	  fi; \
-	done)
-endif
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(GNUSTEP_INSTANCE)
@@ -201,7 +174,7 @@ build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
                        $(BUNDLE_DIR_NAME)/Contents/Info.plist
 
 # NeXTstep bundles
-$(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
+$(BUNDLE_DIR_NAME)/Resources/Info.plist:
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
@@ -213,7 +186,7 @@ $(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
 	  echo "}") >$@
 
 # GNUstep bundles
-$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
+$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
@@ -268,9 +241,6 @@ endif
 ifeq ($(strip),yes)
 	$(STRIP) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_FILE)
 endif
-
-$(BUNDLE_DIR_NAME)/Resources:
-	$(MKDIRS) $@
 
 $(BUNDLE_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
