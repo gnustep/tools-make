@@ -1,3 +1,15 @@
+Sun Dec 15 16:22:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/stamp-string.make: New file providing
+	infrastructure for very efficient stamp string support.
+	* GNUmakefile.in (INSTANCE_SHARED_MAKE_FILES): Added stamp-string.make
+	* Instance/application.make: Use Instance/Shared/stamp-string.make
+	to rebuild Info.plist and xxx.desktop iff there is a clear reason
+	to do so.
+	* Instance/bundle.make: Use Instance/Shared/stamp-string.make
+	to make sure we rebuild the Info.plist whenever the make variables
+	used in it change.
+
 Sat Dec 14 02:42:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* library-combo.make: Quick attempt at fixing/updating
