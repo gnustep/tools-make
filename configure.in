@@ -641,7 +641,7 @@ AC_ARG_WITH(gmp-library,
   [  --with-gmp-library=PATH  library path for gmp libraries],
   gmp_libdir="$withval", gmp_libdir="no")
 
-cppflags_temp=$CFLAGS
+cppflags_temp=$CPPFLAGS
 libs_temp=$LIBS
 
 if test "$gmp_incdir" != "no"; then

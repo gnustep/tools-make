@@ -1,3 +1,7 @@
+2000-12-13  Adam Fedor  <fedor@gnu.org>
+
+	* configure: Fix mistaken setting of CPPFLAGS from CFLAGS.
+
 2000-12-12  Adam Fedor  <fedor@gnu.org>
 
 	* bundle.make (build-macosx-bundle): Build suitable files for

@@ -3823,7 +3823,7 @@ else
 fi
 
 
-cppflags_temp=$CFLAGS
+cppflags_temp=$CPPFLAGS
 libs_temp=$LIBS
 
 if test "$gmp_incdir" != "no"; then
