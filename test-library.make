@@ -156,12 +156,12 @@ $(SCRIPTS_DIRECTORY)/config/unix.exp: _FORCE
 	echo "set OBJC_RUNTIME $(OBJC_RUNTIME)"; \
 	echo "set FOUNDATION_LIBRARY $(FOUNDATION_LIB)"; \
 	echo ""; \
-	echo "if {[file isdirectory $(GNUSTEP_USER_LIBRARIES_ROOT)/ObjCTest]} {"; \
-	echo "  set OBJCTEST_DIR $(GNUSTEP_USER_LIBRARIES_ROOT)/ObjCTest"; \
-	echo "} elseif {[file isdirectory $(GNUSTEP_LOCAL_LIBRARIES_ROOT)/ObjCTest]} {"; \
-	echo "  set OBJCTEST_DIR $(GNUSTEP_LOCAL_LIBRARIES_ROOT)/ObjCTest"; \
-	echo "} elseif {[file isdirectory $(GNUSTEP_SYSTEM_LIBRARIES_ROOT)/ObjCTest]} {"; \
-	echo "  set OBJCTEST_DIR $(GNUSTEP_SYSTEM_LIBRARIES_ROOT)/ObjCTest"; \
+	echo "if {[file isdirectory $(GNUSTEP_USER_ROOT)/Libraries/ObjCTest]} {"; \
+	echo "  set OBJCTEST_DIR $(GNUSTEP_USER_ROOT)/Libraries/ObjCTest"; \
+	echo "} elseif {[file isdirectory $(GNUSTEP_LOCAL_ROOT)/Libraries/ObjCTest]} {"; \
+	echo "  set OBJCTEST_DIR $(GNUSTEP_LOCAL_ROOT)/Libraries/ObjCTest"; \
+	echo "} elseif {[file isdirectory $(GNUSTEP_SYSTEM_ROOT)/Libraries/ObjCTest]} {"; \
+	echo "  set OBJCTEST_DIR $(GNUSTEP_SYSTEM_ROOT)/Libraries/ObjCTest"; \
 	echo "}"; \
 	echo "set objdir `pwd`"; \
 	echo "source \"\$$OBJCTEST_DIR/common.exp\""; \
