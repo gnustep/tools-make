@@ -4,6 +4,8 @@
 	and change order to prevent problems in obscure case where GNUstep
 	is installed in user's home.
 
+	* Documentation/machines.texi (cygwin): Update link.
+
 2004-01-25  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.Darwin: Update.

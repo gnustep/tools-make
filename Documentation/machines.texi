@@ -678,12 +678,12 @@ work.
 gcc 2.95.3 (Cygwin release 1.1.8) or later
 
 @item Extra libs needed 
-Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
+Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/windows/cygwin})
 for shared libs. It's a good idea to remove the libobjc.a that comes with gcc
 (gcc -v for location) so that it isn't accidentally found.
 For ffcall, you should get version 1.8b or above (the earlier ones don't
 compile). There are still some problems with structure passing, but that is
-generally not supportred on any architecture. libffi not supported.
+generally not supportred on any architecture.  libffi also works.
 
 @item Special Instructions
 On later versions of Cygwin you may be required to include the win32api
