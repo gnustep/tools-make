@@ -1,3 +1,15 @@
+Wed Jan 30 17:48:57 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make (GNUSTEP_MAKE_INSTANCE_INVOCATION): Unexport the 
+	variable.
+
+Wed Jan 30 17:30:04 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* tool.make (install-tool): Do not install the tool shell script
+	wrapper.
+	(internal-tool-uninstall): Do not remove it.
+	* ctool.make (install-ctool, internal-ctool-uninstall): Idem.
+	
 Wed Jan 30 17:11:34 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make All global rules, and all %.variables, %.subprojects,
