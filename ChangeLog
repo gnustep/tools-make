@@ -1,3 +1,46 @@
+Fri Jan 11 09:58:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in (ac_word, ac_dummy, ac_dir, ac_save_ifs): Unset
+	each variable after using it.
+	* ld_lib_path.sh (host_os, guile_paths): Unset each variable
+	after using it.
+	
+Fri Jan 11 09:04:57 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Patches by Balaton Zoltan <balaton@eik.bme.hu>, modified:
+	* GNUmakefile.in: Do not include Version.
+	(distclean): Remove config.h.
+	* GNUstep.sh.in: Changed the first line so that it doesnt' run it
+	using /bin/sh but it but rather uses /bin/echo to print out a
+	message saying that you must source it.
+	* GNUstep.csh.in: Idem.
+	* GNUstep.sh.in (CYGPATH): Renamed to cygpath.
+	(CONVERT_WIN_PATHS): Renamed to convert_win_paths.
+	(tmpdir, cygpath, tmp_IFS, dir, temp_path, convert_win_paths,
+	G_U_R, G_L_R, G_N_R, G_S_R, gnustep_class_path): Unset each
+	variable after using it.
+	Check and source $GNUSTEP_USER_ROOT/GNUstep.sh rather than
+	~/GNUstep/GNUstep.sh.  Check that make_services is an executable
+	file, not only a standard file, before executing it.
+	* ld_lib_path.sh (last_path_part, tool_path_part, dir, 
+	additional, lib_paths, old_IFS): Unset each variable after using 
+	it.
+	* GNUstep.csh.in (GNUSTEP_PATHPREFIX): Fixed to be
+	GNUSTEP_PATHPREFIX_LIST.
+	(tp): Renamed to temp_path.
+	(temp_path, dir, gnustep_class_path, TDIR): Unset each variable
+	after using it.
+	Check that GNUSTEP_FLATTENED is empty by using == "".  For Tools,
+	add the LIBRARY_COMBO dir to PATH as well when GNUSTEP_FLATTENED.
+	Only set PATH if it doesn't already contain temp_path.  Use
+	GNUSTEP_MAKEFILES.  Only set the CLASSPATH if it doesn't already
+	contain gnustep_class_path.  Look for and source
+	$GNUSTEP_USER_ROOT/GNUstep.csh rather than ~/GNUstep/GNUstep.csh.
+	Check that make_services is executable, not only that it exists,
+	before executing it.
+	* ld_lib_path.csh (tool_path_part, last_path_part, host_os,
+	additional, dir, lib_paths): Unset them after using them.
+	
 Thu Jan 10 15:13:35 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.in: Do not source ../Version.
