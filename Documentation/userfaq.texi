@@ -401,7 +401,12 @@ make[1]: Leaving directory `/home/multix/gnustep-gui-0.8.6/Tools'
 make: *** [internal-all] Error 2
 @end example
 
-This means your GNU make is broken on your system. Try this:
+This means your GNU make is being overly protective. When you try to
+become root (e.g. to install something), certain environment variables
+like LD_LIBRARY_PATH are unset in order to reduce the possibility of
+a security breach.  If you are becoming root to install
+something, you need to exec the GNUstep.sh file as root, just as you
+do when you login. Although for simplicity, you can also try this:
 
 @example
 make LD_LIBRARY_PATH=$LD_LIBRARY_PATH

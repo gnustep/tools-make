@@ -91,7 +91,9 @@ gcc 3.2.2
 
 Default compiler has some odd memory(?) related problems.
 Use the GNU runtime. Download the gcc compiler and configure it with
---enable-threads=posix. Usually the installed compiler will produce object
+--enable-threads=posix. You don't need binutils or anything else.
+
+Optional: Usually the installed compiler will produce object
 files for the NeXT runtime if you don't say gcc -fgnu-runtime. To change
 this behaviour, edit src-dir/gcc/config/darwin.h: You have to change the
 word #define in line 73 to #undef. Then the runtime default is gnu. When
@@ -100,20 +102,21 @@ bootstrapping the compiler a nice working objective C gnu-runtime library
 and installed when make install. To use it, there is one (important) thing
 left: After installing the compiler, you have to go to
 install-dir/lib and produce the following dynamic link:
+@example
 ln -s libobjc.a libobjc.dylib
+@end example
 This might seem senseless, but it forces the linker to use this library
 instead of the NeXT-runtime!
 
-Make sure to configure gnustep-make with ./configure
---with-library-combo=gnu-gnu-gnu if you want to use all the GNUstep libraries.
-
 @item Extra libs needed 
 Use libffi (not ffcall). This should be enabled by default in gnustep-base
-so you don't have to type --enable-libffi. Also need the dlcompat library
-(from @url{www.opendarwin.org}) to load bundles.
+so you don't have to type --enable-libffi. Also you need the dlcompat library
+(from @url{www.opendarwin.org}) to load bundles (like the backend bundle).
 
 @item Special Instructions 
 
+Make sure to configure gnustep-make with ./configure
+--with-library-combo=gnu-gnu-gnu if you want to use all the GNUstep libraries.
 
 @end table
 
