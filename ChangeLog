@@ -1,3 +1,69 @@
+Wed Dec 12 13:25:21 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Implemented INSTALL_AS_USER and INSTALL_AS_GROUP.
+	* config.make.in (CHOWN): New variable - define.
+	* configure.in (CHOWN): Added test for chown.
+	* configure: Regenerated.
+	* common.make (INSTALL_AS): New variable - define.
+	(INSTALL): Append INSTALL_AS at the end.
+	(CHOWN_TO): New variable - define.
+	(MKINSTALLDIRS): New variable - define.
+	* mkinstalldirs: Modified to recognize a `-c CHOWN_TO' option, 
+	running chown as needed when that option is passed.
+		
+	* tool.make (install-tool): Use INSTALL_DATA, not cp, to install
+	executable.template.	
+	* ctool.make (install-ctool): Idem.
+	
+	* application.make (internal-app-install): If CHOWN_TO is defined,
+	run chown after installing, to set user and group.
+	* bundle.make (internal-bundle-install): Idem.
+	* documentation.make (internal-doc-install): Idem - for
+	JAVADOC_FILES.
+	* Documentation/makedoc.make: Idem.
+	* framework.make (internal-framework-install): Idem.
+	* gswapp.make (internal-gswapp-install): Idem.
+	* gswbundle.make (internal-bundle-install): Idem.
+	* service.make (internal-service-install): Idem.
+
+	* application.make ($(GNUSTEP_APPS)): Use MKINSTALLDIRS, not
+	MKDIRS, to create the installation directory.
+	* bundle.make ($(BUNDLE_INSTALL_DIR)): Idem.
+	(internal-bundle-install): Idem.
+	* clibrary.make ($(FINAL_LIBRARY_INSTALL_DIR)): Idem.
+	($(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)): Idem.
+	($(DLL_INSTALLATION_DIR)): Idem.
+	($(ADDITIONAL_INSTALL_DIRS)): Idem.
+	* ctool.make ($(CTOOL_INSTALLATION_DIR)): Idem.
+	* documentation.make
+	($(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)): Idem.
+	* framework.make ($(GNUSTEP_FRAMEWORKS_HEADERS)): Idem.
+	($(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)): Idem.
+	($(FRAMEWORK_INSTALL_DIR)): Idem.
+	($(DLL_INSTALLATION_DIR)): Idem.
+	(internal-framework-install): Idem.
+	* gswapp.make (internal-gswapp-install): Idem.
+	* gswbundle.make (internal-bundle-install): Idem.
+	($(GSWBUNDLE_INSTALL_DIR)): Idem.
+	* java.make ($(JAVA_INSTALLATION_DIR)): Idem.
+	(internal-install-java-dirs): Idem.
+	* java-tool.make ($(JAVA_TOOL_INSTALLATION_DIR)): Idem.
+	(internal-install-java_tool-dirs): Idem.
+	* library.make ($(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)):
+	Idem.
+	($(FINAL_LIBRARY_INSTALL_DIR)): Idem.
+	($(ADDITIONAL_INSTALL_DIRS)): Idem.
+	($(DLL_INSTALLATION_DIR)): Idem.
+	* objc.make ($(OBJC_PROGRAM_INSTALLATION_DIR)): Idem.
+	* palette.make ($(PALETTE_INSTALL_DIR)): Idem.
+	* service.make ($(GNUSTEP_SERVICES)): Idem.
+	* subproject.make
+	($(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)): Idem.
+	($(ADDITIONAL_INSTALL_DIRS)): Idem.
+
+	* framework.make ($(FRAMEWORK_DIR_NAME)/Resources): Now a separate
+	rule.
+	
 Wed Dec 12 11:15:13 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make (internal-bundle-install): Added a '/' between
