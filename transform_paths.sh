@@ -28,10 +28,10 @@ if [ -z "$*" ]; then
   exit 0
 fi
 
-curdir=`pwd`
+curdir="`pwd`"
 
 for dir in $@; do
-  if [ -d $curdir/$dir ]; then
+  if [ -d "$curdir/$dir" ]; then
     echo "$curdir/$dir"
   else
     echo "$dir"
