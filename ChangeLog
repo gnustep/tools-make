@@ -1,3 +1,8 @@
+Fri Jul 13 10:18:15 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.subprojects): Use the __done trick.
+	(%.tools): Idem.
+	
 Thu Jul 12 18:10:31 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* subproject.make (.PHONY): Added.
