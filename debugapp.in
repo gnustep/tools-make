@@ -34,6 +34,9 @@ fi
 if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
+if [ -z "$GDB" ]; then
+  GDB=gdb
+fi
 
 case $1 in
   --help)
@@ -169,7 +172,7 @@ if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   fi
 
   # Support for GDBbundle under OPENSTEP
-  gdb -connect TextEdit $gdbargs $full_appname/$appname $corefile
+  $GDB -connect TextEdit $gdbargs $full_appname/$appname $corefile
 
 else
   # Determine if the application has a binary for this operating system
@@ -185,9 +188,9 @@ else
 
   # Support for GDBbundle under OPENSTEP
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
-    gdb -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
+    $GDB -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
   else
-    gdb $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
+    $GDB $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
   fi
 
 fi
