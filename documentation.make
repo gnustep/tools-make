@@ -245,12 +245,15 @@ internal-doc-uninstall::
 
 ifneq ($(LATEX2HTML),)
 internal-doc-install:: 
-	$(INSTALL_DATA) $(INTERNAL_doc_NAME)/* \
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME)/*.html \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME)/*.css \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 # Yeah - I know - the following is dangerous if you have misused the 
 # DOC_INSTALL_DIR - but it's the only way to do it
 internal-doc-uninstall:: 
-	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*
+	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.html
+	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.css
 endif # LATEX2HTML
 endif # LATEX_FILES
 
