@@ -36,9 +36,29 @@ ifeq ($(INTERNAL_app_NAME),)
 
 internal-all:: $(TEST_APP_NAME:=.all.app.variables)
 
-internal-clean:: $(TEST_APP_NAME:=.clean.app.variables)
+internal-clean:: $(TEST_APP_NAME:=.clean.app.subprojects)
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+endif
+ifeq ($(OBJC_COMPILER), NeXT)
+	rm -f *.iconheader
+	for f in *.$(APP_EXTENSION); do \
+	  rm -f $$f/`basename $$f .$(APP_EXTENSION)`; \
+	done
+else
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.$(APP_EXTENSION)
+endif
+endif
 
-internal-distclean:: $(TEST_APP_NAME:=.distclean.app.variables)
+internal-distclean:: $(TEST_APP_NAME:=.distclean.app.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj *.app *.debug *.profile *.iconheader
 
 internal-check:: $(TEST_APP_NAME:=.check.testapp.variables)
 
