@@ -1,3 +1,24 @@
+Mon Jan 15 16:45:48 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make (REMOVE_INSTALLED_DIR): New variable to be used to
+	remove an installed dir.
+	* application.make (internal-app-install): Use it.
+	* bundle.make (internal-bundle-install): Idem.
+	* framework.make (internal-framework-install): Idem. 
+	* framework.make (internal-framework-install): Use
+	REMOVE_INSTALLED_LN_S.
+	* file-list.make (REMOVE_INSTALLED_DIR): Redefine to do nothing.
+
+	Made file list rpm specific - so it is now suitable to be included
+	directly with `%file -f' directives into rpm spec files.
+	* file-list.make: Add an `%attr (-, root, root)' at the beginning
+	of the file list.
+	* log_install_dir.sh.in: Rpm specific fix - output `%dir' before
+	the directory name.
+
+	* file-list.make (FILE_LIST): Output different file list 
+	for debugging and non-debugging cases.
+	
 2001-01-13  Adam Fedor  <fedor@gnu.org>
 
 	* openapp.in (additional_library_paths): Set for FLATTENED structure
