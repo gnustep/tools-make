@@ -1,3 +1,11 @@
+Wed Oct 29 10:02:37 1997  Adam Fedor  <fedor@doc.com>
+
+	* GNUstep.sh.in: Use -f to find user's GNUstep.sh.
+	* configure.in (ac_cv_library_combo): Use dashes instead of
+	underlines.
+
+	* target.make (TARGET_SYSTEM_LIBS): Add -lthread for Solaris.
+
 Tue Oct 28 09:32:23 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* common.make: Define the system, local and user headers variables.

@@ -58,7 +58,7 @@ PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:
 #
 # Perform any user initialization
 #
-if [ -e ~/.GNUstep/GNUstep.sh ]
+if [ -f ~/.GNUstep/GNUstep.sh ]
 then
 	. ~/.GNUstep/GNUstep.sh
 fi

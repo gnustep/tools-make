@@ -44,7 +44,7 @@ TARGET_SYSTEM_LIBS := -ldl -lm
 endif
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-TARGET_SYSTEM_LIBS := -lsocket -lnsl -ldl -lm
+TARGET_SYSTEM_LIBS := -lthread -lsocket -lnsl -ldl -lm
 endif
 
 #

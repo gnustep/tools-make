@@ -91,7 +91,7 @@ AC_ARG_WITH(library-combo,[
     'make'. You can still change the library combination at runtime by
     specifying the 'library_combo' make variable. For example:
     
-      $ make library_combo=nx_pdo_nx_nil
+      $ make library_combo=nx-pdo-nx-nil
 ],
 ac_cv_library_combo=$withval,
 ac_cv_library_combo=$withval
@@ -99,9 +99,9 @@ ac_cv_library_combo=$withval
 
 if test "$ac_cv_library_combo" = ""; then
   if test $host_os = nextstep4; then
-    ac_cv_library_combo=nx_nx_nx_nil
+    ac_cv_library_combo=nx-nx-nx-nil
   else
-    ac_cv_library_combo=gnu_gnu_gnu_xdp
+    ac_cv_library_combo=gnu-gnu-gnu-xdp
   fi
 fi
 AC_SUBST(ac_cv_library_combo)
