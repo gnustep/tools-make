@@ -1,3 +1,9 @@
+Fri Jul 13 13:45:54 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.variables, %.tools, %.subprojects): Removed usage
+	of $(call ...) for backward compatibility with old versions of GNU
+	make.
+
 Fri Jul 13 10:18:15 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.subprojects): Use the __done trick.
