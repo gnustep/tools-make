@@ -327,7 +327,7 @@ $(GSWAPP_DIR_NAME)/Resources/WebServer:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 internal-gswapp-install_::
-	$(ECHO_INSTALLING)($(MKINSTALLDIRS) $(GNUSTEP_GSWAPPS); \
+	$(ECHO_INSTALLING)$(MKINSTALLDIRS) $(GNUSTEP_GSWAPPS); \
 	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
