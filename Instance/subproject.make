@@ -35,7 +35,7 @@ endif
 # (that is done automatically if the project uses
 # Instance/Shared/bundle.make to manage its own resource bundle)
 #
-GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH = Resources/Subproject
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = Resources/Subproject
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 

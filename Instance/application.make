@@ -59,7 +59,7 @@ ALL_GUI_LIBS =								     \
 
 APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
 
-GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Resources
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 # Support building NeXT applications

@@ -25,7 +25,7 @@
 #
 
 #
-#  GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH : the path to the
+#  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH : the path to the
 #  local resource bundle (this might be a subdirectory of the actual
 #  bundle directory).  Resource files will be copied into this path.
 #  For example, for a normal bundle it would be
@@ -34,12 +34,12 @@
 #  Resources/$(GNUSTEP_INSTANCE).  This variable is used during build,
 #  to copy the resources in place.
 #
-#  GNUSTEP_SHARED_INSTANCE_BUNDLE_MAIN_PATH : the path to the top
+#  GNUSTEP_SHARED_BUNDLE_MAIN_PATH : the path to the top
 #  level bundle directory to install.  For example, for a normal
 #  bundle it would be $(BUNDLE_DIR); for an application it would be
 #  $(APP_DIR); for a library or a tool, Resources/$(GNUSTEP_INSTANCE).
 #
-#  GNUSTEP_SHARED_INSTANCE_BUNDLE_PRESERVE_LINK_PATH : the path
+#  GNUSTEP_SHARED_BUNDLE_PRESERVE_LINK_PATH : the path
 #  to a symlink to preserve when installing.  Normally symlinks are
 #  dereferenced, but we have support to preserve a single symlink.
 #  This is used when building bundles on MacOSX.  If not set, it's
@@ -73,7 +73,7 @@
 #  $(GNUSTEP_INSTANCE)_SUBPROJECTS : the list of subprojects is used
 #  because the resources from each subproject are merged into the bundle
 #  resources (by recursively copying from LLL/Resources/Subproject into
-#  the GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH, where $(LLL) is the
+#  the GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH, where $(LLL) is the
 #  subproject name.
 #
 #  GNUSTEP_TYPE : used when printing the message 'Copying resources into 
@@ -102,7 +102,7 @@
 # 
 #  shared-instance-bundle-all
 #
-#  $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH): Creates the bundle
+#  $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH): Creates the bundle
 #  resource path (invoked automatically)
 #
 
@@ -128,7 +128,7 @@ shared-instance-bundle-all-gsweb
 ifneq ($(RESOURCE_DIRS),)
 
 FULL_RESOURCE_DIRS = \
-$(foreach d, $(RESOURCE_DIRS), $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$(d))
+$(foreach d, $(RESOURCE_DIRS), $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$(d))
 
 endif
 
@@ -136,7 +136,7 @@ ifeq ($(LANGUAGES),)
   LANGUAGES = English
 endif
 
-$(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH):
+$(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH):
 	$(MKDIRS) $@
 
 $(FULL_RESOURCE_DIRS):
@@ -165,13 +165,13 @@ $(FULL_RESOURCE_DIRS):
 # $$subproject/Resources/Subproject/* the * expands to itself.  So we
 # check if that is true before trying to copy.
 
-shared-instance-bundle-all: $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH) \
+shared-instance-bundle-all: $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH) \
                       $(FULL_RESOURCE_DIRS) \
                       shared-instance-bundle-all-gsweb
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_COPYING_RESOURCES)for f in $(RESOURCE_FILES); do \
 	  if [ -f $$f -o -d $$f ]; then \
-	    cp -r $$f $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH); \
+	    cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH); \
 	  else \
 	    echo "Warning: $$f not found - ignoring"; \
 	  fi; \
@@ -180,9 +180,9 @@ endif
 ifneq ($(LOCALIZED_RESOURCE_DIRS),)
 	$(ECHO_CREATING_LOC_RESOURCE_DIRS)for l in $(LANGUAGES); do \
 	  if [ -d $$l.lproj ]; then \
-	    $(MKDIRS) $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
+	    $(MKDIRS) $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_DIRS); do \
-	      $(MKDIRS) $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj/$$f; \
+	      $(MKDIRS) $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj/$$f; \
 	    done; \
 	  else \
 	    echo "Warning: $$l.lproj not found - ignoring"; \
@@ -192,11 +192,11 @@ endif
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	$(ECHO_COPYING_LOC_RESOURCES)for l in $(LANGUAGES); do \
 	  if [ -d $$l.lproj ]; then \
-	    $(MKDIRS) $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
+	    $(MKDIRS) $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
 	      if [ -f $$l.lproj/$$f -o -d $$l.lproj/$$f ]; then \
 	        cp -r $$l.lproj/$$f \
-	              $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
+	              $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	      else \
 	        echo "Warning: $$l.lproj/$$f not found - ignoring"; \
 	      fi; \
@@ -211,7 +211,7 @@ ifneq ($(_SUBPROJECTS),)
 	  if [ -d $$subproject/Resources/Subproject ]; then \
 	    for f in $$subproject/Resources/Subproject/*; do \
 	      if [ $$f != $$subproject'/Resources/Subproject/*' ]; then \
-	        cp -r $$f $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
+	        cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
 	      fi; \
 	    done; \
 	  fi; \
@@ -244,7 +244,7 @@ WEBSERVER_LOCALIZED_RESOURCE_DIRS = \
 ifneq ($(WEBSERVER_RESOURCE_DIRS),)
 
 WEBSERVER_FULL_RESOURCE_DIRS = \
-$(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$(d))
+$(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$(d))
 
 $(WEBSERVER_FULL_RESOURCE_DIRS):
 	$(MKDIRS) $@
@@ -260,17 +260,17 @@ shared-instance-bundle-all-gsweb: shared-instance-bundle-all-webresources \
 
 ifneq ($(WEBSERVER_RESOURCE_FILES),)
 
-$(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer:
+$(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer:
 	$(MKDIRS) $@
 
 shared-instance-bundle-all-webresources: \
-  $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer \
+  $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer \
   $(WEBSERVER_FULL_RESOURCE_DIRS)
 	$(ECHO_COPYING_WEBSERVER_RESOURCES)for f in $(WEBSERVER_RESOURCE_FILES); do \
 	  if [ -f ./WebServerResources/$$f \
 	       -o -d ./WebServerResources/$$f ]; then \
 	    cp -r ./WebServerResources/$$f \
-	       $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$$f; \
+	       $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$$f; \
 	  else \
 	    echo "Warning: WebServerResources/$$f not found - ignoring"; \
 	  fi; \
@@ -288,10 +288,10 @@ ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_DIRS),)
 	$(ECHO_CREATING_WEBSERVER_LOC_RESOURCE_DIRS)for l in $(LANGUAGES); do \
 	 if [ -d ./WebServerResources/$$l.lproj ]; then \
 	  $(MKDIRS) \
-	   $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj; \
+	   $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj; \
 	  for f in $(WEBSERVER_LOCALIZED_RESOURCE_DIRS); do \
 	   $(MKDIRS) \
-	     $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj/$$f; \
+	     $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj/$$f; \
 	    done; \
 	  else \
 	    echo "Warning: WebServer/$$l.lproj not found - ignoring"; \
@@ -302,12 +302,12 @@ ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_FILES)
 	$(ECHO_COPYING_WEBSERVER_LOC_RESOURCES)for l in $(LANGUAGES); do \
 	 if [ -d ./WebServerResources/$$l.lproj ]; then \
 	  $(MKDIRS) \
-	  $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj;\
+	  $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj;\
 	  for f in $(WEBSERVER_LOCALIZED_RESOURCE_FILES); do \
 	   if [ -f ./WebServerResources/$$l.lproj/$$f \
 	        -o -d ./WebServerResources/$$l.lproj/$$f ]; then \
 	    cp -r ./WebServerResources/$$l.lproj/$$f \
-	          $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj/$$f; \
+	          $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj/$$f; \
 	      else \
 	        echo "Warning: WebServerResources/$$l.lproj/$$f not found - ignoring"; \
 	      fi; \
