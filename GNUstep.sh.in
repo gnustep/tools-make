@@ -47,10 +47,11 @@ export GNUSTEP_MAKEFILES
 # Determine the host information
 #
 if [ -z "$GNUSTEP_HOST" ]; then
-  pushd /tmp >> /dev/null
+  # Not all OSs (e.g. FreeBSD < 4.0) have pushd/popd
+  tmpdir=`pwd`; cd /tmp
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.guess`
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.sub $GNUSTEP_HOST`
-  popd >> /dev/null
+  cd $tmpdir
 fi
 GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/cpu.sh $GNUSTEP_HOST`
 GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/vendor.sh $GNUSTEP_HOST`

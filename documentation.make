@@ -90,17 +90,14 @@ internal-textdoc-all:: before-all before-$(TARGET)-all \
 
 $(INTERNAL_doc_NAME).info: $(TEXI_FILES)
 	for i in $(TEXI_FILES); do \
-	   sed -e 's,@email{\([^}]*\)},<\1>,g' \
-		$$i \
-		| sed -e 's,@url{\([^}]*\)},@samp{\1},g' \
-		> `basename $$i .tmpl.texi`.texi ; \
+           cp $$i `basename $$i .tmpl.texi`.texi ; \
 	done
 	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
 		-o $@ $(INTERNAL_doc_NAME).texi
 
 $(INTERNAL_doc_NAME).dvi: $(TEXI_FILES)
 	for i in $(TEXI_FILES); do \
-		cp $$i `basename $$i .tmpl.texi`.texi ; \
+	  -cp $$i `basename $$i .tmpl.texi`.texi ; \
 	done
 	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(INTERNAL_doc_NAME).texi
 
@@ -121,10 +118,7 @@ $(INTERNAL_doc_NAME)_toc.html: $(TEXI_FILES)
 
 $(INTERNAL_textdoc_NAME): $(TEXI_FILES) $(TEXT_MAIN)
 	for i in $(TEXI_FILES) $(TEXT_MAIN); do \
-	   sed -e 's,@email{\([^}]*\)},<\1>,g' \
-		$$i \
-		| sed -e 's,@url{\([^}]*\)},@samp{\1},g' \
-		> `basename $$i .tmpl.texi`.texi ; \
+           -cp $$i `basename $$i .tmpl.texi`.texi ; \
 	done
 	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
 		-o $@ `basename $(TEXT_MAIN) .tmpl.texi`.texi

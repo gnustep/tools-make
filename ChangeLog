@@ -1,5 +1,17 @@
 2000-03-20  Adam Fedor  <fedor@gnu.org>
 
+	* gswapp.make: include common.make for TAR
+	* gswbundle.make: Likewise.
+
+	* GNUstep.sh.in: Replace pushd/popd with cd equivalent since not
+	all OS's have it.
+
+	* bundle.make: Include localization support (from gswbundle.make)
+	(Patch from Jonathan Gapen <jagapen@whitewater.chem.wisc.edu>)
+
+	* documentation.make: Take out sed of @email and @url since
+	texinfo has them now.
+
 	* configure.in (GRAPHIC_LIBS): Check for libXmu if libwraster
 	not found. Add X libs if libwraster not found.
 
