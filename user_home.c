@@ -183,56 +183,57 @@ int main (int argc, char** argv)
     }
   strncpy(home, pw->pw_dir, sizeof(home));
 #else
-  /* The environment variable USERPROFILE holds the home directory
-     for the user on modern versions of windoze. */
-  len0 = GetEnvironmentVariable("USERPROFILE", buf0, 1024);
-  if (len0 > 0 && len0 < 1024)
-    {
-      int	i;
-
-      for (i = 0; i < len0; i++)
-	{
-	  if (isspace((int)buf0[0]))
-	    {
-	      len0 = 0;	/* Spaces not permitted! */
-	    }
-	}
-    }
+  home[0] = '\0';
+  /*
+   * The environment variable HOMEPATH holds the home directory
+   * for the user on Windows NT; Win95 has no concept of home.
+   * For OPENSTEP compatibility (and because USERPROFILE is usually
+   * unusable because it contains spaces), we use HOMEPATH in
+   * preference to USERPROFILE.
+   */
+  len0 = GetEnvironmentVariable("HOMEPATH", buf0, 1024);
   if (len0 > 0 && len0 < 1024)
     {
       buf0[len0] = '\0';
-      strcpy(home, buf0);
+      /*
+       * Only use HOMEDRIVE is HOMEPATH does not already contain drive.
+       */
+      if (len0 < 2 || buf0[1] != ':')
+	{
+	  len1 = GetEnvironmentVariable("HOMEDRIVE", buf1, 128);
+	  if (len1 > 0 && len1 < 128)
+	    {
+	      buf1[len1] = '\0';
+	      sprintf(home, "%s%s", buf1, buf0);
+	    }
+	  else
+	    {
+	      sprintf(home, "C:%s", buf0);
+	    }
+	}
     }
   else
     {
-      /* The environment variable HOMEPATH holds the home directory
-	 for the user on Windows NT; Win95 has no concept of home. */
-      len0 = GetEnvironmentVariable("HOMEPATH", buf0, 1024);
+      /* The environment variable USERPROFILE may hold the home directory
+	 for the user on modern versions of windoze. */
+      len0 = GetEnvironmentVariable("USERPROFILE", buf0, 1024);
       if (len0 > 0 && len0 < 1024)
 	{
 	  buf0[len0] = '\0';
-	  /*
-	   * Only use HOMEDRIVE is HOMEPATH does not already contain drive.
-	   */
-	  if (len0 < 2 || buf0[1] != ':')
-	    {
-	      len1 = GetEnvironmentVariable("HOMEDRIVE", buf1, 128);
-	      if (len1 > 0 && len1 < 128)
-		{
-		  buf1[len1] = '\0';
-		  sprintf(home, "%s%s", buf1, buf0);
-		}
-	      else
-		{
-		  fprintf(stderr, "Unable to determine HOMEDRIVE\n");
-		  return 1;
-		}
-	    }
+	  strcpy(home, buf0);
 	}
-      else
+    }
+  if (home[0] != '\0')
+    {
+      int	i;
+
+      for (i = 0; i < strlen(home); i++)
 	{
-	  fprintf(stderr, "Unable to determine HOMEPATH\n");
-	  return 1;
+	  if (isspace((int)home[0]))
+	    {
+	      home[0] = '\0';	/* Spaces not permitted! */
+	      break;
+	    }
 	}
     }
 #endif
