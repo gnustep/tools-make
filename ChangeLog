@@ -1,3 +1,8 @@
+Mon Mar 10 12:51:20 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make: Disable all built-in SUFFIXES and all built-in rules
+	with a % target -- for performance.
+
 Wed Feb 26 18:34:37 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/application.make ($(APP_INFO_PLIST_FILE)): Implemented
