@@ -192,7 +192,7 @@ int main (int argc, char** argv)
 
       for (i = 0; i < len0; i++)
 	{
-	  if (isspace(buf0[0]))
+	  if (isspace((int)buf0[0]))
 	    {
 	      len0 = 0;	/* Spaces not permitted! */
 	    }
@@ -275,20 +275,20 @@ int main (int argc, char** argv)
 		{
 		  val = pos;
 		  *val++ = '\0';
-		  while (isspace(*key))
+		  while (isspace((int)*key))
 		    key++;
-		  while (strlen(key) > 0 && isspace(key[strlen(key)-1]))
+		  while (strlen(key) > 0 && isspace((int)key[strlen(key)-1]))
 		    key[strlen(key)-1] = '\0';
 		  while (isspace(*val))
 		    val++;
-		  while (strlen(val) > 0 && isspace(val[strlen(val)-1]))
+		  while (strlen(val) > 0 && isspace((int)val[strlen(val)-1]))
 		    val[strlen(val)-1] = '\0';
 		}
 	      else
 		{
-		  while (isspace(*key))
+		  while (isspace((int)*key))
 		    key++;
-		  while (strlen(key) > 0 && isspace(key[strlen(key)-1]))
+		  while (strlen(key) > 0 && isspace((int)key[strlen(key)-1]))
 		    key[strlen(key)-1] = '\0';
 		  val = "";
 		}
@@ -351,13 +351,15 @@ int main (int argc, char** argv)
 		      char	*val = pos;
 
 		      *val++ = '\0';
-		      while (isspace(*key))
+		      while (isspace((int)*key))
 			key++;
-		      while (strlen(key) > 0 && isspace(key[strlen(key)-1]))
+		      while (strlen(key) > 0
+			&& isspace((int)key[strlen(key)-1]))
 			key[strlen(key)-1] = '\0';
-		      while (isspace(*val))
+		      while (isspace((int)*val))
 			val++;
-		      while (strlen(val) > 0 && isspace(val[strlen(val)-1]))
+		      while (strlen(val) > 0
+			&& isspace((int)val[strlen(val)-1]))
 			val[strlen(val)-1] = '\0';
 
 		      if (strcmp(key, "GNUSTEP_USER_ROOT") == 0)

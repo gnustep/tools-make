@@ -1,3 +1,8 @@
+2003-06-29 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* user_home.c: Cast all arguments to isspace() as int ... for picky
+	compiler versions.
+
 2003-06-25  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/GNUmakefile.in (after-install): Install man pages
