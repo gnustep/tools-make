@@ -39,13 +39,15 @@ if ( "${host_os}" == "" ) then
   set host_os=${1}
 endif
 
+set lib_paths="${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
+
 switch ( "${host_os}" )
 
   case *nextstep4* :
     if ( $?DYLD_LIBRARY_PATH == 0 ) then
-	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
-    else
-	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${DYLD_LIBRARY_PATH}"
+	setenv DYLD_LIBRARY_PATH "${lib_paths}"
+    else if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
+	setenv DYLD_LIBRARY_PATH "${lib_paths}:${DYLD_LIBRARY_PATH}"
     endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})
@@ -54,15 +56,17 @@ switch ( "${host_os}" )
     endif
 
     if ( "${?additional}" == "1" ) then
+      if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
        setenv DYLD_LIBRARY_PATH="${additional}${DYLD_LIBRARY_PATH}"
+      endif
     endif
     breaksw
 
   case *darwin* :
     if ( $?DYLD_LIBRARY_PATH == 0 ) then
-	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
-    else
-	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${DYLD_LIBRARY_PATH}"
+	setenv DYLD_LIBRARY_PATH "${lib_paths}"
+    else if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
+	setenv DYLD_LIBRARY_PATH "${lib_paths}:${DYLD_LIBRARY_PATH}"
     endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})
@@ -71,15 +75,17 @@ switch ( "${host_os}" )
     endif
 
     if ( "${?additional}" == "1" ) then
+      if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
        setenv DYLD_LIBRARY_PATH="${additional}${DYLD_LIBRARY_PATH}"
+      endif
     endif
     breaksw
 
   case *hpux* :
     if ( $?SHLIB_PATH == 0 ) then
-	setenv SHLIB_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
-    else
-	setenv SHLIB_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${SHLIB_PATH}"
+	setenv SHLIB_PATH "${lib_paths}"
+    else if ( { (echo "${SHLIB_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
+	setenv SHLIB_PATH "${lib_paths}:${SHLIB_PATH}"
     endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})
@@ -88,13 +94,15 @@ switch ( "${host_os}" )
     endif
 
     if ( "${?additional}" == "1" ) then
+      if ( { (echo "${SHLIB_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
        setenv SHLIB_PATH="${additional}${SHLIB_PATH}"
+      endif
     endif
 
     if ( $?LD_LIBRARY_PATH == 0 ) then
-	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
-    else
-	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${LD_LIBRARY_PATH}"
+	setenv LD_LIBRARY_PATH "${lib_paths}"
+    else if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
+	setenv LD_LIBRARY_PATH "${lib_paths}:${LD_LIBRARY_PATH}"
     endif
 
     if ( $?additional_lib_paths == 1) then
@@ -104,15 +112,17 @@ switch ( "${host_os}" )
     endif
 
     if ( "${?additional}" == "1" ) then
+      if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
        setenv LD_LIBRARY_PATH="${additional}${LD_LIBRARY_PATH}"
+      endif
     endif
     breaksw
 
   case * :
     if ( $?LD_LIBRARY_PATH == 0 ) then
-	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
-    else
-	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${LD_LIBRARY_PATH}"
+	setenv LD_LIBRARY_PATH "${lib_paths}"
+    else if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
+	setenv LD_LIBRARY_PATH "${lib_paths}:${LD_LIBRARY_PATH}"
     endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})
@@ -121,7 +131,9 @@ switch ( "${host_os}" )
     endif
 
     if ( "${?additional}" == "1" ) then
+      if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
        setenv LD_LIBRARY_PATH="${additional}${LD_LIBRARY_PATH}"
+      endif
     endif
     breaksw
 

@@ -1,3 +1,11 @@
+Fri Apr 25 17:02:55 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.csh.in: Use the grep -v trick to make sure that
+	GUILE_LOAD_PATH is not increased if the paths to add are already
+	there in the variable.
+
+	* ld_lib_path.csh: Similar change/fix for all paths.
+
 2003-04-24  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/filesystem.texi: Clarify Local installation
