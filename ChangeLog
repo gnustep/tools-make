@@ -5,6 +5,13 @@
 	use autogsdoc stuff reliably using the release Adam is planning
 	to do real soon and pending us getting the new rules working
 	properly.
+	Retain checks for libxml for cleaner handling of case where it is
+	not present.
+	Modify experimental code to have html files depend on the igsdoc
+	file so that their cross references get set up correctly.
+	Outstanding requirements for experimental rules ...
+	need to get dependency on .m files working and probably other things
+	(certainly performance improvements needed).
 
 Fri Jan  4 15:37:19 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
