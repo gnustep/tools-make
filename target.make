@@ -45,18 +45,18 @@ endif
 endif
 
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
-  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) \
+  TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) \
 	-lws2_32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
 	-lmpr -lnetapi32 -lm -I. # the -I is a dummy to avoid -lm^M
 endif
 ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
-  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm -I. 
+  TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lm -I. 
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
+  TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
 endif
 ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
-  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
+  TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
 endif
 
 #
@@ -85,7 +85,14 @@ endif
 #    for frameworks.
 #  LIB_LINK_VERSION_FILE: the final file to create, having full
 #     version information: typically `libgnustep-base.so.1.5.3' for shared
-#     libraries, and `libgnustep-base.a' for static libraries.
+#     libraries, and `libgnustep-base.a' for static libraries.  For DLL
+#     libraries, this is the import library libgnustep-base.dll.a.  The
+#     reason we use the import library is because that is the code which
+#     needs to be installed in the library path.  So by setting
+#     LIB_LINK_VERSION_FILE to the import library, the standard code to
+#     install it in the library path will work for Windows.  The DLL
+#     library instead needs to be installed in the PATH, so we have separate
+#     code for that one.
 #  LIB_LINK_SONAME_FILE: this is only used for shared libraries; it 
 #    should be passed in the -Wl,-soname argument of most linkers when 
 #    building the LIB_LINK_VERSION_FILE. Typically `libgnustep-base.so.1' 
@@ -102,7 +109,13 @@ endif
 #  LIB_LINK_INSTALL_NAME: on some platforms, when a shared library is
 #    linked, a default install name of the library is hardcoded into
 #    the library.  This is that name.
-#
+#  LIB_LINK_DLL_FILE: on Windows, this is the DLL that gets created
+#    and installed in the Tools/ directory (eg, gnustep-base.dll).
+#    Please note that while this is the main file you need to use the
+#    library at runtime, on Windows we treat this as a side-effect of
+#    the compilation; the compilation target for make is
+#    LIB_LINK_VERSION_FILE, which is the import library.
+
 # AFTER_INSTALL_SHARED_LIB_CMD provides commands to be executed after
 # installation (at least for libraries, not for frameworks at the
 # moment), and is supposed to setup symlinks properly in the
@@ -853,12 +866,21 @@ endif
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
 shared = yes
 HAVE_SHARED_LIBS = yes
+# This command links the library, generates automatically the list of
+# symbols to export, creates the DLL (eg, obj/gnustep-base.dll) and 
+# the import library (eg, obj/libgnustep-base.dll.a).
+SHARED_LIB_LINK_CMD     = \
+        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+           $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) $^ \
+	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+	   $(SHARED_LD_POSTFLAGS)
+
+AFTER_INSTALL_SHARED_LIB_CMD = 
+AFTER_INSTALL_SHARED_LIB_CHOWN =
+
 BUILD_DLL	 = yes
-WITH_DLL	 = yes
-SHARED_LIBEXT	 = .a
+LIBEXT	 	 = .a
 DLL_LIBEXT	 = .dll
-DLLTOOL		 = dlltool
-DLLWRAP		 = dllwrap
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
@@ -881,7 +903,7 @@ ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
 shared = yes
 HAVE_SHARED_LIBS = yes
 BUILD_DLL	 = yes
-WITH_DLL	 = yes
+OLD_DLL_SUPPORT  = yes
 SHARED_LIBEXT	 = .a
 DLL_LIBEXT	 = .dll
 DLLTOOL		 = dlltool

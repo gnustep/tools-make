@@ -37,7 +37,6 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 # The directory where the header files are located is xxx_HEADER_FILES_DIR
 # The directory where to install the header files inside the library
 # installation directory is xxx_HEADER_FILES_INSTALL_DIR
-# The DLL export file is in xxx_DLL_DEF
 #
 #	Where xxx is the name of the library
 #
@@ -98,8 +97,10 @@ endif
 #
 ifneq ($(filter lib%,$(GNUSTEP_INSTANCE)),)
   LIBRARY_NAME_WITH_LIB = $(GNUSTEP_INSTANCE)
+  LIBRARY_NAME_WITHOUT_LIB = $(patsubst lib%,%,$(GNUSTEP_INSTANCE))
 else
   LIBRARY_NAME_WITH_LIB = lib$(GNUSTEP_INSTANCE)
+  LIBRARY_NAME_WITHOUT_LIB = $(GNUSTEP_INSTANCE)
 endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
@@ -114,7 +115,6 @@ ifeq ($(shared), yes)
 ifneq ($(BUILD_DLL),yes)
 
 LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
-LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 
 # Allow the user GNUmakefile to define xxx_INTERFACE_VERSION to
@@ -174,22 +174,50 @@ SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(INTERFACE_VERSION)
 
 else # BUILD_DLL
 
-LIBRARY_FILE     = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
-LIBRARY_FILE_EXT = $(DLL_LIBEXT)
-DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
-DLL_EXP_LIB      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
-DLL_EXP_DEF      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX).def
-
+# When you build a DLL, you have to install it in a directory which is
+# in your PATH.
 ifeq ($(DLL_INSTALLATION_DIR),)
   DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 endif
 
+# When we build a DLL, we also pass -DBUILD_lib{library_name}_DLL=1 to
+# the preprocessor.  With the new DLL support, this is usually not
+# needed; but in some cases some symbols are difficult and have to be
+# exported/imported manually.  For these cases, the library header
+# files can use this preprocessor define to know that they are
+# included during compilation of the library itself, or are being
+# imported by external code.  Typically with the new DLL support if a
+# symbol can't be imported you have to mark it with
+# __declspec(dllimport) when the library is not being compiled.
+# __declspec(dllexport) is not particularly useful instead.
+
+CLEAN_library_NAME = $(subst -,_,$(LIBRARY_NAME_WITH_LIB))
+SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
+
+# OLD_DLL_SUPPORT should really be deprecated and dropped.
+ifeq ($(OLD_DLL_SUPPORT),yes)
+LIBRARY_FILE     = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
+DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
+DLL_EXP_LIB      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
+DLL_EXP_DEF      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX).def
+
+else
+# BUILD_DLL, but new DLL support.
+
+# LIBRARY_FILE is the import library, libgnustep-base.dll.a
+LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)$(LIBEXT)
+VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
+SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
+
+# LIB_LINK_DLL_FILE is the DLL library, gnustep-base.dll
+LIB_LINK_DLL_FILE    = $(LIBRARY_NAME_WITHOUT_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
+
+endif # OLD_DLL_SUPPORT
 endif # BUILD_DLL
 
-else # shared
+else # following code for static libs
 
 LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
-LIBRARY_FILE_EXT     = $(LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 
@@ -214,7 +242,7 @@ LIB_LINK_INSTALL_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
 # Compilation targets
 #
 
-ifeq ($(BUILD_DLL),yes)
+ifeq ($(OLD_DLL_SUPPORT),yes)
 
 DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
 DLL_DEF_FILES = $(SUBPROJECT_DEF_FILES) $(DLL_DEF)
@@ -227,13 +255,6 @@ $(DLL_DEF_INP): $(DLL_DEF_FILES)
 
 DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
 endif
-
-# Pass -DBUILD_lib{library_name}_DLL=1 to the preprocessor.  The
-# library header files can use this preprocessor define to know that
-# they are included during compilation of the library itself, and can
-# then use __declspec(dllexport) to export symbols
-CLEAN_library_NAME = $(shell echo $(LIBRARY_NAME_WITH_LIB)|tr '-' '_')
-SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
 internal-library-all_:: \
 	$(GNUSTEP_OBJ_DIR)			\
@@ -265,7 +286,7 @@ $(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
 	  $(INTERNAL_LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) \
 	  $(SHARED_LD_POSTFLAGS)$(END_ECHO)
 
-else # BUILD_DLL
+else # following code for anything but OLD_DLL_SUPPORt
 
 internal-library-all_:: $(GNUSTEP_OBJ_DIR) \
                         $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
@@ -294,7 +315,7 @@ $(FINAL_LIBRARY_INSTALL_DIR):
 $(DLL_INSTALLATION_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-ifeq ($(BUILD_DLL),yes)
+ifeq ($(OLD_DLL_SUPPORT),yes)
 
 internal-install-lib::
 	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
@@ -315,9 +336,17 @@ internal-install-lib::
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi$(END_ECHO)
 
+ifeq ($(BUILD_DLL),yes)
+# For new-style DLLs, also install the DLL file.
+internal-install-lib::
+	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
+	                     $(DLL_INSTALLATION_DIR) ; \
+	fi$(END_ECHO)
+endif
 endif
 
-ifeq ($(BUILD_DLL),yes)
+ifeq ($(OLD_DLL_SUPPORT),yes)
 
 internal-library-uninstall_:: shared-instance-headers-uninstall
 	$(ECHO_UNINSTALLING)rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME) \
@@ -329,6 +358,12 @@ internal-library-uninstall_:: shared-instance-headers-uninstall
 	$(ECHO_UNINSTALLING)rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)$(END_ECHO)
+
+ifeq ($(BUILD_DLL),yes)
+# For new-style DLLs, also remove the DLL file.
+internal-library-uninstall_::
+	$(ECHO_UNINSTALLING)rm -f $(DLL_INSTALLATION_DIR)/$(LINK_LIBRARY_DLL_FILE)$(END_ECHO)
+endif
 endif
 
 #

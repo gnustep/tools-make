@@ -307,7 +307,13 @@ ALL_CPLISTFLAGS += $(ADDITIONAL_CPLISTFLAGS) $(AUXILIARY_CPLISTFLAGS)
 # case use __declspec(dllimport) to mark symbols as needing to be put
 # into the import table for the executable/library/whatever that is
 # being compiled.
-ifeq ($(WITH_DLL),yes)
+#
+# In the new DLL support, this is usually no longer needed.  The
+# compiler does it all automatically.  But in some cases, some symbols
+# can not be automatically imported and you might want to declare them
+# specially.  For those symbols, this define is handy.
+#
+ifeq ($(BUILD_DLL),yes)
 ALL_CPPFLAGS += -DGNUSTEP_WITH_DLL
 endif
 

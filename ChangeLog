@@ -1,3 +1,30 @@
+2005-03-01  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* target.make (WITH_DLL): Variable removed.
+	(OLD_DLL_SUPPORT): New variable which is set to yes for cygwin,
+	but to no for mingw.
+	(DLLTOOL): Do not define for mingw.
+	(DLLWRAP): Do not define for mingw.
+	(SHARED_LIB_LINK_CMD): New variable for mingw.
+	(AFTER_INSTALL_SHARED_LIB_CMD): The same.
+	(AFTER_INSTALL_SHARED_LIB_CHOWN): The same.
+	(SHARED_LIBEXT): Do not define to be .a on mingw; that is only
+	confusing; use LIBEXT instead.
+	(LIBEXT): Define to be .a on mingw.
+	(TARGET_SYSTEM_LIBS): Define using =, not :=.
+       
+	* rules.make (ALL_CPPFLAGS): Check BUILD_DLL instead of WITH_DLL
+	when adding -DGNUSTEP_WITH_DLL.
+
+	* Instance/library.make (LIBRARY_NAME_WITHOUT_LIB): New variable.
+	(LIBRARY_FILE_EXT): Unused variable removed.
+	(CLEAN_library_NAME): Generate using make functions rather than
+	firing external shell scripts to increase building speed.
+	Execute existing DLL code when OLD_DLL_SUPPORT is set to yes.  For
+	BUILD_DLL but not OLD_DLL_SUPPORT, added brand new code which uses
+	the new target.make mingw variables and takes advantage of the new
+	DLL support in GCC and mingw.
+
 2005-02-19  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.MinGW: Minor edit.
