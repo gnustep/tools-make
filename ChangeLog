@@ -1,3 +1,8 @@
+Fri Apr 11 12:38:44 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Bug fix - install fixpath.sh from the
+	local directory, not from the source directory.
+
 Sun Apr  6 02:25:07 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (install): Bug fix - install GNUstep-reset.sh
