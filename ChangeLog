@@ -1,3 +1,11 @@
+2000-03-11  Adam Fedor  <fedor@gnu.org>
+
+	* brain.make: Use new GRAPHIC_ variables. Remove old TIFF, JPEG
+	and X varialbles.
+	* config.make.in: Likewise.
+	* configure.in: Check for wraster library. Avoid checking for
+	tiff, jpeg, etc, if found.
+
 2000-03-06  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess: Better guess of NetBSD systems.

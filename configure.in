@@ -109,20 +109,75 @@ fi
 AC_LN_S
 
 #--------------------------------------------------------------------
+# Miscellaneous headers (for make programs only)
+#--------------------------------------------------------------------
+AC_HEADER_DIRENT
+AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
+		sys/stat.h sys/errno.h)
+
+#--------------------------------------------------------------------
+# Look for WindowMaker's wraster library
+#--------------------------------------------------------------------
+SYSTEM_DEFS=
+AC_ARG_WITH(wraster, 
+           [  --with-wraster=PREFIX wraster directory prefix])
+if test "x$with_wraster" = "x"; then
+ wprefix=""
+else
+ wprefix=${with_wraster}/
+fi
+
+GRAPHIC_LIBS=`${wprefix}get-wraster-flags --libs`
+GRAPHIC_CFLAGS=`${wprefix}get-wraster-flags --cflags`
+GRAPHIC_LFLAGS=`${wprefix}get-wraster-flags --ldflags`
+
+AC_DEFUN(AC_CHECK_WRASTER,
+[wraster_check_save_header=${CPPFLAGS}
+wraster_check_save_libs=${LIBS}
+CPPFLAGS="$1 $2 ${CPPFLAGS}"
+LIBS="$3 $LIBS"
+
+AC_CHECK_LIB(wraster, main, wraster_ok=yes, wraster_ok=no)
+if test "$wraster_ok" = yes; then
+  AC_CHECK_HEADERS(wraster.h, wraster_ok=yes, wraster_ok=no)
+fi
+if test "$wraster_ok" = yes; then
+  SYSTEM_DEFS="-DHAVE_WRASTER_H $SYSTEM_DEFS"
+else
+  GRAPHIC_LIBS=
+  GRAPHIC_CFLAGS=
+  GRAPHIC_LFLAGS=
+fi
+CPPFLAGS="${wraster_check_save_header}"
+LIBS="${wraster_check_save_libs}"
+])
+
+if test "x$GRAPHIC_LIBS" != x; then
+  AC_CHECK_WRASTER(${GRAPHIC_CFLAGS}, ${GRAPHIC_LFLAGS}, ${GRAPHIC_LIBS})
+fi
+
+AC_SUBST(GRAPHIC_LIBS)
+AC_SUBST(GRAPHIC_CFLAGS)
+AC_SUBST(GRAPHIC_LFLAGS)
+AC_SUBST(SYSTEM_DEFS)
+
+#--------------------------------------------------------------------
 # Find for X windows
 #--------------------------------------------------------------------
 AC_PATH_XTRA
-X_INCLUDE=""
-if test -n "$x_includes"; then
-    X_INCLUDE="-I$x_includes"
-fi
-X_LIBS=""
-if test -n "$x_libraries"; then
-    X_LIBS="-L$x_libraries"
+
+if test "x$GRAPHIC_LIBS" = x; then
+  if test -n "$x_includes"; then
+    GRAPHIC_CFLAGS="-I$x_includes $GRAPHIC_CFLAGS"
+  fi
+  if test -n "$x_libraries"; then
+    GRAPHIC_LFLAGS="-L$x_libraries $GRAPHIC_LFLAGS"
+  fi
 fi
 if test -r $x_includes/X11/DPS; then
-  X_INCLUDE="$X_INCLUDE -I$x_includes/X11"
+  GRAPHIC_CFLAGS="-I$x_includes/X11 $GRAPHIC_CFLAGS"
 fi
+AC_SUBST(X_PRE_LIBS)
 
 #--------------------------------------------------------------------
 # Find for DPS
@@ -138,12 +193,12 @@ AC_ARG_WITH(dps_include,
 # check for dpsNXargs.h below looks at the appropriate target includes
 ORIG_CPPFLAGS=${CPPFLAGS}
 if test -n "$with_dps_include"; then
-  X_INCLUDE="$X_INCLUDE -I$with_dps_include"
-  if test -n "$with_dps_library"; then
-    X_LIBS="$X_LIBS -L$with_dps_library"
-  fi
+  GRAPHIC_CFLAGS="-I$with_dps_include $GRAPHIC_CFLAGS"
 fi
-CPPFLAGS="${CPPFLAGS} ${X_INCLUDE}"
+if test -n "$with_dps_library"; then
+  GRAPHIC_LFLAGS="-L$with_dps_library $GRAPHIC_LFLAGS"
+fi
+CPPFLAGS="${CPPFLAGS} ${GRAPHIC_CFLAGS}"
 
 # We care about this header file on the target not host system
 AC_HAVE_HEADERS(DPS/dpsclient.h, DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=1',
@@ -156,13 +211,6 @@ AC_HAVE_HEADERS(DPS/dpsNXargs.h,
 CPPFLAGS=${ORIG_CPPFLAGS}
 
 AC_SUBST(DPS_DEFINE)
-AC_SUBST(X_INCLUDE)
-AC_SUBST(X_LIBS)
-AC_SUBST(X_PRE_LIBS)
-
-AC_HEADER_DIRENT
-AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
-		sys/stat.h sys/errno.h)
 
 #--------------------------------------------------------------------
 # Find for JPEG
@@ -193,20 +241,15 @@ if test "$jpeg_ok" = yes; then
   AC_MSG_RESULT($jpeg_ok)
 
   if test "$jpeg_ok" = yes; then
-    JPEG_LIB="-L$1"
-    export JPEG_LIB
-    JPEG_INCLUDE="-I$2"
-    export JPEG_INCLUDE
+    GRAPHIC_LFLAGS="-L$1 $GRAPHIC_LFLAGS"
+    GRAPHIC_CFLAGS="-I$1 $GRAPHIC_CFLAGS"
   fi
 fi
 CPPFLAGS="${jpeg_check_lib_save_header}"])
 
-if test "x$JPEG_LIB" = x; then
+if test "x$GRAPHIC_LIBS" = x; then
   AC_CHECK_JPEGLIB(${with_jpeg_library}, ${with_jpeg_include})
 fi
-
-AC_SUBST(JPEG_LIB)
-AC_SUBST(JPEG_INCLUDE)
 
 #--------------------------------------------------------------------
 # Find for TIFF
@@ -267,10 +310,9 @@ if test "$tiff_ok" = yes; then
                   tiff_ok=yes,
 	          tiff_ok=no)
   if test "$tiff_ok" = yes; then
-    TIFF_LIB="-L$1"
-    export TIFF_LIB
-    TIFF_INCLUDE="-I$2"
-    export TIFF_INCLUDE
+    GRAPHIC_LFLAGS="-L$1 $GRAPHIC_LFLAGS"
+    GRAPHIC_CFLAGS="-I$1 $GRAPHIC_CFLAGS"
+    GRAPHIC_LIBS="-ltiff $JPEG $GRAPHIC_LIBS"
   else
     AC_MSG_WARN(Cannot find libtiff header tiffio)
     echo "* The GUI library requres the TIFF library"
@@ -283,13 +325,9 @@ if test "$tiff_ok" = yes; then
 fi
 CPPFLAGS="${tiff_check_lib_save_header}"])
 
-if test "x$TIFF_LIB" = x; then
+if test "x$GRAPHIC_LIBS" = x; then
   AC_CHECK_TIFFLIB(${with_tiff_library}, ${with_tiff_include})
 fi
-
-AC_SUBST(JPEG)
-AC_SUBST(TIFF_LIB)
-AC_SUBST(TIFF_INCLUDE)
 
 #--------------------------------------------------------------------
 # Look for Java stuff

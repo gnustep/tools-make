@@ -75,47 +75,16 @@ ifndef objc_threaded
 endif
 
 #
-# X Window System headers and libraries
+# Graphic and X Window System headers and libraries
 #
-X_INCLUDE := @X_INCLUDE@
-ifeq ($(X_INCLUDE),-INONE)
-	X_INCLUDE=
-endif
-X_LIBS := @X_LIBS@
-ifeq ($(X_LIBS),-LNONE)
-	X_LIBS=
-endif
+GRAPHIC_LIBS=@GRAPHIC_LIBS@
+GRAPHIC_CFLAGS=@GRAPHIC_CFLAGS@
+GRAPHIC_LFLAGS=@GRAPHIC_LFLAGS@
 X_PRE_LIBS=@X_PRE_LIBS@
-
-#
-# Tiff header and library
-#
-TIFF_INCLUDE := @TIFF_INCLUDE@
-ifeq ($(TIFF_INCLUDE),-INONE)
-        TIFF_INCLUDE=
-endif
-TIFF_LIB := @TIFF_LIB@
-ifeq ($(TIFF_LIB),-LNONE)
-        TIFF_LIB=
-endif
-
-#
-# Jpeg header and library
-# 
-JPEG_INCLUDE := @JPEG_INCLUDE@
-ifeq ($(JPEG_INCLUDE),-INONE)
-        JPEG_INCLUDE=
-endif
-JPEG_LIB := @JPEG_LIB@
-ifeq ($(JPEG_LIB),-LNONE)
-        JPEG_LIB=
-endif
-JPEG = @JPEG@
-
-DPS_DEFINE=@DPS_DEFINE@
 
 # Any user specified libs, like thread libraries
 CONFIG_SYSTEM_LIBS = @LIBS@
+CONFIG_SYSTEM_DEFS = @SYSTEM_DEFS@ @DPS_DEFINE@
 
 #
 # Java configuration
