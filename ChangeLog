@@ -1,3 +1,7 @@
+Wed Aug 16 18:24:13 2000  Adam Fedor  <fedor@ultra.doc.com>
+
+	* mkinstalldirs: Test if mkdir accepts -p arg.
+
 2000-08-06  Adam Fedor  <fedor@gnu.org>
 
 	* Version 0.6.6 released.
