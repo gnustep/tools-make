@@ -24,6 +24,16 @@ TEST_APPLICATION_MAKE_LOADED=yes
 
 TEST_APP_NAME:=$(strip $(TEST_APP_NAME))
 
+ifeq ($(profile), yes)
+  APP_EXTENSION = profile
+else
+  ifeq ($(debug), yes)
+    APP_EXTENSION = debug
+  else
+    APP_EXTENSION = app
+  endif
+endif
+
 #
 # Include in the common makefile rules
 #
@@ -37,11 +47,7 @@ ifeq ($(INTERNAL_app_NAME),)
 internal-all:: $(TEST_APP_NAME:=.all.app.variables)
 
 internal-clean:: $(TEST_APP_NAME:=.clean.app.subprojects)
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
-endif
+	rm -rf $(GNUSTEP_OBJ_DIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(APP_EXTENSION); do \
