@@ -332,12 +332,12 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR) $(OBJ_FILES_TO_LINK) GNUmakefile
 	  classarray="$$classarray)"; \
 	fi; \
 	echo "$$classarray" > $(DUMMY_FRAMEWORK_CLASS_LIST); \
-	if [ "`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_USER_ROOT))//'`" != "$(FRAMEWORK_INSTALL_DIR)" ]; then \
-	  fw_env="@\"GNUSTEP_USER_ROOT\""; \
-	elif [ "`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_LOCAL_ROOT))//'`" != "$(FRAMEWORK_INSTALL_DIR)" ]; then \
-	  fw_env="@\"GNUSTEP_LOCAL_ROOT\""; \
-	elif [ "`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_SYSTEM_ROOT))//'`" != "$(FRAMEWORK_INSTALL_DIR)" ]; then \
+	if [ "$(findstring $(GNUSTEP_SYSTEM_ROOT), $(FRAMEWORK_INSTALL_DIR))" = $(GNUSTEP_SYSTEM_ROOT) ]; then \
 	  fw_env="@\"GNUSTEP_SYSTEM_ROOT\""; \
+	elif [ "$(findstring $(GNUSTEP_LOCAL_ROOT), $(FRAMEWORK_INSTALL_DIR))" = $(GNUSTEP_LOCAL_ROOT) ]; then \
+	  fw_env="@\"GNUSTEP_LOCAL_ROOT\""; \
+	elif [ "$(findstring $(GNUSTEP_USER_ROOT), $(FRAMEWORK_INSTALL_DIR))" = $(GNUSTEP_USER_ROOT) ]; then \
+	  fw_env="@\"GNUSTEP_USER_ROOT\""; \
 	else \
 	  fw_env="nil"; \
 	fi; \

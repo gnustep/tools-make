@@ -1,3 +1,9 @@
+2004-02-07  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/framework.make: Simplify search for framework location
+	and change order to prevent problems in obscure case where GNUstep
+	is installed in user's home.
+
 2004-01-25  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.Darwin: Update.
