@@ -238,7 +238,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   RESOURCE_DIRS="$($(basename $(basename $*))_RESOURCE_DIRS)" \
   BUNDLE_LIBS="$($(basename $(basename $*))_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
   SERVICE_INSTALL_DIR="$($(basename $(basename $*))_SERVICE_INSTALL_DIR)" \
-  APPLICATION_ICON="$($(basename $(basename $*))_APPLICATION_ICON)" \
   PALETTE_ICON="$($(basename $(basename $*))_PALETTE_ICON)" \
   PRINCIPAL_CLASS="$($(basename $(basename $*))_PRINCIPAL_CLASS)" \
   DLL_DEF="$($(basename $(basename $*))_DLL_DEF)" \
