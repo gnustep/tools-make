@@ -56,7 +56,7 @@ internal-clean:: $(LIBRARY_NAME:=.clean.library.variables)
 internal-distclean:: $(LIBRARY_NAME:=.distclean.library.variables)
 
 $(LIBRARY_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 		$@.all.library.variables
 
 else

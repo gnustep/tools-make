@@ -1,3 +1,10 @@
+Wed Jun 17 10:00:20 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* brain.make: Add xraw library combo option
+	
+	* library.make: Add --no-keep-going MAKE option.
+	* tool.make: Likewise.
+
 Fri Jun 12 22:15:00 1998  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* which_lib.c Fixed generation of library suffix and logic for shared

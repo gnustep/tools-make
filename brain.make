@@ -33,6 +33,14 @@ ifeq ($(library_combo),fd-xdps)
   the_library_combo=gnu-fd-gnu-xdps
 endif
 
+ifeq ($(library_combo),gnu-xraw)
+  the_library_combo=gnu-gnu-gnu-xraw
+endif
+
+ifeq ($(library_combo),fd-xraw)
+  the_library_combo=gnu-fd-gnu-xraw
+endif
+
 ifeq ($(the_library_combo),)
   the_library_combo=$(library_combo)
 endif
@@ -171,6 +179,12 @@ BACKEND_LIBS = -lgnustep-xdps
 BACKEND_DEFINE = -DXDPS_BACKEND_LIBRARY=1
 endif
 
+ifeq ($(GUI_BACKEND_LIB),xraw)
+BACKEND_LDFLAGS =
+BACKEND_LIBS = -lgnustep-xraw
+BACKEND_DEFINE = -DXRAW_BACKEND_LIBRARY=1
+endif
+
 ifeq ($(GUI_BACKEND_LIB),w32)
 BACKEND_LDFLAGS =
 BACKEND_LIBS = -lMBKit
@@ -189,6 +203,17 @@ SYSTEM_INCLUDES = $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(X_LIBS)
 SYSTEM_LIBS = -ltiff -ldpstk -ldps -lpsres -lX11
+endif
+
+#
+# If the backend GUI library is X (only) based
+# then add X headers and libraries
+#
+ifeq ($(GUI_BACKEND_LIB),xraw)
+SYSTEM_INCLUDES = $(X_INCLUDE)
+SYSTEM_LDFLAGS =
+SYSTEM_LIB_DIR = $(X_LIBS)
+SYSTEM_LIBS = -ltiff -lpsres -lX11
 endif
 
 #

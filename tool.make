@@ -54,7 +54,7 @@ internal-clean:: $(TOOL_NAME:=.clean.tool.variables)
 internal-distclean:: $(TOOL_NAME:=.distclean.tool.variables)
 
 $(TOOL_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.tool.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going $@.all.tool.variables
 
 else
 
