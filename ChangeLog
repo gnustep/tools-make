@@ -1,3 +1,13 @@
+Fri Aug 20 02:26:12 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Documentation/install.texi (Single-User): Removed mention of
+	FORCE_USER_ROOT which is going to be dropped in next releases.
+
+Fri Aug 20 02:19:54 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in: Do not run make_services.
+	* GNUstep.csh.in: Do not run make_services.
+	
 2004-08-07  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Remove warning about moving old directories into
