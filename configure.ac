@@ -412,6 +412,12 @@ else
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="-lthread $extra_LIBS",
 	objc_threaded="", objc_threaded="")
+  if test x"$objc_threaded" = x""; then
+    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS""
+    AC_TRY_RUN([#include "config_thread.m"], 
+    	objc_threaded="-lpthread $extra_LIBS", 
+	objc_threaded="", objc_threaded="")
+  fi
 fi
 LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"

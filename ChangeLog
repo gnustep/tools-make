@@ -1,3 +1,10 @@
+2003-03-14  Adam Fedor  <fedor@Eldorado.local.>
+
+	* configure.ac: Check for -lpthread on unknown hosts (e.g. irix)
+	* target.make (darwin): Add -read_only_reolcs warning. 
+	(darwin5): Remove
+	* Documentation/machines.texi: Update Darwin.
+
 2003-03-13  Adam Fedor  <fedor@gnu.org>
 
 	* clean_cpu.sh: Make all hppa variants the same.

@@ -305,9 +305,10 @@ endif
 
 ifneq ($(OBJC_COMPILER), NeXT)
 # GNU compiler
-SHARED_LD_PREFLAGS += -arch_only ppc -noall_load
+SHARED_LD_PREFLAGS += -arch_only ppc -noall_load -read_only_relocs warning \
+	-flat_namespace -undefined warning
 SHARED_LIB_LINK_CMD     = \
-	/usr/bin/libtool -flat_namespace -undefined warning \
+	/usr/bin/libtool \
 		$(SHARED_LD_PREFLAGS) \
 		$(ARCH_FLAGS) -dynamic	\
 		$(DYLIB_COMPATIBILITY_VERSION)		\
@@ -375,115 +376,6 @@ SHARED_CFLAGS   += -fno-common
 endif
 #
 # end MacOSX 10.2, darwin6
-#
-####################################################
-
-####################################################
-#
-# MacOSX 10.1.1, darwin5.1
-#
-ifeq ($(findstring darwin5, $(GNUSTEP_TARGET_OS)), darwin5)
-ifeq ($(OBJC_RUNTIME_LIB), apple)
-  HAVE_BUNDLES     = yes
-  OBJC_COMPILER    = NeXT
-  # Set flags to ignore the MacOSX headers
-  ifneq ($(FOUNDATION_LIB), apple)
-    INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
-  endif
-endif
-
-HAVE_SHARED_LIBS = yes
-SHARED_LIBEXT    = .dylib
-
-ifeq ($(FOUNDATION_LIB), apple)
-  # Use the NeXT compiler
-  CC = cc
-  INTERNAL_OBJCFLAGS += -traditional-cpp
-  ifneq ($(arch),)
-    ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
-    INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
-    INTERNAL_CFLAGS    += $(ARCH_FLAGS)
-    INTERNAL_LDFLAGS   += $(ARCH_FLAGS)
-  endif
-endif
-
-TARGET_LIB_DIR = \
-Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
-
-DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
-DYLIB_CURRENT_VERSION       = -current_version 1
-DYLIB_INSTALL_NAME = $(FINAL_LIBRARY_INSTALL_DIR)/$(LIB_LINK_FILE)
-
-# Remove empty dirs from the compiler/linker flags (ie, remove -Idir and 
-# -Ldir flags where dir is empty).
-REMOVE_EMPTY_DIRS = yes
-
-ifeq ($(FOUNDATION_LIB), apple)
-DYLIB_DEF_FRAMEWORKS += -framework Foundation
-endif
-
-ifneq ($(OBJC_COMPILER), NeXT)
-# GNU compiler
-SHARED_LD_PREFLAGS += -arch_only ppc -noall_load
-SHARED_LIB_LINK_CMD     = \
-	/usr/bin/libtool -flat_namespace -undefined warning \
-		$(SHARED_LD_PREFLAGS) \
-		$(ARCH_FLAGS) -dynamic	\
-		$(DYLIB_COMPATIBILITY_VERSION)		\
-		$(DYLIB_CURRENT_VERSION)		\
-		-install_name $(DYLIB_INSTALL_NAME)	\
-		-o $@					\
-		$(DYLIB_DEF_FRAMEWORKS)			\
-		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
-		$^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
-
-HAVE_BUNDLES = no
-BUNDLE_LD	=  /usr/bin/ld
-BUNDLE_LDFLAGS  += -dynamic -flat_namespace -undefined warning $(ARCH_FLAGS)
-
-else 
-# NeXT Compiler
-
-#DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
-
-SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) \
-		-dynamiclib $(ARCH_FLAGS) -dynamic	\
-		$(DYLIB_COMPATIBILITY_VERSION)		\
-		$(DYLIB_CURRENT_VERSION)		\
-		$(DYLIB_EXTRA_FLAGS)			\
-		-install_name $(DYLIB_INSTALL_NAME)	\
-		-o $@					\
-		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
-		$^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
-
-SHARED_CFLAGS   += -dynamic
-
-BUNDLE_LD	=  $(CC)
-BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
-
-endif # OBJC_COMPILER
-
-OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r -d -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
-
-STATIC_LIB_LINK_CMD	= \
-	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
-	$(STATIC_LD_POSTFLAGS)
-
-AFTER_INSTALL_STATIC_LIB_CMD = \
-	(cd $(LIB_LINK_INSTALL_DIR); \
-	$(RANLIB) $(LIB_LINK_VERSION_FILE))
-
-SHARED_CFLAGS   += -fno-common
-
-endif
-#
-# end MacOSX 10.1.1, darwin5.1
 #
 ####################################################
 
