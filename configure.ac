@@ -30,6 +30,7 @@ AC_PROG_CC
 AC_PROG_CPP
 AC_CANONICAL_TARGET([])
 
+AC_MSG_CHECKING(for library combo)
 AC_ARG_WITH(library-combo,[
 --with-library-combo		Define the default library combination
 ],
@@ -38,13 +39,21 @@ ac_cv_library_combo=$ac_cv_library_combo
 )
 
 if test "$ac_cv_library_combo" = ""; then
-  if test $host_os = nextstep4; then
-    ac_cv_library_combo=nx-nx-nx
-  else
-    ac_cv_library_combo=gnu-gnu-gnu
-  fi
+  case "$host_os" in
+    darwin*)   ac_cv_library_combo=apple-apple-apple ;;
+    nextstep4) ac_cv_library_combo=nx-nx-nx          ;;
+    *)         ac_cv_library_combo=gnu-gnu-gnu       ;;
+  esac
 fi
+
+case "$ac_cv_library_combo" in
+  apple) ac_cv_library_combo=apple-apple-apple ;;
+  gnu)   ac_cv_library_combo=gnu-gnu-gnu ;;
+  nx)    ac_cv_library_combo=nx-nx-nx ;;
+esac
+
 AC_SUBST(ac_cv_library_combo)
+AC_MSG_RESULT($ac_cv_library_combo)
 
 OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 
@@ -327,6 +336,9 @@ saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
+  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+fi
+if test "$OBJC_RUNTIME_LIB" = "apple"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi
 if test "$OBJC_THREAD" != ""; then
