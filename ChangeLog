@@ -3,6 +3,8 @@
 	* common.make: Remove -fno-strict-aliasing (Doesn't work on old
 	compilers).
 
+	* target.make: Add posix4 back to Solaris when threaded
+
 2000-06-22  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Fix for exporting vars on broken sh's.
