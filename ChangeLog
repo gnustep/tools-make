@@ -1,3 +1,32 @@
+Wed Jul 11 13:35:49 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* framework.make (internal-framework-all): Do not depend on
+	build-framework-dir as that is already done by before all.
+	(build-framework-dir): Renamed to build-framework-dirs; depend on
+	single separate rules building - only if needed! - the directories
+	rather than building them directly in this rule.  Create all the
+	needed symbolic links in this rule.  Remove files which are not
+	symbolic links before creating the links.
+	($(FRAMEWORK_HEADER_FILES)): Do not create any symbolic link in
+	this rule.
+	* subproject.make (internal-install): If not inside a framework,
+	run internal install to install the headers.
+	(internal-uninstall): Idem.
+	($(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)): Depend on
+	SUBPROJECT_OBJ_FILES to account for sub-subprojects.
+	($(FRAMEWORK_HEADER_FILES)): Use makefile conditional; do not
+	create the framework symbolic links which are done by the
+	framework; depend on FRAMEWORK_HEADERS_DIR rather than building it
+	here.
+	($(FRAMEWORK_HEADERS_DIR)): New rule.
+	All internal installation/uninstallation rules are now included 
+	only if FRAMEWORK_NAME is empty.
+	(HEADER_FILES_DIR): Set.
+	(internal-install-subproject-dirs): Removed; added rules to build 
+	the single dirs instead.
+	(internal-install-subproject-headers): Renamed to
+	internal-install-headers, and simplified.
+
 Wed Jul 11 12:06:29 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* framework.make (before-all): Run internal build-headers target
