@@ -359,6 +359,9 @@ enabled but no profile information, the command line would be:
 The last argument is not necessary because the default is to build a version
 without profile information.
 
+The object files will be outputed into the shared_debug_obj directory. If the
+profile is turned on the output directory would be shared_profile_debug_obj.
+
 Of course you also have to specify the library combo if it's different than the
 default.
 
