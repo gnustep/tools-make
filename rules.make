@@ -35,9 +35,8 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    $(GNUSTEP_HEADERS_FND_FLAG) $(GNUSTEP_HEADERS_GUI_FLAG) \
    -I$(GNUSTEP_TARGET_HEADERS) -I$(GNUSTEP_HEADERS) 
 
-ALL_LDFLAGS = $(INTERNAL_LDFLAGS) $(ADDITIONAL_LDFLAGS) \
-   $(FND_LDFLAGS) $(GUI_LDFLAGS) $(BACKEND_LDFLAGS) \
-   $(SYSTEM_LDFLAGS)
+ALL_LDFLAGS = $(ADDITIONAL_LDFLAGS) $(FND_LDFLAGS) $(GUI_LDFLAGS) \
+   $(BACKEND_LDFLAGS) $(SYSTEM_LDFLAGS) $(INTERNAL_LDFLAGS)
 
 ALL_LIB_DIRS = $(ADDITIONAL_LIB_DIRS) -L$(GNUSTEP_LIBRARIES) \
    -L$(GNUSTEP_TARGET_LIBRARIES) $(SYSTEM_LIB_DIR)
@@ -52,14 +51,17 @@ LIB_DIRS_NO_SYSTEM = $(ADDITIONAL_LIB_DIRS) -L$(GNUSTEP_LIBRARIES) \
    -L$(GNUSTEP_TARGET_LIBRARIES)
 
 ALL_TOOL_LIBS := \
-    $(shell TARGET_LIB_DIR=$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
-      $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TOOL_LIBS) \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TOOL_LIBS) \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
 ALL_GUI_LIBS := \
-    $(shell TARGET_LIB_DIR=$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
-      $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GUI_LIBS) \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GUI_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
+LIBRARIES_DEPEND_UPON := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON)\
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
@@ -130,6 +132,26 @@ ALL_TEST_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) \
 ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
    $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
+ALL_TEST_LIBRARY_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_LIBRARY_LIBS)\
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
+ALL_TEST_BUNDLE_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_BUNDLE_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
+ALL_TEST_TOOL_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_TOOL_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
+ALL_TEST_GUI_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_GUI_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
 %.testlib : FORCE
 	@echo Making $*...
 	$(MAKE) --no-print-directory internal-testlib-all \
@@ -139,7 +161,8 @@ ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_LIBRARY_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.testbundle : FORCE
 	@echo Making $*...
@@ -152,7 +175,8 @@ ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
 		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
 		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_BUNDLE_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.testtool : FORCE
 	@echo Making $*...
@@ -163,7 +187,8 @@ ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_TOOL_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.testapp : FORCE
 	@echo Making $*...
@@ -174,38 +199,42 @@ ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
 		  ADDITIONAL_GUI_LIBS="$($*_LIBS)" \
-		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 # These are for running the tests
-ALL_LD_LIB_DIRS = $(ADDITIONAL_LD_LIB_DIRS)$(GNUSTEP_LD_LIB_DIRS)
 
 %.checklib : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-lib \
+	$(MAKE) --no-print-directory internal-check-LIBRARY \
 		  TEST_LIBRARY_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
-		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.checkbundle : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-bundle \
+	$(MAKE) --no-print-directory internal-check-BUNDLE \
 		  TEST_BUNDLE_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
-		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.checktool : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-tool \
+	$(MAKE) --no-print-directory internal-check-TOOL \
 		  TEST_TOOL_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
-		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 %.checkapp : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-app \
+	$(MAKE) --no-print-directory internal-check-APP \
 		  TEST_APP_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
-		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
+		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
 #
 # The list of Objective-C source files to be compiled

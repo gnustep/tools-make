@@ -249,13 +249,19 @@ int search_for_library_with_type_in_directory(char type, char* path, char* ext)
       else {
 	/* The extension matches. Do a check to see if the suffix of the
 	   library matches the library type we are looking for. */
-	for (i = library_name_len; i < filelen - extlen; i++) {
+	for (i = library_name_len + 3; i < filelen - extlen; i++) {
 	  if (dirbuf->d_name[i] == '_')
 	    continue;
 	  if (type == dirbuf->d_name[i]) {
 	    found = 1;
 	    break;
 	  }
+	  /* Skip the libraries that begin with the same name but have different
+	     suffix, eg libobjc.a libobjc-test.a. */
+	  if (dirbuf->d_name[i] != 'd'
+	      || dirbuf->d_name[i] != 'p'
+	      || dirbuf->d_name[i] != 's')
+	    break;
 	}
       }
 

@@ -29,10 +29,10 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 #
 
 ifeq ($(shared), yes)
-LIBRARY_FILE = $(LIBRARY_NAME)$(SHARED_LIBEXT)
+LIBRARY_FILE = $(LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
 LIBRARY_FILE_EXT=$(SHARED_LIBEXT)
 else
-LIBRARY_FILE = $(LIBRARY_NAME)$(LIBEXT)
+LIBRARY_FILE = $(LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
 LIBRARY_FILE_EXT=$(LIBEXT)
 endif
 
@@ -49,10 +49,10 @@ endif
 #
 # Compilation targets
 #
-internal-all:: $(GNUSTEP_OBJ_DIR) $(VERSION_LIBRARY_FILE) \
+internal-all:: $(GNUSTEP_OBJ_DIR) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
 		import-library
 
-$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LIB_LINK_CMD)
 
 import-library::
@@ -83,8 +83,9 @@ internal-install-libs:: internal-install-lib \
     internal-install-import-lib
 
 internal-install-lib::
-	if [ -f $(VERSION_LIBRARY_FILE) ]; then \
-	  $(INSTALL_PROGRAM) $(VERSION_LIBRARY_FILE) $(GNUSTEP_LIBRARIES) ; \
+	if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
+	      $(GNUSTEP_LIBRARIES) ; \
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
 

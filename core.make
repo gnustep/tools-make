@@ -53,7 +53,7 @@ OBJC_LIBS =
 #
 # Set the appropriate ObjC runtime library and other information
 #
-ifeq ($(OBJC_RUNTIME_LIB),gnu)
+ifeq ($(OBJC_RUNTIME_LIB), gnu)
 OBJC_LDFLAGS =
 OBJC_LIB_DIR =
 OBJC_LIBS = -lobjc

@@ -1,3 +1,29 @@
+Tue Oct  7 15:59:28 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make: New FOUNDATION_LIBRARY_NAME, FOUNDATION_LIBRARY_DEFINE
+	and RUNTIME_DEFINE make variables. Correctly handle the suffix of a
+	library name (using LIBRARY_NAME_SUFFIX).
+	* library.make: Append to the name of the library the suffix which
+	identifies its type. Output the library in the object files directory.
+	* rules.make: Move INTERNAL_LDFLAGS to the end of ALL_LDFLAGS
+	definition. Removed unnecessary passing of TARGET_LIB_DIR to shell
+	scripts. Process the libraries used to create a test using the
+	which_lib program. New variable SCRIPTS_DIRECTORY which identifies the
+	location of the dejagnu scripts (it can be not defined in which case
+	the current directory is assumed).
+	* target.make: For OS 4.x: don't hard code the location to libobjc and
+	libgcc, pass -L flags to libtool that point to the various GNUstep
+	directories. Define ADDITIONAL_LDFLAGS with a flag to linker that
+	disables warning for common symbols.
+	* test.make: Assume the driver program is located under the object
+	files directory.
+	Create the unix.exp file in the config directory where the test scripts
+	are located.
+	Compressed the internal-check-* targets into a single target.
+	* rules.make: Work with the new internal-check-* targets.
+	* which_lib.c: Fixed a bug when two libraries that have the same prefix
+	were matching.
+
 Sun Oct  5 20:30:01 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* common.make: Take the which_lib script from the host_cpu/host_os

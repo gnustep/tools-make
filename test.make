@@ -6,6 +6,7 @@
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -89,30 +90,36 @@ CHECK_APP_LIST := $(TEST_APP_NAME:=.checkapp)
 TEST_APP_STAMPS := $(foreach app,$(TEST_APP_NAME),stamp-testapp-$(app))
 TEST_APP_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_APP_STAMPS))
 
+ALL_LD_LIB_DIRS = $(ADDITIONAL_LD_LIB_DIRS)$(GNUSTEP_LD_LIB_DIRS)
+
+ifeq ($(SCRIPTS_DIRECTORY),)
+SCRIPTS_DIRECTORY = .
+endif
+
 #
 # Internal targets
 #
 
 $(GNUSTEP_OBJ_DIR)/stamp-testlib-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TEST_LIBRARY_NAME) \
+	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_LIBRARY_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TEST_LIBRARY_LIBS)
 	touch $@
 
 $(GNUSTEP_OBJ_DIR)/stamp-testbundle-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TEST_BUNDLE_NAME) \
+	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_BUNDLE_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TEST_BUNDLE_LIBS)
 	touch $@
 
 $(GNUSTEP_OBJ_DIR)/stamp-testtool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TEST_TOOL_NAME) \
+	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_TOOL_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TEST_TOOL_LIBS)
 	touch $@
 
 $(GNUSTEP_OBJ_DIR)/stamp-testapp-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TEST_APP_NAME) \
+	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_APP_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TEST_APP_LIBS)
 	touch $@
@@ -120,24 +127,24 @@ $(GNUSTEP_OBJ_DIR)/stamp-testapp-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 #
 # Compilation targets
 #
-internal-all:: config/unix.exp $(GNUSTEP_OBJ_DIR) internal-test-build
+internal-all:: $(GNUSTEP_OBJ_DIR) internal-test-build
 
-config/unix.exp::
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs config
-	@echo "Creating the config/unix.exp file..."
-	@echo "## Do Not Edit ##" > config/unix.exp
-	@echo "# Contents generated automatically by Makefile" >> config/unix.exp
-	@echo "#" >> config/unix.exp
-	@echo "" >> config/unix.exp
-	@echo "set OBJC_RUNTIME $(OBJC_RUNTIME)" >> config/unix.exp
-	@echo "set FOUNDATION_LIB $(FOUNDATION_LIB)" >> config/unix.exp
-	@echo "" >> config/unix.exp
-	@echo "set OBJCTEST_DIR $(GNUSTEP_LIBRARIES_ROOT)/ObjCTest" >> config/unix.exp
-	@echo "set objdir `pwd`" >> config/unix.exp
-	@echo "source \"\$$OBJCTEST_DIR/common.exp\"" >> config/unix.exp
-	@echo "" >> config/unix.exp
-	@echo "# Maintain your own code in local.exp" >> config/unix.exp
-	@echo "source \"config/local.exp\"" >> config/unix.exp
+$(SCRIPTS_DIRECTORY)/config/unix.exp::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $(SCRIPTS_DIRECTORY)/config
+	@echo "Creating the $@ file..."
+	@echo "## Do Not Edit ##" > $@
+	@echo "# Contents generated automatically by Makefile" >> $@
+	@echo "#" >> $@
+	@echo "" >> $@
+	@echo "set OBJC_RUNTIME $(OBJC_RUNTIME)" >> $@
+	@echo "set FOUNDATION_LIBRARY $(FOUNDATION_LIB)" >> $@
+	@echo "" >> $@
+	@echo "set OBJCTEST_DIR $(GNUSTEP_LIBRARIES_ROOT)/ObjCTest" >> $@
+	@echo "set objdir `pwd`" >> $@
+	@echo "source \"\$$OBJCTEST_DIR/common.exp\"" >> $@
+	@echo "" >> $@
+	@echo "# Maintain your own code in local.exp" >> $@
+	@echo "source \"config/local.exp\"" >> $@
 
 internal-test-build:: test-libs test-bundles test-tools test-apps
 
@@ -161,7 +168,7 @@ internal-testapp-all:: $(GNUSTEP_OBJ_DIR)/stamp-testapp-$(TEST_APP_NAME)
 # Check targets (actually running the tests)
 #
 
-internal-check:: config/unix.exp check-libs check-bundles check-tools check-apps
+internal-check:: check-libs check-bundles check-tools check-apps
 
 check-libs:: $(CHECK_LIBRARY_LIST)
 
@@ -171,26 +178,13 @@ check-tools:: $(CHECK_TOOL_LIST)
 
 check-apps:: $(CHECK_APP_LIST)
 
-internal-check-lib::
-	for f in $(CHECK_SCRIPT_DIRS); do \
-	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
-	   runtest --tool $$f --srcdir . PROG=./$(TEST_LIBRARY_NAME)) ; \
-	done
-
-internal-check-bundle::
-	for f in $(CHECK_SCRIPT_DIRS); do \
-	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
-	   runtest --tool $$f --srcdir . PROG=./$(TEST_BUNDLE_NAME) ; \
-	done
-
-internal-check-tool::
-	for f in $(CHECK_SCRIPT_DIRS); do \
-	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
-	   runtest --tool $$f --srcdir . PROG=./$(TEST_TOOL_NAME) ; \
-	done
-
-internal-check-app::
-	for f in $(CHECK_SCRIPT_DIRS); do \	
-	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
-	   runtest --tool $$f --srcdir . PROG=./$(TEST_APP_NAME) ; \
-	done
+internal-check-%:: $(SCRIPTS_DIRECTORY)/config/unix.exp
+	@(for f in $(CHECK_SCRIPT_DIRS); do \
+	  $(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
+	  if [ "$(SCRIPTS_DIRECTORY)" != "" ]; then \
+	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME)"; \
+	    (cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME)); \
+	  else \
+	    runtest --tool $$f --srcdir . PROG=./$(TEST_$*_NAME) ; \
+	  fi; \
+	done)
