@@ -1,3 +1,8 @@
+Tue Oct 14 00:34:57 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/library.make (DERIVED_SOURCES): Do not define here;
+	it's already defined in rules.make.
+
 Mon Oct 13 23:23:40 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/bundle.make (internal-bundle-install_): Fixed error
