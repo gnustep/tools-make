@@ -502,28 +502,28 @@ ifeq ($(JAVA_HOME),)
 endif
 
 #
-# The Java Compiler.
+# The java compiler.
 #
 ifeq ($(JAVAC),)
   JAVAC = $(JAVA_HOME)/bin/javac
 endif
 
 #
-# The Java Header Compiler.
+# The java header compiler.
 #
 ifeq ($(JAVAH),)
   JAVAH = $(JAVA_HOME)/bin/javah
 endif
 
 #
-# The Java Doc Tool.
+# The java doc tool.
 #
 ifeq ($(JAVADOC),)
   JAVADOC = $(JAVA_HOME)/bin/javadoc
 endif
 
 #
-# The autogsdoc Tool.
+# The autogsdoc tool.
 #
 ifeq ($(AUTOGSDOC),)
   AUTOGSDOC = autogsdoc
