@@ -1,3 +1,8 @@
+Tue Jul 10 10:49:59 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* woapp.make: Removed.
+	* wobundle.make: Removed.
+	
 Tue Jul 10 10:44:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* aggregate.make: Do not include rules.make if RULES_MAKE_LOADED
