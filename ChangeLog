@@ -1,3 +1,7 @@
+2001-05-18  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* framework.make ($(DUMMY_FRAMEWORK_FILE)): added missed fi.
+
 Fri May 18 01:41:03 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* debugapp.in, openapp.in, opentool.in: Fixed adding EXEEXT at the

@@ -245,6 +245,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(S
 	    classlist="NULL"; \
 	  else \
 	    classlist="$$classlist, NULL"; \
+	  fi; \
 	else \
 	  classlist="NULL"; \
 	fi; \
