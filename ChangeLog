@@ -1,3 +1,12 @@
+Fri May 24 18:23:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/documentation.make (internal-doc-install_): Fixed
+	installation of info files (Suggestion by Evan Prodromou
+	<evan@prodromou.san-francisco.ca.us>).
+	(internal-doc-clean): Fixed cleaning info files in similar way.
+	(internal-doc-uninstall_): Fixed removal installed info files in
+	similar way.
+
 Thu May 23 12:22:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/rules.make (OBJ_FILES_TO_LINK): Strip it when it's
