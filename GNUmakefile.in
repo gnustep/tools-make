@@ -30,8 +30,7 @@ include config.make
 include Version
 
 prefix = @prefix@
-GNUSTEP_INSTALLATION_DIR=$(prefix)
-GNUSTEP_ROOT = @GNUSTEP_ROOT@
+GNUSTEP_SYSTEM_ROOT = @GNUSTEP_SYSTEM_ROOT@
 srcdir = @srcdir@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
@@ -58,9 +57,9 @@ else
   GNUSTEP_TARGET_LDIR = .
 endif
 
-makedir = $(prefix)/Makefiles
-tooldir = $(prefix)/Tools
-librarydir = $(prefix)/Libraries
+makedir = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
+tooldir = $(GNUSTEP_SYSTEM_ROOT)/Tools
+librarydir = $(GNUSTEP_SYSTEM_ROOT)/Libraries
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
@@ -85,30 +84,30 @@ which_lib$(EXEEXT): which_lib.c
 	$(CC) @CFLAGS@ -Wall -o $@ $^
 
 install: all
-	$(srcdir)/mkinstalldirs $(GNUSTEP_ROOT) $(prefix) $(makedir) \
+	$(srcdir)/mkinstalldirs $(prefix) $(GNUSTEP_SYSTEM_ROOT) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(makedir)/Additional \
 		$(tooldir) \
-		$(prefix)/share \
-		$(prefix)/Apps \
-		$(prefix)/Libraries/$(GNUSTEP_TARGET_DIR) \
-		$(prefix)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-		$(prefix)/Headers/$(GNUSTEP_TARGET_DIR) \
-		$(prefix)/Tools/$(GNUSTEP_TARGET_DIR) \
-		$(prefix)/Tools/$(GNUSTEP_TARGET_LDIR) \
-		$(prefix)/Library \
-		$(prefix)/Library/Colors \
-		$(prefix)/Library/PostScript \
-		$(prefix)/Library/Services \
-		$(prefix)/Documentation/Developer \
-		$(prefix)/Documentation/User \
-		$(prefix)/Documentation/info \
-		$(prefix)/Documentation/man \
-		$(GNUSTEP_ROOT)/Local \
-		$(GNUSTEP_ROOT)/Local/Users \
-		$(GNUSTEP_ROOT)/Local/Users/Administrator \
-		$(GNUSTEP_ROOT)/Network
+		$(GNUSTEP_SYSTEM_ROOT)/share \
+		$(GNUSTEP_SYSTEM_ROOT)/Apps \
+		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Tools/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Tools/$(GNUSTEP_TARGET_LDIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Library \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/Colors \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/PostScript \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/Services \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/Developer \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/User \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/info \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/man \
+		$(prefix)/Local \
+		$(prefix)/Local/Users \
+		$(prefix)/Local/Users/Administrator \
+		$(prefix)/Network
 	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
@@ -124,7 +123,7 @@ install: all
 	for f in $(MAKE_FILES); do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
-	$(INSTALL_DATA) config.site $(prefix)/share
+	$(INSTALL_DATA) config.site $(GNUSTEP_SYSTEM_ROOT)/share
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
@@ -143,7 +142,7 @@ uninstall:
 	for f in $(MAKE_FILES); do \
 	  rm -f $(makedir)/$$f; \
 	done
-	rm -f $(prefix)/share/config.site
+	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
 
 clean:

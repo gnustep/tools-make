@@ -28,15 +28,13 @@ AC_CONFIG_HEADER(config.h)
 # defined, but if not then we have a global default.
 #--------------------------------------------------------------------
 AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
-GNUSTEP_SYSTEM_ROOT=/usr/GNUstep ;
-echo $GNUSTEP_SYSTEM_ROOT ;
+echo /usr/GNUstep ;
 else
 echo $GNUSTEP_SYSTEM_ROOT ;
 fi`)
 if test "x$prefix" = "xNONE"; then
   prefix=$ac_default_prefix ;
 fi
-GNUSTEP_ROOT=$prefix
 AC_ARG_WITH(system-root, 
   [  --without-system-root    Dont use separate system root directory], 
   ac_cv_system_root=$withval,  
@@ -44,12 +42,13 @@ AC_ARG_WITH(system-root,
 
 if test $ac_cv_system_root = yes; then
   if test `basename $prefix` = System; then
-    GNUSTEP_ROOT=`dirname $prefix`
-  else
-    prefix=$prefix/System
+    prefix=`dirname $prefix`
   fi
+  GNUSTEP_SYSTEM_ROOT=$prefix/System
+else
+  GNUSTEP_SYSTEM_ROOT=$prefix
 fi
-AC_SUBST(GNUSTEP_ROOT)
+AC_SUBST(GNUSTEP_SYSTEM_ROOT)
 
 
 #--------------------------------------------------------------------

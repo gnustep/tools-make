@@ -24,8 +24,8 @@
 #
 # Set the GNUstep system root and local root
 #
-GNUSTEP_ROOT=@GNUSTEP_ROOT@
-GNUSTEP_SYSTEM_ROOT=@prefix@
+GNUSTEP_ROOT=@prefix@
+GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
 GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
 if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@

@@ -1,3 +1,12 @@
+2001-01-30  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Redo setting prefix again! prefix is now the
+	base directory (typically /usr/GNUstep) and GNUSTEP_SYSTEM_ROOT
+	is set to $prefix/System (typically).
+	* GNUmakefile.in: Update for new prefix
+	* GNUstep.csh.in: Likewise.
+	* GNUstep.sh.in: Likewise.
+
 Mon Jan 29 23:38:25 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* debian: New directory.
