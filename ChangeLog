@@ -1,3 +1,8 @@
+Mon Sep 17 14:23:03 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* bundle.make ($(BUNDLE_FILE)): Added missing \ at the end of
+	line.
+
 Sun Sep 16 17:32:29 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (CURRENT_FRAMEWORK_HEADERS_FLAG): New variable;
