@@ -1,0 +1,74 @@
+#
+#   config.make.in
+#
+#   All of the settings required by the makefile package
+#   that are determined by configure.
+#
+#   Copyright (C) 1997 Free Software Foundation, Inc.
+#
+#   Author:  Scott Christley <scottc@net-community.com>
+#
+#   This file is part of the GNUstep Makefile Package.
+#
+#   This library is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License
+#   as published by the Free Software Foundation; either version 2
+#   of the License, or (at your option) any later version.
+#   
+#   You should have received a copy of the GNU General Public
+#   License along with this library; see the file COPYING.LIB.
+#   If not, write to the Free Software Foundation,
+#   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+#
+# The host information
+#
+GNUSTEP_HOST = @host@
+GNUSTEP_HOST_CPU = @host_cpu@
+GNUSTEP_HOST_VENDOR = @host_vendor@
+GNUSTEP_HOST_OS = @host_os@
+
+#
+# The target information
+#
+CONFIG_TARGET = @target@
+CONFIG_TARGET_CPU = @target_cpu@
+CONFIG_TARGET_VENDOR = @target_vendor@
+CONFIG_TARGET_OS = @target_os@
+
+#
+# Scripts to run for parsing canonical names
+#
+CONFIG_SUB_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/config.sub
+CONFIG_CPU_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/cpu.sh
+CONFIG_VENDOR_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/vendor.sh
+CONFIG_OS_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/os.sh
+
+#
+# Binary and compile tools
+#
+CC = @CC@
+
+EXEEXT = 
+OEXT = .o
+LIBEXT = .a
+RESEXT = .res
+RCEXT = .rc
+
+LN_S = @LN_S@
+
+LD = gcc
+LDOUT =
+LDFLAGS = @LDFLAGS@ -o
+
+AR = ar
+AROUT =
+ARFLAGS = rc
+RANLIB = @RANLIB@
+
+RC = @RC@
+DLLTOOL = @DLLTOOL@
+
+INSTALL = @INSTALL@
+INSTALL_DATA = @INSTALL_DATA@
+INSTALL_PROGRAM = @INSTALL_PROGRAM@

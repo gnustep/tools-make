@@ -1,0 +1,50 @@
+AC_INIT(application.make)
+
+#
+#   configure.in
+#
+#   Copyright (C) 1997 Free Software Foundation, Inc.
+#
+#   Author:  Scott Christley <scottc@net-community.com>
+#
+#   This file is part of the GNUstep Makefile Package.
+#
+#   This library is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License
+#   as published by the Free Software Foundation; either version 2
+#   of the License, or (at your option) any later version.
+#   
+#   You should have received a copy of the GNU General Public
+#   License along with this library; see the file COPYING.LIB.
+#   If not, write to the Free Software Foundation,
+#   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+#--------------------------------------------------------------------
+# The GNUstep root directory.
+# The user should have the GNUSTEP_ROOT environment variable defined,
+# but if not then we have a global default.
+#--------------------------------------------------------------------
+AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_ROOT" = "x"; then 
+echo /usr/GNUstep ;
+else
+echo $GNUSTEP_ROOT ;
+fi`)
+
+#--------------------------------------------------------------------
+# Determine the host, build, and target systems
+#--------------------------------------------------------------------
+AC_CANONICAL_SYSTEM
+
+#--------------------------------------------------------------------
+# Find the binary and compile tools
+#--------------------------------------------------------------------
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_RANLIB
+AC_LN_S
+
+#--------------------------------------------------------------------
+# Produce the output files
+#--------------------------------------------------------------------
+AC_OUTPUT(config.make Makefile)
