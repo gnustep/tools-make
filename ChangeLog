@@ -1,3 +1,39 @@
+Sat Sep 15 13:59:31 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (OBJ_FILES_TO_LINK): New variable holding all object
+	files to be linked into the resulting app or lib or whatever.
+	* application.make ($(APP_FILE)): Use the new variable rather
+	than listing manually all different object files.
+	* bundle.make ($(BUNDLE_FILE)): Idem.	
+	* framework.make ($(FRAMEWORK_FILE)): Idem.
+	($(DUMMY_FRAMEWORK_FILE)): Idem.
+	* gswapp.make ($(GSWAPP_FILE)): Idem.
+	* gswbundle.make ($(GSWBUNDLE_FILE)): Idem.
+	* library.make ($(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)): 
+	Idem.
+	* objc.make
+	($(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT)): 
+	Idem.
+	* palette.make ($(PALETTE_FILE)): Idem.
+	* service.make ($(SERVICE_FILE)): Idem.
+	* subproject.make ($(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)):
+	Idem.
+	* test-library.make
+	($(GNUSTEP_OBJ_DIR)/$(INTERNAL_testlib_NAME)): Idem.
+	* tool.make ($(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)):
+	Idem.
+	* library.make (DLL_OFILES): Replaced with OBJ_FILES_TO_LINK.
+
+	Implemented support for C++ files.
+	* rules.make (.SUFFIXES): Added .C, .cp, .cpp, .cxx, .cc.
+	(ALL_CCFLAGS): New variable.
+	($(GNUSTEP_OBJ_DIR)/%${OEXT}): Added implicit rules for building
+	object files from .C, .cp, .cpp, .cxx and .cc files.
+	(%.variables): Extract CC_FILES from xxx_CC_FILES, and pass them
+	down to the submake.
+	(CC_OBJS, CC_OBJ_FILES): New variables.
+	(OBJ_FILES_TO_LINK): Added CC_OBJ_FILES.
+	
 2001-09-14  Adam Fedor  <fedor@gnu.org>
 
 	* debian/changelog: Minor fixes to get debian to build correctly
