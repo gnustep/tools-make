@@ -73,6 +73,8 @@ check:: before-check internal-check after-check
 #
 
 before-all::
+	rm -f obj
+	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj
 
 internal-all::
 

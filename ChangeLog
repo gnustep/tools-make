@@ -1,3 +1,10 @@
+2001-03-14 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* rules.make: Quicks hack in before-all... create a symbolic link
+	from 'obj' to the directory in which we store object files ...
+	purely as a convenience.  Probably can get cleaner code for this
+	but I'm not a makefiles expert.
+
 Wed Mar 14 10:40:45 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.variables): Bug fix: rewritten the rule as it was
