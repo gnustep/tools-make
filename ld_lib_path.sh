@@ -35,15 +35,34 @@ if [ -z "$host_os" ]; then
   host_os=$1
 fi
 
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO
-  tool_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-  lib_paths="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_NETWORK_ROOT/$last_path_part:$GNUSTEP_NETWORK_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part"
-  unset last_path_part
-  unset tool_path_part
-else
-  lib_paths="$GNUSTEP_USER_ROOT/Libraries:$GNUSTEP_LOCAL_ROOT/Libraries:$GNUSTEP_NETWORK_ROOT/Libraries:$GNUSTEP_SYSTEM_ROOT/Libraries"
-fi
+
+
+old_IFS="$IFS"
+IFS=:
+lib_paths=
+for dir in $GNUSTEP_PATHPREFIX_LIST; do
+
+  # prepare the path_fragment for this dir
+  if [ -z "$GNUSTEP_FLATTENED" ]; then
+    path_fragment="$dir/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+  else
+    path_fragment="$dir/Libraries"
+  fi
+
+  # Append the path_fragment to lib_paths
+  if [ -z "$lib_paths" ]; then
+    lib_paths="$path_fragment"
+  else
+    lib_paths="$lib_paths:$path_fragment"
+  fi
+
+  unset path_fragment
+
+done
+IFS="$tmp_IFS"
+unset old_IFS
+unset dir
+
 
 if [ -n "$additional_library_paths" ]; then
   old_IFS="$IFS"
@@ -111,7 +130,21 @@ unset lib_paths
 #
 # Setup path for loading guile modules too.
 #
-guile_paths="$GNUSTEP_USER_ROOT/Libraries/Guile:$GNUSTEP_LOCAL_ROOT/Libraries/Guile:$GNUSTEP_NETWORK_ROOT/Libraries/Guile:$GNUSTEP_SYSTEM_ROOT/Libraries/Guile"
+old_IFS="$IFS"
+IFS=:
+guile_paths=
+for dir in $GNUSTEP_PATHPREFIX_LIST; do
+
+  if [ -z "$guile_paths" ]; then
+    guile_paths="$dir/Libraries/Guile"
+  else
+    guile_paths="$guile_paths:$dir/Libraries/Guile"
+  fi
+
+done
+IFS="$tmp_IFS"
+unset old_IFS
+unset dir
 
 if [ -z "$GUILE_LOAD_PATH" ]; then
   GUILE_LOAD_PATH="$guile_paths"
