@@ -210,12 +210,13 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 
 # The magical application rules, thank you GNU make!
 %.build:
-	@(if [ "$(FRAMEWORK_NAME)" != "" ] && [ "$(OPERATION)" = "all" ]; then \
+	@(if [ "$(FRAMEWORK_NAME)" != "" ] && [ "$(OPERATION)" = "all" ] && [ "$(TOOL_NAME)" = "" ]; then \
 	  echo Build public headers for $(TARGET_TYPE) $*...; \
 	  $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    build-framework-headers \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
 	    SUBPROJECTS="$($*_SUBPROJECTS)" \
+	    TOOLS="$($*_TOOLS)" \
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
 	    JAVA_FILES="$($*_JAVA_FILES)" \
@@ -268,6 +269,29 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	  fi;\
 	fi;)
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
+	if [ "$(FRAMEWORK_NAME)" != "" ] && [ "$($*_TOOLS)" != "" ] && [ "$(OPERATION)" != "build-framework-headers" ]; then tools="$($*_TOOLS)"; \
+        else tools="__dummy__";\
+	fi;\
+	if [ "$$tools" != "__dummy__" ]; then \
+	  for f in $$tools; do \
+	    mf=$(MAKEFILE_NAME); \
+	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	      mf=Makefile; \
+	        echo "WARNING: No $(MAKEFILE_NAME) found for tool $ff; using 'Makefile'"; \
+	    fi; \
+	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
+		FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+		FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+		FRAMEWORK_OPERATION="$(OPERATION)" \
+		TOOL_OPERATION="$(OPERATION)" \
+		DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+		SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	    ; then \
+	      :; \
+	    else exit $$?; \
+            fi; \
+	  done; \
+	fi; \
 	if [ "$($*_SUBPROJECTS)" != "" ]; then subprjs="$($*_SUBPROJECTS)"; \
         else subprjs="__dummy__";\
 	fi;\

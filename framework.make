@@ -40,6 +40,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The list of languages the framework supports is in xxx_LANGUAGES
 # The list of framework resource directories are in xxx_RESOURCE_DIRS
 # The list of framework subprojects directories are in xxx_SUBPROJECTS
+# The list of framework tools directories are in xxx_TOOLS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
 # The header files are in xxx_HEADER_FILES
 # The list of framework web server resource directories are in
@@ -97,7 +98,6 @@ ifneq ($(BUILD_DLL),yes)
 FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/Current
 FRAMEWORK_LIBRARY_DIR_NAME := $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 FRAMEWORK_CURRENT_LIBRARY_DIR_NAME := $(FRAMEWORK_CURRENT_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
-FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 
 FRAMEWORK_LIBRARY_FILE = lib$(INTERNAL_framework_NAME)$(SHARED_LIBEXT)
 FRAMEWORK_LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)

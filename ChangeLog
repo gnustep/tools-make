@@ -1,3 +1,10 @@
+2001-01-18  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* tool.make: modified to build framework tools. (installed in the
+	framework resource dir)
+	* rules.make (%.build): build framework tools.
+	* framework.make: updated docs.
+
 Thu Jan 18 12:15:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* gnustep-make.spec.in: Do a make distclean before running

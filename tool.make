@@ -60,6 +60,10 @@ $(TOOL_NAME):
 
 else # second pass
 
+ifneq ($(FRAMEWORK_NAME),)
+  TOOL_INSTALLATION_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(GNUSTEP_TARGET_LDIR)
+endif
+
 ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) \
    $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
    $(TARGET_SYSTEM_LIBS)
@@ -90,8 +94,14 @@ endif
 #
 # Compilation targets
 #
+ifeq ($(FRAMEWORK_NAME),)
 internal-tool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) after-$(TARGET)-all
+else
+internal-tool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) after-$(TARGET)-all \
+	internal-install-dirs install-tool
+endif
 
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
@@ -102,7 +112,17 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
+ifneq ($(FRAMEWORK_NAME),)
+ifneq ($(FRAMEWORK_OPERATION),all)
+   NULL_INSTALL = yes
+endif
+endif
+
+ifeq ($(NULL_INSTALL),yes)
+internal-tool-install::
+else
 internal-tool-install:: internal-tool-all internal-install-dirs install-tool
+endif
 
 internal-install-dirs::
 	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
@@ -110,8 +130,13 @@ internal-install-dirs::
 ifeq ($(GNUSTEP_FLATTENED),)
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) $(TOOL_INSTALLATION_DIR);
-	cp $(GNUSTEP_MAKEFILES)/executable.template $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
-	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
+	@(if [ "$(FRAMEWORK_NAME)" = "" ]; then \
+		cp $(GNUSTEP_MAKEFILES)/executable.template $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
+		chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
+	else \
+		cp $(GNUSTEP_MAKEFILES)/executable.template $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME); \
+		chmod a+x $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME); \
+	fi;)
 else
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) $(TOOL_INSTALLATION_DIR)
