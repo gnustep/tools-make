@@ -118,18 +118,18 @@ $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 ifeq ($(WITH_DLL),yes)
 
 $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
-	$(DLLWRAP) --driver-name $(CC) \
+	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_BUNDLE_LIBS)
+		$(ALL_BUNDLE_LIBS)$(END_ECHO)
 
 else # WITH_DLL
 
 $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
-	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_BUNDLE_LIBS)
+		$(ALL_BUNDLE_LIBS)$(END_ECHO)
 
 endif # WITH_DLL
 
@@ -151,7 +151,7 @@ endif # OBJ_FILES_TO_LINK
 # MacOSX bundles
 
 $(BUNDLE_DIR_NAME)/Contents :
-	$(MKDIRS) $@
+	@$(MKDIRS) $@
 
 $(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents \
                                         $(BUNDLE_DIR_NAME)/Resources
@@ -214,9 +214,9 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
-	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	@(if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	  plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
-	fi
+	fi)
 else # following code for when no object file is built
 # NeXTstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info.plist:
@@ -229,9 +229,9 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "}") >$@
-	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	@(if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	  plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
-	fi
+	fi)
 endif
 
 # Comment on the tar options used in the rule below - 
@@ -259,7 +259,7 @@ endif
 # symbolic link, we don't care).
 
 internal-bundle-install_:: $(BUNDLE_INSTALL_DIR) shared-instance-headers-install
-	rm -f .tmp.gnustep.exclude; \
+	$(ECHO_INSTALLING)rm -f .tmp.gnustep.exclude; \
 	echo "$(BUNDLE_DIR_NAME)/Contents/Resources" > .tmp.gnustep.exclude;\
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME); \
 	$(TAR) chfX - .tmp.gnustep.exclude $(BUNDLE_DIR_NAME) \
@@ -268,7 +268,7 @@ internal-bundle-install_:: $(BUNDLE_INSTALL_DIR) shared-instance-headers-install
 	(cd $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)/Contents; \
 	    if [ ! -d Resources ]; then \
 	      rm -f Resources; $(LN_S) ../Resources .; \
-	    fi;)
+	    fi;)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 endif
