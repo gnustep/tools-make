@@ -30,7 +30,7 @@ BUNDLE_MAKE_LOADED=yes
 include $(GNUSTEP_MAKEFILES)/rules.make
 
 # The name of the bundle is in the BUNDLE_NAME variable.
-# The list of bundle resource file are in xxx_RESOURCES
+# The list of bundle resource file are in xxx_RESOURCE_FILES
 # The list of bundle resource directories are in xxx_RESOURCE_DIRS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
 # where xxx is the bundle name
@@ -141,7 +141,7 @@ internal-bundle-clean::
 internal-bundle-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+	  static_profile_debug_obj $(BUNDLE_DIR_NAME)
 
 endif
 

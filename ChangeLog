@@ -1,3 +1,8 @@
+Sun Sep 19  1999  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make (internal-bundle-distclean): Added
+	$(BUNDLE_DIR_NAME) so that the bundle is removed on distclean.
+
 Fri Sep 17  1999  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (distclean): added test, so that distclean invokes
