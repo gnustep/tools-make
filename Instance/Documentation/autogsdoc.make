@@ -20,6 +20,7 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+ifeq ($(BASE_MAKE_LOADED), yes)
 ifeq ($(GNUSTEP_BASE_HAVE_LIBXML), 1)
 
 ifeq ($(AUTOGSDOC),)
@@ -64,3 +65,13 @@ internal-doc-all_::
 	@echo "No libxml - processing of autogsdoc files skipped"
 
 endif # GNUSTEP_BASE_HAVE_LIBXML
+
+else
+
+internal-doc-all_::
+	@echo "GNUstep-Base not installed - processing of autogsdoc files skipped"
+	@echo "If you want to generate documentation, install GNUstep-base first"
+	@echo "and then rerun make here"
+
+
+endif # BASE_MAKE_LOADED

@@ -1,3 +1,9 @@
+2003-06-21  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/Documentation/autogsdoc.make: If not BASE_MAKE_LOADED
+	print a better error message about needing to install GNUstep-base
+	first.
+
 2003-06-20  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.7.1
