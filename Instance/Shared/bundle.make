@@ -63,6 +63,12 @@
 #  recursively copied (/locally symlinked if symlinks are available)
 #  into the resource bundle. <FIXME - not sure this will be kept>
 #
+#  $(GNUSTEP_INSTANCE)_SUBPROJECTS : the list of subprojects is used
+#  because the resources from each subproject are merged into the bundle
+#  resources (by recursively copying from LLL/Resources/Subproject into
+#  the GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH, where $(LLL) is the
+#  subproject name.
+#
 #  GNUSTEP_TYPE : used when printing the message 'Copying resources into 
 #  the $(GNUSTEP_TYPE) wrapper...'
 #
@@ -85,7 +91,7 @@
 #  shared-instance-bundle-all
 #
 #  $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH): Creates the bundle
-#  path (invoked automatically)
+#  resource path (invoked automatically)
 #
 
 # NB: The 'override' in all this file are needed to override the
@@ -97,6 +103,10 @@ override RESOURCE_DIRS = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_DIRS))
 override LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
 override LOCALIZED_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES))
 override COMPONENTS = $(strip $($(GNUSTEP_INSTANCE)_COMPONENTS))
+
+# NB: Use _SUBPROJECTS, not SUBPROJECTS here as that might conflict
+# with what is used in aggregate.make.
+_SUBPROJECTS = $(strip $($(GNUSTEP_INSTANCE)_SUBPROJECTS))
 
 .PHONY: \
 shared-instance-bundle-all \
@@ -171,6 +181,14 @@ ifneq ($(COMPONENTS),)
 	 if [ -d $$component ]; then \
 	  cp -r $$component $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/;\
 	 fi; \
+	done)
+endif
+ifneq ($(_SUBPROJECTS),)
+	@(echo "Copying resources from subprojects into the $(GNUSTEP_TYPE) wrapper..."; \
+	for subproject in $(_SUBPROJECTS); do \
+	  if [ -d $$subproject/Resources/Subproject ]; then \
+	    cp -r $$subproject/Resources/Subproject/* $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
+	  fi; \
 	done)
 endif
 
