@@ -29,21 +29,30 @@
 #  local resource bundle (this might be a subdirectory of the actual
 #  bundle directory).  Resource files will be copied into this path.
 #  For example, for a normal bundle it would be
-#  $(BUNDLE_DIR)/Resources; for an application it would be
-#  $(APP_DIR)/Resources; for a library or a tool,
+#  $(BUNDLE_DIR_NAME)/Resources; for an application it would be
+#  $(APP_DIR_NAME)/Resources; for a library or a tool,
 #  Resources/$(GNUSTEP_INSTANCE).  This variable is used during build,
 #  to copy the resources in place.
 #
-#  GNUSTEP_SHARED_BUNDLE_MAIN_PATH : the path to the top
-#  level bundle directory to install.  For example, for a normal
-#  bundle it would be $(BUNDLE_DIR); for an application it would be
-#  $(APP_DIR); for a library or a tool, Resources/$(GNUSTEP_INSTANCE).
+#  GNUSTEP_SHARED_BUNDLE_MAIN_PATH : the path to the top level bundle
+#  directory to install, relative to the current dir during build
+#  (/installation dir when installed).  For example, for a normal
+#  bundle it would be $(BUNDLE_DIR_NAME); for an application it would
+#  be $(APP_DIR_NAME); for a library or a tool,
+#  Resources/$(GNUSTEP_INSTANCE).
+#
+#  GNUSTEP_SHARED_BUNDLE_INSTALL_DIR : the path to the dir
+#  in which the bundle is to be installed.  For example, for a normal
+#  bundle it would be $(BUNDLE_INSTALL_DIR); for an application it would
+#  be $(APP_INSTALL_DIR); for a library or tool, $(LIBRARY_INSTALL_DIR),
+#  or $(TOOL_INSTALL_DIR).
 #
 #  GNUSTEP_SHARED_BUNDLE_PRESERVE_LINK_PATH : the path
 #  to a symlink to preserve when installing.  Normally symlinks are
 #  dereferenced, but we have support to preserve a single symlink.
 #  This is used when building bundles on MacOSX.  If not set, it's
-#  ignored.
+#  ignored. (not supported yet, which is why Instance/bundle.make
+#  is not using the facilities of this file to install the bundle)
 #
 #  $(GNUSTEP_INSTANCE)_RESOURCE_FILES : a list of resource files to install.
 #  They are recursively copied (/symlinked), so it might also include dirs.
@@ -105,6 +114,17 @@
 #  $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH): Creates the bundle
 #  resource path (invoked automatically)
 #
+#  shared-instance-bundle-install
+#  shared-instance-bundle-uninstall
+#
+
+#
+# Warning - the bundle install rules depend on the rule to create
+# $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR) - the rule to build it has to be
+# provided by the caller {we can't provide two rules to build the same
+# target; the caller might need to provide the rule for cases when we
+# are not included, so we let the caller always provide it}
+#
 
 RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_FILES) \
                         $($(GNUSTEP_INSTANCE)_COMPONENTS))
@@ -123,7 +143,9 @@ _SUBPROJECTS = $(strip $($(GNUSTEP_INSTANCE)_SUBPROJECTS))
 .PHONY: \
 shared-instance-bundle-all \
 shared-instance-bundle-all-resources \
-shared-instance-bundle-all-gsweb
+shared-instance-bundle-all-gsweb \
+shared-instance-bundle-install \
+shared-instance-bundle-uninstall
 
 ifneq ($(RESOURCE_DIRS),)
 
@@ -324,7 +346,17 @@ shared-instance-bundle-all-localized-webresources:
 
 endif
 
+shared-instance-bundle-install:: $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)
+	$(ECHO_INSTALLING_BUNDLE)rm -rf $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
+	$(TAR) cf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH) \
+	  | (cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) \
+	  $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)
+endif
 
+shared-instance-bundle-uninstall::
+	(cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); rm -rf $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH))
 
 ## Local variables:
 ## mode: makefile
