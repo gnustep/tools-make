@@ -90,7 +90,8 @@ INSTANCE_MAKE_FILES = \
         resource-set.make service.make subproject.make test-application.make \
         test-library.make test-tool.make tool.make
 
-INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make strings.make
+INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make \
+                             stamp-string.make strings.make
 
 INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
                           javadoc.make latex.make texi.make
