@@ -46,14 +46,21 @@ if ( ! ${?GNUSTEP_HOST} ) then
   setenv GNUSTEP_HOST `${GNUSTEP_MAKEFILES}/config.sub ${GNUSTEP_HOST}`
   popd > /dev/null
 endif
-setenv GNUSTEP_HOST_CPU `${GNUSTEP_MAKEFILES}/cpu.sh $GNUSTEP_HOST`
-setenv GNUSTEP_HOST_VENDOR `${GNUSTEP_MAKEFILES}/vendor.sh $GNUSTEP_HOST`
-setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/os.sh $GNUSTEP_HOST`
 
-# Clean the host
-setenv GNUSTEP_HOST_CPU `${GNUSTEP_MAKEFILES}/clean_cpu.sh $GNUSTEP_HOST_CPU`
-setenv GNUSTEP_HOST_VENDOR `${GNUSTEP_MAKEFILES}/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
-setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/clean_os.sh $GNUSTEP_HOST_OS`
+if ( ! ${?GNUSTEP_HOST_CPU} ) then
+  setenv GNUSTEP_HOST_CPU `${GNUSTEP_MAKEFILES}/cpu.sh ${GNUSTEP_HOST}`
+  setenv GNUSTEP_HOST_CPU `${GNUSTEP_MAKEFILES}/clean_cpu.sh ${GNUSTEP_HOST_CPU}`
+endif
+
+if ( ! ${?GNUSTEP_HOST_VENDOR} ) then
+  setenv GNUSTEP_HOST_VENDOR `${GNUSTEP_MAKEFILES}/vendor.sh ${GNUSTEP_HOST}`
+  setenv GNUSTEP_HOST_VENDOR `${GNUSTEP_MAKEFILES}/clean_vendor.sh ${GNUSTEP_HOST_VENDOR}`
+endif
+
+if ( ! ${?GNUSTEP_HOST_OS} ) then
+  setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/os.sh ${GNUSTEP_HOST}`
+  setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/clean_os.sh ${GNUSTEP_HOST_OS}`
+endif
 
 #
 # Add the GNUstep tools directories to the path
