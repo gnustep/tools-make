@@ -208,6 +208,9 @@ after-check::
 # It's very important to notice that $(basename $(basename $*)) in
 # these rules is simply the instance (such as libgmodel).
 
+# NB: INTERNAL_$${type}_NAME and TARGET are deprecated - use
+# GNUSTEP_INSTANCE instead.
+
 # Before building the real thing, we must build framework tools if
 # any, then subprojects (FIXME - not sure - at what stage should we
 # build framework tools ? perhaps after the framework so we can link
