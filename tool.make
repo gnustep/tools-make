@@ -124,7 +124,11 @@ else
 internal-tool-install:: internal-tool-all internal-install-dirs install-tool
 endif
 
-internal-install-dirs::
+# Depend on having created the installation dir
+internal-install-dirs:: $(TOOL_INSTALLATION_DIR)
+
+# This rule runs $(MKDIRS) only if needed
+$(TOOL_INSTALLATION_DIR):
 	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
 
 ifeq ($(GNUSTEP_FLATTENED),)
