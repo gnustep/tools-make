@@ -1,11 +1,10 @@
 #
 #   test-tool.make
 #
-#   Makefile rules for dejagnu/GNUstep based testing
-#
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -32,7 +31,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-# building of test tools calls the tool.make rules
+# building of test tools works as in tool.make
 ifeq ($(INTERNAL_tool_NAME),)
 
 internal-all:: $(TEST_TOOL_NAME:=.all.tool.variables)
@@ -41,8 +40,17 @@ internal-clean:: $(TEST_TOOL_NAME:=.clean.tool.variables)
 
 internal-distclean:: $(TEST_TOOL_NAME:=.distclean.tool.variables)
 
+internal-check:: $(TEST_TOOL_NAME:=.check.tool.variables)
+
 $(TEST_TOOL_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.tool.variables
+
+# However, we don't install/uninstall test-tools
+internal-install::
+	@ echo Skipping installation of test tools...
+
+internal-uninstall::
+	@ echo Skipping uninstallation of test tools...
 
 else
 
@@ -51,31 +59,7 @@ include $(GNUSTEP_MAKEFILES)/tool.make
 
 endif
 
-# However we do not install test tools
-ifeq ($(INTERNAL_testtool_NAME),)
-
-internal-install:: $(TEST_TOOL_NAME:=.install.testtool.variables)
-
-internal-uninstall:: $(TEST_TOOL_NAME:=.uninstall.testtool.variables)
-
-internal-check:: $(TEST_TOOL_NAME:=.check.testtool.variables)
-
-else
-
-internal-install:: $(TEST_TOOL_NAME:=.install.testtool.variables)
-
-internal-uninstall:: $(TEST_TOOL_NAME:=.uninstall.testtool.variables)
-
-endif
-
-internal-testtool-install::
-
-internal-testtool-uninstall::
-
-internal-testtool-check::
-
-endif
-# test-tool.make loaded
+endif # test-tool.make loaded
 
 ## Local variables:
 ## mode: makefile

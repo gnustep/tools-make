@@ -1,11 +1,10 @@
 #
 #   test-application.make
 #
-#   Makefile rules for dejagnu/GNUstep based testing
-#
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -32,7 +31,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-# building of test applications calls the application.make rules
+# building of test applications works as in application.make
 ifeq ($(INTERNAL_app_NAME),)
 
 internal-all:: $(TEST_APP_NAME:=.all.app.variables)
@@ -41,15 +40,17 @@ internal-clean:: $(TEST_APP_NAME:=.clean.app.variables)
 
 internal-distclean:: $(TEST_APP_NAME:=.distclean.app.variables)
 
+internal-check:: $(TEST_APP_NAME:=.check.testapp.variables)
+
 $(TEST_APP_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
 
-# if a subproject is the target, cd to it's dir and make it
-$(SUBPROJECTS)::
-	@(target=`echo $@ | sed 's/internal-//'`; \
-	echo Making $$target in $$target...;\
-	(cd $$target; $(MAKE) -f $(MAKEFILE_NAME) --no-keep-going $$target \
-	after-all); )
+# However, we don't install/uninstall test apps
+internal-install::
+	@ echo Skipping installation of test apps...
+
+internal-uninstall::
+	@ echo Skipping uninstallation of test apps...
 
 else
 
@@ -58,25 +59,7 @@ include $(GNUSTEP_MAKEFILES)/application.make
 
 endif
 
-# However we do not install test applications
-ifeq ($(INTERNAL_testapp_NAME),)
-
-internal-install:: $(TEST_APP_NAME:=.install.testapp.variables)
-
-internal-uninstall:: $(TEST_APP_NAME:=.uninstall.testapp.variables)
-
-internal-check:: $(TEST_APP_NAME:=.check.testapp.variables)
-
-else
-
-internal-install:: $(TEST_APP_NAME:=.install.testapp.variables)
-
-internal-uninstall:: $(TEST_APP_NAME:=.uninstall.testapp.variables)
-
-endif
-
-endif
-# test-application.make loaded
+endif # test-application.make loaded
 
 ## Local variables:
 ## mode: makefile
