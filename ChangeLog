@@ -1,3 +1,21 @@
+2000-01-24  Adam Fedor  <fedor@gnu.org>
+
+	* names.make (GNUSTEP_HOST_GUESS): New variable. Evaluate config.guess
+	and config.sub separately.
+
+2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
+
+	*  gswapp.make and gswbundle.make: tar options changed 
+	
+2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
+
+	* GNUmakefile: add gswapp.make and gswbundle.make
+	
+2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
+
+	* rules.make and bundle.make: changes for GNUstepWeb
+	* gswapp.make and gswbundle.make: added
+	
 2000-01-14  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.csh.in (GNUSTEP_LOCAL_ROOT): Use correct quotes.
