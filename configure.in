@@ -332,7 +332,7 @@ case "${target_os}" in
 esac
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c"
+CFLAGS="$CFLAGS -x objective-c -I$srcdir"
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi
@@ -423,7 +423,7 @@ AC_SUBST(AUTO_DEPENDENCIES)
 # Record the version
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for the version of gnustep-make we are compiling)
-. ./Version
+. "$srcdir/Version"
 AC_MSG_RESULT($GNUSTEP_MAKE_VERSION)
 DATE=`date +"%Y%m%d"`
 AC_SUBST(GNUSTEP_MAKE_VERSION)
