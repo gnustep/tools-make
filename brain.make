@@ -221,7 +221,7 @@ ifeq ($(GUI_BACKEND_LIB),xdps)
 SYSTEM_INCLUDES = $(TIFF_INCLUDE) $(JPEG_INCLUDE) $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(TIFF_LIB) $(JPEG_LIB) $(X_LIBS)
-SYSTEM_LIBS = -ltiff $(JPEG) -ldpstk -ldps -lpsres -lX11
+SYSTEM_LIBS = -ltiff $(JPEG) -ldpstk -ldps -lpsres -lXt $(X_PRE_LIBS) -lXext -lX11
 endif
 
 #

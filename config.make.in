@@ -24,14 +24,14 @@
 #
 # Binary and compile tools
 #
-CC = @CC@
+CC      = @CC@
 OPTFLAG = @CFLAGS@
 
 EXEEXT = @EXEEXT@
-OEXT = .o
+OEXT   = .o
 LIBEXT = .a
 RESEXT = .res
-RCEXT = .rc
+RCEXT  = .rc
 
 LN_S = @LN_S@
 
@@ -39,18 +39,18 @@ LD = $(CC)
 LDOUT =
 LDFLAGS = @LDFLAGS@ -o
 
-AR = ar
-AROUT =
+AR      = @AR@
+AROUT   =
 ARFLAGS = rc
-RANLIB = @RANLIB@
+RANLIB  = @RANLIB@
 
-RC = @RC@
+RC      = @RC@
 DLLTOOL = @DLLTOOL@
 
-YACC = yacc
-BISON = bison
-FLEX = flex
-LEX = lex
+YACC            = yacc
+BISON           = bison
+FLEX            = flex
+LEX             = lex
 
 INSTALL		= @HOST_INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
@@ -84,6 +84,7 @@ X_LIBS := @X_LIBS@
 ifeq ($(X_LIBS),-LNONE)
 	X_LIBS=
 endif
+X_PRE_LIBS=@X_PRE_LIBS@
 
 #
 # Tiff header and library

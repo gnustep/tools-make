@@ -1,3 +1,11 @@
+1999-04-01  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Handle cross-platform compilation better by
+	finding programs with proper prefix for target.
+	Look for extra X libs needed by dps.
+	* config.make.in (X_PRE_LIBS): Define extra X libs
+	* brain.make: Use them.
+
 Wed Mar 31 01:24:50 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
 	* application.make (ALL_GUI_LIBS): Put BACKEND_LIBS after GUI_LIBS.

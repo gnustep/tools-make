@@ -40,10 +40,11 @@ fi
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
+targetArgument=${target}
 AC_CANONICAL_SYSTEM
 
 EXEEXT=
-if test "$program_suffix" != "NONE"; then
+if test "x$program_suffix" != "xNONE"; then
   EXEEXT=$program_suffix 
 fi
 AC_SUBST(EXEEXT)
@@ -51,9 +52,26 @@ AC_SUBST(EXEEXT)
 #--------------------------------------------------------------------
 # Find the binary and compile tools
 #--------------------------------------------------------------------
+if test "x$target" != "x$host"; then
+  echo "cross compiling from $host to $target .."
+  cross_compiling="yes"
+  AC_CHECK_PROG(CC,      "${targetArgument}-gcc",     dnl
+                         "${targetArgument}-gcc",     gcc)
+  AC_CHECK_PROG(RANLIB,  "${targetArgument}-ranlib",  dnl
+                         "${targetArgument}-ranlib",  ranlib)
+  AC_CHECK_PROG(AR,      "${targetArgument}-ar",      dnl
+                         "${targetArgument}-ar",      ar)
+  AC_CHECK_PROG(DLLTOOL, "${targetArgument}-dlltool", dnl
+                         "${targetArgument}-dlltool", dlltool)
+else
+  AC_CHECK_PROG(AR,      ar,      ar)
+  AC_CHECK_PROG(DLLTOOL, dlltool, dlltool)
+  AC_PROG_RANLIB
+fi
+
 AC_PROG_CC
 AC_PROG_CPP
-AC_PROG_RANLIB
+AC_PATH_PROG(PERL, perl, /usr/local/bin/perl)
 
 AC_PROG_INSTALL
 # HOST_INSTALL is the name of the install program in config.make so set it up
@@ -71,7 +89,7 @@ AC_LN_S
 #--------------------------------------------------------------------
 # Find for X windows
 #--------------------------------------------------------------------
-AC_PATH_X
+AC_PATH_XTRA
 X_INCLUDE=""
 if test -n "$x_includes"; then
     X_INCLUDE="-I$x_includes"
@@ -99,14 +117,14 @@ AC_ARG_WITH(dps_include,
 ORIG_CPPFLAGS=${CPPFLAGS}
 if test -n "$with_dps_include"; then
   X_INCLUDE="$X_INCLUDE -I$with_dps_include"
-  if test -n "$with_dps_lib"; then
-    X_LIBS="$X_LIBS -L$with_dps_lib"
+  if test -n "$with_dps_library"; then
+    X_LIBS="$X_LIBS -L$with_dps_library"
   fi
 fi
 CPPFLAGS="${CPPFLAGS} ${X_INCLUDE}"
 
 # We care about this header file on the target not host system
-AC_HAVE_HEADERS(DPS/dpsclient.h, DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=1',
+AC_HAVE_HEADERS(DPS/dpsclient.h, DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=0',
 	DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=0')
 AC_HAVE_HEADERS(DPS/dpsNXargs.h, 
 	DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS=1",
@@ -118,6 +136,7 @@ CPPFLAGS=${ORIG_CPPFLAGS}
 AC_SUBST(DPS_DEFINE)
 AC_SUBST(X_INCLUDE)
 AC_SUBST(X_LIBS)
+AC_SUBST(X_PRE_LIBS)
 
 AC_HEADER_DIRENT
 AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
@@ -294,7 +313,9 @@ AC_SUBST(ac_cv_objc_threaded)
 #--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------
-. ../Version
+if test -f "../Version"; then
+  . ../Version
+fi
 AC_SUBST(GNUSTEP_VERSION)
 AC_SUBST(GNUSTEP_MAJOR_VERSION)
 AC_SUBST(GNUSTEP_MINOR_VERSION)
@@ -302,6 +323,6 @@ AC_SUBST(GNUSTEP_MINOR_VERSION)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_OUTPUT(config.h config.make openapp debugapp opentool GNUmakefile
-GNUstep.sh GNUstep.csh,
-chmod a+x openapp debugapp opentool)
+AC_OUTPUT(config.h config.make openapp debugapp which_lib.pl opentool 
+GNUmakefile GNUstep.sh GNUstep.csh,
+chmod a+x openapp debugapp which_lib.pl opentool)
