@@ -89,6 +89,7 @@ install: all
 		$(prefix)/Libraries/$(GNUSTEP_TARGET_LDIR) \
 		$(prefix)/Headers/$(GNUSTEP_TARGET_DIR) \
 		$(prefix)/Tools/$(GNUSTEP_TARGET_DIR) \
+		$(prefix)/Tools/$(GNUSTEP_TARGET_LDIR) \
 		$(prefix)/Library \
 		$(prefix)/Library/Colors \
 		$(prefix)/Library/PostScript \

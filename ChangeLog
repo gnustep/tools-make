@@ -1,5 +1,6 @@
 2000-12-12  Adam Fedor  <fedor@gnu.org>
 
+	* GNUmakefile.in (install): Make Tools ...LDIR (For win32 machines).
 	* bundle.make (build-macosx-bundle): Build suitable files for
 	MacOSX bundle (fixes from Helge Hess <helge.hess@skyrix.com>).
 
