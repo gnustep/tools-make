@@ -80,6 +80,8 @@ endif
 
 if ( -x ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services ) then
   ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services &
+else
+  echo "Warning - make_services not available"
 endif
 
 endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )

@@ -88,8 +88,11 @@ fi
 # Run 'make_services' in background if possible - updates cache of services
 # and applications/file-extensions known to the applications.
 #
-if [ -x $GNUSTEP_SYSTEM_ROOT/Tools/make_services ]; then
+if [ -x $GNUSTEP_SYSTEM_ROOT/Tools/make_services ]
+then
   $GNUSTEP_SYSTEM_ROOT/Tools/make_services &
+else
+  echo "Warning - make_services not available"
 fi
 
 fi # [ -z "$GNUSTEP_BUILD_ROOT" ]
