@@ -1,3 +1,9 @@
+2003-01-09 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Updated for current cod, fixing a few
+	errors.
+	* user_home.c: Fixed typo.
+
 2003-01-03 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: Don't use RUNTIME_FLAG for plain C code, just for ObjC

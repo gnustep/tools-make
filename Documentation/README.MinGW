@@ -1,4 +1,4 @@
-Date:	14-May-2002 (tested under windoze-xp)
+Date:	09-Jan-2003 (tested under windoze-xp)
 Author: Richard Frith-Macdonald <rfm@gnu.org>
 
 PURPOSE
@@ -53,15 +53,17 @@ line terminators should be set to the unix option.
 Installing and setting up MINGW and MSYS
 ----------------------------------------
 
-Next, download msys-1.07 or later from
+Next, download msys-1.08 or later from
 http://sourceforge.net/projects/mingw
 and install it.
 
 Next, download MinGW-2.0.0-3 or later from
 http://sourceforge.net/projects/mingw
-and install it (usually in c:/mingw)
+and install it inside the msys installation
+(usually in c:/msys/1.0/mingw)
 
-After installing ming, create a file called fstab in
+If you didn't install mingw in the standard location within the msys
+installation, then after installing mingw, create a file called fstab in
 c:/msys/<version-number>/etc, or wherever you installed msys, and make
 sure it contains the line
 c:/mingw /mingw
@@ -118,6 +120,9 @@ GNUstep-base (snapshot, or cvs core module)
 
 For gui ... GNUstep-back (snapshot, or cvs core module)
 
+NB. Ensure that the GNUstep code you are attempting to use has a date
+later than the date at the top of this document!  The instructions do
+not apply to earlier code.
 
 
 Setting up the GNUstep make environment
@@ -148,8 +153,8 @@ in your ~/.profile would do nicely:
 export HOMEDRIVE=C:
 export HOMEPATH=/home/myname
 export HOME=/C/home/myname
-export GNUSTEP_SYSTEM_DIR=/C/GNUstep/System
-. $GNUSTEP_SYSTEM_DIR/Makefiles/GNUstep.sh
+export GNUSTEP_SYSTEM_ROOT=/C/GNUstep/System
+. $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 
 
 
@@ -166,7 +171,9 @@ Ignore any other instructions for building this ...
 First, in the shell window in which you have set up your GNUstep
 environment, type
 
-./configure --prefix=$GNUSTEP_SYSTEM_ROOT --includedir=$GNUSTEP_SYSTEM_ROOT/Headers
+./configure --prefix=$GNUSTEP_SYSTEM_ROOT \
+ --libdir=$GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32 \
+ --includedir=$GNUSTEP_SYSTEM_ROOT/Headers
 
 Having configured the ffcall library, you can now build and install
 it simply by typing:
@@ -190,16 +197,16 @@ Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
 
 This should build and install the ObjectiveC runtime and headers for you.
 
-If you encounter problems linking the runtime, copy the files
-libavcall.a, libavcall.la, libcallback.a, libcallback.la,
-libtrampoline.a and libvacall.a from C:\GNUstep\System\lib to
-C:\MinGW\lib.
 
-Optional libraries
-------------------
+
+
+Additional libraries
+--------------------
 
 There are some optional (but very strongly recommended) libraries you
-can install to make GNUstep work better.
+can install to make GNUstep work better.  For full multilingual support
+you need libiconv, and for gui applications you need libtiff, libjpeg,
+and zlib.
 
 libiconv
   Needed for multilingual character support (unicode etc)
@@ -222,8 +229,8 @@ libtiff, libjpeg, and zlib
   http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-lib.zip
   Unpack and install
   the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Headers
-  the library (.a) files in $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
-  the dll (.dll) files in $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
+  the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
+  the dll files in $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
 
 
 
@@ -260,17 +267,6 @@ openssl
 
 Building and installing GNUstep-base
 ------------------------------------
-
-If you are using MinGW 2.0.0 or higher you are using gcc 3.x, and
-consequently should change the line
-
-__objc_class_name_NXConstantString
-
-to
-
-__objc_class_name_NSConstantString
-
-in Source/libgnustep-base.def before doing a make.
 
 Go to gnustep-base (or from CVS into the core/base directory), and type
 
