@@ -78,38 +78,38 @@ JAVA_PROPERTIES_FILES = $($(GNUSTEP_INSTANCE)_JAVA_PROPERTIES_FILES)
 
 shared-instance-java-install: shared-instance-java-install-dirs
 ifneq ($(JAVA_OBJ_FILES),)
-	for file in $(JAVA_OBJ_FILES) __done; do \
+	$(ECHO_INSTALLING_CLASS_FILES)for file in $(JAVA_OBJ_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file \
 	                    $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif
 ifneq ($(ADDITIONAL_JAVA_OBJ_FILES),)
-	for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
+	$(ECHO_INSTALLING_ADD_CLASS_FILES)for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file \
 	                    $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif
 ifneq ($(JAVA_PROPERTIES_FILES),)
-	for file in $(JAVA_PROPERTIES_FILES) __done; do \
+	$(ECHO_INSTALLING_PROPERTIES_FILES)for file in $(JAVA_PROPERTIES_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file \
 	                    $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif
 
 shared-instance-java-install-dirs: $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)
 ifneq ($(JAVA_OBJ_FILES),)
-	$(MKINSTALLDIRS) \
+	@$(MKINSTALLDIRS) \
            $(addprefix $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES)))
 endif
 
 $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR):
-	$(MKINSTALLDIRS) $@
+	@$(MKINSTALLDIRS) $@
 
 shared-instance-java-clean:
 	rm -f $(JAVA_OBJ_FILES) \
