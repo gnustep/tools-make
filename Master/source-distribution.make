@@ -65,6 +65,14 @@ ifeq ($(CVS_FLAGS),)
   CVS_FLAGS = -z3
 endif
 
+# Set the cvs command we use.  Most of the times, this is 'cvs' and
+# you need to do nothing.  But you can override 'cvs' with something
+# else.  Useful for example when you need cvs to go through runsocks
+# you can do make cvs-snapshot CVS='runsocks cvs'
+ifeq ($(CVS),)
+  CVS = cvs
+endif
+
 #
 # You can set COMPRESSION_PROGRAM and COMPRESSION_EXT by hand if your 
 # COMPRESSION type is not listed here.
@@ -163,7 +171,7 @@ endif
 # Tag the CVS source with the $(CVS_MODULE_NAME)-$(VERTAG) tag
 #
 cvs-tag:
-	cvs $(CVS_FLAGS) rtag $(CVS_MODULE_NAME)-$(VERTAG) $(CVS_MODULE_NAME)
+	$(CVS) $(CVS_FLAGS) rtag $(CVS_MODULE_NAME)-$(VERTAG) $(CVS_MODULE_NAME)
 
 #
 # Build a .tar.gz from the CVS sources using revision/tag 
@@ -184,7 +192,7 @@ internal-cvs-export:
 	  echo "*Error* cannot export: $(CVS_MODULE_NAME) already exists"; \
 	  exit 1; \
 	fi; \
-	cvs $(CVS_FLAGS) export $(EXPORT_CVS_FLAGS) $(CVS_MODULE_NAME); \
+	$(CVS) $(CVS_FLAGS) export $(EXPORT_CVS_FLAGS) $(CVS_MODULE_NAME); \
 	echo "Generating $(ARCHIVE_FILE)"; \
 	mv $(CVS_MODULE_NAME) $(VERSION_NAME); \
 	if [ -f $(ARCHIVE_FILE) ]; then            \
