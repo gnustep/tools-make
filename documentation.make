@@ -434,7 +434,7 @@ internal-doc-install::
 	$(TAR) cf - $(INTERNAL_doc_NAME) | \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
 ifeq ($(GNUSTEP_BASE_HAVE_LIBXML),1)
-	autogsdoc $(INTERNAL_AGSLINKFLAGS) $(notdir $(AGSDOC_HTML_FILES))
+	-autogsdoc $(INTERNAL_AGSLINKFLAGS) $(notdir $(AGSDOC_HTML_FILES))
 endif
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) \
