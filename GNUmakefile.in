@@ -84,9 +84,11 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
         spec-rules.template spec-debug-rules.template \
         spec-debug-alone-rules.template
 
-MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make
+MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make \
+        application.make
 
-INSTANCE_MAKE_FILES = rules.make
+INSTANCE_MAKE_FILES = rules.make \
+        application.make
 
 all: generated-files which_lib$(EXEEXT)
 
