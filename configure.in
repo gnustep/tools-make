@@ -206,7 +206,7 @@ AC_ARG_WITH(user-root,
 to force all users to share the same GNUSTEP_USER_ROOT directory.  Example:
 --with-user-root=/CommonHome/GNUstep
 ],
-FORCE_USER_ROOT="-DFORCE_USER_ROOT=$withval",
+FORCE_USER_ROOT="-DFORCE_USER_ROOT=\"$withval\"",
 FORCE_USER_ROOT=""
 )
 AC_MSG_RESULT($FORCE_USER_ROOT)
@@ -219,7 +219,7 @@ AC_ARG_WITH(defaults-root,
 to force all users to share common defaults.  Example:
 --with-defaults-root=/CommonDefaults
 ],
-FORCE_DEFAULTS_ROOT="-DFORCE_DEFAULTS_ROOT=$withval",
+FORCE_DEFAULTS_ROOT="-DFORCE_DEFAULTS_ROOT=\"$withval\"",
 FORCE_DEFAULTS_ROOT=""
 )
 AC_MSG_RESULT($FORCE_DEFAULTS_ROOT)
