@@ -1,3 +1,11 @@
+Wed Feb 18 16:57:46 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Removed --enable-import / --disable-import option.
+	* common.make (OBJCFLAGS): Do not add OBJC_NO_IMPORT.
+	* config.make.in (OBJC_NO_IMPORT): Removed.
+	* configure: Regenerated.
+	* Documentation/userfaq.texi: Removed mention of --enable-import.
+	
 2004-02-11  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.Darwin: Update (from Lars Sonchocky-Helldorf). 
