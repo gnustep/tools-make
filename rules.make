@@ -251,30 +251,15 @@ ALL_LIB_DIRS = $(ADDITIONAL_FRAMEWORK_DIRS) $(AUXILIARY_FRAMEWORK_DIRS) \
    $(GNUSTEP_LIBRARIES_FLAGS) \
    $(SYSTEM_LIB_DIR)
 
-# If we are using Windows32 DLLs, for each library that we link
-# against, pass a -Dlib{library_name}_ISDLL=1 option to the
-# preprocessor (for example, -Dlibgnustep_base_ISDLL=1 or
-# -Dlibobjc_ISDLL=1).  This preprocessor define might be used by the
-# library header files to know they are included from external code
-# needing to use the library symbols, so that the library header files
-# can in this case use __declspec(dllimport) to mark symbols as
-# needing to be put into the import table for the
-# executable/library/whatever that is being compiled.
+# If we are using Windows32 DLLs, we pass -DGNUSTEP_WITH_DLL to the
+# compiler.  This preprocessor define might be used by library header
+# files to know they are included from external code needing to use
+# the library symbols, so that the library header files can in this
+# case use __declspec(dllimport) to mark symbols as needing to be put
+# into the import table for the executable/library/whatever that is
+# being compiled.
 ifeq ($(WITH_DLL),yes)
-TMP_LIBS := $(LIBRARIES_DEPEND_UPON) $(BUNDLE_LIBS) $(ADDITIONAL_GUI_LIBS) $(ADDITIONAL_OBJC_LIBS) $(ADDITIONAL_LIBRARY_LIBS)
-TMP_LIBS := $(filter -l%, $(TMP_LIBS))
-# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
-TMP_LIBS := $(filter-out -l%_ds, $(TMP_LIBS))
-TMP_LIBS := $(filter-out -l%_s,  $(TMP_LIBS))
-TMP_LIBS := $(filter-out -l%_dps,$(TMP_LIBS))
-TMP_LIBS := $(filter-out -l%_ps, $(TMP_LIBS))
-# strip away -l, _p and _d ..
-TMP_LIBS := $(TMP_LIBS:-l%=%)
-TMP_LIBS := $(TMP_LIBS:%_d=%)
-TMP_LIBS := $(TMP_LIBS:%_p=%)
-TMP_LIBS := $(TMP_LIBS:%_dp=%)
-TMP_LIBS := $(shell echo $(TMP_LIBS)|tr '-' '_')
-ALL_CPPFLAGS += $(TMP_LIBS:%=-Dlib%_ISDLL=1)
+ALL_CPPFLAGS += -DGNUSTEP_WITH_DLL
 endif
 
 # General rules
