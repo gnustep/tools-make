@@ -84,8 +84,11 @@ internal-install:: $(TEST_LIBRARY_NAME:=.install.testlib.variables)
 
 internal-uninstall:: $(TEST_LIBRARY_NAME:=.uninstall.testlib.variables)
 
+_PSWRAP_C_FILES = $(foreach lib,$(TEST_LIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.c))
+_PSWRAP_H_FILES = $(foreach lib,$(TEST_LIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.h))
+
 internal-clean:: $(TEST_LIBRARY_NAME:=.clean.testlib.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 
 internal-distclean:: $(TEST_LIBRARY_NAME:=.distclean.testlib.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \

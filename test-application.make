@@ -46,8 +46,11 @@ ifeq ($(INTERNAL_app_NAME),)
 
 internal-all:: $(TEST_APP_NAME:=.all.app.variables)
 
+_PSWRAP_C_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.c))
+_PSWRAP_H_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
+
 internal-clean:: $(TEST_APP_NAME:=.clean.app.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(APP_EXTENSION); do \

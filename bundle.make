@@ -57,9 +57,12 @@ internal-install:: $(BUNDLE_NAME:=.install.bundle.variables)
 
 internal-uninstall:: $(BUNDLE_NAME:=.uninstall.bundle.variables)
 
+_PSWRAP_C_FILES = $(foreach bundle,$(BUNDLE_NAME),$($(bundle)_PSWRAP_FILES:.psw=.c))
+_PSWRAP_H_FILES = $(foreach bundle,$(BUNDLE_NAME),$($(bundle)_PSWRAP_FILES:.psw=.h))
+
 internal-clean:: $(BUNDLE_NAME:=.clean.bundle.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR) \
-	       $(addsuffix $(BUNDLE_EXTENSION),$(BUNDLE_NAME))
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	       $(addsuffix $(BUNDLE_EXTENSION),$(BUNDLE_NAME)) \
 
 internal-distclean:: $(BUNDLE_NAME:=.distclean.bundle.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \

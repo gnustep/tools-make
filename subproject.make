@@ -62,8 +62,11 @@ internal-uninstall:: $(SUBPROJECT_NAME:=.uninstall.subproject.variables)
 
 endif
 
+_PSWRAP_C_FILES = $(foreach subproject,$(SUBPROJECT_NAME),$($(subproject)_PSWRAP_FILES:.psw=.c))
+_PSWRAP_H_FILES = $(foreach subproject,$(SUBPROJECT_NAME),$($(subproject)_PSWRAP_FILES:.psw=.h))
+
 internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 
 internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproject.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \

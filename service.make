@@ -3,10 +3,11 @@
 #
 #   Makefile rules to build GNUstep-based services.
 #
-#   Copyright (C) 1998 Free Software Foundation, Inc.
+#   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 #   Based on the makefiles by Scott Christley.
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -49,8 +50,11 @@ internal-install:: $(SERVICE_NAME:=.install.service.variables)
 
 internal-uninstall:: $(SERVICE_NAME:=.uninstall.service.variables)
 
+_PSWRAP_C_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.psw=.c))
+_PSWRAP_H_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.psw=.h))
+
 internal-clean:: $(SERVICE_NAME:=.clean.service.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.service; do \

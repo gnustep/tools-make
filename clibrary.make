@@ -63,8 +63,11 @@ internal-install:: $(CLIBRARY_NAME:=.install.clibrary.variables)
 
 internal-uninstall:: $(CLIBRARY_NAME:=.uninstall.clibrary.variables)
 
+_PSWRAP_C_FILES = $(foreach lib,$(CLIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.c))
+_PSWRAP_H_FILES = $(foreach lib,$(CLIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.h))
+
 internal-clean:: $(CLIBRARY_NAME:=.clean.clibrary.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 
 internal-distclean:: $(CLIBRARY_NAME:=.distclean.clibrary.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
