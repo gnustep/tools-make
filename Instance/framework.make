@@ -3,7 +3,7 @@
 #
 #   Instance Makefile rules to build GNUstep-based frameworks.
 #
-#   Copyright (C) 2000, 2001 Free Software Foundation, Inc.
+#   Copyright (C) 2000, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
 #
 #   Author: Mirko Viviani <mirko.viviani@rccr.cremona.it>
 #   Author: Nicola Pero <n.pero@mi.flashnet.it>
@@ -555,7 +555,7 @@ $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
 $(GNUSTEP_HEADERS) :
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-# NB: We use 'rm -f' to remove the symlink to insure
+# NB: We use 'rm -f' to remove the symlinks to insure
 #     that we do not remove customized real directories.  
 internal-framework-uninstall_::
 	$(ECHO_UNINSTALLING)if [ "$(HEADER_FILES)" != "" ]; then \
@@ -568,7 +568,12 @@ internal-framework-uninstall_::
 	if [ -n "$(HEADER_FILES)" ]; then \
 	  rm -f $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) ; \
 	fi; \
-	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
+	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME) ; \
+	cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
+	rm -f $(FRAMEWORK_LIBRARY_FILE); \
+	rm -f $(SONAME_FRAMEWORK_FILE); \
+	rm -f $(VERSION_FRAMEWORK_LIBRARY_FILE); \
+	$(END_ECHO)
 
 #
 # Cleaning targets
