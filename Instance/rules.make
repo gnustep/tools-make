@@ -58,18 +58,43 @@ before-$(GNUSTEP_INSTANCE)-install::
 
 after-$(GNUSTEP_INSTANCE)-install::
 
-internal-$(GNUSTEP_TYPE)-install:: before-$(GNUSTEP_INSTANCE)-install \
-                                   internal-$(GNUSTEP_TYPE)-install_  \
-                                   after-$(GNUSTEP_INSTANCE)-install
-
 before-$(GNUSTEP_INSTANCE)-uninstall::
 
 after-$(GNUSTEP_INSTANCE)-uninstall::
+
+
+# By adding the line 
+#   xxxx_STANDARD_INSTALL = no
+# to your GNUmakefile, you can disable the standard installation code
+# for a certain GNUSTEP_INSTANCE.  This can be useful if you are
+# installing manually in some other way (or for some other reason you
+# don't want installation to be performed ever) and don't want the
+# standard installation to be performed.  Please note that
+# before-xxx-install and after-xxx-install are still executed, so if
+# you want, you can add your code in those targets to perform your
+# custom installation.
+
+ifeq ($($(GNUSTEP_INSTANCE)_STANDARD_INSTALL),no)
+
+internal-$(GNUSTEP_TYPE)-install:: before-$(GNUSTEP_INSTANCE)-install \
+                                   after-$(GNUSTEP_INSTANCE)-install
+	@echo "Skipping standard installation of $(GNUSTEP_INSTANCE) as requested by makefile"
+
+internal-$(GNUSTEP_TYPE)-uninstall:: before-$(GNUSTEP_INSTANCE)-uninstall \
+                                     after-$(GNUSTEP_INSTANCE)-uninstall
+	@echo "Skipping standard uninstallation of $(GNUSTEP_INSTANCE) as requested by makefile"
+
+else
+
+internal-$(GNUSTEP_TYPE)-install:: before-$(GNUSTEP_INSTANCE)-install \
+                                   internal-$(GNUSTEP_TYPE)-install_  \
+                                   after-$(GNUSTEP_INSTANCE)-install
 
 internal-$(GNUSTEP_TYPE)-uninstall:: before-$(GNUSTEP_INSTANCE)-uninstall \
                                    internal-$(GNUSTEP_TYPE)-uninstall_  \
                                    after-$(GNUSTEP_INSTANCE)-uninstall
 
+endif
 
 # before-$(GNUSTEP_INSTANCE)-clean and similar for after and distclean
 # are not supported -- they wouldn't be executed most of the times, since
