@@ -297,7 +297,7 @@ AC_ARG_WITH(javac,
 			JAVAC=/usr/bin/javac)
 AC_ARG_WITH(java_include,
 			[  --with-java-include=DIR Java include files are in DIR], ,
-			JAVA_INCLUDE=/usr/include/kaffe)
+			JAVA_INCLUDE=-I/usr/include/kaffe)
 
 AC_SUBST(JAVAC)
 AC_SUBST(JAVA_INCLUDE)

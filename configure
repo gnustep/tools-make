@@ -2874,7 +2874,7 @@ if test "${with_java_include+set}" = set; then
   withval="$with_java_include"
   :
 else
-  JAVA_INCLUDE=/usr/include/kaffe
+  JAVA_INCLUDE=-I/usr/include/kaffe
 fi
 
 
