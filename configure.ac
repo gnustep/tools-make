@@ -482,21 +482,54 @@ AC_SUBST(ac_cv_objc_threaded)
 #--------------------------------------------------------------------
 # Check if GCC supports -fobjc-exceptions, and if so, turn it on!
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(if the compiler supports native ObjC exceptions)
 
-# What we want to do: set HAS_OBJC_EXCEPTIONS to yes if we can compile
-# something with @try/@catch/@finally in it.
+AC_ARG_ENABLE(native-objc-exceptions,
+	AC_HELP_STRING([--enable-native-objc-exceptions],
+		       [use native objective-c exceptions]),
+	USE_OBJC_EXCEPTIONS=$enableval,
+	USE_OBJC_EXCEPTIONS=no)
 
-if test ! ${GCC} = "yes" ; then
-  HAS_OBJC_EXCEPTIONS=""
-  AC_MSG_RESULT(no: it's not gcc)
+AC_MSG_CHECKING(whether we should use native ObjC exceptions)
+if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
+  # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
+  # something with @try/@catch/@finally in it.
+  if test ! ${GCC} = "yes" ; then
+    USE_OBJC_EXCEPTIONS=no
+    AC_MSG_RESULT(no: compiler isn't gcc)
+  else
+    CFLAGS="$CFLAGS -fobjc-exceptions"
+    AC_RUN_IFELSE([[
+#include <stdlib.h>
+#include <objc/Object.h>
+
+int main(int argc, char **argv)
+{
+	Object *o=nil;
+	@try
+	{
+		o=[Object new];
+		@throw o;
+	}
+	@catch (id foo)
+	{
+		if (o!=foo)
+			return 1;
+	}
+	return 0;
+}
+  ]], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
+    AC_MSG_RESULT($USE_OBJC_EXCEPTIONS)
+  fi
+  if test x$USE_OBJC_EXCEPTIONS = xno; then
+    AC_MSG_NOTICE([Native objective-c exceptions were requested, but the compiler])
+    AC_MSG_NOTICE([doesn't support them.])
+    AC_MSG_ERROR([compiler doesn't support native objective-c exceptions])
+  fi
 else
-  CFLAGS="$CFLAGS -fobjc-exceptions"
-  AC_COMPILE_IFELSE([[int main() {@try{; } @finally{; }; return 0;}]], HAS_OBJC_EXCEPTIONS=yes, HAS_OBJC_EXCEPTIONS=no)
-  AC_MSG_RESULT($HAS_OBJC_EXCEPTIONS)
+  AC_MSG_RESULT(not requested by user)
 fi
 
-AC_SUBST(HAS_OBJC_EXCEPTIONS)
+AC_SUBST(USE_OBJC_EXCEPTIONS)
 
 # Restore LIBS and CFLAGS - we are going to compile C code in the next
 # test.

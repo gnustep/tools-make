@@ -401,8 +401,9 @@ OBJCFLAGS = -fno-strict-aliasing
 CFLAGS =
 OBJ_DIR_PREFIX =
 
-# If the compiler supports native ObjC exceptions, turn them on!
-ifeq ($(HAS_OBJC_EXCEPTIONS), yes)
+# If the compiler supports native ObjC exceptions and the user wants us to
+# use them, turn them on!
+ifeq ($(USE_OBJC_EXCEPTIONS), yes)
   OBJCFLAGS += -fobjc-exceptions
 endif
 

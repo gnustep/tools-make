@@ -317,7 +317,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_type CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded HAS_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_type CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -857,6 +857,8 @@ Optional Features:
 --enable-multi-platform		Use run time multi-platform support
 
 --disable-backend-bundle	Compile gui backend as a library
+  --enable-native-objc-exceptions
+                          use native objective-c exceptions
 --enable-strip-makefiles	Enable stripping makefiles after installation
 --disable-move-obsolete		Disable moving obsolete dir structure
 
@@ -4540,43 +4542,92 @@ ac_cv_objc_threaded="$objc_threaded"
 #--------------------------------------------------------------------
 # Check if GCC supports -fobjc-exceptions, and if so, turn it on!
 #--------------------------------------------------------------------
-echo "$as_me:$LINENO: checking if the compiler supports native ObjC exceptions" >&5
-echo $ECHO_N "checking if the compiler supports native ObjC exceptions... $ECHO_C" >&6
 
-# What we want to do: set HAS_OBJC_EXCEPTIONS to yes if we can compile
-# something with @try/@catch/@finally in it.
-
-if test ! ${GCC} = "yes" ; then
-  HAS_OBJC_EXCEPTIONS=""
-  echo "$as_me:$LINENO: result: no: it's not gcc" >&5
-echo "${ECHO_T}no: it's not gcc" >&6
+# Check whether --enable-native-objc-exceptions or --disable-native-objc-exceptions was given.
+if test "${enable_native_objc_exceptions+set}" = set; then
+  enableval="$enable_native_objc_exceptions"
+  USE_OBJC_EXCEPTIONS=$enableval
 else
-  CFLAGS="$CFLAGS -fobjc-exceptions"
+  USE_OBJC_EXCEPTIONS=no
+fi;
+
+echo "$as_me:$LINENO: checking whether we should use native ObjC exceptions" >&5
+echo $ECHO_N "checking whether we should use native ObjC exceptions... $ECHO_C" >&6
+if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
+  # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
+  # something with @try/@catch/@finally in it.
+  if test ! ${GCC} = "yes" ; then
+    USE_OBJC_EXCEPTIONS=no
+    echo "$as_me:$LINENO: result: no: compiler isn't gcc" >&5
+echo "${ECHO_T}no: compiler isn't gcc" >&6
+  else
+    CFLAGS="$CFLAGS -fobjc-exceptions"
+    if test "$cross_compiling" = yes; then
+  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+See \`config.log' for more details." >&5
+echo "$as_me: error: cannot run test program while cross compiling
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+else
   cat >conftest.$ac_ext <<_ACEOF
-int main() {@try{; } @finally{; }; return 0;}
+
+#include <stdlib.h>
+#include <objc/Object.h>
+
+int main(int argc, char **argv)
+{
+	Object *o=nil;
+	@try
+	{
+		o=[Object new];
+		@throw o;
+	}
+	@catch (id foo)
+	{
+		if (o!=foo)
+			return 1;
+	}
+	return 0;
+}
+
 _ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
+rm -f conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  HAS_OBJC_EXCEPTIONS=yes
+  USE_OBJC_EXCEPTIONS=yes
 else
-  echo "$as_me: failed program was:" >&5
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-HAS_OBJC_EXCEPTIONS=no
+( exit $ac_status )
+USE_OBJC_EXCEPTIONS=no
 fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-  echo "$as_me:$LINENO: result: $HAS_OBJC_EXCEPTIONS" >&5
-echo "${ECHO_T}$HAS_OBJC_EXCEPTIONS" >&6
+rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+    echo "$as_me:$LINENO: result: $USE_OBJC_EXCEPTIONS" >&5
+echo "${ECHO_T}$USE_OBJC_EXCEPTIONS" >&6
+  fi
+  if test x$USE_OBJC_EXCEPTIONS = xno; then
+    { echo "$as_me:$LINENO: Native objective-c exceptions were requested, but the compiler" >&5
+echo "$as_me: Native objective-c exceptions were requested, but the compiler" >&6;}
+    { echo "$as_me:$LINENO: doesn't support them." >&5
+echo "$as_me: doesn't support them." >&6;}
+    { { echo "$as_me:$LINENO: error: compiler doesn't support native objective-c exceptions" >&5
+echo "$as_me: error: compiler doesn't support native objective-c exceptions" >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+else
+  echo "$as_me:$LINENO: result: not requested by user" >&5
+echo "${ECHO_T}not requested by user" >&6
 fi
 
 
@@ -5393,7 +5444,7 @@ s,@BACKEND_BUNDLE@,$BACKEND_BUNDLE,;t t
 s,@EGREP@,$EGREP,;t t
 s,@objc_threaded@,$objc_threaded,;t t
 s,@ac_cv_objc_threaded@,$ac_cv_objc_threaded,;t t
-s,@HAS_OBJC_EXCEPTIONS@,$HAS_OBJC_EXCEPTIONS,;t t
+s,@USE_OBJC_EXCEPTIONS@,$USE_OBJC_EXCEPTIONS,;t t
 s,@AUTO_DEPENDENCIES@,$AUTO_DEPENDENCIES,;t t
 s,@INCLUDES@,$INCLUDES,;t t
 s,@LIB_DIR@,$LIB_DIR,;t t

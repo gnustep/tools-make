@@ -126,4 +126,4 @@ AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
 # Whether the ObjC compiler supports native ObjC exceptions via
 # @try/@catch/@finally/@throw.
 #
-HAS_OBJC_EXCEPTIONS = @HAS_OBJC_EXCEPTIONS@
+USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
