@@ -1,3 +1,8 @@
+2000-12-26  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Look for libxml2 (patch from Kim Shrier
+	<kim@tinker.com>).
+
 Mon Dec 25 01:20:25 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* library.make (internal-library-all): Bug fix: removed duplicated

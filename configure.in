@@ -557,13 +557,25 @@ if test "$libxml_libdir" != "no"; then
   LIBS="$LIBS -L$libxml_libdir"
 fi
 
-AC_CHECK_HEADERS(libxml/xmlversion.h)
-if test $ac_cv_header_libxml_xmlversion_h = no; then
+xmlhdrdir=no
+# The order of these tests is important.
+AC_TRY_CPP([#include <libxml/xmlversion.h>
+#if LIBXML_VERSION < 20203
+#error libxml needs to be version 2.2.3 or later
+#endif], xmlhdrdir=libxml)
+if test $xmlhdrdir = no; then
+AC_TRY_CPP([#include <libxml2/xmlversion.h>
+#if LIBXML_VERSION < 20203
+#error libxml needs to be version 2.2.3 or later
+#endif], AC_DEFINE(LIBXML2) xmlhdrdir=libxml2)
+fi
+AC_MSG_RESULT($xmlhdrdir)
+if test $xmlhdrdir = no; then
   echo "Could not find libxml headers"
   echo "Check to make sure you have libxml version 2.2.3 or later installed"
   AC_MSG_WARN(Could not find libxml headers)
 else
-  AC_TRY_CPP([#include "libxml/xmlversion.h"
+  AC_TRY_CPP([#include "$xmlhdrdir/xmlversion.h"
     #if LIBXML_VERSION < 20203
     #error
     #endif], libxml2plus=1, libxml2plus=0)
@@ -571,11 +583,7 @@ else
     echo "libxml version older than 2.2.3"
     AC_MSG_WARN(libxml version older than 2.2.3)
   else
-    AC_CHECK_LIB(xml, xmlNewDoc, xml_ok=yes, xml_ok=no)
-    if test "$xml_ok" = yes; then
-      LIBS="$LIBS -lxml"
-      AC_SUBST(LIBS)
-    fi
+    AC_SEARCH_LIBS(xmlNewDoc, xml xml2, xml_ok=yes, xml_ok=no)
   fi
 fi
 

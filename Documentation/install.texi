@@ -1,3 +1,4 @@
+@ifclear HOWTO
 @chapter GNUstep makefile package installation
 
 @section Introduction
@@ -19,8 +20,9 @@ core libraries and are also located at the GNUstep web site at
 @section Additional Libraries
 
 @section Configuration
+@end ifclear
 
-The GNUstep makefile package uses the Autoconf mechanism for
+The GNUstep packages uses the Autoconf mechanism for
 configuration; it checks some host capabilties which are used by
 all GNUstep software.  To configure just type:
 
@@ -41,6 +43,37 @@ following command makes /usr/local/GNUstep the root directory:
 If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
 and you do not specify a root directory when running configure, then
 configure will use /usr/GNUstep as the default root directory.
+
+To see more options you can use with configure, type
+
+@example
+./configure --help
+@end example
+
+Look particularly at the end of the list that configure gives, as these 
+options are specific to GNUstep. For instance, if you installed the tiff
+library in other than a normal directory, you can use the 
+@samp{--with-tiff-include} option to tell configure where it is.
+
+With the various GNUstep libraries you can use the various
+switches, shared and debug. As in ``make shared=no debug=yes'' (Make sure
+you use the same switches for every package you compile, and also when
+you install).
+
+@subsection Alternate Library Setup
+
+You can specify compilation of alternate libraries by using the
+--with-library-combo option. You need to have these libraries unpacked in a
+subdirectory under the gstep directory, then you can say
+
+@example
+./configure --with-library-combo=gnu-gnu-gnu-xdps
+@end example
+
+to compile with the xdps library rather than the default xgps backend.  
+IMPORTANT: The xdps backend is still experimental. Do not use it unless
+you are willing to deal with PostScript problems and other bugs.
+
 
 @subsection Reading Command-Line Arguments
 
@@ -153,6 +186,7 @@ in a @code{$(GNUSTEP_CPU)/$(GNUSTEP_OS)/$(LIBRARY_COMBO)} subdirectory.
 You lose a lot of versatility with this layout, but it's simpler (less
 intimidating) for naive users to handle.
 
+@ifclear HOWTO
 @section Installation
 
 After you configure the GNUstep makefile package, then you need to
@@ -222,8 +256,9 @@ you can add the following lines to that file:
 This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for the user.
 
+@include end.texi
+@end ifclear
 
-@bye
 
 
 
