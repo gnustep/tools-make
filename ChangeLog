@@ -1,3 +1,20 @@
+Thu Jan 31 11:27:06 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in: Moved determination of host, target and build
+	system at the beginning of the file, so that any GNUstep test can
+	use this knowledge.
+	* configure.in (OBJC_RUNTIME_LIB): Use -F- option to awk rather
+	than piping through an additional tr process.
+	(DATE): Unused variable removed.
+	(GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT,
+	GNUSTEP_USER_ROOT): Print out which directories we are going to
+	use for all these variables.
+	(GNUSTEP_USER_ROOT): Set it to be ~/GNUstep or
+	$HOMEDRIVE/$HOMEPATH/GNUstep on Windows.
+	* configure: Regenerated.
+	* GNUstep.sh.in (GNUSTEP_USER_ROOT): On Windows, convert \ into /.
+	* GNUstep.csh.in: Idem.
+	
 Wed Jan 30 19:01:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (clean): Remove *~ in Master/ and Instance/ as
