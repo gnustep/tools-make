@@ -1,3 +1,26 @@
+Tue Jul 10 10:44:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* aggregate.make: Do not include rules.make if RULES_MAKE_LOADED
+	is not empty.
+	* application.make: Idem.
+	* bundle.make: Idem.
+	* ctool.make: Idem.
+	* documentation.make: Idem.
+	* framework.make: Idem.
+	* gswapp.make: Idem.
+	* gswbundle.make: Idem.
+	* java-tool.make: Idem.
+	* java.make: Idem.
+	* library.make: Idem.
+	* objc.make: Idem.
+	* palette.make: Idem.
+	* service.make: Idem.
+	* subproject.make: Idem.
+	* test-application.make: Idem.	
+	* test-library.make: Idem.
+	* test-tool.make: Idem.
+	* tool.make: Idem.
+	
 Tue Jul 10 10:17:59 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.build): Removed doubled code to compute
