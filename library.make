@@ -147,15 +147,13 @@ CLEAN_library_NAME = $(shell echo $(INTERNAL_library_NAME)|tr '-' '_')
 SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
 internal-library-all :: \
-	before-all				\
 	before-$(TARGET)-all			\
 	$(GNUSTEP_OBJ_DIR)			\
 	$(DERIVED_SOURCES)			\
 	$(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def	\
 	$(GNUSTEP_OBJ_DIR)/$(DLL_NAME)		\
 	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)	\
-	after-$(TARGET)-all			\
-	after-all
+	after-$(TARGET)-all
 
 internal-library-clean ::
 	rm -rf $(DERIVED_SOURCES)
@@ -181,9 +179,9 @@ $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) : $(DLL_OFILES) $(DERIVED_SOURCES)/$(INTERNAL_lib
 
 else # BUILD_DLL
 
-internal-library-all:: before-all before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
+internal-library-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 		$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) import-library \
-		after-$(TARGET)-all after-all
+		after-$(TARGET)-all
 
 $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(LIB_LINK_CMD)
