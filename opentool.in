@@ -146,4 +146,4 @@ if [ -z "$full_toolname" ]; then
 fi
 
 IFS=" "
-exec $full_toolname "$@"
+exec "$full_toolname" "$@"
