@@ -795,16 +795,10 @@ FRAMEWORK_DIR_NAME := $(FRAMEWORK_NAME:=.framework)
 FRAMEWORK_VERSION_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
 SUBPROJECT_ROOT_DIR := "."
 
-# The rule to create the objects file directory. This rule is here so that it
-# can be accessed from the global before and after targets as well.
-$(GNUSTEP_OBJ_DIR):
-	@($(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
-	rm -f obj; \
-	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj)
-
-# Include the Master invocation rules
 ifeq ($(GNUSTEP_MAKE_INSTANCE_INVOCATION),)
 include $(GNUSTEP_MAKEFILES)/Master/rules.make
+else
+include $(GNUSTEP_MAKEFILES)/Instance/rules.make
 endif
 
 endif
