@@ -20,6 +20,7 @@ more popular operating systems. Some machines marked with
 * Debian/i386::                 
 * Debian/PowerPC::              
 * Debian/SPARC::                
+* FreeBSD 5.x::                 
 * FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
@@ -105,8 +106,8 @@ Use the GNU runtime. Download the gcc compiler and configure it with
 
 @item Special Instructions 
 
-Read the @url{README.Darwin} file in the gnustep-make/Documentation directory for
-complete instructions.
+Read the @url{README.Darwin} file in the gnustep-make/Documentation
+directory for complete instructions.
 
 @end table
 
@@ -131,8 +132,8 @@ so you don't have to type --enable-libffi. Also you need the dlcompat library
 
 @item Special Instructions 
 
-Read the @url{README.Darwin} file in the gnustep-make/Documentation directory for
-complete instructions.
+Read the @url{README.Darwin} file in the gnustep-make/Documentation
+directory for complete instructions.
 
 @end table
 
@@ -184,7 +185,7 @@ None
 @end table
 
 @c -----------------------------------------
-@node Debian/SPARC, FreeBSD 4.x, Debian/PowerPC, Machine Specific
+@node Debian/SPARC, FreeBSD 5.x, Debian/PowerPC, Machine Specific
 @section Debian/SPARC
 
 Tested on sid.
@@ -200,7 +201,25 @@ None
 @end table
 
 @c -----------------------------------------
-@node FreeBSD 4.x, FreeBSD 3.x, Debian/SPARC, Machine Specific
+@node FreeBSD 5.x, FreeBSD 4.x, Debian/SPARC, Machine Specific
+@section FreeBSD 5.x
+
+Tested on 5.0 and 5.1
+@table @samp
+@item Recommended compiler
+
+@item Extra libs needed 
+None.
+
+@item Special Instructions
+Can install via /usr/ports/devel/gnustep, but not all required dependancies
+are installed. See the GNUstep-HOWTO for list of libraries.
+
+@end table
+
+
+@c -----------------------------------------
+@node FreeBSD 4.x, FreeBSD 3.x, FreeBSD 5.x, Machine Specific
 @section FreeBSD 4.x
 
 @table @samp

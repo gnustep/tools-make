@@ -218,7 +218,7 @@ then:
 (apple-apple-apple is the default if you don't specify gnu-gnu-gnu). If you want
 to be able to compile for different targets/platforms together. Do this:
 
-./configure --with-library-combo=gnu-gnu-gnu -disable-flattened
+./configure --with-library-combo=gnu-gnu-gnu --disable-flattened
 --enable-multi-platform [--prefix=<GNUstep install dir>] [CC='<gcc install
 dir>/bin/gcc']
 

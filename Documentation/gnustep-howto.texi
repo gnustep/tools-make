@@ -83,7 +83,7 @@ the following packages first (if you don't already have them):
 @itemize @bullet
 @item gcc (Version 2.95 or greater, 3.0.4 or greater recommended)
 @item GNU make (Version 3.75 or greater)
-@item gdb, if you plan to do any debugging
+@item gdb (Version 6.0 or greater recommended), if you plan to do any debugging
 @end itemize
 
 You may also need to install some of the following libraries and
@@ -133,6 +133,15 @@ The GUI library uses this to handle loading JPEG images.
 
 @item The PNG library (libpng) (RECOMMENDED)
 The GUI library uses this to handle loading PNG images.
+
+@item libaudiofile (RECOMMENDED)
+The GUI library uses this for the sound server
+
+@item freetype2 (RECOMMENDED, REQUIRED for art backend)
+This is used for font information
+
+@item libart_lgpl2 (REQUIRED for are backend only)
+Drawing library for the art backend.
 
 @item WindowMaker (Version >= 0.62) (OPTIONAL)
 GNUstep and WindowMaker work together to provide a consistant interface.

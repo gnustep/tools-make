@@ -36,6 +36,11 @@ case "$1" in
 	echo netbsdelf
 	exit 0
 	;;
+    # Also an ELF target
+    netbsd1.6ZK*)
+	echo netbsdelf
+	exit 0
+	;;
     # Remove version number for Darwin
     darwin7*)
         echo darwin7

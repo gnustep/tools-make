@@ -22,5 +22,5 @@ You can get the gstep-make-@value{GNUSTEP-MAKE-VERSION}.tar.gz
 distribution file at @url{ftp://ftp.gnustep.org/pub/gnustep/core}
 
 Please log bug reports on the GNUstep project page
-@url{http://savannah.gnu.org/support/?group=gnustep} or send bug
+@url{http://savannah.gnu.org/bugs/?group=gnustep} or send bug
 reports to @email{bug-gnustep@@gnu.org}.

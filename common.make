@@ -312,7 +312,7 @@ ifeq ($(REMOVE_EMPTY_DIRS),yes)
  GNUSTEP_LIBRARIES_FLAGS = \
    $(addprefix -L,$(foreach dir,$(GNUSTEP_LIBRARIES_DIRS),$(remove_if_empty)))
  GNUSTEP_FRAMEWORKS_FLAGS = \
-   $(addprefix -F,$(foreach dir,$(GNUSTEP_FRAMEWORKS_DIRS),$(remove_if_empty))
+   $(addprefix -F,$(foreach dir,$(GNUSTEP_FRAMEWORKS_DIRS),$(remove_if_empty)))
 else
  # Default case, just add -I / -L
  GNUSTEP_HEADERS_FLAGS = $(addprefix -I,$(GNUSTEP_HEADERS_DIRS))
