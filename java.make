@@ -89,12 +89,13 @@ after-$(TARGET)-all::
 
 internal-java_package-install:: internal-java_package-all install-java_package
 
-internal-install-java-dirs::
-	$(MKDIRS) $(GNUSTEP_JAVA); \
-	$(MKDIRS) $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX); \
+internal-install-java-dirs:: $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX)
 	if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
 	  $(MKDIRS) $(addprefix $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX)/,$(dir $(JAVA_OBJ_FILES))); \
 	fi
+
+$(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX):
+	$(MKDIRS) $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX);
 
 install-java_package:: internal-install-java-dirs
 	 if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
