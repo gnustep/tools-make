@@ -97,6 +97,7 @@ install-tool::
 
 internal-tool-uninstall::
 	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)
+	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
 
 #
 # Cleaning targets

@@ -1,3 +1,14 @@
+Wed Nov 10 12:05:16 1999  Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
+
+	* library.make: Added some uninstalling commands, specifically,
+	when the 'LIBRARY_NAME.so' file links to 'LIBRARY_NAME_d.so',
+	remove that stale link. (using if [ ! -e <link ], maybe that's wrong,
+	but it works)
+	* rootinstall.sh: changed rooot to root.
+	* tool.make: Also added install commands here, to remove the
+	'GNUSTEP_INSTALLATION_DIR/Tools/<toolname>' script as well as the
+	real tool binary.
+	
 Mon Nov 08 11:41:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* names.make: Fix to run config scripts in /tmp in order to avoid

@@ -34,7 +34,7 @@ GNUSTEP_TARGET_DIR=$GNUSTEP_TARGET_CPU/$GNUSTEP_TARGET_OS
 # Install the gdomap executables
 # TODO: automatically handle GDOMAP_PORT_OVERRIDE
 echo Installing gdomap
-echo "WARNING: gdomap MUST be installed owned by rooot and with";
+echo "WARNING: gdomap MUST be installed owned by root and with";
 echo "the 's-bit' set unless you defined 'GDOMAP_PORT_OVERRIDE' in";
 echo "gdomap.h before compiling gdomap.c and NSPortNameServer.m";
 echo "in which case you should install it by hand.";

@@ -152,7 +152,11 @@ internal-uninstall-libs:: internal-uninstall-lib \
 
 internal-uninstall-lib::
 	rm -f $(GNUSTEP_LIBRARIES)/$(VERSION_LIBRARY_FILE)
+	rm -f $(GNUSTEP_LIBRARIES)/$(SONAME_LIBRARY_FILE)
 	rm -f $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE)
+	if [ ! -e $(GNUSTEP_LIBRARIES)/$(INTERNAL_library_NAME)$(SHARED_LIBEXT) ]; then \
+		rm -f $(GNUSTEP_LIBRARIES)/$(INTERNAL_library_NAME)$(SHARED_LIBEXT); \
+	fi
 
 internal-uninstall-import-lib::
 
