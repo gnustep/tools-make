@@ -1,3 +1,9 @@
+Mon Dec 25 01:20:25 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library.make (internal-library-all): Bug fix: removed duplicated
+	before-all and after-all.  They are already in rules.make and so
+	they were executed twice.
+
 2000-12-18  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make ($(BUNDLE_DIR_NAME)/Resources/Info.plist): Readded
