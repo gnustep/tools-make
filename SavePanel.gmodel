@@ -1,0 +1,198 @@
+// -*- C++ -*-
+
+//
+// Gmodel for NSOpenPanel/NSSavePanel
+//
+{
+    Version = 1;
+    TopLevelObjects = (RootObject);
+    RootObject = {
+	isa = GMModel;
+	Objects = "ObjectArray";
+	Connections = "ConnectionArray";
+    };
+
+    "ObjectArray" = {
+	elements = ( "Custom_SavePanel" );
+	isa = NSMutableArray;
+    };
+
+    "ConnectionArray" = {
+	elements = ();
+	isa = NSMutableArray;
+    };
+
+    "Custom_SavePanel" = {
+	isa = IMCustomObject;
+	className = _SavePanel;
+	realObject = "_SavePanel";
+    };
+
+    "_SavePanel" = {
+	isa = _SavePanel;
+	panel = "SavePanel";
+    };
+
+    "SavePanel" = {
+	backingType = 2;
+	contentView = "SavePanelView";
+	frame = "{x = 100; y = 100; width = 300; height = 350}";
+	isVisible = YES;
+	level = 0;
+	isa = NSSavePanel;
+	isAutodisplay = NO;
+	title = "Save Panel";
+	isDocumentEdited = NO;
+	representedFilename = "";
+	isReleasedWhenClosed = NO;
+	delegate = nil;
+	prompt = "Name:";
+	accessoryView = nil;
+	requiredFileType = "";
+	treatsFilePackagesAsDirectories = YES;
+	directory = ".";
+    };
+
+    "SavePanelView" = {
+	autoresizesSubviews = YES;
+	autoresizingMask = 0;
+	bounds = "{x = 0; y = 0; width = 300; height = 350}";
+	frame = "{x = 0; y = 0; width = 300; height = 350}";
+	isa = NSView;
+	nextResponder = "SavePanel";
+	postBoundsChangedNotifications = YES;
+	postFrameChangedNotifications = YES;
+	subviews = "SavePanelSubviews";
+	superview = nil;
+	tag = 0;
+    };
+
+    "SavePanelSubviews" = {
+	elements = ("HomeButton", "MountButton", "UnmountButton", "OkButton");
+	isa = NSMutableArray;
+    };
+
+    "HomeButton" = {
+	alignment = 2;
+	alternateImage = nil;
+	alternateTitle = "Home";
+	autoresizesSubviews = NO;
+	autoresizingMask = 0;
+	bounds = "{x = 0; y = 0; width = 50; height = 32}";
+	frame = "{x = 8; y = 312; width = 50; height = 32}";
+	delay = 0.2;
+	highlightsBy = 14;
+	ignoresMultiClick = NO;
+	image = nil;
+	imagePosition = 0;
+	interval = 0.025;
+	isBordered = YES;
+	isContinuous = NO;
+	isEnabled = YES;
+	isTransparent = NO;
+	isa = NSButton;
+	keyEquivalent = "";
+	nextResponder = "SavePanelView";
+	postsBoundsChangedNotifications = YES;
+	postsFrameChangedNotifications = YES;
+	showsStateBy = 0;
+	state = 0;
+	subviews = nil;
+	superview = "SavePanelView";
+	tag = 0;
+	title = "Home";
+    };
+
+    "MountButton" = {
+	alignment = 2;
+	alternateImage = nil;
+	alternateTitle = "Mount";
+	autoresizesSubviews = NO;
+	autoresizingMask = 0;
+	bounds = "{x = 0; y = 0; width = 50; height = 32}";
+	frame = "{x = 66; y = 312; width = 50; height = 32}";
+	delay = 0.2;
+	highlightsBy = 14;
+	ignoresMultiClick = NO;
+	image = nil;
+	imagePosition = 0;
+	interval = 0.025;
+	isBordered = YES;
+	isContinuous = NO;
+	isEnabled = YES;
+	isTransparent = NO;
+	isa = NSButton;
+	keyEquivalent = "";
+	nextResponder = "SavePanelView";
+	postsBoundsChangedNotifications = YES;
+	postsFrameChangedNotifications = YES;
+	showsStateBy = 0;
+	state = 0;
+	subviews = nil;
+	superview = "SavePanelView";
+	tag = 0;
+	title = "Mount";
+    };
+
+    "UnmountButton" = {
+	alignment = 2;
+	alternateImage = nil;
+	alternateTitle = "Unmount";
+	autoresizesSubviews = NO;
+	autoresizingMask = 0;
+	bounds = "{x = 0; y = 0; width = 50; height = 32}";
+	frame = "{x = 124; y = 312; width = 50; height = 32}";
+	delay = 0.2;
+	highlightsBy = 14;
+	ignoresMultiClick = NO;
+	image = nil;
+	imagePosition = 0;
+	interval = 0.025;
+	isBordered = YES;
+	isContinuous = NO;
+	isEnabled = YES;
+	isTransparent = NO;
+	isa = NSButton;
+	keyEquivalent = "";
+	nextResponder = "SavePanelView";
+	postsBoundsChangedNotifications = YES;
+	postsFrameChangedNotifications = YES;
+	showsStateBy = 0;
+	state = 0;
+	subviews = nil;
+	superview = "SavePanelView";
+	tag = 0;
+	title = "Unmount";
+    };
+
+    "OkButton" = {
+	alignment = 2;
+	alternateImage = nil;
+	alternateTitle = "Ok";
+	autoresizesSubviews = NO;
+	autoresizingMask = 0;
+	bounds = "{x = 0; y = 0; width = 50; height = 32}";
+	frame = "{x = 182; y = 312; width = 50; height = 32}";
+	delay = 0.2;
+	highlightsBy = 14;
+	ignoresMultiClick = NO;
+	image = nil;
+	imagePosition = 0;
+	interval = 0.025;
+	isBordered = YES;
+	isContinuous = NO;
+	isEnabled = YES;
+	isTransparent = NO;
+	isa = NSButton;
+	keyEquivalent = "";
+	nextResponder = "SavePanelView";
+	postsBoundsChangedNotifications = YES;
+	postsFrameChangedNotifications = YES;
+	showsStateBy = 0;
+	state = 0;
+	subviews = nil;
+	superview = "SavePanelView";
+	tag = 0;
+	title = "Ok";
+    };
+};
