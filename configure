@@ -2882,29 +2882,29 @@ else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -fr conftest*
-  elif test "`echo $host_os|sed 's/0-9.*//'|sed s/elf//`" = freebsd; then
-  LIBS="-pthread -lobjc"
-  if test "$cross_compiling" = yes; then
-  objc_threaded="-pthread"
-else
-  cat > conftest.$ac_ext <<EOF
-#line 2892 "configure"
-#include "confdefs.h"
-#include "config_thread.m"
-EOF
-if { (eval echo configure:2896: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
-then
-  objc_threaded="-pthread"
-else
-  echo "configure: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  rm -fr conftest*
   objc_threaded=""
 fi
 rm -fr conftest*
 fi
 
-	objc_threaded=""
+elif test "`echo $host_os|sed 's/[0-9].*//'|sed s/elf//`" = freebsd; then
+  LIBS="-lpthread -lobjc"
+  if test "$cross_compiling" = yes; then
+  objc_threaded="-lpthread"
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2897 "configure"
+#include "confdefs.h"
+#include "config_thread.m"
+EOF
+if { (eval echo configure:2901: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  objc_threaded="-lpthread"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  objc_threaded=""
 fi
 rm -fr conftest*
 fi
