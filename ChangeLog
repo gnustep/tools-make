@@ -1,4 +1,4 @@
-Fri Jul 13 17:13:53 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+Fri Jul 13 17:19:05 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* library.make (internal-clean): Commands to make clean moved
 	here; depend on .subprojects.
@@ -6,6 +6,13 @@ Fri Jul 13 17:13:53 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 	(internal-library-clean, internal-library-distclean): Removed.
 	(.PHONY): Removed internal-library-clean and
 	internal-library-distclean.
+	* objc.make (internal-clean): Commands to make clean moved here;
+	depend on .subprojects.
+	(internal-distclean): Idem.
+	(internal-objc_program-clean, internal-objc_program-distclean):
+	Removed.
+	(.PHONY): Removed internal-objc_program-clean and
+	internal-objc_program-distclean.
 	
 Fri Jul 13 16:48:29 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
