@@ -286,6 +286,8 @@ OBJ_DIR_PREFIX += debug_
   LIBRARY_NAME_SUFFIX := d$(LIBRARY_NAME_SUFFIX)
 endif
 
+OBJ_DIR_PREFIX += obj
+
 ifeq ($(warn), no)
 ADDITIONAL_FLAGS += -UGSWARN
 else
