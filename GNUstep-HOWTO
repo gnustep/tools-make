@@ -394,13 +394,18 @@ Darwin/ix86
 Currently tested on Darwin 7.x
 
 `Recommended compiler'
-     gcc 3.3.2. Older versions will not compile on Darwin.
+     gcc 3.3.2 or greater 3.3.* versions 
+     Older versions will not compile on Darwin and 3.4.* versions don't 
+     support GNU runtime compilation on Darwin currently (The gcc bug 
+     report is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-     Default compiler has unknown problems.  Use the GNU runtime.
-     Download the gcc compiler and configure it with
-     -enable-threads=posix. You don't need binutils or anything else.
+     Default compiler (Apple gcc) has unknown problems.
+     Download the FSF gcc compiler and configure it with 
+     --enable-threads=posix. You don't need binutils or anything else.
+     Use the GNU runtime.
 
 `Extra libs needed'
+     Use ffcall, because libffi hasn't been ported to Darwin x86.
 
 `Special Instructions'
      Read the <README.Darwin> file in the gnustep-make/Documentation
@@ -413,11 +418,15 @@ Darwin/PowerPC
 Currently tested on Darwin 6.x, 7.x
 
 `Recommended compiler'
-     gcc 3.3.2. Older versions will not compile on Darwin.
+     gcc 3.3.2 or greater 3.3.* versions
+     Older versions will not compile on Darwin and 3.4.* versions don't 
+     support GNU runtime compilation on Darwin currently (The gcc bug 
+     report is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-     Default compiler has unknown problems.  Use the GNU runtime.
-     Download the gcc compiler and configure it with
-     -enable-threads=posix. You don't need binutils or anything else.
+     Default compiler (Apple gcc) has unknown problems.
+     Download the FSF gcc compiler and configure it with 
+     --enable-threads=posix. You don't need binutils or anything else.
+     Use the GNU runtime.
 
 `Extra libs needed'
      Use libffi (not ffcall). This should be enabled by default in

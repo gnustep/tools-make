@@ -1,5 +1,13 @@
 2004-12-26  Quentin Mathe <qmathe@club-internet.fr>
        
+        * Documentation/README.Darwin: Updated to take in account the latest 
+        feedback by Uli Kusterer.
+        * Documentation/machines.texi: 
+        * GNUstep-HOWTO:
+        Updated the current GCC state for GNUstep on Darwin.
+
+2004-12-26  Quentin Mathe <qmathe@club-internet.fr>
+       
         * Documentation/README.Darwin: Improved indentation and presentation.
 
 2004-12-19 Richard Frith-Macdonald <rfm@gnu.org>

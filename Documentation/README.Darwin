@@ -18,7 +18,7 @@ work. (Must be verified)
 COMMONLY USED SYMBOLS
 ---------------------
 
-<> denotes a variable depending on your preferences. To be replaced with the 
+<> denotes a variable depending on your preferences. To be replaced with the
 actual values from your system. For instance, if you installed gcc in /opt/local
    
      ./configure CC=<gcc install dir>/bin/gcc
@@ -44,7 +44,8 @@ PRELIMINAIRES
 
 For all targets, get the following software. I'd recommend installing Fink (and 
 FinkCommander on Mac OS X) to get all this software. If you use Fink, you 
-probably need to add this to your .bashrc or .profile (or similar startup) file:
+probably need to add the two lines below to your .bashrc or .profile (or similar 
+startup) file:
 
      test -r /sw/bin/init.sh && . /sw/bin/init.sh
      export DYLD_LIBRARY_PATH=/sw/lib:$DYLD_LIBRARY_PATH
@@ -55,10 +56,11 @@ see an instruction like 'make install', you usually need to use sudo
 
      libxml2  (Optional, highly recommended, already in 
                Mac OS X 10.3 / Darwin 7)
+     libxslt  (Optional)
      libtiff  (Required)
      libjpeg  (Optional, highly recommended)
      libpng   (Optional, highly recommended)
-
+     
      libffi   (Required, only contained in the gcc distributions and pyobjc)
      ffcall   (On Darwin x86 - use instead of libffi)
 
@@ -84,8 +86,8 @@ You need these gnustep packages:
 Targets
 -------
 
-For GNUstep, there are several combinations of Objective-C runtime, Foundation 
-library and Application Kit library possible, called library combos.  The usual
+For GNUstep, there are several combinations of Objective-C runtime, Foundation
+library and Application Kit library possible, called library combos. The usual
 notation is:
 
      objcruntime-foundation-applicationkit
@@ -130,10 +132,11 @@ GNUstep on Darwin PowerPC
 -------------------------
 
 Haven't been able to get Apple GCC on Mac OS X 10.2 / Darwin 6 to compile 
-GNUstep-base. The compiler crashes with various errors.  You need the FSF GCC
+GNUstep-base. The compiler crashes with various errors. You need the FSF GCC
 compiler here. You need at least version 3.3.2.
-Version 3.3.5 seems to cause the fewest headaches, even compared to later 
-versions.
+Version 3.3.5 seems to cause the fewest headaches, but later versions 3.4.x
+doesn't work on Mac OS X / Darwin (because libobjc cannot be compiled, the 
+related gcc bug report is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
 Building FSF-GCC
 ----------------
@@ -145,7 +148,7 @@ FSF GCC is difficult to compile here. The only way I could do it was like this:
      ln -s /usr/bin/c++filt /usr/bin/c++filt3          # Missing on Darwin 7.0.1
                                                        # x86 but not necessary 
                                                        # on OpenDarwin 7.2.1
-
+                                                       
 and then configure gcc with:
 
      mkdir build                                       # Create a sibling to the
@@ -170,9 +173,17 @@ Configure and build as follows (tested using gcc-3.3.2 on Mac OS X 10.2 and
 
      mkdir build
      cd build
-     <dir>/gcc-x.x.x/configure \                       # By default gcc
-     [--prefix=<gcc install dir>]                      # installs in /usr/local
-                                                        
+     <dir>/gcc-x.x.x/configure \                       # The first option
+     [--prefix=<gcc install dir>] \                    # permits to change the
+     [--enable-languages=c,objc]                       # fact gcc installs by     
+                                                       # default in /usr/local
+                                                       # The second option 
+                                                       # permits to speed the 
+                                                       # gcc compilation in the
+                                                       # case you will not use 
+                                                       # languages other than c 
+                                                       # and objc
+                                           
      make bootstrap
      make install
      cd <gcc install dir>/lib
@@ -197,13 +208,12 @@ then:
      ./configure --with-library-combo=gnu-gnu-gnu \
      [--prefix=<GNUstep install dir>] [CC=<gcc install dir>/bin/gcc]
 
-(apple-apple-apple is the default if you don't specify
-gnu-gnu-gnu). If you want to be able to compile for different
-targets/platforms together. Do this:
+(apple-apple-apple is the default if you don't specify gnu-gnu-gnu). If you want 
+to be able to compile for different targets/platforms together. Do this:
 
      ./configure --with-library-combo=gnu-gnu-gnu --disable-flattened \
      --enable-multi-platform [--prefix=<GNUstep install dir>] \
-     [CC='<gcc install dir>/bin/gcc']
+     [CC=<gcc install dir>/bin/gcc]
 
 Now:
 
@@ -217,7 +227,7 @@ Warning ! Don't compile libobjc if you are using FSF GCC.  Go to gnustep-objc
 (or from CVS, into dev-libs/libobjc), and type:
 
      make install
-
+     
 This should build and install the GNU Objective-C runtime and headers for you.
 
 Building and installing libffi (on Darwin PowerPC only !!!)
@@ -420,8 +430,8 @@ Refer to GNUstep-HOWTO to know how to launch GNUstep daemons.
 
 Note: If you try to start GNUstep daemons by hand with 'sudo opentool dameon',
 it won't work, because when you become root on Mac OS X / Darwin with sudo or
-su, DYLD_LIBRARY_PATH environment variable is erased, then to start them in the
-shell, do:
+su, the DYLD_LIBRARY_PATH environment variable of your user isn't used, then to
+start them in the shell, do:
 
      sudo opentool gdomap                              # gdomap doesn't rely on
                                                        # the GNUstep libraries 
@@ -431,16 +441,53 @@ shell, do:
 
 then with bourne shell like bash (Mac OS X 10.3):
 
-     . /GNUSTEP_SYSTEM_ROOT/Library/Makesfiles/GNUstep.sh
+     . $GNUSTEP_SYSTEM_ROOT/Library/Makesfiles/GNUstep.sh
 
 or with c shell like tcsh (Mac OS X 10.2):
 
-     source /GNUSTEP_SYSTEM_ROOT/Library/Makesfiles/GNUstep.csh
+     source $GNUSTEP_SYSTEM_ROOT/Library/Makesfiles/GNUstep.csh
 
 and just do:
 
      opentool gdnc
      opentool gpbs
+
+GNUstep applications
+--------------------
+
+Now you can install GNUstep applications like Gorm, ProjectCenter etc.
+Remember the fact that when you do 'sudo make install', the $DYLD_LIBRARY_PATH 
+variable of your user is not used by root. In that case, GNUstep-make could 
+complain for the undefined library path, the solution is identical to the one we 
+used to launch the GNUstep daemons above:
+
+     su root
+
+then with bourne shell like bash (Mac OS X 10.3):
+
+     . $GNUSTEP_SYSTEM_ROOT/Library/MakeFiles/GNUstep.sh
+
+or with c shell like tcsh (Mac OS X 10.2):
+
+     . $GNUSTEP_SYSTEM_ROOT/Library/MakeFiles/GNUstep.sh
+
+and just do:
+
+     make install
+
+Note: upon launching applications like Project Center which links a framework, 
+you will probably get an error message about the library 
+<Framework name>.framework/<Framework name> which cannot be found, to fix that, 
+just create a symbolic link to the actual library file, which is installed 
+deeper in the hierarchy:
+
+     cd $GNUSTEP_SYSTEM_ROOT/Library/Frameworks/<Framework name>.framework
+     sudo ln -s Versions/<Current version>/lib<Framework name>.dylib <Framework name>
+
+Example with the ProjectCenter framework (0.4.0 version):
+
+     cd $GNUSTEP_SYSTEM_ROOT/Library/Frameworks/ProjectCenter.framework
+     sudo ln -s Versions/0.4.0/libProjectCenter.dylib.0.4.0 ProjectCenter
 
 ---
 
