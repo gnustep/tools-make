@@ -63,7 +63,8 @@ internal-subproj-all:: before-all before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
                    $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
                    after-$(TARGET)-all after-all
 
-$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+					  $(SUBPROJECT_OBJ_FILES)
 	$(OBJ_MERGE_CMD)
 
 before-$(TARGET)-all::

@@ -45,12 +45,10 @@ ifeq ($(findstring linux-gnu, $(GNUSTEP_TARGET_OS)), linux-gnu)
   endif
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-  ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm -lposix4
-  else
+  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -ldl -lm -lposix4
+  ifneq ("$(objc_threaded)","")
     INTERNAL_CFLAGS = -D_REENTRANT
     INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -ldl -lm
   endif
 endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
@@ -66,7 +64,13 @@ ifeq ($(findstring aix4.1, $(GNUSTEP_TARGET_OS)), aix4.1)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
 ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  ifeq ("$(objc_threaded)","")
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  else
+    INTERNAL_CFLAGS = -D_REENTRANT
+    INTERNAL_OBJCFLAGS = -D_REENTRANT
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
+  endif
 endif
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
@@ -293,6 +297,33 @@ endif
 
 ####################################################
 #
+# FreeBSD a.out (2.2.x)
+#
+ifeq ($(findstring freebsd2, $(GNUSTEP_TARGET_OS)), freebsd2)
+HAVE_SHARED_LIBS	= no
+SHARED_LIB_LINK_CMD = \
+	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
+	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
+	(cd $(GNUSTEP_OBJ_DIR); \
+	  rm -f $(LIBRARY_FILE); \
+	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS	+= -fPIC
+SHARED_LIBEXT	= .so
+
+HAVE_BUNDLES	= yes
+BUNDLE_LD	= $(CC)
+BUNDLE_CFLAGS	+= -fPIC
+BUNDLE_LDFLAGS	+= -shared
+ADDITIONAL_LDFLAGS += -rdynamic
+endif
+#
+# end FreeBSD A.out
+#
+####################################################
+
+####################################################
+#
 # FreeBSD ELF
 #
 ifeq ($(findstring freebsdelf, $(GNUSTEP_TARGET_OS)), freebsdelf)
@@ -317,33 +348,6 @@ ADDITIONAL_LDFLAGS += -rdynamic
 endif
 #
 # end FreeBSD
-#
-####################################################
-
-####################################################
-#
-# FreeBSD a.out (2.2.x)
-#
-ifeq ($(findstring freebsd2, $(GNUSTEP_TARGET_OS)), freebsd2)
-HAVE_SHARED_LIBS	= no
-SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
-	(cd $(GNUSTEP_OBJ_DIR); \
-	  rm -f $(LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-
-SHARED_CFLAGS	+= -fPIC
-SHARED_LIBEXT	= .so
-
-HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS	+= -fPIC
-BUNDLE_LDFLAGS	+= -shared
-ADDITIONAL_LDFLAGS += -rdynamic
-endif
-#
-# end FreeBSD A.out
 #
 ####################################################
 
@@ -413,6 +417,37 @@ endif
 
 ####################################################
 #
+# OSF
+#
+ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
+HAVE_SHARED_LIBS	= no
+SHARED_LIB_LINK_CMD = \
+	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
+	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+	(cd $(GNUSTEP_OBJ_DIR); \
+	  rm -f $(LIBRARY_FILE); \
+	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+OBJ_MERGE_CMD		= \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+SHARED_CFLAGS	+= -fPIC
+SHARED_LIBEXT	= .so
+
+HAVE_BUNDLES	= yes
+BUNDLE_LD	= $(CC)
+BUNDLE_CFLAGS	+= -fPIC
+BUNDLE_LDFLAGS	+= -shared
+ADDITIONAL_LDFLAGS += -rdynamic
+# Newer gcc's don't define this in Objective-C programs:
+ADDITIONAL_CPPFLAGS += -D__LANGUAGES_C__
+endif
+#
+# end OSF
+#
+####################################################
+
+####################################################
+#
 # IRIX
 #
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
@@ -460,6 +495,9 @@ AFTER_INSTALL_SHARED_LIB_COMMAND = \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
 	)
+
+OBJ_MERGE_CMD = \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so

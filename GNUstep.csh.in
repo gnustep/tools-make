@@ -33,15 +33,17 @@ setenv GNUSTEP_LOCAL_ROOT @prefix@/Local
 setenv GNUSTEP_USER_ROOT ~/GNUstep
 
 if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
-      setenv GNUSTEP_MAKEFILES=${GNUSTEP_SYSTEM_ROOT}/Makefiles
+      setenv GNUSTEP_MAKEFILES ${GNUSTEP_SYSTEM_ROOT}/Makefiles
 else
-      setenv GNUSTEP_MAKEFILES=${GNUSTEP_BUILD_ROOT}/Makefiles
+      setenv GNUSTEP_MAKEFILES ${GNUSTEP_BUILD_ROOT}/Makefiles
 endif
 
 #
 # Determine the host information
 #
-setenv GNUSTEP_HOST `${GNUSTEP_SYSTEM_ROOT}/Makefiles/config.guess`
+if ( ! ${?GNUSTEP_HOST} ) then
+  setenv GNUSTEP_HOST `(cd /tmp; ${GNUSTEP_SYSTEM_ROOT}/Makefiles/config.guess)`
+endif
 setenv GNUSTEP_HOST_CPU `${GNUSTEP_SYSTEM_ROOT}/Makefiles/cpu.sh $GNUSTEP_HOST`
 setenv GNUSTEP_HOST_VENDOR `${GNUSTEP_SYSTEM_ROOT}/Makefiles/vendor.sh $GNUSTEP_HOST`
 setenv GNUSTEP_HOST_OS `${GNUSTEP_SYSTEM_ROOT}/Makefiles/os.sh $GNUSTEP_HOST`
