@@ -60,6 +60,15 @@ $(CTOOL_NAME):
 
 else
 
+.PHONY: internal-ctool-all \
+        internal-ctool-clean \
+        internal-ctool-distclean \
+        internal-ctool-install \
+        internal-ctool-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        install-ctool
+
 ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
    $(TARGET_SYSTEM_LIBS)
 
@@ -105,26 +114,19 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-internal-ctool-install:: internal-install-dirs install-ctool
+internal-ctool-install:: $(CTOOL_INSTALLATION_DIR) install-ctool
 
 $(CTOOL_INSTALLATION_DIR):
 	$(MKDIRS) $(CTOOL_INSTALLATION_DIR)
 
-internal-install-dirs:: $(CTOOL_INSTALLATION_DIR)
-
+install-ctool::
+	$(INSTALL_PROGRAM) -m 0755 \
+	                   $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
+	                   $(CTOOL_INSTALLATION_DIR)
 ifeq ($(GNUSTEP_FLATTENED),)
-install-ctool::
-	$(INSTALL_PROGRAM) -m 0755 \
-	                   $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
-	                   $(CTOOL_INSTALLATION_DIR);
 	cp $(GNUSTEP_MAKEFILES)/executable.template \
-	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
+	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME); \
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
-else
-install-ctool::
-	$(INSTALL_PROGRAM) -m 0755 \
-	                   $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
-	                   $(CTOOL_INSTALLATION_DIR);
 endif
 
 internal-ctool-uninstall::
