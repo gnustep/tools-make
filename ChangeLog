@@ -1,3 +1,7 @@
+Fri Nov  1 12:12:48 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/documentation.make: Removed unused rules for autogsdoc.
+
 Thu Oct 31 21:52:45 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/tool.make (internal-install-dirs, install-tool):
