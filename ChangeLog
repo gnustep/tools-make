@@ -1,3 +1,7 @@
+2004-04-27  Adam Fedor  <fedor@gnu.org>
+
+	* clean_os.sh: Report netbsd1.6* and netbsd2* as netbsdelf.
+
 Tue Apr 20 10:27:16 2004  Matt Rice <ratmice@yahoo.com>
 
 	* target.make: Use the GNU/Linux ELF code for GNU/Hurd too.

@@ -32,12 +32,7 @@ case "$1" in
 	exit 0
 	;;
     # Remove version number for NetBSD ELF targets
-    netbsdelf*)
-	echo netbsdelf
-	exit 0
-	;;
-    # Also an ELF target
-    netbsd1.6ZK*)
+    netbsdelf* | netbsd1.6* | netbsd2*)
 	echo netbsdelf
 	exit 0
 	;;
