@@ -237,17 +237,6 @@ configure will use /usr/GNUstep/System as the default root directory.
 @node Alternate Library Setup, Individual Packages, Core Package, Core Package
 @subsection Alternate Library Setup
 
-You can specify compilation of alternate libraries by using the
---with-library-combo option:
-
-@example
-./configure --with-library-combo=gnu-gnu-gnu-xdps
-@end example
-
-to compile with the xdps library rather than the default xgps backend.  
-IMPORTANT: The xdps backend is still experimental. Do not use it unless
-you are willing to deal with PostScript problems and other bugs.
-
 Read the installation instructions in the Makefile package (make) for more
 installation options. Make sure you use the same
 configuration options when configuring each GNUstep library.

@@ -75,15 +75,11 @@ do
 done
 
 if [ "$LIBRARY_COMBO" = nx ]; then
-  LIBRARY_COMBO=nx-nx-nx-nil
-elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
-  LIBRARY_COMBO=gnu-gnu-gnu-xdps
-elif [ "$LIBRARY_COMBO" = gnu-xgps ]; then
-  LIBRARY_COMBO=gnu-gnu-gnu-xgps
-elif [ "$LIBRARY_COMBO" = fd-xgps ]; then
-  LIBRARY_COMBO=gnu-fd-gnu-xgps
-elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
-  LIBRARY_COMBO=gnu-fd-gnu-xdps
+  LIBRARY_COMBO=nx-nx-nx
+elif [ "$LIBRARY_COMBO" = gnu ]; then
+  LIBRARY_COMBO=gnu-gnu-gnu
+elif [ "$LIBRARY_COMBO" = fd ]; then
+  LIBRARY_COMBO=gnu-fd-gnu
 fi
 export LIBRARY_COMBO
 
@@ -197,7 +193,7 @@ if [ $show_full_path = 1 ]; then
   exit 0
 fi
 
-if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+if [ "$LIBRARY_COMBO" = nx-nx-nx -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   if [ -f "$full_appname/library_paths.openapp" ]; then
     additional_library_paths="`cat $full_appname/library_paths.openapp`"
   fi

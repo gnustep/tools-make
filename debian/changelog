@@ -1,3 +1,9 @@
+gnustep-make (1.0.0) unstable; urgency=low
+
+  * Change library-combo to gnu-gnu-gnu
+
+ -- Adam Fedor <fedor@gnu.org> Thu, 12 Apr 2001 18:47:57 +0600
+
 gnustep-make (0.9.0-1) unstable; urgency=low
 
   * Update to Debian policy 3.2.1.

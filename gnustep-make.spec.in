@@ -6,7 +6,7 @@
 %define gs_version	@GNUSTEP_MAKE_VERSION@
 %define gs_name         gnustep-make
 %define gs_prefix 	/usr/GNUstep
-%define gs_libcombo     gnu-gnu-gnu-xgps
+%define gs_libcombo     gnu-gnu-gnu
 #
 Name: 		%{gs_name}
 Version: 	%{gs_version}
@@ -20,22 +20,6 @@ Vendor:		The GNUstep Project
 URL:		http://www.gnustep.org/
 BuildRoot: 	/var/tmp/build-%{gs_name}
 #
-# NB: This package will be configured for use with:
-#
-# libxml.so.2 >= 2.2.3
-# openssl => 0.9.5
-# libwraster
-# libtiff
-# etc... <the ones available on the machine when the package is compiled>
-#
-# `Requires' lines for these packages will be automatically included
-# into gnustep-base gnustep-gui and gnustep-xgps - since these contain 
-# tools, applications etc which are linked against those libraries.  
-#
-# But it's very important that gnustep-base, gnustep-gui and
-# gnustep-xgps to be packaged at the same time/machine as this
-# gnustep-make, and so they must depend on this particular version of
-# gnustep-make.
 
 %description
 This package contains the basic scripts, makefiles and directory layout
@@ -112,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Apr 12 2001 Adam Fedor <fedor@gnu.org>
+- Changed default combo to gnu-gnu-gnu
+
 * Mon Feb 19 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 - Updated for new special_prefix option
 	

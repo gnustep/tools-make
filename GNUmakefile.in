@@ -157,6 +157,16 @@ clean:
 distclean: clean
 	rm -f GNUmakefile config.make
 	rm -f config.cache config.log config.status
+	rm -f openapp
+	rm -f debugapp
+	rm -f which_lib.pl
+	rm -f opentool
+	rm -f executable.template
+	rm -f GNUmakefile
+	rm -f GNUstep.sh
+	rm -f GNUstep.csh
+	rm -f gnustep-make.spec
+	rm -f Documentation/GNUmakefile
 
 cvs-tag:
 	cvs -z3 rtag make-$(VERTAG) make

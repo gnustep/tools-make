@@ -104,6 +104,21 @@ fi
 AC_SUBST(GNUSTEP_FLATTENED)
 
 #--------------------------------------------------------------------
+# Build backend bundles (on by default)
+#--------------------------------------------------------------------
+AC_ARG_ENABLE(backend-bundle, 
+  [  --disable-backend-bundle    Compile gui backend as a library], 
+  ac_cv_backend=$enableval,  
+  ac_cv_backend="yes")
+
+if test "$ac_cv_backend" = "yes"; then
+  BACKEND_BUNDLE=yes;
+else
+  BACKEND_BUNDLE=;
+fi
+AC_SUBST(BACKEND_BUNDLE)
+
+#--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
 targetArgument=${target}
@@ -117,7 +132,7 @@ AC_ARG_WITH(library-combo,[
 type 'make'. You can still change the library combination at runtime
 by specifying the 'library_combo' make variable. For example:
     
-      $ make library_combo=nx-pdo-nx-nil
+      $ make library_combo=nx-pdo-nx
 ],
 ac_cv_library_combo=$withval,
 ac_cv_library_combo=$ac_cv_library_combo
@@ -125,15 +140,9 @@ ac_cv_library_combo=$ac_cv_library_combo
 
 if test "$ac_cv_library_combo" = ""; then
   if test $host_os = nextstep4; then
-    ac_cv_library_combo=nx-nx-nx-nil
-  elif test $host_os = cygwin; then
-    ac_cv_library_combo=gnu-gnu-gnu-win32
-  elif test $host_os = mingw32; then
-    ac_cv_library_combo=gnu-gnu-gnu-win32
-  elif test $host_os = mingw; then
-    ac_cv_library_combo=gnu-gnu-gnu-win32
+    ac_cv_library_combo=nx-nx-nx
   else
-    ac_cv_library_combo=gnu-gnu-gnu-xgps
+    ac_cv_library_combo=gnu-gnu-gnu
   fi
 fi
 AC_SUBST(ac_cv_library_combo)

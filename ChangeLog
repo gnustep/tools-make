@@ -1,3 +1,16 @@
+2001-04-13  Adam Fedor  <fedor@gnu.org>
+
+	* GUI Backend built as bundle by default. Remove backend component
+	of LIBRARY_COMBO throughout makefiles and scripts.
+	* configure.in: Add enable-backend-bundle.
+	* config.make.in: Define BACKEND_BUNDLE.
+
+	* Documenation/DESIGN,gnustep-howto.texi,install.texi: Update.
+
+	* openapp.in: Simplify - use executable.template script for work.
+	* opentool.in: Likewise.
+	(patches from Jeff Teunissen <deek@dusknet.dhs.org>).
+	
 Wed Apr 11 12:03:55 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* documentation.make [TEXI_FILES] ($(INTERNAL_doc_NAME)_toc.html):

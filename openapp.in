@@ -23,7 +23,7 @@
 # unmodified to the application.
 
 if [ -z "$1" ]; then
-  echo usage: `basename $0` [--library-combo=...] application [arguments...]
+  echo usage: `basename $0` application [--library-combo=...] [arguments...]
   echo `basename $0` --help for help
   exit 1
 fi
@@ -34,61 +34,21 @@ fi
 if [ -z "$EXEEXT" ]; then
   EXEEXT=@EXEEXT@
 fi
-if [ -z "$LIBRARY_COMBO" ]; then
-  LIBRARY_COMBO=@ac_cv_library_combo@
-fi
 
 # trap the --library-combo parameter
 case $1 in
   --help)
-    echo usage: `basename $0` [--library-combo=...] application [arguments...]
-    echo
-    if [ -z "$GNUSTEP_FLATTENED" ]; then
-      echo [--library-combo=...] specifies a GNUstep backend to use.
-      echo It overrides the default LIBRARY_COMBO environment variable.
-      echo --library-combo=gnu-xdps for GNUstep XDPS Backend
-      echo --library-combo=gnu-xraw for GNUstep XRaw Backend
-      echo --library-combo=fd-xraw for GNUstep XRaw Backend with libFoundation
-      echo --library-combo=fd-xdps for GNUstep XDPS Backend with libFoundation
-      echo --library-combo=nx for NeXT OPENSTEP
-    else
-      echo [--library-combo=...] is ignored for a flattened directory structure.
-    fi
+    echo usage: `basename $0` application [--library-combo=...] [arguments...]
     echo
     echo application is the complete or relative name of the application
-    echo program with the .app extension, like Edit.app.
+    echo program with the .app extension, like Ink.app.
     echo
-    echo [arguments...] are the arguments to the application.
+    echo [arguments...] are the arguments to the application.     
     exit 0
-    ;;
-  --library-combo=*)
-    LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
-    if [ -z "$2" ]; then
-      echo usage: `basename $0` [--library-combo=...] application [arguments...]
-      echo `basename $0` --help for help
-      exit 1
-    fi
-    app=$2; shift; shift
     ;;
   *)
     app=$1; shift;;
 esac
-
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  # TODO: these defaults need to be output to the user
-  if [ "$LIBRARY_COMBO" = nx ]; then
-    LIBRARY_COMBO=nx-nx-nx-nil
-  elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
-    LIBRARY_COMBO=gnu-gnu-gnu-xdps
-  elif [ "$LIBRARY_COMBO" = gnu-xraw ]; then
-    LIBRARY_COMBO=gnu-gnu-gnu-xraw
-  elif [ "$LIBRARY_COMBO" = fd-xraw ]; then
-    LIBRARY_COMBO=gnu-fd-gnu-xraw
-  elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
-    LIBRARY_COMBO=gnu-fd-gnu-xdps
-  fi
-  export LIBRARY_COMBO
-fi
 
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
@@ -127,82 +87,14 @@ if [ -z "$full_appname" ]; then
   exit 1
 fi
 
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  #
-  # Determine the host information
-  #
-  if [ -z "$GNUSTEP_HOST" ]; then
-    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess)`
-    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $GNUSTEP_HOST)`
-    export GNUSTEP_HOST
-  fi
-  if [ -z "$GNUSTEP_HOST_CPU" ]; then
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
-    export GNUSTEP_HOST_CPU
-  fi
-  if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
-    export GNUSTEP_HOST_VENDOR
-  fi
-  if [ -z "$GNUSTEP_HOST_OS" ]; then
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
-   export GNUSTEP_HOST_OS
-  fi
-
-  if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
-    if [ -f "$full_appname/library_paths.openapp" ]; then
-      additional_library_paths="`cat $full_appname/library_paths.openapp`"
-    fi
-  else
-    if [ -f "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp" ]; then
-      additional_library_paths="`cat $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp`"
-    fi
-  fi
-else
-    if [ -f "$full_appname/library_paths.openapp" ]; then
-	additional_library_paths="`cat $full_appname/library_paths.openapp`"
-    fi
-fi
-
 # get base app name
 appname=`echo $app | sed 's/\.[a-z]*$//'`
 appname=`basename $appname`
 
-# Load up LD_LIBRARY_PATH
-# this needs to be PATH on NT
-. $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
-
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
-    if [ ! -f $full_appname/$appname ]; then
-      echo "$full_appname application does not have a binary for this kind of machine and operating system."
-      exit 1
-    fi
-
-    IFS=" "
-    $full_appname/$appname "$@"
-
-  else
-    # Determine if the application has a binary for this operating system
-    if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
-      echo "$full_appname application does not have a binary for this kind of machine and operating system."
-      exit 1
-    fi
-
-    if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO ]; then
-      echo "$full_appname application does not have a binary for this combination of libraries: $LIBRARY_COMBO."
-      exit 1
-    fi
-
-    IFS=" "
-    $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname "$@"
-
-  fi
-else
-  IFS=" "
-  $full_appname/$appname "$@"
+if [ ! -f $full_appname/$appname ]; then
+  echo "Could not find $full_appname executable/script"
+  exit 1
 fi
 
+IFS=" "
+$full_appname/$appname $@

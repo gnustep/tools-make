@@ -274,12 +274,10 @@ The 'set_show_service' program
   should be permitted to offer on it's 'services' menu.
 @end example
 
-If you want to see a sample GUI application running - you need to
-build GNUstep for use with the 'xgps' library (configuring it with
-with the option --with-library-combo=gnu-gnu-gnu-xgps) and look at the
-example applications in the gstep-examples package.
-Build 'Finger' or 'Ink' and start it with 'openapp
-Finger.app' or 'openapp Ink.app'
+If you want to see a sample GUI application running you need to build
+GNUstep and look at the example applications in the gstep-examples
+package.  Build 'Finger' or 'Ink' and start it with 'openapp Finger.app'
+or 'openapp Ink.app'
 
 To look best - use WindowMaker (the currently preferred GNUstep
 window manager) as your window manager.

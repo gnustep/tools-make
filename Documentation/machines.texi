@@ -70,7 +70,7 @@ have a GCC ObjC Compiler, so you need to use the ObjC runtime that comes with
 Darwin. To do this configure (gnustep-make) like this:
 
 @example
-./configure --with-library-combo=nx-gnu-gnu-xgps
+./configure --with-library-combo=nx-gnu-gnu
 @end example
 
 

@@ -44,10 +44,7 @@ case $1 in
     echo
     echo [--library-combo=...] specifies a GNUstep backend to use.
     echo It overrides the default LIBRARY_COMBO environment variable.
-    echo --library-combo=gnu-xdps for GNUstep XDPS Backend
-    echo --library-combo=gnu-xraw for GNUstep XRaw Backend
-    echo --library-combo=fd-xraw for GNUstep XRaw Backend with libFoundation
-    echo --library-combo=fd-xdps for GNUstep XDPS Backend with libFoundation
+    echo --library-combo=gnu for GNUstep 
     echo --library-combo=nx for NeXT OPENSTEP
     echo
     echo application is the complete or relative name of the application
@@ -70,15 +67,11 @@ case $1 in
 esac
 
 if [ "$LIBRARY_COMBO" = nx ]; then
-  LIBRARY_COMBO=nx-nx-nx-nil
-elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
-  LIBRARY_COMBO=gnu-gnu-gnu-xdps
-elif [ "$LIBRARY_COMBO" = gnu-xraw ]; then
-  LIBRARY_COMBO=gnu-gnu-gnu-xraw
-elif [ "$LIBRARY_COMBO" = fd-xraw ]; then
-  LIBRARY_COMBO=gnu-fd-gnu-xraw
-elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
-  LIBRARY_COMBO=gnu-fd-gnu-xdps
+  LIBRARY_COMBO=nx-nx-nx
+elif [ "$LIBRARY_COMBO" = gnu ]; then
+  LIBRARY_COMBO=gnu-gnu-gnu
+elif [ "$LIBRARY_COMBO" = fd ]; then
+  LIBRARY_COMBO=gnu-fd
 fi
 
 # Remove leading slashes at the end of the application name
@@ -152,7 +145,7 @@ if [ -z "$GNUSTEP_FLATTENED" ]; then
 	   export GNUSTEP_HOST_OS
 	fi
 	
-	if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+	if [ "$LIBRARY_COMBO" = nx-nx-nx -a $GNUSTEP_HOST_OS = nextstep4 ]; then
 	  if [ -f "$full_appname/library_paths.openapp" ]; then
 	    additional_library_paths="`cat $full_appname/library_paths.openapp`"
 	  fi
@@ -168,7 +161,7 @@ appname=`basename $appname`
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 
-if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+if [ "$LIBRARY_COMBO" = nx-nx-nx -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   if [ ! -f $full_appname/$appname ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
@@ -203,4 +196,10 @@ fi
   fi
 
 fi
+
+
+
+
+
+
 

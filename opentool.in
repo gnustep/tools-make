@@ -24,14 +24,11 @@
 # unmodified to the tool.
 
 if [ -z "$1" ]; then
-  echo usage: `basename $0` [--library-combo=...] tool [arguments...]
+  echo usage: `basename $0` tool [--library-combo=...] [arguments...]
   echo `basename $0` --help for help
   exit 1
 fi
 
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
-fi
 if [ -z "$EXEEXT" ]; then
   EXEEXT=@EXEEXT@
 fi
@@ -39,93 +36,19 @@ fi
 # traps the parameters
 case $1 in
   --help)
-    echo usage: `basename $0` [--library-combo=...] tool [arguments...]
-    echo
-    if [ -z "$GNUSTEP_FLATTENED" ]; then
-      echo [--library-combo=...] specifies a GNUstep backend to use.
-      echo It overrides the default LIBRARY_COMBO environment variable.
-      echo --library-combo=gnu-xdps for GNUstep XDPS Backend
-      echo --library-combo=gnu-xraw for GNUstep XRaw Backend
-      echo --library-combo=fd-xraw for GNUstep XRaw Backend with libFoundation
-      echo --library-combo=fd-xdps for GNUstep XDPS Backend with libFoundation
-      echo --library-combo=nx for NeXT OPENSTEP
-    else
-      echo [--library-combo=...] is ignored for a flattened directory structure.
-    fi
-    echo
+    echo usage: `basename $0` tool [--library-combo=...] [arguments...]
     echo tool is the complete or relative name of the tool executable
     echo without any extension, like dread.
     echo
     echo [arguments...] are the arguments to the tool.
     exit 0
     ;;
-  --library-combo=*)
-    LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
-    if [ -z "$2" ]; then
-      echo usage: `basename $0` [--library-combo=...] tool [arguments...]
-      echo `basename $0` --help for help
-      exit 1
-    fi
-    tool=$2; shift; shift
-    ;;
   *)
     tool=$1; shift;;
 esac
 
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  # TODO: these defaults need to be output to the user
-  if [ "$LIBRARY_COMBO" = nx ]; then
-    LIBRARY_COMBO=nx-nx-nx-nil
-  elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
-    LIBRARY_COMBO=gnu-gnu-gnu-xdps
-  elif [ "$LIBRARY_COMBO" = gnu-xraw ]; then
-    LIBRARY_COMBO=gnu-gnu-gnu-xraw
-  elif [ "$LIBRARY_COMBO" = fd-xraw ]; then
-    LIBRARY_COMBO=gnu-fd-gnu-xraw
-  elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
-    LIBRARY_COMBO=gnu-fd-gnu-xdps
-  fi
-  export LIBRARY_COMBO
-fi
-
 if [ -z "$EXEEXT" ]; then
   tool=$tool$EXEEXT
-fi
-
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  #
-  # Determine the host information
-  #
-  if [ -z "$GNUSTEP_HOST" ]; then
-    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess)`
-    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $GNUSTEP_HOST)`
-    export GNUSTEP_HOST
-  fi
-  if [ -z "$GNUSTEP_HOST_CPU" ]; then
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
-    export GNUSTEP_HOST_CPU
-  fi
-  if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
-    export GNUSTEP_HOST_VENDOR
-  fi
-  if [ -z "$GNUSTEP_HOST_OS" ]; then
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
-   export GNUSTEP_HOST_OS
-  fi
-
-  if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
-    if [ -f "$full_toolname/library_paths.openapp" ]; then
-      additional_library_paths="`cat $full_toolname/library_paths.openapp`"
-    fi
-  else
-    if [ -f "$full_toolname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp" ]; then
-      additional_library_paths="`cat $full_toolname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp`"
-    fi
-  fi
 fi
 
 case $tool in
@@ -138,44 +61,30 @@ case $tool in
 	full_toolname=${tool_dir}/${tool_name};;
   *)	# A path that should be searched into GNUstep tool paths
 
-	if [ -z "$GNUSTEP_FLATTENED" ]; then
-	  GNUSTEP_HOST_DIR=$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-	  GNUSTEP_HOST_LDIR=$GNUSTEP_HOST_DIR/$LIBRARY_COMBO
-
-	  # search for a local one
-	  for file in */$GNUSTEP_HOST_LDIR/$tool; do
-	    if [ -x $file ]; then
-	      full_toolname=$file;
-	      break;
-	    fi
-	  done
-	  # Only search further if we found no local one
-	  if [ -z "$full_toolname" ]; then
-	    SPATH=:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_DIR
-	    SPATH=$SPATH:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_LDIR
-	    SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_DIR
-	    SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_LDIR
-	    SPATH=$SPATH:$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_DIR
-	    SPATH=$SPATH:$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_LDIR
-	    SPATH=$SPATH:$PATH
-	  fi
-	else
-	  SPATH=:$GNUSTEP_USER_ROOT/Tools
-	  SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools
-	  SPATH=$SPATH:$GNUSTEP_SYSTEM_ROOT/Tools
-	  SPATH=$SPATH:$PATH
+        if [ -z "$GNUSTEP_FLATTENED" ]; then
+          # search for a local one
+          for file in */$GNUSTEP_HOST_LDIR/$tool; do
+            if [ -x $file ]; then
+              full_toolname=$file;
+              break;
+            fi
+          done
 	fi
 
-	# Only search further if we found no local one
-	if [ -z "$full_toolname" ]; then
-	  IFS=:
-	  for dir in $SPATH; do
-	    if [ -x $dir/$tool ]; then
-	      full_toolname=$dir/$tool;
-	      break;
-	    fi
-	  done;
-	fi;;
+        if [ -n $GNUSTEP_PATHPREFIX_LIST ]; then
+          SPATH=$GNUSTEP_PATHPREFIX_LIST
+        else
+          SPATH=$PATH
+        fi
+        SPATH=.:$SPATH
+        IFS=:
+        for dir in $SPATH; do
+          if [ -x $dir/Tools/$tool ]; then
+            full_toolname=$dir/Tools/$tool
+            break;
+          fi
+        done
+        ;;
 esac
 
 if [ -z "$full_toolname" ]; then
@@ -183,9 +92,5 @@ if [ -z "$full_toolname" ]; then
   exit 1
 fi
 
-# Load up LD_LIBRARY_PATH
-# this needs to be PATH on NT
-. $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
-
 IFS=" "
-$full_toolname "$@"
+exec $full_toolname "$@"

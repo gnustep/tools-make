@@ -53,37 +53,31 @@ be compiled for these combinations:
 Objective-C runtime: NeXT, GNU
 Foundation library: NeXT, PDO, gnustep-base, libFoundation
 GUI library: NeXT, gnustep-gui
-Back-end library: nil, XDPS, Win32
-
-The back-end library is required if the GUI library used is
-gnustep-gui. It is "nil" if the GUI library is NeXT's AppKit. We'll
-use the following abbreviations to identify different parts:
 
 Objective-C runtime: nx (for NeXT), gnu (for GNU)
 Foundation library: nx (for NeXT), pdo (for PDO), gnu (for gnustep-base),
 		fd (for libFoundation)
 GUI library: nx (for NeXT), gnu (for gnustep-gui)
-Back-end library: nil (for none), xdps (for XDPS), w32 (for Win32)
 
 We'll denote the fact that an application was compiled for a certain
 combination of the above values by using the abbreviations of the
 different subsystems and placing dashes between them. For example
 an application compiled for NeXT Foundation using NeXT AppKit will
-have the compile attribute nx-nx-nx-nil. An application compiled for
+have the compile attribute nx-nx-nx. An application compiled for
 PDO with the gnustep-gui library under Unix will be denoted by
-nx-pdo-gnu-xdps and another one compiled for gnustep-base using
-gnustep-gui under Unix will be denoted by gnu-gnu-gnu-xdps. Here is a
+nx-pdo-gnu and another one compiled for gnustep-base using
+gnustep-gui under Unix will be denoted by gnu-gnu-gnu. Here is a
 list of some of the possible combinations:
 
-ObjC runtime	Foundation	GUI	Backend
-------------	----------	---	--------
-    nx		    nx		nx	nil
-    nx		    pdo		nx	nil
-    nx		    pdo		gnu	xdps
-    gnu		    gnu		gnu	xdps
-    gnu		    gnu		gnu	w32
-    nx		    fd		gnu	xdps
-    gnu		    fd		gnu	xdps
+ObjC runtime	Foundation	GUI
+------------	----------	---
+    nx		    nx		nx	
+    nx		    pdo		nx
+    nx		    pdo		gnu
+    gnu		    gnu		gnu
+    gnu		    gnu		gnu
+    nx		    fd		gnu
+    gnu		    fd		gnu
 
 Note that one can choose his/her own packages to build; it is not
 required to have all the packages installed on the system. Not having
@@ -131,19 +125,16 @@ several combinations of packages:
 Libraries/
   i386/
     linux-gnu/
-      gnu-gnu-gnu-xdps/
+      gnu-gnu-gnu/
 	libgnustep-base.so
 	libgnustep-gui.so
-	libgnustep-xdps.so
-      gnu-fd-gnu-xdps/
+      gnu-fd-gnu/
 	libFoundation.so
 	libgnustep-gui.so
-	libgnustep-xdps.so
   sparc/
     solaris-2.5.1/
-      nx-pdo-gnu-xdps/
+      nx-pdo-gnu/
 	libgnustep-gui.so
-	libgnustep-xdps.so
 
 Please note that the Libraries/ directory contains only the libraries
 that come with GNUstep, the PDO library for example is not inside
@@ -185,11 +176,11 @@ Apps/
     InterfaceModeller (for OPENSTEP systems compatibility)
     i386/
       linux-gnu/
-	gnu-gnu-gnu-xdps/
+	gnu-gnu-gnu/
 	  InterfaceModeller
     sparc/
       solaris-2.5.1/
-	nx-pdo-gnu-xdps/
+	nx-pdo-gnu/
 	  InterfaceModeller
 
 The Tools/ directory contains command line tools.  Each tool
@@ -280,7 +271,7 @@ For instance if you want to choose to compile using the NeXT's PDO
 Foundation and use the GNUstep GUI library on a Unix machine you can
 do like this:
 
-  $ make library_combo=nx-pdo-gnu-xdps
+  $ make library_combo=nx-pdo-gnu
 
 
 Projects that require running configure before compiling
@@ -490,4 +481,4 @@ The makefile package is installed under $(GNUSTEP_SYSTEM_ROOT)/Makefiles.
 
 Ovidiu Predescu
 
-Last updated: October, 1997
+Last updated: April, 2001

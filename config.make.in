@@ -59,13 +59,11 @@ INSTALL_DATA	= @INSTALL_DATA@
 TAR		= @TAR@
 MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
 
-# Version information
-GNUSTEP_VERSION_DEFINE = -DGNUSTEP_VERSION=@GNUSTEP_VERSION@ \
-	-DGNUSTEP_MAJOR_VERSION=@GNUSTEP_MAJOR_VERSION@ \
-	-DGNUSTEP_MINOR_VERSION=@GNUSTEP_MINOR_VERSION@
-
 # The default library combination
 default_library_combo = @ac_cv_library_combo@
+
+# Backend bundle
+BACKEND_BUNDLE=@BACKEND_BUNDLE@
 
 #
 # Do threading stuff.
