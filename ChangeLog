@@ -1,3 +1,15 @@
+Mon Jul  9 16:23:19 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* gswapp.make (.PHONY): Added.
+	(internal-gswapp-install): Do not depend on internal-gswapp-all.
+	Run the rule commands in a single subshell.
+	(gswapp-components): Turned shell conditional into makefile
+	conditional.
+	(gswapp-webresource-files): Idem.
+	(gswapp-localized-webresource-files): Idem.
+	(gswapp-resource-files): Idem.
+	(gswapp-localized-resource-files): Idem.
+
 Mon Jul  9 16:05:06 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* documentation.make (.PHONY): Added.
