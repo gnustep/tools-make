@@ -293,35 +293,6 @@ endif
 
 ####################################################
 #
-# FreeBSD ELF
-#
-ifeq ($(findstring freebsd3, $(GNUSTEP_TARGET_OS)), freebsd3)
-HAVE_SHARED_LIBS	= yes
-SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
-	(cd $(GNUSTEP_OBJ_DIR); \
-	  rm -f $(LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
-
-SHARED_CFLAGS	+= -fPIC
-SHARED_LIBEXT	= .so
-
-HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS	+= -fPIC
-BUNDLE_LDFLAGS	+= -shared
-ADDITIONAL_LDFLAGS += -rdynamic
-endif
-#
-# end FreeBSD
-#
-####################################################
-
-####################################################
-#
 # FreeBSD a.out (2.2.x)
 #
 ifeq ($(findstring freebsd2, $(GNUSTEP_TARGET_OS)), freebsd2)
@@ -344,6 +315,35 @@ ADDITIONAL_LDFLAGS += -rdynamic
 endif
 #
 # end FreeBSD A.out
+#
+####################################################
+
+####################################################
+#
+# FreeBSD ELF
+#
+ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
+HAVE_SHARED_LIBS	= yes
+SHARED_LIB_LINK_CMD = \
+	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
+	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+	(cd $(GNUSTEP_OBJ_DIR); \
+	  rm -f $(LIBRARY_FILE); \
+	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+OBJ_MERGE_CMD		= \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+SHARED_CFLAGS	+= -fPIC
+SHARED_LIBEXT	= .so
+
+HAVE_BUNDLES	= yes
+BUNDLE_LD	= $(CC)
+BUNDLE_CFLAGS	+= -fPIC
+BUNDLE_LDFLAGS	+= -shared
+ADDITIONAL_LDFLAGS += -rdynamic
+endif
+#
+# end FreeBSD
 #
 ####################################################
 

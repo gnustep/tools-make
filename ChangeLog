@@ -1,3 +1,11 @@
+1999-08-09  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.csh.in: Fix the setting of GNUSTEP_MAKEFILES (patch
+	from Christopher Seawood <cls@seawood.org>).
+
+	* target.make: Change freebsd3 to freebsd to find all versions,
+	except put freebsd2 first so it is still unique.
+
 1999-08-09  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	Fixes so that things don't bomb out if you don't have write access
