@@ -45,7 +45,7 @@ internal-install:: $(GSWAPP_NAME:=.install.gswapp.variables)
 
 internal-uninstall:: $(GSWAPP_NAME:=.uninstall.gswapp.variables)
 
-internal-clean:: $(GSWAPP_NAME:=.clean.gswapp.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
@@ -60,10 +60,16 @@ else
 endif
 endif
 
-internal-distclean:: $(GSWAPP_NAME:=.distclean.gswapp.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj *.gswa *.debug *.profile *.iconheader
+
+GSWAPPS_WITH_SUBPROJECTS = $(strip $(foreach gswapp,$(GSWAPP_NAME),$(patsubst %,$(gswapp),$($(gswapp)_SUBPROJECTS))))
+ifneq ($(GSWAPPS_WITH_SUBPROJECTS),)
+internal-clean:: $(GSWAPPS_WITH_SUBPROJECTS:=.clean.gswapp.subprojects)
+internal-distclean:: $(GSWAPPS_WITH_SUBPROJECTS:=.distclean.gswapp.subprojects)
+endif
 
 $(GSWAPP_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

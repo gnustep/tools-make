@@ -37,14 +37,20 @@ internal-install:: $(GSWBUNDLE_NAME:=.install.gswbundle.variables)
 
 internal-uninstall:: $(GSWBUNDLE_NAME:=.uninstall.gswbundle.variables)
 
-internal-clean:: $(GSWBUNDLE_NAME:=.clean.gswbundle.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) \
 	       $(addsuffix $(GSWBUNDLE_EXTENSION),$(GSWBUNDLE_NAME))
 
-internal-distclean:: $(GSWBUNDLE_NAME:=.distclean.gswbundle.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+GSWBUNDLES_WITH_SUBPROJECTS = $(strip $(foreach gswbundle,$(GSWBUNDLE_NAME),$(patsubst %,$(gswbundle),$($(gswbundle)_SUBPROJECTS))))
+ifneq ($(GSWBUNDLES_WITH_SUBPROJECTS),)
+internal-clean:: $(GSWBUNDLES_WITH_SUBPROJECTS:=.clean.gswbundle.subprojects)
+internal-distclean:: $(GSWBUNDLES_WITH_SUBPROJECTS:=.distclean.gswbundle.subprojects)
+endif
 
 $(GSWBUNDLE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

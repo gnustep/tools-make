@@ -32,13 +32,19 @@ internal-install:: $(OBJC_PROGRAM_NAME:=.install.objc-program.variables)
 
 internal-uninstall:: $(OBJC_PROGRAM_NAME:=.uninstall.objc-program.variables)
 
-internal-clean:: $(OBJC_PROGRAM_NAME:=.clean.objc-program.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(OBJC_PROGRAM_NAME:=.distclean.objc-program.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+OBJC_PROGRAMS_WITH_SUBPROJECTS = $(strip $(foreach objc_program,$(OBJC_PROGRAM_NAME),$(patsubst %,$(objc_program),$($(objc_program)_SUBPROJECTS))))
+ifneq ($(OBJC_PROGRAMS_WITH_SUBPROJECTS),)
+internal-clean:: $(OBJC_PROGRAMS_WITH_SUBPROJECTS:=.clean.objc_program.subprojects)
+internal-distclean:: $(OBJC_PROGRAMS_WITH_SUBPROJECTS:=.distclean.objc_program.subprojects)
+endif
 
 $(OBJC_PROGRAM_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

@@ -42,7 +42,12 @@ internal-uninstall:: $(JAVA_TOOL_NAME:=.uninstall.java_tool.variables)
 
 internal-clean:: $(JAVA_TOOL_NAME:=.clean.java_tool.variables)
 
-internal-distclean:: $(JAVA_TOOL_NAME:=.distclean.java_tool.subprojects)
+internal-distclean::
+
+JAVA_TOOLS_WITH_SUBPROJECTS = $(strip $(foreach java_tool,$(JAVA_TOOL_NAME),$(patsubst %,$(java_tool),$($(java_tool)_SUBPROJECTS))))
+ifneq ($(JAVA_TOOLS_WITH_SUBPROJECTS),)
+internal-distclean:: $(JAVA_TOOLS_WITH_SUBPROJECTS:=.distclean.java_tool.subprojects)
+endif
 
 $(JAVA_TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

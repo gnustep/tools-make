@@ -32,13 +32,19 @@ internal-install:: $(CTOOL_NAME:=.install.ctool.variables)
 
 internal-uninstall:: $(CTOOL_NAME:=.uninstall.ctool.variables)
 
-internal-clean:: $(CTOOL_NAME:=.clean.ctool.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(CTOOL_NAME:=.distclean.ctool.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+CTOOLS_WITH_SUBPROJECTS = $(strip $(foreach ctool,$(CTOOL_NAME),$(patsubst %,$(ctool),$($(ctool)_SUBPROJECTS))))
+ifneq ($(CTOOLS_WITH_SUBPROJECTS),)
+internal-clean:: $(CTOOLS_WITH_SUBPROJECTS:=.clean.ctool.subprojects)
+internal-distclean:: $(CTOOLS_WITH_SUBPROJECTS:=.distclean.ctool.subprojects)
+endif
 
 $(CTOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

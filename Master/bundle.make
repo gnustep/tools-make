@@ -36,14 +36,21 @@ internal-uninstall:: $(BUNDLE_NAME:=.uninstall.bundle.variables)
 _PSWRAP_C_FILES = $(foreach bundle,$(BUNDLE_NAME),$($(bundle)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach bundle,$(BUNDLE_NAME),$($(bundle)_PSWRAP_FILES:.psw=.h))
 
-internal-clean:: $(BUNDLE_NAME:=.clean.bundle.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
 	       $(addsuffix $(BUNDLE_EXTENSION),$(BUNDLE_NAME))
 
-internal-distclean:: $(BUNDLE_NAME:=.distclean.bundle.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+BUNDLES_WITH_SUBPROJECTS = $(strip $(foreach bundle,$(BUNDLE_NAME),$(patsubst %,$(bundle),$($(bundle)_SUBPROJECTS))))
+
+ifneq ($(BUNDLES_WITH_SUBPROJECTS),)
+internal-clean:: $(BUNDLES_WITH_SUBPROJECTS:=.clean.bundle.subprojects)
+internal-distclean:: $(BUNDLES_WITH_SUBPROJECTS:=.distclean.bundle.subprojects)
+endif
 
 $(BUNDLE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

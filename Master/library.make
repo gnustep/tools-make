@@ -36,13 +36,19 @@ internal-uninstall:: $(LIBRARY_NAME:=.uninstall.library.variables)
 _PSWRAP_C_FILES = $(foreach lib,$(LIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach lib,$(LIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.h))
 
-internal-clean:: $(LIBRARY_NAME:=.clean.library.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 
-internal-distclean:: $(LIBRARY_NAME:=.distclean.library.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+LIBRARIES_WITH_SUBPROJECTS = $(strip $(foreach library,$(LIBRARY_NAME),$(patsubst %,$(library),$($(library)_SUBPROJECTS))))
+ifneq ($(LIBRARIES_WITH_SUBPROJECTS),)
+internal-clean:: $(LIBRARIES_WITH_SUBPROJECTS:=.clean.library.subprojects)
+internal-distclean:: $(LIBRARIES_WITH_SUBPROJECTS:=.distclean.library.subprojects)
+endif
 
 $(LIBRARY_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

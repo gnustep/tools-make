@@ -37,10 +37,15 @@ internal-uninstall:: $(PALETTE_NAME:=.uninstall.palette.variables)
 _PSWRAP_C_FILES = $(foreach palette,$(PALETTE_NAME),$($(palette)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach palette,$(PALETTE_NAME),$($(palette)_PSWRAP_FILES:.psw=.h))
 
-internal-clean:: $(PALETTE_NAME:=.clean.palette.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 
 internal-distclean:: $(PALETTE_NAME:=.distclean.palette.variables)
+
+PALETTES_WITH_SUBPROJECTS = $(strip $(foreach palette,$(PALETTE_NAME),$(patsubst %,$(palette),$($(palette)_SUBPROJECTS))))
+ifneq ($(PALETTES_WITH_SUBPROJECTS),)
+internal-clean:: $(PALETTES_WITH_SUBPROJECTS:=.clean.palette.subprojects)
+endif
 
 $(PALETTE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

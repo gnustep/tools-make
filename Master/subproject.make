@@ -64,13 +64,19 @@ endif
 _PSWRAP_C_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.c)
 _PSWRAP_H_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.h)
 
-internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 
-internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproject.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+SUBPROJECTS_WITH_SUBPROJECTS = $(strip $(patsubst %,$(SUBPROJECT_NAME),$($(SUBPROJECT_NAME)_SUBPROJECTS)))
+ifneq ($(SUBPROJECTS_WITH_SUBPROJECTS),)
+internal-clean:: $(SUBPROJECTS_WITH_SUBPROJECTS:=.clean.subproject.subprojects)
+internal-distclean:: $(SUBPROJECTS_WITH_SUBPROJECTS:=.distclean.subproject.subprojects)
+endif
 
 # If the subproject has a resource bundle, destroy it on distclean
 ifeq ($($(SUBPROJECT_NAME)_HAS_RESOURCE_BUNDLE), yes)

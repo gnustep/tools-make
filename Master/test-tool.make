@@ -28,13 +28,19 @@ endif
 
 internal-all:: $(TEST_TOOL_NAME:=.all.test-tool.variables)
 
-internal-clean:: $(TEST_TOOL_NAME:=.clean.test-tool.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(TEST_TOOL_NAME:=.distclean.test-tool.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+TEST_TOOLS_WITH_SUBPROJECTS = $(strip $(foreach test-tool,$(TEST_TOOL_NAME),$(patsubst %,$(test-tool),$($(test-tool)_SUBPROJECTS))))
+ifneq ($(TEST_TOOLS_WITH_SUBPROJECTS),)
+internal-clean:: $(TEST_TOOLS_WITH_SUBPROJECTS:=.clean.test-tool.subprojects)
+internal-distclean:: $(TEST_TOOLS_WITH_SUBPROJECTS:=.distclean.test-tool.subprojects)
+endif
 
 $(TEST_TOOL_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

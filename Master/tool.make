@@ -32,13 +32,19 @@ internal-install:: $(TOOL_NAME:=.install.tool.variables)
 
 internal-uninstall:: $(TOOL_NAME:=.uninstall.tool.variables)
 
-internal-clean:: $(TOOL_NAME:=.clean.tool.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(TOOL_NAME:=.distclean.tool.subprojects)
+internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+TOOLS_WITH_SUBPROJECTS = $(strip $(foreach tool,$(TOOL_NAME),$(patsubst %,$(tool),$($(tool)_SUBPROJECTS))))
+ifneq ($(TOOLS_WITH_SUBPROJECTS),)
+internal-clean:: $(TOOLS_WITH_SUBPROJECTS:=.clean.tool.subprojects)
+internal-distclean:: $(TOOLS_WITH_SUBPROJECTS:=.distclean.tool.subprojects)
+endif
 
 # On distclean, we also want to efficiently wipe out the Resources/
 # directory if (and only if) there are tools for which

@@ -36,7 +36,7 @@ internal-uninstall:: $(SERVICE_NAME:=.uninstall.service.variables)
 _PSWRAP_C_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.psw=.h))
 
-internal-clean:: $(SERVICE_NAME:=.clean.service.subprojects)
+internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
@@ -51,7 +51,13 @@ else
 endif
 endif
 
-internal-distclean:: $(SERVICE_NAME:=.distclean.service.variables)
+internal-distclean::
+
+SERVICES_WITH_SUBPROJECTS = $(strip $(foreach service,$(SERVICE_NAME),$(patsubst %,$(service),$($(service)_SUBPROJECTS))))
+ifneq ($(SERVICES_WITH_SUBPROJECTS),)
+internal-clean:: $(SERVICES_WITH_SUBPROJECTS:=.clean.service.subprojects)
+internal-distclean:: $(SERVICES_WITH_SUBPROJECTS:=.distclean.service.subprojects)
+endif
 
 $(SERVICE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
