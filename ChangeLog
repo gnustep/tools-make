@@ -1,3 +1,8 @@
+Sat Jan 26 14:29:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* executable.template.in (appname): Minor tidyup of the sed code
+	to extract the executable name.
+
 Fri Jan 25 12:08:30 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make: Added long comment explaining the difference between
