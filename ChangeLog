@@ -1,3 +1,9 @@
+Fri Mar  1 10:58:58 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (which_lib$(EXEEXT)): Compile $<, not
+	which_lib.c.
+	(user_home$(EXEEXT)): Idem.
+
 2002-03-01 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* user_home.c: Port to MINGW
