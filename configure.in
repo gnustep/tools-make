@@ -201,7 +201,9 @@ AC_ARG_WITH(user-root,
 to have the GNUSTEP_USER_ROOT directory in a non-standard place.  Example:
 --with-user-root=/MyHome/local/GNUstep
 ],
+FORCE_USER_ROOT="-DFORCE_USER_ROOT=$withval"
 GNUSTEP_USER_ROOT="$withval",
+FORCE_USER_ROOT=""
 if test ! -z "$WINDIR"; then
   # Any \ is turned into a / inside GNUstep.sh.  We can't do it here
   # because HOMEDRIVE and HOMEPATH are only expanded inside GNUstep.sh
@@ -210,6 +212,7 @@ else
   GNUSTEP_USER_ROOT='$HOME/GNUstep'
 fi
 )
+AC_SUBST(FORCE_USER_ROOT)
 AC_MSG_RESULT($GNUSTEP_USER_ROOT)
 
 AC_MSG_CHECKING(for GNUSTEP_DEFAULTS_ROOT to use)
@@ -219,9 +222,12 @@ AC_ARG_WITH(defaults-root,
 to have the GNUSTEP_DEFAULTS_ROOT directory in a non-standard place.  Example:
 --with-defaults-root=$HOME
 ],
+FORCE_DEFAULTS_ROOT="-DFORCE_DEFAULTS_ROOT=$withval"
 GNUSTEP_DEFAULTS_ROOT="$withval",
+FORCE_DEFAULTS_ROOT=""
 GNUSTEP_DEFAULTS_ROOT=""
 )
+AC_SUBST(FORCE_DEFAULTS_ROOT)
 AC_MSG_RESULT($GNUSTEP_DEFAULTS_ROOT)
 
 AC_SUBST(GNUSTEP_LOCAL_ROOT)

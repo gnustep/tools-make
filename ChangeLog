@@ -1,3 +1,10 @@
+2002-02-28 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.in: setup variables to force particular paths for user
+	and defaults roots.
+	* config.make.in: pass configured forced paths on to build process
+	* common.make: use path forcing.
+
 Thu Feb 28 18:27:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (PRINCIPAL_CLASS): Do not pass down

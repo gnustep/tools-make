@@ -73,6 +73,10 @@ default_library_combo = @ac_cv_library_combo@
 # Backend bundle
 BACKEND_BUNDLE=@BACKEND_BUNDLE@
 
+FORCE_DEFAULTS_ROOT=@FORCE_DEFAULTS_ROOT@
+
+FORCE_USER_ROOT=@FORCE_USER_ROOT@
+
 #
 # Do threading stuff.
 #
