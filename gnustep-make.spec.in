@@ -1,145 +1,95 @@
+#
+# This file is to be manually edited
+#
 # This package is not relocatable
-%define ver	@GNUSTEP_MAKE_VERSION@
-%define date	@DATE@
-%define prefix 	/usr
-%define gir 	%{prefix}/GNUstep
-%define gsr 	%{prefix}/GNUstep/System
-%define libcombo gnu-gnu-gnu-xgps
-Name: 		gnustep-make
-Version: 	%{ver}
+#
+%define gs_version	@GNUSTEP_MAKE_VERSION@
+%define gs_name         gnustep-make
+%define gs_prefix 	/usr/GNUstep
+%define libcombo        gnu-gnu-gnu-xgps
+#
+Name: 		%{gs_name}
+Version: 	%{gs_version}
 Release: 	1
-Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/gstep-make-%{ver}.tar.gz
+Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/%{gs_name}-%{gs_version}.tar.gz
 Copyright: 	GPL
 Group: 		System Environment/Base
 Summary: 	GNUstep Makefile package
 Packager:	Adam Fedor <fedor@gnu.org>
-Distribution:	The GNUstep Project Presents (%{_buildsym})
 Vendor:		The GNUstep Project
 URL:		http://www.gnustep.org/
-BuildRoot: 	/var/tmp/build-%{name}
-Conflicts:	gnustep-core
+BuildRoot: 	/var/tmp/build-%{gs_name}
+#
+# NB: This package is configured for use with:
+#
+# libxml.so.2 >= 2.2.3
+# openssl => 0.9.5
+# libwraster
+# libtiff
+# <FIXME: Fill in all the requirements>
+#
+# `Requires' lines for this packages have to be included into gnustep-base 
+# gnustep-gui and gnustep-xgps.  Also, gnustep-base, gnustep-gui and 
+# gnustep-xgps have to be packaged at the same time as this gnustep-make, 
+# and must depend on this version of gnustep-make.
+#
+# We don't add the Requires here because - while the thing is configured 
+# for those libraries - it doesn't need them - gnustep-base, gnustep-xgps 
+# etc will need them - and we don't want to force people to install 
+# eg gui libraries if they are only going to use gnustep-base.
+#
 
 %description
-This package contains the basic tools needed to run GNUstep applications.
-Library combo is %{libcombo}.
-%{_buildblurb}
-
-%package devel
-Summary: Files needed to develop applications with gnustep-make
-Group: Development/Tools
-Requires: %{name} = %{ver}
-
-%description devel 
-The makefile package is a simplistic, powerful and extensible way to
-write makefiles for a GNUstep-based project.  It allows the user to
-write a GNUstep-based project without having to deal with the complex
-issues associated with the configuration and installation of the core
-GNUstep libraries.  It also allows the user to easily create
-cross-compiled binaries.
-Library combo is %{libcombo}.
-%{_buildblurb}
+This package contains the basic scripts, makefiles and directory layout
+needed to run and compile any GNUstep software.  This package was configured
+for library combo %{libcombo}.
 
 %prep
-%setup -q -n gstep-%{ver}/make
+%setup -n %{gs_name}-%{gs_version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gir} --with-library-combo=%{libcombo}
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%{libcombo}
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make install prefix=${RPM_BUILD_ROOT}%{gsr}
-
-tmp1=`./config.guess`
-tmp2=`./cpu.sh $tmp1`
-tmp3=`./vendor.sh $tmp1`
-tmp4=`./os.sh $tmp1`
-tmp5=`./clean_cpu.sh $tmp2`
-tmp6=`./clean_vendor.sh $tmp3`
-tmp7=`./clean_os.sh $tmp4`
+make install prefix=${RPM_BUILD_ROOT}%{gs_prefix}/System
 
 %ifos Linux
 mkdir -p ${RPM_BUILD_ROOT}/etc/profile.d
-# Create profile files
-cat > mygnustep.sh << EOF
-#!/bin/sh
-. %{gsr}/Makefiles/GNUstep.sh
-EOF
 
-cat > mygnustep.csh << EOF
-#!/bin/csh
-source %{gsr}/Makefiles/GNUstep.csh
-EOF
+# Create profile files
+
+echo "#!/bin/sh" > mygnustep.sh
+echo ". %{gs_prefix}/System/Makefiles/GNUstep.sh" >> mygnustep.sh
+
+echo "#!/bin/csh" > mygnustep.csh
+echo "source %{gs_prefix}/System/Makefiles/GNUstep.csh" >> mygnustep.csh
 
 chmod 755 mygnustep.*
 mv mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
 mv mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
-%endif
-
-cat > filelist.rpm.in << EOF
-%defattr (-, bin, bin)
-%doc COPYING INSTALL NEWS README
-%ifos Linux
-%config /etc/profile.d/GNUstep.csh
-%config /etc/profile.d/GNUstep.sh
-%endif
-
-%dir %{gir}
-%dir %{gsr}
-%dir %{gsr}/share
-%dir %{gsr}/Apps
-%dir %{gsr}/Makefiles
-%dir %{gsr}/Makefiles/GSARCH
-%dir %{gsr}/Makefiles/GSARCH/GSOS
-%dir %{gsr}/Library
-%dir %{gsr}/Library/Colors
-%dir %{gsr}/Library/PostScript
-%dir %{gsr}/Library/Services
-%dir %{gsr}/Documentation/Developer
-%dir %{gsr}/Documentation/User
-%dir %{gsr}/Documentation/info
-%dir %{gsr}/Documentation/man
-%dir %{gsr}/Tools
-%dir %{gir}/Local
-%dir %{gir}/Local/Users
-%dir %{gir}/Local/Users/Administrator
-%dir %{gir}/Network
-
-%{gsr}/Makefiles/config*
-%{gsr}/Makefiles/*.csh
-%{gsr}/Makefiles/*.sh
-%{gsr}/Makefiles/GSARCH/GSOS/which_lib
-
-%{gsr}/Tools/debugapp
-%{gsr}/Tools/openapp
-%{gsr}/Tools/opentool
-
-EOF
-
-cat > filelist-devel.rpm.in << EOF
-%defattr (-, bin, bin)
-%config %{gsr}/share/config.site
-%config %{gsr}/Makefiles/GSARCH/GSOS/config.make
-
-%{gsr}/Makefiles/*.func
-%{gsr}/Makefiles/*.make
-%{gsr}/Makefiles/*.template
-%{gsr}/Makefiles/*.in
-%{gsr}/Makefiles/install-sh
-%{gsr}/Makefiles/mkinstalldirs
-
-EOF
-
-sed -e "s|GSARCH|${tmp5}|" -e "s|GSOS|${tmp7}|" < filelist.rpm.in > filelist.rpm
-sed -e "s|GSARCH|${tmp5}|" -e "s|GSOS|${tmp7}|" < filelist-devel.rpm.in > filelist-devel.rpm
+%endif # Linux
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files -f filelist.rpm
-%files -f filelist-devel.rpm devel
+%files
+%defattr (-, root, root)
+
+# Well - this is the simplest trick you could think of.  We include in
+# the package everything which was installed inside /usr/GNUstep/
+%{gs_prefix}
+
+# Add the profiles for linux as configuration files <FIXME gdomap etc>
+%ifos Linux
+%config /etc/profile.d/GNUstep.sh
+%config /etc/profile.d/GNUstep.csh
+%endif # Linux
 
 %changelog
+* Wed Jan 17 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+- Updated; heavily simplified and mostly rewritten
+
 * Sat Sep 18 1999 Christopher Seawood <cls@seawood.org>
 - Version 0.6.0
 - Added nodupsh patch
