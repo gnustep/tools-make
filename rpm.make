@@ -296,7 +296,7 @@ $(SPEC_FILE): $(SPEC_IN)
 	@echo "Name: %{gs_name}$(PACKAGE_EXTENSION)" >> $@
 	@echo "Version: %{gs_version}" >> $@
 	@echo "BuildRoot: /var/tmp/%{gs_name}-buildroot" >> $@
-	@ if [ "$(RPM_DISABLE_RELOCATABLE)" != "yes" ]; then \
+	@ if [ "$(RPM_DISABLE_RELOCATABLE)" != "YES" ]; then \
 	    echo "Prefix: %{gs_install_dir}" >> $@;          \
 	  fi
 	@ if [ "$(debug)" = "yes" ]; then                          \
