@@ -290,8 +290,8 @@ ifneq ($(HEADER_FILES),)
 endif
 endif
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME); \
-	$(TAR) ch --exclude=$(BUNDLE_DIR_NAME)/Contents/Resources \
-	          --to-stdout $(BUNDLE_DIR_NAME) \
+	$(TAR) chf - --exclude=$(BUNDLE_DIR_NAME)/Contents/Resources \
+	             $(BUNDLE_DIR_NAME) \
 	    | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -); \
 	(cd $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)/Contents; \
 	    rm -f Resources; $(LN_S) ../Resources .)
