@@ -365,6 +365,13 @@ ifeq ($(JAVAC),)
 JAVAC = javac
 endif
 
+#
+# The Java Header Compiler.  
+#
+ifeq ($(JAVAH),)
+JAVAH = javah
+endif
+
 ## Local variables:
 ## mode: makefile
 ## End:
