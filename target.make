@@ -264,20 +264,20 @@ ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
 HAVE_SHARED_LIBS        = yes
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
-        $(SHARED_LD) -x -Bshareable -Bforcearchive \
+        $(SHARED_LD) -r -x -Bshareable -Bforcearchive \
            -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
         (cd $(GNUSTEP_OBJ_DIR); \
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
-SHARED_CFLAGS   += -fPIC
+SHARED_CFLAGS   += -fpic -fPIC -shared
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= gcc
-BUNDLE_CFLAGS   += -fPIC
+#BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
-ADDITIONAL_LDFLAGS += -rdynamic
+#ADDITIONAL_LDFLAGS += -rdynamic
 endif
 #
 # end NetBSD

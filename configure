@@ -1455,8 +1455,8 @@ done
 # Find for DPS
 #--------------------------------------------------------------------
 if test -f clean_cpu.sh; then
-  transformed_host_cpu=`clean_cpu.sh $host_cpu`
-  transformed_target_cpu=`clean_cpu.sh $target_cpu`
+  transformed_host_cpu=`./clean_cpu.sh $host_cpu`
+  transformed_target_cpu=`./clean_cpu.sh $target_cpu`
 else if test -f ${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_cpu.sh; then
   transformed_host_cpu=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_cpu.sh $host_cpu`
   transformed_target_cpu=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_cpu.sh $target_cpu`
@@ -1464,8 +1464,8 @@ fi
 fi
 
 if test -f clean_os.sh; then
-  transformed_host_os=`clean_os.sh $host_os`
-  transformed_target_os=`clean_os.sh $target_os`
+  transformed_host_os=`./clean_os.sh $host_os`
+  transformed_target_os=`./clean_os.sh $target_os`
 else if test -f ${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_os.sh; then
   transformed_host_os=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_os.sh $host_os`
   transformed_target_os=`${GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_os.sh $target_os`

@@ -1,3 +1,8 @@
+Mon Nov  9 16:34:20 1998  Adam Fedor  <fedor@doc.com>
+
+	* configure.in: Don't assume . in path (Fix from Christopher
+	Seawood <cls@seawood.org>).
+
 Fri Nov  6 13:15:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
 	* target.make: If objc library built with threads, assume we need to
