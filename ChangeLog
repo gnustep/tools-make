@@ -1,3 +1,9 @@
+Tue Jun 25 18:52:51 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* opentool.in: Rewritten parsing of parameters adding support for
+	the --library-combo switch.  Changed inline help to put
+	--library-combo=... before the tool name.
+	
 Wed Jun 19 15:39:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (internal-distclean): Reverted last change.
