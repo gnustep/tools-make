@@ -1,3 +1,24 @@
+Wed Jan 17 10:29:22 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rpm.make ($(SPEC_FILE)): Add line to set %{gs_configure} to YES
+	or NO in the rpm spec file according to PACKAGE_NEEDS_CONFIGURE
+	variable.
+	* spec-rules.template: Run configure if %{gs_configure} is YES.
+	* spec-debug-rules.template: Idem.
+	* spec-debug-alone-rules.template: Idem.
+
+	* source-distribution.make (tgz): Added a dependency of `tgz' from
+	`distclean'.
+	* rpm.make (rpm): Build tgz - which involves a make distclean -
+	before specfile.
+
+	* spec-debug-rules.template (%install): Fixed generation of non
+	debugging file list; fixed and uncommented filtering of debugging
+	file list through the non debugging one.
+
+	* rpm.make ($(PACKAGE_NAME)-debug.spec.in): Do not any longer 
+	generate it from the non debugging one.
+	
 Tue Jan 16 19:52:58 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* aggregate.make: Fixed to work with empty $(SUBPROJECTS) as well.
