@@ -78,13 +78,17 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
   temp_path=$temp_path$dir/Tools:
   temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
 done
-PATH=$temp_path$PATH
 IFS="$tmp_IFS"
+if ( echo ${PATH}|fgrep -v "${temp_path}" >/dev/null ); then
+  PATH=$temp_path$PATH
+fi
 
 if [ -z "$MANPATH" ]; then
   MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:/usr/local/man:/usr/man
 else
-  MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:${MANPATH}
+  if ( echo ${MANPATH}|fgrep -v "${GNUSTEP_SYSTEM_ROOT}/Library/man" >/dev/null ); then
+    MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:${MANPATH}
+  fi
 fi
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh

@@ -1,7 +1,9 @@
 Fri Sep 24 19:30:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
-	* GNUstep.sh.in: Fix so that paths are set up correctly again.
-	* GNUstep.csh.in: ditto.
+	* GNUstep.csh.in: Fix so that paths are set up correctly again.
+	* GNUstep.sh.in: Fix so that paths are set up correctly again and
+	add checks to try to avoid duplicating information in paths.
+	* ld_lib_path.sh: Add checks to try to avoid duplication in path.
 
 Mon Sep 20  9:40:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
