@@ -71,9 +71,9 @@ ALL_TOOL_LIBS := \
 # Compilation targets
 #
 internal-tool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME) after-$(TARGET)-all
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) after-$(TARGET)-all
 
-$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$@ \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
@@ -88,11 +88,11 @@ internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs $(TOOL_INSTALLATION_DIR)
 
 install-tool::
-	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME) \
+	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
 	    $(TOOL_INSTALLATION_DIR);
 
 internal-tool-uninstall::
-	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)
+	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)
 
 #
 # Cleaning targets

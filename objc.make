@@ -71,7 +71,7 @@ ALL_OBJC_LIBS := \
 # Internal targets
 #
 
-$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME): \
+$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT): \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$@ \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
@@ -81,7 +81,7 @@ $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME): \
 # Compilation targets
 #
 internal-objc_program-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME) after-$(TARGET)-all
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT) after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -94,7 +94,7 @@ internal-install-objc-dirs::
 
 install-objc_program::
 	$(INSTALL_PROGRAM) -m 0755 \
-	    $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME) \
+	    $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT) \
 	    $(OBJC_PROGRAM_INSTALLATION_DIR);
 
 #

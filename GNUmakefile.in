@@ -54,9 +54,9 @@ INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
 
-all: generated-files which_lib
+all: generated-files which_lib$(EXEEXT)
 
-which_lib: which_lib.c
+which_lib$(EXEEXT): which_lib.c
 	$(CC) -O2 -Wall -o $@ $^
 
 install: all
@@ -75,7 +75,7 @@ install: all
 		$(prefix)/Library/PostScript \
 		$(prefix)/Library/Services \
 		$(prefix)/Library/man
-	$(INSTALL_PROGRAM) -m 755 which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
+	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
@@ -96,7 +96,7 @@ install: all
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
-	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib
+	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib$(EXEEXT)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
@@ -117,7 +117,7 @@ uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
 
 clean:
-	rm -f *~ which_lib
+	rm -f *~ which_lib$(EXEEXT)
 
 distclean: clean
 	rm -f GNUmakefile config.make
