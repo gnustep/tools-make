@@ -1,3 +1,17 @@
+Fri Feb 22 12:38:59 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* tool.make: Broken into Master and Instance.
+	* Instance/tool.make: New file.
+	* Master/tool.make: New file.
+
+	* test-tool.make: Broken into Master and Instance.
+	* Instance/test-tool.make: New file.
+	* Master/test-tool.make: New file.
+
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added test-tool.make 
+	and tool.make
+	(INSTANCE_MAKE_FILES): Idem.
+	
 Fri Feb 22 12:33:13 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/test-application.make: Use test-app, not testapp, as
