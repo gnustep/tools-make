@@ -37,7 +37,6 @@ if [ -z "$host_os" ]; then
 fi
 
 
-
 old_IFS="$IFS"
 IFS=:
 lib_paths=
@@ -60,7 +59,7 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
   unset path_fragment
 
 done
-IFS="$tmp_IFS"
+IFS="$old_IFS"
 unset old_IFS
 unset dir
 
@@ -143,7 +142,7 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
   fi
 
 done
-IFS="$tmp_IFS"
+IFS="$old_IFS"
 unset old_IFS
 unset dir
 
