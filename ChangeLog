@@ -1,3 +1,12 @@
+Tue Jul 25 15:01:43 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Added support to build jni headers from java classes.
+	* rules.make: Added rules to build jni headers from java classes
+	using JAVAH; added JAVA_JNI_OBJ_FILES, JAVA_JNI_OBJS; added
+	ALL_JAVAHFLAGS.
+	* java.make (internal-java_package-all): Build also JAVA_JNI_FILES
+	(internal-java_package-clean): Remove the jni headers too.
+	
 2000-07-21  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUmakefile.in: Use C version of which_lib exclusively.
