@@ -38,7 +38,11 @@ fi`)
 #--------------------------------------------------------------------
 AC_CANONICAL_SYSTEM
 
-AC_SUBST(program_suffix)
+EXEEXT=
+if test "$program_suffix" != "NONE"; then
+  EXEEXT=$program_suffix 
+fi
+AC_SUBST(EXEEXT)
 
 #--------------------------------------------------------------------
 # Find the binary and compile tools

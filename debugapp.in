@@ -28,7 +28,7 @@ if [ -z "$1" ]; then
 fi
 
 if [ -z "$EXEEXT" ]; then
-  EXEEXT=@program_suffix@
+  EXEEXT=@EXEEXT@
 fi
 if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
