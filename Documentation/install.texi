@@ -71,6 +71,7 @@ compile, and also when you install).
 * Backend Bundles::             
 * Alternate Libraries::         
 * Alternate Thread Library::    
+* Warnings for deprecated #import::
 * Cross-Compiling::             
 * Flat Structure::              
 @end menu
@@ -102,7 +103,7 @@ with-library-combo option.
 to compile with Apple's (NexT's) runtime on Darwin, for example. See the DESIGN
 document for more examples of the variety of library combos.
 
-@node Alternate Thread Library, Cross-Compiling, Alternate Libraries, Configuration
+@node Alternate Thread Library, Warnings for deprecated #import, Alternate Libraries, Configuration
 @subsection Alternate Thread Library
 
 You can specify compilation of an alternate thread library from the one that
@@ -123,7 +124,27 @@ to set compiler flags, use the CFLAGS variable when calling configure:
 CFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
 @end example
 
-@node Cross-Compiling, Flat Structure, Alternate Thread Library, Configuration
+@node Warnings for deprecated #import, Cross-Compiling, Alternate Thread Library, Configuration
+@subsection Warnings for deprecated #import
+
+The #import directive, often found in legacy Objective-C code from the
+NeXTstep and OpenStep era, is deprecated.  You should use #include
+instead whenever possible, and even if you use #import, you should
+protect all your headers against multiple inclusions.  The GCC compiler
+automatically emits a warning whenever you use #import.  For political
+and historical reasons (basically for fear of annoying legacy users),
+these warnings are disabled by gnustep-make.  But if you are not a
+legacy user and/or you want to make sure your Objective-C code is not
+using any deprecated feature, you should configure gnustep-make with
+--disable-import:
+@example
+./configure --disable-import
+@end example
+If you are a legacy user, and wonder why #import is deprecated, please
+search the web and the GCC and GNUstep mailing list archives - there are
+very precise and sound technical reasons.
+
+@node Cross-Compiling, Flat Structure, Warnings for deprecated #import, Configuration
 @subsection Configuring the GNUstep makefile package for a cross-compile target
 
 By default when you run configure, it assumes that you want to create
