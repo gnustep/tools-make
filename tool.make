@@ -141,11 +141,12 @@ internal-install-dirs:: $(TOOL_INSTALLATION_DIR)
 $(TOOL_INSTALLATION_DIR):
 	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
 
-ifeq ($(GNUSTEP_FLATTENED),)
+
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 \
 		$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
-		$(TOOL_INSTALLATION_DIR);
+		$(TOOL_INSTALLATION_DIR)
+ifeq ($(GNUSTEP_FLATTENED),)
 ifeq ($(FRAMEWORK_NAME),)
 	cp $(GNUSTEP_MAKEFILES)/executable.template \
 	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
@@ -155,11 +156,6 @@ else
 	   $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME); \
 	chmod a+x $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME);
 endif
-else
-install-tool::
-	$(INSTALL_PROGRAM) -m 0755 \
-		$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
-		$(TOOL_INSTALLATION_DIR)
 endif
 
 internal-tool-uninstall::
