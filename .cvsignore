@@ -2,7 +2,7 @@ config.log
 config.make
 config.cache
 which_lib
-which_lib.pl
+user_home
 GNUmakefile
 GNUstep.sh
 GNUstep.csh
