@@ -1,3 +1,10 @@
+Mon Jul  9 17:58:33 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* objc.make (.PHONY): Added.
+	(internal-install-objc-dirs): Removed.
+	(internal-objc_program-clean): Do not remove $(OBJC_PROGRAM_NAME)
+	because it is not built.
+
 Mon Jul  9 17:46:02 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* library.make (.PHONY): Added.
