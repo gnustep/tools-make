@@ -124,7 +124,7 @@ fi
 CPPFLAGS="${CPPFLAGS} ${X_INCLUDE}"
 
 # We care about this header file on the target not host system
-AC_HAVE_HEADERS(DPS/dpsclient.h, DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=0',
+AC_HAVE_HEADERS(DPS/dpsclient.h, DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=1',
 	DPS_DEFINE=' -DHAVE_DPS_CLIENT_H=0')
 AC_HAVE_HEADERS(DPS/dpsNXargs.h, 
 	DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS_H=1",
