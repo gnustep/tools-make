@@ -1,3 +1,8 @@
+Sun Jan  9 00:16:15 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Create directory
+ 	$(prefix)/Library/Colors to store color lists.
+
 Fri Jan  7  6:05:00 2000  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* application.make: use xxx_PRINCIPAL_CLASS to override the value
