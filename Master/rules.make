@@ -237,7 +237,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   MAIN_MODEL_FILE="$($(basename $(basename $*))_MAIN_MODEL_FILE)" \
   RESOURCE_DIRS="$($(basename $(basename $*))_RESOURCE_DIRS)" \
   BUNDLE_LIBS="$($(basename $(basename $*))_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
-  PALETTE_ICON="$($(basename $(basename $*))_PALETTE_ICON)" \
   PRINCIPAL_CLASS="$($(basename $(basename $*))_PRINCIPAL_CLASS)" \
   DLL_DEF="$($(basename $(basename $*))_DLL_DEF)" \
   ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
