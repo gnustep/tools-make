@@ -218,46 +218,70 @@ MAKEFILE_NAME = GNUmakefile
 endif
 
 # Now prepare the library and header flags - we first prepare the list
-# of directories, then optionally remove the empty ones, then prepend
-# -I / -L to them.
+# of directories (trying to avoid duplicates in the list), then
+# optionally remove the empty ones, then prepend -I / -L to them.
 ifeq ($(GNUSTEP_FLATTENED),)
 
-GNUSTEP_HEADERS_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR)\
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR)\
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR)\
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)
+# The following variables have to be evaluated after setting dir to
+# something, such as GNUSTEP_USER_ROOT.  When you evaluate them in
+# that situation, they will generate paths according to the following
+# definition.  Later, we'll systematically replace dir with
+# GNUSTEP_USER_ROOT, the GNUSTEP_LOCAL_ROOT, then
+# GNUSTEP_NETWORK_ROOT, then GNUSTEP_SYSTEM_ROOT.
+GS_HEADER_PATH = \
+ $(dir)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR) \
+ $(dir)/Library/Headers/$(LIBRARY_COMBO)
 
-GNUSTEP_LIBRARIES_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  $(GNUSTEP_USER_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_DIR) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_DIR)
+GS_LIBRARY_PATH = \
+ $(dir)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
+ $(dir)/Library/Libraries/$(GNUSTEP_TARGET_DIR)
 
-else # GNUSTEP_FLATTENED
+else
 
-GNUSTEP_HEADERS_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Headers \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers
+# In the flattened case, the paths to generate are considerably simpler.
 
-GNUSTEP_LIBRARIES_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Libraries \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Libraries \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Libraries \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Libraries
+GS_HEADER_PATH = $(dir)/Library/Headers
+GS_LIBRARY_PATH = $(dir)/Library/Libraries
 
-endif # GNUSTEP_FLATTENED
+endif
 
+# First, we add paths based on GNUSTEP_USER_ROOT.
+
+# Please note that the following causes GS_HEADER_PATH to be evaluated
+# with the variable dir equal $(GNUSTEP_USER_ROOT), which gives the
+# effect we wanted.
+GNUSTEP_HEADERS_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_HEADER_PATH))
+GNUSTEP_LIBRARIES_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_LIBRARY_PATH))
+
+# Second, if GNUSTEP_LOCAL_ROOT is different from GNUSTEP_USER_ROOT
+# (which has already been added), we add the paths based on
+# GNUSTEP_LOCAL_ROOT too.
+ifneq ($(GNUSTEP_LOCAL_ROOT), $(GNUSTEP_USER_ROOT))
+GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_HEADER_PATH))
+GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_LIBRARY_PATH))
+endif
+
+# Third, if GNUSTEP_NETWORK_ROOT is different from GNUSTEP_USER_ROOT and
+# GNUSTEP_LOCAL_ROOT (which have already been added), we add the paths
+# based on GNUSTEP_NETWORK_ROOT too.
+ifneq ($(GNUSTEP_NETWORK_ROOT), $(GNUSTEP_USER_ROOT))
+ifneq ($(GNUSTEP_NETWORK_ROOT), $(GNUSTEP_LOCAL_ROOT))
+GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_HEADER_PATH))
+GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_LIBRARY_PATH))
+endif
+endif
+
+# Last, if GNUSTEP_SYSTEM_ROOT is different from GNUSTEP_USER_ROOT,
+# GNUSTEP_LOCAL_ROOT and GNUSTEP_NETWORK_ROOT (which have already been
+# added), we add the pathe paths based on GNUSTEP_SYSTEM_ROOT too.
+ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_USER_ROOT))
+ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_LOCAL_ROOT))
+ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_NETWORK_ROOT))
+GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_HEADER_PATH))
+GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_LIBRARY_PATH))
+endif
+endif
+endif
 
 ifeq ($(REMOVE_EMPTY_DIRS),yes)
  # This variable, when evaluated, gives $(dir) if dir is non-empty, and
@@ -548,7 +572,3 @@ unexport GNUSTEP_INSTANCE
 unexport GNUSTEP_TYPE
 
 endif # COMMON_MAKE_LOADED
-
-## Local variables:
-## mode: makefile
-## End:
