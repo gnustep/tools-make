@@ -756,17 +756,21 @@ endif
 # NetBSD ELF
 #
 ifeq ($(findstring netbsdelf, $(GNUSTEP_TARGET_OS)), netbsdelf)
-HAVE_SHARED_LIBS	= yes
+HAVE_SHARED_LIBS    = yes
+SHARED_LD_POSTFLAGS = -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+              -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
+                 $^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+                 $(SHARED_LD_POSTFLAGS); \
 	(cd $(GNUSTEP_OBJ_DIR); \
 	  rm -f $(LIBRARY_FILE); \
 	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 SHARED_FRAMEWORK_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	   -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ ;\
+           -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
+              $^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+                 $(SHARED_LD_POSTFLAGS); \
 	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
 	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
 	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
@@ -782,9 +786,10 @@ HAVE_BUNDLES	= yes
 BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
-ADDITIONAL_LDFLAGS += -rdynamic
+ADDITIONAL_LDFLAGS += -rdynamic -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
+ADDITIONAL_INCLUDE_DIRS += -I/usr/pkg/include
 ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
+ADDITIONAL_LDFLAGS += -static -L/usr/pkg/lib
 endif
 endif
 #
