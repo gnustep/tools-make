@@ -176,16 +176,42 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 
+# FIXME: Missing dependency on $(GNUSTEP_INSTANCE)Info.plist files
+
+# You can have a single xxxInfo.plist for both GNUstep and Apple if
+# you put in it all fields required by both GNUstep and Apple; they
+# differ at the moment.
+
+# On Apple we assume that xxxInfo.plist has a '{' (and nothing else)
+# on the first line, and the rest of the file is a plain property list
+# dictionary.  You must make sure your xxxInfo.plist is in this format
+# to use it on Apple.
+
+# The problem is, we need to add the automatically generated entries
+# to this custom dictionary on Apple - to do that, we generate '{'
+# followed by the custom entries, followed by xxxInfo.plist (with the
+# first line removed), or by '}'.  NB: "sed '1d' filename" prints out
+# filename, except the first line.
+
+# On GNUstep we use plmerge which is much slower, but should probably
+# be safer, because as soon as xxxInfo.plist is in plist format, it
+# should always work (even if the first line is not just a '{' and
+# nothing else).
+
 ifeq ($(FOUNDATION_LIB), apple)
 $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
-	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
+	    echo "  CFBundleIconFile = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
+	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	    sed '1d' "$(GNUSTEP_INSTANCE)Info.plist"; \
+	  else \
+	    echo "}"; \
+	  fi) > $@
 else
 $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -196,9 +222,9 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
-	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
-	   plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
-	 fi
+	 @if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	   plmerge $@ "$(GNUSTEP_INSTANCE)Info.plist"; \
+	  fi
 endif
 
 $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
