@@ -99,14 +99,11 @@ endif
 endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )
 
 #
-# Set the Java CLASSPATH  (i haven't tested this csh version yet)
 #
-if ( ! ${?CLASSPATH} ) then
-  setenv MY_CLASSPATH .
-else
-  setenv MY_CLASSPATH ${CLASSPATH}:.
-endif
+#
+set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
 
-setenv CLASSPATH ${GNUSTEP_SYSTEM_ROOT}/Java/:${GNUSTEP_USER_ROOT}/Java/:${GNUSTEP_LOCAL_ROOT}/Java/:${GNUSTEP_NETWORK_ROOT}/Java/:${MY_CLASSPATH}
+setenv CLASSPATH "${CLASSPATH}:${gnustep_class_path}"
 
-unsetenv MY_CLASSPATH
+#
+#
