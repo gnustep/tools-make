@@ -50,7 +50,7 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%
 make
 
 %install
-make install prefix=${RPM_BUILD_ROOT}%{gs_prefix}/System
+make install special_prefix=${RPM_BUILD_ROOT}
 
 %ifos Linux
 mkdir -p ${RPM_BUILD_ROOT}/etc/profile.d
@@ -112,6 +112,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Mon Feb 19 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+- Updated for new special_prefix option
+	
 * Wed Jan 17 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 - Updated; heavily simplified and mostly rewritten
 

@@ -34,7 +34,7 @@ install: build
 	dh_testroot
 	dh_clean -k
 	dh_installdirs
-	$(MAKE) install prefix=$(tmpdir)/$(prefix)/System
+	$(MAKE) install special_prefix=$(tmpdir)
 
 # Build architecture-independent files here.
 binary-indep: build install
@@ -68,3 +68,4 @@ binary-arch: build install
 
 binary: binary-indep binary-arch
 .PHONY: build clean binary-indep binary-arch binary install
+
