@@ -2,8 +2,7 @@
 #
 #   ld_lib_path.sh
 #
-#   Return the name of the environment variable for the operating
-#   system that is used by the dynamic loader.
+#   Set up the LD_LIBRARY_PATH (or similar env variable for your system)
 #
 #   Copyright (C) 1997,1999 Free Software Foundation, Inc.
 #
