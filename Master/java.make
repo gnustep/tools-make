@@ -41,7 +41,7 @@ internal-uninstall:: $(JAVA_PACKAGE_NAME:=.uninstall.java-package.variables)
 
 internal-clean:: $(JAVA_PACKAGE_NAME:=.clean.java-package.variables)
 
-internal-distclean:: $(JAVA_PACKAGE_NAME:=.distclean.java-package.variables)
+internal-distclean:: $(JAVA_PACKAGE_NAME:=.distclean.java-package.subprojects)
 
 $(JAVA_PACKAGE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \

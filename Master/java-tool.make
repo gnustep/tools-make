@@ -46,7 +46,7 @@ internal-uninstall:: $(JAVA_TOOL_NAME:=.uninstall.java_tool.variables)
 
 internal-clean:: $(JAVA_TOOL_NAME:=.clean.java_tool.variables)
 
-internal-distclean:: $(JAVA_TOOL_NAME:=.distclean.java_tool.variables)
+internal-distclean:: $(JAVA_TOOL_NAME:=.distclean.java_tool.subprojects)
 
 $(JAVA_TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
