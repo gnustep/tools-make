@@ -20,8 +20,8 @@ Sun Mar 18 16:19:49 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 	* service.make: Define GNUSTEP_MAKE_SERVICES to be make_services
 	if not yet set.
 	($(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist): Use
-	$(MAKE_SERVICES) rather than `opentool make_services' to run 
-	make_services.
+	$(GNUSTEP_MAKE_SERVICES) rather than `opentool make_services' to
+	run make_services.
 	* application.make: Do not use opentool when running plmerge.
 	* common.make: Warn the user if PATH is not set up correctly.
 	
