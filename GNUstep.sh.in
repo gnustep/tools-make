@@ -222,6 +222,7 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
 done
 IFS="$tmp_IFS"
 unset tmp_IFS
+unset dir
 
 if [ -z "$CLASSPATH" ]; then
   CLASSPATH="$gnustep_class_path"
