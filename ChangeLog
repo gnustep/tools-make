@@ -1,3 +1,10 @@
+Sun Sep 30 13:46:38 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* test-library.make ($(SCRIPTS_DIRECTORY)/config/unix.exp): Do not
+	use GNUSTEP_SYSTEM_LIBRARIES_ROOT or similar variables considered
+	internal to common.make; use the obvious replacement
+	$(GNUSTEP_SYSTEM_ROOT)/Libraries and similar instead.
+
 Sun Sep 30 13:36:43 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: (GNUSTEP_SYSTEM_FRAMEWORKS_TARGET_LIBRARIES):
