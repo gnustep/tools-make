@@ -1,3 +1,7 @@
+2004-09-07  Adam Fedor  <fedor@gnu.org>
+
+	* Version 1.10.0
+
 Tue Sep  7 12:48:31 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (SHARED_LIB_LINK_CMD): Removed -prebind flag.
