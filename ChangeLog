@@ -1,3 +1,8 @@
+Fri Jul 28 14:45:21 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* jni.make: New file to be included when compiling JNI projects.
+	* GNUmakefile.in (MAKE_FILES): Added jni.make.
+
 Fri Jul 28 12:17:02 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make: Set INTERNAL_JAVACFLAGS and INTERNAL_JAVAHFLAGS to
