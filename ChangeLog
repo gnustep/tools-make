@@ -1,3 +1,7 @@
+1999-06-24  Adam Fedor  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* common.make: include -Wall when building for debug
+
 1999-06-16  Adam Fedor  <fedor@gnu.org>
 
 	* executable.template.in: Add double quotes around $@ to quote
