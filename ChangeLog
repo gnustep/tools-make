@@ -1,3 +1,9 @@
+Sun Jan 27 11:39:38 2002  Gregory John Casamento  <greg_casamento@yahoo.com>
+
+	* library.make: A minor correction was necessary.  The definition 
+	of SOVERSION in library.make was missing a right paren which was 
+	causing the build to fail when creating shared libraries.   
+	
 Sat Jan 26 15:02:49 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* library.make: Recognize xxx_SOVERSION to be used to override the
