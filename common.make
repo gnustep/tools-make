@@ -143,7 +143,10 @@ endif # code used when FOUNDATION_LIB != nx
 
 endif # End of sanity checks run only at makelevel 0
 
-
+#
+# Get standard messages
+#
+include $(GNUSTEP_MAKEFILES)/messages.make
 
 #
 # Get flags/config options for core libraries
