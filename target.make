@@ -295,7 +295,7 @@ endif
 #
 # FreeBSD ELF
 #
-ifeq ($(findstring freebsd3, $(GNUSTEP_TARGET_OS)), freebsd3)
+ifeq ($(findstring freebsdelf, $(GNUSTEP_TARGET_OS)), freebsdelf)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
