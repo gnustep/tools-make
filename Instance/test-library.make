@@ -83,14 +83,14 @@ ALL_TEST_LIBRARY_LIBS =						\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-internal-testlib-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_testlib_NAME) after-$(TARGET)-all
+internal-testlib-all:: before-$(GNUSTEP_INSTANCE)-all $(GNUSTEP_OBJ_DIR) \
+	$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE) after-$(GNUSTEP_INSTANCE)-all
 
-before-$(TARGET)-all::
+before-$(GNUSTEP_INSTANCE)-all::
 
-after-$(TARGET)-all::
+after-$(GNUSTEP_INSTANCE)-all::
 
-$(GNUSTEP_OBJ_DIR)/$(INTERNAL_testlib_NAME): $(OBJ_FILES_TO_LINK)
+$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@	\
 		$(OBJ_FILES_TO_LINK)		\
 		$(ALL_TEST_LIBRARY_LIBS)
@@ -107,10 +107,10 @@ really-testlib-check:
 		. $(GNUSTEP_MAKEFILES)/ld_lib_path.sh; \
 	for f in $(CHECK_SCRIPT_DIRS); do \
 	  if [ "$(SCRIPTS_DIRECTORY)" != "" ]; then \
-	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(INTERNAL_testlib_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)"; \
-	    (cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(INTERNAL_testlib_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)); \
+	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)"; \
+	    (cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)); \
 	  else \
-	    runtest --tool $$f --srcdir . PROG=./$(INTERNAL_testlib_NAME) \
+	    runtest --tool $$f --srcdir . PROG=./$(GNUSTEP_INSTANCE) \
 		  $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS); \
 	  fi; \
 	done)

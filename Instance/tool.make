@@ -39,8 +39,8 @@ endif
 .PHONY: internal-tool-all       \
         internal-tool-install   \
         internal-tool-uninstall \
-        before-$(TARGET)-all    \
-        after-$(TARGET)-all     \
+        before-$(GNUSTEP_INSTANCE)-all    \
+        after-$(GNUSTEP_INSTANCE)-all     \
         internal-install-dirs   \
         install-tool 
 
@@ -78,23 +78,23 @@ endif
 #
 # Compilation targets
 #
-internal-tool-all:: before-$(TARGET)-all \
+internal-tool-all:: before-$(GNUSTEP_INSTANCE)-all \
                     $(GNUSTEP_OBJ_DIR) \
-                    $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
-                    after-$(TARGET)-all
+                    $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
+                    after-$(GNUSTEP_INSTANCE)-all
 
 ifneq ($(FRAMEWORK_NAME),)
 internal-tool-all:: internal-install-dirs install-tool
 endif
 
-$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(OBJ_FILES_TO_LINK)
+$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 		$(OBJ_FILES_TO_LINK) \
 		$(ALL_TOOL_LIBS)
 
-before-$(TARGET)-all::
+before-$(GNUSTEP_INSTANCE)-all::
 
-after-$(TARGET)-all::
+after-$(GNUSTEP_INSTANCE)-all::
 
 ifneq ($(FRAMEWORK_NAME),)
 ifneq ($(FRAMEWORK_OPERATION),all)
@@ -117,11 +117,11 @@ $(TOOL_INSTALLATION_DIR):
 
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 \
-		$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
+		$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
 		$(TOOL_INSTALLATION_DIR)
 
 internal-tool-uninstall::
-	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)
+	rm -f $(TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 #
 # Cleaning targets
