@@ -222,8 +222,8 @@ GNUstep.csh: GNUstep.csh.in
 config.h: config.h.in
 	$(SHELL) config.status
 
-config.make: config.make.in
-	$(SHELL) config.status
+config.make: config.make.in Version
+	$(SHELL) config.status --recheck
 
 debugapp: debugapp.in
 	$(SHELL) config.status
@@ -234,8 +234,8 @@ openapp: openapp.in
 opentool: opentool.in
 	$(SHELL) config.status
 
-gnustep-make.spec: gnustep-make.spec.in
-	$(SHELL) config.status
+gnustep-make.spec: gnustep-make.spec.in Version
+	$(SHELL) config.status --recheck
 
 executable.template: executable.template.in
 	$(SHELL) config.status
