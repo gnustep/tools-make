@@ -888,7 +888,7 @@ OBJ_MERGE_CMD = \
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
-BUNDLE_LDFLAGS += -nodefaultlibs -Xlinker -r
+BUNDLE_LDFLAGS     += -shared
 endif
 
 # end Mingw32
