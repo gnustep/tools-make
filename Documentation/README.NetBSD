@@ -1,3 +1,10 @@
+This information is provided by Turbocat's Development.
+We do not make any guarantees as to the currency, accuracy,
+or quality of information stored here. Use at your own risk.
+Please submit any comments to info@turbocat.de or the GNUstep maintainers.
+
+---
+
 Hi folks,
 
 we have installed GS on NetBSD 1.5 (intel) and this is what we did:
@@ -140,16 +147,4 @@ Time Zone" "Europe/Berlin"
 	start:		openapp ProjectCenter.app
 
 
----
-   _  _
- _(_)(_)_  David Wetzel, Turbocat's Development,
-(_) __ (_) Buchhorster Strasse 23, D-16567 Muehlenbeck/Berlin, FRG,
-  _/  \_   Fax +49 33056 82835 NeXTmail dave@turbocat.de
- (______)  http://www.turbocat.de/
-           DEVELOPMENT * CONSULTING * ADMINISTRATION
-
-_______________________________________________
-Discuss-gnustep mailing list
-Discuss-gnustep@gnu.org
-http://mail.gnu.org/mailman/listinfo/discuss-gnustep
 
