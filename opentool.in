@@ -88,9 +88,6 @@ if [ -z "$GNUSTEP_FLATTENED" ]; then
   export LIBRARY_COMBO
 fi
 
-# Remove leading slashes at the end of the tool name
-tool=`echo $tool | sed 's%/*$%%'`
-
 if [ -z "$EXEEXT" ]; then
   tool=$tool$EXEEXT
 fi
