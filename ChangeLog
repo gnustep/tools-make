@@ -1,3 +1,10 @@
+2001-01-17  Adam Fedor  <fedor@gnu.org>
+
+	* library.make (LIBRARY_OBJ_DIR): New redefinable var to specify
+	where libraries go. Some packages can specify backend independant
+	libs to go in library_combo/..
+	* configure.in: Check for libobjc in new dir.
+
 Wed Jan 17 16:49:54 2001  Nicola Pero  <nicola@brainstorm.co.uk>
  
 	* rpm.make (rpm): Fixed typo in copying tar gz file.

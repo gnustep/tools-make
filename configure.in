@@ -201,8 +201,9 @@ if test "$TAR" = ""; then
 fi
 
 #--------------------------------------------------------------------
-# Strip '-g' off of CFLAGS, since debug=yes adds that anyway
+# Miscellaneous flags
 #--------------------------------------------------------------------
+# Strip '-g' off of CFLAGS, since debug=yes adds that anyway
 CFLAGS=`echo $CFLAGS | sed -e 's/-g //'`
 
 # CPPFLAGS are used throughout for additional includes, which eventually
@@ -212,6 +213,17 @@ if test "$FORCE_CPPFLAGS" = ""; then
   FORCE_CPPFLAGS=
 fi
 AC_SUBST(FORCE_CPPFLAGS)
+
+# Set location of GNUstep dirs for later use
+GNUSTEP_HDIR=$GNUSTEP_SYSTEM_ROOT/Headers
+if test "$GNUSTEP_FLATTENED" = yes; then
+  GNUSTEP_LDIR=$GNUSTEP_SYSTEM_ROOT/Libraries
+else
+  clean_target_os=`$srcdir/clean_os.sh $target_os`
+  clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
+  obj_dir=$clean_target_cpu/$clean_target_os
+  GNUSTEP_LDIR=$GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir
+fi
 
 #--------------------------------------------------------------------
 # Miscellaneous headers (for make programs only)
@@ -453,13 +465,9 @@ AC_MSG_CHECKING(for alternate objc library)
 AC_CACHE_VAL(gs_cv_objc_libdir,
 [dnl
 gs_cv_objc_libdir=NONE
-if test -f $GNUSTEP_SYSTEM_ROOT/Headers/objc/objc.h; then
-  clean_target_os=`$srcdir/clean_os.sh $target_os`
-  clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
-  obj_dir=$clean_target_cpu/$clean_target_os/$ac_cv_library_combo
-  if test -f $GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir/libobjc.a \
-	-o -f $GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir/libobjc.so; then
-    gs_cv_objc_libdir=$GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir
+if test -f $GNUSTEP_HDIR/objc/objc.h; then
+  if test -f $GNUSTEP_LDIR/libobjc.a -o -f $GNUSTEP_LDIR/libobjc.so; then
+    gs_cv_objc_libdir=$GNUSTEP_LDIR
   else
     gs_cv_objc_libdir=NONE
   fi
