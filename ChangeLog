@@ -1,7 +1,6 @@
 2000-10-17  Adam Fedor  <fedor@gnu.org>
 
-	* target.make (OpenBSD): Add -fpic to SHARED_CFLAGS. Enable
-	shared libraries.
+	* target.make (OpenBSD): Add -fpic to SHARED_CFLAGS. 
 
 Fri Oct 13 11:26:49 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 

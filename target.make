@@ -542,7 +542,11 @@ endif
 # OpenBSD 2.x (though set for 2.4)
 #
 ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
-HAVE_SHARED_LIBS        = yes
+# This is disabled temporarily, because I don't know exactly how
+# to link shared libs. Everything seems to link correctly now but
+# constructor functions in the shared lib failed to get called
+# when the lib is loaded in. I don't know why. ASF.
+HAVE_SHARED_LIBS        = no
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
         $(SHARED_LD) $(SHARED_LD_PREFLAGS) -x -Bshareable -Bforcearchive \
