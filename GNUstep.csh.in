@@ -70,6 +70,12 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX_LIST}; do echo $
 end
 setenv PATH ${tp}${PATH}
 
+if ( ! ${?MANPATH} ) then
+  setenv MANPATH ${GNUSTEP_SYSTEM_ROOT}/Library/man:/usr/local/man:/usr/man
+else
+  setenv MANPATH ${GNUSTEP_SYSTEM_ROOT}/Library/man:${MANPATH}
+endif
+
 source ${GNUSTEP_SYSTEM_ROOT}/Makefiles/ld_lib_path.csh
 
 #

@@ -75,6 +75,12 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
 done
 PATH=$temp_path$PATH
 
+if [ -z "$MANPATH" ]; then
+  MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:/usr/local/man:/usr/man
+else
+  MANPATH=${GNUSTEP_SYSTEM_ROOT}/Library/man:${MANPATH}
+fi
+
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
 #

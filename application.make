@@ -161,7 +161,7 @@ app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-d
 	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
 	fi)
 
-$(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources
+$(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(INTERNAL_app_NAME)\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
@@ -180,6 +180,8 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources
 
 $(APP_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
+
+_FORCE::
 
 internal-app-install::
 	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)

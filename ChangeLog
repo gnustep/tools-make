@@ -1,3 +1,10 @@
+1999-07-15  Adam Fedor  <fedor@gnu.org>
+
+	* application.make: Force Info-gnustep.plist to be remade everytime
+
+	* GNUstep.sh.in: Add $GNUSTEP_SYSTEM_ROOT/Libraries/man to MANPATH
+	* GNUstep.csh.in: Likewise.
+
 1999-07-14  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* target.make: Patch for threads on Solaris by bgg@itga.com.au
