@@ -111,9 +111,13 @@ INTERNAL_LIBRARIES_DEPEND_UPON =				\
    debug=$(debug) profile=$(profile) shared=$(shared)		\
    libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-DUMMY_FRAMEWORK = NSFramework_$(GNUSTEP_INSTANCE)
-DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES)/$(DUMMY_FRAMEWORK).m
-DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
+ifeq ($(FOUNDATION_LIB),gnu)
+  # On GNUstep, build our dummy class to store information which
+  # gnustep-base can find at run time
+  DUMMY_FRAMEWORK = NSFramework_$(GNUSTEP_INSTANCE)
+  DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES)/$(DUMMY_FRAMEWORK).m
+  DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
+endif
 
 FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Headers/,$(HEADER_FILES))
 
@@ -146,7 +150,7 @@ endif
 endif # BUILD_DLL
 
 ifeq ($(WITH_DLL),yes)
-FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
+  FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
 ifeq ($(FRAMEWORK_INSTALL_DIR),)
@@ -168,6 +172,7 @@ LIB_LINK_OBJ_DIR = $(FRAMEWORK_LIBRARY_DIR_NAME)
 LIB_LINK_VERSION_FILE = $(VERSION_FRAMEWORK_LIBRARY_FILE)
 LIB_LINK_SONAME_FILE = $(SONAME_FRAMEWORK_FILE)
 LIB_LINK_FILE = $(FRAMEWORK_LIBRARY_FILE)
+LIB_LINK_INSTALL_NAME = $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 LIB_LINK_INSTALL_DIR = $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
 
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR_NAME)/Resources
@@ -213,7 +218,7 @@ $(FRAMEWORK_LIBRARY_DIR_NAME):
 $(FRAMEWORK_VERSION_DIR_NAME)/Headers:
 	$(MKDIRS) $@
 
-$(DERIVED_SOURCES) :
+$(DERIVED_SOURCES):
 	$(MKDIRS) $@
 
 # Need to share this code with the headers code ... but how.
@@ -306,13 +311,33 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
 	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@;\
 	echo "@end" >> $@
 
+ifeq ($(FOUNDATION_LIB),gnu)
 $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(ECHO_COMPILING)$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@$(END_ECHO)
+endif
+
+ifeq ($(FOUNDATION_LIB), nx)
+# When building native frameworks on Apple, we need to create a
+# top-level symlink xxx.framework/xxx ---> the framework shared
+# library
+
+OPTIONAL_TOP_LEVEL_LINK = $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
+
+$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
+	(cd $(GNUSTEP_INSTANCE).framework; \
+	rm -f $(GNUSTEP_INSTANCE); \
+	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE))
+else
+OPTIONAL_TOP_LEVEL_LINK = 
+endif
 
 build-framework:: $(FRAMEWORK_FILE) \
                   shared-instance-bundle-all \
                   $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist \
-                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
+                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist \
+                  $(OPTIONAL_TOP_LEVEL_LINK)
+
+
 
 ifeq ($(WITH_DLL),yes)
 
@@ -334,7 +359,6 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 
 endif # WITH_DLL
 
-
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
 ifeq ($(PRINCIPAL_CLASS),)
@@ -346,7 +370,7 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 # MacOSX-S frameworks
 $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
+	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
@@ -363,6 +387,8 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_
 	 fi
 
 ifneq ($(WITH_DLL),yes)
+
+ifeq ($(FOUNDATION_LIB),gnu)
 
 internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
@@ -410,6 +436,22 @@ ifneq ($(CHOWN_TO),)
 	  $(CHOWN) $(CHOWN_TO) $(SONAME_FRAMEWORK_FILE); \
 	fi; \
 	$(CHOWN) $(CHOWN_TO) $(VERSION_FRAMEWORK_LIBRARY_FILE))
+endif
+
+else
+
+# This code for Apple OSX
+
+internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR)
+	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
+	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
+endif
+ifeq ($(strip),yes)
+	$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE) 
+endif
+
 endif
 
 else # install DLL
