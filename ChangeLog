@@ -1,3 +1,8 @@
+2002-11-29  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (darwin1): Remove
+	(darwin6): Add.
+
 2002-11-27 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* user_home.c: Use USERPROFILE for home directory on windoze.
