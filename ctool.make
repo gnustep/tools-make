@@ -129,17 +129,10 @@ install-ctool::
 	$(INSTALL_PROGRAM) -m 0755 \
 	                   $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
 	                   $(CTOOL_INSTALLATION_DIR)
-ifeq ($(GNUSTEP_FLATTENED),)
-	$(INSTALL_DATA) $(GNUSTEP_MAKEFILES)/executable.template \
-	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME); \
-	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
-endif
 
 internal-ctool-uninstall::
 	rm -f $(CTOOL_INSTALLATION_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
-endif
+
 
 endif
 
