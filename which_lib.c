@@ -129,7 +129,7 @@ char* library_name = NULL;
 char *libname_suffix;
 int debug = 0;
 int profile = 0;
-int shared = 0;
+int shared = 1;
 char* libext = ".a";
 char* shared_libext = ".so";
 char* extension;
@@ -192,12 +192,12 @@ void get_arguments (int argc, char** argv)
   libname_suffix = malloc (5);
   *libname_suffix = 0;
 
-  if (!shared)
-    strcat (libname_suffix, "s");
-  if (profile)
-    strcat (libname_suffix, "p");
   if (debug)
     strcat (libname_suffix, "d");
+  if (profile)
+    strcat (libname_suffix, "p");
+  if (!shared)
+    strcat (libname_suffix, "s");
 
   if (*libname_suffix) {
     char tmp[5];
