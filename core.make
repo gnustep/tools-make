@@ -52,17 +52,49 @@ GUI_BACKEND_LIB = $(word 4,$(combo_list))
 
 endif
 
+#
+# Allow user specify the runtime, foundation, gui and backend libraries in
+# separate variables.
+#
+ifneq ($(runtime),)
+OBJC_RUNTIME_LIB = $(runtime)
+endif
+
+ifneq ($(foundation),)
+FOUNDATION_LIB = $(foundation)
+endif
+
+ifneq ($(gui),)
+GUI_LIB = $(gui)
+endif
+
+ifneq ($(backend),)
+GUI_BACKEND_LIB = $(backend)
+endif
+
 LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)_$(FOUNDATION_LIB)_$(GUI_LIB)_$(GUI_BACKEND_LIB)
 
 OBJC_LDFLAGS =
 OBJC_LIBS =
 #
-# Set the appropriate ObjC runtime library
+# Set the appropriate ObjC runtime library and other information
 #
 ifeq ($(OBJC_RUNTIME_LIB),gnu)
 OBJC_LDFLAGS =
 OBJC_LIB_DIR =
 OBJC_LIBS = -lobjc
+OBJC_RUNTIME = GNU
+RUNTIME_DEFINE = -DGNU_RUNTIME=1
+endif
+
+ifeq ($(OBJC_RUNTIME_LIB), nx)
+OBJC_RUNTIME = NeXT
+RUNTIME_DEFINE = -DNeXT_RUNTIME=1
+endif
+
+ifeq ($(OBJC_RUNTIME_LIB), sun)
+OBJC_RUNTIME = Sun
+RUNTIME_DEFINE = -DSun_RUNTIME=1
 endif
 
 FND_LDFLAGS =
@@ -73,16 +105,26 @@ FND_LIBS =
 ifeq ($(FOUNDATION_LIB),gnu)
 FND_LDFLAGS =
 FND_LIBS = -lgnustep-base
+FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
 endif
 
 ifeq ($(FOUNDATION_LIB),fd)
 FND_LDFLAGS =
 FND_LIBS = -lFoundation
+FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
 endif
 
 ifeq ($(FOUNDATION_LIB),nx)
 FND_LDFLAGS = -framework Foundation
 FND_LIBS =
+endif
+
+ifeq ($(FOUNDATION_LIB), nx)
+FND_DEFINE = -DNeXT_foundation_LIBRARY=1
+endif
+
+ifeq ($(FOUNDATION_LIB), sun)
+FND_DEFINE = -DSun_Foundation_LIBRARY=1
 endif
 
 GUI_LDFLAGS =

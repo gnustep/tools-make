@@ -36,6 +36,10 @@ endif
 
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 
+ifeq ($(strip $(HEADER_FILES_DIR)),)
+HEADER_FILES_DIR = .
+endif
+
 #
 # Internal targets
 #
@@ -43,9 +47,10 @@ VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 #
 # Compilation targets
 #
-internal-all:: $(GNUSTEP_OBJ_DIR) $(LIBRARY_FILE) import-library
+internal-all:: $(GNUSTEP_OBJ_DIR) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
+		import-library
 
-$(LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LIB_LINK_CMD)
 
 import-library::
@@ -104,15 +109,6 @@ internal-uninstall-import-lib::
 # Cleaning targets
 #
 internal-clean::
-	rm -f $(OBJC_OBJ_FILES)
-	rm -f $(SHARED_OBJC_OBJ_FILES)
-	rm -f $(C_OBJ_FILES)
-	rm -f $(SHARED_C_OBJ_FILES)
-	rm -f $(PSWRAP_C_FILES)
-	rm -f $(PSWRAP_H_FILES)
-	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
-	rm -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
-	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)
 
 #

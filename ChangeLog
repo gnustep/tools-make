@@ -1,3 +1,22 @@
+Wed Oct  1 17:03:56 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make: Added -I compile flag when compiling using gnustep-base
+	and libFoundation to get the files specific for cpu/os/runtime.
+	* core.make: Allow the user to specify a set of variables different
+	than the library combo. This is needed when compiling basic libraries
+	that don't use the whole library combo (like libFoundation). Also
+	define OBJC_RUNTIME that holds the name of the runtime, useful in make,
+	and RUNTIME_DEFINE that defines for the runtime, useful while
+	compiling. The last one should be added to the additional C/ObjC flags.
+	* library.make: Define HEADER_FILES_DIR to be . by default.
+	Changed the rule for building the library to build it into the object
+	files directory. Cleaned the internal-clean rule.
+	* rules.make: Remove newlines in compilation rules. Added the 'all'
+	target in the list of dependencies for install.
+	* target.make: Cleaned the rules for building a shared library under
+	OPENSTEP 4.x. Added flags to linker to disable printing of warnings for
+	read only relocation symbols.
+
 Wed Oct  1 11:15:22 1997  Scott Christley  <scottc@net-community.com>
 
 	* bundle.make: Add install and uninstall targets.  Use bundle

@@ -107,27 +107,14 @@ ifeq ($(GNUSTEP_TARGET_OS), nextstep4)
 HAVE_BUNDLES            = yes
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        /bin/libtool -dynamic -o $@ \
+        /bin/libtool -dynamic -read_only_relocs suppress -o $@ \
                 /NextLibrary/Frameworks/System.framework/System \
                 $(GNUSTEP_LIBRARIES)/libobjc$(SHARED_LIBEXT) \
-                $(GNUSTEP_LIBRARIES)/libgcc$(SHARED_LIBEXT) $^ \
-                >/dev/null
+                $(GNUSTEP_LIBRARIES)/libgcc$(SHARED_LIBEXT) $^
 
-ifeq ($(OBJC_RUNTIME_LIB), gnu)
-STATIC_LIB_LINK_CMD	= \
-	/bin/libtool -static -o $@ \
-                /NextLibrary/Frameworks/System.framework/System \
-                $(GNUSTEP_LIBRARIES)/libobjc$(SHARED_LIBEXT) \
-                $(GNUSTEP_LIBRARIES)/libgcc$(SHARED_LIBEXT) $^ \
-                >/dev/null
-else
-# not tested
-STATIC_LIB_LINK_CMD	= \
-	/bin/libtool -static -o $@ \
-                /NextLibrary/Frameworks/System.framework/System \
-                $(GNUSTEP_LIBRARIES)/libgcc$(SHARED_LIBEXT) $^ \
-                >/dev/null
-endif
+STATIC_LIB_LINK_CMD	= /bin/libtool -static -o $@ $^
+LDFLAGS += -Wl,-read_only_relocs,suppress
+
 AFTER_INSTALL_STATIC_LIB_COMMAND =
 
 SHARED_CFLAGS   += -dynamic

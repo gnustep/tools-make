@@ -55,12 +55,10 @@ VPATH = .
 .PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
-	$(CC) -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) \
-		-o $@ $<
+	$(CC) -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
-	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) \
-		-o $@ $<
+	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@ $<
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
@@ -126,7 +124,7 @@ C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
 #
 all:: before-all internal-all after-all
 
-install:: before-install internal-install after-install
+install:: all before-install internal-install after-install
 
 uninstall:: before-uninstall internal-uninstall after-uninstall
 
