@@ -1,3 +1,8 @@
+Tue Jun 19 10:00:06 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* java-tool.make (install-java_tool): Install nested classes as
+	well.  (internal-java_tool-clean): Remove nested classes as well.
+
 2001-06-18 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* java.make: Added code to cope with install and clean for inner
