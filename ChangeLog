@@ -1,3 +1,9 @@
+Thu Feb 28 15:22:31 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/application.make: Simplified a lot by using
+	Instance/Shared/bundle.make to copy resource files into the
+	application bundle.
+
 2002-02-28 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* user_home.c: new utility to report users home directory.
