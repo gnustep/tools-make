@@ -509,8 +509,6 @@ endif
 # GNUmakefile, the user can override these variables by setting them
 # in the GNUmakefile.
 BUNDLE_EXTENSION = .bundle
-CURRENT_VERSION_NAME = A
-DEPLOY_WITH_CURRENT_VERSION = yes
 ifeq ($(profile), yes)
   APP_EXTENSION = profile
 else
