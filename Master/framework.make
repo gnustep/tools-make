@@ -24,6 +24,8 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+FRAMEWORK_NAME := $(strip $(FRAMEWORK_NAME))
+
 # A framework has a special task to do before-all, which is to build 
 # the public framework headers.
 before-all:: $(FRAMEWORK_NAME:=.build-headers.framework.variables)
