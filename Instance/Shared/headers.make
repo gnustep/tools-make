@@ -78,12 +78,12 @@ ifeq ($(GNUSTEP_DEVELOPER),)
 #
 
 shared-instance-headers-install: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
-	for file in $(HEADER_FILES) __done; do \
+	$(ECHO_INSTALLING_HEADERS)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
 	              $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file; \
 	  fi; \
-	done
+	done$(END_ECHO)
 
 else
 
