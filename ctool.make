@@ -39,8 +39,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # This is the directory where the ctools get installed. If you don't specify a
 # directory they will get installed in the GNUstep system root.
 ifeq ($(CTOOL_INSTALLATION_DIR),)
-  CTOOL_INSTALLATION_DIR = \
-    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
+  CTOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 endif
 
 ifeq ($(INTERNAL_ctool_NAME),)
@@ -56,7 +55,8 @@ internal-clean:: $(CTOOL_NAME:=.clean.ctool.variables)
 internal-distclean:: $(CTOOL_NAME:=.distclean.ctool.variables)
 
 $(CTOOL_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going $@.all.ctool.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+                 $@.all.ctool.variables
 
 else
 
@@ -90,10 +90,13 @@ endif
 #
 # Compilation targets
 #
-internal-ctool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) after-$(TARGET)-all
+internal-ctool-all:: before-$(TARGET)-all \
+                     $(GNUSTEP_OBJ_DIR) \
+	             $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
+                     after-$(TARGET)-all
 
-$(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT): $(C_OBJ_FILES) \
+                                                    $(SUBPROJECT_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 		$(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
@@ -111,12 +114,17 @@ internal-install-dirs:: $(CTOOL_INSTALLATION_DIR)
 
 ifeq ($(GNUSTEP_FLATTENED),)
 install-ctool::
-	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) $(CTOOL_INSTALLATION_DIR);
-	cp $(GNUSTEP_MAKEFILES)/executable.template $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
+	$(INSTALL_PROGRAM) -m 0755 \
+	                   $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
+	                   $(CTOOL_INSTALLATION_DIR);
+	cp $(GNUSTEP_MAKEFILES)/executable.template \
+	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
 else
 install-ctool::
-	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) $(CTOOL_INSTALLATION_DIR);
+	$(INSTALL_PROGRAM) -m 0755 \
+	                   $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
+	                   $(CTOOL_INSTALLATION_DIR);
 endif
 
 internal-ctool-uninstall::
