@@ -50,7 +50,7 @@ $(GNUSTEP_OBJ_DIR)/stamp-app-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 #
 internal-all:: $(GNUSTEP_OBJ_DIR) $(APP_DIR_NAME)
 
-internal-app-all:: build-app-dir build-app
+internal-app-all:: $(GNUSTEP_OBJ_DIR) build-app-dir build-app
 
 build-app-dir::
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
@@ -60,10 +60,6 @@ build-app-dir::
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 
 build-app:: $(GNUSTEP_OBJ_DIR)/stamp-app-$(APP_NAME)
-
-object-dir::
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		./$(GNUSTEP_OBJ_DIR)
 
 #
 # Cleaning targets

@@ -63,6 +63,7 @@ internal-install-dirs::
 		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
 		$(GNUSTEP_LIBRARIES) \
 		$(GNUSTEP_HEADERS) \
+		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
 		$(ADDITIONAL_INSTALL_DIRS)
 
 internal-install-headers::
@@ -83,6 +84,22 @@ internal-install-lib::
 
 internal-install-import-lib::
 
+internal-uninstall:: internal-uninstall-headers internal-uninstall-lib
+
+internal-uninstall-headers::
+	for file in $(HEADER_FILES); do \
+	  rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	done
+
+internal-uninstall-libs:: internal-uninstall-lib \
+    internal-uninstall-import-lib
+
+internal-uninstall-lib::
+	rm -f $(GNUSTEP_LIBRARIES)/$(VERSION_LIBRARY_FILE)
+	rm -f $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE)
+
+internal-uninstall-import-lib::
+
 #
 # Cleaning targets
 #
@@ -96,9 +113,7 @@ internal-clean::
 	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
 	rm -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
 	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
-
-internal-distclean:: clean
-	rm -rf objs
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
 
 #
 # Testing targets

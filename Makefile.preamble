@@ -29,6 +29,12 @@ ADDITIONAL_LDFLAGS =
 # Additional library directories the linker should search
 ADDITIONAL_LIB_DIRS = 
 
+# Additional libraries when linking tools
+ADDITIONAL_TOOL_LIBS =
+
+# Additional libraries when linking applications
+ADDITIONAL_GUI_LIBS =
+
 #
 # Flags dealing with installing and uninstalling
 #

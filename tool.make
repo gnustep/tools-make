@@ -58,7 +58,4 @@ build-tool:: $(GNUSTEP_OBJ_DIR)/stamp-tool-$(TOOL_NAME)
 #
 internal-clean::
 	rm -f $(TOOL_NAME)
-	@rm -f $(TOOL_STAMPS)
-
-internal-distclean:: clean
-	rm -rf objs
+	rm -rf $(GNUSTEP_OBJ_PREFIX)

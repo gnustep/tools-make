@@ -1,3 +1,15 @@
+Tue Sep 30 08:27:28 1997  Scott Christley  <scottc@net-community.com>
+
+	* Makefile.preamble (ADDITIONAL_TOOL_LIBS, ADDITIONAL_GUI_LIBS): Add
+ 	template variables for additional libraries when linking.
+	* application.make (internal-app-all): Build object directory.
+	* common.make (GNUSTEP_HEADERS_FND): New variable.
+	(GNUSTEP_OBJ_PREFIX): New variable.
+	(GNUSTEP_TARGET_LIBRARIES): New variable.
+	* library.make: Add uninstall targets.
+	* rules.make (ALL_LIB_DIRS): Search GNUSTEP_TARGET_LIBRARIES.
+	* tool.make (internal-clean): Remove object directory.
+
 Fri Sep 26 13:16:03 1997  Scott Christley  <scottc@net-community.com>
 
 	* Makefile.in: Define install script.
