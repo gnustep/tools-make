@@ -55,9 +55,20 @@ internal-clean:: $(TOOL_NAME:=.clean.tool.variables)
 internal-distclean:: $(TOOL_NAME:=.distclean.tool.variables)
 
 $(TOOL_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going $@.all.tool.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	         $@.all.tool.variables
 
 else # second pass
+
+.PHONY: internal-tool-all       \
+        internal-tool-clean     \
+        internal-tool-distclean \
+        internal-tool-install   \
+        internal-tool-uninstall \
+        before-$(TARGET)-all    \
+        after-$(TARGET)-all     \
+        internal-install-dirs   \
+        install-tool 
 
 ifneq ($(FRAMEWORK_NAME),)
   TOOL_INSTALLATION_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(GNUSTEP_TARGET_LDIR)
@@ -93,13 +104,13 @@ endif
 #
 # Compilation targets
 #
-ifeq ($(FRAMEWORK_NAME),)
-internal-tool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) after-$(TARGET)-all
-else
-internal-tool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) after-$(TARGET)-all \
-	internal-install-dirs install-tool
+internal-tool-all:: before-$(TARGET)-all \
+                    $(GNUSTEP_OBJ_DIR) \
+                    $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
+                    after-$(TARGET)-all
+
+ifneq ($(FRAMEWORK_NAME),)
+internal-tool-all:: internal-install-dirs install-tool
 endif
 
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
@@ -132,17 +143,23 @@ $(TOOL_INSTALLATION_DIR):
 
 ifeq ($(GNUSTEP_FLATTENED),)
 install-tool::
-	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) $(TOOL_INSTALLATION_DIR);
-	@(if [ "$(FRAMEWORK_NAME)" = "" ]; then \
-		cp $(GNUSTEP_MAKEFILES)/executable.template $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
-		chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
-	else \
-		cp $(GNUSTEP_MAKEFILES)/executable.template $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME); \
-		chmod a+x $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME); \
-	fi;)
+	$(INSTALL_PROGRAM) -m 0755 \
+		$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
+		$(TOOL_INSTALLATION_DIR);
+ifeq ($(FRAMEWORK_NAME),)
+	cp $(GNUSTEP_MAKEFILES)/executable.template \
+	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
+	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME);
+else
+	cp $(GNUSTEP_MAKEFILES)/executable.template \
+	   $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME); \
+	chmod a+x $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME);
+endif
 else
 install-tool::
-	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) $(TOOL_INSTALLATION_DIR)
+	$(INSTALL_PROGRAM) -m 0755 \
+		$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
+		$(TOOL_INSTALLATION_DIR)
 endif
 
 internal-tool-uninstall::

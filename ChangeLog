@@ -1,3 +1,10 @@
+Mon Jul  9 11:54:20 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* tool.make (.PHONY): Added.
+	(internal-tool-all): Simplified.
+	(install-tool): Turned shell conditional into makefile
+	conditional.
+
 Mon Jul  9 11:35:48 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make ($(GNUSTEP_OBJ_DIR)): Do not protect this rule
