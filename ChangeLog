@@ -1,3 +1,8 @@
+Sat Jan 19 23:58:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (GNUSTEP_FRAMEWORKS_LIBRARIES_ROOT): Removed.
+	(GNUSTEP_LIBRARIES_ROOT): Removed.
+
 Sat Jan 19 23:35:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* framework.make (ADDITIONAL_INCLUDE_DIRS): Do not add 

@@ -172,16 +172,6 @@ GNUSTEP_DOCUMENTATION        = $(GNUSTEP_INSTALLATION_DIR)/Documentation
 GNUSTEP_DOCUMENTATION_MAN    = $(GNUSTEP_DOCUMENTATION)/man
 GNUSTEP_DOCUMENTATION_INFO   = $(GNUSTEP_DOCUMENTATION)/info
 
-#
-# Variables defined only for backward compatibility with older gnustep-makes
-#
-# Will be removed any time after 31 December 2001.
-#
-# DEPRECATED - use GNUSTEP_FRAMEWORKS_LIBRARIES instead
-GNUSTEP_FRAMEWORKS_LIBRARIES_ROOT = $(GNUSTEP_FRAMEWORKS_LIBRARIES)
-# DEPRECATED - use GNUSTEP_LIBRARIES instead
-GNUSTEP_LIBRARIES_ROOT = $(GNUSTEP_LIBRARIES)
-
 # The default name of the makefile to be used in recursive invocations of make
 ifeq ($(MAKEFILE_NAME),)
 MAKEFILE_NAME = GNUmakefile
