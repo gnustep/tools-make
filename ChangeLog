@@ -1,3 +1,11 @@
+Fri Nov  9 13:34:50 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* opentool.in: Fixed (again!) the fact that if there is both a
+	local and an installed tool, the local one should be used, not the
+	installed one.  Rewritten checks for local tools - we now search
+	in ./, then in ./obj, then in ./Tools/, then in ./Tools/obj, then
+	look for an installed tool.
+
 2001-11-08  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in (TAR): Undo last patch, add configure option
