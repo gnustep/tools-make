@@ -263,11 +263,15 @@ This should automatically run the configure script for you, build the
 base library and some tools, and install the whole lot (along with some
 system resources).
 
-If you are using gcc 3.x, you should remove the line
+If you are using gcc 3.x, you should change the line
 
 __objc_class_name_NXConstantString
 
-from Source/libgnustep-base.def before doing a make.
+to
+
+__objc_class_name_NSConstantString
+
+in Source/libgnustep-base.def before doing a make.
 
 
 
