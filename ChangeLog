@@ -1,3 +1,8 @@
+Fri Oct 24 15:54:41 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Documentation/texi.make (internal-doc-clean): Remove
+	$(GNUSTEP_INSTANCE).html.
+
 2003-10-20  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Add 1.57 prereq, subst OBJCFLAGS
