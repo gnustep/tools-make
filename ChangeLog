@@ -7,13 +7,10 @@ Wed Nov  6 15:26:07 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 Wed Nov  6 12:31:40 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Rewritten framework/subproject interaction so that it supports
-	FRAMEWORK_NAME containing multiple framework names.
-
-	Framework API change warning: in order to support multiple
-	independent frameworks built using the same makefile,
-	CURRENT_VERSION_NAME and DEPLOY_WITH_CURRENT_VERSION have been
-	removed; xxx_CURRENT_VERSION_NAME and
-	xxx_DEPLOY_WITH_CURRENT_VERSION should be used instead.
+	FRAMEWORK_NAME containing multiple framework names.  Framework API
+	change warning: CURRENT_VERSION_NAME replaced by
+	XXX_CURRENT_VERSION_NAME; DEPLOY_WITH_CURRENT_VERSION replaced by
+	XXX_DEPLOY_WITH_CURRENT_VERSION.
 	* common.make (CURRENT_VERSION_NAME): Do not define here.
 	(DEPLOY_WITH_CURRENT_VERSION): Idem.
 	* Instance/framework.make: Added support for
