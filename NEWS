@@ -1,7 +1,21 @@
 NEWS
 ****
 
-The currently released version is `1.5.1'.
+The currently released version is `1.5.2'.
+
+Changes in version `1.5.2'
+==========================
+
+   Make now configures by default for only one system. To compile and
+run GNUstep for multiple platforms from the same directory, use the
+configure argument -enable-multi-platform.
+
+   * Auto-build def file for DLLs
+
+   * Work natively on MacOSX systems. Now use apple-apple-apple instead
+     of nx-nx-nx on OSX systems.
+
+   * More efficient checks for re-making a project.
 
 Changes in version `1.5.1'
 ==========================

@@ -9,10 +9,11 @@ libraries, read the file GNUstep-HOWTO for more complete instructions on
 how to install the entire GNUstep package (including this package).
 GNUstep-HOWTO comes with this distribution.
 
-   This should be the first GNUstep package you install. After
+   This should be the first GNUstep package you install. Before
 installing this package, install ffcall or libffi and any other
-libraries that GNUstep may need (see the GNUstep-HOWTO). Then install
-gnustep-base.
+libraries that GNUstep may need (see the GNUstep-HOWTO). Read and
+follow the instructions on setting up the GNUstep environement below.
+Then install gnustep-base.
 
    When you configure additional libraries, make sure you use the same
 configuration options as with gstep-make.
@@ -177,8 +178,8 @@ some minor administration to be performed.  Based upon whether you are
 setting up the GNUstep environment for a single user or all users on
 your system, perform the appropriate step below.
 
-Setting up the GNUstep
-======================
+Setting up the GNUstep environment
+==================================
 
 Setting up the GNUstep environment for all users
 ------------------------------------------------

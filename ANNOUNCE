@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.5.1 is now available.
+The GNUstep Makefile Package version 1.5.2 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -12,30 +12,28 @@ write a project without having to deal with the complex issues
 associated with configuration, building, installation, and packaging.
 It also allows the user to easily create cross-compiled binaries.
 
-Changes in version `1.5.1'
+   Note that versions that have a odd minor release number are unstable
+releases (like 1.5.2), which even release numbers (1.4.1) are stable
+releases.
+
+Changes in version `1.5.2'
 ==========================
 
-   * Framework support rewritten, also supports multiple names.
+   Make now configures by default for only one system. To compile and
+run GNUstep for multiple platforms from the same directory, use the
+configure argument -enable-multi-platform.
 
-   * API change: Replace frameowork's xxx_TOOLS by xxx_COPY_INTO_DIR.
+   * Auto-build def file for DLLs
 
-   * Unified link commands between libraries and frameworks
-     (LIB_LINK_*).
+   * Work natively on MacOSX systems. Now use apple-apple-apple instead
+     of nx-nx-nx on OSX systems.
 
-   * New 'make strings' target for localization support.
-
-   * Speed improvements.
-
-   * Doesn't try to build OSX bundle on GNUstep and vice versa.
-
-   * API change: Tools/Subproj can have resources.
-
-   * API change: TOOL_INSTALL_DIR.
+   * More efficient checks for re-making a project.
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.5.1.tar.gz distribution file at
+   You can get the gstep-make-1.5.2.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please send bug reports to <bug-gnustep@gnu.org>.

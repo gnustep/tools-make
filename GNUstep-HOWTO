@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 10 December 2002
+   Last Update: 16 February 2003
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -15,10 +15,9 @@
 Introduction
 ************
 
-   This document explains how to build the GNUstep core libraries or
-GNUstep Launchpad. The core libraries, along with associated tools and
-other files provide everything necessary for a working GNUstep system.
-GNUstep Launchpad consists of the non-graphical libraries of GNUstep.
+   This document explains how to build the GNUstep core libraries.  The
+core libraries, along with associated tools and other files provide
+everything necessary for a working GNUstep system.
 
    In order to easily compile and debug GNUstep projects, you will need
 the GNU Objective-C compiler `GCC' as well as various other GNU
@@ -33,7 +32,7 @@ Summary
    In order to compile the libraries, you need to compile and install
 the following packages first (if you don't already have them):
 
-   * gcc (Version 2.8.0 or greater, 3.0.4 or greater recommended)
+   * gcc (Version 2.9.5 or greater, 3.0.4 or greater recommended)
 
    * GNU make (Version 3.75 or greater)
 
@@ -44,7 +43,7 @@ packages described below. Most of these packages are optional, but some
 are required.
 
 `ffcall libraries (HIGHLY RECOMMENDED)'
-     This is a library that provides stack frame handling for
+     This is a library that provides stack-frame handling for
      NSInvocation and NSConnection. This library is highly recommended.
      The previous builtin method for stack frame handling is no longer
      supported and may be removed in the future.  ffcall is under GNU
@@ -66,7 +65,7 @@ are required.
      uses that would otherwise not be available.  Get WindowMaker from
      <http://www.windowmaker.org>.
 
-`libxml2 (OPTIONAL)'
+`libxml2 (RECOMMENDED)'
      The libxml library (Version 2) is used to translate some of the
      documentation for GNUstep and to provide suport for MacOS-X
      compatible XML-based property-lists. It is recommended but not
@@ -83,11 +82,11 @@ are required.
 `libiconv (OPTIONAL)'
      Unicode support functions (iconv) come with glibc version 2.1 or
      greater. If you don't have this, you can get the separate libiconv
-     library from <
-     http://clisp.cons.org/~haible/packages-libiconv.html>. However,
+     library from
+     <http://clisp.cons.org/~haible/packages-libiconv.html>. However,
      neither one is required to use GNUstep.
 
-`gnustep-objc package (for gcc version < 3.0) (RECOMMENDED)'
+`gnustep-objc package (for gcc version < 3.0 ONLY) (RECOMMENDED)'
      This is a special version of the Objective-C runtime that include
      several bug fixes and features that were not in gcc versions
      previous to 3.0.  It is available at
@@ -102,28 +101,14 @@ are required.
 `The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)'
      The GUI library uses this to handle loading and saving TIFF images.
 
-`DGS, the XFree86 DPS extension, or Adobe DPS (OPTIONAL)'
-     If you want to use the features of a Display Postscript
-     (DPS)backend. Note that it is not required since you can use the
-     backend that is Xlib based.  Note that the DPS backend is also
-     still experimental and not recommended.  DPS can be obtained from
-     the following locations:
-
-        * DGS client/server, <ftp://ftp.gnustep.org/pub/gnustep/dgs>
-
-        * XFree86 DPS, <http://dps.sourceforge.net/>
-
-        * Adobe DPS, (contact your OS distributor)
-
-`PCThreads (OPTIONAL)'
-     For GNU/Linux systems on Intel x86 processors. PCThreads is no
-     longer necessary (and should not be used) on GNU/Linux systems with
-     glibc version 2, such as Debian 2.0 and RedHat 5.x and greater.
-
 `GDB and Objective-C patch (OPTIONAL)'
      GDB can be obtained from <ftp://ftp.gnu.org/gnu/gdb>. The patch to
      make it work better with GNUstep can be obtained from
      <ftp://ftp.gnustep.org/pub/gnustep/patches>
+
+`TeX (OPTIONAL)'
+     You need a TeX implementation, like tetex, to compile some of the
+     documentation (although most of that is available on the web).
 
 Compiling and Installing the packages
 *************************************
@@ -138,41 +123,18 @@ Compiling and Installing the packages
 
    * gnustep-back
 
-   For GNUstep Launchpad, substitute `gnustep-guile' and `jigs' for
-`gnustep-gui' and `gnustep-back'.
-
    See <http://www.gnustep.org> for information on where to get these
 packages.
 
    Make sure you install all the previously mentioned libraries first
-before configuring and building GNUstep (Except you need to install
-gnustep-objc after installing gnustep-make).
+before configuring and building GNUstep.
 
-   Note: you will need to be able to install packages as root (at least
-the base library) for applications to work correctly.
+   You should be able to install these packages as root.
 
    For installation on specific systems, read the machine specific
 instructions at the end of this document or appropriate README files in
 the gnustep-make Documentation directory (such as README.MingW for
 Windows).
-
-Using a Display Postscript System
-=================================
-
-   Please skip this instruction unless you really know what you are
-doing. The DPS backend is not well developed. You are better off
-sticking to the xlib-based backend.
-
-   Install a Display PostScript system if you want to use the XDPS
-backend.  You do not need it if you want to use the xlib-based backend.
-Some systems, like Sun Microcomputers(TM) already have a DPS system
-installed.  Linux/GNU systems need to use a free implementation of DPS
-(described in the Introduction.)
-
-   If you are installing DGS, follow the installation instructions
-included with the DGS package. If you are installing the XFree86 DPS
-extension, follow the instructions included with that package (and note
-that you need to be running XFree86 version 4.0 or greater).
 
 Installing the Core Libraries
 =============================
@@ -219,14 +181,16 @@ as follows:
 
       . /usr/GNUstep/System/Makefiles/GNUstep.sh
 
-   before proceeding any further. Then do gnustep-objc. Before building
-gnustep-objc, edit `GNUmakefile' and set the THREADING variable to the
-thread library used on your system (usually its posix, but you can
-leave it at single if you don't need threads). At this point you should
-probably re-configure, make and install gnustep-make, so it can pick up
-on any threading information that gnustep-objc provides.
+   before proceeding any further.
 
-   Now do gnustep-base, gnustep-gui and finally gnustep-back.
+   NOTE for gcc 2.X or MinGW users: Now install gnustep-objc. Before
+building gnustep-objc, edit the `GNUmakefile' and set the THREADING
+variable to the thread library used on your system (usually its posix,
+but you can leave it at single if you don't need threads). At this point
+you should probably re-configure, make and install gnustep-make, so it
+can pick up on any threading information that gnustep-objc provides.
+
+   Now install gnustep-base, gnustep-gui and finally gnustep-back.
 
    NOTE: If you are trying to install the packages without root
 permission, you may need to change one thing in the base library. Edit
@@ -268,9 +232,10 @@ tcsh, try
 GNUstep Home
 ============
 
-   Set up your home GNUstep directory. This is where user defaults are
-kept as well as other user configuration files. User installed apps,
-libraries, etc are also here (if the default user directory is used).
+   Set up your home GNUstep directory. This should be done automatically
+if you don't do it. This is where user defaults are kept as well as
+other user configuration files. User installed apps, libraries, etc are
+also here (if the default user directory is used).
 
      cd
      mkdir GNUstep
@@ -295,13 +260,6 @@ for typical time zones):
 
   4. Set the TZ environment variable (this may conflict with other
      software on your system though).
-
-DPS Information
-===============
-
-   If you are using a built-in DPS server, you may need to set the
-PSRESOURCEPATH environment variable (on Solaris, it's set to
-`/usr/openwin/lib/X11').
 
 GNUstep deamons
 ===============
@@ -340,7 +298,7 @@ libraries first before doing this.
 GNUstep makefile package (and stored in `$GNUSTEP_SYSTEM_ROOT/Tools').
 Usage is:
 
-     openapp [--library-combo=...] application [additional arguments to app]
+     openapp application [additional arguments to app]
 
    Good Luck!
 

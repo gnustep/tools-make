@@ -149,6 +149,9 @@ GDB can be obtained from @url{ftp://ftp.gnu.org/gnu/gdb}. The patch to
 make it work better with GNUstep can be obtained from
 @url{ftp://ftp.gnustep.org/pub/gnustep/patches}
     
+@item TeX (OPTIONAL)
+You need a TeX implementation, like tetex, to compile some of the
+documentation (although most of that is available on the web).
 @end table
 
 @node Compiling and Installing, Additional Installation, Preliminaries, Top
@@ -175,7 +178,11 @@ For installation on specific systems, read the machine specific
 instructions at the end of this document or appropriate README files in
 the gnustep-make Documentation directory (such as README.MingW for Windows).
 
-@node Core Package,  , DPS System, Compiling and Installing
+@menu
+* Core Package::                
+@end menu
+
+@node Core Package,  , Compiling and Installing, Compiling and Installing
 @section Installing the Core Libraries
 
 The GNUstep packages uses the Autoconf mechanism for
@@ -262,7 +269,6 @@ administrator to start the gdomap server using it.
 * Environment Setup::           
 * GNUstep Home::                
 * Time Zone::                   
-* DPS Information::             
 * GNUstep deamons::             
 @end menu
 
@@ -305,7 +311,7 @@ cd
 mkdir GNUstep
 @end example
 
-@node Time Zone, DPS Information, GNUstep Home, Additional Installation
+@node Time Zone, GNUstep deamons, GNUstep Home, Additional Installation
 @section Time Zone
 
 Next, set your local time zone.  There are four ways to do this, pick
@@ -326,7 +332,7 @@ something like ``defaults write NSGlobalDomain "Local Time Zone" GB''.
 software on your system though).
 @end enumerate
 
-@node GNUstep deamons,  , DPS Information, Additional Installation
+@node GNUstep deamons,  , Time Zone, Additional Installation
 @section GNUstep deamons
 
 Set up your system to execute some GNUstep deamons. If you don't do
