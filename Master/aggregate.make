@@ -58,6 +58,7 @@ ifneq ($(SUBPROJECTS),)
 internal-all internal-install internal-uninstall internal-clean \
   internal-distclean internal-check internal-strings::
 	@ operation=$(subst internal-,,$@); \
+	  abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
 	for f in $(SUBPROJECTS); do \
 	  echo "Making $$operation in $$f..."; \
 	  mf=$(MAKEFILE_NAME); \
@@ -65,7 +66,13 @@ internal-all internal-install internal-uninstall internal-clean \
 	    mf=Makefile; \
 	    echo "WARNING: No $(MAKEFILE_NAME) found for aggregate project $$f; using 'Makefile'"; \
 	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation; then \
+	  if [ "$${abs_build_dir}" = "." ]; then \
+	    gsbuild="."; \
+	  else \
+	    gsbuild="$${abs_build_dir}/$$f"; \
+	  fi; \
+	  if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+	       GNUSTEP_BUILD_DIR="$$gsbuild"; then \
 	    :; else exit $$?; \
 	  fi; \
 	done
