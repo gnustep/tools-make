@@ -19,7 +19,20 @@
 
 #include "config.h"
 
+#ifdef __MINGW32__
+#ifndef __MINGW__
+#define __MINGW__
+#endif
+#ifndef __WIN32__
+#define __WIN32__
+#endif
+#endif
+
 #include <stdio.h>
+
+#if defined(__MINGW__)
+# include <windows.h>
+#endif
 
 #if HAVE_SYS_TYPES_H
 # include <sys/types.h>
@@ -56,7 +69,7 @@ int main (int argc, char** argv)
 #else
   struct passwd *pw;
 #endif
-  const char *loginName = 0;
+  char		*loginName = 0;
 
   if (loginName == 0)
     {
