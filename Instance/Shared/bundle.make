@@ -188,7 +188,7 @@ ifneq ($(_SUBPROJECTS),)
 	@(echo "Copying resources from subprojects into the $(GNUSTEP_TYPE) wrapper..."; \
 	for subproject in $(_SUBPROJECTS); do \
 	  if [ -d $$subproject/Resources/Subproject ]; then \
-	    if [ "$$subproject/Resources/Subproject/*" != $$subproject'/Resources/Subproject/*' ]; then \
+	    if [ $$subproject/Resources/Subproject/* != $$subproject'/Resources/Subproject/*' ]; then \
 	      cp -r $$subproject/Resources/Subproject/* \
 	            $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
 	    fi; \
