@@ -1,3 +1,8 @@
+1999-04-27  Adam Fedor  <fedor@gnu.org>
+
+	* congif.site (includedir): Put include files in Headers, not in
+	OS/CPU specific dir.
+
 1999-04-22  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.csh.in: Don't define LIBRARY_COMBO if already set.

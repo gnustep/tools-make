@@ -77,7 +77,7 @@ fi
 
 # Change the include directory default
 if test "$includedir" = "\${prefix}/include" ; then
-   includedir="\${prefix}/Headers/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
+   includedir="\${prefix}/Headers"
 fi
 
 # xxx What about oldincludedir?
