@@ -135,7 +135,6 @@ FND_LIBS =
 # Set the appropriate Foundation library
 #
 ifeq ($(FOUNDATION_LIB),gnu)
-  GNUSTEP_FND_DIR           = gnustep
   FOUNDATION_LIBRARY_NAME   = gnustep-base
   FOUNDATION_LIBRARY_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
 endif
@@ -172,7 +171,6 @@ endif
 ifeq ($(FOUNDATION_LIB),fd)
   -include $(GNUSTEP_MAKEFILES)/libFoundation.make
 
-  GNUSTEP_FND_DIR = libFoundation
   FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
   FND_LIBS = -lFoundation
 
