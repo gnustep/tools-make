@@ -1,3 +1,19 @@
+Tue Mar  5 12:57:08 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/gswapp.make (COMPONENTS, LANGUAGES,
+	WEBSERVER_RESORCE_FILES, LOCALIZED_WEBSERVER_RESOURCE_FILES,
+	WEBSERVER_RESORCE_DIRS, LOCALIZED_RESOURCE_DIRS, RESOURCE_FILES,
+	RESOURCE_DIRS): Define here.
+
+Tue Mar  5 12:50:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* config.make.in (HAS_LN_S): Set.
+
+Tue Mar  5 12:34:29 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make: Major simplification by using
+	Instance/Shared/bundle.make to manage resources.
+
 Tue Mar  5 12:20:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/bundle.make: Added support for gsweb resources;
