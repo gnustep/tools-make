@@ -5,8 +5,7 @@ Mon Dec  7 09:58:01 1998  Adam Fedor  <fedor@ultra.doc.com>
 	* openapp.in (EXEEXT): Likewise.
  	* debugapp.in (EXEEXT): Likewise.
 
-	* aggregate.make (internal-all): Break if subproject make fails
-	(Is there a better way to get make to return an error?).
+	* aggregate.make (internal-all): Break if subproject make fails.
 
 Mon Dec  7 16:10:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 

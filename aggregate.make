@@ -43,7 +43,7 @@ internal-all internal-install internal-uninstall internal-clean \
 	for f in $(SUBPROJECTS); do \
 	  echo Making $$target in $$f...;\
 	  if eval "(cd $$f; $(MAKE) -f $(MAKEFILE_NAME) --no-keep-going $$target)"; then \
-	    :; else break gnustep_build_error; \
+	    :; else exit 1; \
 	  fi; \
 	done)
 
