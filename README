@@ -70,7 +70,18 @@ upon system startup; add lines similar to these:
 . /usr/GNUstep/Makefiles/GNUstep.sh
 
 This will source in the GNUstep.sh file and set the environment
-variables; thus making them available for all users.
+variables; thus making them available for all users. Before executing
+this script, you can setup a default path for searching for tools
+and apps by defining the variable GNUSTEP_PATHPREFIX_LIST (and exporting
+it). By defualt, it's set to
+
+$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
+
+which might look something like this:
+
+~/GNUstep:/usr/GNUstep/Local:/usr/GNUstep
+
+when all is done.
 
 Setting up the GNUstep environment for a single user
 ====================================================

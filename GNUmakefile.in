@@ -89,7 +89,7 @@ install: all
 	$(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
 	for f in aggregate.make application.make bundle.make service.make \
 		common.make brain.make library.make rules.make target.make \
-		tool.make test-library.make names.make objc.make \
+		tool.make ctool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
 		documentation.make MediaBook.func executable.template; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
@@ -112,7 +112,7 @@ uninstall:
 	rm -f $(tooldir)/opentool; \
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
-		tool.make test-library.make names.make objc.make \
+		tool.make ctool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
 		documentation.make MediaBook.func executable.template; do \
 	  rm -f $(makedir)/$$f; \

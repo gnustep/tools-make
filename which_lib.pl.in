@@ -141,7 +141,7 @@ foreach $j (0..$#l) {
 	for (@possible_libs) {
 		$mypossiblelib = $_;
 		$myflags = $mypossiblelib;
-		$myflags =~ /([_dpsg]{0,5})$/;	
+		$myflags =~ /_([dpsg]{0,5})$/;	
 		$myflags = $1;
 	
 		$mysharedflag = 1;
@@ -157,7 +157,7 @@ foreach $j (0..$#l) {
 		$mygcflag = 1 if $myflags =~ /g/;
 		
 	
-		print "flags found in $mypossiblelib: shared=$mysharedflag, debug=$mydebugflag, profile=$myprofileflag, gc=$mygcflag\n" if $debug > 5;
+		print "flags found $myflags in $mypossiblelib: shared=$mysharedflag, debug=$mydebugflag, profile=$myprofileflag, gc=$mygcflag\n" if $debug > 5;
 
 		if($option{'gc'} == mygcflag) {
 	

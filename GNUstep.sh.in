@@ -68,9 +68,11 @@ if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
   export GNUSTEP_PATHPREFIX_LIST
 fi
 IFS=:
+temp_path=
 for dir in $GNUSTEP_PATHPREFIX_LIST; do
-  PATH=$PATH:$dir/Tools
+  temp_path=$temp_path$dir/Tools:
 done
+PATH=$temp_path$PATH
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 

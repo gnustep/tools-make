@@ -1,3 +1,13 @@
+1999-06-03  Adam Fedor  <fedor@gnu.org>
+
+	* ctool.make: New file for making C tools.
+	* GNUmakefile.in: Install it.
+	* whichlib.pl.in: Bug fixes.
+	* GNUstep.csh.in: Fix up PATHPREFIX expansion 
+	(patches and files from from Helge Hess <hh@mdlink.de>)
+
+	* GNustep.sh.in: Insert GNUstep path before PATH.
+
 1999-06-01  Adam Fedor  <fedor@gnu.org>
 
 	* executable.template.in: New file to be used as shell script
