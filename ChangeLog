@@ -1,3 +1,7 @@
+Tue Mar  9 17:21:34 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: Removed stale debugging statement.
+
 Tue Mar  9 17:05:38 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (GNUSTEP_HEADERS_FND_DIRS): Only set these flags
