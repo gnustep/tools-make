@@ -141,10 +141,6 @@ SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 
 endif # shared
 
-ifeq ($(strip $(HEADER_FILES_DIR)),)
-override HEADER_FILES_DIR = .
-endif
-
 #
 # Internal targets
 #
