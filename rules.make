@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   rules.make
 #
 #   All of the common makefile rules.
@@ -401,7 +401,3 @@ $(GNUSTEP_OBJ_DIR):
 
 endif
 # rules.make loaded
-
-## Local variables:
-## mode: makefile
-## End:
