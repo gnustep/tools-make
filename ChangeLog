@@ -1,3 +1,16 @@
+Mon Nov  6 16:43:22 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Create the
+	System/Documentation/Developer and System/Documentation/User
+	directories.
+	* common.make (GNUSTEP_DOCUMENTATION): Changed to be
+	$(GNUSTEP_INSTALLATION_DIR)/Documentation rather than
+	$(GNUSTEP_INSTALLATION_DIR)/Libraries
+	* rules.make: Added DOC_INSTALL_DIR and LATEX_FILES.
+	* documentation.make: Major improvement.  Implemented installation
+	and uninstallation of documentation, and support for LaTeX based
+	documentation projects.
+	
 2000-11-04  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* configure.in: fixed gtar checking.
