@@ -1,3 +1,14 @@
+1999-12-02  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.csh.in: Run GNUSTEP_HOST through config.sub to get correct
+	CPU, etc.
+	* GNUstep.sh.in: Likewise.
+	* debugapp.in: Likewise.
+	* executable.template.in: Likewise.
+	* names.make: Likewise.
+	* openapp.in: Likewise.
+	* opentool.in: Likewise.
+
 Fri Nov 12 11:52:14 1999  Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
 
 	* rules.make: Moved some Java rules into gstep-java.

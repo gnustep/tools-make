@@ -123,6 +123,7 @@ fi
 #
 if [ -z "$GNUSTEP_HOST" ]; then
     GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess)`
+    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $GNUSTEP_HOST)`
     export GNUSTEP_HOST
 fi
 if [ -z "$GNUSTEP_HOST_CPU" ]; then
