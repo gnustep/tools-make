@@ -1,0 +1,68 @@
+#
+#  Documentation makefile for the GNUstep Makefile Package 
+#  Copyright (C) 2000 Free Software Foundation, Inc.
+#
+#  Written: Adam Fedor <fedor@gnu.org>
+#
+#  This library is free software; you can redistribute it and/or
+#  modify it under the terms of the GNU Library General Public
+#  License as published by the Free Software Foundation; either
+#  version 2 of the License, or (at your option) any later version.
+#
+#  This library is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
+#  Library General Public License for more details.
+#
+#  You should have received a copy of the GNU Library General Public
+#  License along with this library; if not, write to the Free
+#  Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111 USA.
+
+# Install into the system root by default
+prefix = @prefix@
+GNUSTEP_INSTALLATION_DIR=$(prefix)
+GNUSTEP_PREFIX = @GNUSTEP_PREFIX@
+srcdir = @srcdir@
+datadir = @datadir@
+
+GNUSTEP_MAKETEXT        = makeinfo
+GNUSTEP_MAKETEXT_FLAGS  = -D NO-TEXI2HTML -D TEXT-ONLY --no-header --no-split
+
+# The documents to be generated
+DOCUMENT_NAME = 
+
+# The text documents to be generated
+DOCUMENT_TEXT_NAME = \
+INSTALL README 
+
+TOP_DOC_FILES = INSTALL README
+
+INSTALL_TEXI_FILES = 
+INSTALL_TEXT_MAIN = install.texi
+INSTALL_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+
+NEWS_TEXI_FILES = 
+NEWS_TEXT_MAIN = news.texi
+NEWS_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+
+README_TEXI_FILES = 
+README_TEXT_MAIN = readme.texi
+README_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+
+ANNOUNCE_TEXI_FILES = 
+ANNOUNCE_TEXT_MAIN = announce.texi
+ANNOUNCE_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+
+all: $(DOCUMENT_TEXT_NAME)
+
+INSTALL: install.texi
+	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
+		-o $@ $^
+
+README: readme.texi
+	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
+		-o $@ $^
+
+
+regenerate: $(DOCUMENT_TEXT_NAME)
+	mv -f $(TOP_DOC_FILES) ..

@@ -1,0 +1,44 @@
+@chapter GNUstep makefile package
+
+Here is some introductory info to get you started:
+
+@section What is the GNUstep makefile package?
+
+The makefile package is a simplistic, powerful and extensible way to
+write makefiles for a GNUstep-based project.  It allows the user to
+write a GNUstep-based project without having to deal with the complex
+issues associated with the configuration and installation of the core
+GNUstep libraries.  It also allows the user to easily create
+cross-compiled binaries.
+
+@section Information
+
+The file @samp{NEWS} has the library's feature history.
+
+The files @samp{INSTALL} or @samp{GNUstep-HOWTO} (from the core package)
+gives instructions for installing the library.
+
+The file @samp{DESIGN} has information on the design of the Makefile
+system and how to write your own makefiles that work with it.
+
+@section History
+
+The GNUstep makefile package was designed by Scott Christley
+@email{scottc@@net-community.com} and Ovidiu Predescu
+@email{ovidiu@@net-community.com}.
+
+Flags for building shared libraries and bundles on several systems were
+originally identified by Mircea Oancea @email{mircea@@pathcom.com}.
+
+Richard Frith-Macdonald @email{richard@@brainstorm.co.uk} also
+contributed with ideas.
+
+@section How can you help?
+
+@itemize @bullet
+
+@item
+Give us feedback!  Tell us what you like; tell us what you think
+could be better.  Send bug reports to @email{bug-gnustep@@gnu.org}.
+
+@end itemize

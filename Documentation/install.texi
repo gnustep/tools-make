@@ -1,0 +1,222 @@
+@chapter GNUstep makefile package installation
+
+@section Introduction
+
+If you are installing this package as part of the GNUstep core
+libraries, read the file GNUstep-HOWTO for more complete instructions on
+how to install the entire GNUstep package (including this package).
+GNUstep-HOWTO comes with the core distribution and also is located at the
+same ftp sites as this library.
+
+When you configure additional libraries, make sure you use the same
+configuration options as with gstep-make.
+
+Also make sure you've read the machine-specific instructions for your
+particular operating system and CPU. These instructions come with the
+core libraries and are also located at the GNUstep web site at
+@url{http://www.gnustep.org}.
+
+@section Additional Libraries
+
+@section Configuration
+
+The GNUstep makefile package uses the Autoconf mechanism for
+configuration; it checks some host capabilties which are used by
+all GNUstep software.  To configure just type:
+
+@example
+./configure
+@end example
+
+The GNUstep makefile package needs a root directory.  If the
+GNUSTEP_SYSTEM_ROOT environment variable is set then configure will
+use its value as the root directory.  You can also specify the root
+directory when you run configure with the prefix paramter; the
+following command makes /usr/local/GNUstep the root directory:
+
+@example
+./configure --prefix=/usr/local/GNUstep
+@end example
+
+If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
+and you do not specify a root directory when running configure, then
+configure will use /usr/GNUstep as the default root directory.
+
+@subsection Reading Command-Line Arguments
+
+There are two features that change how GNUstep gets access to 
+command-line arguments and environment variables (normally passed to
+the program in the @code{main()} function. These features are
+@code{--enable-pass-arguments} and the @code{--enable-fake-main}
+option(s). 
+
+The fake-main option @emph{secretly} renames the @code{main()} function
+and substitutes it's own function which stores the command line
+arguments before calling the real main.
+
+The pass-arguments option absolves GNUstep of any effort to get the
+command-line arguments and instead forces the developer to insert the
+line
+
+@example
+  [NSProcessInfo initializeWithArguments:argv count:argc environment:env];
+@end example
+
+in the @code{main()} function of their program.
+
+Normally, the configure script will determine if a program
+can read process information directly from the system (for use by the
+class NSProcessInfo) and enable or disable the fake-main hack
+automatically, but if you find that configure is not doing this
+correctly, you can force the fake-main hack to be used, which will
+always work. Note that if the fake-main hack is enabled, you need to
+include the header file GSConfig.h in you main program -- this is done
+by default if you include NSObject.h or Foundation.h. If you want to
+avoid the whole idea of the fake-main hack, you can use the
+pass-arguments option. In this case you will be forced to call the
+NSProcessInfo initializeWithArguments method to pass the program
+arguments to NSProcessInfo (This would be done automatically if you use
+the NSApplicationMain function in a gui application).
+
+@subsection FFI Library
+
+GNUstep's NSInvocations and Distributed Objects code involves detailed
+manipulation of function (method) calls, which does not work on all
+machine architectures. A more robust and portable solution is to use a
+library that implements a Foreign-Function Interface (FFI), such as the
+ffcall libraries. If you use a non-x86 machine, you should seriously
+consider enabling this option using @code{--enable-ffcall}.
+
+For this to work, you need to have the ffcall libraries, which you can
+get from @url{ftp://ftp.santafe.edu/pub/gnu/} or
+@url{http://clisp.cons.org/~haible/}. You also need to have a special
+version of the Objective-C library (as of gcc 2.95.x the required hooks
+are not in the standard library). You can get this library from
+@url{ftp://www.gnustep.org/pub/gnustep/contrib/libobjc-hh.tar.gz} or
+patch the standard library with the patch at
+@url{ftp://www.gnustep.org/pub/gnustep/contrib/libobjc-ffi.patch}.
+
+Make sure you specify this option when configuring gstep-base also.
+
+@section Configuring the GNUstep makefile package for a cross-compile target
+
+By default when you run configure, it assumes that you want to create
+executables for the same host that you are compiling on; however, the
+GNUstep makefile package has been designed to support cross-compiling
+just as easily as normal compiling.  In order to add a cross-compile
+target to the GNUstep makefile package, you must rerun configure for
+that target and reinstall the makefile package.  By rerunning
+configure, the appropriate target settings are determined, and
+reinstalling the makefile package installs the appropriate files for
+that target.  The target parameter is used to specify the target
+platform for cross-compiling:
+
+@example
+./configure --target=i386-mingw32
+make install
+@end example
+
+Note that configuring and installing for a cross-compile target does
+not eliminate or overwrite the files for any other targets that you
+may have configured.  So if you wish to setup the GNUstep makefile
+package for multiple targets then just perform the above steps
+multiple times.
+
+@example
+./configure --target=i386-mingw32
+make install
+./configure --target=sparc-solaris2.5
+make install
+./configure --target=alpha-linux-gnu
+make install
+@end example
+
+@section Configuring the GNUstep makefile package for a flattened structure
+
+On systems where you know you are only interested in supporting a single
+operating system, cpu type, and library combination, it's possible to
+configure GNUstep to use a 'flattened' directory structure.
+You do this by supplying the '--enable-flattened' argument to configure.
+
+In a flattened structure, files are stotred at the top-level rather than
+in a @code{$(GNUSTEP_CPU)/$(GNUSTEP_OS)/$(LIBRARY_COMBO)} subdirectory.
+
+You lose a lot of versatility with this layout, but it's simpler (less
+intimidating) for naive users to handle.
+
+@section Installation
+
+After you configure the GNUstep makefile package, then you need to
+compile the programs that come with the package.  Currently there is
+only a single C program which needs to be compiled; all of the other
+files are either shell scripts or makefile fragments, so you can
+compile and install the makefile package in one step with:
+
+@example
+make install
+@end example
+
+After you have installed the GNUstep makefile package, there is still
+some minor administration to be performed.  Based upon whether you are
+setting up the GNUstep environment for a single user or all users on
+your system, perform the appropriate step below.
+
+@section Setting up the GNUstep environment for all users
+
+The GNUstep environment and thus usage of the makefile package is
+based almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.
+So essentially the setup involved is to make sure that the variable is
+defined for all users.  The GNUstep.sh file within the makefile
+package contains all of the environment variable settings required, so
+you want to call that shell.  For most UNIX systems, the easiest way
+to do that is to modify the system rc.local file which is executed
+upon system startup; add lines similar to these:
+
+@example
+# Setup for the GNUstep environment
+. /usr/GNUstep/Makefiles/GNUstep.sh
+@end example
+
+This will source in the GNUstep.sh file and set the environment
+variables; thus making them available for all users. Before executing
+this script, you can setup a default path for searching for tools
+and apps by defining the variable GNUSTEP_PATHPREFIX_LIST (and exporting
+it). By defualt, it's set to
+
+@example
+$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
+@end example
+
+which might look something like this:
+
+@example
+~/GNUstep:/usr/GNUstep/Local:/usr/GNUstep
+@end example
+
+when all is done.
+
+@section Setting up the GNUstep environment for a single user
+
+The GNUstep environment and thus usage of the makefile package is
+based almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.
+So essentially the setup involved is to make sure that the variable is
+defined for the user.  The GNUstep.sh file within the makefile package
+contains all of the environment variable settings required, so you
+want to call that shell when the user logs in to the system.  Most
+shells have some file that you read upon login, for example the BASH
+shell reads the .bash_profile file in the user's home directory.  So
+you can add the following lines to that file:
+
+# Setup for the GNUstep environment
+. /usr/GNUstep/Makefiles/GNUstep.sh
+
+This will source in the GNUstep.sh file and set the environment
+variables; thus making them available for the user.
+
+
+@bye
+
+
+
+
+

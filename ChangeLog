@@ -1,3 +1,11 @@
+2000-12-08  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Add check for --enable-ffcall
+	* Documentation/GNUmakefile.in: New file.
+	* Documentation/install.texi: New file.
+	* Documentation/readme.texi: New file.
+	* README, INSTALL: Regenerate.
+
 2000-12-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* openapp.in:
