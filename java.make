@@ -42,6 +42,13 @@ JAVA_PACKAGE_MAKE_LOADED=yes
 # with a different relative path, you may use JAVA_PACKAGE_PREFIX: 
 # They will be installed in: 
 # ${GNUSTEP_INSTALLATION_DIR}/Libraries/Java/${JAVA_PACKAGE_PREFIX}/{relative path}
+#
+# If you have java sources to be processed throught JAVAH to create JNI
+# headers, specify the files in xxx_JAVA_JNI_FILES.  The headers will be 
+# placed together with the source file (example: the header of
+# gnu/gnustep/base/NSObject.java will be created as gnu/gnustep/base/NSObject.h) 
+# These headers are not installed.
+#
 
 JAVA_PACKAGE_NAME:=$(strip $(JAVA_PACKAGE_NAME))
 
@@ -73,7 +80,7 @@ else
 # Targets
 #
 internal-java_package-all:: before-$(TARGET)-all \
-        $(JAVA_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+        $(JAVA_OBJ_FILES) $(JAVA_JNI_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
         after-$(TARGET)-all
 
 before-$(TARGET)-all::
@@ -103,6 +110,7 @@ install-java_package:: internal-install-java-dirs
 #
 internal-java_package-clean::
 	rm -f $(JAVA_OBJ_FILES)
+	rm -f $(JAVA_JNI_OBJ_FILES)
 
 internal-java_package-distclean::
 
