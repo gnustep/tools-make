@@ -121,7 +121,7 @@ CONFIG_SYSTEM_LIBS = @LIBS@
 # Java configuration
 #
 JAVA_INCLUDE := @JAVA_INCLUDE@
-ifeq ($(JAVA_INCLUDE,-INONE)
+ifeq ($(JAVA_INCLUDE,-INONE))
 	JAVA_INCLUDE=
 endif
 
