@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 13 April 2001
+   Last Update: 29 May 2001
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -281,8 +281,8 @@ GNUstep deamons
 ===============
 
    Set up your system to execute some GNUstep deamons. If you don't do
-this, they will be started automatically when you run your  first
-GNUstep app:
+this, they will be started automatically when you run your first GNUstep
+app:
 
    * gdomap - Put this in a system startup file, like `/etc/rc.local'
      or `/etc/rc.d/rc.local' (customize for your system)
@@ -764,8 +764,10 @@ Windows with CYGWIN (_Unstable!_)
 
 `Extra libs needed'
      Objective-C library DLL (<ftp://ftp.gnustep.org/pub/gnustep/libs>)
-     for shared libs. ffcall is not ported to cygwin so don't try to
-     use it (some invocation and DO stuff will not work).
+     for shared libs. It's a good idea to remove the libobjc.a that
+     comes with gcc (gcc -v for location) so that it isn't accidentally
+     found.  Ffcall is not ported to cygwin so don't try to use it (some
+     invocation and DO stuff will not work).
 
 `Special Instructions'
    For shared libs, make sure to specify SHARED=YES explicitly when

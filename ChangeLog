@@ -1,3 +1,7 @@
+2001-05-29  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.0.1
+
 2001-05-28  Adam Fedor  <fedor@gnu.org>
 
 	* config.site: Check GNUSTEP_FLATTENED when setting bindir,libdir.

@@ -1,7 +1,18 @@
 NEWS
 ****
 
-The currently released version is `1.0.0'.
+The currently released version is `1.0.1'.
+
+Changes in version `1.0.1'
+==========================
+
+   * Support for Java tools.
+
+   * Build GUI backend as a bundle (default).
+
+   * Remove backend part of LIBRARY_COMBO.
+
+   * Fixes to run on FreeBSD, Solaris.
 
 Changes in version `1.0.0'
 ==========================
