@@ -161,7 +161,7 @@ VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 #  still use the old version.
 
 ifeq ($($(INTERNAL_library_NAME)_SOVERSION),)
-  SOVERSION = $(word 1,$(SUBST ., ,$(VERSION)))
+  SOVERSION = $(word 1,$(subst ., ,$(VERSION)))
 else
   SOVERSION = $($(INTERNAL_library_NAME)_SOVERSION)
 endif
