@@ -113,8 +113,8 @@ which_lib$(EXEEXT): which_lib.c config.h
 	$(CC) @CFLAGS@ -Wall -I. -o $@ $<
 
 user_home$(EXEEXT): user_home.c config.h
-	$(CC) @CFLAGS@ -Wall -I. -o $@ $<
-
+	$(CC) @CFLAGS@ @FORCE_USER_ROOT@ @FORCE_DEFAULTS_ROOT@ \
+	  -Wall -I. -o $@ $<
 
 install: all
 	$(srcdir)/mkinstalldirs  $(GNUSTEP_SYSTEM_ROOT) $(makedir) \
