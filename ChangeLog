@@ -1,3 +1,7 @@
+Thu Jun 22 18:58:41 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make (JAVAH): Set it to 'javah' if null.
+
 2000-06-21  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Check for alternate objc libraries
