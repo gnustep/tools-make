@@ -254,7 +254,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 ifneq ($(FRAMEWORK_NAME),)
 ifeq ($(OPERATION),all)
 ifeq ($(TOOL_NAME),)
-	@(echo Build public headers for $(TARGET_TYPE) $*...; \
+	@ echo Build public headers for $(TARGET_TYPE) $*...; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	  build-framework-headers \
 	  INTERNAL_$(TARGET_TYPE)_NAME=$* \
@@ -309,58 +309,53 @@ ifeq ($(TOOL_NAME),)
 		shared=$(shared) libext=$(LIBEXT) \
 		shared_libext=$(SHARED_LIBEXT))" \
 	  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)" \
-	  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"; \
-	if [ "$($*_SUBPROJECTS)" != "" ]; then subprjs="$($*_SUBPROJECTS)"; \
-        else subprjs="__dummy__";\
-	fi;)
+	  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
 endif
 endif
+ifneq ($($*_TOOLS),)
+ifneq ($(OPERATION), build-framework-headers)
+	@ echo Building tools for $(TARGET_TYPE) $*...; \
+	for f in $($*_TOOLS); do \
+	  mf=$(MAKEFILE_NAME); \
+	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	    mf=Makefile; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for tool $ff; using 'Makefile'"; \
+	  fi; \
+	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
+	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+	        FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+	        FRAMEWORK_OPERATION="$(OPERATION)" \
+	        TOOL_OPERATION="$(OPERATION)" \
+	        DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+	        SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	      ; then \
+	          :; \
+	  else exit $$?; \
+	  fi; \
+	done
 endif
-	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
-	if [ "$(FRAMEWORK_NAME)" != "" ] && [ "$($*_TOOLS)" != "" ] && [ "$(OPERATION)" != "build-framework-headers" ]; then tools="$($*_TOOLS)"; \
-        else tools="__dummy__";\
-	fi;\
-	if [ "$$tools" != "__dummy__" ]; then \
-	  for f in $$tools; do \
-	    mf=$(MAKEFILE_NAME); \
-	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	      mf=Makefile; \
-	        echo "WARNING: No $(MAKEFILE_NAME) found for tool $ff; using 'Makefile'"; \
-	    fi; \
-	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
-		FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-		FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-		FRAMEWORK_OPERATION="$(OPERATION)" \
-		TOOL_OPERATION="$(OPERATION)" \
-		DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-		SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	    ; then \
-	      :; \
-	    else exit $$?; \
-            fi; \
-	  done; \
-	fi; \
-	if [ "$($*_SUBPROJECTS)" != "" ]; then subprjs="$($*_SUBPROJECTS)"; \
-        else subprjs="__dummy__";\
-	fi;\
-	if [ "$$subprjs" != "__dummy__" ]; then \
-	  for f in $$subprjs; do \
-	    mf=$(MAKEFILE_NAME); \
-	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	      mf=Makefile; \
-	        echo "WARNING: No $(MAKEFILE_NAME) found for subproject $ff; using 'Makefile'"; \
-	    fi; \
-	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
-		FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-		FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-		DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-		SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	    ; then \
-	      :; \
-	    else exit $$?; \
-            fi; \
-	  done; \
-	fi; \
+endif
+endif # end of FRAMEWORK code
+ifneq ($($*_SUBPROJECTS),) # but the following looks like FRAMEWORK code ... ?
+	@ echo Building subprojects for $(TARGET_TYPE) $*...; \
+	for f in $($*_SUBPROJECTS); do \
+	  mf=$(MAKEFILE_NAME); \
+	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	    mf=Makefile; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $ff; using 'Makefile'"; \
+	  fi; \
+	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
+	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+	        FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+	        DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+	        SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	      ; then \
+	         :; \
+	  else exit $$?; \
+	  fi; \
+	done
+endif
+	@ echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
@@ -414,8 +409,8 @@ endif
 		shared=$(shared) libext=$(LIBEXT) \
 		shared_libext=$(SHARED_LIBEXT))" \
 	    SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)" \
-	    CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
-	)
+	    CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+
 
 #
 # The list of Objective-C source files to be compiled
