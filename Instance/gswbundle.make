@@ -109,10 +109,10 @@ build-bundle-dir:: $(GSWBUNDLE_DIR_NAME)/Resources \
                    $(GSWBUNDLE_RESOURCE_DIRS)
 
 $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	@$(MKDIRS) $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
 $(GSWBUNDLE_RESOURCE_DIRS):
-	@$(MKDIRS) $(GSWBUNDLE_RESOURCE_DIRS)
+	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_RESOURCE_DIRS)$(END_ECHO)
 
 build-bundle:: $(GSWBUNDLE_FILE) \
                gswbundle-components \
@@ -183,7 +183,7 @@ ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 endif
 
 gswbundle-webresource-dir::
-	@$(MKDIRS) $(GSWBUNDLE_WEBSERVER_RESOURCE_DIRS)
+	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_WEBSERVER_RESOURCE_DIRS)$(END_ECHO)
 
 gswbundle-webresource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/WebServer \
                               gswbundle-webresource-dir
@@ -239,10 +239,10 @@ $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR_NAME)/Resour
 	  echo "}") >$@
 
 $(GSWBUNDLE_DIR_NAME)/Resources:
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(GSWBUNDLE_DIR_NAME)/Resources/WebServer:
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 internal-gswbundle-install_:: $(GSWBUNDLE_INSTALL_DIR) shared-instance-headers-install
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
@@ -255,7 +255,7 @@ ifeq ($(strip),yes)
 endif
 
 $(GSWBUNDLE_INSTALL_DIR)::
-	@$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-gswbundle-uninstall_:: shared-instance-headers-uninstall
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)

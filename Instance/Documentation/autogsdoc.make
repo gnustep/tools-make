@@ -35,7 +35,7 @@ INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 internal-doc-all_:: generate-autogsdoc
 
 $(GNUSTEP_INSTANCE):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # FIXME: We need appropriate rules here to determine when to run
 # autogsdoc ... this simplistic rule inefficiently runs autogsdoc

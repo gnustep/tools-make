@@ -194,7 +194,7 @@ internal-library-clean::
 	rm -rf $(DERIVED_SOURCES)
 
 $(DERIVED_SOURCES):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def: $(OBJ_FILES_TO_LINK) $(DLL_DEF_INP)
 	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)
@@ -236,13 +236,13 @@ internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
 # Now the rule to create each dir.  NB: Nothing gets executed if the dir 
 # already exists
 $(FINAL_LIBRARY_INSTALL_DIR):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 $(DLL_INSTALLATION_DIR):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 $(ADDITIONAL_INSTALL_DIRS):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 
 ifeq ($(BUILD_DLL),yes)

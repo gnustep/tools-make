@@ -121,7 +121,7 @@ internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_INFO_PLIST_FILE)
 
 $(APP_DIR_NAME):
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 else
 
@@ -135,7 +135,7 @@ internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     shared-instance-bundle-all
 
 $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 ifeq ($(GNUSTEP_FLATTENED),)
 internal-application-build-template: $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)
@@ -266,7 +266,7 @@ internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir
 # install/uninstall targets
 
 $(APP_INSTALL_DIR):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-app-install_:: shared-instance-bundle-install
 ifeq ($(strip),yes)

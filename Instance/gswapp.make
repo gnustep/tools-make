@@ -159,7 +159,7 @@ internal-gswapp-all_:: \
    $(GSWAPP_DIR_NAME)/$(GNUSTEP_INSTANCE).sh
 
 $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	@$(MKDIRS) $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+	$(ECHO_CREATING)$(MKDIRS) $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 endif
 
 ifeq ($(GNUSTEP_INSTANCE)_GEN_SCRIPT,yes) #<==
@@ -321,15 +321,15 @@ $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWAPP_DIR_NAME)/Resources
 	  echo "}") >$@
 
 $(GSWAPP_DIR_NAME)/Resources:
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(GSWAPP_DIR_NAME)/Resources/WebServer:
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 internal-gswapp-install_::
-	@($(MKINSTALLDIRS) $(GNUSTEP_GSWAPPS); \
+	$(ECHO_INSTALLING)($(MKINSTALLDIRS) $(GNUSTEP_GSWAPPS); \
 	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME); \
-	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -))
+	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME)
 endif

@@ -219,13 +219,13 @@ ifneq ($(HEADER_FILES),)
 endif
 
 $(FRAMEWORK_LIBRARY_DIR_NAME):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(FRAMEWORK_VERSION_DIR_NAME)/Headers:
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(DERIVED_SOURCES):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
@@ -500,19 +500,19 @@ endif
 endif
 
 $(DLL_INSTALLATION_DIR)::
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 $(FRAMEWORK_DIR_NAME)/Resources::
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(FRAMEWORK_INSTALL_DIR)::
-	@$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 $(GNUSTEP_HEADERS) :
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 # FIXME - uninstall doesn't work - it should be removing all the symlinks!
 internal-framework-uninstall_::

@@ -46,7 +46,7 @@ RESOURCE_FILES_FULL_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/$(RESOURCE_FILES_I
 
 # Rule to build the installation dir
 $(RESOURCE_FILES_FULL_INSTALL_DIR):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 
 # Determine the additional installation dirs to build
@@ -55,7 +55,7 @@ RESOURCE_DIRS = $($(GNUSTEP_INSTANCE)_RESOURCE_DIRS)
 ifneq ($(RESOURCE_DIRS),)
 # Rule to build the additional installation dirs
 $(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(RESOURCE_DIRS)):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 endif
 
 
@@ -139,7 +139,7 @@ else
 
 # Rule to build the language installation directories
 $(addsuffix .lproj,$(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(LANGUAGES))):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # install the localized resources, checking the installation date by
 # using test -nt ... this doesn't seem to be easy to do using make

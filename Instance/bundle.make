@@ -139,7 +139,7 @@ build-bundle:: $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
 # by Instance/Shared/bundle.make
 
 $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 ifeq ($(WITH_DLL),yes)
 
@@ -198,7 +198,7 @@ ifeq ($(FOUNDATION_LIB), apple)
 # MacOSX bundles
 
 $(BUNDLE_DIR_NAME)/Contents:
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
 $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents \
@@ -265,7 +265,7 @@ endif
 endif # FOUNDATION_LIB != apple
 
 $(BUNDLE_INSTALL_DIR):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-bundle-install_:: shared-instance-headers-install \
                      shared-instance-bundle-install

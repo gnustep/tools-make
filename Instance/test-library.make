@@ -114,7 +114,7 @@ really-test_lib-check:
 _FORCE::
 
 $(SCRIPTS_DIRECTORY)/config/unix.exp: _FORCE
-	@$(MKDIRS) $(SCRIPTS_DIRECTORY)/config
+	$(ECHO_CREATING)$(MKDIRS) $(SCRIPTS_DIRECTORY)/config$(END_ECHO)
 	@(echo "Creating the $@ file..."; \
 	echo "## Do Not Edit ##" > $@; \
 	(echo "# Contents generated automatically by Makefile"; \

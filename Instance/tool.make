@@ -81,7 +81,7 @@ internal-tool-copy_into_dir::
 
 # This rule runs $(MKDIRS) only if needed
 $(FINAL_TOOL_INSTALL_DIR):
-	@$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-tool-install_:: $(FINAL_TOOL_INSTALL_DIR)
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \
@@ -116,10 +116,10 @@ internal-tool-all_:: shared-instance-bundle-all
 internal-tool-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
 $(TOOL_INSTALL_DIR):
-	@$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 $(TOOL_INSTALL_DIR)/Resources:
-	@$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-tool-install_:: $(TOOL_INSTALL_DIR)/Resources \
                     shared-instance-bundle-install 

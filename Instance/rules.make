@@ -86,7 +86,7 @@ internal-$(GNUSTEP_TYPE)-all:: before-$(GNUSTEP_INSTANCE)-all \
 
 # To copy into a dir, we always have to first make sure the dir exists :-)
 $(COPY_INTO_DIR):
-	@$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # The specific project-type makefiles will add more commands.
 internal-$(GNUSTEP_TYPE)-copy_into_dir:: $(COPY_INTO_DIR)

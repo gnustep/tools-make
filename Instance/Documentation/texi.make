@@ -120,7 +120,7 @@ internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
 	fi
 
 $(GNUSTEP_DOCUMENTATION_INFO):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-doc-uninstall_::
 	rm -f \

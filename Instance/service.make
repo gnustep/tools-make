@@ -78,7 +78,7 @@ $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
 		$(ALL_SERVICE_LIBS)$(END_ECHO)
 
 $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+	$(ECHO_CREATING)$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
 
 # Allow the gui library to redefine make_services to use its local one
@@ -100,7 +100,7 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 #
 
 $(GNUSTEP_SERVICES):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-service-install_:: $(GNUSTEP_SERVICES)
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME); \

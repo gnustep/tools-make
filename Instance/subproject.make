@@ -91,7 +91,7 @@ ifneq ($(HEADER_FILES),)
 endif # we got HEADER_FILES
 
 $(OWNING_PROJECT_HEADER_DIR):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # End FRAMEWORK code
 else
