@@ -260,7 +260,7 @@ else
   PACKAGE_EXTENSION="-debug"
 endif
 
-.PHONY: specfile rpm
+.PHONY: specfile rpm check-RPM_TOPDIR
 
 #
 # The user will type `make specfile' to generate the specfile
@@ -323,17 +323,24 @@ endif
 	    cat $(SPEC_SCRIPT_IN) >> $@;                            \
           fi
 
-rpm: tgz specfile
-	@echo "Generating the rpm...";                                    \
-	if [ "$(RPM_TOPDIR)" = "" ]; then                                 \
+check-RPM_TOPDIR:
+	@if [ "$(RPM_TOPDIR)" = "" ]; then                                 \
 	  echo "I can't build the RPM if you do not set your RPM_TOPDIR"; \
 	  echo "shell variable";                                          \
-	else                                                              \
-          cp ../$(PACKAGE_NAME)-$(VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/; \
-	  cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/;                           \
-	  cd $(RPM_TOPDIR)/SPECS/;                                        \
-	  rpm -ba $(SPEC_FILE);                                           \
-	fi
+	  exit 1; \
+	fi;
+
+rpm: check-RPM_TOPDIR tgz specfile
+	@echo "Generating the rpm...";
+ifneq ($(RELEASE_DIR),)
+	@cp $(RELEASE_DIR)/$(PACKAGE_NAME)-$(VERSION).tar.gz \
+	    $(RPM_TOPDIR)/SOURCES/;
+else
+	@cp ../$(PACKAGE_NAME)-$(VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/;
+endif	
+	cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/; \
+	cd $(RPM_TOPDIR)/SPECS/; \
+	rpm -ba $(SPEC_FILE)
 
 ifneq ($(PACKAGE_NAME),)
 internal-distclean::
