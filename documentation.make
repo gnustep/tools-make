@@ -250,7 +250,7 @@ internal-doc-install::
 # Yeah - I know - the following is dangerous if you have misused the 
 # DOC_INSTALL_DIR - but it's the only way to do it
 internal-doc-uninstall:: 
-	rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*
+	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*
 endif # LATEX2HTML
 endif # LATEX_FILES
 
@@ -286,7 +286,7 @@ internal-doc-clean::
 	rm -f $(INTERNAL_doc_NAME)_*.html
 	rm -f $(INTERNAL_doc_NAME).ps.gz
 	rm -f $(INTERNAL_doc_NAME).tar.gz
-	rm -f $(INTERNAL_doc_NAME)/*
+	-rm -f $(INTERNAL_doc_NAME)/*
 ifneq ($(GSDOC_FILES),)
 	for i in $(GSDOC_FILES); do \
 		rm -f `basename $$i .gsdoc`.html ; \
@@ -309,7 +309,6 @@ endif
 ifneq ($(LATEX_FILES),)
 
 internal-doc-distclean::
-	rm -Rf $(INTERNAL_doc_NAME)
 	rm -Rf *~ 
 	rm -Rf *.aux
 else # ! LATEX_FILES
