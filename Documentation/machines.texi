@@ -111,11 +111,11 @@ Currently tested on Darwin 7.x
 @item Recommended compiler
 gcc 3.3.2 or greater 3.3.* versions. 
 Older versions will not compile on Darwin and 3.4.* versions don't 
-support GNU runtime compilation on Darwin currently (The gcc bug report 
+support GNU runtime compilation on Darwin currently (The GCC bug report 
 is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-Default compiler (Apple gcc) has unknown problems.
-Download the FSF gcc compiler and configure it with
+Default compiler (Apple GCC) has unknown problems.
+Download the FSF GCC compiler and configure it with
 -enable-threads=posix. You don't need binutils or anything else.
 Use the GNU runtime.
 
@@ -146,11 +146,11 @@ Currently tested on Darwin 6.x, 7.x
 @item Recommended compiler
 gcc 3.3.2 or greater 3.3.* versions. 
 Older versions will not compile on Darwin and 3.4.* versions don't 
-support GNU runtime compilation on Darwin currently (The gcc bug report 
+support GNU runtime compilation on Darwin currently (The GCC bug report 
 is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-Default compiler (Apple gcc) has unknown problems.
-Download the FSF gcc compiler and configure it with
+Default compiler (Apple GCC) has unknown problems.
+Download the FSF GCC compiler and configure it with
 -enable-threads=posix. You don't need binutils or anything else.
 Use the GNU runtime.
 
@@ -382,11 +382,16 @@ Default. For 10.1.5, you need to add -no-cpp-precomp to CFLAGS
 @item Extra libs needed 
 None.
 
-@item Special Instructions 
-By default, on Mac OS X, only the GNUstep extensions are built. This
-is if you want to build gdl2, etc on Mac OS X. Xcode project files
-exist, but they may not be up-to-date.  Make sure /usr/sbin is in your
-path:
+@item Special Instructions
+Warning ! To know how to install a complete GNUstep system on Mac OS X, 
+read the Darwin/PowerPC section.
+By default, on Mac OS X, only the GNUstep extensions are built. Read the @url{README.Darwin} file in the gnustep-make/Documentation directory for
+complete instructions.
+
+To build the GNUstep extensions only is useful, when you want to build 
+on Mac OS X, GNUstep related projects like gdl2, etc linked to Cocoa. 
+Xcode project files exist, but they may not be up-to-date. Make sure 
+/usr/sbin is in your path:
 
 @example
 PATH=$PATH:/usr/sbin

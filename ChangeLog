@@ -1,3 +1,13 @@
+2004-12-27  Quentin Mathe <qmathe@club-internet.fr>
+       
+        * Documentation/README.Darwin: Rewritten the base library install
+        instructions (libxslt support with Fink explained) and other minor
+        updates.
+        * Documentation/machines.texi: Made the GNUstep on MacOSX section a bit
+        more clear.
+        * GNUstep-HOWTO: Synchronized with Documentation/machines.texi and made
+        the spacing more consistent.
+
 2004-12-26  Quentin Mathe <qmathe@club-internet.fr>
        
         * Documentation/README.Darwin: Updated to take in account the latest 

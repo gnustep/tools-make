@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 3 September 2004
+   Last Update: 25 December 2004
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -396,11 +396,11 @@ Currently tested on Darwin 7.x
 `Recommended compiler'
      gcc 3.3.2 or greater 3.3.* versions 
      Older versions will not compile on Darwin and 3.4.* versions don't 
-     support GNU runtime compilation on Darwin currently (The gcc bug 
+     support GNU runtime compilation on Darwin currently (The GCC bug 
      report is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-     Default compiler (Apple gcc) has unknown problems.
-     Download the FSF gcc compiler and configure it with 
+     Default compiler (Apple GCC) has unknown problems.
+     Download the FSF GCC compiler and configure it with 
      --enable-threads=posix. You don't need binutils or anything else.
      Use the GNU runtime.
 
@@ -411,7 +411,6 @@ Currently tested on Darwin 7.x
      Read the <README.Darwin> file in the gnustep-make/Documentation
      directory for complete instructions.
 
-
 Darwin/PowerPC
 ==============
 
@@ -420,11 +419,11 @@ Currently tested on Darwin 6.x, 7.x
 `Recommended compiler'
      gcc 3.3.2 or greater 3.3.* versions
      Older versions will not compile on Darwin and 3.4.* versions don't 
-     support GNU runtime compilation on Darwin currently (The gcc bug 
+     support GNU runtime compilation on Darwin currently (The GCC bug 
      report is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-     Default compiler (Apple gcc) has unknown problems.
-     Download the FSF gcc compiler and configure it with 
+     Default compiler (Apple GCC) has unknown problems.
+     Download the FSF GCC compiler and configure it with 
      --enable-threads=posix. You don't need binutils or anything else.
      Use the GNU runtime.
 
@@ -438,8 +437,7 @@ Currently tested on Darwin 6.x, 7.x
      Read the <README.Darwin> file in the gnustep-make/Documentation
      directory for complete instructions.
 
-
-   See also the MacOSX/PowerPC section
+     See also the MacOSX/PowerPC section
 
 Debian/DEC-Alpha
 ================
@@ -457,6 +455,7 @@ Debian/i386
 ===========
 
 Tested on sid.
+
 `Recommended compiler'
      Unknown
 
@@ -470,6 +469,7 @@ Debian/PowerPC
 ==============
 
 Tested on sid.
+
 `Recommended compiler'
      Unknown
 
@@ -483,6 +483,7 @@ Debian/SPARC
 ============
 
 Tested on sid.
+
 `Recommended compiler'
      Unknown
 
@@ -505,8 +506,7 @@ Tested on 5.0 and 5.1
      Can install via /usr/ports/devel/gnustep, but not all required
      dependancies are installed. See the GNUstep-HOWTO for list of
      libraries.
-
-
+     
 FreeBSD 4.x
 ===========
 
@@ -519,7 +519,6 @@ FreeBSD 4.x
      For gcc 3.0.4, make WANT_THREADS_SUPPORT=YES
 
      For libxml2 2.4.24, make WITHOUT_PYTHON=YES
-
 
 FreeBSD 3.x
 ===========
@@ -555,13 +554,12 @@ Compiles "out of the box" on FreeBSD 3.4.
 
      This can be done more much easily by using the port version.  Just
      `cd' to `/usr/ports/lang/egcs' and do a `"make WANT_THREADS=yes
-     install"'.  Easy.
+     install"'. Easy.
 
      If configure cannot find tiff.h or the tiff library and you have
      it installed in a non-standard place (even `/usr/local'), you may
      need to pass these flags to configure:
      `CFLAGS="-I/usr/local/include"' and `LDFLAGS="-L/usr/local/lib"'.
-
 
 FreeBSD 2.x (_Obsolete,Unstable_)
 =================================
@@ -584,7 +582,6 @@ FreeBSD 2.x (_Obsolete,Unstable_)
      FreeBSD 3.x.  You need to use gmake not make to compile the
      GNUstep packages.
 
-
 Irix 6.5/MIPS
 =============
 
@@ -605,23 +602,40 @@ Irix 6.5/MIPS
      use systune ncargs to increase the value (maximum is 262144) or
      link the library by hand.  No libffi-support: Use ffcall
 
-
 MacOSX/PowerPC
 ==============
 
-Currently tested on MacOSX 10.2, 10.3
+This section is for building the GNUstep extensions only.
+Use this if, for instance, if you want to build something based
+on GNUstep, such as GSWeb or GNUMail. If you want to build the complete
+GNUstep system independant of Mac OS X, see the Darwin/PowerPC section.
+
+Currently tested on MacOSX 10.1.5, 10.2, 10.3
 
 `Recommended compiler'
-     Default.
+     Default. For 10.1.5, you need to add -no-cpp-precomp to CFLAGS 
+     (For instance, ./configure CFLAGS="-no-cpp-precomp" ...)
 
 `Extra libs needed'
      None.
 
 `Special Instructions'
-     By default, on Mac OS X, only the GNUstep extensions are built.
-     This is if you want to build gdl2, etc on Mac OS X. Xcode project
-     files exist, but they may not be up-to-date. Try:
+     Warning! To know how to install a complete GNUstep system on 
+     Mac OS X, read the Darwin/PowerPC section.
+     
+     By default, on Mac OS X, only the GNUstep extensions are built. 
+     Read the <README.Darwin> file in the 
+     gnustep-make/Documentation directory for complete instructions.
 
+     To build the GNUstep extensions only is useful, when you want to
+     build on Mac OS X, GNUstep related projects like gdl2, etc linked
+     to Cocoa. Xcode project files exist, but they may not be 
+     up-to-date. Make sure /usr/sbin is in your path:
+     
+          PATH=$PATH:/usr/sbin
+          
+     Then type:
+          
           cd make
           ./configure --with-library-combo=apple-apple-apple
           make install
@@ -629,7 +643,9 @@ Currently tested on MacOSX 10.2, 10.3
           cd ../base
           ./configure --with-xml-prefix=/usr --disable-xmltest
           make debug=yes install
-
+          
+   On Mac OS X 10.1.5, there is no libxml. Either install libxml2
+   or configure base with --disable-xml.
 
    See also the Darwin/PowerPC section.
 
@@ -648,7 +664,6 @@ Tested with R2 RC2 (2004/03/04).
 `Special Instructions'
      Unknown.
 
-
 NetBSD
 ======
 
@@ -660,7 +675,6 @@ NetBSD
 
 `Special Instructions'
      See the <README.NetBSD> file located in the gnustep-make package.
-
 
 Netwinder (_Unstable_)
 ======================
@@ -706,7 +720,6 @@ Information is for Version 3.2C
      you may need to link with a library twice. For instance, add an
      extra -lgnustep-gui in ADDTIONAL_TOOL_LIBS in the
      GNUmakefile(.preamble).
-
 
 RedHat/Intel
 ============
@@ -767,7 +780,7 @@ Tested on Solaris version 6, 7, and 8
 
 
    Some people have reported problems when using binutils assembler and
-linker.  Using the native Solaris assmebler and linker should work fine.
+linker. Using the native Solaris assmebler and linker should work fine.
 
    Older Instructions: If you are using threads, make sure the
 Objective-C runtime (libobjc that comes with gcc) is compiled with
@@ -809,10 +822,9 @@ GNUstep has been tested on version 6.2-6.4 of Suse
 
 `Special Instructions'
      It seems that there is a problem with the default kernel build
-     distributed with Suse  which means that the socket binding used by
-     gdnc doesn't work.  If you recompile the kernel then it starts
+     distributed with Suse which means that the socket binding used by
+     gdnc doesn't work. If you recompile the kernel then it starts
      working.
-
 
 Suse/Intel
 ==========
@@ -822,7 +834,7 @@ Suse
 
 `Recommended compiler'
      The default compiler that comes with Susu is fine. Also gcc2.95.x,
-     gcc3.0.x, 3.1 and 3.2 work, but 2.95 is faster.  Compile with
+     gcc3.0.x, 3.1 and 3.2 work, but 2.95 is faster. Compile with
      -threads-enabled (non-standard).
 
 `Extra libs needed'
@@ -830,7 +842,6 @@ Suse
 
 `Special Instructions'
      None.
-
 
 Suse 7.x/PPC
 ============
@@ -935,8 +946,8 @@ Unixware-2.1.3/Intel
           gdomap -a /etc/gdomap_addresses
 
 
-   If you don't set gdomap up correctly, Distributed Objects will not
-work.
+   If you don't set gdomap up correctly, Distributed Objects will not 
+   work.
 
 Windows with CYGWIN (_Needs Testing_)
 =====================================
@@ -957,8 +968,7 @@ Windows with CYGWIN (_Needs Testing_)
 `Special Instructions'
      Make sure you have good shared libraries for everthing. Sometimes
      a bad shared library (like libtiff) will cause odd and untraceable
-     problems.  See <README.Cygwin> for information on compiling.
-
+     problems. See <README.Cygwin> for information on compiling.
 
 Windows with MinGW
 ==================
@@ -1010,4 +1020,3 @@ to update, for example, go into 'base', and type:
      cvs -z3 update -Pd
 
    You don't have to re-checkout after you have the source, just update!
-
