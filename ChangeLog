@@ -1,3 +1,8 @@
+Fri Aug 31 15:33:30 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* bundle.make (bundle-localized-resource-files): Bug fix - added
+	missing ) at then end of command.
+
 2001-08-21  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in (gs_cv_objc_libdir): Don't look for gcc's
