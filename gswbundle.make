@@ -285,7 +285,6 @@ ifneq ($(HEADER_FILES),)
 	done;
 endif
 endif
-	$(MKDIRS) $(GSWBUNDLE_INSTALL_DIR); \
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
 
