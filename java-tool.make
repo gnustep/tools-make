@@ -121,6 +121,8 @@ _FORCE::
 UNESCAPED_ADD_JAVA_OBJ_FILES = $(wildcard $(JAVA_OBJ_FILES:.class=[$$]*.class))
 ADDITIONAL_JAVA_OBJ_FILES = $(subst $$,\$$,$(UNESCAPED_ADD_JAVA_OBJ_FILES))
 
+JAVA_PROPERTIES_FILES = $($(INTERNAL_java_tool_NAME)_JAVA_PROPERTIES_FILES)
+
 install-java_tool:: internal-install-java_tool-dirs \
                    $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)
 ifneq ($(strip $(JAVA_OBJ_FILES)),)
@@ -132,6 +134,13 @@ ifneq ($(strip $(ADDITIONAL_JAVA_OBJ_FILES)),)
 	for file in $(ADDITIONAL_JAVA_OBJ_FILES); do \
 	  $(INSTALL_DATA) $$file $(JAVA_TOOL_INSTALLATION_DIR)/$$file ; \
 	done;
+endif
+ifneq ($(JAVA_PROPERTIES_FILES),)
+	for file in $(JAVA_PROPERTIES_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
+	  fi;    \
+	done
 endif
 
 # Warning - to uninstall nested classes you need to have a compiled 

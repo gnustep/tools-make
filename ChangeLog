@@ -1,3 +1,9 @@
+Thu Feb  7 12:58:52 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* java.make (install-java_package): Recognize and install
+	xxx_JAVA_PROPERTIES_FILES.
+	* java-tool.make (install-java_tool): Idem.
+	
 2002-02-04 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* opentool.in: Rewrite searching code so that it looks in the

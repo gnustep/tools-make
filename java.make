@@ -53,6 +53,8 @@ JAVA_PACKAGE_MAKE_LOADED=yes
 # gnu/gnustep/base/NSObject.java will be created as
 # gnu/gnustep/base/NSObject.h) These headers are not installed.
 #
+# If you have properties file to install, put them in the
+# xxx_JAVA_PROPERTIES_FILES
 
 JAVA_PACKAGE_NAME:=$(strip $(JAVA_PACKAGE_NAME))
 
@@ -141,6 +143,8 @@ UNESCAPED_ADD_JAVA_OBJ_FILES = $(wildcard $(JAVA_OBJ_FILES:.class=[$$]*.class))
 # shell
 ADDITIONAL_JAVA_OBJ_FILES = $(subst $$,\$$,$(UNESCAPED_ADD_JAVA_OBJ_FILES))
 
+JAVA_PROPERTIES_FILES = $($(INTERNAL_java_package_NAME)_JAVA_PROPERTIES_FILES)
+
 install-java_package:: internal-install-java-dirs
 ifneq ($(JAVA_OBJ_FILES),)
 	for file in $(JAVA_OBJ_FILES) __done; do \
@@ -151,6 +155,13 @@ ifneq ($(JAVA_OBJ_FILES),)
 endif
 ifneq ($(ADDITIONAL_JAVA_OBJ_FILES),)
 	for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
+	  fi;    \
+	done
+endif
+ifneq ($(JAVA_PROPERTIES_FILES),)
+	for file in $(JAVA_PROPERTIES_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi;    \
