@@ -1,3 +1,10 @@
+Tue Feb  3 22:47:38 1998  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* brain.make: Include libFoundation.make which is now installed by
+	libFoundation to support Boehm's garbage collector.
+	* target.make (OPENSTEP): Add LIBRARIES_FOUNDATION_DEPEND_UPON to the
+	list of libraries to link against when building a shared library.
+
 Sun Feb  1 04:05:07 1998  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* test-library.make: Force the creation of unix.exp file.

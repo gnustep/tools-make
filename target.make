@@ -95,10 +95,11 @@ TARGET_LIB_DIR = \
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
-        /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
+	/bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
 		-framework System \
 		$(ALL_LIB_DIRS) \
-		$(LIBRARIES_DEPEND_UPON) -lobjc -lgcc $^; \
+		$(LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
+		-lobjc -lgcc $^; \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 else
@@ -106,7 +107,8 @@ SHARED_LIB_LINK_CMD     = \
         /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
 		$(ALL_LDFLAGS) $@ \
 		-framework System \
-		$(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) $^; \
+		$(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) \
+		$(LIBRARIES_FOUNDATION_DEPEND_UPON) $^; \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 endif
