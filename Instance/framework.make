@@ -40,6 +40,11 @@ endif
 # The list of framework subprojects directories are in xxx_SUBPROJECTS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
 # The header files are in xxx_HEADER_FILES
+# The directory where the header files are located is xxx_HEADER_FILES_DIR
+#   (defaults to ./)
+# The directory where to install the header files inside the library
+#   installation directory is xxx_HEADER_FILES_INSTALL_DIR
+#   (defaults to the framework name [without .framework])
 # The list of framework web server resource directories are in
 #    xxx_WEBSERVER_RESOURCE_DIRS
 # The list of localized framework web server GSWeb components are in
@@ -49,6 +54,15 @@ endif
 #       "yes") [Nicola: I'm not sure what this means :-)]
 #
 # where xxx is the framework name
+#
+#
+# The HEADER_FILES_INSTALL_DIR might look somewhat weird.  At the
+# moment, it allows you to put headers for framework XXX in directory
+# YYY, so that you can refer to them by using #include
+# <YYY/MyHeader.h> rather than #include <XXX/MyHeader.h>.  It seems to
+# be mostly used to have a framework with name XXX work as a drop-in
+# replacement for another framework, which has name YYY -- and which
+# might be installed at the same time :-).
 #
 
 # Warn about obsolete syntax
@@ -76,7 +90,9 @@ endif
 FRAMEWORK_DIR_NAME = $(GNUSTEP_INSTANCE).framework
 FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
 
-HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
+# This is not doing much at the moment, but at least is defining HEADER_FILES,
+# HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR in the standard way.
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 # FIXME - do we really want to link the framework against all libs ?
 # That easily makes problems when the framework is loaded as a bundle,
@@ -186,9 +202,9 @@ endif
 	    $(LN_S) Versions/Current/Headers Headers; \
 	  fi;)
 	@(cd $(DERIVED_SOURCES); \
-	  if [ ! -L "$(GNUSTEP_INSTANCE)" ]; then \
+	  if [ ! -L "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
-                    ./$(GNUSTEP_INSTANCE); \
+                    ./$(HEADER_FILES_INSTALL_DIR); \
 	  fi;)
 
 $(FRAMEWORK_LIBRARY_DIR_NAME):
@@ -205,7 +221,7 @@ $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) ./$$file \
+	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
 	                    $(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
 	  fi; \
 	done
@@ -354,15 +370,15 @@ ifeq ($(strip),yes)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
-	  if test -L "$(GNUSTEP_INSTANCE)"; then \
-	    rm -f $(GNUSTEP_INSTANCE); \
+	  if test -L "$(HEADER_FILES_INSTALL_DIR)"; then \
+	    rm -f $(HEADER_FILES_INSTALL_DIR); \
 	  fi; \
-	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(GNUSTEP_INSTANCE); \
+	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(HEADER_FILES_INSTALL_DIR); \
 	fi;$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	@(cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
-	  $(CHOWN) $(CHOWN_TO) $(GNUSTEP_INSTANCE); \
+	  $(CHOWN) $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
 	fi;)
 endif
 	@(cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
@@ -405,18 +421,18 @@ ifeq ($(strip),yes)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
-	  if test -d "$(GNUSTEP_INSTANCE)"; then \
-	    rm -Rf $(GNUSTEP_INSTANCE); \
+	  if test -d "$(HEADER_FILES_INSTALL_DIR)"; then \
+	    rm -Rf $(HEADER_FILES_INSTALL_DIR); \
 	  fi; \
           $(MKINSTALLDIRS) $(GNUSTEP_INSTANCE); \
 	  cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
-            $(TAR) cf - . | (cd  $(GNUSTEP_HEADERS)/$(GNUSTEP_INSTANCE); \
+            $(TAR) cf - . | (cd  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR); \
             $(TAR) xf - ); \
 	fi;$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	@(cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
-	  $(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_INSTANCE); \
+	  $(CHOWN) -R $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
 	fi;)
 endif
 	(cd $(DLL_INSTALLATION_DIR); \
@@ -443,7 +459,7 @@ $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
 $(GNUSTEP_HEADERS) :
 	$(MKINSTALLDIRS) $@
 
-# FIXME - uninstall doesn't work
+# FIXME - uninstall doesn't work - it should be removing all the symlinks!
 internal-framework-uninstall_::
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
