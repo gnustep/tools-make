@@ -97,6 +97,18 @@ export PATH
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
+gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"
+
+if [ -z "$CLASSPATH" ]; then
+  CLASSPATH="$gnustep_class_path"
+else
+  if ( echo ${CLASSPATH}| grep -v "${gnustep_class_path}" >/dev/null ); then
+    CLASSPATH="$CLASSPATH:$gnustep_class_path"
+  fi
+fi
+
+export CLASSPATH
+
 #
 # Perform any user initialization
 #
@@ -127,16 +139,4 @@ else
     $TDIR/make_services &
   fi
 fi
-
-gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"
-
-if [ -z "$CLASSPATH" ]; then
-  CLASSPATH="$gnustep_class_path"
-else
-  if ( echo ${CLASSPATH}| grep -v "${gnustep_class_path}" >/dev/null ); then
-    CLASSPATH="$CLASSPATH:$gnustep_class_path"
-  fi
-fi
-
-export CLASSPATH
 

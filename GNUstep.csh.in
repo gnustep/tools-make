@@ -83,6 +83,19 @@ setenv PATH ${tp}${PATH}
 source ${GNUSTEP_SYSTEM_ROOT}/Makefiles/ld_lib_path.csh
 
 #
+set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
+
+if ( ! ${?CLASSPATH} ) then
+  setenv CLASSPATH "${gnustep_class_path}"
+else
+  setenv CLASSPATH "${CLASSPATH}:${gnustep_class_path}"
+endif
+
+#
+#
+
+
+#
 # Perform any user initialization
 #
 if ( -e ~/.GNUstep/GNUstep.csh ) then
@@ -102,17 +115,6 @@ else
   if ( -e $TDIR/make_services ) then
     $TDIR/make_services &
   endif
-endif
-
-#
-#
-#
-set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
-
-if ( ! ${?CLASSPATH} ) then
-  setenv CLASSPATH "${gnustep_class_path}"
-else
-  setenv CLASSPATH "${CLASSPATH}:${gnustep_class_path}"
 endif
 
 #
