@@ -1,3 +1,8 @@
+Mon Apr  8 00:45:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in (dir): Unset after using (Reported by Balaton
+	Zoltan <balaton@eik.bme.hu>).
+
 Sat Apr  6 15:09:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Fixed bundling frameworks in RPMs or DEBs.
