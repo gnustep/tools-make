@@ -41,7 +41,9 @@ To get stuff from CVS you can download and install WinCVS ... which
 you can find at http://sourceforge.net/projects/cvsgui You will need
 to be a system administrator on your machine to install this software.
 You should be able to use it without changing/setting any special
-configuration options.
+configuration options.  The one thing to remember is that the checkbox
+to select whether to use unix line terminators instead of windows/DOS
+line terminators should be se to the unix option.
 
 
 Installing and setting up MINGW and MSYS
@@ -73,6 +75,11 @@ You may also want to set the HOMEDRIVE and HOMEPATH environment variables
 to point to the home directory you wish to work from (though the defaults
 may be ok for you).
 NB. This home directory for building software must *not* contain spaces.
+(aside - MSYS uses the unix-style HOME environment variable, but windows
+programs, including GNUstep programs under windows, use the HOMEDRIVE and
+HOMEPATH environment variables to build a windows-style path for the home
+directory.  eg. if HOMEDRIVE is C: and HOMEPATH is \MyHome then the path
+to the home directory is C:\MyHome).
 
 From this window we can now start building things.
 
@@ -232,3 +239,22 @@ base library and some tools, and install the whole lot (along with some
 system resources).
 
 
+
+Good Sites for Pre-Compiled Binaries
+------------------------------------
+
+Many libraries, etc from:
+
+<http://sourceforge.net/project/showfiles.php?group_id=7382>
+<http://penguin.at0.net/~fredo/files/old/> (for libxml2, more?)
+<http://sourceforge.net/project/showfiles.php?group_id=23617> (libtiff)
+
+MingW guile from
+
+<http://www.textsure.net/~ela/devel.html>.
+
+also need guile from 
+
+<http://sourceforge.net/project/showfiles.php?group_id=7382>
+
+for guile-config file.
