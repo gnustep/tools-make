@@ -1,3 +1,11 @@
+Wed Jan 30 17:52:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.in (PERL): Do not check for PERL; do not generate
+	which_lib.pl.
+	* GNUmakefile.in (PERL): Do not define.
+	(distclean): Do not remove which_lib.pl.
+	* which_lib.pl.in: Removed.
+	
 Wed Jan 30 17:48:57 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make (GNUSTEP_MAKE_INSTANCE_INVOCATION): Unexport the 
