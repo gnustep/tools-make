@@ -1,3 +1,20 @@
+Sun Sep 30 14:22:16 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (GNUSTEP_SYSTEM_FRAMEWORKS_LIBRARIES): Variable
+	removed.
+	(GNUSTEP_SYSTEM_FRAMEWORKS_LIBRARIES_FLAGS): Updated definition
+	for removal of variable.
+
+	(GNUSTEP_LOCAL_FRAMEWORKS_LIBRARIES): Corresponding change.
+	(GNUSTEP_LOCAL_FRAMEWORKS_LIBRARIES_FLAGS): Corresponding change.
+
+	(GNUSTEP_USER_FRAMEWORKS_LIBRARIES): Corresponding change.
+	(GNUSTEP_USER_FRAMEWORKS_LIBRARIES_FLAGS): Corresponding change.
+
+	(GNUSTEP_NETWORK_FRAMEWORKS_LIBRARIES): Corresponding change.
+	(GNUSTEP_NETWORK_FRAMEWORKS_LIBRARIES_FLAGS): Corresponding
+	change.
+	
 Sun Sep 30 14:09:05 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (GNUSTEP_SYSTEM_LIBRARIES): Variable removed.
