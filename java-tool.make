@@ -114,10 +114,10 @@ internal-java_tool-uninstall::
 #
 # Cleaning targets
 #
-internal-java_package-clean::
+internal-java_tool-clean::
 	rm -f $(JAVA_OBJ_FILES)
 
-internal-java_package-distclean::
+internal-java_tool-distclean::
 
 
 endif # internal java tool name
