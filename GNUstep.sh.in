@@ -1,4 +1,4 @@
-#! /bin/sh
+#! /bin/echo This file must be sourced inside (ba)sh using: .
 #
 #   GNUstep.sh.in
 #
@@ -41,6 +41,7 @@ GNUSTEP_USER_ROOT=@GNUSTEP_USER_ROOT@
 
 if [ -z "$GNUSTEP_USER_ROOT" ]; then
   if [ ! -z "$WINDIR" ]; then
+    # FIXME - should we check that HOMEDRIVE and HOMEPATH are not empty ?
     GNUSTEP_USER_ROOT=`echo $HOMEDRIVE/$HOMEPATH/GNUstep | tr '\\\' '/'`
   else
     GNUSTEP_USER_ROOT=~/GNUstep
@@ -49,26 +50,33 @@ fi
 
 ac_save_ifs="$IFS"; IFS=":"
 
-CYGPATH=
+cygpath=
 ac_word=cygpath.exe
 ac_dummy="$PATH"
 for ac_dir in $ac_dummy; do
   test -z "$ac_dir" && ac_dir=.
   if test -f $ac_dir/$ac_word; then
-    CYGPATH=$ac_word
+    cygpath=$ac_word
     break
   fi
 done
+# Because this file is sourced rather than executed, we need to unset
+# every temporary variable when we are done with it, otherwise they
+# pollute the calling environment!
+unset ac_word
+unset ac_dummy
+unset ac_dir
 
 IFS="$ac_save_ifs"
+unset ac_save_ifs
 
-if [ -z "$CYGPATH" ]; then
-  CYGPATH=$GNUSTEP_MAKEFILES/cygpath.sh
+if [ -z "$cygpath" ]; then
+  cygpath=$GNUSTEP_MAKEFILES/cygpath.sh
 fi
 
 # test to see if GNUSTEP_ROOT is in Win32 standard form and flag it
 if [ -z "`echo $GNUSTEP_SYSTEM_ROOT | sed 's|^[a-zA-Z]:/.*$||'`" ]; then
-  CONVERT_WIN_PATHS=yes
+  convert_win_paths=yes
 fi
 
 export GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT
@@ -78,11 +86,12 @@ export GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT
 # Determine the host information
 #
 if [ -z "$GNUSTEP_HOST" ]; then
-  # Not all OSs (e.g. FreeBSD < 4.0) have pushd/popd
+  # Not all shells (e.g. /bin/sh on FreeBSD < 4.0 or ash) have pushd/popd
   tmpdir=`pwd`; cd /tmp
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.guess`
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.sub $GNUSTEP_HOST`
   cd $tmpdir
+  unset tmpdir
 fi
 
 if [ -z "$GNUSTEP_HOST_CPU" ]; then
@@ -106,17 +115,19 @@ export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
 # Add the GNUstep tools directories to the path
 #
 if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
-  if [ "$CONVERT_WIN_PATHS" = "yes" ]; then
-    G_U_R=`$CYGPATH -u "$GNUSTEP_USER_ROOT"`
-    G_L_R=`$CYGPATH -u "$GNUSTEP_LOCAL_ROOT"`
-    G_N_R=`$CYGPATH -u "$GNUSTEP_NETWORK_ROOT"`
-    G_S_R=`$CYGPATH -u "$GNUSTEP_SYSTEM_ROOT"`
+  if [ "$convert_win_paths" = "yes" ]; then
+    G_U_R=`$cygpath -u "$GNUSTEP_USER_ROOT"`
+    G_L_R=`$cygpath -u "$GNUSTEP_LOCAL_ROOT"`
+    G_N_R=`$cygpath -u "$GNUSTEP_NETWORK_ROOT"`
+    G_S_R=`$cygpath -u "$GNUSTEP_SYSTEM_ROOT"`
     GNUSTEP_PATHPREFIX_LIST=$G_U_R:$G_L_R:$G_N_R:$G_S_R
   else
     GNUSTEP_PATHPREFIX_LIST=$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_NETWORK_ROOT:$GNUSTEP_SYSTEM_ROOT
   fi
   export GNUSTEP_PATHPREFIX_LIST
 fi
+
+unset cygpath
 
 tmp_IFS="$IFS"
 IFS=:
@@ -129,6 +140,8 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
   fi
 done
 IFS="$tmp_IFS"
+unset tmp_IFS
+unset dir
 if [ -z "$PATH" ]; then
   PATH="$temp_path"
 else
@@ -136,6 +149,7 @@ else
     PATH="${temp_path}${PATH}"
   fi
 fi
+unset temp_path
 export PATH
 
 # directory for gcc's 3.x shared libraries
@@ -143,11 +157,17 @@ GCC_SO_DIR=@GCC_SO_DIR@
 export GCC_SO_DIR
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
-if [ "$CONVERT_WIN_PATHS" = "yes" ]; then
+if [ "$convert_win_paths" = "yes" ]; then
+  # FIXME - G_U_R might not have been defined
   gnustep_class_path="$G_U_R/Libraries/Java:$G_L_R/Libraries/Java:$G_N_R/Libraries/Java:$G_S_R/Libraries/Java"
 else
   gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"
 fi
+unset convert_win_paths
+unset G_U_R
+unset G_L_R
+unset G_N_R
+unset G_S_R
 
 if [ -z "$CLASSPATH" ]; then
   CLASSPATH="$gnustep_class_path"
@@ -157,14 +177,15 @@ else
   fi
 fi
 
+unset gnustep_class_path
 export CLASSPATH
 
 #
 # Perform any user initialization
 #
-if [ -f ~/GNUstep/GNUstep.sh ]
+if [ -f $GNUSTEP_USER_ROOT/GNUstep.sh ]
 then
-  . ~/GNUstep/GNUstep.sh
+  . $GNUSTEP_USER_ROOT/GNUstep.sh
 fi
 
 #
@@ -173,20 +194,21 @@ fi
 #
 if [ -z "$GNUSTEP_FLATTENED" ]; then
   TDIR=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-  if [ -f $TDIR/$LIBRARY_COMBO/make_services ]
+  if [ -x $TDIR/$LIBRARY_COMBO/make_services ]
   then
     $TDIR/$LIBRARY_COMBO/make_services &
   else
-    if [ -f $TDIR/make_services ]
+    if [ -x $TDIR/make_services ]
     then
       $TDIR/make_services &
     fi
   fi
 else
   TDIR=$GNUSTEP_SYSTEM_ROOT/Tools
-  if [ -f $TDIR/make_services ]
+  if [ -x $TDIR/make_services ]
   then
     $TDIR/make_services &
   fi
 fi
+unset TDIR
 
