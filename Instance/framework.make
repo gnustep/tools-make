@@ -294,7 +294,7 @@ $(DERIVED_SOURCES_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
-$(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
+$(FRAMEWORK_HEADER_FILES):: $(addprefix $(HEADER_FILES_DIR)/,$(HEADER_FILES))
 ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
