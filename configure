@@ -859,16 +859,6 @@ to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
 to have the GNUSTEP_NETWORK_ROOT directory in a non-standard place.  Example:
 --with-network-root=/usr/local/GNUstep/Network
 
---with-user-root
-    Set the GNUSTEP_USER_ROOT directory.  Use this option if you want
-to force all users to share the same GNUSTEP_USER_ROOT directory.  Example:
---with-user-root=/CommonHome/GNUstep
-
---with-defaults-root
-    Set the GNUSTEP_DEFAULTS_ROOT directory.  Use this option if you want
-to force all users to share common defaults.  Example:
---with-defaults-root=/CommonDefaults
-
 --with-thread-lib		Specify alternate thread library
 
 Some influential environment variables:
@@ -2930,36 +2920,6 @@ fi;
 echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_ROOT" >&5
 echo "${ECHO_T}$GNUSTEP_NETWORK_ROOT" >&6
 
-echo "$as_me:$LINENO: checking for GNUSTEP_USER_ROOT to be forced for all users" >&5
-echo $ECHO_N "checking for GNUSTEP_USER_ROOT to be forced for all users... $ECHO_C" >&6
-
-# Check whether --with-user-root or --without-user-root was given.
-if test "${with_user_root+set}" = set; then
-  withval="$with_user_root"
-  FORCE_USER_ROOT="-DFORCE_USER_ROOT=\"$withval\""
-else
-  FORCE_USER_ROOT=""
-
-fi;
-echo "$as_me:$LINENO: result: $FORCE_USER_ROOT" >&5
-echo "${ECHO_T}$FORCE_USER_ROOT" >&6
-
-
-echo "$as_me:$LINENO: checking for GNUSTEP_DEFAULTS_ROOT to be forced for all users" >&5
-echo $ECHO_N "checking for GNUSTEP_DEFAULTS_ROOT to be forced for all users... $ECHO_C" >&6
-
-# Check whether --with-defaults-root or --without-defaults-root was given.
-if test "${with_defaults_root+set}" = set; then
-  withval="$with_defaults_root"
-  FORCE_DEFAULTS_ROOT="-DFORCE_DEFAULTS_ROOT=\"$withval\""
-else
-  FORCE_DEFAULTS_ROOT=""
-
-fi;
-echo "$as_me:$LINENO: result: $FORCE_DEFAULTS_ROOT" >&5
-echo "${ECHO_T}$FORCE_DEFAULTS_ROOT" >&6
-
-
 
 
 
@@ -4720,8 +4680,6 @@ s,@CHOWN@,$CHOWN,;t t
 s,@GNUSTEP_ROOT@,$GNUSTEP_ROOT,;t t
 s,@root_prefix@,$root_prefix,;t t
 s,@HOST_INSTALL@,$HOST_INSTALL,;t t
-s,@FORCE_USER_ROOT@,$FORCE_USER_ROOT,;t t
-s,@FORCE_DEFAULTS_ROOT@,$FORCE_DEFAULTS_ROOT,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t
 s,@GNUSTEP_FLATTENED@,$GNUSTEP_FLATTENED,;t t

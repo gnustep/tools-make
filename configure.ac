@@ -204,32 +204,6 @@ GNUSTEP_NETWORK_ROOT="$GNUSTEP_ROOT/Network"
 )
 AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 
-AC_MSG_CHECKING(for GNUSTEP_USER_ROOT to be forced for all users)
-AC_ARG_WITH(user-root,
-[--with-user-root
-    Set the GNUSTEP_USER_ROOT directory.  Use this option if you want 
-to force all users to share the same GNUSTEP_USER_ROOT directory.  Example:
---with-user-root=/CommonHome/GNUstep
-],
-FORCE_USER_ROOT="-DFORCE_USER_ROOT=\"$withval\"",
-FORCE_USER_ROOT=""
-)
-AC_MSG_RESULT($FORCE_USER_ROOT)
-AC_SUBST(FORCE_USER_ROOT)
-
-AC_MSG_CHECKING(for GNUSTEP_DEFAULTS_ROOT to be forced for all users)
-AC_ARG_WITH(defaults-root,
-[--with-defaults-root
-    Set the GNUSTEP_DEFAULTS_ROOT directory.  Use this option if you want 
-to force all users to share common defaults.  Example:
---with-defaults-root=/CommonDefaults
-],
-FORCE_DEFAULTS_ROOT="-DFORCE_DEFAULTS_ROOT=\"$withval\"",
-FORCE_DEFAULTS_ROOT=""
-)
-AC_MSG_RESULT($FORCE_DEFAULTS_ROOT)
-AC_SUBST(FORCE_DEFAULTS_ROOT)
-
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 

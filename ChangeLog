@@ -1,3 +1,13 @@
+2002-05-10 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Remove FORCE_USER_ROOT and FORCE_DEFAULTS_ROOT
+	* GNUmakefile.in: ditto
+	* config.make.in: ditto
+	* common.make: regenerate
+	* configure: ditto
+	* user_home.c: Implement system-wide .GNUsteprc
+	* Documentation/install.texi: Document use of system-wide .GNUsteprc
+
 2002-05-08 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Mention need to ensure we use

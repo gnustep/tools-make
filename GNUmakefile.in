@@ -112,7 +112,7 @@ which_lib$(EXEEXT): which_lib.c config.h
 	$(CC) @CFLAGS@ -Wall -I. -o $@ $<
 
 user_home$(EXEEXT): user_home.c config.h
-	$(CC) @CFLAGS@ @FORCE_USER_ROOT@ @FORCE_DEFAULTS_ROOT@ \
+	$(CC) @CFLAGS@ \
 	  -DGNUSTEP_SYSTEM_ROOT=$(GNUSTEP_SYSTEM_ROOT) \
 	  -Wall -I. -o $@ $<
 

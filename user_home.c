@@ -111,21 +111,11 @@ int main (int argc, char** argv)
     {
       if (strcmp(argv[1], "defaults") == 0)
 	{
-#ifdef	FORCE_DEFAULTS_ROOT
-	  printf("%s", stringify(FORCE_DEFAULTS_ROOT));
-	  return 0;
-#else
 	  type = DEFS;
-#endif
 	}
       else if (strcmp(argv[1], "user") == 0)
 	{
-#ifdef	FORCE_USER_ROOT
-	  printf("%s", stringify(FORCE_USER_ROOT));
-	  return 0;
-#else
 	  type = USER;
-#endif
 	}
     }
 
@@ -197,7 +187,7 @@ int main (int argc, char** argv)
     }
   strncpy(home, pw->pw_dir, sizeof(home));
 #else
-  /* Then environment variable HOMEPATH holds the home directory
+  /* The environment variable HOMEPATH holds the home directory
      for the user on Windows NT; Win95 has no concept of home. */
   len0 = GetEnvironmentVariable("HOMEDRIVE", buf0, 1024);
   if (len0 > 0 && len0 < 1024)
@@ -231,38 +221,34 @@ int main (int argc, char** argv)
       FILE	*fptr;
       char	*user = "";
       char	*defs = "";
+      int	forceD = 0;
+      int	forceU = 0;
 
-      strcpy(path, home);
+#if defined (__MINGW32__)
+      len0 = GetEnvironmentVariable("GNUSTEP_SYSTEM_ROOT", buf0, sizeof(buf0));
+      if (len0 > 0)
+	{
+	  strcpy(path, buf0);
+	}
+#else 
+      {
+	strcpy(path, (const char*)getenv("GNUSTEP_SYSTEM_ROOT"));
+      }
+#endif
       strcat(path, SEP);
       strcat(path, ".GNUsteprc");
       fptr = fopen(path, "r");
-      if (fptr == 0)
-	{
-	  path[0] = '\0';
-#if defined (__MINGW32__)
-	  len0 = GetEnvironmentVariable("SystemDrive", buf0, 128);
-	  if (len0 > 0)
-	    {
-	      strcpy(path, buf0);
-	    }
-#endif
-	  strcat(path, stringify(GNUSTEP_SYSTEM_ROOT));
-	  strcat(path, SEP);
-	  strcat(path, ".GNUsteprc");
-	  fptr = fopen(path, "r");
-	}
-      path[0] = '\0';
       if (fptr != 0)
 	{
 	  while (fgets(buf0, sizeof(buf0), fptr) != 0)
 	    {
 	      char	*pos = strchr(buf0, '=');
+	      char	*key = buf0;
+	      char	*val;
 
 	      if (pos != 0)
 		{
-		  char	*key = buf0;
-		  char	*val = pos;
-
+		  val = pos;
 		  *val++ = '\0';
 		  while (isspace(*key))
 		    key++;
@@ -272,39 +258,123 @@ int main (int argc, char** argv)
 		    val++;
 		  while (strlen(val) > 0 && isspace(val[strlen(val)-1]))
 		    val[strlen(val)-1] = '\0';
-
-		  if (strcmp(key, "GNUSTEP_USER_ROOT") == 0)
+		}
+	      else
+		{
+		  while (isspace(*key))
+		    key++;
+		  while (strlen(key) > 0 && isspace(key[strlen(key)-1]))
+		    key[strlen(key)-1] = '\0';
+		  val = "";
+		}
+		  	
+	      if (strcmp(key, "GNUSTEP_USER_ROOT") == 0)
+		{
+		  if (*val == '~')
 		    {
-		      if (*val == '~')
-			{
-			  user = malloc(strlen(val) + strlen(home));
-			  strcpy(user, home);
-			  strcat(user, &val[1]);
-			}
-		      else
-			{
-			  user = malloc(strlen(val) + 1);
-			  strcpy(user, val);
-			}
+		      user = malloc(strlen(val) + strlen(home));
+		      strcpy(user, home);
+		      strcat(user, &val[1]);
 		    }
-		  else if (strcmp(key, "GNUSTEP_DEFAULTS_ROOT") == 0)
+		  else
 		    {
-		      if (*val == '~')
-			{
-			  defs = malloc(strlen(val) + strlen(home));
-			  strcpy(defs, home);
-			  strcat(defs, &val[1]);
-			}
-		      else
-			{
-			  defs = malloc(strlen(val) + 1);
-			  strcpy(defs, val);
-			}
+		      user = malloc(strlen(val) + 1);
+		      strcpy(user, val);
 		    }
+		}
+	      else if (strcmp(key, "GNUSTEP_DEFAULTS_ROOT") == 0)
+		{
+		  if (*val == '~')
+		    {
+		      defs = malloc(strlen(val) + strlen(home));
+		      strcpy(defs, home);
+		      strcat(defs, &val[1]);
+		    }
+		  else
+		    {
+		      defs = malloc(strlen(val) + 1);
+		      strcpy(defs, val);
+		    }
+		}
+	      else if (strcmp(key, "FORCE_USER_ROOT") == 0)
+		{
+		  forceU = 1;
+		}
+	      else if (strcmp(key, "FORCE_DEFAULTS_ROOT") == 0)
+		{
+		  forceD = 1;
 		}
 	    }
 	  fclose(fptr);
 	}
+
+      if (*user == '\0' || forceU == 0 || *defs == '\0' || forceD == 0)
+	{
+	  strcpy(path, home);
+	  strcat(path, SEP);
+	  strcat(path, ".GNUsteprc");
+	  fptr = fopen(path, "r");
+	  if (fptr != 0)
+	    {
+	      while (fgets(buf0, sizeof(buf0), fptr) != 0)
+		{
+		  char	*pos = strchr(buf0, '=');
+
+		  if (pos != 0)
+		    {
+		      char	*key = buf0;
+		      char	*val = pos;
+
+		      *val++ = '\0';
+		      while (isspace(*key))
+			key++;
+		      while (strlen(key) > 0 && isspace(key[strlen(key)-1]))
+			key[strlen(key)-1] = '\0';
+		      while (isspace(*val))
+			val++;
+		      while (strlen(val) > 0 && isspace(val[strlen(val)-1]))
+			val[strlen(val)-1] = '\0';
+
+		      if (strcmp(key, "GNUSTEP_USER_ROOT") == 0)
+			{
+			  if (*user == '\0' || forceU == 0)
+			    {
+			      if (*val == '~')
+				{
+				  user = malloc(strlen(val) + strlen(home));
+				  strcpy(user, home);
+				  strcat(user, &val[1]);
+				}
+			      else
+				{
+				  user = malloc(strlen(val) + 1);
+				  strcpy(user, val);
+				}
+			    }
+			}
+		      else if (strcmp(key, "GNUSTEP_DEFAULTS_ROOT") == 0)
+			{
+			  if (*defs == '\0' || forceD == 0)
+			    {
+			      if (*val == '~')
+				{
+				  defs = malloc(strlen(val) + strlen(home));
+				  strcpy(defs, home);
+				  strcat(defs, &val[1]);
+				}
+			      else
+				{
+				  defs = malloc(strlen(val) + 1);
+				  strcpy(defs, val);
+				}
+			    }
+			}
+		    }
+		}
+	      fclose(fptr);
+	    }
+	}
+
       if (type == DEFS)
 	{
 	  strcpy(path, defs);
