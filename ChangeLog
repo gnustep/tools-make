@@ -1,3 +1,10 @@
+Fri Mar 16 20:01:58 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (before-all): Do not create the symbolic link
+	obj->$(GNUSTEP_OBJ_DIR).  ($(GNUSTEP_OBJ_DIR)): Create the link in
+	this rule, so that it is only created when/if the object directory
+	is created.  (internal-clean): Remove the obj symbolic link too.
+
 Fri Mar 16 14:48:51 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in: Fixed syntax of some new tests.
