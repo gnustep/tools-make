@@ -36,6 +36,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 #
 # The main file for text document is in the xxx_TEXT_MAIN variable.
 # The Texinfo files that needs pre-processing are in xxx_TEXI_FILES
+# The GSDoc files that needs pre-processing are in xxx_GSDOC_FILES
 #
 #	Where xxx is the name of the document
 #
@@ -75,6 +76,8 @@ else
 #
 # Compilation targets
 #
+ifneq ($(TEXI_FILES),)
+
 internal-doc-all:: before-all before-$(TARGET)-all \
                    $(INTERNAL_doc_NAME).info \
                    $(INTERNAL_doc_NAME).ps \
@@ -126,9 +129,24 @@ $(INTERNAL_textdoc_NAME): $(TEXI_FILES) $(TEXT_MAIN)
 	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
 		-o $@ `basename $(TEXT_MAIN) .tmpl.texi`.texi
 
+endif
+
 before-$(TARGET)-all::
 
 after-$(TARGET)-all::
+
+
+ifneq ($(GSDOC_FILES),)
+
+internal-doc-all:: before-all before-$(TARGET)-all \
+                   $(INTERNAL_doc_NAME).html \
+                   after-$(TARGET)-all after-all
+
+$(INTERNAL_doc_NAME).html: $(GSDOC_FILES)
+	gsdoc $(GSDOC_FILES)
+
+endif
+
 
 #
 # Install and uninstall targets
@@ -163,15 +181,29 @@ internal-doc-clean::
 	rm -f $(INTERNAL_doc_NAME).vr
 	rm -f $(INTERNAL_doc_NAME).vrs
 	rm -f $(INTERNAL_doc_NAME)_*.html
+ifneq ($(TEXI_FILES),)
 	for i in $(TEXI_FILES); do \
 		rm -f `basename $$i .tmpl.texi`.texi ; \
 	done
+endif
+ifneq ($(GSDOC_FILES),)
+	for i in $(GSDOC_FILES); do \
+		rm -f `basename $$i .gsdoc`.html ; \
+	done
+endif
 
 internal-textdoc-clean::
 	rm -f $(INTERNAL_textdoc_NAME)
+ifneq ($(TEXI_FILES),)
 	for i in $(TEXI_FILES) $(TEXT_MAIN); do \
 		rm -f `basename $$i .tmpl.texi`.texi ; \
 	done
+endif
+ifneq ($(GSDOC_FILES),)
+	for i in $(GSDOC_FILES); do \
+		rm -f `basename $$i .gsdoc`.html ; \
+	done
+endif
 
 internal-doc-distclean::
 
