@@ -1,3 +1,9 @@
+Thu Nov 22 00:06:02 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* source-distribution.make: Rewritten.  Bug fixes; new features;
+	all packages built using gnustep-make should now be able to take
+	full advantage of its facilities.
+
 Wed Nov 21 15:34:15 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make (ADDITIONAL_JAVAFLAGS): Removed unused variable.
