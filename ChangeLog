@@ -1,3 +1,11 @@
+2003-06-02 18:16  Alexander Malmberg <alexander@malmberg.org>
+
+	* Instance/Documentation/autogsdoc.make (internal-doc-install_):
+	Add a missing "\" line continuation.
+
+	(internal-doc-uninstall_): Add an $(END_ECHO) to balance the
+	echoing.
+
 Mon Jun  2 10:21:11 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (install): Only create the symlink Makefiles -->
