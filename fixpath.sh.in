@@ -22,6 +22,12 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
+#
+# Define CYGWIN to "yes" to force cygwin style path handling, or
+# to anything else for MINGW32/MSYS style path handling.
+#
+CYGWIN="@CYGWIN@"
+
 if [ ! $# -eq 2 ]; then
   quit="yes"
 fi
@@ -44,7 +50,7 @@ if [ "$operation" = "-u" ]; then
   #
   # convert to Unix style file name
   #
-  if [ "@CYGWIN@" = "yes" ]; then
+  if [ "$CYGWIN" = "yes" ]; then
     #
     # drive:directory --> /cygdrive/drive/directory
     #
@@ -64,7 +70,7 @@ else
   #
   # convert to Windows style file name
   #
-  if [ "@CYGWIN@" = "yes" ]; then
+  if [ "$CYGWIN" = "yes" ]; then
     #
     # /cygdrive/drive/directory --> drive:directory
     #

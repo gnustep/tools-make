@@ -32,8 +32,10 @@ been depreciated. You'll need to use /cygwin/path or C: style paths now.
 MinGW on Cygwin
 ---------------
 
-This is the only configuration I've tested so far. This method uses
-the Cygwin tools to help out with the configuration and compilation of
+Not recommended ... this is a corss compilation solution ... using native
+mingw/msys is simpler and less error prone.
+
+Uses the Cygwin tools to help out with the configuration and compilation of
 the libraries. It's always good to get the very latest version of
 Cygwin and MinGW. These instructions were performed
 with Cygwin DLL 1.3.9-1 and MingW gcc 2.95.3-6. If you have more
@@ -71,6 +73,10 @@ First, go to the 'gnustep-make' package and configure:
 
   cd gnustep-make
   ./configure --target=i386-mingw32
+
+2a.  The configure script may not have recognised that you are running in
+a cygwin environment ... so you may need to edit 'fixpath.sh' to set the
+CYGWIN variable to 'yes' before you build and install the make package.
 
 3. Now build the gnustep-make package. Occationally, the make that comes
 with MinGW doesn't like the way GNUstep makefiles are setup (or perhaps

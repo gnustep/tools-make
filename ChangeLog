@@ -1,3 +1,9 @@
+2002-03-19 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* fixpath.sh.in: Restructure slightly so we can easily edit the
+	fixpath.sh to force cygwin style paths.
+	* Documentation/README.cygwin: Edd note about editing fixpath.sh
+
 Mon Mar 18 16:57:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: If REMOVE_EMPTY_DIRS is yes, remove efficiently all
