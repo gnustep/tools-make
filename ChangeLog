@@ -1,4 +1,10 @@
-1999-06-24  Adam Fedor  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+1999-06-28  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* GNUstep.csh.in: Include Tools/host-cpu/host-os in path for any
+	utilities that are installed without a startup script.
+	* GNUstep.sh.in: ditto.
+
+1999-06-24  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* common.make: include -Wall when building for debug
 

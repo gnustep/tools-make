@@ -71,6 +71,7 @@ IFS=:
 temp_path=
 for dir in $GNUSTEP_PATHPREFIX_LIST; do
   temp_path=$temp_path$dir/Tools:
+  temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
 done
 PATH=$temp_path$PATH
 

@@ -66,6 +66,7 @@ endif
 set tp = ""
 foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX_LIST}; do echo $i; done'` )
   set tp=${tp}${dir}/Tools:
+  set tp=${tp}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
 end
 setenv PATH ${tp}${PATH}
 
