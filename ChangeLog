@@ -1,3 +1,8 @@
+Thu Apr  4 13:01:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep-reset.sh: Fixed bugs with shell substitutions and other
+	technicalities.
+
 2002-04-04  Fred Kiefer <FredKiefer@gmx.de>
 
 	* Instance/bundle.make
