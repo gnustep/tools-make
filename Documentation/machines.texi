@@ -332,7 +332,7 @@ Can only compile with static libraries. Compiler may fail when
 linking executables (e.g. gdnc). Standard ranlib and ar programs are
 to feable to create libraries. Should use GNU binutils versions. Linker
 sometimes fails to find symbols, in which case you may need to link with 
-a library twice. For instance, add an extra -lgnustep-xgps in
+a library twice. For instance, add an extra -lgnustep-gui in
 ADDTIONAL_TOOL_LIBS in the GNUmakefile(.preamble).
 
 @end table
