@@ -186,14 +186,14 @@ HAVE_BUNDLES = no
 # MacOSX-Server 1.0
 #
 ifeq ($(findstring rhapsody5, $(GNUSTEP_TARGET_OS)), rhapsody5)
-ifeq ($(OBJC_RUNTIME), NeXT)
+ifeq ($(OBJC_RUNTIME_LIB), apple)
 HAVE_BUNDLES     = yes
 endif
 
 HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), apple)
   # Use the NeXT compiler
   CC = cc
   OBJC_COMPILER = NeXT
@@ -264,11 +264,11 @@ endif
 # MacOSX 10.[12], darwin[56]
 #
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
-ifeq ($(OBJC_RUNTIME), NeXT)
+ifeq ($(OBJC_RUNTIME_LIB), apple)
   HAVE_BUNDLES     = yes
   OBJC_COMPILER    = NeXT
   # Set flags to ignore the MacOSX headers
-  ifneq ($(FOUNDATION_LIB),nx)
+  ifneq ($(FOUNDATION_LIB), apple)
     INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
   endif
 endif
@@ -276,7 +276,7 @@ endif
 HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), apple)
   INTERNAL_OBJCFLAGS += -traditional-cpp
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
@@ -293,7 +293,7 @@ DYLIB_CURRENT_VERSION       = -current_version 1
 # -Ldir flags where dir is empty).
 REMOVE_EMPTY_DIRS = yes
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), apple)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
@@ -369,11 +369,11 @@ endif
 # MacOSX 10.1.1, darwin5.1
 #
 ifeq ($(findstring darwin5, $(GNUSTEP_TARGET_OS)), darwin5)
-ifeq ($(OBJC_RUNTIME), NeXT)
+ifeq ($(OBJC_RUNTIME_LIB), apple)
   HAVE_BUNDLES     = yes
   OBJC_COMPILER    = NeXT
   # Set flags to ignore the MacOSX headers
-  ifneq ($(FOUNDATION_LIB),nx)
+  ifneq ($(FOUNDATION_LIB), apple)
     INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
   endif
 endif
@@ -381,7 +381,7 @@ endif
 HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), apple)
   # Use the NeXT compiler
   CC = cc
   INTERNAL_OBJCFLAGS += -traditional-cpp
@@ -404,7 +404,7 @@ DYLIB_INSTALL_NAME = $(FINAL_LIBRARY_INSTALL_DIR)/$(LIB_LINK_FILE)
 # -Ldir flags where dir is empty).
 REMOVE_EMPTY_DIRS = yes
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), apple)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
@@ -478,14 +478,14 @@ endif
 # OpenStep 4.x
 #
 ifeq ($(GNUSTEP_TARGET_OS), nextstep4)
-ifeq ($(OBJC_RUNTIME), NeXT)
-  HAVE_BUNDLES            = yes
+ifeq ($(OBJC_RUNTIME_LIB), nx)
+  HAVE_BUNDLES  = yes
   OBJC_COMPILER = NeXT
 endif
 
-HAVE_SHARED_LIBS        = yes
+HAVE_SHARED_LIBS = yes
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), nx)
   # Use the NeXT compiler
   CC = cc
   ifneq ($(arch),)
@@ -548,14 +548,14 @@ endif
 # NEXTSTEP 3.x
 #
 ifeq ($(GNUSTEP_TARGET_OS), nextstep3)
-ifeq ($(OBJC_RUNTIME), NeXT)
+ifeq ($(OBJC_RUNTIME_LIB), nx)
   HAVE_BUNDLES            = yes
   OBJC_COMPILER = NeXT
 endif
 
 HAVE_SHARED_LIBS        = yes
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), nx)
   # Use the NeXT compiler
   CC = cc
   ifneq ($(arch),)
