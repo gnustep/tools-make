@@ -314,7 +314,9 @@ ifeq ($(OBJC_RUNTIME), NeXT)
   HAVE_BUNDLES     = yes
   OBJC_COMPILER    = NeXT
   # Set flags to ignore the MacOSX headers
-  INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
+  ifneq ($(FOUNDATION_LIB),nx)
+    INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
+  endif
 endif
 
 HAVE_SHARED_LIBS = yes
