@@ -355,21 +355,24 @@ ifeq ($(FOUNDATION_LIB), apple)
 # top-level symlink xxx.framework/xxx ---> the framework shared
 # library
 
-OPTIONAL_TOP_LEVEL_LINK = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
+build-framework:: $(FRAMEWORK_FILE) \
+                  shared-instance-bundle-all \
+                  $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
+                  $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 
 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework; \
 	rm -f $(GNUSTEP_INSTANCE); \
 	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE)$(END_ECHO)
 else
-OPTIONAL_TOP_LEVEL_LINK = 
-endif
 
 build-framework:: $(FRAMEWORK_FILE) \
                   shared-instance-bundle-all \
-                  $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
-                  $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist \
-                  $(OPTIONAL_TOP_LEVEL_LINK)
+                  $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist
+
+endif
+
+
 
 
 
