@@ -1,3 +1,13 @@
+Thu Nov 22 13:28:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in (AUTO_DEPENDENCIES): New configure check which
+	automatically sets AUTO_DEPENDENCIES to yes if the compiler is GCC
+	=> 3.x.
+	* configure: Regenerated.
+	* config.make.in (AUTO_DEPENDENCIES): Added.
+	* rules.make (AUTO_DEPENDENCIES_FLAGS): Set them only if not
+	already set.
+
 Thu Nov 22 10:41:39 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* source-distribution.make (tgz): tgz target renamed to dist.
