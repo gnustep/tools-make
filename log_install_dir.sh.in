@@ -28,6 +28,10 @@ fi
 # TODO - check argument number
 
 for file in `@TAR@ cf - $1 | @TAR@ t`; do
-  echo "$2/$file" >> $FILE_LIST;
+  if [ -d "$2/$file" ]; then
+    echo "%dir $2/$file" >> $FILE_LIST
+  else
+    echo "$2/$file" >> $FILE_LIST
+  fi
 done
 
