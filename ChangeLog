@@ -1,33 +1,39 @@
+2000-12-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* openapp.in:
+	* opentool.in:
+	Fixed for flattened directory structure.
+
 2000-12-04 Georg Fleischmann <georg@vhf.de>
 
         * subproject.make: workaround for empty list in for loops added.
 
 2000-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
-	* make/GNUmakefile.in:
-	* make/GNUstep.csh.in:
-	* make/GNUstep.sh.in:
-	* make/MediaBook.func:
-	* make/README:
-	* make/application.make:
-	* make/brain.make:
-	* make/bundle.make:
-	* make/common.make:
-	* make/configure:
-	* make/configure.in:
-	* make/ctool.make:
-	* make/framework.make:
-	* make/gswapp.make:
-	* make/gswbundle.make:
-	* make/ld_lib_path.csh:
-	* make/ld_lib_path.sh:
-	* make/library.make:
-	* make/palette.make:
-	* make/service.make:
-	* make/target.make:
-	* make/tool.make:
-	* make/woapp.make:
-	* make/wobundle.make:
+	* GNUmakefile.in:
+	* GNUstep.csh.in:
+	* GNUstep.sh.in:
+	* MediaBook.func:
+	* README:
+	* application.make:
+	* brain.make:
+	* bundle.make:
+	* common.make:
+	* configure:
+	* configure.in:
+	* ctool.make:
+	* framework.make:
+	* gswapp.make:
+	* gswbundle.make:
+	* ld_lib_path.csh:
+	* ld_lib_path.sh:
+	* library.make:
+	* palette.make:
+	* service.make:
+	* target.make:
+	* tool.make:
+	* woapp.make:
+	* wobundle.make:
 	Updated for flattened directory structure - use GNUSTEP_XXX_DIR and
 	GNUASTEP_XXX_LDIR for referring to directories with and without the
 	library combo.  Localise changes as much as possible.
