@@ -55,6 +55,19 @@
 #  which always returns success whatever command returns.
 #
 
+# If we're running in zsh (auch!) make sure we're using -y
+# (SH_WORD_SPLIT) else our path manipulations won't work.
+if [ -n "$ZSH_VERSION" ]; then
+
+  # If -y is not already set, set it and remember that we
+  # need to set it back to what it was at the end.
+  if ( setopt | grep shwordsplit > /dev/null ); then :; else
+    set -y
+    GS_ZSH_NEED_TO_RESTORE_SET=yes
+  fi
+
+fi
+
 #
 # Set the GNUstep system root and local root
 #
@@ -318,3 +331,6 @@ else
 fi
 unset TDIR
 
+if [ -n "$GS_ZSH_NEED_TO_RESTORE_SET" ]; then
+  set +y
+fi
