@@ -1,3 +1,9 @@
+Mon Jan 22 12:55:13 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in (LD_LIBRARY_PATH): set it before running the tests
+	to fix problems in executing tests against a shared libobjc.
+	* configure: Regenerated.
+	
 2001-01-19  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* spec-debug-rules.template: Bug fix: removed a '/' at the end of
