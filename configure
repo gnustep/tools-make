@@ -4262,7 +4262,7 @@ ac_given_INSTALL="$INSTALL"
 
 trap 'rm -fr `echo "config.h config.make openapp debugapp which_lib.pl opentool 
 executable.template GNUmakefile GNUstep.sh GNUstep.csh gnustep-make.spec 
-install-complete-dir.sh log_install_dir.sh Documentation/GNUmakefile config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+Documentation/GNUmakefile config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -4390,7 +4390,7 @@ cat >> $CONFIG_STATUS <<EOF
 
 CONFIG_FILES=\${CONFIG_FILES-"config.h config.make openapp debugapp which_lib.pl opentool 
 executable.template GNUmakefile GNUstep.sh GNUstep.csh gnustep-make.spec 
-install-complete-dir.sh log_install_dir.sh Documentation/GNUmakefile"}
+Documentation/GNUmakefile"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then
@@ -4561,7 +4561,8 @@ cat >> $CONFIG_STATUS <<EOF
 
 EOF
 cat >> $CONFIG_STATUS <<\EOF
-chmod a+x openapp debugapp which_lib.pl opentool executable.template
+chmod a+x openapp debugapp which_lib.pl \
+opentool executable.template
 exit 0
 EOF
 chmod +x $CONFIG_STATUS
