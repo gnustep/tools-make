@@ -1,3 +1,8 @@
+2003-10-19  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/gnustep-howto.texi: Updates, clearer instructions.
+	* Documenation/machines.texi, Documentation/userfaq.texi: Idem.
+
 Sun Oct 19 16:09:46 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* native-library.make: New file.
