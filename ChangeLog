@@ -1,3 +1,8 @@
+Thu Dec 20 23:27:42 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: Disable the check on PATH if we are running on an
+	Apple system (Requested by Helge Hess).
+
 Mon Dec 17 11:10:23 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* bundle.make (internal-bundle-install): Another tar option update
