@@ -70,6 +70,7 @@ FRAMEWORK_NAME := $(strip $(FRAMEWORK_NAME))
 FRAMEWORK_DIR_NAME := $(FRAMEWORK_NAME:=.framework)
 FRAMEWORK_VERSION_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
 SUBPROJECT_ROOT_DIR := "."
+DERIVED_SOURCES = derived_src
 
 # Always include all the compilation flags and generic compilation
 # rules, because the user, in his GNUmakefile.postamble, might want to
