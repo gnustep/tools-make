@@ -341,7 +341,7 @@ AC_SUBST(ac_cv_objc_threaded)
 #--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------
-. Version
+. ./Version
 if test -f "../Version"; then
   . ../Version
 fi
