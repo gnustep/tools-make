@@ -1,3 +1,12 @@
+Thu Jul 12 17:26:40 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.variables): Depend on %.tools and %.subprojects.
+	Corresponding code to build framework tools and subprojects moved
+	into new %.tools and %.subprojects rules.
+	(.PRECIOUS): Added %.variables, %.subprojects and %.tools to
+	prevent make from trying to delete them as if they were temporary
+	files.
+	
 Thu Jul 12 16:54:01 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.variables): Pass TARGET down to submake so that
