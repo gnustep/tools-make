@@ -38,6 +38,15 @@ RULES_MAKE_LOADED=yes
 #
 #	libgmodel.all.library.variables
 #
+# when the rule is executed, $* is libgmodel.all.libray;
+#  target=libgmodel
+#  operation=all
+#  type=library 
+#
+# this rule might be executed many times, for different targets to build.
+
+# it then calls a submake, which runs the %.build rule below with 
+# the specified target
 %.variables:
 	@(target=$(basename $(basename $*)); \
 	operation=$(subst .,,$(suffix $(basename $*))); \
@@ -52,6 +61,9 @@ RULES_MAKE_LOADED=yes
 #
 # Global targets
 #
+
+# The first time you invoke `make', if you have not given a target,
+# `all' is executed as it is the first one
 all:: before-all internal-all after-all
 
 # internal-after-install is used by packaging to get the list of files 
@@ -119,6 +131,7 @@ after-check::
 
 .PHONY = all before-all internal-all after-all \
 	 install before-install internal-install after-install \
+	         internal-after-install \
 	 uninstall before-uninstall internal-uninstall after-uninstall \
 	 clean before-clean internal-clean after-clean \
 	 distclean before-distclean internal-distclean after-distclean \
