@@ -1,3 +1,8 @@
+Tue Mar  2 08:57:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+        * make/target.make: Include GNUSTEP_SYSTEM_LIBRARIES in link list to
+          fix shared-lib linking error on linux elf.
+
 Tue Mar  2 08:04:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* Merge in 'dawn' CVS branch.
