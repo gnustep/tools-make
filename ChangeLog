@@ -1,3 +1,14 @@
+1999-02-17  Scott Christley  <scottc@net-community.com>
+
+	* opentool.in: New file.
+	* rootinstall.sh: New file.
+	* rootuninstall.sh: New file.
+	* openapp.in: Add help text.
+	* debugapp.in: Add help text.
+	* configure.in: Add opentool.in.
+	* configure: Regenerate.
+	* GNUmakefile.in: Install/uninstall new files.
+
 Tun Feb 16 16:26:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* services.make: Tidied with removal of some unneccessary dependencies.

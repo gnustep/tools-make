@@ -1789,7 +1789,7 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "config.h config.make openapp debugapp GNUmakefile
+trap 'rm -fr `echo "config.h config.make openapp debugapp opentool GNUmakefile
 GNUstep.sh GNUstep.csh config.h" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
@@ -1890,7 +1890,7 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"config.h config.make openapp debugapp GNUmakefile
+CONFIG_FILES=\${CONFIG_FILES-"config.h config.make openapp debugapp opentool GNUmakefile
 GNUstep.sh GNUstep.csh"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
@@ -2062,7 +2062,7 @@ cat >> $CONFIG_STATUS <<EOF
 
 EOF
 cat >> $CONFIG_STATUS <<\EOF
-chmod a+x openapp debugapp
+chmod a+x openapp debugapp opentool
 exit 0
 EOF
 chmod +x $CONFIG_STATUS

@@ -24,6 +24,7 @@
 
 if [ -z "$1" ]; then
   echo usage: `basename $0` [--library-combo=...] application [arguments...]
+  echo `basename $0` --help for help
   exit 1
 fi
 
@@ -35,10 +36,28 @@ if [ -z "$LIBRARY_COMBO" ]; then
 fi
 
 case $1 in
+  --help)
+    echo usage: `basename $0` [--library-combo=...] application [arguments...]
+    echo
+    echo [--library-combo=...] specifies a GNUstep backend to use.
+    echo It overrides the default LIBRARY_COMBO environment variable.
+    echo --library-combo=gnu-xdps for GNUstep XDPS Backend
+    echo --library-combo=gnu-xraw for GNUstep XRaw Backend
+    echo --library-combo=fd-xraw for GNUstep XRaw Backend with libFoundation
+    echo --library-combo=fd-xdps for GNUstep XDPS Backend with libFoundation
+    echo --library-combo=nx for NeXT OPENSTEP
+    echo
+    echo application is the complete or relative name of the application
+    echo program with the .app extension, like Edit.app.
+    echo
+    echo [arguments...] are the arguments to the application.
+    exit 0
+    ;;
   --library-combo=*)
     LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
     if [ -z "$2" ]; then
       echo usage: `basename $0` [--library-combo=...] application [arguments...]
+      echo `basename $0` --help for help
       exit 1
     fi
     app=$2; shift; shift

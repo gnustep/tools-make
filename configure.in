@@ -189,6 +189,6 @@ AC_SUBST(ac_cv_objc_threaded)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_OUTPUT(config.h config.make openapp debugapp GNUmakefile
+AC_OUTPUT(config.h config.make openapp debugapp opentool GNUmakefile
 GNUstep.sh GNUstep.csh,
-chmod a+x openapp debugapp)
+chmod a+x openapp debugapp opentool)

@@ -80,11 +80,13 @@ install: all
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
 		transform_paths.sh vendor.sh \
+		rootinstall.sh rootuninstall.sh \
 		GNUstep.csh ld_lib_path.csh ; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	$(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
+	$(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
 	for f in aggregate.make application.make bundle.make service.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
@@ -101,11 +103,13 @@ uninstall:
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
 		transform_paths.sh vendor.sh \
+		rootinstall.sh rootuninstall.sh \
 		GNUstep.csh ld_lib_path.csh ; do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(tooldir)/openapp; \
 	rm -f $(tooldir)/debugapp; \
+	rm -f $(tooldir)/opentool; \
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
@@ -144,4 +148,7 @@ debugapp: debugapp.in
 	$(SHELL) config.status
 
 openapp: openapp.in
+	$(SHELL) config.status
+
+opentool: opentool.in
 	$(SHELL) config.status
