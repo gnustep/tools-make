@@ -499,9 +499,12 @@ endif
 
 ####################################################
 #
-# Linux ELF
+# Linux ELF or GNU/Hurd
 #
-ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
+# The following ifeq matches both 'linux-gnu' (which is GNU/Linux ELF)
+# and 'gnu0.3' (I've been told GNUSTEP_TARGET_OS is 'gnu0.3' on
+# GNU/Hurd at the moment).  We want the same code in both cases.
+ifeq ($(findstring gnu, $(GNUSTEP_TARGET_OS)), gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
