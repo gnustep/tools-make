@@ -1,3 +1,16 @@
+Sun Jan 11 13:00:46 1998  Scott Christley  <scottc@net-community.com>
+
+	* GNUmakefile.preamble: Add additional flags.
+	* MediaBook.func (c): Display library combo setting and move
+	display of the CVS root.
+	* application.make: Correct comment.
+	* config.make.in (X_INCLUDE, X_LIBS): Define to be empty if
+	not using the X Window System.
+	* rules.make (%.build): Pass additional flags.
+	* target.make (nextstep4): Use ALL_LIB_DIRS instead of
+	specifying the individual user, local, and system dirs.
+	(nextstep3): Add system specific settings for NEXTSTEP 3.x
+
 Fri Jan  9 12:16:19 1998  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* aggregate.make: Run the recursive make using the makefile specified

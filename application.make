@@ -31,7 +31,7 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 #
 # The name of the application is in the APP_NAME variable.
-# The list of application resource file are in xxx_RESOURCES
+# The list of application resource file are in xxx_RESOURCE_FILES
 # The list of application resource directories are in xxx_RESOURCE_DIRS
 # where xxx is the application name
 #

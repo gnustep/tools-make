@@ -190,6 +190,8 @@ function c {
 			echo "  System Root: $GNUSTEP_SYSTEM_ROOT"
 			echo "   Local Root: $GNUSTEP_LOCAL_ROOT"
 			echo "    User Root: $GNUSTEP_USER_ROOT"
+			echo "Library Combo: $LIBRARY_COMBO"
+			echo "     CVS Root: $CVSROOT"
 			echo "--------------"
 			echo "  System Name: $MB_CUR"
 			echo "      Version: $MB_CUR_VER"
@@ -201,7 +203,6 @@ function c {
 			echo "      Headers: $MB_CUR_H"
 			echo "        Tests: $MB_CUR_TST"
 			echo "Documentation: $MB_CUR_DOC"
-			echo "     CVS Root: $CVSROOT"
 			echo " "
 			return 
 			;;

@@ -63,7 +63,13 @@ default_library_combo = @ac_cv_library_combo@
 # X Window System headers and libraries
 #
 X_INCLUDE := @X_INCLUDE@
+ifeq ($(X_INCLUDE),-INONE)
+	X_INCLUDE=
+endif
 X_LIBS := @X_LIBS@
+ifeq ($(X_LIBS),-LNONE)
+	X_LIBS=
+endif
 
 # Any user specified libs, like thread libraries
 CONFIG_SYSTEM_LIBS = @LIBS@

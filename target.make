@@ -61,7 +61,13 @@ AFTER_INSTALL_SHARED_LIB_COMMAND = \
 	 $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 HAVE_BUNDLES = no
 
+####################################################
+#
+# Start of system specific settings
+#
+####################################################
 
+####################################################
 #
 # OpenStep 4.x
 #
@@ -89,11 +95,78 @@ TARGET_LIB_DIR = \
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
-        /bin/libtool -dynamic -read_only_relocs suppress \
-		$(ARCH_FLAGS) -o $@ -framework System \
-                -L$(GNUSTEP_USER_ROOT)/$(TARGET_LIB_DIR) \
-		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
-		-L$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR) \
+        /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
+		-framework System \
+		$(ALL_LIB_DIRS) \
+		$(LIBRARIES_DEPEND_UPON) -lobjc -lgcc $^; \
+	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+else
+SHARED_LIB_LINK_CMD     = \
+        /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
+		$(ALL_LDFLAGS) $@ \
+		-framework System \
+		$(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) $^; \
+	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+endif
+
+STATIC_LIB_LINK_CMD	= \
+	/bin/libtool -static $(ARCH_FLAGS) -o $@ $^
+
+ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
+
+AFTER_INSTALL_STATIC_LIB_COMMAND =
+
+SHARED_CFLAGS   += -dynamic
+SHARED_LIBEXT   = .a
+
+ifneq ($(OBJC_COMPILER), NeXT)
+TARGET_SYSTEM_LIBS += $(CONFIG_SYSTEM_LIBS) -lgcc
+endif
+
+BUNDLE_LD	= ld
+BUNDLE_CFLAGS   +=
+BUNDLE_LDFLAGS  += -r $(ARCH_FLAGS)
+endif
+#
+# end OpenStep 4.x
+#
+####################################################
+
+####################################################
+#
+# NEXTSTEP 3.x
+#
+ifeq ($(GNUSTEP_TARGET_OS), nextstep3)
+ifeq ($(OBJC_RUNTIME), NeXT)
+HAVE_BUNDLES            = yes
+endif
+
+HAVE_SHARED_LIBS        = yes
+
+ifeq ($(FOUNDATION_LIB),nx)
+  # Use the NeXT compiler
+  CC = cc
+  OBJC_COMPILER = NeXT
+  ifneq ($(arch),)
+    ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
+    INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
+    INTERNAL_CFLAGS += $(ARCH_FLAGS)
+    INTERNAL_LDFLAGS += $(ARCH_FLAGS)
+  endif
+endif
+
+TARGET_LIB_DIR = \
+    Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+
+ifneq ($(OBJC_COMPILER), NeXT)
+SHARED_LIB_LINK_CMD     = \
+        /bin/libtool -dynamic -read_only_relocs suppress
+		 $(ARCH_FLAGS) -o $@ -framework System \
+		$(GNUSTEP_USER_TARGET_LIBRARIES_FLAG) \
+		$(GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAG) \
+		-L$(GNUSTEP_SYSTEM_TARGET_LIBRARIES) \
 		$(ADDITIONAL_LIB_DIRS) \
 		$(LIBRARIES_DEPEND_UPON) -lobjc -lgcc -undefined warning $^; \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
@@ -102,9 +175,9 @@ else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
 		-framework System \
-                -L$(GNUSTEP_USER_ROOT)/$(TARGET_LIB_DIR) \
-		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
-		-L$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR) \
+		$(GNUSTEP_USER_TARGET_LIBRARIES_FLAG) \
+		$(GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAG) \
+		-L$(GNUSTEP_SYSTEM_TARGET_LIBRARIES) \
 		$(ADDITIONAL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) $^; \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
@@ -128,7 +201,12 @@ BUNDLE_LD	= ld
 BUNDLE_CFLAGS   +=
 BUNDLE_LDFLAGS  += -r $(ARCH_FLAGS)
 endif
+#
+# end NEXTSTEP 3.x
+#
+####################################################
 
+####################################################
 #
 # Linux ELF
 #
@@ -149,8 +227,13 @@ BUNDLE_LD	= gcc
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
 endif
+#
+# end Linux ELF
+#
+####################################################
 
 
+####################################################
 #
 # Solaris
 #
@@ -171,3 +254,7 @@ BUNDLE_LD	= gcc
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 endif
+#
+# end Solaris
+#
+####################################################
