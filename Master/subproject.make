@@ -56,12 +56,13 @@ _PSWRAP_C_FILES = $(foreach subproject,$(SUBPROJECT_NAME),$($(subproject)_PSWRAP
 _PSWRAP_H_FILES = $(foreach subproject,$(SUBPROJECT_NAME),$($(subproject)_PSWRAP_FILES:.psw=.h))
 
 internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	       Resources/Subproject
 
 internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproject.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+	  static_profile_debug_obj Resources
 
 $(SUBPROJECT_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
