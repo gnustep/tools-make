@@ -1,5 +1,18 @@
 2005-03-10  Nicola Pero <n.pero@mi.flashnet.it>
 
+	* Instance/library.make: On Windows, try to link against all 
+	libraries, except the one we are compiling.
+	* Instance/bundle.make: Replaced all occurrences of WITH_DLL with
+	BUILD_DLL.
+	* Instance/framework.make: Same change.
+	* Instance/palette.make:  Same change.
+	* Instance/bundle.make (build-bundle): Use the old DLL rules to
+	build bundles only if OLD_DLL_SUPPORT is defined.  Else, use the
+	rules specified in target.make for that platform.
+	* target.make (BUNDLE_LD): Just use -shared on Mingw.
+	
+2005-03-10  Nicola Pero <n.pero@mi.flashnet.it>
+
 	* user_home.c (main): Fixed missing case for Windows ... if
 	HOMEPATH was already a full path, the code would forget to copy
 	the path into home.
