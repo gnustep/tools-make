@@ -2,7 +2,7 @@
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Debian/DEC-Alpha, , (DIR)
-@node Machine Specific, Debian/DEC-Alpha, , (DIR)
+@node Machine Specific
 @chapter Machines
 @end ifclear
 
@@ -12,6 +12,7 @@ more popular operating systems. Some machines marked with
 @emph{Unstable} may have some trouble or may not work at all.
 
 @menu
+* Darwin 1.0/PowerPC::          
 * Debian/DEC-Alpha::            
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
@@ -50,7 +51,31 @@ configuring, @samp{CFLAGS="" ./configure}. Or when building,
 @samp{make OPTFLAG=""}.
 
 @c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 3.x, Machine Specific, Machine Specific
+@node Darwin 1.0/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
+@section Darwin 1.0/PowerPC (@emph{Unstable!})
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Don't use gnustep-objc or ffcall.
+
+@item Special Instructions 
+@end table
+
+GNUstep has not been ported to Darwin. Expect some minor irritations and
+possibly one or two major ones if your trying to do this. Darwin doesn't
+have a GCC ObjC Compiler, so you need to use the ObjC runtime that comes with
+Darwin. To do this configure (gnustep-make) like this:
+
+@example
+./configure --with-library-combo=nx-gnu-gnu-xgps
+@end example
+
+
+@c -----------------------------------------
+@node Debian/DEC-Alpha, FreeBSD 3.x, Darwin 1.0/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -327,8 +352,7 @@ See the Solaris 2.6 section for more instructions.
 
 @c -----------------------------------------
 @node Solaris 2.6/Sparc, Solaris 2.7/Intel, Solaris 2.5.1/Sparc, Machine Specific
-@section Solaris 2.6/Sparc
-@c Contact?: Benhur Stein <Benhur-de-Oliveira.Stein@imag.fr>
+@section Solaris 2.[67]/Sparc
 
 @table @samp
 @item Recommended compiler
@@ -538,7 +562,8 @@ gcc 2.95.3 (Cygwin release 1.1.8)
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
-for shared libs.
+for shared libs. ffcall is not ported to cygwin so don't try to use it (some
+invocation and DO stuff will not work).
 
 @item Special Instructions 
 @end table
@@ -567,7 +592,7 @@ gcc 2.95.2 (MingW release 1999-11-07)
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
-for shared libs.
+for shared libs. ffcall is not ported to Mingw32 so don't try to use it.
 
 @item Special Instructions 
 See the @file{README.MinGW} file located in the gnustep-make Documentation
