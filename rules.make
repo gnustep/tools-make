@@ -60,7 +60,11 @@ uninstall:: before-uninstall internal-uninstall after-uninstall
 
 clean:: before-clean internal-clean after-clean
 
+ifeq ($(MAKELEVEL),0)
 distclean:: clean before-distclean internal-distclean after-distclean
+else 
+distclean:: before-distclean internal-distclean after-distclean
+endif
 
 check:: before-check internal-check after-check
 

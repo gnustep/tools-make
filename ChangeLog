@@ -1,3 +1,9 @@
+Fri Sep 17  1999  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (distclean): added test, so that distclean invokes
+	clean only in the top dir.  This avoids having 'make clean'
+	executed uselessly a lot of times in subdirs.
+
 1999-09-14  Adam Fedor  <fedor@gnu.org>
 
 	* common.make, config.make.in: Remove -o from LDFLAGS.
