@@ -33,7 +33,7 @@ INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
-internal-doc-all_:: $(GNUSTEP_INSTANCE)/stamp
+internal-doc-all_:: $(GNUSTEP_INSTANCE)/dependencies
 
 # Only include (and implicitly automatically rebuild if needed) the
 # dependencies file when we are compiling.  Ignore it when cleaning or
@@ -42,16 +42,8 @@ ifeq ($(GNUSTEP_OPERATION), all)
 -include $(GNUSTEP_INSTANCE)/dependencies
 endif
 
-$(GNUSTEP_INSTANCE):
-	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
-
-$(GNUSTEP_INSTANCE)/dependencies: $(GNUSTEP_INSTANCE)
+$(GNUSTEP_INSTANCE)/dependencies:
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -MakeDependencies $(GNUSTEP_INSTANCE)/dependencies $(AGSDOC_FILES)$(END_ECHO)
-	touch $(GNUSTEP_INSTANCE)/stamp
-
-$(GNUSTEP_INSTANCE)/stamp: $(GNUSTEP_INSTANCE)
-	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -MakeDependencies $(GNUSTEP_INSTANCE)/dependencies $(AGSDOC_FILES)$(END_ECHO)
-	touch $(GNUSTEP_INSTANCE)/stamp
 
 internal-doc-install_:: 
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \

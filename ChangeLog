@@ -1,3 +1,10 @@
+2004-05-17 Richard Frith-Macdonald <rfm@gnu.org>
+
+        * Instance/Documentation/autogsdoc.make: Simplify rules.  Avoid
+	dependency on existence of documentation subdirectory by relying on
+	new autogsdoc feature (it now creates the subdirectory if necessary).
+	This prevents possible recursion in make process.
+
 2004-05-07 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Master/rules.make: Pass 'operation' to instances in
