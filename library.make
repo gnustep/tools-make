@@ -22,7 +22,7 @@
 #
 # Include in the common makefile rules
 #
-include $(GNUSTEP_ROOT)/Makefiles/rules.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 #
 # The name of the library is in the LIBRARY_NAME variable.

@@ -22,12 +22,12 @@
 #
 # Include in the common makefile rules
 #
-include $(GNUSTEP_ROOT)/Makefiles/rules.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 LINK_CMD = $(CC) $(ALL_CFLAGS) $@$(OEXT) -o $@ $(ALL_LDFLAGS)
 
 #
-# The name of the library is in the LIBRARY_NAME variable.
+# The name of the library is in the APP_NAME variable.
 #
 
 APP_DIR_NAME := $(foreach app,$(APP_NAME),$(app).app)

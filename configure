@@ -11,10 +11,10 @@
 ac_help=
 ac_default_prefix=/usr/local
 # Any additions from configure.in:
-ac_default_prefix=`if test "x$GNUSTEP_ROOT" = "x"; then 
+ac_default_prefix=`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
 echo /usr/GNUstep ;
 else
-echo $GNUSTEP_ROOT ;
+echo $GNUSTEP_SYSTEM_ROOT ;
 fi`
 ac_help="$ac_help
   --with-x                use the X Window System"
@@ -547,8 +547,8 @@ fi
 
 #--------------------------------------------------------------------
 # The GNUstep root directory.
-# The user should have the GNUSTEP_ROOT environment variable defined,
-# but if not then we have a global default.
+# The user should have the GNUSTEP_SYSTEM_ROOT environment variable
+# defined, but if not then we have a global default.
 #--------------------------------------------------------------------
 
 
@@ -1392,7 +1392,7 @@ done
 ac_given_srcdir=$srcdir
 ac_given_INSTALL="$INSTALL"
 
-trap 'rm -fr `echo "config.make Makefile" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
+trap 'rm -fr `echo "config.make Makefile GNUstep.sh" | sed "s/:[^ ]*//g"` conftest*; exit 1' 1 2 15
 EOF
 cat >> $CONFIG_STATUS <<EOF
 
@@ -1486,7 +1486,7 @@ EOF
 
 cat >> $CONFIG_STATUS <<EOF
 
-CONFIG_FILES=\${CONFIG_FILES-"config.make Makefile"}
+CONFIG_FILES=\${CONFIG_FILES-"config.make Makefile GNUstep.sh"}
 EOF
 cat >> $CONFIG_STATUS <<\EOF
 for ac_file in .. $CONFIG_FILES; do if test "x$ac_file" != x..; then

@@ -1,0 +1,59 @@
+#
+#   GNUstep.sh.in
+#
+#   Shell initialization for the GNUstep environment.
+#
+#   Copyright (C) 1997 Free Software Foundation, Inc.
+#
+#   Author:  Scott Christley <scottc@net-community.com>
+#
+#   This file is part of the GNUstep Makefile Package.
+#
+#   This library is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License
+#   as published by the Free Software Foundation; either version 2
+#   of the License, or (at your option) any later version.
+#   
+#   You should have received a copy of the GNU General Public
+#   License along with this library; see the file COPYING.LIB.
+#   If not, write to the Free Software Foundation,
+#   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+#
+
+#
+# Set the GNUstep system root and local root
+#
+GNUSTEP_SYSTEM_ROOT=@prefix@
+GNUSTEP_LOCAL_ROOT=@prefix@/Local
+GNUSTEP_USER_ROOT=~
+export GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_USER_ROOT
+
+#
+# Determine the host information
+#
+GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess`
+GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
+GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
+GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
+
+# Clean the host
+GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
+GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
+GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
+
+export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
+
+#
+# Add the GNUstep tools directories to the path
+#
+PATH=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+PATH=$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+
+#
+# Perform any user initialization
+#
+if [ -e ~/.GNUstep/GNUstep.sh ]
+then
+	. ~/.GNUstep/GNUstep.sh
+fi

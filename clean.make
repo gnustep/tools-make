@@ -1,7 +1,7 @@
 #
 #   clean.make
 #
-#   Clean up the target names
+#   Clean up the host and target names
 #
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
@@ -19,16 +19,12 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# Intel processors are made equivalent
-ifeq ($(GNUSTEP_TARGET_CPU),i386)
-GNUSTEP_TARGET_CPU=ix86
-endif
-ifeq ($(GNUSTEP_TARGET_CPU),i486)
-GNUSTEP_TARGET_CPU=ix86
-endif
-ifeq ($(GNUSTEP_TARGET_CPU),i586)
-GNUSTEP_TARGET_CPU=ix86
-endif
-ifeq ($(GNUSTEP_TARGET_CPU),i686)
-GNUSTEP_TARGET_CPU=ix86
-endif
+# Clean up the host names
+GNUSTEP_HOST_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU))
+GNUSTEP_HOST_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR))
+GNUSTEP_HOST_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS))
+
+# Clean up the target names
+GNUSTEP_TARGET_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_TARGET_CPU))
+GNUSTEP_TARGET_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_TARGET_VENDOR))
+GNUSTEP_TARGET_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_TARGET_OS))

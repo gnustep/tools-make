@@ -21,10 +21,10 @@
 
 # Run config.guess to guess the host
 
-GNUSTEP_HOST = $(shell $(CONFIG_GUESS_SCRIPT))
-GNUSTEP_HOST_CPU = $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST))
-GNUSTEP_HOST_VENDOR = $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST))
-GNUSTEP_HOST_OS = $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST))
+GNUSTEP_HOST := $(shell $(CONFIG_GUESS_SCRIPT))
+GNUSTEP_HOST_CPU := $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST))
+GNUSTEP_HOST_VENDOR := $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST))
+GNUSTEP_HOST_OS := $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST))
 
 #
 # The user can specify a `target' variable when running make
@@ -33,10 +33,10 @@ GNUSTEP_HOST_OS = $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST))
 ifeq ($(strip $(target)),)
 
 # The host is the default target
-GNUSTEP_TARGET = $(GNUSTEP_HOST)
-GNUSTEP_TARGET_CPU = $(GNUSTEP_HOST_CPU)
-GNUSTEP_TARGET_VENDOR = $(GNUSTEP_HOST_VENDOR)
-GNUSTEP_TARGET_OS = $(GNUSTEP_HOST_OS)
+GNUSTEP_TARGET := $(GNUSTEP_HOST)
+GNUSTEP_TARGET_CPU := $(GNUSTEP_HOST_CPU)
+GNUSTEP_TARGET_VENDOR := $(GNUSTEP_HOST_VENDOR)
+GNUSTEP_TARGET_OS := $(GNUSTEP_HOST_OS)
 
 else
 
@@ -44,17 +44,17 @@ else
 # Parse the target variable
 #
 
-GNUSTEP_TARGET = $(shell $(CONFIG_SUB_SCRIPT) $(target))
-GNUSTEP_TARGET_CPU = $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_TARGET))
-GNUSTEP_TARGET_VENDOR = $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_TARGET))
-GNUSTEP_TARGET_OS = $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_TARGET))
+GNUSTEP_TARGET := $(shell $(CONFIG_SUB_SCRIPT) $(target))
+GNUSTEP_TARGET_CPU := $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_TARGET))
+GNUSTEP_TARGET_VENDOR := $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_TARGET))
+GNUSTEP_TARGET_OS := $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_TARGET))
 
 endif
 
 #
-# Clean up the target names
+# Clean up the host and target names
 #
-include $(GNUSTEP_ROOT)/Makefiles/clean.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean.make
 
 #
 # Host and target specific settings

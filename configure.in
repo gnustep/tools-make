@@ -21,13 +21,13 @@ AC_INIT(application.make)
 
 #--------------------------------------------------------------------
 # The GNUstep root directory.
-# The user should have the GNUSTEP_ROOT environment variable defined,
-# but if not then we have a global default.
+# The user should have the GNUSTEP_SYSTEM_ROOT environment variable
+# defined, but if not then we have a global default.
 #--------------------------------------------------------------------
-AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_ROOT" = "x"; then 
+AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
 echo /usr/GNUstep ;
 else
-echo $GNUSTEP_ROOT ;
+echo $GNUSTEP_SYSTEM_ROOT ;
 fi`)
 
 #--------------------------------------------------------------------
@@ -80,4 +80,4 @@ AC_SUBST(X_LIBS)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_OUTPUT(config.make Makefile)
+AC_OUTPUT(config.make Makefile GNUstep.sh)

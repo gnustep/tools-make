@@ -22,16 +22,19 @@
 #
 # Scripts to run for parsing canonical names
 #
-CONFIG_GUESS_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/config.guess
-CONFIG_SUB_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/config.sub
-CONFIG_CPU_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/cpu.sh
-CONFIG_VENDOR_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/vendor.sh
-CONFIG_OS_SCRIPT = $(GNUSTEP_ROOT)/Makefiles/os.sh
+CONFIG_GUESS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/config.guess
+CONFIG_SUB_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/config.sub
+CONFIG_CPU_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/cpu.sh
+CONFIG_VENDOR_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/vendor.sh
+CONFIG_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/os.sh
+CLEAN_CPU_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_cpu.sh
+CLEAN_VENDOR_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_vendor.sh
+CLEAN_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_os.sh
 
 #
 # Determine the compilation host and target
 #
-include $(GNUSTEP_ROOT)/Makefiles/target.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/target.make
 
 GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
@@ -39,22 +42,22 @@ GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 #
 # Get the config information
 #
-include $(GNUSTEP_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
 
 #
 # Determine the core libraries
 #
-include $(GNUSTEP_ROOT)/Makefiles/core.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/core.make
 
 #
 # Variables specifying the installation directory paths
 #
-GNUSTEP_APPS = $(GNUSTEP_ROOT)/Apps
-GNUSTEP_TOOLS = $(GNUSTEP_ROOT)/Tools
-GNUSTEP_HEADERS = $(GNUSTEP_ROOT)/Headers
-GNUSTEP_LIBRARIES_ROOT = $(GNUSTEP_ROOT)/Libraries
+GNUSTEP_APPS = $(GNUSTEP_SYSTEM_ROOT)/Apps
+GNUSTEP_TOOLS = $(GNUSTEP_SYSTEM_ROOT)/Tools
+GNUSTEP_HEADERS = $(GNUSTEP_SYSTEM_ROOT)/Headers
+GNUSTEP_LIBRARIES_ROOT = $(GNUSTEP_SYSTEM_ROOT)/Libraries
 GNUSTEP_LIBRARIES = $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
-GNUSTEP_MAKEFILES = $(GNUSTEP_ROOT)/Makefiles
+GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 
 #
 # Determine Foundation header subdirectory based upon library combo
@@ -87,8 +90,8 @@ GNUSTEP_HEADERS_GUI = $(GNUSTEP_HEADERS)$(APP_HEADER)
 #
 DEBUGFLAG = -g
 OPTFLAG = -O2
-OBJCFLAGS = -Wno-implicit -Wno-import -Wall
-CFLAGS = -Wall
+OBJCFLAGS = -Wno-implicit -Wno-import
+CFLAGS = 
 
 ifeq ($(OBJC_RUNTIME_LIB),gnu)
 RUNTIME_FLAG = -fgnu-runtime

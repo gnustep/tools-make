@@ -22,7 +22,7 @@
 #
 # Include in the common makefile rules
 #
-include $(GNUSTEP_ROOT)/Makefiles/rules.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 #
 # The list of directory names with the subprojects 
@@ -35,35 +35,35 @@ include $(GNUSTEP_ROOT)/Makefiles/rules.make
 internal-all::
 	@(for f in $(SUBPROJECTS); do \
 		echo Making all in $$f...;\
-		(cd $$f; $(MAKE) $(MAKEFLAGS) all); \
+		(cd $$f; $(MAKE) all); \
 	done)
 
 internal-install::
 	@(for f in $(SUBPROJECTS); do \
 		echo Making install in $$f...;\
-		(cd $$f; $(MAKE) $(MAKEFLAGS) install); \
+		(cd $$f; $(MAKE) install); \
 	done)
 
 internal-uninstall::
 	@(for f in $(SUBPROJECTS); do \
 		echo Making uninstall in $$f...;\
-		(cd $$f; $(MAKE) $(MAKEFLAGS) uninstall); \
+		(cd $$f; $(MAKE) uninstall); \
 	done)
 
 internal-clean::
 	@(for f in $(SUBPROJECTS); do \
 		echo Making clean in $$f...;\
-		(cd $$f; $(MAKE) $(MAKEFLAGS) clean); \
+		(cd $$f; $(MAKE) clean); \
 	done)
 
 internal-distclean::
 	@(for f in $(SUBPROJECTS); do \
 		echo Making distclean in $$f...;\
-		(cd $$f; $(MAKE) $(MAKEFLAGS) distclean); \
+		(cd $$f; $(MAKE) distclean); \
 	done)
 
 internal-check::
 	@(for f in $(SUBPROJECTS); do \
 		echo Making check in $$f...;\
-		(cd $$f; $(MAKE) $(MAKEFLAGS) check); \
+		(cd $$f; $(MAKE) check); \
 	done)
