@@ -140,8 +140,9 @@ endif
 # $GNUSTEP_MAKEFILES/Additional/ to set the needed flags
 #
 ifeq ($(FOUNDATION_LIB),nx)
-  FND_LDFLAGS = -framework Foundation
-  FND_LIBS   = 
+  # -framework Foundation is used both to find headers, and to link
+  INTERNAL_OBJCFLAGS += -framework Foundation
+  FND_LIBS   = -framework Foundation
   FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
 endif
 
@@ -158,7 +159,6 @@ ifeq ($(FOUNDATION_LIB),fd)
 
   GNUSTEP_FND_DIR = libFoundation
   FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
-  FND_LDFLAGS =
   FND_LIBS = -lFoundation
 
   # If gc=yes was passed and libFoundation was compiled with Boehm's
@@ -184,14 +184,9 @@ GUI_LIBS =
 #
 ifeq ($(GUI_LIB),nx)
   GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
-  ifneq ($(INTERNAL_app_NAME),)
-    # If we're building an application pass the following additional flags to
-    # the linker
-    GUI_LDFLAGS = -sectcreate __ICON __header $(INTERNAL_app_NAME).iconheader \
-		  -segprot __ICON r r -sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff \
-		  -framework AppKit
-    GUI_LIBS =
-  endif
+  # -framework AppKit is used both to find headers, and to find the library
+  INTERNAL_OBJCFLAGS += -framework AppKit
+  GUI_LIBS = -framework AppKit
 endif
 
 SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL)
