@@ -39,27 +39,14 @@ $(warning Ignoring all subprojects and building only $(SUBPROJECT_NAME))
 
 endif
 
-ifneq ($(FRAMEWORK_NAME),)
 .PHONY: build-headers
 build-headers:: $(SUBPROJECT_NAME:=.build-headers.subproject.variables)
-endif
 
 internal-all:: $(SUBPROJECT_NAME:=.all.subproject.variables)
 
-# for frameworks, headers are copied by build-headers into the
-# framework directory, and are automatically installed when you
-# install the framework; for other projects, we need to install each
-# subproject's headers separately
-ifeq ($(FRAMEWORK_NAME),)
-# WARNING - if you type `make install' in a framework's subproject dir
-# you are going to install the headers in the wrong place - can't fix
-# that - but you can prevent it by adding `FRAMEWORK_NAME = xxx' to
-# your subprojects' GNUmakefiles.
 internal-install:: $(SUBPROJECT_NAME:=.install.subproject.variables)
 
 internal-uninstall:: $(SUBPROJECT_NAME:=.uninstall.subproject.variables)
-
-endif
 
 _PSWRAP_C_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.c)
 _PSWRAP_H_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.h)
