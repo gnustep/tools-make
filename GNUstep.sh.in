@@ -37,11 +37,14 @@ export GNUSTEP_MAKEFILES
 
 GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
+GNUSTEP_USER_ROOT=@GNUSTEP_USER_ROOT@
 
-if [ ! -z "$WINDIR" ]; then
-  GNUSTEP_USER_ROOT=`echo $HOMEDRIVE/$HOMEPATH/GNUstep | tr '\\\' '/'`
-else
-  GNUSTEP_USER_ROOT=~/GNUstep
+if [ -z "$GNUSTEP_USER_ROOT" ]; then
+  if [ ! -z "$WINDIR" ]; then
+    GNUSTEP_USER_ROOT=`echo $HOMEDRIVE/$HOMEPATH/GNUstep | tr '\\\' '/'`
+  else
+    GNUSTEP_USER_ROOT=~/GNUstep
+  fi
 fi
 
 ac_save_ifs="$IFS"; IFS=":"
