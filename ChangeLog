@@ -1,3 +1,15 @@
+1998-02-05  Ovidiu Predescu  <ovidiu@net-community.com>
+
+	* brain.make (GUI_LIBS): Changed the order of the gui and gmodel
+	libraries.
+	* library.make (internal-library-all): Added before-all and after-all
+	in the list of dependencies. The same thing should be added in the
+	other makefile fragments, maybe using a more general way.
+	* rules.make (internal-clean): Remove directories that have been
+	changed too.
+	* tool.make (internal-tool-install): Add internal-tool-all to the list
+	of dependencies.
+
 Wed Feb  4 09:01:16 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* target.make: Add TARGET_SYSTEM_LIBS for irix OS.

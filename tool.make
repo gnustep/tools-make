@@ -80,7 +80,7 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-internal-tool-install:: internal-install-dirs install-tool
+internal-tool-install:: internal-tool-all internal-install-dirs install-tool
 
 internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs $(TOOL_INSTALLATION_DIR)

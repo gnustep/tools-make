@@ -89,7 +89,7 @@ after-uninstall::
 before-clean::
 
 internal-clean::
-	rm -f *~
+	rm -rf *~
 
 after-clean::
 
