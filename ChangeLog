@@ -1,3 +1,16 @@
+Fri Jul 13 18:31:26 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* test-application.make (APP_EXTENSION): Set it, fixing 
+	the bug on make clean.
+
+Fri Jul 13 18:29:03 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make (internal-clean): Simplified by using 
+	GNUSTEP_OBJ_DIR.
+	* gswapp.make (internal-clean): Idem.
+	* service.make (internal-clean): Idem.
+	* test-application.make (internal-clean): Idem.
+
 Fri Jul 13 17:55:45 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* test-library.make (internal-clean): Depend on .subprojects; make
