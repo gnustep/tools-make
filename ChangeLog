@@ -1,3 +1,17 @@
+Tue Mar  5 07:26:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/gswapplication.make: Renamed bundle directory where
+	gsweb resources are kept from WebServerResources to
+	Resources/WebServer.
+	* Instance/gswbundle.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/subproject.make: Idem.
+
+	* Instance/framework.make (framework-webresource-dir): Don't
+	create the link for the WebServerResources.  No longer needed
+	since it uses the normal Resources link now.
+	* Instance/subproject.make (framework-webresource-dir): Idem.
+	
 Mon Mar  4 16:14:52 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (MAKE_FILES): Added resource-set.make.
