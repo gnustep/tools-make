@@ -60,18 +60,31 @@ RANLIB  = @RANLIB@
 
 DLLTOOL = @DLLTOOL@
 
+# NB: These variables are defined here only so that they can be
+# overridden on the command line (so you can type 'AWK=mawk make' to
+# use a different awk for that particular run of make).  We should
+# *NOT* set them to the full path of these tools at configure time,
+# because otherwise when you change/update the tools you would need to
+# reconfigure and reinstall gnustep-make!  We can normally assume that
+# typing 'awk' and 'sed' on the command line cause the preferred awk
+# and sed programs on the system to be used.  Hardcoding the full path
+# (or the name) of the specific awk or sed program on this sytem here
+# would make it lot more inflexible.  In other words, the following
+# definitions should remain like in 'AWK = awk' on all systems.
+AWK             = awk
+SED             = sed
 YACC            = yacc
 BISON           = bison
 FLEX            = flex
 LEX             = lex
+CHOWN           = chown
+STRIP           = strip
 
 INSTALL		= @HOST_INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
 TAR		= @TAR@
 MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
-CHOWN           = chown
-STRIP           = strip
 
 # The default library combination
 default_library_combo = @ac_cv_library_combo@
