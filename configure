@@ -317,7 +317,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_type CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS OBJC_NO_IMPORT_FLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_type CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -857,7 +857,6 @@ Optional Features:
 --enable-multi-platform		Use run time multi-platform support
 
 --disable-backend-bundle	Compile gui backend as a library
---enable-import     Don't warn about usage of deprecated import directive
 --enable-strip-makefiles	Enable stripping makefiles after installation
 --disable-move-obsolete		Disable moving obsolete dir structure
 
@@ -4571,32 +4570,6 @@ fi
 
 
 
-#---------------------------------------------------------------------
-# Enable/disable warnings for deprecated #import directive as required
-#---------------------------------------------------------------------
-echo "$as_me:$LINENO: checking whether to disable compiler warnings about deprecated import" >&5
-echo $ECHO_N "checking whether to disable compiler warnings about deprecated import... $ECHO_C" >&6
-
-#
-# GCC recommends that you use `--disable-import' here, since #import
-# is seriously deprecated.  If you are unsure, please use --disable-import.
-#
-# Check whether --enable-import or --disable-import was given.
-if test "${enable_import+set}" = set; then
-  enableval="$enable_import"
-  ac_cv_import=$enableval
-else
-  ac_cv_import="no"
-fi;
-
-echo "$as_me:$LINENO: result: $ac_cv_import" >&5
-echo "${ECHO_T}$ac_cv_import" >&6
-
-if test "$ac_cv_import" = "yes"; then
-  OBJC_NO_IMPORT_FLAGS=-Wno-import;
-fi
-
-
 #--------------------------------------------------------------------
 # Shall we strip makefiles upon installation ?
 #--------------------------------------------------------------------
@@ -5368,7 +5341,6 @@ s,@AUTO_DEPENDENCIES@,$AUTO_DEPENDENCIES,;t t
 s,@INCLUDES@,$INCLUDES,;t t
 s,@LIB_DIR@,$LIB_DIR,;t t
 s,@OBJCFLAGS@,$OBJCFLAGS,;t t
-s,@OBJC_NO_IMPORT_FLAGS@,$OBJC_NO_IMPORT_FLAGS,;t t
 s,@GNUSTEP_STRIP_MAKEFILES@,$GNUSTEP_STRIP_MAKEFILES,;t t
 s,@GNUSTEP_MOVE_OBSOLETE@,$GNUSTEP_MOVE_OBSOLETE,;t t
 s,@GNUSTEP_MAKE_VERSION@,$GNUSTEP_MAKE_VERSION,;t t
