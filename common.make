@@ -3,10 +3,11 @@
 #
 #   Set all of the common environment variables.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Author:  Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -80,8 +81,8 @@ endif
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
 
-# Sanity check on $PATH - NB: if PATH is wrong, we can't do anything
-# as we can't run the tools (not even using opentool as we can't even
+# Sanity check on $PATH - NB: if PATH is wrong, we can't do certain things
+# because we can't run the tools (not even using opentool as we can't even
 # run opentool if PATH is wrong)
 ifeq ($(MAKELEVEL),0)
 
@@ -445,8 +446,8 @@ ifneq ($(LIBRARY_NAME_SUFFIX),)
 endif
 
 AUXILIARY_CPPFLAGS += $(GNUSTEP_DEFINE) \
-		$(FND_DEFINE) $(GUI_DEFINE) $(BACKEND_DEFINE) $(RUNTIME_DEFINE) \
-		$(FOUNDATION_LIBRARY_DEFINE)
+		$(FND_DEFINE) $(GUI_DEFINE) $(BACKEND_DEFINE) \
+		$(RUNTIME_DEFINE) $(FOUNDATION_LIBRARY_DEFINE)
 
 INTERNAL_OBJCFLAGS += $(ADDITIONAL_FLAGS) $(OPTFLAG) $(OBJCFLAGS) \
 			$(RUNTIME_FLAG)
