@@ -1,3 +1,37 @@
+Wed Jun 12 12:32:40 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make: Fixed typo in ifneq which was
+	causing the LOCALIZED_WEBSERVER_RESOURCE_FILES code to be never
+	executed.
+	(WEBSERVER_LOCALIZED_RESOURCE_DIRS): New variable.
+	(shared-instance-bundle-all-localized-webresources): Implemented
+	code to create webserver resource dirs.  Fixed installation of
+	WEBSERVER_LOCALIZED_RESOURCE_FILES ... yet another typo preventing
+	it from working.
+
+Wed Jun 12 12:31:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>	
+
+	* Instance/Shared/bundle.make
+	(WEBSERVER_LOCALIZED_RESOURCE_FILES): Support the new variable
+	name xxx_WEBSERVER_LOCALIZED_RESOURCE_FILES.
+	(WEBSERVER_COMPONENTS, WEBSERVER_LOCALIZED_COMPONENTS):
+	Implemented support for these variables, by merging them into
+	WEBSERVER_RESOURCE_FILES and WEBSERVER_LOCALIZED_RESOURCE_FILES
+	
+Wed Jun 12 12:28:07 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make (COMPONENTS, LOCALIZED_COMPONENTS):
+	Merge them into RESOURCE_FILES and LOCALIZED_RESOURCE_FILES.
+	(shared-instance-bundle-all): Code to manage COMPONENTS and
+	LOCALIZED_COMPONENTS removed.
+	(shared-instance-bundle-all): When installing RESOURCE_FILES,
+	check that the file exists, and is a file or a dir, before
+	installing it.  When installing LOCALIZED_RESOURCE_FILES, accept
+	directories as well as files.
+	(LOCALIZED_RESOURCE_DIRS): New variable.
+	(shared-instance-bundle-all): Added code to manage
+	LOCALIZED_RESOURCE_DIRS.
+	
 Wed Jun 12 11:44:47 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* relative_path.sh: Do not run sed to remove the partial_match
