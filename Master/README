@@ -39,7 +39,7 @@ your project.  We have an 'Instance' invocation per each logically
 separate thing to do in your project.
 
 You might wonder why we use 'Instance' invocations at all, and why we
-don't actually perform each instance tak inside the 'Master'
+don't actually perform each instance task inside the 'Master'
 invocation itself.  The explanation is very technical ... in a few
 words, we can't because of limitations of make.  The problem is that
 if you have multiple instances of the same type, say multiple
@@ -52,4 +52,4 @@ xxx, for each xxx.  That is difficult to do in the same make
 invocation, because the make grammar doesn't contain any looping
 construct allowing us to include the same makefile multiple times, one
 for each value of xxx.  What we do to work around this problem is, we
-fire a separate submake invocation per instance to be built.
+run a separate submake invocation per instance to be built.
