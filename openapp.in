@@ -169,9 +169,6 @@ if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   IFS=" "
   $full_appname/$appname $@
 
-elif [ -d $full_appname/Java ]; then
-	# It's a Java app
-	$full_appname/$appname $@
 else
   # Determine if the application has a binary for this operating system
   if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
