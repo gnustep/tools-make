@@ -2,6 +2,7 @@
 
 	* GNUmakefile.in: Added model (un)installation (SavePanel.gmodel), 
 	                  model files install in GNUSTEP_ROOT/Library/Model/
+	* SavePanel.gmodel: More GUI elements, nearing completion
 
 Wed Nov 18 17:20:02 1998  Adam Fedor  <fedor@hyper.doc.com>
 
