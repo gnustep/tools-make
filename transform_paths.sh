@@ -5,7 +5,10 @@
 #
 # Author: Ovidiu Predescu <ovidiu@net-community.com>
 # Date: October 1997
-# 
+# Rewritten: Nicola Pero <n.pero@mi.flashnet.it>
+# Date: March 2001
+#
+#
 # This file is part of the GNUstep Makefile Package.
 #
 # This library is free software; you can redistribute it and/or
@@ -29,6 +32,8 @@ curdir=`pwd`
 
 for dir in $@; do
   if [ -d $curdir/$dir ]; then
-    echo "`(cd $curdir/$dir; pwd)`"
+    echo "$curdir/$dir"
+  else
+    echo "$dir"
   fi
 done
