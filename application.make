@@ -72,6 +72,17 @@ $(APP_NAME):
 
 else
 
+.PHONY: internal-app-all \
+        internal-app-clean \
+        internal-app-distclean \
+        internal-app-install \
+        internal-app-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        app-resource-files \
+        app-localized-resource-files \
+        _FORCE
+
 # Libraries that go before the GUI libraries
 ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS) \
    $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
@@ -89,12 +100,6 @@ ALL_GUI_LIBS := \
 # rules.make).
 APP_DIR_NAME = $(INTERNAL_app_NAME:=.$(APP_EXTENSION))
 APP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(APP_DIR_NAME)/Resources/$(d))
-ifeq ($(strip $(RESOURCE_FILES)),)
-  override RESOURCE_FILES=""
-endif
-ifeq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-  override LOCALIZED_RESOURCE_FILES=""
-endif
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
@@ -180,27 +185,26 @@ $(APP_RESOURCE_DIRS):
 
 app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
                      $(APP_RESOURCE_DIRS)
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying resources into the application wrapper..."; \
-	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
-	fi)
+ifneq ($(strip $(RESOURCE_FILES)),)
+	@(echo "Copying resources into the application wrapper..."; \
+	cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources;)
+endif
 
 app-localized-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
                                $(APP_RESOURCE_DIRS)
-	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying localized resources into the application wrapper..."; \
-	  for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then \
-	      $(MKDIRS) $(APP_DIR_NAME)/Resources/$$l.lproj; \
+ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
+	@(echo "Copying localized resources into the application wrapper..."; \
+	for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then \
+	    $(MKDIRS) $(APP_DIR_NAME)/Resources/$$l.lproj; \
+	  fi; \
+	  for f in $(LOCALIZED_RESOURCE_FILES); do \
+	    if [ -f $$l.lproj/$$f ]; then \
+	      cp -r $$l.lproj/$$f $(APP_DIR_NAME)/Resources/$$l.lproj; \
 	    fi; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f $(APP_DIR_NAME)/Resources/$$l.lproj; \
-	      fi; \
-	    done; \
 	  done; \
-	fi)
-
+	done;)
+endif
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = NSApplication
