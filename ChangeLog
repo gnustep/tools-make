@@ -1,6 +1,5 @@
 Thu Jan 18 12:15:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
-	* rpm.make: Build the file-list only at top level.
 	* gnustep-make.spec.in: Do a make distclean before running
 	configure.
 	
