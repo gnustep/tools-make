@@ -49,9 +49,9 @@ endif
 #    xxx_WEBSERVER_RESOURCE_DIRS
 # The list of localized framework web server GSWeb components are in
 #    xxx_LOCALIZED_WEBSERVER_RESOURCE_DIRS
-# xxx_CURRENT_VERSION_NAME is the compiled version name (default "A")
-# xxx_DEPLOY_WITH_CURRENT_VERSION deploy with current version or not (default
-#     "yes")
+# CURRENT_VERSION_NAME is the compiled version name (default "A")
+# DEPLOY_WITH_CURRENT_VERSION deploy with current version or not (default
+#       "yes")
 #
 # where xxx is the framework name
 #
