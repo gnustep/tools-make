@@ -1,3 +1,18 @@
+Fri Jul 13 16:17:36 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* tool.make (internal-clean): Short-cut the recursive make
+	invocation, and clean immediately for all tools here.  But 
+	depend on the .subprojects rule in order to make clean in 
+	eventual subprojects.
+	(internal-distclean): Idem.
+	(internal-tool-clean): Removed.
+	(internal-tool-distclean): Removed.
+	(.PHONY): Removed internal-tool-clean and internal-tool-distclean.
+	* ctool.make: Exactly the same changes as in tool.make.
+	* test-tool.make (internal-clean): Updated to mirror the change in
+	tool.make.
+	(internal-distclean): Idem.
+	
 Fri Jul 13 13:45:54 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.variables, %.tools, %.subprojects): Removed usage
