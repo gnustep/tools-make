@@ -3,6 +3,9 @@
 	* bundle.make ($(BUNDLE_DIR_NAME)/Contents/Resources): Remove
 	-f (Solaris ln -f doesn't work).
 
+	* target.make (LIBRARY_INSTALL_DIR): Update for last change
+	removing GNUSTEP_TARGET_DIR.
+	
 Tue Oct 16 03:30:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Warning - very minor backwards incompatible change in the API, 
