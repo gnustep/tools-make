@@ -60,9 +60,10 @@ install:
 	done
 	for f in aggregate.make application.make bundle.make clean.make \
 		common.make core.make library.make rules.make target.make \
-		tool.make config.site MediaBook.func; do \
+		tool.make MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
+	$(INSTALL_DATA) config.site $(prefix)/share
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
