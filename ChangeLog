@@ -1,3 +1,16 @@
+Wed Apr 10 14:02:55 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Documentation/makedoc.make (internal-doc-install): Depend on
+	creating GNUSTEP_DOCUMENTATION_INFO
+	(internal-doc-uninstall): Remove the .info files from
+	GNUSTEP_DOCUMENTATION_INFO.
+
+	Patch from Sir Raorn (<raorn@binec.ru>):
+	* Documentation/GNUmakefile.in (GNUSTEP_DOCUMENTATION_INFO): Define.
+	* Documentation/makedoc.make (internal-doc-install): Install the info files
+	in GNUSTEP_DOCUMENTATION_INFO.
+	($(GNUSTEP_DOCUMENTATION_INFO)): Create the directory if missing.
+	
 Mon Apr  8 00:45:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in (dir): Unset after using (Reported by Balaton
