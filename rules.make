@@ -59,23 +59,7 @@ ifneq ($(INSTALL_AS_GROUP),)
 endif
 
 
-#
-# The bundle extension (default is .bundle) is defined by BUNDLE_EXTENSION.
-#
-ifeq ($(strip $(BUNDLE_EXTENSION)),)
-BUNDLE_EXTENSION = .bundle
-endif
-
-#
-# Common variables for frameworks
-#
-ifeq ($(CURRENT_VERSION_NAME),)
-  CURRENT_VERSION_NAME := A
-endif
-ifeq ($(DEPLOY_WITH_CURRENT_VERSION),)
-  DEPLOY_WITH_CURRENT_VERSION := yes
-endif
-
+# FIXME - what to do with these
 FRAMEWORK_NAME := $(strip $(FRAMEWORK_NAME))
 FRAMEWORK_DIR_NAME := $(FRAMEWORK_NAME:=.framework)
 FRAMEWORK_VERSION_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)

@@ -1,3 +1,8 @@
+Wed Jan 30 17:54:45 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (BUNDLE_EXTENSION, CURRENT_VERSION_NAME,
+	DEPLOY_WITH_CURRENT_VERSION): Moved to common.make.
+
 Wed Jan 30 17:53:03 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make: Always include Instance/rules.make, even if in the

@@ -460,6 +460,16 @@ ifeq ($(JAVADOC),)
   JAVADOC = $(JAVA_HOME)/bin/javadoc
 endif
 
+#
+# Common variables - default values
+#
+# Because this file is included at the beginning of the user's
+# GNUmakefile, the user can override these variables by setting them
+# in the GNUmakefile.
+BUNDLE_EXTENSION = .bundle
+CURRENT_VERSION_NAME = A
+DEPLOY_WITH_CURRENT_VERSION = yes
+
 # We want total control over GNUSTEP_MAKE_INSTANCE_INVOCATION.
 # GNUSTEP_MAKE_INSTANCE_INVOCATION determines wheter it's a Master or
 # an Instance invocation.  Whenever we run a submake, we want it to be
