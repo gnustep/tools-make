@@ -37,6 +37,10 @@ case "$1" in
 	exit 0
 	;;
     # Remove version number for Darwin
+    darwin7*)
+        echo darwin7
+        exit 0
+        ;;
     darwin6*)
         echo darwin6
         exit 0

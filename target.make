@@ -222,7 +222,7 @@ endif
 
 ####################################################
 #
-# MacOSX 10.[12], darwin[56]
+# MacOSX 10.[12], darwin[567]
 #
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 ifeq ($(OBJC_RUNTIME_LIB), apple)
@@ -268,8 +268,13 @@ endif
 
 ifneq ($(CC_TYPE), apple)
 # GNU compiler
-SHARED_LD_PREFLAGS += -arch_only ppc -noall_load -read_only_relocs warning \
+SHARED_LD_PREFLAGS += -noall_load -read_only_relocs warning \
 	-flat_namespace -undefined warning
+# Useful flag: -Wl,-single_module.  This flag only
+# works starting with 10.3. libs w/ffcall don't link on darwin/ix86 without it.
+ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
+  SHARED_LD_PREFLAGS += -single_module
+endif
 SHARED_LIB_LINK_CMD     = \
 	/usr/bin/libtool \
 		$(SHARED_LD_PREFLAGS) \
@@ -296,10 +301,13 @@ else
 # Apple Compiler
 
 #DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
-
-# Useful optimization flag: -Wl,-single_module.  This flag is included
-# by default just because it doesn't work on Mac OS X 10.2; it only
+DYLIB_EXTRA_FLAGS    = -flat_namespace -undefined warning 
+# Useful optimization flag: -Wl,-single_module.  This flag only
 # works starting with 10.3.
+ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
+  DYLIB_EXTRA_FLAGS    += -Wl,-single_module
+endif
+
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -prebind \

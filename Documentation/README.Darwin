@@ -1,0 +1,178 @@
+Date:	15-Jan-2004 (tested under i686-apple-darwin7.0.0, 
+		     powerpc-apple-darwin6.8)
+Author: Adam Fedor <fedor@gnu.org>
+
+PURPOSE
+-------
+
+This document is intended to provide a step by step instruction on how
+to get the GNUstep intalled on Darwin
+
+PRELIMINAIRES
+-------------
+
+For all targets, get the following software:
+
+libxml2 (Optional, highly recommended, already in Darwin 7/MacOSX 10.3)
+libtiff (Required)
+libjpeg (Optional, highly recommended)
+libpng  (Optional, highly recommended)
+
+libffi  (Only contained in the gcc distributions)
+ffcall  (On Darwin/ix86 - use instead of libffi)
+
+Obtaining GNUstep
+-----------------
+
+The main GNUstep project pages tell you how to get hold of this. You can get
+the latest release of the following libraries. However, since MacOSX support
+is currently evolving, we recommend that you get the latest snapshot
+or code from CVS.
+
+You need these gnustep packages:
+
+GNUstep-make
+GNUstep-base
+GNUstep-gui
+GNUstep-back
+
+Targets
+-------
+You can use either the Apple compiler or compile your own GNU compiler. This
+potentially gives two different targets:
+
+Apple CC, gnu-gnu-gnu
+GNU CC, gnu-gnu-gnu
+
+Unfortunatly, Using Apple CC with gnu-gnu-gnu doesn't appear to work currently
+(see below for more info), so this option really isn't open now.
+In addition, if you are on MacOSX, you can also use the Foundation and Appkit
+libraries, but this only works with the Apple compiler:
+
+Apple CC, apple-apple-apple
+
+GNUstep on Darwin ix86
+----------------------
+
+For GNUstep on Darwin/ix86, Apple CC compiles GNUstep-base, but causes strange
+problems when running programs (e.g. the program hangs while allocating 
+memory or executes methods multiple times). So we have to use GNU gcc.
+
+GNU gcc is difficult to compile here. The only way I could do it was like this:
+
+ln -s /usr/bin/c++filt /usr/bin/c++filt3	# missing on Darwin/ix86?
+
+and then configure gcc with
+
+./configure --enable-languages=c,objc		# don't try to build c++
+make bootstrap
+make install
+cd /usr/local/lib
+ln -s libobjc.a libobjc.dylib			# So the linker sees us
+
+gcc on Darwin doesn't appear to support threads.
+Additionally, libffi has not been ported to Darwin/ix86, so you will
+need to install ffcall instead.
+
+ffcall	(ftp://ftp.gnustep.org/pub/gnustep/libs)
+
+See instructions below for building ffcall
+
+GNUstep on Darwin PowerPC
+-------------------------
+
+Haven't been able to get Dawrin6/MacOSX 10.2 compiler to compile GNUstep-base.
+The compiler crashes with various errors.
+You need the GNU gcc compiler here. You need at least version 3.3.2.
+
+Setting up the GNUstep make environment
+---------------------------------------
+
+In the GNUstep-make (core/make) package, do 
+
+./configure --with-library-combo=gnu-gnu-gnu
+
+(apple-apple-apple is the default if you don't specify gnu-gnu-gnu). If you
+want to try different targets together. Do this:
+
+./configure --with-library-combo=gnu-gnu-gnu -disable-flattened --enable-multi-platform
+
+Now:
+
+make
+make install
+
+Building and installing libobjc (Target Apple CC, gnu-gnu-gnu Only!!!)
+-------------------------------
+
+Go to gnustep-objc (or from CVS, into dev-libs/libobjc), and type
+
+  make install
+
+This should build and install the GNU ObjectiveC runtime and headers for you.
+
+Building and installing libffi (On Darwin/PowerPC Only!!!)
+------------------------------
+
+Untar the GNU gcc distribution (even if you are not compiling the compiler) and:
+
+mkdir libffi-build
+cd libffi-build
+../gcc-X.X.X/libffi/configure
+make
+make install
+
+
+(Replace X.X.X with the actual distribution you have).
+
+Building and installing FFCALL (On Darwin/ix86 Only!!!)
+------------------------------
+
+./configure --prefix=$GNUSTEP_SYSTEM_ROOT \
+ --libdir=$GNUSTEP_SYSTEM_ROOT/Library/Libraries \
+ --includedir=$GNUSTEP_SYSTEM_ROOT/Library/Headers
+
+Now you can now build and install it simply by typing:
+
+  make
+  make install
+
+Additional libraries
+--------------------
+
+Build and install and additional libraries listed above. You can aslo
+get them via fink or sometimes they are already present on MacOSX.
+
+Building and installing GNUstep-base
+------------------------------------
+
+Go to gnustep-base (or from CVS into the core/base directory), and type
+
+  make install
+
+This should automatically run the configure script for you, build the
+base library and some tools, and install the whole lot (along with some
+system resources). You can also do ./configure, make, make install separately.
+
+On the apple-apple-apple target, it will only build the GNUstep
+additions library that adds extra stuff to Foundation. If you are
+using the apple-apple-apple target, there currently is no reason to
+go on and compile GNUstep-gui.
+
+Building and installing GNUstep-gui
+-----------------------------------
+
+Go to gnustep-gui (or from CVS into the core/gui directory), and type
+
+  make install
+
+
+Building and installing GNUstep-back
+------------------------------------
+
+In the back directory, type
+
+  make install
+
+GNUstep only runs within X-Windows, so you need to start up an X Server to
+run and GUI applications.
