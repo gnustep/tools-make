@@ -438,8 +438,8 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_
 	  echo "}") >$@
 
 internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
-                             $(GNUSTEP_FRAMEWORKS_LIBRARIES) \
-                             $(GNUSTEP_FRAMEWORKS_HEADERS)
+                      $(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
+                      $(GNUSTEP_FRAMEWORKS_HEADERS)
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
 	@(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
@@ -449,7 +449,7 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 	  fi; \
 	  $(LN_S) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers $(INTERNAL_framework_NAME); \
 	fi;)
-	@(cd $(GNUSTEP_FRAMEWORKS_LIBRARIES); \
+	@(cd $(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
 	if test -f "$(FRAMEWORK_LIBRARY_FILE)"; then \
 	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
 	fi; \
@@ -468,7 +468,7 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 $(FRAMEWORK_DIR_NAME)/Resources $(FRAMEWORK_INSTALL_DIR)::
 	@$(MKDIRS) $@
 
-$(GNUSTEP_FRAMEWORKS_LIBRARIES) :
+$(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
 	$(MKDIRS) $@
 
 $(GNUSTEP_FRAMEWORKS_HEADERS) :
