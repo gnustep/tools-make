@@ -1,3 +1,7 @@
+2001-11-11  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.2.0
+
 Fri Nov  9 13:34:50 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* opentool.in: Fixed (again!) the fact that if there is both a

@@ -9,7 +9,7 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
-@section Changes in version @samp{1.2.0pre1}
+@section Changes in version @samp{1.2.0}
 
 @itemize @bullet
 @item The core rules and internals of gnustep-make have been fundamentally
@@ -20,6 +20,7 @@ it consistently faster and simpler in all circumstances.
 recursive sub-make invocations at all and so they are really fast.
 @item Many improvements to java support. Optimized management of nested classes
 @item Better conformance to make conventions.
+@item File specific compilation flags 
 @item Fixed darwin support
 @item Support for C++ files.
 @item Made use of library installation dir consistent with other installation.
