@@ -24,7 +24,7 @@
 # Interesting variables to define in your GNUmakefile:
 #
 # PACKAGE_NAME = gnustep-base
-# VERSION = 1.0.0
+# PACKAGE_VERSION = 1.0.0
 #
 # For CVS exports, you may want to define something like:
 #
@@ -111,11 +111,11 @@ endif
 
 endif # COMPRESSION
 
-VERSION_NAME = $(PACKAGE_NAME)-$(VERSION)
+VERSION_NAME = $(PACKAGE_NAME)-$(PACKAGE_VERSION)
 
 ARCHIVE_FILE = $(VERSION_NAME).tar$(COMPRESSION_EXT)
 
-VERTAG = $(subst .,_,$(VERSION))
+VERTAG = $(subst .,_,$(PACKAGE_VERSION))
 
 .PHONY: dist cvs-tag cvs-dist cvs-snapshot internal-cvs-export
 
@@ -225,8 +225,3 @@ ifneq ($(RELEASE_DIR),)
 	fi; \
 	mv $(ARCHIVE_FILE) $(RELEASE_DIR)
 endif
-
-## Local variables:
-## mode: makefile
-## End:
-

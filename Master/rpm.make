@@ -66,12 +66,12 @@
 # [1] Add - after common.make - the following lines in your GNUmakefile:
 #
 # PACKAGE_NAME = Gomoku
-# VERSION = 1.1.1
+# PACKAGE_VERSION = 1.1.1
 # 
 # (replace them with name, version of your software).  This is mainly
 # needed so that when you build the .tgz and the spec file, they have
-# names which are in sync.  Also, you can use VERSION to keep the
-# library version and the package version in sync.
+# names which are in sync.  Make sure to keep the library version and
+# the package version in sync.
 #
 # The other important variable you may want to set in your makefiles is
 #
@@ -101,14 +101,14 @@
 
 # Comments:
 #  you must not include: `Name', `Version', `BuildRoot' and `Prefix'
-#  entries.  These are generated automatically; `Name' and `Version'
-#  from $(PACKAGE_NAME) and $(VERSION), and so for BuildRoot and Prefix.
-#  you might include all the other tags listed in the RPM doc if you want.
-#  The `Prefix:' entry is automatically included only if your package
-#  is relocatable (should be the default for all non-system packages.
-#  If you want your package to be non-relocatable (to be used only for
-#  system packages which *must* be installed in GNUSTEP_SYSTEM_ROOT),
-#  add the line
+# entries.  These are generated automatically; `Name' and `Version'
+# from $(PACKAGE_NAME) and $(PACKAGE_VERSION), and so for BuildRoot
+# and Prefix.  you might include all the other tags listed in the RPM
+# doc if you want.  The `Prefix:' entry is automatically included only
+# if your package is relocatable (should be the default for all
+# non-system packages.  If you want your package to be non-relocatable
+# (to be used only for system packages which *must* be installed in
+# GNUSTEP_SYSTEM_ROOT), add the line
 #
 #  RPM_DISABLE_RELOCATABLE=YES
 #
@@ -118,7 +118,7 @@
 #  
 #  You can use the following if you need:
 #  %{gs_name}    expands to the value of the make variable PACKAGE_NAME
-#  %{gs_version} expands to the value of the make variable VERSION  
+#  %{gs_version} expands to the value of the make variable PACKAGE_VERSION  
 #  (make sure you use them in `Source:' as shown).
 #
 #
@@ -143,11 +143,12 @@
 #
 
 #
-# A debugging package is called $(PACKAGE_NAME)-debug-$(VERSION) rather 
-# than $(PACKAGE_NAME)-$(VERSION).  The source .tgz have the same name 
-# though.  The source rpm package instead has a different name because 
-# it contains the .spec file, which is different between debug and 
-# non debug version.
+# A debugging package is called
+# $(PACKAGE_NAME)-debug-$(PACKAGE_VERSION) rather than
+# $(PACKAGE_NAME)-$(PACKAGE_VERSION).  The source .tgz have the same
+# name though.  The source rpm package instead has a different name
+# because it contains the .spec file, which is different between debug
+# and non debug version.
 #
 # To build the spec for the debugging package, type `make debug=yes specfile'. 
 # This builds a specfile as for the non-debugging package, except:
@@ -182,7 +183,7 @@
 # `RPM_TOPDIR=/usr/src/redhat' make rpm
 #
 # will do the whole job once you have written your '.spec.in' file,
-# and set the PACKAGE_NAME and VERSION variables in the makefile.
+# and set the PACKAGE_NAME and PACKAGE_VERSION variables in the makefile.
 # The generated rpm will be in /usr/src/redhat/RPMS/.
 #
 
@@ -293,7 +294,7 @@ $(SPEC_FILE): $(SPEC_IN)
 	@echo "%define gs_root         $(GNUSTEP_SYSTEM_ROOT)" >> $@
 	@echo "%define gs_install_dir  $(GNUSTEP_INSTALLATION_DIR)" >> $@
 	@echo "%define gs_name         $(PACKAGE_NAME)" >> $@
-	@echo "%define gs_version      $(VERSION)" >> $@
+	@echo "%define gs_version      $(PACKAGE_VERSION)" >> $@
 ifeq ($(PACKAGE_NEEDS_CONFIGURE),YES)
 	@echo "%define gs_configure    YES" >> $@
 else
@@ -340,10 +341,10 @@ check-RPM_TOPDIR:
 rpm: check-RPM_TOPDIR dist specfile
 	@echo "Generating the rpm...";
 ifneq ($(RELEASE_DIR),)
-	@cp $(RELEASE_DIR)/$(PACKAGE_NAME)-$(VERSION).tar.gz \
+	@cp $(RELEASE_DIR)/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz \
 	    $(RPM_TOPDIR)/SOURCES/;
 else
-	@cp ../$(PACKAGE_NAME)-$(VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/;
+	@cp ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/;
 endif	
 	@cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/; \
 	cd $(RPM_TOPDIR)/SPECS/; \

@@ -383,6 +383,13 @@ fi
 # Now rules for packaging - all automatically included
 # 
 
+# For backwards compatibility, take value of PACKAGE_VERSION from
+# VERSION.  New GNUmakefiles should all use the PACKAGE_VERSION
+# variable rather than the VERSION variable.
+ifeq ($(PACKAGE_VERSION),)
+  PACKAGE_VERSION = $(VERSION)
+endif
+
 #
 # Rules for building source distributions
 #

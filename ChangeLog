@@ -1,3 +1,12 @@
+Wed Jan 14 18:59:25 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rpm.make: Use PACKAGE_VERSION instead of VERSION.
+	* Master/source-distribution.make: Use PACKAGE_VERSION instead of
+	VERSION.
+
+	* Master/rules.make: Set PACKAGE_VERSION from VERSION if
+	PACKAGE_VERSION is not set, for backwards compatibility.
+	
 Mon Jan 12 12:45:56 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: If a framework is being compiled with shared=no,
