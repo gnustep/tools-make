@@ -34,11 +34,16 @@ endif
         internal-objc_program-install_ \
         internal-objc_program-uninstall_
 
+# Deprecation warning - will be remove on Dec 2002
+ifneq ($(OBJC_PROGRAM_INSTALLATION_DIR),)
+  $(warning OBJC_PROGRAM_INSTALLATION_DIR is deprecated! Please use OBJC_PROGRAM_INSTALL_DIR instead)
+endif
+
 # This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the Tools
 # directory in GNUSTEP_LOCAL_ROOT.
-ifeq ($(OBJC_PROGRAM_INSTALLATION_DIR),)
-OBJC_PROGRAM_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
+ifeq ($(OBJC_PROGRAM_INSTALL_DIR),)
+OBJC_PROGRAM_INSTALL_DIR = $(GNUSTEP_TOOLS)
 endif
 
 ALL_OBJC_LIBS =								\
@@ -57,16 +62,16 @@ $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 	      $(ALL_OBJC_LIBS)$(END_ECHO)
 
-internal-objc_program-install_:: $(OBJC_PROGRAM_INSTALLATION_DIR)
+internal-objc_program-install_:: $(OBJC_PROGRAM_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \
 	    $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-	    $(OBJC_PROGRAM_INSTALLATION_DIR)$(END_ECHO)
+	    $(OBJC_PROGRAM_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
-$(OBJC_PROGRAM_INSTALLATION_DIR):
+$(OBJC_PROGRAM_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKINSTALLDIRS) $@
 
 internal-objc_program-uninstall_::
-	rm -f $(OBJC_PROGRAM_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+	rm -f $(OBJC_PROGRAM_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 ## Local variables:
 ## mode: makefile

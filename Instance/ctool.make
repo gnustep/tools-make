@@ -30,11 +30,16 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+# Deprecation warning - will be remove on Dec 2002
+ifneq ($(CTOOL_INSTALLATION_DIR),)
+  $(warning CTOOL_INSTALLATION_DIR is deprecated! Please use CTOOL_INSTALL_DIR instead)
+endif
+
 # This is the directory where the ctools get installed. If you don't
 # specify a directory they will get installed in the GNUstep Local
 # root.
-ifeq ($(CTOOL_INSTALLATION_DIR),)
-  CTOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
+ifeq ($(CTOOL_INSTALL_DIR),)
+  CTOOL_INSTALL_DIR = $(GNUSTEP_TOOLS)
 endif
 
 .PHONY: internal-ctool-all_ \
@@ -61,16 +66,16 @@ $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(C_OBJ_FILES) \
 	      $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 	      $(ALL_TOOL_LIBS)$(END_ECHO)
 
-internal-ctool-install_:: $(CTOOL_INSTALLATION_DIR)
+internal-ctool-install_:: $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \
 	                   $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-	                   $(CTOOL_INSTALLATION_DIR)$(END_ECHO)
+	                   $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)$(END_ECHO)
 
-$(CTOOL_INSTALLATION_DIR):
-	$(MKINSTALLDIRS) $(CTOOL_INSTALLATION_DIR)
+$(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR):
+	@$(MKINSTALLDIRS) $@
 
 internal-ctool-uninstall_::
-	rm -f $(CTOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+	rm -f $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 ## Local variables:
 ## mode: makefile
