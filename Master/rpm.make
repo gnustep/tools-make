@@ -363,7 +363,3 @@ ifneq ($(PACKAGE_NAME),)
 internal-distclean::
 	rm -rf $(PACKAGE_NAME).spec $(PACKAGE_NAME)-debug.spec
 endif
-
-## Local variables:
-## mode: makefile
-## End:
