@@ -1,3 +1,14 @@
+Mon Jan 21 23:57:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (GNUSTEP_HEADERS_FND_FLAG): Fixed order of flags.
+	For libFoundation, added missing network header flag.
+	* common.make: Implemented sanity check on GNUSTEP_*_ROOT.  Exit
+	with an error if any of those variables is unset.  Simplified all
+	the code in the file by removing obsolete checks for empty
+	GNUSTEP_*_ROOT and simplified even further by merging all settings
+	of library and header flags for different GNUSTEP_*_ROOT into
+	simple single commands.
+
 Mon Jan 21 20:34:03 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* config.guess: Updated to latest version.
