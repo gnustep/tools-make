@@ -313,9 +313,7 @@ $(GSWAPP_DIR_NAME)/WebServerResources:
 internal-gswapp-install:: internal-gswapp-all
 	@$(MKDIRS) $(GNUSTEP_GSWAPPS)
 	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME)
-	$(TAR) chf --exclude=CVS $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -)
-
-#	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -)
+	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -)
 
 internal-gswapp-uninstall::
 	(cd $(GNUSTEP_GSWAPPS); rm -rf $(GSWAPP_DIR_NAME))

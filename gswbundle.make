@@ -256,9 +256,7 @@ internal-bundle-install:: $(GSWBUNDLE_INSTALL_DIR)
         fi
 	$(MKDIRS) $(GSWBUNDLE_INSTALL_DIR)
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
-	$(TAR) chf --exclude=CVS $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
-
-#	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
+	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
 
 $(GSWBUNDLE_INSTALL_DIR)::
 	@$(MKDIRS) $@
