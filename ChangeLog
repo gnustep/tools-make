@@ -1,3 +1,8 @@
+2002-12-02  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* Instance/framework.make ($(FRAMEWORK_FILE)): link
+	lib<frameworkName>.so to <frameworkName> for dynamic loading.
+
 Mon Dec  2 12:43:23 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make: Added support for XXX_HEADER_FILES_DIR
