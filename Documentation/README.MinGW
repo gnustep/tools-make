@@ -245,11 +245,6 @@ libtiff, libjpeg, and zlib
 
   Be sure to rename the .lib files to .a!
 
-
-
-The following are libraries which are not currently used, but which will
-be required at some point in the future -
-
 libxml2
   Needed for XML parsing support, for MacOS-X compatible
   property lists, and for documentation processing.
@@ -264,6 +259,9 @@ libxml2
     cd ../lib
     cp libxml2.lib $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libxml2.a
     cp libxml2.dll $GNUSTEP_SYSTEM_ROOT/Tools
+
+The following are libraries which are not currently used, but which will
+be required at some point in the future -
 
 openssl
   Needed for the SSL bundle, providing HTTPS support for NSURL.
@@ -332,9 +330,7 @@ Good Sites for Pre-Compiled Binaries
 
 Many libraries, etc from:
 
-<http://sourceforge.net/project/showfiles.php?group_id=7382>
-<http://penguin.at0.net/~fredo/files/old/> (for libxml2, more?)
-<http://sourceforge.net/project/showfiles.php?group_id=23617> (libtiff)
+<http://gnuwin32.sf.net> (libtiff, libxml2)
 
 MingW guile from
 
