@@ -91,8 +91,8 @@ else
 
 # This is the directory where the libs get installed. Normally this
 # includes the target arch and os directory and library_combo.
-ifeq ($(LIBRARY_OBJ_DIR),)
-  LIBRARY_OBJ_DIR = $(GNUSTEP_OBJ_DIR)
+ifeq ($(LIBRARY_INSTALL_DIR),)
+  LIBRARY_INSTALL_DIR = $(GNUSTEP_LIBRARIES)
 endif
 
 ifeq ($(shared), yes)
@@ -157,8 +157,8 @@ internal-library-all :: \
 	$(GNUSTEP_OBJ_DIR)			\
 	$(DERIVED_SOURCES)			\
 	$(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def	\
-	$(LIBRARY_OBJ_DIR)/$(DLL_NAME)		\
-	$(LIBRARY_OBJ_DIR)/$(DLL_EXP_LIB)	\
+	$(GNUSTEP_OBJ_DIR)/$(DLL_NAME)		\
+	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)	\
 	after-$(TARGET)-all
 
 internal-library-clean ::
@@ -172,10 +172,10 @@ DLL_OFILES = $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILE
 $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def : $(DLL_OFILES) $(DLL_DEF)
 	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(DLL_OFILES)
 
-$(LIBRARY_OBJ_DIR)/$(DLL_EXP_LIB) : $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
+$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) : $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
 	$(DLLTOOL) --dllname $(DLL_NAME) --def $< --output-lib $@
 
-$(LIBRARY_OBJ_DIR)/$(DLL_NAME) : $(DLL_OFILES) $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
+$(GNUSTEP_OBJ_DIR)/$(DLL_NAME) : $(DLL_OFILES) $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
 	$(DLLWRAP) --driver-name $(CC) \
 	  $(SHARED_LD_PREFLAGS) \
 	  --def $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def \
@@ -186,10 +186,10 @@ $(LIBRARY_OBJ_DIR)/$(DLL_NAME) : $(DLL_OFILES) $(DERIVED_SOURCES)/$(INTERNAL_lib
 else # BUILD_DLL
 
 internal-library-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-		$(LIBRARY_OBJ_DIR)/$(VERSION_LIBRARY_FILE) import-library \
+		$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) import-library \
 		after-$(TARGET)-all
 
-$(LIBRARY_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(LIB_LINK_CMD)
 
 endif # BUILD_DLL
@@ -227,21 +227,21 @@ internal-install-headers::
 ifeq ($(BUILD_DLL),yes)
 
 internal-install-lib::
-	if [ -f $(LIBRARY_OBJ_DIR)/$(DLL_NAME) ]; then \
-	  $(INSTALL_PROGRAM) $(LIBRARY_OBJ_DIR)/$(DLL_NAME) \
+	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) \
 	    $(DLL_INSTALLATION_DIR) ; \
 	fi
-	if [ -f $(LIBRARY_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
-	  $(INSTALL_PROGRAM) $(LIBRARY_OBJ_DIR)/$(DLL_EXP_LIB) \
-	      $(GNUSTEP_LIBRARIES) ; \
+	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) \
+	      $(LIBRARY_INSTALL_DIR) ; \
 	fi
 
 else
 
 internal-install-lib::
-	if [ -f $(LIBRARY_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
-	  $(INSTALL_PROGRAM) $(LIBRARY_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
-	      $(GNUSTEP_LIBRARIES) ; \
+	if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
+	      $(LIBRARY_INSTALL_DIR) ; \
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
 
@@ -262,13 +262,13 @@ ifeq ($(BUILD_DLL),yes)
 
 internal-uninstall-lib::
 	rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME)
-	rm -f $(GNUSTEP_LIBRARIES)/$(DLL_EXP_LIB)
+	rm -f $(LIBRARY_INSTALL_DIR)/$(DLL_EXP_LIB)
 
 else
 
 internal-uninstall-lib::
-	rm -f $(GNUSTEP_LIBRARIES)/$(VERSION_LIBRARY_FILE)
-	rm -f $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE)
+	rm -f $(LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE)
+	rm -f $(LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE)
 
 endif
 
@@ -278,7 +278,7 @@ internal-uninstall-import-lib::
 # Cleaning targets
 #
 internal-library-clean::
-	rm -rf $(LIBRARY_OBJ_DIR)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
 internal-library-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \

@@ -1,3 +1,11 @@
+2001-01-17  Adam Fedor  <fedor@gnu.org>
+
+	* library.make: Revert last change, add LIBRARY_INSTALL_DIR
+	which replaces GNUSTEP_LIBRARIES.
+	* target.make: Replace GNUSTEP_LIBRARIES with LIBRARY_INSTALL_DIR.
+
+	* source-distribution.make: Add cvs-dist and cvs-snapshot targets
+
 Wed Jan 17 17:19:58 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rpm.make: GNUSTEP_BASE_INSTALL changed to INSTALL_ROOT_DIR since

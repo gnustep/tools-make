@@ -31,6 +31,9 @@
 ifeq ($(TGZ_MAKE_LOADED),)
 TGZ_MAKE_LOADED=yes
 
+# Striped package name, probably only useful for GNUstep libraries
+PDIR_NAME = $(subst gnustep-,,$(PACKAGE_NAME))
+
 #
 # Build a .tgz with the whole directory tree
 #
@@ -46,6 +49,18 @@ tgz: distclean
 	if [ "$$SNAPSHOT_DIR" != "$(PACKAGE_NAME)-$(VERSION)" ]; then         \
 	  mv $(PACKAGE_NAME)-$(VERSION) $$SNAPSHOT_DIR;                       \
         fi;
+
+cvs-dist:
+	cvs -z3 export -r $(PDIR_NAME)-$(VERTAG) $(PDIR_NAME)
+	mv $(PDIR_NAME) $(PACKAGE_NAME)-$(VERSION)
+	tar --gzip -cf $(PACKAGE_NAME)-$(VERSION).tar.gz $(PACKAGE_NAME)-$(VERSION)
+	rm -rf $(PACKAGE_NAME)-$(VERSION)
+
+cvs-snapshot:
+	cvs -z3 export -D now $(PDIR_NAME)
+	mv $(PDIR_NAME) $(PACKAGE_NAME)-$(VERSION)
+	tar --gzip -cf $(PACKAGE_NAME)-$(VERSION).tar.gz $(PACKAGE_NAME)-$(VERSION)
+	rm -rf $(PACKAGE_NAME)-$(VERSION)
 
 endif
 # source-distribution.make loaded
