@@ -74,21 +74,39 @@ $(GSWBUNDLE_NAME):
 else
 # This part gets included the second time make is invoked.
 
+.PHONY: internal-bundle-all \
+        internal-bundle-clean \
+        internal-bundle-distclean \
+        internal-bundle-install \
+        internal-bundle-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        build-bundle-dir \
+        build-bundle \
+        gswbundle-components \
+        gswbundle-resource-files \
+        gswbundle-localized-resource-files \
+        gswbundle-webresource-dir \
+        gswbundle-webresource-files \
+        gswbundle-localized-webresource-files
+
 # On Solaris we don't need to specifies the libraries the bundle needs.
 # How about the rest of the systems? ALL_BUNDLE_LIBS is temporary empty.
 #ALL_GSWBUNDLE_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) \
 	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-	$(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) \
+	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 #ALL_GSWBUNDLE_LIBS = 
 #ALL_GSWBUNDLE_LIBS := \
     $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GSWBUNDLE_LIBS) \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
-internal-bundle-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-		build-bundle-dir build-bundle \
-		after-$(TARGET)-all
+internal-bundle-all:: before-$(TARGET)-all \
+                      $(GNUSTEP_OBJ_DIR) \
+                      build-bundle-dir \
+                      build-bundle \
+                      after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -104,26 +122,13 @@ ifeq ($(strip $(HEADER_FILES_DIR)),)
 HEADER_FILES_DIR = .
 endif
 
-ifeq ($(strip $(COMPONENTS)),)
-  override COMPONENTS=""
-endif
-ifeq ($(strip $(RESOURCE_FILES)),)
-  override RESOURCE_FILES=""
-endif
-ifeq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
-  override WEBSERVER_RESOURCE_FILES=""
-endif
-ifeq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-  override LOCALIZED_RESOURCE_FILES=""
-endif
-ifeq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
-  override LOCALIZED_WEBSERVER_RESOURCE_FILES=""
-endif
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
 
-build-bundle-dir:: $(GSWBUNDLE_DIR_NAME)/Resources $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(GSWBUNDLE_RESOURCE_DIRS)
+build-bundle-dir:: $(GSWBUNDLE_DIR_NAME)/Resources \
+                   $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                   $(GSWBUNDLE_RESOURCE_DIRS)
 
 $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
@@ -131,100 +136,108 @@ $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 $(GSWBUNDLE_RESOURCE_DIRS):
 	@$(MKDIRS) $(GSWBUNDLE_RESOURCE_DIRS)
 
-build-bundle:: $(GSWBUNDLE_FILE) gswbundle-components gswbundle-resource-files localized-gswbundle-resource-files gswbundle-localized-webresource-files gswbundle-webresource-files
+build-bundle:: $(GSWBUNDLE_FILE) \
+               gswbundle-components \
+               gswbundle-resource-files \
+               gswbundle-localized-resource-files \
+               gswbundle-localized-webresource-files \
+               gswbundle-webresource-files
 
 
 $(GSWBUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) 
-		$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) $(ALL_LDFLAGS) -o $(LDOUT)$(GSWBUNDLE_FILE) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)
+	$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) \
+	                $(ALL_LDFLAGS) -o $(LDOUT)$(GSWBUNDLE_FILE) \
+	                $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+	                $(SUBPROJECT_OBJ_FILES) \
+	                $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)
 
 gswbundle-components :: $(GSWBUNDLE_DIR_NAME)
-	@(if [ "$(COMPONENTS)" != "" ]; then \
-	  	echo "Linking components into the bundle wrapper..."; \
+ifneq ($(strip $(COMPONENTS)),)
+	@(echo "Linking components into the bundle wrapper..."; \
         cd $(GSWBUNDLE_DIR_NAME)/Resources; \
         for component in $(COMPONENTS); do \
-			if [ -d ../../$$component ]; then \
-		    	$(LN_S) -f ../../$$component ./;\
-			fi; \
+	  if [ -d ../../$$component ]; then \
+	    $(LN_S) -f ../../$$component ./;\
+	  fi; \
         done; \
-	  	echo "Linking localized components into the bundle wrapper..."; \
+	echo "Linking localized components into the bundle wrapper..."; \
         for l in $(LANGUAGES); do \
-	    	if [ ! -f $$l.lproj ]; then \
-				$(MKDIRS) $$l.lproj; fi; \
-	    	cd $$l.lproj; \
-	    	for f in $(COMPONENTS); do \
-				if [ -d ../../../$$l.lproj/$$f ]; then \
-					$(LN_S) -f ../../../$$l.lproj/$$f .;\
-				fi;\
-            done;\
-	    	cd ..; \
-		done;\
-	fi)
-
-gswbundle-resource-files:: $(GSWBUNDLE_DIR_NAME)/bundle-info.plist $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking resources into the bundle wrapper..."; \
-          cd $(GSWBUNDLE_DIR_NAME)/Resources/; \
-          for ff in $(RESOURCE_FILES); do \
-	    $(LN_S) -f ../../$$ff .;\
-          done; \
-	fi)
-
-localized-gswbundle-resource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
-	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking localized resources into the bundle wrapper..."; \
-          cd $(GSWBUNDLE_DIR_NAME)/Resources; \
-          for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
+	  if [ ! -f $$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj; fi; \
 	    cd $$l.lproj; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-              if [ -f ../../../$$l.lproj/$$f ]; then \
-		$(LN_S) -f ../../../$$l.lproj/$$f .;\
-              fi;\
-            done;\
+	    for f in $(COMPONENTS); do \
+	      if [ -d ../../../$$l.lproj/$$f ]; then \
+	        $(LN_S) -f ../../../$$l.lproj/$$f .;\
+	      fi;\
+	    done;\
 	    cd ..; \
-          done;\
-	fi)
+	done)
+endif
+
+gswbundle-resource-files:: $(GSWBUNDLE_DIR_NAME)/bundle-info.plist \
+                           $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+ifneq ($(strip $(RESOURCE_FILES)),)
+	@(echo "Linking resources into the bundle wrapper..."; \
+	cd $(GSWBUNDLE_DIR_NAME)/Resources/; \
+	for ff in $(RESOURCE_FILES); do \
+	  $(LN_S) -f ../../$$ff .;\
+	done)
+endif
+
+gswbundle-localized-resource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
+	@(echo "Linking localized resources into the bundle wrapper..."; \
+	cd $(GSWBUNDLE_DIR_NAME)/Resources; \
+	for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
+	  cd $$l.lproj; \
+	  for f in $(LOCALIZED_RESOURCE_FILES); do \
+	    if [ -f ../../../$$l.lproj/$$f ]; then \
+	      $(LN_S) -f ../../../$$l.lproj/$$f .;\
+	    fi;\
+	  done;\
+	cd ..; \
+	done)
+endif
 
 gswbundle-webresource-dir::
 	@$(MKDIRS) $(GSWBUNDLE_WEBSERVER_RESOURCE_DIRS)
 
-gswbundle-webresource-files:: $(GSWBUNDLE_DIR_NAME)/WebServerResources gswbundle-webresource-dir
-	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking webserver resources into the application wrapper..."; \
-          cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
-          for ff in $(WEBSERVER_RESOURCE_FILES); do \
-	    $(LN_S) -f ../../WebServerResources/$$ff .;\
-          done; \
-	fi)
+gswbundle-webresource-files:: $(GSWBUNDLE_DIR_NAME)/WebServerResources \
+                              gswbundle-webresource-dir
+ifneq ($strip $(WEBSERVER_RESOURCE_FILES)),)
+	@(echo "Linking webserver resources into the application wrapper..."; \
+	cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
+	for ff in $(WEBSERVER_RESOURCE_FILES); do \
+	  $(LN_S) -f ../../WebServerResources/$$ff .;\
+	done)
+endif
 
-gswbundle-localized-webresource-files:: $(GSWBUNDLE_DIR_NAME)/WebServerResources gswbundle-webresource-dir
-	@(if [ "$(LOCALIZED_WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking localized web resources into the application wrapper..."; \
-          cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
-          for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
-	    cd $$l.lproj; \
-	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-              if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
-                if [ ! -r $$f ]; then \
-		  $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
-		fi;\
-              fi;\
-            done;\
-	    cd ..; \
-          done;\
-	fi)
+gswbundle-localized-webresource-files:: $(GSWBUNDLE_DIR_NAME)/WebServerResources \
+                                        gswbundle-webresource-dir
+ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
+	@(echo "Linking localized web resources into the application wrapper..."; \
+	cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
+	for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
+	  cd $$l.lproj; \
+	  for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
+	    if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
+	      if [ ! -r $$f ]; then \
+	        $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
+	      fi;\
+	    fi;\
+	  done;\
+	  cd ..; \
+	done)
+endif
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(INTERNAL_bundle_NAME)
 endif
 
 $(GSWBUNDLE_DIR_NAME)/bundle-info.plist: $(GSWBUNDLE_DIR_NAME)
-	@(cd $(GSWBUNDLE_DIR_NAME); \
-	  $(LN_S) -f ../bundle-info.plist . \
-	)
+	@(cd $(GSWBUNDLE_DIR_NAME); $(LN_S) -f ../bundle-info.plist .)
 
 $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -242,32 +255,32 @@ $(GSWBUNDLE_DIR_NAME)/WebServerResources:
 	@$(MKDIRS) $@
 
 internal-bundle-install:: $(GSWBUNDLE_INSTALL_DIR)
-	if [ "$(HEADER_FILES_INSTALL_DIR)" != "" ]; then \
-	  $(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR); \
-	  if [ "$(HEADER_FILES)" != "" ]; then \
-	    for file in $(HEADER_FILES) __done; do \
-	      if [ $$file != __done ]; then \
-	        $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-		 $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	      fi; \
-	    done; \
-	  fi; \
-        fi
-	$(MKDIRS) $(GSWBUNDLE_INSTALL_DIR)
-	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
+ifneq ($(HEADER_FILES_INSTALL_DIR),)
+	$(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR);
+ifneq ($(HEADER_FILES),)
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
+	        $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	   fi; \
+	done; \
+endif
+endif
+	$(MKDIRS) $(GSWBUNDLE_INSTALL_DIR); \
+	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
 
 $(GSWBUNDLE_INSTALL_DIR)::
 	@$(MKDIRS) $@
 
 internal-bundle-uninstall::
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  for file in $(HEADER_FILES) __done; do \
-	    if [ $$file != __done ]; then \
-	      rm -rf $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	    fi; \
-	  done; \
-	fi; \
+ifneq ($(HEADER_FILES),)
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -rf $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	  fi; \
+	done;
+endif
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
 
 #
