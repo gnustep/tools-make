@@ -1,7 +1,7 @@
 #
 #   java.make
 #
-#   Makefile rules to build java-based (but not GNUstep) packages.
+#   Makefile rules to build java-based (not necessarily GNUstep) packages.
 #
 #   Copyright (C) 2000 Free Software Foundation, Inc.
 #
@@ -34,20 +34,29 @@ JAVA_PACKAGE_MAKE_LOADED=yes
 # test_JAVA_FILES = gnu/gnustep/base/NSArray.java
 #
 # The relative path is important because things will be installed 
-# in ${GNUSTEP_INSTALLATION_DIR}/Libraries/Java/{relative path};
-# for example, the file above would be installed in 
-# ${GNUSTEP_INSTALLATION_DIR}/Libraries/Java/gnu/gnustep/base/NSArray.class
+# in $(JAVA_INSTALLATION_DIR)/{relative_path}; for example, 
+# the file above would be installed in 
+# ${JAVA_INSTALLATION_DIR)/gnu/gnustep/base/NSArray.class
 #
-# If you have all your files in a directory but want them to be installed 
-# with a different relative path, you may use JAVA_PACKAGE_PREFIX: 
-# They will be installed in: 
-# ${GNUSTEP_INSTALLATION_DIR}/Libraries/Java/${JAVA_PACKAGE_PREFIX}/{relative path}
+# JAVA_INSTALLATION_DIR contains the directory where you want to
+# install your classes - it defaults to $(GNUSTEP_JAVA), which is
+# $(GNUSTEP_LOCAL_ROOT)/Libraries/Java/.
 #
-# If you have java sources to be processed throught JAVAH to create JNI
-# headers, specify the files in xxx_JAVA_JNI_FILES.  The headers will be 
-# placed together with the source file (example: the header of
-# gnu/gnustep/base/NSObject.java will be created as gnu/gnustep/base/NSObject.h) 
-# These headers are not installed.
+# If you have all your files in a directory but want them to be
+# installed with a different relative path, you can simply redefine 
+# JAVA_INSTALLATION_DIR, as in the following example - 
+# JAVA_INSTALLATION_DIR = $(GNUSTEP_JAVA)/gnu/gnustep/base/
+#
+# ((deprecated and will be removed)) The old way of managing this is
+# by using another variable, called JAVA_PACKAGE_PREFIX: if non null,
+# files will be installed in:
+# ${JAVA_INSTALLATION_DIR)/${JAVA_PACKAGE_PREFIX}/{relative path}.
+#
+# If you have java sources to be processed throught JAVAH to create
+# JNI headers, specify the files in xxx_JAVA_JNI_FILES.  The headers
+# will be placed together with the source file (example: the header of
+# gnu/gnustep/base/NSObject.java will be created as
+# gnu/gnustep/base/NSObject.h) These headers are not installed.
 #
 
 JAVA_PACKAGE_NAME:=$(strip $(JAVA_PACKAGE_NAME))
@@ -76,6 +85,12 @@ $(JAVA_PACKAGE_NAME):
 
 else
 
+# This is the directory where the java classses get
+# installed. Normally this is /usr/GNUstep/Local/Libraries/Java/
+ifeq ($(JAVA_INSTALLATION_DIR),)
+  JAVA_INSTALLATION_DIR = $(GNUSTEP_JAVA)
+endif
+
 #
 # Targets
 #
@@ -89,19 +104,33 @@ after-$(TARGET)-all::
 
 internal-java_package-install:: internal-java_package-all install-java_package
 
-internal-install-java-dirs:: $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX)
+# Support old unflexible way (JAVA_PACKAGE_PREFIX) to customize
+# installation dir - deprecated and will be removed to keep the code clean.
+
+# Deprecated on 25 Apr 2001.  Will be removed any time after 25 Jun 2001.
+
+ifneq ($(JAVA_PACKAGE_PREFIX),)
+  $(warning "WARNING - JAVA_PACKAGE_PREFIX is deprecated and will be removed - use JAVA_INSTALLATION_DIR instead")
+  _WE_INSTALL_INTO=$(JAVA_INSTALLATION_DIR)/$(JAVA_PACKAGE_PREFIX)
+else
+  # When JAVA_PACKAGE_PREFIX is removed, simply replace all occurrences 
+  # of _WE_INSTALL_INTO with JAVA_INSTALLATION_DIR
+  _WE_INSTALL_INTO=$(JAVA_INSTALLATION_DIR)
+endif
+
+internal-install-java-dirs:: $(_WE_INSTALL_INTO)
 	if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
-	  $(MKDIRS) $(addprefix $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX)/,$(dir $(JAVA_OBJ_FILES))); \
+	  $(MKDIRS) $(addprefix $(_WE_INSTALL_INTO)/,$(dir $(JAVA_OBJ_FILES))); \
 	fi
 
-$(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX):
-	$(MKDIRS) $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX);
+$(_WE_INSTALL_INTO):
+	$(MKDIRS) $(_WE_INSTALL_INTO)
 
 install-java_package:: internal-install-java-dirs
 	 if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
 	    for file in $(JAVA_OBJ_FILES) __done; do \
 	      if [ $$file != __done ]; then \
-	        $(INSTALL_DATA) $$file $(GNUSTEP_JAVA)/$(JAVA_PACKAGE_PREFIX)/$$file ; \
+	        $(INSTALL_DATA) $$file $(_WE_INSTALL_INTO)/$$file ; \
 	      fi; \
 	    done; \
 	  fi

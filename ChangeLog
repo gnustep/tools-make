@@ -1,3 +1,8 @@
+Wed Apr 25 14:01:32 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* java.make (JAVA_INSTALLATION_DIR): New variable to configure
+	where to install.  JAVA_PACKAGE_PREFIX has been deprecated.
+
 Wed Apr 25 11:05:49 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Version: Use the standard names GNUSTEP_MAKE_MAJOR_VERSION,
