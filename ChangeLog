@@ -1,3 +1,8 @@
+2002-02-27 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: updated to latest versions of
+	things I used.  Describe current state.
+
 2002-02-25 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* target.make: Use winsocks2 library ... we will never support

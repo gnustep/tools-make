@@ -9,9 +9,10 @@ subtle problems with running GNU tools on Windows, so any problems you
 may encounter may just as easly have to do with the compilation tools
 you are using as with GNUstep.
 
-The base library is not completely ported to run on MinGW yet.
-In particular, anything using sockets, RunLoops and FileHandles will probably
-not work.
+The base library is not completely ported to run on MinGW yet, but most
+stuff works, including networking/distributed objects.
+Probably background file handle operations (other than networking) and
+advanced parts of NSTask code do not currently work.
 
 Note for compiling with shared libraries (DLLs), it's a good idea to
 remove the libobjc.a that comes with gcc (gcc -v for location) so that
@@ -30,7 +31,7 @@ This is the only configuration I've tested so far. This method uses
 the Cygwin tools to help out with the configuration and compilation of
 the libraries. It's always good to get the very latest version of
 Cygwin and MinGW. These instructions were performed
-with Cygwin DLL 1.3.2 and MingW gcc 2.95.3-5. If you have more
+with Cygwin DLL 1.3.9-1 and MingW gcc 2.95.3-6. If you have more
 experience with MinGW than me, please help improve these instructions!
 
 I assume you have installed Cygwin and MinGW, and dowloaded and
@@ -51,6 +52,12 @@ are in your path:
   export PATH=/c/mingw/bin:$PATH
 
 (Put in whatever path you have for the mingw tools). 
+
+NB. Using MinGW-1.1 the header file winsock2.h needed to be slightly
+updated for 2000 or XP.  The size of the sa_data field in struct sockaddr
+had to be increased from 14 to 22.  If you don't do this before building
+the gnustep base library, the gdomap tool will not correctly determine the
+internet addresses of your machine.
 
 2. Configure and compile gnustep-make.
 The default location for GNUstep on Windows systems in C:/GNUstep.
@@ -80,15 +87,15 @@ when configuring gnustep-make.
 NOTE for WIN98 users: You should also define the environment variables
 HOMEDRIVE and HOMEPATH, since these aren't defined normally.
 
-5. Compile and install the ffcall package (Version 1.8b or above). It's
+5. Compile and install the ffcall package (Version 1.8b). It's
 simply a C library so it requires no special tools other than the compiler.
 
 LD=`which ld` RANLIB=/usr/bin/ranlib ./configure --target=i386-mingw32 \
 	--prefix=`cygpath -u $GNUSTEP_SYSTEM_ROOT`
 
 which installs the libraries in the GNUstep directory structure (There is
-a script in ffcall-1.8c and higher that automatically configures ffcall
-and installs, called compile-mingw). Then
+a script called compile-mingw that automatically configures ffcall
+and installs it, but you need to find it on the web). Then
 
   make
   make install
