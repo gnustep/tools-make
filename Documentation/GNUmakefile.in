@@ -107,6 +107,7 @@ ANNOUNCE_TEXT_MAIN = announce.texi
 ANNOUNCE_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
 # Manual pages to install
+MAN1_PAGES = openapp.1
 MAN7_PAGES = GNUstep.7
 
 include makerules.make
@@ -125,6 +126,16 @@ after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
 	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN) ]; then \
 	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN); \
 	fi; \
+	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN)/man1 ]; then \
+	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN)/man1; \
+	fi; \
+	for file in $(MAN1_PAGES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $$file $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file; \
+	    which gzip && rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file.gz \
+		&& gzip -9 $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file; \
+	  fi; \
+	done;
 	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN)/man7 ]; then \
 	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN)/man7; \
 	fi; \

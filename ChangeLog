@@ -1,3 +1,7 @@
+2003-08-05  Martin Brecher <martin@mb-itconsulting.com>
+        * Documentation/openapp.1: New file.
+        * Documentation/GNUstep.7: Updated. File is now unprocessed.
+
 2003-08-07 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/autogsdoc.make: Rewrite dependency rules

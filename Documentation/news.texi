@@ -9,7 +9,7 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
-@section Changes in version @samp{1.7.1}
+@section Changes in version @samp{1.7.2}
 
 --enable-flattened (Flat directory structure) is on by default.
 
