@@ -218,28 +218,24 @@ internal-library-install:: internal-install-dirs \
                            internal-install-headers
 
 # Depend on creating all the dirs
-internal-install-dirs:: $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
-                        $(GNUSTEP_LIBRARIES) \
-                        $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
-                        $(DLL_INSTALLATION_DIR) \
-                        $(ADDITIONAL_INSTALL_DIRS)
+internal-install-dirs:: $(LIBRARY_INSTALL_DIR) \
+                          $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
+                          $(DLL_INSTALLATION_DIR) \
+                          $(ADDITIONAL_INSTALL_DIRS)
 
 # Now the rule to create each dir.  NB: Nothing gets executed if the dir 
 # already exists
-$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR):
-	$(MKDIRS) $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR)
-
-$(GNUSTEP_LIBRARIES):
-	$(MKDIRS) $(GNUSTEP_LIBRARIES)
+$(LIBRARY_INSTALL_DIR):
+	$(MKDIRS) $@
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
-	$(MKDIRS) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
+	$(MKDIRS) $@
 
 $(DLL_INSTALLATION_DIR):
-	$(MKDIRS) $(DLL_INSTALLATION_DIR)
+	$(MKDIRS) $@
 
 $(ADDITIONAL_INSTALL_DIRS):
-	$(MKDIRS) $(ADDITIONAL_INSTALL_DIRS)
+	$(MKDIRS) $@
 
 
 internal-install-headers::
@@ -295,8 +291,8 @@ else
 
 internal-uninstall-lib::
 	rm -f $(LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
-	      $(LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE)
-
+	      $(LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE)         \
+	      $(LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)
 endif
 
 #
