@@ -1,3 +1,8 @@
+2001-09-12  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (TARGET_SYSTEM_LIBS): Remove -lgcc from
+	darwin/MacOSX/NeXT targets.
+
 2001-09-11  Adam Fedor  <fedor@gnu.org>
 
 	* brain.make: If nx-gnu-gnu, add -lobjc to OBJC_LIBS
