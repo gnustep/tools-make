@@ -261,6 +261,22 @@ AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
+AC_MSG_CHECKING(for GNUSTEP_USER_ROOT to use)
+AC_ARG_WITH(user-root,
+[--with-user-root
+    Set the GNUSTEP_USER_ROOT directory for all users.  '~' is allowed
+    at the beginning to mean the user's home directory.  Use this
+    option if you want to have the GNUSTEP_USER_ROOT directory in a non
+    default place for all users.
+    Example: --with-user-root='~/gnustep'
+],
+GNUSTEP_USER_ROOT="$withval",
+# The default is to have user roots in ~/GNUstep
+GNUSTEP_USER_ROOT="~/GNUstep"
+)
+AC_MSG_RESULT($GNUSTEP_USER_ROOT)
+AC_SUBST(GNUSTEP_USER_ROOT)
+
 #--------------------------------------------------------------------
 # Is the system flattened?
 #--------------------------------------------------------------------
@@ -658,7 +674,7 @@ AC_SUBST(target)
 #--------------------------------------------------------------------
 AC_CONFIG_FILES([config.make openapp debugapp opentool 
 executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh
-gnustep-make.spec])
+gnustep-make.spec GNUsteprc])
 AC_CONFIG_COMMANDS([default],
 	[[chmod a+x openapp debugapp opentool fixpath.sh executable.template]],
 	[[]])
