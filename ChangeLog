@@ -1,3 +1,16 @@
+Tue Sep 18 13:16:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library.make (internal-install-dirs): Depend on
+	$(LIBRARY_INSTALL_DIR) rather than on $(GNUSTEP_LIBRARIES) and
+	$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR).
+	($(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR)): Target removed.
+	($(GNUSTEP_LIBRARIES)): Target removed.
+	($(LIBRARY_INSTALL_DIR)): New target.  
+	* tool.make (internal-tool-uninstall): Remove the shell script
+	wrapper.
+	* library.make (internal-uninstall-lib): When not using DLL, 
+	remove the $(SONAME_LIBRARY_FILE) as well.
+	
 Mon Sep 17 14:23:03 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* bundle.make ($(BUNDLE_FILE)): Added missing \ at the end of
