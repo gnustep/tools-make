@@ -167,6 +167,8 @@ internal-java_package-clean::
 
 internal-java_package-distclean::
 
+# TODO - uninstall rule
+
 endif # INTERNAL_java_package_NAME
 
 endif # java.make loaded
