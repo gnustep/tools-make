@@ -1,3 +1,14 @@
+1999-08-09  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	Fixes so that things don't bomb out if you don't have write access
+	to your current directory.
+	* GNUstep.csh.in: Run config.guess in /tmp
+	* GNUstep.sh.in: ditto
+	* executable.template.in: ditto
+	* openapp.in: ditto
+	* opentool: ditto
+	* opentool.in: ditto
+
 1999-08-03  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* application.make: Make installation directory if necessary.

@@ -41,7 +41,7 @@ endif
 #
 # Determine the host information
 #
-setenv GNUSTEP_HOST `${GNUSTEP_SYSTEM_ROOT}/Makefiles/config.guess`
+setenv GNUSTEP_HOST `(cd /tmp; ${GNUSTEP_SYSTEM_ROOT}/Makefiles/config.guess)`
 setenv GNUSTEP_HOST_CPU `${GNUSTEP_SYSTEM_ROOT}/Makefiles/cpu.sh $GNUSTEP_HOST`
 setenv GNUSTEP_HOST_VENDOR `${GNUSTEP_SYSTEM_ROOT}/Makefiles/vendor.sh $GNUSTEP_HOST`
 setenv GNUSTEP_HOST_OS `${GNUSTEP_SYSTEM_ROOT}/Makefiles/os.sh $GNUSTEP_HOST`
