@@ -1,3 +1,8 @@
+Mon Feb  8 08:24:39 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+        * ld_lib_path.csh: Rename additional_library_paths to
+	additional_lib_paths.  It was too long for solaris2. 
+
 1999-02-01  Adam Fedor  <fedor@penitente>
 
 	* target.make: Add openbsd target (Patch from Michael Hanni

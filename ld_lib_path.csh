@@ -42,8 +42,8 @@ switch ( "${host_os}" )
     else
 	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${DYLD_LIBRARY_PATH}"
     endif
-    if ( $?additional_library_paths == 1) then
-      foreach dir (${additional_library_paths})
+    if ( $?additional_lib_paths == 1) then
+      foreach dir (${additional_lib_paths})
 	set additional="${additional}${dir}:"
       end
     endif
@@ -59,8 +59,8 @@ switch ( "${host_os}" )
     else
 	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${LD_LIBRARY_PATH}"
     endif
-    if ( $?additional_library_paths == 1) then
-      foreach dir (${additional_library_paths})
+    if ( $?additional_lib_paths == 1) then
+      foreach dir (${additional_lib_paths})
 	set additional="${additional}${dir}:"
       end
     endif
