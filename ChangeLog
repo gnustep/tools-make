@@ -1,3 +1,11 @@
+Thu Mar  4 11:36:41 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/library.make (INTERFACE_VERSION): New variable.
+	xxx_SOVERSION has been renamed to xxx_INTERFACE_VERSION, which
+	will be used consistently by frameworks too, and not only for the
+	.so names.  Backwards compatibility code for xxx_SOVERSION
+	included.
+	
 Thu Mar  4 10:41:21 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/bundle.make (internal-bundle-copy_into_dir): New rule.
