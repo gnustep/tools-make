@@ -168,15 +168,19 @@ if [ -n "$GNUSTEP_FLATTENED" ]; then
 
 fi
 
+case "$LIBRARY_COMBO" in
+  apple-*) app_executable="$full_appname/Contents/MacOS/$appname";;
+  *)       app_executable="$full_appname/$appname";;
+esac
 
-if [ ! -f "$full_appname/$appname" ]; then
-  echo "Could not find $full_appname/$appname executable/script"
+if [ ! -f "$app_executable" ]; then
+  echo "Could not find $app_executable executable/script"
   exit 1
 fi
 
 if [ -n "$only_find" ]; then
-  echo "$full_appname/$appname"
+  echo "$app_executable"
   exit 0
 fi
 
-exec "$full_appname/$appname" "$@"
+exec "$app_executable" "$@"
