@@ -198,7 +198,7 @@ ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	      cp -r $$l.lproj/$$f $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
 	    fi; \
 	  done; \
-	done;
+	done)
 endif
 
 ifeq ($(PRINCIPAL_CLASS),)
