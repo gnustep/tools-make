@@ -48,6 +48,14 @@ INSTALL_DATA = $(INSTALL) -m 644
 INSTALL_PROGRAM = $(INSTALL)
 
 #
+# Determine the compilation host and target
+#
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/names.make
+
+GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
+GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
+
+#
 # Get the config information
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
@@ -58,12 +66,9 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/core.make
 
 #
-# Determine the compilation host and target
+# Determine target specific settings
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/target.make
-
-GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
-GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
 #
 # Variables specifying the installation directory paths

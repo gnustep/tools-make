@@ -1,3 +1,12 @@
+Thu Oct 16 17:31:43 1997  Scott Christley  <scottc@net-community.com>
+
+	* names.make: New file.
+	* target.make: Move determination of host and target system
+	to names.make file.
+	* Makefile.in: Install names.make.
+	* common.make: Include names.make and set the host and target
+	directory variables before including config.make.
+
 Thu Oct 16 12:04:32 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* common.make: Turn off the optimizations when compiling with debug
