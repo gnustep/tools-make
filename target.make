@@ -691,12 +691,12 @@ SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
-BUNDLE_LDFLAGS  += -shared -fpic
+BUNDLE_LDFLAGS  += -shared -fPIC
 #ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
 endif
 #
-# end OpenBSD 2.x
+# end OpenBSD 3.x
 #
 ####################################################
 

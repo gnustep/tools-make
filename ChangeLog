@@ -1,3 +1,9 @@
+Wed Jul 30 09:52:16 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (BUNDLE_LDFLAGS): openbsd: use -fPIC instead of
+	-fpic to match the -fPIC flag used when compiling as recommended
+	by the gcc manual.
+
 Tue Jul 29 12:06:02 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: If flattened, add library combo to headers
