@@ -1,3 +1,13 @@
+Mon Jul  9 17:19:17 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* java.make (.PHONY): Added.
+	(internal-java_package-install): Do not depend on
+	internal-java_package-all.
+	(internal-install-java-dirs): Turned shell conditional into
+	makefile conditional.
+	(install-java_package): Idem.
+	(internal-java_package-clean): Use a single rm command.
+
 Mon Jul  9 17:02:22 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* java-tool.make (.PHONY): Added.
