@@ -31,6 +31,7 @@ ALWAYS_ECHO_NO_LANGUAGES = @(echo " No LANGUAGES specified ... nothing done.")
 ifneq ($(messages),yes)
 
   # General messages
+  ECHO_PREPROCESSING = @(echo " Preprocessing file $< ...";
   ECHO_COMPILING = @(echo " Compiling file $< ...";
   ECHO_LINKING   = @(echo " Linking $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) ...";
   ECHO_JAVAHING  = @(echo " Running javah on $< ...";
