@@ -4,9 +4,12 @@
 #
 #   Shell initialization for the GNUstep environment.
 #
-#   Copyright (C) 1998 Free Software Foundation, Inc.
+#   Copyright (C) 1998-2002 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Adam Fedor <fedor@gnu.org>
+#   Author:  Richard Frith-Macdonald <rfm@gnu.org>
+#   Author:  Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
