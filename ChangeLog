@@ -1,3 +1,9 @@
+Mon Jul  9 11:35:48 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make ($(GNUSTEP_OBJ_DIR)): Do not protect this rule
+	against multiple inclusions as the whole file is already
+	protected.
+
 Mon Jul  9 11:30:21 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make ($(GNUSTEP_OBJ_DIR)): Send the three shell commands
