@@ -33,8 +33,7 @@ endif
 .PHONY: internal-tool-all_       \
         internal-tool-install_   \
         internal-tool-uninstall_ \
-        internal-install-dirs    \
-        install-tool 
+        internal-tool-copy_into_dir
 
 # Deprecation warning - will be remove on Dec 2002
 ifneq ($(TOOL_INSTALLATION_DIR),)
@@ -73,16 +72,11 @@ internal-tool-copy_into_dir::
 	  $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
 	  $(COPY_INTO_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
-internal-tool-install_:: internal-install-dirs install-tool
-
-# Depend on having created the installation dir
-internal-install-dirs:: $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
-
 # This rule runs $(MKDIRS) only if needed
 $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKINSTALLDIRS) $@
 
-install-tool::
+internal-tool-install_:: $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \
 		$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
 		$(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
@@ -90,12 +84,8 @@ install-tool::
 internal-tool-uninstall_::
 	rm -f $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
-#
-# Cleaning targets
-#
-
-# we don't have any cleaning targets for tools here, because we clean
-# during the Master make invocation.
+# NB: We don't have any cleaning targets for tools here, because we
+# clean during the Master make invocation.
 
 #
 # If the user makefile contains the command
