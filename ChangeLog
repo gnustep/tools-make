@@ -1,3 +1,15 @@
+2000-10-29  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* framework.make (FRAMEWORK_WEBSERVER_RESOURCE_DIRS),
+	(framework-components), (framework-webresource-dir): 
+	(framework-webresource-files), (framework-localized-webresource-files):
+	new specific gsweb targets.
+	* subproject.make (framework-components), (framework-webresource-dir),
+	(framework-webresource-files), (framework-localized-webresource-files):
+	likewise.
+	* rules.make (SUBPROJECT_ROOT_DIR): new variable.
+	* gswapp.make ($(GSWAPP_FILE)): added ALL_FRAMEWORK_DIRS
+
 2000-10-28  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* configure.in:  added --with-libxml-include, --with-libxml-library

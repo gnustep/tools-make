@@ -29,13 +29,27 @@ FRAMEWORK_MAKE_LOADED=yes
 include $(GNUSTEP_MAKEFILES)/rules.make
 
 # The name of the bundle is in the FRAMEWORK_NAME variable.
-# The list of framework resource file are in xxx_RESOURCE_FILES
-# The list of localized framework resource files is in xxx_LOCALIZED_RESOURCE_FILES
+# The list of framework resource files are in xxx_RESOURCE_FILES
+# The list of framework web server resource files are in
+#    xxx_WEBSERVER_RESOURCE_FILES
+# The list of localized framework resource files is in
+#    xxx_LOCALIZED_RESOURCE_FILES
+# The list of localized framework web server resource files is in
+#    xxx_LOCALIZED_WEBSERVER_RESOURCE_FILES
+# The list of framework GSWeb components are in xxx_COMPONENTS
 # The list of languages the framework supports is in xxx_LANGUAGES
 # The list of framework resource directories are in xxx_RESOURCE_DIRS
 # The list of framework subprojects directories are in xxx_SUBPROJECTS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
 # The header files are in xxx_HEADER_FILES
+# The list of framework web server resource directories are in
+#    xxx_WEBSERVER_RESOURCE_DIRS
+# The list of localized framework web server GSWeb components are in
+#    xxx_LOCALIZED_WEBSERVER_RESOURCE_DIRS
+# xxx_CURRENT_VERSION_NAME is the compiled version name (default "A")
+# xxx_DEPLOY_WITH_CURRENT_VERSION deploy with current version or not (default
+#     "yes")
+#
 # where xxx is the framework name
 #
 
@@ -84,7 +98,6 @@ FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/Current
 FRAMEWORK_LIBRARY_DIR_NAME := $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 FRAMEWORK_CURRENT_LIBRARY_DIR_NAME := $(FRAMEWORK_CURRENT_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
-FRAMEWORK_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(FRAMEWORK_DIR_NAME)/Resources/$(d))
 
 FRAMEWORK_LIBRARY_FILE = lib$(INTERNAL_framework_NAME)$(SHARED_LIBEXT)
 FRAMEWORK_LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)
@@ -137,11 +150,22 @@ before-$(TARGET)-all:: $(FRAMEWORK_HEADER_FILES)
 after-$(TARGET)-all::
 
 FRAMEWORK_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(d))
+FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$(d))
+
+ifeq ($(strip $(COMPONENTS)),)
+  override COMPONENTS=""
+endif
 ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
 endif
+ifeq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
+  override WEBSERVER_RESOURCE_FILES=""
+endif
 ifeq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
   override LOCALIZED_RESOURCE_FILES=""
+endif
+ifeq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
+  override LOCALIZED_WEBSERVER_RESOURCE_FILES=""
 endif
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
@@ -254,7 +278,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(S
 $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
 
-build-framework:: $(FRAMEWORK_FILE) framework-resource-files localized-framework-resource-files
+build-framework:: $(FRAMEWORK_FILE) framework-components framework-resource-files localized-framework-resource-files framework-localized-webresource-files framework-webresource-files
 
 ifeq ($(WITH_DLL),yes)
 
@@ -273,6 +297,30 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(INTERNAL_framework_NAME))
 
 endif # WITH_DLL
+
+framework-components::
+	@(if [ "$(COMPONENTS)" != "" ]; then \
+	  echo "Copying components into the framework wrapper..."; \
+	  cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
+	  for component in $(COMPONENTS); do \
+	    if [ -d ../../../../$$component ]; then \
+	      cp -r ../../../../$$component ./; \
+	    fi; \
+	  done; \
+	  echo "Copying localized components into the framework wrapper..."; \
+	  for l in $(LANGUAGES); do \
+	    if [ ! -f $$l.lproj ]; then \
+	      $(MKDIRS) $$l.lproj; \
+	    fi; \
+	    cd $$l.lproj; \
+	    for f in $(COMPONENTS); do \
+	      if [ -d ../../../../../$$l.lproj/$$f ]; then \
+		cp -r ../../../../../$$l.lproj/$$f .;\
+	      fi; \
+	    done;\
+	    cd ..; \
+	  done;\
+	fi;)
 
 framework-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
@@ -297,11 +345,51 @@ localized-framework-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Inf
 	  done; \
 	fi)
 
+framework-webresource-dir::
+	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ] || [ "$(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)" != "" ]; then \
+	  $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	  $(MKDIRS) $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS); \
+	  if test ! -L "$(FRAMEWORK_DIR_NAME)/WebServerResources"; then \
+	    $(LN_S) Versions/Current/WebServerResources $(FRAMEWORK_DIR_NAME);\
+	  fi; \
+	fi;)
+
+framework-webresource-files:: framework-webresource-dir
+	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ]; then \
+	  echo "Copying webserver resources into the framework wrapper..."; \
+	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	  for ff in $(WEBSERVER_RESOURCE_FILES); do \
+	    if [ -f ../../../../WebServerResources/$$ff ]; then \
+	      cp -r ../../../../WebServerResources/$$ff .; \
+	    fi; \
+	  done; \
+	fi;)
+
+framework-localized-webresource-files:: framework-webresource-dir
+	@(if [ "$(LOCALIZED_WEBSERVER_RESOURCE_FILES)" != "" ]; then \
+	  echo "Copying localized webserver resources into the framework wrapper..."; \
+	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	  for l in $(LANGUAGES); do \
+	    if [ ! -f $$l.lproj ]; then \
+	      $(MKDIRS) $$l.lproj; \
+	    fi; \
+	    cd $$l.lproj; \
+	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
+	      if [ -f ../../../../../WebServerResources/$$l.lproj/$$f ]; then \
+		if [ ! -r $$f ]; then \
+		  cp -r ../../../../../WebServerResources/$$l.lproj/$$f $$f;\
+		fi;\
+	      fi;\
+	    done;\
+	    cd ..; \
+	  done;\
+	fi;)
+
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(INTERNAL_framework_NAME)
 endif
 
-# MacOSX-S bundles
+# MacOSX-S frameworks
 $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(FRAMEWORK_NAME)${FRAMEWORK_OBJ_EXT}\";"; \
@@ -313,7 +401,7 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
-# GNUstep bundles
+# GNUstep frameworks
 $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(INTERNAL_framework_NAME)${FRAMEWORK_OBJ_EXT}\";"; \
@@ -326,7 +414,7 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_
 	  echo "}") >$@
 
 internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) $(GNUSTEP_FRAMEWORKS_LIBRARIES) $(GNUSTEP_FRAMEWORKS_HEADERS)
-	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
+	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
 	@(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
