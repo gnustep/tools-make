@@ -78,6 +78,8 @@ endif
 #
 # Internal targets
 #
+SERVICE_FILE = $(SERVICE_DIR_NAME)/$(INTERNAL_svc_NAME).service
+
 
 $(SERVICE_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$@ $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
@@ -110,22 +112,23 @@ svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist svc-resour
 	  cp -r $(RESOURCE_FILES) $(SERVICE_DIR_NAME)/Resources; \
 	fi)
 
-$(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: $(SERVICE_DIR_NAME)/Resources
+$(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: $(SERVICE_DIR_NAME)/Resources $(INTERNAL_svc_NAME)Info.plist 
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = $(INTERNAL_svc_NAME);"; \
+	  echo "  NSExecutable = \"$(INTERNAL_svc_NAME)\";"; \
 	  cat $(INTERNAL_svc_NAME)Info.plist; \
-	  echo "}") >$@
+	  echo "}") >$@ ;\
 	make_services --test $@
 
 $(SERVICE_DIR_NAME)/Resources:
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
 
 internal-svc-install::
-	rm -rf $(GNUSTEP_APPS)/$(SERVICE_DIR_NAME)
-	$(TAR) cf - $(SERVICE_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
+	rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)
+	$(TAR) cf - $(SERVICE_DIR_NAME) | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)
 
 internal-svc-uninstall::
-	(cd $(GNUSTEP_APPS); rm -rf $(SERVICE_DIR_NAME))
+	(cd $(GNUSTEP_SERVICES); rm -rf $(SERVICE_DIR_NAME))
+
 
 #
 # Cleaning targets

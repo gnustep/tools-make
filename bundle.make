@@ -113,13 +113,13 @@ endif
 
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = $(INTERNAL_bundle_NAME);"; \
+	  echo "  NSExecutable = \"$(INTERNAL_bundle_NAME)\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
-	    echo "  NSMainNibFile = `echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`;"; \
+	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
 	  fi; \
-	  echo "  NSPrincipalClass = $(PRINCIPAL_CLASS);"; \
+	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)

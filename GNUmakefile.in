@@ -73,6 +73,7 @@ install: all
 		$(prefix)/Library \
 		$(prefix)/Library/info \
 		$(prefix)/Library/PostScript \
+		$(prefix)/Library/Services \
 		$(prefix)/Library/man
 	$(INSTALL_PROGRAM) -m 755 which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
