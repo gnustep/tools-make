@@ -1,3 +1,10 @@
+2004-07-04  Adrian Robert  <arobert@cogsci.ucsd.edu>
+
+	* Instance/Documentation/texi.make:
+	Added rules to use texi2pdf to generate PDF doc, and replace PS by PDF
+	in the default generate/install/uninstall rules.  Add <instance>.html
+	to the list of files installed/uninstalled for HTML.
+
 Fri Jun 19 13:01:02 2004  Nicola Pero <n.pero@mi.flashnet.it>,
 	                  Yves de Champlain <yves@gnu-darwin.org>
 
