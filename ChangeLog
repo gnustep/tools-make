@@ -1,6 +1,11 @@
-Mon Nov 12 18:57:13 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+Tue Nov 13 14:02:06 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
-	* common.make: in the check that GNUSTEP_SYSTEM_ROOT/Tools is in
+	* rpm.make: Fixed check for debug variable so that it correctly 
+	manage debug = no.
+
+Tue Nov 13 13:57:13 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: In the check that GNUSTEP_SYSTEM_ROOT/Tools is in
 	the PATH, for windows use cygpath not cygpath.sh (Suggested by
 	Stephen Brandon).
 
