@@ -1,3 +1,59 @@
+2003-03-17  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.6.0
+
+2003-03-14  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Check for -lpthread on unknown hosts (e.g. irix)
+	* target.make (darwin): Add -read_only_reolcs warning. 
+	(darwin5): Remove
+	* Documentation/machines.texi: Update Darwin.
+	(suggestions from Carl Eugen Hoyos)
+
+2003-03-13  Adam Fedor  <fedor@gnu.org>
+
+	* clean_cpu.sh: Make all hppa variants the same.
+	(suggestion from Matthias Klose)
+
+2003-03-04  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Change sense of --disable-import help line
+	* configure: Regen.
+	* Documentation/install.texi: Update import section
+	* Documentation/userfaq.texi: Add import section.
+
+Tue Mar  4 17:13:46 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Enable GCC deprecation warnings for #import.
+	* configure: Regenerated.
+	
+2003-03-03 iMartin Brecher <martin@mb-itconsulting.com>
+
+	* Documentation/README.MinGW: Tidied
+	Some modifiecations by rfm@gnu.org also ... mainly to change the
+	order of build/install of libobjc and ffcall
+ 
+2003-02-23 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* user_home.c: fix HOMEPATH and HOMEDRIVE handling for mingw to
+	only use the drive if there isn't one in the path.
+
+2003-02-17  Tom Koelman <tkoelman@xs4all.nl>
+
+	* Documentation/README.MingW: Update URLs.
+
+2003-02-16  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.5.2
+	* Documentation/announce.texi, news.texi, install.texi: Update 
+
+2003-02-14  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (Darwin/SHARED_LIBRARY_LINK_CMD): Include object files
+	before library depends.
+
+	* Documentation/gnustep-howto.texi, install.texi: Updates.
+
 Mon Feb 10 13:42:54 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/source-distribution.make: Define a CVS variable, and use

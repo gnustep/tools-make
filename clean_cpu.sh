@@ -31,6 +31,11 @@ case "$1" in
 	echo alpha
 	exit 0
 	;;
+    # Make all hppa variants the same
+    hppa*)
+        echo hppa
+        exit 0
+        ;;
     *)
 	echo $1
         exit 0

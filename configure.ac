@@ -412,6 +412,12 @@ else
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="-lthread $extra_LIBS",
 	objc_threaded="", objc_threaded="")
+  if test x"$objc_threaded" = x""; then
+    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS""
+    AC_TRY_RUN([#include "config_thread.m"], 
+    	objc_threaded="-lpthread $extra_LIBS", 
+	objc_threaded="", objc_threaded="")
+  fi
 fi
 LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
@@ -471,9 +477,9 @@ AC_MSG_CHECKING(whether to disable compiler warnings about deprecated import)
 # is seriously deprecated.  If you are unsure, please use --disable-import.
 #
 AC_ARG_ENABLE(import,
-[--disable-import     Warn about usage of deprecated import directive], 
+[--enable-import     Don't warn about usage of deprecated import directive], 
   ac_cv_import=$enableval,  
-  ac_cv_import="yes")
+  ac_cv_import="no")
 
 AC_MSG_RESULT($ac_cv_import)
 

@@ -17,9 +17,10 @@ libraries, read the file GNUstep-HOWTO for more complete instructions on
 how to install the entire GNUstep package (including this package).
 GNUstep-HOWTO comes with this distribution.
 
-This should be the first GNUstep package you install. After installing
+This should be the first GNUstep package you install. Before installing
 this package, install ffcall or libffi and any other libraries that GNUstep may
-need (see the GNUstep-HOWTO). Then install gnustep-base.
+need (see the GNUstep-HOWTO). Read and follow the instructions on
+setting up the GNUstep environement below.  Then install gnustep-base.
 
 When you configure additional libraries, make sure you use the same
 configuration options as with gstep-make.
@@ -136,12 +137,10 @@ possible, and even if you use #import, you should protect all your
 headers against multiple inclusions.  The GCC compiler automatically
 emits a warning whenever you use #import.  Because many users are
 annoyed by these warnings and want to use #import (usually for
-compatibility with other systems), gnustep-make automatically disables
-these warnings.  But if you want to make sure your Objective-C code is
-not using any deprecated feature, you can configure gnustep-make with
---disable-import:
+compatibility with other systems), gnustep-make can disable
+these warnings:
 @example
-./configure --disable-import
+./configure --enable-import
 @end example
 If you are a legacy or MacOS X user, and wonder why #import is
 deprecated, please search the web and the GCC and GNUstep mailing list
@@ -214,7 +213,7 @@ setting up the GNUstep environment for a single user or all users on
 your system, perform the appropriate step below.
 
 @node Setup,  , Installation, Top
-@section Setting up the GNUstep
+@section Setting up the GNUstep environment
 
 @menu
 * Multi-User::                  

@@ -1,11 +1,12 @@
-Date:	09-Jan-2003 (tested under windoze-xp)
+Date:	09-Jan-2003 (tested under Windows XP)
+Update: 23-Feb-2003 (also tested under Windows 2000)
 Author: Richard Frith-Macdonald <rfm@gnu.org>
 
 PURPOSE
 -------
 
 This document is intended to provide a step by step instruction on how
-to get the GNUstep base library into a usable state on a recent windows
+to get the GNUstep base library into a usable state on a recent Windows
 operating system (XP, 2000, and probably NT).
 
 MinGW is a collection of header files and import libraries that allow
@@ -34,10 +35,10 @@ than developing user applications.
 PRELIMINARIES
 -------------
 
-Before we start, we need to get some preliminary windoze software -
+Before we start, we need to get some preliminary Windows software -
 a tool for fetching source code via CVS.
 
-If you don't want to use windows tools for this, you can get the
+If you don't want to use Windows tools for this, you can get the
 latest cygwin distribution and use the cvs client in that. The following is
 for people who don't want to download all that cygwin stuff.
 
@@ -46,7 +47,7 @@ you can find at http://sourceforge.net/projects/cvsgui You will need
 to be a system administrator on your machine to install this software.
 You should be able to use it without changing/setting any special
 configuration options.  The one thing to remember is that the checkbox
-to select whether to use unix line terminators instead of windows/DOS
+to select whether to use UNIX line terminators instead of Windows/DOS
 line terminators should be set to the unix option.
 
 
@@ -72,7 +73,7 @@ somewhere else.
 
 You may need to edit /mingw/include/winsock2.h to change the size of the
 sa_data field in the sockaddr structure from 14 to 22 ... this is because
-newer versions of windoze have changed the layout of this structure.
+newer versions of Windows have changed the layout of this structure.
 This modification is needed to be able to correctly determine the
 network interface details for your machine.
 
@@ -87,8 +88,8 @@ At this point you may want to set the HOMEDRIVE and HOMEPATH environment
 variables to point to the home directory you wish to work from (though
 the defaults may be ok for you).
 NB. This home directory for building software must *not* contain spaces.
-(aside - MSYS uses the unix-style HOME environment variable, but windows
-programs, including GNUstep programs under windows, use the HOMEDRIVE and
+(aside - MSYS uses the UNIX-style HOME environment variable, but Windows
+programs, including GNUstep programs under Windows, use the HOMEDRIVE and
 HOMEPATH environment variables to build a windows-style path for the home
 directory.  eg. if HOMEDRIVE is C: and HOMEPATH is \MyHome then the path
 to the home directory is C:\MyHome).
@@ -156,6 +157,27 @@ export HOME=/C/home/myname
 export GNUSTEP_SYSTEM_ROOT=/C/GNUstep/System
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 
+NOTE: Sometimes the HOME variable may already be set by Windows to be
+%USERPROFILE% (which is the Windows variable that contains the path of
+your home folder). MSYS has problems with that as it doesn't recognise
+that %USERPROFILE% is a variable name. Be sure to check that if you run
+into errors.
+
+
+
+Building and installing libobjc
+-------------------------------
+
+Despite the statement in the GNUstep-HOWTO, even if you have a 3.x
+compiler, you still need to install gnustep-objc as it properly
+exports symbols for DLLs.
+
+Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
+
+  make install
+
+This should build and install the ObjectiveC runtime and headers for you.
+
 
 
 Building and installing FFCALL
@@ -175,28 +197,10 @@ environment, type
  --libdir=$GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32 \
  --includedir=$GNUSTEP_SYSTEM_ROOT/Headers
 
-Having configured the ffcall library, you can now build and install
-it simply by typing:
+Now you can now build and install it simply by typing:
 
   make
   make install
-
-
-
-
-Building and installing libobjc
--------------------------------
-
-Despite the statement in the GNUstep-HOWTO, even if you have a 3.x
-compiler, you still need to install gnustep-objc as it properly
-exports symbols for DLLs.
-
-Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
-
-  make install
-
-This should build and install the ObjectiveC runtime and headers for you.
-
 
 
 
@@ -212,7 +216,7 @@ libiconv
   Needed for multilingual character support (unicode etc)
 
   Get the binary package from
-  http://www.fh-frankfurt.de/~igor/projects/libxml
+  http://www.zlatkovic.com/projects/libxml/index.html
   Unpack this and
     cp include/iconv.h $GNUSTEP_SYSTEM_ROOT/Headers
     cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libiconv.a
@@ -224,13 +228,18 @@ libtiff, libjpeg, and zlib
 
   Get the binary packages from -
   http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-bin.zip
   http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-lib.zip
   http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-bin.zip
   http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-bin.zip
+  
   Unpack and install
   the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Headers
   the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
   the dll files in $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
+
+  Be sure to rename the .lib files to .a!
 
 
 
@@ -241,10 +250,10 @@ libxml2
   Needed for XML parsing support, for MacOS-X compatible
   property lists, and for documentation processing.
   NB. at the time of writing, XML support in GNUstep base has *not*
-  been ported to windows - but when it is, you will need this package.
+  been ported to Windows - but when it is, you will need this package.
 
   Get the binary package from
-  http://www.fh-frankfurt.de/~igor/projects/libxml
+  http://www.zlatkovic.com/projects/libxml/binaries.html
   Unpack this and
     cd include
     tar -cf - libxml | (cd $GNUSTEP_SYSTEM_ROOT/Headers; tar -xvf -)
@@ -255,7 +264,7 @@ libxml2
 openssl
   Needed for the SSL bundle, providing HTTPS support for NSURL.
   NB. at the time of writing, SSL support in GNUstep base has *not*
-  been ported to windows - but when it is, you will need this package.
+  been ported to Windows - but when it is, you will need this package.
   Get the binary package from
   http://www.kix.or.jp/~fujino/openssl
   Unpack this and
@@ -293,8 +302,8 @@ Go to gnustep-gui (or from CVS into the core/gui directory), and type
 Building and installing GNUstep-back
 ------------------------------------
 
-This software is PRE-ALPHA ... it is present in CVS for people who which to
-help porting the GNUstep backend to windows!
+This software is PRE-ALPHA ... it is present in CVS for people who wish to
+help porting the GNUstep backend to Windows!
 
 In the back directory, type
 
@@ -306,6 +315,13 @@ In the back directory, type
 
 Troubleshooting
 ---------------
+
+Issues with updating:
+Before attempting to update your GNUstep installation, be sure to stop/kill
+all running GNUstep programs or services (i.e. gdomap, gdnc, gpbs) since
+Windows cannot overwrite files that are currently in use.
+
+
 
 Good Sites for Pre-Compiled Binaries
 ------------------------------------
