@@ -1538,7 +1538,7 @@ if test "${with_library_combo+set}" = set; then
   withval="$with_library_combo"
   ac_cv_library_combo=$withval
 else
-  ac_cv_library_combo=$withval
+  ac_cv_library_combo=$ac_cv_library_combo
 
 fi
 
@@ -1562,7 +1562,7 @@ objc_thread_lib=""
 if test $host_os = linux-gnu; then
   LIBS="-lobjc -lpthread"
   if test "$cross_compiling" = yes; then
-  objc_threaded=-lpthread
+  objc_threaded="-lpthread"
 else
   cat > conftest.$ac_ext <<EOF
 #line 1569 "configure"
@@ -1571,7 +1571,7 @@ else
 EOF
 if { (eval echo configure:1573: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
-  objc_threaded=-lpthread
+  objc_threaded="-lpthread"
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
@@ -1581,10 +1581,10 @@ fi
 rm -fr conftest*
 fi
 
-  if test "$objc_threaded" = ""; then
+  if test x"$objc_threaded" = x""; then
     LIBS="-lobjc -lpcthread"
     if test "$cross_compiling" = yes; then
-  objc_threaded=-lpcthread
+  objc_threaded="-lpcthread"
 else
   cat > conftest.$ac_ext <<EOF
 #line 1591 "configure"
@@ -1593,7 +1593,7 @@ else
 EOF
 if { (eval echo configure:1595: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
-  objc_threaded=-lpcthread
+  objc_threaded="-lpcthread"
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
@@ -1607,7 +1607,7 @@ fi
 else
   LIBS="-lobjc $LIBS"
   if test "$cross_compiling" = yes; then
-  objc_threaded=-lthread
+  objc_threaded="-lthread"
 else
   cat > conftest.$ac_ext <<EOF
 #line 1614 "configure"
@@ -1616,7 +1616,7 @@ else
 EOF
 if { (eval echo configure:1618: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
-  objc_threaded=-lthread
+  objc_threaded="-lthread"
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
@@ -1628,7 +1628,7 @@ fi
 
 fi
 LIBS="$saved_LIBS"
-if test "$objc_threaded" = ""; then
+if test x"$objc_threaded" = x""; then
   echo "$ac_t""no" 1>&6
 else
   echo "$ac_t""yes" 1>&6

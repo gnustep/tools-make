@@ -1,3 +1,7 @@
+Wed Nov 25 16:25:09 1998  Adam Fedor  <fedor@doc.com>
+
+	* configure.in (ac_cv_library_combo): Take old value if not set.
+
 Mon Nov 23 14:00:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
 	GNUmakefile.in: mod for services

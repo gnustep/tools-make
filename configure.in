@@ -134,7 +134,7 @@ by specifying the 'library_combo' make variable. For example:
       $ make library_combo=nx-pdo-nx-nil
 ],
 ac_cv_library_combo=$withval,
-ac_cv_library_combo=$withval
+ac_cv_library_combo=$ac_cv_library_combo
 )
 
 if test "$ac_cv_library_combo" = ""; then
