@@ -1,3 +1,10 @@
+2004-12-06  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/machines.texi (MacOSX): Update (info from Markus
+	Hitter).
+
+	* Documentation/README.Darwin: Clean up, simplify.
+
 Sun Nov  7 04:18:39 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* tar-exclude-list: Use *.svn instead of .svn to have

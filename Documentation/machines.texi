@@ -128,6 +128,12 @@ directory for complete instructions.
 @node Darwin/PowerPC, Debian/DEC-Alpha, Darwin/ix86, Machine Specific
 @section Darwin/PowerPC
 
+This section is for building the complete GNUstep system.
+This system will not interact at all with Mac OS X/Cocoa. It uses different
+complilers, different display systems, etc. For building GNUstep extensions
+to be used with Mac OS X (for instance, if you want to build something based
+on GNUstep, such as GSWeb or GNUMail, see the MacOSX/PowerPC section).
+
 Currently tested on Darwin 6.x, 7.x
 
 @table @var
@@ -351,11 +357,17 @@ No libffi-support: Use ffcall
 @node MacOSX/PowerPC, MkLinux/PowerPC, Irix 6.5/MIPS, Machine Specific
 @section MacOSX/PowerPC
 
-Currently tested on MacOSX 10.2, 10.3
+This section is for building the GNUstep extensions only.
+Use this if, for instance, if you want to build something based
+on GNUstep, such as GSWeb or GNUMail. If you want to build the complete
+GNUstep system independant of Mac OS X, see the Darwin/PowerPC section.
+
+Currently tested on MacOSX 10.1.5, 10.2, 10.3
 
 @table @var
 @item Recommended compiler
-Default.
+Default. For 10.1.5, you need to add -no-cpp-precomp to CFLAGS
+(For instance, ./configure CFLAGS="-no-cpp-precomp" ...)
 
 @item Extra libs needed 
 None.
@@ -363,18 +375,27 @@ None.
 @item Special Instructions 
 By default, on Mac OS X, only the GNUstep extensions are built. This
 is if you want to build gdl2, etc on Mac OS X. Xcode project files
-exist, but they may not be up-to-date. Try:
+exist, but they may not be up-to-date.  Make sure /usr/sbin is in your
+path:
+
+@example
+PATH=$PATH:/usr/sbin
+@end example
+
+Then type:
 
 @example
 cd make
 ./configure --with-library-combo=apple-apple-apple
 make install
-
+. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 cd ../base
 ./configure --with-xml-prefix=/usr --disable-xmltest
 make debug=yes install
 @end example
 
+On Mac OS X 10.1.5, there is no libxml. Either install libxml2
+or configure base with --disable-xml.
 @end table
 
 See also the Darwin/PowerPC section.
