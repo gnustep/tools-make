@@ -74,16 +74,16 @@ else
 # directory in GNUSTEP_LOCAL_ROOT.
 OBJC_PROGRAM_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 
-ALL_OBJC_LIBS = $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-	        $(TARGET_SYSTEM_LIBS)
-
-ALL_OBJC_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_OBJC_LIBS) \
-            debug=$(debug) profile=$(profile) shared=$(shared) \
-            libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+ALL_OBJC_LIBS =								\
+    $(shell $(WHICH_LIB_SCRIPT)						\
+	$(LIB_DIRS_NO_SYSTEM)						\
+	$(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
+        $(TARGET_SYSTEM_LIBS)						\
+        debug=$(debug) profile=$(profile) shared=$(shared)		\
+        libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 ifeq ($(WITH_DLL),yes)
-TTMP_LIBS := $(ALL_TOOL_LIBS)
+TTMP_LIBS := $(ALL_OBJC_LIBS)
 TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
 # filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
 TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
