@@ -1,3 +1,11 @@
+Wed Oct  1 11:15:22 1997  Scott Christley  <scottc@net-community.com>
+
+	* bundle.make: Add install and uninstall targets.  Use bundle
+	extension variable.
+	(BUNDLE_LIBS): Libraries to link against when building a bundle.
+	* rules.make (BUNDLE_EXTENSION): Allow the user to specify a
+	different extension for the bundle directory name.
+
 Tue Sep 30 14:24:20 1997  Scott Christley  <scottc@net-community.com>
 
 	* Add bundle support.

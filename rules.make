@@ -82,15 +82,23 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)"
 
-%.bundle : FORCE
+#
+# The bundle extension (default is .bundle) is defined by BUNDLE_EXTENSION.
+#
+ifeq ($(strip $(BUNDLE_EXTENSION)),)
+BUNDLE_EXTENSION = .bundle
+endif
+
+%$(BUNDLE_EXTENSION) : FORCE
 	@echo Making $*...
-	$(MAKE) --no-print-directory internal-bundle-all \
+	@$(MAKE) --no-print-directory internal-bundle-all \
 		  BUNDLE_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 		  RESOURCE_FILES="$($*_RESOURCES)" \
 		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
+		  BUNDLE_LIBS="$($*_BUNDLE_LIBS)"
 
 #
 # The list of Objective-C source files to be compiled

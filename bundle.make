@@ -24,17 +24,14 @@
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
-BUNDLE_LINK_CMD = $(CC) $(ALL_CFLAGS) $@$(OEXT) -o $@ $(ALL_LDFLAGS)
-
-#
 # The name of the bundle is in the BUNDLE_NAME variable.
 # The list of bundle resource file are in xxx_RESOURCES
 # The list of bundle resource directories are in xxx_RESOURCE_DIRS
 # where xxx is the bundle name
 #
 
-BUNDLE_DIR_NAME := $(foreach bundle,$(BUNDLE_NAME),$(bundle).bundle)
-BUNDLE_FILE = $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)
+BUNDLE_DIR_NAME := $(foreach bundle,$(BUNDLE_NAME),$(bundle)$(BUNDLE_EXTENSION))
+BUNDLE_FILE := $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)
 BUNDLE_STAMPS := $(foreach bundle,$(BUNDLE_NAME),stamp-bundle-$(bundle))
 BUNDLE_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(BUNDLE_STAMPS))
 BUNDLE_RESOURCE_DIRS = $(foreach d,$(RESOURCE_DIRS),$(BUNDLE_DIR_NAME)/$(d))
@@ -49,7 +46,8 @@ $(GNUSTEP_OBJ_DIR)/stamp-bundle-% : $(BUNDLE_FILE) bundle-resource-files
 $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		$(LDOUT)$(BUNDLE_FILE) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+		$(ALL_LIB_DIRS) $(BUNDLE_LIBS)
 
 #
 # Compilation targets
@@ -59,7 +57,7 @@ internal-all:: $(GNUSTEP_OBJ_DIR) $(BUNDLE_DIR_NAME)
 internal-bundle-all:: $(GNUSTEP_OBJ_DIR) build-bundle-dir build-bundle
 
 build-bundle-dir::
-	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		$(BUNDLE_DIR_NAME) \
 		$(BUNDLE_DIR_NAME)/Resources \
 		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_CPU) \
@@ -72,6 +70,29 @@ build-bundle:: $(GNUSTEP_OBJ_DIR)/stamp-bundle-$(BUNDLE_NAME)
 bundle-resource-files::
 	for f in $(RESOURCE_FILES); do \
 	  $(INSTALL_DATA) $$f $(BUNDLE_DIR_NAME)/$$f ;\
+	done
+
+#
+# Install targets
+#
+internal-install:: internal-install-dir internal-install-bundle
+
+internal-install-dir::
+	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		$(BUNDLE_INSTALL_DIR) \
+		$(ADDITIONAL_INSTALL_DIRS)
+
+internal-install-bundle::
+	for f in $(BUNDLE_DIR_NAME); do \
+	  cp -dprf $$f $(BUNDLE_INSTALL_DIR) ; \
+	done
+
+#
+# Uninstall targets
+#
+internal-uninstall::
+	for f in $(BUNDLE_DIR_NAME); do \
+	  rm -rf $(BUNDLE_INSTALL_DIR)/$$f ; \
 	done
 
 #
