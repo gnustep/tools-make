@@ -224,7 +224,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   GNUSTEP_INSTANCE=$$instance \
   INTERNAL_$${type}_NAME=$$instance \
   TARGET=$$instance \
-  MAIN_MODEL_FILE="$($(basename $(basename $*))_MAIN_MODEL_FILE)" \
   BUNDLE_LIBS="$($(basename $(basename $*))_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
   DLL_DEF="$($(basename $(basename $*))_DLL_DEF)" \
   ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
