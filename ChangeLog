@@ -1,3 +1,13 @@
+Mon Sep 23 05:51:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Documentation/gnustep-howto.texi: Fixed/updated documentation on
+	./configure --prefix for gnustep-make ... was confusing
+	GNUSTEP_SYSTEM_ROOT and GNUSTEP_ROOT, and giving an incorrect
+	example.  Also, simplified/updated example for sourcing
+	GNUstep.sh.
+	* GNUstep-HOWTO: Regenerated.
+	* FAQ: Regenerated.
+	
 2002-09-19  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/faq.texi: Add section on porting to Cocoa.
