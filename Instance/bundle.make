@@ -270,7 +270,9 @@ $(BUNDLE_INSTALL_DIR):
 internal-bundle-install_:: shared-instance-headers-install \
                      shared-instance-bundle-install
 ifeq ($(strip),yes)
+ifneq ($(OBJ_FILES_TO_LINK),)
 	$(ECHO_STRIPPING)$(STRIP) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_FILE)$(END_ECHO)
+endif
 endif
 
 
