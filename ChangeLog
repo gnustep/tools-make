@@ -1,3 +1,9 @@
+Wed Jul 24 16:31:14 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* debian/: Outdated directory removed - the debian maintainers are
+	maintaining the updated one elsewhere.  (Suggested by Matthias
+	Klose <doko@cs.tu-berlin.de>).
+
 Mon Jul 22 12:34:49 2002  Georg Fleischmann <georg@vhf.de>
 
 	* Instance/Shared/bundle.make (shared-instance-bundle-all):
