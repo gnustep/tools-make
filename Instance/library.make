@@ -185,12 +185,12 @@ $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB): $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def
 
 $(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
                                $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def
-	$(DLLWRAP) --driver-name $(CC) \
+	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
 	  $(SHARED_LD_PREFLAGS) \
 	  --def $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def \
 	  -o $@ $(OBJ_FILES_TO_LINK) \
 	  $(INTERNAL_LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) \
-	  $(SHARED_LD_POSTFLAGS) 
+	  $(SHARED_LD_POSTFLAGS)$(END_ECHO)
 
 else # BUILD_DLL
 
@@ -198,7 +198,7 @@ internal-library-all_:: $(GNUSTEP_OBJ_DIR) \
                         $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
 
 $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(OBJ_FILES_TO_LINK)
-	$(LIB_LINK_CMD)
+	$(ECHO_LINKING)$(LIB_LINK_CMD)$(END_ECHO)
 
 endif # BUILD_DLL
 
@@ -229,23 +229,23 @@ $(ADDITIONAL_INSTALL_DIRS):
 ifeq ($(BUILD_DLL),yes)
 
 internal-install-lib::
-	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
+	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) \
 	                     $(DLL_INSTALLATION_DIR) ; \
-	fi
+	fi; \
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) \
 	                     $(FINAL_LIBRARY_INSTALL_DIR) ; \
-	fi
+	fi$(END_ECHO)
 
 else
 
 internal-install-lib::
-	if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
+	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
 	                     $(FINAL_LIBRARY_INSTALL_DIR) ; \
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
-	fi
+	fi$(END_ECHO)
 
 endif
 
