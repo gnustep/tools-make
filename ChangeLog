@@ -1,3 +1,8 @@
+2002-05-14 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Update and correct libtiff info so
+	instructions work for gui as well as base.
+
 2002-05-10 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Remove FORCE_USER_ROOT and FORCE_DEFAULTS_ROOT

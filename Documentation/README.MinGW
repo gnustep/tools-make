@@ -1,4 +1,4 @@
-Date:	7-May-2002 (tested under windoze-xp)
+Date:	14-May-2002 (tested under windoze-xp)
 Author: Richard Frith-Macdonald <rfm@gnu.org>
 
 PURPOSE
@@ -25,6 +25,10 @@ The base library is only recently ported to run on MinGW.  While most
 stuff works, including networking/distributed objects, there are probably
 bits that have been overlooked or are untested as yet.  The only *known*
 areas of code not yet ported are the zlib, SSL and XML extensions.
+
+The gui library is only partially ported to run under MinGW ... you can
+play with it, but expect to have to work on porting the library rather
+than developing user applications.
 
 
 PRELIMINARIES
@@ -111,7 +115,10 @@ You need things in the following order:
 GNUstep-make (release, snapshot, or cvs core module)
 libffcall (http://ftp.gnustep.org/pub/gnustep/lib)
 GNUstep-libobjc (release, snapshot, or cvs dev-apps module)
-GNUstep-base (release, snapshot, or cvs core module)
+GNUstep-base (snapshot, or cvs core module)
+
+For gui ... GNUstep-back (snapshot, or cvs core module)
+
 
 
 Setting up the GNUstep make environment
@@ -198,13 +205,15 @@ libiconv
     cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libiconv.a
     cp lib/iconv.dll $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32/iconv.dll
 
-libtiff
+libtiff, libjpeg, and zlib
   Needed for image handling support in the GNUstep gui libary
-  (not required for GNUstep-base).
+  (not required for GNUstep-base, though zlib can be used by the base library).
 
   Get the binary packages from -
-  http://prdownloads.sourceforge.net/mingwrep/libtiff-3.4-1.zip
-  http://prdownloads.sourceforge.net/mingwrep/libtiff-devel-3.4-1.zip
+  http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-bin.zip
+  http://prdownloads.sourceforge.net/gnuwin32/zlib-61.1.4lib.zip
   Unpack and install
   the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Headers
   the library (.a) files in $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
