@@ -74,7 +74,7 @@ VERTAG = `echo $(GNUSTEP_MAKE_VERSION) | tr '.' '_'`
 
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	common.make library-combo.make java.make jni.make library.make \
-	rules.make target.make names.make resource-set.make \
+	messages.make rules.make target.make names.make resource-set.make \
 	tool.make ctool.make test-library.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
