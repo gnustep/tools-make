@@ -322,7 +322,7 @@ rpm: tgz specfile
 	  echo "I can't build the RPM if you do not set your RPM_TOPDIR"; \
 	  echo "shell variable";                                          \
 	else                                                              \
-          cp ../$(PACKAGE_NAME)-$(VERSION).tgz $(RPM_TOPDIR)/SOURCES/;    \
+          cp ../$(PACKAGE_NAME)-$(VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/; \
 	  cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/;                           \
 	  cd $(RPM_TOPDIR)/SPECS/;                                        \
 	  rpm -ba $(SPEC_FILE);                                           \
