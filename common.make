@@ -573,9 +573,14 @@ endif
 # be created using MKDIRS instead because we don't want to set user/group.
 #
 ifneq ($(CHOWN_TO),)
-MKINSTALLDIRS = $(MKDIRS) -c $(CHOWN_TO)
+ MKINSTALLDIRS = $(MKDIRS) -c $(CHOWN_TO)
+ # Fixup the library installation commands if needed so that we change
+ # ownership of the links as well
+ ifeq ($(shared),yes)
+  AFTER_INSTALL_LIBRARY_CMD += ; $(AFTER_INSTALL_SHARED_LIB_CHOWN)
+ endif
 else
-MKINSTALLDIRS = $(MKDIRS)
+ MKINSTALLDIRS = $(MKDIRS)
 endif
 
 endif # COMMON_MAKE_LOADED
