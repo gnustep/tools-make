@@ -23,6 +23,10 @@
 # FIXME: Move all this documentation into the documentation
 #
 
+#
+# FIXME/TODO: Update for GNUSTEP_BUILD_DIR
+#
+
 # rpm puts all tools, bundles, applications, subprojects, libraries,
 # etc specified in the GNUmakefile into a single rpm. There aren't any
 # provisions for putting separate apps/tools/etc in separate rpms
