@@ -46,6 +46,10 @@ GNUSTEP_TARGET_OS := $(shell ./clean_os.sh $(GNUSTEP_TARGET_OS))
 makedir = $(prefix)/Makefiles
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_DATA	= @INSTALL_DATA@
+
 all: which_lib
 
 which_lib: which_lib.c
@@ -72,7 +76,7 @@ uninstall:
 	rm -rf $(makedir)
 
 clean:
-	rm -f *~
+	rm -f *~ which_lib
 
 distclean: clean
 	rm -f Makefile config.make

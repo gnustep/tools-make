@@ -1,3 +1,15 @@
+Fri Oct  3 14:48:15 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* Support the host install program if any.
+	* Makefile.in: Added definitions for INSTALL variable. Delete the
+	which_lib program in the clean target.
+	* config.make.in: Define INSTALL to be the value of HOST_INSTALL
+	instead of INSTALL.
+	* configure.in: Check if the INSTALL program is the install-sh script.
+	If so define HOST_INSTALL to be the install script; otherwise it is 
+	the host install program.
+	* which_lib.c: Include limits.h.
+
 Fri Oct  3 13:43:18 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* Added support for linking with different types of a library,

@@ -53,6 +53,12 @@
 # include <string.h>
 #endif
 
+#if HAVE_SYS_STAT_H
+# include <sys/stat.h>
+#endif
+
+#include <fcntl.h>
+
 #if defined(HAVE_DIRENT_H)
 # include <dirent.h>
 #elif defined(HAVE_SYS_DIR_H)
@@ -79,13 +85,14 @@
 
 /* determine filesystem max path length */
 
-#ifdef _POSIX_VERSION
 # include <limits.h>			/* for PATH_MAX */
+
+#ifdef _POSIX_VERSION
 # include <utime.h>
 #else
-#if HAVE_SYS_PARAM_H
-# include <sys/param.h>			/* for MAXPATHLEN */
-#endif
+# if HAVE_SYS_PARAM_H
+#  include <sys/param.h>		/* for MAXPATHLEN */
+# endif
 #endif
 
 #ifndef PATH_MAX
@@ -103,12 +110,6 @@
 #if HAVE_SYS_FILE_H
 #include <sys/file.h>
 #endif
-
-#if HAVE_SYS_STAT_H
-# include <sys/stat.h>
-#endif
-
-#include <fcntl.h>
 
 #define PATH_SEP "/"
 
