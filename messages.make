@@ -46,6 +46,17 @@ ifneq ($(messages),yes)
 
   END_ECHO = )
 
+#
+# Translation of messages:
+#
+# In case a translation is appropriate (FIXME - decide how to
+# determine if this is the case), here we will determine which
+# translated messages.make file to use, and include it here; this file
+# can override any of the ECHO_XXX variables providing new definitions
+# which print out the translated messages.  (if it fails to provide a
+# translation of any variable, the original untranslated message would
+# then be automatically print out).
+#
 
 else
 
@@ -71,3 +82,4 @@ else
   END_ECHO = 
 
 endif
+
