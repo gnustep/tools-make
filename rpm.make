@@ -86,7 +86,7 @@
 # Release: 1
 # Copyright: GPL
 # Group: Amusements/Games
-# Source: http://www.gnustep.it/nicola/Applications/Gomoku/%{gs_name}-%{gs_version}.tgz
+# Source: http://www.gnustep.it/nicola/Applications/Gomoku/%{gs_name}-%{gs_version}.tar.gz
 #
 # %description 
 # Gomoku is an extended TicTacToe game for GNUstep. You win the game if
