@@ -319,6 +319,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
     internal-$${type}-$$operation \
     GNUSTEP_TYPE=$$type \
     GNUSTEP_INSTANCE=$$instance \
+    GNUSTEP_OPERATION=$$operation \
     INTERNAL_$${type}_NAME=$$instance \
     TARGET=$$instance \
     GNUSTEP_BUILD_DIR="$${abs_build_dir}"

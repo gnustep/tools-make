@@ -1,3 +1,9 @@
+2004-05-07 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Master/rules.make: Pass 'operation' to instances in
+	'GNUSTEP_OPERATION'
+        * Instance/Documentation/autogsdoc.make: Use 'GNUSTEP_OPERATION'
+
 Thu Apr 29 15:54:17 2004  Nicola Pero <n.pero@mi.flashnet.it>
 	
 	* Instance/Documentation/autogsdoc.make

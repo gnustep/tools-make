@@ -38,7 +38,7 @@ internal-doc-all_:: $(GNUSTEP_INSTANCE)/stamp
 # Only include (and implicitly automatically rebuild if needed) the
 # dependencies file when we are compiling.  Ignore it when cleaning or
 # installing.
-ifeq ($(operation), all)
+ifeq ($(GNUSTEP_OPERATION), all)
 -include $(GNUSTEP_INSTANCE)/dependencies
 endif
 
