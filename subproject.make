@@ -95,28 +95,34 @@ $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
 	      fi; \
 	    done; \
 	  fi; \
-	fi;
+	fi
 
 framework-components::
 	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
 	  if [ "$(COMPONENTS)" != "" ]; then \
 	    echo "Copying components into the framework wrapper..."; \
 	    cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	    for component in $(COMPONENTS); do \
-	      if [ -d ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ]; then \
-		cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ./; \
+	    for component in $(COMPONENTS) __done; do \
+	      if [ $$component != __done ]; then \
+	        if [ -d ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ]; then \
+		  cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/$$component ./; \
+	        fi; \
 	      fi; \
 	    done; \
 	    echo "Copying localized components into the framework wrapper..."; \
-	    for l in $(LANGUAGES); do \
-	      if [ ! -f $$l.lproj ]; then \
-		$(MKDIRS) $$l.lproj; \
+	    for l in $(LANGUAGES) __done; do \
+	      if [ $$l != __done ]; then \
+	        if [ ! -f $$l.lproj ]; then \
+		  $(MKDIRS) $$l.lproj; \
+	        fi; \
 	      fi; \
 	      cd $$l.lproj; \
-	      for f in $(COMPONENTS); do \
-		if [ -d ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f ]; then \
-		  cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f .;\
-		fi; \
+	      for f in $(COMPONENTS) __done; do \
+	        if [ $$f != __done ]; then \
+		  if [ -d ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f ]; then \
+		    cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f .; \
+		  fi; \
+	        fi; \
 	      done; \
 	      cd ..; \
 	    done;\
@@ -138,14 +144,18 @@ localized-framework-resource-files::
 	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
 	  if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
 	    echo "Copying localized resources into the framework wrapper..."; \
-	    for l in $(LANGUAGES); do \
-	      if [ ! -f $$l.lproj ]; then \
-	        $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+	    for l in $(LANGUAGES) __done; do \
+	      if [ $$l != __done ]; then \
+	        if [ ! -f $$l.lproj ]; then \
+	          $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+	        fi; \
 	      fi; \
-	      for f in $(LOCALIZED_RESOURCE_FILES); do \
-		if [ -f $$l.lproj/$$f ]; then \
-		  cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-		fi; \
+	      for f in $(LOCALIZED_RESOURCE_FILES) __done; do \
+	        if [ $$f != __done ]; then \
+		  if [ -f $$l.lproj/$$f ]; then \
+		    cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+		  fi; \
+	        fi; \
 	      done; \
 	    done; \
 	  fi; \
@@ -164,9 +174,11 @@ framework-webresource-files:: framework-webresource-dir
 	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying webserver resources into the framework wrapper..."; \
 	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
-	  for ff in $(WEBSERVER_RESOURCE_FILES); do \
-	    if [ -f ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff ]; then \
-	      cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff .; \
+	  for ff in $(WEBSERVER_RESOURCE_FILES) __done; do \
+	    if [ $$ff != __done ]; then \
+	      if [ -f ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff ]; then \
+	        cp -r ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff .; \
+	      fi; \
 	    fi; \
 	  done; \
 	fi;)
@@ -175,16 +187,20 @@ framework-localized-webresource-files:: framework-webresource-dir
 	@(if [ "$(LOCALIZED_WEBSERVER_RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying localized webserver resources into the framework wrapper..."; \
 	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
-	  for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then \
-	      $(MKDIRS) $$l.lproj; \
+	  for l in $(LANGUAGES) __done; do \
+	    if [ $$l != __done ]; then \
+	      if [ ! -f $$l.lproj ]; then \
+	        $(MKDIRS) $$l.lproj; \
+	      fi; \
 	    fi; \
 	    cd $$l.lproj; \
-	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-	      if [ -f ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f ]; then \
-		if [ ! -r $$f ]; then \
-		  cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f $$f; \
-		fi; \
+	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES) __done; do \
+	      if [ $$f != __done ]; then \
+	        if [ -f ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f ]; then \
+		  if [ ! -r $$f ]; then \
+		    cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$l.lproj/$$f $$f; \
+		  fi; \
+	        fi;\
 	      fi;\
 	    done;\
 	    cd ..; \

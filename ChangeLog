@@ -1,3 +1,7 @@
+2000-12-04 Georg Fleischmann <georg@vhf.de>
+
+        * subproject.make: workaround for empty list in for loops added.
+
 2000-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* make/GNUmakefile.in:
