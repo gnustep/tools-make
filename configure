@@ -2194,9 +2194,6 @@ fi
 echo $ac_n "checking for the version of gnustep-make we are compiling""... $ac_c" 1>&6
 echo "configure:2196: checking for the version of gnustep-make we are compiling" >&5
 . ./Version
-if test -f "../Version"; then
-  . ../Version
-fi
 echo "$ac_t""$GNUSTEP_MAKE_VERSION" 1>&6
 DATE=`date +"%Y%m%d"`
 
