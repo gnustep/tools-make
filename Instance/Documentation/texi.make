@@ -114,10 +114,10 @@ internal-doc-clean::
 internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
 	if [ -f $(GNUSTEP_INSTANCE).ps ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
 	fi
 	if [ -f $(GNUSTEP_INSTANCE).info ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOCUMENTATION_INFO)
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOCUMENTATION_INFO); \
 	fi
 	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
