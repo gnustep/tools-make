@@ -1,3 +1,8 @@
+Mon Sep 10 11:25:58 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rootinstall.sh: Removed as obsolete.
+	* rootuninstall.sh: Idem.	
+
 Tue Sep  4 16:23:12 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make (bundle-localized-resource-files): Use -d instead of
