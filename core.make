@@ -19,38 +19,12 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-#
-# The user can specify the `library_combo' variable when running make
-#
-
-ifeq ($(strip $(library_combo)),)
-
-# The default is GNU
-OBJC_RUNTIME_LIB = gnu
-FOUNDATION_LIB = gnu
-GUI_LIB = gnu
-GUI_BACKEND_LIB = xdp
-
-# Except on OPENSTEP systems where the default is (you guessed it) NeXT
-ifeq ($(GNUSTEP_TARGET_OS),nextstep4)
-
-OBJC_RUNTIME_LIB = nx
-FOUNDATION_LIB = nx
-GUI_LIB = nx
-GUI_BACKEND_LIB = nil
-
-endif
-
-else
-
 # Strip out the individual libraries from the combo string
 combo_list = $(subst _, ,$(library_combo))
 OBJC_RUNTIME_LIB = $(word 1,$(combo_list))
 FOUNDATION_LIB = $(word 2,$(combo_list))
 GUI_LIB = $(word 3,$(combo_list))
 GUI_BACKEND_LIB = $(word 4,$(combo_list))
-
-endif
 
 #
 # Allow user specify the runtime, foundation, gui and backend libraries in

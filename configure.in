@@ -60,6 +60,27 @@ AC_SUBST(X_INCLUDE)
 AC_SUBST(X_LIBS)
 
 #--------------------------------------------------------------------
+# Setup the library combination
+#--------------------------------------------------------------------
+AC_ARG_WITH(library-combo,[
+
+--with-library-combo
+    Define the default library combinations that will be used when you type
+    'make'. You can still change the library combination at runtime by
+    specifying the 'library_combo' make variable. For example:
+    
+      $ make library_combo=nx_pdo_nx_nil
+],
+ac_cv_library_combo=$withval,
+ac_cv_library_combo=$withval
+)
+
+if test "$ac_cv_library_combo" = ""; then
+  ac_cv_library_combo=gnu_gnu_gnu_xdp
+fi
+AC_SUBST(ac_cv_library_combo)
+
+#--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
 AC_OUTPUT(config.make Makefile GNUstep.sh)

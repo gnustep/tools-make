@@ -1,3 +1,11 @@
+Wed Oct  1 18:04:25 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* configure.in: Added the --with-library-combo to support specifying a
+	default library combination.
+	* core.make: Removed logic that defines a default library
+	combination.
+	* config.make.in: Add little logic for library combo.
+
 Wed Oct  1 17:03:56 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* common.make: Added -I compile flag when compiling using gnustep-base
