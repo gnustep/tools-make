@@ -60,8 +60,9 @@ import-library::
 #
 # Install and uninstall targets
 #
-internal-install:: internal-install-dirs internal-install-headers \
-   internal-install-lib
+internal-install:: internal-install-dirs internal-install-lib \
+	internal-install-headers
+   
 
 before-install:: all
 

@@ -1,3 +1,31 @@
+Wed Oct 15 12:14:42 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	Better support for building applications.
+	* application.make: Reworked to eliminate the need of timestamp files
+	which cause weird behavior when building. Also it is possible to have
+	different extensions for the application directory based upon the
+	debug and profile variables (.app, .debug and .profile).
+	* rules.make: Changed the name of the implicit rule %.app to %.buildapp
+	to make possible creation of applications with different extensions.
+	* core.make: Removed targets from the OS 4.x specific section.
+
+	Better support of shared libraries in openapp.
+	* openapp.in: Read in the library_paths.openapp file from the
+	application directory; this file contains additional directories that
+	should be added to the dynamic libraries search paths.
+	* ld_lib_path.sh: Support adding additional library paths from an
+	environment variable. This is set by openapp from a file inside the
+	application.
+	* application.make: Output an additional file in the application
+	directory containing additional library search paths.
+	* common.make: New variable TRANSFORM_PATHS.
+
+	* library.make: First install the library and then the headers.
+	* rules.make: Change the order of GUI and Foundation LDFLAGS.
+	* openapp.in: Remove the slashed from the end of the application name.
+	* DESIGN: Fixed typos. Document how the application's directory
+	extension is chosen.
+
 Tue Oct 14 15:28:52 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* DESIGN: Wrote about the naming conventions for libraries and how they

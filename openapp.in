@@ -42,6 +42,9 @@ case $1 in
     app=$1; shift;;
 esac
 
+# Remove leading slashes at the end of the application name
+app=`echo $app | sed 's%/*$%%'`
+
 case $app in
   /*)	# An absolute path.
 	full_appname=$app;;
@@ -61,6 +64,10 @@ esac
 if [ -z "$full_appname" ]; then
   echo "Can't find the required application: $app!"
   exit 1
+fi
+
+if [ -f "$full_appname/library_paths.openapp" ]; then
+  additional_library_paths=`cat $full_appname/library_paths.openapp`
 fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`

@@ -244,7 +244,7 @@ project types can be added as well, the makefile package does not
 limit this in any way.
 
 A project consists from a collection of source code files and resource
-files. If a project has several subdirectories those subdirectories
+files. If a project has several subdirectories, those subdirectories
 are subprojects of the main project. A subproject type is not
 restricted in any way by the type of the project it's contained
 into. The only restriction is that you can not create multiple project
@@ -287,7 +287,7 @@ Projects that require running configure before compiling
 ========================================================
 
 There are two issues with this kind of projects. 'configure' is used
-to determine the existance of particular header files and/or of some
+to determine the existence of particular header files and/or of some
 specific functionality in the system header files. This thing is
 usually done by creating a config.h file which contains a couple of
 defines like HAVE_... which say if the checked functionality is
@@ -322,7 +322,7 @@ application for another machine just by typing
 
   $ make target="target machine"
 
-where "target machine" is the cannonical system name as reported by
+where "target machine" is the canonical system name as reported by
 config.guess.
 
 Building different types of a project
@@ -359,7 +359,7 @@ enabled but no profile information, the command line would be:
 The last argument is not necessary because the default is to build a version
 without profile information.
 
-The object files will be outputed into the shared_debug_obj directory. If the
+The object files will be output into the shared_debug_obj directory. If the
 profile is turned on the output directory would be shared_profile_debug_obj.
 
 Of course you also have to specify the library combo if it's different than the
@@ -420,6 +420,30 @@ match. If a static version is required but no static versions of the library
 exist, then no library is chosen; in this case the system simply prints out the
 name of the library, assuming a static library is somewhere else in the
 libraries search path of the linker.
+
+Building applications
+=====================
+
+In the makefile's package terminology an application is a program linked
+against the GUI libraries.
+
+An application is built as usualy, by compiling all of the sources and then
+linking the object files into the binary. The only difference between
+an application and any other project results is that the first is created into
+its own directory, instead of being a simple file. This directory is called
+the application wrapper and it contains the binaries for various architectures
+and resources needed by the application.
+
+The name of the application wrapper is taken to be the name of the application
+with the following extensions:
+
+.profile - if the application has been built with profile enabled
+.debug - if the application has been built with debug enabled
+.app - if the application has been built without debug or profile enabled
+
+If both debug and profile are enabled, the application extension will simply
+have the .profile extension. This is different from libraries were both options
+are reflected into the library's name. 
 
 The structure of makefiles
 ==========================

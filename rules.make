@@ -35,7 +35,7 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    $(GNUSTEP_HEADERS_FND_FLAG) $(GNUSTEP_HEADERS_GUI_FLAG) \
    -I$(GNUSTEP_TARGET_HEADERS) -I$(GNUSTEP_HEADERS) 
 
-ALL_LDFLAGS = $(ADDITIONAL_LDFLAGS) $(FND_LDFLAGS) $(GUI_LDFLAGS) \
+ALL_LDFLAGS = $(ADDITIONAL_LDFLAGS) $(GUI_LDFLAGS) $(FND_LDFLAGS) \
    $(BACKEND_LDFLAGS) $(SYSTEM_LDFLAGS) $(INTERNAL_LDFLAGS)
 
 ALL_LIB_DIRS = $(ADDITIONAL_LIB_DIRS) -L$(GNUSTEP_LIBRARIES) \
@@ -81,10 +81,10 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	pswrap -h $*.h -o $@ $<
 
 # The magical app rule, thank you GNU make!
-%.app : FORCE
+%.buildapp:
 	@echo Making $*...
-	@$(MAKE) --no-print-directory internal-app-all \
-		  APP_NAME=$* \
+	@$(MAKE) --no-print-directory internal-all \
+		  INTERNAL_APP_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)"

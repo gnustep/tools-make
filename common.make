@@ -38,6 +38,7 @@ CLEAN_VENDOR_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_vendor.sh
 CLEAN_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_os.sh
 WHICH_LIB_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/which_lib
 LD_LIB_PATH_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/ld_lib_path.sh
+TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/transform_paths.sh
 
 #
 # Scripts used for installing data and program files
