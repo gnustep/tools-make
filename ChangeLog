@@ -1,3 +1,10 @@
+Thu Feb 28 18:16:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/gswbundle.make (COMPONENTS, LANGUAGES,
+	WEBSERVER_RESORCE_FILES, LOCALIZED_WEBSERVER_RESOURCE_FILES,
+	WEBSERVER_RESORCE_DIRS, LOCALIZED_RESOURCE_DIRS, RESOURCE_FILES,
+	RESOURCE_DIRS): Define here.
+
 Thu Feb 28 15:22:31 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Instance/application.make: Simplified a lot by using
