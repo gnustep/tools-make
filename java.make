@@ -42,10 +42,6 @@ JAVA_PACKAGE_MAKE_LOADED=yes
 # with a different relative path, you may use JAVA_PACKAGE_PREFIX: 
 # They will be installed in: 
 # ${GNUSTEP_INSTALLATION_DIR}/Libraries/Java/${JAVA_PACKAGE_PREFIX}/{relative path}
-#
-# In general, it's better to make subdirectories rather than using 
-# JAVA_PACKAGE_PREFIX.
-#
 
 JAVA_PACKAGE_NAME:=$(strip $(JAVA_PACKAGE_NAME))
 
