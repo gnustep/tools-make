@@ -312,30 +312,18 @@ OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # FRAMEWORK_INSTALL_DIR from the command line, not currently covered
 # at the moment!
 #
-# To get the list of all classes, we run 'nm' on the object files, and
-# retrieve all symbols of the form __objc_class_name_NSObject which
-# are not 'U' (undefined) ... an __objc_class_name_NSObject is defined
-# in the module implementing the class, and referenced by all other
-# modules needing to use the class.  So if we have an
-# __objc_class_name_XXX which is not 'U' (which would be a reference
-# to a class implemented elsewhere), it must be a class implemented in
-# this module.
+# To get the list of all classes, we use
+# $(EXTRACT_CLASS_NAMES_COMMAND), which is defined in target.make
 #
-# The 'sed' command parses a set of lines, and extracts lines starting
-# with __objc_class_name_XXXX Y, where XXXX is a string of characters
-# from A-Za-z_. and Y is not 'U'.  It then replaces the whole line
-# with XXXX, and prints the result. '-n' disables automatic printing
-# for portability, so we are sure we only print what we want on all
-# platforms.
 #
 # The following rule will also build the DUMMY_FRAMEWORK_CLASS_LIST
 # file.  This file is always created/deleted at the same time as the
 # DUMMY_FRAMEWORK_FILE.
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR) $(OBJ_FILES_TO_LINK) GNUmakefile
 	$(ECHO_CREATING) classes=""; \
-	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
-	  if [ "$$f" != "__dummy__" ]; then \
-	    sym=`nm -Pg $$f | sed -n -e '/^__objc_class_name_[A-Za-z_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z_.]*\) [^U].*/\1/p;}'`; \
+	for object_file in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
+	  if [ "$$object_file" != "__dummy__" ]; then \
+	    sym=`$(EXTRACT_CLASS_NAMES_COMMAND)`; \
 	    classes="$$classes $$sym"; \
 	  fi; \
 	done; \

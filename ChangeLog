@@ -1,3 +1,11 @@
+Fri Jun 19 13:01:02 2004  Nicola Pero <n.pero@mi.flashnet.it>,
+	                  Yves de Champlain <yves@gnu-darwin.org>
+
+	* target.make (EXTRACT_CLASS_NAMES_COMMAND): New variable, with
+	special value for darwin.
+	* Instance/framework.make: Use the new variable when building
+	the list of classes in the framework.
+
 Fri Jun 18 18:49:16 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* configure.ac: Detect native exception handler support in the

@@ -113,6 +113,28 @@ endif
 # AFTER_INSTALL_STATIC_LIB_CMD is similar.
 #
 
+# For frameworks on unusual platforms, you might also need to set
+# EXTRACT_CLASS_NAMES_COMMAND.  This should be a command which is
+# evaluated on $(object_file) and returns a list of classes
+# implemented in the object_file.  Our default command is the
+# following (you can override it with another one in your target's
+# section if you need), which runs 'nm' on the object file, and
+# retrieve all symbols of the form __objc_class_name_NSObject which
+# are not 'U' (undefined) ... an __objc_class_name_NSObject is defined
+# in the module implementing the class, and referenced by all other
+# modules needing to use the class.  So if we have an
+# __objc_class_name_XXX which is not 'U' (which would be a reference
+# to a class implemented elsewhere), it must be a class implemented in
+# this module.
+#
+# The 'sed' command parses a set of lines, and extracts lines starting
+# with __objc_class_name_XXXX Y, where XXXX is a string of characters
+# from A-Za-z_. and Y is not 'U'.  It then replaces the whole line
+# with XXXX, and prints the result. '-n' disables automatic printing
+# for portability, so we are sure we only print what we want on all
+# platforms.
+EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z_.]*\) [^U].*/\1/p;}'
+
 #
 # This is the generic version - if the target is not in the following list,
 # this setup will be used.  It the target does not override variables here
@@ -236,6 +258,9 @@ endif
 
 HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
+
+# The output of nm is slightly different on Darwin, it doesn't support -P
+EXTRACT_CLASS_NAMES_COMMAND = nm  -g $$object_file | sed -n -e '/[^U] ___objc_class_name_/ {s/[0-9a-f]* [^U] ___objc_class_name_//p;}'
 
 ifeq ($(CC_TYPE), apple)
   # Not sure why, but without -no-cpp-precomp, it doesn't compile
