@@ -1,3 +1,7 @@
+2002-11-27 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* user_home.c: Use USERPROFILE for home directory on windoze.
+
 2002-11-19  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.5.1

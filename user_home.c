@@ -187,28 +187,39 @@ int main (int argc, char** argv)
     }
   strncpy(home, pw->pw_dir, sizeof(home));
 #else
-  /* The environment variable HOMEPATH holds the home directory
-     for the user on Windows NT; Win95 has no concept of home. */
-  len0 = GetEnvironmentVariable("HOMEDRIVE", buf0, 1024);
+  /* The environment variable USERPROFILE holds the home directory
+     for the user on modern versions of windoze. */
+  len0 = GetEnvironmentVariable("USERPROFILE", buf0, 1024);
   if (len0 > 0 && len0 < 1024)
     {
       buf0[len0] = '\0';
-      len1 = GetEnvironmentVariable("HOMEPATH", buf1, 128);
-      if (len1 > 0 && len1 < 128)
-	{
-	  buf1[len1] = '\0';
-	  sprintf(home, "%s%s", buf0, buf1);
-	}
-      else
-	{
-	  fprintf(stderr, "Unable to determine HOMEPATH\n");
-	  return 1;
-	}
+      strcpy(home, buf0);
     }
   else
     {
-      fprintf(stderr, "Unable to determine HOMEDRIVE\n");
-      return 1;
+      /* The environment variable HOMEPATH holds the home directory
+	 for the user on Windows NT; Win95 has no concept of home. */
+      len0 = GetEnvironmentVariable("HOMEDRIVE", buf0, 1024);
+      if (len0 > 0 && len0 < 1024)
+	{
+	  buf0[len0] = '\0';
+	  len1 = GetEnvironmentVariable("HOMEPATH", buf1, 128);
+	  if (len1 > 0 && len1 < 128)
+	    {
+	      buf1[len1] = '\0';
+	      sprintf(home, "%s%s", buf0, buf1);
+	    }
+	  else
+	    {
+	      fprintf(stderr, "Unable to determine HOMEPATH\n");
+	      return 1;
+	    }
+	}
+      else
+	{
+	  fprintf(stderr, "Unable to determine HOMEDRIVE\n");
+	  return 1;
+	}
     }
 #endif
 
