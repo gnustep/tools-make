@@ -121,18 +121,26 @@ FND_LIBS =
 #
 # Set the appropriate Foundation library
 #
-ifeq ($(FOUNDATION_LIB),gnu)
-  FND_LDFLAGS =
-  FND_LIBS = -lgnustep-base
-  FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
-  GNUSTEP_DEFINE = -DGNUSTEP
-  # If gc=yes was passed, use the appropriate library and defines
-  ifeq ($(gc), yes)
-    OBJC_LIBS = -lobjc_gc -lgc
-    AUXILIARY_CPPFLAGS += -DGS_WITH_GC=1
-  endif
+
+#
+# Third-party foundations not using make package
+# Our own foundation will install a base.make file into 
+# $GNUSTEP_MAKEFILES/Additional/ to set the needed flags
+#
+ifeq ($(FOUNDATION_LIB),nx)
+  FND_LDFLAGS = -framework Foundation
+  FND_LIBS   = 
+  FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
 endif
 
+ifeq ($(FOUNDATION_LIB), sun)
+  FND_DEFINE = -DSun_Foundation_LIBRARY=1
+endif
+
+#
+# FIXME - Ask Helge to move this inside his libFoundation, and have 
+# it installed as a $(GNUSTEP_MAKEFILES)/Additional/libFoundation.make
+#
 ifeq ($(FOUNDATION_LIB),fd)
   -include $(GNUSTEP_MAKEFILES)/libFoundation.make
 
@@ -156,18 +164,13 @@ ifeq ($(FOUNDATION_LIB),fd)
 
 endif
 
-ifeq ($(FOUNDATION_LIB),nx)
-  FND_LDFLAGS = -framework Foundation
-  FND_LIBS   = 
-  FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
-endif
-
-ifeq ($(FOUNDATION_LIB), sun)
-  FND_DEFINE = -DSun_Foundation_LIBRARY=1
-endif
-
 #
 # Set the WO library flags
+#
+
+#
+# FIXME - Move these flags into gnustepweb, installing them inside 
+# $(GNUSTEP_MAKEFILES)/Additional/gnustepweb.make
 #
 WO_LDFLAGS =
 WO_LIBS    = -lNGObjWeb -lNGHttp -lNGMime -lNGZlib \
@@ -178,15 +181,9 @@ WO_DEFINE  = -DNGObjWeb_LIBRARY=1
 GUI_LDFLAGS =
 GUI_LIBS = 
 #
-# Set the GUI library
+# Third-party GUI libraries - our own sets its flags into 
+# $(GNUSTEP_MAKEFILES)/Additional/gui.make
 #
-ifeq ($(GUI_LIB),gnu)
-  GUI_LDFLAGS =
-  GUI_LIBS = -lgnustep-gui -lgmodel -lgnustep-gui
-  GUI_DEFINE = -DGNU_GUI_LIBRARY=1
-  GNUSTEP_DEFINE = -DGNUSTEP
-endif
-
 ifeq ($(GUI_LIB),nx)
   GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
   ifneq ($(INTERNAL_app_NAME),)
@@ -204,62 +201,21 @@ BACKEND_LIBS =
 #
 # Set the GUI Backend library
 #
-ifeq ($(GUI_BACKEND_LIB),xdps)
-  BACKEND_LDFLAGS =
-  BACKEND_LIBS = -lgnustep-xdps
-  BACKEND_DEFINE = -DXDPS_BACKEND_LIBRARY=1
-endif
-
-ifeq ($(GUI_BACKEND_LIB),xraw)
-  BACKEND_LDFLAGS =
-  BACKEND_LIBS = -lgnustep-xraw
-  BACKEND_DEFINE = -DXRAW_BACKEND_LIBRARY=1
-endif
-
-ifeq ($(GUI_BACKEND_LIB),xgps)
-  BACKEND_LDFLAGS =
-  BACKEND_LIBS = -lgnustep-xgps
-  BACKEND_DEFINE = -DXGPS_BACKEND_LIBRARY=1
-endif
-
-ifeq ($(GUI_BACKEND_LIB),w32)
-  BACKEND_LDFLAGS =
-  BACKEND_LIBS = -lMBKit
-endif
 
 SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL)
 SYSTEM_LDFLAGS = 
 SYSTEM_LIB_DIR =
 SYSTEM_LIBS =
-#
-# If the backend GUI library is X based
-# then add X headers and libraries
-#
-ifeq ($(GUI_BACKEND_LIB),xdps)
-  SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL) $(GRAPHIC_CFLAGS)
-  SYSTEM_LDFLAGS =
-  SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
-  SYSTEM_LIBS = -ldpstk -ldps -lpsres -lXt $(X_PRE_LIBS) $(GRAPHIC_LIBS)
-endif
 
 #
-# If the backend GUI library is X (only) based
-# then add X headers and libraries
+# FIXME - when we have a win32 backend, move these flags inside 
+# $(GNUSTEP_MAKEFILES)/Additional/win32.make and have them managed 
+# by the win32 backend directly
 #
-ifeq ($(GUI_BACKEND_LIB),xraw)
-  SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL) $(GRAPHIC_CFLAGS)
-  SYSTEM_LDFLAGS =
-  SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
-  SYSTEM_LIBS = $(GRAPHIC_LIBS)
+ifeq ($(GUI_BACKEND_LIB),w32)
+  BACKEND_LDFLAGS =
+  BACKEND_LIBS = -lMBKit
 endif
-
-ifeq ($(GUI_BACKEND_LIB),xgps)
-  SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL) $(GRAPHIC_CFLAGS)
-  SYSTEM_LDFLAGS =
-  SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
-  SYSTEM_LIBS = $(GRAPHIC_LIBS)
-endif
-
 #
 # If the backend GUI library is Win32 based
 # then add Win32 headers and libraries
