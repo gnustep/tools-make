@@ -172,6 +172,7 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Headers:
 $(DERIVED_SOURCES) :
 	$(MKDIRS) $@
 
+# Need to share this code with the headers code ... but how.
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
