@@ -122,6 +122,20 @@ ifeq ($(FOUNDATION_LIB),gnu)
   DUMMY_FRAMEWORK = NSFramework_$(GNUSTEP_INSTANCE)
   DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES_DIR)/$(DUMMY_FRAMEWORK).m
   DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
+
+  # The following file will hold the list of classes compiled into the
+  # framework, ready to be included in the .plist file.  We include the
+  # list of classes twice, in the object file itself (for when the
+  # framework is loaded) and in the .plist (for tools which let you
+  # browse in frameworks on disk and see lists of classes).  Please note
+  # that reading the class list from the .plist requires gnustep-base to
+  # have properly located the framework bundle on disk, while reading
+  # the list from the object file itself does not (and so it's more
+  # likely to work in a portable way), which is why we still save the
+  # list in the object file rather than only putting it in the .plist.
+  # Maybe this point should be discarded, and we should only store the class
+  # list in the .plist file.
+  DUMMY_FRAMEWORK_CLASS_LIST = $(DERIVED_SOURCES_DIR)/$(GNUSTEP_INSTANCE)-class-list
 endif
 
 FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
@@ -268,6 +282,10 @@ OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # with XXXX, and prints the result. '-n' disables automatic printing
 # for portability, so we are sure we only print what we want on all
 # platforms.
+#
+# The following rule will also build the DUMMY_FRAMEWORK_CLASS_LIST
+# file.  This file is always created/deleted at the same time as the
+# DUMMY_FRAMEWORK_FILE.
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR) $(OBJ_FILES_TO_LINK) GNUmakefile
 	$(ECHO_CREATING) classes=""; \
 	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
@@ -277,20 +295,26 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR) $(OBJ_FILES_TO_LINK) GNUmakefile
 	  fi; \
 	done; \
 	classlist=""; \
+	classarray=""; \
 	for f in $$classes __dummy__ ; do \
 	  if [ "$$f" != "__dummy__" ]; then \
 	    if [ "$$classlist" = "" ]; then \
 	      classlist="@\"$$f\""; \
+	      classarray="(\"$$f\""; \
 	    else \
 	      classlist="$$classlist, @\"$$f\""; \
+	      classarray="$$classarray, \"$$f\""; \
 	    fi; \
 	  fi; \
 	done; \
 	if [ "$$classlist" = "" ]; then \
 	  classlist="NULL"; \
+	  classarray="()"; \
 	else \
 	  classlist="$$classlist, NULL"; \
+	  classarray="$$classarray)"; \
 	fi; \
+	echo "$$classarray" > $(DUMMY_FRAMEWORK_CLASS_LIST); \
 	if [ "`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_USER_ROOT))//'`" != "$(FRAMEWORK_INSTALL_DIR)" ]; then \
 	  fw_env="@\"GNUSTEP_USER_ROOT\""; \
 	elif [ "`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_LOCAL_ROOT))//'`" != "$(FRAMEWORK_INSTALL_DIR)" ]; then \
@@ -388,11 +412,14 @@ $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resource
 	  echo "}") >$@$(END_ECHO)
 
 # GNUstep frameworks
-$(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR)/Resources
+$(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR)/Resources $(DUMMY_FRAMEWORK_FILE)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
+	  echo "  Classes = "; \
+	  cat $(DUMMY_FRAMEWORK_CLASS_LIST); \
+	  echo "  ;"; \
 	  echo "}") >$@$(END_ECHO)
 	$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	   plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
@@ -527,12 +554,14 @@ internal-framework-uninstall_::
 # Cleaning targets
 #
 internal-framework-clean::
-	$(ECHO_NOTHING)rm -rf $(GNUSTEP_OBJ_DIR) $(PSWRAP_C_FILES) $(PSWRAP_H_FILES) \
+	$(ECHO_NOTHING)rm -rf $(GNUSTEP_OBJ_DIR) \
+	       $(PSWRAP_C_FILES) $(PSWRAP_H_FILES) \
 	       $(FRAMEWORK_DIR) $(DERIVED_SOURCES_DIR)$(END_ECHO)
 
 internal-framework-distclean::
-	$(ECHO_NOTHING)rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj$(END_ECHO)
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	  rm -rf shared_obj static_obj shared_debug_obj \
+	  shared_profile_obj static_debug_obj static_profile_obj \
+	  shared_profile_debug_obj static_profile_debug_obj$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
