@@ -69,7 +69,12 @@ all:: before-all internal-all after-all
 # internal-after-install is used by packaging to get the list of files 
 # installed (see rpm.make); it must come after *all* the installation 
 # rules have been executed.
+ifeq ($(MAKELEVEL),0)
+install:: all \
+          before-install internal-install after-install internal-after-install
+else
 install:: before-install internal-install after-install internal-after-install
+endif
 
 uninstall:: before-uninstall internal-uninstall after-uninstall
 
@@ -129,7 +134,7 @@ after-check::
 
 # declare targets as PHONY
 
-.PHONY = all before-all internal-all after-all \
+.PHONY: all before-all internal-all after-all \
 	 install before-install internal-install after-install \
 	         internal-after-install \
 	 uninstall before-uninstall internal-uninstall after-uninstall \
