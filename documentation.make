@@ -44,7 +44,8 @@ endif
 # The main file for text document is in the xxx_TEXT_MAIN variable.
 # The Texinfo files that needs pre-processing are in xxx_TEXI_FILES
 # The GSDoc files that needs pre-processing are in xxx_GSDOC_FILES
-# The LaTeX files that needs pre-processing are in xxx_LATEX_FILES
+# The files for processing by autogsdoc are in xxx_AGSDOC_FILES
+# The options for controlling autogsdoc are in xxx_AGSDOC_FLAGS
 #
 # Javadoc support: 
 # The Java classes and packages that needs documenting using javadoc
@@ -179,6 +180,25 @@ $(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
 	gsdoc $(GSDOC_FILES)
 
 endif # GSDOC_FILES
+
+#
+# processing of agsdoc files
+#
+ifneq ($(AGSDOC_FILES),)
+
+INTERNAL_AGSDOCFLAGS = $(AGSDOC_FLAGS)
+INTERNAL_AGSDOCFLAGS += -Project $(INTERNAL_doc_NAME)
+INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(INTERNAL_doc_NAME)
+
+internal-doc-all:: before-$(TARGET)-all \
+                   generate-autogsdoc \
+                   after-$(TARGET)-all
+
+generate-autogsdoc:
+	$(MKDIRS) $(INTERNAL_doc_NAME); \
+	autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
+
+endif # AGSDOC_FILES
 
 #
 # Compilation of LaTeX files
@@ -316,6 +336,25 @@ internal-doc-uninstall::
 endif # GSDOC_FILES
 
 #
+# autogsdoc installation
+#
+ifneq ($(JAVADOC_FILES),)
+
+internal-doc-install:: 
+	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)
+	$(TAR) cf - $(INTERNAL_doc_NAME) |  \
+	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) \
+	      $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)
+endif
+
+internal-doc-uninstall:: 
+	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)
+
+endif # AUTOGSDOC_FILES
+
+#
 # LaTeX installation
 #
 ifneq ($(LATEX_FILES),)
@@ -394,6 +433,9 @@ internal-doc-clean::
 	         $(INTERNAL_doc_NAME)/*
 ifneq ($(GSDOC_FILES),)
 	@ -rm -f $(GSDOC_OBJECT_FILES)
+endif
+ifneq ($(AGSDOC_FILES),)
+	@ -rm -Rf $(INTERNAL_doc_NAME)
 endif
 ifneq ($(LATEX_FILES),)
 	@ rm -f *.aux

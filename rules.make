@@ -547,6 +547,8 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   HEADER_FILES="$($(basename $(basename $*))_HEADER_FILES)" \
   TEXI_FILES="$($(basename $(basename $*))_TEXI_FILES)" \
   GSDOC_FILES="$($(basename $(basename $*))_GSDOC_FILES)" \
+  AGSDOC_FILES="$($(basename $(basename $*))_AGSDOC_FILES)" \
+  AGSDOC_FLAGS="$($(basename $(basename $*))_AGSDOC_FLAGS)" \
   LATEX_FILES="$($(basename $(basename $*))_LATEX_FILES)" \
   JAVADOC_FILES="$($(basename $(basename $*))_JAVADOC_FILES)" \
   JAVADOC_SOURCEPATH="$($(basename $(basename $*))_JAVADOC_SOURCEPATH)" \
