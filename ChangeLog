@@ -24,7 +24,7 @@ Wed Jun 21 12:35:43 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* GNUmakefile.in (MAKE_FILES): Added java.make.
 	* java.make: New makefile for compiling not-GNUstep java 
-	application.
+	packages.
 
 Tue Jun 20 19:59:19 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
