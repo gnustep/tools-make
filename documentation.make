@@ -103,16 +103,10 @@ internal-textdoc-all:: before-all before-$(TARGET)-all \
                    after-$(TARGET)-all after-all
 
 $(INTERNAL_doc_NAME).info: $(TEXI_FILES)
-	for i in $(TEXI_FILES); do \
-           cp $$i `basename $$i .tmpl.texi`.texi ; \
-	done
 	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
 		-o $@ $(INTERNAL_doc_NAME).texi
 
 $(INTERNAL_doc_NAME).dvi: $(TEXI_FILES)
-	for i in $(TEXI_FILES); do \
-	  cp $$i `basename $$i .tmpl.texi`.texi ; \
-	done
 	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(INTERNAL_doc_NAME).texi
 
 $(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
@@ -120,22 +114,12 @@ $(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
 		$(INTERNAL_doc_NAME).dvi -o $@
 
 $(INTERNAL_doc_NAME)_toc.html: $(TEXI_FILES)
-	for i in $(TEXI_FILES); do \
-	   sed -e 's,@email{\([^}]*\)},<A HREF="mailto:\1">\1</A>,g' \
-		$$i \
-		| sed -e 's,@url{\([^}]*\)},<A HREF="\1">\1</A>,g' \
-		| sed -e 's,^ *$$,@br{},g' \
-		> `basename $$i .tmpl.texi`.texi ; \
-	done
 	$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
 		$(INTERNAL_doc_NAME).texi
 
 $(INTERNAL_textdoc_NAME): $(TEXI_FILES) $(TEXT_MAIN)
-	for i in $(TEXI_FILES) $(TEXT_MAIN); do \
-           cp $$i `basename $$i .tmpl.texi`.texi ; \
-	done
 	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
-		-o $@ `basename $(TEXT_MAIN) .tmpl.texi`.texi
+		-o $@ $(TEXT_MAIN)
 
 endif # TEXI_FILES
 
@@ -303,11 +287,6 @@ internal-doc-clean::
 	rm -f $(INTERNAL_doc_NAME).ps.gz
 	rm -f $(INTERNAL_doc_NAME).tar.gz
 	rm -f $(INTERNAL_doc_NAME)/*
-ifneq ($(TEXI_FILES),)
-	for i in $(TEXI_FILES); do \
-		rm -f `basename $$i .tmpl.texi`.texi ; \
-	done
-endif
 ifneq ($(GSDOC_FILES),)
 	for i in $(GSDOC_FILES); do \
 		rm -f `basename $$i .gsdoc`.html ; \
@@ -316,11 +295,6 @@ endif
 
 internal-textdoc-clean::
 	rm -f $(INTERNAL_textdoc_NAME)
-ifneq ($(TEXI_FILES),)
-	for i in $(TEXI_FILES) $(TEXT_MAIN); do \
-		rm -f `basename $$i .tmpl.texi`.texi ; \
-	done
-endif
 ifneq ($(GSDOC_FILES),)
 	for i in $(GSDOC_FILES); do \
 		rm -f `basename $$i .gsdoc`.html ; \

@@ -1,3 +1,8 @@
+2000-11-06  Adam Fedor  <fedor@gnu.org>
+
+	* documentation.make: Remove conversion of tmpl.texi files to
+	texi files (no longer necessary).
+
 Mon Nov  6 16:43:22 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (install): Create the
