@@ -66,10 +66,6 @@ internal-palette-all:: before-$(GNUSTEP_INSTANCE)-all \
                        build-palette \
                        after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 PALETTE_DIR_NAME := $(GNUSTEP_INSTANCE).palette
 PALETTE_FILE := $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
 PALETTE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(PALETTE_DIR_NAME)/Resources/$(d))

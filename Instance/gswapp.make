@@ -129,10 +129,6 @@ internal-gswapp-all:: \
 	$(GSWAPP_DIR_NAME)/$(GNUSTEP_INSTANCE).sh \
 	after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 $(GNUSTEP_INSTANCE).iconheader:
 	@(echo "F	$(GNUSTEP_INSTANCE).$(GSWAPP_EXTENSION)	$(GNUSTEP_INSTANCE)	$(GSWAPP_EXTENSION)"; \
 	  echo "F	$(GNUSTEP_INSTANCE)	$(GNUSTEP_INSTANCE)	app") >$@

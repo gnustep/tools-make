@@ -57,10 +57,6 @@ endif
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
 	$(OBJ_MERGE_CMD)
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 ifneq ($(FRAMEWORK_NAME),)
 .PHONY: internal-subproject-build-headers       \
         framework-components \

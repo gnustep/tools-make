@@ -95,10 +95,6 @@ internal-bundle-all:: before-$(GNUSTEP_INSTANCE)-all \
                       build-macosx-bundle \
                       after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 BUNDLE_DIR_NAME := $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := \
     $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)

@@ -86,10 +86,6 @@ ALL_TEST_LIBRARY_LIBS =						\
 internal-testlib-all:: before-$(GNUSTEP_INSTANCE)-all $(GNUSTEP_OBJ_DIR) \
 	$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE) after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@	\
 		$(OBJ_FILES_TO_LINK)		\

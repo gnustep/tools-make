@@ -96,10 +96,6 @@ internal-service-all:: before-$(GNUSTEP_INSTANCE)-all \
                    service-resource-files \
                    after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 

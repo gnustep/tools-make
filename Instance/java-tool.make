@@ -54,10 +54,6 @@ internal-java_tool-all:: before-$(GNUSTEP_INSTANCE)-all \
                            shared-instance-java-all \
                            after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 internal-java_tool-install:: shared-instance-java-install \
                         $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)
 

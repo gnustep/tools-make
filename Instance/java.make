@@ -79,10 +79,6 @@ internal-java_package-all:: before-$(GNUSTEP_INSTANCE)-all \
                                shared-instance-java-all \
                                after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 internal-java_package-install:: shared-instance-java-install
 
 internal-java_package-clean:: shared-instance-java-clean

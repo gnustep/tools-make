@@ -138,10 +138,6 @@ $(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
 
 endif # TEXI_FILES
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 
 #
 # Compilation of gsdoc files

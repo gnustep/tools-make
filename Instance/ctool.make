@@ -84,10 +84,6 @@ $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(C_OBJ_FILES) \
 	      $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 	      $(ALL_TOOL_LIBS)
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 internal-ctool-install:: $(CTOOL_INSTALLATION_DIR)
 	$(INSTALL_PROGRAM) -m 0755 \
 	                   $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \

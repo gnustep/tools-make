@@ -87,10 +87,6 @@ internal-gswbundle-all:: before-$(GNUSTEP_INSTANCE)-all \
                       build-bundle \
                       after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 GSWBUNDLE_DIR_NAME := $(GNUSTEP_INSTANCE:=$(GSWBUNDLE_EXTENSION))
 GSWBUNDLE_FILE := \
     $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)

@@ -21,6 +21,18 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+
+# Every project should have its internal-xxx-all depend first on
+# before-$(GNUSTEP_INSTANCE)-all, and last on
+# after-$(GNUSTEP_INSTANCE)-all.  We declare them here, empty, so that
+# the user can add them if he wants, but if he doesn't, make doesn't
+# complain about missing targets.
+
+before-$(GNUSTEP_INSTANCE)-all::
+
+after-$(GNUSTEP_INSTANCE)-all::
+
+
 #
 # The list of Objective-C source files to be compiled
 # are in the OBJC_FILES variable.

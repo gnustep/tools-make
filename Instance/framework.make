@@ -123,10 +123,6 @@ internal-framework-all:: before-$(GNUSTEP_INSTANCE)-all \
                          build-framework \
                          after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 FRAMEWORK_RESOURCE_DIRS = $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Resources/,$(RESOURCE_DIRS))
 FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/,$(WEBSERVER_RESOURCE_DIRS))
 

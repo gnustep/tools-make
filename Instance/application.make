@@ -104,10 +104,6 @@ internal-app-all:: before-$(GNUSTEP_INSTANCE)-all \
                    app-resource-files \
                    after-$(GNUSTEP_INSTANCE)-all
 
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
-
 $(GNUSTEP_INSTANCE).iconheader:
 	@(echo "F	$(GNUSTEP_INSTANCE).$(APP_EXTENSION)	$(GNUSTEP_INSTANCE)	$(APP_EXTENSION)"; \
 	  echo "F	$(GNUSTEP_INSTANCE)	$(GNUSTEP_INSTANCE)	app") >$@
@@ -125,10 +121,6 @@ internal-app-all:: before-$(GNUSTEP_INSTANCE)-all \
                    app-resource-files \
                    app-localized-resource-files \
                    after-$(GNUSTEP_INSTANCE)-all
-
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
 
 $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
