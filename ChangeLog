@@ -1,3 +1,8 @@
+Thu Apr 29 14:04:61 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Instance/Documentation/autogsdoc.make (internal-doc-distclean):
+	Added rule, to make sure a 'make distclean' actually cleans.
+
 2004-04-27  Adam Fedor  <fedor@gnu.org>
 
 	* clean_os.sh: Report netbsd1.6* and netbsd2* as netbsdelf.
