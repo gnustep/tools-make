@@ -1,3 +1,8 @@
+Sun Feb  4 23:19:38 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* debian/*: Applied patches by Matthias Klose <doko@debian.org> to
+	make it more debian compliant.
+
 2001-01-30  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Redo setting prefix again! set root_prefix to
