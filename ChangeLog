@@ -1,3 +1,7 @@
+Wed Mar 14 19:16:01 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* aggregate.make: Micro optimization: Replace sed with subst.
+
 Wed Mar 14 18:49:53 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in, GNUstep.csh.in: Removed references to the old
