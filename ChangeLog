@@ -1,3 +1,8 @@
+Thu Feb 24 21:12:00 2000  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* bundle.make: fixes to permit use of BUNDLE_INSTALL_DIR variable.
+	patch by jagapen@whitewater.chem.wisc.edu
+
 2000-02-23  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Make separate sytem root the default. Disable by

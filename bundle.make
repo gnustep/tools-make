@@ -85,6 +85,9 @@ BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resourc
 ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
 endif
+ifeq ($(BUNDLE_INSTALL_DIR),)
+  BUNDLE_INSTALL_DIR := $(GNUSTEP_BUNDLES)
+endif
 
 build-bundle-dir::
 	@$(MKDIRS) \
@@ -124,10 +127,12 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  echo "}") >$@
 
 internal-bundle-install:: internal-install-dirs
-	tar cf - $(BUNDLE_DIR_NAME) | (cd $(GNUSTEP_BUNDLES); tar xf -)
+	tar cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); tar xf -)
+
 
 internal-install-dirs::
-	$(MKDIRS) $(GNUSTEP_BUNDLES)
+	$(MKDIRS) $(BUNDLE_INSTALL_DIR)
+
 
 $(BUNDLE_DIR_NAME)/Resources $(GNUSTEP_BUNDLES)::
 	@$(MKDIRS) $@
