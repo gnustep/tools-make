@@ -72,17 +72,15 @@ endif
 # included when make is invoked the second time from the %.build rule (see
 # rules.make).
 SERVICE_DIR_NAME = $(GNUSTEP_INSTANCE:=.service)
-SERVICE_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(SERVICE_DIR_NAME)/Resources/$(d))
 
 #
 # Internal targets
 #
 SERVICE_FILE = $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
 
-
-$(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
-	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
-		$(ALL_SERVICE_LIBS)
+# Copy any resources into $(SERVICE_DIR_NAME)/Resources
+GNUSTEP_SHARED_INSTANCE_BUNDLE_PATH = $(SERVICE_DIR_NAME)/Resources
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 #
 # Compilation targets
@@ -91,21 +89,17 @@ internal-service-all:: before-$(GNUSTEP_INSTANCE)-all \
                    $(GNUSTEP_OBJ_DIR) \
                    $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
                    $(SERVICE_FILE) \
-                   service-resource-files \
+                   $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist \
+                   shared-instance-bundle-all \
                    after-$(GNUSTEP_INSTANCE)-all
+
+$(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
+	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
+		$(ALL_SERVICE_LIBS)
 
 $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 
-$(SERVICE_RESOURCE_DIRS):
-	$(MKDIRS) $(SERVICE_RESOURCE_DIRS)
-
-service-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist \
-                     $(SERVICE_RESOURCE_DIRS)
-ifneq ($(strip $(RESOURCE_FILES)),)
-	@(echo "Copying resources into the service wrapper..."; \
-	cp -r $(RESOURCE_FILES) $(SERVICE_DIR_NAME)/Resources)
-endif
 
 # Allow the gui library to redefine make_services to use its local one
 ifeq ($(GNUSTEP_MAKE_SERVICES),)
@@ -121,8 +115,9 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 	if $(GNUSTEP_MAKE_SERVICES) --test $@; then : ; else rm -f $@; false; \
 	fi
 
-$(SERVICE_DIR_NAME)/Resources:
-	@$(MKDIRS) $@
+#
+# Install targets
+#
 
 $(GNUSTEP_SERVICES):
 	$(MKINSTALLDIRS) $@
