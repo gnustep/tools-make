@@ -1,3 +1,9 @@
+Mon Mar  8 13:20:38 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* openapp.in: On Apple, look for the executable in the new location.
+	* debugapp.in: On Apple, look for the executable in the new
+	location.  Also, removed obsolete nextstep support code.
+
 2004-03-07  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/machines.texi: Updates, add URL's for README's.
