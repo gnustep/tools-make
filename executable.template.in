@@ -124,10 +124,10 @@ fi
 app=`echo $app | sed 's/\.[a-z]*$//'`
 app=`basename $app`
 appname=
-if [ -f $full_appname/Resources/Info-gnustep.plist ]; then
+if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
   appname=`grep NSExecutable $full_appname/Resources/Info-gnustep.plist`
-  if [ -n '$appname' ]; then
-    appname=`echo '$appname' | sed 's,\", ,g' | awk '{print $3}'`
+  if [ -n "$appname" ]; then
+    appname=`echo "$appname" | tr -d '\";=' | awk '{print $2}'`
   fi
 fi
 if [ -z "$appname" ]; then
