@@ -1,14 +1,23 @@
 NEWS
 ****
 
-The currently released version is `1.9.0'.
+The currently released version is `1.9.1'.
+
+Changes in version `1.9.1'
+==========================
+
+   * Remove `--disable-import' option
+
+   * README.Darwin for darwin/MacOSX install
+
+   * Framework version and naming clarified.
 
 Changes in version `1.9.0'
 ==========================
 
    * Support for building in a separate build dir.
 
-   * Add -enable-string-makefiles option to configure
+   * Add `--enable-strip-makefiles' option to configure
 
    * List of classes in a framework gets written to the plist file.
 

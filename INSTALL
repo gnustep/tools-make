@@ -89,10 +89,10 @@ Alternate Library Setup
    You can specify compilation of alternate libraries by using the
 with-library-combo option.
 
-     ./configure --with-library-combo=nx-gnu-gnu
+     ./configure --with-library-combo=apple-gnu-gnu
 
-   to compile with Apple's (NexT's) runtime on Darwin, for example. See
-the DESIGN document for more examples of the variety of library combos.
+   to compile with Apple's runtime on Darwin, for example. See the
+DESIGN document for more examples of the variety of library combos.
 
 Alternate Thread Library
 ------------------------
@@ -112,25 +112,31 @@ variable when calling configure:
 
      CPPFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
 
-Warnings for deprecated #import
--------------------------------
+Warnings for #import
+--------------------
 
-   The #import directive, often found in legacy Objective-C code from
-the NeXTstep era - and more recently on code from the Apple MacOS X
-Cocoa environment - is deprecated.  You should use #include instead
-whenever possible, and even if you use #import, you should protect all
-your headers against multiple inclusions.  The GCC compiler
-automatically emits a warning whenever you use #import.  Because many
-users are annoyed by these warnings and want to use #import (usually for
-compatibility with other systems), gnustep-make can disable these
-warnings:
-     ./configure --enable-import
-   If you are a legacy or MacOS X user, and wonder why #import is
-deprecated, please search the web and the GCC and GNUstep mailing list
-archives - there are very precise and sound technical reasons.
+   Up until gcc 3.4, the #import directive was not implemented
+correctly.  As a result, the GCC compiler automatically emitted a
+warning whenever #import was used.  As of gcc 3.4, this problem has
+been fixed, so presumable, this warning is no longer emitted when code
+is compiled. If you are using an early compiler, you can supress these
+warnings by adding `-Wno-import' to `CPPFLAGS' in the config.make file.
 
-Configuring the GNUstep makefile package for a cross-compile target
--------------------------------------------------------------------
+Configuring for a non-flattened structure
+-----------------------------------------
+
+   GNUstep is normally configured to support a single target/combo. If
+you are interested in supporting more than one target and/or combo,
+it's possible to configure GNUstep to use a non-'flattened' directory
+structure.  You do this by supplying the `--disable-flattened' argument
+to configure.  You might also want to supply the
+`--enable-multi-platform' option.
+
+   In a flattened structure, files are stored at the top-level rather
+than in a `$(GNUSTEP_CPU)/$(GNUSTEP_OS)/$(LIBRARY_COMBO)' subdirectory.
+
+Configuring for a cross-compile target
+--------------------------------------
 
    By default when you run configure, it assumes that you want to create
 executables for the same host that you are compiling on; however, the
@@ -146,31 +152,18 @@ platform for cross-compiling:
      ./configure --target=i386-mingw32
      make install
 
-   Note that configuring and installing for a cross-compile target does
-not eliminate or overwrite the files for any other targets that you may
-have configured.  So if you wish to setup the GNUstep makefile package
-for multiple targets then just perform the above steps multiple times.
+   GNUstep normally is configured to work with only one target. To work
+with multiple targets, you'll need to add `--disable-flattened' and
+`--enable-multi-platform' to the configure flags.  Files for the
+different targets will not be overwritten when you configure and install
+the make package several times.
 
-     ./configure --target=i386-mingw32
+     ./configure --disable-flattened --enable-multi-platform --target=i386-mingw32
      make install
-     ./configure --target=sparc-solaris2.5
+     ./configure --disable-flattened --enable-multi-platform --target=sparc-solaris2.5
      make install
-     ./configure --target=alpha-linux-gnu
+     ./configure --disable-flattened --enable-multi-platform --target=alpha-linux-gnu
      make install
-
-Configuring the GNUstep makefile package for a flattened structure
-------------------------------------------------------------------
-
-   On systems where you know you are only interested in supporting a
-single operating system, cpu type, and library combination, it's
-possible to configure GNUstep to use a 'flattened' directory structure.
-You do this by supplying the '-enable-flattened' argument to configure.
-
-   In a flattened structure, files are stored at the top-level rather
-than in a `$(GNUSTEP_CPU)/$(GNUSTEP_OS)/$(LIBRARY_COMBO)' subdirectory.
-
-   You lose a lot of versatility with this layout, but it's simpler
-(less intimidating) for naive users to handle.
 
 Installation
 ============

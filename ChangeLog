@@ -1,6 +1,14 @@
-2004-02-28  Quentin Mathé  <qmathe@club-internet.fr>
+2004-02-28  Adam Fedor  <fedor@gnu.org>
 
-	* Documentation/README.Darwin: Update with the detailed and complete installation process on Mac OS X and Darwin (with the help of Nicolas Roard).
+	* Version 1.9.1
+	* Documentation/announce.texi, readme.texi, install.texi, news.texi:
+	Update.
+
+2004-02-28  Quentin Mathe  <qmathe@club-internet.fr>
+
+	* Documentation/README.Darwin: Update with the detailed and
+	complete installation process on Mac OS X and Darwin (with the
+	help of Nicolas Roard).
 
 2004-02-23  Adam Fedor  <fedor@gnu.org>
 

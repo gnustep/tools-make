@@ -234,7 +234,9 @@ warning: using `#import' is not recommended
 Up until gcc 3.4, the #import directive was not implemented correctly.
 As a result, the GCC compiler automatically emitted a warning whenever
 #import was used.  As of gcc 3.4, this problem has been fixed, so
-presumably, this warning is no longer emitted when code is compiled.
+presumably, this warning is no longer emitted when code is compiled. If
+you are using an early compiler, you can supress these warnings by adding
+@code{-Wno-import} to your include (cpp) flags.
 
 @c ****************************************************************
 @node Compatibility and Layout, Troubleshooting, Compiling and Installing, Top

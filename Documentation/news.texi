@@ -9,6 +9,16 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.9.1}
+
+@itemize @bullet
+@item Remove @code{--disable-import} option
+@item README.Darwin for darwin/MacOSX install
+@item Framework version and naming clarified.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.9.0}
 
 @itemize @bullet
@@ -16,8 +26,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item Add @code{--enable-strip-makefiles} option to configure
 @item List of classes in a framework gets written to the plist file.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.8.0}
 

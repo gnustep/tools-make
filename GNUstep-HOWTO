@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 23 November 2003
+   Last Update: 27 February 2004
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -50,27 +50,16 @@ are required.
      GPL. As a special exception, if used in GNUstep or in derivate
      works of GNUstep, the included parts of ffcall are under GNU LGPL.
 
-`libffi library (OPTIONAL)'
+`libffi library (ALTERNATIVE RECOMMENDATION)'
      This is a library that provides stack frame handling for
      NSInvocation and NSConnection similar to ffcall.  Use this instead
      of ffcall. You don't need both.
-
-`WindowMaker (Version >= 0.62) (OPTIONAL)'
-     GNUstep and WindowMaker work together to provide a consistant
-     interface.  Although it is not required, GNUstep will work much
-     better if you use it with the WindowMaker window manager. In
-     addition, WindowMaker includes some functionality that GNUstep
-     uses that would otherwise not be available.  Get WindowMaker from
-     <http://www.windowmaker.org>.
 
 `libxml2 (RECOMMENDED)'
      The libxml library (Version 2) is used to translate some of the
      documentation for GNUstep and to provide suport for MacOS-X
      compatible XML-based property-lists. It is recommended but not
      currently required.
-
-`The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)'
-     The GUI library uses this to handle loading and saving TIFF images.
 
 `openssl (OPTIONAL)'
      The openssl library is used to provide support for https
@@ -88,6 +77,21 @@ are required.
      separate libiconv library from
      <http://clisp.cons.org/~haible/packages-libiconv.html>. However,
      neither one is required to use GNUstep.
+
+`The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)'
+     The GUI library uses this to handle loading and saving TIFF images.
+
+`The JPEG library (libjpeg) (RECOMMENDED)'
+     The GUI library uses this to handle loading JPEG images.
+
+`The PNG library (libpng) (RECOMMENDED)'
+     The GUI library uses this to handle loading PNG images.
+
+`WindowMaker (Version >= 0.62) (OPTIONAL)'
+     GNUstep and WindowMaker work together to provide a consistant
+     interface.  Although it is not required, GNUstep will work much
+     better if you use it with the WindowMaker window manager.  Get
+     WindowMaker from <http://www.windowmaker.org>.
 
 `gnustep-objc package (for gcc version < 3.0 ONLY) (RECOMMENDED)'
      Note: Do not install this library unless you are sure you need it.
@@ -306,10 +310,12 @@ Usage is:
 Machine Specific Instructions
 *****************************
 
-   \input texinfo    Below is a list of machines that people have
-attempted to compile GNUstep on. GNUstep compiles with little or no
-trouble on many of the more popular operating systems. Some machines
-marked with _Unstable_ may have some trouble or may not work at all.
+   \input texinfo
+
+   Below is a list of machines that people have attempted to compile
+GNUstep on. GNUstep compiles with little or no trouble on many of the
+more popular operating systems. Some machines marked with _Unstable_
+may have some trouble or may not work at all.
 
    A recommended compiler is listed for each machine, if known. You
 should try to use the recommended compiler for compiling GNUstep, as
@@ -365,7 +371,7 @@ Darwin 6.x/PowerPC
 ==================
 
 `Recommended compiler'
-     gcc 3.2.2
+     gcc 3.3.2. Older versions will not compile on Darwin.
 
      Default compiler has some odd memory(?) related problems.  Use the
      GNU runtime. Download the gcc compiler and configure it with
@@ -406,7 +412,46 @@ Debian/DEC-Alpha
      Unknown
 
 `Special Instructions'
+     None
+
+Debian/i386
+===========
+
+   Tested on sid.
+`Recommended compiler'
      Unknown
+
+`Extra libs needed'
+     Unknown
+
+`Special Instructions'
+     None
+
+Debian/PowerPC
+==============
+
+   Tested on sid.
+`Recommended compiler'
+     Unknown
+
+`Extra libs needed'
+     Unknown
+
+`Special Instructions'
+     None
+
+Debian/SPARC
+============
+
+   Tested on sid.
+`Recommended compiler'
+     Unknown
+
+`Extra libs needed'
+     Unknown
+
+`Special Instructions'
+     None
 
 FreeBSD 4.x
 ===========
@@ -488,16 +533,6 @@ FreeBSD 2.x (_Unstable!_)
      FreeBSD 3.x.  You need to use gmake not make to compile the
      GNUstep packages.
 
-GNU-Linux/PowerPC (LinuxPPC, Yellowdog)
-=======================================
-
-`Recommended compiler'
-     Standard
-
-`Extra libs needed'
-     Standard (ffcall or libffi)
-
-`Special Instructions'
 Irix 6.5/MIPS
 =============
 
@@ -524,34 +559,22 @@ MkLinux/PowerPC (_Obsolete_)
    This configuration is no longer being tested, but it may still work.
 
 `Recommended compiler'
-     egcs-2.90.25 980302 (egcs-1.0.2 prerelease) which comes standard
-     with DR 3.
+     gcc 3.x allthough earlier ones should work if you also install
+     gnustep-objc
 
 `Extra libs needed'
      None.
 
 `Special Instructions'
-     Comes with a good version of gcc.  Seems to compile and install
-     ok, althouth DR3 has an old version of glibc, which requires some
-     workarounds which should be taken care of in the configuration.
-     Not completely tested, so some aspects, particular object
-     invocations and DO may not work properly.
+     DR3 comes with a good version of gcc.  Seems to compile and
+     install ok, althouth DR3 has an old version of glibc, which
+     requires some workarounds which should be taken care of in the
+     configuration. Not completely tested, so some aspects, particular
+     object invocations and DO may not work properly.
 
      If you want threads, you'll probably have to get the latest gcc
      compiler and glibc library (which has the threads library) and
      install both.
-
-RedHat/Intel
-============
-
-`Recommended compiler'
-     Standard
-
-`Extra libs needed'
-     Standard (ffcall or libffi)
-
-`Special Instructions'
-     None
 
 NetBSD
 ======
@@ -608,6 +631,18 @@ OSF Alpha  (_Unstable!_)
      you may need to link with a library twice. For instance, add an
      extra -lgnustep-gui in ADDTIONAL_TOOL_LIBS in the
      GNUmakefile(.preamble).
+
+RedHat/Intel
+============
+
+`Recommended compiler'
+     Standard
+
+`Extra libs needed'
+     Standard (ffcall or libffi)
+
+`Special Instructions'
+     None
 
 Slackware/Intel
 ===============
@@ -703,11 +738,13 @@ Suse 6.x/Intel
 Suse/Intel
 ==========
 
-   GNUstep has been tested on version 7.0, 8.0, 8.1, and 8.2 of Suse
+   GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, and 9.0 of
+Suse
 
 `Recommended compiler'
-     Standard. gcc2.95.x, gcc3.0.x, 3.1 and 3.2 work, but 2.95 is
-     faster.  Compile with -threads-enabled (non-standard).
+     The default compiler that comes with Susu is fine. Also gcc2.95.x,
+     gcc3.0.x, 3.1 and 3.2 work, but 2.95 is faster.  Compile with
+     -threads-enabled (non-standard).
 
 `Extra libs needed'
      None
@@ -718,7 +755,7 @@ Suse/Intel
 Suse 7.x/PPC
 ============
 
-   GNUstep has been tested on version 7.0 of Suse
+   GNUstep has been tested on version 7.0 of Suse/PPC
 
 `Recommended compiler'
      Standard. gcc2.95.x, gcc3.0.x and gc3.1 work, but 2.95 is faster.
@@ -825,13 +862,14 @@ Windows with CYGWIN (_Unstable!_)
      gcc 2.95.3 (Cygwin release 1.1.8) or later
 
 `Extra libs needed'
-     Objective-C library DLL (<ftp://ftp.gnustep.org/pub/gnustep/libs>)
-     for shared libs. It's a good idea to remove the libobjc.a that
-     comes with gcc (gcc -v for location) so that it isn't accidentally
-     found.  For ffcall, you should get version 1.8b or above (the
-     earlier ones don't compile). There are still some problems with
-     structure passing, but that is generally not supportred on any
-     architecture. libffi not supported.
+     Objective-C library DLL
+     (<ftp://ftp.gnustep.org/pub/gnustep/windows/cygwin>) for shared
+     libs. It's a good idea to remove the libobjc.a that comes with gcc
+     (gcc -v for location) so that it isn't accidentally found.  For
+     ffcall, you should get version 1.8b or above (the earlier ones
+     don't compile). There are still some problems with structure
+     passing, but that is generally not supportred on any architecture.
+     libffi also works.
 
 `Special Instructions'
      On later versions of Cygwin you may be required to include the
@@ -858,6 +896,16 @@ Windows with MinGW (_Unstable! As always..._)
      Win98 machines and earlier are very buggy and are not supported.
      Native GUI backend is alpha version.
 
+Yellowdog/PowerPC
+=================
+
+`Recommended compiler'
+     Standard
+
+`Extra libs needed'
+     Standard (ffcall or libffi)
+
+`Special Instructions'
 Getting Libraries via Anonymous CVS
 ***********************************
 
