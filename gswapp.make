@@ -215,9 +215,9 @@ $(GSWAPP_DIR_NAME)/$(GSWAPP_NAME).sh:
 
 endif
 
-gswapp-components:: $(GSWAPP_DIR_NAME)
+gswapp-components:: $(GSWAPP_DIR_NAME)/Resources
 ifneq ($(strip $(COMPONENTS)),)
-	echo "Linking components into the application wrapper..."; \
+	@ echo "Linking components into the application wrapper..."; \
         cd $(GSWAPP_DIR_NAME)/Resources; \
         for component in $(COMPONENTS); do \
 	  if [ -d ../../$$component ]; then \
@@ -226,15 +226,16 @@ ifneq ($(strip $(COMPONENTS)),)
         done; \
 	echo "Linking localized components into the application wrapper..."; \
         for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then \
-	     $(MKDIRS) $$l.lproj; fi; \
-	     cd $$l.lproj; \
-	     for f in $(COMPONENTS); do \
-	       if [ -d ../../../$$l.lproj/$$f ]; then \
-	          $(LN_S) -f ../../../$$l.lproj/$$f .;\
-	        fi;\
+	  if [ -d ../../$$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj; \
+	    cd $$l.lproj; \
+	    for f in $(COMPONENTS); do \
+	      if [ -d ../../../$$l.lproj/$$f ]; then \
+	        $(LN_S) -f ../../../$$l.lproj/$$f .;\
+	      fi;\
             done;\
-	cd ..; \
+	    cd ..; \
+	  fi;\
 	done
 endif
 
@@ -246,28 +247,32 @@ $(GSWAPP_WEBSERVER_RESOURCE_DIRS):
 gswapp-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources \
                            gswapp-webresource-dir
 ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
-	echo "Linking webserver resources into the application wrapper..."; \
+	@echo "Linking webserver resources into the application wrapper..."; \
         cd $(GSWAPP_DIR_NAME)/WebServerResources; \
         for ff in $(WEBSERVER_RESOURCE_FILES); do \
 	  $(LN_S) -f ../../WebServerResources/$$ff .;\
-        done;
+        done
 endif
 
 gswapp-localized-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources gswapp-webresource-dir
 ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
-	echo "Linking localized web resources into the application wrapper..."; \
-        cd $(GSWAPP_DIR_NAME)/WebServerResources; \
-        for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
-	  cd $$l.lproj; \
-	  for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-            if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
-              if [ ! -r $$f ]; then \
-	        $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
+	@ echo "Linking localized web resources into the application wrapper..."; \
+	cd $(GSWAPP_DIR_NAME)/WebServerResources; \
+	for l in $(LANGUAGES); do \
+	  if [ -d ../../WebServerResources/$$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj;\
+	    cd $$l.lproj; \
+	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
+	      if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
+	        if [ ! -r $$f ]; then \
+	          $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
+	        fi;\
 	      fi;\
-	    fi;\
-	  done;\
-	  cd ..; \
+	    done;\
+	    cd ..; \
+	  else\
+	   echo "Warning - WebServerResources/$$l.lproj not found - ignoring";\
+	  fi;\
 	done
 endif
 
@@ -279,7 +284,7 @@ $(GSWAPP_RESOURCE_DIRS):
 gswapp-resource-files:: $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist \
                         gswapp-resource-dir
 ifneq ($(strip $(RESOURCE_FILES)),)
-	echo "Linking resources into the application wrapper..."; \
+	@ echo "Linking resources into the application wrapper..."; \
         cd $(GSWAPP_DIR_NAME)/Resources/; \
         for ff in $(RESOURCE_FILES); do \
 	  echo $$ff; \
@@ -290,18 +295,22 @@ endif
 gswapp-localized-resource-files:: $(GSWAPP_DIR_NAME)/Resources \
                                   gswapp-resource-dir
 ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-	echo "Linking localized resources into the application wrapper..."; \
+	@ echo "Linking localized resources into the application wrapper..."; \
         cd $(GSWAPP_DIR_NAME)/Resources; \
         for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
-	  cd $$l.lproj; \
-	  for f in $(LOCALIZED_RESOURCE_FILES); do \
-            if [ -f ../../../$$l.lproj/$$f ]; then \
-	      echo $$l.lproj/$$ff; \
-	      $(LN_S) -f ../../../$$l.lproj/$$f .;\
-	    fi;\
-	  done;\
-	  cd ..; \
+	  if [ -d ../../$$l.lproj ]; then 
+	    $(MKDIRS) $$l.lproj; \
+	    cd $$l.lproj; \
+	    for f in $(LOCALIZED_RESOURCE_FILES); do \
+              if [ -f ../../../$$l.lproj/$$f ]; then \
+	        echo $$l.lproj/$$ff; \
+	        $(LN_S) -f ../../../$$l.lproj/$$f .;\
+	      fi;\
+	    done;\
+	    cd ..; \
+	  else \
+	   echo "Warning - $$l.lproj not found - ignoring";\
+	  fi;\
 	done
 endif
 
