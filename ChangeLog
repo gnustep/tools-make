@@ -1,3 +1,8 @@
+Fri Mar 22 16:58:33 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Documentation/install.texi: Tidied part on --disable-import.
+	* INSTALL: Regenerated.
+
 2002-03-20 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/GNUstep-howto.texi: Correct and expand on the
