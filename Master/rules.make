@@ -225,15 +225,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   INTERNAL_$${type}_NAME=$$instance \
   TARGET=$$instance \
   HEADER_FILES="$($(basename $(basename $*))_HEADER_FILES)" \
-  TEXI_FILES="$($(basename $(basename $*))_TEXI_FILES)" \
-  GSDOC_FILES="$($(basename $(basename $*))_GSDOC_FILES)" \
-  AGSDOC_FILES="$($(basename $(basename $*))_AGSDOC_FILES)" \
-  AGSDOC_FLAGS="$($(basename $(basename $*))_AGSDOC_FLAGS)" \
-  LATEX_FILES="$($(basename $(basename $*))_LATEX_FILES)" \
-  JAVADOC_FILES="$($(basename $(basename $*))_JAVADOC_FILES)" \
-  JAVADOC_SOURCEPATH="$($(basename $(basename $*))_JAVADOC_SOURCEPATH)" \
-  DOC_INSTALL_DIR="$($(basename $(basename $*))_DOC_INSTALL_DIR)" \
-  TEXT_MAIN="$($(basename $(basename $*))_TEXT_MAIN)" \
   HEADER_FILES_DIR="$($(basename $(basename $*))_HEADER_FILES_DIR)" \
   HEADER_FILES_INSTALL_DIR="$($(basename $(basename $*))_HEADER_FILES_INSTALL_DIR)" \
   COMPONENTS="$($(basename $(basename $*))_COMPONENTS)" \
