@@ -25,13 +25,29 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+# FIXME - this file has not been updated to use Shared/bundle.make
+# because it is using symlinks rather than copying resources.  It also
+# has 'COMPONENTS' (what's that ?)  it looks like it's the same as
+# 'RESOURCE_FILES', but actually directories rather than simple files.
+
+# override which can be removed once Master/rules.make has been updated
+# not to push them down to submakes
+override COMPONENTS = $($(GNUSTEP_INSTANCE)_COMPONENTS)
+override LANGUAGES = $($(GNUSTEP_INSTANCE)_LANGUAGES)
+override WEBSERVER_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_FILES)
+override LOCALIZED_WEBSERVER_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_LOCALIZED_WEBSERVER_RESOURCE_FILES)
+override WEBSERVER_RESOURCE_DIRS = $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_DIRS)
+override LOCALIZED_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES)
+override RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_RESOURCE_FILES)
+override RESOURCE_DIRS = $($(GNUSTEP_INSTANCE)_RESOURCE_DIRS)
+
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 ifeq ($(strip $(GSWBUNDLE_EXTENSION)),)
 GSWBUNDLE_EXTENSION = .gswbundle
 endif
 
-GSWBUNDLE_LD= $(BUNDLE_LD)
+GSWBUNDLE_LD = $(BUNDLE_LD)
 GSWBUNDLE_LDFLAGS = $(BUNDLE_LDFLAGS)
 
 ifeq ($(GSWBUNDLE_INSTALL_DIR),)
@@ -85,8 +101,8 @@ internal-gswbundle-all:: before-$(GNUSTEP_INSTANCE)-all \
                       build-bundle \
                       after-$(GNUSTEP_INSTANCE)-all
 
-GSWBUNDLE_DIR_NAME := $(GNUSTEP_INSTANCE:=$(GSWBUNDLE_EXTENSION))
-GSWBUNDLE_FILE := \
+GSWBUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(GSWBUNDLE_EXTENSION))
+GSWBUNDLE_FILE = \
     $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
 GSWBUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/Resources/$(d))
 GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/WebServerResources/$(d))
@@ -94,6 +110,7 @@ GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
+
 
 build-bundle-dir:: $(GSWBUNDLE_DIR_NAME)/Resources \
                    $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
@@ -223,7 +240,7 @@ $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR_NAME)/Resour
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  if [ "$(HAS_GSWCOMPONENTS)" != "" ]; then \
-			  echo "  HasGSWComponents = \"$(HAS_GSWCOMPONENTS)\";"; \
+	    echo "  HasGSWComponents = \"$(HAS_GSWCOMPONENTS)\";"; \
 	  fi; \
 	  echo "}") >$@
 
