@@ -1,8 +1,15 @@
+Wed Apr 10 14:39:24 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/documentation.make (internal-doc-install_): Install all
+	xxx.info-* files, not only the root xxx.info file.
+	(internal-doc-uninstall_): Remove all xxx.info-* files.
+	(Suggestion by Sir Raorn (<raorn@binec.ru>)).
+	
 Wed Apr 10 14:18:29 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* relative_path.sh: Fixed bug when looping - ignore path
 	components which are '.' - fixing problem with frameworks and
-	gnustep flattened. (Patch from Sir Raorn (<raorn@binec.ru>).
+	gnustep flattened. (Patch from Sir Raorn (<raorn@binec.ru>)).
 	* Instance/documentation.make (internal-doc-install_): Depend on creating
 	GNUSTEP_DOCUMENTATION_INFO.
 	($(GNUSTEP_DOCUMENTATION_INFO): Rule to create the dir added.
