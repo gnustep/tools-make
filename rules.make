@@ -257,8 +257,8 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 
 # The magical application rules, thank you GNU make!
 %.build:
-ifneq ($(OPERATION), before-all) # before-all is special, no SUBPROJECTS/TOOLS
 ifneq ($(FRAMEWORK_NAME),)
+ifneq ($(OPERATION), build-headers) # this is only an optimization
 	@ if [ "$($*_TOOLS)" != "" ]; then \
 	echo Building tools for $(TARGET_TYPE) $*...; \
 	for f in $($*_TOOLS); do \
@@ -280,8 +280,8 @@ ifneq ($(FRAMEWORK_NAME),)
 	  fi; \
 	done; \
 	fi
+endif # end of build-headers optimization
 endif # end of FRAMEWORK code
-endif # end of code not executed by before-all
 	@ if [ "$($*_SUBPROJECTS)" != "" ]; then \
 	echo Making $(OPERATION) in subprojects of $(TARGET_TYPE) $*...; \
 	for f in $($*_SUBPROJECTS); do \
