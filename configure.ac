@@ -86,14 +86,12 @@ AC_SUBST(cc_bundle)
 #--------------------------------------------------------------------
 # specific target_os options
 #--------------------------------------------------------------------
-INCLUDES=
-LIB_DIR=
 case "$target_os" in
   freebsd* | openbsd* )	
-	        INCLUDES="-I/usr/local/include"
-		LIB_DIR="-L/usr/local/lib";;
-  netbsd*)	INCLUDES="-I/usr/pkg/include"
-		LIB_DIR="-Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
+	        INCLUDES="$INCLUDES -I/usr/local/include"
+		LIB_DIR="$LIB_DIR -L/usr/local/lib";;
+  netbsd*)	INCLUDES="$INCLUDES -I/usr/pkg/include"
+		LIB_DIR="$LIB_DIR -Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
 esac
 
 #--------------------------------------------------------------------

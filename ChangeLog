@@ -1,6 +1,6 @@
-2004-09-04  Adam Fedor  <fedor@gnu.org>
+2004-09-06  Adam Fedor  <fedor@gnu.org>
 
-	* Version 1.10.0
+	* configure.ac: Don't reset LIB_DIR.
 
 2004-09-03  Adam Fedor  <fedor@gnu.org>
 
