@@ -287,7 +287,7 @@ rpm: test-RPM_TOPDIR dist
 	fi; \
 	$${rpmbuild} -ba gnustep-make.spec
 
-generated-files: GNUmakefile GNUstep.sh GNUstep.csh config.h config.make debugapp openapp opentool gnustep-make.spec executable.template
+generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config.h config.make debugapp openapp opentool gnustep-make.spec executable.template
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -296,6 +296,9 @@ GNUstep.sh: GNUstep.sh.in
 	$(SHELL) config.status
 
 GNUstep.csh: GNUstep.csh.in
+	$(SHELL) config.status
+
+fixpath.sh: fixpath.sh.in
 	$(SHELL) config.status
 
 config.h: config.h.in
