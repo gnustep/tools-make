@@ -4155,6 +4155,7 @@ DATE=`date +"%Y%m%d"`
 
 
 
+
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
@@ -4342,6 +4343,7 @@ s%@XML_CFLAGS@%$XML_CFLAGS%g
 s%@XML_LIBS@%$XML_LIBS%g
 s%@HAVE_GMP@%$HAVE_GMP%g
 s%@GNUSTEP_VERSION@%$GNUSTEP_VERSION%g
+s%@GNUSTEP_MAKE_VERSION@%$GNUSTEP_MAKE_VERSION%g
 s%@GNUSTEP_MAJOR_VERSION@%$GNUSTEP_MAJOR_VERSION%g
 s%@GNUSTEP_MINOR_VERSION@%$GNUSTEP_MINOR_VERSION%g
 s%@DATE@%$DATE%g

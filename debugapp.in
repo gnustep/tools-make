@@ -127,37 +127,39 @@ if [ -z "$full_appname" ]; then
   exit 1
 fi
 
-#
-# Determine the host information
-#
-if [ -z "$GNUSTEP_HOST" ]; then
-    GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess`
-    GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $GNUSTEP_HOST`
-    export GNUSTEP_HOST
-fi
-if [ -z "$GNUSTEP_HOST_CPU" ]; then
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
-    export GNUSTEP_HOST_CPU
-fi
-if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
-    export GNUSTEP_HOST_VENDOR
-fi
-if [ -z "$GNUSTEP_HOST_OS" ]; then
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
-   export GNUSTEP_HOST_OS
-fi
-
-if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+if [ -z "$GNUSTEP_FLATTENED" ]; then
+	#
+	# Determine the host information
+	#
+	if [ -z "$GNUSTEP_HOST" ]; then
+	    GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess`
+	    GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $GNUSTEP_HOST`
+	    export GNUSTEP_HOST
+	fi
+	if [ -z "$GNUSTEP_HOST_CPU" ]; then
+	    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
+	    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
+	    export GNUSTEP_HOST_CPU
+	fi
+	if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
+	    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
+	    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
+	    export GNUSTEP_HOST_VENDOR
+	fi
+	if [ -z "$GNUSTEP_HOST_OS" ]; then
+	    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
+	    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
+	   export GNUSTEP_HOST_OS
+	fi
+	
+	if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+	  if [ -f "$full_appname/library_paths.openapp" ]; then
+	    additional_library_paths="`cat $full_appname/library_paths.openapp`"
+	  fi
+	fi
+else
   if [ -f "$full_appname/library_paths.openapp" ]; then
     additional_library_paths="`cat $full_appname/library_paths.openapp`"
-  fi
-else
-  if [ -f "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp" ]; then
-    additional_library_paths="`cat $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp`"
   fi
 fi
 
@@ -177,21 +179,28 @@ if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
 
 else
   # Determine if the application has a binary for this operating system
-  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
+  if [ -z "$GNUSTEP_FLATTENED" -a ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
   fi
 
-  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO ]; then
+  if [ -z "$GNUSTEP_FLATTENED" -a ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO ]; then
     echo "$full_appname application does not have a binary for this combination of libraries: $LIBRARY_COMBO."
     exit 1
   fi
 
-  # Support for GDBbundle under OPENSTEP
+if [ -z "$GNUSTEP_FLATTENED" ]; then
+	file_appname=$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
+else
+	file_appname=$full_appname/$appname
+fi
+
+#Support for GDBbundle under OPENSTEP
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
-    $GDB -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
+    $GDB -connect TextEdit $file_appname $corefile
   else
-    $GDB $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
+    $GDB $file_appname $corefile
   fi
 
 fi
+

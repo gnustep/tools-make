@@ -161,6 +161,10 @@ if [ -z "$GNUSTEP_FLATTENED" ]; then
       additional_library_paths="`cat $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp`"
     fi
   fi
+else
+    if [ -f "$full_appname/library_paths.openapp" ]; then
+	additional_library_paths="`cat $full_appname/library_paths.openapp`"
+    fi
 fi
 
 # get base app name

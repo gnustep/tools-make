@@ -1,5 +1,5 @@
 # This package is not relocatable
-%define ver	@GNUSTEP_VERSION@
+%define ver	@GNUSTEP_MAKE_VERSION@
 %define date	@DATE@
 %define prefix 	/usr
 %define gir 	%{prefix}/GNUstep
@@ -78,7 +78,7 @@ mv mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
 
 cat > filelist.rpm.in << EOF
 %defattr (-, bin, bin)
-%doc COPYING DESIGN README
+%doc COPYING INSTALL NEWS README
 %ifos Linux
 %config /etc/profile.d/GNUstep.csh
 %config /etc/profile.d/GNUstep.sh

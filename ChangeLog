@@ -1,3 +1,11 @@
+2001-01-13  Adam Fedor  <fedor@gnu.org>
+
+	* openapp.in (additional_library_paths): Set for FLATTENED structure
+	* debugapp.in: Add FLATTENED structure support.
+	(fix from Frederic <frederic.chauvin@noos.fr>).
+
+	* GNUmakefile.in: Add target to make dist file.
+
 Fri Jan 12 17:38:06 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in (AC_OUTPUT): Added install-complete-dir.sh and

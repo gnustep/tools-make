@@ -27,6 +27,7 @@
 #
 
 include config.make
+include Version
 
 prefix = @prefix@
 GNUSTEP_INSTALLATION_DIR=$(prefix)
@@ -65,6 +66,8 @@ INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
 PERL = @PERL@
+
+VERTAG = `echo $(GNUSTEP_MAKE_VERSION) | tr '.' '_'`
 
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	common.make brain.make java.make jni.make library.make rules.make \
@@ -147,6 +150,13 @@ clean:
 distclean: clean
 	rm -f GNUmakefile config.make
 	rm -f config.cache config.log config.status
+
+cvs-dist:
+	cvs -z3 export -r make-$(VERTAG) make
+	mkdir gstep-$(GNUSTEP_MAKE_VERSION)
+	mv make gstep-$(GNUSTEP_MAKE_VERSION)
+	tar --gzip -cf gstep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gstep-$(GNUSTEP_MAKE_VERSION)
+	rm -rf gstep-$(GNUSTEP_MAKE_VERSION)
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh config.h config.make debugapp openapp
 
