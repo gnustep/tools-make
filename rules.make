@@ -68,6 +68,7 @@ endif
 # In subprojects, will be set by the recursive make invocation on the
 # make command line to be [../../]../derived_src
 DERIVED_SOURCES = derived_src
+DERIVED_SOURCES_DIR = $(GNUSTEP_BUILD_DIR)/$(DERIVED_SOURCES)
 
 # Always include all the compilation flags and generic compilation
 # rules, because the user, in his GNUmakefile.postamble, might want to
@@ -136,15 +137,16 @@ endif
 
 #
 # If this is part of the compilation of a framework,
-# add -I[../../../etc]derived_src so that the code can include 
-# framework headers simply using `#include <MyFramework/MyHeader.h>'
+# add -I[$GNUSTEP_BUILD_DIR][../../../etc]derived_src so that the code
+# can include framework headers simply using `#include
+# <MyFramework/MyHeader.h>'
 #
 # If it's a framework makefile, FRAMEWORK_NAME will be non-empty.  If
-# it's a framework subproject, OWNING_PROJECT_HEADER_DIR will be
+# it's a framework subproject, OWNING_PROJECT_HEADER_DIR_NAME will be
 # non-empty.
 #
-ifneq ($(FRAMEWORK_NAME)$(OWNING_PROJECT_HEADER_DIR),)
-  DERIVED_SOURCES_HEADERS_FLAG = -I$(DERIVED_SOURCES)
+ifneq ($(FRAMEWORK_NAME)$(OWNING_PROJECT_HEADER_DIR_NAME),)
+  DERIVED_SOURCES_HEADERS_FLAG = -I$(DERIVED_SOURCES_DIR)
 endif
 
 #
@@ -477,11 +479,18 @@ $(GNUSTEP_MAKEFILES)/Instance/Shared/*.make: ;
 
 $(GNUSTEP_MAKEFILES)/Instance/Documentation/*.make: ;
 
+# The rule to create the GNUSTEP_BUILD_DIR if any.
+ifneq ($(GNUSTEP_BUILD_DIR),.)
+$(GNUSTEP_BUILD_DIR):
+	$(ECHO_CREATING)$(MKDIRS) $(GNUSTEP_BUILD_DIR)$(END_ECHO)
+endif
+
 # The rule to create the objects file directory.
 $(GNUSTEP_OBJ_DIR):
-	$(ECHO_NOTHING)$(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME); \
 	rm -f obj; \
-	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj$(END_ECHO)
+	$(LN_S) ./$(GNUSTEP_OBJ_DIR_NAME) obj$(END_ECHO)
 
 endif
 # rules.make loaded
