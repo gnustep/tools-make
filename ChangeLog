@@ -1,3 +1,20 @@
+Tue May 27 12:04:38 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* messages.make (ECHO_CHOWNING, ECHO_STRIPPING): New variables.
+	
+	* Instance/service.make (internal-service-install_): 
+	* Instance/application.make: Use them.
+	* Instance/bundle.make: Use them.
+	* Instance/framework.make: Use them.	
+	* Instance/gswapp.make: Use them.	
+	* Instance/gswbundle.make: Use them.
+	* Instance/java-tool.make: Use them.
+	* Instance/palette.make: Use them.	
+	* Instance/service.make: Use them.
+	* Instance/Shared/bundle.make: Use them.
+	* Instance/Documentation/autogsdoc.make: Use them.
+	* Instance/Documentation/javadoc.make: Use them.
+	
 Tue May 27 11:45:41 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make (build-framework-dirs): Merge contiguous
