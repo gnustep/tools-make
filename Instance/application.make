@@ -74,7 +74,7 @@ APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
 # Now include the standard resource-bundle routines from Shared/bundle.make
 #
 
-ifneq ($(FOUNDATION_LIB),nx)
+ifneq ($(FOUNDATION_LIB), apple)
   # GNUstep bundle
   GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Resources
   APP_INFO_PLIST_FILE = $(APP_DIR_NAME)/Resources/Info-gnustep.plist
@@ -87,8 +87,7 @@ GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(APP_DIR_NAME)
 GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(APP_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-# Support building NeXT applications
-ifneq ($(OBJC_COMPILER), NeXT)
+ifneq ($(FOUNDATION_LIB), apple)
 APP_FILE = \
     $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 else
@@ -102,7 +101,7 @@ endif
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 	      $(ALL_GUI_LIBS)$(END_ECHO)
-ifeq ($(OBJC_COMPILER), NeXT)
+ifeq ($(FOUNDATION_LIB), apple)
 	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 		>$(APP_DIR_NAME)/library_paths.openapp
 else
@@ -114,7 +113,7 @@ endif
 # Compilation targets
 #
 
-ifeq ($(FOUNDATION_LIB), nx)
+ifeq ($(FOUNDATION_LIB), apple)
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_DIR_NAME) \
                     $(APP_FILE) \
@@ -170,14 +169,14 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(APPLICATION_ICON)-$(MAIN_MODEL_FILE)
 GNUSTEP_STAMP_DIR = $(APP_DIR_NAME)
 
-ifneq ($(FOUNDATION_LIB),nx)
+ifneq ($(FOUNDATION_LIB), apple)
 # Only for efficiency
 $(GNUSTEP_STAMP_DIR): $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 
-ifeq ($(FOUNDATION_LIB), nx)
+ifeq ($(FOUNDATION_LIB), apple)
 $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \

@@ -101,7 +101,7 @@ ifeq ($(strip $(LANGUAGES)),)
 endif
 
 # Support building NeXT applications
-ifneq ($(OBJC_COMPILER), NeXT)
+ifneq ($(FOUNDATION_LIB), apple)
 GSWAPP_FILE = \
     $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 else
@@ -116,7 +116,7 @@ $(GSWAPP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 	      $(ALL_GSW_LIBS)$(END_ECHO)
 
-ifeq ($(OBJC_COMPILER), NeXT)
+ifeq ($(FOUNDATION_LIB), apple)
 	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 		>$(GSWAPP_DIR_NAME)/library_paths.openapp
 # This is a hack for OPENSTEP systems to remove the iconheader file
@@ -130,7 +130,7 @@ endif
 #
 # Compilation targets
 #
-ifeq ($(OBJC_COMPILER), NeXT)
+ifeq ($(FOUNDATION_LIB), apple)
 internal-gswapp-all_:: \
 	$(GNUSTEP_OBJ_DIR) $(GSWAPP_DIR_NAME) $(GSWAPP_FILE) \
 	gswapp-components \

@@ -90,7 +90,7 @@ endif # OBJ_FILES_TO_LINK
 # xxx.bundle/Contents/Info.plist
 # xxx.bundle/Contents/Resources/<all resources here>
 # This second way of building bundles is triggered by FOUNDATION_LIB =
-# nx.
+# apple.
 #
 
 internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) build-bundle
@@ -106,7 +106,7 @@ ifeq ($(BUNDLE_INSTALL_DIR),)
   BUNDLE_INSTALL_DIR = $(GNUSTEP_BUNDLES)
 endif
 
-ifneq ($(FOUNDATION_LIB),nx)
+ifneq ($(FOUNDATION_LIB), apple)
   # GNUstep bundle
   GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(BUNDLE_DIR_NAME)/Resources
   BUNDLE_INFO_PLIST_FILE = $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
@@ -171,7 +171,7 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(MAIN_MODEL_FILE)
 GNUSTEP_STAMP_DIR = $(BUNDLE_DIR_NAME)
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), apple)
 # For efficiency, depend on the rule to build BUNDLE_DIR_NAME/Contents
 # (which would be used anyway when building the bundle), rather than
 # executing a separate rule.
@@ -184,7 +184,7 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), apple)
 # MacOSX bundles
 
 $(BUNDLE_DIR_NAME)/Contents:
@@ -226,7 +226,7 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents \
 	) >$@
 endif
 
-else # following executed if FOUNDATION_LIB != nx
+else # following executed if FOUNDATION_LIB != apple
 
 ifneq ($(OBJ_FILES_TO_LINK),)
 # GNUstep bundles
@@ -252,7 +252,7 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources \
 	fi)
 endif
 
-endif # FOUNDATION_LIB != nx
+endif # FOUNDATION_LIB != apple
 
 $(BUNDLE_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
