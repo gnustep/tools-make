@@ -1,3 +1,15 @@
+Sun Sep 30 13:10:43 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (GNUSTEP_SYSTEM_HEADERS_FLAGS): New variable.
+	(GNUSTEP_SYSTEM_FRAMEWORKS_HEADERS_FLAGS): Idem.
+	(GNUSTEP_SYSTEM_LIBRARIES_FLAGS): Idem.
+	(GNUSTEP_SYSTEM_FRAMEWORKS_LIBRARIES_FLAGS): Idem.
+	* rules.make (ALL_OBJCFLAGS): Use the new variables.
+	(ALL_CFLAGS): Idem.  
+	(LIB_DIRS_NO_SYSTEM): Idem.  
+	(ALL_LIB_DIRS): Idem.  
+	(ALL_FRAMEWORK_DIRS): Idem.
+
 Sun Sep 30 12:55:14 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (GNUSTEP_LOCAL_LIBRARIES_FLAG): Renamed to
