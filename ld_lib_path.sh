@@ -4,11 +4,12 @@
 #
 #   Set up the LD_LIBRARY_PATH (or similar env variable for your system)
 #
-#   Copyright (C) 1997,1999 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2002 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #   Rewrite: Richard Frith-Macdoanld <richard@brainstorm.co.uk>
+#
 #   This file is part of the GNUstep Makefile Package.
 #
 #   This library is free software; you can redistribute it and/or
@@ -21,6 +22,9 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
+
+# This file is sourced.  This means extra care is needed when changing
+# it.  Please read the comments on GNUstep.sh.in before touching it.
 
 # The first (and only) parameter to this script is the canonical
 # operating system name.
@@ -46,13 +50,15 @@ else
 fi
 
 if [ -n "$additional_library_paths" ]; then
+  additional=""
   for dir in $additional_library_paths; do
     additional="${additional}${dir}:"
   done
   unset dir
+
+  lib_paths="${additional}${lib_paths}"
+  unset additional
 fi
-lib_paths="${additional}${lib_paths}"
-unset additional
 
 case "$host_os" in
 
