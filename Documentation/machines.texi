@@ -13,7 +13,6 @@ more popular operating systems. Some machines marked with
 
 @menu
 * Darwin 6.x/PowerPC::          
-* Darwin 5.x/PowerPC::          
 * Debian/DEC-Alpha::            
 * FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
@@ -74,28 +73,36 @@ optimization can break some code. The easiest way to do this is when
 configuring, @samp{CFLAGS="" ./configure}. Or when building, 
 @samp{make OPTFLAG=""}.
 
+Also if you manually upgraded gcc and/or make, we recommend reading the
+documentation at @url{http://www.LinuxFromScratch.org} for tips on compiling
+and installing gcc and make. If you had GNUstep previously installed, make sure
+you completely remove all of it, including installed init scripts.
+
 @c -----------------------------------------
-@node Darwin 6.x/PowerPC, Darwin 5.x/PowerPC, Machine Specific, Machine Specific
+@node Darwin 6.x/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
 @section Darwin 6.x/PowerPC (@emph{Unstable!})
 
 @table @samp
 @item Recommended compiler
-gcc 3.2.1
+gcc 3.2.2
 
 Default compiler has some odd memory(?) related problems.
-Use the GNU runtime. Download the gcc3.2.1 compiler and configure it with
+Use the GNU runtime. Download the gcc compiler and configure it with
 --enable-threads=posix. Usually the installed compiler will produce object
 files for the NeXT runtime if you don't say gcc -fgnu-runtime. To change
 this behaviour, edit src-dir/gcc/config/darwin.h: You have to change the
 word #define in line 73 to #undef. Then the runtime default is gnu. When
 bootstrapping the compiler a nice working objective C gnu-runtime library
-(which is a little bit faster than apples NeXT-runtime) will be compiled
+(which is a little bit faster than Apple's runtime) will be compiled
 and installed when make install. To use it, there is one (important) thing
-left: After installing the compiler, you have to go (probably as root) to
+left: After installing the compiler, you have to go to
 install-dir/lib and produce the following dynamic link:
 ln -s libobjc.a libobjc.dylib
 This might seem senseless, but it forces the linker to use this library
 instead of the NeXT-runtime!
+
+Make sure to configure gnustep-make with ./configure
+--with-library-combo=gnu-gnu-gnu if you want to use all the GNUstep libraries.
 
 @item Extra libs needed 
 Use libffi (not ffcall). This should be enabled by default in gnustep-base
@@ -107,50 +114,7 @@ so you don't have to type --enable-libffi
 @end table
 
 @c -----------------------------------------
-@node Darwin 5.x/PowerPC, Debian/DEC-Alpha, Darwin 6.x/PowerPC, Machine Specific
-@section Darwin 5.x/PowerPC (@emph{Unstable!})
-
-@table @samp
-@item Recommended compiler
-gcc 3.1 (See Darwin 6.x for other instructions).
-
-@item Extra libs needed
-Probably should use libffi as with Darwin 6.x.
-Instructions for compiling ffcall are provided below if that doesn't work.
-
-@item Special Instructions 
-
-
-@end table
-
-Compiling ffcall:
-@example
-tar xf ffcall-1.8d.tar
-cd ffcall-1.8d
-configure
-cd avcall
-rm avcall-rs6000-sysv4.s
-gcc avcall-rs6000.c -S -o avcall-rs6000-sysv4.s
-make
-make install-lib
-cd ../callback/trampoline_r
-ln -s trampoline_r.h.in trampoline_r.h
-rm cache-rs6000-sysv4.s tramp-rs6000-sysv4.s
-gcc cache.c -S -o cache-rs6000-sysv4.s
-gcc trampoline.c -S -o tramp-rs6000-sysv4.s
-cd ../vacall_r
-rm vacall-rs6000-sysv4.s
-gcc vacall-rs6000.c -S -o vacall-rs6000-sysv4.s -DREENTRANT
-make
-gcc -c misc.c -fno-common
-ar cru .libs/libvacall.a  vacall.o misc.o structcpy.o
-cd ..
-make
-make install-lib
-@end example
-
-@c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 5.x/PowerPC, Machine Specific
+@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 6.x/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -491,6 +455,9 @@ highly recommended. In fact, some functions, such as compiling frameworks,
 will not work without it. 
 
 @end table 
+
+Some people have reported problems when using binutils assembler and linker.
+Using the native Solaris assmebler and linker should work fine.
 
 Older Instructions:
 If you are using threads, make sure the Objective-C runtime (libobjc that comes

@@ -81,7 +81,7 @@ In order to compile the libraries, you need to compile and install
 the following packages first (if you don't already have them):
 
 @itemize @bullet
-@item gcc (Version 2.9.5 or greater, 3.0.4 or greater recommended)
+@item gcc (Version 2.95 or greater, 3.0.4 or greater recommended)
 @item GNU make (Version 3.75 or greater)
 @item gdb, if you plan to do any debugging
 @end itemize
@@ -117,6 +117,9 @@ The libxml library (Version 2) is used to translate some of the
 documentation for GNUstep and to provide suport for MacOS-X compatible
 XML-based property-lists. It is recommended but not currently required.
 
+@item The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)
+The GUI library uses this to handle loading and saving TIFF images.
+
 @item openssl (OPTIONAL)
 The openssl library is used to provide support for https connections by
 the NSURL and HSURLHandle classes.  This functionality is
@@ -126,8 +129,9 @@ replacement, it can quickly be used by creating another bundle.
 
 @item libiconv (OPTIONAL)
 Unicode support functions (iconv) come with glibc version 2.1 or greater. If
-you don't have this, you can get the separate libiconv library
-from @url{http://clisp.cons.org/~haible/packages-libiconv.html}. However,
+you don't have glibc (try iconv --version), you can get the separate 
+libiconv library from 
+@url{http://clisp.cons.org/~haible/packages-libiconv.html}. However,
 neither one is required to use GNUstep.
 
 @item gnustep-objc package (for gcc version < 3.0 ONLY) (RECOMMENDED)
@@ -140,9 +144,6 @@ It's possible to compile the library static (make shared=no) and
 just copy to the place where the gcc libobjc library is (type gcc -v to
 get this location). Note you have to install gnustep-make (below) before
 installing this library.
-
-@item The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)
-The GUI library uses this to handle loading and saving TIFF images.
 
 @item GDB and Objective-C patch (OPTIONAL)
 GDB can be obtained from @url{ftp://ftp.gnu.org/gnu/gdb}. The patch to

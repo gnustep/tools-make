@@ -207,25 +207,31 @@ int main (int argc, char** argv)
     {
       /* The environment variable HOMEPATH holds the home directory
 	 for the user on Windows NT; Win95 has no concept of home. */
-      len0 = GetEnvironmentVariable("HOMEDRIVE", buf0, 1024);
+      len0 = GetEnvironmentVariable("HOMEPATH", buf0, 1024);
       if (len0 > 0 && len0 < 1024)
 	{
 	  buf0[len0] = '\0';
-	  len1 = GetEnvironmentVariable("HOMEPATH", buf1, 128);
-	  if (len1 > 0 && len1 < 128)
+	  /*
+	   * Only use HOMEDRIVE is HOMEPATH does not already contain drive.
+	   */
+	  if (len0 < 2 || buf0[1] != ':')
 	    {
-	      buf1[len1] = '\0';
-	      sprintf(home, "%s%s", buf0, buf1);
-	    }
-	  else
-	    {
-	      fprintf(stderr, "Unable to determine HOMEPATH\n");
-	      return 1;
+	      len1 = GetEnvironmentVariable("HOMEDRIVE", buf1, 128);
+	      if (len1 > 0 && len1 < 128)
+		{
+		  buf1[len1] = '\0';
+		  sprintf(home, "%s%s", buf1, buf0);
+		}
+	      else
+		{
+		  fprintf(stderr, "Unable to determine HOMEDRIVE\n");
+		  return 1;
+		}
 	    }
 	}
       else
 	{
-	  fprintf(stderr, "Unable to determine HOMEDRIVE\n");
+	  fprintf(stderr, "Unable to determine HOMEPATH\n");
 	  return 1;
 	}
     }

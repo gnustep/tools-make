@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 16 February 2003
+   Last Update: 17 March 2003
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -32,7 +32,7 @@ Summary
    In order to compile the libraries, you need to compile and install
 the following packages first (if you don't already have them):
 
-   * gcc (Version 2.9.5 or greater, 3.0.4 or greater recommended)
+   * gcc (Version 2.95 or greater, 3.0.4 or greater recommended)
 
    * GNU make (Version 3.75 or greater)
 
@@ -71,6 +71,9 @@ are required.
      compatible XML-based property-lists. It is recommended but not
      currently required.
 
+`The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)'
+     The GUI library uses this to handle loading and saving TIFF images.
+
 `openssl (OPTIONAL)'
      The openssl library is used to provide support for https
      connections by the NSURL and HSURLHandle classes.  This
@@ -81,8 +84,8 @@ are required.
 
 `libiconv (OPTIONAL)'
      Unicode support functions (iconv) come with glibc version 2.1 or
-     greater. If you don't have this, you can get the separate libiconv
-     library from
+     greater. If you don't have glibc (try iconv -version), you can get
+     the separate libiconv library from
      <http://clisp.cons.org/~haible/packages-libiconv.html>. However,
      neither one is required to use GNUstep.
 
@@ -97,9 +100,6 @@ are required.
      just copy to the place where the gcc libobjc library is (type gcc
      -v to get this location). Note you have to install gnustep-make
      (below) before installing this library.
-
-`The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)'
-     The GUI library uses this to handle loading and saving TIFF images.
 
 `GDB and Objective-C patch (OPTIONAL)'
      GDB can be obtained from <ftp://ftp.gnu.org/gnu/gdb>. The patch to
@@ -350,68 +350,43 @@ optimization can break some code. The easiest way to do this is when
 configuring, `CFLAGS="" ./configure'. Or when building, `make
 OPTFLAG=""'.
 
+   Also if you manually upgraded gcc and/or make, we recommend reading
+the documentation at <http://www.LinuxFromScratch.org> for tips on
+compiling and installing gcc and make. If you had GNUstep previously
+installed, make sure you completely remove all of it, including
+installed init scripts.
+
 Darwin 6.x/PowerPC (_Unstable!_)
 ================================
 
 `Recommended compiler'
-     gcc 3.2.1
+     gcc 3.2.2
 
      Default compiler has some odd memory(?) related problems.  Use the
-     GNU runtime. Download the gcc3.2.1 compiler and configure it with
+     GNU runtime. Download the gcc compiler and configure it with
      -enable-threads=posix. Usually the installed compiler will produce
      object files for the NeXT runtime if you don't say gcc
      -fgnu-runtime. To change this behaviour, edit
      src-dir/gcc/config/darwin.h: You have to change the word #define
      in line 73 to #undef. Then the runtime default is gnu. When
      bootstrapping the compiler a nice working objective C gnu-runtime
-     library (which is a little bit faster than apples NeXT-runtime)
-     will be compiled and installed when make install. To use it, there
-     is one (important) thing left: After installing the compiler, you
-     have to go (probably as root) to install-dir/lib and produce the
-     following dynamic link: ln -s libobjc.a libobjc.dylib This might
-     seem senseless, but it forces the linker to use this library
-     instead of the NeXT-runtime!
+     library (which is a little bit faster than Apple's runtime) will
+     be compiled and installed when make install. To use it, there is
+     one (important) thing left: After installing the compiler, you
+     have to go to install-dir/lib and produce the following dynamic
+     link: ln -s libobjc.a libobjc.dylib This might seem senseless, but
+     it forces the linker to use this library instead of the
+     NeXT-runtime!
+
+     Make sure to configure gnustep-make with ./configure
+     -with-library-combo=gnu-gnu-gnu if you want to use all the GNUstep
+     libraries.
 
 `Extra libs needed'
      Use libffi (not ffcall). This should be enabled by default in
      gnustep-base so you don't have to type -enable-libffi
 
 `Special Instructions'
-Darwin 5.x/PowerPC (_Unstable!_)
-================================
-
-`Recommended compiler'
-     gcc 3.1 (See Darwin 6.x for other instructions).
-
-`Extra libs needed'
-     Probably should use libffi as with Darwin 6.x.  Instructions for
-     compiling ffcall are provided below if that doesn't work.
-
-`Special Instructions'
-   Compiling ffcall:
-     tar xf ffcall-1.8d.tar
-     cd ffcall-1.8d
-     configure
-     cd avcall
-     rm avcall-rs6000-sysv4.s
-     gcc avcall-rs6000.c -S -o avcall-rs6000-sysv4.s
-     make
-     make install-lib
-     cd ../callback/trampoline_r
-     ln -s trampoline_r.h.in trampoline_r.h
-     rm cache-rs6000-sysv4.s tramp-rs6000-sysv4.s
-     gcc cache.c -S -o cache-rs6000-sysv4.s
-     gcc trampoline.c -S -o tramp-rs6000-sysv4.s
-     cd ../vacall_r
-     rm vacall-rs6000-sysv4.s
-     gcc vacall-rs6000.c -S -o vacall-rs6000-sysv4.s -DREENTRANT
-     make
-     gcc -c misc.c -fno-common
-     ar cru .libs/libvacall.a  vacall.o misc.o structcpy.o
-     cd ..
-     make
-     make install-lib
-
 Debian/DEC-Alpha
 ================
 
@@ -691,6 +666,9 @@ Solaris 2.[67]/Sparc
      Using a POSIX shell (zsh or bash, which should come with Solaris)
      is highly recommended. In fact, some functions, such as compiling
      frameworks, will not work without it.
+
+   Some people have reported problems when using binutils assembler and
+linker.  Using the native Solaris assmebler and linker should work fine.
 
    Older Instructions: If you are using threads, make sure the
 Objective-C runtime (libobjc that comes with gcc) is compiled with

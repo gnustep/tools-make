@@ -1,9 +1,9 @@
 NEWS
 ****
 
-The currently released version is `1.5.2'.
+The currently released version is `1.6.0'.
 
-Changes in version `1.5.2'
+Changes in version `1.6.0'
 ==========================
 
    Make now configures by default for only one system. To compile and

@@ -840,7 +840,7 @@ Optional Features:
 --enable-multi-platform		Use run time multi-platform support
 
 --disable-backend-bundle	Compile gui backend as a library
---disable-import     Warn about usage of deprecated import directive
+--enable-import     Don't warn about usage of deprecated import directive
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -2987,6 +2987,9 @@ fi
 # which was returning the wrong platform because the development
 # tools needed/used to determine the platform were not available).
 #
+# Unless you know what you are doing, stick with the default, which is
+# also much faster when sourcing GNUstep.sh.
+#
 # Check whether --enable-multi-platform or --disable-multi-platform was given.
 if test "${enable_multi_platform+set}" = set; then
   enableval="$enable_multi_platform"
@@ -4089,7 +4092,7 @@ if test "${enable_import+set}" = set; then
   enableval="$enable_import"
   ac_cv_import=$enableval
 else
-  ac_cv_import="yes"
+  ac_cv_import="no"
 fi;
 
 echo "$as_me:$LINENO: result: $ac_cv_import" >&5
