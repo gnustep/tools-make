@@ -208,8 +208,7 @@ at @url{ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-F
 
 Invocations (and DO) do not work well. The major problem is sending data
 with data sizes less than 4 bytes (chars, shorts, etc).  To fix this, we
-recommend using the ffcall libraries via the @code{--enable-ffcall}
-option when configuring (Read the instructions on this in the
+recommend using the ffcall libraries (Read the instructions on this in the
 configuration section).
 
 @c -----------------------------------------
@@ -351,14 +350,15 @@ See the Solaris 2.6 section for more instructions.
 
 @table @samp
 @item Recommended compiler
-egcs-2.91.60 (1.1.2?), egcs-1.0.1, gcc 2.8.1, gcc 2.95.2
+gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
 
 @item Extra libs needed 
 tiff, Don't use the one in /usr/openwin
 
 @item Special Instructions 
-GCC 2.8.0 induced a problem on Solaris/Sparc
-systems; however, there is a patch to fix this in the contrib directory
+There is no need to patch the compiler for the builtin_apply problem unless
+you are not using the ffcall libraries.
+There is a patch to fix this in the contrib directory
 on the ftp sites (This is also true for all versions of gcc/egcs up
 through 2.95.2 (possibly fixed in later versions)).
 
@@ -369,9 +369,9 @@ LIBS=-L/usr/local/lib ./configure
 if, for instance, you have put a newer tiff library in /usr/local/lib
 @end table
 
-Even with the about patch, invocations (and DO) still don't
+Even with the above patch, invocations (and DO) still don't
 work well. The major problem is sending messages with more than four arguments.
-We recommend using the ffcall libraries via the @code{--enable-ffcall} option
+We recommend using the ffcall libraries
 when configuring (Read the instructions on this in the configuration section).
 
 If you are using threads, make sure the Objective-C runtime (libobjc that comes

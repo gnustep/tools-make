@@ -155,13 +155,13 @@ and NSConnection. This library is highly recommended. The previous
 builtin method for stack frame handling is no longer supported and
 may be removed in the future.
 
-@item libobjc library snapshot (for gcc version <= 2.95.2)
+@item gnustep-objc package (for gcc version <= 3.0)
 This is a special version of the Objective-C runtime that include several
 bug fixes and features that have not been officially released yet.
 It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
 compiles using the GNUstep Makefile package (so you don't have to get the
 entire gcc dist). Make sure to set the THREADING variable in the GNUmakefile.
-It might also be best to compile the library static (make shared=no) and
+It's possible to compile the library static (make shared=no) and
 just copy to the place where the gcc libobjc library is (type gcc -v to
 get this location).
 @end table
@@ -171,7 +171,7 @@ get this location).
 
 Make sure you install all the previously mentioned libraries first
 before configuring and building GNUstep (Except you need to install
-libobjc after installing gnustep-make, unless your installing it as part
+gnustep-objc after installing gnustep-make, unless your installing it as part
 of gcc).
 
 Note: you will need to be able to install packages as root (at least

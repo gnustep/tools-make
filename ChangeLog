@@ -1,3 +1,11 @@
+2001-03-27  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Add darwin target.
+
+	* Documentation/machines.texi: Update.
+	* Documentation/faq.texi: Likewise.
+	* Documentation/gnustep-howto.texi: Likewise
+
 Mon Mar 19 14:30:01 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (install): Depend on internal-after-install after all

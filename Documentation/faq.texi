@@ -78,7 +78,7 @@ OpenStep's @samp{AppKit}.)
 
 @item GNUstep DisplayGhostscript Server - A server that draws PostScript
 graphics to the screen, and receives events from the keyboard and
-mouse.  It is based on GhostScript. There is also an DPS extension to
+mouse.  It is based on GNU GhostScript. There is also an DPS extension to
 Xfree*6 that is usable.
 
 @item Various Tools and applications, including GORM, The GNUstep
@@ -846,18 +846,22 @@ It works, but is slow and buggy. A lot of work could be done.
 @subsection What is the Display Ghostscript Server?
 
 It is a free implementation of a Display PostScript server based on the
-ghostscript program by Aladdin software.
+GNU Ghostscript program developed by Aladdin Enterprises and now owned by artofcode LLC.
 
 @node What is DGSs current state of development?, What is the relationship between the Display Ghostscript Server and X Windows?, What is the Display Ghostscript Server?, GNUstep DisplayGhostScript Server
 @subsection What is its current state of development?
 
-GNU contracted with Aladdin software to add some key features to
-ghostscript so it could be used as a DPS server. This work has mostly
-been done, althought Aladdin did not completely finish the work that they
-were contracted for. DGS works fairly well with a single context and
-will soon work with multiple contexts. Alpha channel and compositing
+GNU contracted with Aladdin Enterprises to add some key features to
+GNU Ghostscript so it could be used as a DPS server. This work has mostly
+been done, although Aladdin did not completely
+finish the work that they were contracted for.  (Because the work took
+longer than specified and was not completed, Aladdin agreed to waive
+approximately $10,000 in promised fees for the work that was actually
+done and delivered.)
+DGS works fairly well with a single context.
+Alpha channel and compositing
 currently doesn't work, but should before the end of 2000 (It's already
-been fixed in Ghostscript, just not released).
+been fixed in GNU Ghostscript 6.0, just not released).
 
 @node What is the relationship between the Display Ghostscript Server and X Windows?,  , What is DGSs current state of development?, GNUstep DisplayGhostScript Server
 @subsection What is the relationship between the Display Ghostscript Server and X Windows?
