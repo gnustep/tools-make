@@ -33,9 +33,9 @@ if test "$target" = NONE ; then
 else
    # The user did specify a target, so canonicalize and clean
    GNUSTEP_TARGET=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $target`
-   GNUSTEP_TARGET_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $target`
-   GNUSTEP_TARGET_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $target`
-   GNUSTEP_TARGET_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $target`
+   GNUSTEP_TARGET_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_TARGET`
+   GNUSTEP_TARGET_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_TARGET`
+   GNUSTEP_TARGET_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_TARGET`
 fi
 
 # Clean the target
@@ -70,12 +70,12 @@ fi
 
 # Change the library directory default
 if test "$libdir" = "\${exec_prefix}/lib" ; then
-   libdir="\${exec_prefix}/Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   libdir="\${exec_prefix}/Libraries/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
 fi
 
 # Change the include directory default
 if test "$includedir" = "\${prefix}/include" ; then
-   includedir="\${prefix}/Headers"
+   includedir="\${prefix}/Headers/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
 fi
 
 # xxx What about oldincludedir?

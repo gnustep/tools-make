@@ -37,9 +37,9 @@ datadir = @datadir@
 GNUSTEP_TARGET_CPU := @target_cpu@
 GNUSTEP_TARGET_OS := @target_os@
 
-GNUSTEP_TARGET_CPU := $(shell clean_cpu.sh $(GNUSTEP_TARGET_CPU))
-GNUSTEP_TARGET_VENDOR := $(shell clean_vendor.sh $(GNUSTEP_TARGET_VENDOR))
-GNUSTEP_TARGET_OS := $(shell clean_os.sh $(GNUSTEP_TARGET_OS))
+GNUSTEP_TARGET_CPU := $(shell ./clean_cpu.sh $(GNUSTEP_TARGET_CPU))
+GNUSTEP_TARGET_VENDOR := $(shell ./clean_vendor.sh $(GNUSTEP_TARGET_VENDOR))
+GNUSTEP_TARGET_OS := $(shell ./clean_os.sh $(GNUSTEP_TARGET_OS))
 
 makedir = $(prefix)/Makefiles
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)

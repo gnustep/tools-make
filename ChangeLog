@@ -1,3 +1,10 @@
+Wed Sep 24 14:00:03 1997  Scott Christley  <scottc@net-community.com>
+
+	* Makefile.in: Run scripts in current directory.
+	* config.site: For autoconf packages in the GNUstep directory
+	structure, the headers and libraries must go into the appropriate
+	target subdirectory.
+
 Tue Sep 23 15:18:08 1997  Scott Christley  <scottc@net-community.com>
 
 	* application.make: Utilize object directory.
