@@ -229,9 +229,11 @@ endif
 
 OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 
-# FIXME - I don't think we can depend on GNUmakefile - rather we should 
-# FORCE then because GNUmakefile might include other arbitrary files outside
-# our control
+# FIXME - We should not depend on GNUmakefile - rather we should use
+# Instance/Shared/stamp-string.make if we need to depend on the value
+# of some make variables.  That would also detect a change in
+# FRAMEWORK_INSTALL_DIR from the command line, not currently covered
+# at the moment!
 #
 # To get the list of all classes, we run 'nm' on the object files, and
 # retrieve all symbols of the form __objc_class_name_NSObject which
