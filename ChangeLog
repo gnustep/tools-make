@@ -1,3 +1,7 @@
+1999-03-05  Adam Fedor  <fedor@gnu.org>
+
+	* brain.make: Switch order of TIFF_INCLUDE and X_INCLUDE.
+
 1999-03-04  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Check if tiff libary nees jpeg. Rearrange tiff and
