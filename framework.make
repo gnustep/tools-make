@@ -121,8 +121,7 @@ DLL_EXP_LIB      = $(INTERNAL_framework_NAME)$(FRAMEWORK_NAME_SUFFIX)$(SHARED_LI
 DLL_EXP_DEF      = $(INTERNAL_framework_NAME)$(FRAMEWORK_NAME_SUFFIX).def
 
 ifeq ($(DLL_INSTALLATION_DIR),)
-  DLL_INSTALLATION_DIR = \
-    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
+  DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 endif # BUILD_DLL
@@ -243,11 +242,14 @@ endif
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) \
                          $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
                          $(OBJ_FILES) GNUmakefile
-	@(if [ "$(OBJC_OBJ_FILES)" != "" ]; then objcfiles="$(OBJC_OBJ_FILES)"; \
+	@(if [ "$(OBJC_OBJ_FILES)" != "" ]; \
+	    then objcfiles="$(OBJC_OBJ_FILES)"; \
 	fi; \
-	if [ "$(SUBPROJECT_OBJ_FILES)" != "" ]; then objcfiles="$$objcfiles $(SUBPROJECT_OBJ_FILES)"; \
+	if [ "$(SUBPROJECT_OBJ_FILES)" != "" ]; \
+	    then objcfiles="$$objcfiles $(SUBPROJECT_OBJ_FILES)"; \
 	fi; \
-	if [ "$$objcfiles" = "" ]; then objcfiles="__dummy__"; \
+	if [ "$$objcfiles" = "" ]; \
+	    then objcfiles="__dummy__"; \
 	fi;\
 	classes=""; \
 	if [ "$$objcfiles" != "__dummy__" ]; then \
