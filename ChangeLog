@@ -1,3 +1,9 @@
+Thu Apr  4 14:57:38 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.in: Quote FORCE_USER_ROOT and FORCE_DEFAULTS_ROOT when
+	building the -D preprocessor option.
+	* configure: Regenerated.
+
 Thu Apr  4 14:41:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in (temp_path, gnustep_class_path): Partially
