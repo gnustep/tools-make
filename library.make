@@ -185,7 +185,7 @@ $(LIBRARY_OBJ_DIR)/$(DLL_NAME) : $(DLL_OFILES) $(DERIVED_SOURCES)/$(INTERNAL_lib
 
 else # BUILD_DLL
 
-internal-library-all:: before-$(TARGET)-all $(LIBRARY_OBJ_DIR) \
+internal-library-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 		$(LIBRARY_OBJ_DIR)/$(VERSION_LIBRARY_FILE) import-library \
 		after-$(TARGET)-all
 
