@@ -1,3 +1,15 @@
+Thu Jul  5 11:19:46 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (internal-textdoc-all): Do not depend on
+	before-all and after-all.
+	(internal-doc-clean): Use $(GSDOC_OBJECT_FILES) when installing
+	gsdoc files.
+	(internal-textdoc-clean): Removed gsdoc related code from here.
+	(internal-doc-all): for building gsdoc, depend on
+	$(GSDOC_OBJECT_FILES) rather than $(INTERNAL_doc_NAME).html.
+	($(INTERNAL_doc_NAME).html): Replaced this rule for gsdoc with a
+	rule for $(GSDOC_OBJECT_FILES).
+	
 Thu Jul  5 10:28:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (INTERNAL_CLASSPATHFLAGS): Moved ADDITIONAL_CLASSPATH

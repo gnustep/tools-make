@@ -1,15 +1,16 @@
 #   -*-makefile-*-
 #   documentation.make
 #
-#   Makefile rules to build GNUstep-based texinfo documentation.
+#   Makefile rules to build GNUstep-based documentation.
 #
 #   Copyright (C) 1998, 2000, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #  
 #   Author:  Nicola Pero <n.pero@mi.flashnet.it> 
-#   Date: November 2000 
-#   Changes: Support for installing documentation, and for LaTeX projects
+#   Date: 2000, 2001
+#   Changes: Support for installing documentation, for LaTeX projects,
+#            for Javadoc, lots of other changes and fixes
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -104,15 +105,15 @@ else
 #
 ifneq ($(TEXI_FILES),)
 
-internal-doc-all:: before-all before-$(TARGET)-all \
+internal-doc-all:: before-$(TARGET)-all \
                    $(INTERNAL_doc_NAME).info \
                    $(INTERNAL_doc_NAME).ps \
                    $(INTERNAL_doc_NAME)_toc.html \
-                   after-$(TARGET)-all after-all
+                   after-$(TARGET)-all
 
-internal-textdoc-all:: before-all before-$(TARGET)-all \
+internal-textdoc-all:: before-$(TARGET)-all \
                    $(INTERNAL_textdoc_NAME) \
-                   after-$(TARGET)-all after-all
+                   after-$(TARGET)-all
 
 $(INTERNAL_doc_NAME).info: $(TEXI_FILES)
 	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
@@ -149,11 +150,16 @@ after-$(TARGET)-all::
 #
 ifneq ($(GSDOC_FILES),)
 
-internal-doc-all:: before-all before-$(TARGET)-all \
-                   $(INTERNAL_doc_NAME).html \
-                   after-$(TARGET)-all after-all
+# The only thing we know is that each %.gsdoc file should generate a
+# %.html file.  If any of the %.gsdoc files is newer than a corresponding
+# %.html file, we rebuild them all.
+GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
 
-$(INTERNAL_doc_NAME).html: $(GSDOC_FILES)
+internal-doc-all:: before-$(TARGET)-all \
+                   $(GSDOC_OBJECT_FILES) \
+                   after-$(TARGET)-all
+
+$(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
 	gsdoc $(GSDOC_FILES)
 
 endif # GSDOC_FILES
@@ -176,7 +182,7 @@ $(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
 $(INTERNAL_doc_NAME).ps.gz: $(INTERNAL_doc_NAME).ps 
 	gzip $(INTERNAL_doc_NAME).ps -c > $(INTERNAL_doc_NAME).ps.gz
 
-internal-doc-all:: before-all before-$(TARGET)-all \
+internal-doc-all:: before-$(TARGET)-all \
                    $(INTERNAL_doc_NAME).ps.gz
 
 #
@@ -196,7 +202,7 @@ $(INTERNAL_doc_NAME).tar.gz: $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html
 
 endif # LATEX2HTML
 
-internal-doc-all:: after-$(TARGET)-all after-all
+internal-doc-all:: after-$(TARGET)-all
 
 endif # LATEX_FILES
 
@@ -268,7 +274,7 @@ internal-doc-install::
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
 	fi
 
-internal-doc-uninstall:: 
+internal-doc-uninstall::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
 	rm -f \
@@ -281,8 +287,6 @@ endif # TEXI_FILES
 # gsdoc installation
 #
 ifneq ($(GSDOC_FILES),)
-
-GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
 
 internal-doc-install::
 	$(INSTALL_DATA) $(GSDOC_OBJECT_FILES) \
@@ -368,22 +372,17 @@ internal-doc-clean::
 	-rm -f $(INTERNAL_doc_NAME)/*
 ifneq ($(GSDOC_FILES),)
 	for i in $(GSDOC_FILES); do \
-		rm -f `basename $$i .gsdoc`.html ; \
+	  rm -f $(GSDOC_OBJECT_FILES) ; \
 	done
 endif
 ifneq ($(LATEX_FILES),)
 	for i in $(LATEX_FILES); do \
-		rm -f `basename $$i .tex`.aux ; \
+	  rm -f `basename $$i .tex`.aux ; \
 	done
 endif
 
 internal-textdoc-clean::
 	rm -f $(INTERNAL_textdoc_NAME)
-ifneq ($(GSDOC_FILES),)
-	for i in $(GSDOC_FILES); do \
-		rm -f `basename $$i .gsdoc`.html ; \
-	done
-endif
 
 ifneq ($(JAVADOC_FILES),)
 
