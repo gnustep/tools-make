@@ -244,6 +244,43 @@ fi
 AC_SUBST(GNUSTEP_FLATTENED)
 
 #--------------------------------------------------------------------
+# Is the system multi-platform?
+#--------------------------------------------------------------------
+#
+# Multi-platform means that GNUstep.sh will determine the host
+# platform (by running config.guess) each time that it is sourced.
+# This is good if you are sharing your GNUstep.sh across your network
+# (for example, mounting the makefiles via NFS), but it requires you
+# to be able to run config.guess on your machine(s), which usually
+# requires a development environment (compiler, libc etc).
+#
+# The default instead is not using multi-platform, which means the
+# local host os, cpu and version is hardcoded in GNUstep.sh.  This
+# works nicely for a single machine using this gnustep-make
+# installation, and it works even if you don't have development
+# packages (gcc, binutils, libc-dev etc) installed.  We had to make
+# this the default after end-users (with no development packages
+# installed) complained that binary packages wouldn't work (and the
+# reason turned out to be that GNUstep.sh was running config.guess
+# which was returning the wrong platform because the development
+# tools needed/used to determine the platform were not available).
+#
+# Unless you know what you are doing, stick with the default, which is
+# also much faster when sourcing GNUstep.sh.
+#
+AC_ARG_ENABLE(multi-platform, 
+[--enable-multi-platform		Use run time multi-platform support], 
+  ac_cv_multi_platform=$enableval,
+  ac_cv_multi_platform="undefined")
+
+if test "$ac_cv_multi_platform" = "yes"; then
+  GNUSTEP_MULTI_PLATFORM=yes;
+else
+  GNUSTEP_MULTI_PLATFORM=;
+fi
+AC_SUBST(GNUSTEP_MULTI_PLATFORM)
+
+#--------------------------------------------------------------------
 # Build backend bundles (on by default)
 #--------------------------------------------------------------------
 AC_ARG_ENABLE(backend-bundle, [
@@ -466,13 +503,15 @@ AC_SUBST(GNUSTEP_MAKE_SUBMINOR_VERSION)
 # have to compute clean_target_os from target_os (and similar) by
 # running shell scripts each time you 'make' something inside
 # gnustep-make.  We basically compute them once now, and cache them
-# forever.
+# forever.  It is also used by GNUstep.sh when multi-platform is
+# disabled.
 clean_target_os=`$srcdir/clean_os.sh $target_os`
 clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
 clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
 AC_SUBST(clean_target_os)
 AC_SUBST(clean_target_cpu)
 AC_SUBST(clean_target_vendor)
+AC_SUBST(target)
 
 #--------------------------------------------------------------------
 # Produce the output files
