@@ -120,7 +120,7 @@ Get the HOWTO from
 @url{http://www.gnustep.org/resources/documentation/GNUstep-HOWTO}
 Get the latest release from @url{ftp://ftp.gnustep.org}. If you're
 really adventurous, get the latest snapshot by anonymous ftp from
-@url{ftp://ftp.gnustep.org:/pub/daily-snapshots}
+@url{ftp://ftp.gnustep.org/pub/daily-snapshots}
 
 Use anonymous CVS to keep up to date - instructions are in the
 HOWTO.
@@ -432,7 +432,7 @@ incorrectly. Try running the GSTest application, KeyboardInput test
 (located in the examples package 
 at @url{ftp://ftp.gnustep.org/pub/gnustep/core}) to test it.
 See
-@url{http://www.gnustep.org/resources/documentation/gnustep-gui_6.html#SEC43}
+@url{http://www.gnustep.org/resources/documentation/User/Gui/KeyboardSetup.html}
 for information on how to change the settings.
 
 If you are using WindowMaker, it's possible it is grabing this key and

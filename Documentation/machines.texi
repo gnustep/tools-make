@@ -1,5 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @setfilename machines.info
+@settitle Platform Compatibility
+
 @ifclear HOWTO
 @c Machine Specific, Darwin 6.x/PowerPC, , (DIR)
 @node Machine Specific, Darwin 6.x/PowerPC, , (DIR)
