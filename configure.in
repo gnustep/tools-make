@@ -107,6 +107,8 @@ AC_SUBST(GNUSTEP_FLATTENED)
 # Setup the library combination
 #--------------------------------------------------------------------
 targetArgument=${target}
+AC_PROG_CC
+AC_PROG_CPP
 AC_CANONICAL_SYSTEM
 
 AC_ARG_WITH(library-combo,[
@@ -186,8 +188,6 @@ else
   AC_PROG_RANLIB
 fi
 
-AC_PROG_CC
-AC_PROG_CPP
 AC_PATH_PROG(PERL, perl, none)
 
 AC_PROG_INSTALL
