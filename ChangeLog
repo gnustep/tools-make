@@ -1,3 +1,8 @@
+Tue Jan 22 00:20:12 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in (cygpath): Moved code to search for cygpath 
+	so that it's executed only if it's needed.
+
 Mon Jan 21 23:59:06 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.in (--with-user-root): Improved help message.
