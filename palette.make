@@ -145,14 +145,17 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	  fi; \
 	  ) >$@
 
-internal-palette-install:: $(PALETTE_INSTALL_DIR)
-	tar cf - $(PALETTE_DIR_NAME) | (cd $(PALETTE_INSTALL_DIR); tar xf -)
+internal-palette-install:: internal-install-dirs
+	tar cf - $(PALETTE_DIR_NAME) | (cd $(GNUSTEP_PALETTES); tar xf -)
 
-$(PALETTE_DIR_NAME)/Resources $(PALETTE_INSTALL_DIR)::
+internal-install-dirs::
+	$(MKDIRS) $(GNUSTEP_PALETTES)
+
+$(PALETTE_DIR_NAME)/Resources $(GNUSTEP_PALETTES)::
 	@$(MKDIRS) $@
 
 internal-palette-uninstall::
-	rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
+	rm -rf $(GNUSTEP_PALETTES)/$(PALETTE_DIR_NAME)
 
 #
 # Cleaning targets

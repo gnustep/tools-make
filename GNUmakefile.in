@@ -28,10 +28,10 @@
 
 include config.make
 
+prefix = @prefix@
+GNUSTEP_INSTALLATION_DIR=$(prefix)
 GNUSTEP_PREFIX = @GNUSTEP_PREFIX@
-GNUSTEP_INSTALLATION_DIR = @prefix@
 srcdir = @srcdir@
-prefix = $(GNUSTEP_INSTALLATION_DIR)
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 libdir = @libdir@
@@ -72,6 +72,7 @@ install: all
 		$(prefix)/Headers/$(GNUSTEP_TARGET_DIR) \
 		$(prefix)/Tools/$(GNUSTEP_TARGET_DIR) \
 		$(prefix)/Library \
+		$(prefix)/Library/Colors \
 		$(prefix)/Library/PostScript \
 		$(prefix)/Library/Services \
 		$(prefix)/Documentation/info \
@@ -96,7 +97,7 @@ install: all
 		common.make brain.make library.make rules.make target.make \
 		tool.make ctool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
-		palette.make \
+		palette.make gswapp.make gswbundle.make \
 		documentation.make MediaBook.func executable.template; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
@@ -120,7 +121,7 @@ uninstall:
 		common.make brain.make library.make rules.make target.make \
 		tool.make ctool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
-		palette.make \
+		palette.make gswapp.make gswbundle.make \
 		documentation.make MediaBook.func executable.template; do \
 	  rm -f $(makedir)/$$f; \
 	done
