@@ -39,6 +39,13 @@ setenv GNUSTEP_NETWORK_ROOT @GNUSTEP_NETWORK_ROOT@
 
 setenv GNUSTEP_MAKEFILES ${GNUSTEP_SYSTEM_ROOT}/Makefiles
 
+if ( "@GNUSTEP_MULTI_PLATFORM@" == "" ) then
+  setenv GNUSTEP_HOST @target@
+  setenv GNUSTEP_HOST_CPU @clean_target_cpu@
+  setenv GNUSTEP_HOST_VENDOR @clean_target_vendor@
+  setenv GNUSTEP_HOST_OS @clean_target_os@
+endif
+
 #
 # Determine the host information
 #

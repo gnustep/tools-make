@@ -73,6 +73,23 @@ GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
 export GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT
 
+# If multi-platform support is disabled, just use the hardcoded cpu,
+# vendor and os determined when gnustep-make was configured.  The
+# reason using the hardcoded ones might be better is that config.guess
+# and similar scripts might even require compiling test files to
+# determine the platform - but then you can't source GNUstep.sh
+# without having gcc, binutils, libc6-dev installed.  Which can be a
+# problem for end-users who are not developers and have no development
+# tools installed.  To prevent this problem, unless we were configured
+# to determine the platform at run time, by default we use the
+# hardcoded values of GNUSTEP_HOST*.
+if [ -z "@GNUSTEP_MULTI_PLATFORM@" ]; then
+  GNUSTEP_HOST=@target@
+  GNUSTEP_HOST_CPU=@clean_target_cpu@
+  GNUSTEP_HOST_VENDOR=@clean_target_vendor@
+  GNUSTEP_HOST_OS=@clean_target_os@
+fi
+
 #
 # Determine the host information
 #
