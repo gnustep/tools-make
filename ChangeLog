@@ -1,3 +1,14 @@
+Tue Mar  5 13:54:36 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (COMPONENTS, LANGUAGES,
+	WEBSERVER_RESOURCE_FILES, LOCALIZED_WEBSERVER_RESOURCE_FILES,
+	WEBSERVER_RESOURCE_DIRS, LOCALIZED_RESOURCE_FILES, RESOURCE_FILES,
+	RESOURCE_DIRS): Do not pass down to submakes.
+	* Instance/Shared/bundle.make: Do not use override when defining
+	resource variables.
+	* Instance/gswapp.make: Idem.
+	* Instance/gswbundle.make: Idem.
+
 Tue Mar  5 13:45:01 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/subproject.make: Modified to have resources, and manage
