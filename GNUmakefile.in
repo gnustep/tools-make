@@ -88,13 +88,15 @@ MASTER_MAKE_FILES = \
         aggregate.make source-distribution.make rpm.make rules.make \
         application.make bundle.make clibrary.make ctool.make \
         documentation.make gswapp.make gswbundle.make library.make \
-        objc.make java.make java-tool.make test-application.make
+        objc.make java.make java-tool.make test-application.make \
+        test-tool.make tool.make
 
 INSTANCE_MAKE_FILES = \
         rules.make \
         application.make bundle.make clibrary.make ctool.make \
         documentation.make gswapp.make gswbundle.make library.make \
-        objc.make java.make java-tool.make test-application.make
+        objc.make java.make java-tool.make test-application.make \
+        test-tool.make tool.make
 
 INSTANCE_SHARED_MAKE_FILES = headers.make java.make
 
