@@ -259,10 +259,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   ADDITIONAL_CLASSPATH="$($(basename $(basename $*))_CLASSPATH) \
                         $(ADDITIONAL_CLASSPATH)" \
   LIBRARIES_DEPEND_UPON="$($(basename $(basename $*))_LIBRARIES_DEPEND_UPON) \
-                         $(LIBRARIES_DEPEND_UPON)" \
-  SCRIPTS_DIRECTORY="$($(basename $(basename $*))_SCRIPTS_DIRECTORY)" \
-  CHECK_SCRIPT_DIRS="$($(basename $(basename $*))_SCRIPT_DIRS)"
-
+                         $(LIBRARIES_DEPEND_UPON)"
 
 ifneq ($(FRAMEWORK_NAME),)
 #
