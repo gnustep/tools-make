@@ -1,3 +1,8 @@
+Mon Jul 28 10:59:21 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (%.plist): Filter the result through sed to drop #pragma
+	statements.
+
 2003-07-23 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/autogsdoc.make: put stamp file in
