@@ -325,6 +325,43 @@ application for another machine just by typing
 where "target machine" is the cannonical system name as reported by
 config.guess.
 
+Building different types of a project
+=====================================
+
+During development you usually need to switch between a debug version and a
+profile one without having to recompile all of the sources. The makefile
+package allows you to do this by letting you define three boolean make
+variables. The values of these variables can be either "yes" or "no".
+
+* debug
+
+If the value is yes then it is assumed that the target is to be built with
+debugging info. By default the optimization is turned on but you can control
+this behavior via the OPTFLAGS make variable. The default is no.
+
+* shared
+
+It makes sense to specify this only for library targets. This variable says
+if the target needs to be built as a shared library. On systems that support
+shared libraries this is the default; the user has to explicitly specify
+shared=no in the command line.
+
+* profile
+
+When this variable is yes, a profile version of the target is built. The
+default is no.
+
+For example if you want to build a shared library with debug information
+enabled but no profile information, the command line would be:
+
+  $ make shared=yes debug=yes profile=no
+
+The last argument is not necessary because the default is to build a version
+without profile information.
+
+Of course you also have to specify the library combo if it's different than the
+default.
+
 The structure of makefiles
 ==========================
 
