@@ -1,3 +1,7 @@
+Mon Mar 29 12:19:38 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Version: Do not define VERSION.
+
 Mon Mar 29 12:19:38 2004  Matt Rice <ratmice@yahoo.com>
 
 	* Master/source-distribution.make: Strip whitespaces from
