@@ -16,7 +16,9 @@ not work.
 Note for compiling with shared libraries (DLLs), it's a good idea to
 remove the libobjc.a that comes with gcc (gcc -v for location) so that
 it isn't accidentally found instead of the libobjc DLL that you will
-compile below.
+compile below. Also note that, despite the statement in the GNUstep-HOWTO,
+even if you have 3.x, you still need to install gnustep-objc as it properly 
+exports symbols for DLLs.
 
 MinGW on Cygwin
 ---------------

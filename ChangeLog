@@ -1,3 +1,9 @@
+2001-09-25  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.MinGW: Update
+	* Documentation/machines.texi: Likewise.
+	* GNUstep-HOWTO: Regen.
+
 Fri Sep 21 13:39:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* application.make ($(APP_FILE)): Added ALL_FRAMEWORK_DIRS to 

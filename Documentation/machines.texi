@@ -597,7 +597,7 @@ backend.
 
 @table @samp
 @item Recommended compiler
-gcc 2.95.2 (MingW release 1999-11-07)
+gcc 2.95.3-5
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})

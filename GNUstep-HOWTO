@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 19 July 2001
+   Last Update: 19 September 2001
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -787,22 +787,24 @@ building:
 
      make shared=yes
 
-   For static libs, use SHARED=NO, Make sure files and compilation done
-in Unix mode (no ^M in files, EXPORT CYGWIN=BINMODE usually works if
-cygwin is not buggy).  Gdomap services not set up correctly. Must add
-services lines to `C:\WINDOWS\services' (on Windows 98) or xxx (on
+   For static libs, use `shared=no', Make sure files and compilation
+done in Unix mode (no ^M in files, EXPORT CYGWIN=BINMODE usually works
+if cygwin is not buggy).  Gdomap services not set up correctly. Must
+add services lines to `C:\WINDOWS\services' (on Windows 98) or xxx (on
 Windows NT).  Base library only. No native GUI backend.
 
 Windows with MinGW (_Unstable!_)
 ================================
 
 `Recommended compiler'
-     gcc 2.95.2 (MingW release 1999-11-07)
+     gcc 2.95.3-5
 
 `Extra libs needed'
      Objective-C library DLL (<ftp://ftp.gnustep.org/pub/gnustep/libs>)
-     for shared libs. ffcall is not ported to Mingw32 so don't try to
-     use it.
+     for shared libs.  For ffcall, you should get version 1.8b or above
+     (the earlier ones don't compile). There are still some problems
+     with structure passing, but that is generally not supportred on
+     any architecture.
 
 `Special Instructions'
      See the `README.MinGW' file located in the gnustep-make
