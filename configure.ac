@@ -473,7 +473,7 @@ AC_MSG_CHECKING(whether to disable compiler warnings about deprecated import)
 AC_ARG_ENABLE(import,
 [--disable-import     Warn about usage of deprecated import directive], 
   ac_cv_import=$enableval,  
-  ac_cv_import="yes")
+  ac_cv_import="no")
 
 AC_MSG_RESULT($ac_cv_import)
 

@@ -1,3 +1,8 @@
+Tue Mar  4 17:13:46 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Enable GCC deprecation warnings for #import.
+	* configure: Regenerated.
+	
 2003-03-03 iMartin Brecher <martin@mb-itconsulting.com>
 
 	* Documentation/README.MinGW: Tidied
