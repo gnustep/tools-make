@@ -1,3 +1,7 @@
+2000-07-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUmakefile.in: Use C version of which_lib exclusively.
+
 2000-07-18  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* ctool.make: Changed installation dir to be CTOOL_INSTALLATION_DIR

@@ -65,9 +65,8 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 
 all: generated-files which_lib$(EXEEXT)
 
-which_lib$(EXEEXT): which_lib.pl
-	cp which_lib.pl which_lib$(EXEEXT)
-	chmod +x which_lib$(EXEEXT)
+which_lib$(EXEEXT): which_lib.c
+        $(CC) @CFLAGS@ -Wall -o $@ $^
 
 install: all
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
