@@ -44,8 +44,6 @@ internal-distclean:: $(TEST_TOOL_NAME:=.distclean.tool.subprojects)
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
 
-internal-check:: $(TEST_TOOL_NAME:=.check.tool.variables)
-
 $(TEST_TOOL_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.tool.variables
 
