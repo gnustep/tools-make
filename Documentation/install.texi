@@ -128,21 +128,22 @@ CFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -l
 @subsection Warnings for deprecated #import
 
 The #import directive, often found in legacy Objective-C code from the
-NeXTstep and OpenStep era, is deprecated.  You should use #include
+NeXTstep and OpenStep era (and more recently on code from the Apple
+MacOS X Cocoa environment), is deprecated.  You should use #include
 instead whenever possible, and even if you use #import, you should
 protect all your headers against multiple inclusions.  The GCC compiler
 automatically emits a warning whenever you use #import.  For political
-and historical reasons (basically for fear of annoying legacy users),
-these warnings are disabled by gnustep-make.  But if you are not a
-legacy user and/or you want to make sure your Objective-C code is not
-using any deprecated feature, you should configure gnustep-make with
---disable-import:
+and historical reasons (basically for fear of annoying legacy and MacOS
+X users), these warnings are disabled by gnustep-make.  But if you are
+not a legacy (/MacOS X) user and/or you want to make sure your
+Objective-C code is not using any deprecated feature, you should
+configure gnustep-make with --disable-import:
 @example
 ./configure --disable-import
 @end example
-If you are a legacy user, and wonder why #import is deprecated, please
-search the web and the GCC and GNUstep mailing list archives - there are
-very precise and sound technical reasons.
+If you are a legacy or MacOS X user, and wonder why #import is
+deprecated, please search the web and the GCC and GNUstep mailing list
+archives - there are very precise and sound technical reasons.
 
 @node Cross-Compiling, Flat Structure, Warnings for deprecated #import, Configuration
 @subsection Configuring the GNUstep makefile package for a cross-compile target
