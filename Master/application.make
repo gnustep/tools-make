@@ -25,7 +25,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-APP_NAME:=$(strip $(APP_NAME))
+APP_NAME := $(strip $(APP_NAME))
 
 internal-all:: $(APP_NAME:=.all.app.variables)
 

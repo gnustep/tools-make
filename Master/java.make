@@ -24,7 +24,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-JAVA_PACKAGE_NAME:=$(strip $(JAVA_PACKAGE_NAME))
+JAVA_PACKAGE_NAME := $(strip $(JAVA_PACKAGE_NAME))
 
 internal-all:: $(JAVA_PACKAGE_NAME:=.all.java-package.variables)
 

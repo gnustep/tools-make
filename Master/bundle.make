@@ -25,7 +25,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-BUNDLE_NAME:=$(strip $(BUNDLE_NAME))
+BUNDLE_NAME := $(strip $(BUNDLE_NAME))
 
 internal-all:: $(BUNDLE_NAME:=.all.bundle.variables)
 

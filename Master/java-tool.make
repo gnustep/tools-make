@@ -28,7 +28,7 @@
 # xxx_PRINCIPAL_CLASS variable.
 #
 
-JAVA_TOOL_NAME:=$(strip $(JAVA_TOOL_NAME))
+JAVA_TOOL_NAME := $(strip $(JAVA_TOOL_NAME))
 
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make

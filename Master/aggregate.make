@@ -28,7 +28,7 @@ endif
 # The list of directory names with the subprojects is in the makefile 
 # variable SUBPROJECTS
 #
-SUBPROJECTS:=$(strip $(SUBPROJECTS))
+SUBPROJECTS := $(strip $(SUBPROJECTS))
 
 #
 # Internal targets
