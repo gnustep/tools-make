@@ -1,3 +1,11 @@
+Fri Feb  8 11:43:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* java-tool.make: Broken into Master and Instance.
+	* Instance/java-tool.make: New file.
+	* Master/jave-tool.make: New file.
+	* GNUmakefile.in (INSTANCE_MAKE_FILES): Added java-tool.make
+	(MASTER_MAKE_FILES): Added java-tool.make.
+	
 Fri Feb  8 10:07:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* java.make: Broken into Master and Instance.
