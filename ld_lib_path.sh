@@ -135,7 +135,7 @@ case "$host_os" in
 # The code below has been temporarily removed, because...
 # With GNUstep -make on any platform, when you compile a
 # framework, it is supported by creating a link like
-# Librairies/libMyFramework.dylib ->
+# Libraries/libMyFramework.dylib ->
 # Frameworks/MyFramework.framework/Versions/Current/libMyFramework.dylib, to
 # mitigate the fact that FSF GCC supports to link frameworks with the -frameworks
 # flag only on Darwin . 
