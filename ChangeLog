@@ -1,3 +1,10 @@
+2002-03-01 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.sh.in: Updated to use user_home tool.
+	* GNUstep.csh.in: ditto
+	* configure.in: Updated comments/instructions to talk about
+	forcing common user and defaults root directories.
+
 Fri Mar  1 10:58:58 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (which_lib$(EXEEXT)): Compile $<, not

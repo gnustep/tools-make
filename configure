@@ -43,14 +43,14 @@ to have the GNUSTEP_NETWORK_ROOT directory in a non-standard place.  Example:
 ac_help="$ac_help
 --with-user-root
     Set the GNUSTEP_USER_ROOT directory.  Use this option if you want 
-to have the GNUSTEP_USER_ROOT directory in a non-standard place.  Example:
---with-user-root=/MyHome/local/GNUstep
+to force all users to share the same GNUSTEP_USER_ROOT directory.  Example:
+--with-user-root=/CommonHome/GNUstep
 "
 ac_help="$ac_help
 --with-defaults-root
     Set the GNUSTEP_DEFAULTS_ROOT directory.  Use this option if you want 
-to have the GNUSTEP_DEFAULTS_ROOT directory in a non-standard place.  Example:
---with-defaults-root=$HOME
+to force all users to share common default.  Example:
+--with-defaults-root=/CommonDefaults
 "
 ac_help="$ac_help
 --enable-flattened		Use flattened directory structure"
@@ -1608,10 +1608,11 @@ fi
 echo "$ac_t""$prefix" 1>&6
 
 #--------------------------------------------------------------------
-# Process --with-user-root, --with-local-root and --with-network-root
+# Process --with-defaults-root, --with-user-root,
+# --with-local-root and --with-network-root
 #--------------------------------------------------------------------
 echo $ac_n "checking for GNUSTEP_LOCAL_ROOT to use""... $ac_c" 1>&6
-echo "configure:1615: checking for GNUSTEP_LOCAL_ROOT to use" >&5
+echo "configure:1616: checking for GNUSTEP_LOCAL_ROOT to use" >&5
 # Check whether --with-local-root or --without-local-root was given.
 if test "${with_local_root+set}" = set; then
   withval="$with_local_root"
@@ -1624,7 +1625,7 @@ fi
 echo "$ac_t""$GNUSTEP_LOCAL_ROOT" 1>&6
 
 echo $ac_n "checking for GNUSTEP_NETWORK_ROOT to use""... $ac_c" 1>&6
-echo "configure:1628: checking for GNUSTEP_NETWORK_ROOT to use" >&5
+echo "configure:1629: checking for GNUSTEP_NETWORK_ROOT to use" >&5
 # Check whether --with-network-root or --without-network-root was given.
 if test "${with_network_root+set}" = set; then
   withval="$with_network_root"
@@ -1637,7 +1638,7 @@ fi
 echo "$ac_t""$GNUSTEP_NETWORK_ROOT" 1>&6
 
 echo $ac_n "checking for GNUSTEP_USER_ROOT to use""... $ac_c" 1>&6
-echo "configure:1641: checking for GNUSTEP_USER_ROOT to use" >&5
+echo "configure:1642: checking for GNUSTEP_USER_ROOT to use" >&5
 # Check whether --with-user-root or --without-user-root was given.
 if test "${with_user_root+set}" = set; then
   withval="$with_user_root"
@@ -1659,7 +1660,7 @@ fi
 echo "$ac_t""$GNUSTEP_USER_ROOT" 1>&6
 
 echo $ac_n "checking for GNUSTEP_DEFAULTS_ROOT to use""... $ac_c" 1>&6
-echo "configure:1663: checking for GNUSTEP_DEFAULTS_ROOT to use" >&5
+echo "configure:1664: checking for GNUSTEP_DEFAULTS_ROOT to use" >&5
 # Check whether --with-defaults-root or --without-defaults-root was given.
 if test "${with_defaults_root+set}" = set; then
   withval="$with_defaults_root"
@@ -1750,7 +1751,7 @@ fi
 # If so, there are probably other libraries that we want there also, so
 # leave the proper includes in CPPFLAGS and LDFLAGS
 echo $ac_n "checking for shared objc library""... $ac_c" 1>&6
-echo "configure:1754: checking for shared objc library" >&5
+echo "configure:1755: checking for shared objc library" >&5
 if eval "test \"`echo '$''{'gs_cv_objc_libdir'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -1789,12 +1790,12 @@ for ac_hdr in dirent.h sys/ndir.h sys/dir.h ndir.h
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr that defines DIR""... $ac_c" 1>&6
-echo "configure:1793: checking for $ac_hdr that defines DIR" >&5
+echo "configure:1794: checking for $ac_hdr that defines DIR" >&5
 if eval "test \"`echo '$''{'ac_cv_header_dirent_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1798 "configure"
+#line 1799 "configure"
 #include "confdefs.h"
 #include <sys/types.h>
 #include <$ac_hdr>
@@ -1802,7 +1803,7 @@ int main() {
 DIR *dirp = 0;
 ; return 0; }
 EOF
-if { (eval echo configure:1806: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
+if { (eval echo configure:1807: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>&5; }; then
   rm -rf conftest*
   eval "ac_cv_header_dirent_$ac_safe=yes"
 else
@@ -1827,7 +1828,7 @@ done
 # Two versions of opendir et al. are in -ldir and -lx on SCO Xenix.
 if test $ac_header_dirent = dirent.h; then
 echo $ac_n "checking for opendir in -ldir""... $ac_c" 1>&6
-echo "configure:1831: checking for opendir in -ldir" >&5
+echo "configure:1832: checking for opendir in -ldir" >&5
 ac_lib_var=`echo dir'_'opendir | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1835,7 +1836,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-ldir  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1839 "configure"
+#line 1840 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1846,7 +1847,7 @@ int main() {
 opendir()
 ; return 0; }
 EOF
-if { (eval echo configure:1850: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:1851: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1868,7 +1869,7 @@ fi
 
 else
 echo $ac_n "checking for opendir in -lx""... $ac_c" 1>&6
-echo "configure:1872: checking for opendir in -lx" >&5
+echo "configure:1873: checking for opendir in -lx" >&5
 ac_lib_var=`echo x'_'opendir | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1876,7 +1877,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-lx  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1880 "configure"
+#line 1881 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1887,7 +1888,7 @@ int main() {
 opendir()
 ; return 0; }
 EOF
-if { (eval echo configure:1891: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:1892: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1913,17 +1914,17 @@ for ac_hdr in sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h 		sys/s
 do
 ac_safe=`echo "$ac_hdr" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for $ac_hdr""... $ac_c" 1>&6
-echo "configure:1917: checking for $ac_hdr" >&5
+echo "configure:1918: checking for $ac_hdr" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1922 "configure"
+#line 1923 "configure"
 #include "confdefs.h"
 #include <$ac_hdr>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1927: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1928: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out | grep -v "^conftest.${ac_ext}\$"`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1952,12 +1953,12 @@ done
 for ac_func in getpwnam getpwuid geteuid getlogin
 do
 echo $ac_n "checking for $ac_func""... $ac_c" 1>&6
-echo "configure:1956: checking for $ac_func" >&5
+echo "configure:1957: checking for $ac_func" >&5
 if eval "test \"`echo '$''{'ac_cv_func_$ac_func'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1961 "configure"
+#line 1962 "configure"
 #include "confdefs.h"
 /* System header to define __stub macros and hopefully few prototypes,
     which can conflict with char $ac_func(); below.  */
@@ -1980,7 +1981,7 @@ $ac_func();
 
 ; return 0; }
 EOF
-if { (eval echo configure:1984: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
+if { (eval echo configure:1985: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext}; then
   rm -rf conftest*
   eval "ac_cv_func_$ac_func=yes"
 else
@@ -2021,7 +2022,7 @@ fi
 
 
 echo $ac_n "checking whether objc has thread support""... $ac_c" 1>&6
-echo "configure:2025: checking whether objc has thread support" >&5
+echo "configure:2026: checking whether objc has thread support" >&5
 extra_LIBS=""
 case "${target_os}" in
   solaris*)
@@ -2040,11 +2041,11 @@ if test "$OBJC_THREAD" != ""; then
   objc_threaded=""
 else
   cat > conftest.$ac_ext <<EOF
-#line 2044 "configure"
+#line 2045 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2048: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2049: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="$OBJC_THREAD $extra_LIBS"
 else
@@ -2062,11 +2063,11 @@ elif test "$host_os" = linux-gnu; then
   objc_threaded="-lpthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2066 "configure"
+#line 2067 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2070: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2071: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lpthread"
 else
@@ -2084,11 +2085,11 @@ elif test "`echo $host_os|sed 's/[0-9].*//'|sed s/elf//`" = freebsd; then
   objc_threaded="-pthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2088 "configure"
+#line 2089 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2092: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2093: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-pthread"
 else
@@ -2106,11 +2107,11 @@ fi
   objc_threaded="-lpthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2110 "configure"
+#line 2111 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2114: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2115: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lpthread"
 else
@@ -2129,11 +2130,11 @@ fi
   objc_threaded="-lpcthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2133 "configure"
+#line 2134 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2137: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2138: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lpcthread"
 else
@@ -2153,11 +2154,11 @@ elif test "$MINGW32" = yes; then
   objc_threaded="works"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2157 "configure"
+#line 2158 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2161: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2162: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="works"
 else
@@ -2175,11 +2176,11 @@ else
   objc_threaded=""
 else
   cat > conftest.$ac_ext <<EOF
-#line 2179 "configure"
+#line 2180 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2183: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2184: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lthread $extra_LIBS"
 else
@@ -2211,7 +2212,7 @@ ac_cv_objc_threaded="$objc_threaded"
 #--------------------------------------------------------------------
 
 echo $ac_n "checking if the compiler supports autodependencies""... $ac_c" 1>&6
-echo "configure:2215: checking if the compiler supports autodependencies" >&5
+echo "configure:2216: checking if the compiler supports autodependencies" >&5
 
 # What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x
 
@@ -2245,7 +2246,7 @@ fi
 # Enable/disable warnings for deprecated #import directive as required
 #---------------------------------------------------------------------
 echo $ac_n "checking whether to disable compiler warnings about deprecated import""... $ac_c" 1>&6
-echo "configure:2249: checking whether to disable compiler warnings about deprecated import" >&5
+echo "configure:2250: checking whether to disable compiler warnings about deprecated import" >&5
 
 #
 # GCC recommends that you use `--disable-import' here, since #import
@@ -2271,7 +2272,7 @@ fi
 # Record the version
 #--------------------------------------------------------------------
 echo $ac_n "checking for the version of gnustep-make we are compiling""... $ac_c" 1>&6
-echo "configure:2275: checking for the version of gnustep-make we are compiling" >&5
+echo "configure:2276: checking for the version of gnustep-make we are compiling" >&5
 . "$srcdir/Version"
 echo "$ac_t""$GNUSTEP_MAKE_VERSION" 1>&6
 

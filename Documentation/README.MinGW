@@ -168,12 +168,13 @@ shared libraries. Even static libraries based on C (e.g. libtiff) will
 prevent Objective-C modules from being loaded in Objective-C libraries.
 
 [3] On Windows XP, at least, there are sometimes spaces in the path to the
-user directory. The make program cannot deal with this. One potential solution
-is to re-define the GNUSTEP_USER_ROOT location so it doesn't have spaces:
+user directory. The make program cannot deal with this.
+Probably the best solution is to add a .GNUsteprc file in your home
+directory with a line of the form -
+GNUSTEP_USER_ROOT=/home/myname
+setting your personal GNUstep root directory to be '/home/myname' ...
+some path which does not contain spaces.
 
-./configure --with-user-root='/home/$USERNAME/GNUstep'
-
-is a good alternative.
 
 Good Sites for Pre-Compiled Binaries
 ------------------------------------
