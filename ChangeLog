@@ -1,3 +1,14 @@
+Fri Sep 26 13:16:03 1997  Scott Christley  <scottc@net-community.com>
+
+	* Makefile.in: Define install script.
+	* application.make: Correct name of stamp file.
+	* common.make: Define install script.
+	* config.make.in: Do not define install script.
+	* configure.in: Do not check for install script.
+	* configure: Regenerate for configure.in changes.
+	* library.make: Use -f instead of -e.
+	* target.make: Customize alpha-linux system libraries.
+
 Thu Sep 25 23:31:30 1997  Scott Christley <scottc@net-community.com>
 
 	* library.make (internal-install-lib): Install correct file.

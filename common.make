@@ -37,6 +37,13 @@ CLEAN_VENDOR_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_vendor.sh
 CLEAN_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_os.sh
 
 #
+# Scripts used for installing data and program files
+#
+INSTALL = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/install-sh -c
+INSTALL_DATA = $(INSTALL) -m 644
+INSTALL_PROGRAM = $(INSTALL)
+
+#
 # Determine the compilation host and target
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/target.make

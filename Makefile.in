@@ -46,6 +46,10 @@ GNUSTEP_TARGET_OS := $(shell ./clean_os.sh $(GNUSTEP_TARGET_OS))
 makedir = $(prefix)/Makefiles
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
+INSTALL = ./install-sh -c
+INSTALL_DATA = $(INSTALL) -m 644
+INSTALL_PROGRAM = $(INSTALL)
+
 all:
 	@echo Nothing needs to be made, just install with
 	@echo make install

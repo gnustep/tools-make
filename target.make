@@ -69,7 +69,12 @@ endif
 # Target specific libraries
 #
 ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
+ifeq ($(GNUSTEP_TARGET_CPU),ix86)
 TARGET_SYSTEM_LIBS := -lpcthread -ldl -lm
+endif
+ifeq ($(GNUSTEP_TARGET_CPU),alpha)
+TARGET_SYSTEM_LIBS := -ldl -lm
+endif
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 TARGET_SYSTEM_LIBS := -lsocket -lnsl -ldl -lm

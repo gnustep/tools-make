@@ -39,7 +39,7 @@ APP_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(APP_STAMPS))
 # Internal targets
 #
 
-$(GNUSTEP_OBJ_DIR)/stamp-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/stamp-app-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(APP_FILE) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
@@ -59,7 +59,11 @@ build-app-dir::
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR) \
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 
-build-app:: $(GNUSTEP_OBJ_DIR)/stamp-$(APP_NAME)
+build-app:: $(GNUSTEP_OBJ_DIR)/stamp-app-$(APP_NAME)
+
+object-dir::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		./$(GNUSTEP_OBJ_DIR)
 
 #
 # Cleaning targets

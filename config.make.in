@@ -45,10 +45,6 @@ RANLIB = @RANLIB@
 RC = @RC@
 DLLTOOL = @DLLTOOL@
 
-INSTALL = @INSTALL@
-INSTALL_DATA = @INSTALL_DATA@
-INSTALL_PROGRAM = @INSTALL_PROGRAM@
-
 #
 # X Window System headers and libraries
 #
