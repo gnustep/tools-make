@@ -1,3 +1,7 @@
+2001-03-10  Adam Fedor  <fedor@gnu.org>
+
+	* objc.make (WITH_DLL): Add DLL defs when WITH_DLL=yes
+
 2001-03-08  Adam Fedor  <fedor@gnu.org>
 
 	* clean_cpu.sh: Make all alpha variants the same.
