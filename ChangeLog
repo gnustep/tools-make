@@ -1,3 +1,7 @@
+2000-01-14  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.csh.in (GNUSTEP_LOCAL_ROOT): Use correct quotes.
+
 Sun Jan  9 00:16:15 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (install): Create directory
