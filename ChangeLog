@@ -1,3 +1,9 @@
+2003-03-03 iMartin Brecher <martin@mb-itconsulting.com>
+
+	* Documentation/README.MinGW: Tidied
+	Some modifiecations by rfm@gnu.org also ... mainly to change the
+	order of build/install of libobjc and ffcall
+ 
 2003-02-23 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* user_home.c: fix HOMEPATH and HOMEDRIVE handling for mingw to
