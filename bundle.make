@@ -207,6 +207,18 @@ build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
 	$(BUNDLE_DIR_NAME)/Contents/Resources \
 	$(BUNDLE_DIR_NAME)/Contents/Info.plist
 
+# NeXTstep bundles
+$(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
+	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}\";"; \
+	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
+	    echo "  NSMainNibFile = \"\";"; \
+	  else \
+	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
+	  fi; \
+	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
+	  echo "}") >$@
+
 # GNUstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
