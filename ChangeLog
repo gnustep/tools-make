@@ -1,3 +1,8 @@
+2002-10-01 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/documentation.make: commented out bogus extra running
+	of autogsdoc without args, as this was halting install process.
+
 2002-10-01  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/filesystem.texi: New file.
