@@ -1,3 +1,10 @@
+Thu Oct 30 09:35:34 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make: Add the cpu/os/runtime include flag only for
+	libFoundation since only it requires this for the exception files.
+	* debugapp.in: Support for GDBbundle under OPENSTEP.
+	* rules.make: Don't show the recursive make command.
+
 Wed Oct 29 09:32:26 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* core.make: Renamed to brain.make to avoid removing it accidentally by

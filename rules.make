@@ -188,7 +188,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.testlib : FORCE
 	@echo Making $*...
-	$(MAKE) --no-print-directory internal-testlib-all \
+	@$(MAKE) --no-print-directory internal-testlib-all \
 		  TEST_LIBRARY_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
@@ -242,7 +242,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.checklib : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-LIBRARY \
+	@$(MAKE) --no-print-directory internal-check-LIBRARY \
 		  TEST_LIBRARY_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
@@ -250,7 +250,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.checkbundle : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-BUNDLE \
+	@$(MAKE) --no-print-directory internal-check-BUNDLE \
 		  TEST_BUNDLE_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
@@ -258,7 +258,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.checktool : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-TOOL \
+	@$(MAKE) --no-print-directory internal-check-TOOL \
 		  TEST_TOOL_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
@@ -266,7 +266,7 @@ ALL_TEST_GUI_LIBS := \
 
 %.checkapp : FORCE
 	@echo Checking $*...
-	$(MAKE) --no-print-directory internal-check-APP \
+	@$(MAKE) --no-print-directory internal-check-APP \
 		  TEST_APP_NAME=$* \
 		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \

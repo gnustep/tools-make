@@ -73,16 +73,15 @@ fi
 appname=`echo $app | sed 's/\.[a-z]*$//'`
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
+
 if [ "$library_combo" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   if [ ! -f $full_appname/$appname ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
   fi
 
-  # From some reasons $@ does not correctly pass the arguments to the binary
-  # so I use xargs to do this.
-  # echo $@ | xargs $full_appname/$appname
-  gdb $full_appname/$appname
+  # Support for GDBbundle under OPENSTEP
+  gdb -connect TextEdit $gdbargs $full_appname/$appname
 
 else
   # Determine if the application has a binary for this operating system
@@ -96,9 +95,11 @@ else
     exit 1
   fi
 
-  # From some reasons $@ does not correctly pass the arguments to the binary
-  # so I use xargs to do this.
-  # echo $@ | xargs $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
-  gdb $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+  # Support for GDBbundle under OPENSTEP
+  if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
+    gdb -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+  else
+    gdb $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+  fi
 
 fi
