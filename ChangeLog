@@ -1,3 +1,24 @@
+Sun Mar  7 15:22:37 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Updated application and bundle file structure on Apple to the
+	latest Apple conventions.
+	* Instance/application.make (APP_FILE_NAME): On Apple, create it
+	as xxx.app/Contents/MacOS/xxx.  ($(APP_FILE)): Put the
+	library_paths.openapp file inside xxx.app/Contents.
+	($(APP_DIR)/Contents/MacOS): New rule on Apple replacing the rule
+	to create xxx.app (GNUSTEP_STAMP_DIR): On Apple, use
+	xxx.app/Contents as directory in which to create the stamp.make
+	file.  (internal-app-all_): On Apple, create the
+	xxx.app/Contents/MacOS directory instead of xxx.app.
+	* Instance/bundle.make (BUNDLE_FILE_NAME): On Apple, create it as
+	xxx.bundle/Contents/MacOS/xxx. (build-bundle): On Apple, depend on
+	creating the xxx.bundle/Contents/MacOS directory rather than the
+	xxx.bundle/library-combo one.  (GNUSTEP_STAMP_DIR): On Apple, use
+	xxx.bundle/Contents as directory for stamp.make.
+	($(GNUSTEP_STAMP_DIR)): On Apple, updated rule for new setup.
+	($(BUNDLE_DIR)/Contents/MacOS): New rule on Apple replacing the
+	xxx.bundle/Contents one.
+	
 2004-03-4  Quentin Mathe  <qmathe@club-internet.fr>
 
 	* Documentation/README.Darwin: Minor improvements.
