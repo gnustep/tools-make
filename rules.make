@@ -39,9 +39,9 @@ RULES_MAKE_LOADED=yes
 #	libgmodel.all.library.variables
 #
 %.variables:
-	@(target=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\1/'`; \
-	operation=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\2/'`; \
-	type=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\3/' | tr - _`; \
+	@(target=$(word 1,$(subst ., ,$*)); \
+	operation=$(word 2,$(subst ., ,$*)); \
+	type=$(subst -,_,$(word 3,$(subst ., ,$*))); \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    TARGET_TYPE=$${type} \
 	    OPERATION=$${operation} TARGET=$${target} \
