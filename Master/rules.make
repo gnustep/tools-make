@@ -213,22 +213,46 @@ after-check::
 # this with a better API which works for everything and not only
 # frameworks and not only tools)
 
-%.variables: %.tools %.subprojects
-	@ instance=$(basename $(basename $*)); \
-	  operation=$(subst .,,$(suffix $(basename $*))); \
-	  type=$(subst -,_,$(subst .,,$(suffix $*))); \
-	  echo Making $$operation for $$type $$instance...; \
-	  $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-	    internal-$${type}-$$operation \
-	    GNUSTEP_TYPE=$$type \
-	    GNUSTEP_INSTANCE=$$instance \
-	    INTERNAL_$${type}_NAME=$$instance \
-	    TARGET=$$instance
+# If you change the subprojects code here, make sure to update the
+# %.subprojects rule below too!  The code from the %.subprojects rule
+# below is 'inlined' here for speed (so that we don't run a separate
+# shell just to execute that code).
+%.variables: %.tools
+	@ \
+instance=$(basename $(basename $*)); \
+operation=$(subst .,,$(suffix $(basename $*))); \
+type=$(subst -,_,$(subst .,,$(suffix $*))); \
+if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
+  echo Making $$operation in subprojects of $$type $$instance...; \
+  for f in $($(basename $(basename $*))_SUBPROJECTS) __done; do \
+    if [ $$f != __done ]; then       \
+      mf=$(MAKEFILE_NAME); \
+      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+        mf=Makefile; \
+        echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+      fi; \
+      if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+          FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+          FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+          DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+        ; then \
+        :; \
+      else exit $$?; \
+      fi; \
+    fi; \
+  done; \
+fi; \
+echo Making $$operation for $$type $$instance...; \
+$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+    internal-$${type}-$$operation \
+    GNUSTEP_TYPE=$$type \
+    GNUSTEP_INSTANCE=$$instance \
+    INTERNAL_$${type}_NAME=$$instance \
+    TARGET=$$instance
 
 ifneq ($(FRAMEWORK_NAME),)
 #
 # This rule is executed only for frameworks to build the framework tools.
-# It is currently executed before %.subprojects (FIXME order).
 #
 %.tools:
 	@ \
@@ -264,7 +288,10 @@ else # no FRAMEWORK
 endif # end of FRAMEWORK code
 
 #
-# This rule is executed before %.variables to process (eventual) subprojects
+# This rule provides exactly the same code as the %.variables one with
+# respect to subprojects; it is available for clean targets when they
+# want to run make clean in subprojects but do not need a full Instance
+# invocation.  In that case, they can depend on %.subprojects only.
 #
 %.subprojects:
 	@ \
@@ -310,8 +337,3 @@ include $(GNUSTEP_MAKEFILES)/Master/rpm.make
 # Rules for building debian/* scripts for DEBs, and DEBs
 # 
 #include $(GNUSTEP_MAKEFILES)/Master/deb.make <TODO>
-
-
-## Local variables:
-## mode: makefile
-## End:
