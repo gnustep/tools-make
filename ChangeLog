@@ -1,3 +1,14 @@
+Wed Dec 25 03:04:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (DYLIB_INSTALL_NAME): Variable removed, replaced
+	by LIB_LINK_INSTALL_NAME.
+	* Instance/library.make (LIB_LINK_INSTALL_NAME): Define.
+	* Instance/framework.make (LIB_LINK_INSTALL_NAME): Define.
+	* Instance/framework.make: Do not build and link the dummy
+	framework class on Apple.  On Apple, create the symbolic link
+	xxx.framework/xxx --> the shared library.  Modified NSExecutable
+	value on Apple.  New install code for Apple.
+	
 Wed Dec 25 02:53:19 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/application.make (internal-clean): Removed special code
