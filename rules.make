@@ -91,7 +91,16 @@ internal-all::
 
 after-all::
 
+ifeq ($(MAKELEVEL),0)
 before-install::
+	@if [ ! -w $(GNUSTEP_INSTALLATION_DIR) ]; then \
+	  echo "Sorry, the software is configured to install itself into $(GNUSTEP_INSTALLATION_DIR)"; \
+	  echo "but you do not have permissions to write in that directory - aborting installation."; \
+	  exit 1; \
+	fi;
+else
+before-install::
+endif
 
 internal-install::
 

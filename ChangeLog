@@ -1,3 +1,9 @@
+Mon Sep  3 15:13:49 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (before-install): If MAKELEVEL is 0, check that
+	GNUSTEP_INSTALLATION_DIR is writable by us; if it isn't, abort
+	with an error message.
+
 Fri Aug 31 15:33:30 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* bundle.make (bundle-localized-resource-files): Bug fix - added
