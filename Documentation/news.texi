@@ -13,11 +13,11 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
 @itemize @bullet
 @item The core rules and internals of gnustep-make have been fundamentally
-   redesigned and rewritten.  notably, gnustep-make now works using only
-   a single recursive sub-make invocation rather than two, which makes
-   it consistently faster and simpler in all circumstances.
+redesigned and rewritten.  notably, gnustep-make now works using only
+a single recursive sub-make invocation rather than two, which makes
+it consistently faster and simpler in all circumstances.
 @item The clean rules have been heavily optimized - they no longer use 
-   recursive sub-make invocations at all and so they are really fast.
+recursive sub-make invocations at all and so they are really fast.
 @item Many improvements to java support. Optimized management of nested classes
 @item Better conformance to make conventions.
 @item Fixed darwin support

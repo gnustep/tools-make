@@ -259,6 +259,9 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
+	@if [ -r "$(INTERNAL_bundle_NAME)Info.plist" ]; then \
+	  plmerge $@ $(INTERNAL_bundle_NAME)Info.plist; \
+	fi
 
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 ifneq ($(HEADER_FILES_INSTALL_DIR),)

@@ -1,3 +1,8 @@
+2001-11-03  Adam Fedor  <fedor@gnu.org>
+
+	* bundle.make ($(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist): 
+	Add *Info.plist (suggestion from stefanurbanek@yahoo.fr).
+
 2001-10-26  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/news.texi: Update
