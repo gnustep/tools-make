@@ -6,6 +6,8 @@
 	referenced correctly.
 	* Documentation/machines.texi: Add compilers section.
 
+	* Instance/tool.make: Fix a typo.
+
 2004-09-07  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.10.0
