@@ -1,3 +1,8 @@
+Mon Mar  8 13:52:43 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make ($(APP_FILE)): Do not create the
+	library_paths.openapp file on Apple.
+
 Mon Mar  8 13:20:38 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* openapp.in: On Apple, look for the executable in the new location.
