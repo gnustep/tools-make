@@ -1,3 +1,7 @@
+2004-02-28  Quentin Mathé  <qmathe@club-internet.fr>
+
+	* Documentation/README.Darwin: Update with the detailed and complete installation process on Mac OS X and Darwin (with the help of Nicolas Roard).
+
 2004-02-23  Adam Fedor  <fedor@gnu.org>
 
 	* user_home.c (main): Fix check for space in home dir, issue
