@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 28 March 2001
+   Last Update: 5 April 2001
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -350,7 +350,25 @@ to the GNUstep maintainer <gnustep-maintainers@gnu.org>.
    If your having mysterious trouble with a machine, try compiling
 GNUstep without optimization. Particularly in the newer GCC compilers,
 optimization can break some code. The easiest way to do this is when
-configuring: `CFLAGS="" ./configure'. Or `make OPTFLAG=""'.
+configuring, `CFLAGS="" ./configure'. Or when building, `make
+OPTFLAG=""'.
+
+Darwin 1.0/PowerPC (_Unstable!_)
+================================
+
+`Recommended compiler'
+     Unknown
+
+`Extra libs needed'
+     Don't use gnustep-objc or ffcall.
+
+`Special Instructions'
+   GNUstep has not been ported to Darwin. Expect some minor irritations
+and possibly one or two major ones if your trying to do this. Darwin
+doesn't have a GCC ObjC Compiler, so you need to use the ObjC runtime
+that comes with Darwin. To do this configure (gnustep-make) like this:
+
+     ./configure --with-library-combo=nx-gnu-gnu-xgps
 
 Debian/DEC-Alpha
 ================
@@ -453,19 +471,6 @@ GNU-Linux/Intel (RedHat 5.x, 6.x, and 7.0)
           CC=egcs LDFLAGS="-u shmctl@GLIBC_2.2 -L/lib -lc -u getpwuid_r@GLIBC_2.1.2
           -L/lib -lc -u getpwnam_r@GLIBC_2.1.2 -L/lib -lc" ./configure
 
-GNU-Linux/PowerPC (LinuxPPC 4.x)
-================================
-
-`Recommended compiler'
-     egcs-2.90.25 980302 (egcs-1.0.2 prerelease).  glibc-0.961212-1h.
-     gdb: 4.16.97.
-
-`Extra libs needed'
-     None.
-
-`Special Instructions'
-     egcs-1.1.2 does NOT work.
-
 GNU-Linux/PowerPC (LinuxPPC 5.x)
 ================================
 
@@ -560,11 +565,6 @@ OpenBSD 2.x  (_Unstable!_)
 `Special Instructions'
      Can only compile with static libraries. Gives a lot of warnings
 
-     GNUstep 0.6.0 uses code to access the /proc filesystem, which may
-     be broken on BSD machines. To avoid this configure with the
-     argument -enable-fake-main.  Later versions of GNUstep should
-     check for a broken /proc filesystem.
-
 OSF Alpha  (_Unstable!_)
 ========================
 
@@ -597,8 +597,8 @@ Solaris 2.5.1/Sparc
 `Special Instructions'
      See the Solaris 2.6 section for more instructions.
 
-Solaris 2.6/Sparc
-=================
+Solaris 2.[67]/Sparc
+====================
 
 `Recommended compiler'
      gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
@@ -627,7 +627,7 @@ arguments.  We recommend using the ffcall libraries when configuring
    If you are using threads, make sure the Objective-C runtime (libobjc
 that comes with gcc) is compiled with threads enabled (This is true by
 default) AND that it is compiled with the _REENTRANT flag defined (This
-does not seem to be true by default).
+does not seem to be true by default). Or use the gnustep-objc package.
 
 Solaris 2.7/Intel
 =================
@@ -770,23 +770,24 @@ Windows with CYGWIN (_Unstable!_)
 =================================
 
 `Recommended compiler'
-     gcc 2.95.2 (Cygwin release 1.1.2 or later)
+     gcc 2.95.3 (Cygwin release 1.1.8)
 
 `Extra libs needed'
      Objective-C library DLL (<ftp://ftp.gnustep.org/pub/gnustep/libs>)
-     for shared libs.
+     for shared libs. ffcall is not ported to cygwin so don't try to
+     use it (some invocation and DO stuff will not work).
 
 `Special Instructions'
-     Static libs require no extra effort (just make shared=no),
-     however, DLLs (shared=yes) are compiled by default, and for this
-     you need a special version of the Objective-C library that also
-     compiles as a DLL. Make sure files and compilation done in Unix
-     mode (no ^M in files). For shared libs you have to type `make
-     BUILD_DLL=yes WITH_DLL=yes' for all packages, despite the fact
-     that this should be set automatically.  Gdomap services not set up
-     correctly. Must add services lines to `C:\WINDOWS\services' (on
-     Windows 98) or xxx (on Windows NT).  Base library only. No native
-     GUI backend.
+   For shared libs, make sure to specify SHARED=YES explicitly when
+building:
+
+     make shared=yes
+
+   For static libs, use SHARED=NO, Make sure files and compilation done
+in Unix mode (no ^M in files, EXPORT CYGWIN=BINMODE usually works if
+cygwin is not buggy).  Gdomap services not set up correctly. Must add
+services lines to `C:\WINDOWS\services' (on Windows 98) or xxx (on
+Windows NT).  Base library only. No native GUI backend.
 
 Windows with MinGW (_Unstable!_)
 ================================
@@ -796,7 +797,8 @@ Windows with MinGW (_Unstable!_)
 
 `Extra libs needed'
      Objective-C library DLL (<ftp://ftp.gnustep.org/pub/gnustep/libs>)
-     for shared libs.
+     for shared libs. ffcall is not ported to Mingw32 so don't try to
+     use it.
 
 `Special Instructions'
      See the `README.MinGW' file located in the gnustep-make

@@ -1,8 +1,15 @@
+2001-04-05  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.0.0
+	* GNUstep-HOWTO, NEWS: Regenerated.
+	* Documentation/machines.texi: Update
+
 2001-04-04  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess: Update to latest version
 	* config.sub: Likewise.
 	* configure.in: Quote $host_os
+	* Documentation/*texi: Update
 
 2001-03-31  Adam Fedor  <fedor@gnu.org>
 
