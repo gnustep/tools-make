@@ -131,23 +131,3 @@ if ( -e "$GNUSTEP_USER_ROOT/GNUstep.csh" ) then
   source "$GNUSTEP_USER_ROOT/GNUstep.csh"
 endif
 
-#
-# Run 'make_services' in background if possible - updates cache of services
-# and applications/file-extensions known to the applications.
-#
-if ( "${GNUSTEP_FLATTENED}" == "" ) then
-  set TDIR=${GNUSTEP_SYSTEM_ROOT}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}
-  if ( -x $TDIR/$LIBRARY_COMBO/make_services ) then
-    ($TDIR/$LIBRARY_COMBO/make_services &)
-    if ( -x $TDIR/make_services ) then
-      ($TDIR/make_services &)
-    endif
-  endif
-else
-  set TDIR=${GNUSTEP_SYSTEM_ROOT}/Tools
-  if ( -x $TDIR/make_services ) then
-    ($TDIR/make_services &)
-  endif
-endif
-
-unset TDIR
