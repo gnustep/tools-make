@@ -82,9 +82,12 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
 	documentation.make \
 	java-executable.template java-tool.make framework.make \
-	source-distribution.make rpm.make \
         spec-rules.template spec-debug-rules.template \
         spec-debug-alone-rules.template
+
+MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make
+
+INSTANCE_MAKE_FILES = 
 
 all: generated-files which_lib$(EXEEXT)
 
@@ -97,6 +100,8 @@ install: all
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(makedir)/Additional \
+		$(makedir)/Master \
+		$(makedir)/Instance \
 		$(tooldir) \
 		$(GNUSTEP_SYSTEM_ROOT)/share \
 		$(GNUSTEP_SYSTEM_ROOT)/Apps \
@@ -149,6 +154,12 @@ install: all
 	$(INSTALL_PROGRAM) -m 755 opentool $(tooldir);
 	for f in $(MAKE_FILES); do \
 	  $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
+	done
+	for f in $(MASTER_MAKE_FILES); do \
+	  $(INSTALL_DATA) $(srcdir)/Master/$$f $(makedir)/Master; \
+	done
+	for f in $(INSTANCE_MAKE_FILES); do \
+	  $(INSTALL_DATA) $(srcdir)/Instance/$$f $(makedir)/Instance; \
 	done
 	$(INSTALL_DATA) executable.template $(makedir)
 	$(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share
