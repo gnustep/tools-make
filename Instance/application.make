@@ -182,7 +182,7 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 
 # Often enough, you can just put in it all fields required by both
 # GNUstep and Apple; if there is a conflict, you can add
-# xxx_PREPROCESS_PLIST = yes to your GNUmakefile, and provide a
+# xxx_PREPROCESS_INFO_PLIST = yes to your GNUmakefile, and provide a
 # xxxInfo.cplist (please note the suffix!) - that file is
 # automatically run through the C preprocessor to generate a
 # xxxInfo.plist file from it.  The preprocessor will define GNUSTEP
