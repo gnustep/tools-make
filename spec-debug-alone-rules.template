@@ -11,8 +11,9 @@
 if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
   . %{gs_root}/Makefiles/GNUstep.sh 
 fi
-# Argh - this doesn't work
-CFLAGS=$RPM_OPT_FLAGS 
+if [ "%{gs_configure}" = "YES" ]; then 
+  CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_root}
+fi
 make debug=yes
 
 #
