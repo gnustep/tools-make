@@ -9,6 +9,14 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.5.0}
+
+@itemize @bullet
+@item Add NetBSD Elf support
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.4.0}
 
 @itemize @bullet
@@ -25,8 +33,6 @@ This is a first prerelease version for 1.4.
 @item Change GNUSTEP_PATHPREFIX_LIST to	GNUSTEP_PATHLIST 
 @item Add verbosity levels. Use make messages=yes for full messages.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.3.3}
 

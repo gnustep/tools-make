@@ -1,7 +1,12 @@
 NEWS
 ****
 
-The currently released version is `1.4.0'.
+The currently released version is `1.5.0'.
+
+Changes in version `1.5.0'
+==========================
+
+   * Add NetBSD Elf support
 
 Changes in version `1.4.0'
 ==========================

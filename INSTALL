@@ -10,8 +10,9 @@ how to install the entire GNUstep package (including this package).
 GNUstep-HOWTO comes with this distribution.
 
    This should be the first GNUstep package you install. After
-installing this package, install ffcall and any other libraries that
-GNUstep may need (see the GNUstep-HOWTO). Then install gnustep-base.
+installing this package, install ffcall or libffi and any other
+libraries that GNUstep may need (see the GNUstep-HOWTO). Then install
+gnustep-base.
 
    When you configure additional libraries, make sure you use the same
 configuration options as with gstep-make.
@@ -93,10 +94,10 @@ library is) with the with-thread-lib option.
 Objective-C runtime (libobjc) must have a compatible threading backend
 in order to use this threading library and you must set the appropriate
 threading backend by hand in the GNUmakefile if you are using
-gnustep-objc. If you also need to set compiler flags, use the CFLAGS
+gnustep-objc. If you also need to set compiler flags, use the CPPFLAGS
 variable when calling configure:
 
-     CFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
+     CPPFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
 
 Warnings for deprecated #import
 -------------------------------
