@@ -154,7 +154,7 @@ SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
 internal-library-all :: \
 	before-$(TARGET)-all			\
-	$(LIBRARY_OBJ_DIR)			\
+	$(GNUSTEP_OBJ_DIR)			\
 	$(DERIVED_SOURCES)			\
 	$(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def	\
 	$(LIBRARY_OBJ_DIR)/$(DLL_NAME)		\
