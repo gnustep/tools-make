@@ -1,3 +1,16 @@
+Fri Jul 13 17:55:45 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* test-library.make (internal-clean): Depend on .subprojects; make
+	clean rules moved here.
+	(internal-distclean): Idem.
+	(internal-testlib-distclean): Removed.
+	(internal-testlib-clean): Removed.
+
+Fri Jul 13 17:53:38 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* test-application.make (internal-clean, internal-distclean):
+	Updated to changes in application.make.
+
 Fri Jul 13 17:48:55 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* documentation.make (internal-doc-clean): Ignore problems 
