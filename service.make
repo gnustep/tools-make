@@ -113,13 +113,19 @@ svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist svc-resour
 	  cp -r $(RESOURCE_FILES) $(SERVICE_DIR_NAME)/Resources; \
 	fi)
 
+# Allow the gui library to redefine make_services to use its local one
+ifeq ($(GNUSTEP_MAKE_SERVICES),)
+  GNUSTEP_MAKE_SERVICES=make_services
+endif
+
 $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 	$(SERVICE_DIR_NAME)/Resources $(INTERNAL_svc_NAME)Info.plist 
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(INTERNAL_svc_NAME)\";"; \
 	  cat $(INTERNAL_svc_NAME)Info.plist; \
 	  echo "}") >$@ ;\
-	if opentool make_services --test $@; then : ; else rm -f $@; false; fi
+	if $(GNUSTEP_MAKE_SERVICES) --test $@; then : ; else rm -f $@; false; \
+	fi
 
 $(SERVICE_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
