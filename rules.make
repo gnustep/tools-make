@@ -83,9 +83,15 @@ SUBPROJECT_ROOT_DIR := "."
 
 ifeq ($(GNUSTEP_MAKE_INSTANCE_INVOCATION),)
 include $(GNUSTEP_MAKEFILES)/Master/rules.make
-else
-include $(GNUSTEP_MAKEFILES)/Instance/rules.make
 endif
+
+# Always include the Instance rules.  The reason is that the user, in
+# his GNUmakefile.postamble, might want to add manual commands for
+# example to after-all, which are processed during the Master
+# invocation, but yet are actually instance invocation rules, and so
+# need access to all the variables to build Instance invocation rules.
+include $(GNUSTEP_MAKEFILES)/Instance/rules.make
+
 
 # The following dummy rules are needed for performance - we need to
 # prevent make from spending time trying to compute how/if to rebuild
