@@ -81,13 +81,15 @@ PATH=$temp_path$PATH
 #
 if [ -f ~/.GNUstep/GNUstep.sh ]
 then
-	. ~/.GNUstep/GNUstep.sh
+  . ~/.GNUstep/GNUstep.sh
 fi
 
 #
 # Run 'make_services' in background if possible - updates cache of services
 # and applications/file-extensions known to the applications.
 #
-$GNUSTEP_SYSTEM_ROOT/Tools/make_services &
+if [ -x $GNUSTEP_SYSTEM_ROOT/Tools/make_services ]; then
+  $GNUSTEP_SYSTEM_ROOT/Tools/make_services &
+fi
 
 fi # [ -z "$GNUSTEP_BUILD_ROOT" ]

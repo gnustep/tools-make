@@ -78,6 +78,8 @@ if ( -e ~/.GNUstep/GNUstep.csh ) then
 	. ~/.GNUstep/GNUstep.csh
 endif
 
-${GNUSTEP_SYSTEM_ROOT}/Tools/make_services &
+if ( -x ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services ) then
+  ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services &
+endif
 
 endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )
