@@ -80,10 +80,10 @@ fi
 
 # Change the library directory default
 if test "$libdir" = "\${exec_prefix}/lib" ; then
-   if [ -z "$GNUSTEP_FLATTENED" ]; then
+  if [ -z "$GNUSTEP_FLATTENED" ]; then
      libdir="\${exec_prefix}/Libraries/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
   else
-     libdir="\${exec_prefix}/Libraries
+     libdir="\${exec_prefix}/Libraries"
   fi
 fi
 
