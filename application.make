@@ -58,8 +58,6 @@ else
   endif
 endif
 
-$(warning APP_EXTENSION is $(APP_EXTENSION))
-
 ifeq ($(INTERNAL_app_NAME),)
 # This part gets included by the first invoked make process.
 internal-all:: $(APP_NAME:=.all.app.variables)
