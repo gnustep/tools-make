@@ -1,3 +1,18 @@
+Wed Jul 11 15:51:43 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* subproject.make (internal-subproject-all): Only depend on
+	framework rules if we are building in a framework.  Include the
+	framework rules only if building in a framework.
+	(framework-components): Turned shell conditional into makefile
+	conditional.
+	(localized-framework-resource-files): Idem.
+	(framework-webresource-dir): Idem.
+	(framework-webresource-files): Idem.
+	(framework-localized-webresource-files): Idem.
+	(framework-resource-files): Idem; and do not build the framework
+	resource directory here as it is already built by the framework
+	build-header rules.
+	
 Wed Jul 11 13:35:49 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* framework.make (internal-framework-all): Do not depend on
