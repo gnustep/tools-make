@@ -2144,7 +2144,7 @@ CFLAGS="$saved_CFLAGS"
 if test x"$objc_threaded" = x""; then
   echo "$ac_t""no" 1>&6
 else
-  echo "$ac_t""yes" 1>&6
+  echo "$ac_t""yes: $objc_threaded" 1>&6
   if test x"$objc_threaded" = x"works"; then
     objc_threaded=""
   fi
