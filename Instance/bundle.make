@@ -41,11 +41,9 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 # where xxx is the bundle name
 #
 
-.PHONY: internal-bundle-all \
-        internal-bundle-clean \
-        internal-bundle-distclean \
-        internal-bundle-install \
-        internal-bundle-uninstall \
+.PHONY: internal-bundle-all_ \
+        internal-bundle-install_ \
+        internal-bundle-uninstall_ \
         build-bundle-dir \
         build-bundle \
         build-macosx-bundle \
@@ -86,11 +84,9 @@ ALL_CPPFLAGS += $(TTMP_LIBS)
 BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
-internal-bundle-all:: before-$(GNUSTEP_INSTANCE)-all \
-                      $(GNUSTEP_OBJ_DIR) \
-                      build-bundle \
-                      build-macosx-bundle \
-                      after-$(GNUSTEP_INSTANCE)-all
+internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) \
+                       build-bundle \
+                       build-macosx-bundle
 
 BUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
 
@@ -218,7 +214,7 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 # Resources already exists and is a directory (either a real one or a
 # symbolic link, we don't care).
 
-internal-bundle-install:: $(BUNDLE_INSTALL_DIR) shared-instance-headers-install
+internal-bundle-install_:: $(BUNDLE_INSTALL_DIR) shared-instance-headers-install
 	rm -f .tmp.gnustep.exclude; \
 	echo "$(BUNDLE_DIR_NAME)/Contents/Resources" > .tmp.gnustep.exclude;\
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME); \
@@ -239,7 +235,7 @@ endif
 $(BUNDLE_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
 
-internal-bundle-uninstall:: shared-instance-headers-uninstall
+internal-bundle-uninstall_:: shared-instance-headers-uninstall
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 
 

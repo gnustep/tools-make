@@ -76,16 +76,16 @@ DOC_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_DOC_INSTALL_DIR)
 TEXT_MAIN = $($(GNUSTEP_INSTANCE)_TEXT_MAIN)
 
 
-.PHONY: internal-doc-all \
-        internal-textdoc-all \
+.PHONY: internal-doc-all_ \
+        internal-textdoc-all_ \
         internal-doc-clean \
         internal-textdoc-clean \
         internal-doc-distclean \
         internal-textdoc-distclean \
-        internal-doc-install \
-        internal-textdoc-install \
-        internal-doc-uninstall \
-        internal-textdoc-uninstall \
+        internal-doc-install_ \
+        internal-textdoc-install_ \
+        internal-doc-uninstall_ \
+        internal-textdoc-uninstall_ \
         generate-javadoc
 
 #
@@ -101,15 +101,11 @@ TEXT_MAIN = $($(GNUSTEP_INSTANCE)_TEXT_MAIN)
 #
 ifneq ($(TEXI_FILES),)
 
-internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GNUSTEP_INSTANCE).info \
-                   $(GNUSTEP_INSTANCE).ps \
-                   $(GNUSTEP_INSTANCE)_toc.html \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
+                    $(GNUSTEP_INSTANCE).ps \
+                    $(GNUSTEP_INSTANCE)_toc.html
 
-internal-textdoc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GNUSTEP_INSTANCE) \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
 $(GNUSTEP_INSTANCE).info: $(TEXI_FILES)
 	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
@@ -147,9 +143,7 @@ ifneq ($(GSDOC_FILES),)
 # %.html file, we rebuild them all.
 GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
 
-internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GSDOC_OBJECT_FILES) \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-doc-all_:: $(GSDOC_OBJECT_FILES)
 
 $(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
 	gsdoc $(GSDOC_FILES)
@@ -203,10 +197,8 @@ $(GNUSTEP_INSTANCE)/%.html: $(GNUSTEP_INSTANCE)/%.gsdoc $(GNUSTEP_INSTANCE)/$(GN
 $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).igsdoc: $(AGSDOC_GSDOC_FILES)
 	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $(AGSDOC_GSDOC_FILES)
 
-internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                     $(GNUSTEP_INSTANCE) \
-                     $(AGSDOC_HTML_FILES) \
-                     after-$(GNUSTEP_INSTANCE)-all
+internal-doc-all_::  $(GNUSTEP_INSTANCE) \
+                     $(AGSDOC_HTML_FILES)
 
 else
 
@@ -220,9 +212,7 @@ INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
 
 # The autogsdoc program has built-in dependency handling, so we can
 # simply run it and it will work out what needs to be rebuilt.
-internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   generate-autogsdoc \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-doc-all_:: generate-autogsdoc
 
 $(GNUSTEP_INSTANCE):
 	$(MKDIRS) $@
@@ -234,7 +224,7 @@ endif # AGSDOC_EXPERIMENTAL
 
 else
 
-internal-doc-all::
+internal-doc-all_::
 	@echo "No libxml - processing of autogsdoc files skipped"
 
 endif # GNUSTEP_BASE_HAVE_LIBXML
@@ -259,8 +249,7 @@ $(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
 $(GNUSTEP_INSTANCE).ps.gz: $(GNUSTEP_INSTANCE).ps 
 	gzip $(GNUSTEP_INSTANCE).ps -c > $(GNUSTEP_INSTANCE).ps.gz
 
-internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GNUSTEP_INSTANCE).ps.gz
+internal-doc-all_:: $(GNUSTEP_INSTANCE).ps.gz
 
 #
 # Targets built only if we can find `latex2html'
@@ -273,7 +262,7 @@ ifneq ($(LATEX2HTML),)
 endif
 
 ifeq ($(HAS_LATEX2HTML),yes)
-internal-doc-all:: $(GNUSTEP_INSTANCE).tar.gz 
+internal-doc-all_:: $(GNUSTEP_INSTANCE).tar.gz 
 
 $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html: $(GNUSTEP_INSTANCE).dvi 
 	$(LATEX2HTML) $(GNUSTEP_INSTANCE)
@@ -282,8 +271,6 @@ $(GNUSTEP_INSTANCE).tar.gz: $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html
 	$(TAR) cfz $(GNUSTEP_INSTANCE).tar.gz $(GNUSTEP_INSTANCE)
 
 endif # LATEX2HTML
-
-internal-doc-all:: after-$(GNUSTEP_INSTANCE)-all
 
 endif # LATEX_FILES
 
@@ -304,18 +291,16 @@ endif
 
 ifneq ($(JAVADOC_BUILD_ALWAYS),YES) # Build only once
 
-internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GNUSTEP_INSTANCE)/index.html \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-doc-all_:: $(GNUSTEP_INSTANCE)/index.html
+
 $(GNUSTEP_INSTANCE)/index.html:
 	$(MKDIRS) $(GNUSTEP_INSTANCE); \
 	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(GNUSTEP_INSTANCE)
 
 else # Build always
 
-internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   generate-javadoc \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-doc-all_:: generate-javadoc
+
 generate-javadoc:
 	$(MKDIRS) $(GNUSTEP_INSTANCE); \
 	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(GNUSTEP_INSTANCE)
@@ -332,14 +317,14 @@ endif # JAVADOC_FILES
 #
 # Installation directory - always created
 #
-internal-doc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+internal-doc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 # xxx_INSTALL_FILES
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_FILES),)
-internal-doc-install::
+internal-doc-install_::
 	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file \
@@ -347,7 +332,7 @@ internal-doc-install::
 	  fi; \
 	done
 
-internal-doc-uninstall::
+internal-doc-uninstall_::
 	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
@@ -361,7 +346,7 @@ endif
 ifneq ($(TEXI_FILES),)
 
 # NB: Only install HTML if it has been generated
-internal-doc-install::
+internal-doc-install_::
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info \
@@ -371,7 +356,7 @@ internal-doc-install::
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
 	fi
 
-internal-doc-uninstall::
+internal-doc-uninstall_::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps
 	rm -f \
@@ -385,10 +370,10 @@ endif # TEXI_FILES
 #
 ifneq ($(GSDOC_FILES),)
 
-internal-doc-install::
+internal-doc-install_::
 	$(INSTALL_DATA) $(GSDOC_OBJECT_FILES) \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-internal-doc-uninstall:: 
+internal-doc-uninstall_:: 
 	rm -f \
 	  $(addprefix $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/,\
 	              $(GSDOC_OBJECT_FILES))
@@ -399,7 +384,7 @@ endif # GSDOC_FILES
 #
 ifneq ($(AGSDOC_FILES),)
 
-internal-doc-install:: 
+internal-doc-install_:: 
 	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 	$(TAR) cf - $(GNUSTEP_INSTANCE) | \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
@@ -411,7 +396,7 @@ ifneq ($(CHOWN_TO),)
 	      $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 endif
 
-internal-doc-uninstall:: 
+internal-doc-uninstall_:: 
 	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 
 endif # AUTOGSDOC_FILES
@@ -420,22 +405,22 @@ endif # AUTOGSDOC_FILES
 # LaTeX installation
 #
 ifneq ($(LATEX_FILES),)
-internal-doc-install:: 
+internal-doc-install_:: 
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-internal-doc-uninstall:: 
+internal-doc-uninstall_:: 
 	rm -f \
 	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps
 
 ifeq ($(HAS_LATEX2HTML),yes)
-internal-doc-install:: 
+internal-doc-install_:: 
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.html \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.css \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 # Yeah - I know - the following is dangerous if you have misused the 
 # DOC_INSTALL_DIR - but it's the only way to do it
-internal-doc-uninstall:: 
+internal-doc-uninstall_:: 
 	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.html
 	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.css
 endif # LATEX2HTML
@@ -446,7 +431,7 @@ endif # LATEX_FILES
 #
 ifneq ($(JAVADOC_FILES),)
 
-internal-doc-install:: 
+internal-doc-install_:: 
 	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 	$(TAR) cf - $(GNUSTEP_INSTANCE) |  \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
@@ -455,7 +440,7 @@ ifneq ($(CHOWN_TO),)
 	      $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 endif
 
-internal-doc-uninstall:: 
+internal-doc-uninstall_:: 
 	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 
 endif # JAVADOC_FILES
@@ -463,11 +448,11 @@ endif # JAVADOC_FILES
 #
 # text file installation
 #
-internal-textdoc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+internal-textdoc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
-internal-textdoc-uninstall::
+internal-textdoc-uninstall_::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 

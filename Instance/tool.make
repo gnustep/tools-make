@@ -36,10 +36,10 @@ ifeq ($(TOOL_INSTALLATION_DIR),)
   TOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 endif
 
-.PHONY: internal-tool-all       \
-        internal-tool-install   \
-        internal-tool-uninstall \
-        internal-install-dirs   \
+.PHONY: internal-tool-all_       \
+        internal-tool-install_   \
+        internal-tool-uninstall_ \
+        internal-install-dirs    \
         install-tool 
 
 ifneq ($(FRAMEWORK_NAME),)
@@ -76,13 +76,11 @@ endif
 #
 # Compilation targets
 #
-internal-tool-all:: before-$(GNUSTEP_INSTANCE)-all \
-                    $(GNUSTEP_OBJ_DIR) \
-                    $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-                    after-$(GNUSTEP_INSTANCE)-all
+internal-tool-all_:: $(GNUSTEP_OBJ_DIR) \
+                     $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 ifneq ($(FRAMEWORK_NAME),)
-internal-tool-all:: internal-install-dirs install-tool
+internal-tool-all_:: internal-install-dirs install-tool
 endif
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
@@ -97,9 +95,9 @@ endif
 endif
 
 ifeq ($(NULL_INSTALL),yes)
-internal-tool-install::
+internal-tool-install_::
 else
-internal-tool-install:: internal-install-dirs install-tool
+internal-tool-install_:: internal-install-dirs install-tool
 endif
 
 # Depend on having created the installation dir
@@ -114,7 +112,7 @@ install-tool::
 		$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
 		$(TOOL_INSTALLATION_DIR)
 
-internal-tool-uninstall::
+internal-tool-uninstall_::
 	rm -f $(TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 #
@@ -122,7 +120,7 @@ internal-tool-uninstall::
 #
 
 # we don't have any cleaning targets for tools here, because we clean
-# at the first make invocation.
+# during the Master make invocation.
 
 ## Local variables:
 ## mode: makefile

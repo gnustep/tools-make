@@ -41,9 +41,9 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 #	Where xxx is the name of the library
 #
 
-.PHONY: internal-library-all \
-        internal-library-install \
-        internal-library-uninstall \
+.PHONY: internal-library-all_ \
+        internal-library-install_ \
+        internal-library-uninstall_ \
         internal-install-lib \
         internal-install-dirs
 
@@ -164,14 +164,12 @@ endif
 CLEAN_library_NAME = $(shell echo $(GNUSTEP_INSTANCE)|tr '-' '_')
 SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
-internal-library-all:: \
-	before-$(GNUSTEP_INSTANCE)-all			\
+internal-library-all_:: \
 	$(GNUSTEP_OBJ_DIR)			\
 	$(DERIVED_SOURCES)			\
 	$(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def	\
 	$(GNUSTEP_OBJ_DIR)/$(DLL_NAME)		\
-	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)	\
-	after-$(GNUSTEP_INSTANCE)-all
+	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)
 
 internal-library-clean::
 	rm -rf $(DERIVED_SOURCES)
@@ -196,10 +194,8 @@ $(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
 
 else # BUILD_DLL
 
-internal-library-all:: before-$(GNUSTEP_INSTANCE)-all \
-                       $(GNUSTEP_OBJ_DIR) \
-                       $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
-                       after-$(GNUSTEP_INSTANCE)-all
+internal-library-all_:: $(GNUSTEP_OBJ_DIR) \
+                        $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
 
 $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(OBJ_FILES_TO_LINK)
 	$(LIB_LINK_CMD)
@@ -209,9 +205,9 @@ endif # BUILD_DLL
 #
 # Install and uninstall targets
 #
-internal-library-install:: internal-install-dirs \
-                           internal-install-lib \
-                           shared-instance-headers-install
+internal-library-install_:: internal-install-dirs \
+                            internal-install-lib \
+                            shared-instance-headers-install
 
 # Depend on creating all the dirs
 internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
@@ -255,13 +251,13 @@ endif
 
 ifeq ($(BUILD_DLL),yes)
 
-internal-library-uninstall:: shared-instance-headers-uninstall
+internal-library-uninstall_:: shared-instance-headers-uninstall
 	rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(DLL_EXP_LIB)
 
 else
 
-internal-library-uninstall:: shared-instance-headers-uninstall
+internal-library-uninstall_:: shared-instance-headers-uninstall
 	rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)

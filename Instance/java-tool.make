@@ -32,11 +32,11 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-.PHONY: internal-java_tool-all \
+.PHONY: internal-java_tool-all_ \
         internal-java_tool-clean \
         internal-java_tool-distclean \
-        internal-java_tool-install \
-        internal-java_tool-uninstall \
+        internal-java_tool-install_ \
+        internal-java_tool-uninstall_ \
         _FORCE
 
 # This is the directory where the tools get installed. If you don't specify a
@@ -48,11 +48,9 @@ endif
 GNUSTEP_SHARED_JAVA_INSTALLATION_DIR = $(JAVA_TOOL_INSTALLATION_DIR)/Java
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/java.make
 
-internal-java_tool-all:: before-$(GNUSTEP_INSTANCE)-all \
-                           shared-instance-java-all \
-                           after-$(GNUSTEP_INSTANCE)-all
+internal-java_tool-all_:: shared-instance-java-all
 
-internal-java_tool-install:: shared-instance-java-install \
+internal-java_tool-install_:: shared-instance-java-install \
                         $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
@@ -84,7 +82,7 @@ endif
 _FORCE::
 
 
-internal-java_tool-uninstall:: shared-instance-java-uninstall
+internal-java_tool-uninstall_:: shared-instance-java-uninstall
 	rm -f $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)
 
 internal-java_tool-clean:: shared-instance-java-clean

@@ -38,9 +38,9 @@ endif
 # palette.table (if any) is xxxpalette.table where xxx is the palette name
 #
 
-.PHONY: internal-palette-all \
-        internal-palette-install \
-        internal-palette-uninstall \
+.PHONY: internal-palette-all_ \
+        internal-palette-install_ \
+        internal-palette-uninstall_ \
         internal-palette-distclean
 
 # On Solaris we don't need to specifies the libraries the palette needs.
@@ -62,15 +62,14 @@ PALETTE_FILE = $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
 GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH = $(PALETTE_DIR_NAME)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-palette-all:: before-$(GNUSTEP_INSTANCE)-all \
-                       $(GNUSTEP_OBJ_DIR) \
-                       $(PALETTE_DIR_NAME)/Resources \
-                       $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-                       $(PALETTE_FILE) \
-                       $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
-                       $(PALETTE_DIR_NAME)/Resources/palette.table \
-                       shared-instance-bundle-all \
-                       after-$(GNUSTEP_INSTANCE)-all
+internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
+                        $(PALETTE_DIR_NAME)/Resources \
+                        $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                        $(PALETTE_FILE) \
+                        $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
+                        $(PALETTE_DIR_NAME)/Resources/palette.table \
+                        shared-instance-bundle-all
+
 $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	$(MKDIRS) $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 
@@ -121,7 +120,7 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 # Install, clean targets
 #
 
-internal-palette-install:: $(PALETTE_INSTALL_DIR)
+internal-palette-install_:: $(PALETTE_INSTALL_DIR)
 	tar cf - $(PALETTE_DIR_NAME) | (cd $(PALETTE_INSTALL_DIR); tar xf -)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
@@ -133,7 +132,7 @@ endif
 $(PALETTE_INSTALL_DIR):
 	$(MKINSTALLDIRS) $(PALETTE_INSTALL_DIR)
 
-internal-palette-uninstall::
+internal-palette-uninstall_::
 	rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
 
 internal-palette-distclean::

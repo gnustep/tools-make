@@ -24,9 +24,9 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-.PHONY: internal-subproject-all       \
-        internal-subproject-install   \
-        internal-subproject-uninstall
+.PHONY: internal-subproject-all_       \
+        internal-subproject-install_   \
+        internal-subproject-uninstall_
 
 #
 # A subproject can have resources, which it stores into the
@@ -42,11 +42,9 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 #
 # Compilation targets
 #
-internal-subproject-all:: before-$(GNUSTEP_INSTANCE)-all \
-                       $(GNUSTEP_OBJ_DIR) \
-                       $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
-                       shared-instance-bundle-all \
-                       after-$(GNUSTEP_INSTANCE)-all
+internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
+                           $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
+                           shared-instance-bundle-all
 
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
@@ -92,9 +90,9 @@ ifeq ($(FRAMEWORK_NAME),)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
-internal-subproject-install:: shared-instance-headers-install
+internal-subproject-install_:: shared-instance-headers-install
 
-internal-subproject-uninstall:: shared-instance-headers-uninstall
+internal-subproject-uninstall_:: shared-instance-headers-uninstall
 
 endif # no FRAMEWORK_NAME
 

@@ -67,9 +67,9 @@ endif
 
 GNUSTEP_GSWAPPS = $(GNUSTEP_INSTALLATION_DIR)/GSWApps
 
-.PHONY: internal-gswapp-all \
-        internal-gswapp-install \
-        internal-gswapp-uninstall \
+.PHONY: internal-gswapp-all_ \
+        internal-gswapp-install_ \
+        internal-gswapp-uninstall_ \
         gswapp-components \
         gswapp-webresource-dir \
         gswapp-webresource-files \
@@ -131,16 +131,14 @@ endif
 # Compilation targets
 #
 ifeq ($(OBJC_COMPILER), NeXT)
-internal-gswapp-all:: \
-	before-$(GNUSTEP_INSTANCE)-all \
+internal-gswapp-all_:: \
 	$(GNUSTEP_OBJ_DIR) $(GSWAPP_DIR_NAME) $(GSWAPP_FILE) \
 	gswapp-components \
 	gswapp-localized-webresource-files \
 	gswapp-webresource-files \
 	gswapp-localized-resource-files \
 	gswapp-resource-files \
-	$(GSWAPP_DIR_NAME)/$(GNUSTEP_INSTANCE).sh \
-	after-$(GNUSTEP_INSTANCE)-all
+	$(GSWAPP_DIR_NAME)/$(GNUSTEP_INSTANCE).sh
 
 $(GNUSTEP_INSTANCE).iconheader:
 	@(echo "F	$(GNUSTEP_INSTANCE).$(GSWAPP_EXTENSION)	$(GNUSTEP_INSTANCE)	$(GSWAPP_EXTENSION)"; \
@@ -150,16 +148,15 @@ $(GSWAPP_DIR_NAME):
 	mkdir $@
 else
 
-internal-gswapp-all:: \
-   before-$(GNUSTEP_INSTANCE)-all $(GNUSTEP_OBJ_DIR) \
+internal-gswapp-all_:: \
+   $(GNUSTEP_OBJ_DIR) \
    $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(GSWAPP_FILE) \
    gswapp-components \
    gswapp-localized-webresource-files \
    gswapp-webresource-files \
    gswapp-localized-resource-files \
    gswapp-resource-files \
-   $(GSWAPP_DIR_NAME)/$(GNUSTEP_INSTANCE).sh \
-   after-$(GNUSTEP_INSTANCE)-all
+   $(GSWAPP_DIR_NAME)/$(GNUSTEP_INSTANCE).sh
 
 $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
@@ -329,7 +326,7 @@ $(GSWAPP_DIR_NAME)/Resources:
 $(GSWAPP_DIR_NAME)/Resources/WebServer:
 	@$(MKDIRS) $@
 
-internal-gswapp-install::
+internal-gswapp-install_::
 	@($(MKINSTALLDIRS) $(GNUSTEP_GSWAPPS); \
 	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -))
@@ -340,7 +337,7 @@ ifeq ($(strip),yes)
 	$(STRIP) $(GNUSTEP_GSWAPPS)/$(GSWAPP_FILE) 
 endif
 
-internal-gswapp-uninstall::
+internal-gswapp-uninstall_::
 	(cd $(GNUSTEP_GSWAPPS); rm -rf $(GSWAPP_DIR_NAME))
 
 ## Local variables:

@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/test-application.make
 #
 #   Copyright (C) 2002 Free Software Foundation, Inc.
@@ -25,5 +25,5 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/application.make
 
-internal-test_app-all:: internal-app-all
+internal-test_app-all_:: internal-app-all_
 

@@ -65,11 +65,9 @@ endif
 #  xxx_LOCALIZED_WEBSERVER_RESOURCE_DIRS
 # where xxx is the application name <==
 
-.PHONY: internal-gswbundle-all \
-        internal-gswbundle-clean \
-        internal-gswbundle-distclean \
-        internal-gswbundle-install \
-        internal-gswbundle-uninstall \
+.PHONY: internal-gswbundle-all_ \
+        internal-gswbundle-install_ \
+        internal-gswbundle-uninstall_ \
         build-bundle-dir \
         build-bundle \
         gswbundle-components \
@@ -91,11 +89,9 @@ endif
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
-internal-gswbundle-all:: before-$(GNUSTEP_INSTANCE)-all \
-                      $(GNUSTEP_OBJ_DIR) \
-                      build-bundle-dir \
-                      build-bundle \
-                      after-$(GNUSTEP_INSTANCE)-all
+internal-gswbundle-all_:: $(GNUSTEP_OBJ_DIR) \
+                          build-bundle-dir \
+                          build-bundle
 
 GSWBUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(GSWBUNDLE_EXTENSION))
 GSWBUNDLE_FILE = \
@@ -248,7 +244,7 @@ $(GSWBUNDLE_DIR_NAME)/Resources:
 $(GSWBUNDLE_DIR_NAME)/Resources/WebServer:
 	@$(MKDIRS) $@
 
-internal-gswbundle-install:: $(GSWBUNDLE_INSTALL_DIR) shared-instance-headers-install
+internal-gswbundle-install_:: $(GSWBUNDLE_INSTALL_DIR) shared-instance-headers-install
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
 ifneq ($(CHOWN_TO),)
@@ -261,7 +257,7 @@ endif
 $(GSWBUNDLE_INSTALL_DIR)::
 	@$(MKINSTALLDIRS) $@
 
-internal-gswbundle-uninstall:: shared-instance-headers-uninstall
+internal-gswbundle-uninstall_:: shared-instance-headers-uninstall
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
 
 ## Local variables:

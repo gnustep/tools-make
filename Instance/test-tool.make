@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/test-tool.make
 #
 #   Copyright (C) 2002 Free Software Foundation, Inc.
@@ -25,5 +25,5 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/tool.make
 
-internal-test_tool-all:: internal-tool-all
+internal-test_tool-all_:: internal-tool-all_
 

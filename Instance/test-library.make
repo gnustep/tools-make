@@ -83,8 +83,8 @@ ALL_TEST_LIBRARY_LIBS =						\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-internal-test_lib-all:: before-$(GNUSTEP_INSTANCE)-all $(GNUSTEP_OBJ_DIR) \
-	$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE) after-$(GNUSTEP_INSTANCE)-all
+internal-test_lib-all_:: $(GNUSTEP_OBJ_DIR) \
+	                 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@	\
@@ -136,9 +136,9 @@ $(SCRIPTS_DIRECTORY)/config/unix.exp: _FORCE
 	echo "# Maintain your own code in local.exp"; \
 	echo "source \"config/local.exp\"") >>$@)
 
-internal-test_lib-install::
+internal-test_lib-install_::
 
-internal-test_lib-uninstall::
+internal-test_lib-uninstall_::
 
 #
 # Cleaning targets

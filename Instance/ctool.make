@@ -37,9 +37,9 @@ ifeq ($(CTOOL_INSTALLATION_DIR),)
   CTOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 endif
 
-.PHONY: internal-ctool-all \
-        internal-ctool-install \
-        internal-ctool-uninstall
+.PHONY: internal-ctool-all_ \
+        internal-ctool-install_ \
+        internal-ctool-uninstall_
 
 ALL_TOOL_LIBS =							\
     $(shell $(WHICH_LIB_SCRIPT)					\
@@ -71,10 +71,8 @@ endif
 #
 # Compilation targets
 #
-internal-ctool-all:: before-$(GNUSTEP_INSTANCE)-all \
-                     $(GNUSTEP_OBJ_DIR) \
-	             $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-                     after-$(GNUSTEP_INSTANCE)-all
+internal-ctool-all_:: $(GNUSTEP_OBJ_DIR) \
+	              $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(C_OBJ_FILES) \
                                                  $(SUBPROJECT_OBJ_FILES)
@@ -82,7 +80,7 @@ $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(C_OBJ_FILES) \
 	      $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 	      $(ALL_TOOL_LIBS)
 
-internal-ctool-install:: $(CTOOL_INSTALLATION_DIR)
+internal-ctool-install_:: $(CTOOL_INSTALLATION_DIR)
 	$(INSTALL_PROGRAM) -m 0755 \
 	                   $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
 	                   $(CTOOL_INSTALLATION_DIR)
@@ -90,7 +88,7 @@ internal-ctool-install:: $(CTOOL_INSTALLATION_DIR)
 $(CTOOL_INSTALLATION_DIR):
 	$(MKINSTALLDIRS) $(CTOOL_INSTALLATION_DIR)
 
-internal-ctool-uninstall::
+internal-ctool-uninstall_::
 	rm -f $(CTOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 ## Local variables:

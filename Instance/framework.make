@@ -24,6 +24,8 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+# FIXME - missing .PHONY declaration
+
 # The name of the framework is in the FRAMEWORK_NAME variable.
 # The list of framework resource files are in xxx_RESOURCE_FILES
 # The list of framework web server resource files are in
@@ -123,10 +125,8 @@ endif # WITH_DLL
 GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-framework-all:: before-$(GNUSTEP_INSTANCE)-all \
-                         $(GNUSTEP_OBJ_DIR) \
-                         build-framework \
-                         after-$(GNUSTEP_INSTANCE)-all
+internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
+                          build-framework
 
 ifeq ($(FRAMEWORK_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR = $(GNUSTEP_FRAMEWORKS)
@@ -299,7 +299,7 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_
 
 ifneq ($(WITH_DLL),yes)
 
-internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
+internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_HEADERS)
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
@@ -349,7 +349,7 @@ endif
 
 else # install DLL
 
-internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
+internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_HEADERS) \
                       $(DLL_INSTALLATION_DIR)
@@ -402,7 +402,7 @@ $(GNUSTEP_HEADERS) :
 	$(MKINSTALLDIRS) $@
 
 # FIXME - uninstall doesn't work
-internal-framework-uninstall::
+internal-framework-uninstall_::
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
 	    if [ $$file != __done ]; then \

@@ -33,10 +33,10 @@ endif
 # where xxx is the service name
 #
 
-.PHONY: internal-service-all \
+.PHONY: internal-service-all_ \
         internal-service-distclean \
-        internal-service-install \
-        internal-service-uninstall \
+        internal-service-install_ \
+        internal-service-uninstall_ \
         service-resource-files
 
 # Libraries that go before the GUI libraries
@@ -85,13 +85,11 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 #
 # Compilation targets
 #
-internal-service-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GNUSTEP_OBJ_DIR) \
-                   $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-                   $(SERVICE_FILE) \
-                   $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist \
-                   shared-instance-bundle-all \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
+                        $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                        $(SERVICE_FILE) \
+                        $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist \
+                        shared-instance-bundle-all
 
 $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
@@ -122,7 +120,7 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 $(GNUSTEP_SERVICES):
 	$(MKINSTALLDIRS) $@
 
-internal-service-install:: $(GNUSTEP_SERVICES)
+internal-service-install_:: $(GNUSTEP_SERVICES)
 	rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME); \
 	$(TAR) cf - $(SERVICE_DIR_NAME) | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)
 ifneq ($(CHOWN_TO),)
@@ -132,7 +130,7 @@ ifeq ($(strip),yes)
 	$(STRIP) $(GNUSTEP_SERVICES)/$(SERVICE_FILE) 
 endif
 
-internal-service-uninstall::
+internal-service-uninstall_::
 	(cd $(GNUSTEP_SERVICES); rm -rf $(SERVICE_DIR_NAME))
 
 

@@ -41,9 +41,9 @@ endif
 # where xxx is the application name
 #
 
-.PHONY: internal-app-all \
-        internal-app-install \
-        internal-app-uninstall \
+.PHONY: internal-app-all_ \
+        internal-app-install_ \
+        internal-app-uninstall_ \
         internal-application-build-template \
         _FORCE
 
@@ -92,13 +92,11 @@ endif
 # Compilation targets
 #
 ifeq ($(OBJC_COMPILER), NeXT)
-internal-app-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GNUSTEP_INSTANCE).iconheader \
-                   $(GNUSTEP_OBJ_DIR) \
-                   $(APP_DIR_NAME) \
-                   $(APP_FILE) \
-                   shared-instance-bundle-all \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-app-all_:: $(GNUSTEP_INSTANCE).iconheader \
+                    $(GNUSTEP_OBJ_DIR) \
+                    $(APP_DIR_NAME) \
+                    $(APP_FILE) \
+                    shared-instance-bundle-all
 
 $(GNUSTEP_INSTANCE).iconheader:
 	@(echo "F	$(GNUSTEP_INSTANCE).$(APP_EXTENSION)	$(GNUSTEP_INSTANCE)	$(APP_EXTENSION)"; \
@@ -106,16 +104,14 @@ $(GNUSTEP_INSTANCE).iconheader:
 
 else
 
-internal-app-all:: before-$(GNUSTEP_INSTANCE)-all \
-                   $(GNUSTEP_OBJ_DIR) \
-                   $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-                   $(APP_FILE) \
-                   internal-application-build-template \
-                   $(APP_DIR_NAME)/Resources \
-                   $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
-		   $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop \
-                   shared-instance-bundle-all \
-                   after-$(GNUSTEP_INSTANCE)-all
+internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
+                    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                    $(APP_FILE) \
+                    internal-application-build-template \
+                    $(APP_DIR_NAME)/Resources \
+                    $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
+                    $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop \
+                    shared-instance-bundle-all
 
 $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $@
@@ -162,7 +158,7 @@ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 
 _FORCE::
 
-internal-app-install:: $(GNUSTEP_APPS)
+internal-app-install_:: $(GNUSTEP_APPS)
 	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME); \
 	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
 ifneq ($(CHOWN_TO),)
@@ -176,7 +172,7 @@ endif
 $(GNUSTEP_APPS):
 	$(MKINSTALLDIRS) $@
 
-internal-app-uninstall::
+internal-app-uninstall_::
 	(cd $(GNUSTEP_APPS); rm -rf $(APP_DIR_NAME))
 
 ## Local variables:

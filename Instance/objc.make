@@ -30,9 +30,9 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-.PHONY: internal-objc_program-all \
-       internal-objc_program-install \
-       internal-objc_program-uninstall
+.PHONY: internal-objc_program-all_ \
+        internal-objc_program-install_ \
+        internal-objc_program-uninstall_
 
 # This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the Tools
@@ -67,17 +67,15 @@ TTMP_LIBS := $(TTMP_LIBS:%=-Dlib%_ISDLL=1)
 ALL_CPPFLAGS += $(TTMP_LIBS)
 endif
 
-internal-objc_program-all:: \
-                  before-$(GNUSTEP_INSTANCE)-all \
+internal-objc_program-all_:: \
                   $(GNUSTEP_OBJ_DIR) \
-                  $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-                  after-$(GNUSTEP_INSTANCE)-all
+                  $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
 	      $(ALL_OBJC_LIBS)
 
-internal-objc_program-install:: $(OBJC_PROGRAM_INSTALLATION_DIR)
+internal-objc_program-install_:: $(OBJC_PROGRAM_INSTALLATION_DIR)
 	$(INSTALL_PROGRAM) -m 0755 \
 	    $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
 	    $(OBJC_PROGRAM_INSTALLATION_DIR)
@@ -85,7 +83,7 @@ internal-objc_program-install:: $(OBJC_PROGRAM_INSTALLATION_DIR)
 $(OBJC_PROGRAM_INSTALLATION_DIR):
 	$(MKINSTALLDIRS) $@
 
-internal-objc_program-uninstall::
+internal-objc_program-uninstall_::
 	rm -f $(OBJC_PROGRAM_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 ## Local variables:

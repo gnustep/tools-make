@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instace/resource-set.make
 #
 #   Instance makefile rules to install resource files
@@ -37,8 +37,8 @@ endif
 #    is in the xxx_LOCALIZED_RESOURCE_FILES variable.
 #
 
-.PHONY: internal-resource_set-install \
-       internal-resource_set-uninstall
+.PHONY: internal-resource_set-install_ \
+        internal-resource_set-uninstall_
 
 # Determine installation dir
 RESOURCE_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_RESOURCE_FILES_INSTALL_DIR)
@@ -87,7 +87,7 @@ LOCALIZED_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES)
 ifeq ($(GNUSTEP_DEVELOPER),)
 
 # Standard one - just run a subshell and loop, and install everything.
-internal-resource_set-install: \
+internal-resource_set-install_: \
   $(RESOURCE_FILES_FULL_INSTALL_DIR) \
   $(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(RESOURCE_DIRS))
 ifneq ($(RESOURCE_FILES),)
@@ -126,7 +126,7 @@ $(RESOURCE_FILES_FULL_INSTALL_DIR)/% : $(RESOURCE_FILES_DIR)/%
 	$(INSTALL_DATA) $< $@
 
 # This rule depends on having installed all files
-internal-resource_set-install: \
+internal-resource_set-install_: \
    $(RESOURCE_FILES_FULL_INSTALL_DIR) \
    $(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(RESOURCE_DIRS)) \
    $(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(RESOURCE_FILES)) \
@@ -170,7 +170,7 @@ endif # LOCALIZED_RESOURCE_FILES
 endif
 
 
-internal-resource_set-uninstall:
+internal-resource_set-uninstall_:
 ifneq ($(RESOURCE_FILES),)
 	for file in $(RESOURCE_FILES); do \
 	  rm -rf $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$file ; \

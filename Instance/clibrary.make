@@ -31,9 +31,9 @@
 # It all works as for library.make but we install outside library-combo
 #
 
-.PHONY: internal-clibrary-all \
-        internal-clibrary-install \
-        internal-clibrary-uninstall
+.PHONY: internal-clibrary-all_ \
+        internal-clibrary-install_ \
+        internal-clibrary-uninstall_
 
 # This is the directory where the lib get installed. 
 ifeq ($(CLIBRARY_INSTALL_DIR),)
@@ -49,13 +49,11 @@ FINAL_LIBRARY_INSTALL_DIR = $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/library.make
 
 # Now call them from our own rules
-internal-clibrary-all:: internal-library-all
+internal-clibrary-all_:: internal-library-all_
 
-internal-clibrary-clean:: internal-library-clean
+internal-clibrary-install_:: internal-library-install_
 
-internal-clibrary-install:: internal-library-install
-
-internal-clibrary-uninstall:: internal-library-uninstall
+internal-clibrary-uninstall_:: internal-library-uninstall_
 
 internal-clibrary-check:: internal-library-check
 

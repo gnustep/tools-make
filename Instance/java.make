@@ -57,11 +57,11 @@ endif
 # If you have properties file to install, put them in the
 # xxx_JAVA_PROPERTIES_FILES
 
-.PHONY: internal-java_package-all \
+.PHONY: internal-java_package-all_ \
         internal-java_package-clean \
         internal-java_package-distclean \
-        internal-java_package-install \
-        internal-java_package-uninstall
+        internal-java_package-install_ \
+        internal-java_package-uninstall_
 
 # This is the directory where the java classses get
 # installed. Normally this is /usr/GNUstep/Local/Libraries/Java/
@@ -73,17 +73,15 @@ GNUSTEP_SHARED_JAVA_INSTALLATION_DIR = $(JAVA_INSTALLATION_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/java.make
 
 
-internal-java_package-all:: before-$(GNUSTEP_INSTANCE)-all \
-                               shared-instance-java-all \
-                               after-$(GNUSTEP_INSTANCE)-all
+internal-java_package-all_:: shared-instance-java-all
 
-internal-java_package-install:: shared-instance-java-install
+internal-java_package-install_:: shared-instance-java-install
 
 internal-java_package-clean:: shared-instance-java-clean
 
 internal-java_package-distclean::
 
-internal-java_package-uninstall:: shared-instance-java-uninstall
+internal-java_package-uninstall_:: shared-instance-java-uninstall
 
 
 ## Local variables:

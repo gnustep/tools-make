@@ -28,11 +28,53 @@
 # the user can add them if he wants, but if he doesn't, make doesn't
 # complain about missing targets.
 
-.PHONY: before-$(GNUSTEP_INSTANCE)-all after-$(GNUSTEP_INSTANCE)-all
+# NB: internal-$(GNUSTEP_TYPE)-all_ should not be declared .PHONY
+# here, because it's not implemented here.  (example of how could go
+# wrong otherwise: if say internal-clibrary-all_ depends on
+# internal-library-all_, both of them should be declared .PHONY, while
+# here we would only declare one of them .PHONY, so it should be done
+# by the project specific makefile fragments).
+.PHONY: \
+ before-$(GNUSTEP_INSTANCE)-all after-$(GNUSTEP_INSTANCE)-all \
+ internal-$(GNUSTEP_TYPE)-all \
+ before-$(GNUSTEP_INSTANCE)-install after-$(GNUSTEP_INSTANCE)-install \
+ internal-$(GNUSTEP_TYPE)-install \
+ before-$(GNUSTEP_INSTANCE)-uninstall after-$(GNUSTEP_INSTANCE)-uninstall \
+ internal-$(GNUSTEP_TYPE)-uninstall
 
 before-$(GNUSTEP_INSTANCE)-all::
 
 after-$(GNUSTEP_INSTANCE)-all::
+
+# Automatically run before-$(GNUSTEP_INSTANCE)-all before building,
+# and after-$(GNUSTEP_INSTANCE)-all after building.
+# The project-type specific makefile instance fragment only needs to provide
+# the internal-$(GNUSTEP_TYPE)-all_ rule.
+internal-$(GNUSTEP_TYPE)-all:: before-$(GNUSTEP_INSTANCE)-all \
+                               internal-$(GNUSTEP_TYPE)-all_  \
+                               after-$(GNUSTEP_INSTANCE)-all
+
+before-$(GNUSTEP_INSTANCE)-install::
+
+after-$(GNUSTEP_INSTANCE)-install::
+
+internal-$(GNUSTEP_TYPE)-install:: before-$(GNUSTEP_INSTANCE)-install \
+                                   internal-$(GNUSTEP_TYPE)-install_  \
+                                   after-$(GNUSTEP_INSTANCE)-install
+
+before-$(GNUSTEP_INSTANCE)-uninstall::
+
+after-$(GNUSTEP_INSTANCE)-uninstall::
+
+internal-$(GNUSTEP_TYPE)-uninstall:: before-$(GNUSTEP_INSTANCE)-uninstall \
+                                   internal-$(GNUSTEP_TYPE)-uninstall_  \
+                                   after-$(GNUSTEP_INSTANCE)-uninstall
+
+
+# before-$(GNUSTEP_INSTANCE)-clean and similar for after and distclean
+# are not supported -- they wouldn't be executed most of the times, since
+# most of the times we don't perform an Instance invocation at all on
+# make clean or make distclean.
 
 
 #
