@@ -1,3 +1,8 @@
+2005-03-09  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* configure.ac: Detect libobjc.dll.a as a custom ObjC library.
+	* configure: Regenerated.
+
 2005-03-01  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* target.make (WITH_DLL): Variable removed.
