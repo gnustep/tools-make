@@ -48,7 +48,7 @@ shared-instance-java-all \
 shared-instance-java-install \
 shared-instance-java-install-dirs \
 shared-instance-java-uninstall \
-shared-instance-java-clean \
+shared-instance-java-clean
 
 
 shared-instance-java-all: $(JAVA_OBJ_FILES) \
