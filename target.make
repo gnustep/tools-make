@@ -109,6 +109,8 @@ AFTER_INSTALL_SHARED_LIB_COMMAND = \
 	 $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 HAVE_BUNDLES = no
 
+OBJC_CLASS_SECTION = R
+
 ####################################################
 #
 # Start of system specific settings
@@ -544,6 +546,8 @@ SHARED_FRAMEWORK_LINK_CMD = \
 	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
 	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
 	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
+
+OBJC_CLASS_SECTION = D
 
 SHARED_CFLAGS   += -shared -fpic
 SHARED_LIBEXT   = .so
