@@ -31,6 +31,9 @@
 # CVS_MODULE_NAME = base
 # CVS_FLAGS = -d :pserver:anoncvs@subversions.gnu.org:/cvsroot/gnustep
 #
+# CVS_TAG_NAME is the same as CVS_MODULE_NAME if not set and is used to
+# tag and retreive a module version
+#
 # You can also pass/override them on the command line if you want,
 # make cvs-snapshot CVS_FLAGS="-d :pserver:anoncvs@subversions.gnu.org:/cvsroot/gnustep -z9"
 #
@@ -59,6 +62,9 @@
 
 ifeq ($(CVS_MODULE_NAME),)
   CVS_MODULE_NAME = $(PACKAGE_NAME)
+endif
+ifeq ($(CVS_TAG_NAME),)
+  CVS_TAG_NAME = $(CVS_MODULE_NAME)
 endif
 
 ifeq ($(CVS_FLAGS),)
@@ -168,16 +174,16 @@ ifneq ($(RELEASE_DIR),)
 endif
 
 #
-# Tag the CVS source with the $(CVS_MODULE_NAME)-$(VERTAG) tag
+# Tag the CVS source with the $(CVS_TAG_NAME)-$(VERTAG) tag
 #
 cvs-tag:
-	$(CVS) $(CVS_FLAGS) rtag $(CVS_MODULE_NAME)-$(VERTAG) $(CVS_MODULE_NAME)
+	$(CVS) $(CVS_FLAGS) rtag $(CVS_TAG_NAME)-$(VERTAG) $(CVS_MODULE_NAME)
 
 #
 # Build a .tar.gz from the CVS sources using revision/tag 
-# $(CVS_MODULE_NAME)-$(VERTAG)
+# $(CVS_TAG_NAME)-$(VERTAG)
 #
-cvs-dist: EXPORT_CVS_FLAGS = -r $(CVS_MODULE_NAME)-$(VERTAG) 
+cvs-dist: EXPORT_CVS_FLAGS = -r $(CVS_TAG_NAME)-$(VERTAG) 
 cvs-dist: internal-cvs-export
 
 #

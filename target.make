@@ -262,14 +262,6 @@ SHARED_LIBEXT    = .dylib
 # The output of nm is slightly different on Darwin, it doesn't support -P
 EXTRACT_CLASS_NAMES_COMMAND = nm  -g $$object_file | sed -n -e '/[^U] ___objc_class_name_/ {s/[0-9a-f]* [^U] ___objc_class_name_//p;}'
 
-ifeq ($(CC_TYPE), apple)
-  # Not sure why, but without -no-cpp-precomp, it doesn't compile
-  # plain C files.
-  INTERNAL_CFLAGS += -no-cpp-precomp
-
-  # TODO - Check if we can do without -no-cpp-precomp for Objective-C.
-  INTERNAL_OBJCFLAGS += -no-cpp-precomp
-endif
 ifeq ($(FOUNDATION_LIB), apple)
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
@@ -292,7 +284,7 @@ DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
 
-ifneq ($(CC_TYPE), apple)
+ifeq ($(CC_BUNDLE), no)
 # GNU compiler
 SHARED_LD_PREFLAGS += -noall_load -read_only_relocs warning \
 	-flat_namespace -undefined warning

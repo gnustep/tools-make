@@ -1,3 +1,14 @@
+2004-07-31  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Add checks for specific Apple compiler flags.
+	* target.make (darwin): Use them. Don't add no-cpp-precomp flag
+	when compiling with Apple compiler.
+
+	* Documentation/README.Darwin: Minor fixes (Patch from
+	lars.sonchocky-helldorf@hamburg.de).
+
+	* Master/source-distribution.make: Add CVS_TAG_NAME variable.
+
 2004-07-11  Gregory John Casamento <greg_casamento@yahoo.com>
 
 	* Instance/palette.make: Updated the palette.make to create

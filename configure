@@ -317,7 +317,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_type CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -2551,18 +2551,27 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 
 #--------------------------------------------------------------------
 # Check if we are using Apple cc
-# FIXME: It would be nicer if there was a better way to test this.
 #--------------------------------------------------------------------
-echo "$as_me:$LINENO: checking if we are using the apple compiler" >&5
-echo $ECHO_N "checking if we are using the apple compiler... $ECHO_C" >&6
-gcc_cc_type=`${CC} --print-libgcc-file-name | grep -c "gcc-lib"`
-if test "$gcc_cc_type" = 1; then
-  cc_type=gnu
+cc_cppprecomp=0
+cc_byndle=0
+echo "$as_me:$LINENO: checking for apple compiler flags" >&5
+echo $ECHO_N "checking for apple compiler flags... $ECHO_C" >&6
+cc_cppprecomp=`${CC} -no-cpp-precomp 2>&1 | grep -c "unrecognized"`
+cc_bundle=`${CC} -bundle 2>&1 | grep -c "couldn"`
+# 0 means we have the flag
+if test $cc_cppprecomp = 0; then
+  cc_cppprecomp=yes
 else
-  cc_type=apple
+  cc_cppprecomp=no
 fi
-echo "$as_me:$LINENO: result: $cc_type" >&5
-echo "${ECHO_T}$cc_type" >&6
+if test $cc_bundle = 0; then
+  cc_bundle=yes
+else
+  cc_bundle=no
+fi
+echo "$as_me:$LINENO: result: done" >&5
+echo "${ECHO_T}done" >&6
+
 
 
 #--------------------------------------------------------------------
@@ -5400,7 +5409,8 @@ s,@target_cpu@,$target_cpu,;t t
 s,@target_vendor@,$target_vendor,;t t
 s,@target_os@,$target_os,;t t
 s,@ac_cv_library_combo@,$ac_cv_library_combo,;t t
-s,@cc_type@,$cc_type,;t t
+s,@cc_cppprecomp@,$cc_cppprecomp,;t t
+s,@cc_bundle@,$cc_bundle,;t t
 s,@CYGWIN@,$CYGWIN,;t t
 s,@RANLIB@,$RANLIB,;t t
 s,@AR@,$AR,;t t
