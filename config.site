@@ -24,8 +24,8 @@
 echo Processing GNUstep site configuration
 
 # Determine the target
-if test "$target" = NONE ; then
-   # The did not specify one so the target is the host
+if test -z "$target" -o "$target" = NONE; then
+   # The user did not specify one so the target is the host
    GNUSTEP_TARGET=$GNUSTEP_HOST
    GNUSTEP_TARGET_CPU=$GNUSTEP_HOST_CPU
    GNUSTEP_TARGET_VENDOR=$GNUSTEP_HOST_VENDOR

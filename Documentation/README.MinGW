@@ -158,3 +158,40 @@ compile correctly:
 
   . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 
+
+Problems?
+---------
+
+Compiling ffcall:
+
+./configure --host=i386-mingw32 --prefix=//c/mingw
+
+Problems compiling ffcall with MingWs gcc? Use Cygwin gcc:
+
+export CC="gcc -mno-cygwin"
+
+Configure problem finding ld with MingW?
+
+LD=ld ./configure
+
+Good Sites for Pre-Compiled Binaries
+------------------------------------
+
+Many libraries, etc from:
+
+<http://sourceforge.net/project/showfiles.php?group_id=7382>
+
+MingW guile from
+
+<http://www.textsure.net/~ela/devel.html>.
+
+also need guile from 
+
+<http://sourceforge.net/project/showfiles.php?group_id=7382>
+
+for guile-config file.
+
+Author
+------
+
+Adam Fedor <fedor@gnu.org>

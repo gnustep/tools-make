@@ -1,3 +1,8 @@
+2001-10-09  Adam Fedor  <fedor@gnu.org>
+
+	* config.site: Fix for empty target. (suggested by
+	Laurent.Julliard@xrce.xerox.com).
+
 Mon Oct  8 14:06:30 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* service.make (CPP_FLAGS): Add the DLL flags for ALL_GUI_LIBS if

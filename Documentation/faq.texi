@@ -586,23 +586,11 @@ documentation directory.
 If you want to work on other parts of the website - capture the
 pages you want to edit in your web browser (at http://www.gnustep.org).
 If you can't do that, you can grab a copy of the website  via
-anonymous CVS -
-
-@example
-$ CVSROOT=:pserver:anoncvs:@@cvs.net-community.com:/gnustep-www 
-$ export CVSROOT 
-$ cvs login (password anoncvs) 
-$ checkout -z3 www
-@end example
+anonymous CVS. See @url{http://savannah.gnu.org/cvs/?group_id=99}
+for instructions on how to do that.
 
 The main task with the website is to figure out which bits are
 out-of-date (or wrong) and update/mark-as-outdated as required.
-
-Current status -
-
-The 'developers section' of the FAQ is being worked on by
-@email{stevensl@@mindspring.net}, and we are looking at rewriting the more
-general parts of the FAQ.
 
 @node How do I compile GNUstep on my machine? , Are there any precompiled packages available?, How can I help with the GNUstep website?, Compiling and Developing
 @subsection How do I compile GNUstep on my machine?
