@@ -140,7 +140,7 @@ ifeq ($(FOUNDATION_LIB),nx)
 endif
 
 TARGET_LIB_DIR = \
-    Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+    Libraries/$(GNUSTEP_TARGET_LDIR)
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
@@ -224,7 +224,7 @@ ifeq ($(FOUNDATION_LIB),nx)
 endif
 
 TARGET_LIB_DIR = \
-    Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+    Libraries/$(GNUSTEP_TARGET_LDIR)
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
@@ -300,7 +300,7 @@ ifeq ($(FOUNDATION_LIB),nx)
 endif
 
 TARGET_LIB_DIR = \
-    Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+    Libraries/$(GNUSTEP_TARGET_LDIR)
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \

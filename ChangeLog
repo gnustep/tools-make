@@ -1,3 +1,33 @@
+2000-12-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* make/GNUmakefile.in:
+	* make/GNUstep.csh.in:
+	* make/GNUstep.sh.in:
+	* make/MediaBook.func:
+	* make/README:
+	* make/application.make:
+	* make/brain.make:
+	* make/bundle.make:
+	* make/common.make:
+	* make/configure:
+	* make/configure.in:
+	* make/ctool.make:
+	* make/framework.make:
+	* make/gswapp.make:
+	* make/gswbundle.make:
+	* make/ld_lib_path.csh:
+	* make/ld_lib_path.sh:
+	* make/library.make:
+	* make/palette.make:
+	* make/service.make:
+	* make/target.make:
+	* make/tool.make:
+	* make/woapp.make:
+	* make/wobundle.make:
+	Updated for flattened directory structure - use GNUSTEP_XXX_DIR and
+	GNUASTEP_XXX_LDIR for referring to directories with and without the
+	library combo.  Localise changes as much as possible.
+
 Mon Nov 27 16:28:12 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* documentation.make (internal-doc-clean): Ignore errors when

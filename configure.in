@@ -59,6 +59,26 @@ fi
 AC_SUBST(GNUSTEP_ROOT)
 AC_SUBST(GNUSTEP_PREFIX)
 
+
+#--------------------------------------------------------------------
+# Is the system flattened?
+#--------------------------------------------------------------------
+AC_ARG_ENABLE(flattened, 
+  [  --enable-flattened    Use flattened directory structure], 
+  ac_cv_flattened=$enableval,  
+  ac_cv_flattened="undefined")
+
+if test "$ac_cv_flattened" = "yes"; then
+  GNUSTEP_FLATTENED=yes;
+else
+  if test "$ac_cv_flattened" = "no"; then
+    GNUSTEP_FLATTENED=;
+  else
+    GNUSTEP_FLATTENED=$GNUSTEP_FLATTENED;
+  fi
+fi
+AC_SUBST(GNUSTEP_FLATTENED)
+
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------

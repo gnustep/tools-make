@@ -135,7 +135,7 @@ endif
 # Support building NeXT applications
 ifneq ($(OBJC_COMPILER), NeXT)
 WOAPP_FILE = \
-    $(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(INTERNAL_woapp_NAME)$(EXEEXT)
+    $(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_woapp_NAME)$(EXEEXT)
 else
 WOAPP_FILE = $(WOAPP_DIR_NAME)/$(INTERNAL_woapp_NAME)$(EXEEXT)
 endif
@@ -155,7 +155,7 @@ ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f $(INTERNAL_woapp_NAME).iconheader
 else
 	@$(TRANSFORM_PATHS_SCRIPT) `echo $(ALL_LIB_DIRS) | sed 's/-L//g'` \
-	>$(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)/library_paths.openapp
+	>$(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp
 endif
 
 #
@@ -187,7 +187,7 @@ else
 
 internal-woapp-all:: \
    before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-   $(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(WOAPP_FILE) \
+   $(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(WOAPP_FILE) \
    woapp-components \
    woapp-localized-webresource-files \
    woapp-webresource-files \
@@ -200,15 +200,15 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-$(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
-	@$(MKDIRS) $(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+$(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+	@$(MKDIRS) $(WOAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 ifeq ($(WOAPP_NAME)_GEN_SCRIPT,yes)
 $(WOAPP_DIR_NAME)/$(WOAPP_NAME).sh: $(WOAPP_DIR_NAME)
 	@(echo "#!/bin/sh"; \
 	  echo '# Automatically generated, do not edit!'; \
-	  echo '$${GNUSTEP_HOST_CPU}/$${GNUSTEP_HOST_OS}/$${LIBRARY_COMBO}/$(INTERNAL_woapp_NAME) $$1 $$2 $$3 $$4 $$5 $$6 $$7 $$8') >$@
+	  echo '$${GNUSTEP_HOST_LDIR}/$(INTERNAL_woapp_NAME) $$1 $$2 $$3 $$4 $$5 $$6 $$7 $$8') >$@
 	chmod +x $@
 else
 $(WOAPP_DIR_NAME)/$(WOAPP_NAME).sh:
@@ -306,14 +306,14 @@ internal-woapp-uninstall::
 # Cleaning targets
 #
 internal-woapp-clean::
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(WOAPP_EXTENSION); do \
 	  rm -f $$f/`basename $$f .$(WOAPP_EXTENSION)`; \
 	done
 else
-	rm -rf *.$(WOAPP_EXTENSION)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf *.$(WOAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 

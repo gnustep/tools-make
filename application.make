@@ -102,7 +102,7 @@ endif
 # Support building NeXT applications
 ifneq ($(OBJC_COMPILER), NeXT)
 APP_FILE = \
-    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(INTERNAL_app_NAME)$(EXEEXT)
+    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_app_NAME)$(EXEEXT)
 else
 APP_FILE = $(APP_DIR_NAME)/$(INTERNAL_app_NAME)$(EXEEXT)
 endif
@@ -123,7 +123,7 @@ ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f $(INTERNAL_app_NAME).iconheader
 else
 	@$(TRANSFORM_PATHS_SCRIPT) `echo $(ALL_LIB_DIRS) | sed 's/-L//g'` \
-	>$(APP_DIR_NAME)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)/library_paths.openapp
+	>$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp
 endif
 
 #
@@ -148,7 +148,7 @@ $(APP_DIR_NAME):
 else
 
 internal-app-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-   $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(APP_FILE) \
+   $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(APP_FILE) \
    $(APP_DIR_NAME)/$(INTERNAL_app_NAME) app-resource-files \
    app-localized-resource-files after-$(TARGET)-all
 
@@ -156,12 +156,14 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
-	@$(MKDIRS) $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+	@$(MKDIRS) $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 
+ifeq ($(GNUSTEP_FLATTENED),)
 $(APP_DIR_NAME)/$(INTERNAL_app_NAME):
 	cp $(GNUSTEP_MAKEFILES)/executable.template $(APP_DIR_NAME)/$(INTERNAL_app_NAME)
 	chmod a+x $(APP_DIR_NAME)/$(INTERNAL_app_NAME)
+endif
 endif
 
 app-resource-dir::
@@ -229,14 +231,14 @@ internal-app-uninstall::
 # Cleaning targets
 #
 internal-app-clean::
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(APP_EXTENSION); do \
 	  rm -f $$f/`basename $$f .$(APP_EXTENSION)`; \
 	done
 else
-	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 

@@ -72,25 +72,25 @@ GUI_BACKEND_LIB = $(word 4,$(combo_list))
 # separate variables.
 #
 ifneq ($(runtime),)
-OBJC_RUNTIME_LIB = $(runtime)
+  OBJC_RUNTIME_LIB = $(runtime)
 endif
 
 ifneq ($(foundation),)
-FOUNDATION_LIB = $(foundation)
+  FOUNDATION_LIB = $(foundation)
 endif
 
 ifneq ($(gui),)
-GUI_LIB = $(gui)
+  GUI_LIB = $(gui)
 endif
 
 ifneq ($(backend),)
-GUI_BACKEND_LIB = $(backend)
+  GUI_BACKEND_LIB = $(backend)
 endif
 
 ifeq ($(gc), yes)
-export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-$(GUI_BACKEND_LIB)-gc
+  export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-$(GUI_BACKEND_LIB)-gc
 else
-export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-$(GUI_BACKEND_LIB)
+  export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-$(GUI_BACKEND_LIB)
 endif
 
 OBJC_LDFLAGS =
@@ -99,21 +99,21 @@ OBJC_LIBS =
 # Set the appropriate ObjC runtime library and other information
 #
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
-OBJC_LDFLAGS =
-OBJC_LIB_DIR =
-OBJC_LIBS = -lobjc
-OBJC_RUNTIME = GNU
-RUNTIME_DEFINE = -DGNU_RUNTIME=1
+  OBJC_LDFLAGS =
+  OBJC_LIB_DIR =
+  OBJC_LIBS = -lobjc
+  OBJC_RUNTIME = GNU
+  RUNTIME_DEFINE = -DGNU_RUNTIME=1
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), nx)
-OBJC_RUNTIME = NeXT
-RUNTIME_DEFINE = -DNeXT_RUNTIME=1
+  OBJC_RUNTIME = NeXT
+  RUNTIME_DEFINE = -DNeXT_RUNTIME=1
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), sun)
-OBJC_RUNTIME = Sun
-RUNTIME_DEFINE = -DSun_RUNTIME=1
+  OBJC_RUNTIME = Sun
+  RUNTIME_DEFINE = -DSun_RUNTIME=1
 endif
 
 FND_LDFLAGS =
@@ -122,48 +122,48 @@ FND_LIBS =
 # Set the appropriate Foundation library
 #
 ifeq ($(FOUNDATION_LIB),gnu)
-FND_LDFLAGS =
-FND_LIBS = -lgnustep-base
-FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
-GNUSTEP_DEFINE = -DGNUSTEP
-# If gc=yes was passed, use the appropriate library and defines
-ifeq ($(gc), yes)
-  OBJC_LIBS = -lobjc_gc -lgc
-  AUXILIARY_CPPFLAGS += -DGS_WITH_GC=1
-endif
+  FND_LDFLAGS =
+  FND_LIBS = -lgnustep-base
+  FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
+  GNUSTEP_DEFINE = -DGNUSTEP
+  # If gc=yes was passed, use the appropriate library and defines
+  ifeq ($(gc), yes)
+    OBJC_LIBS = -lobjc_gc -lgc
+    AUXILIARY_CPPFLAGS += -DGS_WITH_GC=1
+  endif
 endif
 
 ifeq ($(FOUNDATION_LIB),fd)
--include $(GNUSTEP_MAKEFILES)/libFoundation.make
+  -include $(GNUSTEP_MAKEFILES)/libFoundation.make
 
-FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
-FND_LDFLAGS =
-FND_LIBS = -lFoundation
+  FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
+  FND_LDFLAGS =
+  FND_LIBS = -lFoundation
 
-# If gc=yes was passed and libFoundation was compiled with Boehm's
-# GC support, use the appropriate libraries
+  # If gc=yes was passed and libFoundation was compiled with Boehm's
+  # GC support, use the appropriate libraries
 
-ifeq ($(gc), yes)
-  ifeq ($(LIBFOUNDATION_WITH_GC), yes)
-    OBJC_LIBS = -lobjc $(LIBFOUNDATION_GC_LIBRARY)
-    ifeq ($(leak), yes)
-      AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_LEAK_GC=1
-    else
-      AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_BOEHM_GC=1
+  ifeq ($(gc), yes)
+    ifeq ($(LIBFOUNDATION_WITH_GC), yes)
+      OBJC_LIBS = -lobjc $(LIBFOUNDATION_GC_LIBRARY)
+      ifeq ($(leak), yes)
+        AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_LEAK_GC=1
+      else
+        AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_BOEHM_GC=1
+      endif
     endif
   endif
-endif
 
 endif
 
 ifeq ($(FOUNDATION_LIB),nx)
-FND_LDFLAGS = -framework Foundation
-FND_LIBS   = 
-FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
+  FND_LDFLAGS = -framework Foundation
+  FND_LIBS   = 
+  FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
 endif
 
 ifeq ($(FOUNDATION_LIB), sun)
-FND_DEFINE = -DSun_Foundation_LIBRARY=1
+  FND_DEFINE = -DSun_Foundation_LIBRARY=1
 endif
 
 #
@@ -181,21 +181,21 @@ GUI_LIBS =
 # Set the GUI library
 #
 ifeq ($(GUI_LIB),gnu)
-GUI_LDFLAGS =
-GUI_LIBS = -lgnustep-gui -lgmodel -lgnustep-gui
-GUI_DEFINE = -DGNU_GUI_LIBRARY=1
-GNUSTEP_DEFINE = -DGNUSTEP
+  GUI_LDFLAGS =
+  GUI_LIBS = -lgnustep-gui -lgmodel -lgnustep-gui
+  GUI_DEFINE = -DGNU_GUI_LIBRARY=1
+  GNUSTEP_DEFINE = -DGNUSTEP
 endif
 
 ifeq ($(GUI_LIB),nx)
-GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
+  GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
   ifneq ($(INTERNAL_app_NAME),)
     # If we're building an application pass the following additional flags to
     # the linker
     GUI_LDFLAGS = -sectcreate __ICON __header $(INTERNAL_app_NAME).iconheader \
 		  -segprot __ICON r r -sectcreate __ICON app /NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff \
 		  -framework AppKit
-  GUI_LIBS =
+    GUI_LIBS =
   endif
 endif
 
@@ -205,26 +205,26 @@ BACKEND_LIBS =
 # Set the GUI Backend library
 #
 ifeq ($(GUI_BACKEND_LIB),xdps)
-BACKEND_LDFLAGS =
-BACKEND_LIBS = -lgnustep-xdps
-BACKEND_DEFINE = -DXDPS_BACKEND_LIBRARY=1
+  BACKEND_LDFLAGS =
+  BACKEND_LIBS = -lgnustep-xdps
+  BACKEND_DEFINE = -DXDPS_BACKEND_LIBRARY=1
 endif
 
 ifeq ($(GUI_BACKEND_LIB),xraw)
-BACKEND_LDFLAGS =
-BACKEND_LIBS = -lgnustep-xraw
-BACKEND_DEFINE = -DXRAW_BACKEND_LIBRARY=1
+  BACKEND_LDFLAGS =
+  BACKEND_LIBS = -lgnustep-xraw
+  BACKEND_DEFINE = -DXRAW_BACKEND_LIBRARY=1
 endif
 
 ifeq ($(GUI_BACKEND_LIB),xgps)
-BACKEND_LDFLAGS =
-BACKEND_LIBS = -lgnustep-xgps
-BACKEND_DEFINE = -DXGPS_BACKEND_LIBRARY=1
+  BACKEND_LDFLAGS =
+  BACKEND_LIBS = -lgnustep-xgps
+  BACKEND_DEFINE = -DXGPS_BACKEND_LIBRARY=1
 endif
 
 ifeq ($(GUI_BACKEND_LIB),w32)
-BACKEND_LDFLAGS =
-BACKEND_LIBS = -lMBKit
+  BACKEND_LDFLAGS =
+  BACKEND_LIBS = -lMBKit
 endif
 
 SYSTEM_INCLUDES =
@@ -236,10 +236,10 @@ SYSTEM_LIBS =
 # then add X headers and libraries
 #
 ifeq ($(GUI_BACKEND_LIB),xdps)
-SYSTEM_INCLUDES = $(GRAPHIC_CFLAGS)
-SYSTEM_LDFLAGS =
-SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
-SYSTEM_LIBS = -ldpstk -ldps -lpsres -lXt $(X_PRE_LIBS) $(GRAPHIC_LIBS)
+  SYSTEM_INCLUDES = $(GRAPHIC_CFLAGS)
+  SYSTEM_LDFLAGS =
+  SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
+  SYSTEM_LIBS = -ldpstk -ldps -lpsres -lXt $(X_PRE_LIBS) $(GRAPHIC_LIBS)
 endif
 
 #
@@ -247,17 +247,17 @@ endif
 # then add X headers and libraries
 #
 ifeq ($(GUI_BACKEND_LIB),xraw)
-SYSTEM_INCLUDES = $(GRAPHIC_CFLAGS)
-SYSTEM_LDFLAGS =
-SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
-SYSTEM_LIBS = $(GRAPHIC_LIBS)
+  SYSTEM_INCLUDES = $(GRAPHIC_CFLAGS)
+  SYSTEM_LDFLAGS =
+  SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
+  SYSTEM_LIBS = $(GRAPHIC_LIBS)
 endif
 
 ifeq ($(GUI_BACKEND_LIB),xgps)
-SYSTEM_INCLUDES = $(GRAPHIC_CFLAGS)
-SYSTEM_LDFLAGS =
-SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
-SYSTEM_LIBS = $(GRAPHIC_LIBS)
+  SYSTEM_INCLUDES = $(GRAPHIC_CFLAGS)
+  SYSTEM_LDFLAGS =
+  SYSTEM_LIB_DIR = $(GRAPHIC_LFLAGS)
+  SYSTEM_LIBS = $(GRAPHIC_LIBS)
 endif
 
 #
@@ -265,10 +265,10 @@ endif
 # then add Win32 headers and libraries
 #
 ifeq ($(GUI_BACKEND_LIB),w32)
-SYSTEM_INCLUDES =
-SYSTEM_LDFLAGS = 
-SYSTEM_LIB_DIR =
-SYSTEM_LIBS = -ltiff -lwsock32 -ladvapi32 -lcomctl32 -luser32 \
+  SYSTEM_INCLUDES =
+  SYSTEM_LDFLAGS = 
+  SYSTEM_LIB_DIR =
+  SYSTEM_LIBS = -ltiff -lwsock32 -ladvapi32 -lcomctl32 -luser32 \
    -lgdi32 -lcomdlg32
 endif
 

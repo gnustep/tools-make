@@ -26,9 +26,6 @@
 # The first (and only) parameter to this script is the canonical
 # operating system name.
 
-last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO
-tool_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-
 host_os=$GNUSTEP_HOST_OS
 
 if [ -z "$host_os" ]; then
@@ -39,7 +36,13 @@ old_IFS="$IFS"
 IFS=" 
 "
 
-lib_paths="$GNUSTEP_USER_ROOT/Library/$last_path_part:$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/Library/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/Library/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part"
+if [ -z "$GNUSTEP_FLATTENED" ]; then
+  last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO
+  tool_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+  lib_paths="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part"
+else
+  lib_paths="$GNUSTEP_USER_ROOT/Libraries:$GNUSTEP_LOCAL_ROOT/Libraries:$GNUSTEP_SYSTEM_ROOT/Libraries"
+fi
 
 if [ -n "$additional_library_paths" ]; then
   for dir in $additional_library_paths; do

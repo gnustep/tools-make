@@ -107,7 +107,7 @@ after-$(TARGET)-all::
 
 BUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := \
-    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)$(BUNDLE_OBJ_EXT)
+    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)$(BUNDLE_OBJ_EXT)
 BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resources/$(d))
 
 ifeq ($(strip $(HEADER_FILES_DIR)),)
@@ -130,7 +130,7 @@ endif
 build-bundle-dir::
 	@$(MKDIRS) \
 		$(BUNDLE_DIR_NAME)/Resources \
-		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
 		$(BUNDLE_RESOURCE_DIRS)
 
 build-bundle:: $(BUNDLE_FILE) bundle-components bundle-resource-files localized-bundle-resource-files

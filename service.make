@@ -80,7 +80,7 @@ endif
 #
 # Internal targets
 #
-SERVICE_FILE = $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(INTERNAL_svc_NAME)
+SERVICE_FILE = $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_svc_NAME)
 
 
 $(SERVICE_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
@@ -92,15 +92,15 @@ $(SERVICE_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # Compilation targets
 #
 internal-svc-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-   $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(SERVICE_FILE) \
+   $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(SERVICE_FILE) \
    svc-resource-files after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-$(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
-	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+$(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 
 svc-resource-dir::
 	@$(MKDIRS) $(SERVICE_RESOURCE_DIRS)
@@ -134,14 +134,14 @@ internal-svc-uninstall::
 # Cleaning targets
 #
 internal-svc-clean::
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.service; do \
 	  rm -f $$f/`basename $$f .service`; \
 	done
 else
-	rm -rf *.service/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf *.service/$(GNUSTEP_TARGET_LDIR)
 endif
 
 

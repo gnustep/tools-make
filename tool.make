@@ -40,7 +40,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # directory they will get installed in the GNUstep system root.
 ifeq ($(TOOL_INSTALLATION_DIR),)
   TOOL_INSTALLATION_DIR = \
-    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 ifeq ($(INTERNAL_tool_NAME),)
@@ -107,11 +107,15 @@ internal-tool-install:: internal-tool-all internal-install-dirs install-tool
 internal-install-dirs::
 	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
 
+ifeq ($(GNUSTEP_FLATTENED),)
 install-tool::
-	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
-	    $(TOOL_INSTALLATION_DIR);
+	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) $(TOOL_INSTALLATION_DIR);
 	cp $(GNUSTEP_MAKEFILES)/executable.template $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
+else
+install-tool::
+	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) $(TOOL_INSTALLATION_DIR)
+endif
 
 internal-tool-uninstall::
 	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)

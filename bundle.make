@@ -107,7 +107,7 @@ after-$(TARGET)-all::
 
 BUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := \
-    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)$(BUNDLE_OBJ_EXT)
+    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)$(BUNDLE_OBJ_EXT)
 BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resources/$(d))
 ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
@@ -125,7 +125,7 @@ endif
 build-bundle-dir::
 	@$(MKDIRS) \
 		$(BUNDLE_DIR_NAME)/Resources \
-		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
 		$(BUNDLE_RESOURCE_DIRS)
 
 build-bundle:: $(BUNDLE_FILE) bundle-resource-files localized-bundle-resource-files
@@ -178,7 +178,7 @@ endif
 # MacOSX-S bundles
 $(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}\";"; \
+	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \

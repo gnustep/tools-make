@@ -116,7 +116,7 @@ endif
 # Support building NeXT applications
 ifneq ($(OBJC_COMPILER), NeXT)
 GSWAPP_FILE = \
-    $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(INTERNAL_gswapp_NAME)$(EXEEXT)
+    $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_gswapp_NAME)$(EXEEXT)
 else
 GSWAPP_FILE = $(GSWAPP_DIR_NAME)/$(INTERNAL_gswapp_NAME)$(EXEEXT)
 endif
@@ -138,7 +138,7 @@ ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f $(INTERNAL_gswapp_NAME).iconheader
 else
 	@$(TRANSFORM_PATHS_SCRIPT) `echo $(ALL_LIB_DIRS) | sed 's/-L//g'` \
-	>$(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)/library_paths.openapp
+	>$(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp
 endif
 
 #
@@ -170,7 +170,7 @@ else
 
 internal-gswapp-all:: \
    before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-   $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(GSWAPP_FILE) \
+   $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(GSWAPP_FILE) \
    gswapp-components \
    gswapp-localized-webresource-files \
    gswapp-webresource-files \
@@ -183,15 +183,15 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-$(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
-	@$(MKDIRS) $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+$(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+	@$(MKDIRS) $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 ifeq ($(GSWAPP_NAME)_GEN_SCRIPT,yes) #<==
 $(GSWAPP_DIR_NAME)/$(GSWAPP_NAME).sh: $(GSWAPP_DIR_NAME)
 	@(echo "#!/bin/sh"; \
 	  echo '# Automatically generated, do not edit!'; \
-	  echo '$${GNUSTEP_HOST_CPU}/$${GNUSTEP_HOST_OS}/$${LIBRARY_COMBO}/$(INTERNAL_gswapp_NAME) $$1 $$2 $$3 $$4 $$5 $$6 $$7 $$8') >$@
+	  echo '$${GNUSTEP_HOST_LDIR}/$(INTERNAL_gswapp_NAME) $$1 $$2 $$3 $$4 $$5 $$6 $$7 $$8') >$@
 	chmod +x $@
 else
 $(GSWAPP_DIR_NAME)/$(GSWAPP_NAME).sh:
@@ -319,14 +319,14 @@ internal-gswapp-uninstall::
 # Cleaning targets
 #
 internal-gswapp-clean::
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(GSWAPP_EXTENSION); do \
 	  rm -f $$f/`basename $$f .$(GSWAPP_EXTENSION)`; \
 	done
 else
-	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 

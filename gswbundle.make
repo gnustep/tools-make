@@ -96,7 +96,7 @@ after-$(TARGET)-all::
 
 GSWBUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(GSWBUNDLE_EXTENSION))
 GSWBUNDLE_FILE := \
-    $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(GSWBUNDLE_NAME)
+    $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GSWBUNDLE_NAME)
 GSWBUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/Resources/$(d))
 GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/WebServerResources/$(d))
 
@@ -126,7 +126,7 @@ endif
 build-bundle-dir::
 	@$(MKDIRS) \
 		$(GSWBUNDLE_DIR_NAME)/Resources \
-		$(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+		$(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
 		$(GSWBUNDLE_RESOURCE_DIRS)
 
 build-bundle:: $(GSWBUNDLE_FILE) gswbundle-components gswbundle-resource-files localized-gswbundle-resource-files gswbundle-localized-webresource-files gswbundle-webresource-files

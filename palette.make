@@ -86,7 +86,7 @@ after-$(TARGET)-all::
 
 PALETTE_DIR_NAME := $(INTERNAL_palette_NAME).palette
 PALETTE_FILE := \
-    $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(PALETTE_NAME)
+    $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
 PALETTE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(PALETTE_DIR_NAME)/Resources/$(d))
 ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
@@ -95,7 +95,7 @@ endif
 build-palette-dir::
 	@$(MKDIRS) \
 		$(PALETTE_DIR_NAME)/Resources \
-		$(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+		$(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
 		$(PALETTE_RESOURCE_DIRS)
 
 build-palette:: $(PALETTE_FILE) palette-resource-files

@@ -132,6 +132,21 @@ make install
 ./configure --target=alpha-linux-gnu
 make install
 
+Configuring the GNUstep makefile package for a flattened structure
+==================================================================
+
+On systems where you know you are only interested in supporting a single
+operating system, cpu type, and library combination, it's possible to
+configure GNUstep to use a 'flattened' directory structure.
+You do this by supplying the '--enable-flattened' argument to configure.
+
+In a flattened structure, files are stotred at the top-level rather than
+in a $(GNUSTEP_CPU)/$(GNUSTEP_OS)/$(LIBRARY_COMBO) subdirectory.
+
+You lose a lot of versatility with this layout, but it's simpler (less
+intimidating) for naive users to handle.
+
+
 History
 =======
 

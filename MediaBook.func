@@ -23,366 +23,368 @@
 #
 # Change to a different version for the current system
 #
-function ver {
-	if [ -z $1 ]
-	then
-		echo Need to specify a version number
-		echo Or \"default\" for the default version
-		return 0
-	fi
+function ver
+{
+  if [ -z $1 ]
+  then
+    echo Need to specify a version number
+    echo Or \"default\" for the default version
+    return 0
+  fi
 
-	if [ -z $MB_CUR ]
-	then
-		echo No current system!
-		return 0
-	fi
+  if [ -z $MB_CUR ]
+  then
+    echo No current system!
+    return 0
+  fi
 
-	# default version
-	pushd $MB_CUR_SYS >/dev/null
-	if [ $1 = default ]
-	then
-		if [ -e MB.version ]
-		then
-			MB_CUR_VER=`cat MB.version`
-		fi
+  # default version
+  pushd $MB_CUR_SYS >/dev/null
+  if [ $1 = default ]
+  then
+    if [ -e MB.version ]
+    then
+      MB_CUR_VER=`cat MB.version`
+    fi
 
-		# Abort if no default version
-		if [ -z $MB_CUR_VER ]
-		then
-			echo No default version!
-			popd >/dev/null
-			return 0
-		fi
-	else
-		# An explicit version
-		if [ -e $1 ]
-		then
-			MB_CUR_VER=$1
-		else
-			echo Version $1 does not exist!
-			popd >/dev/null
-			return 0
-		fi
-	fi
-	popd >/dev/null
+    # Abort if no default version
+    if [ -z $MB_CUR_VER ]
+    then
+      echo No default version!
+      popd >/dev/null
+      return 0
+    fi
+  else
+    # An explicit version
+    if [ -e $1 ]
+    then
+      MB_CUR_VER=$1
+    else
+      echo Version $1 does not exist!
+      popd >/dev/null
+      return 0
+    fi
+  fi
+  popd >/dev/null
 
-	# Set the current system directories
-	MB_CUR_TOP=$MB_CUR_SYS/$MB_CUR_VER
+  # Set the current system directories
+  MB_CUR_TOP=$MB_CUR_SYS/$MB_CUR_VER
 
-	# Apps
-	if [ -d $MB_CUR_TOP/Apps ]
-	then
-		MB_CUR_BIN=$MB_CUR_TOP/Apps
-	else if [ -d $MB_CUR_TOP/bin ]
-	then
-		MB_CUR_BIN=$MB_CUR_TOP/bin
-	else
-		MB_CUR_BIN=$MB_CUR_TOP
-	fi fi
+  # Apps
+  if [ -d $MB_CUR_TOP/Apps ]
+  then
+    MB_CUR_BIN=$MB_CUR_TOP/Apps
+  else if [ -d $MB_CUR_TOP/bin ]
+  then
+    MB_CUR_BIN=$MB_CUR_TOP/bin
+  else
+    MB_CUR_BIN=$MB_CUR_TOP
+  fi fi
 
-	# Source
-	if [ -d $MB_CUR_TOP/Source ]
-	then
-		MB_CUR_SOU=$MB_CUR_TOP/Source
-	else if [ -d $MB_CUR_TOP/src ]
-	then
-		MB_CUR_SOU=$MB_CUR_TOP/src
-	else
-		MB_CUR_SOU=$MB_CUR_TOP
-	fi fi
+  # Source
+  if [ -d $MB_CUR_TOP/Source ]
+  then
+    MB_CUR_SOU=$MB_CUR_TOP/Source
+  else if [ -d $MB_CUR_TOP/src ]
+  then
+    MB_CUR_SOU=$MB_CUR_TOP/src
+  else
+    MB_CUR_SOU=$MB_CUR_TOP
+  fi fi
 
-	# Headers
-	if [ -d $MB_CUR_TOP/Headers/$MB_CUR ]
-	then
-		MB_CUR_H=$MB_CUR_TOP/Headers/$MB_CUR
-	else if [ -d $MB_CUR_TOP/Headers ]
-	then
-		MB_CUR_H=$MB_CUR_TOP/Headers
-	else if [ -d $MB_CUR_TOP/include/$MB_CUR ]
-	then
-		MB_CUR_H=$MB_CUR_TOP/include/$MB_CUR
-	else if [ -d $MB_CUR_TOP/include ]
-	then
-		MB_CUR_H=$MB_CUR_TOP/include
-	else
-		MB_CUR_H=$MB_CUR_TOP
-	fi fi fi fi
+  # Headers
+  if [ -d $MB_CUR_TOP/Headers/$MB_CUR ]
+  then
+    MB_CUR_H=$MB_CUR_TOP/Headers/$MB_CUR
+  else if [ -d $MB_CUR_TOP/Headers ]
+  then
+    MB_CUR_H=$MB_CUR_TOP/Headers
+  else if [ -d $MB_CUR_TOP/include/$MB_CUR ]
+  then
+    MB_CUR_H=$MB_CUR_TOP/include/$MB_CUR
+  else if [ -d $MB_CUR_TOP/include ]
+  then
+    MB_CUR_H=$MB_CUR_TOP/include
+  else
+    MB_CUR_H=$MB_CUR_TOP
+  fi fi fi fi
 
-	# Tests
-	if [ -d $MB_CUR_TOP/Testing ]
-	then
-		MB_CUR_TST=$MB_CUR_TOP/Testing
-	else if [ -d $MB_CUR_TOP/checks ]
-	then
-		MB_CUR_TST=$MB_CUR_TOP/checks
-	else
-		MB_CUR_TST=$MB_CUR_TOP
-	fi fi
+  # Tests
+  if [ -d $MB_CUR_TOP/Testing ]
+  then
+    MB_CUR_TST=$MB_CUR_TOP/Testing
+  else if [ -d $MB_CUR_TOP/checks ]
+  then
+    MB_CUR_TST=$MB_CUR_TOP/checks
+  else
+    MB_CUR_TST=$MB_CUR_TOP
+  fi fi
 
-	# Documentation
-	if [ -d $MB_CUR_TOP/Documentation ]
-	then
-		MB_CUR_DOC=$MB_CUR_TOP/Documentation
-	else if [ -d $MB_CUR_TOP/doc ]
-	then
-		MB_CUR_DOC=$MB_CUR_TOP/doc
-	else
-		MB_CUR_DOC=$MB_CUR_TOP
-	fi fi
+  # Documentation
+  if [ -d $MB_CUR_TOP/Documentation ]
+  then
+    MB_CUR_DOC=$MB_CUR_TOP/Documentation
+  else if [ -d $MB_CUR_TOP/doc ]
+  then
+    MB_CUR_DOC=$MB_CUR_TOP/doc
+  else
+    MB_CUR_DOC=$MB_CUR_TOP
+  fi fi
 
-	if [ -e $MB_CUR_TOP ]
-	then
-		cd $MB_CUR_TOP
-	else
-		echo Current version directory does not exist!
-		cd $MB_CUR_SYS
-	fi
-	return 1
+  if [ -e $MB_CUR_TOP ]
+  then
+    cd $MB_CUR_TOP
+  else
+    echo Current version directory does not exist!
+    cd $MB_CUR_SYS
+  fi
+  return 1
 }
 
 #
 # Functions for moving between systems
 #
-function c {
-	case $1 in
-		# Show help
-		--help | --hel | --he | --h )
-			echo " "
-			echo "Parameters"
-			echo "----------"
-			echo "--help    : Show help"
-			echo "--status  : Show environment status"
-			echo "--list    : List available source systems"
-			echo " "
-			echo "Usage"
-			echo "-----"
-			echo "c name    : Where 'name' is a system name"
-			echo "            or environment directory;"
-			echo "            list systems and directories"
-			echo "            with --list parameter."
-			echo " "
-			echo "Additional Shell Functions"
-			echo "--------------------------"
-			echo "c         : Move between system and directories"
-			echo "            within the MediaBook Environment."
-			echo "ver       : Move to different version directory"
-			echo "            within the same source system."
-			echo "sys       : Move to top-level directory"
-			echo "            for the current source system."
-			echo "devswitch : Change Development root."
-			echo "prodswitch: Change Production root."
-			echo " "
-			echo "These commands move between various directories"
-			echo "within the current source system version."
-			echo " "
-			echo "bin       : Move to bin or Apps"
-			echo "h         : Move to include or Headers"
-			echo "sou       : Move to src or Source"
-			echo "tst       : Move to checks or Testing"
-			echo "doc       : Move to doc or Documentation"
-			echo "gde       : Move to version root"
-			echo " "
-			echo "GNUstep source specific commands"
-			echo "make      : Move to root dir of GNUstep Make"
-			echo "base      : Move to root dir of GNUstep Base"
-			echo "gui       : Move to root dir of GNUstep GUI"
-			echo "xraw      : Move to root dir of GNUstep XRaw"
-			echo "xdps      : Move to root dir of GNUstep XDPS"
-			echo "gtests    : Move to root dir of GNUstep tests"
-			echo " "
-			;;
+function c
+{
+  case $1 in
+    # Show help
+    --help | --hel | --he | --h )
+      echo " "
+      echo "Parameters"
+      echo "----------"
+      echo "--help    : Show help"
+      echo "--status  : Show environment status"
+      echo "--list    : List available source systems"
+      echo " "
+      echo "Usage"
+      echo "-----"
+      echo "c name    : Where 'name' is a system name"
+      echo "            or environment directory;"
+      echo "            list systems and directories"
+      echo "            with --list parameter."
+      echo " "
+      echo "Additional Shell Functions"
+      echo "--------------------------"
+      echo "c         : Move between system and directories"
+      echo "            within the MediaBook Environment."
+      echo "ver       : Move to different version directory"
+      echo "            within the same source system."
+      echo "sys       : Move to top-level directory"
+      echo "            for the current source system."
+      echo "devswitch : Change Development root."
+      echo "prodswitch: Change Production root."
+      echo " "
+      echo "These commands move between various directories"
+      echo "within the current source system version."
+      echo " "
+      echo "bin       : Move to bin or Apps"
+      echo "h         : Move to include or Headers"
+      echo "sou       : Move to src or Source"
+      echo "tst       : Move to checks or Testing"
+      echo "doc       : Move to doc or Documentation"
+      echo "gde       : Move to version root"
+      echo " "
+      echo "GNUstep source specific commands"
+      echo "make      : Move to root dir of GNUstep Make"
+      echo "base      : Move to root dir of GNUstep Base"
+      echo "gui       : Move to root dir of GNUstep GUI"
+      echo "xraw      : Move to root dir of GNUstep XRaw"
+      echo "xdps      : Move to root dir of GNUstep XDPS"
+      echo "gtests    : Move to root dir of GNUstep tests"
+      echo " "
+      ;;
 
-		# Show current MB environment status
-		--status | --statu | --stat | --sta | --st | --s )
-			echo " "
-			echo "  System Root: $GNUSTEP_SYSTEM_ROOT"
-			echo "   Local Root: $GNUSTEP_LOCAL_ROOT"
-			echo "    User Root: $GNUSTEP_USER_ROOT"
-			echo "Library Combo: $LIBRARY_COMBO"
-			echo "     CVS Root: $CVSROOT"
-			echo "--------------"
-			echo "  System Name: $MB_CUR"
-			echo "      Version: $MB_CUR_VER"
-			echo "  Description: $MB_SYS"
-			echo "--------------"
-			echo "      Current: $PWD"
-			echo "  Version Top: $MB_CUR_TOP"
-			echo "       Source: $MB_CUR_SOU"
-			echo "      Headers: $MB_CUR_H"
-			echo "        Tests: $MB_CUR_TST"
-			echo "Documentation: $MB_CUR_DOC"
-			echo " "
-			return 
-			;;
+    # Show current MB environment status
+    --status | --statu | --stat | --sta | --st | --s )
+      echo " "
+      echo "  System Root: $GNUSTEP_SYSTEM_ROOT"
+      echo "   Local Root: $GNUSTEP_LOCAL_ROOT"
+      echo "    User Root: $GNUSTEP_USER_ROOT"
+      echo "Library Combo: $LIBRARY_COMBO"
+      echo "     CVS Root: $CVSROOT"
+      echo "--------------"
+      echo "  System Name: $MB_CUR"
+      echo "      Version: $MB_CUR_VER"
+      echo "  Description: $MB_SYS"
+      echo "--------------"
+      echo "      Current: $PWD"
+      echo "  Version Top: $MB_CUR_TOP"
+      echo "       Source: $MB_CUR_SOU"
+      echo "      Headers: $MB_CUR_H"
+      echo "        Tests: $MB_CUR_TST"
+      echo "Documentation: $MB_CUR_DOC"
+      echo " "
+      return 
+      ;;
 
-		# List Systems
-		--list | --lis | --li | --l )
-			pushd $MB_ROOT >/dev/null
-			echo " "
-			echo "Directories"
-			echo "-----------"
-			echo "apps       : System Applications"
-			echo "localapps  : Local Applications"
-			echo "userapps   : User Applications"
-			echo "tools      : System Command Line Tools"
-			echo "localtools : Local Command Line Tools"
-			echo "usertools  : User Command Line Tools"
-			echo "libs       : System Libraries"
-			echo "locallibs  : Local Libraries"
-			echo "userlibs   : User Libraries"
-			echo "head       : System Headers"
-			echo "localhead  : Local Headers"
-			echo "userhead   : User Headers"
-			echo "source     : Development Source"
-			echo " "
-			echo "List of Available Source Systems"
-			echo -e "Name \t\t  Description"
-			echo -e "------------ \t  -------------------------"
-			for dir in [ * ]
-			do
-				if [ -d $dir ]
-				then
-					pushd $dir >/dev/null
-					# Get system description
-					if [ -e MB.name ]
-					then
-						temp=`cat MB.name`
-						len=${#dir}
-						if [ $len -lt 8 ]
-						then
-							tabtmp="\t\t"
-						else
-							tabtmp="\t"
-						fi
-						echo -e "$dir$tabtmp: $temp"
-					fi
-					popd >/dev/null
-				fi
-			done
-			echo " "
-			echo "Type 'c name' to goto that system."
-			echo " "
-			popd >/dev/null
-			return
-			;;
+    # List Systems
+    --list | --lis | --li | --l )
+      pushd $MB_ROOT >/dev/null
+      echo " "
+      echo "Directories"
+      echo "-----------"
+      echo "apps       : System Applications"
+      echo "localapps  : Local Applications"
+      echo "userapps   : User Applications"
+      echo "tools      : System Command Line Tools"
+      echo "localtools : Local Command Line Tools"
+      echo "usertools  : User Command Line Tools"
+      echo "libs       : System Libraries"
+      echo "locallibs  : Local Libraries"
+      echo "userlibs   : User Libraries"
+      echo "head       : System Headers"
+      echo "localhead  : Local Headers"
+      echo "userhead   : User Headers"
+      echo "source     : Development Source"
+      echo " "
+      echo "List of Available Source Systems"
+      echo -e "Name \t\t  Description"
+      echo -e "------------ \t  -------------------------"
+      for dir in [ * ]
+      do
+	if [ -d $dir ]
+	then
+	  pushd $dir >/dev/null
+	  # Get system description
+	  if [ -e MB.name ]
+	  then
+	    temp=`cat MB.name`
+	    len=${#dir}
+	    if [ $len -lt 8 ]
+	    then
+	      tabtmp="\t\t"
+	    else
+	      tabtmp="\t"
+	    fi
+	    echo -e "$dir$tabtmp: $temp"
+	  fi
+	  popd >/dev/null
+	fi
+      done
+      echo " "
+      echo "Type 'c name' to goto that system."
+      echo " "
+      popd >/dev/null
+      return
+      ;;
 
-		# System apps
-		apps )
-			cd $GNUSTEP_SYSTEM_ROOT/Apps
-			return 
-			;;
-		# Local apps
-		localapps )
-			cd $GNUSTEP_LOCAL_ROOT/Apps
-			return 
-			;;
-		# System command line tools
-		tools )
-			cd $GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-			return 
-			;;
-		# Local command line tools
-		localtools )
-			cd $GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-			return 
-			;;
-		# System libraries
-		libs )
-			cd $GNUSTEP_SYSTEM_ROOT/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-			return
-			;;
-		# Local libraries
-		locallibs )
-			cd $GNUSTEP_LOCAL_ROOT/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-			return
-			;;
-		# System headers
-		head )
-			cd $GNUSTEP_SYSTEM_ROOT/Headers
-			return
-			;;
-		# Local headers
-		localhead )
-			cd $GNUSTEP_LOCAL_ROOT/Headers
-			return
-			;;
-		# Development directory
-		source )
-			cd $MB_ROOT
-			return
-			;;
-		# MB systems
-		* )
-			# Perform any user initialization
-			if [ -e ~/MB.init ]
-			then
-				. ~/MB.init
-			fi
+    # System apps
+    apps )
+      cd $GNUSTEP_SYSTEM_ROOT/Apps
+      return 
+      ;;
+    # Local apps
+    localapps )
+      cd $GNUSTEP_LOCAL_ROOT/Apps
+      return 
+      ;;
+    # System command line tools
+    tools )
+      cd $GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+      return 
+      ;;
+    # Local command line tools
+    localtools )
+      cd $GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+      return 
+      ;;
+    # System libraries
+    libs )
+      cd $GNUSTEP_SYSTEM_ROOT/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+      return
+      ;;
+    # Local libraries
+    locallibs )
+      cd $GNUSTEP_LOCAL_ROOT/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+      return
+      ;;
+    # System headers
+    head )
+      cd $GNUSTEP_SYSTEM_ROOT/Headers
+      return
+      ;;
+    # Local headers
+    localhead )
+      cd $GNUSTEP_LOCAL_ROOT/Headers
+      return
+      ;;
+    # Development directory
+    source )
+      cd $MB_ROOT
+      return
+      ;;
+    # MB systems
+    * )
+      # Perform any user initialization
+      if [ -e ~/MB.init ]
+      then
+	. ~/MB.init
+      fi
 
-			pushd $MB_ROOT >/dev/null
-			if [ -e $1 ]
-			then
-				popd >/dev/null
+      pushd $MB_ROOT >/dev/null
+      if [ -e $1 ]
+      then
+	popd >/dev/null
 
-				if [ -z $1 ]
-				then
-					pwd
-					return
-				fi
+	if [ -z $1 ]
+	then
+	  pwd
+	  return
+	fi
 
-				HOLD_CUR=$MB_CUR
-				MB_CUR=$1
-				pushd $MB_ROOT/$1 >/dev/null
+	HOLD_CUR=$MB_CUR
+	MB_CUR=$1
+	pushd $MB_ROOT/$1 >/dev/null
 
-				# Get system description
-				HOLD_SYS=$MB_SYS
-				if [ -e MB.name ]
-				then
-					MB_SYS=`cat MB.name`
-				else
-					MB_SYS=
-				fi
+	# Get system description
+	HOLD_SYS=$MB_SYS
+	if [ -e MB.name ]
+	then
+	  MB_SYS=`cat MB.name`
+	else
+	  MB_SYS=
+	fi
 
-				HOLD_CUR_SYS=$MB_CUR_SYS
-				MB_CUR_SYS=$MB_ROOT/$MB_CUR
+	HOLD_CUR_SYS=$MB_CUR_SYS
+	MB_CUR_SYS=$MB_ROOT/$MB_CUR
 
-				# Get default version
-				HOLD_CUR_VER=$MB_CUR_VER
-				MB_CUR_VER=
-				ver default
-				if [ $? -eq 0 ]
-				then
-					MB_CUR=$HOLD_CUR
-					MB_SYS=$HOLD_SYS
-					MB_CUR_SYS=$HOLD_CUR_SYS
-					MB_CUR_VER=$HOLD_CUR_VER
-					popd >/dev/null
-					return
-				fi
+	# Get default version
+	HOLD_CUR_VER=$MB_CUR_VER
+	MB_CUR_VER=
+	ver default
+	if [ $? -eq 0 ]
+	then
+	  MB_CUR=$HOLD_CUR
+	  MB_SYS=$HOLD_SYS
+	  MB_CUR_SYS=$HOLD_CUR_SYS
+	  MB_CUR_VER=$HOLD_CUR_VER
+	  popd >/dev/null
+	  return
+	fi
 
-				popd >/dev/null
-				if [ -e $MB_CUR_TOP ]
-				then
-					cd $MB_CUR_TOP
-				else
-					cd $MB_CUR_SYS
-				fi
+	popd >/dev/null
+	if [ -e $MB_CUR_TOP ]
+	then
+	  cd $MB_CUR_TOP
+	else
+	  cd $MB_CUR_SYS
+	fi
 
-				# If there is an MB.init shell file
-				# then execute for system customizations
-				if [ -f $MB_CUR_SYS/MB.init ]
-				then
-					. $MB_CUR_SYS/MB.init
-				fi
-			else
-				# no system then just return
-				popd >/dev/null
-				echo Unknown system or command
-				echo Type \"c --help\" for help
-				return
-			fi
-			;;
-	esac
+	# If there is an MB.init shell file
+	# then execute for system customizations
+	if [ -f $MB_CUR_SYS/MB.init ]
+	then
+	  . $MB_CUR_SYS/MB.init
+	fi
+      else
+	# no system then just return
+	popd >/dev/null
+	echo Unknown system or command
+	echo Type \"c --help\" for help
+	return
+      fi
+      ;;
+  esac
 }
 
 # Go to apps directory for current system
@@ -527,45 +529,46 @@ function hostinfo {
 }
 
 # assign the paths based upon the root variables
-function assignpaths {
+function assignpaths
+{
 
-	hostinfo
+  hostinfo
 
-	PATH=$GNUSTEP_SYSTEM_ROOT/Tools:$MB_ORIG_PATH
-	if [ -n "$GNUSTEP_HOST_CPU" ]
+  PATH=$GNUSTEP_SYSTEM_ROOT/Tools:$MB_ORIG_PATH
+  if [ -n "$GNUSTEP_HOST_CPU" -a -z "$GNUSTEP_FLATTENED" ]
+  then
+    if [ -n "$LIBRARY_COMBO" ]
+    then
+      PATH=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
+    fi
+    PATH=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+  fi
+
+  if [ -n "$GNUSTEP_LOCAL_ROOT" ]
+  then
+    PATH=$GNUSTEP_LOCAL_ROOT/Tools:$PATH
+    if [ -n "$GNUSTEP_HOST_CPU" -a -z "$GNUSTEP_FLATTENED" ]
+    then
+      if [ -n "$LIBRARY_COMBO" ]
+      then
+	PATH=$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
+      fi
+      PATH=$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+    fi
+  fi
+
+  if [ -n "$GNUSTEP_USER_ROOT" ]
+  then
+    PATH=$GNUSTEP_USER_ROOT/Tools:$PATH
+    if [ -n "$GNUSTEP_HOST_CPU" -a -z "$GNUSTEP_FLATTENED" ]
+      then
+	if [ -n "$LIBRARY_COMBO" ]
 	then
-		if [ -n "$LIBRARY_COMBO" ]
-		then
-			PATH=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
-		fi
-		PATH=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+	  PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
 	fi
-
-	if [ -n "$GNUSTEP_LOCAL_ROOT" ]
-	then
-		PATH=$GNUSTEP_LOCAL_ROOT/Tools:$PATH
-		if [ -n "$GNUSTEP_HOST_CPU" ]
-		then
-			if [ -n "$LIBRARY_COMBO" ]
-			then
-				PATH=$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
-			fi
-			PATH=$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
-		fi
-	fi
-
-	if [ -n "$GNUSTEP_USER_ROOT" ]
-	then
-		PATH=$GNUSTEP_USER_ROOT/Tools:$PATH
-		if [ -n "$GNUSTEP_HOST_CPU" ]
-		then
-			if [ -n "$LIBRARY_COMBO" ]
-			then
-				PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
-			fi
-			PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
-		fi
-	fi
+	PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+      fi
+  fi
 }
 
 # switch the LIBRARY_COMBO

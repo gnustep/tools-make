@@ -26,10 +26,11 @@
 #
 GNUSTEP_ROOT=@GNUSTEP_ROOT@
 GNUSTEP_SYSTEM_ROOT=@prefix@
+GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
 if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
-export GNUSTEP_ROOT GNUSTEP_SYSTEM_ROOT LIBRARY_COMBO
+export GNUSTEP_ROOT GNUSTEP_SYSTEM_ROOT GNUSTEP_FLATTENED LIBRARY_COMBO
 
 GNUSTEP_LOCAL_ROOT=$GNUSTEP_ROOT/Local
 GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Network
@@ -80,8 +81,10 @@ tmp_IFS="$IFS"
 IFS=:
 temp_path=
 for dir in $GNUSTEP_PATHPREFIX_LIST; do
-  temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:
-  temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
+  if [ -z "$GNUSTEP_FLATTENED" ]; then
+    temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:
+    temp_path=$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
+  fi
   temp_path=$temp_path$dir/Tools:
 done
 IFS="$tmp_IFS"
@@ -102,11 +105,19 @@ fi
 # Run 'make_services' in background if possible - updates cache of services
 # and applications/file-extensions known to the applications.
 #
-TDIR=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-if [ -f $TDIR/$LIBRARY_COMBO/make_services ]
-then
-  $TDIR/$LIBRARY_COMBO/make_services &
+if [ -z "$GNUSTEP_FLATTENED" ]; then
+  TDIR=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+  if [ -f $TDIR/$LIBRARY_COMBO/make_services ]
+  then
+    $TDIR/$LIBRARY_COMBO/make_services &
+  else
+    if [ -f $TDIR/make_services ]
+    then
+      $TDIR/make_services &
+    fi
+  fi
 else
+  TDIR=$GNUSTEP_SYSTEM_ROOT/Tools
   if [ -f $TDIR/make_services ]
   then
     $TDIR/make_services &
