@@ -1,3 +1,11 @@
+Mon Jul 28 11:49:18 2003  Pete French <pete@twisted.org.uk>
+
+	* Instance/application.make (MAIN_MARKUP_FILE): New variable.
+	* Instance/application.make (GNUSTEP_STAMP_STRING): Include
+	MAIN_MARKUP_FILE in the stamp string.
+	* Instance/application.make ($(APP_INFO_PLIST_FILE)): Set
+	GSMarkupMainFile to MAIN_MARKUP_FILE in the info dictionary.
+
 Mon Jul 28 10:59:21 2003  Pete French <pete@twisted.org.uk>
 
 	* rules.make (%.plist): Filter the result through sed to drop #pragma

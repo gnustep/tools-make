@@ -160,13 +160,15 @@ APPLICATION_ICON = $($(GNUSTEP_INSTANCE)_APPLICATION_ICON)
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
+MAIN_MARKUP_FILE = $(strip $(subst .gsmarkup,,$($(GNUSTEP_INSTANCE)_MAIN_MARKUP_FILE)))
 
 # We must recreate Info.plist if PRINCIPAL_CLASS and/or
-# APPLICATION_ICON and/or MAIN_MODEL_FILE has changed since last time
-# we built Info.plist.  We use stamp-string.make, which will store the
-# variables in a stamp file inside GNUSTEP_STAMP_DIR, and rebuild
-# Info.plist iff GNUSTEP_STAMP_STRING changes.
-GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(APPLICATION_ICON)-$(MAIN_MODEL_FILE)
+# APPLICATION_ICON and/or MAIN_MODEL_FILE and/or MAIN_MARKUP_FILE has
+# changed since last time we built Info.plist.  We use
+# stamp-string.make, which will store the variables in a stamp file
+# inside GNUSTEP_STAMP_DIR, and rebuild Info.plist iff
+# GNUSTEP_STAMP_STRING changes.
+GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(APPLICATION_ICON)-$(MAIN_MODEL_FILE)-$(MAIN_MARKUP_FILE)
 GNUSTEP_STAMP_DIR = $(APP_DIR_NAME)
 
 ifneq ($(FOUNDATION_LIB), apple)
@@ -231,6 +233,7 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
+	  echo "  GSMainMarkupFile = \"$(MAIN_MARKUP_FILE)\";"; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
 	    echo "  CFBundleIconFile = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
@@ -246,6 +249,7 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
+	  echo "  GSMainMarkupFile = \"$(MAIN_MARKUP_FILE)\";"; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
