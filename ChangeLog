@@ -1,3 +1,8 @@
+Thu Mar 28 13:08:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make (TTMP_LIBS): Setup for the benefit of
+	Windows.
+
 Tue Mar 26 18:23:32 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* openapp.in: Do not add EXEEXT at the end of the application name
