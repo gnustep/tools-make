@@ -286,17 +286,19 @@ internal-doc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 	$(MKDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
+$(GNUSTEP_DOCUMENTATION_INFO):
+	$(MKDIRS) $(GNUSTEP_DOCUMENTATION_INFO)
+
 #
 # texi installation
 #
 ifneq ($(TEXI_FILES),)
 
 # NB: Only install HTML if it has been generated
-internal-doc-install::
+internal-doc-install:: $(GNUSTEP_DOCUMENTATION_INFO)
 	$(INSTALL_DATA) $(INTERNAL_doc_NAME).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(INTERNAL_doc_NAME).info \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	$(INSTALL_DATA) $(INTERNAL_doc_NAME).info $(GNUSTEP_DOCUMENTATION_INFO)
 	if [ -f $(INTERNAL_doc_NAME)_toc.html ]; then \
 	  $(INSTALL_DATA) $(INTERNAL_doc_NAME)_*.html \
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
@@ -306,7 +308,7 @@ internal-doc-uninstall::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
 	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).info
+          $(GNUSTEP_DOCUMENTATION_INFO)/$(INTERNAL_doc_NAME).info
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)_*.html
 endif # TEXI_FILES
