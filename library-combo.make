@@ -1,11 +1,12 @@
 #
-#   brain.make
+#   library-combo.make
 #
-#   Determine the core libraries.
+#   Determine which runtime, foundation and gui library to use.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -19,61 +20,59 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# Handle abbreviations for library combinations
-
-ifndef library_combo
-  ifdef LIBRARY_COMBO
-    library_combo:=$(LIBRARY_COMBO)
-  endif
-endif
-ifdef library_combo
-  the_library_combo=$(library_combo)
+# Get library_combo from LIBRARY_COMBO or default_library_combo (or
+# from the command line if the user defined it on the command line by
+# invoking `make library_combo=gnu-gnu-gnu'; command line
+# automatically takes the precedence over makefile definitions, so
+# setting library_combo here has no effect if the user already defined
+# it on the command line).
+ifdef LIBRARY_COMBO
+  library_combo := $(LIBRARY_COMBO)
 else
-  the_library_combo=$(default_library_combo)
+  library_combo := $(default_library_combo)
 endif
 
-ifeq ($(library_combo),nx)
-  the_library_combo=nx-nx-nx
+# Handle abbreviations for library combinations.
+the_library_combo = $(library_combo)
+
+ifeq ($(the_library_combo), nx)
+  the_library_combo = nx-nx-nx
 endif
 
-ifeq ($(library_combo),gnu)
-  the_library_combo=gnu-gnu-gnu
+ifeq ($(the_library_combo), gnu)
+  the_library_combo = gnu-gnu-gnu
 endif
 
-ifeq ($(library_combo),fd)
-  the_library_combo=gnu-fd-gnu
+ifeq ($(the_library_combo), fd)
+  the_library_combo = gnu-fd-gnu
 endif
 
-ifeq ($(the_library_combo),)
-  the_library_combo=$(library_combo)
-endif
-
-ifeq ($(gc), yes)
-  the_library_combo := $(the_library_combo)-gc
-endif
-
-# Strip out the individual libraries from the combo string
+# Strip out the individual libraries from the library_combo string
 combo_list = $(subst -, ,$(the_library_combo))
-OBJC_RUNTIME_LIB = $(word 1,$(combo_list))
-FOUNDATION_LIB = $(word 2,$(combo_list))
-GUI_LIB = $(word 3,$(combo_list))
 
-#
-# Allow user specify the runtime, foundation, gui and backend libraries in
-# separate variables.
-#
-ifneq ($(runtime),)
-  OBJC_RUNTIME_LIB = $(runtime)
+# NB: The user can always specify any of the OBJC_RUNTIME_LIB, the
+# FOUNDATION_LIB and the GUI_LIB variable manually overriding our
+# determination.
+
+ifeq ($(OBJC_RUNTIME_LIB),)
+  OBJC_RUNTIME_LIB = $(word 1,$(combo_list))
 endif
 
-ifneq ($(foundation),)
-  FOUNDATION_LIB = $(foundation)
+ifeq ($(FOUNDATION_LIB),)
+  FOUNDATION_LIB = $(word 2,$(combo_list))
 endif
 
-ifneq ($(gui),)
-  GUI_LIB = $(gui)
+ifeq ($(GUI_LIB),)
+  GUI_LIB = $(word 3,$(combo_list))
 endif
 
+# Now build and export the final LIBRARY_COMBO variable, which is the
+# only variable (together with OBJC_RUNTIME_LIB, FOUNDATION_LIB and
+# GUI_LIB) the other makefiles need to know about.  This LIBRARY_COMBO
+# might be different from the original one, because we might have
+# replaced it with a library_combo provided on the command line, or we
+# might have fixed up parts of it in accordance to some custom
+# OBJC_RUNTIME_LIB, FOUNDATION_LIB and/or GUI_LIB !
 ifeq ($(gc), yes)
   export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-gc
 else
