@@ -7,7 +7,6 @@
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
-#   Java support by Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -179,11 +178,8 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
 
-$(JAVA_OBJ_PREFIX)%.class : %.java
-	@if [ $< -nt $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ -o ! -f $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ ]; then \
-		echo $(JAVAC) $(ALL_JAVAFLAGS) $< -d $(JAVA_OBJ_PREFIX); \
-		$(JAVAC) $(ALL_JAVAFLAGS) $< -d $(JAVA_OBJ_PREFIX); \
-	fi
+%.class : %.java
+	$(JAVAC) $(ALL_JAVAFLAGS) $<
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
@@ -214,8 +210,6 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
 	    JAVA_FILES="$($*_JAVA_FILES)" \
-	    JAVA_JOBS_FILES="$($*_JOBS_FILES)" \
-	    JAVA_WRAPPER_FRAMEWORK="$($*_WRAPPER_FRAMEWORK)" \
 	    OBJ_FILES="$($*_OBJ_FILES)" \
 	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 	    HEADER_FILES="$($*_HEADER_FILES)" \
@@ -291,11 +285,7 @@ OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
 
 JAVA_OBJS = $(JAVA_FILES:.java=.class)
-ifeq ($(JAVA_OBJ_PREFIX),)
-	JAVA_OBJ_FILES = $(JAVA_OBJS)
-else
-	JAVA_OBJ_FILES = $(addprefix $(JAVA_OBJ_PREFIX),$(JAVA_OBJS))
-endif
+JAVA_OBJ_FILES = $(JAVA_OBJS)
 
 PSWRAP_C_FILES = $(PSWRAP_FILES:.psw=.c)
 PSWRAP_H_FILES = $(PSWRAP_FILES:.psw=.h)
