@@ -1,9 +1,10 @@
 #
 #   test-tool.make
 #
-#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
+#   Makefile rules to build GNUstep-based test tools.
 #
-#   Author:  Scott Christley <scottc@net-community.com>
+#   Copyright (C) 2002 Free Software Foundation, Inc.
+#
 #   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
@@ -18,50 +19,15 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# prevent multiple inclusions
-ifeq ($(TEST_TOOL_MAKE_LOADED),)
-TEST_TOOL_MAKE_LOADED=yes
-
-TEST_TOOL_NAME:=$(strip $(TEST_TOOL_NAME))
-
-#
-# Include in the common makefile rules
-#
-ifeq ($(RULES_MAKE_LOADED),)
-include $(GNUSTEP_MAKEFILES)/rules.make
-endif
-
-# building of test tools works as in tool.make
-ifeq ($(INTERNAL_tool_NAME),)
-
-internal-all:: $(TEST_TOOL_NAME:=.all.tool.variables)
-
-internal-clean:: $(TEST_TOOL_NAME:=.clean.tool.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR)
-
-internal-distclean:: $(TEST_TOOL_NAME:=.distclean.tool.subprojects)
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
-
-$(TEST_TOOL_NAME)::
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.tool.variables
-
-# However, we don't install/uninstall test-tools
-internal-install::
-	@ echo Skipping installation of test tools...
-
-internal-uninstall::
-	@ echo Skipping uninstallation of test tools...
-
+ifeq ($(GNUSTEP_INSTANCE),)
+include $(GNUSTEP_MAKEFILES)/Master/test-tool.make
 else
 
-# We use the tool.make rules for building
-include $(GNUSTEP_MAKEFILES)/tool.make
-
+ifeq ($(GNUSTEP_TYPE),test_tool)
+include $(GNUSTEP_MAKEFILES)/Instance/test-tool.make
 endif
 
-endif # test-tool.make loaded
+endif
 
 ## Local variables:
 ## mode: makefile

@@ -1,7 +1,5 @@
 #
-#   tool.make
-#
-#   Makefile rules to build GNUstep-based command line tools.
+#   Instance/test-tool.make
 #
 #   Copyright (C) 2002 Free Software Foundation, Inc.
 #
@@ -19,16 +17,13 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-ifeq ($(GNUSTEP_INSTANCE),)
-include $(GNUSTEP_MAKEFILES)/Master/tool.make
-else
+ifeq ($(RULES_MAKE_LOADED),)
+include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
-ifeq ($(GNUSTEP_TYPE),tool)
+# Just inherit the build rule from tool.make
+
 include $(GNUSTEP_MAKEFILES)/Instance/tool.make
-endif
 
-endif
+internal-test_tool-all:: internal-tool-all
 
-## Local variables:
-## mode: makefile
-## End:
