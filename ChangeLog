@@ -1,3 +1,13 @@
+1999-07-29  Adam Fedor  <fedor@gnu.org>
+
+	* config.guess: Updated from latest version + fix for Netwinder.
+	* config.sub: Likewise.
+
+	* subproject.make: Add install targets for headers (Patch from
+	Pedro Ivo Andrade Tavares <ptavares@iname.com>).
+
+	* target.make: Add MacOSX target (from Helge Hess <hh@mdlink.de>).
+
 1999-07-26  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* GNUstep.sh.in: Safe and restor value of IFS as suggested by

@@ -39,6 +39,8 @@ ifeq ($(INTERNAL_subproj_NAME),)
 
 internal-all:: $(SUBPROJECT_NAME:=.all.subproj.variables)
 
+internal-install:: $(SUBPROJECT_NAME:=.install.subproj.variables)
+
 internal-clean:: $(SUBPROJECT_NAME:=.clean.subproj.variables)
 
 internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproj.variables)
@@ -71,8 +73,37 @@ after-$(TARGET)-all::
 after-all::
 
 #
-# Installation targets
+# Installation and Uninstallation targets
 #
+
+internal-subproj-install:: internal-install-subproj-dirs \
+	internal-install-subproj-headers
+
+internal-install-subproj-dirs::
+	$(MKDIRS) \
+		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
+		$(ADDITIONAL_INSTALL_DIRS)
+
+internal-install-subproj-headers::
+	if [ "$(HEADER_FILES)" != "" ]; then \
+	  for file in $(HEADER_FILES) __done; do \
+	    if [ $$file != __done ]; then \
+	      $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
+		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    fi; \
+	  done; \
+	fi
+
+internal-library-uninstall:: before-uninstall internal-uninstall-headers after-uninstall
+
+before-uninstall after-uninstall::
+
+internal-uninstall-headers::
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	  fi; \
+	done
 
 #
 # Cleaning targets

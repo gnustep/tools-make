@@ -35,7 +35,7 @@ endif
 #
 # Target specific libraries
 #
-ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
+ifeq ($(findstring linux-gnu, $(GNUSTEP_TARGET_OS)), linux-gnu)
   ifeq ("$(objc_threaded)","")
     TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -ldl -lm
   else
@@ -250,7 +250,7 @@ endif
 #
 # Linux ELF
 #
-ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
+ifeq ($(findstring linux-gnu, $(GNUSTEP_TARGET_OS)), linux-gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         $(CC) -shared -Wl,-soname,$(SONAME_LIBRARY_FILE) \
@@ -561,6 +561,94 @@ endif
 #
 ####################################################
 
+####################################################
+#
+# MacOSX-Server 1.0
+#
+ifeq ($(findstring rhapsody5, $(GNUSTEP_TARGET_OS)), rhapsody5)
+ifeq ($(OBJC_RUNTIME), NeXT)
+HAVE_BUNDLES     = yes
+endif
+
+HAVE_SHARED_LIBS = yes
+SHARED_LIBEXT    = .dylib
+
+ifeq ($(FOUNDATION_LIB),nx)
+  # Use the NeXT compiler
+  CC = cc
+  OBJC_COMPILER = NeXT
+  ifneq ($(arch),)
+    ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
+    INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
+    INTERNAL_CFLAGS    += $(ARCH_FLAGS)
+    INTERNAL_LDFLAGS   += $(ARCH_FLAGS)
+  endif
+endif
+
+TARGET_LIB_DIR = \
+   
+Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+
+ifneq ($(OBJC_COMPILER), NeXT)
+SHARED_LIB_LINK_CMD     = \
+	$(CC) $(SHARED_LD_PREFLAGS) \
+		-dynamiclib $(ARCH_FLAGS) -dynamic \
+		-compatibility_version 1 -current_version 1 \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
+\
+		-o $@ \
+		-framework Foundation \
+		-framework System \
+		$(ALL_LIB_DIRS) \
+		$(LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
+		-lobjc -lgcc $^ $(SHARED_LD_POSTFLAGS); \
+	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+else # OBJC_COMPILER=NeXT
+SHARED_LIB_LINK_CMD     = \
+	$(CC) $(SHARED_LD_PREFLAGS) \
+		-dynamiclib $(ARCH_FLAGS) -dynamic \
+		-compatibility_version 1 -current_version 1 \
+		-read_only_relocs suppress \
+		-undefined suppress \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
+\
+		-o $@ \
+		$(ALL_LIB_DIRS) \
+		$(LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
+		-framework Foundation \
+		$^ $(SHARED_LD_POSTFLAGS); \
+	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+endif # OBJC_COMPILER
+
+OBJ_MERGE_CMD = \
+	$(CC) -nostdlib -r -d -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+STATIC_LIB_LINK_CMD	= \
+	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
+	$(STATIC_LD_POSTFLAGS)
+
+# This doesn't work with 4.1, what about others?
+#ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
+
+AFTER_INSTALL_STATIC_LIB_COMMAND =
+
+SHARED_CFLAGS   += -dynamic
+SHARED_LIBEXT   = .dylib
+
+ifneq ($(OBJC_COMPILER), NeXT)
+TARGET_SYSTEM_LIBS += $(CONFIG_SYSTEM_LIBS) -lgcc
+endif
+
+BUNDLE_LD	=  $(CC)
+BUNDLE_CFLAGS   += 
+BUNDLE_LDFLAGS  += -bundle -undefined suppress $(ARCH_FLAGS)
+endif
+#
+# end MacOSX-Server 1.0
+#
+####################################################
 
 ## Local variables:
 ## mode: makefile
