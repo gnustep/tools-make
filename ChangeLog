@@ -4,10 +4,12 @@
 	* target.make (darwin): Add -read_only_reolcs warning. 
 	(darwin5): Remove
 	* Documentation/machines.texi: Update Darwin.
+	(suggestions from Carl Eugen Hoyos)
 
 2003-03-13  Adam Fedor  <fedor@gnu.org>
 
 	* clean_cpu.sh: Make all hppa variants the same.
+	(suggestion from Matthias Klose)
 
 2003-03-04  Adam Fedor  <fedor@gnu.org>
 
