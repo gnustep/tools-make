@@ -88,7 +88,13 @@ for dir in $GNUSTEP_PATHPREFIX_LIST; do
   temp_path=$temp_path$dir/Tools:
 done
 IFS="$tmp_IFS"
-PATH=${temp_path}${PATH}
+if [ -z "$PATH" ]; then
+  PATH="$temp_path"
+else
+  if ( echo ${PATH}| grep -v "${temp_path}" >/dev/null ); then
+    PATH="$PATH:$temp_path"
+  fi
+fi
 export PATH
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh

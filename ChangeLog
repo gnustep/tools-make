@@ -1,3 +1,8 @@
+2001-03-01 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.sh.in: Added check to ensure we don't add the same info
+	to the path twice.
+
 2001-02-28  Adam Fedor  <fedor@gnu.org>
 
 	* rules.make (LIBRARIES_DEPEND_UPON): Use ALL_LIB_DIRS on 
