@@ -94,15 +94,11 @@
 #  resource path (invoked automatically)
 #
 
-# NB: The 'override' in all this file are needed to override the
-# Master/rules.make setting of LANGUAGES and similar variables.
-# Once that setting will be removed (as it should be), the 'override'
-# in this file should be removed as well.
-override RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_FILES))
-override RESOURCE_DIRS = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_DIRS))
-override LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
-override LOCALIZED_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES))
-override COMPONENTS = $(strip $($(GNUSTEP_INSTANCE)_COMPONENTS))
+RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_FILES))
+RESOURCE_DIRS = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_DIRS))
+LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
+LOCALIZED_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES))
+COMPONENTS = $(strip $($(GNUSTEP_INSTANCE)_COMPONENTS))
 
 # NB: Use _SUBPROJECTS, not SUBPROJECTS here as that might conflict
 # with what is used in aggregate.make.
@@ -121,7 +117,7 @@ $(foreach d, $(RESOURCE_DIRS), $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$
 endif
 
 ifeq ($(LANGUAGES),)
-override LANGUAGES = English
+  LANGUAGES = English
 endif
 
 $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH):
@@ -198,10 +194,10 @@ endif
 ##
 ##
 
-override WEBSERVER_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_FILES))
+WEBSERVER_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_FILES))
 # For historical reasons, the external API is different for the following one
-override WEBSERVER_LOCALIZED_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_WEBSERVER_RESOURCE_FILES))
-override WEBSERVER_RESOURCE_DIRS = $(strip $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_DIRS))
+WEBSERVER_LOCALIZED_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_WEBSERVER_RESOURCE_FILES))
+WEBSERVER_RESOURCE_DIRS = $(strip $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_DIRS))
 
 
 ifneq ($(WEBSERVER_RESOURCE_DIRS),)
