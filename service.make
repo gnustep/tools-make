@@ -187,10 +187,6 @@ internal-service-uninstall::
 #
 # Cleaning targets
 #
-internal-service-clean::
-
-
-
 internal-service-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
