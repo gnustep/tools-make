@@ -109,6 +109,7 @@
 #
 #  shared-instance-bundle-install
 #  shared-instance-bundle-uninstall
+#  shared-instance-bundle-copy_into_dir
 #
 
 #
@@ -138,7 +139,8 @@ shared-instance-bundle-all \
 shared-instance-bundle-all-resources \
 shared-instance-bundle-all-gsweb \
 shared-instance-bundle-install \
-shared-instance-bundle-uninstall
+shared-instance-bundle-uninstall \
+shared-instance-bundle-copy_into_dir
 
 ifneq ($(RESOURCE_DIRS),)
 
@@ -354,6 +356,11 @@ ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) \
 	  $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)
 endif
+
+shared-instance-bundle-copy_into_dir::
+	$(ECHO_COPYING_BUNDLE_INTO_DIR)rm -rf $(COPY_INTO_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
+	$(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH) \
+	  | (cd $(COPY_INTO_DIR); $(TAR) xf -)$(END_ECHO)
 
 shared-instance-bundle-uninstall::
 	(cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); rm -rf $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH))
