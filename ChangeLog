@@ -1,3 +1,14 @@
+Thu Sep 25 11:25:36 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* Makefile.in: Include config.make to get the definition for the
+	INSTALL program. Use INSTALL program instead of cp.
+	* aclocal.m4: Remove unnecessary file.
+	* configure.in: Remove checks for unnecessary X libraries.
+	* application.make: Added newline at the end of file.
+	* library.make: Likewise.
+	* rules.make: Likewise.
+	* tool.make: Likewise.
+
 Wed Sep 24 17:54:41 1997  Scott Christley  <scottc@speedy.net-community.com>
 
 	* target.make: Correct settings for solaris.

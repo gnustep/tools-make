@@ -121,11 +121,20 @@ make install
 ./configure --target=alpha-linux-gnu
 make install
 
+History
+=======
+
+The GNUstep makefile package was designed by Scott Christley
+<scottc@net-community.com> and Ovidiu Predescu <ovidiu@net-community.com>.
+
+Flags for building shared libraries on several systems were originally
+identified by Mircea Oancea <mircea@pathcom.com>.
+
+Richard Frith-Macdonald <richard@brainstorm.co.uk> also contributed with ideas.
+
 Questions and/or Bug Reports
 ============================
 
-The GNUstep makefile package was designed by the GNUstep developers;
-the initial implementation was performed by Scott Christley
-<scottc@net-community.com>, so you may send questions and/or bug
-reports to him or to the GNUstep discussion mailing list at
-<discussion@gnustep.org>
+The initial implementation was performed by Scott Christley
+<scottc@net-community.com>, so you may send questions and/or bug reports to him
+or to the GNUstep discussion mailing list at <discussion@gnustep.org>

@@ -1255,24 +1255,6 @@ if test -n "$x_libraries"; then
     X_LIBS="-L$x_libraries"
 fi
 
-# You'd think something standard like X11 would come with standard libraries!
-echo "checking for specific X-Windows libraries we might need" 1>&6
-echo "configure:1261: checking for specific X-Windows libraries we might need" >&5
-# add Xmu library if we have it
-for xfile in $x_libraries/libXmu.*; do
-    if (test -r $xfile); then
-        WIDGET_LIBS="${WIDGET_LIBS} -lXmu"
-        break
-    fi
-done
-# add Xext library if we have it
-for xfile in $x_libraries/libXext.*; do
-    if (test -r $xfile); then
-        WIDGET_LIBS="${WIDGET_LIBS} -lXext"
-        break
-    fi
-done
-
 
 
 

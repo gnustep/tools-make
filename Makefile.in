@@ -26,6 +26,8 @@
 # in a special directory, so it was simpler this way.
 #
 
+include config.make
+
 srcdir = @srcdir@
 prefix = @prefix@
 exec_prefix = @exec_prefix@
@@ -53,33 +55,15 @@ install:
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(prefix)/share
-	cp config.guess $(makedir)
-	cp config.sub $(makedir)
-	cp cpu.sh $(makedir)
-	cp vendor.sh $(makedir)
-	cp os.sh $(makedir)
-	cp clean_cpu.sh $(makedir)
-	cp clean_vendor.sh $(makedir)
-	cp clean_os.sh $(makedir)
-	cp install-sh $(makedir)
-	cp mkinstalldirs $(makedir)
-	cp aggregate.make $(makedir)
-	cp application.make $(makedir)
-	cp bundle.make $(makedir)
-	cp clean.make $(makedir)
-	cp common.make $(makedir)
-	cp core.make $(makedir)
-	cp library.make $(makedir)
-	cp rules.make $(makedir)
-	cp target.make $(makedir)
-	cp tool.make $(makedir)
-	cp config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
-	cp GNUstep.sh $(makedir)
-	chmod +x $(makedir)/GNUstep.sh
-	cp config.site $(prefix)/share
-	cp MediaBook.func $(makedir)
-	cp MediaBook.sh $(makedir)
-	chmod +x $(makedir)/MediaBook.sh
+	for f in config.guess config.sub install-sh mkinstalldirs *.sh; do \
+	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
+	done
+	for f in application.make bundle.make clean.make common.make \
+		core.make library.make rules.make target.make tool.make \
+		config.site MediaBook.func; do \
+	  $(INSTALL_DATA) $$f $(makedir); \
+	done
+	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
 	rm -rf $(makedir)
