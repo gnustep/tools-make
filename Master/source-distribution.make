@@ -57,6 +57,8 @@
 # all files (/directories) you want to exclude from distribution.
 #
 
+PACKAGE_NAME := $(strip $(PACKAGE_NAME))
+
 ifeq ($(CVS_MODULE_NAME),)
   CVS_MODULE_NAME = $(PACKAGE_NAME)
 endif
