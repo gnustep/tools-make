@@ -34,6 +34,11 @@ TOOL_MAKE_LOADED=yes
 #
 include $(GNUSTEP_MAKEFILES)/rules.make
 
+# This is the directory where the tools get installed. If you don't specify a
+# directory they will get installed in the GNUstep system root.
+TOOL_INSTALLATION_DIR = \
+    $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+
 ifeq ($(INTERNAL_tool_NAME),)
 
 internal-all:: $(TOOL_NAME:=.all.tool.variables)
@@ -50,11 +55,6 @@ $(TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.tool.variables
 
 else
-
-# This is the directory where the tools get installed. If you don't specify a
-# directory they will get installed in the GNUstep system root.
-TOOL_INSTALLATION_DIR = \
-    $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 
 ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) \
    $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \

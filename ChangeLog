@@ -1,3 +1,8 @@
+Sat Feb 14 16:32:14 1998  Scott Christley  <scottc@net-community.com>
+
+	* tool.make (TOOL_INSTALLATION_DIR): Move definition outside
+	of if clause so that it is always defined.
+
 1998-02-09  Ovidiu Predescu  <ovidiu@net-community.com>
 
 	* common.make (GNUSTEP_MAKEFILES): Moved the definition to the top
@@ -9,13 +14,13 @@ Mon Feb  9 00:23:33 1998  Ovidiu Predescu <ovidiu@net-community.com>
 	garbage collector into libFoundation. Include libFoundation.make in
 	case it's present and add the Boehm's GC library to the list of
 	Foundation libraries.
-	* library.make (internal-library-uninstall): Added the before-uninstall
-	and after-uninstall.
+	* library.make (internal-library-uninstall): Added the 
+	before-uninstall and after-uninstall.
 	* test-library.make: Added LIBFOUNDATION_GC_LIBRARY to the list of
 	files used when linking.
 	* tool.make: Likewise.
-	* which_lib.c: Collect the rest of flags and output them at the end. We
-	should change this mechanism to keep the order in which the flags
+	* which_lib.c: Collect the rest of flags and output them at the end.
+	We should change this mechanism to keep the order in which the flags
 	appear on the command line.
 
 Fri Feb  6 12:25:51 1998  Adam Fedor  <fedor@ultra.doc.com>
@@ -117,8 +122,8 @@ Tue Jan  6 11:06:27 1998  Ovidiu Predescu <ovidiu@net-community.com>
 
 Wed Dec 17 10:40:02 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
-	* ld_lib_path.sh: Don't treat Solaris' LD_LIBRARY_PATH different (patch
-	from Matthias Klose <Matthias.Klose@cs.tu-berlin.de>).
+	* ld_lib_path.sh: Don't treat Solaris' LD_LIBRARY_PATH different 
+	(patch from Matthias Klose <Matthias.Klose@cs.tu-berlin.de>).
 
 Fri Nov 28 10:47:11 1997  Scott Christley  <scottc@net-community.com>
 
@@ -236,8 +241,8 @@ Fri Nov  7 16:33:22 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	* application.make: Likewise. Wrote the install target support.
 
 	* config.make.in: New definition for TAR.
-	* test.make (testbundle-resource-files): Added __done at the end of the
-	for list command so the shell doesn't crash if the list is empty.
+	* test.make (testbundle-resource-files): Added __done at the end of
+	the for list command so the shell doesn't crash if the list is empty.
 	* brain.make: Small changes on the OPENSTEP support.
 	* target.make: Added LIBRARIES_DEPEND_UPON to the list of libraries
 	for OPENSTEP.
@@ -299,8 +304,8 @@ Thu Oct 30 09:35:34 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 Wed Oct 29 09:32:26 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
-	* core.make: Renamed to brain.make to avoid removing it accidentally by
-	the configure script.
+	* core.make: Renamed to brain.make to avoid removing it accidentally
+	by the configure script.
 
 Wed Oct 29 10:02:37 1997  Adam Fedor  <fedor@doc.com>
 
@@ -318,10 +323,11 @@ Tue Oct 28 09:32:23 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	the first one is automatically exported by both GNUmake and the shell.
 	No longer use the export_variable to print out the name of the dynamic
 	linker environment variable.
-	* openapp.in: Changed underscores to dashes in the library combo names.
+	* openapp.in: Changed underscores to dashes in the library combo
+	names.
 	* debugapp.in: Likewise.
-	* rules.make: Add search paths for include files to the user, local and
-	system header directories. The same with the libraries.
+	* rules.make: Add search paths for include files to the user, local
+	and system header directories. The same with the libraries.
 	* test.make: Create the unix.exp file to search for the configuration
 	files in all the user, local and system directories. Use
 	ld_library_path.sh to setup the dynamic linker's environment variable
@@ -355,8 +361,8 @@ Mon Oct 27 14:50:06 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	since they are in config.make.
 	* GNUstep.sh.in: Add the LIBRARY_COMBO variable. Setup the PATH to
 	also point to the tools directory.
-	* rules.make: New implicit rules %.buildlib and %.installlib to support
-	the recursive building of libraries.
+	* rules.make: New implicit rules %.buildlib and %.installlib to
+	support the recursive building of libraries.
 	* tool.make: Install the tools in the proper directory.
 
 Fri Oct 24 20:26:41 1997  Ovidiu Predescu <ovidiu@net-community.com>
@@ -440,8 +446,9 @@ Wed Oct 15 12:14:42 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	which cause weird behavior when building. Also it is possible to have
 	different extensions for the application directory based upon the
 	debug and profile variables (.app, .debug and .profile).
-	* rules.make: Changed the name of the implicit rule %.app to %.buildapp
-	to make possible creation of applications with different extensions.
+	* rules.make: Changed the name of the implicit rule %.app to
+	%.buildapp to make possible creation of applications with
+	different extensions.
 	* core.make: Removed targets from the OS 4.x specific section.
 
 	Better support of shared libraries in openapp.
@@ -463,8 +470,8 @@ Wed Oct 15 12:14:42 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 Tue Oct 14 15:28:52 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
-	* DESIGN: Wrote about the naming conventions for libraries and how they
-	are chosen by the package.
+	* DESIGN: Wrote about the naming conventions for libraries and how
+	they are chosen by the package.
 	* Makefile.preamble: Use += instead of =.
 	* application.make (stamp-app-% rule): Added before-link target to
 	support building of OPENSTEP 4.x applications.
@@ -476,9 +483,9 @@ Tue Oct 14 15:28:52 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	automatically.
 	* openapp.in: Check to see if the application really exists before
 	checking for the binary. Correctly check for the binary under OS 4.x.
-	* target.make: On OS 4.x systems with NeXT's Foundation, use the native
-	compiler. If we don't use the native compiler don't pass the GNU ObjC
-	runtime library and libgcc to libtool.
+	* target.make: On OS 4.x systems with NeXT's Foundation, use the
+	native compiler. If we don't use the native compiler don't pass
+	the GNU ObjC runtime library and libgcc to libtool.
 	* which_lib.c: Correctly skip the libraries with the same suffix.
 
 Tue Oct 14 11:26:15 1997  Ovidiu Predescu <ovidiu@net-community.com>
@@ -533,12 +540,12 @@ Tue Oct  7 15:59:28 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	disables warning for common symbols.
 	* test.make: Assume the driver program is located under the object
 	files directory.
-	Create the unix.exp file in the config directory where the test scripts
-	are located.
+	Create the unix.exp file in the config directory where the test
+	scripts are located.
 	Compressed the internal-check-* targets into a single target.
 	* rules.make: Work with the new internal-check-* targets.
-	* which_lib.c: Fixed a bug when two libraries that have the same prefix
-	were matching.
+	* which_lib.c: Fixed a bug when two libraries that have the same
+	prefix were matching.
 
 Sun Oct  5 20:30:01 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
@@ -549,8 +556,8 @@ Sun Oct  5 20:30:01 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 Sat Oct  4 23:08:01 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
-	* target.make: Set the extension of shared libraries under OS 4.x to be
-	.a because the compiler/linker does not handle other extensions.
+	* target.make: Set the extension of shared libraries under OS 4.x to
+	be .a because the compiler/linker does not handle other extensions.
 	* library.make: Output the library in the current directory to be able
 	to solve problems with different library paths under systems with 
 	shared libraries.
@@ -577,8 +584,8 @@ Fri Oct  3 13:43:18 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	* common.make: Added definition for WHICH_LIB_SCRIPT.
 	* rules.make: Added rules to process the libraries list and obtain a
 	new one based upon the debug, profile and shared variables.
-	* configure.in: Added checks for various header files needed to compile
-	the which_lib program.
+	* configure.in: Added checks for various header files needed to
+	compile the which_lib program.
 	* library.make: Added new variable LIBRARY_FILE_EXT.
 
 	* application.make: Replaced foreach with :.something=.someotherthing.
@@ -630,17 +637,18 @@ Wed Oct  1 17:03:56 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	* core.make: Allow the user to specify a set of variables different
 	than the library combo. This is needed when compiling basic libraries
 	that don't use the whole library combo (like libFoundation). Also
-	define OBJC_RUNTIME that holds the name of the runtime, useful in make,
-	and RUNTIME_DEFINE that defines for the runtime, useful while
-	compiling. The last one should be added to the additional C/ObjC flags.
+	define OBJC_RUNTIME that holds the name of the runtime, useful in
+	make, and RUNTIME_DEFINE that defines for the runtime, useful while
+	compiling. The last one should be added to the additional
+	C/ObjC flags.
 	* library.make: Define HEADER_FILES_DIR to be . by default.
 	Changed the rule for building the library to build it into the object
 	files directory. Cleaned the internal-clean rule.
 	* rules.make: Remove newlines in compilation rules. Added the 'all'
 	target in the list of dependencies for install.
 	* target.make: Cleaned the rules for building a shared library under
-	OPENSTEP 4.x. Added flags to linker to disable printing of warnings for
-	read only relocation symbols.
+	OPENSTEP 4.x. Added flags to linker to disable printing of warnings
+	for read only relocation symbols.
 
 Wed Oct  1 11:15:22 1997  Scott Christley  <scottc@net-community.com>
 
@@ -708,8 +716,8 @@ Thu Sep 25 17:32:37 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* rules.make: Add rule for creating the object files directory here
 	instead of having the same rule in several files.
-	* application.make: Remove creation of the object files directory. Just
-	add the dependency to the targets.
+	* application.make: Remove creation of the object files directory.
+	Just add the dependency to the targets.
 	* tool.make: Likewise.
 
 	* clean.make: Optimize cannonicalization of host/target cpu/os/vendor
@@ -733,8 +741,8 @@ Thu Sep 25 17:32:37 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	need a way to determine what compiler is used, which is simple because
 	our tools only partially work with the NeXT runtime/compiler.
 	* core.make: Support for the NeXT Foundation and AppKit added.
-	* rules.make: Use flags to specify the include paths while compiling to
-	support NeXT frameworks. Cleanup in the shared libraries support.
+	* rules.make: Use flags to specify the include paths while compiling
+	to support NeXT frameworks. Cleanup in the shared libraries support.
 
 	* rules.make: .PRECIOUS target added to disable removing of
 	intermediate files (Scott's idea).
