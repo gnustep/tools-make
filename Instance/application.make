@@ -174,6 +174,8 @@ ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = NSApplication
 endif
 
+APPLICATION_ICON = $($(GNUSTEP_INSTANCE)_APPLICATION_ICON)
+
 $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
