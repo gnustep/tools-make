@@ -1,3 +1,10 @@
+Wed May 28 09:47:42 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make: Use test -r instead of test -f to check
+	that a file, which might be a symlink, exists.
+	* Instance/framework.make (internal-framework-install_): Always remove
+	the old symlinks without checking.
+
 Tue May 27 16:52:27 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Documentation/javadoc.make (internal-doc-install_): Fixed line breaking
