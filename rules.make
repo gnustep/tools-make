@@ -173,9 +173,21 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 # The magical application rules, thank you GNU make!
 %.build:
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
+	for f in $($*_SUBPROJECTS); do \
+	  mf=$(MAKEFILE_NAME); \
+	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	    mf=Makefile; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	  fi; \
+	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION); then \
+	    :; \
+	  else exit $$?; \
+	  fi; \
+	done; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
+	    SUBPROJECTS="$($*_SUBPROJECTS)" \
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
 	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
@@ -213,6 +225,11 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 #
 # The list of PSWRAP source files to be compiled
 # are in the PSWRAP_FILES variable.
+
+ifneq ($(SUBPROJECTS),)
+  SUBPROJECT_OBJ_FILES = $(foreach d, $(SUBPROJECTS), \
+    $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
+endif
 
 OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))

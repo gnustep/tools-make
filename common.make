@@ -306,6 +306,9 @@ GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
 GNUSTEP_DVIPS = dvips
 GNUSTEP_DVIPS_FLAGS = 
 
+#
+# Common variables for subprojects
+SUBPROJECT_PRODUCT = subproject$(OEXT)
 
 ## Local variables:
 ## mode: makefile

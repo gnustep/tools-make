@@ -94,10 +94,10 @@ build-bundle-dir::
 
 build-bundle:: $(BUNDLE_FILE) bundle-resource-files
 
-$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		$(LDOUT)$(BUNDLE_FILE) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_BUNDLE_LIBS)
 
 bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist

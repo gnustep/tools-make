@@ -90,7 +90,7 @@ install: all
 	for f in aggregate.make application.make bundle.make service.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
-		test-application.make test-tool.make \
+		test-application.make test-tool.make subproject.make \
 		documentation.make MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
@@ -113,7 +113,7 @@ uninstall:
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
-		test-application.make test-tool.make \
+		test-application.make test-tool.make subproject.make \
 		documentation.make MediaBook.func; do \
 	  rm -f $(makedir)/$$f; \
 	done

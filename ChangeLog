@@ -1,3 +1,16 @@
+1999-02-19  Adam Fedor  <fedor@gnu.org>
+
+	* subproject.make: New file.
+   	* common.make (SUBPROJECT_PRODUCT): New variable so all
+	makefiles agree on the name of the object a subproject produces. 
+ 	* rules.make:  Added recursive invokation of subproject makefiles
+	in the %.build target.
+	* application.make, library.make, ... (SUBPROJECT_OBJ_FILES): New
+	dependency. 
+	* target.make (OBJ_MERGE_CMD): For merging subproject
+	files. (patches from Jonathan Gapen
+	<jagapen@whitewater.chem.wisc.edu>).
+
 Wed Feb 17 17:15:47 1999  Adam Fedor  <fedor@ultra.doc.com>
 
 	* bundle.make (PRINCIPAL_CLASS): Override if not set (Report from

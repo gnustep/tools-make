@@ -92,7 +92,7 @@ internal-library-all:: before-all before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 		$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) import-library \
 		after-$(TARGET)-all after-all
 
-$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(LIB_LINK_CMD)
 
 before-$(TARGET)-all::
