@@ -353,7 +353,7 @@ ifneq ($(TEXI_FILES),)
 # GNUSTEP_DOCUMENTATION_INFO.  TODO: I think we should run
 # install-info too - to keep up-to-date the dir index in that
 # directory.  
-internal-doc-install_::
+internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info $(GNUSTEP_DOCUMENTATION_INFO)
@@ -361,6 +361,9 @@ internal-doc-install_::
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
 	fi
+
+$(GNUSTEP_DOCUMENTATION_INFO):
+	$(MKINSTALLDIRS) $@
 
 internal-doc-uninstall_::
 	rm -f \
