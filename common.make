@@ -53,6 +53,7 @@ else
 endif
 LD_LIB_PATH_SCRIPT     = $(GNUSTEP_MAKEFILES)/ld_lib_path.sh
 TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_MAKEFILES)/transform_paths.sh
+REL_PATH_SCRIPT        = $(GNUSTEP_MAKEFILES)/relative_path.sh
 
 # Take the makefiles from the system root
 ifeq ($(GNUSTEP_MAKEFILES),)
