@@ -186,7 +186,7 @@ uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
 
 clean:
-	rm -f *~ which_lib$(EXEEXT)
+	rm -f *~ which_lib$(EXEEXT) Master/*~ Instance/*~
 
 distclean: clean
 	rm -f GNUmakefile config.make config.h
