@@ -1,3 +1,23 @@
+Thu Apr 18 10:54:33 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Warning - after this change, header files for libraries building
+	on Windows must be changed - all symbols are to be marked for
+	export if BUILD_lib{library_name}_DLL is defined, else to be
+	marked for import if GNUSTEP_WITH_DLL is defined (else you're not
+	on windows and you mark nothing).
+	* rules.make (ALL_CPPFLAGS): If WITH_DLL, add -DGNUSTEP_WITH_DLL.  
+	Do not add any -Dlibxxx_ISDLL=1 flag.
+	* Instance/application.make (ALL_CPPFLAGS): Do not add
+	any -Dlibxxx_ISDLL=1 flag.
+	* Instance/bundle.make (ALL_CPPFLAGS): Idem.
+	(ALL_BUNDLE_LIBS): Even on Windows, do not link against
+	libraries.
+	* Instance/ctool.make (ALL_CPPFLAGS): Idem.
+	* Instance/framework.make (ALL_CPPFLAGS): Idem.
+	* Instance/objc.make (ALL_CPPFLAGS): Idem.
+	* Instance/service.make (ALL_CPPFLAGS): Idem.
+	* Instance/tool.make (ALL_CPPFLAGS): Idem.
+
 Thu Apr 18 10:41:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/application.make: Removed spurious newline.
