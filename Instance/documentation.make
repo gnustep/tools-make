@@ -345,10 +345,9 @@ $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 # xxx_INSTALL_FILES
-ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_FILES)$($(GNUSTEP_INSTANCE)_INSTALL_FILES),)
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_FILES),)
 internal-doc-install::
-	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) \
-	            $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
+	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file \
 	               $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
@@ -356,8 +355,7 @@ internal-doc-install::
 	done
 
 internal-doc-uninstall::
-	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) \
-	            $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
+	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
 	  fi; \
