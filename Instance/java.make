@@ -70,91 +70,29 @@ endif
         internal-java_package-install \
         internal-java_package-uninstall \
         before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
-        install-java_package \
-        internal-install-java-dirs
+        after-$(GNUSTEP_INSTANCE)-all
 
 # This is the directory where the java classses get
 # installed. Normally this is /usr/GNUstep/Local/Libraries/Java/
 ifeq ($(JAVA_INSTALLATION_DIR),)
-  JAVA_INSTALLATION_DIR = $(GNUSTEP_JAVA)
+JAVA_INSTALLATION_DIR = $(GNUSTEP_JAVA)
 endif
 
-#
-# Targets
-#
+GNUSTEP_SHARED_JAVA_INSTALLATION_DIR = $(JAVA_INSTALLATION_DIR)
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/java.make
+
+
 internal-java_package-all:: before-$(GNUSTEP_INSTANCE)-all \
-                            $(JAVA_OBJ_FILES) \
-                            $(JAVA_JNI_OBJ_FILES) \
-                            $(SUBPROJECT_OBJ_FILES) \
-                            after-$(GNUSTEP_INSTANCE)-all
+                               shared-instance-java-all \
+                               after-$(GNUSTEP_INSTANCE)-all
 
 before-$(GNUSTEP_INSTANCE)-all::
 
 after-$(GNUSTEP_INSTANCE)-all::
 
-internal-java_package-install:: install-java_package
+internal-java_package-install:: shared-instance-java-install
 
-internal-install-java-dirs:: $(JAVA_INSTALLATION_DIR)
-ifneq ($(JAVA_OBJ_FILES),)
-	$(MKINSTALLDIRS) \
-           $(addprefix $(JAVA_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES)))
-endif
-
-$(JAVA_INSTALLATION_DIR):
-	$(MKINSTALLDIRS) $(JAVA_INSTALLATION_DIR)
-
-# Say that you have a Pisa.java source file.  Here we install both
-# Pisa.class (the main class) and also, if they exist, all class files
-# with names beginning wih Pisa$ (such as Pisa$1$Nicola.class); these
-# files are generated for nested/inner classes, and must be installed
-# as well.  The fact we need to install these files is the reason why
-# the following is more complicated than you would think at first
-# glance.
-
-# Build efficiently the list of possible inner/nested classes 
-
-# We first build a list like in `Pisa[$]*.class Roma[$]*.class' by
-# taking the JAVA_OBJ_FILES and replacing .class with [$]*.class, then
-# we use wildcard to get the list of all files matching the pattern
-UNESCAPED_ADD_JAVA_OBJ_FILES = $(wildcard $(JAVA_OBJ_FILES:.class=[$$]*.class))
-
-# Finally we need to escape the $s before passing the filenames to the
-# shell
-ADDITIONAL_JAVA_OBJ_FILES = $(subst $$,\$$,$(UNESCAPED_ADD_JAVA_OBJ_FILES))
-
-JAVA_PROPERTIES_FILES = $($(GNUSTEP_INSTANCE)_JAVA_PROPERTIES_FILES)
-
-install-java_package:: internal-install-java-dirs
-ifneq ($(JAVA_OBJ_FILES),)
-	for file in $(JAVA_OBJ_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
-	  fi; \
-	done
-endif
-ifneq ($(ADDITIONAL_JAVA_OBJ_FILES),)
-	for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
-	  fi;    \
-	done
-endif
-ifneq ($(JAVA_PROPERTIES_FILES),)
-	for file in $(JAVA_PROPERTIES_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
-	  fi;    \
-	done
-endif
-
-#
-# Cleaning targets
-#
-internal-java_package-clean::
-	rm -f $(JAVA_OBJ_FILES) \
-	      $(ADDITIONAL_JAVA_OBJ_FILES) \
-	      $(JAVA_JNI_OBJ_FILES)
+internal-java_package-clean:: shared-instance-java-clean
 
 internal-java_package-distclean::
 
