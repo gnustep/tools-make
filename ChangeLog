@@ -1,3 +1,8 @@
+Wed Sep 19 18:40:00 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* palette.make ($(PALETTE_FILE)): Fixed typo, OBJC_FILES_TO_LINK
+	which should have been OBJ_FILES_TO_LINK
+
 Tue Sep 18 13:16:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* library.make (internal-install-dirs): Depend on
