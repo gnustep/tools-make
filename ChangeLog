@@ -1,6 +1,6 @@
 1999-09-07  Adam Fedor  <fedor@gnu.org>
 
-	* Version: Version 0.6.0
+	* Version: 0.6.0
 
 	* GNUstep.csh.in: Don't set GNUSTEP_HOST if already set.
 	* GNUstep.sh.in: Likewise.
