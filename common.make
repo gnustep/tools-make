@@ -366,6 +366,12 @@ ifeq ($(JAVAH),)
   JAVAH = $(JAVA_HOME)/bin/javah
 endif
 
+#
+# Flags useful for compilation
+#
+INTERNAL_JAVACFLAGS = -classpath ./:$(CLASSPATH)
+INTERNAL_JAVAHFLAGS = -classpath ./:$(CLASSPATH)
+
 ## Local variables:
 ## mode: makefile
 ## End:
