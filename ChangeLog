@@ -1,3 +1,11 @@
+Wed Mar 31 01:24:50 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* application.make (ALL_GUI_LIBS): Put BACKEND_LIBS after GUI_LIBS.
+
+        This causes a problem when building a static library.
+
+        The patch is provided by Takaaki MORIYAMA <taka@airlab.cs.ritsumei.ac.jp>.
+        
 1999-03-17  Adam Fedor  <fedor@gnu.org>
 
 	* Fix include/includes problem. Use autoconf 2.13
