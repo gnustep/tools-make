@@ -110,14 +110,14 @@ svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist svc-resour
 	  cp -r $(RESOURCE_FILES) $(SERVICE_DIR_NAME)/Resources; \
 	fi)
 
-$(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: $(SERVICE_DIR_NAME)/Resources $(INTERNAL_svc_NAME)Info.plist 
+$(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: $(INTERNAL_svc_NAME)Info.plist 
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(INTERNAL_svc_NAME)\";"; \
 	  cat $(INTERNAL_svc_NAME)Info.plist; \
 	  echo "}") >$@ ;\
 	if [ -n "$(GNUSTEP_OBJ_DIR)" ];then \
 	  _d=$(GNUSTEP_OBJ_DIR)/; \
-	  LD_LIBRARY_PATH=../../base/src/$$_d:../Source/$$_d; \
+	  LD_LIBRARY_PATH=../../base/Source/$$_d:../Source/$$_d; \
 	  export LD_LIBRARY_PATH; \
 	fi; \
 	if $${_d}make_services --test $@; then : ; else rm -f $@; false; fi
