@@ -1,3 +1,7 @@
+1999-07-14  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* target.make: Patch for threads on Solaris by bgg@itga.com.au
+
 1999-07-05  Adam Fedor  <fedor@gnu.org>
 
         * configure.in: Fix prefix check.
