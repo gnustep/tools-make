@@ -1,3 +1,12 @@
+Sun Feb 21 15:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* target.make (Solaris::AFTER_INSTALL_SHARED_LIB_COMMAND): 
+	Removed two duplicated lines.
+
+Sun Feb 21 13:49:55 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* rules.make (%.build): Check the length of string, $($*_SUBPROJECTS).
+
 1999-02-19  Adam Fedor  <fedor@gnu.org>
 
 	* subproject.make: New file.

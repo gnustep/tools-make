@@ -173,17 +173,20 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 # The magical application rules, thank you GNU make!
 %.build:
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
-	for f in $($*_SUBPROJECTS); do \
-	  mf=$(MAKEFILE_NAME); \
-	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION); then \
-	    :; \
-	  else exit $$?; \
-	  fi; \
-	done; \
+        tmp="$($*_SUBPROJECTS)"; \
+        if test "x$(tmp)" != x ; then \
+          for f in $tmp; do \
+	    mf=$(MAKEFILE_NAME); \
+	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	      mf=Makefile; \
+	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	    fi; \
+	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION); then \
+	      :; \
+	    else exit $$?; \
+	    fi; \
+	  done; \
+        fi; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
