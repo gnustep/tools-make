@@ -1,3 +1,14 @@
+Fri Sep  3 21:52:00 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Recognize --with-user-root option and store
+	the configuration into the system GNUsteprc.
+	* configure: Regenerated.
+	* GNUsteprc.in: New file.
+	* GNUmakefile.in (install): Install the system GNUsteprc into
+	GNUSTEP_SYSTEM_ROOT.  (uninstall): Uninstall the same file.
+	* user_home.c: Do not segfault if the environment variable
+	GNUSTEP_SYSTEM_ROOT is not set when the tool is executed.
+	
 Thu Sep 02 17:01:11 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* tar-exclude-list: New file currently containing CVS and .svn.
