@@ -42,6 +42,29 @@
  before-$(GNUSTEP_INSTANCE)-uninstall after-$(GNUSTEP_INSTANCE)-uninstall \
  internal-$(GNUSTEP_TYPE)-uninstall
 
+# By adding the line
+#   xxx_COPY_INTO_DIR = ../Vanity.framework/Resources
+# to you GNUmakefile, you cause the after-xxx-all:: stage of
+# compilation of xxx to copy the created stuff into the *local*
+# directory ../Vanity.framework/Resources (this path should be
+# relative).  It also disables installation of xxx.
+#
+# This is normally used, for example, to bundle a tool into a
+# framework.  You compile the framework, then the tool, then you can
+# request the tool to be copied into the framework, becoming part of
+# the framework (it is installed with the framework etc).
+#
+COPY_INTO_DIR = $(strip $($(GNUSTEP_INSTANCE)_COPY_INTO_DIR))
+
+# If COPY_INTO_DIR is non-empty, we'll execute below an additional
+# target at the end of compilation:
+# internal-$(GNUSTEP_TYPE)-copy_into_dir
+
+# Centrally disable standard installation if COPY_INTO_DIR is non-empty.
+ifneq ($(COPY_INTO_DIR),)
+  $(GNUSTEP_INSTANCE)_STANDARD_INSTALL = no
+endif
+
 before-$(GNUSTEP_INSTANCE)-all::
 
 after-$(GNUSTEP_INSTANCE)-all::
@@ -50,9 +73,24 @@ after-$(GNUSTEP_INSTANCE)-all::
 # and after-$(GNUSTEP_INSTANCE)-all after building.
 # The project-type specific makefile instance fragment only needs to provide
 # the internal-$(GNUSTEP_TYPE)-all_ rule.
+
+ifeq ($(COPY_INTO_DIR),)
 internal-$(GNUSTEP_TYPE)-all:: before-$(GNUSTEP_INSTANCE)-all \
                                internal-$(GNUSTEP_TYPE)-all_  \
                                after-$(GNUSTEP_INSTANCE)-all
+else
+internal-$(GNUSTEP_TYPE)-all:: before-$(GNUSTEP_INSTANCE)-all \
+                               internal-$(GNUSTEP_TYPE)-all_  \
+                               after-$(GNUSTEP_INSTANCE)-all \
+                               internal-$(GNUSTEP_TYPE)-copy_into_dir
+
+# To copy into a dir, we always have to first make sure the dir exists :-)
+$(COPY_INTO_DIR):
+	@$(MKDIRS) $@
+
+# The specific project-type makefiles will add more commands.
+internal-$(GNUSTEP_TYPE)-copy_into_dir:: $(COPY_INTO_DIR)
+endif
 
 before-$(GNUSTEP_INSTANCE)-install::
 
@@ -61,7 +99,6 @@ after-$(GNUSTEP_INSTANCE)-install::
 before-$(GNUSTEP_INSTANCE)-uninstall::
 
 after-$(GNUSTEP_INSTANCE)-uninstall::
-
 
 # By adding the line 
 #   xxxx_STANDARD_INSTALL = no
