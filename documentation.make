@@ -186,24 +186,55 @@ endif # GSDOC_FILES
 #
 ifneq ($(AGSDOC_FILES),)
 
+ifeq ($(GNUSTEP_BASE_HAVE_LIBXML), 1)
+
 INTERNAL_AGSDOCFLAGS = $(AGSDOC_FLAGS)
+INTERNAL_AGSDOCFLAGS += -IgnoreDependencies YES
 INTERNAL_AGSDOCFLAGS += -Project $(INTERNAL_doc_NAME)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(INTERNAL_doc_NAME)
 
-# The autogsdoc program has built-in dependency handling, so we can
-# simply run it and it will work out what needs to be rebuilt.
-internal-doc-all:: before-$(TARGET)-all \
-                   generate-autogsdoc \
-                   after-$(TARGET)-all
+INTERNAL_AGSLINKFLAGS = $(AGSLINK_FLAGS)
+INTERNAL_AGSLINKFLAGS += -Project $(INTERNAL_doc_NAME)
+INTERNAL_AGSLINKFLAGS += -DocumentationDirectory $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)
+
+AGSDOC_OBJS = $(patsubst %.gsdoc,%.html,\
+               $(patsubst %.h,%.html,\
+                $(patsubst %.m,%.html,$(AGSDOC_FILES))))
+AGSDOC_HTML_FILES = $(addprefix $(INTERNAL_doc_NAME)/,$(AGSDOC_OBJS))
+AGSDOC_GSDOC_FILES = $(patsubst %.html,%.gsdoc,$(AGSDOC_HTML_FILES))
+
+.PRECIOUS: $(INTERNAL_doc_NAME)/%.gsdoc
 
 $(INTERNAL_doc_NAME):
 	$(MKDIRS) $@
 
-# If autogsdoc is not present, the '-' at the start of the next command
-# lets the makefile system simply continue without generating any
-# documentation from headers etc.
-generate-autogsdoc: $(INTERNAL_doc_NAME)
-	-autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
+$(INTERNAL_doc_NAME)/%.gsdoc: %.gsdoc
+	cp $< $@
+
+$(INTERNAL_doc_NAME)/%.gsdoc: %.h
+	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
+
+$(INTERNAL_doc_NAME)/%.gsdoc: $($(INTERNAL_doc_NAME)_HEADER_FILES_DIR)/%.h
+	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
+
+$(INTERNAL_doc_NAME)/%.gsdoc: %.m
+	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
+
+$(INTERNAL_doc_NAME)/%.html: $(INTERNAL_doc_NAME)/%.gsdoc
+	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml YES $<
+
+internal-doc-all:: before-$(TARGET)-all \
+                     $(AGSDOC_HTML_FILES) \
+                     after-$(TARGET)-all
+
+before-$(TARGET)-all:: $(INTERNAL_doc_NAME)
+
+else
+
+internal-doc-all::
+	@echo "No libxml - processing of autogsdoc files skipped"
+
+endif # GNUSTEP_BASE_HAVE_LIBXML
 
 endif # AGSDOC_FILES
 
@@ -351,6 +382,9 @@ internal-doc-install::
 	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)
 	$(TAR) cf - $(INTERNAL_doc_NAME) | \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
+ifeq ($(GNUSTEP_BASE_HAVE_LIBXML),1)
+	autogsdoc $(INTERNAL_AGSLINKFLAGS) $(notdir $(AGSDOC_HTML_FILES))
+endif
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) \
 	      $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)
