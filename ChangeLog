@@ -1,3 +1,10 @@
+2004-07-11  Gregory John Casamento <greg_casamento@yahoo.com>
+
+	* Instance/palette.make: Updated the palette.make to create
+	a plist instead of a string format file for the palette.table.   
+	It's necessary for the the palette.table to be able to pass in
+	a set of classes to be imported.
+
 2004-07-09  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Improve compiler type test.
