@@ -1,3 +1,28 @@
+Thu Mar  7 14:06:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (DLL_DEF): Do not pass down to submakes.
+	* Instance/library.make (DLL_DEF): Define here instead.
+
+Thu Mar  7 14:05:38 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (SUBPROJECT_ROOT_DIR): Unused variable removed.
+	* Master/rules.make (SUBPROJECT_ROOT_DIR): Idem.
+	
+Thu Mar  7 13:43:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make: Include Instance/rules.make before using the
+	ADDITIONAL flags.
+	* Instance/rules.make (BUNDLE_LIBS, ADDITIONAL_INCLUDE_DIRS,
+	ADDITIONAL_GUI_LIBS, ADDITIONAL_TOOL_LIBS, ADDITIONAL_OBJC_LIBS,
+	ADDITIONAL_LIB_DIRS, ADDITIONAL_LIBRARY_LIBS, ADDITIONAL_LDFLAGS,
+	ADDITIONAL_CLASSPATH, LIBRARIES_DEPEND_UPON): Add instance
+	specific flags here.
+	* Master/rules.make (BUNDLE_LIBS, ADDITIONAL_INCLUDE_DIRS,
+	ADDITIONAL_GUI_LIBS, ADDITIONAL_TOOL_LIBS, ADDITIONAL_OBJC_LIBS,
+	ADDITIONAL_LIB_DIRS, ADDITIONAL_LIBRARY_LIBS, ADDITIONAL_LDFLAGS,
+	ADDITIONAL_CLASSPATH, LIBRARIES_DEPEND_UPON): Do not pass down to
+	submakes.
+	
 Wed Mar  6 10:15:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (MAIN_MODEL_FILE): Do not pass down to submakes here.
