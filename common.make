@@ -376,6 +376,11 @@ ifeq ($(shared), no)
     override shared = yes
     export shared
   endif
+  ifeq ($(GNUSTEP_TYPE), framework)
+    $(warning "Static frameworks are meaningless!  I am using shared=yes!")
+    override shared = yes
+    export shared
+  endif
 endif
 
 # Enable building shared libraries by default. If the user wants to build a

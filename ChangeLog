@@ -1,3 +1,8 @@
+Mon Jan 12 12:45:56 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: If a framework is being compiled with shared=no,
+	print a warning and use shared=yes instead.
+
 Mon Jan 12 11:47:00 2004  Jeff Teunissen <deek@d2dc.net>,
 	                  Nicola Pero  <n.pero@mi.flashnet.it>
 
