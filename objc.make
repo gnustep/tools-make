@@ -55,7 +55,7 @@ $(OBJC_PROGRAM_NAME):
 
 else
 
-# This is the directory where the objc programss get installed. If you
+# This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the GNUstep
 # system root.
 OBJC_PROGRAM_INSTALLATION_DIR = \
