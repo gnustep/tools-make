@@ -131,8 +131,7 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    -I$(GNUSTEP_SYSTEM_HEADERS)
 
 ALL_JAVAFLAGS = $(INTERNAL_JAVAFLAGS) $(ADDITIONAL_JAVAFLAGS) \
-	$(AUXILIARY_JAVAFLAGS) -classpath \
-	$(GNUSTEP_SYSTEM_ROOT)/Java/:$(GNUSTEP_USER_ROOT)/Java/:$(GNUSTEP_LOCAL_ROOT)/Java:$(GNUSTEP_NETWORK_ROOT)/Java:${CLASSPATH}:.
+	$(AUXILIARY_JAVAFLAGS)
 
 ALL_LDFLAGS = $(ADDITIONAL_LDFLAGS) $(AUXILIARY_LDFLAGS) $(GUI_LDFLAGS) \
    $(BACKEND_LDFLAGS) $(SYSTEM_LDFLAGS) $(INTERNAL_LDFLAGS)
@@ -172,7 +171,8 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@ $<
 
 $(JAVA_OBJ_PREFIX)%.class : %.java
-	if [ $< -nt $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ -o ! -f $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ ]; then \
+	@if [ $< -nt $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ -o ! -f $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ ]; then \
+		echo $(JAVAC) $(ALL_JAVAFLAGS) $< -d $(JAVA_OBJ_PREFIX); \
 		$(JAVAC) $(ALL_JAVAFLAGS) $< -d $(JAVA_OBJ_PREFIX); \
 	fi
 
@@ -204,6 +204,7 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 	    C_FILES="$($*_C_FILES)" \
 		JAVA_FILES="$($*_JAVA_FILES)" \
 		JAVA_JOBS_FILES="$($*_JOBS_FILES)" \
+		JAVA_WRAPPER_FRAMEWORK="$($*_WRAPPER_FRAMEWORK)" \
 	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 	    HEADER_FILES="$($*_HEADER_FILES)" \
 	    TEXI_FILES="$($*_TEXI_FILES)" \
