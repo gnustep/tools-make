@@ -35,6 +35,9 @@ if [ -z "$host_os" ]; then
   host_os=$1
 fi
 
+old_IFS="$IFS"
+IFS=" 
+"
 
 case "$host_os" in
 
@@ -42,7 +45,7 @@ case "$host_os" in
     ld_lib_path="DYLD_LIBRARY_PATH"
     DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$DYLD_LIBRARY_PATH"
     if [ -n "$additional_library_paths" ]; then
-      for dir in "$additional_library_paths"; do
+      for dir in $additional_library_paths; do
 	additional="${additional}${dir}:"
       done
     fi
@@ -53,7 +56,7 @@ case "$host_os" in
     ld_lib_path="LD_LIBRARY_PATH"
     LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part;$GNUSTEP_LOCAL_ROOT/$last_path_part;$GNUSTEP_SYSTEM_ROOT/$last_path_part;$LD_LIBRARY_PATH"
     if [ -n "$additional_library_paths" ]; then
-      for dir in "$additional_library_paths"; do
+      for dir in $additional_library_paths; do
 	additional="${additional}${dir};"
       done
     fi
@@ -64,7 +67,7 @@ case "$host_os" in
     ld_lib_path="LD_LIBRARY_PATH"
     LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$LD_LIBRARY_PATH"
     if [ -n "$additional_library_paths" ]; then
-      for dir in "$additional_library_paths"; do
+      for dir in $additional_library_paths; do
 	additional="${additional}${dir}:"
       done
     fi
@@ -77,3 +80,5 @@ esac
 if [ "$export_variable" != yes ]; then
   echo $ld_lib_path
 fi
+
+IFS="$old_IFS"

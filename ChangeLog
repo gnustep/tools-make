@@ -1,3 +1,13 @@
+Thu Oct 16 11:23:05 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* ld_lib_path.sh: Set IFS to blank and newline to make the for loop
+	run correctly. Remove double quotes around $additional_library_paths
+	in the for loop.
+	* openapp.in: Put double quotes around the cat command when obtaining
+	the value for additional_library_paths.
+	* transform_paths.sh: Search through all the directories in $@,
+	not in "$*".
+
 Wed Oct 15 12:14:42 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	Better support for building applications.

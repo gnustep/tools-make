@@ -27,8 +27,8 @@ fi
 
 curdir=`pwd`
 
-for dir in "$*"; do
+for dir in $@; do
   if [ -d $curdir/$dir ]; then
-    echo `(cd $curdir/$dir; pwd)`
+    echo "`(cd $curdir/$dir; pwd)`"
   fi
 done

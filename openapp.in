@@ -67,7 +67,7 @@ if [ -z "$full_appname" ]; then
 fi
 
 if [ -f "$full_appname/library_paths.openapp" ]; then
-  additional_library_paths=`cat $full_appname/library_paths.openapp`
+  additional_library_paths="`cat $full_appname/library_paths.openapp`"
 fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`
