@@ -1,3 +1,8 @@
+Wed Dec 12 22:59:00 2001  Manuel Guesdon <mguesdon@oxymium.net>
+
+	* gswapp.make: adding resource-dirs and webresource-dirs
+	   installation
+
 Wed Dec 12 17:12:54 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: Moved all INSTALL_AS_USER and INSTALL_AS_GROUP

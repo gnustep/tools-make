@@ -239,9 +239,18 @@ ifneq ($(strip $(COMPONENTS)),)
 endif
 
 gswapp-webresource-dir:: $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
+ifneq ($(strip $(WEBSERVER_RESOURCE_DIRS)),)
+	@ echo "Linking webserver Resource Dirs into the application wrapper..."; \
+        cd $(GSWAPP_DIR_NAME)/Resources; \
+        for dir in $(WEBSERVER_RESOURCE_DIRS); do \
+	  if [ -d ../../$$dir ]; then \
+	     $(LN_S) -f ../../$$dir ./;\
+	  fi; \
+        done;
+endif
 
 $(GSWAPP_WEBSERVER_RESOURCE_DIRS):
-	@$(MKDIRS) $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
+	#@$(MKDIRS) $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
 
 gswapp-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources \
                            gswapp-webresource-dir
@@ -276,9 +285,18 @@ ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 endif
 
 gswapp-resource-dir:: $(GSWAPP_RESOURCE_DIRS)
+ifneq ($(strip $(RESOURCE_DIRS)),)
+	@ echo "Linking Resource Dirs into the application wrapper..."; \
+        cd $(GSWAPP_DIR_NAME)/Resources; \
+        for dir in $(RESOURCE_DIRS); do \
+	  if [ -d ../../$$dir ]; then \
+	     $(LN_S) -f ../../$$dir ./;\
+	  fi; \
+        done;
+endif
 
 $(GSWAPP_RESOURCE_DIRS):
-	@$(MKDIRS) $(GSWAPP_RESOURCE_DIRS)
+	#@$(MKDIRS) $(GSWAPP_RESOURCE_DIRS)
 
 gswapp-resource-files:: $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist \
                         gswapp-resource-dir
