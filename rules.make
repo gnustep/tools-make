@@ -105,7 +105,8 @@ after-all::
 # $(GNUSTEP_SYSTEM_ROOT) command in the makefiles, and the check of
 # course works with it.
 internal-check-install-permissions:
-	@if [ ! -w $(GNUSTEP_INSTALLATION_DIR) ]; then \
+	@if [ -d "$(GNUSTEP_INSTALLATION_DIR)" \
+	      -a ! -w "$(GNUSTEP_INSTALLATION_DIR)" ]; then \
 	  echo "*ERROR*: the software is configured to install itself into $(GNUSTEP_INSTALLATION_DIR)"; \
 	  echo "but you do not have permissions to write in that directory:";\
 	  echo "Aborting installation."; \
