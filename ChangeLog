@@ -1,3 +1,8 @@
+Tue May 27 13:21:57 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/objc.make: Remove old deprecation warning.
+	* Instance/tool.make: The same.
+	
 Tue May 27 13:12:59 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/application.make: Use ECHO_NOTHING in commands which
