@@ -42,9 +42,10 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 #
 
 .PHONY: internal-bundle-all_ \
-       internal-bundle-install_ \
-       internal-bundle-uninstall_ \
-       build-bundle
+        internal-bundle-install_ \
+        internal-bundle-uninstall_ \
+        internal-bundle-copy_into_dir \
+        build-bundle
 
 # In some cases, a bundle without any object file in it is useful - to
 # just store some resources which can be loaded comfortably using the 
@@ -272,6 +273,8 @@ $(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
 endif
 
 endif # FOUNDATION_LIB != apple
+
+internal-bundle-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
 $(BUNDLE_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)

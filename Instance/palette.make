@@ -40,7 +40,8 @@ endif
 
 .PHONY: internal-palette-all_ \
         internal-palette-install_ \
-        internal-palette-uninstall_
+        internal-palette-uninstall_ \
+        internal-palette-copy_into_dir
 
 # On Solaris we don't need to specifies the libraries the palette needs.
 # How about the rest of the systems? ALL_PALETTE_LIBS is temporary empty.
@@ -120,6 +121,8 @@ $(PALETTE_DIR)/Resources/palette.table: $(PALETTE_DIR)/Resources
 	    cat $(GNUSTEP_INSTANCE)palette.table; \
 	  fi; \
 	  ) >$@$(END_ECHO)
+
+internal-palette-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
 #
 # Install targets

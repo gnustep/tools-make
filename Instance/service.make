@@ -36,6 +36,7 @@ endif
 .PHONY: internal-service-all_ \
         internal-service-install_ \
         internal-service-uninstall_ \
+        internal-service-copy_into_dir \
         service-resource-files
 
 # Libraries that go before the GUI libraries
@@ -101,6 +102,8 @@ $(SERVICE_DIR)/Resources/Info-gnustep.plist: \
 	  echo "}") >$@ ;\
 	if $(GNUSTEP_MAKE_SERVICES) --test $@; then : ; else rm -f $@; false; \
 	fi$(END_ECHO)
+
+internal-service-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
 #
 # Install targets
