@@ -1,3 +1,7 @@
+Tue Jan 22 21:46:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* names.make: Removed unused conditional for internal_name_clean.
+
 Tue Jan 22 21:45:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Simplified: frameworks now install symlinks to their headers and
