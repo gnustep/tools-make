@@ -1,5 +1,12 @@
-Compiling GNUstep on MinGW
-==========================
+Date:	15-March-2002
+Author: Richard Frith-Macdonald <rfm@gnu.org>
+
+PURPOSE
+-------
+
+This document is intended to provide a step by step instruction on how
+to get the GNUstep base library into a usable state on a recent windows
+operating system (XP, 2000, and probably NT).
 
 MinGW is a collection of header files and import libraries that allow
 one to use GCC and produce native Windows32 programs that do not rely
@@ -9,193 +16,232 @@ subtle problems with running GNU tools on Windows, so any problems you
 may encounter may just as easly have to do with the compilation tools
 you are using as with GNUstep.
 
+MSYS is a very much cut down version of the Cygwin environment ...
+providing a minimal set of tools needed to build programs using MingGW.
+If you wish to build for MinGW by cross-compiling from a Cygwin
+environment, please read README.cygwin instead.
+
 The base library is not completely ported to run on MinGW yet, but most
 stuff works, including networking/distributed objects.
 Probably background file handle operations (other than networking) and
 advanced parts of NSTask code do not currently work.
 
-Note for compiling with shared libraries (DLLs), it's a good idea to
-remove the libobjc.a that comes with gcc (gcc -v for location) so that
-it isn't accidentally found instead of the libobjc DLL that you will
-compile below. Also note that, despite the statement in the GNUstep-HOWTO,
-even if you have 3.x, you still need to install gnustep-objc as it properly 
+
+
+PRELIMINARIES
+-------------
+
+Before we start, we need to get some preliminary windoze software -
+a tool for fetching source code via CVS.
+
+If you don't want to use windows tools for this ... you can get the
+latest cygwin distribution and use the cvs client in that - the following is
+for people qho don't want to download all that cygwin stuff.
+
+To get stuff from CVCS you can download and install WinCVS ... which you
+can find at http://sourceforge.net/projects/cvsgui
+
+You will need to be a system administrator on your machine to install
+this software.
+You should be able to use it without changing/setting any special
+configuration options.
+
+
+
+Installing and setting up MINGW and MSYS
+----------------------------------------
+
+Next, download msys-1.06 or later from
+http://sourceforge.net/project/mingw
+and install it.
+
+Next, download MinGW-1.1 or later from
+http://sourceforge.net/project/mingw
+and extract this into c:/msys/version-number/mingw
+This will unpack the mingw source tree within the msys hierarchy.
+Unpacking mingw into the correct location within msys will ensure that the
+path set up in /etc/profile in msys picks up the mingw tools too.
+
+Remove the mingw make.exe file ... mingw make is not good.
+Rename the msys gmake.exe to make.exe, so we will use this make program.
+
+It's a good idea to remove the libobjc.a and include/objc header that come
+with gcc (gcc -v for location) so that they are not accidentally found
+instead of the libobjc DLL that you will compile below.
+
+
+Now you can double click on the c:/msys/version-number/bin/sh program to
+open a window containing a shell.
+
+In the shell window, type '. /etc/profile' to set up your path.
+You may also want to set the HOMEDRIVE and HOMEPATH environment variables
+to point to the home directory you wish to work from (though the defaults
+may be ok for you).
+NB. This home directory for building software must *not* contain spaces.
+
+From this window we can now start building things...
+
+
+
+Obtaining GNUstep
+-----------------
+
+The main GNUstep project pages tell you how to get hold of this.
+
+You need things in the following order -
+
+GNUstep-make (cvs core module)
+libffcall (http://ftp.gnustep.org/pub/gnustep/lib)
+GNUstep-libobjc (cvs dev-apps module)
+GNUstep-base (cvs core module)
+
+If you can't get the latest CVS code, recent snapshots might work by the
+time you read this (at 11-Mar-2002 they won't)
+
+
+
+Setting up the GNUstep make environment
+---------------------------------------
+
+In the core/make package, do 'configure --prefix=C:/GNUstep'
+You can of course use a different prefix to install the GNUstep system in
+an alternative location, but it is important that the path you use is a
+full windows style path with a drive letter and colon at the start of it.
+This is because, while the msys shell and other tools automatically map
+unix style paths to windows paths, the mingw compiler does not!
+
+IMPORTANT ... bear this in mind.  The msys tools all handle unix style
+paths and map them to windows style paths internally.  The mingw tools
+only handle windows style paths.  In particular this means that where
+absolute paths are given for commands within makefiles, and where paths
+for headers and libraries are supplied to the compiler, these paths must
+be in windows format, not unix format!!!
+The big place where things go wrong is with configure .... the configure
+script may use the msys shell and other tools to locate binaries etc, and
+the msys tools will supply those locations as unix style paths.  If the
+configure script then causes those paths to be built in to makefiles, the
+make process is likely to fall over.
+
+Now you can type 'make install' to build and install the make package.
+
+Once this is done, type '. GNUstep.sh' to set up your GNUstep environment.
+The environment for building software is now completely set up ... but for
+ease of use later, you might set up a script to be used to set up any new
+shell windows you create.  Something like this -
+
+. /etc/profile
+export HOMEDRIVE=C:
+export HOMEPATH=/home/myname
+export GNUSTEP_SYSTEM_DIR=C:/GNUstep/System
+. $GNUSTEP_SYSTEM_DIR/Makefiles/GNUstep.sh
+
+
+
+Building and installing FFCALL
+------------------------------
+
+The next priority is to get the ffcall library built and installed.
+You should get the latest ffcall archive from
+http://ftp.gnustep.org/pub/gnustep/libs
+Currently this is ffcall-1.8d.tar.gz
+
+Ignore any other instructions for builting this ...
+
+First, rename the msys/version-number/bin/ln.exe file ...
+this program creates 'symbolic links' using windows 'shortcuts' ...
+but some tools like the compiler won't follow them - so renaming this
+program forces configure scripts to use the 'cp' program instead.
+If you don't do this, the configure scripts for ffcall will produce
+makefiles which won't work properly!
+
+Next, in the shell window in which you have set up your GNUstep
+environment, type
+
+RANLIB=touch ./configure --prefix=`$GNUSTEP_MAKEFILES/fixpath.sh -u $GNUSTEP_SYSTEM_ROOT`
+
+We use 'touch' as a substitute for 'ranlib', as windows does not
+have (and does not need) ranlib.
+We provided the installation prefix as a unix style pathname ...
+since the libtool scripts barf on windows style paths.
+
+Having configured the ffcall library, you can now build and install
+it simply by typing -
+
+make install
+
+Finally, rename the ln.exe program back into place.
+
+
+
+Building and installing libobjc
+-------------------------------
+
+Despite the statement in the GNUstep-HOWTO, even if you have a 3.x
+compiler, you still need to install gnustep-objc as it properly
 exports symbols for DLLs.
 
-Note also that the //c construct for specifying paths with drives has
-been depreciated. You'll need to use /cygwin/path or C: style paths now.
+You get this from the dev-apps area of the GNUstep cvs repository
+(not the ftp site).
 
-MinGW on Cygwin
----------------
+Go into dev-apps/libobjc, and type 
 
-This is the only configuration I've tested so far. This method uses
-the Cygwin tools to help out with the configuration and compilation of
-the libraries. It's always good to get the very latest version of
-Cygwin and MinGW. These instructions were performed
-with Cygwin DLL 1.3.9-1 and MingW gcc 2.95.3-6. If you have more
-experience with MinGW than me, please help improve these instructions!
+make install
 
-I assume you have installed Cygwin and MinGW, and dowloaded and
-unpacked the GNUstep packages:
-
-ffcall
-gnustep-make
-gnustep-objc
-gnustep-base
-
-See the GNUstep-HOWTO file for more information on where to get
-various files. You need to build and install each package separately,
-as described below.
-
-1. First, start up a Cygwin BASH shell and make sure the MinGW tools
-are in your path:
-
-  export PATH=/c/mingw/bin:$PATH
-
-(Put in whatever path you have for the mingw tools). 
-
-NB. Using MinGW-1.1 the header file winsock2.h needed to be slightly
-updated for 2000 or XP.  The size of the sa_data field in struct sockaddr
-had to be increased from 14 to 22.  If you don't do this before building
-the gnustep base library, the gdomap tool will not correctly determine the
-internet addresses of your machine.
-
-2. Configure and compile gnustep-make.
-The default location for GNUstep on Windows systems in C:/GNUstep.
-To use another location you can use the --prefix argument to configure.
-First, go to the 'gnustep-make' package and configure:
-
-  cd gnustep-make
-  ./configure --target=i386-mingw32
-
-3. Now build the gnustep-make package. Occationally, the make that comes
-with MinGW doesn't like the way GNUstep makefiles are setup (or perhaps
-it's that MingW make doesn't work with bash), so you can try
-using Cygwin's make instead (/usr/bin/make instead of just make).
-
-  make target=i386-mingw32
-  make target=i386-mingw32 install
-
-4. Now source the GNUstep.sh file so the rest of the packages will
-compile correctly:
-
-  . C:/GNUstep/System/Makefiles/GNUstep.sh
-
-Also put this command in your shell startup script. Be sure to adjust
-this path to match your real GNUstep root directory if you changed it
-when configuring gnustep-make.
-
-NOTE for WIN98 users: You should also define the environment variables
-HOMEDRIVE and HOMEPATH, since these aren't defined normally.
-
-5. Compile and install the ffcall package (Version 1.8b). It's
-simply a C library so it requires no special tools other than the compiler.
-
-LD=`which ld` RANLIB=/usr/bin/ranlib ./configure --target=i386-mingw32 \
-	--prefix=`cygpath -u $GNUSTEP_SYSTEM_ROOT`
-
-which installs the libraries in the GNUstep directory structure (There is
-a script in ffcall-1.8d and higher that automatically configures ffcall
-and installs, called compile-mingw). Then
-
-  make
-  make install
-
-6. Now you can compile the Objective-C runtime DLL, gnustep-objc (unless 
-you already have one installed):
-
-  cd gnustep-objc
-  make target=i386-mingw32 shared=yes
-  make target=i386-mingw32 shared=yes install
-
-Make sure to remove libobjc.a that comes with gcc, otherwise it will find that
-one instead of the one we want. The libobjc library that comes with gcc-3.x
-MAY work if you add some extra lines to the .def file, but I won't go into
-that here. It's good just to use gnustep-objc.
-
-7. Now we can configure and build the gnustep-base library.
-
-  cd gnustep-base 
-  ./configure --target=i386-mingw32 
-  make target=i386-mingw32 shared=yes
-  make target=i386-mingw32 shared=yes install
-
-If you get tired of typing  "target=i386-mingw32" all the time, then before
-you exec the GNUstep.sh script, just set the GNUSTEP_HOST:
-
-  export GNUSTEP_HOST=i586-pc-mingw32
-  . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+This should build and install the ObjectiveC runtime and headers for you.
 
 
-Native MinGW 
-------------
 
-(Information provided by Craig Miskell)
+Optional libraries
+------------------
 
-So far, this configuration only works when compiling the Makefile package
-(gnustep-make). It should, in the future work on the libraries. First, you
-need to get a port of sh (probably zsh) for Windows 
-(ftp://ftp.blarg.net/users/amol/).
+There are some optional (but very strongly recommended) libraries you
+can install to make GNUstep work better.
 
-1. Make sure $HOST_CC or $CC is set to MinGW's gcc. The default seems to be 
-wrong.
+libiconv ...
+  needed for multilingual character support (unicode etc)
 
-2. Now configure. 
+  Get the binary package from
+  http://www.fh-frankfurt.de/~igor/projects/libxml
+  Unpack this and 
+    cp iconv.h $GNUSTEP_SYSTEM_ROOT/Headers
+    cp iconv.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libiconv.a
+    cp iconv.dll $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32/iconv.dll
 
-  ./configure 
+libxml2 ...
+  needed for XML parsing support - needed for MacOS-X compatible
+  property lists and for documentation processing.
+NB. at the time of writing, XML support in GNUstep base has *not*
+been ported to windows - but when it is, you will need this package.
 
-(Make sure the drive is specified correctly in the path).
+  Get the binary package from
+  http://www.fh-frankfurt.de/~igor/projects/libxml
+  Unpack this and 
+    tar -cf - libxml | (cd $GNUSTEP_SYSTEM_ROOT/Headers; tar -xvf -)
+    cp libxml2.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libxml2.a
+    cp libxml2.dll $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
 
-3. Then make and install
-
-  make
-  make install
-
-4. Now source the GNUstep.sh file so the rest of the packages will
-compile correctly:
-
-  . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
-
-
-Problems?
----------
-
-[1] Problems compiling ffcall with MingWs gcc? Use Cygwin gcc:
-
-export CC="gcc -mno-cygwin"
-
-[2] It's really important that all the libraries you link with GNUstep be
-shared libraries. Even static libraries based on C (e.g. libtiff) will
-prevent Objective-C modules from being loaded in Objective-C libraries.
-
-[3] On Windows XP, at least, there are sometimes spaces in the path to the
-user directory. The make program cannot deal with this.
-Probably the best solution is to add a .GNUsteprc file in your home
-directory with a line of the form -
-GNUSTEP_USER_ROOT=/home/myname
-setting your personal GNUstep root directory to be '/home/myname' ...
-some path which does not contain spaces.
+openssl ...
+  needed for the SSL bundle, providing HTTPS support for NSURL.
+NB. at the time of writing, SSL support in GNUstep base has *not*
+been ported to windows - but when it is, you will need this package.
+  Get the binary package from
+  http://www.kix.or.jp/~fujino/openssl
+  Unpack this and
+    tar -cf - openssl | (cd $GNUSTEP_SYSTEM_ROOT/Headers; tar -xvf -)
+    cp *.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
+    cp *.dll *.exe $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
 
 
-Good Sites for Pre-Compiled Binaries
+
+Building and installing GNUstep-base
 ------------------------------------
 
-Many libraries, etc from:
+Go into the core/base directory, and type
 
-<http://sourceforge.net/project/showfiles.php?group_id=7382>
-<http://penguin.at0.net/~fredo/files/old/> (for libxml2, more?)
-<http://sourceforge.net/project/showfiles.php?group_id=23617> (libtiff)
+make install
 
-MingW guile from
+This should automatically run the configure script for you, build the
+base library and some tools, and install the while lot (along with some
+system resources).
 
-<http://www.textsure.net/~ela/devel.html>.
 
-also need guile from 
-
-<http://sourceforge.net/project/showfiles.php?group_id=7382>
-
-for guile-config file.
-
-Author
-------
-
-Adam Fedor <fedor@gnu.org>

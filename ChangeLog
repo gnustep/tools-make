@@ -1,5 +1,7 @@
-2002-03-12 Richard Frith-Macdonald <rfm@gnu.org>
+2002-03-13 Richard Frith-Macdonald <rfm@gnu.org>
 
+	* Documentation/README.MinGW: New content describing native MinGW build
+	* Documentation/README.cygwin: Old contentnon cross-compiling to MinGW
 	* fixpath.sh: Removed
 	* fixpath.sh.in: new file
 	* configure.in: generate fixpath.sh from fixpath.sh.in to control
