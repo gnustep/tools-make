@@ -1,3 +1,8 @@
+2001-08-21  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in (gs_cv_objc_libdir): Don't look for gcc's
+	installed libobjc.so since it's usually in a standard dir anyway.
+
 Mon Aug  6 19:15:35 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* library.make (internal-install-dirs): Insert a / between

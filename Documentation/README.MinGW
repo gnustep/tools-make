@@ -57,6 +57,9 @@ Then
   make
   make install
 
+NOTES: On some systems, configure has trouble when mingw's bin is in the
+path (probably because of mingw's make).
+
 2. The default location for GNUstep on Unix systems in /usr/GNUstep, but
 there is no default for Windows machines, so you need to set that up
 first with the GNUSTEP_SYSTEM_ROOT environment variable. To put it in
