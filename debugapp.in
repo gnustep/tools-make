@@ -27,6 +27,9 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+if [ -z "$EXEEXT" ]; then
+  EXEEXT=@program_suffix@
+fi
 if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
@@ -58,6 +61,10 @@ fi
 
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
+
+if [ -z "$EXEEXT" ]; then
+  app=$app$EXEEXT
+fi
 
 case $app in
   /*)	# An absolute path.

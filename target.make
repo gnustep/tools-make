@@ -63,6 +63,9 @@ endif
 ifeq ($(findstring aix4.1, $(GNUSTEP_TARGET_OS)), aix4.1)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
+ifeq ($(findstring freebsd3.0, $(GNUSTEP_TARGET_OS)), freebsd3.0)
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+endif
 
 #
 # Specific settings for building shared libraries, static libraries,
@@ -261,10 +264,41 @@ endif
 
 ####################################################
 #
+# FreeBSD
+#
+ifeq ($(GNUSTEP_TARGET_OS), freebsd3.0)
+HAVE_SHARED_LIBS	= yes
+SHARED_LIB_LINK_CMD = \
+	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
+	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+	(cd $(GNUSTEP_OBJ_DIR); \
+	  rm -f $(LIBRARY_FILE); \
+	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS	+= -fPIC
+SHARED_LIBEXT	= .so
+
+HAVE_BUNDLES	= yes
+BUNDLE_LD	= $(CC)
+BUNDLE_CFLAGS	+= -fPIC
+BUNDLE_LDFLAGS	+= -shared
+ADDITIONAL_LDFLAGS += -rdynamic
+endif
+#
+# end FreeBSD
+#
+####################################################
+
+####################################################
+#
 # NetBSD
 #
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
-HAVE_SHARED_LIBS        = yes
+# This is disabled temporarily, because I don't know exactly how
+# to link shared libs. Everything seems to link correctly now but
+# constructor functions in the shared lib failed to get called
+# when the lib is loaded in. I don't know why. ASF.
+HAVE_SHARED_LIBS        = no
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
         $(SHARED_LD) -x -Bshareable -Bforcearchive \

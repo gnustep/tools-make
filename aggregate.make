@@ -41,8 +41,10 @@ internal-all internal-install internal-uninstall internal-clean \
   internal-distclean internal-check::
 	@(target=`echo $@ | sed 's/internal-//'`; \
 	for f in $(SUBPROJECTS); do \
-		echo Making $$target in $$f...;\
-		(cd $$f; $(MAKE) -f $(MAKEFILE_NAME) --no-keep-going $$target); \
+	  echo Making $$target in $$f...;\
+	  if eval "(cd $$f; $(MAKE) -f $(MAKEFILE_NAME) --no-keep-going $$target)"; then \
+	    :; else break; \
+	  fi; \
 	done)
 
 endif

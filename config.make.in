@@ -26,7 +26,7 @@
 #
 CC = @CC@
 
-EXEEXT = 
+EXEEXT = @program_suffix@
 OEXT = .o
 LIBEXT = .a
 RESEXT = .res
