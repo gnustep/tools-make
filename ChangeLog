@@ -1,3 +1,22 @@
+Wed Jun 21 12:35:43 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	Rewritten and simplified java support.
+	* GNUstep.sh.in: Only append to the CLASSPATH if not already there. 
+	* GNUstep.csh.in: Simplified java classpath.
+	* brain.make (SYSTEM_INCLUDES): Removed JAVA_INCLUDES.
+	* common.make (JAVAC): Set it to 'javac' only if it is null, 
+	so it can be overridden.
+	* common.make (GNUSTEP_JAVA): New variable.
+	* config.make.in: Removed old java code.
+	* configure.in: Idem.
+	* configure: Rebuilt.
+	* openapp.in: Removed old java code.
+	* rules.make: Completely remanaged java stuff.
+
+	* GNUmakefile.in (MAKE_FILES): Added java.make.
+	* java.make: New makefile for compiling not-GNUstep java 
+	application.
+
 Tue Jun 20 19:59:19 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* objc.make (internal-objc_program-install): Depend on building
