@@ -4,6 +4,13 @@
 	settings.
 	* gnustep-make.spec: Newfile
 
+	* common.make: Add default installation dirs.
+	* bundle.make: Use default installation dir.
+	* ctool.make: Likewise.
+	* objc.make: Likewise.
+	* palette.make: Likewise.
+	* tool.make: Likewise.
+
 2000-02-08  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess: New version

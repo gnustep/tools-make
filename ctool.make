@@ -40,7 +40,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # directory they will get installed in the GNUstep system root.
 ifeq ($(TOOL_INSTALLATION_DIR),)
   TOOL_INSTALLATION_DIR = \
-    $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 endif
 
 ifeq ($(INTERNAL_ctool_NAME),)
