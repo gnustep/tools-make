@@ -1,3 +1,14 @@
+Thu Nov 22 10:41:39 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* source-distribution.make (tgz): tgz target renamed to dist.
+	(Suggestion by Dan Pascu <dan@services.iiruc.ro>).
+	
+	* source-distribution.make (.PHONY): Updated for change.  
+	* rpm.make (rpm): Updated for change.
+
+	* source-distribution.make (TGZ_MAKE_LOADED): Renamed to 
+	SOURCE_DISTRIBUTION_MAKE_LOADED.
+	
 Thu Nov 22 03:05:33 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Implemented support for auto dependencies.  Only works with gcc =>
