@@ -41,15 +41,17 @@ SUBPROJECTS:=$(strip $(SUBPROJECTS))
 internal-all internal-install internal-uninstall internal-clean \
   internal-distclean internal-check::
 	@target=`echo $@ | sed 's/internal-//'`; \
-	for f in $(SUBPROJECTS); do \
-	  echo Making $$target in $$f...; \
-	  mf=$(MAKEFILE_NAME); \
-	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $$target; then \
-	    :; else exit $$?; \
+	for f in $(SUBPROJECTS) __done; do \
+	  if [ $$f != __done ]; then       \
+	    echo Making $$target in $$f...; \
+	    mf=$(MAKEFILE_NAME); \
+	    if [ ! -f "$$f/$$mf" -a -f "$$f/Makefile" ]; then \
+	      mf=Makefile; \
+	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	    fi; \
+	    if $(MAKE) -C $$f -f $$mf --no-keep-going $$target; then \
+	      :; else exit $$?; \
+	    fi; \
 	  fi; \
 	done
 
