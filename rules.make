@@ -194,8 +194,25 @@ ifneq ($(FRAMEWORK_NAME),)
 CURRENT_FRAMEWORK_HEADERS_FLAG = -I$(DERIVED_SOURCES)
 endif
 
+#
+# Auto dependencies
+#
+# -MMD -MP tells gcc to generate a .d file for each compiled file, 
+# which includes makefile rules adding dependencies of the compiled
+# file on all the header files the source file includes ...
+#
+# next time `make' is run, we include the .d files for the previous
+# run (if we find them) ... this automatically adds dependencies on
+# the appropriate header files 
+#
 
-ALL_CPPFLAGS = $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) $(AUXILIARY_CPPFLAGS)
+# Warning - the following variable name might change
+ifeq ($(AUTO_DEPENDENCIES),yes)
+  AUTO_DEPENDENCIES_FLAGS = -MMD -MP
+endif
+
+ALL_CPPFLAGS = $(AUTO_DEPENDENCIES_FLAGS) $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) \
+               $(AUXILIARY_CPPFLAGS)
 
 ALL_OBJCFLAGS = $(INTERNAL_OBJCFLAGS) $(ADDITIONAL_OBJCFLAGS) \
    $(AUXILIARY_OBJCFLAGS) $(ADDITIONAL_INCLUDE_DIRS) \
@@ -267,7 +284,6 @@ LIB_DIRS_NO_SYSTEM = $(ADDITIONAL_LIB_DIRS) \
 ifeq ($(strip $(BUNDLE_EXTENSION)),)
 BUNDLE_EXTENSION = .bundle
 endif
-
 
 # General rules
 VPATH = .
@@ -629,6 +645,13 @@ CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(CC_OBJS))
 # tool/app/whatever
 OBJ_FILES_TO_LINK = $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) \
                     $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+
+ifeq ($(AUTO_DEPENDENCIES),yes)
+  ifneq ($(strip $(OBJ_FILES_TO_LINK)),)
+    -include $(addsuffix .d, $(basename $(OBJ_FILES_TO_LINK)))
+  endif
+endif
+
 
 # If we are using Windows32 DLLs, for each library that we link
 # against, pass a -Dlib{library_name}_ISDLL=1 option to the
