@@ -90,9 +90,9 @@ fi
 # Change the include directory default
 if test "$includedir" = "\${prefix}/include" ; then
   if [ -z "$GNUSTEP_FLATTENED" ]; then
-   includedir="\${prefix}/Headers/${LIBRARY_COMBO}"
+   includedir="\${prefix}/Library/Headers/${LIBRARY_COMBO}"
   else
-   includedir="\${prefix}/Headers"
+   includedir="\${prefix}/Library/Headers"
   fi
 fi
 

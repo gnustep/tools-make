@@ -123,10 +123,20 @@ internal-$(GNUSTEP_TYPE)-uninstall:: before-$(GNUSTEP_INSTANCE)-uninstall \
 
 else
 
-internal-$(GNUSTEP_TYPE)-install:: before-$(GNUSTEP_INSTANCE)-install \
+# By adding an ADDITIONAL_INSTALL_DIRS variable (or xxx_INSTALL_DIRS)
+# you can request additional installation directories to be created
+# before the first installation target is executed.
+ADDITIONAL_INSTALL_DIRS += $($(GNUSTEP_INSTANCE)_INSTALL_DIRS)
+
+$(ADDITIONAL_INSTALL_DIRS):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
+
+internal-$(GNUSTEP_TYPE)-install:: $(ADDITIONAL_INSTALL_DIRS) \
+                                   before-$(GNUSTEP_INSTANCE)-install \
                                    internal-$(GNUSTEP_TYPE)-install_  \
                                    after-$(GNUSTEP_INSTANCE)-install
 
+# It would be nice to remove ADDITIONAL_INSTALL_DIRS here, if empty.
 internal-$(GNUSTEP_TYPE)-uninstall:: before-$(GNUSTEP_INSTANCE)-uninstall \
                                    internal-$(GNUSTEP_TYPE)-uninstall_  \
                                    after-$(GNUSTEP_INSTANCE)-uninstall
