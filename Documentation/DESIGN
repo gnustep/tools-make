@@ -96,7 +96,7 @@ GNUstep directories:
 $(GNUSTEP_SYSTEM_ROOT)/
     Headers/
     Libraries/
-    Apps/
+    Applications/
     Tools/
 
 The Headers/ and Libraries/ directories, as their names suggest, keep
@@ -104,8 +104,8 @@ the header files and the libraries required by a GNUstep project to
 compile and link. The libraries can be both shared or static,
 depending on the target system.
 
-The Apps/ directory is used by GNUstep graphical applications, those
-applications which have a graphical interface with the user. The
+The Applications/ directory is used by GNUstep graphical applications,
+those applications which have a graphical interface with the user. The
 Tools/ directory holds command line tools based on GNUstep libraries.
 
 The header files are grouped like this in the Headers/ directory:
@@ -166,12 +166,12 @@ The resources that are specific to each Foundation libraries are kept
 in a subdirectory like above, except for NeXT Foundation and PDO which
 keep their resources in their own places.
 
-The Apps/ directory contains GNUstep graphical applications. Each
-application is kept in an app wrapper which contains all the binaries
-and all the resource files the application needs. The binaries
-organization resembles the one from libraries:
+The Applications/ directory contains GNUstep graphical
+applications. Each application is kept in an app wrapper which
+contains all the binaries and all the resource files the application
+needs. The binaries organization resembles the one from libraries:
 
-Apps/
+Applications/
   InterfaceModeller.app/
     InterfaceModeller (for OPENSTEP systems compatibility)
     i386/
