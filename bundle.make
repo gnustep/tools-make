@@ -268,19 +268,25 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 
 # Comment on the tar options used in the rule below - 
 
-# The `h' option to tar makes sure the bundle can contain symbolic
-# links to external files (for example templates), and when you
-# install the bundle, the symbolic links are replaced with the actual
-# files.  The --exclude Contents/Resources is used because otherwise
-# the `h' option would dereference the Contents/Resources-->Resources
-# symbolic link, and install the Resources directory twice.  Instead,
-# we exclude the symbolic link from the tar file, then rebuild the
-# link by hand in the installation directory.
+# The h option to tar makes sure the bundle can contain symbolic links
+# to external files (for example templates), and when you install the
+# bundle, the symbolic links are replaced with the actual files.  The
+# X option is used because otherwise the -h option would dereference
+# the Contents/Resources-->Resources symbolic link, and install the
+# Resources directory twice.  Instead, we exclude the symbolic link
+# from the tar file, then rebuild the link by hand in the installation
+# directory.
 
-# When rebuilding the link, we need to make sure that we can manage
-# the case that tar was actually broken and didn't honour the
-# --exclude option (and/or the h option).  This was reported to have
-# happened.  To manage this, we simply do not build the link if
+# Because of compatibility issues with older versions of GNU tar (not
+# to speak of non-GNU tars), we use the X option rather than the
+# --exclude= option.  The X option requires as argument a file listing
+# files to exclude.  We create a temporary file for this, then remove
+# it immediately afterwards.
+
+# When rebuilding the link, just as yet another compatibility safety
+# measure, we need to make sure that we can manage the case that tar
+# was actually broken and didn't honour the X option (and/or the h
+# option).  To manage this, we simply do not build the link if
 # Resources already exists and is a directory (either a real one or a
 # symbolic link, we don't care).
 
@@ -296,10 +302,12 @@ ifneq ($(HEADER_FILES),)
 	done;
 endif
 endif
+	rm -f .tmp.gnustep.exclude; \
+	echo "$(BUNDLE_DIR_NAME)/Contents/Resources" > .tmp.gnustep.exclude;\
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME); \
-	$(TAR) -chf - --exclude=$(BUNDLE_DIR_NAME)/Contents/Resources \
-	              $(BUNDLE_DIR_NAME) \
+	$(TAR) chfX - .tmp.gnustep.exclude $(BUNDLE_DIR_NAME) \
 	    | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -); \
+	rm -f .tmp.gnustep.exclude; \
 	(cd $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)/Contents; \
 	    if [ ! -d Resources ]; then \
 	      rm -f Resources; $(LN_S) ../Resources .; \
