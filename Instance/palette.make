@@ -54,10 +54,39 @@ endif
 #    $(shell $(WHICH_LIB_SCRIPT) $(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS) \
 #	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 #	shared_libext=$(SHARED_LIBEXT))
+# On windows, this is unfortunately required.
+
+ifeq ($(WITH_DLL), yes)
+  LINK_PALETTE_AGAINST_ALL_LIBS = yes
+endif
+
+# On Apple, two-level namespaces require all symbols in bundles
+# to be resolved at link time.
+ifeq ($(FOUNDATION_LIB), apple)
+  LINK_PALETTE_AGAINST_ALL_LIBS = yes
+endif
+
+ifeq ($(LINK_PALETTE_AGAINST_ALL_LIBS), yes)
+PALETTE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
+   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
+   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+endif
+
+ALL_PALETTE_LIBS =						\
+    $(shell $(WHICH_LIB_SCRIPT)					\
+	$(ALL_LIB_DIRS)						\
+	$(PALETTE_LIBS)						\
+	debug=$(debug) profile=$(profile) shared=$(shared)	\
+	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+
+ifeq ($(WITH_DLL),yes)
+PALETTE_OBJ_EXT = $(DLL_LIBEXT)
+endif
 
 PALETTE_DIR_NAME = $(GNUSTEP_INSTANCE).palette
 PALETTE_DIR = $(GNUSTEP_BUILD_DIR)/$(PALETTE_DIR_NAME)
-PALETTE_FILE_NAME = $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
+PALETTE_FILE_NAME = $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)$(PALETTE_OBJ_EXT)
 PALETTE_FILE = $(GNUSTEP_BUILD_DIR)/$(PALETTE_FILE_NAME)
 
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
@@ -84,11 +113,23 @@ internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
 $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
+ifeq ($(WITH_DLL),yes)
+
+$(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
+	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
+		-o $(LDOUT)$(PALETTE_FILE) \
+		$(OBJ_FILES_TO_LINK) \
+		$(ALL_PALETTE_LIBS)$(END_ECHO)
+
+else # WITH_DLL
+
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
 	  $(OBJ_FILES_TO_LINK) \
 	  $(ALL_PALETTE_LIBS)$(END_ECHO)
+
+endif # WITH_DLL
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
