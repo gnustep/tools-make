@@ -1,3 +1,9 @@
+Thu Apr 26 12:48:27 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (JAVADOC_BUILD_ALWAYS): New variable to allow
+	asking gnustep-make to rebuild javadoc documentation each time it
+	is run.
+	
 2001-04-25  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Check OBJC_RUNTIME_LIB from library_combo and set
