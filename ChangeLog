@@ -1,3 +1,8 @@
+2000-12-18 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* bundle.make: Add a couple of missing backslashes as reported by
+	enrico@imago.ro
+
 2000-12-14  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in (CFLAGS): Strip -g (debug=yes adds that automatically).

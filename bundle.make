@@ -180,8 +180,8 @@ endif
 $(BUNDLE_DIR_NAME)/Contents :
 	@$(MKDIRS) $@
 
-$(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents
-$(BUNDLE_DIR_NAME)/Resources
+$(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents \
+	$(BUNDLE_DIR_NAME)/Resources
 	@(cd $(BUNDLE_DIR_NAME)/Contents;\
 	  $(LN_S) -f ../Resources .)
 
@@ -203,9 +203,9 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
 	  echo "</plist>";\
 	) >$@
 
-build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents
-$(BUNDLE_DIR_NAME)/Contents/Resources
-$(BUNDLE_DIR_NAME)/Contents/Info.plist
+build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
+	$(BUNDLE_DIR_NAME)/Contents/Resources \
+	$(BUNDLE_DIR_NAME)/Contents/Info.plist
 
 # GNUstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
