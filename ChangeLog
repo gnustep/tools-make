@@ -1,3 +1,10 @@
+Sun Sep 16 17:32:29 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (CURRENT_FRAMEWORK_HEADERS_FLAG): New variable;
+	define it to be -I$(DERIVED_SOURCES) if we are compiling as part
+	of a framework.  (ALL_OBJCFLAGS, ALL_CFLAGS): Added
+	$(CURRENT_FRAMEWORK_HEADERS_FLAG) to the flags.
+		
 Sat Sep 15 13:59:31 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (OBJ_FILES_TO_LINK): New variable holding all object
