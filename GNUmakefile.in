@@ -57,7 +57,7 @@ INSTALL_DATA	= @INSTALL_DATA@
 PERL = @PERL@
 
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
-	common.make brain.make library.make rules.make target.make \
+	common.make brain.make java.make library.make rules.make target.make \
 	tool.make ctool.make test-library.make names.make objc.make \
 	test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make woapp.make wobundle.make  \
