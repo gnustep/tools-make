@@ -1,3 +1,8 @@
+Mon Oct  5 09:12:41 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* GNUstep.csh.in: Fix up syntax problems (from Don Bottstein
+	<donh@mapquest.com>).
+
 Mon Sep 14 11:28:26 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* ld_lib_path.sh: Add quotes around *_LIBRARY_PATH (patch from
