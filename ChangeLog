@@ -1,3 +1,24 @@
+Wed Feb 20 16:56:43 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/library.make (FINAL_LIBRARY_INSTALL_DIR): Only set 
+	if not already set.
+	* Instance/clibrary.make: Trivialized.  Set
+	FINAL_LIBRARY_INSTALL_DIR, then include Instance/library.make to
+	inherit all the makefile code from there ... very cool.  Please
+	note that this 'makefile inheritance' wouldn't have been possible
+	had I not broken the makefiles into Master and Instance.
+
+Wed Feb 20 16:49:41 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/library.make: Heavily simplified and improved support
+	for headers by simply using Instance/Shared/headers.make to manage
+	headers.
+	* Instance/Shared/headers.make: Modified to support
+	$(GNUSTEP_INSTANCE)_EMPTY_HEADER_FILES_INSTALL_DIR to allow
+	callers to specify they really want an empty header files install
+	dir, which is not otherwise tollerated, and automatically replaced
+	with $(GNUSTEP_INSTANCE).
+	
 Wed Feb 20 15:41:14 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* library.make: Broken into Master and Instance.
