@@ -50,8 +50,9 @@ endif
 # The list of localized framework web server GSWeb components are in
 #    xxx_WEBSERVER_LOCALIZED_RESOURCE_DIRS
 # xxx_CURRENT_VERSION_NAME is the compiled version name (default "A")
-# xxx_DEPLOY_WITH_CURRENT_VERSION deploy with current version or not (default
-#       "yes") [Nicola: I'm not sure what this means :-)]
+# xxx_MAKE_CURRENT_VERSION is used to decide if the framework version
+#   we compiling should be made the current/default version or not
+#   (default is "yes")
 #
 # where xxx is the framework name
 #
@@ -79,13 +80,27 @@ ifeq ($(CURRENT_VERSION_NAME),)
   CURRENT_VERSION_NAME = A
 endif
 
+
+# DEPLOY_WITH_CURRENT_VERSION deprecated 6 Nov 2002.  Remove any time
+# after 6 Nov 2004.
 ifneq ($(DEPLOY_WITH_CURRENT_VERSION),)
-  $(warning DEPLOY_WITH_CURRENT_VERSION is deprecated because it doesnt allow multiple frameworks with different DEPLOY_WITH_CURRENT_VERSION to be built from the same GNUmakefile!  Please replace it with XXX_DEPLOY_WITH_CURRENT_VERSION)
+  $(warning DEPLOY_WITH_CURRENT_VERSION is deprecated.  Please use MAKE_CURRENT_VERSION instead.)
+  MAKE_CURRENT_VERSION = DEPLOY_WITH_CURRENT_VERSION
 endif
 
-DEPLOY_WITH_CURRENT_VERSION = $($(GNUSTEP_INSTANCE)_DEPLOY_WITH_CURRENT_VERSION)
-ifeq ($(DEPLOY_WITH_CURRENT_VERSION),)
-  DEPLOY_WITH_CURRENT_VERSION = yes
+# xxx_DEPLOY_WITH_CURRENT_VERSION deprecated 4 Mar 2004.  Remove any
+# time after 4 Mar 2006.
+ifneq ($($(GNUSTEP_INSTANCE)_DEPLOY_WITH_CURRENT_VERSION),)
+  $(warning xxx_DEPLOY_WITH_CURRENT_VERSION is deprecated.  Please use xxx_MAKE_CURRENT_VERSION instead.)
+  MAKE_CURRENT_VERSION = $($(GNUSTEP_INSTANCE)_DEPLOY_WITH_CURRENT_VERSION)
+endif
+
+ifneq ($($(GNUSTEP_INSTANCE)_MAKE_CURRENT_VERSION),)
+  MAKE_CURRENT_VERSION = $($(GNUSTEP_INSTANCE)_MAKE_CURRENT_VERSION)
+endif
+
+ifeq ($(MAKE_CURRENT_VERSION),)
+  MAKE_CURRENT_VERSION = yes
 endif
 
 # This is used on Apple to build frameworks which can be embedded into
@@ -232,22 +247,29 @@ internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
 internal-framework-build-headers:: build-framework-dirs \
                                    $(FRAMEWORK_HEADER_FILES)
 
+
+ifeq ($(MAKE_CURRENT_VERSION),yes)
+# A target to build/reset the Current symlink to point to the newly
+# compiled framework.  Only executed if MAKE_CURRENT_VERSION is yes.
+UPDATE_CURRENT_SYMLINK_RULE = update-current-symlink
+update-current-symlink:: $(FRAMEWORK_VERSION_DIR)
+	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
+	rm -f Current; \
+	$(LN_S) $(CURRENT_VERSION_NAME) Current$(END_ECHO)
+
+else
+UPDATE_CURRENT_SYMLINK_RULE = 
+endif
+
 # Please note that test -h must be used instead of test -L because on old
 # Sun Solaris, test -h works but test -L does not.
 build-framework-dirs:: $(DERIVED_SOURCES_DIR) \
                        $(FRAMEWORK_LIBRARY_DIR) \
                        $(FRAMEWORK_VERSION_DIR)/Headers \
                        $(FRAMEWORK_VERSION_DIR)/Resources \
-                       $(FRAMEWORK_RESOURCE_DIRS)
-ifeq ($(DEPLOY_WITH_CURRENT_VERSION),yes)
-	$(ECHO_NOTHING)rm -f $(FRAMEWORK_DIR)/Versions/Current$(END_ECHO)
-endif
-	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
-	  if [ ! -h "Current" ]; then \
-	    rm -f Current; \
-	    $(LN_S) $(CURRENT_VERSION_NAME) Current; \
-	  fi; \
-	  cd ../; \
+                       $(FRAMEWORK_RESOURCE_DIRS) \
+                       $(UPDATE_CURRENT_SYMLINK_RULE)
+	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR); \
 	  if [ ! -h "Resources" ]; then \
 	    rm -f Resources; \
 	    $(LN_S) Versions/Current/Resources Resources; \
@@ -388,10 +410,19 @@ build-framework:: $(FRAMEWORK_FILE) \
                   $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
                   $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 
+# Please note that the following keeps the top-level symlink pointing
+# to the framework in Current.  This is always correct, even if what
+# we are compiling is not made the Current framework version, but if
+# what we are compiling is not made the Current framework version, I
+# think it's not our business to touch the Current stuff, so let's
+# ignore it.  It's faster to ignore it anyway. ;-)
 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
+ifeq ($(MAKE_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework; \
 	rm -f $(GNUSTEP_INSTANCE); \
 	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE)$(END_ECHO)
+endif
+
 else
 
 build-framework:: $(FRAMEWORK_FILE) \
