@@ -1,3 +1,10 @@
+Tue Jul 10 11:32:12 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (internal-doc-clean): Do not print clean
+	commands.
+	(internal-textdoc-clean): Idem.
+	(internal-doc-distclean): Idem.
+
 Tue Jul 10 11:16:47 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* GNUmakefile.in (MAKE_FILES): Removed woapp.make and
