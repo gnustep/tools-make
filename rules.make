@@ -257,75 +257,15 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 
 # The magical application rules, thank you GNU make!
 %.build:
+ifneq ($(OPERATION), before-all) # before-all is special, no SUBPROJECTS/TOOLS
 ifneq ($(FRAMEWORK_NAME),)
-ifeq ($(OPERATION),all)
-ifeq ($(TOOL_NAME),)
-	@ echo Build public headers for $(TARGET_TYPE) $*...; \
-	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-	  build-framework-headers \
-	  INTERNAL_$(TARGET_TYPE)_NAME=$* \
-	  SUBPROJECTS="$($*_SUBPROJECTS)" \
-	  TOOLS="$($*_TOOLS)" \
-	  OBJC_FILES="$($*_OBJC_FILES)" \
-	  C_FILES="$($*_C_FILES)" \
-	  JAVA_FILES="$($*_JAVA_FILES)" \
-	  JAVA_JNI_FILES="$($*_JAVA_JNI_FILES)" \
-	  OBJ_FILES="$($*_OBJ_FILES)" \
-	  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
-	  HEADER_FILES="$($*_HEADER_FILES)" \
-	  TEXI_FILES="$($*_TEXI_FILES)" \
-	  GSDOC_FILES="$($*_GSDOC_FILES)" \
-	  LATEX_FILES="$($*_LATEX_FILES)" \
-	  JAVADOC_FILES="$($*_JAVADOC_FILES)" \
-	  JAVADOC_SOURCEPATH="$($*_JAVADOC_SOURCEPATH)" \
-	  DOC_INSTALL_DIR="$($*_DOC_INSTALL_DIR)" \
-	  TEXT_MAIN="$($*_TEXT_MAIN)" \
-	  HEADER_FILES_DIR="$($*_HEADER_FILES_DIR)" \
-	  HEADER_FILES_INSTALL_DIR="$($*_HEADER_FILES_INSTALL_DIR)" \
-	  COMPONENTS="$($*_COMPONENTS)" \
-	  LANGUAGES="$($*_LANGUAGES)" \
-	  HAS_GSWCOMPONENTS="$($*_HAS_GSWCOMPONENTS)" \
-	  GSWAPP_INFO_PLIST="$($*_GSWAPP_INFO_PLIST)" \
-	  WEBSERVER_RESOURCE_FILES="$($*_WEBSERVER_RESOURCE_FILES)" \
-	  LOCALIZED_WEBSERVER_RESOURCE_FILES="$($*_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
-	  WEBSERVER_RESOURCE_DIRS="$($*_WEBSERVER_RESOURCE_DIRS)" \
-	  LOCALIZED_RESOURCE_FILES="$($*_LOCALIZED_RESOURCE_FILES)" \
-	  RESOURCE_FILES="$($*_RESOURCE_FILES)" \
-	  MAIN_MODEL_FILE="$($*_MAIN_MODEL_FILE)" \
-	  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
-	  BUNDLE_LIBS="$($*_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
-	  SERVICE_INSTALL_DIR="$($*_SERVICE_INSTALL_DIR)" \
-	  APPLICATION_ICON="$($*_APPLICATION_ICON)" \
-	  PALETTE_ICON="$($*_PALETTE_ICON)" \
-	  PRINCIPAL_CLASS="$($*_PRINCIPAL_CLASS)" \
-	  DLL_DEF="$($*_DLL_DEF)" \
-	  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
-			           $($*_INCLUDE_DIRS)" \
-	  ADDITIONAL_GUI_LIBS="$($*_GUI_LIBS) $(ADDITIONAL_GUI_LIBS)" \
-	  ADDITIONAL_TOOL_LIBS="$($*_TOOL_LIBS) $(ADDITIONAL_TOOL_LIBS)" \
-	  ADDITIONAL_OBJC_LIBS="$($*_OBJC_LIBS) $(ADDITIONAL_OBJC_LIBS)" \
-	  ADDITIONAL_LIBRARY_LIBS="$($*_LIBS) $($*_LIBRARY_LIBS) $(ADDITIONAL_LIBRARY_LIBS)" \
-	  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS)" \
-	  ADDITIONAL_LDFLAGS="$($*_LDFLAGS) $(ADDITIONAL_LDFLAGS)" \
-	  ADDITIONAL_CLASSPATH="$($*_CLASSPATH) $(ADDITIONAL_CLASSPATH)" \
-	  LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
-	        $($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS) $(ALL_LIB_DIRS) \
-		$(LIBRARIES_DEPEND_UPON) \
-		$($*_LIBRARIES_DEPEND_UPON) debug=$(debug) profile=$(profile) \
-		shared=$(shared) libext=$(LIBEXT) \
-		shared_libext=$(SHARED_LIBEXT))" \
-	  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)" \
-	  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
-endif
-endif
-ifneq ($(OPERATION), build-framework-headers)
 	@ if [ "$($*_TOOLS)" != "" ]; then \
 	echo Building tools for $(TARGET_TYPE) $*...; \
 	for f in $($*_TOOLS); do \
 	  mf=$(MAKEFILE_NAME); \
 	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
 	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for tool $ff; using 'Makefile'"; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
 	  fi; \
 	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
 	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
@@ -340,7 +280,6 @@ ifneq ($(OPERATION), build-framework-headers)
 	  fi; \
 	done; \
 	fi
-endif
 endif # end of FRAMEWORK code
 	@ if [ "$($*_SUBPROJECTS)" != "" ]; then \
 	echo Building subprojects for $(TARGET_TYPE) $*...; \
@@ -348,7 +287,7 @@ endif # end of FRAMEWORK code
 	  mf=$(MAKEFILE_NAME); \
 	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
 	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $ff; using 'Makefile'"; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
 	  fi; \
 	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION) \
 	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
@@ -361,6 +300,7 @@ endif # end of FRAMEWORK code
 	  fi; \
 	done; \
 	fi
+endif # end of code not executed by before-all
 	@ echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
@@ -416,7 +356,6 @@ endif # end of FRAMEWORK code
 		shared_libext=$(SHARED_LIBEXT))" \
 	    SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)" \
 	    CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
-
 
 #
 # The list of Objective-C source files to be compiled
