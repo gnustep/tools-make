@@ -203,7 +203,7 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed -e 's/.gmodel//' -e 's/.gorm//' -e 's/.nib//'`\";"; \
+	    echo "  NSMainNibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
 	  fi; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
