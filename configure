@@ -2310,10 +2310,10 @@ if eval "test \"`echo '$ac_cv_header_'$ac_safe`\" = yes"; then
   cat >> confdefs.h <<EOF
 #define $ac_tr_hdr 1
 EOF
- DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS=1"
+ DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS_H=1"
 else
   echo "$ac_t""no" 1>&6
-DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS=0"
+DPS_DEFINE="$DPS_DEFINE -DHAVE_DPS_DPSNXARGS_H=0"
 fi
 done
 
