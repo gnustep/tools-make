@@ -543,21 +543,19 @@ for shared libs.
 @item Special Instructions 
 @end table
 
-Static libs require no extra effort (just make shared=no), however, DLLs
-(shared=yes) are compiled by default, and for this you need a special
-version of the Objective-C library that also compiles as a DLL. Also make sure
-to type:
+For shared libs, make sure to specify @var{shared=yes} explicitly when 
+building:
 
 @example
-make BUILD_DLL=yes WITH_DLL=yes
+make target=ix86-mingw32 shared=yes
 @end example
 
-(despite the fact that this should be set automatically) in addition to
-any other make options you want (shared libraries only).  Make sure
-files and compilation done in Unix mode (no ^M in files).  Gdomap
-services not set up correctly. Must add services lines to
-@file{C:\WINDOWS\services} (on Windows 98) or xxx (on Windows NT).  Base
-library only. No native GUI backend.
+For static libs, use @var{shared=no}, Make sure files and compilation
+done in Unix mode (no ^M in files, @var{export CYGWIN=binmode} usually
+works if cygwin is not buggy).  Gdomap services not set up
+correctly. Must add services lines to @file{C:\WINDOWS\services} (on
+Windows 98) or xxx (on Windows NT).  Base library only. No native GUI
+backend.
 
 @c -----------------------------------------
 @node Windows with MinGW,  , Windows with CYGWIN, Machine Specific

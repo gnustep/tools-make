@@ -67,15 +67,15 @@ have one installed). First edit the GNUmakefile and set the THREADING
 variable to 'win32'. Then:
 
   cd gnustep-objc
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes install
+  /usr/bin/make target=i386-mingw32 shared=yes
+  /usr/bin/make target=i386-mingw32 shared=yes install
 
 7. Now we can configure and build the gnustep-base library.
 
   cd gnustep-base 
   ./configure --target=i386-mingw32 
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes 
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes install
+  /usr/bin/make target=i386-mingw32 shared=yes
+  /usr/bin/make target=i386-mingw32 shared=yes install
 
 Note that the base library is not completely ported to run on MinGW yet.
 In particular, anything using sockets, RunLoops and FileHandles.
