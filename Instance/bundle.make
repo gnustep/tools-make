@@ -173,15 +173,13 @@ build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
                        $(BUNDLE_DIR_NAME)/Contents/Resources \
                        $(BUNDLE_DIR_NAME)/Contents/Info.plist
 
+MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
+
 # NeXTstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info.plist:
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
-	  fi; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
@@ -189,11 +187,7 @@ $(BUNDLE_DIR_NAME)/Resources/Info.plist:
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
-	  fi; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \

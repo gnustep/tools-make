@@ -141,14 +141,12 @@ endif
 
 APPLICATION_ICON = $($(GNUSTEP_INSTANCE)_APPLICATION_ICON)
 
+MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
+
 $(APP_DIR_NAME)/Resources/Info-gnustep.plist: _FORCE
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
-	  fi; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
 	  fi; \

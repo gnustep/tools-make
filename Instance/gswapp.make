@@ -305,6 +305,7 @@ endif
 
 HAS_GSWCOMPONENTS = $($(GNUSTEP_INSTANCE)_HAS_GSWCOMPONENTS)
 GSWAPP_INFO_PLIST = $($(GNUSTEP_INSTANCE)_GSWAPP_INFO_PLIST)
+MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
 $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWAPP_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -313,11 +314,7 @@ $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWAPP_DIR_NAME)/Resources
 	  if [ "$(HAS_GSWCOMPONENTS)" != "" ]; then \
 	    echo "  HasGSWComponents = \"$(HAS_GSWCOMPONENTS)\";"; \
 	  fi; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
-	  fi; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	    cat $(GNUSTEP_INSTANCE)Info.plist; \
 	  fi; \

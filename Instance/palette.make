@@ -105,12 +105,11 @@ $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist: $(PALETTE_DIR_NAME)/Resources
 	  fi; \
 	  echo "}") >$@
 
+MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
+
 $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	@(echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NibFile = \"\";"; \
-	  else \
-	    echo "  NibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
+	  echo "  NibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  fi; \
 	  echo "  Class = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "  Icon = \"$(PALETTE_ICON)\";"; \
