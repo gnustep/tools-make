@@ -60,6 +60,7 @@ esac
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
 AC_CYGWIN
+AC_SUBST(CYGWIN)
 AC_MINGW32
 AC_EXEEXT
 AC_OBJEXT
@@ -468,6 +469,6 @@ AC_SUBST(GNUSTEP_MAKE_SUBMINOR_VERSION)
 # Produce the output files
 #--------------------------------------------------------------------
 AC_OUTPUT(config.h config.make openapp debugapp opentool 
-executable.template GNUmakefile GNUstep.sh GNUstep.csh gnustep-make.spec 
-Documentation/GNUmakefile, chmod a+x openapp debugapp \
-opentool executable.template)
+executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh \
+gnustep-make.spec Documentation/GNUmakefile, chmod a+x openapp debugapp \
+opentool fixpath.sh executable.template)

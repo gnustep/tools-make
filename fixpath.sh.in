@@ -44,7 +44,7 @@ if [ "$operation" = "-u" ]; then
   #
   # convert to Unix style file name
   #
-  if [ "$GNUSTEP_HOST_OS" = "cygwin" ]; then
+  if [ "@CYGWIN@" = "yes" ]; then
     #
     # drive:directory --> /cygdrive/drive/directory
     #
@@ -64,7 +64,7 @@ else
   #
   # convert to Windows style file name
   #
-  if [ "$GNUSTEP_HOST_OS" = "cygwin" ]; then
+  if [ "@CYGWIN@" = "yes" ]; then
     #
     # /cygdrive/drive/directory --> drive:directory
     #

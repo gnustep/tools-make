@@ -1,3 +1,10 @@
+2002-03-12 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* fixpath.sh: Removed
+	* fixpath.sh.in: new file
+	* configure.in: generate fixpath.sh from fixpath.sh.in to control
+	whether it fixes cygwin or mingw/msys style paths.
+
 2002-03-11 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* cygpath.sh: Removed ... replaced by fixpath.sh which should handle
