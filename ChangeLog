@@ -1,3 +1,8 @@
+Fri Jan 11 10:34:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in (ac_word, ac_dummy, ac_dir, ac_save_ifs): Renamed
+	to word, dummy, dir, save_ifs.
+
 Fri Jan 11 09:58:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in (ac_word, ac_dummy, ac_dir, ac_save_ifs): Unset
