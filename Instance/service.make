@@ -60,13 +60,15 @@ SERVICE_DIR_NAME = $(GNUSTEP_INSTANCE:=.service)
 #
 SERVICE_FILE = $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
 
-# Copy any resources into $(SERVICE_DIR_NAME)/Resources
+ifeq ($(SERVICE_INSTALL_DIR),)
+  SERVICE_INSTALL_DIR = $(GNUSTEP_SERVICES)
+endif
+
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(SERVICE_DIR_NAME)/Resources
+GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(SERVICE_DIR_NAME)
+GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(SERVICE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-#
-# Compilation targets
-#
 internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
                         $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
                         $(SERVICE_FILE) \
@@ -98,24 +100,15 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 #
 # Install targets
 #
-
-$(GNUSTEP_SERVICES):
+$(SERVICE_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-internal-service-install_:: $(GNUSTEP_SERVICES)
-	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME); \
-	$(TAR) cf - $(SERVICE_DIR_NAME) \
-	  | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)$(END_ECHO)
-ifneq ($(CHOWN_TO),)
-	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)$(END_ECHO)
-endif
+internal-service-install_:: shared-instance-bundle-install
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(GNUSTEP_SERVICES)/$(SERVICE_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(SERVICE_INSTALL_DIR)/$(SERVICE_FILE)$(END_ECHO)
 endif
 
-internal-service-uninstall_::
-	$(ECHO_UNINSTALLING)cd $(GNUSTEP_SERVICES); rm -rf $(SERVICE_DIR_NAME)$(END_ECHO)
-
+internal-service-uninstall_:: shared-instance-bundle-uninstall
 
 #
 # Cleaning targets

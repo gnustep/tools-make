@@ -58,8 +58,13 @@ endif
 PALETTE_DIR_NAME = $(GNUSTEP_INSTANCE).palette
 PALETTE_FILE = $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
 
-# Copy any resources into $(PALETTE_DIR_NAME)/Resources
+ifeq ($(PALETTE_INSTALL_DIR),)
+  PALETTE_INSTALL_DIR = $(GNUSTEP_PALETTES)
+endif
+
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(PALETTE_DIR_NAME)/Resources
+GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(PALETTE_DIR_NAME)
+GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(PALETTE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
@@ -91,11 +96,6 @@ ifeq ($(PALETTE_ICON),)
   PALETTE_ICON = $(GNUSTEP_INSTANCE)
 endif
 
-ifeq ($(PALETTE_INSTALL_DIR),)
-  PALETTE_INSTALL_DIR = $(GNUSTEP_PALETTES)
-endif
-
-
 $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist: $(PALETTE_DIR_NAME)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
@@ -119,22 +119,16 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 #
 # Install, clean targets
 #
+$(PALETTE_INSTALL_DIR):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-internal-palette-install_:: $(PALETTE_INSTALL_DIR)
-	$(ECHO_INSTALLING)tar cf - $(PALETTE_DIR_NAME) \
-	  | (cd $(PALETTE_INSTALL_DIR); tar xf -)$(END_ECHO)
-ifneq ($(CHOWN_TO),)
-	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)$(END_ECHO)
-endif
+internal-palette-install_:: shared-instance-bundle-install
 ifeq ($(strip),yes)
 	$(ECHO_STRIPPING)$(STRIP) $(PALETTE_INSTALL_DIR)/$(PALETTE_FILE)$(END_ECHO)
 endif
 
-$(PALETTE_INSTALL_DIR):
-	$(ECHO_CREATING)$(MKINSTALLDIRS) $(PALETTE_INSTALL_DIR)$(END_ECHO)
+internal-palette-uninstall_:: shared-instance-bundle-uninstall
 
-internal-palette-uninstall_::
-	$(ECHO_NOTHING)rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)$(END_ECHO)
 
 internal-palette-distclean::
 	$(ECHO_NOTHING)rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
