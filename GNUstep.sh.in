@@ -114,11 +114,11 @@ fi
 export GNUSTEP_USER_ROOT
 
 #
-# GNUSTEP_PATHPREFIX_LIST is like an abstract path-like shell
+# GNUSTEP_PATHLIST is like an abstract path-like shell
 # variable, which can be used to search the gnustep directories - and
 # in these scripts, it is also used to set up other shell variables
 #
-if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
+if [ -z "$GNUSTEP_PATHLIST" ]; then
 
   # If we need to convert win32 paths, this is the time!
   if [ -z "`echo $GNUSTEP_SYSTEM_ROOT | sed 's|^[a-zA-Z]:/.*$||'`" ]; then
@@ -134,20 +134,20 @@ if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
   fi
 
   # Now we basically want to build
-  # GNUSTEP_PATHPREFIX_LIST="$G_U_R:$G_L_R:$G_N_R:$G_S_R"
+  # GNUSTEP_PATHLIST="$G_U_R:$G_L_R:$G_N_R:$G_S_R"
   # but we want to remove duplicates.
 
   # Start with $G_U_R:$G_L_R - or $G_U_R if they are the same
   if [ "$G_L_R" != "$G_U_R" ]; then
-    GNUSTEP_PATHPREFIX_LIST="$G_U_R:$G_L_R"
+    GNUSTEP_PATHLIST="$G_U_R:$G_L_R"
   else
-    GNUSTEP_PATHPREFIX_LIST="$G_U_R"
+    GNUSTEP_PATHLIST="$G_U_R"
   fi
 
   # Now append $G_N_R but only if different from what already there
   if [ "$G_N_R" != "$G_U_R" ]; then
     if [ "$G_N_R" != "$G_L_R" ]; then
-      GNUSTEP_PATHPREFIX_LIST="$GNUSTEP_PATHPREFIX_LIST:$G_N_R"
+      GNUSTEP_PATHLIST="$GNUSTEP_PATHLIST:$G_N_R"
     fi
   fi
 
@@ -155,7 +155,7 @@ if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
   if [ "$G_S_R" != "$G_U_R" ]; then
     if [ "$G_S_R" != "$G_L_R" ]; then
       if [ "$G_S_R" != "$G_N_R" ]; then
-        GNUSTEP_PATHPREFIX_LIST="$GNUSTEP_PATHPREFIX_LIST:$G_S_R"
+        GNUSTEP_PATHLIST="$GNUSTEP_PATHLIST:$G_S_R"
       fi
     fi
   fi
@@ -165,7 +165,7 @@ if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
   unset G_N_R
   unset G_S_R
 
-  export GNUSTEP_PATHPREFIX_LIST
+  export GNUSTEP_PATHLIST
 fi
 
 #
@@ -174,7 +174,7 @@ fi
 tmp_IFS="$IFS"
 IFS=:
 temp_path=
-for dir in $GNUSTEP_PATHPREFIX_LIST; do
+for dir in $GNUSTEP_PATHLIST; do
 
   # Prepare the path_fragment
   if [ -z "$GNUSTEP_FLATTENED" ]; then
@@ -211,7 +211,7 @@ export PATH
 tmp_IFS="$IFS"
 IFS=:
 gnustep_class_path=
-for dir in $GNUSTEP_PATHPREFIX_LIST; do
+for dir in $GNUSTEP_PATHLIST; do
 
   if [ -z "$gnustep_class_path" ]; then
     gnustep_class_path="$dir/Libraries/Java"

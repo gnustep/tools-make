@@ -48,9 +48,9 @@ function reset_path
   # Loop on the paths
   for dir in $original_path; do
     # For each of them, keep it only if it's not beginning with
-    # a path in GNUSTEP_PATHPREFIX_LIST as prefix
+    # a path in GNUSTEP_PATHLIST as prefix
     found=no;
-    for gnustep_dir in $GNUSTEP_PATHPREFIX_LIST; do
+    for gnustep_dir in $GNUSTEP_PATHLIST; do
       if [ -n "$gnustep_dir" ]; then
         case $dir in
           $gnustep_dir*)  found=yes; break;;
@@ -89,7 +89,7 @@ reset_path PATH
 # want to pollute the environment with it.
 unset -f reset_path
 
-unset GNUSTEP_PATHPREFIX_LIST
+unset GNUSTEP_PATHLIST
 unset GNUSTEP_USER_ROOT
 unset GNUSTEP_HOST_OS
 unset GNUSTEP_HOST_VENDOR

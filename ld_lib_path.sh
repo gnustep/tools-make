@@ -40,7 +40,7 @@ fi
 old_IFS="$IFS"
 IFS=:
 lib_paths=
-for dir in $GNUSTEP_PATHPREFIX_LIST; do
+for dir in $GNUSTEP_PATHLIST; do
 
   # prepare the path_fragment for this dir
   if [ -z "$GNUSTEP_FLATTENED" ]; then
@@ -133,7 +133,7 @@ unset lib_paths
 old_IFS="$IFS"
 IFS=:
 guile_paths=
-for dir in $GNUSTEP_PATHPREFIX_LIST; do
+for dir in $GNUSTEP_PATHLIST; do
 
   if [ -z "$guile_paths" ]; then
     guile_paths="$dir/Libraries/Guile"

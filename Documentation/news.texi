@@ -9,7 +9,7 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
-@section Changes in version @samp{1.3.2}
+@section Changes in version @samp{1.3.3}
 
 @itemize @bullet
 @item Recognizes XXX_STANDARD_INSTALL=no to not do installation.

@@ -200,7 +200,7 @@ as `/etc/bashrc', where you could add lines similar to these:
 variables; thus making them available for all users. Before executing
 this script, you can setup a default path for scripts in the makefiles
 package to use for searching for tools and apps by defining the
-variable GNUSTEP_PATHPREFIX_LIST (and exporting it). By default, it's
+variable GNUSTEP_PATHLIST (and exporting it). By default, it's
 set to
 
      $GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT

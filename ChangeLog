@@ -1,3 +1,17 @@
+2002-06-18  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep-reset.sh: Change GNUSTEP_PATHPREFIX_LIST to
+	GNUSTEP_PATHLIST for compatibility with many shells (variable was
+	too long).
+	* GNUstep.csh.in: Idem
+	* GNUstep.sh.in: Idem
+	* debugapp.in: Idem
+	* executable.template.in: Idem
+	* ld_lib_path.sh: Idem
+	* openapp.in: Idem
+	* opentool.in: Idem
+	* Documentation/install.texi: Idem
+
 Mon Jun 17 18:56:39 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (internal-distclean): Remove program.core as

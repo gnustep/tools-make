@@ -73,13 +73,13 @@ endif
 #
 # Add the GNUstep tools directories to the path
 #
-if ( ! ${?GNUSTEP_PATHPREFIX_LIST} ) then
-  setenv GNUSTEP_PATHPREFIX_LIST \
+if ( ! ${?GNUSTEP_PATHLIST} ) then
+  setenv GNUSTEP_PATHLIST \
          ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_NETWORK_ROOT}:${GNUSTEP_SYSTEM_ROOT}
 endif
 
 set temp_path = ""
-foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX_LIST}; do echo $i; done'` )
+foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHLIST}; do echo $i; done'` )
   set temp_path=${temp_path}${dir}/Tools:
   if ( "${GNUSTEP_FLATTENED}" == "" ) then
     set temp_path=${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:
@@ -96,7 +96,7 @@ unset temp_path dir
 
 source ${GNUSTEP_MAKEFILES}/ld_lib_path.csh
 
-# FIXME/TODO - use GNUSTEP_PATHPREFIX_LIST here
+# FIXME/TODO - use GNUSTEP_PATHLIST here
 set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
 
 if ( ! ${?CLASSPATH} ) then

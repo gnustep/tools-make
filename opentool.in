@@ -25,8 +25,8 @@
 # is not specified. The arguments passed after the tool name are passed
 # unmodified to the tool.
 
-if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
-  echo "The GNUSTEP_PATHPREFIX_LIST environment variable is missing."
+if [ -z "$GNUSTEP_PATHLIST" ]; then
+  echo "The GNUSTEP_PATHLIST environment variable is missing."
   echo "Did you forget to set up your environment using GNUstep.sh ?"
   exit 1
 fi
@@ -94,7 +94,7 @@ case $tool in
 	if [ -z "$full_toolname" ]; then 
           
           # Local tool not found - Search for an installed one
-          # we search in GNUSTEP_PATHPREFIX_LIST, which means we
+          # we search in GNUSTEP_PATHLIST, which means we
           # search in the order in:
           # GNUSTEP_USER_ROOT
           # GNUSTEP_LOCAL_ROOT
@@ -106,8 +106,8 @@ case $tool in
 	  # subdirectory, then the top-level directory.
 	  # (For flattened systems we skip the first two options.
 	  #
-          if [ -n "$GNUSTEP_PATHPREFIX_LIST" ]; then
-            SPATH=$GNUSTEP_PATHPREFIX_LIST
+          if [ -n "$GNUSTEP_PATHLIST" ]; then
+            SPATH=$GNUSTEP_PATHLIST
 	    IFS=:
 	    for dir in $SPATH; do
 	      tmpdir=$dir/Tools

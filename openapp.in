@@ -58,8 +58,8 @@ case $app in
   */*)	# A relative path
 	full_appname=`(cd $app; pwd)`;;
   *)	# A path that should be searched into the GNUstep paths
-	if [ -n $GNUSTEP_PATHPREFIX_LIST ]; then
-	    SPATH=$GNUSTEP_PATHPREFIX_LIST
+	if [ -n $GNUSTEP_PATHLIST ]; then
+	    SPATH=$GNUSTEP_PATHLIST
 	else
 	    SPATH=$PATH
 	fi
