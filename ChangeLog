@@ -1,3 +1,12 @@
+Fri Aug  9 11:15:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Patch from Peter Cooper <comrade@obverse.com.au> with minor
+	modifications:
+	* target.make: Updated netbsdelf code.  In particular,
+	LIBRARIES_DEPEND_UPON should now work for netbsdelf.
+	* configure.ac: Updated netbsdelf code.
+	* conigure: Regenerated.
+	
 2002-08-08 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/documentation.make: Order autogsdoc flags so that those
