@@ -25,6 +25,7 @@
 # Binary and compile tools
 #
 CC = @CC@
+OPTFLAG = @CFLAGS@
 
 EXEEXT = @EXEEXT@
 OEXT = .o

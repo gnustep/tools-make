@@ -1,3 +1,19 @@
+1999-02-27  Matthias Klose  <doko@cs.tu-berlin.de>
+
+        * make/target.make: Link shared libs against other libs (Linux only,
+          should be possible for all ELF targets).
+
+1999-02-28  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in: Use CFLAGS from configure rather than setting
+	our own.
+	* config.make.in (OPTFLAG): Use CFLAGS from configure.
+	* common.make (OPTFLAG): Remove -O if debugging
+
+	* debugapp.in: Remove basename so debugapp can be used to run
+	programs in other directories.
+	(patches submitted by Christopher Seawood <cls@seawood.org>).
+
 Thu Feb 25 20:25:04 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
 	* service.make ($(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist:): 
