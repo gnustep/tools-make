@@ -149,7 +149,7 @@ ifneq ($(LATEX_FILES),)
 #
 # Targets which are always built
 #
-$(INTERNAL_doc_NAME).dvi: $(INTERNAL_doc_NAME).tex 
+$(INTERNAL_doc_NAME).dvi: $(LATEX_FILES)
 	latex $(INTERNAL_doc_NAME).tex
 	latex $(INTERNAL_doc_NAME).tex
 
@@ -292,6 +292,11 @@ ifneq ($(GSDOC_FILES),)
 		rm -f `basename $$i .gsdoc`.html ; \
 	done
 endif
+ifneq ($(LATEX_FILES),)
+	for i in $(LATEX_FILES); do \
+		rm -f `basename $$i .tex`.aux ; \
+	done
+endif
 
 internal-textdoc-clean::
 	rm -f $(INTERNAL_textdoc_NAME)
@@ -306,6 +311,7 @@ ifneq ($(LATEX_FILES),)
 internal-doc-distclean::
 	rm -Rf $(INTERNAL_doc_NAME)
 	rm -Rf *~ 
+	rm -Rf *.aux
 else # ! LATEX_FILES
 internal-doc-distclean::
 	rm -Rf *~ 
