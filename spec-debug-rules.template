@@ -27,7 +27,7 @@ fi
 # build the non debugging file list
 mkdir tmp-rpm-build-%{gs_name}
 make debug=no \
-  INSTALL_ROOT_DIR=`pwd`/tmp-rpm-build-%{gs_name}/ \
+  INSTALL_ROOT_DIR=`pwd`/tmp-rpm-build-%{gs_name} \
   GNUSTEP_INSTALLATION_DIR=`pwd`/tmp-rpm-build-%{gs_name}/%{gs_install_dir} \
   filelist=yes install
 rm -rf tmp-rpm-build-%{gs_name}
