@@ -11,3 +11,4 @@ config.status
 openapp
 debugapp
 executable.template
+opentool
