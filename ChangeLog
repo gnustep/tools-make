@@ -1,3 +1,16 @@
+Tue Mar  5 13:45:01 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/subproject.make: Modified to have resources, and manage
+	them by using Instance/Shared/bundle.make; put them into a
+	Resources/Subproject directory.  Removed a lot of framework
+	specific code obsoleted by the new more general code - tidied up
+	framework code to build headers.
+	* Master/subproject.make (internal-clean): Remove Resources/Subproject.
+	(internal-distclean): Remove Resources.
+	* Instance/Shared/bundle.make: If the instance has subprojects,
+	copy recursively resources from the subprojects
+	Resources/Subproject dir into the instance resource bundle.
+	
 Tue Mar  5 13:09:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/headers.make (HEADER_FILES): Do not define
