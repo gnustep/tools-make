@@ -1,3 +1,12 @@
+Sun Jan 20 00:19:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: Removed GNUSTEP_SYSTEM_HEADERS,
+	GNUSTEP_LOCAL_HEADERS, GNUSTEP_USER_HEADERS,
+	GNUSTEP_NETWORK_HEADERS variables.
+	(GNUSTEP_HEADERS_FND_FLAG): For the fd foundation, use
+	GNUSTEP_TARGET_DIR instead of
+	GNUSTEP_TARGET_CPU/GNUSTEP_TARGET_OS.
+	
 Sun Jan 20 00:02:17 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: Got rid of the GNUSTEP_HEADERS_TARGET_FLAGS
