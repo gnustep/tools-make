@@ -43,9 +43,9 @@ AC_ARG_ENABLE(system-root,
   [ 
     if test `basename $prefix` = System; then
       GNUSTEP_ROOT=`dirname $prefix`
-      GNUSTEP_PREFIX='$(prefix)/..'
     else
       prefix=$prefix/System
+      GNUSTEP_PREFIX='$(prefix)/..'
     fi
   ],
   [

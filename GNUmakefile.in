@@ -61,8 +61,7 @@ which_lib$(EXEEXT): which_lib.c
 	$(CC) @CFLAGS@ -Wall -o $@ $^
 
 install: all
-	$(srcdir)/mkinstalldirs $(GNUSTEP_PREFIX) $(makedir) \
-		$(prefix) \
+	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(tooldir) \

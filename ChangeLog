@@ -1,3 +1,10 @@
+1999-10-17  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (OSF): Set SHARED_LIBRARIES to yes.
+
+	* configure.in (GNUSTEP_PREFIX): Was set in wrong place for
+	separate system root.
+
 1999-10-14  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (AUXILIARY_CPPFLAGS): Change from ADDITIONAL... so

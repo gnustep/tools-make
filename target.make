@@ -420,7 +420,7 @@ endif
 # OSF
 #
 ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
-HAVE_SHARED_LIBS	= no
+HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
 	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\

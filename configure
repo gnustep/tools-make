@@ -592,9 +592,9 @@ if test "${enable_system_root+set}" = set; then
    
     if test `basename $prefix` = System; then
       GNUSTEP_ROOT=`dirname $prefix`
-      GNUSTEP_PREFIX='$(prefix)/..'
     else
       prefix=$prefix/System
+      GNUSTEP_PREFIX='$(prefix)/..'
     fi
   
 else
