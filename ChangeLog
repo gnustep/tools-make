@@ -1,3 +1,8 @@
+Wed Dec 16 13:46:09 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* target.make (AFTER_INSTALL_SHARED_LIB_COMMAND): New macro for
+ 	Linux (patch from Matthias Klose <doko@cs.tu-berlin.de>).
+
 Tue Dec 15 12:36:52 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* GNUmakefile.in: Add $(EXEEXT) to which_lib
