@@ -123,21 +123,19 @@ ifneq ($(FOUNDATION_LIB),nx)
 # We want to check that this path is in the PATH
 SYS_TOOLS_PATH = $(GNUSTEP_SYSTEM_ROOT)/Tools
 
-# But on windows we might need to first fix it up ...
-ifeq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
-  ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
-    SYS_TOOLS_PATH := $(shell $(GNUSTEP_MAKEFILES)/fixpath.sh -u $(SYS_TOOLS_PATH))
-  endif
-endif
+# But on cygwin we might need to first fix it up ...
 ifeq ($(findstring cygwin, $(GNUSTEP_HOST_OS)), cygwin)
   ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
     SYS_TOOLS_PATH := $(shell $(GNUSTEP_MAKEFILES)/fixpath.sh -u $(SYS_TOOLS_PATH))
   endif
 endif
 
-ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
-  $(warning WARNING: Your PATH may not be set up correctly !)
-  $(warning Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+# Under mingw paths are so confused this warning is not worthwhile
+ifneq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
+  ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
+    $(warning WARNING: Your PATH may not be set up correctly !)
+    $(warning Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+  endif
 endif
 
 endif # code used when FOUNDATION_LIB != nx
