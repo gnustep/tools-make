@@ -103,6 +103,22 @@ else
   LIBRARY_NAME_WITHOUT_LIB = $(GNUSTEP_INSTANCE)
 endif
 
+# On windows, this is unfortunately required.
+ifeq ($(BUILD_DLL), yes)
+  LINK_AGAINST_ALL_LIBS = yes
+endif
+
+ifeq ($(LINK_AGAINST_ALL_LIBS), yes)
+# Link against all libs ... but not the one we're compiling! (this can
+# happen, for example, with gnustep-gui)
+LIBRARIES_DEPEND_UPON += $(filter-out -l$(LIBRARY_NAME_WITHOUT_LIB), \
+   $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
+   $(BACKEND_LIBS) \
+   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
+   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+endif
+
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
   $(shell $(WHICH_LIB_SCRIPT)					\
    $(ALL_LIB_DIRS)						\
