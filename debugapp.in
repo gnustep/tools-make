@@ -77,10 +77,6 @@ fi
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
 
-if [ -n "$EXEEXT" ]; then
-  app=$app$EXEEXT
-fi
-
 case $app in
   /*)	# An absolute path.
 	full_appname=$app;;
@@ -159,6 +155,7 @@ fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`
 appname=`basename $appname`
+appname="$appname$EXEEXT"
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 
@@ -184,9 +181,9 @@ else
   fi
 
 if [ -z "$GNUSTEP_FLATTENED" ]; then
-	file_appname=$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
+  file_appname="$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname"
 else
-	file_appname=$full_appname/$appname
+  file_appname="$full_appname/$appname"
 fi
 
 #Support for GDBbundle under OPENSTEP
