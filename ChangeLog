@@ -1,3 +1,8 @@
+Mon Nov  3 23:30:47 2003  Marcus Muller <znek@mulle-kybernetik.com>
+
+	* library-combo.make (INTERNAL_OBJCFLAGS): Do not add -framework
+	Foundation and -framework AppKit for Apple.
+
 Mon Nov  3 23:25:07 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make (build-framework): Do not build

@@ -159,8 +159,7 @@ ifeq ($(FOUNDATION_LIB), sun)
 endif
 
 ifeq ($(FOUNDATION_LIB), apple)
-  # -framework Foundation is used both to find headers, and to link
-  INTERNAL_OBJCFLAGS += -framework Foundation
+  # -framework Foundation is used only to link
   FND_LIBS   = -framework Foundation
   FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
   LIBRARIES_DEPEND_UPON += -framework Foundation
@@ -200,7 +199,7 @@ GUI_LIBS =
 #
 ifeq ($(GUI_LIB), nx)
   GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
-  # -framework AppKit is used both to find headers, and to find the library
+  # -framework AppKit is used both to find headers, and to link
   INTERNAL_OBJCFLAGS += -framework AppKit
   GUI_LIBS = -framework AppKit
   LIBRARIES_DEPEND_UPON += -framework AppKit
@@ -209,8 +208,7 @@ endif
 
 ifeq ($(GUI_LIB), apple)
   GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
-  # -framework AppKit is used both to find headers, and to find the library
-  INTERNAL_OBJCFLAGS += -framework AppKit
+  # -framework AppKit is used only to link
   GUI_LIBS = -framework AppKit
   LIBRARIES_DEPEND_UPON += -framework AppKit
 endif
