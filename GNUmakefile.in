@@ -75,7 +75,7 @@ install: all
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
-		MediaBook.func; do \
+		test-application.make test-tool.make MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
@@ -94,7 +94,7 @@ uninstall:
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
-		MediaBook.func; do \
+		test-application.make test-tool.make MediaBook.func; do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(prefix)/share/config.site

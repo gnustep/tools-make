@@ -1,3 +1,17 @@
+Fri Nov 14 12:51:16 1997  Scott Christley  <scottc@net-community.com>
+
+	* test-application.make: New file.
+	* test-tool.make: New file.
+	* GNUmakefile.in: Install new files.
+	* aggregate.make: Prevent multiple inclusions.
+	* application.make: Likewise.
+	* bundle.make: Likewise.
+	* library.make: Likewise.
+	* objc.make: Likewise.
+	* rules.make: Likewise.
+	* test-library.make: Likewise.
+	* tool.make: Likewise.
+
 Fri Nov 14 09:53:50 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* brain.make: Added defines for the GUI and backend libraries.

@@ -20,6 +20,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# prevent multiple inclusions
+ifeq ($(APPLICATION_MAKE_LOADED),)
+APPLICATION_MAKE_LOADED=yes
+
 #
 # Include in the common makefile rules
 #
@@ -166,3 +170,6 @@ internal-app-distclean::
 	  static_profile_debug_obj *.app *.debug *.profile *.iconheader
 
 endif
+
+endif
+# application.make loaded

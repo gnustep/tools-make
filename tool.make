@@ -25,6 +25,10 @@
 # xxx We need to prefix the target name when cross-compiling
 #
 
+# prevent multiple inclusions
+ifeq ($(TOOL_MAKE_LOADED),)
+TOOL_MAKE_LOADED=yes
+
 #
 # Include in the common makefile rules
 #
@@ -100,3 +104,6 @@ internal-tool-distclean::
 	  static_profile_debug_obj
 
 endif
+
+endif
+# tool.make loaded

@@ -20,6 +20,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# prevent multiple inclusions
+ifeq ($(BUNDLE_MAKE_LOADED),)
+BUNDLE_MAKE_LOADED=yes
+
 #
 # Include in the common makefile rules
 #
@@ -103,3 +107,5 @@ internal-bundle-distclean::
 
 endif
 
+endif
+# bundle.make loaded

@@ -20,6 +20,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# prevent multiple inclusions
+ifeq ($(LIBRARY_MAKE_LOADED),)
+LIBRARY_MAKE_LOADED=yes
+
 #
 # Include in the common makefile rules
 #
@@ -159,3 +163,6 @@ internal-library-distclean::
 internal-library-check::
 
 endif
+
+endif
+# library.make loaded

@@ -19,6 +19,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# prevent multiple inclusions
+ifeq ($(OBJC_PROGRAM_MAKE_LOADED),)
+OBJC_PROGRAM_MAKE_LOADED=yes
+
 #
 # The name of the ObjC program is in the OBJC_PROGRAM_NAME variable.
 #
@@ -104,3 +108,6 @@ internal-objc-program-distclean::
 	  static_profile_debug_obj
 
 endif
+
+endif
+# objc.make loaded

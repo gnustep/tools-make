@@ -20,6 +20,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# prevent multiple inclusions
+ifeq ($(AGGREGATE_MAKE_LOADED),)
+AGGREGATE_MAKE_LOADED=yes
+
 #
 # Include in the common makefile rules
 #
@@ -40,3 +44,6 @@ internal-all internal-install internal-uninstall internal-clean \
 		echo Making $$target in $$f...;\
 		(cd $$f; $(MAKE) --no-keep-going $$target); \
 	done)
+
+endif
+# aggregate.make loaded

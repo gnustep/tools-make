@@ -20,6 +20,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# prevent multiple inclusions
+ifeq ($(RULES_MAKE_LOADED),)
+RULES_MAKE_LOADED=yes
+
 # This part is included the first time make is invoked. This part defines the
 # global targets and the following implicit rule which determines the
 # TARGET_TYPE of the next thing to be build in the following make invocation
@@ -220,3 +224,5 @@ $(GNUSTEP_OBJ_DIR):
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs ./$(GNUSTEP_OBJ_DIR)
 endif
 
+endif
+# rules.make loaded
