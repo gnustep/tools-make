@@ -219,7 +219,7 @@ libtiff, libjpeg, and zlib
   http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-lib.zip
   http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-lib.zip
   http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-bin.zip
-  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-lib.zip
   Unpack and install
   the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Headers
   the library (.a) files in $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
