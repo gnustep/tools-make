@@ -328,7 +328,7 @@ endif
 
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
-		-dynamiclib $(ARCH_FLAGS) -prebind \
+		-dynamiclib $(ARCH_FLAGS) \
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
 		-install_name $(LIB_LINK_INSTALL_NAME)	\

@@ -1,3 +1,7 @@
+Tue Sep  7 12:48:31 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (SHARED_LIB_LINK_CMD): Removed -prebind flag.
+
 2004-09-06  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Don't reset LIB_DIR.
