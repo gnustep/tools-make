@@ -1,3 +1,13 @@
+2004-06-16  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile (distclean): Remove duplicate GNUmakefile removal
+	Don't remove Documentation/GNUmakefile
+
+	* Documentation/machines.texi: Update
+
+	* Instance/resource-set.make (internal-resource_set-uninstall_):
+	Remove directories after removing files.
+
 Tue Jun 15 09:49:16 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in: Detect if we're running under zsh, and if so, if

@@ -171,16 +171,17 @@ endif
 
 
 internal-resource_set-uninstall_:
+ifneq ($(LOCALIZED_RESOURCE_FILES),)
+	-$(ECHO_NOTHING)for language in $(LANGUAGES); do \
+	  for file in $(LOCALIZED_RESOURCE_FILES); do \
+	    rm -rf $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$language.lproj/$$file;\
+	  done; \
+	  rmdir $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$language.lproj; \
+	done$(END_ECHO)
+endif
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_NOTHING)for file in $(RESOURCE_FILES); do \
 	  rm -rf $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$file ; \
 	done$(END_ECHO)
+	-rmdir $(RESOURCE_FILES_FULL_INSTALL_DIR)
 endif
-ifneq ($(LOCALIZED_RESOURCE_FILES),)
-	$(ECHO_NOTHING)for language in $(LANGUAGES); do \
-	  for file in $(LOCALIZED_RESOURCE_FILES); do \
-	    rm -rf $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$language.lproj/$$file;\
-	  done; \
-	done$(END_ECHO)
-endif
-

@@ -4,7 +4,7 @@
 
 @ifclear HOWTO
 @c Machine Specific, Darwin/ix86, , (DIR)
-@node Machine Specific, Darwin/ix86, , (DIR)
+@node Machine Specific
 @chapter Machines
 @end ifclear
 
@@ -238,11 +238,6 @@ are installed. See the GNUstep-HOWTO for list of libraries.
 Unknown
 
 @item Special Instructions 
-If you're using zsh, some shell variables may not be set correctly when
-executing GNUstep.sh. Try turing on SH_WORD_SPLIT (e.g. 'zsh
---sh-word-split', 'zsh -o shwordsplit', 'zsh -y' or by setting 'setopt
-SH_WORD_SPLIT' in one of zsh's startup files.)
-
 For gcc 3.0.4, make WANT_THREADS_SUPPORT=YES
 
 For libxml2 2.4.24, make WITHOUT_PYTHON=YES
@@ -516,11 +511,13 @@ See the Solaris 2.6 section for more instructions.
 
 @c -----------------------------------------
 @node Solaris/Sparc, Solaris 2.7/Intel, Solaris 2.5.1/Sparc, Machine Specific
-@section Solaris 2.[67]/Sparc
+@section Solaris 2.[678]/Sparc
+
+Tested on Solaris version 6, 7, and 8
 
 @table @samp
 @item Recommended compiler
-gcc 3.2.1
+gcc 3.2.1 or greater
 gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
 gcc 3.04. Not 3.1 - does not compile parts of GNUstep.
 
@@ -528,9 +525,6 @@ gcc 3.04. Not 3.1 - does not compile parts of GNUstep.
 tiff, Don't use the one in /usr/openwin
 
 @item Special Instructions 
-No libffi-support unless you use the patch
-@url{http://gcc.gnu.org/ml/java-patches/2002-q3/msg00036.html} (not
-particularly recommended).
 
 Using a POSIX shell (zsh or bash, which should come with Solaris) is
 highly recommended. In fact, some functions, such as compiling frameworks,

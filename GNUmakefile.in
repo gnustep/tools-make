@@ -261,12 +261,10 @@ distclean: clean
 	rm -f debugapp
 	rm -f opentool
 	rm -f executable.template
-	rm -f GNUmakefile
 	rm -f GNUstep.sh
 	rm -f GNUstep.csh
 	rm -f fixpath.sh
 	rm -f gnustep-make.spec
-	rm -f Documentation/GNUmakefile
 
 cvs-tag:
 	cvs -z3 rtag make-$(VERTAG) make
