@@ -1,3 +1,8 @@
+2000-07-16  Adam Fedor  <fedor@gnu.org>
+
+	* palette.make (PALETTE_INSTALL_DIR): Default to GNUSTEP_PALETTES
+	if not set.
+
 2000-07-14  Adam Fedor  <fedor@gnu.org>
 
 	* common.make (GNUSTEP_HEADERS_GUI_FLAG): Remove.
