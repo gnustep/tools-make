@@ -1,3 +1,11 @@
+Fri Jan 31 01:20:59 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* openapp.in: Added new option --find.  Calling 'openapp --find
+	Ink' will search for the Ink application as usual, but then only
+	print out the full path of the application instead of executing
+	it.  Replaced `basename $0` with openapp in messages.  Do not talk
+	of unimplemented --library-combo option in messages.
+
 Thu Jan 30 17:32:37 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Documentation/gsdoc.make: Use autogsdoc, not gsdoc, to
