@@ -198,18 +198,18 @@ if [ -z "$GNUSTEP_FLATTENED" ]; then
   TDIR=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
   if [ -x "$TDIR/$LIBRARY_COMBO/make_services" ]
   then
-    "$TDIR/$LIBRARY_COMBO/make_services" &
+    ("$TDIR/$LIBRARY_COMBO/make_services" &)
   else
     if [ -x "$TDIR/make_services" ]
     then
-      "$TDIR/make_services" &
+      ("$TDIR/make_services" &)
     fi
   fi
 else
   TDIR=$GNUSTEP_SYSTEM_ROOT/Tools
   if [ -x "$TDIR/make_services" ]
   then
-    "$TDIR/make_services" &
+    ("$TDIR/make_services" &)
   fi
 fi
 unset TDIR
