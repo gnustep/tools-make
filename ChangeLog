@@ -3,6 +3,8 @@
 	* library.make (DLL_INSTALLATION_DIR): New default location for
 	installing DLLs.
 
+	* common.make (JAVA_HOME): Check if 'which' returns a path.
+
 2000-09-11  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.in: Added test for libxml so we link with it if it is
