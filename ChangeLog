@@ -1,3 +1,10 @@
+Sun Mar 18 14:49:31 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (generated-files): Added opentool,
+	executable.template and gnustep-make.spec.in which were missing;
+	added missing rules for executable.template and gnustep-make.spec.
+	* opentool.in (case $tool in */*): Fixed case of relative path.
+	
 Sat Mar 17 00:11:52 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* application.make ($(APP_FILE)): Micro optimization: Replace 
