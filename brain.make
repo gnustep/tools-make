@@ -219,7 +219,7 @@ ifeq ($(GUI_BACKEND_LIB),xraw)
 SYSTEM_INCLUDES = $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(X_LIBS)
-SYSTEM_LIBS = -ltiff -lpsres -lX11
+SYSTEM_LIBS = -ltiff -ldps -lpsres -lX11
 endif
 
 #
