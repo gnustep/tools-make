@@ -1,3 +1,10 @@
+Thu Sep 25 23:31:30 1997  Scott Christley <scottc@net-community.com>
+
+	* library.make (internal-install-lib): Install correct file.
+	* common.make (GNUSTEP_TARGET_HEADERS): New variable.
+	* rules.make (ALL_OBJCFLAGS, ALL_CFLAGS): Add target header
+	directory to include directories.
+
 Thu Sep 25 20:20:50 1997  Scott Christley <scottc@net-community.com>
 
 	* Makefile.in (config.site): Install in share directory not

@@ -75,8 +75,8 @@ internal-install-libs:: internal-install-lib \
     internal-install-import-lib
 
 internal-install-lib::
-	if [ -e $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) ]; then \
-	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) \
+	if [ -e $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
 	    $(GNUSTEP_LIBRARIES) ; \
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
