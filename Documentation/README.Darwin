@@ -164,7 +164,11 @@ Building and installing GNUstep-gui
 
 Go to gnustep-gui (or from CVS into the core/gui directory), and type
 
+  ./configure --disable-gsnd
+  make
   make install
+
+Note: The gsnd server hasn't been ported to Darwin yet.
 
 
 Building and installing GNUstep-back
@@ -172,6 +176,15 @@ Building and installing GNUstep-back
 
 In the back directory, type
 
+  ./configure
+  make
+  make install
+
+or if you have the freetype and libart libraries installed and want to use
+the art backend:
+
+  ./configure --enable-graphics=art
+  make
   make install
 
 GNUstep only runs within X-Windows, so you need to start up an X Server to

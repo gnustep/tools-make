@@ -1,3 +1,7 @@
+2004-01-25  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.Darwin: Update.
+
 2004-01-21  Adam Fedor  <fedor@gnu.org>
 
 	* clean_os.sh: Add darwin7
