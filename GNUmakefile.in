@@ -192,7 +192,7 @@ rpm: tgz
 	cd $(RPM_TOPDIR)/SPECS/
 	rpm -ba gnustep-make.spec
 
-generated-files: GNUmakefile GNUstep.sh GNUstep.csh config.h config.make debugapp openapp
+generated-files: GNUmakefile GNUstep.sh GNUstep.csh config.h config.make debugapp openapp opentool gnustep-make.spec executable.template
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -216,4 +216,10 @@ openapp: openapp.in
 	$(SHELL) config.status
 
 opentool: opentool.in
+	$(SHELL) config.status
+
+gnustep-make.spec: gnustep-make.spec.in
+	$(SHELL) config.status
+
+executable.template: executable.template.in
 	$(SHELL) config.status
