@@ -1,3 +1,8 @@
+2001-01-25 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.in: Added check for recent versions of GMP
+	* configure: Regenerated.
+
 Mon Jan 22 12:55:13 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in (LD_LIBRARY_PATH): set it before running the tests
