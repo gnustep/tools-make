@@ -1,3 +1,9 @@
+Sat Oct  5 01:05:47 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* mkinstalldirs (MKDIR): Do not test for 'mkdir -p'; always use
+	'mkdir'.  The test for 'mkdir -p' was itself subject to race
+	conditions.  Do not echo what is done.
+
 Sat Oct  5 00:50:41 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* executable.template.in (app): Do not run a sed subprocess to
