@@ -1,3 +1,8 @@
+Fri May 29 13:31:36 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* common.make (ADDITIONAL_FLAGS): Add -DDEBUG for debug=yes.
+	* target.make (HP-UX SHARED_LINK): Add */*.o files.
+
 Tue Apr 14 22:45:38 1998  Ovidiu Predescu  <ovidiu@aracnet.com>
 
 	* test-tool.make (internal-testtool-check): New target.

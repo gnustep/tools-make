@@ -254,7 +254,7 @@ OBJ_DIR_PREFIX += profile_
 endif
 
 ifeq ($(debug), yes)
-ADDITIONAL_FLAGS += -g
+ADDITIONAL_FLAGS += -g -DDEBUG
 OBJ_DIR_PREFIX += debug_
   LIBRARY_NAME_SUFFIX := d$(LIBRARY_NAME_SUFFIX)
 endif
