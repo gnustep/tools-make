@@ -1,3 +1,26 @@
+Thu Sep 26 02:16:48 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/ctool.make
+	($(CTOOL_INSTALLATION_DIR)/$(GNUSTEP_TARGET_LDIR)): Do not echo
+	the command; use $@ syntax in command.
+	* Instance/tool.make (internal-tool-uninstall_): Do nothing if
+	NULL_INSTALL is YES.
+	
+Thu Sep 26 02:01:04 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Warning: tiny incompatible API change.
+	* Instance/tool.make (TOOL_INSTALL_DIR): New variable replacing
+	TOOL_INSTALLATION_DIR, but not including TARGET_LDIR to be
+	consistent with LIBRARY_INSTALL_DIR and BUNDLE_INSTALL_DIR, and
+	preparing the way for bundle resources for tools.  Updated the
+	whole makefile to work with the new variable.
+	(TOOL_INSTALLATION_DIR): Emit a deprecation warning if it's used.
+	* Instance/ctool.make: Perfectly similar changes.
+	* Instance/objc.make: Perfectly similar changes.
+	* Instance/java.make (JAVA_INSTALLATION_DIR): Renamed to be
+	JAVA_INSTALL_DIR.  We still accept the old name, but the new one
+	should be preferred.
+
 Thu Sep 26 01:47:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/bundle.make: Renamed all
