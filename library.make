@@ -206,13 +206,26 @@ import-library::
 internal-library-install:: internal-install-dirs internal-install-lib \
 	internal-install-headers
 
-internal-install-dirs::
-	$(MKDIRS) \
-		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
-		$(GNUSTEP_LIBRARIES) \
-		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
-		$(DLL_INSTALLATION_DIR) \
-		$(ADDITIONAL_INSTALL_DIRS)
+# Depend on creating all the dirs
+internal-install-dirs:: $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) $(GNUSTEP_LIBRARIES) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) $(DLL_INSTALLATION_DIR) $(ADDITIONAL_INSTALL_DIRS)
+
+# Now the rule to create each dir.  NB: Nothing gets executed if the dir 
+# already exists
+$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR):
+	$(MKDIRS) $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR)
+
+$(GNUSTEP_LIBRARIES):
+	$(MKDIRS) $(GNUSTEP_LIBRARIES)
+
+$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR):
+	$(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)
+
+$(DLL_INSTALLATION_DIR):
+	$(MKDIRS) $(DLL_INSTALLATION_DIR)
+
+$(ADDITIONAL_INSTALL_DIRS):
+	$(MKDIRS) $(ADDITIONAL_INSTALL_DIRS)
+
 
 internal-install-headers::
 	if [ "$(HEADER_FILES)" != "" ]; then \
