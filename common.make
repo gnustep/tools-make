@@ -469,6 +469,17 @@ endif
 BUNDLE_EXTENSION = .bundle
 CURRENT_VERSION_NAME = A
 DEPLOY_WITH_CURRENT_VERSION = yes
+ifeq ($(profile), yes)
+  APP_EXTENSION = profile
+else
+  ifeq ($(debug), yes)
+    APP_EXTENSION = debug
+  else
+    APP_EXTENSION = app
+  endif
+endif
+
+
 
 # We want total control over GNUSTEP_INSTANCE.
 # GNUSTEP_INSTANCE determines wheter it's a Master or an Instance
