@@ -157,22 +157,6 @@ after-$(TARGET)-all::
 FRAMEWORK_RESOURCE_DIRS = $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Resources/,$(RESOURCE_DIRS))
 FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/,$(WEBSERVER_RESOURCE_DIRS))
 
-
-ifeq ($(strip $(COMPONENTS)),)
-  override COMPONENTS=""
-endif
-ifeq ($(strip $(RESOURCE_FILES)),)
-  override RESOURCE_FILES=""
-endif
-ifeq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
-  override WEBSERVER_RESOURCE_FILES=""
-endif
-ifeq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-  override LOCALIZED_RESOURCE_FILES=""
-endif
-ifeq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
-  override LOCALIZED_WEBSERVER_RESOURCE_FILES=""
-endif
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
@@ -296,7 +280,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) \
 	echo "+ (NSString *)frameworkPath { return $$fw_path; }" >> $@; \
 	echo "+ (NSString *)frameworkVersion { return @\"$(CURRENT_VERSION_NAME)\"; }" >> $@; \
 	echo "static NSString *allClasses[] = {$$classlist};" >> $@; \
-	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@; \
+	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@;\
 	echo "@end" >> $@
 
 $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
@@ -305,7 +289,7 @@ $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 build-framework:: $(FRAMEWORK_FILE) \
                   framework-components \
                   framework-resource-files \
-                  localized-framework-resource-files \
+                  framework-localized-resource-files \
                   framework-localized-webresource-files \
                   framework-webresource-files
 
@@ -332,91 +316,100 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) \
 endif # WITH_DLL
 
 framework-components::
-	@(if [ "$(COMPONENTS)" != "" ]; then \
-	  echo "Copying components into the framework wrapper..."; \
-	  cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	  for component in $(COMPONENTS); do \
-	    if [ -d ../../../../$$component ]; then \
-	      cp -r ../../../../$$component ./; \
-	    fi; \
-	  done; \
-	  echo "Copying localized components into the framework wrapper..."; \
-	  for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then \
-	      $(MKDIRS) $$l.lproj; \
-	    fi; \
-	    cd $$l.lproj; \
-	    for f in $(COMPONENTS); do \
-	      if [ -d ../../../../../$$l.lproj/$$f ]; then \
-		cp -r ../../../../../$$l.lproj/$$f .;\
-	      fi; \
-	    done;\
-	    cd ..; \
-	  done;\
-	fi;)
-
-framework-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying resources into the framework wrapper..."; \
-	  for f in "$(RESOURCE_FILES)"; do \
-	    cp -r $$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	  done; \
-	fi;)
-
-localized-framework-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
-	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying localized resources into the framework wrapper..."; \
-	  for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then \
-	      $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-	    fi; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-	      fi; \
-	    done; \
-	  done; \
-	fi)
-
-framework-webresource-dir::
-	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ] || [ "$(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)" != "" ]; then \
-	  $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
-	  $(MKDIRS) $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS); \
-	  if test ! -L "$(FRAMEWORK_DIR_NAME)/WebServerResources"; then \
-	    $(LN_S) Versions/Current/WebServerResources $(FRAMEWORK_DIR_NAME);\
+ifneq ($(strip $(COMPONENTS)),)
+	@ echo "Copying components into the framework wrapper..."; \
+	cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
+	for component in $(COMPONENTS); do \
+	  if [ -d ../../../../$$component ]; then \
+	    cp -r ../../../../$$component ./; \
 	  fi; \
-	fi;)
+	done; \
+	echo "Copying localized components into the framework wrapper..."; \
+	for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj; \
+	  fi; \
+	  cd $$l.lproj; \
+	  for f in $(COMPONENTS); do \
+	    if [ -d ../../../../../$$l.lproj/$$f ]; then \
+	      cp -r ../../../../../$$l.lproj/$$f .;\
+	    fi; \
+	  done;\
+	  cd ..; \
+	done
+endif
 
-framework-webresource-files:: framework-webresource-dir
-	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying webserver resources into the framework wrapper..."; \
-	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
-	  for ff in $(WEBSERVER_RESOURCE_FILES); do \
-	    if [ -f ../../../../WebServerResources/$$ff ]; then \
-	      cp -r ../../../../WebServerResources/$$ff .; \
+framework-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist\
+                           $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
+ifneq ($(strip $(RESOURCE_FILES)),)
+	@ echo "Copying resources into the framework wrapper..."; \
+	for f in "$(RESOURCE_FILES)"; do \
+	  cp -r $$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
+	done
+endif
+
+framework-localized-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
+ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
+	@ echo "Copying localized resources into the framework wrapper..."; \
+	for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then \
+	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+	  fi; \
+	  for f in $(LOCALIZED_RESOURCE_FILES); do \
+	    if [ -f $$l.lproj/$$f ]; then \
+	      cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
 	    fi; \
 	  done; \
-	fi;)
+	done
+endif
 
+$(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources:
+	$(MKDIRS) $@
+
+$(FRAMEWORK_WEBSERVER_RESOURCE_DIRS):
+	$(MKDIRS) $@
+
+framework-webresource-dir:: $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources\
+                            $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)
+	@ if [ ! -L "$(FRAMEWORK_DIR_NAME)/WebServerResources" ]; then \
+	  rm -f $(FRAMEWORK_DIR_NAME)/WebServerResources; \
+	  $(LN_S) Versions/Current/WebServerResources $(FRAMEWORK_DIR_NAME);\
+	fi
+
+framework-webresource-files::
+
+ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
+framework-webresource-files:: framework-webresource-dir
+	@ echo "Copying webserver resources into the framework wrapper..."; \
+	for ff in $(WEBSERVER_RESOURCE_FILES); do \
+	  if [ -f ./WebServerResources/$$ff ]; then \
+	    cp -r ./WebServerResources/$$ff \
+                  $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$$ff; \
+	  fi; \
+	done
+endif
+
+framework-localized-webresource-files::
+
+ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 framework-localized-webresource-files:: framework-webresource-dir
-	@(if [ "$(LOCALIZED_WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying localized webserver resources into the framework wrapper..."; \
-	  cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
-	  for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then \
-	      $(MKDIRS) $$l.lproj; \
-	    fi; \
-	    cd $$l.lproj; \
-	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-	      if [ -f ../../../../../WebServerResources/$$l.lproj/$$f ]; then \
-		if [ ! -r $$f ]; then \
-		  cp -r ../../../../../WebServerResources/$$l.lproj/$$f $$f;\
-		fi;\
+	@ echo "Copying localized webserver resources into the framework wrapper..."; \
+	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj; \
+	  fi; \
+	  cd $$l.lproj; \
+	  for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
+	    if [ -f ../../../../../WebServerResources/$$l.lproj/$$f ]; then \
+	      if [ ! -r $$f ]; then \
+	        cp -r ../../../../../WebServerResources/$$l.lproj/$$f $$f;\
 	      fi;\
-	    done;\
-	    cd ..; \
+	    fi;\
 	  done;\
-	fi;)
+	  cd ..; \
+	done
+endif
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(INTERNAL_framework_NAME)
