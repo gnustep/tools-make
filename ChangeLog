@@ -1,3 +1,25 @@
+Mon Jan 21 17:12:18 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* ctool.make (internal-ctool-uninstall): Uninstall the 
+	wrapper script if not flattened.
+	* GNUmakefile.in (uninstall): Remove executable.template and 
+	cygpath.sh.
+
+Mon Jan 21 16:44:09 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	Support for building gnustep-make in another directory.
+	* configure.in (CFLAGS): Add -I$srcdir before the compilation
+	test.  
+	(Version): Include the file from $srcdir, not ./.
+	* configure: Regenerated.
+	* GNUmakefile.in (VPATH): Define.
+	Run clean_cpu.sh, clean_vendor.sh and clean_os.sh from $srcdir
+	rather than ./.
+	(which_lib): Use -I. when compiling which_lib.
+	When installing, install configure generated files from ./, 
+	and other files from $srcdir.
+	(Patch from Balaton Zoltan, modified).
+	
 Mon Jan 21 16:36:58 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in (objc_threaded): When printing out the results
