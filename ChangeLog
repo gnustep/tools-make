@@ -66,7 +66,7 @@ Fri Oct 24 15:54:41 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 2003-10-20  Adam Fedor  <fedor@gnu.org>
 
-	* configure.ac: Add 1.57 prereq, subst OBJCFLAGS
+	* configure.ac: Add 2.57 prereq, subst OBJCFLAGS
 	* config.make.in (OBJCFLAGS): New
 
 Mon Oct 20 15:02:22 2003  Nicola Pero  <n.pero@mi.flashnet.it>

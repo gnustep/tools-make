@@ -206,7 +206,7 @@ systems, there might be a system wide script that everyone uses, such
 as `/etc/bashrc', where you could add lines similar to these:
 
      # Setup for the GNUstep environment
-     . /usr/GNUstep/System/Makefiles/GNUstep.sh
+     . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 
    This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for all users. Before executing
@@ -240,8 +240,8 @@ reads the .bash_profile file in the user's home directory.  So you can
 add the following lines to that file:
 
      # Setup for the GNUstep environment
-     if [ -f $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh ]; then
-       . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+     if [ -f $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh ]; then
+       . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
      fi
 
    This will source in the GNUstep.sh file and set the environment

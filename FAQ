@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-   Last updated 22 August 2003.  Please send corrections to
+   Last updated 23 November 2003.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -25,20 +25,52 @@ constantly changing, much faster than GNUstep could hope to keep up.
 They have added extensions and new classes that aren't available in
 GNUstep yet. Plus there are some other issues. If you start with Cocoa:
 
-   * Be careful with Cocoa.h includes
+   * Be careful with Cocoa.h includes (Use #ifndef GNUSTEP, for
+     instance)
 
    * Do not use CoreFoundation
 
-   * Do not use C++
+   * Do not use Objective-C++
 
-   * Do not use Quicktime or other propriatory extention
+   * Do not use Quicktime or other proprietary extension
 
-   * You need to convert .nib (IB if you use it) to .gmodel or .gorm
-     and Gorm is good enough for most of the work
+   * You need to convert .nib files (see next question  *note Tools for
+     porting::)
 
-   * Do not use NSToolBar (not finished in GNUstep)
+   * Some unfinished classes include NSToolBar and Drawers.
 
-   * Do not use Drawer (not implmented in GNUstep)
+Tools for porting
+-----------------
+
+   While the programming interface should be almost transparent between
+systems (expect for the unimplemented parts, of course), there are a
+variety of other files and tools that are necessary for porting
+programs.
+
+`ni2gmodel'
+     This program coverts nib files from any system, such as Cocoa or
+     OPENSTEP to a gmodel format file. Gmodel can be read directly by
+     GNUstep or you can convert this to a more GNUstep-native gorm
+     format (using the Gorm interface modeller).
+
+`Renaissance'
+     GNUstep Renaissance allows you to describe your user interfaces
+     (that is, the windows in your application, and the buttons, boxes,
+     textfields, etc in the windows) in simple and intuitive XML files,
+     using an open, standard format describing the logic of the
+     interface.  It has a number of advantages over the proprietary nib
+     format: portability, open standard, easy localization,
+     themeability, and intelligent autolayout.
+
+`OpenStep2GNUConverter and nfmake'
+     Two programs that allow you to convert PB files to GNUstep
+     makefiles or compile a program on GNUstep directly from PB files.
+     They probably work only for OPENSTEP systems and are a little
+     out-of-date.
+
+`StepTalk'
+     A portable scripting environment that lets your do scripting in
+     almost any language you like.
 
 Can I transfer archived data from GNUstep to Cocoa?
 ---------------------------------------------------
@@ -54,7 +86,7 @@ different machines because of endiness issues, although GNUstep doesn't
 have this problem.
 
    Your best bet is to implement your own archiving format that would
-work both with GNUstep and Cocoa. Fortuneatly, you don't have to start
+work both with GNUstep and Cocoa. Fortunately, you don't have to start
 from scratch, since this has been essentially done for you in the
 nib2gmodel tool, which has an archiver that works both on GNUstep and
 Cocoa. It might be nice to split this off into a separate project to
@@ -82,16 +114,15 @@ supports both the 'gmodel' format (which stores information as text
 (property-lists) and can therefore be edited 'by hand') and binary
 archive format (which can be edited by Gorm).  There IS a conversion
 tool called nib2gmodel that can be compiled under OPENSTEP to convert
-OPENSTEP nib files to GNUstep gmodel files.
+nib files to GNUstep gmodel files.
 
 Can one use the hybrid "Objective-C++"
 --------------------------------------
 
    No. at present the GNU compiler (gcc) does not support
-"Objective-C++". Apple has submitted patches for this, but it is up to
-the GCC steering commitee to decide if they want to add them. If you
-would like to see this, please politely and respectfully lobby them at
-<gcc@gnu.org>.
+"Objective-C++". Apple is interested in adding back their implementation
+to gcc and is slowly adding parts of it to the mainline gcc
+implementation.
 
 Is there a plan to support the Java/YellowBox Bindings?
 -------------------------------------------------------
@@ -114,7 +145,8 @@ interface to that is not the same as the interface to the
 OPENSTEP/MacOS-X windows server.  While someone could write a backend
 library to provide the interface, nobody has bothered to date.
 
-   Also, the GNUstep base library is still being ported to Darwin.
+   You should, however, be able to use a GNUstep program with an X11
+server running on MacOSX.
 
 Is the Objective C API for GTK related?
 ---------------------------------------
@@ -143,7 +175,7 @@ work involved in implementing the OpenStep API, the backend is a
 relatively thin layer and the advantages of GTK over direct xlib or
 win32 calls is likely to be minimal.  If/when GTK is ported to more
 systems, a backend written using it could be a valuable asset -
-volunteers are, as always, wecome.
+volunteers are, as always, welcome.
 
 Compiling and Developing
 ========================
@@ -153,7 +185,7 @@ How can I get started programming?
 
    Good question.  Read the tutorials at the GNUstep web site. Also
 look at Apple's documentation (pointers in the Resources section on the
-GNUstep web site.
+GNUstep web site.)
 
 How can I help with GNUstep?
 ----------------------------
@@ -176,7 +208,7 @@ Software Foundation before they can be incorporated into the project.
 Get in touch with the maintainer of the library you are working on
 about this.
 
-   Don't start with large-scale reorganisation of anything - instead,
+   Don't start with large-scale reorganization of anything - instead,
 get a general idea in mind of what you want to do, and proceed as much
 as possible with incremental changes that don't break anything - that
 way you can make those incremental changes available to the rest of the
@@ -308,14 +340,11 @@ out-of-date (or wrong) and update/mark-as-outdated as required.
 Why doesn't GDB support Objective-C?
 ------------------------------------
 
-   Apple has submitted their patches to make GDB work with Objective-C
-programs, and the GDB maintainer has said that he is interested in
-integrating them. Now it appears that that there is just a lack of time
-and priority to get this done. You can ask about or lobby for this -
-see <http://sources.redhat.com/gdb/>.
+   Update: GDB 6.0, which should come out sometime in September 2003
+supports debugging of Objective-C code.
 
-   There are patches available on the gnustep web site if you want to
-compile your own gdb (see <ftp://ftp.gnustep.org/pub/gnustep/patches>).
+   There are patches available on the gnustep web site for earlier
+versions of gdb (see <ftp://ftp.gnustep.org/pub/gnustep/patches>).
 
 GNU Objective C Compiler and Runtime
 ====================================
@@ -331,36 +360,22 @@ does, including Categories, Protocols, `+poseAs:', thread-safety, class
 initialization on demand, delayed loading of classes, and
 initialization of static instances (such as @""-style string objects).
 
-   It also has several improvements over NeXT's implementation:
-
-   * NeXT's runtime requires an extra function call (objc_msgSend) for
-     each message that is sent; (the function looks up the receiving
-     instance's implementation of the method).  GNU's implementation is
-     faster because it does not use an extra function call.  Instead, it
-     inlines a short piece of code that makes two pointer hops into a
-     method dispatch table; because the code is inlined, it does not
-     incur the overhead of a function call.
-
-   * When running in thread-safe mode, NeXT's runtime must aquire a
-     global mutual exclusion lock every time a message is sent; this is
-     extremely slow.  GNU's runtime, amazingly, sends messages just as
-     fast in thread-safe mode as it does in single-thread mode--the
-     code path does not contain even a single extra instruction!  The
-     GNU runtime only needs locks when certainly structures are
-     written, not read; the structures are written relatively
-     infrequently: only at class initialization and when `+poseAs:' is
-     called.
+   It also has several differences over NeXT's implementation:
 
    * GNU's runtime provides "selector-types" along with each selector;
      NeXT's does not.  A selector-type is a string that describes the C
      variable types for the method's return and argument values.  Among
-     other uses, selector-types is extrememly helpful for fast
+     other uses, selector-types is extremely helpful for fast
      distributed objects implementations, (see GNUstep Base Library
      Section, below).
 
    * Many of the GNU functions have different names than their
      corresponding NeXT functions; the GNU names conform to the GNU
-     coding standards.
+     coding standards. The GNUstep base library contains a
+     compatibility header that works with both runtimes. You should use
+     functions there or use OpenStep Foundation methods/functions
+     instead of the basic runtime functions so that you code can run
+     with either system.
 
 
 Does it allow a mixture of Objective C and C++?
@@ -393,11 +408,11 @@ portion of the OpenStep standard (the Foundation library).
 What is its current state of development?
 -----------------------------------------
 
-   GNUstep base is currently stable and implements probably 99% of the
-functionality of the OpenStep classes and most all of the new Cocoa
-classes.  Normal work can already be done using the library since the
-missing 1 percent are the least-often-used features or are simply not
-up to date with the latest Carbon spec.
+   GNUstep base is currently stable and, to the best of our knowledge,
+implements all of the OpenStep functionality (except for a few classes
+that we feel are not useful). It also implements most all of the new
+Cocoa classes. However we do some things, like scripting, differently,
+so we don't implement all the Cocoa classes.
 
 What are the features of GNU Distributed Objects?
 -------------------------------------------------
@@ -409,7 +424,7 @@ are not available.
 
    [NOTE: The GNU distributed object facilities have the same
 ease-of-use as NeXT's; be warned, however, that they are not compatible
-with each other.  They have different class heirarchies, different
+with each other.  They have different class hierarchies, different
 instance variables, different method names, different implementation
 strategies and different network message formats.  You cannot
 communicate with a NeXT NSConnection using a GNU NSConnection.
@@ -462,14 +477,27 @@ platforms to share the large amount of front-end code.
 What is the current state of development of the front-end?
 ----------------------------------------------------------
 
-   Many of the classes are well implemented, if not thouroughly tested.
+   Many of the classes are well implemented, if not thoroughly tested.
 See the GNUstep web sites and read status information contained in the
 distribution for the most up-to-date information.
 
-What is the current state of development of the X/DPS back-end?
----------------------------------------------------------------
+What is the current state of development of the back-ends?
+----------------------------------------------------------
 
-   It works, but is slow and buggy. A lot of work could be done.
+   There are several backends currently available:
+
+`xlib'
+     This is the standard backend that runs on X11 and uses standard
+     xlib calls for implementing drawing. It works well, but is limited
+     in many areas due to the limitations of xlib drawing.
+
+`art'
+     This is a very good backend that draws using the libart package and
+     freetype with near PostScript quality and functionality. At some
+     point it will become the standard.
+
+`w32'
+     This backend works on Windows and is currently very alpha quality.
 
 GNUstep DisplayGhostScript Server
 =================================
@@ -480,6 +508,11 @@ What is the Display Ghostscript Server?
    It is a free implementation of a Display PostScript server based on
 the GNU Ghostscript program developed by Aladdin Enterprises and now
 owned by artofcode LLC.
+
+   At one point, GNUstep was using this for display purposes. However
+the development of DGS has stopped as it is too difficult to maintain
+and no one wanted to work on it. Now we are using other means of
+drawing.
 
 What is its current state of development?
 -----------------------------------------

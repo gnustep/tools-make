@@ -1,7 +1,30 @@
 NEWS
 ****
 
-The currently released version is `1.7.3'.
+The currently released version is `1.9.0'.
+
+Changes in version `1.9.0'
+==========================
+
+   * Support for building in a separate build dir.
+
+   * Add -enable-string-makefiles option to configure
+
+   * List of classes in a framework gets written to the plist file.
+
+Changes in version `1.8.0'
+==========================
+
+   Read the NEWS file for a complete list of changes since the last
+stable release. The major difference from 1.6.0 is that the locations
+of certain directories have changed. Generally this will not cause a
+problem unless your GNUstep directory is shared by multiple machines
+running this and earlier (1.6.x) versions of the software.
+
+Changes in version `1.7.4'
+==========================
+
+   Bug fixes.
 
 Changes in version `1.7.3'
 ==========================

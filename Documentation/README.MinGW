@@ -116,7 +116,7 @@ You need things in the following order:
 
 GNUstep-make (release, snapshot, or cvs core module)
 libffcall (http://ftp.gnustep.org/pub/gnustep/lib)
-GNUstep-libobjc (release, snapshot, or cvs dev-apps module)
+GNUstep-objc (release, snapshot, or cvs dev-apps module)
 GNUstep-base (snapshot, or cvs core module)
 
 For gui ... GNUstep-back (snapshot, or cvs core module)
@@ -176,7 +176,7 @@ Despite the statement in the GNUstep-HOWTO, even if you have a 3.x
 compiler, you still need to install gnustep-objc as it properly
 exports symbols for DLLs.
 
-Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
+Go to gnustep-objc (or from CVS, into dev-libs/libobjc), and type
 
   make install
 
