@@ -1,7 +1,14 @@
 NEWS
 ****
 
-The currently released version is `1.3.2'.
+The currently released version is `1.3.3'.
+
+Changes in version `1.3.2'
+==========================
+
+   * Recognizes XXX_STANDARD_INSTALL=no to not do installation.
+
+   * Updated instructions for MingW/MSYS installation.
 
 Changes in version `1.3.2'
 ==========================

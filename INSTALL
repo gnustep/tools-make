@@ -239,8 +239,14 @@ variables; thus making them available for the user.
    The GNUstep.sh file will set up GNUSTEP_USER_ROOT to the GNUstep
 subdirectory of the users home directory by default.  This may be
 overridden by a user providing a .GNUsteprc file in their home
-directory.
+directory.  It may be overridden on a system-wide basis by supplying a
+.GNUsteprc file in the GNUSTEP_SYSTEM_ROOT directory.
 
      # Set up to store GNUstep files directly in my home directory
      GNUSTEP_USER_ROOT=~
+
+   The system-wide .GNUsteprc file can also contain aa line saying
+     FORCE_USER_ROOT
+   Which will force the value supplied in the system wide file to be
+used irrespective of any user specific .GNUsteprc file settings.
 

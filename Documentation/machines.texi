@@ -1,8 +1,8 @@
 @c \input texinfo   @c -*-texinfo-*-
 @setfilename machines.info
 @ifclear HOWTO
-@c Machine Specific, Darwin 1.x/PowerPC, , (DIR)
-@node Machine Specific
+@c Machine Specific, Darwin 5.x/PowerPC, , (DIR)
+@node Machine Specific, Darwin 5.x/PowerPC, , (DIR)
 @chapter Machines
 @end ifclear
 
@@ -415,6 +415,8 @@ them, you have to tell the gnumake configure script: The libraries you
 have to link with are -lpthread -lrt (read man libposix4 for more
 details). You have to call configure --with-thread-lib=-lpthread to avoid
 using -lthread which doesn't work!
+
+@end table 
 
 Older Instructions:
 If you are using threads, make sure the Objective-C runtime (libobjc that comes

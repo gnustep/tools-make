@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.3.2 is now available.
+The GNUstep Makefile Package version 1.3.3 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -15,18 +15,14 @@ It also allows the user to easily create cross-compiled binaries.
 Changes in version `1.3.2'
 ==========================
 
-   * Instructions for building on Windows with MSYS
+   * Recognizes XXX_STANDARD_INSTALL=no to not do installation.
 
-   * Resolve library dependencies better on Windows
-
-   * Fix frameworks in RPMs and DEBs
-
-   * Continued reorganization.
+   * Updated instructions for MingW/MSYS installation.
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.3.2.tar.gz distribution file at
+   You can get the gstep-make-1.3.3.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please send bug reports to <bug-gnustep@gnu.org>.

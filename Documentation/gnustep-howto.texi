@@ -103,7 +103,7 @@ included parts of ffcall are under GNU LGPL.
 
 @item libffi library (OPTIONAL)
 This is a library that provides stack frame handling for NSInvocation
-and NSConnection similarl to ffcall. However, libffi is still somewhat
+and NSConnection similar to ffcall. However, libffi is still somewhat
 experimental so you should not use it unless you are familiar with 
 potential problems. Use this instead of ffcall. You don't need both.
 
