@@ -1,3 +1,7 @@
+Wed Nov 18 17:20:02 1998  Adam Fedor  <fedor@hyper.doc.com>
+
+	* brain.make (SYSTEM_LIBS): Remove dps libs from xraw compilation.
+
 Mon Nov 16 15:09:47 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* application.make: Change RESOURCE_FILES="none" to ""
