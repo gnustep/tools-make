@@ -6,11 +6,7 @@
 #   Copyright (C) 1998, 2000, 2001, 2002 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
-#  
 #   Author:  Nicola Pero <n.pero@mi.flashnet.it> 
-#   Date: 2000, 2001
-#   Changes: Support for installing documentation, for LaTeX projects,
-#            for Javadoc, lots of other changes and fixes
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -25,7 +21,7 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 ifeq ($(RULES_MAKE_LOADED),)
-include $(GNUSTEP_MAKEFILES)/rules.make
+  include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
 #
@@ -62,266 +58,71 @@ endif
 #	Where xxx is the name of the document
 #
 
-# TODO - clean all this file, breaking it into little manageable
-# independent files
-
 TEXI_FILES = $($(GNUSTEP_INSTANCE)_TEXI_FILES)
 GSDOC_FILES = $($(GNUSTEP_INSTANCE)_GSDOC_FILES)
 AGSDOC_FILES = $($(GNUSTEP_INSTANCE)_AGSDOC_FILES)
-AGSDOC_FLAGS = $($(GNUSTEP_INSTANCE)_AGSDOC_FLAGS)
 LATEX_FILES = $($(GNUSTEP_INSTANCE)_LATEX_FILES)
 JAVADOC_FILES = $($(GNUSTEP_INSTANCE)_JAVADOC_FILES)
-JAVADOC_SOURCEPATH = $($(GNUSTEP_INSTANCE)_JAVADOC_SOURCEPATH)
 DOC_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_DOC_INSTALL_DIR)
 TEXT_MAIN = $($(GNUSTEP_INSTANCE)_TEXT_MAIN)
 
 #
-# Common variables for building documentation
+# GNUSTEP_DVIPS is here because it's common to texi.make and latex.make
 #
 
-# To override GNUSTEP_MAKEINFO, define it differently in
+# To override GNUSTEP_DVIPS, define it differently in
 # GNUmakefile.preamble
-ifeq ($(GNUSTEP_MAKEINFO),)
-  GNUSTEP_MAKEINFO = makeinfo
-endif
-
-# To override GNUSTEP_MAKEINFO_FLAGS, define it differently in
-# GNUmakefile.premable.  To only add new flags to the existing ones,
-# set ADDITIONAL_MAKEINFO_FLAGS in GNUmakefile.preamble.
-ifeq ($(GNUSTEP_MAKEINFO_FLAGS),)
-  GNUSTEP_MAKEINFO_FLAGS = -D NO-TEXI2HTML
-endif
-
-ifeq ($(GNUSTEP_MAKETEXT),)
-  GNUSTEP_MAKETEXT = makeinfo
-endif
-ifeq ($(GNUSTEP_MAKETEXT_FLAGS),)
-  GNUSTEP_MAKETEXT_FLAGS = -D NO-TEXI2HTML -D TEXT-ONLY --no-header --no-split
-endif
-
-ifeq ($(GNUSTEP_TEXI2DVI),)
-  GNUSTEP_TEXI2DVI = texi2dvi
-endif
-ifeq ($(GNUSTEP_TEXI2DVI_FLAGS),)
-  GNUSTEP_TEXI2DVI_FLAGS =
-endif
-
-ifeq ($(GNUSTEP_TEXI2HTML),)
-  GNUSTEP_TEXI2HTML = texi2html
-endif
-ifeq ($(GNUSTEP_TEXI2HTML_FLAGS),)
-  GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
-endif
-
 ifeq ($(GNUSTEP_DVIPS),)
   GNUSTEP_DVIPS = dvips
 endif
+
+# To override GNUSTEP_DVIPS_FLAGS, define it differently in
+# GNUmakefile.premable.  To only add new flags to the existing ones,
+# set ADDITIONAL_DVIPS_FLAGS in GNUmakefile.preamble.
 ifeq ($(GNUSTEP_DVIPS_FLAGS),)
   GNUSTEP_DVIPS_FLAGS =
 endif
 
 .PHONY: internal-doc-all_ \
-        internal-textdoc-all_ \
         internal-doc-clean \
-        internal-textdoc-clean \
         internal-doc-distclean \
-        internal-textdoc-distclean \
         internal-doc-install_ \
-        internal-textdoc-install_ \
         internal-doc-uninstall_ \
-        internal-textdoc-uninstall_ \
-        generate-javadoc
+        internal-textdoc-all_ \
+        internal-textdoc-clean \
+        internal-textdoc-distclean \
+        internal-textdoc-install_ \
+        internal-textdoc-uninstall_
 
-#
-# Internal targets
-#
-
-#
-# Compilation targets
-#
-
-#
-# Compilation of texinfo files
-#
 ifneq ($(TEXI_FILES),)
+  include $(GNUSTEP_MAKEFILES)/Instance/Documentation/texi.make
+endif
 
-internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
-                    $(GNUSTEP_INSTANCE).ps \
-                    $(GNUSTEP_INSTANCE)_toc.html
-
-internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
-
-$(GNUSTEP_INSTANCE).info: $(TEXI_FILES)
-	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) $(ADDITIONAL_MAKEINFO_FLAGS) \
-		-o $@ $(GNUSTEP_INSTANCE).texi
-
-$(GNUSTEP_INSTANCE).dvi: $(TEXI_FILES)
-	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(ADDITIONAL_TEXI2DVI_FLAGS) \
-	        $(GNUSTEP_INSTANCE).texi
-
-$(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
-	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
-		$(GNUSTEP_INSTANCE).dvi -o $@
-
-# Some systems don't have GNUSTEP_TEXI2HTML.  Simply don't build the
-# HTML in these cases - but without aborting compilation.  Below, we
-# don't install the result if it doesn't exist.
-
-$(GNUSTEP_INSTANCE)_toc.html: $(TEXI_FILES)
-	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
-		$(GNUSTEP_INSTANCE).texi
-
-$(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
-	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) $(ADDITIONAL_MAKETEXT_FLAGS) \
-		-o $@ $(TEXT_MAIN)
-
-endif # TEXI_FILES
-
-
-#
-# Compilation of gsdoc files
-#
 ifneq ($(GSDOC_FILES),)
+  include $(GNUSTEP_MAKEFILES)/Instance/Documentation/gsdoc.make
+endif
 
-# The only thing we know is that each %.gsdoc file should generate a
-# %.html file.  If any of the %.gsdoc files is newer than a corresponding
-# %.html file, we rebuild them all.
-GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
-
-internal-doc-all_:: $(GSDOC_OBJECT_FILES)
-
-$(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
-	gsdoc $(GSDOC_FILES)
-
-endif # GSDOC_FILES
-
-#
-# Processing of agsdoc files
-#
 ifneq ($(AGSDOC_FILES),)
-
-ifeq ($(GNUSTEP_BASE_HAVE_LIBXML), 1)
-
-ifeq ($(AUTOGSDOC),)
-  AUTOGSDOC = autogsdoc
+  include $(GNUSTEP_MAKEFILES)/Instance/Documentation/autogsdoc.make
 endif
 
-INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
-INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
-INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
-
-# The autogsdoc program has built-in dependency handling, so we can
-# simply run it and it will work out what needs to be rebuilt.
-internal-doc-all_:: generate-autogsdoc
-
-$(GNUSTEP_INSTANCE):
-	$(MKDIRS) $@
-
-generate-autogsdoc: $(GNUSTEP_INSTANCE)
-	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
-
-else
-
-internal-doc-all_::
-	@echo "No libxml - processing of autogsdoc files skipped"
-
-endif # GNUSTEP_BASE_HAVE_LIBXML
-
-endif # AGSDOC_FILES
-
-#
-# Compilation of LaTeX files
-#
 ifneq ($(LATEX_FILES),)
-#
-# Targets which are always built
-#
-$(GNUSTEP_INSTANCE).dvi: $(LATEX_FILES)
-	latex $(GNUSTEP_INSTANCE).tex
-	latex $(GNUSTEP_INSTANCE).tex
-
-$(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
-	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
-		$(GNUSTEP_INSTANCE).dvi -o $@
-
-$(GNUSTEP_INSTANCE).ps.gz: $(GNUSTEP_INSTANCE).ps 
-	gzip $(GNUSTEP_INSTANCE).ps -c > $(GNUSTEP_INSTANCE).ps.gz
-
-internal-doc-all_:: $(GNUSTEP_INSTANCE).ps.gz
-
-#
-# Targets built only if we can find `latex2html'
-#
-# NB: you may set LATEX2HTML on the command line if the following doesn't work
-LATEX2HTML = $(shell which latex2html | awk '{print $$1}' |  sed -e 's/which://')
-
-ifneq ($(LATEX2HTML),)
-  HAS_LATEX2HTML = yes
+  include $(GNUSTEP_MAKEFILES)/Instance/Documentation/latex.make
 endif
 
-ifeq ($(HAS_LATEX2HTML),yes)
-internal-doc-all_:: $(GNUSTEP_INSTANCE).tar.gz 
-
-$(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html: $(GNUSTEP_INSTANCE).dvi 
-	$(LATEX2HTML) $(GNUSTEP_INSTANCE)
-
-$(GNUSTEP_INSTANCE).tar.gz: $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html
-	$(TAR) cfz $(GNUSTEP_INSTANCE).tar.gz $(GNUSTEP_INSTANCE)
-
-endif # LATEX2HTML
-
-endif # LATEX_FILES
-
-#
-# Documentation generated with javadoc
-#
 ifneq ($(JAVADOC_FILES),)
-
-ifeq ($(JAVADOC),)
-  JAVADOC = $(JAVA_HOME)/bin/javadoc
+  include $(GNUSTEP_MAKEFILES)/Instance/Documentation/javadoc.make
 endif
 
-ifeq ($(JAVADOC_SOURCEPATH),)
-  INTERNAL_JAVADOCFLAGS = -sourcepath ./
-else
-  INTERNAL_JAVADOCFLAGS = -sourcepath ./:$(strip $(JAVADOC_SOURCEPATH))
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_FILES),)
+  include $(GNUSTEP_MAKEFILES)/Instance/Documentation/install_files.make
 endif
 
-ALL_JAVADOCFLAGS = $(INTERNAL_CLASSPATHFLAGS) $(INTERNAL_JAVADOCFLAGS) \
-$(ADDITIONAL_JAVADOCFLAGS) $(AUXILIARY_JAVADOCFLAGS)
-
-# incremental compilation with javadoc is not supported - you can only
-# build once, or always.  by default we build only once - use
-# `JAVADOC_BUILD_ALWAYS = YES' to force rebuilding it always
-
-ifneq ($(JAVADOC_BUILD_ALWAYS),YES) # Build only once
-
-internal-doc-all_:: $(GNUSTEP_INSTANCE)/index.html
-
-$(GNUSTEP_INSTANCE)/index.html:
-	$(MKDIRS) $(GNUSTEP_INSTANCE); \
-	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(GNUSTEP_INSTANCE)
-
-else # Build always
-
-internal-doc-all_:: generate-javadoc
-
-generate-javadoc:
-	$(MKDIRS) $(GNUSTEP_INSTANCE); \
-	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(GNUSTEP_INSTANCE)
-
-endif
-
-
-endif # JAVADOC_FILES
-
 #
-# Install and uninstall targets
+# Common code. 
 #
 
-#
-# Installation directory - always created
-#
+# Installation directory - always created.
 internal-doc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
@@ -330,138 +131,9 @@ $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE):
 	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 
-# xxx_INSTALL_FILES
-ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_FILES),)
-internal-doc-install_::
-	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file \
-	               $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
-	  fi; \
-	done
-
-internal-doc-uninstall_::
-	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
-	  fi; \
-	done
-endif
-
-# TODO ... what about man pages ?  are we installing them ?
-
 #
-# texi installation
-#
-ifneq ($(TEXI_FILES),)
-
-# NB: Only install HTML if it has been generated
-
-# We install all info files in the same directory, which is
-# GNUSTEP_DOCUMENTATION_INFO.  TODO: I think we should run
-# install-info too - to keep up-to-date the dir index in that
-# directory.  
-internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOCUMENTATION_INFO)
-	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
-	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
-	fi
-
-$(GNUSTEP_DOCUMENTATION_INFO):
-	$(MKINSTALLDIRS) $@
-
-internal-doc-uninstall_::
-	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps
-	rm -f \
-          $(GNUSTEP_DOCUMENTATION_INFO)/$(GNUSTEP_INSTANCE).info*
-	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
-endif # TEXI_FILES
-
-#
-# gsdoc installation
-#
-ifneq ($(GSDOC_FILES),)
-
-internal-doc-install_:: \
-	$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-	$(INSTALL_DATA) $(GSDOC_OBJECT_FILES) \
-	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-internal-doc-uninstall_:: 
-	rm -f \
-	  $(addprefix $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/\
-	    $(GNUSTEP_INSTANCE)/,$(GSDOC_OBJECT_FILES))
-endif # GSDOC_FILES
-
-#
-# autogsdoc installation
-#
-ifneq ($(AGSDOC_FILES),)
-
-internal-doc-install_:: 
-	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-	$(TAR) cf - $(GNUSTEP_INSTANCE) | \
-	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
-ifneq ($(CHOWN_TO),)
-	$(CHOWN) -R $(CHOWN_TO) \
-	      $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-endif
-
-internal-doc-uninstall_:: 
-	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-
-endif # AUTOGSDOC_FILES
-
-#
-# LaTeX installation
-#
-ifneq ($(LATEX_FILES),)
-internal-doc-install_:: 
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-internal-doc-uninstall_:: 
-	rm -f \
-	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps
-
-ifeq ($(HAS_LATEX2HTML),yes)
-internal-doc-install_:: 
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.html \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.css \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-# Yeah - I know - the following is dangerous if you have misused the 
-# DOC_INSTALL_DIR - but it's the only way to do it
-internal-doc-uninstall_:: 
-	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.html
-	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.css
-endif # LATEX2HTML
-endif # LATEX_FILES
-
-#
-# Javadoc installation
-#
-ifneq ($(JAVADOC_FILES),)
-
-internal-doc-install_:: 
-	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-	$(TAR) cf - $(GNUSTEP_INSTANCE) |  \
-	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
-ifneq ($(CHOWN_TO),)
-	$(CHOWN) -R $(CHOWN_TO) \
-	      $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-endif
-
-internal-doc-uninstall_:: 
-	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
-
-endif # JAVADOC_FILES
-
-#
-# text file installation
+# textdoc targets - these are meant to be used with texi.make ... maybe
+# they should be moved in there
 #
 internal-textdoc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
@@ -471,57 +143,8 @@ internal-textdoc-uninstall_::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 
-#
-# Cleaning targets
-#
-internal-doc-clean::
-	@ -rm -f $(GNUSTEP_INSTANCE).aux  \
-	         $(GNUSTEP_INSTANCE).cp   \
-	         $(GNUSTEP_INSTANCE).cps  \
-	         $(GNUSTEP_INSTANCE).dvi  \
-	         $(GNUSTEP_INSTANCE).fn   \
-	         $(GNUSTEP_INSTANCE).info* \
-	         $(GNUSTEP_INSTANCE).ky   \
-	         $(GNUSTEP_INSTANCE).log  \
-	         $(GNUSTEP_INSTANCE).pg   \
-	         $(GNUSTEP_INSTANCE).ps   \
-	         $(GNUSTEP_INSTANCE).toc  \
-	         $(GNUSTEP_INSTANCE).tp   \
-	         $(GNUSTEP_INSTANCE).vr   \
-	         $(GNUSTEP_INSTANCE).vrs  \
-	         $(GNUSTEP_INSTANCE)_*.html \
-	         $(GNUSTEP_INSTANCE).ps.gz  \
-	         $(GNUSTEP_INSTANCE).tar.gz \
-	         $(GNUSTEP_INSTANCE)/*
-ifneq ($(GSDOC_FILES),)
-	@ -rm -f $(GSDOC_OBJECT_FILES)
-endif
-ifneq ($(AGSDOC_FILES),)
-	@ -rm -Rf $(GNUSTEP_INSTANCE)
-endif
-ifneq ($(LATEX_FILES),)
-	@ rm -f *.aux
-endif
-ifneq ($(JAVADOC_FILES),)
-	@ -rm -Rf $(GNUSTEP_INSTANCE)
-endif
-
 internal-textdoc-clean::
 	@ rm -f $(GNUSTEP_INSTANCE)
-
-ifneq ($(LATEX_FILES),)
-ifeq ($(HAS_LATEX2HTML),yes)
-internal-doc-distclean::
-	@ if [ -d "$(GNUSTEP_INSTANCE)" ]; then \
-	    rm -rf $(GNUSTEP_INSTANCE)/; \
-	  fi
-endif
-endif
-
-ifneq ($(JAVADOC_FILES),)
-internal-doc-distclean::
-	@ rm -rf $(GNUSTEP_INSTANCE)
-endif 
 
 internal-textdoc-distclean::
 
