@@ -64,7 +64,13 @@ ifeq ($(findstring aix4.1, $(GNUSTEP_TARGET_OS)), aix4.1)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
 ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  ifeq ("$(objc_threaded)","")
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  else
+    INTERNAL_CFLAGS = -D_REENTRANT
+    INTERNAL_OBJCFLAGS = -D_REENTRANT
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
+  endif
 endif
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
