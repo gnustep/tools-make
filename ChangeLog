@@ -1,3 +1,8 @@
+1999-10-14  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (AUXILIARY_CPPFLAGS): Change from ADDITIONAL... so
+	it doesn't get reset by other Makefiles
+
 1999-10-11 Adam Fedor <fedor@gnu.org>
 
 	* Allow for separate System root directory and other changes

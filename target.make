@@ -439,7 +439,7 @@ BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 # Newer gcc's don't define this in Objective-C programs:
-ADDITIONAL_CPPFLAGS += -D__LANGUAGES_C__
+AUXILIARY_CPPFLAGS += -D__LANGUAGES_C__
 endif
 #
 # end OSF
