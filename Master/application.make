@@ -37,9 +37,12 @@ internal-uninstall:: $(APP_NAME:=.uninstall.app.variables)
 # invocation just to remove them.
 _PSWRAP_C_FILES = $(foreach app,$(APP_NAME),$($(app)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach app,$(APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
+# The following intricate code computes the list of xxxInfo.plist files
+# for all applications xxx which have xxx_PREPROCESS_INFO_PLIST=yes.
+_PLIST_INFO_FILES = $(addsuffix Info.plist,$(foreach app,$(APP_NAME),$(patsubst yes,$(app),$($(app)_PREPROCESS_INFO_PLIST))))
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) $(_PLIST_INFO_FILES)
 ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 else
