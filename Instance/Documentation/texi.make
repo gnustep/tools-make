@@ -100,6 +100,7 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).tp   \
 	         $(GNUSTEP_INSTANCE).vr   \
 	         $(GNUSTEP_INSTANCE).vrs  \
+	         $(GNUSTEP_INSTANCE).html \
 	         $(GNUSTEP_INSTANCE)_*.html \
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
