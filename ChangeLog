@@ -1,3 +1,8 @@
+Wed Mar 14 09:14:22 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library.make (SOVERSION): Minor optimization: Replace awk call
+	with simple subt and word calls.
+
 Wed Mar 14 00:15:15 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Huge speed up.  As an example of the order of magnitude, on my
