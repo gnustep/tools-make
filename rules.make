@@ -156,6 +156,7 @@ ifeq ($(strip $(BUNDLE_EXTENSION)),)
 BUNDLE_EXTENSION = .bundle
 endif
 
+
 # General rules
 VPATH = .
 
@@ -182,8 +183,8 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 %.build:
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
         tmp="$($*_SUBPROJECTS)"; \
-        if test "x$$tmp" != x ; then \
-          for f in $$tmp; do \
+        if test "x$(tmp)" != x ; then \
+          for f in $tmp; do \
 	    mf=$(MAKEFILE_NAME); \
 	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
 	      mf=Makefile; \
@@ -202,6 +203,7 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
 		JAVA_FILES="$($*_JAVA_FILES)" \
+		JAVA_JOBS_FILES="$($*_JOBS_FILES)" \
 		JAVA_WRAPPER_FRAMEWORK="$($*_WRAPPER_FRAMEWORK)" \
 	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 	    HEADER_FILES="$($*_HEADER_FILES)" \
@@ -210,12 +212,17 @@ $(JAVA_OBJ_PREFIX)%.class : %.java
 	    HEADER_FILES_DIR="$($*_HEADER_FILES_DIR)" \
 	    HEADER_FILES_INSTALL_DIR="$($*_HEADER_FILES_INSTALL_DIR)" \
 	    RESOURCE_FILES="$($*_RESOURCE_FILES)" \
+	    WEBSERVER_RESOURCE_FILES="$($*_WEBSERVER_RESOURCE_FILES)" \
+		LOCALIZED_RESOURCE_FILES="$($*_LOCALIZED_RESOURCE_FILES)" \
+		LOCALIZED_WEBSERVER_RESOURCE_FILES="$($*_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
 	    MAIN_MODEL_FILE="$($*_MAIN_MODEL_FILE)" \
 	    APPLICATION_ICON="$($*_APPLICATION_ICON)" \
 	    RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
+		COMPONENTS="$($*_COMPONENTS)" \
+		LANGUAGES="$($*_LANGUAGES)" \
+		HAS_GSWCOMPONENTS="$($*_HAS_GSWCOMPONENTS)" \
+		GSWAPP_INFO_PLIST="$($*_GSWAPP_INFO_PLIST)" \
 	    BUNDLE_LIBS="$($*_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
-	    PALETTE_LIBS="$($*_PALETTE_LIBS) $(PALETTE_LIBS)" \
-	    PALETTE_ICON="$($*_PALETTE_ICON)" \
 	    SERVICE_INSTALL_DIR="$($*_SERVICE_INSTALL_DIR)" \
 	    PRINCIPAL_CLASS="$($*_PRINCIPAL_CLASS)" \
 	    ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \

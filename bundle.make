@@ -33,8 +33,6 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The list of bundle resource file are in xxx_RESOURCE_FILES
 # The list of bundle resource directories are in xxx_RESOURCE_DIRS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
-# The name of a file containing info.plist entries to be inserted into
-# Info-gnustep.plist (if any) is xxxInfo.plist
 # where xxx is the bundle name
 #
 
@@ -120,12 +118,9 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed -e 's/.gmodel//' -e 's/.gorm//' -e 's/.nib//'`\";"; \
+	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  if [ -r "$(INTERNAL_bundle_NAME)Info.plist" ]; then \
-	    cat $(INTERNAL_bundle_NAME)Info.plist; \
-	  fi; \
 	  echo "}") >$@
 
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
