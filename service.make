@@ -56,6 +56,15 @@ $(SERVICE_NAME):
 
 else
 
+.PHONY: internal-svc-all \
+        internal-svc-clean \
+        internal-svc-distclean \
+        internal-svc-install \
+        internal-svc-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        svc-resource-files
+
 # Libraries that go before the GUI libraries
 ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
    $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
@@ -73,9 +82,6 @@ ALL_GUI_LIBS := \
 # rules.make).
 SERVICE_DIR_NAME = $(INTERNAL_svc_NAME:=.service)
 SERVICE_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(SERVICE_DIR_NAME)/Resources/$(d))
-ifeq ($(strip $(RESOURCE_FILES)),)
-  override RESOURCE_FILES=""
-endif
 
 #
 # Internal targets
@@ -91,9 +97,12 @@ $(SERVICE_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 #
 # Compilation targets
 #
-internal-svc-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-   $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(SERVICE_FILE) \
-   svc-resource-files after-$(TARGET)-all
+internal-svc-all:: before-$(TARGET)-all \
+                   $(GNUSTEP_OBJ_DIR) \
+                   $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                   $(SERVICE_FILE) \
+                   svc-resource-files \
+                   after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -102,16 +111,15 @@ after-$(TARGET)-all::
 $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 
-svc-resource-dir:: $(SERVICE_RESOURCE_DIRS)
-
 $(SERVICE_RESOURCE_DIRS):
 	$(MKDIRS) $(SERVICE_RESOURCE_DIRS)
 
-svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist svc-resource-dir
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying resources into the service wrapper..."; \
-	  cp -r $(RESOURCE_FILES) $(SERVICE_DIR_NAME)/Resources; \
-	fi)
+svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist \
+                     $(SERVICE_RESOURCE_DIRS)
+ifneq ($(strip $(RESOURCE_FILES)),)
+	@(echo "Copying resources into the service wrapper..."; \
+	cp -r $(RESOURCE_FILES) $(SERVICE_DIR_NAME)/Resources)
+endif
 
 # Allow the gui library to redefine make_services to use its local one
 ifeq ($(GNUSTEP_MAKE_SERVICES),)
@@ -130,8 +138,11 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 $(SERVICE_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
 
-internal-svc-install::
-	rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)
+$(GNUSTEP_SERVICES):
+	$(MKDIRS) $@
+
+internal-svc-install:: $(GNUSTEP_SERVICES)
+	rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME); \
 	$(TAR) cf - $(SERVICE_DIR_NAME) | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)
 
 internal-svc-uninstall::
