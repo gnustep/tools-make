@@ -1,3 +1,27 @@
+Tue May 27 11:22:44 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make: Use ECHO_CREATING when running MKDIRS
+	or MKINSTALLDIRS.
+	* Instance/bundle.make: The same.
+	* Instance/ctool.make: The same.
+	* Instance/documentation.make: The same.
+	* Instance/framework.make: The same.
+	* Instance/gswapp.make: The same.
+	* Instance/gsbundle.make: The same.
+	* Instance/library.make: The same.
+	* Instance/objc.make: The same.
+	* Instance/palette.make: The same.
+	* Instance/resource-set.make: The same.
+	* Instance/rules.make: The same.
+	* Instance/service.make: The same.
+	* Instance/subproject.make: The same.
+	* Instance/test-library.make: The same.
+	* Instance/tool.make: The same.
+	* Instance/Documentation/autogsdoc.make: The same.
+	* Instance/Documentation/texi.make: The same.
+	
+	* Instance/gswapp.make (internal-gswapp-install_): Use ECHO_INSTALLING.
+
 Tue May 27 11:08:52 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* messages.make (ECHO_UNINSTALLING): New variable.
