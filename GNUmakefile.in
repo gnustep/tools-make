@@ -87,7 +87,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 
 MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make
 
-INSTANCE_MAKE_FILES = 
+INSTANCE_MAKE_FILES = rules.make
 
 all: generated-files which_lib$(EXEEXT)
 
