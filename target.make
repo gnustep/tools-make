@@ -137,6 +137,9 @@ endif
 #    be created as a symlink to LIB_LINK_VERSION_FILE (or to 
 #    LIB_LINK_SONAME_FILE if it's created on that platform).
 #    Typically `libgnustep-base.so'.
+#  LIB_LINK_INSTALL_NAME: on some platforms, when a shared library is
+#    linked, a default install name of the library is hardcoded into
+#    the library.  This is that name.
 #
 # AFTER_INSTALL_SHARED_LIB_CMD provides commands to be executed after
 # installation (at least for libraries, not for frameworks at the
@@ -283,12 +286,8 @@ ifeq ($(FOUNDATION_LIB),nx)
   endif
 endif
 
-TARGET_LIB_DIR = \
-Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
-
 DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
 DYLIB_CURRENT_VERSION       = -current_version 1
-DYLIB_INSTALL_NAME = $(FINAL_LIBRARY_INSTALL_DIR)/$(LIB_LINK_FILE)
 
 # Remove empty dirs from the compiler/linker flags (ie, remove -Idir and 
 # -Ldir flags where dir is empty).
@@ -297,6 +296,7 @@ REMOVE_EMPTY_DIRS = yes
 ifeq ($(FOUNDATION_LIB),nx)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
+
 
 ifneq ($(OBJC_COMPILER), NeXT)
 # GNU compiler
@@ -307,7 +307,7 @@ SHARED_LIB_LINK_CMD     = \
 		$(ARCH_FLAGS) -dynamic	\
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
-		-install_name $(DYLIB_INSTALL_NAME)	\
+		-install_name $(LIB_LINK_INSTALL_NAME)	\
 		-o $@					\
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
@@ -324,13 +324,14 @@ else
 
 #DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
 
+
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -dynamic	\
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
+		-install_name $(LIB_LINK_INSTALL_NAME)	\
 		$(DYLIB_EXTRA_FLAGS)			\
-		-install_name $(DYLIB_INSTALL_NAME)	\
 		-o $@					\
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$^ $(SHARED_LD_POSTFLAGS); \
