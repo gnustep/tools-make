@@ -698,7 +698,7 @@ endif
 
 ####################################################
 #
-# OpenBSD 2.x (though set for 2.4)
+# OpenBSD 3.x (though set for 3.3)
 #
 ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 # This is disabled temporarily, because I don't know exactly how
@@ -714,6 +714,9 @@ SHARED_LIB_LINK_CMD     = \
         (cd $(LIB_LINK_OBJ_DIR); \
           rm -f $(LIB_LINK_FILE); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
+
+OBJ_MERGE_CMD		= \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS   += -shared -fpic
 SHARED_LIBEXT   = .so

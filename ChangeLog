@@ -1,3 +1,7 @@
+2003-06-06  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (openbsd/OBJ_MERGE_CMD): Add.
+
 2003-06-05  Adam Fedor  <fedor@gnu.org>
 
 	* config_thread.m: More complete thread test.
