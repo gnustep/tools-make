@@ -9,6 +9,24 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.7.0}
+
+This version contains a major change in the location of certain
+directories and installed files as detailed in the @file{filesystem.texi}
+document. When installing this version for the first time, all old
+directories and files in those directories will be moved to the new 
+locations automatically. However, you should update all GNUstep versions
+on any machine you have them installed on in order to avoid any
+incompatibilities.
+
+Other changes:
+
+@itemize @bullet
+@item Support for preprocessed Info.plists.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.6.0}
 
 Make now configures by default for only one system. To compile and run
@@ -21,8 +39,6 @@ configure argument --enable-multi-platform.
 instead of nx-nx-nx on OSX systems.
 @item More efficient checks for re-making a project.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.5.1}
 

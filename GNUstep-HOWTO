@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 17 March 2003
+   Last Update: 19 May 2003
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -244,7 +244,8 @@ Time Zone
 =========
 
    Next, set your local time zone.  There are four ways to do this, pick
-one (see `$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/zones'
+one (see
+`$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-bsae/NSTimeZones/zones'
 for typical time zones):
 
   1. Use the defaults utility to set "Local Time Zone" to your local
@@ -255,7 +256,7 @@ for typical time zones):
   2. Set the GNUSTEP_TZ environment variable.
 
   3. Create the file
-     `$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/localtime'
+     `$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-base/NSTimeZones/localtime'
      with the name of the local time zone in it.
 
   4. Set the TZ environment variable (this may conflict with other
@@ -270,7 +271,7 @@ app:
 
    * gdomap - Put this in a system startup file, like `/etc/rc.local'
      or `/etc/rc.d/rc.local' (customize for your system)
-          GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
+          GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
           if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap ]; then
             $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap
           fi

@@ -214,6 +214,7 @@ Network/
 * Network Description::         
 * Applications::                
 * Tools::                       
+* share::                       
 * Library::                     
 @end menu
 
@@ -274,7 +275,7 @@ GWorkspace.app
 Preferences.app
 @end example
 
-@node Tools, Library, Applications, Description
+@node Tools, share, Applications, Description
 @subsection Tools
 
 The @file{Tools} directory contains tools and executable
@@ -285,7 +286,7 @@ Tools that are written in languages other than Objective-C, or are developed
 to work with other runtime environments may have their own directory within
 the Tools directory (for example: @file{Tools/Java}).
 
-@node share,  , Tools, Description
+@node share, Library, Tools, Description
 @subsection share
 
 The share directory is used for configuration and installation
@@ -294,7 +295,7 @@ need configuration information. It is used by the configure (autoconf)
 program.
 
 
-@node Library,  , Tools, Description
+@node Library,  , share, Description
 @subsection Library
 
 The @file{Library} directory contains most of the functional

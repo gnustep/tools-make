@@ -415,15 +415,24 @@ elif test "$MINGW32" = yes; then
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="works")
 else
-  LIBS="-lobjc $LIBS -lthread $extra_LIBS"
+  LIBS="-lobjc $LIBS $extra_LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="-lthread $extra_LIBS",
+	objc_threaded="OK",
 	objc_threaded="", objc_threaded="")
   if test x"$objc_threaded" = x""; then
     LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS"
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lpthread $extra_LIBS", 
 	objc_threaded="", objc_threaded="")
+  fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="-lobjc $saved_LIBS -lthread $extra_LIBS"
+    AC_TRY_RUN([#include "config_thread.m"], 
+    	objc_threaded="-lthread $extra_LIBS", 
+	objc_threaded="", objc_threaded="")
+  fi
+  if test x"$objc_threaded" = x"OK"; then  
+    objc_threaded="$extra_LIBS"
   fi
 fi
 LIBS="$saved_LIBS"

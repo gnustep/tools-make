@@ -41,7 +41,7 @@ at the user FAQ for more user oriented questions.
 
 It is probably easy for simple programs. There are some portability
 tools to make this easier
-(@url{http://www.gnustep.org/resources/source_port.html}), or rewrite
+(@url{http://www.gnustep.org/resources/sources.html}), or rewrite
 the Makefiles yourself.  You will also have to translate the NIB files
 (if there are any) to GNUstep model files using the nib2gmodel program
 (from @url{ftp://ftp.gnustep.org/pub/gnustep/dev-apps}).

@@ -1,3 +1,11 @@
+2003-05-19  Adam Fedor  <fedor@gnu.org>
+
+	* Version 1.7.0
+	* Documentation/news.texi: Updated
+
+	* configure.ac: On some systems, check for thread libraries
+	in different order.
+
 Thu May 15 10:30:55 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (generated-files): Added fixpath.sh.

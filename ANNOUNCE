@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.6.0 is now available.
+The GNUstep Makefile Package version 1.7.0 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -16,24 +16,25 @@ It also allows the user to easily create cross-compiled binaries.
 number, y, in x.y.z) are unstable releases (like 1.5.2), which even
 minor release numbers (1.4.1) are stable releases.
 
-Changes in version `1.6.0'
+Changes in version `1.7.0'
 ==========================
 
-   Make now configures by default for only one system. To compile and
-run GNUstep for multiple platforms from the same directory, use the
-configure argument -enable-multi-platform.
+   This version contains a major change in the location of certain
+directories and installed files as detailed in the `filesystem.texi'
+document. When installing this version for the first time, all old
+directories and files in those directories will be moved to the new
+locations automatically. However, you should update all GNUstep versions
+on any machine you have them installed on in order to avoid any
+incompatibilities.
 
-   * Auto-build def file for DLLs
+   Other changes:
 
-   * Work natively on MacOSX systems. Now use apple-apple-apple instead
-     of nx-nx-nx on OSX systems.
-
-   * More efficient checks for re-making a project.
+   * Support for preprocessed Info.plists.
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.6.0.tar.gz distribution file at
+   You can get the gstep-make-1.7.0.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please log bug reports on the GNUstep project page

@@ -3999,7 +3999,7 @@ fi
 rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 else
-  LIBS="-lobjc $LIBS -lthread $extra_LIBS"
+  LIBS="-lobjc $LIBS $extra_LIBS"
   if test "$cross_compiling" = yes; then
   objc_threaded=""
 else
@@ -4019,7 +4019,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
   (exit $ac_status); }; }; then
-  objc_threaded="-lthread $extra_LIBS"
+  objc_threaded="OK"
 else
   echo "$as_me: program exited with status $ac_status" >&5
 echo "$as_me: failed program was:" >&5
@@ -4060,6 +4060,41 @@ objc_threaded=""
 fi
 rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
+  fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="-lobjc $saved_LIBS -lthread $extra_LIBS"
+    if test "$cross_compiling" = yes; then
+  objc_threaded=""
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include "config_thread.m"
+_ACEOF
+rm -f conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  objc_threaded="-lthread $extra_LIBS"
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+( exit $ac_status )
+objc_threaded=""
+fi
+rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+  fi
+  if test x"$objc_threaded" = x"OK"; then
+    objc_threaded="$extra_LIBS"
   fi
 fi
 LIBS="$saved_LIBS"

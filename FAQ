@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-   Last updated 17 March 2003.  Please send corrections to
+   Last updated 19 May 2003.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -13,7 +13,7 @@ Is it easy to port OPENSTEP programs to GNUstep?
 
    It is probably easy for simple programs. There are some portability
 tools to make this easier
-(<http://www.gnustep.org/resources/source_port.html>), or rewrite the
+(<http://www.gnustep.org/resources/sources.html>), or rewrite the
 Makefiles yourself.  You will also have to translate the NIB files (if
 there are any) to GNUstep model files using the nib2gmodel program
 (from <ftp://ftp.gnustep.org/pub/gnustep/dev-apps>).

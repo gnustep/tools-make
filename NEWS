@@ -1,7 +1,22 @@
 NEWS
 ****
 
-The currently released version is `1.6.0'.
+The currently released version is `1.7.0'.
+
+Changes in version `1.7.0'
+==========================
+
+   This version contains a major change in the location of certain
+directories and installed files as detailed in the `filesystem.texi'
+document. When installing this version for the first time, all old
+directories and files in those directories will be moved to the new
+locations automatically. However, you should update all GNUstep versions
+on any machine you have them installed on in order to avoid any
+incompatibilities.
+
+   Other changes:
+
+   * Support for preprocessed Info.plists.
 
 Changes in version `1.6.0'
 ==========================
