@@ -115,7 +115,7 @@ endif
 # Skip the check if we are on an Apple system.  I was told that you can't
 # source GNUstep.sh before running Apple's PB and that the only
 # friendly solution is to disable the check.
-ifneq ($(FOUNDATION_LIB),nx)
+ifneq ($(FOUNDATION_LIB), apple)
 
 # NB - we can't trust PATH here because it's what we are trying to
 # check ... but hopefully if we (common.make) have been found, we
@@ -139,7 +139,7 @@ ifneq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
   endif
 endif
 
-endif # code used when FOUNDATION_LIB != nx
+endif # code used when FOUNDATION_LIB != apple
 
 endif # End of sanity checks run only at makelevel 0
 
@@ -284,6 +284,25 @@ GNUSTEP_HEADERS_FND_DIRS = \
   $(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)
 
 ifeq ($(FOUNDATION_LIB), fd)
+
+# Map OBJC_RUNTIME_LIB values to OBJC_RUNTIME values as used by
+# libFoundation.  TODO/FIXME: Drop all this stuff and have
+# libFoundation use OBJC_RUNTIME_LIB directly.
+ifeq ($(OBJC_RUNTIME_LIB), nx)
+  OBJC_RUNTIME = NeXT
+endif
+ifeq ($(OBJC_RUNTIME_LIB), sun)
+  OBJC_RUNTIME = Sun
+endif
+ifeq ($(OBJC_RUNTIME_LIB), apple)
+  OBJC_RUNTIME = apple
+endif
+ifeq ($(OBJC_RUNTIME_LIB), gnu)
+  OBJC_RUNTIME = GNU
+endif
+ifeq ($(OBJC_RUNTIME_LIB), gnugc)
+  OBJC_RUNTIME = GNU
+endif
   GNUSTEP_HEADERS_FND_DIRS += \
     $(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
     $(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
@@ -291,7 +310,7 @@ ifeq ($(FOUNDATION_LIB), fd)
     $(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
 endif
 
-ifeq ($(REMOVE_EMPTY_DIRS),yes)
+ifeq ($(REMOVE_EMPTY_DIRS), yes)
  # Build the GNUSTEP_HEADERS_FND_FLAG by removing the empty dirs
  # from GNUSTEP_HEADERS_FND_DIRS, then prepending -I to each of them
  GNUSTEP_HEADERS_FND_FLAG = \
