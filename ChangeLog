@@ -2,6 +2,35 @@
 
 	* rules.make: Revert previous change of parens around tmp.
 
+2000-02-18  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 0.6.5 Released.
+
+2000-02-16  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in: Standardize prefix/GNUSTEP_INSTALLATION_DIR
+	settings.
+	* gnustep-make.spec: Newfile
+
+	* common.make: Add default installation dirs.
+	* bundle.make: Use default installation dir.
+	* ctool.make: Likewise.
+	* objc.make: Likewise.
+	* palette.make: Likewise.
+	* tool.make: Likewise.
+
+	* GNUstep.csh.in: Use pushd/popd to changes dirs.
+
+2000-02-08  Adam Fedor  <fedor@gnu.org>
+
+	* config.guess: New version
+	* config.sub: Likewise.
+
+2000-01-24  Adam Fedor  <fedor@gnu.org>
+
+	* names.make (GNUSTEP_HOST_GUESS): New variable. Evaluate config.guess
+	and config.sub separately.
+
 2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
 
 	*  gswapp.make and gswbundle.make: tar options changed 

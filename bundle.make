@@ -123,14 +123,17 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
-internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
-	tar cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); tar xf -)
+internal-bundle-install:: internal-install-dirs
+	tar cf - $(BUNDLE_DIR_NAME) | (cd $(GNUSTEP_BUNDLES); tar xf -)
 
-$(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::
+internal-install-dirs::
+	$(MKDIRS) $(GNUSTEP_BUNDLES)
+
+$(BUNDLE_DIR_NAME)/Resources $(GNUSTEP_BUNDLES)::
 	@$(MKDIRS) $@
 
 internal-bundle-uninstall::
-	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
+	rm -rf $(GNUSTEP_BUNDLES)/$(BUNDLE_DIR_NAME)
 
 #
 # Cleaning targets
