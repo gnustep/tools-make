@@ -39,13 +39,8 @@ GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
 GNUSTEP_USER_ROOT=@GNUSTEP_USER_ROOT@
 
-if [ -z "$GNUSTEP_USER_ROOT" ]; then
-  if [ ! -z "$WINDIR" ]; then
-    # FIXME - should we check that HOMEDRIVE and HOMEPATH are not empty ?
-    GNUSTEP_USER_ROOT=`echo $HOMEDRIVE/$HOMEPATH/GNUstep | tr '\\\' '/'`
-  else
-    GNUSTEP_USER_ROOT=~/GNUstep
-  fi
+if [ -z "$WINDIR" ]; then
+  GNUSTEP_USER_ROOT=`tr '\\\' '/' $GNUSTEP_USER_ROOT`
 fi
 
 # test to see if GNUSTEP_ROOT is in Win32 standard form and flag it
