@@ -123,7 +123,41 @@ ifneq ($(BUILD_DLL),yes)
 LIBRARY_FILE = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
 LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
-SOVERSION            = $(word 1,$(subst ., ,$(VERSION)))
+
+# Allow the user GNUmakefile to define xxx_SOVERSION to replace the
+# default SOVERSION for this library.
+
+# Effect of the value of SOVERSION - 
+
+#  suppose your library is libgnustep-base.1.0.0 - if you do nothing,
+#  SOVERSION=1, and we prepare the symlink libgnustep-base.so.1 -->
+#  libgnustep-base.so.1.0.0 and tell the linker that it should
+#  remember that any application compiled against this library need to
+#  use version .1 of the library.  So at runtime, the dynamical linker
+#  will search for libgnustep-base.so.1.  This is important if you
+#  install multiple versions of the same library.  The default is that
+#  if you install a new version of a library with the same major
+#  number, the new version replaces the old one, and all applications
+#  which were using the old one now use the new one.  If you install a
+#  library with a different major number, the old apps will still use
+#  the old library, while newly compiled apps will use the new one.
+
+#  If you redefine SOVERSION to be for example 1.0, then we prepare
+#  the symlink libgnustep-base.so.1.0 --> libgnustep-base.so.1.0.0
+#  instead, and tell the linker to remember 1.0.  So at runtime, the
+#  dynamical linker will search for libgnustep-base.so.1.0.  The
+#  effect of changing SOVERSION to major.minor as in this example is
+#  that if you install a new version with the same major.minor
+#  version, that replaces the old one also for old applications, but
+#  if you install a new library with the same major version but a
+#  *different* minor version, that is used in new apps, but old apps
+#  still use the old version.
+
+ifeq ($($(INTERNAL_library_NAME)_SOVERSION),)
+  SOVERSION = $(word 1,$(SUBST ., ,$(VERSION))
+else
+  SOVERSION = $($(INTERNAL_library_NAME)_SOVERSION)
+endif
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(SOVERSION)
 
 else # BUILD_DLL
