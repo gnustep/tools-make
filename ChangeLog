@@ -1,3 +1,7 @@
+1999-03-08  Adam Fedor  <fedor@gnu.org>
+
+	* Version 0.5.5 Released.
+
 1999-03-05  Adam Fedor  <fedor@gnu.org>
 
 	* brain.make: Switch order of TIFF_INCLUDE and X_INCLUDE.
