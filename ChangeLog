@@ -1,3 +1,15 @@
+Tue Oct 22 00:59:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make ($(GNUSTEP_MAKEFILES)/Instance/Shared/*.make): New
+	rule to stop make from spending time trying to rebuild the
+	Instance/Shared makefiles each time.
+	
+Tue Oct 22 00:48:21 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/headers.make (.PHONY): Fixed typo in target
+	names, `install' instead of `instance'.
+	* Instance/Shared/java.make (.PHONY): Idem.
+
 Thu Oct 17 17:49:51 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/aggregate.make: Execute nothing is SUBPROJECTS is empty.
