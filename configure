@@ -2319,6 +2319,8 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 case "$target_os" in
   freebsd*)	CPPFLAGS="$CPPFLAGS -I/usr/local/include"
 		LIBS="$LIBS -L/usr/local/lib";;
+  netbsd*)	CPPFLAGS="$CPPFLAGS -I/usr/pkg/include"
+		LIBS="$LIBS -L/usr/pkg/lib";;
 esac
 
 #--------------------------------------------------------------------
