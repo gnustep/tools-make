@@ -1,3 +1,8 @@
+Wed Mar 14 10:40:45 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.variables): Bug fix: rewritten the rule as it was
+	not able to manage names containing dots.
+
 Wed Mar 14 09:14:22 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* library.make (SOVERSION): Minor optimization: Replace awk call
