@@ -224,9 +224,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   GNUSTEP_INSTANCE=$$instance \
   INTERNAL_$${type}_NAME=$$instance \
   TARGET=$$instance \
-  HEADER_FILES="$($(basename $(basename $*))_HEADER_FILES)" \
-  HEADER_FILES_DIR="$($(basename $(basename $*))_HEADER_FILES_DIR)" \
-  HEADER_FILES_INSTALL_DIR="$($(basename $(basename $*))_HEADER_FILES_INSTALL_DIR)" \
   COMPONENTS="$($(basename $(basename $*))_COMPONENTS)" \
   LANGUAGES="$($(basename $(basename $*))_LANGUAGES)" \
   WEBSERVER_RESOURCE_FILES="$($(basename $(basename $*))_WEBSERVER_RESOURCE_FILES)" \
