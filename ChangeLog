@@ -1,3 +1,8 @@
+2002-02-04 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* opentool.in: Rewrite searching code so that it looks in the
+	appropriate host/os/library-combo subdirectory to find tools.
+
 2002-02-03  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Remove setting of GCC_SO_DIR. Remove CPPFLAGS

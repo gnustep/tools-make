@@ -86,29 +86,50 @@ case $tool in
 	if [ -z "$full_toolname" ]; then 
           
           # Local tool not found - Search for an installed one
-
           # we search in GNUSTEP_PATHPREFIX_LIST, which means we
           # search in the order in:
           # GNUSTEP_USER_ROOT
           # GNUSTEP_LOCAL_ROOT
           # GNUSTEP_NETWORK_ROOT
           # GNUSTEP_SYSTEM_ROOT
-          # If GNUSTEP_PATHPREFIX_LIST is not defined, we search in
-          # PATH (I don't know why)
+	  #
+	  # We look in the GNUSTEP_HOST_CPU/GNUSTEP_HOST_OS/LIBRARY_COMBO
+	  # subdirectory first, then the GNUSTEP_HOST_CPU/GNUSTEP_HOST_OS
+	  # subdirectory, then the top-level directory.
+	  # (For flattened systems we skip the first two options.
+	  #
           if [ -n "$GNUSTEP_PATHPREFIX_LIST" ]; then
             SPATH=$GNUSTEP_PATHPREFIX_LIST
-          else
-            SPATH=$PATH
+	    IFS=:
+	    for dir in $SPATH; do
+	      tmpdir=$dir/Tools
+	      if [ -z "$GNUSTEP_FLATTENED" ]; then
+	        tmpgnudir=$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+		tmplibdir=$tmpgnudir/$LIBRARY_COMBO
+		# echo "$tmplibdir/$tool";
+		if [ -x "$tmplibdir/$tool" ]; then
+		  # echo "Found: $tmplibdir/$tool";
+		  full_toolname=$tmplibdir/$tool
+		  break;
+		fi
+		if [ -x "$tmpgnudir/$tool" ]; then
+		  # echo "Found: $tmpgnudir/$tool";
+		  full_toolname=$tmpgnudir/$tool
+		  break;
+		fi
+	      fi
+	      # echo "$tmpdir/$tool";
+	      if [ -x "$tmpdir/$tool" ]; then
+		# echo "Found: $tmpdir/$tool";
+		full_toolname=$tmpdir/$tool
+		break;
+	      fi
+	    done
+	    unset tmpdir
+	    unset tmpgnudir
+	    unset tmplibdir
+	    IFS=" "
           fi
-          IFS=:
-          for dir in $SPATH; do
-            # echo "$dir/Tools/$tool";
-            if [ -x "$dir/Tools/$tool" ]; then
-              # echo "Found: $dir/Tools/$tool";
-              full_toolname=$dir/Tools/$tool
-              break;
-            fi
-          done
         fi
         ;;
 esac
