@@ -74,8 +74,8 @@ internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
                         shared-instance-bundle-all
 
 $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
-	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
-		$(ALL_SERVICE_LIBS)
+	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
+		$(ALL_SERVICE_LIBS)$(END_ECHO)
 
 $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
@@ -103,8 +103,9 @@ $(GNUSTEP_SERVICES):
 	$(MKINSTALLDIRS) $@
 
 internal-service-install_:: $(GNUSTEP_SERVICES)
-	rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME); \
-	$(TAR) cf - $(SERVICE_DIR_NAME) | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)
+	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME); \
+	$(TAR) cf - $(SERVICE_DIR_NAME) \
+	  | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)
 endif
