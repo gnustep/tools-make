@@ -1,3 +1,9 @@
+Tue Mar  5 16:05:22 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make (shared-instance-bundle-all): Fixed
+	tricky problem when copying resources from subprojects ... * in
+	the shell being expanded to itself if no matching file exists.
+
 Tue Mar  5 15:15:41 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/bundle.make (BUNDLE_INSTALL_DIR): Define with =,
