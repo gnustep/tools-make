@@ -50,6 +50,8 @@ endif
 # where xxx is the framework name
 #
 
+override HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
+
 ALL_FRAMEWORK_LIBS =						\
     $(shell $(WHICH_LIB_SCRIPT)					\
 	    $(ALL_LIB_DIRS)					\
