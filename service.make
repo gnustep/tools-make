@@ -85,18 +85,18 @@ else
         service-resource-files
 
 # Libraries that go before the GUI libraries
-ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-
-ALL_GUI_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GUI_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+ALL_SERVICE_LIBS =							\
+    $(shell $(WHICH_LIB_SCRIPT)						\
+	$(LIB_DIRS_NO_SYSTEM)						\
+	$(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS)			\
+	$(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	\
+	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
+	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)		\
+	debug=$(debug) profile=$(profile) shared=$(shared)		\
+	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 ifeq ($(WITH_DLL),yes)
-TTMP_LIBS := $(ALL_GUI_LIBS)
+TTMP_LIBS := $(ALL_SERVICE_LIBS)
 TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
 # filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
 TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
@@ -127,7 +127,7 @@ SERVICE_FILE = $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_service_NAM
 
 $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
-		$(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
+		$(ALL_LIB_DIRS) $(ALL_SERVICE_LIBS)
 
 #
 # Compilation targets
