@@ -258,9 +258,9 @@ endif
 
 ####################################################
 #
-# MacOSX 10.6, darwin6
+# MacOSX 10.[12], darwin[56]
 #
-ifeq ($(findstring darwin6, $(GNUSTEP_TARGET_OS)), darwin6)
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 ifeq ($(OBJC_RUNTIME), NeXT)
   HAVE_BUNDLES     = yes
   OBJC_COMPILER    = NeXT
@@ -861,22 +861,37 @@ endif
 #
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
 HAVE_SHARED_LIBS        = yes
-STATIC_LIB_LINK_CMD = \
-        (cd $(LIB_LINK_OBJ_DIR); $(AR) $(ARFLAGS) \
-        $(LIB_LINK_VERSION_FILE) `ls -1 *\.o */*\.o`);\
-        $(RANLIB) $(LIB_LINK_VERSION_FILE)
+
 SHARED_LIB_LINK_CMD     = \
-        (cd $(LIB_LINK_OBJ_DIR); $(CC) -v $(SHARED_LD_PREFLAGS) \
-	$(SHARED_CFLAGS) -shared -o $(LIB_LINK_VERSION_FILE) `ls -1 *\.o` \
-	$(INTERNAL_LIBRARIES_DEPEND_UPON) $(SHARED_LD_POSTFLAGS);\
-          rm -f $(LIB_LINK_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
+        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
+           -Wl,-rpath,$(LIB_LINK_INSTALL_DIR) \
+	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+	   $(SHARED_LD_POSTFLAGS);\
+	(cd $(LIB_LINK_OBJ_DIR); \
+          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
+	)
+AFTER_INSTALL_SHARED_LIB_CMD = \
+	(cd $(LIB_LINK_INSTALL_DIR); \
+          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
+	)
+AFTER_INSTALL_SHARED_LIB_CHOWN = \
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
+	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS     += -fPIC
 SHARED_LIBEXT   = .so
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	/usr/bin/ld -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+ADDITIONAL_LDFLAGS +=
+STATIC_LDFLAGS +=
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD       = $(CC)

@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 19 November 2002
+   Last Update: 10 December 2002
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -379,13 +379,12 @@ of the following information before choosing the compiler you use.
      Several bugs where introduced in the version. It's probably better
      to avoid this one, although it might work fine.
 
-`gcc 3.2'
-     Pretty good, although at the time of this writing it hasn't been
-     fully tested on many platforms. Recommended.
+`gcc 3.2.x'
+     Pretty good. Recommended.
 
    If you have compiled GNUstep on a specific machine, please send
-information about what you needed and any special instructions needed
-to the GNUstep maintainer <gnustep-maintainers@gnu.org>.
+information about what you needed and any special instructions needed to
+GNUstep <bug-gnustep@gnu.org>.
 
    If your having mysterious trouble with a machine, try compiling
 GNUstep without optimization. Particularly in the newer GCC compilers,
@@ -393,12 +392,14 @@ optimization can break some code. The easiest way to do this is when
 configuring, `CFLAGS="" ./configure'. Or when building, `make
 OPTFLAG=""'.
 
-Darwin 5.x/PowerPC (_Unstable!_)
+Darwin 6.x/PowerPC (_Unstable!_)
 ================================
 
 `Recommended compiler'
+     gcc 3.2.1
+
      Default compiler has some odd memory(?) related problems.  Use the
-     GNU runtime. Download the gcc3.1 compiler and configure it with
+     GNU runtime. Download the gcc3.2.1 compiler and configure it with
      -enable-threads=posix. Usually the installed compiler will produce
      object files for the NeXT runtime if you don't say gcc
      -fgnu-runtime. To change this behaviour, edit
@@ -414,9 +415,19 @@ Darwin 5.x/PowerPC (_Unstable!_)
      instead of the NeXT-runtime!
 
 `Extra libs needed'
-     Compile ffcall if you want to use Distributed Ojects: See
-     instructions below.  Some test (e.g. in callback) simply wont't
-     work.
+     Use libffi (not ffcall). This should be enabled by default in
+     gnustep-base so you don't have to type -enable-libffi
+
+`Special Instructions'
+Darwin 5.x/PowerPC (_Unstable!_)
+================================
+
+`Recommended compiler'
+     gcc 3.1 (See Darwin 6.x for other instructions).
+
+`Extra libs needed'
+     Probably should use libffi as with Darwin 6.x.  Instructions for
+     compiling ffcall are provided below if that doesn't work.
 
 `Special Instructions'
    Compiling ffcall:
@@ -582,19 +593,21 @@ Irix 6.5/MIPS
 =============
 
 `Recommended compiler'
-     You can't compile the base library with gcc2.95.x, and 3.1
-     compiles more of the Testing programs (nsarray) than 3.0.4 so 3.1
-     should be the recommended compiler. To use threads, it's necessary
-     to bootstrap a compiler yourself: configure with
-     -enable-threads=posix, that will work as long as you link EVERY
-     objective C executable with -lpthread, no matter what warnings the
-     irix linker produces!
+     gcc 3.2.1
+
+     To use threads, it's necessary to bootstrap a compiler yourself:
+     configure with -enable-threads=posix, that will work as long as you
+     link EVERY objective C executable with -lpthread, no matter what
+     warnings the irix linker produces!
 
 `Extra libs needed'
      Unknown
 
 `Special Instructions'
-     Static libs only (make shared=no).
+     If you cannot link the library because of the very low default
+     limit (20480) for the command line length, then you should either
+     use systune ncargs to increase the value (maximum is 262144) or
+     link the library by hand.  No libffi-support: Use ffcall
 
 MkLinux/PowerPC (_Obsolete_)
 ============================
@@ -706,19 +719,16 @@ Solaris 2.[67]/Sparc
 ====================
 
 `Recommended compiler'
-     gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
-     gcc 3.04. Not 3.1 - does not compile parts of GNUstep.
+     gcc 3.2.1 gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep
+     tickles.  gcc 3.04. Not 3.1 - does not compile parts of GNUstep.
 
 `Extra libs needed'
      tiff, Don't use the one in /usr/openwin
 
 `Special Instructions'
-     I think gcc provides posix threads on this system even if not
-     configured whith -enable-threads, but to use them, you have to
-     tell the gnumake configure script: The libraries you have to link
-     with are -lpthread -lrt (read man libposix4 for more details). You
-     have to call configure -with-thread-lib=-lpthread to avoid using
-     -lthread which doesn't work!
+     No libffi-support unless you use the patch
+     <http://gcc.gnu.org/ml/java-patches/2002-q3/msg00036.html> (not
+     particularly recommended).
 
      Using a POSIX shell (zsh or bash, which should come with Solaris)
      is highly recommended. In fact, some functions, such as compiling

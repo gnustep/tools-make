@@ -1,3 +1,11 @@
+2002-12-10  Adam Fedor  <fedor@gnu.org>
+
+	* clean_os.sh: Filter version from darwin6.
+	* target.make (darwin): Was darwin6
+	(irix): Updated for shared libraries (from Carl Eugen Hoyos).
+
+	* Documentation/machines.texi: Updated.
+
 Mon Dec  9 12:04:49 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make (internal-framework-install_): Fixed
