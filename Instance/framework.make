@@ -79,7 +79,7 @@ ifeq ($(CURRENT_VERSION_NAME),)
 endif
 
 ifneq ($(DEPLOY_WITH_CURRENT_VERSION),)
-  $(warning DEPLOY_WITH_CURRENT_VERSION is deprecated because it doesnt allow multiple frameworks with different DEPLOY_WITH_CURRENT_VERSION to be built from warning the same GNUmakefile!  Please replace it with XXX_DEPLOY_WITH_CURRENT_VERSION)
+  $(warning DEPLOY_WITH_CURRENT_VERSION is deprecated because it doesnt allow multiple frameworks with different DEPLOY_WITH_CURRENT_VERSION to be built from the same GNUmakefile!  Please replace it with XXX_DEPLOY_WITH_CURRENT_VERSION)
 endif
 
 DEPLOY_WITH_CURRENT_VERSION = $($(GNUSTEP_INSTANCE)_DEPLOY_WITH_CURRENT_VERSION)
