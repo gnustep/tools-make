@@ -13,3 +13,4 @@ debugapp
 executable.template
 opentool
 gnustep-make.spec
+fixpath.sh
