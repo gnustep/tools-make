@@ -344,14 +344,15 @@ Windows).
 @section Troubleshooting
 
 @menu
-* Problems compiling::          
+* Problems compiling (loading shared libs)::  
+* Problems compiling (GNUstep Internal Error)::  
 * Problems with Alt key::       
 * Problems with gcc3::          
 * Problems with fonts::         
 @end menu
 
-@node Problems compiling, Problems with Alt key, Troubleshooting, Troubleshooting
-@subsection Problems compiling
+@node Problems compiling (loading shared libs), Problems compiling (GNUstep Internal Error), Troubleshooting, Troubleshooting
+@subsection Problems compiling (loading shared libs)
 
 If you get something like
 
@@ -369,7 +370,24 @@ make LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 You could also be having problems with gcc. gcc 2.96 does not work
 (Mandrake 8.1, perhaps others). Use a different compiler, like gcc 3.x.
 
-@node Problems with Alt key, Problems with gcc3, Problems compiling, Troubleshooting
+@node Problems compiling (GNUstep Internal Error), Problems with Alt key, Problems compiling (loading shared libs), Troubleshooting
+@subsection Problems compiling (GNUstep Internal Error)
+
+If you get
+
+@example
+GNUSTEP Internal Error:
+The private GNUstep function to establish the argv and environment
+variables was not called.
+Please report the error to bug-gnustep@gnu.org.
+@end example
+
+when compiling the gui library, there could be several things wrong. One
+is that you installed the gnustep-objc library, but the compiler
+found another Objecive-C library (like the one that came with gcc). If
+you are using gcc 3.x, DO NOT use the gnustep-objc library.
+
+@node Problems with Alt key, Problems with gcc3, Problems compiling (GNUstep Internal Error), Troubleshooting
 @subsection Problems with Alt key
 
 It's possible the Alt key is not where you think it is or is defined

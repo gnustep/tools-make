@@ -132,6 +132,12 @@ to be used.  Older versions of the tools required a windows style
 path (eg. C:/GNUstep), but using the MSYS style path is important as
 it will avoid problems later!
 
+Note: There was a comment that '--prefix=/C/GNUstep' did not work
+with a bash shell as it got converted to C:\GNUstep (which is bad because 
+the shell treats a \G as something entirely different. If you have this
+problem, try '--prefix=C:/GNUstep' (It's probably better to use the
+native Msys shell though).
+
 Now you can type 'make install' to build and install the make package.
 
 Once this is done, type '. GNUstep.sh' to set up your GNUstep

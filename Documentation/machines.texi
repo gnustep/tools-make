@@ -317,7 +317,9 @@ Static libs only (make shared=no).
 
 @c -----------------------------------------
 @node MkLinux/PowerPC, NetBSD, Irix 6.5/MIPS, Machine Specific
-@section MkLinux/PowerPC (MkLinux DR 3)
+@section MkLinux/PowerPC (@emph{Obsolete})
+
+This configuration is no longer being tested, but it may still work.
 
 @table @samp
 @item Recommended compiler
@@ -427,7 +429,9 @@ Unknown.
 
 @c -----------------------------------------
 @node Solaris 2.5.1/Sparc, Solaris/Sparc, Slackware/Intel, Machine Specific
-@section Solaris 2.5.1/Sparc
+@section Solaris 2.5.1/Sparc (@emph{Obsolete})
+
+This configuration is no longer being tested, but it may still work.
 
 @table @samp
 @item Recommended compiler
@@ -521,18 +525,18 @@ gdnc doesn't work.  If you recompile the kernel then it starts working.
 @node Suse/Intel, Suse 7.x/PPC, Suse 6.x/Intel, Machine Specific
 @section Suse/Intel 
 
-GNUstep has been tested on version 7.0 and 8.0 of Suse
+GNUstep has been tested on version 7.0, 8.0, and 8.1 of Suse
 
 @table @samp
 @item Recommended compiler
-Standard. gcc2.95.x, gcc3.0.x and gc3.1 work, but 2.95 is faster.
+Standard. gcc2.95.x, gcc3.0.x, 3.1 and 3.2 work, but 2.95 is faster.
 Compile with --threads-enabled (non-standard).
 
 @item Extra libs needed 
 None
 
 @item Special Instructions 
-Unknown.
+None.
 
 @end table
 

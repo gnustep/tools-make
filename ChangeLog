@@ -1,3 +1,11 @@
+2002-11-05  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.MinGW: Add note about setting
+	installation prefix.
+	* Documentation/faq.texi: Typo.
+	* Documentation/machines.texi: Updates.
+	* Documentation/userfaq.texi: Idem.
+
 Mon Nov  4 14:59:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/documentation.make (internal-doc-install_): Moved

@@ -51,7 +51,7 @@ the Makefiles yourself.  You will also have to translate the NIB files
 
 It's easier from GNUstep to Cocoa than Cocoa to GNUstep. Cocoa is
 constantly changing, much faster than GNUstep could hope to keep
-up. The have added extensions and new classes that aren't available in
+up. They have added extensions and new classes that aren't available in
 GNUstep yet. Plus there are some other issues. If you start with
 Cocoa:
 
