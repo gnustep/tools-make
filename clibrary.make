@@ -101,6 +101,14 @@ endif
 # library_combo - this variable is PRIVATE to gnustep-make
 FINAL_LIBRARY_INSTALL_DIR = $(CLIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)
 
+INTERNAL_LIBRARIES_DEPEND_UPON =				\
+  $(shell $(WHICH_LIB_SCRIPT)					\
+   $($(INTERNAL_library_NAME)_LIB_DIRS) $(ADDITIONAL_LIB_DIRS)	\
+   $(ALL_LIB_DIRS)						\
+   $(LIBRARIES_DEPEND_UPON)					\
+   debug=$(debug) profile=$(profile) shared=$(shared)		\
+   libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+
 ifeq ($(shared), yes)
 
 ifneq ($(BUILD_DLL),yes)
@@ -189,7 +197,8 @@ $(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
 	  --def $(DERIVED_SOURCES)/$(INTERNAL_clibrary_NAME).def \
 	  -o $@ $(OBJ_FILES_TO_LINK) \
 	  $(ALL_LIB_DIRS) \
-	  $(LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) $(SHARED_LD_POSTFLAGS) 
+	  $(INTERNAL_LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) \
+	  $(SHARED_LD_POSTFLAGS) 
 
 else # BUILD_DLL
 
