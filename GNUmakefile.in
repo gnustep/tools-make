@@ -34,9 +34,9 @@ include Version
 # install special_prefix=/var/tmp/gnustep-make'
 special_prefix = 
 
-GNUSTEP_SYSTEM_ROOT = $(special_prefix)/@prefix@
-GNUSTEP_LOCAL_ROOT  = $(special_prefix)/@GNUSTEP_LOCAL_ROOT@
-GNUSTEP_NETWORK_ROOT = $(special_prefix)/@GNUSTEP_NETWORK_ROOT@
+GNUSTEP_SYSTEM_ROOT = $(special_prefix)@prefix@
+GNUSTEP_LOCAL_ROOT  = $(special_prefix)@GNUSTEP_LOCAL_ROOT@
+GNUSTEP_NETWORK_ROOT = $(special_prefix)@GNUSTEP_NETWORK_ROOT@
 srcdir = @srcdir@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
