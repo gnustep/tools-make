@@ -13,7 +13,7 @@
 
 	* target.make: Use -lposix for Solaris (regardless of threaded).
 
-1999-09-07  David Lazaro Saz
+1999-09-07  David Lazaro Saz  <khelekir@encomix.es>
 
 	* configure.in: Added threading support for FreeBSD.
 	* target.make: Likewise.
