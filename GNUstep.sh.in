@@ -159,8 +159,7 @@ export CLASSPATH
 #
 # Perform any user initialization
 #
-if [ -f "$GNUSTEP_USER_ROOT/GNUstep.sh" ]
-then
+if [ -f "$GNUSTEP_USER_ROOT/GNUstep.sh" ]; then
   . "$GNUSTEP_USER_ROOT/GNUstep.sh"
 fi
 
