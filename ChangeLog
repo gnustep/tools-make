@@ -1,3 +1,9 @@
+Wed Feb 27 16:38:36 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/rules.make (PALETTE_ICON): Do not pass it to submakes.
+	* Instance/palette.make (PALETTE_ICON): Define it here.
+	(PALETTE_INSTALL_DIR): Define with =, not :=.
+
 Wed Feb 27 16:33:03 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* palette.make: Broken into Master and Instance.
