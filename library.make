@@ -3,10 +3,11 @@
 #
 #   Makefile rules to build GNUstep-based libraries.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #	     Ovidiu Predescu <ovidiu@net-community.com>
+#            Nicola Pero     <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -50,23 +51,19 @@ LIBRARY_NAME:=$(strip $(LIBRARY_NAME))
 ifeq ($(INTERNAL_library_NAME),)
 # This part is included the first time make is invoked.
 
-# Short explanation of how gstep-make works: (hh)
+# Short explanation of how gnustep-make works:
 #
 # The
 #   internal-all:: $(LIBRARY_NAME:=.all.library.variables)
 # eg expands to:
-#   internal-all ::
+#   internal-all::
 #     libobjc.all.library.variables libFoundation.all.library.variables
 # that is,
 #   $target.$operation.$type.variables
 # for each target (word in the LIBRARY_NAME (list) variable)
 #
-# The %.variables is matched in rules.make which then invokes
-# it's $target.build rule which does the actual work. The %.build
-# rule is a pattern rule extracting the variable set matching for
-# the appropriate target. Eg when
-#   libobjc.build
-# is invoked, $($*_C_FILES) expands to the value of the variable
+# The %.variables is matched in rules.make which then kicks off a submake
+# invocation; $($*_C_FILES) expands to the value of the variable
 # libobjc_C_FILES which in turn is mapped in the nested invocation
 # of make to the the plain C_FILES variable. In this step also
 # which_lib is invoked to determine to correct library bindings.
@@ -80,20 +77,21 @@ internal-install:: $(LIBRARY_NAME:=.install.library.variables)
 
 internal-uninstall:: $(LIBRARY_NAME:=.uninstall.library.variables)
 
-internal-clean:: $(LIBRARY_NAME:=.clean.library.variables)
+internal-clean:: $(LIBRARY_NAME:=.clean.library.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(LIBRARY_NAME:=.distclean.library.variables)
+internal-distclean:: $(LIBRARY_NAME:=.distclean.library.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 $(LIBRARY_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 		$@.all.library.variables
 
-else
-# This part gets included the second time make is invoked.
+else # This part gets included the second time make is invoked.
 
 .PHONY: internal-library-all \
-        internal-library-clean \
-        internal-library-distclean \
         internal-library-install \
         internal-library-uninstall \
         before-$(TARGET)-all \
@@ -254,7 +252,7 @@ ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	    $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	         $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done;
 endif
@@ -264,11 +262,11 @@ ifeq ($(BUILD_DLL),yes)
 internal-install-lib::
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) \
-	    $(DLL_INSTALLATION_DIR) ; \
+	                     $(DLL_INSTALLATION_DIR) ; \
 	fi
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) \
-	      $(LIBRARY_INSTALL_DIR) ; \
+	                     $(LIBRARY_INSTALL_DIR) ; \
 	fi
 
 else
@@ -276,7 +274,7 @@ else
 internal-install-lib::
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
-	      $(LIBRARY_INSTALL_DIR) ; \
+	                     $(LIBRARY_INSTALL_DIR) ; \
 	  $(AFTER_INSTALL_LIBRARY_CMD) \
 	fi
 
@@ -305,17 +303,6 @@ internal-uninstall-lib::
 	      $(LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE)
 
 endif
-
-#
-# Cleaning targets
-#
-internal-library-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
-
-internal-library-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
 
 #
 # Testing targets
