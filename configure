@@ -837,6 +837,7 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
 --enable-flattened		Use flattened directory structure
+--enable-multi-platform		Use run time multi-platform support
 
 --disable-backend-bundle	Compile gui backend as a library
 --disable-import     Warn about usage of deprecated import directive
@@ -2965,6 +2966,43 @@ fi
 
 
 #--------------------------------------------------------------------
+# Is the system multi-platform?
+#--------------------------------------------------------------------
+#
+# Multi-platform means that GNUstep.sh will determine the host
+# platform (by running config.guess) each time that it is sourced.
+# This is good if you are sharing your GNUstep.sh across your network
+# (for example, mounting the makefiles via NFS), but it requires you
+# to be able to run config.guess on your machine(s), which usually
+# requires a development environment (compiler, libc etc).
+#
+# The default instead is not using multi-platform, which means the
+# local host os, cpu and version is hardcoded in GNUstep.sh.  This
+# works nicely for a single machine using this gnustep-make
+# installation, and it works even if you don't have development
+# packages (gcc, binutils, libc-dev etc) installed.  We had to make
+# this the default after end-users (with no development packages
+# installed) complained that binary packages wouldn't work (and the
+# reason turned out to be that GNUstep.sh was running config.guess
+# which was returning the wrong platform because the development
+# tools needed/used to determine the platform were not available).
+#
+# Check whether --enable-multi-platform or --disable-multi-platform was given.
+if test "${enable_multi_platform+set}" = set; then
+  enableval="$enable_multi_platform"
+  ac_cv_multi_platform=$enableval
+else
+  ac_cv_multi_platform="undefined"
+fi;
+
+if test "$ac_cv_multi_platform" = "yes"; then
+  GNUSTEP_MULTI_PLATFORM=yes;
+else
+  GNUSTEP_MULTI_PLATFORM=;
+fi
+
+
+#--------------------------------------------------------------------
 # Build backend bundles (on by default)
 #--------------------------------------------------------------------
 # Check whether --enable-backend-bundle or --disable-backend-bundle was given.
@@ -4085,10 +4123,12 @@ echo "${ECHO_T}$GNUSTEP_MAKE_VERSION" >&6
 # have to compute clean_target_os from target_os (and similar) by
 # running shell scripts each time you 'make' something inside
 # gnustep-make.  We basically compute them once now, and cache them
-# forever.
+# forever.  It is also used by GNUstep.sh when multi-platform is
+# disabled.
 clean_target_os=`$srcdir/clean_os.sh $target_os`
 clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
 clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
+
 
 
 
@@ -4714,6 +4754,7 @@ s,@HOST_INSTALL@,$HOST_INSTALL,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t
 s,@GNUSTEP_FLATTENED@,$GNUSTEP_FLATTENED,;t t
+s,@GNUSTEP_MULTI_PLATFORM@,$GNUSTEP_MULTI_PLATFORM,;t t
 s,@BACKEND_BUNDLE@,$BACKEND_BUNDLE,;t t
 s,@objc_threaded@,$objc_threaded,;t t
 s,@ac_cv_objc_threaded@,$ac_cv_objc_threaded,;t t
