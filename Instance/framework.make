@@ -44,12 +44,37 @@ endif
 #    xxx_WEBSERVER_RESOURCE_DIRS
 # The list of localized framework web server GSWeb components are in
 #    xxx_WEBSERVER_LOCALIZED_RESOURCE_DIRS
-# CURRENT_VERSION_NAME is the compiled version name (default "A")
-# DEPLOY_WITH_CURRENT_VERSION deploy with current version or not (default
-#       "yes")
+# xxx_CURRENT_VERSION_NAME is the compiled version name (default "A")
+# xxx_DEPLOY_WITH_CURRENT_VERSION deploy with current version or not (default
+#       "yes") [Nicola: I'm not sure what this means :-)]
 #
 # where xxx is the framework name
 #
+
+# Warn about obsolete syntax
+ifneq ($(CURRENT_VERSION_NAME),)
+  $(warning CURRENT_VERSION_NAME is deprecated because it doesnt allow multiple frameworks with different versions to be built from warning the same GNUmakefile!  Please replace it with XXX_CURRENT_VERSION_NAME)
+endif
+
+# Warning - the following variable is also used in Master/rules.make
+# to build the OWNING_PROJECT_HEADER_DIR for the framework's
+# subprojects.  Make sure you keep them in sync if you change them.
+CURRENT_VERSION_NAME = $($(GNUSTEP_INSTANCE)_CURRENT_VERSION_NAME)
+ifeq ($(CURRENT_VERSION_NAME),)
+  CURRENT_VERSION_NAME = A
+endif
+
+ifneq ($(DEPLOY_WITH_CURRENT_VERSION),)
+  $(warning DEPLOY_WITH_CURRENT_VERSION is deprecated because it doesnt allow multiple frameworks with different DEPLOY_WITH_CURRENT_VERSION to be built from warning the same GNUmakefile!  Please replace it with XXX_DEPLOY_WITH_CURRENT_VERSION)
+endif
+
+DEPLOY_WITH_CURRENT_VERSION = $($(GNUSTEP_INSTANCE)_DEPLOY_WITH_CURRENT_VERSION)
+ifeq ($(DEPLOY_WITH_CURRENT_VERSION),)
+  DEPLOY_WITH_CURRENT_VERSION = yes
+endif
+
+FRAMEWORK_DIR_NAME = $(GNUSTEP_INSTANCE).framework
+FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
 
 HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 
@@ -439,6 +464,6 @@ internal-framework-clean::
 internal-framework-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj $(DERIVED_SOURCES)
+	  static_profile_debug_obj
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
