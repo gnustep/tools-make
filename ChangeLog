@@ -1,3 +1,14 @@
+Tue Oct 16 03:30:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Warning - very minor backwards incompatible change in the API, 
+	which should only affect gnustep-objc.
+	* library.make (LIBRARY_INSTALL_DIR): Changed not to include the
+	GNUSTEP_TARGET_LDIR.  All occurrences of LIBRARY_INSTALL_DIR
+	updated for this change.
+	* clibrary.make: New file derived from library.make.  It does the
+	same, but installs in a different way.
+	* GNUmakefile.in (MAKE_FILES): Added clibrary.make.
+	
 2001-10-09  Adam Fedor  <fedor@gnu.org>
 
 	* config.site: Fix for empty target. (suggested by
