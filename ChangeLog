@@ -8,6 +8,7 @@ Thu Sep 25 11:25:36 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	* library.make: Likewise.
 	* rules.make: Likewise.
 	* tool.make: Likewise.
+	* common.make: Define SHELL to be /bin/sh to avoid possible problems.
 
 Wed Sep 24 17:54:41 1997  Scott Christley  <scottc@speedy.net-community.com>
 
