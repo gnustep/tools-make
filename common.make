@@ -81,39 +81,63 @@ endif
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
 
+#
+# Sanity checks - only performed at the first make invocation
+#
+ifeq ($(MAKELEVEL),0)
+
+# Sanity check on GNUSTEP_*_ROOT.  We want them all to be non-empty.
+GNUSTEP_ERROR = 
+
+ifeq ($(GNUSTEP_USER_ROOT),)
+  GNUSTEP_ERROR=GNUSTEP_USER_ROOT
+endif
+ifeq ($(GNUSTEP_LOCAL_ROOT),)
+  GNUSTEP_ERROR=GNUSTEP_LOCAL_ROOT
+endif
+ifeq ($(GNUSTEP_NETWORK_ROOT),)
+  GNUSTEP_ERROR=GNUSTEP_NETWORK_ROOT
+endif
+ifeq ($(GNUSTEP_SYSTEM_ROOT),)
+  GNUSTEP_ERROR=GNUSTEP_SYSTEM_ROOT
+endif
+
+ifneq ($(GNUSTEP_ERROR),)
+  $(warning ERROR: Your $(GNUSTEP_ERROR) environment variable is empty !)
+  $(error Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+endif
+
 # Sanity check on $PATH - NB: if PATH is wrong, we can't do certain things
 # because we can't run the tools (not even using opentool as we can't even
 # run opentool if PATH is wrong) - this is particularly bad for gui stuff
-ifeq ($(MAKELEVEL),0)
 
-  # Skip the check if we are on an Apple system.  I was told that you can't
-  # source GNUstep.sh before running Apple's PB and that the only
-  # friendly solution is to disable the check.
-  ifneq ($(FOUNDATION_LIB),nx)
+# Skip the check if we are on an Apple system.  I was told that you can't
+# source GNUstep.sh before running Apple's PB and that the only
+# friendly solution is to disable the check.
+ifneq ($(FOUNDATION_LIB),nx)
 
-  # NB - we can't trust PATH here because it's what we are trying to
-  # check ... but hopefully if we (common.make) have been found, we
-  # can trust that at least $(GNUSTEP_MAKEFILES) is set up correctly :-)
+# NB - we can't trust PATH here because it's what we are trying to
+# check ... but hopefully if we (common.make) have been found, we
+# can trust that at least $(GNUSTEP_MAKEFILES) is set up correctly :-)
 
-  # We want to check that this path is in the PATH
-  SYS_TOOLS_PATH = $(GNUSTEP_SYSTEM_ROOT)/Tools
+# We want to check that this path is in the PATH
+SYS_TOOLS_PATH = $(GNUSTEP_SYSTEM_ROOT)/Tools
 
-  # But on windows we might need to first fix it up ...
-  ifeq ($(findstring mingw, $(GNUSTEP_TARGET_OS)), mingw)
-    ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
-      SYS_TOOLS_PATH := $(shell cygpath -u $(SYS_TOOLS_PATH))
-    endif
+# But on windows we might need to first fix it up ...
+ifeq ($(findstring mingw, $(GNUSTEP_TARGET_OS)), mingw)
+  ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
+    SYS_TOOLS_PATH := $(shell cygpath -u $(SYS_TOOLS_PATH))
   endif
-
-  ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
-    $(warning WARNING - Your PATH is not set up correctly !)
-    $(warning You need to run the GNUstep configuration script to fix this)
-    $(warning try running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
-  endif
-
-  endif # code used when FOUNDATION_LIB != nx
-
 endif
+
+ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
+  $(warning WARNING: Your PATH is not set up correctly !)
+  $(warning Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+endif
+
+endif # code used when FOUNDATION_LIB != nx
+
+endif # End of sanity checks run only at makelevel 0
 
 
 
@@ -141,15 +165,10 @@ include $(GNUSTEP_MAKEFILES)/target.make
 
 #
 # GNUSTEP_INSTALLATION_DIR is the directory where all the things go. If you
-# don't specify it defaults to GNUSTEP_LOCAL_ROOT, unless GNUSTEP_LOCAL_ROOT
-# is empty in which case it defaults to GNUSTEP_SYSTEM_ROOT
+# don't specify it defaults to GNUSTEP_LOCAL_ROOT.
 #
 ifeq ($(GNUSTEP_INSTALLATION_DIR),)
-  ifeq ($(GNUSTEP_LOCAL_ROOT),)
-    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT)
-  else
-    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
-  endif
+  GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 endif
 
 #
@@ -180,82 +199,53 @@ endif
 #
 # Now prepare the library and header flags
 #
+GNUSTEP_FRAMEWORKS_HEADERS_FLAGS = \
+  -I$(GNUSTEP_USER_ROOT)/Library/Headers \
+  -I$(GNUSTEP_LOCAL_ROOT)/Library/Headers \
+  -I$(GNUSTEP_NETWORK_ROOT)/Library/Headers \
+  -I$(GNUSTEP_SYSTEM_ROOT)/Library/Headers
+
+GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS = \
+  -L$(GNUSTEP_USER_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  -L$(GNUSTEP_LOCAL_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  -L$(GNUSTEP_NETWORK_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  -L$(GNUSTEP_SYSTEM_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)
+
 ifeq ($(GNUSTEP_FLATTENED),)
 
-ifneq ($(GNUSTEP_USER_ROOT),)
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_USER_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += \
-  -L$(GNUSTEP_USER_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)
-GNUSTEP_HEADERS_FLAGS += \
+GNUSTEP_HEADERS_FLAGS = \
   -I$(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-  -I$(GNUSTEP_USER_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += \
-  -L$(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  -L$(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR)
-endif
-
-ifneq ($(GNUSTEP_LOCAL_ROOT),)
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_LOCAL_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += \
-  -L$(GNUSTEP_LOCAL_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)
-GNUSTEP_HEADERS_FLAGS += \
+  -I$(GNUSTEP_USER_ROOT)/Headers \
   -I$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-  -I$(GNUSTEP_LOCAL_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += \
-  -L$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  -L$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR)
-endif
-
-ifneq ($(GNUSTEP_NETWORK_ROOT),)
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_NETWORK_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += \
-  -L$(GNUSTEP_NETWORK_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)
-GNUSTEP_HEADERS_FLAGS += \
+  -I$(GNUSTEP_LOCAL_ROOT)/Headers \
   -I$(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-  -I$(GNUSTEP_NETWORK_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += \
-  -L$(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  -L$(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR)
-endif
-
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_SYSTEM_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += \
-  -L$(GNUSTEP_SYSTEM_ROOT)/Library/Libraries/$(GNUSTEP_TARGET_LDIR)
-GNUSTEP_HEADERS_FLAGS += \
+  -I$(GNUSTEP_NETWORK_ROOT)/Headers \
   -I$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
   -I$(GNUSTEP_SYSTEM_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += \
+
+GNUSTEP_LIBRARIES_FLAGS = \
+  -L$(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  -L$(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
+  -L$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  -L$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
+  -L$(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  -L$(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
   -L$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
   -L$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR)
 
-
 else # GNUSTEP_FLATTENED
 
-ifneq ($(GNUSTEP_USER_ROOT),)
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_USER_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += -L$(GNUSTEP_USER_ROOT)/Library/Libraries
-GNUSTEP_HEADERS_FLAGS   += -I$(GNUSTEP_USER_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += -L$(GNUSTEP_USER_ROOT)/Libraries
-endif
+GNUSTEP_HEADERS_FLAGS = \
+  -I$(GNUSTEP_USER_ROOT)/Headers \
+  -I$(GNUSTEP_LOCAL_ROOT)/Headers \
+  -I$(GNUSTEP_NETWORK_ROOT)/Headers \
+  -I$(GNUSTEP_SYSTEM_ROOT)/Headers
 
-ifneq ($(GNUSTEP_LOCAL_ROOT),)
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_LOCAL_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += -L$(GNUSTEP_LOCAL_ROOT)/Library/Libraries
-GNUSTEP_HEADERS_FLAGS   += -I$(GNUSTEP_LOCAL_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += -L$(GNUSTEP_LOCAL_ROOT)/Libraries
-endif
-
-ifneq ($(GNUSTEP_NETWORK_ROOT),)
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_NETWORK_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += -L$(GNUSTEP_NETWORK_ROOT)/Library/Libraries
-GNUSTEP_HEADERS_FLAGS   += -I$(GNUSTEP_NETWORK_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += -L$(GNUSTEP_NETWORK_ROOT)/Libraries
-endif
-
-GNUSTEP_FRAMEWORKS_HEADERS_FLAGS   += -I$(GNUSTEP_SYSTEM_ROOT)/Library/Headers
-GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS += -L$(GNUSTEP_SYSTEM_ROOT)/Library/Libraries
-GNUSTEP_HEADERS_FLAGS   += -I$(GNUSTEP_SYSTEM_ROOT)/Headers
-GNUSTEP_LIBRARIES_FLAGS += -L$(GNUSTEP_SYSTEM_ROOT)/Libraries
+GNUSTEP_LIBRARIES_FLAGS = \
+  -L$(GNUSTEP_USER_ROOT)/Libraries \
+  -L$(GNUSTEP_LOCAL_ROOT)/Libraries \
+  -L$(GNUSTEP_NETWORK_ROOT)/Libraries \
+  -L$(GNUSTEP_SYSTEM_ROOT)/Libraries
 
 endif # GNUSTEP_FLATTENED
 
@@ -292,21 +282,17 @@ ifeq ($(FOUNDATION_LIB),sun)
   FOUNDATION_LIBRARY_DEFINE = -DSun_Foundation_LIBRARY=1
 endif
 
-ifneq ($(GNUSTEP_NETWORK_ROOT),)
-  GNUSTEP_HEADERS_FND_FLAG += -I$(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_FND_DIR)
-endif
-ifneq ($(GNUSTEP_USER_ROOT),)
-  GNUSTEP_HEADERS_FND_FLAG += -I$(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR)
-endif
-ifneq ($(GNUSTEP_LOCAL_ROOT),)
-  GNUSTEP_HEADERS_FND_FLAG += -I$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR)
-endif
-GNUSTEP_HEADERS_FND_FLAG += -I$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)
+GNUSTEP_HEADERS_FND_FLAG = \
+  -I$(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
+  -I$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
+  -I$(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
+  -I$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)
 
 ifeq ($(FOUNDATION_LIB), fd)
   GNUSTEP_HEADERS_FND_FLAG += \
     -I$(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
     -I$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+    -I$(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
     -I$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
 endif
 
