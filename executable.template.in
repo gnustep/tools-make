@@ -210,5 +210,5 @@ fi
 # this needs to be PATH on NT
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
-exec $full_appname/$relative_path $@
+exec $full_appname/$relative_path "$@"
 
