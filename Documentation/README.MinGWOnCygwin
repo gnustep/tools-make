@@ -108,7 +108,7 @@ which installs the libraries in the GNUstep directory structure (There is
 a script in ffcall-1.8d and higher that automatically configures ffcall
 and installs, called compile-mingw). Then
 
-  make
+  make				# NOTE: Might need to be 'make LN_S=cp'
   make install
 
 6. Now you can compile the Objective-C runtime DLL, gnustep-objc (unless 
@@ -139,15 +139,11 @@ you exec the GNUstep.sh script, just set the GNUSTEP_HOST:
 Problems?
 ---------
 
-[1] Problems compiling ffcall with MingWs gcc? Use Cygwin gcc:
-
-export CC="gcc -mno-cygwin"
-
-[2] It's really important that all the libraries you link with GNUstep be
+[1] It's really important that all the libraries you link with GNUstep be
 shared libraries. Even static libraries based on C (e.g. libtiff) will
 prevent Objective-C modules from being loaded in Objective-C libraries.
 
-[3] On Windows XP, at least, there are sometimes spaces in the path to the
+[2] On Windows XP, at least, there are sometimes spaces in the path to the
 user directory. The make program cannot deal with this.
 Probably the best solution is to add a .GNUsteprc file in your home
 directory with a line of the form -
@@ -155,6 +151,34 @@ GNUSTEP_USER_ROOT=/home/myname
 setting your personal GNUstep root directory to be '/home/myname' ...
 some path which does not contain spaces.
 
+[3] Some users report needing to make gnustep libs like this (perhaps
+when using Cygwin's gcc only):
+
+export CC="gcc"
+export CFLAGS="-mno-cygwin"
+export CPPFLAGS="-mno-cygwin"
+find . -name "*.lnk" -print -exec rm {} \;
+make target=i386-mingw32 shared=yes LN_S="ln -s" \
+  SHARED_LD_PREFLAGS="--driver-flags=\"-mno-cygwin -mdll -Wl,--enable-stdcall-fixup\" --target=i386-mingw32 --export-all-symbols"
+
+[4] Compiling iconv (1.8):
+
+(the part with the most problems - maybe you download it precompiled
+but if you want to compile it - here is the guide) Make sure you are
+compiling from a mapped drive (eg. d:) not from an UNC Path!!!!
+
+./configure --target=i386-mingw32 --host=i386-mingw32 (ignore warnings here)
+edit libtool and libcharset/libtool so that the CC variable reads 
+"gcc -mno-cygwin -mdll"
+make
+(After a while make breaks with an error in linking)
+find . -name "*.lnk" -print -exec rm {} \;
+make
+(make breaks now in the src folder, but the DLL is already buildt, 
+that is what we need)
+cp include/iconv.h $GNUSTEP_SYSTEM_ROOT/Headers
+cp lib/.libs/libiconv-2.dll $GNUSTEP_SYSTEM_ROOT/Tools/libiconv-2.dll
+cp lib/.libs/libiconv.dll.a $GNUSTEP_SYSTEM_ROOT/Libraries/libiconv.a
 
 Good Sites for Pre-Compiled Binaries
 ------------------------------------

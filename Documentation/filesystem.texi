@@ -1,0 +1,481 @@
+\input texinfo   @c -*-texinfo-*-
+@c GNUstep filesystem hierarchy
+@c %**start of header
+@setfilename filesystem.info
+@settitle GNUstep Filesystem Hierarchy Document
+@c %**end of header
+@setcontentsaftertitlepage
+@smallbook
+
+@titlepage
+@title GNUstep Filesystem Hierarchy Document
+
+@vskip 0pt plus 1filll
+
+Last Update: @today{}
+
+@page
+@vskip 0pt plus 1filll
+Authors:  Tim Harrison, Martin Brecher, Adam Fedor
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation.
+
+@end titlepage
+
+@node Top, The System Domain, (dir), (dir)
+@top GNUstep Filesystem Hierarchy
+ 
+@menu
+* The System Domain::           
+* The Local Domain::            
+* The Network Domain::          
+* The Users Domain::            
+* Hierarchy::                   
+* Description::                 
+@end menu
+
+On GNUstep, there are four separate places where files related to GNUstep
+are installed: these places are called "domains".  These four 
+domains are the System domain, the Local domain, the Network domain,
+and the User domain.  Each of these domains serve a special purpose.  
+
+The following is a general overview of the GNUstep domains.  A detailed
+explanation of the directory structure contained within each domain is
+found later in this document.
+
+
+@node The System Domain, The Local Domain, Top, Top
+@section The System Domain
+
+The System domain is found in the @file{System} folder of the GNUstep 
+installation.  This directory contains all files which were included
+in the default GNUstep installation or distribution.  Namely these
+are the basic GNUstep libraries (Foundation and AppKit), essential
+system applications (the Workspace Manager, the Editor, applications
+related to system administrative tasks), the developer applications (Project 
+Center and Gorm, as well as header files), essential extensions (bundles
+for XML, SSL, RTF, etc), as well as all software installed by the
+manufacturer of your distribution.  These files are usually essential 
+for having a fully functional system.  Thus, making modifications to 
+these files is highly discouraged.  In addition, only the system 
+administrator ('root' on most UNIX systems) should have permissions to 
+write to that domain.
+
+
+
+@node The Local Domain, The Network Domain, The System Domain, Top
+@section The Local Domain
+
+While at first glance, the Local domain seems very similar to the 
+System domain, there are several differences between them.  The most
+important thing is the differing purpose of the Local domain, as it is
+meant as the location for installing software which was not included
+with your GNUstep distribution.  These may include third party 
+applications, custom extension libraries and their related header files,
+etc.  Another difference is the possible permission for normal users to
+install software in this location without having to ask the system 
+administrator for permission to do so.  The Local domain is - as the name 
+suggests - usually installed as @file{Local} on your GNUstep system.
+
+
+
+@node The Network Domain, The Users Domain, The Local Domain, Top
+@section The Network Domain
+
+If you are working with a GNUstep system at home, the @file{Network} folder
+is probably empty, as it is of small use on stand alone systems.  However,
+the Network domain is of great use in networked, corporate environments.
+Its main purpose is to hold files exported from a central server in your
+network or from other workstations.  Most times, remote directories 
+containing applictations or general data used by several workstations 
+in the network are mounted using the Network File System (NFS).  Such 
+usage gives administrators the possibility of providing application
+or resources to a vast number of workstations while only having to 
+manage the software in one place.  This is especially useful when
+workstations are used by several users with different tasks and requirements.
+
+
+
+@node The Users Domain, Hierarchy, The Network Domain, Top
+@section The Users Domain
+
+On systems where GNUstep is installed optionally, the Users domain can
+usually be found in a subdirectory of the user's home directory called
+'GNUstep'.  This location is configurable, and some installations may
+put this directly in the user's directory (and typical user's home
+directories would be located in a @file{Users} folder).  As the name
+suggests, the main purpose of the Users domain is to hold GNUstep
+related files which shall not be available to other users on the
+system but only to the user owning them.  This includes the GNUstep
+defaults database, which holds system settings, application
+preferences and customized resources, as well as temporary data
+related to services and file type associations for programs.  In
+addition to these special files, the User domain features the same
+structure as the other domains.
+
+
+
+
+
+@node Hierarchy, Description, The Users Domain, Top
+@section Hierarchy
+
+@menu
+* System Hierarchy::            
+* Local Hierarchy::             
+* Network Hierarchy::           
+* User Hierarchy::              
+* Library Folder::              
+@end menu
+
+@node System Hierarchy, Local Hierarchy, Hierarchy, Hierarchy
+@subsection System
+
+@example
+System/
+        Applications/
+        Library/
+        Tools/
+        share/
+@end example
+
+@node Local Hierarchy, Network Hierarchy, System Hierarchy, Hierarchy
+@subsection Local
+
+@example
+Local/
+        Applications/
+        Library/
+        Tools/
+@end example
+
+@node Network Hierarchy, User Hierarchy, Local Hierarchy, Hierarchy
+@subsection Network
+
+@example
+Network/
+        Applications/
+        Library/
+        Servers/
+        Users/
+@end example
+
+@node User Hierarchy, Library Folder, Network Hierarchy, Hierarchy
+@subsection User
+
+@example
+@emph{User's GNUstep root dir}/
+        Applications/
+        Library/
+        Tools/
+@end example
+
+@node Library Folder,  , User Hierarchy, Hierarchy
+@subsection Library Folder
+
+@multitable @columnfractions 0.2 0.2 0.2 0.2 0.2
+@item ApplicationSupport
+@item Bundles						
+@item ColorPickers						
+@item Colors						
+@item Defaults @tab @tab @tab                           @tab @emph{user only}
+@item DTDs						
+@item DocTemplates						
+@item Documentation
+@item Fonts						
+@item Frameworks						
+@item Headers						
+@item Images						
+@item KeyBindings						
+@item Libraries
+@item   @tab Resources					
+@item   @tab	@tab gnustep-base @tab			@tab @emph{system only}
+@item   @tab	@tab	@tab .lproj folders			
+@item   @tab	@tab	@tab CharacterSets			
+@item   @tab	@tab	@tab TimeZones			
+@item   @tab	@tab	@tab Languages
+@item   @tab	@tab gnustep-gui @tab			@tab @emph{system only}
+@item   @tab	@tab	@tab .lproj folders			
+@item   @tab	@tab	@tab TextConverters			
+@item Makefiles @tab @tab @tab				@tab @emph{system only}
+@item 	@tab Additional					
+@item Palettes						
+@item PostScript						
+@item	@tab PPD					
+@item Services						
+@item Sounds						
+
+@end multitable
+
+@node  Description,  , Hierarchy, Top
+@section Description
+
+@menu
+* System Description::          
+* Local Description::           
+* Network Description::         
+* Applications::                
+* Tools::                       
+* Library::                     
+* Network/Servers::             
+* Network/Users::               
+@end menu
+
+@node System Description, Local Description, Description, Description
+@subsection System
+
+The System directory is the location of the GNUstep makefile package,
+base, gui and backend libraries, and any accompanying libraries or
+frameworks that are distributed as part of the GNUstep Project.  This
+directory MUST exist for a proper installation of GNUstep.
+
+Using the --prefix option to the configure script in gnustep-make, an
+installation of GNUstep may be placed wherever the installer wishes.
+Common options are:
+
+@example
+/usr/GNUstep
+/usr/local/GNUstep
+/opt/GNUstep
+/
+@end example
+
+All directories referenced in this document are relative to this root location.
+
+@node Local Description, Network Description, System Description, Description
+@subsection Local
+
+The Local domain is the location of libraries, frameworks, bundles, and 
+supporting files for locally installed applications or tools that are not
+distributed as part of the GNUstep Project.  This directory MUST exist
+for a proper installation of GNUstep.
+
+@node Network Description, Applications, Local Description, Description
+@subsection Network
+
+The Network Domain is the location for all exported applications, remotely
+mounted filesystems, and remote home directories for users made available via
+directory services.
+
+@node Applications, Tools, Network Description, Description
+@subsection Applications
+
+The @file{Applications} directory contains applications. Applications
+are programs that typically have a GUI interface and contain associated
+resource files, such as images, localization files and other program
+elements.
+
+System applications (stored in the @file{System/Applications} folder)
+are specific to development with, or the maintenance of, GNUstep.
+This installation location can be overridden, if the
+administrator/user wishes to install such applications in another
+installation directory. System applications that may be installed include:
+@example
+Gorm.app
+ProjectCenter.app
+GSDefaults.app
+GWorkspace.app
+Preferences.app
+@end example
+
+@node Tools, Library, Applications, Description
+@subsection Tools
+
+The @file{Tools} directory contains tools and executable
+scripts. Tools are programs which generally have a command-line
+interface. Most are not meant to be used by the average user.
+
+Tools that are written in languages other than Objective-C, or are developed
+to work with other runtime environments may have their own directory within
+the Tools directory (for example: @file{Tools/Java}).
+
+@node Library, Network/Servers, Tools, Description
+@subsection Library
+
+The @file{Library} directory contains most of the functional
+code of the GNUstep Development Environment.
+
+The primary reason for the structure of folders within Library is to
+keep a complimentary structure throughout all domains. This allows
+easier development, by keeping a standard directory layout, providing
+developers with a relatively common hierarchy to work within.
+
+@menu
+* ApplicationSupport::          
+* Bundles::                     
+* ColorPickers::                
+* Colors::                      
+* Defaults::                    
+* DTDs::                        
+* DocTemplates::                
+* Documenation::                
+* Fonts::                       
+* Frameworks::                  
+* Headers::                     
+* Images::                      
+* KeyBindings::                 
+* Libraries::                   
+* Makefiles::                   
+* Palettes::                    
+* PostScript::                  
+* Services::                    
+* Sounds::                      
+@end menu
+
+@node ApplicationSupport, Bundles, Library, Library
+@subsubsection ApplicationSupport
+
+This directory contains bundles and other resources that are provided
+for an application, but that are not specifically distributed with that
+application. For instance, these may be third-party resources for
+an application.
+
+For example, modules for the Preferences application may be stored here,
+in a @file{Preferences} subdirectory.
+
+@node Bundles, ColorPickers, ApplicationSupport, Library
+@subsubsection Bundles
+
+This directory contains application bundles. Bundles are
+collections of executable code and associated resources that may be
+loaded at runtime by an application or tool.  All bundles must have
+the extension @file{bundle}, to indicate their usage.
+
+@node ColorPickers, Colors, Bundles, Library
+@subsubsection ColorPickers
+
+This directory contains bundles that are used by the color picking
+system. They may include code that implements picking colors from a color
+wheel, a custom defined list of colors, etc.
+
+@node Colors, Defaults, ColorPickers, Library
+@subsubsection Colors
+
+This directory contains files that define
+specific color mappings for use within libraries or applications
+that require color definitions.
+
+@node Defaults, DTDs, Colors, Library
+@subsubsection Defaults
+
+This directory contains files that store defaults for applications, e.g.
+user preferences. This directory only exists in the User domain.
+
+@node DTDs, DocTemplates, Defaults, Library
+@subsubsection DTDs
+
+This directory contains any Document Type Definitions
+required for document parsing. 
+
+@node DocTemplates, Documenation, DTDs, Library
+@subsubsection DocTemplates
+
+This directory contains text templates for automatic documentation, as
+generated by autodoc.  Any additional documentation template types
+must be placed in this directory, as a central location for
+documentation template types.  Any templates installed within this
+directory must have an extension indicating what type of documentation
+system it is referenced by (ie. .gsdoc for the GNUstep implementation
+of autodoc).
+
+@node Documenation, Fonts, DocTemplates, Library
+@subsubsection Documentation
+
+This directory contains documentation for libraries, applications, etc.
+
+@node Fonts, Frameworks, Documenation, Library
+@subsubsection Fonts
+
+This directory contains fonts and files for organizing font information.
+
+@node Frameworks, Headers, Fonts, Library
+@subsubsection Frameworks
+
+This directory contains frameworks.  Frameworks are a type of bundle,
+which include, within their directory structure, a shared library
+providing a specific functionality (or group of related
+functionalities), and all resources required by that shared library.
+
+All frameworks must have the extension @file{framework}, to indicate
+their usage.
+
+Use of frameworks is generally discouraged, as it is difficult to
+support them in a clean way on multiple platforms. Bundles are a
+better method of organizing shared collections of resources and code.
+
+@node Headers, Images, Frameworks, Library
+@subsubsection Headers
+
+This directory contains header files associated with a library located 
+in the Libraries directory.
+
+@node Images, KeyBindings, Headers, Library
+@subsubsection Images
+
+@node KeyBindings, Libraries, Images, Library
+@subsubsection KeyBindings
+
+@node Libraries, Makefiles, KeyBindings, Library
+@subsubsection Libraries
+
+This directory contains libraries.  (NOTE: The Libraries directory
+being in Library may sound somewhat redundant, however, it could be
+read as "a Library of shared libraries".)
+
+@node Makefiles, Palettes, Libraries, Library
+@subsubsection Makefiles
+
+This directory contains the different types of makefiles used by the
+GNUstep development environment to build applications, libraries,
+bundles, etc.  These makefiles are usually included in a project
+specific GNUmakefile, which is used to build a project under the
+GNUstep development environment.
+
+This directory only exists in the System domain.
+
+@node Palettes, PostScript, Makefiles, Library
+@subsubsection Palettes
+
+This directory contains additional development palettes
+for Gorm, the GNUstep Interface Builder clone.
+
+@node PostScript, Services, Palettes, Library
+@subsubsection PostScript
+
+This directory contains directories for specific 
+PostScript document types and definitions, allowing applications written using 
+the GNUstep development environment to display PostScript documents, or 
+communicate with printers using PostScript.
+
+@node Services, Sounds, PostScript, Library
+@subsubsection Services
+
+This directory contains bundles that are specifically
+built to provide functionality between different programs (for example, spell
+checking, creation of a note from text within an email application).  Services 
+that are installed on the system must an extension of ".service".
+
+@node Sounds,  , Services, Library
+@subsubsection Sounds
+
+This directory contains sound files.
+
+@node Network/Servers, Network/Users, Library, Description
+@subsection  Network/Servers
+
+The @file{Network/Servers} directory contains the mount points for
+remotely mounted filesystems.  If you wish to mount the
+Network/Applications directory from MachineA, and you are using
+MachineB, you would mount MachineA:Network/Applications on
+/Network/Servers/MachineA on MachineB.
+
+@node Network/Users,  , Network/Servers, Description
+@subsection Network/Users
+
+The @file{Network/Users} directory contains user home directories that
+have been remotely mounted on the local computer.
+
+@bye
+\bye
