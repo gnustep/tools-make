@@ -97,7 +97,7 @@ $(CTOOL_INSTALLATION_DIR):
 	$(MKINSTALLDIRS) $(CTOOL_INSTALLATION_DIR)
 
 internal-ctool-uninstall::
-	rm -f $(CTOOL_INSTALLATION_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)
+	rm -f $(CTOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 ## Local variables:
 ## mode: makefile
