@@ -43,6 +43,10 @@ else
   lib_paths="$GNUSTEP_USER_ROOT/Libraries:$GNUSTEP_USER_ROOT/Library/Libraries:$GNUSTEP_LOCAL_ROOT/Libraries:$GNUSTEP_LOCAL_ROOT/Library/Libraries:$GNUSTEP_SYSTEM_ROOT/Libraries:$GNUSTEP_SYSTEM_ROOT/Library/Libraries"
 fi
 
+if [ -n "$GCC_SO_DIR" -a "$GCC_SO_DIR" != "NONE" ]; then
+  lib_paths="${lib_paths}:${GCC_SO_DIR}"
+fi
+
 if [ -n "$additional_library_paths" ]; then
   for dir in $additional_library_paths; do
     additional="${additional}${dir}:"

@@ -24,24 +24,38 @@ MinGW on Cygwin
 This is the only configuration I've tested so far. This method uses
 the Cygwin tools to help out with the configuration and compilation of
 the libraries. It's always good to get the very latest version of
-Cygwin and MinGW (WARNING: Some of the latest releases, however, do
-not include a working Obj-C compiler. For now you should stick with
-gcc 2.95.3-1 release or earlier). These instructions were performed
-with Cygwin DLL 1.1.4 and MingW gcc 2.95.2-1. If you have more
+Cygwin and MinGW. These instructions were performed
+with Cygwin DLL 1.3.2 and MingW gcc 2.95.3-5. If you have more
 experience with MinGW than me, please help improve these instructions!
 
 I assume you have installed Cygwin and MinGW, and dowloaded and
-unpacked the GNUstep packages. You also need to download a version of
-the Objective-C runtime (e.g. gnustep-objc) that compiles as a shared
-library (DLL). See the GNUstep-HOWTO file for more information on
-where to get various files.
+unpacked the GNUstep packages:
+
+ffcall
+gnustep-make
+gnustep-objc
+gnustep-base
+
+See the GNUstep-HOWTO file for more information on where to get
+various files.
 
 1. First, start up a Cygwin BASH shell and make sure the MinGW tools
 are in your path:
 
   export PATH=//c/mingw/bin:$PATH
 
-(Put in whatever path you have for the mingw tools).
+(Put in whatever path you have for the mingw tools). This is also a good
+time to compile and install the ffcall package (Version 1.8b or above). It's
+simply a C library so it requires no special tools other than the compiler.
+For MinGW, configure the ffcall package like this:
+
+  ./configure --host=i386-mingw32 --prefix=//c/mingw
+
+(or set the prefix to some other location that is in the compiler search path).
+Then
+
+  make
+  make install
 
 2. The default location for GNUstep on Unix systems in /usr/GNUstep, but
 there is no default for Windows machines, so you need to set that up
@@ -73,13 +87,27 @@ compile correctly:
 
   . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 
+Also put this command in your shell startup script.
+I also install a special script in the file ~/.GNUstep/GNUstep.sh with the
+lines:
+
+if [ $GNUSTEP_HOST_OS = "mingw32" ]; then
+  GNUSTEP_SYSTEM_ROOT=`cygpath -w $GNUSTEP_SYSTEM_ROOT | tr '\\\' '/'`
+fi
+
+So both Cygwin's shell and MinGW tools can understand the GNUstep directories
+(You can add similar lines for GNUSTEP_LOCAL_ROOT, GNUSTEP_USER_ROOT, etc.)
+This automatically gets executed by the above command.
+
 6. Now you can compile the Objective-C runtime DLL (unless you already
-have one installed). First edit the GNUmakefile and set the THREADING
-variable to 'win32'. Then:
+have one installed):
 
   cd gnustep-objc
   /usr/bin/make target=i386-mingw32 shared=yes
   /usr/bin/make target=i386-mingw32 shared=yes install
+
+Make sure to remove libobjc.a that comes with gcc, otherwise it will find that
+one instead of the one we want. 
 
 7. Now we can configure and build the gnustep-base library.
 

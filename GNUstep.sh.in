@@ -95,7 +95,9 @@ else
 fi
 export PATH
 
+# directory for gcc's 3.x shared libraries
 GCC_SO_DIR=@GCC_SO_DIR@
+export GCC_SO_DIR
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
 gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"

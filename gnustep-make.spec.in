@@ -44,12 +44,12 @@ mkdir -p ${RPM_BUILD_ROOT}/etc/profile.d
 echo "#!/bin/sh" > mygnustep.sh
 echo ". %{gs_prefix}/System/Makefiles/GNUstep.sh" >> mygnustep.sh
 
-echo "#!/bin/csh" > mygnustep.csh
-echo "source %{gs_prefix}/System/Makefiles/GNUstep.csh" >> mygnustep.csh
+#echo "#!/bin/csh" > mygnustep.csh
+#echo "source %{gs_prefix}/System/Makefiles/GNUstep.csh" >> mygnustep.csh
 
 chmod 755 mygnustep.*
 mv mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
-mv mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
+#mv mygnustep.csh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.csh
 %endif # Linux
 
 %clean
@@ -65,7 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 # Add the profiles for linux as configuration files <FIXME gdomap etc>
 %ifos Linux
 %config /etc/profile.d/GNUstep.sh
-%config /etc/profile.d/GNUstep.csh
+#%config /etc/profile.d/GNUstep.csh
 %endif # Linux
 
 #
@@ -96,6 +96,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Thu Jul 19 2001 Adam Fedor <fedor@gnu.org>
+- Remove csh script
+
 * Thu Apr 12 2001 Adam Fedor <fedor@gnu.org>
 - Changed default combo to gnu-gnu-gnu
 

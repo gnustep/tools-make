@@ -80,6 +80,9 @@ end
 setenv GNUSTEP_PATHPREFIX_LIST $GNUSTEP_PATHPREFIX
 setenv PATH ${tp}${PATH}
 
+# directory for gcc's 3.x shared libraries
+setenv GCC_SO_DIR @GCC_SO_DIR@
+
 source ${GNUSTEP_SYSTEM_ROOT}/Makefiles/ld_lib_path.csh
 
 #

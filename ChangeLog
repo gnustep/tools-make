@@ -1,3 +1,16 @@
+2001-07-26  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.csh.in: Set GCC_SO_DIR
+	* GNUstep.sh.in: Export GCC_SO_DIR
+	* ld_lib_path.sh: Use it in library path.
+	* ld_lib_path.csh: Likewise.
+
+	* gnustep-make.spec.in: Remove csh rules so rpm won't depend
+	on csh.
+
+	* Documentation/README.MingW: Update.
+	* Documentation/machines.texi: Likewise.
+
 Thu Jul 26 12:26:10 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Documentation/internals.tex: Revised and updated this document
