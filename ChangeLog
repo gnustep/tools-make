@@ -1,3 +1,7 @@
+Sun Nov 07 14:00:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* common.make: define GSWARN unless 'warn=no' is on command line.
+
 Fri Nov 05 11:23:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* application.make: Added comment about including info.plist stuff.
