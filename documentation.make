@@ -208,6 +208,10 @@ internal-doc-all:: before-$(TARGET)-all \
 LATEX2HTML = $(shell which latex2html | awk '{print $$1}' |  sed -e 's/which://')
 
 ifneq ($(LATEX2HTML),)
+  HAS_LATEX2HTML = yes
+endif
+
+ifeq ($(HAS_LATEX2HTML),yes)
 internal-doc-all:: $(INTERNAL_doc_NAME).tar.gz 
 
 $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html: $(INTERNAL_doc_NAME).dvi 
@@ -322,7 +326,7 @@ internal-doc-uninstall::
 	rm -f \
 	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
 
-ifneq ($(LATEX2HTML),)
+ifeq ($(HAS_LATEX2HTML),yes)
 internal-doc-install:: 
 	$(INSTALL_DATA) $(INTERNAL_doc_NAME)/*.html \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
@@ -397,7 +401,7 @@ internal-textdoc-clean::
 	@ rm -f $(INTERNAL_textdoc_NAME)
 
 ifneq ($(LATEX_FILES),)
-ifneq ($(LATEX2HTML),)
+ifeq ($(HAS_LATEX2HTML),yes)
 internal-doc-distclean::
 	@ if [ -d "$(INTERNAL_doc_NAME)" ]; then \
 	    rm -rf $(INTERNAL_doc_NAME)/; \

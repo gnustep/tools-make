@@ -1,3 +1,8 @@
+Mon Jul 30 20:15:48 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* documentation.make (HAS_LATEX2HTML): New variable to reduce the
+	number of times that LATEX2HTML is evaluated.
+
 2001-07-26  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.csh.in: Set GCC_SO_DIR
