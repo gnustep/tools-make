@@ -1,19 +1,17 @@
 #   -*-makefile-*-
-#   makedoc.make
+#   documentation.make - modified into makedoc.make - see comments 
+#   at the beginning of file for what was changed
 #
-#   Makefile rules to build GNUstep-based texinfo documentation.
+#   Makefile rules to build GNUstep-based documentation.
 #
 #   Copyright (C) 1998, 2000, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #  
 #   Author:  Nicola Pero <n.pero@mi.flashnet.it> 
-#   Date: November 2000 
-#   Changes: Support for installing documentation, and for LaTeX projects
-#
-#   Author: Adam Fedor <fedor@gnu.org>
-#   Date: Feb 2001
-#   Changes: Modified to build make doc (without installation)
+#   Date: 2000, 2001
+#   Changes: Support for installing documentation, for LaTeX projects,
+#            for Javadoc, lots of other changes and fixes
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -30,6 +28,22 @@
 # prevent multiple inclusions
 ifeq ($(DOCUMENTATION_MAKE_LOADED),)
 DOCUMENTATION_MAKE_LOADED=yes
+
+##
+## THE ONLY DIFFERENCE BETWEEN makedoc.make AND THE TOP LEVEL
+## documentation.make IS THAT THE FOLLOWING LINES ARE COMMENTED OUT
+##
+
+#
+# Include in the common makefile rules
+#
+#ifeq ($(RULES_MAKE_LOADED),)
+#include $(GNUSTEP_MAKEFILES)/rules.make
+#endif
+
+##
+## END OF DIFFERENCE
+##
 
 #
 # The names of the documents are in the DOCUMENT_NAME variable.
@@ -71,7 +85,7 @@ ifeq ($(INTERNAL_doc_NAME)$(INTERNAL_textdoc_NAME),)
 internal-all:: $(DOCUMENT_NAME:=.all.doc.variables) \
                $(DOCUMENT_TEXT_NAME:=.all.textdoc.variables)
 
-internal-install:: all $(DOCUMENT_NAME:=.install.doc.variables) \
+internal-install:: $(DOCUMENT_NAME:=.install.doc.variables) \
                    $(DOCUMENT_TEXT_NAME:=.install.textdoc.variables)
 
 internal-uninstall:: $(DOCUMENT_NAME:=.uninstall.doc.variables) \
@@ -90,6 +104,20 @@ internal-distclean:: $(DOCUMENT_NAME:=.distclean.doc.variables) \
 else
 # This part gets included the second time make is invoked.
 
+.PHONY: internal-doc-all \
+        internal-textdoc-all \
+        internal-doc-clean \
+        internal-textdoc-clean \
+        internal-doc-distclean \
+        internal-textdoc-distclean \
+        internal-doc-install \
+        internal-textdoc-install \
+        internal-doc-uninstall \
+        internal-textdoc-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        generate-javadoc
+
 #
 # Internal targets
 #
@@ -103,15 +131,15 @@ else
 #
 ifneq ($(TEXI_FILES),)
 
-internal-doc-all:: before-all before-$(TARGET)-all \
+internal-doc-all:: before-$(TARGET)-all \
                    $(INTERNAL_doc_NAME).info \
                    $(INTERNAL_doc_NAME).ps \
                    $(INTERNAL_doc_NAME)_toc.html \
-                   after-$(TARGET)-all after-all
+                   after-$(TARGET)-all
 
-internal-textdoc-all:: before-all before-$(TARGET)-all \
+internal-textdoc-all:: before-$(TARGET)-all \
                    $(INTERNAL_textdoc_NAME) \
-                   after-$(TARGET)-all after-all
+                   after-$(TARGET)-all
 
 $(INTERNAL_doc_NAME).info: $(TEXI_FILES)
 	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
@@ -124,8 +152,12 @@ $(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
 	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
 		$(INTERNAL_doc_NAME).dvi -o $@
 
+# Some systems don't have GNUSTEP_TEXI2HTML.  Simply don't build the
+# HTML in these cases - but without aborting compilation.  Below, we
+# don't install the result if it doesn't exist.
+
 $(INTERNAL_doc_NAME)_toc.html: $(TEXI_FILES)
-	$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
+	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
 		$(INTERNAL_doc_NAME).texi
 
 $(INTERNAL_textdoc_NAME): $(TEXI_FILES) $(TEXT_MAIN)
@@ -144,11 +176,16 @@ after-$(TARGET)-all::
 #
 ifneq ($(GSDOC_FILES),)
 
-internal-doc-all:: before-all before-$(TARGET)-all \
-                   $(INTERNAL_doc_NAME).html \
-                   after-$(TARGET)-all after-all
+# The only thing we know is that each %.gsdoc file should generate a
+# %.html file.  If any of the %.gsdoc files is newer than a corresponding
+# %.html file, we rebuild them all.
+GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
 
-$(INTERNAL_doc_NAME).html: $(GSDOC_FILES)
+internal-doc-all:: before-$(TARGET)-all \
+                   $(GSDOC_OBJECT_FILES) \
+                   after-$(TARGET)-all
+
+$(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
 	gsdoc $(GSDOC_FILES)
 
 endif # GSDOC_FILES
@@ -171,7 +208,7 @@ $(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
 $(INTERNAL_doc_NAME).ps.gz: $(INTERNAL_doc_NAME).ps 
 	gzip $(INTERNAL_doc_NAME).ps -c > $(INTERNAL_doc_NAME).ps.gz
 
-internal-doc-all:: before-all before-$(TARGET)-all \
+internal-doc-all:: before-$(TARGET)-all \
                    $(INTERNAL_doc_NAME).ps.gz
 
 #
@@ -181,17 +218,21 @@ internal-doc-all:: before-all before-$(TARGET)-all \
 LATEX2HTML = $(shell which latex2html | awk '{print $$1}' |  sed -e 's/which://')
 
 ifneq ($(LATEX2HTML),)
+  HAS_LATEX2HTML = yes
+endif
+
+ifeq ($(HAS_LATEX2HTML),yes)
 internal-doc-all:: $(INTERNAL_doc_NAME).tar.gz 
 
 $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html: $(INTERNAL_doc_NAME).dvi 
 	$(LATEX2HTML) $(INTERNAL_doc_NAME)
 
 $(INTERNAL_doc_NAME).tar.gz: $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html
-	$(TAR) cf $(INTERNAL_doc_NAME).tar.gz $(INTERNAL_doc_NAME)
+	$(TAR) cfz $(INTERNAL_doc_NAME).tar.gz $(INTERNAL_doc_NAME)
 
 endif # LATEX2HTML
 
-internal-doc-all:: after-$(TARGET)-all after-all
+internal-doc-all:: after-$(TARGET)-all
 
 endif # LATEX_FILES
 
@@ -200,21 +241,38 @@ endif # LATEX_FILES
 #
 ifneq ($(JAVADOC_FILES),)
 
-internal-doc-all:: before-$(TARGET)-all \
-                   $(INTERNAL_doc_NAME)/index.html \
-                   after-$(TARGET)-all
-
 ifeq ($(JAVADOC_SOURCEPATH),)
   INTERNAL_JAVADOCFLAGS = -sourcepath ./
 else
   INTERNAL_JAVADOCFLAGS = -sourcepath ./:$(strip $(JAVADOC_SOURCEPATH))
 endif
 
+# incremental compilation with javadoc is not supported - you can only
+# build once, or always.  by default we build only once - use
+# `JAVADOC_BUILD_ALWAYS = YES' to force rebuilding it always
+
+ifneq ($(JAVADOC_BUILD_ALWAYS),YES) # Build only once
+
+internal-doc-all:: before-$(TARGET)-all \
+                   $(INTERNAL_doc_NAME)/index.html \
+                   after-$(TARGET)-all
 $(INTERNAL_doc_NAME)/index.html:
 	$(MKDIRS) $(INTERNAL_doc_NAME); \
 	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(INTERNAL_doc_NAME)
 
-endif # GSDOC_FILES
+else # Build always
+
+internal-doc-all:: before-$(TARGET)-all \
+                   generate-javadoc \
+                   after-$(TARGET)-all
+generate-javadoc:
+	$(MKDIRS) $(INTERNAL_doc_NAME); \
+	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(INTERNAL_doc_NAME)
+
+endif
+
+
+endif # JAVADOC_FILES
 
 #
 # Install and uninstall targets
@@ -223,23 +281,28 @@ endif # GSDOC_FILES
 #
 # Installation directory - always created
 #
-internal-doc-install:: internal-install-dirs
+internal-doc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
-internal-install-dirs::
+$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 	$(MKDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 #
 # texi installation
 #
 ifneq ($(TEXI_FILES),)
+
+# NB: Only install HTML if it has been generated
 internal-doc-install::
 	$(INSTALL_DATA) $(INTERNAL_doc_NAME).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(INTERNAL_doc_NAME).info \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(INTERNAL_doc_NAME)_*.html \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-internal-doc-uninstall:: 
+	if [ -f $(INTERNAL_doc_NAME)_toc.html ]; then \
+	  $(INSTALL_DATA) $(INTERNAL_doc_NAME)_*.html \
+	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
+	fi
+
+internal-doc-uninstall::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
 	rm -f \
@@ -252,8 +315,6 @@ endif # TEXI_FILES
 # gsdoc installation
 #
 ifneq ($(GSDOC_FILES),)
-
-GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
 
 internal-doc-install::
 	$(INSTALL_DATA) $(GSDOC_OBJECT_FILES) \
@@ -275,7 +336,7 @@ internal-doc-uninstall::
 	rm -f \
 	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
 
-ifneq ($(LATEX2HTML),)
+ifeq ($(HAS_LATEX2HTML),yes)
 internal-doc-install:: 
 	$(INSTALL_DATA) $(INTERNAL_doc_NAME)/*.html \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
@@ -307,7 +368,7 @@ endif # JAVADOC_FILES
 #
 # text file installation
 #
-internal-textdoc-install:: internal-install-dirs
+internal-textdoc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(INTERNAL_textdoc_NAME) \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
@@ -319,68 +380,52 @@ internal-textdoc-uninstall::
 # Cleaning targets
 #
 internal-doc-clean::
-	rm -f $(INTERNAL_doc_NAME).aux
-	rm -f $(INTERNAL_doc_NAME).cp
-	rm -f $(INTERNAL_doc_NAME).cps
-	rm -f $(INTERNAL_doc_NAME).dvi
-	rm -f $(INTERNAL_doc_NAME).fn
-	rm -f $(INTERNAL_doc_NAME).info
-	rm -f $(INTERNAL_doc_NAME).ky
-	rm -f $(INTERNAL_doc_NAME).log
-	rm -f $(INTERNAL_doc_NAME).pg
-	rm -f $(INTERNAL_doc_NAME).ps
-	rm -f $(INTERNAL_doc_NAME).toc
-	rm -f $(INTERNAL_doc_NAME).tp
-	rm -f $(INTERNAL_doc_NAME).vr
-	rm -f $(INTERNAL_doc_NAME).vrs
-	rm -f $(INTERNAL_doc_NAME)_*.html
-	rm -f $(INTERNAL_doc_NAME).ps.gz
-	rm -f $(INTERNAL_doc_NAME).tar.gz
-	-rm -f $(INTERNAL_doc_NAME)/*
+	@ -rm -f $(INTERNAL_doc_NAME).aux  \
+	         $(INTERNAL_doc_NAME).cp   \
+	         $(INTERNAL_doc_NAME).cps  \
+	         $(INTERNAL_doc_NAME).dvi  \
+	         $(INTERNAL_doc_NAME).fn   \
+	         $(INTERNAL_doc_NAME).info \
+	         $(INTERNAL_doc_NAME).ky   \
+	         $(INTERNAL_doc_NAME).log  \
+	         $(INTERNAL_doc_NAME).pg   \
+	         $(INTERNAL_doc_NAME).ps   \
+	         $(INTERNAL_doc_NAME).toc  \
+	         $(INTERNAL_doc_NAME).tp   \
+	         $(INTERNAL_doc_NAME).vr   \
+	         $(INTERNAL_doc_NAME).vrs  \
+	         $(INTERNAL_doc_NAME)_*.html \
+	         $(INTERNAL_doc_NAME).ps.gz  \
+	         $(INTERNAL_doc_NAME).tar.gz \
+	         $(INTERNAL_doc_NAME)/*
 ifneq ($(GSDOC_FILES),)
-	for i in $(GSDOC_FILES); do \
-		rm -f `basename $$i .gsdoc`.html ; \
-	done
+	@ -rm -f $(GSDOC_OBJECT_FILES)
 endif
 ifneq ($(LATEX_FILES),)
-	for i in $(LATEX_FILES); do \
-		rm -f `basename $$i .tex`.aux ; \
-	done
+	@ rm -f *.aux
+endif
+ifneq ($(JAVADOC_FILES),)
+	@ -rm -Rf $(INTERNAL_doc_NAME)
 endif
 
 internal-textdoc-clean::
-	rm -f $(INTERNAL_textdoc_NAME)
-ifneq ($(GSDOC_FILES),)
-	for i in $(GSDOC_FILES); do \
-		rm -f `basename $$i .gsdoc`.html ; \
-	done
+	@ rm -f $(INTERNAL_textdoc_NAME)
+
+ifneq ($(LATEX_FILES),)
+ifeq ($(HAS_LATEX2HTML),yes)
+internal-doc-distclean::
+	@ if [ -d "$(INTERNAL_doc_NAME)" ]; then \
+	    rm -rf $(INTERNAL_doc_NAME)/; \
+	  fi
+endif
 endif
 
 ifneq ($(JAVADOC_FILES),)
-
 internal-doc-distclean::
-	rm -Rf $(INTERNAL_doc_NAME)
-
-endif # JAVADOC_FILES
-
-ifneq ($(LATEX_FILES),)
-
-internal-doc-distclean::
-	rm -Rf *~ 
-	rm -Rf *.aux
-else # ! LATEX_FILES
-internal-doc-distclean::
-	rm -Rf *~ 
-endif # LATEX_FILES
+	@ rm -rf $(INTERNAL_doc_NAME)
+endif 
 
 internal-textdoc-distclean::
-
-#
-# Testing targets
-#
-internal-doc-check::
-
-internal-textdoc-check::
 
 endif
 
