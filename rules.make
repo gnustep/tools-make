@@ -265,83 +265,95 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 
 # the rule then calls a submake, which runs the real code
 
-# The following functions are used in the %.variables, %.tools,
-# %.subprojects rules to extract the target, operation and type from
-# the $* (the stem) of the rule.  for example, $(call target,$*) will
-# be the target.
-target=$(basename $(basename $(1)))
-operation=$(subst .,,$(suffix $(basename $(1))))
-type=$(subst -,_,$(subst .,,$(suffix $(1))))
+# the following is the code used in %.variables, %.tools and %.subprojects
+# to extract the target, operation and type from the $* (the stem) of the 
+# rule.  with GNU make => 3.78, we could define the following as macros 
+# and use $(call ...) to call them; but because we have users who are using 
+# GNU make older than that, we have to manually `paste' this code 
+# wherever we need to access target or type or operation.
+#
+# Anyway, the following table tells you what these commands do - 
+#
+# target=$(basename $(basename $(1)))
+# operation=$(subst .,,$(suffix $(basename $(1))))
+# type=$(subst -,_,$(subst .,,$(suffix $(1))))
+#
+# It's very important to notice that $(basename $(basename $*)) in
+# these rules is simply the target (such as libgmodel).
 
 # Before building the real thing, we must build framework tools if
 # any, then subprojects (FIXME - not sure - at what stage should we
 # build framework tools ? perhaps after the framework so we can link
 # with it ?)
 %.variables: %.tools %.subprojects
-	@ echo Making $(call operation,$*) for $(call type,$*) $(call target,$*)...; \
-	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-	    internal-$(call type,$*)-$(call operation,$*) \
-	    INTERNAL_$(call type,$*)_NAME=$(call target,$*) \
-	    TARGET=$(call target,$*) \
-	    _SUBPROJECTS="$($(call target,$*)_SUBPROJECTS)" \
-	    OBJC_FILES="$($(call target,$*)_OBJC_FILES)" \
-	    C_FILES="$($(call target,$*)_C_FILES)" \
-	    JAVA_FILES="$($(call target,$*)_JAVA_FILES)" \
-	    JAVA_JNI_FILES="$($(call target,$*)_JAVA_JNI_FILES)" \
-	    OBJ_FILES="$($(call target,$*)_OBJ_FILES)" \
-	    PSWRAP_FILES="$($(call target,$*)_PSWRAP_FILES)" \
-	    HEADER_FILES="$($(call target,$*)_HEADER_FILES)" \
-	    TEXI_FILES="$($(call target,$*)_TEXI_FILES)" \
-	    GSDOC_FILES="$($(call target,$*)_GSDOC_FILES)" \
-	    LATEX_FILES="$($(call target,$*)_LATEX_FILES)" \
-	    JAVADOC_FILES="$($(call target,$*)_JAVADOC_FILES)" \
-	    JAVADOC_SOURCEPATH="$($(call target,$*)_JAVADOC_SOURCEPATH)" \
-	    DOC_INSTALL_DIR="$($(call target,$*)_DOC_INSTALL_DIR)" \
-	    TEXT_MAIN="$($(call target,$*)_TEXT_MAIN)" \
-	    HEADER_FILES_DIR="$($(call target,$*)_HEADER_FILES_DIR)" \
-	    HEADER_FILES_INSTALL_DIR="$($(call target,$*)_HEADER_FILES_INSTALL_DIR)" \
-	    COMPONENTS="$($(call target,$*)_COMPONENTS)" \
-	    LANGUAGES="$($(call target,$*)_LANGUAGES)" \
-	    HAS_GSWCOMPONENTS="$($(call target,$*)_HAS_GSWCOMPONENTS)" \
-	    GSWAPP_INFO_PLIST="$($(call target,$*)_GSWAPP_INFO_PLIST)" \
-	    WEBSERVER_RESOURCE_FILES="$($(call target,$*)_WEBSERVER_RESOURCE_FILES)" \
-	    LOCALIZED_WEBSERVER_RESOURCE_FILES="$($(call target,$*)_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
-	    WEBSERVER_RESOURCE_DIRS="$($(call target,$*)_WEBSERVER_RESOURCE_DIRS)" \
-	    LOCALIZED_RESOURCE_FILES="$($(call target,$*)_LOCALIZED_RESOURCE_FILES)" \
-	    RESOURCE_FILES="$($(call target,$*)_RESOURCE_FILES)" \
-	    MAIN_MODEL_FILE="$($(call target,$*)_MAIN_MODEL_FILE)" \
-	    RESOURCE_DIRS="$($(call target,$*)_RESOURCE_DIRS)" \
-	    BUNDLE_LIBS="$($(call target,$*)_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
-	    SERVICE_INSTALL_DIR="$($(call target,$*)_SERVICE_INSTALL_DIR)" \
-	    APPLICATION_ICON="$($(call target,$*)_APPLICATION_ICON)" \
-	    PALETTE_ICON="$($(call target,$*)_PALETTE_ICON)" \
-	    PRINCIPAL_CLASS="$($(call target,$*)_PRINCIPAL_CLASS)" \
-	    DLL_DEF="$($(call target,$*)_DLL_DEF)" \
-	    ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
-					$($(call target,$*)_INCLUDE_DIRS)" \
-	    ADDITIONAL_GUI_LIBS="$($(call target,$*)_GUI_LIBS) \
-                                 $(ADDITIONAL_GUI_LIBS)" \
-	    ADDITIONAL_TOOL_LIBS="$($(call target,$*)_TOOL_LIBS) \
-                                  $(ADDITIONAL_TOOL_LIBS)" \
-	    ADDITIONAL_OBJC_LIBS="$($(call target,$*)_OBJC_LIBS) \
-                                  $(ADDITIONAL_OBJC_LIBS)" \
-	    ADDITIONAL_LIBRARY_LIBS="$($(call target,$*)_LIBS) \
-                                     $($(call target,$*)_LIBRARY_LIBS) \
-                                     $(ADDITIONAL_LIBRARY_LIBS)" \
-	    ADDITIONAL_LIB_DIRS="$($(call target,$*)_LIB_DIRS) \
-                                 $(ADDITIONAL_LIB_DIRS)" \
-	    ADDITIONAL_LDFLAGS="$($(call target,$*)_LDFLAGS) \
-                                $(ADDITIONAL_LDFLAGS)" \
-	    ADDITIONAL_CLASSPATH="$($(call target,$*)_CLASSPATH) \
-                                  $(ADDITIONAL_CLASSPATH)" \
-	    LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
-		$($(call target,$*)_LIB_DIRS) $(ADDITIONAL_LIB_DIRS) \
-                $(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) \
-		$($(call target,$*)_LIBRARIES_DEPEND_UPON) debug=$(debug) \
-                profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-		shared_libext=$(SHARED_LIBEXT))" \
-	    SCRIPTS_DIRECTORY="$($(call target,$*)_SCRIPTS_DIRECTORY)" \
-	    CHECK_SCRIPT_DIRS="$($(call target,$*)_SCRIPT_DIRS)"
+	@ \
+target=$(basename $(basename $*)); \
+operation=$(subst .,,$(suffix $(basename $*))); \
+type=$(subst -,_,$(subst .,,$(suffix $*))); \
+echo Making $$operation for $$type $$target...; \
+$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+  internal-$${type}-$$operation \
+  INTERNAL_$${type}_NAME=$$target \
+  TARGET=$$target \
+  _SUBPROJECTS="$($(basename $(basename $*))_SUBPROJECTS)" \
+  OBJC_FILES="$($(basename $(basename $*))_OBJC_FILES)" \
+  C_FILES="$($(basename $(basename $*))_C_FILES)" \
+  JAVA_FILES="$($(basename $(basename $*))_JAVA_FILES)" \
+  JAVA_JNI_FILES="$($(basename $(basename $*))_JAVA_JNI_FILES)" \
+  OBJ_FILES="$($(basename $(basename $*))_OBJ_FILES)" \
+  PSWRAP_FILES="$($(basename $(basename $*))_PSWRAP_FILES)" \
+  HEADER_FILES="$($(basename $(basename $*))_HEADER_FILES)" \
+  TEXI_FILES="$($(basename $(basename $*))_TEXI_FILES)" \
+  GSDOC_FILES="$($(basename $(basename $*))_GSDOC_FILES)" \
+  LATEX_FILES="$($(basename $(basename $*))_LATEX_FILES)" \
+  JAVADOC_FILES="$($(basename $(basename $*))_JAVADOC_FILES)" \
+  JAVADOC_SOURCEPATH="$($(basename $(basename $*))_JAVADOC_SOURCEPATH)" \
+  DOC_INSTALL_DIR="$($(basename $(basename $*))_DOC_INSTALL_DIR)" \
+  TEXT_MAIN="$($(basename $(basename $*))_TEXT_MAIN)" \
+  HEADER_FILES_DIR="$($(basename $(basename $*))_HEADER_FILES_DIR)" \
+  HEADER_FILES_INSTALL_DIR="$($(basename $(basename $*))_HEADER_FILES_INSTALL_DIR)" \
+  COMPONENTS="$($(basename $(basename $*))_COMPONENTS)" \
+  LANGUAGES="$($(basename $(basename $*))_LANGUAGES)" \
+  HAS_GSWCOMPONENTS="$($(basename $(basename $*))_HAS_GSWCOMPONENTS)" \
+  GSWAPP_INFO_PLIST="$($(basename $(basename $*))_GSWAPP_INFO_PLIST)" \
+  WEBSERVER_RESOURCE_FILES="$($(basename $(basename $*))_WEBSERVER_RESOURCE_FILES)" \
+  LOCALIZED_WEBSERVER_RESOURCE_FILES="$($(basename $(basename $*))_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
+  WEBSERVER_RESOURCE_DIRS="$($(basename $(basename $*))_WEBSERVER_RESOURCE_DIRS)" \
+  LOCALIZED_RESOURCE_FILES="$($(basename $(basename $*))_LOCALIZED_RESOURCE_FILES)" \
+  RESOURCE_FILES="$($(basename $(basename $*))_RESOURCE_FILES)" \
+  MAIN_MODEL_FILE="$($(basename $(basename $*))_MAIN_MODEL_FILE)" \
+  RESOURCE_DIRS="$($(basename $(basename $*))_RESOURCE_DIRS)" \
+  BUNDLE_LIBS="$($(basename $(basename $*))_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
+  SERVICE_INSTALL_DIR="$($(basename $(basename $*))_SERVICE_INSTALL_DIR)" \
+  APPLICATION_ICON="$($(basename $(basename $*))_APPLICATION_ICON)" \
+  PALETTE_ICON="$($(basename $(basename $*))_PALETTE_ICON)" \
+  PRINCIPAL_CLASS="$($(basename $(basename $*))_PRINCIPAL_CLASS)" \
+  DLL_DEF="$($(basename $(basename $*))_DLL_DEF)" \
+  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
+		$($(basename $(basename $*))_INCLUDE_DIRS)" \
+  ADDITIONAL_GUI_LIBS="$($(basename $(basename $*))_GUI_LIBS) \
+                       $(ADDITIONAL_GUI_LIBS)" \
+  ADDITIONAL_TOOL_LIBS="$($(basename $(basename $*))_TOOL_LIBS) \
+                        $(ADDITIONAL_TOOL_LIBS)" \
+  ADDITIONAL_OBJC_LIBS="$($(basename $(basename $*))_OBJC_LIBS) \
+                        $(ADDITIONAL_OBJC_LIBS)" \
+  ADDITIONAL_LIBRARY_LIBS="$($(basename $(basename $*))_LIBS) \
+                           $($(basename $(basename $*))_LIBRARY_LIBS) \
+                           $(ADDITIONAL_LIBRARY_LIBS)" \
+  ADDITIONAL_LIB_DIRS="$($(basename $(basename $*))_LIB_DIRS) \
+                       $(ADDITIONAL_LIB_DIRS)" \
+  ADDITIONAL_LDFLAGS="$($(basename $(basename $*))_LDFLAGS) \
+                      $(ADDITIONAL_LDFLAGS)" \
+  ADDITIONAL_CLASSPATH="$($(basename $(basename $*))_CLASSPATH) \
+                        $(ADDITIONAL_CLASSPATH)" \
+  LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
+   $($(basename $(basename $*))_LIB_DIRS) $(ADDITIONAL_LIB_DIRS) \
+   $(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) \
+   $($(basename $(basename $*))_LIBRARIES_DEPEND_UPON) debug=$(debug) \
+     profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+     shared_libext=$(SHARED_LIBEXT))" \
+  SCRIPTS_DIRECTORY="$($(basename $(basename $*))_SCRIPTS_DIRECTORY)" \
+  CHECK_SCRIPT_DIRS="$($(basename $(basename $*))_SCRIPT_DIRS)"
 
 
 ifneq ($(FRAMEWORK_NAME),)
@@ -350,32 +362,35 @@ ifneq ($(FRAMEWORK_NAME),)
 # It is currently executed before %.subprojects (FIXME order).
 #
 %.tools:
-	@ if [ "$(call operation,$*)" != "build-headers" ]; then \
-	  if [ "$($(call target,$*)_TOOLS)" != "" ]; then \
-	    echo Building tools for $(call type,$*) $(call target,$*)...; \
-	    for f in $($(call target,$*)_TOOLS) __done; do \
-	      if [ $$f != __done ]; then       \
-	        mf=$(MAKEFILE_NAME); \
-	        if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	          mf=Makefile; \
-	          echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
-	        fi; \
-	        if $(MAKE) -C $$f -f $$mf --no-keep-going \
-                           $(call operation,$*) \
-	             FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-	             FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-	             FRAMEWORK_OPERATION="$(call operation,$*)" \
-	             TOOL_OPERATION="$(call operation,$*)" \
-	             DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-	             SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	           ; then \
-	           :; \
-	        else exit $$?; \
-	        fi; \
-	      fi; \
-	    done; \
-	  fi; \
-	fi
+	@ \
+target=$(basename $(basename $*)); \
+operation=$(subst .,,$(suffix $(basename $*))); \
+type=$(subst -,_,$(subst .,,$(suffix $*))); \
+if [ "$$operation" != "build-headers" ]; then \
+  if [ "$($(basename $(basename $*))_TOOLS)" != "" ]; then \
+    echo Building tools for $$type $$target...; \
+    for f in $($(basename $(basename $*))_TOOLS) __done; do \
+      if [ $$f != __done ]; then       \
+        mf=$(MAKEFILE_NAME); \
+        if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+          mf=Makefile; \
+          echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
+        fi; \
+        if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+             FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+             FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+             FRAMEWORK_OPERATION="$$operation" \
+             TOOL_OPERATION="$$operation" \
+             DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+             SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+           ; then \
+           :; \
+        else exit $$?; \
+        fi; \
+      fi; \
+    done; \
+  fi; \
+fi
 else # no FRAMEWORK
 %.tools: ;
 endif # end of FRAMEWORK code
@@ -384,27 +399,31 @@ endif # end of FRAMEWORK code
 # This rule is executed before %.variables to process (eventual) subprojects
 #
 %.subprojects:
-	@ if [ "$($(call target,$*)_SUBPROJECTS)" != "" ]; then \
-	echo Making $(call operation,$*) in subprojects of $(call type,$*) $(call target,$*)...; \
-	for f in $($(call target,$*)_SUBPROJECTS) __done; do \
-	  if [ $$f != __done ]; then       \
-	    mf=$(MAKEFILE_NAME); \
-	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	      mf=Makefile; \
-	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-	    fi; \
-	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
-	          FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-	          FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-	          DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-	          SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	        ; then \
-	        :; \
-	    else exit $$?; \
-	    fi; \
-	  fi; \
-	done; \
-	fi
+	@ \
+target=$(basename $(basename $*)); \
+operation=$(subst .,,$(suffix $(basename $*))); \
+type=$(subst -,_,$(subst .,,$(suffix $*))); \
+if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
+  echo Making $$operation in subprojects of $$type $$target...; \
+  for f in $($(basename $(basename $*))_SUBPROJECTS) __done; do \
+    if [ $$f != __done ]; then       \
+      mf=$(MAKEFILE_NAME); \
+      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+        mf=Makefile; \
+        echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+      fi; \
+      if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+          FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+          FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+          DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+          SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+        ; then \
+        :; \
+      else exit $$?; \
+      fi; \
+    fi; \
+  done; \
+fi
 
 #
 # The list of Objective-C source files to be compiled
