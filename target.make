@@ -205,16 +205,16 @@ endif
 #
 ifeq ($(findstring darwin1, $(GNUSTEP_TARGET_OS)), darwin1)
 ifeq ($(OBJC_RUNTIME), NeXT)
-HAVE_BUNDLES     = yes
+  HAVE_BUNDLES     = yes
+  # Use the NeXT compiler
+  CC = cc -traditional-cpp
+  OBJC_COMPILER = NeXT
 endif
 
 HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
 ifeq ($(FOUNDATION_LIB),nx)
-  # Use the NeXT compiler
-  CC = cc -traditional-cpp
-  OBJC_COMPILER = NeXT
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
     INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
@@ -255,8 +255,7 @@ SHARED_LIB_LINK_CMD     = \
 
 else # OBJC_COMPILER=NeXT
 
-DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning
--fno-common
+DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -fno-common
 DYLIB_DEF_FRAMEWORKS += #-framework Foundation
 DYLIB_DEF_LIBS	     = -lobjc
 
