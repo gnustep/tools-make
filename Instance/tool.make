@@ -111,6 +111,39 @@ endif
 # we don't have any cleaning targets for tools here, because we clean
 # during the Master make invocation.
 
+#
+# If the user makefile contains the command
+# xxx_HAS_RESOURCE_BUNDLE = yes
+# then we need to build a resource bundle for the tool, and install it.
+# You can then add resources to the tool, any sort of, with the usual
+# xxx_RESOURCE_FILES, xxx_LOCALIZED_RESOURCE_FILES, xxx_LANGUAGES, etc.
+# The tool resource bundle (and all resources inside it) can be
+# accessed at runtime very comfortably, by using gnustep-base's
+# [NSBundle +mainBundle] (exactly as you would do for an application).
+#
+ifeq ($($(GNUSTEP_INSTANCE)_HAS_RESOURCE_BUNDLE),yes)
+
+# Include the rules to build resource bundles
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = Resources/$(GNUSTEP_INSTANCE)
+GNUSTEP_SHARED_BUNDLE_MAIN_PATH     = Resources/$(GNUSTEP_INSTANCE)
+GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(TOOL_INSTALL_DIR)
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
+
+internal-tool-all_:: shared-instance-bundle-all
+
+$(TOOL_INSTALL_DIR):
+	@$(MKINSTALLDIRS) $@
+
+$(TOOL_INSTALL_DIR)/Resources:
+	@$(MKINSTALLDIRS) $@
+
+internal-tool-install_:: $(TOOL_INSTALL_DIR)/Resources \
+                    shared-instance-bundle-install 
+
+internal-tool-uninstall:: shared-instance-bundle-uninstall
+
+endif
+
 ## Local variables:
 ## mode: makefile
 ## End:
