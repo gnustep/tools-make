@@ -214,25 +214,6 @@ GNUSTEP_HEADERS_FND_FLAG += -I$(GNUSTEP_USER_HEADERS)/$(GNUSTEP_FND_DIR)/$(GNUST
 endif
 
 #
-# Determine AppKit header subdirectory based upon library combo
-#
-ifeq ($(GUI_LIB),gnu)
-GNUSTEP_GUI_DIR = gnustep/gui
-ifneq ($(GNUSTEP_USER_ROOT),)
-GNUSTEP_HEADERS_GUI_FLAG += -I$(GNUSTEP_USER_HEADERS)/$(GNUSTEP_GUI_DIR)
-endif
-ifneq ($(GNUSTEP_LOCAL_ROOT),)
-GNUSTEP_HEADERS_GUI_FLAG += -I$(GNUSTEP_LOCAL_HEADERS)/$(GNUSTEP_GUI_DIR)
-endif
-GNUSTEP_HEADERS_GUI_FLAG += -I$(GNUSTEP_SYSTEM_HEADERS)/$(GNUSTEP_GUI_DIR)
-endif
-
-ifeq ($(GUI_LIB),nx)
-GNUSTEP_GUI_DIR =
-#GNUSTEP_HEADERS_GUI_FLAG = -framework AppKit
-endif
-
-#
 # Overridable compilation flags
 #
 OBJCFLAGS = -Wno-import
