@@ -284,8 +284,8 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
-BUNDLE_LD	=  /usr/bin/libtool
-BUNDLE_LDFLAGS  += -dynamic -flat_namespace -undefined warning $(ARCH_FLAGS)
+BUNDLE_LD       =  /usr/bin/ld
+BUNDLE_LDFLAGS  += -bundle  -flat_namespace -undefined warning /usr/lib/bundle1.o
 
 else 
 # NeXT Compiler
