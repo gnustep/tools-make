@@ -1,3 +1,14 @@
+Sat Apr  6 15:09:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Fixed bundling frameworks in RPMs or DEBs.
+	* relative_path.sh: New script building the relative path
+	of a path relative to another one.
+	* GNUmakefile.in (install): Install relative_path.sh.
+	* common.make (REL_PATH_SCRIPT): set to be
+	$GNUSTEP_MAKEFILES/relative_path.sh.
+	* Instance/framework.make (internal-framework-install_): Use
+	REL_PATH_SCRIPT to build symlinks in a relocatable way.
+
 Sat Apr  6 04:37:36 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/bundle.make (BUNDLE_LIBS): Do not add system libraries
