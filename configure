@@ -579,7 +579,7 @@ fi
 # defined, but if not then we have a global default.
 #--------------------------------------------------------------------
 
-if test "x$prefix" = "x"; then
+if test "x$prefix" = "xNONE"; then
   prefix=$ac_default_prefix ;
 fi
 

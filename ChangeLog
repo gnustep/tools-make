@@ -1,3 +1,7 @@
+1999-07-05  Adam Fedor  <fedor@gnu.org>
+
+        * configure.in: Fix prefix check.
+	
 1999-06-28  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* GNUstep.csh.in: Include Tools/host-cpu/host-os in path for any

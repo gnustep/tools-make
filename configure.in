@@ -33,7 +33,7 @@ echo $GNUSTEP_SYSTEM_ROOT ;
 else
 echo $GNUSTEP_SYSTEM_ROOT ;
 fi`)
-if test "x$prefix" = "x"; then
+if test "x$prefix" = "xNONE"; then
   prefix=$ac_default_prefix ;
 fi
 
