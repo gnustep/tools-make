@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   library-combo.make
 #
 #   Determine which runtime, foundation and gui library to use.
@@ -37,6 +37,10 @@ the_library_combo = $(library_combo)
 
 ifeq ($(the_library_combo), nx)
   the_library_combo = nx-nx-nx
+endif
+
+ifeq ($(the_library_combo), apple)
+  the_library_combo = apple-apple-apple
 endif
 
 ifeq ($(the_library_combo), gnu)
@@ -90,7 +94,6 @@ ifeq ($(OBJC_RUNTIME_LIB), gnu)
   OBJC_LDFLAGS =
   OBJC_LIB_DIR =
   OBJC_LIBS = -lobjc
-  OBJC_RUNTIME = GNU
   RUNTIME_FLAG   = -fgnu-runtime
   RUNTIME_DEFINE = -DGNU_RUNTIME=1
 endif
@@ -99,7 +102,6 @@ ifeq ($(OBJC_RUNTIME_LIB), gnugc)
   OBJC_LDFLAGS = 
   OBJC_LIB_DIR =
   OBJC_LIBS = -lobjc_gc -lgc
-  OBJC_RUNTIME = GNU
   RUNTIME_FLAG   = -fgnu-runtime
   RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DOBJC_WITH_GC=1
   ifeq ($(debug),yes)
@@ -108,19 +110,23 @@ ifeq ($(OBJC_RUNTIME_LIB), gnugc)
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), nx)
-  OBJC_RUNTIME = NeXT
-  ifneq ($(OBJC_COMPILER), NeXT)
-    RUNTIME_FLAG = -fnext-runtime
-  endif
+  RUNTIME_FLAG = -fnext-runtime
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
-  ifeq ($(FOUNDATION_LIB),gnu)
+  ifeq ($(FOUNDATION_LIB), gnu)
     OBJC_LIBS = -lobjc
   endif
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), sun)
-  OBJC_RUNTIME = Sun
   RUNTIME_DEFINE = -DSun_RUNTIME=1
+endif
+
+ifeq ($(OBJC_RUNTIME_LIB), apple)
+  RUNTIME_FLAG = -fnext-runtime
+  RUNTIME_DEFINE = -DNeXT_RUNTIME=1
+  ifeq ($(FOUNDATION_LIB), gnu)
+    OBJC_LIBS = -lobjc
+  endif
 endif
 
 FND_LDFLAGS =
@@ -139,7 +145,7 @@ endif
 # Our own foundation will install a base.make file into 
 # $GNUSTEP_MAKEFILES/Additional/ to set the needed flags
 #
-ifeq ($(FOUNDATION_LIB),nx)
+ifeq ($(FOUNDATION_LIB), nx)
   # -framework Foundation is used both to find headers, and to link
   INTERNAL_OBJCFLAGS += -framework Foundation
   FND_LIBS   = -framework Foundation
@@ -150,6 +156,15 @@ endif
 
 ifeq ($(FOUNDATION_LIB), sun)
   FND_DEFINE = -DSun_Foundation_LIBRARY=1
+endif
+
+ifeq ($(FOUNDATION_LIB), apple)
+  # -framework Foundation is used both to find headers, and to link
+  INTERNAL_OBJCFLAGS += -framework Foundation
+  FND_LIBS   = -framework Foundation
+  FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
+  LIBRARIES_DEPEND_UPON += -framework Foundation
+  BUNDLE_LIBS += -framework Foundation
 endif
 
 #
@@ -184,7 +199,16 @@ GUI_LIBS =
 # Third-party GUI libraries - our own sets its flags into 
 # $(GNUSTEP_MAKEFILES)/Additional/gui.make
 #
-ifeq ($(GUI_LIB),nx)
+ifeq ($(GUI_LIB), nx)
+  GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
+  # -framework AppKit is used both to find headers, and to find the library
+  INTERNAL_OBJCFLAGS += -framework AppKit
+  GUI_LIBS = -framework AppKit
+  LIBRARIES_DEPEND_UPON += -framework AppKit
+  BUNDLE_LIBS += -framework AppKit
+endif
+
+ifeq ($(GUI_LIB), apple)
   GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
   # -framework AppKit is used both to find headers, and to find the library
   INTERNAL_OBJCFLAGS += -framework AppKit
@@ -197,7 +221,3 @@ SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL)
 SYSTEM_LDFLAGS = 
 SYSTEM_LIB_DIR =
 SYSTEM_LIBS =
-
-## Local variables:
-## mode: makefile
-## End:
