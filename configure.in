@@ -99,16 +99,6 @@ else
 fi
 
 AC_PROG_INSTALL
-# HOST_INSTALL is the name of the install program in config.make so set it up
-# to point to the install-sh script in the GNUstep tree if no system install is
-# found.
-AC_SUBST(HOST_INSTALL)
-if test "$INSTALL" = "$ac_install_sh"; then
-  HOST_INSTALL="$prefix/Makefiles/$INSTALL"
-else
-  HOST_INSTALL="$INSTALL"
-fi
-
 AC_LN_S
 
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)
@@ -166,6 +156,16 @@ fi
 AC_SUBST(GNUSTEP_ROOT)
 AC_SUBST(root_prefix)
 AC_MSG_RESULT($prefix)
+
+# HOST_INSTALL is the name of the install program in config.make so set it up
+# to point to the install-sh script in the GNUstep tree if no system install is
+# found.
+AC_SUBST(HOST_INSTALL)
+if test "$INSTALL" = "$ac_install_sh"; then
+  HOST_INSTALL="$prefix/Makefiles/$INSTALL"
+else
+  HOST_INSTALL="$INSTALL"
+fi
 
 #--------------------------------------------------------------------
 # Process --with-defaults-root, --with-user-root,
