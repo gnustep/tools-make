@@ -32,8 +32,8 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
 #
-# The list of directory names with the subprojects 
-# are in the makefile variable SUBPROJECTS
+# The list of directory names with the subprojects is in the makefile 
+# variable SUBPROJECTS
 #
 SUBPROJECTS:=$(strip $(SUBPROJECTS))
 
