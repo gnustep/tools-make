@@ -1639,6 +1639,8 @@ if test x"$objc_threaded" = x""; then
 else
   echo "$ac_t""yes" 1>&6
 fi
+ac_cv_objc_threaded=$objc_threaded
+
 
 
 #--------------------------------------------------------------------
@@ -1804,6 +1806,7 @@ s%@X_LIBS@%$X_LIBS%g
 s%@DPS_DEFINE@%$DPS_DEFINE%g
 s%@ac_cv_library_combo@%$ac_cv_library_combo%g
 s%@objc_threaded@%$objc_threaded%g
+s%@ac_cv_objc_threaded@%$ac_cv_objc_threaded%g
 
 CEOF
 EOF

@@ -242,17 +242,19 @@ endif
 ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
+        $(CC) -shared -Wl,-soname,$(VERSION_MAJOR_LIBRARY_FILE) \
            -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
-        (cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(GNUSTEP_OBJ_DIR); \
+          rm -f $(LIBRARY_FILE) $(VERSION_MAJOR_LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(VERSION_MAJOR_LIBRARY_FILE); \
+          $(LN_S) $(VERSION_MAJOR_LIBRARY_FILE) $(LIBRARY_FILE); \
+	)
 
 SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD	= gcc
+BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
 ADDITIONAL_LDFLAGS += -rdynamic
@@ -311,7 +313,7 @@ SHARED_CFLAGS   += -shared
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD	= gcc
+BUNDLE_LD	= $(CC)
 #BUNDLE_CFLAGS   += 
 BUNDLE_LDFLAGS  += -shared
 #ADDITIONAL_LDFLAGS += -rdynamic
@@ -338,7 +340,7 @@ SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD	= gcc
+BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS   += -fPIC
 #BUNDLE_LDFLAGS  += -shared -mimpure-text
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
@@ -366,7 +368,7 @@ SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD       = gcc
+BUNDLE_LD       = $(CC)
 BUNDLE_CFLAGS   += -fPIC
 #BUNDLE_LDFLAGS  += -shared -mimpure-text
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
@@ -392,7 +394,7 @@ SHARED_CFLAGS     += -fPIC
 SHARED_LIBEXT   = .sl
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD	= gcc
+BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 endif

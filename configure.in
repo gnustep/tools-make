@@ -178,7 +178,9 @@ if test x"$objc_threaded" = x""; then
 else
   AC_MSG_RESULT(yes)
 fi
+ac_cv_objc_threaded=$objc_threaded
 AC_SUBST(objc_threaded)
+AC_SUBST(ac_cv_objc_threaded)
 
 #--------------------------------------------------------------------
 # Produce the output files
