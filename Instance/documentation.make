@@ -183,19 +183,19 @@ $(GNUSTEP_INSTANCE)/%.gsdoc: %.gsdoc
 	cp $< $@
 
 $(GNUSTEP_INSTANCE)/%.gsdoc: %.h
-	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
+	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
 
 $(GNUSTEP_INSTANCE)/%.gsdoc: $($(GNUSTEP_INSTANCE)_HEADER_FILES_DIR)/%.h
-	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
+	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
 
 $(GNUSTEP_INSTANCE)/%.gsdoc: %.m
-	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
+	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $<
 
 $(GNUSTEP_INSTANCE)/%.html: $(GNUSTEP_INSTANCE)/%.gsdoc $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).igsdoc
-	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml YES $<
+	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -GenerateHtml YES $<
 
 $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).igsdoc: $(AGSDOC_GSDOC_FILES)
-	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $(AGSDOC_GSDOC_FILES)
+	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $(AGSDOC_GSDOC_FILES)
 
 internal-doc-all_::  $(GNUSTEP_INSTANCE) \
                      $(AGSDOC_HTML_FILES)
@@ -218,7 +218,7 @@ $(GNUSTEP_INSTANCE):
 	$(MKDIRS) $@
 
 generate-autogsdoc: $(GNUSTEP_INSTANCE)
-	autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
+	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
 
 endif # AGSDOC_EXPERIMENTAL
 
@@ -401,7 +401,7 @@ internal-doc-install_::
 	$(TAR) cf - $(GNUSTEP_INSTANCE) | \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
 ifeq ($(GNUSTEP_BASE_HAVE_LIBXML),1)
-	-autogsdoc $(INTERNAL_AGSLINKFLAGS) $(notdir $(AGSDOC_HTML_FILES))
+	-$(AUTOGSDOC) $(INTERNAL_AGSLINKFLAGS) $(notdir $(AGSDOC_HTML_FILES))
 endif
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) \

@@ -1,3 +1,8 @@
+2002-05-15 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: Define AUTOGSDOC
+	* Instance/documentation.make: Use AUTOGSDOC
+
 2002-05-14 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Update and correct libtiff info so

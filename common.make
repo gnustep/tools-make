@@ -504,6 +504,13 @@ ifeq ($(JAVADOC),)
 endif
 
 #
+# The autogsdoc Tool.
+#
+ifeq ($(AUTOGSDOC),)
+  AUTOGSDOC = autogsdoc
+endif
+
+#
 # Common variables - default values
 #
 # Because this file is included at the beginning of the user's
