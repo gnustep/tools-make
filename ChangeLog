@@ -1,3 +1,13 @@
+Tue Sep 11 12:19:24 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (before-install): Removed code to check installation
+	permissions.
+	(internal-check-install-permissions): New target with code to
+	check installation permissions, extended to give more extensive
+	help.
+	(install): At makelevel 0, depend on
+	internal-check-install-permissions before all.
+	
 Tue Sep 11 10:44:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* documentation.make (internal-doc-clean): Added a complete
