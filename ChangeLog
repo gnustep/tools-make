@@ -1,3 +1,8 @@
+Mon Jan 14 10:01:07 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in: Quoted most paths.
+	* configure: Regenerated.
+	
 Fri Jan 11 10:34:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in (ac_word, ac_dummy, ac_dir, ac_save_ifs): Renamed
