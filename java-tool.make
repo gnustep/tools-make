@@ -62,7 +62,8 @@ else # second pass
         before-$(TARGET)-all \
         after-$(TARGET)-all \
         internal-install-java_tool-dirs \
-        install-java_tool
+        install-java_tool \
+        _FORCE
 
 # This is the directory where the tools get installed. If you don't specify a
 # directory they will get installed in $(GNUSTEP_LOCAL_ROOT)/Tools/Java/.
