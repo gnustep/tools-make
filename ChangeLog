@@ -1,3 +1,10 @@
+2001-05-10  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* target.make (SHARED_FRAMEWORK_LINK_CMD): fix framework soname for
+	FreeBSD ELF.
+	* framework.make (internal-framework-install): handle symlink for
+	libxxx.so.n files. (patches by Kim Shrier <kim@tinker.com>)
+	
 2001-05-08  Adam Fedor  <fedor@gnu.org>
 
 	* bundle.make ($(BUNDLE_DIR_NAME)/Contents/Resources): Remove
