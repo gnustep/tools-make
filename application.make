@@ -31,8 +31,10 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 
 #
 # The name of the application is in the APP_NAME variable.
-# The list of application resource file are in xxx_RESOURCE_FILES
-# The list of application resource directories are in xxx_RESOURCE_DIRS
+# The list of application resource directories is in xxx_RESOURCE_DIRS
+# The list of application resource files is in xxx_RESOURCE_FILES
+# The list of localized resource files is in xxx_LOCALIZED_RESOURCE_FILES
+# The list of supported languages is in xxx_LANGUAGES
 # The name of the application icon (if any) is in xxx_APPLICATION_ICON
 # The name of the app class is xxx_PRINCIPAL_CLASS (defaults to NSApplication).
 # The name of a file containing info.plist entries to be inserted into
@@ -90,6 +92,12 @@ APP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(APP_DIR_NAME)/Resources/$(
 ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
 endif
+ifeq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
+  override LOCALIZED_RESOURCE_FILES=""
+endif
+ifeq ($(strip $(LANGUAGES)),)
+  override LANGUAGES="English"
+endif
 
 # Support building NeXT applications
 ifneq ($(OBJC_COMPILER), NeXT)
@@ -141,7 +149,8 @@ else
 
 internal-app-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(APP_FILE) \
-   $(APP_DIR_NAME)/$(INTERNAL_app_NAME) app-resource-files after-$(TARGET)-all
+   $(APP_DIR_NAME)/$(INTERNAL_app_NAME) app-resource-files \
+   app-localized-resource-files after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -163,6 +172,22 @@ app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-d
 	  echo "Copying resources into the application wrapper..."; \
 	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
 	fi)
+
+app-localized-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
+	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
+	  echo "Copying localized resources into the application wrapper..."; \
+	  for l in $(LANGUAGES); do \
+	    if [ ! -f $$l.lproj ]; then \
+	      $(MKDIRS) $(APP_DIR_NAME)/Resources/$$l.lproj; \
+	    fi; \
+	    for f in $(LOCALIZED_RESOURCE_FILES); do \
+	      if [ -f $$l.lproj/$$f ]; then \
+	        cp -r $$l.lproj/$$f $(APP_DIR_NAME)/Resources/$$l.lproj; \
+	      fi; \
+	    done; \
+	  done; \
+	fi)
+	
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = NSApplication
