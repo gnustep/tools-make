@@ -36,6 +36,7 @@ ifneq ($(messages),yes)
   ECHO_LINKING   = @(echo " Linking $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) ...";
   ECHO_JAVAHING  = @(echo " Running javah on $< ...";
   ECHO_INSTALLING = @(echo " Installing $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE)...";
+  ECHO_UNINSTALLING = @(echo " Uninstalling $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE)...";
   ECHO_COPYING_INTO_DIR = @(echo " Copying $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) into $(COPY_INTO_DIR)...";
   ECHO_CREATING = @(echo " Creating $@...";
 
@@ -82,10 +83,12 @@ ifneq ($(messages),yes)
 
 else
 
+  ECHO_PREPROCESSING =
   ECHO_COMPILING = 
   ECHO_LINKING = 
   ECHO_JAVAHING = 
   ECHO_INSTALLING =
+  ECHO_UNINSTALLING =
   ECHO_COPYING_INTO_DIR = 
   ECHO_CREATING =
   ECHO_NOTHING =
