@@ -31,7 +31,7 @@
 # To compile something against a native library, you can use
 #   ADDITIONAL_NATIVE_LIBS += MyLibrary
 # This will be converted into -lMyLibrary link flag on unix/windows, and
-# into -framework MyLibrary compile/link flag on apple.
+# into -framework MyLibrary link flag on apple.
 
 ifeq ($(FOUNDATION_LIB), apple)
 
