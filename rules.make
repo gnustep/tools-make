@@ -436,14 +436,23 @@ $(GNUSTEP_OBJ_DIR):
 endif
 
 #
-# Rules for building file lists
-#
-include $(GNUSTEP_MAKEFILES)/file-list.make
+# Now rules for packaging - all automatically included
+# 
 
 #
-# Rules for building RPM packages
+# Rules for building source distributions
+#
+include $(GNUSTEP_MAKEFILES)/source-distribution.make
+
+#
+# Rules for building spec files/file lists for RPMs, and RPMs
 #
 include $(GNUSTEP_MAKEFILES)/rpm.make
+
+#
+# Rules for building debian/* scripts for DEBs, and DEBs
+# 
+#include $(GNUSTEP_MAKEFILES)/deb.make <TODO>
 
 endif
 # rules.make loaded
