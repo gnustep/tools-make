@@ -55,7 +55,7 @@ LEX             = lex
 INSTALL		= @HOST_INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
-TAR		= tar
+TAR		= @TAR@
 MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
 
 # Version information

@@ -164,6 +164,9 @@ fi
 
 AC_LN_S
 
+TAR=tar
+AC_CHECK_PROG(TAR, gtar, gtar)
+
 #--------------------------------------------------------------------
 # Miscellaneous headers (for make programs only)
 #--------------------------------------------------------------------
