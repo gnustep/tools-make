@@ -35,16 +35,12 @@ INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
 internal-doc-all_:: $(GNUSTEP_INSTANCE)/stamp
 
-# The following include causes $(GNUSTEP_INSTANCE)/dependencies to be
-# regenerated if not there, which causes the documentation to be
-# potentially regenerated any time this makefile fragment is read.
-# (NB: This is terrifically inefficient and slow.  Eg, ideally no
-# process should be spawned at all if you do a 'make clean' and the
-# system is already clean - other project types often get to the point
-# they don't even need to spawn a submake invocation, and so are
-# really fast, while autogsdoc might need to rebuild everything before
-# being able to clean it!)
+# Only include (and implicitly automatically rebuild if needed) the
+# dependencies file when we are compiling.  Ignore it when cleaning or
+# installing.
+ifeq ($(operation), all)
 -include $(GNUSTEP_INSTANCE)/dependencies
+endif
 
 $(GNUSTEP_INSTANCE):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -70,24 +66,7 @@ internal-doc-uninstall_::
 	-$(ECHO_UNINSTALLING)rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 
 internal-doc-clean::
-	$(ECHO_NOTHING)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -Clean YES $(AGSDOC_FILES)$(END_ECHO)
 	-$(ECHO_NOTHING)rm -Rf $(GNUSTEP_INSTANCE)$(END_ECHO)
-
-# 'make distclean' will cause the 'clean' rules to be executed in a first
-# invocation, then the 'distclean' rules in a second invocation.
-#
-# The first run of 'make clean' builds the documentation if not there,
-# and then deletes it.
-#
-# Unfortunately the 'make distclean' implicitly rebuilds the
-# documentation again.
-#
-# So here we delete it yet another time, so at least after a 'make
-# distclean' the directory tree is clean, never mind you might be
-# building then deleting the documentation twice in the process. ;-)
-#
-internal-doc-distclean::
-	-rm -Rf $(GNUSTEP_INSTANCE)
 
 else
 

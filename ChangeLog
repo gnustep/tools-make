@@ -1,3 +1,12 @@
+Thu Apr 29 15:54:17 2004  Nicola Pero <n.pero@mi.flashnet.it>
+	
+	* Instance/Documentation/autogsdoc.make
+	(GNUSTEP_INSTANCE/dependencies): Only include this file when the
+	operation is 'all'.
+	(internal-doc-clean): Do not run autogsdoc here.
+	(internal-doc-distclean): Rule removed.  No longer needed, as the
+	previous changes should do the real fix.
+	
 Thu Apr 29 14:04:61 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Instance/Documentation/autogsdoc.make (internal-doc-distclean):
