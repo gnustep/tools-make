@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.7.1 is now available.
+The GNUstep Makefile Package version 1.7.2 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -19,27 +19,16 @@ minor release numbers (1.4.1) are stable releases.
 Changes in version `1.7.1'
 ==========================
 
-   Bug fixes.
+   -enable-flattened (Flat directory structure) is on by default.
 
-Changes in version `1.7.0'
-==========================
+   * On WIN32 use HOMEPATH in preference to USERPROFILE
 
-   This version contains a major change in the location of certain
-directories and installed files as detailed in the `filesystem.texi'
-document. When installing this version for the first time, all old
-directories and files in those directories will be moved to the new
-locations automatically. However, you should update all GNUstep versions
-on any machine you have them installed on in order to avoid any
-incompatibilities.
-
-   Other changes:
-
-   * Support for preprocessed Info.plists.
+   * netbsd and openbsd compile fixes.
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.7.1.tar.gz distribution file at
+   You can get the gstep-make-1.7.2.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please log bug reports on the GNUstep project page

@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 20 June 2003
+   Last Update: 22 July 2003
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -272,8 +272,8 @@ app:
    * gdomap - Put this in a system startup file, like `/etc/rc.local'
      or `/etc/rc.d/rc.local' (customize for your system)
           GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
-          if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap ]; then
-            $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap
+          if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/gdomap ]; then
+            $GNUSTEP_SYSTEM_ROOT/Tools/gdomap
           fi
 
    * gdnc - Start after sourcing `GNUstep.sh' (e.g. in .profile)
@@ -717,7 +717,7 @@ Suse 6.x/Intel
 Suse/Intel
 ==========
 
-   GNUstep has been tested on version 7.0, 8.0, and 8.1 of Suse
+   GNUstep has been tested on version 7.0, 8.0, 8.1, and 8.2 of Suse
 
 `Recommended compiler'
      Standard. gcc2.95.x, gcc3.0.x, 3.1 and 3.2 work, but 2.95 is

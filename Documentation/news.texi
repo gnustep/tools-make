@@ -11,6 +11,17 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
 @section Changes in version @samp{1.7.1}
 
+--enable-flattened (Flat directory structure) is on by default.
+
+@itemize @bullet
+@item On WIN32 use HOMEPATH in preference to USERPROFILE
+@item netbsd and openbsd compile fixes.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
+@section Changes in version @samp{1.7.1}
+
 Bug fixes.
 
 @section Changes in version @samp{1.7.0}
@@ -28,8 +39,6 @@ Other changes:
 @itemize @bullet
 @item Support for preprocessed Info.plists.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.6.0}
 

@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-   Last updated 20 June 2003.  Please send corrections to
+   Last updated 22 July 2003.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -315,7 +315,7 @@ and priority to get this done. You can ask about or lobby for this -
 see <http://sources.redhat.com/gdb/>.
 
    There are patches available on the gnustep web site if you want to
-compile your own gdb (see <http://www.gnustep.org/pub/gnustep/patches>).
+compile your own gdb (see <ftp://ftp.gnustep.org/pub/gnustep/patches>).
 
 GNU Objective C Compiler and Runtime
 ====================================

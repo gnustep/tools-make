@@ -1,7 +1,16 @@
 NEWS
 ****
 
-The currently released version is `1.7.1'.
+The currently released version is `1.7.2'.
+
+Changes in version `1.7.1'
+==========================
+
+   -enable-flattened (Flat directory structure) is on by default.
+
+   * On WIN32 use HOMEPATH in preference to USERPROFILE
+
+   * netbsd and openbsd compile fixes.
 
 Changes in version `1.7.1'
 ==========================
