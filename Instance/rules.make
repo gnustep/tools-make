@@ -55,39 +55,38 @@ INSTANCE_RULES_MAKE_LOADED=yes
 # This separation *must* be enforced strictly, because nothing prevents 
 # a GNUmakefile from including both aggregate.make and subproject.make!
 #
-# For this reason, when we pass xxx_SUBPROJECTS to a submake invocation,
-# we call the new variable _SUBPROJECTS rather than SUBPROJECTS
-#
 
-ifneq ($(_SUBPROJECTS),)
-  SUBPROJECT_OBJ_FILES = $(foreach d, $(_SUBPROJECTS), \
+ifneq ($($(GNUSTEP_INSTANCE)_SUBPROJECTS),)
+SUBPROJECT_OBJ_FILES = $(foreach d, $($(GNUSTEP_INSTANCE)_SUBPROJECTS), \
     $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
 endif
 
-OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
+OBJC_OBJS = $(patsubst %.m,%$(OEXT),$($(GNUSTEP_INSTANCE)_OBJC_FILES))
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
 
-JAVA_OBJS = $(JAVA_FILES:.java=.class)
+JAVA_OBJS = $(patsubst %.java,%.class,$($(GNUSTEP_INSTANCE)_JAVA_FILES))
 JAVA_OBJ_FILES = $(JAVA_OBJS)
 
-JAVA_JNI_OBJS = $(JAVA_JNI_FILES:.java=.h)
+JAVA_JNI_OBJS = $(patsubst %.java,%.h,$($(GNUSTEP_INSTANCE)_JAVA__JNI_FILES))
 JAVA_JNI_OBJ_FILES = $(JAVA_JNI_OBJS)
 
-PSWRAP_C_FILES = $(PSWRAP_FILES:.psw=.c)
-PSWRAP_H_FILES = $(PSWRAP_FILES:.psw=.h)
-PSWRAP_OBJS = $(PSWRAP_FILES:.psw=${OEXT})
+PSWRAP_C_FILES = $(patsubst %.psw,%.c,$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
+PSWRAP_H_FILES = $(patsubst %.psw,%.h,$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
+PSWRAP_OBJS = $(patsubst %.psw,%$(OEXT),$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
 PSWRAP_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(PSWRAP_OBJS))
 
-C_OBJS = $(C_FILES:.c=${OEXT})
+C_OBJS = $(patsubst %.c,%$(OEXT),$($(GNUSTEP_INSTANCE)_C_FILES))
 C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
 
 # C++ files might end in .C, .cc, .cpp, .cxx, .cp so we replace multiple times
-CC_OBJS = $(patsubst %.cc,%${OEXT},\
-           $(patsubst %.C,%${OEXT},\
-            $(patsubst %.cp,%${OEXT},\
-             $(patsubst %.cpp,%${OEXT},\
-              $(patsubst %.cxx,%${OEXT},$(CC_FILES))))))
+CC_OBJS = $(patsubst %.cc,%$(OEXT),\
+           $(patsubst %.C,%$(OEXT),\
+            $(patsubst %.cp,%$(OEXT),\
+             $(patsubst %.cpp,%$(OEXT),\
+              $(patsubst %.cxx,%$(OEXT),$($(GNUSTEP_INSTANCE)_CC_FILES))))))
 CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(CC_OBJS))
+
+OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 
 # OBJ_FILES_TO_LINK is the set of all .o files which will be linked
 # into the result - please note that you can add to OBJ_FILES_TO_LINK
@@ -101,12 +100,6 @@ ifeq ($(AUTO_DEPENDENCIES),yes)
     -include $(addsuffix .d, $(basename $(OBJ_FILES_TO_LINK)))
   endif
 endif
-
-# The rule to create the objects file directory.
-$(GNUSTEP_OBJ_DIR):
-	@($(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
-	rm -f obj; \
-	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj)
 
 endif
 # Instance/rules.make loaded
