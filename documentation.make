@@ -215,7 +215,7 @@ $(INTERNAL_doc_NAME)/index.html:
 	$(MKDIRS) $(INTERNAL_doc_NAME); \
 	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(INTERNAL_doc_NAME)
 
-endif # GSDOC_FILES
+endif # JAVADOC_FILES
 
 #
 # Install and uninstall targets
