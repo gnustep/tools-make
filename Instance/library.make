@@ -76,7 +76,19 @@ ifneq ($($(GNUSTEP_INSTANCE)_VERSION),)
 endif
 
 ifeq ($(VERSION),)
-  VERSION = 0.0.1
+  # Check if we can guess VERSION from one of the other version variables
+  ifneq ($($(GNUSTEP_INSTANCE)_INTERFACE_VERSION),)
+    VERSION = $($(GNUSTEP_INSTANCE)_INTERFACE_VERSION).0
+  else 
+    # For backwards compatibility we also check xxx_SOVERSION, which
+    # is the old name for xxx_INTERFACE_VERSION
+    ifneq ($($(GNUSTEP_INSTANCE)_SOVERSION),)
+      VERSION = $($(GNUSTEP_INSTANCE)_SOVERSION).0
+    else
+      # No luck with those.  Use the default.
+      VERSION = 0.0.1
+    endif  
+  endif
 endif
 
 # 

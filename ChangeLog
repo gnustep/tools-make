@@ -1,6 +1,12 @@
+Tue Aug 31 16:21:41 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/library.make: If xxx_INTERFACE_VERSION or xxx_SOVERSION
+	is set, but xxx_VERSION is not set, guess xxx_VERSION by taking
+	xxx_INTERFACE_VERSION and appending .0.
+	
 2004-08-24  Quentin Mathe  <qmathe@club-internet.fr>
 
-        * ld_lib_path.sh:
+	* ld_lib_path.sh:
 	* ld_lib_path.csh:
 	Added comments to explain why we set DYLD_FRAMEWORK_PATH on Darwin with
 	any library combo and not just apple-apple-apple (it is a temporary
