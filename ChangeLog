@@ -1,3 +1,8 @@
+Mon Jul  9 11:30:21 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make ($(GNUSTEP_OBJ_DIR)): Send the three shell commands
+	in this rule together.
+
 Mon Jul  9 11:08:55 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make ($(GNUSTEP_MAKEFILES)/*.make): New empty rule.

@@ -507,9 +507,9 @@ OBJ_DIR_RULE = defined
 # The rule to create the objects file directory. This rule is here so that it
 # can be accessed from the global before and after targets as well.
 $(GNUSTEP_OBJ_DIR):
-	@$(MKDIRS) ./$(GNUSTEP_OBJ_DIR)
-	rm -f obj
-	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj
+	@($(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
+	rm -f obj; \
+	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj)
 endif
 
 #
