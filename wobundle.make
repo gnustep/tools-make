@@ -49,7 +49,7 @@ ifeq ($(INTERNAL_bundle_NAME),)
 
 internal-all:: $(BUNDLE_NAME:=.all.bundle.variables)
 
-internal-install:: all $(BUNDLE_NAME:=.install.bundle.variables)
+internal-install:: $(BUNDLE_NAME:=.install.bundle.variables)
 
 internal-uninstall:: $(BUNDLE_NAME:=.uninstall.bundle.variables)
 
