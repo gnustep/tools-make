@@ -34,6 +34,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The list of application resource file are in xxx_RESOURCE_FILES
 # The list of application resource directories are in xxx_RESOURCE_DIRS
 # The name of the application icon (if any) is in xxx_APPLICATION_ICON
+# The name of the app class is xxx_PRINCIPAL_CLASS (defaults to NSApplication).
 # The name of a file containing info.plist entries to be inserted into
 # Info-gnustep.plist (if any) is xxxInfo.plist
 # where xxx is the application name
@@ -163,13 +164,17 @@ app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-d
 	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
 	fi)
 
+ifeq ($(PRINCIPAL_CLASS),)
+override PRINCIPAL_CLASS = NSApplication
+endif
+
 $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(INTERNAL_app_NAME)\";"; \
+	  echo "  NSExecutable = \"$(PRINCIPAL_CLASS)\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
+	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed -e 's/.gmodel//' -e 's/.gorm//' -e 's/.nib//'`\";"; \
 	  fi; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
