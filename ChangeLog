@@ -1,3 +1,10 @@
+Mon Nov  3 23:48:41 2003  Marcus Muller <znek@mulle-kybernetik.com>
+
+	* target.make (SHARED_LIB_LINK_CMD): Use -prebind flag on Apple.
+	* Instance/framework.make (DYLIB_INSTALL_NAME_BASE): New variable.
+	(LIB_LINK_INSTALL_NAME): Define using DYLIB_INSTALL_NAME_BASE if
+	it was set.
+
 Mon Nov  3 23:34:56 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (ADDITIONAL_INCLUDE_DIRS): Do not add -framework
