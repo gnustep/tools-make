@@ -170,6 +170,12 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 
 internal-palette-install:: internal-install-dirs
 	tar cf - $(PALETTE_DIR_NAME) | (cd $(PALETTE_INSTALL_DIR); tar xf -)
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) -R $(CHOWN_TO) $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
+endif
+ifeq ($(strip),yes)
+	$(STRIP) $(PALETTE_INSTALL_DIR)/$(PALETTE_FILE) 
+endif
 
 internal-install-dirs:: $(PALETTE_INSTALL_DIR)
 

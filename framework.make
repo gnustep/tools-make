@@ -448,6 +448,9 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 endif
+ifeq ($(strip),yes)
+	$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE) 
+endif
 	@(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  if test -L "$(INTERNAL_framework_NAME)"; then \
@@ -495,6 +498,9 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
+endif
+ifeq ($(strip),yes)
+	$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE) 
 endif
 	(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \

@@ -1,3 +1,23 @@
+Fri Dec 14 12:32:45 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* palette.make (internal-palette-install): If CHOWN_TO is 
+	defined, chown the installed dir.
+
+Fri Dec 14 12:22:44 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Implemented strip=yes.
+	* config.make.in (STRIP): New variable.
+	* rules.make (INSTALL_PROGRAM): Add -s if strip=yes.
+	(strip): Export if defined to be yes.
+	* application.make (internal-app-install): Strip the installed
+	executable if strip=yes.
+	* bundle.make (internal-bundle-install): Idem.
+	* framework.make (internal-framework-install): Idem.
+	* gswapp.make (internal-gswapp-install): Idem.
+	* gswbundle.make (internal-bundle-install): Idem.
+	* palette.make (internal-palette-install): Idem.
+	* service.make (internal-service-install): Idem.
+	
 Thu Dec 13 12:27:18 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* java-tool.make

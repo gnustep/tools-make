@@ -64,6 +64,7 @@ INSTALL_DATA	= @INSTALL_DATA@
 TAR		= @TAR@
 MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
 CHOWN           = chown
+STRIP           = strip
 
 # The default library combination
 default_library_combo = @ac_cv_library_combo@

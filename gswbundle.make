@@ -290,6 +290,9 @@ endif
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
 endif
+ifeq ($(strip),yes)
+	$(STRIP) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_FILE) 
+endif
 
 $(GSWBUNDLE_INSTALL_DIR)::
 	@$(MKINSTALLDIRS) $@

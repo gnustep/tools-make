@@ -307,6 +307,9 @@ endif
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 endif
+ifeq ($(strip),yes)
+	$(STRIP) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_FILE)
+endif
 
 $(BUNDLE_DIR_NAME)/Resources:
 	$(MKDIRS) $@

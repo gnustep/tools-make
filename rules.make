@@ -186,6 +186,14 @@ $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make: ;
 $(GNUSTEP_MAKEFILES)/Additional/*.make: ;
 
 #
+# Manage stripping
+#
+ifeq ($(strip),yes)
+INSTALL_PROGRAM += -s
+export strip
+endif
+
+#
 # Prepare the arguments to install to set user/group of installed files
 #
 INSTALL_AS = 

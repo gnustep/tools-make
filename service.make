@@ -182,6 +182,9 @@ internal-service-install:: $(GNUSTEP_SERVICES)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)
 endif
+ifeq ($(strip),yes)
+	$(STRIP) $(GNUSTEP_SERVICES)/$(SERVICE_FILE) 
+endif
 
 internal-service-uninstall::
 	(cd $(GNUSTEP_SERVICES); rm -rf $(SERVICE_DIR_NAME))

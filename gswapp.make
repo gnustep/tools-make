@@ -364,6 +364,9 @@ internal-gswapp-install::
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME)
 endif
+ifeq ($(strip),yes)
+	$(STRIP) $(GNUSTEP_GSWAPPS)/$(GSWAPP_FILE) 
+endif
 
 internal-gswapp-uninstall::
 	(cd $(GNUSTEP_GSWAPPS); rm -rf $(GSWAPP_DIR_NAME))

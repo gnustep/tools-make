@@ -261,6 +261,9 @@ internal-app-install:: $(GNUSTEP_APPS)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_APPS)/$(APP_DIR_NAME)
 endif
+ifeq ($(strip),yes)
+	$(STRIP) $(GNUSTEP_APPS)/$(APP_FILE)
+endif
 
 
 $(GNUSTEP_APPS):
