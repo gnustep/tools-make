@@ -16,7 +16,7 @@ Last Update: @today{}
 
 @page
 @vskip 0pt plus 1filll
-Authors:  Tim Harrison, Martin Brecher, Adam Fedor
+Authors:  Tim Harrison, Martin Brecher, Adam Fedor, Nicola Pero
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -49,50 +49,62 @@ found later in this document.
 @node The System Domain, The Local Domain, Top, Top
 @section The System Domain
 
-The System domain is found in the @file{System} folder of the GNUstep 
+The System domain is found in the @file{System} folder of the GNUstep
 installation.  This directory contains all files which were included
-in the default GNUstep installation or distribution.  Namely these
-are the basic GNUstep libraries (Foundation and AppKit), essential
-system applications (the Workspace Manager, the Editor, applications
-related to system administrative tasks), the developer applications (Project 
-Center and Gorm, as well as header files), essential extensions (bundles
-for XML, SSL, RTF, etc), as well as all software installed by the
-manufacturer of your distribution.  These files are usually essential 
-for having a fully functional system.  Thus, making modifications to 
-these files is highly discouraged.  In addition, only the system 
-administrator ('root' on most UNIX systems) should have permissions to 
-write to that domain.
+in the default GNUstep installation or distribution.  Normally these
+include the basic GNUstep libraries (Foundation and AppKit), and might
+include essential system applications (the Workspace Manager, the
+Editor, applications related to system administrative tasks), the
+developer applications (Project Center and Gorm, as well as header
+files), essential extensions (bundles for XML, SSL, RTF, etc), as well
+as all software installed by the manufacturer of your distribution.
+These files are usually essential for having a fully functional
+system.  Thus, making modifications to these files is highly
+discouraged.  In addition, only the system administrator ('root' on
+most UNIX systems) should have permissions to write to that domain.
 
 
 
 @node The Local Domain, The Network Domain, The System Domain, Top
 @section The Local Domain
 
-While at first glance, the Local domain seems very similar to the 
+While at first glance, the Local domain seems very similar to the
 System domain, there are several differences between them.  The most
 important thing is the differing purpose of the Local domain, as it is
 meant as the location for installing software which was not included
-with your GNUstep distribution.  These may include third party 
-applications, custom extension libraries and their related header files,
-etc.  The Local domain is - as the name 
-suggests - usually installed as @file{Local} on your GNUstep system.
-
+with your GNUstep distribution and which you or your local sysadmin
+compile and/or install manually.  These may include third party
+applications, custom extension libraries and their related header
+files, etc.  The Local domain is - as the name suggests - usually
+installed as @file{Local} on your GNUstep system.  Every software
+(except for gnustep-make, gnustep-base, gnustep-gui and gnustep-back
+which by default install into the System domain) should install by
+default into the Local domain, so that if you download a source
+tarball of the software and you install it, it installs by default in
+the right place for this operation (the Local domain).  Distributions
+should override this default manually when they package the software
+they want to distribute as part of their distribution, so that in that
+case the software is installed in the System domain.
 
 
 @node The Network Domain, The Users Domain, The Local Domain, Top
 @section The Network Domain
 
-If you are working with a GNUstep system at home, the @file{Network} folder
-is probably empty, as it is of small use on stand alone systems.  However,
-the Network domain is of great use in networked, corporate environments.
-Its main purpose is to hold files exported from a central server in your
-network or from other workstations.  Most times, remote directories 
-containing applictations or general data used by several workstations 
-in the network are mounted using the Network File System (NFS).  Such 
-usage gives administrators the possibility of providing application
-or resources to a vast number of workstations while only having to 
-manage the software in one place.  This is especially useful when
-workstations are used by several users with different tasks and requirements.
+The @file{Network} domain is optional and is currently coalesced with
+the @file{Local} domain by default; this is particularly appropriate
+for use on stand alone systems such as your home workstation.
+However, the Network domain can be of great use in networked,
+corporate environments.  Its main purpose is to hold files exported
+from a central server in your network or from other workstations.
+Most times, remote directories containing applictations or general
+data used by several workstations in the network are mounted using the
+Network File System (NFS).  Such usage gives administrators the
+possibility of providing application or resources to a vast number of
+workstations while only having to manage the software in one place.
+This is especially useful when workstations are used by several users
+with different tasks and requirements.  If you want to take advantage
+of the @file{Network} domain, you need to enable it when you configure
+gnustep-make.
 
 
 
@@ -157,6 +169,7 @@ Local/
 Network/
         Applications/
         Library/
+        Tools/
 @end example
 
 @node User Hierarchy, Library Folder, Network Hierarchy, Hierarchy
@@ -222,12 +235,15 @@ Network/
 @subsection System
 
 The System directory is the location of the GNUstep makefile package,
-base, gui and backend libraries, and any accompanying libraries or
-frameworks that are distributed as part of the GNUstep Project.  This
-directory MUST exist for a proper installation of GNUstep.
+base, gui and backend libraries, and any accompanying software that is
+distributed as part of whatever distribution of GNUstep you are using.
+This directory MUST exist for a proper installation of GNUstep.
 
 Using the --prefix option to the configure script in gnustep-make, an
-installation of GNUstep may be placed wherever the installer wishes.
+installation of GNUstep may be placed wherever the installer wishes;
+the System, Local (and optionally Network) domain by default will be
+subdirectory of this root location.
+
 Common options are:
 
 @example
@@ -242,17 +258,19 @@ All directories referenced in this document are relative to this root location.
 @node Local Description, Network Description, System Description, Description
 @subsection Local
 
-The Local domain is the location of libraries, frameworks, bundles, and 
-supporting files for locally installed applications or tools that are not
-distributed as part of the GNUstep Project.  This directory MUST exist
-for a proper installation of GNUstep.
+The Local domain is the location of libraries, frameworks, bundles,
+and supporting files for locally installed applications or tools that
+are not distributed as part of the distribution that you are using,
+but that are compiled and/or installed manually by you or your
+sysadmin.  This directory MUST exist for a proper installation of
+GNUstep.
 
 @node Network Description, Applications, Local Description, Description
 @subsection Network
 
 The Network Domain is the location for all exported applications, remotely
 mounted filesystems, and remote home directories for users made available via
-directory services.
+directory services.  It is optional, and disabled by default.
 
 @node Applications, Tools, Network Description, Description
 @subsection Applications
@@ -262,11 +280,9 @@ are programs that typically have a GUI interface and contain associated
 resource files, such as images, localization files and other program
 elements.
 
-System applications (stored in the @file{System/Applications} folder)
-are specific to development with, or the maintenance of, GNUstep.
-This installation location can be overridden, if the
-administrator/user wishes to install such applications in another
-installation directory. System applications that may be installed include:
+Important applications which are part of GNUstep and which are often
+distributed as part of a core GNUstep distribution (and so installed
+in the @file{System/Applications} folder) include:
 @example
 Gorm.app
 ProjectCenter.app

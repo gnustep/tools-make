@@ -1,3 +1,11 @@
+Tue Mar 30 02:44:21 2004  Nicola Pero <n.pero@mi.flashnet.it>
+	
+	* Documentation/filesystem.texi: Clarify the differences between
+	the Local domain and System domain, clearly state that the default
+	installation directory of software should be the Local domain, and
+	mention that the Network domain is now optional and disabled by
+	default.  Other minor clarifications and tidyups.
+
 Tue Mar 30 02:01:59 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Documentation/make.texi (PACKAGE_NAME, PACKAGE_VERSION): Updated
