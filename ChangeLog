@@ -1,3 +1,11 @@
+Wed Feb 20 15:41:14 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* library.make: Broken into Master and Instance.
+	* Master/library.make: New file.
+	* Instance/library.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added library.make.
+	(INSTANCE_MAKE_FILES): Added library.make.
+
 Wed Feb 20 15:29:41 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* clibrary.make: Broken into Master and Instance.
