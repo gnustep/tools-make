@@ -209,9 +209,9 @@ after-check::
 # GNUSTEP_INSTANCE instead.
 
 # Before building the real thing, we must build framework tools if
-# any, then subprojects (FIXME - not sure - at what stage should we
-# build framework tools ? perhaps after the framework so we can link
-# with it ?)
+# any, then subprojects (FIXME - remove framework tools and replace
+# this with a better API which works for everything and not only
+# frameworks and not only tools)
 %.variables: %.tools %.subprojects
 	@ \
 instance=$(basename $(basename $*)); \
@@ -223,28 +223,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   GNUSTEP_TYPE=$$type \
   GNUSTEP_INSTANCE=$$instance \
   INTERNAL_$${type}_NAME=$$instance \
-  TARGET=$$instance \
-  BUNDLE_LIBS="$($(basename $(basename $*))_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
-  DLL_DEF="$($(basename $(basename $*))_DLL_DEF)" \
-  ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
-		$($(basename $(basename $*))_INCLUDE_DIRS)" \
-  ADDITIONAL_GUI_LIBS="$($(basename $(basename $*))_GUI_LIBS) \
-                       $(ADDITIONAL_GUI_LIBS)" \
-  ADDITIONAL_TOOL_LIBS="$($(basename $(basename $*))_TOOL_LIBS) \
-                        $(ADDITIONAL_TOOL_LIBS)" \
-  ADDITIONAL_OBJC_LIBS="$($(basename $(basename $*))_OBJC_LIBS) \
-                        $(ADDITIONAL_OBJC_LIBS)" \
-  ADDITIONAL_LIBRARY_LIBS="$($(basename $(basename $*))_LIBS) \
-                           $($(basename $(basename $*))_LIBRARY_LIBS) \
-                           $(ADDITIONAL_LIBRARY_LIBS)" \
-  ADDITIONAL_LIB_DIRS="$($(basename $(basename $*))_LIB_DIRS) \
-                       $(ADDITIONAL_LIB_DIRS)" \
-  ADDITIONAL_LDFLAGS="$($(basename $(basename $*))_LDFLAGS) \
-                      $(ADDITIONAL_LDFLAGS)" \
-  ADDITIONAL_CLASSPATH="$($(basename $(basename $*))_CLASSPATH) \
-                        $(ADDITIONAL_CLASSPATH)" \
-  LIBRARIES_DEPEND_UPON="$($(basename $(basename $*))_LIBRARIES_DEPEND_UPON) \
-                         $(LIBRARIES_DEPEND_UPON)"
+  TARGET=$$instance
 
 ifneq ($(FRAMEWORK_NAME),)
 #
@@ -272,7 +251,6 @@ if [ "$$operation" != "build-headers" ]; then \
              FRAMEWORK_OPERATION="$$operation" \
              TOOL_OPERATION="$$operation" \
              DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-             SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
            ; then \
            :; \
         else exit $$?; \
@@ -306,7 +284,6 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
           FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
           FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-          SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
         ; then \
         :; \
       else exit $$?; \
