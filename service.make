@@ -148,7 +148,8 @@ endif
 internal-svc-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.app *.debug *.profile *.iconheader
+	  static_profile_debug_obj *.app *.debug *.profile *.iconheader \
+	  $(SERVICE_DIR_NAME)
 
 endif
 
