@@ -207,7 +207,7 @@ if test ! -z "$WINDIR"; then
   # because HOMEDRIVE and HOMEPATH are only expanded inside GNUstep.sh
   GNUSTEP_USER_ROOT='$HOMEDRIVE/$HOMEPATH/GNUstep'
 else
-  GNUSTEP_USER_ROOT='~/GNUstep'
+  GNUSTEP_USER_ROOT='~$LOGNAME/GNUstep'
 fi
 )
 AC_MSG_RESULT($GNUSTEP_USER_ROOT)

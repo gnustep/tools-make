@@ -1,3 +1,14 @@
+2002-02-13 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure: regenerated
+	* configure.in: Set default user root to be ~$LOGNAME/GNUstep
+	rather than ~/GNUstep so that it is consistent with the operation
+	of the NSUserName() function ... ie.  we use the login name in
+	preference to any temporarily set user id.
+	People wanting the old inconsistent behavior can simply unset
+	the LOGNAME environment variable in any subshell they start
+	with a new uid.
+
 Tue Feb 12 16:37:51 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* framework.make (INTERNAL_LIBRARIES_DEPEND_UPON): Set this
