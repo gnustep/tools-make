@@ -1,3 +1,10 @@
+Tue Jul 10 10:17:59 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.build): Removed doubled code to compute
+	subprojects list.  Use extensively makefile conditionals to
+	improve performance and readability.  Added more verbose messages
+	about what we are doing when building frameworks.
+	
 Tue Jul 10 10:08:18 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* java-tool.make (.PHONY): Added _FORCE.
