@@ -28,7 +28,3 @@ endif
 # Else, it's the Instance invocation for something which is not an
 # application - include nothing
 endif
-
-## Local variables:
-## mode: makefile
-## End:

@@ -28,7 +28,3 @@ include $(GNUSTEP_MAKEFILES)/Instance/library.make
 endif
 
 endif
-
-## Local variables:
-## mode: makefile
-## End:

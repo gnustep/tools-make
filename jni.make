@@ -53,7 +53,3 @@ JNI_INCLUDE_HEADERS = -I$(JAVA_HOME)/include/ \
 ADDITIONAL_INCLUDE_DIRS += $(JNI_INCLUDE_HEADERS)
 
 endif # jni.make loaded
-
-## Local variables:
-## mode: makefile
-## End:

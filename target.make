@@ -995,7 +995,3 @@ endif
 # end HP-UX
 #
 ####################################################
-
-## Local variables:
-## mode: makefile
-## End:

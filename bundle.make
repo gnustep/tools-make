@@ -28,7 +28,3 @@ include $(GNUSTEP_MAKEFILES)/Instance/bundle.make
 endif
 
 endif
-
-## Local variables:
-## mode: makefile
-## End:

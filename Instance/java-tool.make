@@ -88,7 +88,3 @@ internal-java_tool-uninstall_:: shared-instance-java-uninstall
 internal-java_tool-clean:: shared-instance-java-clean
 
 internal-java_tool-distclean::
-
-## Local variables:
-## mode: makefile
-## End:

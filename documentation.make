@@ -34,7 +34,3 @@ endif
 endif
 
 endif
-
-## Local variables:
-## mode: makefile
-## End:

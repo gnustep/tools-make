@@ -123,7 +123,3 @@ shared-instance-headers-uninstall:
 # $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) if it's empty.
 
 endif # HEADER_FILES = ''
-
-## Local variables:
-## mode: makefile
-## End:

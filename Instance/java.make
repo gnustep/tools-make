@@ -94,7 +94,3 @@ internal-java_package-distclean::
 
 internal-java_package-uninstall_:: shared-instance-java-uninstall
 
-
-## Local variables:
-## mode: makefile
-## End:

@@ -28,7 +28,3 @@ include $(GNUSTEP_MAKEFILES)/Instance/service.make
 endif
 
 endif
-
-## Local variables:
-## mode: makefile
-## End:

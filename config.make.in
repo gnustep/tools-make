@@ -121,7 +121,3 @@ CONFIG_SYSTEM_LIB_DIR = @LIB_DIR@
 # used to compile them) via -MMD -MP flags
 #
 AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
-
-## Local variables:
-## mode: makefile
-## End:

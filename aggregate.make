@@ -29,7 +29,3 @@ endif
 
 endif
 # aggregate.make loaded
-
-## Local variables:
-## mode: makefile
-## End:

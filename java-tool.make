@@ -27,7 +27,3 @@ include $(GNUSTEP_MAKEFILES)/Instance/java-tool.make
 endif
 
 endif
-
-## Local variables:
-## mode: makefile
-## End:
