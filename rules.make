@@ -436,6 +436,11 @@ $(GNUSTEP_OBJ_DIR):
 endif
 
 #
+# Rules for building file lists
+#
+include $(GNUSTEP_MAKEFILES)/file-list.make
+
+#
 # Rules for building RPM packages
 #
 include $(GNUSTEP_MAKEFILES)/rpm.make
