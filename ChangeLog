@@ -1,3 +1,31 @@
+Tue Jan 22 21:45:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Simplified: frameworks now install symlinks to their headers and
+	libraries in the same directories where libraries install theirs.
+	* framework.make: Replaced everywhere GNUSTEP_FRAMEWORK_HEADERS
+	with GNUSTEP_HEADERS, and GNUSTEP_FRAMEWORK_LIBRARIES with
+	GNUSTEP_LIBRARIES.
+	* common.make (GNUSTEP_FRAMEWORKS_HEADERS): Removed.
+	(GNUSTEP_FRAMEWORKS_LIBRARIES): Removed.
+	(GNUSTEP_FRAMEWORKS_HEADERS_FLAGS): Removed.
+	(GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS): Removed.
+	* rules.make (ALL_OBJCFLAGS): Do not use the removed
+	flags.  (ALL_CFLAGS): Idem.
+	* rules.make (ALL_LIB_DIRS): Added ADDITIONAL_FRAMEWORK_DIRS
+	and AUXILIARY_FRAMEWORK_DIRS.  (ALL_FRAMEWORK_DIRS): Removed.
+	* application.make: Removed references to ALL_FRAMEWORK_DIRS.
+	* bundle.make: Idem.
+	* gswapp.make: Idem.
+	* tool.make: Idem.
+	* target.make (SHARED_FRAMEWORK_LINK_CMD): Removed
+	ALL_FRAMEWORK_DIRS.
+	* ld_lib_path.sh (lib_paths): Removed xxx/Library/Libraries/yyy 
+	paths.  Added missing GNUSTEP_NETWORK/Libraries path.
+	(guile_paths): Added missing GNUSTEP_NETWORK paths.
+	* ld_lib_path.csh: Removed xxx/Library/Libraries/yyy paths.
+	Fixed position of GNUSTEP_NETWORK/Libraries paths.
+	(GUILE_LOAD_PATH): Added missing GNUSTEP_NETWORK paths.
+	
 Tue Jan 22 00:20:12 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in (cygpath): Moved code to search for cygpath 
