@@ -241,8 +241,9 @@ lines similar to these:
 
 This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for all users. Before executing
-this script, you can setup a default path for searching for tools
-and apps by defining the variable GNUSTEP_PATHPREFIX_LIST (and exporting
+this script, you can setup a default path for scripts in the
+makefiles package to use for searching for tools and apps by
+defining the variable GNUSTEP_PATHPREFIX_LIST (and exporting
 it). By default, it's set to
 
 @example
@@ -256,6 +257,10 @@ which might look something like this:
 @end example
 
 when all is done.
+
+NB. This path is NOT used by GNUstep tools and applications
+themselves ... they use a standard function
+NSSearchPathForDirectoriesInDomains() to locate files instead.
 
 @node Single-User,  , Multi-User, Setup
 @subsection Setting up the GNUstep environment for a single user
@@ -279,5 +284,15 @@ fi
 
 This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for the user.
+
+The GNUstep.sh file will set up GNUSTEP_USER_ROOT to the GNUstep
+subdirectory of the users home directory by default.  This may be
+overridden by a user providing a .GNUsteprc file in their home
+directory.
+
+@example
+# Set up to store GNUstep files directly in my home directory
+GNUSTEP_USER_ROOT=~
+@end example
 
 @bye
