@@ -81,6 +81,34 @@ endif
 $(FRAMEWORK_HEADERS_DIR):
 	$(MKDIRS) $@
 
+#
+# FIXME - this is sure all wrong - frameworks are no different than
+# bundles, applications, tools, libraries, gswbundles, gswapps - and
+# should behave consistently with the other project types
+# 
+# So if we don't install resource files of an application into the
+# application wrapper from a subproject, we shouldn't be installing
+# resource files of a framework into the framework wrapper from a
+# subproject!
+#
+# It's also *extremely* ugly that we have to duplicate here
+# framework-specific code.  We want makefiles which are fairly independent
+# of each other.
+#
+# Perhaps we might modify subproject.make so that a subproject can
+# have resources, and it stores them into a bundle.
+#
+# Then, we modify tools, apps, libraries etc to merge the resources from
+# all the subproject bundles into the main project bundle.  Since tools,
+# apps, libraries etc will use the same code to manage their bundles,
+# we need to write the code merging the subproject bundles only once.
+#
+# In any case - that must be done in a consistent way across all
+# project types, so that subproject.make doesn't need to know if it's
+# the subproject of a framework, bundle or something else, and doesn't
+# contain this horrible framework specific code.
+#
+
 framework-components::
 ifneq ($(COMPONENTS),)
 	@ echo "Copying components into the framework wrapper..."; \
@@ -195,41 +223,11 @@ endif # FRAMEWORK code
 #
 ifeq ($(FRAMEWORK_NAME),)
 
-ifeq ($(strip $(HEADER_FILES_DIR)),)
-override HEADER_FILES_DIR = .
-endif
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
-.PHONY: internal-subproject-install \
-        internal-install-headers \
-        internal-subproject-uninstall
+internal-subproject-install:: shared-instance-headers-install
 
-internal-subproject-install:: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
-                              $(ADDITIONAL_INSTALL_DIRS) \
-                              internal-install-headers
-
-$(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
-	$(MKINSTALLDIRS) $@
-
-$(ADDITIONAL_INSTALL_DIRS):
-	$(MKINSTALLDIRS) $@
-
-internal-install-headers::
-ifneq ($(HEADER_FILES),)
-	for file in $(HEADER_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) \
-	      $(HEADER_FILES_DIR)/$$file \
-	      $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	  fi; \
-	done
-endif
-
-internal-subproject-uninstall::
-	for file in $(HEADER_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	  fi; \
-	done
+internal-subproject-uninstall:: shared-instance-headers-uninstall
 
 endif # no FRAMEWORK_NAME
 
