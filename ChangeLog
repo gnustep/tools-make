@@ -1,3 +1,10 @@
+2004-01-18  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/gnustep-howto.texi: Add gui image libs.
+	* Documentation/install.texi: Update info on #import.
+	* Documentation/userfaq.texi: Idem.
+	* Documentation/machines.texi: Update Darwin compiler.
+
 Fri Jan 16 17:01:55 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/bundle.make: Recognize xxx_INSTALL_DIR and use it if

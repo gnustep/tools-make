@@ -13,7 +13,7 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
 @itemize @bullet
 @item Support for building in a separate build dir.
-@item Add --enable-string-makefiles option to configure
+@item Add @code{--enable-strip-makefiles} option to configure
 @item List of classes in a framework gets written to the plist file.
 @end itemize
 

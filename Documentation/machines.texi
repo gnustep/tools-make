@@ -90,7 +90,7 @@ you completely remove all of it, including installed init scripts.
 
 @table @samp
 @item Recommended compiler
-gcc 3.2.2
+gcc 3.3.2. Older versions will not compile on Darwin.
 
 Default compiler has some odd memory(?) related problems.
 Use the GNU runtime. Download the gcc compiler and configure it with

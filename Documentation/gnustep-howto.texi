@@ -104,20 +104,10 @@ This is a library that provides stack frame handling for NSInvocation
 and NSConnection similar to ffcall. 
 Use this instead of ffcall. You don't need both.
 
-@item WindowMaker (Version >= 0.62) (OPTIONAL)
-GNUstep and WindowMaker work together to provide a consistant interface.
-Although it is not required, GNUstep will work much better if you use it
-with the WindowMaker window manager. In addition, WindowMaker includes some
-functionality that GNUstep uses that would otherwise not be available.
-Get WindowMaker from @url{http://www.windowmaker.org}.
-
 @item libxml2 (RECOMMENDED)
 The libxml library (Version 2) is used to translate some of the
 documentation for GNUstep and to provide suport for MacOS-X compatible
 XML-based property-lists. It is recommended but not currently required.
-
-@item The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)
-The GUI library uses this to handle loading and saving TIFF images.
 
 @item openssl (OPTIONAL)
 The openssl library is used to provide support for https connections by
@@ -134,6 +124,21 @@ you don't have glibc (try iconv --version), you can get the separate
 libiconv library from 
 @url{http://clisp.cons.org/~haible/packages-libiconv.html}. However,
 neither one is required to use GNUstep.
+
+@item The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)
+The GUI library uses this to handle loading and saving TIFF images.
+
+@item The JPEG library (libjpeg) (RECOMMENDED)
+The GUI library uses this to handle loading JPEG images.
+
+@item The PNG library (libpng) (RECOMMENDED)
+The GUI library uses this to handle loading PNG images.
+
+@item WindowMaker (Version >= 0.62) (OPTIONAL)
+GNUstep and WindowMaker work together to provide a consistant interface.
+Although it is not required, GNUstep will work much better if you use it
+with the WindowMaker window manager. 
+Get WindowMaker from @url{http://www.windowmaker.org}.
 
 @item gnustep-objc package (for gcc version < 3.0 ONLY) (RECOMMENDED)
 Note: Do not install this library unless you are sure you need it.
