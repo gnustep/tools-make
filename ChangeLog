@@ -1,3 +1,10 @@
+Fri Oct 25 18:08:49 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Documentation/readme.texi: Rewritten ultra short description of
+	the GNU General Public License by adapting text from the GNU GPL
+	FAQ at www.gnu.org - to address complaints that the previous
+	description was incorrect/misleading.
+
 Tue Oct 22 02:29:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/objc.make (internal-clean): Fixed typo, objc_program for
