@@ -2991,8 +2991,8 @@ fi
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
 # If so, there are probably other libraries that we want there also, so
 # leave the proper includes in CPPFLAGS and LDFLAGS
-echo "$as_me:$LINENO: checking for shared objc library" >&5
-echo $ECHO_N "checking for shared objc library... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking for custom shared objc library" >&5
+echo $ECHO_N "checking for custom shared objc library... $ECHO_C" >&6
 if test "${gs_cv_objc_libdir+set}" = set; then
   echo $ECHO_N "(cached) $ECHO_C" >&6
 else

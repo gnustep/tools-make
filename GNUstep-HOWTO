@@ -1,12 +1,12 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 30 August 2002
+   Last Update: 23 September 2002
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
 
-   Copyright (C) 1996 - 2001 Free Software Foundation, Inc.
+   Copyright (C) 1996 - 2002 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -184,16 +184,17 @@ To configure just type:
      ./configure
 
    The GNUstep makefile package needs a root directory.  If the
-GNUSTEP_SYSTEM_ROOT environment variable is set then configure will use
-its value as the root directory.  You can also specify the root
-directory when you run configure with the prefix paramter; the
+GNUSTEP_SYSTEM_ROOT environment variable is set then configure will
+determine the root directory from its value (by removing the final
+/System path component from it).  You can also specify the root
+directory when you run configure with the prefix paramater; the
 following command makes /usr/local/GNUstep the root directory:
 
-     ./configure --prefix=/usr/local/GNUstep/System
+     ./configure --prefix=/usr/local/GNUstep
 
    If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
 and you do not specify a root directory when running configure, then
-configure will use /usr/GNUstep/System as the default root directory.
+configure will use /usr/GNUstep as the default root directory.
 
 Alternate Library Setup
 -----------------------
@@ -245,23 +246,24 @@ Environment Setup
 =================
 
    Add the shell script `GNUstep.sh' located in the Makefile package to
-your shell startup file (such as `.profile'). For instance:
+your shell startup file (such as `.profile'). For instance, if your
+GNUSTEP_SYSTEM_ROOT is `/usr/GNUstep/System',
 
-     GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
-     export GNUSTEP_SYSTEM_ROOT
-     . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+     . /usr/GNUstep/System/Makefiles/GNUstep.sh
 
    in your `.profile' file will work (Note the period at the beginning
-of the line). It defines environment variables that are needed to find
-GNUstep files and executables.  Users of csh need to use the
-`GNUstep.csh' script. Read the make package `README' for more info.
-Some systems, like GNU/Linux have an `/etc/profile.d' directory where
-scripts can be executed automatically. If you want to set up GNUstep
-for every user on your system, you can try copying/linking the
-`GNUstep.sh' there. For csh or tcsh, try
+of the line, and the space between the period and the following path;
+if your GNUSTEP_SYSTEM_ROOT is different, you need to replace
+`/usr/GNUstep/System' with your GNUSTEP_SYSTEM_ROOT).  It defines
+environment variables that are needed to find GNUstep files and
+executables.  Users of csh need to use the `GNUstep.csh' script. Read
+the make package `README' for more info. Some systems, like GNU/Linux
+have an `/etc/profile.d' directory where scripts can be executed
+automatically. If you want to set up GNUstep for every user on your
+system, you can try copying/linking the `GNUstep.sh' there. For csh or
+tcsh, try
 
-     setenv GNUSTEP_SYSTEM_ROOT /usr/GNUstep
-     source $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.csh
+     source /usr/GNUstep/System/Makefiles/GNUstep.csh
 
 GNUstep Home
 ============

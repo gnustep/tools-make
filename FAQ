@@ -1,15 +1,15 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-   Last updated 30 August 2002.  Please send corrections to
+   Last updated 23 September 2002.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
 Compatibility
 =============
 
-Is it easy to port OPENSTEP and Rhapsody programs to GNUstep?
--------------------------------------------------------------
+Is it easy to port OPENSTEP programs to GNUstep?
+------------------------------------------------
 
    It is probably easy for simple programs. There are some portability
 tools to make this easier
@@ -17,6 +17,29 @@ tools to make this easier
 Makefiles yourself.  You will also have to translate the NIB files (if
 there are any) to GNUstep model files using the nib2gmodel program
 (from <ftp://ftp.gnustep.org/pub/gnustep/dev-apps>).
+
+How about porting between Cocoa and GNUstep?
+--------------------------------------------
+
+   It's easier from GNUstep to Cocoa than Cocoa to GNUstep. Cocoa is
+constantly changing, much faster than GNUstep could hope to keep up.
+The have added extensions and new classes that aren't available in
+GNUstep yet. Plus there are some other issues. If you start with Cocoa:
+
+   * Be careful with Cocoa.h includes
+
+   * Do not use CoreFoundation
+
+   * Do not use C++
+
+   * Do not use Quicktime or other propriatory extention
+
+   * You need to convert .nib (IB if you use it) to .gmodel or .gorm
+     and Gorm is good enough for most of the work
+
+   * Do not use NSToolBar (not finished in GNUstep)
+
+   * Do not use Drawer (not implmented in GNUstep)
 
 Can I transfer archived data from GNUstep to Cocoa?
 ---------------------------------------------------
@@ -372,7 +395,7 @@ What is its current state of development?
 -----------------------------------------
 
    GNUstep base is currently stable and implements probably 99% of the
-functionality of the OpenStep classes and most all of the new Carbon
+functionality of the OpenStep classes and most all of the new Cocoa
 classes.  Normal work can already be done using the library since the
 missing 1 percent are the least-often-used features or are simply not
 up to date with the latest Carbon spec.
