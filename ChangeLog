@@ -1,3 +1,11 @@
+Mon Jan 29 23:38:25 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* debian: New directory.
+	* debian/changelog: New file.
+	* debian/control: New file.
+	* debian/copyright: New file.
+	* debian/rules: New file.
+
 2001-01-29  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Correct setting of prefix and GNUSTEP_ROOT.
