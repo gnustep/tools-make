@@ -1,3 +1,8 @@
+2003-07-23 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/Documentation/autogsdoc.make: put stamp file in
+	documentation subdirectory so it gets removed properly with 'clean'
+
 2003-07-22  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.7.2
