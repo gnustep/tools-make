@@ -54,7 +54,7 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 # On Solaris we don't need to specifies the libraries the bundle needs.
 # How about the rest of the systems? BUNDLE_LIBS is temporary empty.
 # We need this for MS Windows, so use it again!
-BUNDLE_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
+BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
    $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
    $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
    $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
