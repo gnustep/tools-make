@@ -143,9 +143,7 @@ if [ -z "$appname" ]; then
   appname=$app
 fi
 
-if [ -n "$EXEEXT" ]; then
-  appname=$appname$EXEEXT
-fi
+appname="$appname$EXEEXT"
 
 if [ $show_available_platforms = 1 ]; then
   cd $full_appname
@@ -213,7 +211,6 @@ else
 fi
 
 # Load up LD_LIBRARY_PATH
-# this needs to be PATH on NT
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 exec $full_appname/$relative_path "$@"
