@@ -1,3 +1,16 @@
+Fri Feb 22 13:12:44 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/ctool.make (internal-ctool-uninstall): Use
+	GNUSTEP_INSTANCE here.
+
+Fri Feb 22 13:06:18 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* service.make: Broken into Master and Instance.
+	* Master/service.make: New file.
+	* Instance/service.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added service.make
+	(INSTANCE_MAKE_FILES): Idem.
+
 Fri Feb 22 12:55:01 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/rules.make (SCRIPTS_DIRECTORY, CHECK_SCRIPT_DIRS): Do not
