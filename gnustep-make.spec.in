@@ -46,7 +46,6 @@ for library combo %{gs_libcombo}.
 %setup -n %{gs_name}-%{gs_version}
 
 %build
-make distclean
 CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%{gs_libcombo}
 make
 

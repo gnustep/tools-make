@@ -40,15 +40,22 @@ AC_ARG_WITH(system-root,
   ac_cv_system_root=$withval,  
   ac_cv_system_root=yes)
 
+GNUSTEP_ROOT=$prefix
+root_prefix='${prefix}'
 if test $ac_cv_system_root = yes; then
-  if test `basename $prefix` = System; then
-    prefix=`dirname $prefix`
+  if test "x`basename $prefix`" = xSystem; then
+    GNUSTEP_ROOT=`dirname $prefix`
+  else
+    if test "x$prefix" = "x/"; then
+      prefix=/System
+    else
+      prefix=$prefix/System
+    fi
   fi
-  GNUSTEP_SYSTEM_ROOT=$prefix/System
-else
-  GNUSTEP_SYSTEM_ROOT=$prefix
+  root_prefix='${prefix}/..'
 fi
-AC_SUBST(GNUSTEP_SYSTEM_ROOT)
+AC_SUBST(GNUSTEP_ROOT)
+AC_SUBST(root_prefix)
 
 
 #--------------------------------------------------------------------
