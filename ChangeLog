@@ -1,3 +1,12 @@
+Mon Oct 13 15:53:43 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Added configure option --enable-strip-makefiles;
+	substitute @GNUSTEP_STRIP_MAKEFILES@ in output.
+	* configure: Regenerated.
+	* GNUmakefile.in (install): Install strip_makefiles.sh; 
+	execute it if --enable-strip-makefiles.
+	* strip_makefiles.sh: New file.
+	
 Mon Oct 13 15:07:53 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/java.make (.PHONY): Removed line continuation in
