@@ -1,3 +1,9 @@
+Mon Nov  3 11:50:30 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make (FRAMEWORK_LIBRARY_FILE_EXT): Unused variable
+	removed.
+	* Instance/framework.make (FRAMEWORK_FILE_EXT): Unused variable removed.
+	
 Fri Oct 31 17:16:51 2003  Matt Rice <ratmice@yahoo.com>
 
 	* config.make.in (HAS_LN_S): Set to no for mingw32. 
