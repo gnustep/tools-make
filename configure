@@ -2857,6 +2857,12 @@ fi
 #--------------------------------------------------------------------
 echo $ac_n "checking whether objc has thread support""... $ac_c" 1>&6
 echo "configure:2860: checking whether objc has thread support" >&5
+extra_LIBS=""
+case "${target_os}" in
+  solaris*)
+        extra_LIBS="-lposix4"
+        ;;
+esac
 saved_LIBS="$LIBS"
 objc_thread_lib=""
 if test $host_os = linux-gnu; then
@@ -2865,11 +2871,33 @@ if test $host_os = linux-gnu; then
   objc_threaded="-lpthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2869 "configure"
+#line 2875 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2873: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2879: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+then
+  objc_threaded="-lpthread"
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  objc_threaded=""
+fi
+rm -fr conftest*
+fi
+
+elif test "`echo $host_os|sed 's/[0-9].*//'|sed s/elf//`" = freebsd; then
+  LIBS="-lpthread -lobjc"
+  if test "$cross_compiling" = yes; then
+  objc_threaded="-lpthread"
+else
+  cat > conftest.$ac_ext <<EOF
+#line 2897 "configure"
+#include "confdefs.h"
+#include "config_thread.m"
+EOF
+if { (eval echo configure:2901: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lpthread"
 else
@@ -2887,11 +2915,11 @@ fi
   objc_threaded="-lpcthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2891 "configure"
+#line 2919 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2895: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2923: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lpcthread"
 else
@@ -2905,16 +2933,16 @@ fi
 
   fi
 else
-  LIBS="-lobjc $LIBS"
+  LIBS="-lobjc $LIBS $extra_LIBS"
   if test "$cross_compiling" = yes; then
   objc_threaded="-lthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 2914 "configure"
+#line 2942 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:2918: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:2946: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest${ac_exeext} && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lthread"
 else

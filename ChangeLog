@@ -1,3 +1,46 @@
+1999-09-07  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 0.6.0
+
+	* GNUstep.csh.in: Don't set GNUSTEP_HOST if already set.
+	* GNUstep.sh.in: Likewise.
+
+	* configure.in: Add test for solaris libraries
+
+	* target.make: Use -lposix for Solaris (regardless of threaded).
+
+1999-09-07  David Lazaro Saz
+
+	* configure.in: Added threading support for FreeBSD.
+	* target.make: Likewise.
+ 
+1999-08-15  Adam Fedor  <fedor@gnu.org>
+
+	* subproject.make (internal-subproj-all): Make sure files from
+	subprojects of subprojects get linked. (Patch from Pedro Ivo 
+	Andrade Tavares <ptavares@iname.com>).
+
+	* target.make: Add partial OSF support.
+
+1999-08-09  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.csh.in: Fix the setting of GNUSTEP_MAKEFILES (patch
+	from Christopher Seawood <cls@seawood.org>).
+
+	* target.make: Change freebsd3 to freebsd to find all versions,
+	except put freebsd2 first so it is still unique.
+
+1999-08-09  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	Fixes so that things don't bomb out if you don't have write access
+	to your current directory.
+	* GNUstep.csh.in: Run config.guess in /tmp
+	* GNUstep.sh.in: ditto
+	* executable.template.in: ditto
+	* openapp.in: ditto
+	* opentool: ditto
+	* opentool.in: ditto
+
 1999-08-03  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* application.make: Make installation directory if necessary.
