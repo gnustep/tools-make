@@ -114,7 +114,9 @@ fi
 export GNUSTEP_USER_ROOT
 
 #
-# Add the GNUstep tools directories to the path
+# GNUSTEP_PATHPREFIX_LIST is like an abstract path-like shell
+# variable, which can be used to search the gnustep directories - and
+# in these scripts, it is also used to set up other shell variables
 #
 if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
 
@@ -124,18 +126,51 @@ if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
     G_L_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_LOCAL_ROOT"`
     G_N_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_NETWORK_ROOT"`
     G_S_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_SYSTEM_ROOT"`
-    GNUSTEP_PATHPREFIX_LIST="$G_U_R:$G_L_R:$G_N_R:$G_S_R"
-    unset G_U_R
-    unset G_L_R
-    unset G_N_R
-    unset G_S_R
   else
-    GNUSTEP_PATHPREFIX_LIST="$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_NETWORK_ROOT:$GNUSTEP_SYSTEM_ROOT"
+    G_U_R="$GNUSTEP_USER_ROOT"
+    G_L_R="$GNUSTEP_LOCAL_ROOT"
+    G_N_R="$GNUSTEP_NETWORK_ROOT"
+    G_S_R="$GNUSTEP_SYSTEM_ROOT"
   fi
+
+  # Now we basically want to build
+  # GNUSTEP_PATHPREFIX_LIST="$G_U_R:$G_L_R:$G_N_R:$G_S_R"
+  # but we want to remove duplicates.
+
+  # Start with $G_U_R:$G_L_R - or $G_U_R if they are the same
+  if [ "$G_L_R" != "$G_U_R" ]; then
+    GNUSTEP_PATHPREFIX_LIST="$G_U_R:$G_L_R"
+  else
+    GNUSTEP_PATHPREFIX_LIST="$G_U_R"
+  fi
+
+  # Now append $G_N_R but only if different from what already there
+  if [ "$G_N_R" != "$G_U_R" ]; then
+    if [ "$G_N_R" != "$G_L_R" ]; then
+      GNUSTEP_PATHPREFIX_LIST="$GNUSTEP_PATHPREFIX_LIST:$G_N_R"
+    fi
+  fi
+
+  # Now append $G_S_R but only if different from what already there
+  if [ "$G_S_R" != "$G_U_R" ]; then
+    if [ "$G_S_R" != "$G_L_R" ]; then
+      if [ "$G_S_R" != "$G_N_R" ]; then
+        GNUSTEP_PATHPREFIX_LIST="$GNUSTEP_PATHPREFIX_LIST:$G_S_R"
+      fi
+    fi
+  fi
+
+  unset G_U_R
+  unset G_L_R
+  unset G_N_R
+  unset G_S_R
 
   export GNUSTEP_PATHPREFIX_LIST
 fi
 
+#
+# Add path to Tools to PATH
+#
 tmp_IFS="$IFS"
 IFS=:
 temp_path=
