@@ -154,10 +154,21 @@ distclean: clean
 
 cvs-dist:
 	cvs -z3 export -r make-$(VERTAG) make
-	mkdir gstep-$(GNUSTEP_MAKE_VERSION)
-	mv make gstep-$(GNUSTEP_MAKE_VERSION)
-	tar --gzip -cf gstep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gstep-$(GNUSTEP_MAKE_VERSION)
-	rm -rf gstep-$(GNUSTEP_MAKE_VERSION)
+	mv make gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
+
+cvs-snapshot:
+	cvs -z3 export -D now make
+	mv make gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
+
+rpm:
+	cp gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/
+	cp gnustep-make.spec $(RPM_TOPDIR)/SPECS/
+	cd $(RPM_TOPDIR)/SPECS/
+	rpm -ba gnustep-make.spec
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh config.h config.make debugapp openapp
 
