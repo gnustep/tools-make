@@ -44,8 +44,7 @@ endif
 .PHONY: internal-app-all \
         internal-app-install \
         internal-app-uninstall \
-        app-resource-files \
-        app-localized-resource-files \
+        internal-application-build-template \
         _FORCE
 
 ALL_GUI_LIBS =								     \
@@ -59,10 +58,9 @@ ALL_GUI_LIBS =								     \
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
-APP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(APP_DIR_NAME)/Resources/$(d))
-ifeq ($(strip $(LANGUAGES)),)
-  override LANGUAGES="English"
-endif
+
+GNUSTEP_SHARED_INSTANCE_BUNDLE_PATH = $(APP_DIR_NAME)/Resources
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 # Support building NeXT applications
 ifneq ($(OBJC_COMPILER), NeXT)
@@ -99,15 +97,12 @@ internal-app-all:: before-$(GNUSTEP_INSTANCE)-all \
                    $(GNUSTEP_OBJ_DIR) \
                    $(APP_DIR_NAME) \
                    $(APP_FILE) \
-                   app-resource-files \
+                   shared-instance-bundle-all \
                    after-$(GNUSTEP_INSTANCE)-all
 
 $(GNUSTEP_INSTANCE).iconheader:
 	@(echo "F	$(GNUSTEP_INSTANCE).$(APP_EXTENSION)	$(GNUSTEP_INSTANCE)	$(APP_EXTENSION)"; \
 	  echo "F	$(GNUSTEP_INSTANCE)	$(GNUSTEP_INSTANCE)	app") >$@
-
-$(APP_DIR_NAME):
-	mkdir $@
 
 else
 
@@ -115,49 +110,27 @@ internal-app-all:: before-$(GNUSTEP_INSTANCE)-all \
                    $(GNUSTEP_OBJ_DIR) \
                    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
                    $(APP_FILE) \
-                   $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE) \
-                   app-resource-files \
-                   app-localized-resource-files \
+                   internal-application-build-template \
+                   $(APP_DIR_NAME)/Resources \
+                   $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
+		   $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop \
+                   shared-instance-bundle-all \
                    after-$(GNUSTEP_INSTANCE)-all
 
 $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	@$(MKDIRS) $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+	@$(MKDIRS) $@
 
 ifeq ($(GNUSTEP_FLATTENED),)
+internal-application-build-template: $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)
+
 $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE):
 	cp $(GNUSTEP_MAKEFILES)/executable.template \
 	   $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE); \
 	chmod a+x $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)
-endif
-endif
+else
+internal-application-build-template:
 
-$(APP_RESOURCE_DIRS):
-	$(MKDIRS) $(APP_RESOURCE_DIRS)
-
-app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
-		     $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop \
-                     $(APP_RESOURCE_DIRS)
-ifneq ($(strip $(RESOURCE_FILES)),)
-	@(echo "Copying resources into the application wrapper..."; \
-	cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources;)
 endif
-
-app-localized-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
-                               $(APP_RESOURCE_DIRS)
-ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-	@(echo "Copying localized resources into the application wrapper..."; \
-	for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
-	    $(MKDIRS) $(APP_DIR_NAME)/Resources/$$l.lproj; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f $(APP_DIR_NAME)/Resources/$$l.lproj; \
-	      fi; \
-	    done; \
-	  else \
-	    echo "Warning: $$l.lproj not found - ignoring"; \
-	  fi; \
-	done;)
 endif
 
 ifeq ($(PRINCIPAL_CLASS),)
@@ -166,7 +139,7 @@ endif
 
 APPLICATION_ICON = $($(GNUSTEP_INSTANCE)_APPLICATION_ICON)
 
-$(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
+$(APP_DIR_NAME)/Resources/Info-gnustep.plist: _FORCE
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
@@ -187,9 +160,6 @@ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 		$(APP_DIR_NAME)/Resources/Info-gnustep.plist
 	@pl2link $^ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop
 
-$(APP_DIR_NAME)/Resources:
-	@$(MKDIRS) $@
-
 _FORCE::
 
 internal-app-install:: $(GNUSTEP_APPS)
@@ -204,7 +174,7 @@ endif
 
 
 $(GNUSTEP_APPS):
-	$(MKINSTALLDIRS) $(GNUSTEP_APPS)
+	$(MKINSTALLDIRS) $@
 
 internal-app-uninstall::
 	(cd $(GNUSTEP_APPS); rm -rf $(APP_DIR_NAME))
