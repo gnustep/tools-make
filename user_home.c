@@ -192,6 +192,18 @@ int main (int argc, char** argv)
   len0 = GetEnvironmentVariable("USERPROFILE", buf0, 1024);
   if (len0 > 0 && len0 < 1024)
     {
+      int	i;
+
+      for (i = 0; i < len0; i++)
+	{
+	  if (isspace(buf[0]))
+	    {
+	      len0 = 0;	/* Spaces not permitted! */
+	    }
+	}
+    }
+  if (len0 > 0 && len0 < 1024)
+    {
       buf0[len0] = '\0';
       strcpy(home, buf0);
     }
