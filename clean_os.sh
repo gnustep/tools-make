@@ -31,6 +31,11 @@ case "$1" in
 	echo freebsd
 	exit 0
 	;;
+    # Remove version number for Darwin
+    darwin5*)
+        echo darwin5
+        exit 0
+        ;;
     *)
 	echo $1
         exit 0
