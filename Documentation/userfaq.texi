@@ -1,0 +1,95 @@
+\input texinfo   @c -*-texinfo-*-
+@c A FAQ for GNUstep Users
+
+@node Top, GNUstep General Information, (dir), (dir)
+@chapter GNUstep Frequently Asked Questions for Users
+
+Last updated @today{}
+Please send corrections to @email{gnustep-maintainer@@gnu.org}.
+
+@menu
+* GNUstep General Information::  
+* Troubleshooting::             
+@end menu
+
+@node GNUstep General Information, Troubleshooting, Top, Top
+@section GNUstep General Information
+
+@menu
+* What is GNUstep?::            
+* How can I get GNUstep?::      
+* How do you run GNUstep?::     
+* Is there a web site?::        
+@end menu
+
+@node What is GNUstep?, How can I get GNUstep?, GNUstep General Information, GNUstep General Information
+@subsection What is GNUstep?
+
+GNUstep is the Free Software Foundation's effort to implement NeXT
+Software Inc.'s (now Apple Inc.) OpenStep Standard.  The project is not
+finished, so some parts are not as polished as they could be.
+
+@node How can I get GNUstep?, How do you run GNUstep?, What is GNUstep?, GNUstep General Information
+@subsection  How can I get GNUstep?
+
+Get the HOWTO from 
+@url{http://www.gnustep.org/resources/documentation/GNUstep-HOWTO}
+Get the latest release from @url{ftp://ftp.gnustep.org}. If you're
+really adventurous, get the latest snapshot by anonymous ftp from
+@url{ftp://ftp.gnustep.org:/pub/daily-snapshots}
+
+Use anonymous CVS to keep up to date - instructions are in the
+HOWTO.
+
+@node How do you run GNUstep?, Is there a web site?, How can I get GNUstep?, GNUstep General Information
+@subsection  How do you run GNUstep?
+
+ You are presumably under the misapprehension that GNUstep is
+some sort of window manager.
+
+It isn't.
+
+GNUstep is a whole load of things - primarily a set of libraries
+for developing software.
+
+At present, it's those libraries, plus various command-line based
+support tools and service providing daemons.  In the future, it
+will be the libraries, plus the support tools, plus various GUI
+development tools, a GUI desktop/workspace application etc.
+
+At no stage will you ever 'run' GNUstep - you will run applications
+and tools and will make use of it's services (though at some point
+you may well find packages distributed as 'GNUstep' systems in the
+way that you get 'Linux' systems packaged today).
+
+If you want to see a sample GUI application running you need to build
+GNUstep and look at the example applications in the gstep-examples
+package.  Build 'Finger' or 'Ink' and start it with 'openapp Finger.app'
+or 'openapp Ink.app'
+
+To look best - use WindowMaker (the currently preferred GNUstep
+window manager) as your window manager.
+
+@node Is there a web site?,  , How do you run GNUstep?, GNUstep General Information
+@subsection  Is there a web site?
+
+See @url{http://www.gnustep.org/}.
+
+@c ****************************************************************
+@node Troubleshooting,  , GNUstep General Information, Top
+@section Troubleshooting
+
+@menu
+* Problems with Alt key::       
+@end menu
+
+@node Problems with Alt key,  , Troubleshooting, Troubleshooting
+@subsection Problems with Alt key
+
+If you are using WindowMaker, it's possible it is grabing this key and
+using it for itself. To check, open Window Maker's WPrefs and go to the
+Mouse Preferences. Then use another value for the "Mouse grab modifier"
+(bottom right). That will allow you to alt-drag things.
+
+@bye
+\bye

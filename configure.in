@@ -296,29 +296,15 @@ fi
 ])
 AC_MSG_RESULT($gs_cv_objc_libdir)
 
-# FIXME: There is a reference problem here, since gnustep-make
-# needs to be installed before other libraries, but if so, then
-# we will end up not including these dirs. For now, just include them
-# all the time:
-GCC_SO_DIR=NONE
-#if test "$gs_cv_objc_libdir" != "NONE"; then
+# The following are needed to compile the test programs
+if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
+  OBJC_CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
+  OBJC_LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
+fi
 
-  # The following are needed to compile the test programs
-  if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
-    CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
-  else
-    GCC_SO_DIR="$gs_cv_objc_libdir"
-  fi
-  LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
-
-  # And the following to execute them
-  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
-  export LD_LIBRARY_PATH
-
-#fi
-
-AC_SUBST(GCC_SO_DIR)
-
+# And the following to execute them
+LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
+export LD_LIBRARY_PATH
 
 #--------------------------------------------------------------------
 # Miscellaneous headers (only used for compiling which_lib.c)
@@ -347,7 +333,7 @@ case "${target_os}" in
 esac
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c -I$srcdir"
+CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi

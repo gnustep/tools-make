@@ -151,9 +151,6 @@ fi
 unset temp_path
 export PATH
 
-# directory for gcc's 3.x shared libraries
-GCC_SO_DIR=@GCC_SO_DIR@
-export GCC_SO_DIR
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
 if [ "$convert_win_paths" = "yes" ]; then

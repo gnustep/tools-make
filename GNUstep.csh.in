@@ -90,10 +90,6 @@ else if ( { (echo "$PATH" | fgrep -v "$temp_path" >/dev/null) } ) then
 endif
 unset temp_path dir
 
-
-# directory for gcc's 3.x shared libraries
-setenv GCC_SO_DIR @GCC_SO_DIR@
-
 source ${GNUSTEP_MAKEFILES}/ld_lib_path.csh
 
 #

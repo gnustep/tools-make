@@ -1,3 +1,16 @@
+2002-02-03  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Remove setting of GCC_SO_DIR. Remove CPPFLAGS
+	and LDFLAGS with GNUSTEP paths in them since they are already
+	included in default rules. Set OBJC_CPPFLAGS/LDFLAGS for objc 
+	thread test.
+	* GNUstep.csh.in: Remove GCC_SO_DIR
+	* GNUstep.sh.in: Likewise.
+	* ld_lib_path.csh: Likewise.
+	* ld_lib_path.sh: Likewise.
+
+	* Documentation/userfaq.texi: New file.
+	
 Sat Feb  2 10:54:35 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in (GNUSTEP_USER_ROOT): Fixed typo.

@@ -64,9 +64,6 @@ switch ( "${host_os}" )
     else
 	setenv SHLIB_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${SHLIB_PATH}"
     endif
-    if ( "${GCC_SO_DIR}" != "NONE" ) then
-       setenv SHLIB_PATH="${LD_LIBRARY_PATH}:${GCC_SO_DIR}"
-    endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})
 	set additional="${additional}${dir}:"
@@ -83,9 +80,6 @@ switch ( "${host_os}" )
 	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${LD_LIBRARY_PATH}"
     endif
 
-    if ( "${GCC_SO_DIR}" != "NONE" ) then
-       setenv LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${GCC_SO_DIR}"
-    endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})
 	set additional="${additional}${dir}:"
