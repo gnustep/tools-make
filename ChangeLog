@@ -1,3 +1,7 @@
+2001-10-18 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* rules.make: Use -deprecation for java compiles if debug=yes
+
 2001-10-16  Adam Fedor  <fedor@gnu.org>
 
 	* Make paths work correctly on Windows/MinGW
