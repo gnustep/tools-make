@@ -152,9 +152,13 @@ compile correctly:
 Problems?
 ---------
 
-Problems compiling ffcall with MingWs gcc? Use Cygwin gcc:
+[1] Problems compiling ffcall with MingWs gcc? Use Cygwin gcc:
 
 export CC="gcc -mno-cygwin"
+
+[2] It's really important that all the libraries you link with GNUstep be
+shared libraries. Even static libraries based on C (e.g. libtiff) will
+prevent Objective-C modules from being loaded in Objective-C libraries.
 
 Good Sites for Pre-Compiled Binaries
 ------------------------------------
@@ -163,6 +167,7 @@ Many libraries, etc from:
 
 <http://sourceforge.net/project/showfiles.php?group_id=7382>
 <http://penguin.at0.net/~fredo/files/old/> (for libxml2, more?)
+<http://sourceforge.net/project/showfiles.php?group_id=23617> (libtiff)
 
 MingW guile from
 

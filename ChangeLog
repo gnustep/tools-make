@@ -1,3 +1,7 @@
+2002-01-28  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.MinGW: Update
+
 Sun Jan 27 11:39:38 2002  Gregory John Casamento  <greg_casamento@yahoo.com>
 
 	* library.make: A minor correction was necessary.  The definition 

@@ -1,18 +1,5 @@
 \input texinfo   @c -*-texinfo-*-
 @c A FAQ for GNUstep
-@c
-@c This file uses the special commands @url{} and @email{}.  They are
-@c handled by the doc/Makefile.
-
-@iftex
-@global@let@email=@i
-@global@let@url=@samp
-@end iftex
-
-@c @ifinfo
-@c @definfoenclose email, <, >
-@c @definfoenclose url `, '
-@c @end ifinfo
 
 @node Top, GNUstep General Information, (dir), (dir)
 @chapter GNUstep Frequently Asked Questions with Answers
