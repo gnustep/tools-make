@@ -82,9 +82,8 @@ if test "$ac_cv_library_combo" = ""; then
     ac_cv_library_combo=nx-nx-nx-nil
   elif test $host_os = cygwin; then
     ac_cv_library_combo=gnu-gnu-gnu-win32
-    if test "x$program_suffix" = "xNONE"; then
-      program_suffix=.exe
-    fi
+  elif test $host_os = mingw32; then
+    ac_cv_library_combo=gnu-gnu-gnu-win32
   else
     ac_cv_library_combo=gnu-gnu-gnu-xgps
   fi
@@ -397,6 +396,28 @@ fi
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
+AC_MSG_CHECKING(for alternate objc library)
+AC_CACHE_VAL(gs_cv_objc_libdir,
+[dnl
+gs_cv_objc_libdir=NONE
+if test -f $GNUSTEP_SYSTEM_ROOT/Headers/objc/objc.h; then
+  clean_target_os=`clean_os.sh $target_os`
+  clean_target_cpu=`clean_cpu.sh $target_cpu`
+  obj_dir=$clean_target_cpu/$clean_target_os/$ac_cv_library_combo
+  if test -f $GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir/libobjc.a; then
+    gs_cv_objc_libdir=$GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir
+  else
+    gs_cv_objc_libdir=NONE
+  fi
+fi
+])
+AC_MSG_RESULT($gs_cv_objc_libdir)
+
+if test "$gs_cv_objc_libdir" != "NONE"; then
+  CPPFLAGS="$CPPFLAGS -I$GNUSTEP_SYSTEM_ROOT/Headers/"
+  LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
+fi
+
 AC_MSG_CHECKING(whether objc has thread support)
 extra_LIBS=""
 case "${target_os}" in

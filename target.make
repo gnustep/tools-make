@@ -664,6 +664,34 @@ endif
 
 ####################################################
 #
+# Cygwin
+#
+ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
+HAVE_SHARED_LIBS = yes
+BUILD_DLL	 = yes
+WITH_DLL	 = yes
+SHARED_LIBEXT	 = .a
+DLL_LIBEXT	 = .dll
+DLLTOOL		 = dlltool
+DLLWRAP		 = dllwrap
+#SHARED_CFLAGS	 += 
+
+OBJ_MERGE_CMD = \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+HAVE_BUNDLES   = yes
+BUNDLE_LD      = $(CC)
+BUNDLE_CFLAGS  = 
+BUNDLE_LDFLAGS += -nodefaultlibs -Xlinker -r
+endif
+
+# end Cygwin
+#
+####################################################
+
+
+####################################################
+#
 # Solaris
 #
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)

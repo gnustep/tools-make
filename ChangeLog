@@ -1,3 +1,12 @@
+2000-06-21  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Check for alternate objc libraries
+
+	* library.make: Clean the library_name of '-' so it can be
+	used in a define.
+
+	* target.make: Target for cygwin
+
 Wed Jun 21 12:35:43 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	Rewritten and simplified java support.

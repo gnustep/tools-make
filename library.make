@@ -138,7 +138,8 @@ ifneq ($(strip $(DLL_DEF)),)
 DLL_DEF_FLAG = --input-def $(DLL_DEF)
 endif
 
-SHARED_CFLAGS += -DBUILD_$(INTERNAL_library_NAME)_DLL=1
+CLEAN_library_NAME = $(shell echo $(INTERNAL_library_NAME)|tr '-' '_')
+SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
 internal-library-all :: \
 	before-all				\
