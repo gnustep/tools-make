@@ -26,7 +26,9 @@ FRAMEWORK_MAKE_LOADED=yes
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 # The name of the bundle is in the FRAMEWORK_NAME variable.
 # The list of framework resource files are in xxx_RESOURCE_FILES

@@ -28,7 +28,9 @@ TEST_TOOL_NAME:=$(strip $(TEST_TOOL_NAME))
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 # building of test tools calls the tool.make rules
 ifeq ($(INTERNAL_tool_NAME),)

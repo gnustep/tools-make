@@ -34,7 +34,9 @@ OBJC_PROGRAM_NAME:=$(strip $(OBJC_PROGRAM_NAME))
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 ifeq ($(INTERNAL_objc_program_NAME),)
 

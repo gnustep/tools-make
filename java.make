@@ -59,7 +59,9 @@ JAVA_PACKAGE_NAME:=$(strip $(JAVA_PACKAGE_NAME))
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 ifeq ($(INTERNAL_java_package_NAME),)
 

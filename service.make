@@ -27,7 +27,9 @@ SERVICE_MAKE_LOADED=yes
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 #
 # The name of the service is in the SERVICE_NAME variable.

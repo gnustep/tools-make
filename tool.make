@@ -34,7 +34,9 @@ TOOL_NAME:=$(strip $(TOOL_NAME))
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 # This is the directory where the tools get installed. If you don't specify a
 # directory they will get installed in the GNUstep Local Root.

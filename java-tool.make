@@ -34,7 +34,9 @@ JAVA_TOOL_MAKE_LOADED = yes
 
 JAVA_TOOL_NAME:=$(strip $(JAVA_TOOL_NAME))
 
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 ifeq ($(INTERNAL_java_tool_NAME),)
 

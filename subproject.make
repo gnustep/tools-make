@@ -26,7 +26,9 @@ SUBPROJECT_MAKE_LOADED=yes
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 #
 # The names of the subproject is in the SUBPROJECT_NAME variable.

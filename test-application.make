@@ -28,7 +28,9 @@ TEST_APP_NAME:=$(strip $(TEST_APP_NAME))
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 # building of test applications calls the application.make rules
 ifeq ($(INTERNAL_app_NAME),)

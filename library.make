@@ -27,7 +27,9 @@ LIBRARY_MAKE_LOADED=yes
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 #
 # The name of the library is in the LIBRARY_NAME variable.

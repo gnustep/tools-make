@@ -29,7 +29,9 @@ TEST_LIBRARY_NAME:=$(strip $(TEST_LIBRARY_NAME))
 #
 # Include in the common makefile rules
 #
+ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
+endif
 
 #
 # The three main components to perform a test in the framework
