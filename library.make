@@ -225,7 +225,7 @@ internal-library-install:: internal-install-dirs \
 # Depend on creating all the dirs
 internal-install-dirs:: $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
                         $(GNUSTEP_LIBRARIES) \
-                        $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
+                        $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
                         $(DLL_INSTALLATION_DIR) \
                         $(ADDITIONAL_INSTALL_DIRS)
 
@@ -237,8 +237,8 @@ $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR):
 $(GNUSTEP_LIBRARIES):
 	$(MKDIRS) $(GNUSTEP_LIBRARIES)
 
-$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR):
-	$(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)
+$(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
+	$(MKDIRS) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
 
 $(DLL_INSTALLATION_DIR):
 	$(MKDIRS) $(DLL_INSTALLATION_DIR)
@@ -252,7 +252,7 @@ ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	         $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	         $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done;
 endif
@@ -286,7 +286,7 @@ internal-library-uninstall:: internal-uninstall-headers \
 internal-uninstall-headers::
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    rm -f $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done
 
