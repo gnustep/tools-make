@@ -1,3 +1,8 @@
+2001-06-28  Adam Fedor  <fedor@gnu.org>
+
+	* common.make (GNUSTEP_USER_FRAMEWORKS_LIBRARIES_FLAG): Typo
+	fix (was previously overriding GNUSTEP_USER_LIBRARIES_FLAG.
+
 2001-06-22  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/gnustep-howto.texi: Update.
