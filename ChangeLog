@@ -1,3 +1,20 @@
+Fri Feb 22 00:42:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/objc.make (internal-clean): Remove GNUSTEP_OBJ_DIR, not
+	GNUSTEP_OBJ_PREFIX.
+	* Instance/objc.make Minor simplification of rules by removing
+	install-objc_program target.
+	(OBJC_PROGRAM_INSTALLATION_DIR): Don't define if already defined.
+	(internal-objc_program-uninstall): Implemented.
+
+Fri Feb 22 00:38:47 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+	
+	* objc.make: Broken into Master and Instance.
+	* Master/objc.make: New file.
+	* Instance/objc.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added objc.make.
+	(INSTANCE_MAKE_FILES): Added objc.make.
+	
 Thu Feb 21 14:37:37 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Instance/Shared/headers.make: Removed
