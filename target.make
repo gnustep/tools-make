@@ -273,6 +273,34 @@ endif
 
 ####################################################
 #
+# Unixware
+#
+ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
+HAVE_SHARED_LIBS        = yes
+SHARED_LIB_LINK_CMD     = \
+        $(CC) -shared -o $(VERSION_LIBRARY_FILE) $^ ;\
+        mv $(VERSION_LIBRARY_FILE) $(GNUSTEP_OBJ_DIR) ;\
+        (cd $(GNUSTEP_OBJ_DIR); \
+          rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS     += -fpic -fPIC
+SHARED_LIBEXT   = .so
+
+HAVE_BUNDLES    = yes
+BUNDLE_LD       = gcc
+BUNDLE_CFLAGS   += -fPIC
+#BUNDLE_LDFLAGS  += -shared -mimpure-text
+BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+endif
+
+# end Unixware
+#
+####################################################
+
+
+####################################################
+#
 # HP-UX 
 #
 ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
