@@ -1,3 +1,33 @@
+Thu Feb 28 14:35:27 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/rules.make (.PHONY): Declare here as .PHONY
+	before-$(GNUSTEP_INSTANCE)-all and after-$(GNUSTEP_INSTANCE)-all.
+	* Instance/application.make: And not here.
+	* Instance/bundle.make: Idem.
+	* Instance/ctool.make: Idem.
+	* Instance/documentation.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/gswapp.make: Idem.
+	* Instance/gswbundle.make: Idem.
+	* Instance/java-tool.make: Idem.
+	* Instance/java.make: Idem.
+	* Instance/library.make: Idem.
+	* Instance/objc.make: Idem.
+	* Instance/palette.make: Idem.
+	* Instance/rules.make: Idem.
+	* Instance/service.make: Idem.
+	* Instance/subproject.make: Idem.
+	* Instance/test-library.make: Idem.
+	* Instance/tool.make: Idem.
+	
+Thu Feb 28 13:24:08 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* GNUmakefile.in (INSTANCE_SHARED_MAKE_FILES): Added bundle.make.
+	* Instance/Shared/bundle.make: New file.
+	* Instance/bundle.make: Simplified a lot by using
+	Instance/Shared/bundle.make to create bundle dirs and copying
+	resource files there.
+	
 Thu Feb 28 13:03:12 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Instance/rules.make (before-$(GNUSTEP_INSTANCE)-all): Added.
