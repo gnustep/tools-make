@@ -303,65 +303,65 @@ VPATH = .
 # $(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@
 # and similarly all the rules below
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
-	$(CC) $< -c \
+	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)) \
-	      $($<_FILE_FLAGS) -o $@
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
-	$(CC) $< -c \
+	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCFLAGS)) \
-	      $($<_FILE_FLAGS) -o $@
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.C
-	$(CC) $< -c \
+	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
-	      $($<_FILE_FLAGS) -o $@
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cc
-	$(CC) $< -c \
+	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
-	      $($<_FILE_FLAGS) -o $@
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cpp
-	$(CC) $< -c \
+	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
-	      $($<_FILE_FLAGS) -o $@
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cxx
-	$(CC) $< -c \
+	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
-	      $($<_FILE_FLAGS) -o $@
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
-	$(CC) $< -c \
+	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
-	      $($<_FILE_FLAGS) -o $@
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 %.class : %.java
-	$(JAVAC) \
+	$(ECHO_COMPILING)$(JAVAC) \
 	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
-	         $($<_FILE_FLAGS) $<
+	         $($<_FILE_FLAGS) $<$(END_ECHO)
 
 # A jni header file which is created using JAVAH
 # Example of how this rule will be applied: 
 # gnu/gnustep/base/NSObject.h : gnu/gnustep/base/NSObject.java
 #	javah -o gnu/gnustep/base/NSObject.h gnu.gnustep.base.NSObject
 %.h : %.java
-	$(JAVAH) \
+	$(ECHO_JAVAHING)$(JAVAH) \
 	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVAHFLAGS)) \
-	         $($<_FILE_FLAGS) -o $@ $(subst /,.,$*) 
+	         $($<_FILE_FLAGS) -o $@ $(subst /,.,$*)$(END_ECHO)
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
