@@ -13,5 +13,10 @@ version.texi
 *.tp
 *.ky
 *.pg
-*.ps
 *.vrs
+*.gz
+INSTALL
+README
+NEWS
+GNUstep-HOWTO
+internals
