@@ -39,6 +39,8 @@ ifneq ($(messages),yes)
   ECHO_UNINSTALLING = @(echo " Uninstalling $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE)...";
   ECHO_COPYING_INTO_DIR = @(echo " Copying $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) into $(COPY_INTO_DIR)...";
   ECHO_CREATING = @(echo " Creating $@...";
+  ECHO_CHOWNING = @(echo " Fixing ownership of installed file(s)...";
+  ECHO_STRIPPING = @(echo " Stripping object file...";
 
   # ECHO_NOTHING is still better than hardcoding @(, because ECHO_NOTHING
   # prints nothing if messages=no, but it prints all messages when
@@ -92,6 +94,8 @@ else
   ECHO_COPYING_INTO_DIR = 
   ECHO_CREATING =
   ECHO_NOTHING =
+  ECHO_CHOWNING =
+  ECHO_STRIPPING =
 
   ECHO_COPYING_RESOURCES = 
   ECHO_COPYING_LOC_RESOURCES =
