@@ -1,3 +1,7 @@
+Fri Feb 22 18:08:39 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* openapp.in: Quote the arguments when executing the app.
+
 Fri Feb 22 15:49:01 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Instance/documentation.make: Removed doubled installation of
