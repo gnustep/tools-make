@@ -39,6 +39,8 @@ ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
   ifeq ("$(objc_threaded)","")
     TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -ldl -lm
   else
+    INTERNAL_CFLAGS = -D_REENTRANT
+    INTERNAL_OBJCFLAGS = -D_REENTRANT
     TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -ldl -lm
   endif
 endif
@@ -242,18 +244,18 @@ endif
 ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) -shared -Wl,-soname,$(VERSION_MAJOR_LIBRARY_FILE) \
+        $(CC) -shared -Wl,-soname,$(SONAME_LIBRARY_FILE) \
            -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
 	(cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE) $(VERSION_MAJOR_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(VERSION_MAJOR_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_MAJOR_LIBRARY_FILE) $(LIBRARY_FILE); \
+          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_COMMAND = \
 	(cd $(GNUSTEP_LIBRARIES); \
-          rm -f $(LIBRARY_FILE) $(VERSION_MAJOR_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(VERSION_MAJOR_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_MAJOR_LIBRARY_FILE) $(LIBRARY_FILE); \
+          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
 	)
 
 SHARED_CFLAGS   += -fPIC
@@ -336,11 +338,19 @@ endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) -G -o $(VERSION_LIBRARY_FILE) $^ ;\
-        mv $(VERSION_LIBRARY_FILE) $(GNUSTEP_OBJ_DIR) ;\
-        (cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	$(CC) -G -Wl,-h,$(SONAME_LIBRARY_FILE) \
+	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+	(cd $(GNUSTEP_OBJ_DIR); \
+          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+	)
+AFTER_INSTALL_SHARED_LIB_COMMAND = \
+	(cd $(GNUSTEP_LIBRARIES); \
+          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
+          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+	)
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so

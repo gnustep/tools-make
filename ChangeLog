@@ -1,5 +1,16 @@
 Mon Dec 21 11:04:45 1998  Matthias Klose  <doko@cs.tu-berlin.de>
 
+        * common.make: New macros MAJOR_VERSION (0), MINOR_VERSION (5),
+          SUBMINOR_VERSION (0) forming VERSION.
+        * library.make: internal-uninstall-lib: rm SONAME_LIBRARY_FILE.
+          Rename VERSION_MAJOR_LIBRARY_FILE to SONAME_LIBRARY_FILE.
+          New macro SOVERSION.
+        * target.make: define -D_REENTRANT for linux-gnu objc_threaded.
+          For Solaris define AFTER_INSTALL_SHARED_LIB_COMMAND and set
+          shared object name for library.
+
+Mon Dec 21 11:04:45 1998  Matthias Klose  <doko@cs.tu-berlin.de>
+
         * aggregate.make: Exit with original exit status from submakes.
 
 Sat Dec 19 01:26:06 1998  Matthias Klose  <doko@cs.tu-berlin.de>

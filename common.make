@@ -23,7 +23,10 @@
 SHELL = /bin/sh
 
 # Default version
-VERSION = 1.0.0
+MAJOR_VERSION=1
+MINOR_VERSION=0
+SUBMINOR_VERSION=0
+VERSION=${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}
 
 #
 # Scripts to run for parsing canonical names
