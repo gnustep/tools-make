@@ -1,3 +1,7 @@
+2000-11-04  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* configure.in: fixed gtar checking.
+
 2000-10-29  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* framework.make (FRAMEWORK_WEBSERVER_RESOURCE_DIRS),

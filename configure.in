@@ -174,8 +174,11 @@ fi
 
 AC_LN_S
 
-TAR=tar
+TAR=
 AC_CHECK_PROG(TAR, gtar, gtar)
+if test "$TAR" = ""; then
+  TAR=tar
+fi
 
 #--------------------------------------------------------------------
 # Miscellaneous headers (for make programs only)
