@@ -1,3 +1,8 @@
+Fri Feb 22 13:18:43 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/rules.make (SERVICE_INSTALL_DIR): Unused variable
+	removed.
+
 Fri Feb 22 13:12:44 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Instance/ctool.make (internal-ctool-uninstall): Use
