@@ -1,3 +1,9 @@
+Mon Jan 21 23:59:06 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.in (--with-user-root): Improved help message.
+	* configure: Regenerated
+	* executable.template.in: Removed check that EXEEXT is empty.
+	
 Mon Jan 21 23:57:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (GNUSTEP_HEADERS_FND_FLAG): Fixed order of flags.
