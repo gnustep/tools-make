@@ -72,15 +72,31 @@ internal-clean:: $(GSWAPP_NAME:=.clean.gswapp.variables)
 internal-distclean:: $(GSWAPP_NAME:=.distclean.gswapp.variables)
 
 $(GSWAPP_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.gswapp.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
+                 $@.all.gswapp.variables
 
 else
+
+.PHONY: internal-gswapp-all \
+        internal-gswapp-clean \
+        internal-gswapp-distclean \
+        internal-gswapp-install \
+        internal-gswapp-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        gswapp-components \
+        gswapp-webresource-dir \
+        gswapp-webresource-files \
+        gswapp-localized-webresource-files \
+        gswapp-resource-dir \
+        gswapp-resource-files \
+        gswapp-localized-resource-files
 
 # Libraries that go before the WO libraries
 ALL_GSW_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) \
 	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-	$(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) \
+        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
 ALL_GSW_LIBS := \
     $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GSW_LIBS) \
@@ -94,23 +110,8 @@ ALL_GSW_LIBS := \
 GSWAPP_DIR_NAME = $(INTERNAL_gswapp_NAME:=.$(GSWAPP_EXTENSION))
 GSWAPP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(GSWAPP_DIR_NAME)/Resources/$(d))
 GSWAPP_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWAPP_DIR_NAME)/WebServerResources/$(d))
-ifeq ($(strip $(COMPONENTS)),)
-  override COMPONENTS=""
-endif
-ifeq ($(strip $(RESOURCE_FILES)),)
-  override RESOURCE_FILES=""
-endif
-ifeq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
-  override WEBSERVER_RESOURCE_FILES=""
-endif
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
-endif
-ifeq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-  override LOCALIZED_RESOURCE_FILES=""
-endif
-ifeq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
-  override LOCALIZED_WEBSERVER_RESOURCE_FILES=""
 endif
 
 # Support building NeXT applications
@@ -199,91 +200,94 @@ $(GSWAPP_DIR_NAME)/$(GSWAPP_NAME).sh:
 endif
 
 gswapp-components:: $(GSWAPP_DIR_NAME)
-	@(if [ "$(COMPONENTS)" != "" ]; then \
-	  	echo "Linking components into the application wrapper..."; \
+ifneq ($(strip $(COMPONENTS)),)
+	echo "Linking components into the application wrapper..."; \
         cd $(GSWAPP_DIR_NAME)/Resources; \
         for component in $(COMPONENTS); do \
-			if [ -d ../../$$component ]; then \
-		    	$(LN_S) -f ../../$$component ./;\
-			fi; \
+	  if [ -d ../../$$component ]; then \
+	     $(LN_S) -f ../../$$component ./;\
+	  fi; \
         done; \
-	  	echo "Linking localized components into the application wrapper..."; \
+	echo "Linking localized components into the application wrapper..."; \
         for l in $(LANGUAGES); do \
-	    	if [ ! -f $$l.lproj ]; then \
-				$(MKDIRS) $$l.lproj; fi; \
-	    	cd $$l.lproj; \
-	    	for f in $(COMPONENTS); do \
-				if [ -d ../../../$$l.lproj/$$f ]; then \
-					$(LN_S) -f ../../../$$l.lproj/$$f .;\
-				fi;\
+	  if [ ! -f $$l.lproj ]; then \
+	     $(MKDIRS) $$l.lproj; fi; \
+	     cd $$l.lproj; \
+	     for f in $(COMPONENTS); do \
+	       if [ -d ../../../$$l.lproj/$$f ]; then \
+	          $(LN_S) -f ../../../$$l.lproj/$$f .;\
+	        fi;\
             done;\
-	    	cd ..; \
-		done;\
-	fi)
+	cd ..; \
+	done
+endif
 
 gswapp-webresource-dir:: $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
 
 $(GSWAPP_WEBSERVER_RESOURCE_DIRS):
 	@$(MKDIRS) $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
 
-gswapp-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources gswapp-webresource-dir
-	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking webserver resources into the application wrapper..."; \
-          cd $(GSWAPP_DIR_NAME)/WebServerResources; \
-          for ff in $(WEBSERVER_RESOURCE_FILES); do \
-	    $(LN_S) -f ../../WebServerResources/$$ff .;\
-          done; \
-	fi)
+gswapp-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources \
+                           gswapp-webresource-dir
+ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
+	echo "Linking webserver resources into the application wrapper..."; \
+        cd $(GSWAPP_DIR_NAME)/WebServerResources; \
+        for ff in $(WEBSERVER_RESOURCE_FILES); do \
+	  $(LN_S) -f ../../WebServerResources/$$ff .;\
+        done;
+endif
 
 gswapp-localized-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources gswapp-webresource-dir
-	@(if [ "$(LOCALIZED_WEBSERVER_RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking localized web resources into the application wrapper..."; \
-          cd $(GSWAPP_DIR_NAME)/WebServerResources; \
-          for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
-	    cd $$l.lproj; \
-	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-              if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
-                if [ ! -r $$f ]; then \
-		  $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
-		fi;\
-              fi;\
-            done;\
-	    cd ..; \
-          done;\
-	fi)
+ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
+	echo "Linking localized web resources into the application wrapper..."; \
+        cd $(GSWAPP_DIR_NAME)/WebServerResources; \
+        for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
+	  cd $$l.lproj; \
+	  for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
+            if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
+              if [ ! -r $$f ]; then \
+	        $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
+	      fi;\
+	    fi;\
+	  done;\
+	  cd ..; \
+	done
+endif
 
 gswapp-resource-dir:: $(GSWAPP_RESOURCE_DIRS)
 
 $(GSWAPP_RESOURCE_DIRS):
 	@$(MKDIRS) $(GSWAPP_RESOURCE_DIRS)
 
-gswapp-resource-files:: $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist gswapp-resource-dir
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking resources into the application wrapper..."; \
-          cd $(GSWAPP_DIR_NAME)/Resources/; \
-          for ff in $(RESOURCE_FILES); do \
-			echo $$ff; \
-		    $(LN_S) -f ../../$$ff .;\
-          done; \
-	fi)
+gswapp-resource-files:: $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist \
+                        gswapp-resource-dir
+ifneq ($(strip $(RESOURCE_FILES)),)
+	echo "Linking resources into the application wrapper..."; \
+        cd $(GSWAPP_DIR_NAME)/Resources/; \
+        for ff in $(RESOURCE_FILES); do \
+	  echo $$ff; \
+	  $(LN_S) -f ../../$$ff .;\
+        done
+endif
 
-gswapp-localized-resource-files:: $(GSWAPP_DIR_NAME)/Resources gswapp-resource-dir
-	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
-	  echo "Linking localized resources into the application wrapper..."; \
-          cd $(GSWAPP_DIR_NAME)/Resources; \
-          for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
-	    cd $$l.lproj; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-              if [ -f ../../../$$l.lproj/$$f ]; then \
-					echo $$l.lproj/$$ff; \
-		$(LN_S) -f ../../../$$l.lproj/$$f .;\
-              fi;\
-            done;\
-	    cd ..; \
-          done;\
-	fi)
+gswapp-localized-resource-files:: $(GSWAPP_DIR_NAME)/Resources \
+                                  gswapp-resource-dir
+ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
+	echo "Linking localized resources into the application wrapper..."; \
+        cd $(GSWAPP_DIR_NAME)/Resources; \
+        for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
+	  cd $$l.lproj; \
+	  for f in $(LOCALIZED_RESOURCE_FILES); do \
+            if [ -f ../../../$$l.lproj/$$f ]; then \
+	      echo $$l.lproj/$$ff; \
+	      $(LN_S) -f ../../../$$l.lproj/$$f .;\
+	    fi;\
+	  done;\
+	  cd ..; \
+	done
+endif
 
 $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWAPP_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -311,10 +315,10 @@ $(GSWAPP_DIR_NAME)/Resources:
 $(GSWAPP_DIR_NAME)/WebServerResources:
 	@$(MKDIRS) $@
 
-internal-gswapp-install:: internal-gswapp-all
-	@$(MKDIRS) $(GNUSTEP_GSWAPPS)
-	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME)
-	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -)
+internal-gswapp-install::
+	@($(MKDIRS) $(GNUSTEP_GSWAPPS); \
+	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME); \
+	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -))
 
 internal-gswapp-uninstall::
 	(cd $(GNUSTEP_GSWAPPS); rm -rf $(GSWAPP_DIR_NAME))
