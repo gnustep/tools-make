@@ -1,4 +1,4 @@
-Tue Jun  1 15:43:45 BST 2004  Riccardo <rollei@tiscalinet.it>
+Tue Jun  1 15:43:45 BST 2004  Riccardo Mottola <rollei@tiscalinet.it>
 
 	* debugapp.in (appname): Fixed escaping of --args argument to work
 	with an alien grep / os.
