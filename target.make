@@ -889,11 +889,10 @@ endif
 # Mingw32
 #
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+shared = yes
 HAVE_SHARED_LIBS = yes
-ifeq ($(shared), yes)
 BUILD_DLL	 = yes
 WITH_DLL	 = yes
-endif
 SHARED_LIBEXT	 = .a
 DLL_LIBEXT	 = .dll
 DLLTOOL		 = dlltool
@@ -918,11 +917,10 @@ endif
 # Cygwin
 #
 ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
+shared = yes
 HAVE_SHARED_LIBS = yes
-ifeq ($(shared), yes)
 BUILD_DLL	 = yes
 WITH_DLL	 = yes
-endif
 SHARED_LIBEXT	 = .a
 DLL_LIBEXT	 = .dll
 DLLTOOL		 = dlltool
