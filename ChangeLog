@@ -1,3 +1,11 @@
+Wed Nov 21 15:34:15 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make (ADDITIONAL_JAVAFLAGS): Removed unused variable.
+	(INTERNAL_JAVACFLAGS): Defined to be `-g -deprecation' if
+	debug=yes, and `-O' if debug=no.
+	* rules.make (ALL_JAVACFLAGS): Add INTERNAL_JAVACFLAGS.  Do not
+	add -deprecation manually.
+
 2001-11-19  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/REAMDE.NetBSD: Update from jnqt@fbe.freeserve.ne.jp.
