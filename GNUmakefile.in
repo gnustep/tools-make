@@ -213,7 +213,8 @@ uninstall:
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
 		transform_paths.sh vendor.sh \
 		ld_lib_path.csh fixpath.sh \
-	        GNUstep.sh GNUstep.csh ; do \
+	        GNUstep.sh GNUstep.csh GNUstep-reset.sh \
+		relative_path.sh strip_makefiles.sh; do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(tooldir)/openapp; \
@@ -222,10 +223,31 @@ uninstall:
 	for f in $(MAKE_FILES); do \
 	  rm -f $(makedir)/$$f; \
 	done
+	for f in $(MASTER_MAKE_FILES); do \
+	  rm -f $(makedir)/Master/$$f; \
+	done
+	for f in $(INSTANCE_MAKE_FILES); do \
+	  rm -f $(makedir)/Instance/$$f; \
+	done
+	for f in $(INSTANCE_SHARED_MAKE_FILES); do \
+	  rm -f $(makedir)/Instance/Shared/$$f; \
+	done
+	for f in $(INSTANCE_DOC_MAKE_FILES); do \
+	  rm -f $(makedir)/Instance/Documentation/$$f; \
+	done
 	rm -f $(makedir)/executable.template
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
-
+	-for f in $(makedir)/$(GNUSTEP_TARGET_CPU) \
+		$(makedir)/$(GNUSTEP_TARGET_DIR) \
+		$(makedir)/Additional \
+		$(makedir)/Auxiliary \
+		$(makedir)/Master \
+		$(makedir)/Instance/Shared \
+		$(makedir)/Instance/Documentation \
+		$(makedir)/Instance; do \
+	  rmdir $$f; \
+	done
 # To really uninstall all of GNUstep, a 'rm -Rf ${GNUSTEP_ROOT}' should do.
 
 clean:
