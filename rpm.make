@@ -71,7 +71,9 @@ ifeq ($(RPM_MAKE_LOADED),)
 RPM_MAKE_LOADED=yes
 
 # Default variable settings
-DATE=`date +"%Y%m%d"`
+ifeq ($(DATE),)
+  DATE=`date +"%Y%m%d"`
+endif
 ifeq ($(RPM_RELEASE),)
   RPM_RELEASE = 1
 endif
@@ -82,7 +84,7 @@ ifeq ($(PACKAGE_COPYRIGHT),)
   PACKAGE_COPYRIGHT = GPL
 endif
 ifeq ($(RPM_GROUP),)
-  RPM_GROUP = Unknown/Unknown
+  RPM_GROUP = Development/Tools
 endif
 ifeq ($(PACKAGE_SUMMARY),)
   PACKAGE_SUMMARY = $(PACKAGE_NAME) package
@@ -101,12 +103,6 @@ ifeq ($(RPM_VENDOR),)
 endif
 ifeq ($(PACKAGE_URL),)
   PACKAGE_URL = http://www.gnustep.org/
-endif
-ifeq ($(RPM_CONFLICTS),)
-  RPM_CONFLICTS = 
-endif
-ifeq ($(RPM_REQUIRES),)
-  RPM_REQUIRES = 
 endif
 
 #
@@ -345,11 +341,12 @@ filelist-in:
 # Just playing around with these for now
 #
 snapshot-dist:
-	SNAPSHOT_DIR=`basename `pwd``; \
+	PWD=`pwd`; \
+	SNAPSHOT_DIR=`basename $(PWD)`; \
 	cd ..; \
-	mv $SNAPSHOT_DIR $(PACKAGE_NAME)-$(VERSION); \
+	mv $$SNAPSHOT_DIR $(PACKAGE_NAME)-$(VERSION); \
 	tar --gzip -cf $(PACKAGE_NAME)-$(VERSION).tar.gz $(PACKAGE_NAME)-$(VERSION); \
-	mv $(PACKAGE_NAME)-$(VERSION) $SNAPSHOT_DIR
+	mv $(PACKAGE_NAME)-$(VERSION) $$SNAPSHOT_DIR
 
 
 #

@@ -18,8 +18,9 @@ The file @samp{NEWS} has the library's feature history.
 The files @samp{INSTALL} or @samp{GNUstep-HOWTO} (from the core package)
 gives instructions for installing the library.
 
-The file @samp{DESIGN} has information on the design of the Makefile
-system and how to write your own makefiles that work with it.
+Files in the @samp{Documentation} directory have information on the
+design of the Makefile system and how to write your own makefiles that
+work with it.
 
 @section History
 

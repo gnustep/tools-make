@@ -25,11 +25,21 @@ GNUSTEP_PREFIX = @GNUSTEP_PREFIX@
 srcdir = @srcdir@
 datadir = @datadir@
 
+GNUSTEP_MAKEINFO        = makeinfo
+GNUSTEP_MAKEINFO_FLAGS  = -D NO-TEXI2HTML --no-header
 GNUSTEP_MAKETEXT        = makeinfo
 GNUSTEP_MAKETEXT_FLAGS  = -D NO-TEXI2HTML -D TEXT-ONLY --no-header --no-split
+GNUSTEP_TEXI2DVI        = texi2dvi
+GNUSTEP_TEXI2DVI_FLAGS  =
+GNUSTEP_TEXI2HTML       = texi2html
+GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
+GNUSTEP_DVIPS           = dvips
+GNUSTEP_DVIPS_FLAGS     =
+
+include ../Version
 
 # The documents to be generated
-DOCUMENT_NAME = 
+DOCUMENT_NAME = make
 
 # The text documents to be generated
 DOCUMENT_TEXT_NAME = \
@@ -53,7 +63,13 @@ ANNOUNCE_TEXI_FILES =
 ANNOUNCE_TEXT_MAIN = announce.texi
 ANNOUNCE_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
 
+make_TEXI_FILES = \
+make.texi
+
 all: $(DOCUMENT_TEXT_NAME)
+	for file in $(DOCUMENT_NAME); do \
+	  $(MAKE) INTERNAL_doc_NAME=$$file TEXI_FILES=$$file.texi internal-doc-all; \
+	done
 
 INSTALL: install.texi
 	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
@@ -63,6 +79,29 @@ README: readme.texi
 	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
 		-o $@ $^
 
+internal-doc-all:: $(INTERNAL_doc_NAME).info \
+                   $(INTERNAL_doc_NAME).ps \
+                   $(INTERNAL_doc_NAME)_toc.html
+
+$(INTERNAL_doc_NAME).info: $(TEXI_FILES)
+	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
+	  -o $@ $(INTERNAL_doc_NAME).texi
+
+$(INTERNAL_doc_NAME).dvi: $(TEXI_FILES)
+	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(INTERNAL_doc_NAME).texi
+
+$(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
+	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
+	  $(INTERNAL_doc_NAME).dvi -o $@
+
+$(INTERNAL_doc_NAME)_toc.html: $(TEXI_FILES)
+	$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
+	  $(INTERNAL_doc_NAME).texi
 
 regenerate: $(DOCUMENT_TEXT_NAME)
 	mv -f $(TOP_DOC_FILES) ..
+
+version.texi: ../Version
+	rm -f version.texi
+	echo '@set GNUSTEP-MAKE-VERSION' $(GNUSTEP_MAKE_VERSION) \
+	 > version.texi

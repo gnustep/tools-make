@@ -24,9 +24,9 @@ Additional Libraries
 Configuration
 =============
 
-   The GNUstep makefile package uses the Autoconf mechanism for
-configuration; it checks some host capabilties which are used by all
-GNUstep software.  To configure just type:
+   The GNUstep packages uses the Autoconf mechanism for configuration;
+it checks some host capabilties which are used by all GNUstep software.
+To configure just type:
 
      ./configure
 
@@ -41,6 +41,34 @@ following command makes /usr/local/GNUstep the root directory:
    If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
 and you do not specify a root directory when running configure, then
 configure will use /usr/GNUstep as the default root directory.
+
+   To see more options you can use with configure, type
+
+     ./configure --help
+
+   Look particularly at the end of the list that configure gives, as
+these options are specific to GNUstep. For instance, if you installed
+the tiff library in other than a normal directory, you can use the
+`--with-tiff-include' option to tell configure where it is.
+
+   With the various GNUstep libraries you can use the various switches,
+shared and debug. As in "make shared=no debug=yes" (Make sure you use
+the same switches for every package you compile, and also when you
+install).
+
+Alternate Library Setup
+-----------------------
+
+   You can specify compilation of alternate libraries by using the
+-with-library-combo option. You need to have these libraries unpacked
+in a subdirectory under the gstep directory, then you can say
+
+     ./configure --with-library-combo=gnu-gnu-gnu-xdps
+
+   to compile with the xdps library rather than the default xgps
+backend.  IMPORTANT: The xdps backend is still experimental. Do not use
+it unless you are willing to deal with PostScript problems and other
+bugs.
 
 Reading Command-Line Arguments
 ------------------------------
@@ -83,17 +111,32 @@ FFI Library
 detailed manipulation of function (method) calls, which does not work
 on all machine architectures. A more robust and portable solution is to
 use a library that implements a Foreign-Function Interface (FFI), such
-as the ffcall libraries. If you use a non-x86 machine, you should
-seriously consider enabling this option using `--enable-ffcall'.
+as the ffcall libraries.
+
+   Use of the ffcall libraries are now _highly recommended_ for in the
+GNUstep system. The old gcc __builtin_apply method used previously is
+no longer supported and may at some time in the future be removed
+entirely.  Failure to use the ffcall libraries will make GNUstep's
+Distributed Objects system incompatible with other GNUstep systems. The
+ffcall library is required on most non-x86 machines for proper
+operation of invocations and DO.
 
    For this to work, you need to have the ffcall libraries, which you
 can get from <ftp://ftp.santafe.edu/pub/gnu/> or
 <http://clisp.cons.org/~haible/>. You also need to have a special
 version of the Objective-C library (as of gcc 2.95.x the required hooks
 are not in the standard library). You can get this library from
-<ftp://www.gnustep.org/pub/gnustep/contrib/libobjc-hh.tar.gz> or patch
-the standard library with the patch at
-<ftp://www.gnustep.org/pub/gnustep/contrib/libobjc-ffi.patch>.
+<ftp://www.gnustep.org/pub/gnustep/libs/libobjc-20010105.tar.gz> or
+patch the standard library with the patch at
+<ftp://www.gnustep.org/pub/gnustep/libs/patches/libobjc-ffi.patch>.
+
+   Note that the ffcall libraries are GPL, not LGPL, but the copyright
+holder has created a special exception when ffcall is linked with
+GNUstep:
+
+        ffcall is under GNU GPL. As a special exception, if used in GNUstep
+        or in derivate works of GNUstep, the included parts of ffcall are
+        under GNU LGPL.
 
    Make sure you specify this option when configuring gstep-base also.
 

@@ -1,0 +1,38 @@
+NEWS
+****
+
+The currently released version is `0.6.7'.
+
+Changes in version `0.9.0'
+==========================
+
+   ffcall library is highly recommended for use with the GNUstep base
+library. You need to have installed it prior to configuring the Makefile
+package. See the INSTALL file.
+
+   * Support for automatically generating RPM spec files.
+
+   * Build suitable files for MacOS bundles
+
+   * Add option for flattened directory structure.
+
+   * LaText documentation support.
+
+   * Added support for Frameworks
+
+Noteworthy changes in version `0.6.6'
+=====================================
+
+   The GNUstep system libraries are now installed in a separate system
+root directory (default /usr/GNUstep/System) rather than the GNUstep
+root directory (default /usr/GNUstep). You can revert to the old
+behavior using a configure option `--without-system-root'. We also
+recommend removing any previous GNUstep versions before installing the
+new one in order to avoid problems with the system finding the correct
+binary and/or library.
+
+   * Support for Windows compilation (cygwin and mingw) and DLL creation
+     and usage.
+
+   * Java support rewritten and extended.
+

@@ -1,3 +1,10 @@
+2001-01-10  Adam Fedor  <fedor@gnu.org>
+
+	* Version: Prerelease version 0.9.0
+
+	* Documentation/GNUmakfile.in: New targets to make documentation.
+	* Documentation/make.texi: New file
+
 2001-01-08  Adam Fedor  <fedor@gnu.org>
 
 	* GNUmakefile.in (MAKE_FILES): Add rpm.make and template.spec.in

@@ -117,17 +117,23 @@ GNUstep's NSInvocations and Distributed Objects code involves detailed
 manipulation of function (method) calls, which does not work on all
 machine architectures. A more robust and portable solution is to use a
 library that implements a Foreign-Function Interface (FFI), such as the
-ffcall libraries. If you use a non-x86 machine, you should seriously
-consider enabling this option using @code{--enable-ffcall}.
+ffcall libraries. 
+
+Use of the ffcall libraries are now @emph{highly recommended} for in the
+GNUstep system. The old gcc __builtin_apply method used previously is
+no longer supported and may at some time in the future be removed entirely.
+Failure to use the ffcall libraries will make GNUstep's Distributed Objects
+system incompatible with other GNUstep systems. The ffcall library is
+required on most non-x86 machines for proper operation of invocations and DO.
 
 For this to work, you need to have the ffcall libraries, which you can
 get from @url{ftp://ftp.santafe.edu/pub/gnu/} or
 @url{http://clisp.cons.org/~haible/}. You also need to have a special
 version of the Objective-C library (as of gcc 2.95.x the required hooks
 are not in the standard library). You can get this library from
-@url{ftp://www.gnustep.org/pub/gnustep/contrib/libobjc-hh.tar.gz} or
+@url{ftp://www.gnustep.org/pub/gnustep/libs/libobjc-20010105.tar.gz} or
 patch the standard library with the patch at
-@url{ftp://www.gnustep.org/pub/gnustep/contrib/libobjc-ffi.patch}.
+@url{ftp://www.gnustep.org/pub/gnustep/libs/patches/libobjc-ffi.patch}.
 
 Note that the ffcall libraries are GPL, not LGPL, but the copyright
 holder has created a special exception when ffcall is linked with GNUstep:

@@ -1,0 +1,43 @@
+@c -*-texinfo-*-
+@ifclear ANNOUNCE-ONLY
+@chapter NEWS
+@end ifclear
+
+@ifset TEXT-ONLY
+@include version.texi
+@end ifset
+
+The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
+
+@section Changes in version @samp{0.9.0}
+
+ffcall library is highly recommended for use with the GNUstep base
+library. You need to have installed it prior to configuring the Makefile
+package. See the INSTALL file.
+
+@itemize @bullet
+@item Support for automatically generating RPM spec files.
+@item Build suitable files for MacOS bundles
+@item Add option for flattened directory structure.
+@item LaText documentation support.
+@item Added support for Frameworks
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+@section Noteworthy changes in version @samp{0.6.6}
+
+The GNUstep system libraries are now installed in a separate system root
+directory (default /usr/GNUstep/System) rather than the GNUstep
+root directory (default /usr/GNUstep). You can revert to the old behavior
+using a configure option @samp{--without-system-root}. We also recommend
+removing any previous GNUstep versions before installing the new one in order
+to avoid problems with the system finding the correct binary and/or library.
+
+@itemize @bullet
+@item Support for Windows compilation (cygwin and mingw) and DLL creation
+and usage.
+@item Java support rewritten and extended.
+@end itemize
+
+@end ifclear
+@c end ifclear ANNOUNCE-ONLY

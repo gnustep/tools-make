@@ -21,8 +21,9 @@ Information
    The files `INSTALL' or `GNUstep-HOWTO' (from the core package) gives
 instructions for installing the library.
 
-   The file `DESIGN' has information on the design of the Makefile
-system and how to write your own makefiles that work with it.
+   Files in the `Documentation' directory have information on the
+design of the Makefile system and how to write your own makefiles that
+work with it.
 
 History
 =======
