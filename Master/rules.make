@@ -144,8 +144,9 @@ after-clean::
 
 before-distclean::
 
+# BSD systems by default have 'program.core' instead of 'core'
 internal-distclean::
-	rm -f core
+	rm -f core program.core
 
 after-distclean::
 
