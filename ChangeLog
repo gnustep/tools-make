@@ -1,3 +1,9 @@
+Thu Oct  2 14:56:08 1997  Scott Christley  <scottc@stetson.net-community.com>
+
+	* test.make: New file.
+	* rules.make: Add test building and check rules.
+	* Makefile.in: Install test.make.
+
 Wed Oct  1 18:04:25 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* configure.in: Added the --with-library-combo to support specifying a

@@ -99,6 +99,94 @@ endif
 		  BUNDLE_LIBS="$($*_BUNDLE_LIBS)"
 
 #
+# Testing rules
+#
+
+# These are for compiling
+ALL_TEST_LIBRARY_LIBS = $(ADDITIONAL_LIBRARY_LIBS) -lobjc-test \
+   $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
+
+ALL_TEST_BUNDLE_LIBS = $(ADDITIONAL_BUNDLE_LIBS) $(FND_LIBS) $(OBJC_LIBS) \
+   $(TARGET_SYSTEM_LIBS)
+
+ALL_TEST_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) \
+   $(TARGET_SYSTEM_LIBS)
+
+ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
+   $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+
+%.testlib : FORCE
+	@echo Making $*...
+	$(MAKE) --no-print-directory internal-testlib-all \
+		  TEST_LIBRARY_NAME=$* \
+		  OBJC_FILES="$($*_OBJC_FILES)" \
+		  C_FILES="$($*_C_FILES)" \
+		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
+		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_LIBRARY_LIBS="$($*_LIBS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+
+%.testbundle : FORCE
+	@echo Making $*...
+	@$(MAKE) --no-print-directory internal-testbundle-all \
+		  TEST_BUNDLE_NAME=$* \
+		  OBJC_FILES="$($*_OBJC_FILES)" \
+		  C_FILES="$($*_C_FILES)" \
+		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
+		  RESOURCE_FILES="$($*_RESOURCES)" \
+		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
+		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_BUNDLE_LIBS="$($*_LIBS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+
+%.testtool : FORCE
+	@echo Making $*...
+	@$(MAKE) --no-print-directory internal-testtool-all \
+		  TEST_TOOL_NAME=$* \
+		  OBJC_FILES="$($*_OBJC_FILES)" \
+		  C_FILES="$($*_C_FILES)" \
+		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
+		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_TOOL_LIBS="$($*_LIBS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+
+%.testapp : FORCE
+	@echo Making $*...
+	@$(MAKE) --no-print-directory internal-testapp-all \
+		  TEST_APP_NAME=$* \
+		  OBJC_FILES="$($*_OBJC_FILES)" \
+		  C_FILES="$($*_C_FILES)" \
+		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
+		  ADDITIONAL_INCLUDE_DIRS="$($*_INCLUDE_DIRS)" \
+		  ADDITIONAL_GUI_LIBS="$($*_LIBS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
+
+# These are for running the tests
+%.checklib : FORCE
+	@echo Checking $*...
+	$(MAKE) --no-print-directory internal-check-lib \
+		  TEST_LIBRARY_NAME=$* \
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+
+%.checkbundle : FORCE
+	@echo Checking $*...
+	$(MAKE) --no-print-directory internal-check-bundle \
+		  TEST_BUNDLE_NAME=$* \
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+
+%.checktool : FORCE
+	@echo Checking $*...
+	$(MAKE) --no-print-directory internal-check-tool \
+		  TEST_TOOL_NAME=$* \
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+
+%.checkapp : FORCE
+	@echo Checking $*...
+	$(MAKE) --no-print-directory internal-check-app \
+		  TEST_APP_NAME=$* \
+		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
+
+#
 # The list of Objective-C source files to be compiled
 # are in the OBJC_FILES variable.
 #

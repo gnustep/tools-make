@@ -64,7 +64,7 @@ install:
 	done
 	for f in aggregate.make application.make bundle.make clean.make \
 		common.make core.make library.make rules.make target.make \
-		tool.make MediaBook.func; do \
+		tool.make test.make MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
