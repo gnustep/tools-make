@@ -1,3 +1,9 @@
+Sat May 31 09:13:07 2003  Matt Rice <ratmice@yahoo.com>, 
+	                  David Ayers <d.ayers@inode.at>
+
+	* Instance/gswapp.make (internal-gswapp-install_): Fixed typo:
+	removed excess bracket.
+
 Fri May 30 23:28:55 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (OBJC_FLAGS): Added -fno-strict-aliasing.
