@@ -1,4 +1,9 @@
-2000-12-18 Richard Frith-Macdonald <rfm@gnu.org>
+2000-12-18  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make ($(BUNDLE_DIR_NAME)/Resources/Info.plist): Readded
+	rule which had been accidentally deleted.
+
+2000-12-18  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* bundle.make: Add a couple of missing backslashes as reported by
 	enrico@imago.ro
