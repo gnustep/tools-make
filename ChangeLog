@@ -11,6 +11,8 @@ Wed Jan 17 17:19:58 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 	where libraries go. Some packages can specify backend independant
 	libs to go in library_combo/..
 	* configure.in: Check for libobjc in new dir.
+	Avoid referencing problem by just always including the GNUstep
+	Headers and Libraries directory in search paths.
 
 Wed Jan 17 16:49:54 2001  Nicola Pero  <nicola@brainstorm.co.uk>
  
