@@ -1,3 +1,12 @@
+Wed Jan 30 18:13:25 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/rules.make: Code to set generic flags and to build
+	objects from sources moved back into the top-level rules.make.
+	Code which will - not yet but will - depend on the instance
+	retained here instead.
+	* rules.make: Only include Instance/rules.make if GNUSTEP_INSTANCE
+	is non empty.
+	
 Wed Jan 30 17:56:44 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (target): Renamed everywhere to 'instance' to
