@@ -98,10 +98,12 @@ for component in $b; do
 done
 IFS="$tmp_IFS"
 
-# Now partial_match is the substring which matches (/xxx/yyy/) in the
-# example.  Remove it from both a and b.
-a=$(echo $a | sed -e "s#$partial_match##")
-b=$(echo $b | sed -e "s#$partial_match##")
+if [ "$partial_match" != "" ]; then
+  # Now partial_match is the substring which matches (/xxx/yyy/) in the
+  # example.  Remove it from both a and b.
+  a=`echo $a | sed -e "s#$partial_match##"`
+  b=`echo $b | sed -e "s#$partial_match##"`
+fi
 
 # Ok - now ready to build the result
 result=""
