@@ -1,3 +1,8 @@
+Fri Mar  8 12:53:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/palette.make ($(PALETTE_DIR_NAME)/Resources/palette.table): Fixed 
+	typo.
+
 Thu Mar  7 14:06:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (DLL_DEF): Do not pass down to submakes.
