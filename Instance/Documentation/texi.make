@@ -47,6 +47,13 @@ ifeq ($(GNUSTEP_TEXI2DVI_FLAGS),)
   GNUSTEP_TEXI2DVI_FLAGS =
 endif
 
+ifeq ($(GNUSTEP_TEXI2PDF),)
+  GNUSTEP_TEXI2PDF = texi2pdf
+endif
+ifeq ($(GNUSTEP_TEXI2PDF_FLAGS),)
+  GNUSTEP_TEXI2PDF_FLAGS =
+endif
+
 ifeq ($(GNUSTEP_TEXI2HTML),)
   GNUSTEP_TEXI2HTML = texi2html
 endif
@@ -55,7 +62,7 @@ ifeq ($(GNUSTEP_TEXI2HTML_FLAGS),)
 endif
 
 internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
-                    $(GNUSTEP_INSTANCE).ps \
+                    $(GNUSTEP_INSTANCE).pdf \
                     $(GNUSTEP_INSTANCE)_toc.html
 
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
@@ -77,6 +84,10 @@ $(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
 	-$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
 		$(GNUSTEP_INSTANCE).dvi -o $@
 
+$(GNUSTEP_INSTANCE).pdf: $(TEXI_FILES)
+	-$(GNUSTEP_TEXI2PDF) $(GNUSTEP_TEXI2PDF_FLAGS) $(ADDITIONAL_TEXI2PDF_FLAGS) \
+		$(GNUSTEP_INSTANCE).texi -o $@
+
 $(GNUSTEP_INSTANCE)_toc.html: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi
@@ -96,6 +107,7 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).log  \
 	         $(GNUSTEP_INSTANCE).pg   \
 	         $(GNUSTEP_INSTANCE).ps   \
+	         $(GNUSTEP_INSTANCE).pdf  \
 	         $(GNUSTEP_INSTANCE).toc  \
 	         $(GNUSTEP_INSTANCE).tp   \
 	         $(GNUSTEP_INSTANCE).vr   \
@@ -113,6 +125,10 @@ internal-doc-clean::
 # install-info too - to keep up-to-date the dir index in that
 # directory.  
 internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
+	if [ -f $(GNUSTEP_INSTANCE).pdf ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).pdf \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
+	fi
 	if [ -f $(GNUSTEP_INSTANCE).ps ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
@@ -122,6 +138,10 @@ internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
 	fi
 	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
+	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
+	fi
+	if [ -f $(GNUSTEP_INSTANCE).html ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).html \
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
 	fi
 
