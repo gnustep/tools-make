@@ -1,3 +1,29 @@
+Thu Jun 13 14:38:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	First attempt at user-friendly messages and verbosity levels.  Run
+	'make messages=yes' to get full messages.
+	* messages.make: New file.
+	* GNUmakefile.in: Install messages.make.
+	* common.make: Include messages.make.
+	* rules.make: Changed all compilation rules to use new echo
+	variables when compiling
+	* Instance/application.make: Use new echo variables when linking,
+	and in some cases when installing; tidy up echoing.
+	* Instance/bundle.make: Idem.
+	* Instance/ctool.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/gswapp.make: Idem.
+	* Instance/gswbundle.make: Idem.
+	* Instance/library.make: Idem.
+	* Instance/objc.make: Idem.
+	* Instance/palette.make: Idem.
+	* Instance/service.make: Idem.
+	* Instance/subproject.make: Idem.
+	* Instance/tool.make: Idem.
+	* Instance/Shared/bundle.make: Idem.
+	* Instance/Shared/headers.make: Idem.
+	* Instance/Shared/java.make: Idem.
+	
 Thu Jun 13 10:28:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/bundle.make (RESOURCE_FILES): 
