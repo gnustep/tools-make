@@ -44,7 +44,3 @@ endif
 $(JAVA_PACKAGE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.java-package.variables
-
-## Local variables:
-## mode: makefile
-## End:

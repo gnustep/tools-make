@@ -52,7 +52,3 @@ endif
 $(JAVA_TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	         $@.all.java_tool.variables
-
-## Local variables:
-## mode: makefile
-## End:
