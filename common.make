@@ -55,6 +55,19 @@ ifeq ($(GNUSTEP_MAKEFILES),)
   GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 endif
 
+# Sanity check on $PATH - NB: if PATH is wrong, we can't do anything
+# as we can't run the tools (not even using opentool as we can't even
+# run opentool if PATH is wrong)
+ifeq ($(MAKELEVEL),0)
+  ifeq ($(findstring $(GNUSTEP_SYSTEM_ROOT)/Tools,$(PATH)),)
+    $(warning WARNING - Your PATH is not set up correctly !)
+    $(warning You need to run the GNUstep configuration script to fix this)
+# Well - hopefully if we (common.make) has been found, we can trust that 
+# at least $(GNUSTEP_MAKEFILES) is set up correctly :-)
+    $(warning try running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+  endif
+endif
+
 #
 # Determine the compilation host and target
 #
