@@ -46,20 +46,20 @@ ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
 endif
 ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
   ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -ldl -lm
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
   else
     INTERNAL_CFLAGS = -D_REENTRANT
     INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -ldl -lm
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
   endif
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
   ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
   else
     INTERNAL_CFLAGS    = -D_REENTRANT
     INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -ldl -lm
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -lm
   endif
 endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
@@ -75,7 +75,7 @@ ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
 ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
 endif
 ifeq ($(findstring aix4.1, $(GNUSTEP_TARGET_OS)), aix4.1)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
