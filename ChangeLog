@@ -1,3 +1,8 @@
+Wed May  3 18:07:54 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* library.make: Use 'override' flag to force substitution of
+	variable which otherwise was not taking place.
+
 2000-05-01  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* clean_os.sh: removed os version number for FreeBSD-elf
