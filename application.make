@@ -81,6 +81,9 @@ ALL_GUI_LIBS := \
 # rules.make).
 APP_DIR_NAME = $(INTERNAL_app_NAME:=.$(APP_EXTENSION))
 APP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(APP_DIR_NAME)/Resources/$(d))
+ifeq ($(strip $(RESOURCE_FILES)),)
+  override RESOURCE_FILES=none
+endif
 
 # Support building NeXT applications
 ifneq ($(OBJC_COMPILER), NeXT)
@@ -146,7 +149,7 @@ app-resource-dir::
 		$(APP_RESOURCE_DIRS)
 
 app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
+	@(if [ "$(RESOURCE_FILES)" != "none" ]; then \
 	  echo "Copying resources into the application wrapper..."; \
 	  for f in $(RESOURCE_FILES); do \
 	    cp -r $$f $(APP_DIR_NAME)/Resources/$$f; \

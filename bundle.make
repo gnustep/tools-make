@@ -80,6 +80,9 @@ BUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := \
     $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)
 BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resources/$(d))
+ifeq ($(strip $(RESOURCE_FILES)),)
+  override RESOURCE_FILES=none
+endif
 
 build-bundle-dir::
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
@@ -96,7 +99,7 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 		$(ALL_LIB_DIRS) $(ALL_BUNDLE_LIBS)
 
 bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
+	@(if [ "$(RESOURCE_FILES)" != "none" ]; then \
 	  echo "Copying resources into the bundle wrapper..."; \
 	  for f in $(RESOURCE_FILES); do \
 	    cp -r $$f $(BUNDLE_DIR_NAME)/Resources/$$f; \
