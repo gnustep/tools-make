@@ -1,4 +1,4 @@
-Tue Jan 16 16:39:04 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+Tue Jan 16 19:01:21 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	RPM support redesigned and rewritten from scratch.
 	* source-distribution.make: New file.
@@ -18,6 +18,9 @@ Tue Jan 16 16:39:04 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 	* log_install.sh: Removed.
 	* install-complete-dir.sh.in: Removed.
 	* GNUmakefile.in: Updated for added/removed files.
+	* configure.in (AC_OUTPUT): Removed install-complete-dir.sh and
+	log_install_dir.sh.
+	* configure: Regenerated.
 	
 Mon Jan 15 16:45:48 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
