@@ -296,7 +296,7 @@ if [ "$$operation" != "build-headers" ]; then \
           mf=Makefile; \
           echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
         fi; \
-        if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+        if $(MAKE) -C $$f -f $$mf --no-print-directory --no-keep-going $$operation \
              FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
              FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
              FRAMEWORK_OPERATION="$$operation" \
