@@ -1,3 +1,8 @@
+Mon Jan 14 19:45:50 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* executable.template.in (appname): Fixed extracting executable
+	name from Info-gnustep.plist.
+	
 Mon Jan 14 14:33:12 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* which_lib.c: Rewritten.  The main user visible change is that
