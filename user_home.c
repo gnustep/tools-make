@@ -132,39 +132,14 @@ int main (int argc, char** argv)
 	  loginName = buf0;
 	}
 #else
-      loginName = getenv("LOGNAME");
-#if	HAVE_GETPWNAM
-      /*
-       * Check that LOGNAME contained legal name.
-       */
-      if (loginName != 0 && getpwnam(loginName) == 0)
-	{
-	  loginName = 0;
-	}
-#endif	/* HAVE_GETPWNAM */
-#if	HAVE_GETLOGIN
-      /*
-       * Try getlogin() if LOGNAME environmentm variable didn't work.
-       */
-      if (loginName == 0)
-	{
-	  loginName = getlogin();
-	}
-#endif	/* HAVE_GETLOGIN */
 #if HAVE_GETPWUID
-      /*
-       * Try getting the name of the effective user as a last resort.
-       */
-      if (loginName == 0)
-	{
 #if HAVE_GETEUID
-	  int uid = geteuid();
+      int uid = geteuid();
 #else
-	  int uid = getuid();
+      int uid = getuid();
 #endif /* HAVE_GETEUID */
-	  struct passwd *pwent = getpwuid (uid);
-	  loginName = pwent->pw_name;
-	}
+      struct passwd *pwent = getpwuid (uid);
+      loginName = pwent->pw_name;
 #endif /* HAVE_GETPWUID */
 #endif
       if (loginName == 0)

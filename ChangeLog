@@ -1,3 +1,8 @@
+2003-11-3- Richard Frith-Macdonald <rfm@gnu.org>
+
+	* user_home.c: Use name of current user under unix (rather than
+	environment variables etc).
+
 Fri Nov 28 19:07:11 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (ADDITIONAL_OBJC_LIBS): Fixed bug in the
