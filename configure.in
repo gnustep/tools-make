@@ -311,12 +311,12 @@ elif test $MINGW32 = yes; then
   LIBS="-lobjc $LIBS $extra_LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
-	objc_threaded="", objc_threaded="")
+	objc_threaded="", objc_threaded="works")
 else
   LIBS="-lobjc $LIBS -lthread $extra_LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="-lthread $extra_LIBS",
-	objc_threaded="", objc_threaded="works")
+	objc_threaded="", objc_threaded="")
 fi
 LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
