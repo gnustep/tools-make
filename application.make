@@ -3,8 +3,9 @@
 #
 #   Makefile rules to build GNUstep-based applications.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #   Based on the original version by Scott Christley.
 #
@@ -65,9 +66,29 @@ internal-install:: $(APP_NAME:=.install.app.variables)
 
 internal-uninstall:: $(APP_NAME:=.uninstall.app.variables)
 
-internal-clean:: $(APP_NAME:=.clean.app.variables)
+internal-clean:: $(APP_NAME:=.clean.app.subprojects)
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+endif
+ifeq ($(OBJC_COMPILER), NeXT)
+	rm -f *.iconheader
+	for f in *.$(APP_EXTENSION); do \
+	  rm -f $$f/`basename $$f .$(APP_EXTENSION)`; \
+	done
+else
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.$(APP_EXTENSION)
+endif
+endif
 
-internal-distclean:: $(APP_NAME:=.distclean.app.variables)
+internal-distclean:: $(APP_NAME:=.distclean.app.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj *.app *.debug *.profile *.iconheader
 
 $(APP_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
@@ -75,8 +96,6 @@ $(APP_NAME):
 else
 
 .PHONY: internal-app-all \
-        internal-app-clean \
-        internal-app-distclean \
         internal-app-install \
         internal-app-uninstall \
         before-$(TARGET)-all \
@@ -225,9 +244,9 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
-	  @(if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
+	  @ if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
 	    plmerge $@ $(INTERNAL_app_NAME)Info.plist; \
-	  fi)
+	  fi
 
 $(APP_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
@@ -243,34 +262,6 @@ $(GNUSTEP_APPS):
 
 internal-app-uninstall::
 	(cd $(GNUSTEP_APPS); rm -rf $(APP_DIR_NAME))
-
-#
-# Cleaning targets
-#
-internal-app-clean::
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
-endif
-ifeq ($(OBJC_COMPILER), NeXT)
-	rm -f *.iconheader
-	for f in *.$(APP_EXTENSION); do \
-	  rm -f $$f/`basename $$f .$(APP_EXTENSION)`; \
-	done
-else
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf *.$(APP_EXTENSION)
-endif
-endif
-
-
-internal-app-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.app *.debug *.profile *.iconheader
 
 endif
 

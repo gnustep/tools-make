@@ -69,19 +69,37 @@ internal-install:: $(GSWAPP_NAME:=.install.gswapp.variables)
 
 internal-uninstall:: $(GSWAPP_NAME:=.uninstall.gswapp.variables)
 
-internal-clean:: $(GSWAPP_NAME:=.clean.gswapp.variables)
+internal-clean:: $(GSWAPP_NAME:=.clean.gswapp.subprojects)
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+endif
+ifeq ($(OBJC_COMPILER), NeXT)
+	rm -f *.iconheader
+	for f in *.$(GSWAPP_EXTENSION); do \
+	  rm -f $$f/`basename $$f .$(GSWAPP_EXTENSION)`; \
+	done
+else
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.$(GSWAPP_EXTENSION)
+endif
+endif
 
-internal-distclean:: $(GSWAPP_NAME:=.distclean.gswapp.variables)
+internal-distclean:: $(GSWAPP_NAME:=.distclean.gswapp.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj *.gswa *.debug *.profile *.iconheader
 
 $(GSWAPP_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-                 $@.all.gswapp.variables
+	            $@.all.gswapp.variables
 
 else
 
 .PHONY: internal-gswapp-all \
-        internal-gswapp-clean \
-        internal-gswapp-distclean \
         internal-gswapp-install \
         internal-gswapp-uninstall \
         before-$(TARGET)-all \
@@ -324,34 +342,6 @@ internal-gswapp-install::
 
 internal-gswapp-uninstall::
 	(cd $(GNUSTEP_GSWAPPS); rm -rf $(GSWAPP_DIR_NAME))
-
-#
-# Cleaning targets
-#
-internal-gswapp-clean::
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
-endif
-ifeq ($(OBJC_COMPILER), NeXT)
-	rm -f *.iconheader
-	for f in *.$(GSWAPP_EXTENSION); do \
-	  rm -f $$f/`basename $$f .$(GSWAPP_EXTENSION)`; \
-	done
-else
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf *.$(GSWAPP_EXTENSION)
-endif
-endif
-
-
-internal-gswapp-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.gswa *.debug *.profile *.iconheader
 
 endif
 
