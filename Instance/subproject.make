@@ -49,7 +49,7 @@ DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
 endif
 
 internal-subproject-clean::
-	$(ECHO_NOTHING)rm -rf $(DLL_DEF_IMP)$(END_ECHO)
+	$(ECHO_NOTHING)rm -rf $(DLL_DEF_INP)$(END_ECHO)
 
 internal-subproject-all_:: subproject.def
 

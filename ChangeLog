@@ -1,3 +1,8 @@
+Sun Oct 12 18:43:20 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/subproject.make (internal-subproject-clean): Fixed typo
+	- it was removing non-existing DLL_DEF_IMP instead of DLL_DEF_INP.
+
 Sun Oct 12 18:29:49 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/palette.make: Use Instance/Shared/bundle.make to
