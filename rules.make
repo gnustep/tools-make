@@ -21,6 +21,12 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 # prevent multiple inclusions
+
+# NB: This file is internally protected against multiple inclusions.
+# But for perfomance reasons, you might want to check the
+# RULES_MAKE_LOADED variable yourself and include this file only if it
+# is empty.  That allows make to skip reading the file entirely when it 
+# has already been read.
 ifeq ($(RULES_MAKE_LOADED),)
 RULES_MAKE_LOADED=yes
 
