@@ -224,15 +224,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   GNUSTEP_INSTANCE=$$instance \
   INTERNAL_$${type}_NAME=$$instance \
   TARGET=$$instance \
-  COMPONENTS="$($(basename $(basename $*))_COMPONENTS)" \
-  LANGUAGES="$($(basename $(basename $*))_LANGUAGES)" \
-  WEBSERVER_RESOURCE_FILES="$($(basename $(basename $*))_WEBSERVER_RESOURCE_FILES)" \
-  LOCALIZED_WEBSERVER_RESOURCE_FILES="$($(basename $(basename $*))_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
-  WEBSERVER_RESOURCE_DIRS="$($(basename $(basename $*))_WEBSERVER_RESOURCE_DIRS)" \
-  LOCALIZED_RESOURCE_FILES="$($(basename $(basename $*))_LOCALIZED_RESOURCE_FILES)" \
-  RESOURCE_FILES="$($(basename $(basename $*))_RESOURCE_FILES)" \
   MAIN_MODEL_FILE="$($(basename $(basename $*))_MAIN_MODEL_FILE)" \
-  RESOURCE_DIRS="$($(basename $(basename $*))_RESOURCE_DIRS)" \
   BUNDLE_LIBS="$($(basename $(basename $*))_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
   DLL_DEF="$($(basename $(basename $*))_DLL_DEF)" \
   ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
