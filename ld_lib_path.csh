@@ -27,6 +27,7 @@
 # operating system name.
 
 set last_path_part="Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}"
+set tool_path_part="Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
 
 set host_os=${GNUSTEP_HOST_OS}
 
@@ -38,9 +39,9 @@ switch ( "${host_os}" )
 
   case *nextstep4* :
     if ( $?DYLD_LIBRARY_PATH == 0 ) then
-	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}"
+	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
     else
-	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${DYLD_LIBRARY_PATH}"
+	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${DYLD_LIBRARY_PATH}"
     endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})
@@ -55,9 +56,9 @@ switch ( "${host_os}" )
 
   case * :
     if ( $?LD_LIBRARY_PATH == 0 ) then
-	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}"
+	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
     else
-	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${LD_LIBRARY_PATH}"
+	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}:${LD_LIBRARY_PATH}"
     endif
     if ( $?additional_lib_paths == 1) then
       foreach dir (${additional_lib_paths})

@@ -26,6 +26,7 @@
 # operating system name.
 
 last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO
+tool_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
 
 host_os=$GNUSTEP_HOST_OS
 
@@ -41,9 +42,9 @@ case "$host_os" in
 
   *nextstep4*)
     if [ -z "$DYLD_LIBRARY_PATH" ]; then
-	DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part"
+	DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part"
     else
-	DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$DYLD_LIBRARY_PATH"
+	DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part:$DYLD_LIBRARY_PATH"
     fi
     if [ -n "$additional_library_paths" ]; then
       for dir in $additional_library_paths; do
@@ -56,9 +57,9 @@ case "$host_os" in
 
   *)
     if [ -z "$LD_LIBRARY_PATH" ]; then
-	LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part"
+	LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part"
     else
-	LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$LD_LIBRARY_PATH"
+	LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part:$LD_LIBRARY_PATH"
     fi
     if [ -n "$additional_library_paths" ]; then
       for dir in $additional_library_paths; do
