@@ -40,24 +40,47 @@ fi
 operation=$1
 file=$2
 
-# convert to Unix style file name
 if [ "$operation" = "-u" ]; then
-  file=`echo "$file" | tr '\\\' '/'`
+  #
+  # convert to Unix style file name
+  #
   if [ "$GNUSTEP_HOST_OS" = "cygwin" ]; then
-    echo $file | sed 's/^\([a-zA-Z]\):\(.*\)$/\/cygdrive\/\1\2/'
+    #
+    # drive:directory --> /cygdrive/drive/directory
+    #
+    echo $file | \
+    tr '\\' '/' | \
+    sed 's/^\([a-zA-Z]\):\(.*\)$/\/cygdrive\/\1\2/'
   else
-    echo $file | sed 's/^\([a-zA-Z]\):\(.*\)$/\/\1\2/'
+    #
+    # drive:directory --> /drive/directory
+    #
+    echo $file | \
+    tr '\\' '/' | \
+    sed 's/^\([a-zA-Z]\):\(.*\)$/\/\1\2/' | \
+    sed 's/\/\//\//'
   fi
-  exit 0
+else
+  #
+  # convert to Windows style file name
+  #
+  if [ "$GNUSTEP_HOST_OS" = "cygwin" ]; then
+    #
+    # /cygdrive/drive/directory --> drive:directory
+    #
+    echo $file | \
+    sed 's/^\(\/cygdrive\)\?\/\([a-zA-Z]\)\(\/.*\)$/\2:\3/' | \
+    tr '/' '\\'
+  else
+    #
+    # /drive/directory --> drive:directory
+    #
+    echo $file | \
+    sed 's/^\/\([a-zA-Z]\)\(\/.*\)$/\1:\2/' | \
+    tr '/' '\\'
+  fi
 fi
 
-# convert to Windows style file name
-if [ "$GNUSTEP_HOST_OS" = "cygwin" ]; then
-  file=`echo $file | sed 's/^\(\/cygdrive\)\?\/\([a-zA-Z]\)\(\/.*\)$/\2:\3/'`
-else
-  file=`echo $file | sed 's/^\(\/\)\?\/\([a-zA-Z]\)\(\/.*\)$/\2:\3/'`
-fi
-file=`echo "$file" | tr '/' '\\\'`
-echo $file
+exit 0
 
 
