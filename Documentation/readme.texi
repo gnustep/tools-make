@@ -23,6 +23,10 @@ Files in the @samp{Documentation} directory have information on the
 design of the Makefile system and how to write your own makefiles that
 work with it.
 
+Note that releases numbers that have an odd minor version (e.g. 1.3.2)
+are unstable releases. They are not as well tested as stable releases
+(e.g. 1.4.1).
+
 @section License
 
 The GNUstep libraries are covered under the GNU Lesser Public License.

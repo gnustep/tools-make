@@ -1,3 +1,10 @@
+2002-03-13  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/gnustep-howto.texi: Update.
+	* Documentation/install.texi: Likewise.
+	* Documentation/news.texi: Likewise.
+	* Documentation/readme.texi: Likewise.
+
 2002-03-13 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: New content describing native MinGW build

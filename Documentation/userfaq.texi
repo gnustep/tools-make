@@ -345,6 +345,7 @@ Windows).
 @menu
 * Problems compiling::          
 * Problems with Alt key::       
+* Problems with gcc3::          
 @end menu
 
 @node Problems compiling, Problems with Alt key, Troubleshooting, Troubleshooting
@@ -367,13 +368,18 @@ make LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 You could also be having problems with gcc. gcc 2.96 does not work
 (Mandrake 8.1, perhaps others). Use a different compiler, like gcc 3.x.
 
-@node Problems with Alt key,  , Problems compiling, Troubleshooting
+@node Problems with Alt key, Problems with gcc3, Problems compiling, Troubleshooting
 @subsection Problems with Alt key
 
 If you are using WindowMaker, it's possible it is grabing this key and
 using it for itself. To check, open Window Maker's WPrefs and go to the
 Mouse Preferences. Then use another value for the "Mouse grab modifier"
 (bottom right). That will allow you to alt-drag things.
+
+@node Problems with gcc3,  , Problems with Alt key, Troubleshooting
+@subsection Problems with gcc3
+
+Don't forget you need to update binutils and libc also.
 
 @bye
 \bye

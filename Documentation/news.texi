@@ -9,6 +9,25 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.3.0}
+
+The package has gone through an extensive reorganization to break up
+each sub-make into two separate components. This allows for much
+simplified code and lots of code sharing between components. As a side
+effect, it also increased the speed of the code by at least a factor of
+2.
+
+@itemize @bullet
+@item Force shared=yes for cygwin and mingw
+@item Bundles copy resources from subprojects. 
+@item Better resource management. Resources handled accross all project types.
+@item Simplified and fixed user root location between make and base libraries.
+@item Changed Apps directory to Applications
+@item Fixes for MacOSX, MingW
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.2.1}
 
 @itemize @bullet
@@ -22,8 +41,6 @@ build it.  Only works with newer compilers.
 @item implemented a strip=yes option.
 @item various bug fixes and minor improvements.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.2.0}
 

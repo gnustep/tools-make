@@ -130,37 +130,6 @@ you exec the GNUstep.sh script, just set the GNUSTEP_HOST:
   export GNUSTEP_HOST=i586-pc-mingw32
   . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 
-
-Native MinGW 
-------------
-
-(Information provided by Craig Miskell)
-
-So far, this configuration only works when compiling the Makefile package
-(gnustep-make). It should, in the future work on the libraries. First, you
-need to get a port of sh (probably zsh) for Windows 
-(ftp://ftp.blarg.net/users/amol/).
-
-1. Make sure $HOST_CC or $CC is set to MinGW's gcc. The default seems to be 
-wrong.
-
-2. Now configure. 
-
-  ./configure 
-
-(Make sure the drive is specified correctly in the path).
-
-3. Then make and install
-
-  make
-  make install
-
-4. Now source the GNUstep.sh file so the rest of the packages will
-compile correctly:
-
-  . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
-
-
 Problems?
 ---------
 

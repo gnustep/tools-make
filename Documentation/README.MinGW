@@ -241,7 +241,7 @@ Go into the core/base directory, and type
 make install
 
 This should automatically run the configure script for you, build the
-base library and some tools, and install the while lot (along with some
+base library and some tools, and install the whole lot (along with some
 system resources).
 
 
