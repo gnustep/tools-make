@@ -69,6 +69,9 @@ X_LIBS=""
 if test -n "$x_libraries"; then
     X_LIBS="-L$x_libraries"
 fi
+if test -r $x_includes/X11/DPS; then
+  X_INCLUDE="$X_INCLUDE -I$x_includes/X11"
+fi
 
 AC_SUBST(X_INCLUDE)
 AC_SUBST(X_LIBS)
