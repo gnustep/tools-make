@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   rules.make
 #
 #   Makefile rules for the Master invocation.
@@ -237,9 +237,18 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
         mf=Makefile; \
         echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
       fi; \
+      if [ "$(OWNING_PROJECT_HEADER_DIR)" = "" ]; then \
+        if [ "$$type" = "framework" ]; then \
+          framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
+          if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
+          owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
+       else owning_project_header_dir=""; \
+       fi; \
+      else \
+        owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR)"; \
+      fi; \
       if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
-          FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-          FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+          OWNING_PROJECT_HEADER_DIR="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
         ; then \
         :; \
@@ -262,6 +271,14 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 # want to run make clean in subprojects but do not need a full Instance
 # invocation.  In that case, they can depend on %.subprojects only.
 #
+# NB: The OWNING_PROJECT_HEADER_DIR hack in this rule is sort of
+# horrible, because it pollutes this general rule with code specific
+# to the framework implementation (eg, where the framework headers are
+# located).  Still, it's the least evil we could think of at the
+# moment :-) The framework code is now completely confined into
+# framework.make makefiles, except for this little hack in here.  It
+# would be nice to remove this hack without loosing functionality (or
+# polluting other general-purpose makefiles).
 %.subprojects:
 	@ \
 instance=$(basename $(basename $*)); \
@@ -276,9 +293,18 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
         mf=Makefile; \
         echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
       fi; \
+      if [ "$(OWNING_PROJECT_HEADER_DIR)" = "" ]; then \
+        if [ "$$type" = "framework" ]; then \
+          framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
+          if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
+          owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
+       else owning_project_header_dir=""; \
+       fi; \
+      else \
+        owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR)"; \
+      fi; \
       if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
-          FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-          FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+          OWNING_PROJECT_HEADER_DIR="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
         ; then \
         :; \
