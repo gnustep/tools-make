@@ -80,6 +80,16 @@ $(JAVA_PACKAGE_NAME):
 
 else
 
+.PHONY: internal-java_package-all \
+        internal-java_package-clean \
+        internal-java_package-distclean \
+        internal-java_package-install \
+        internal-java_package-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        install-java_package \
+        internal-install-java-dirs
+
 # This is the directory where the java classses get
 # installed. Normally this is /usr/GNUstep/Local/Libraries/Java/
 ifeq ($(JAVA_INSTALLATION_DIR),)
@@ -90,19 +100,22 @@ endif
 # Targets
 #
 internal-java_package-all:: before-$(TARGET)-all \
-        $(JAVA_OBJ_FILES) $(JAVA_JNI_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-        after-$(TARGET)-all
+                            $(JAVA_OBJ_FILES) \
+                            $(JAVA_JNI_OBJ_FILES) \
+                            $(SUBPROJECT_OBJ_FILES) \
+                            after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-internal-java_package-install:: internal-java_package-all install-java_package
+internal-java_package-install:: install-java_package
 
 internal-install-java-dirs:: $(JAVA_INSTALLATION_DIR)
-	if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
-	  $(MKDIRS) $(addprefix $(JAVA_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES))); \
-	fi
+ifneq ($(JAVA_OBJ_FILES),)
+	$(MKDIRS) \
+           $(addprefix $(JAVA_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES)))
+endif
 
 $(JAVA_INSTALLATION_DIR):
 	$(MKDIRS) $(JAVA_INSTALLATION_DIR)
@@ -127,28 +140,28 @@ UNESCAPED_ADD_JAVA_OBJ_FILES = $(wildcard $(JAVA_OBJ_FILES:.class=[$$]*.class))
 ADDITIONAL_JAVA_OBJ_FILES = $(subst $$,\$$,$(UNESCAPED_ADD_JAVA_OBJ_FILES))
 
 install-java_package:: internal-install-java-dirs
-	if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
-	  for file in $(JAVA_OBJ_FILES) __done; do \
-	    if [ $$file != __done ]; then \
-	      $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
-	    fi; \
-	  done; \
-	fi; \
-	if [ "$(ADDITIONAL_JAVA_OBJ_FILES)" != "" ]; then \
-	  for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
-	    if [ $$file != __done ]; then \
-	      $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
-	    fi;    \
-	  done;    \
-	fi
+ifneq ($(JAVA_OBJ_FILES),)
+	for file in $(JAVA_OBJ_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
+	  fi; \
+	done
+endif
+ifneq ($(ADDITIONAL_JAVA_OBJ_FILES),)
+	for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $$file $(JAVA_INSTALLATION_DIR)/$$file ; \
+	  fi;    \
+	done
+endif
 
 #
 # Cleaning targets
 #
 internal-java_package-clean::
-	rm -f $(JAVA_OBJ_FILES)
-	rm -f $(ADDITIONAL_JAVA_OBJ_FILES)
-	rm -f $(JAVA_JNI_OBJ_FILES)
+	rm -f $(JAVA_OBJ_FILES) \
+	      $(ADDITIONAL_JAVA_OBJ_FILES) \
+	      $(JAVA_JNI_OBJ_FILES)
 
 internal-java_package-distclean::
 
