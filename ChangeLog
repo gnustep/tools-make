@@ -1,3 +1,8 @@
+Wed Mar 14 18:49:53 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in, GNUstep.csh.in: Removed references to the old
+	variable GNUSTEP_BUILD_ROOT.
+
 Wed Mar 14 11:48:10 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* application.make: Optimization: rearranged targets as not to run
