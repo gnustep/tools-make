@@ -122,11 +122,13 @@ ifeq ($(BUNDLE_INSTALL_DIR),)
   BUNDLE_INSTALL_DIR := $(GNUSTEP_BUNDLES)
 endif
 
-build-bundle-dir::
-	@$(MKDIRS) \
-		$(BUNDLE_DIR_NAME)/Resources \
-		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-		$(BUNDLE_RESOURCE_DIRS)
+build-bundle-dir:: $(BUNDLE_DIR_NAME)/Resources $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(BUNDLE_RESOURCE_DIRS)
+
+$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+	$(MKDIRS) $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+
+$(BUNDLE_RESOURCE_DIRS):
+	$(MKDIRS) $(BUNDLE_RESOURCE_DIRS)
 
 build-bundle:: $(BUNDLE_FILE) bundle-resource-files localized-bundle-resource-files
 
@@ -178,7 +180,7 @@ endif
 # MacOSX bundles
 
 $(BUNDLE_DIR_NAME)/Contents :
-	@$(MKDIRS) $@
+	$(MKDIRS) $@
 
 $(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents \
 	$(BUNDLE_DIR_NAME)/Resources
@@ -246,8 +248,11 @@ internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 	$(TAR) cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
 
-$(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::
-	@$(MKDIRS) $@
+$(BUNDLE_DIR_NAME)/Resources:
+	$(MKDIRS) $@
+
+$(BUNDLE_INSTALL_DIR):
+	$(MKDIRS) $@
 
 internal-bundle-uninstall::
 	if [ "$(HEADER_FILES)" != "" ]; then \
