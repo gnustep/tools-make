@@ -2,7 +2,7 @@
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Darwin 6.x/PowerPC, , (DIR)
-@node Machine Specific
+@node Machine Specific, Darwin 6.x/PowerPC, , (DIR)
 @chapter Machines
 @end ifclear
 
