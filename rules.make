@@ -317,6 +317,7 @@ endif # end of FRAMEWORK code
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(call type,$*)-$(call operation,$*) \
 	    INTERNAL_$(call type,$*)_NAME=$(call target,$*) \
+	    TARGET=$(call target,$*) \
 	    _SUBPROJECTS="$($(call target,$*)_SUBPROJECTS)" \
 	    OBJC_FILES="$($(call target,$*)_OBJC_FILES)" \
 	    C_FILES="$($(call target,$*)_C_FILES)" \
