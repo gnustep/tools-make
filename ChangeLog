@@ -1,3 +1,21 @@
+Wed Feb 20 13:06:17 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/rules.make (%.tools): Use --no-print-directory in the
+	recursive make invocation.
+
+Wed Feb 20 12:49:55 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/ctool.make: Simplified by removing the install-ctool
+	rule.
+
+Wed Feb 20 12:45:32 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* ctool.make: Broken into Master and Instance.
+	* Master/ctool.make: New file.
+	* Instance/ctool.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added ctool.make.
+	(INSTANCE_MAKE_FILES): Added ctool.make.
+	
 Wed Feb 20 11:37:55 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/rules.make (internal-distclean): Remove core files.
