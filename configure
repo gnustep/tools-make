@@ -2553,38 +2553,17 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 # Check if we are using Apple cc
 # FIXME: It would be nicer if there was a better way to test this.
 #--------------------------------------------------------------------
-save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -faltivec"
 echo "$as_me:$LINENO: checking if we are using the apple compiler" >&5
 echo $ECHO_N "checking if we are using the apple compiler... $ECHO_C" >&6
-
-cat >conftest.$ac_ext <<_ACEOF
-int main() {return 0;}
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  cc_type=apple
+gcc_cc_type=`${CC} --print-libgcc-file-name | grep -c "gcc-lib"`
+if test "$gcc_cc_type" = 1; then
+  cc_type=gnu
 else
-  echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-cc_type=gnu
+  cc_type=apple
 fi
-rm -f conftest.$ac_objext conftest.$ac_ext
 echo "$as_me:$LINENO: result: $cc_type" >&5
 echo "${ECHO_T}$cc_type" >&6
 
-CFLAGS="$save_CFLAGS"
 
 #--------------------------------------------------------------------
 # specific target_os options
@@ -3363,6 +3342,7 @@ export LD_LIBRARY_PATH
 #--------------------------------------------------------------------
 # Miscellaneous headers (only used for compiling which_lib.c and user_home.c)
 #--------------------------------------------------------------------
+
 
 
 

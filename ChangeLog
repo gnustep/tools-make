@@ -1,3 +1,8 @@
+2004-07-09  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Improve compiler type test.
+	* Documentation/gnustep.init: Fix template parsing rules.
+
 2004-07-04  Adrian Robert  <arobert@cogsci.ucsd.edu>
 
 	* Instance/Documentation/texi.make:

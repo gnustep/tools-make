@@ -64,13 +64,15 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 # Check if we are using Apple cc
 # FIXME: It would be nicer if there was a better way to test this.
 #--------------------------------------------------------------------
-save_CFLAGS="$CFLAGS"
-CFLAGS="$CFLAGS -faltivec"
 AC_MSG_CHECKING([if we are using the apple compiler])
-AC_COMPILE_IFELSE([[int main() {return 0;}]], cc_type=apple, cc_type=gnu)
+gcc_cc_type=`${CC} --print-libgcc-file-name | grep -c "gcc-lib"`
+if test "$gcc_cc_type" = 1; then
+  cc_type=gnu
+else
+  cc_type=apple
+fi
 AC_MSG_RESULT($cc_type)
 AC_SUBST(cc_type)
-CFLAGS="$save_CFLAGS"
 
 #--------------------------------------------------------------------
 # specific target_os options

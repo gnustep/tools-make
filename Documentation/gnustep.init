@@ -2,8 +2,8 @@ if (defined($ENV{'GNUSTEP_WEB_ROOT'})) {
   open(TMPL,"<$ENV{'GNUSTEP_WEB_ROOT'}/secondary.html.template");
   $tmpl=join("",<TMPL>);
   close(TMPL);
-  ($T2H_EXTRA_HEAD,$T2H_PRE_BODY_OPEN,$T2H_PRE_BODY_CLOSE) =
-    ($tmpl=~/<\/title>(.*)<\/head>.*<body>(.*<div id="main">).*(<\/div>.*)<\/body>/sm);
+  ($T2H_EXTRA_HEAD,$T2H_AFTER_BODY_OPEN,$T2H_PRE_BODY_CLOSE) =
+    ($tmpl=~/<\/title>(.*)<\/head>.*<body>(.*<div id="main">).*(<\/div><\/div>.*)<\/body>/sm);
   }
 else {
   # this is added inside <HEAD></HEAD> after <TITLE> and some META NAME stuff
@@ -21,4 +21,3 @@ sub nothing
 $T2H_print_About = \&nothing;
 $T2H_SECTION_NAVIGATION = 0;
 $T2H_print_navigation = \&nothing;
-
