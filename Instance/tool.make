@@ -30,20 +30,25 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-# This is the directory where the tools get installed. If you don't specify a
-# directory they will get installed in the GNUstep Local Root.
-ifeq ($(TOOL_INSTALLATION_DIR),)
-  TOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
-endif
-
 .PHONY: internal-tool-all_       \
         internal-tool-install_   \
         internal-tool-uninstall_ \
         internal-install-dirs    \
         install-tool 
 
+# Deprecation warning - will be remove on Dec 2002
+ifneq ($(TOOL_INSTALLATION_DIR),)
+  $(warning TOOL_INSTALLATION_DIR is deprecated! Please use TOOL_INSTALL_DIR instead)
+endif
+
+# This is the directory where the tools get installed. If you don't specify a
+# directory they will get installed in the GNUstep Local Root.
+ifeq ($(TOOL_INSTALL_DIR),)
+  TOOL_INSTALL_DIR = $(GNUSTEP_TOOLS)
+endif
+
 ifneq ($(FRAMEWORK_NAME),)
-  TOOL_INSTALLATION_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(GNUSTEP_TARGET_LDIR)
+  TOOL_INSTALL_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 endif
 
 ALL_TOOL_LIBS =								\
@@ -83,19 +88,21 @@ internal-tool-install_:: internal-install-dirs install-tool
 endif
 
 # Depend on having created the installation dir
-internal-install-dirs:: $(TOOL_INSTALLATION_DIR)
+internal-install-dirs:: $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 
 # This rule runs $(MKDIRS) only if needed
-$(TOOL_INSTALLATION_DIR):
+$(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKINSTALLDIRS) $@
 
 install-tool::
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \
 		$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-		$(TOOL_INSTALLATION_DIR)$(END_ECHO)
+		$(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
+ifneq ($(NULL_INSTALL),yes)
 internal-tool-uninstall_::
-	rm -f $(TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+	rm -f $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+endif
 
 #
 # Cleaning targets
