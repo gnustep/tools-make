@@ -198,9 +198,9 @@ endif
 
 endif # BUILD_DLL
 
-ifeq ($(WITH_DLL),yes)
+ifeq ($(BUILD_DLL),yes)
   FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
-endif # WITH_DLL
+endif # BUILD_DLL
 
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
@@ -420,7 +420,7 @@ endif
 
 
 
-ifeq ($(WITH_DLL),yes)
+ifeq ($(BUILD_DLL),yes)
 
 $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
@@ -439,7 +439,7 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	  $(LN_S) $(LIB_LINK_FILE) $(GNUSTEP_INSTANCE)) \
 	$(END_ECHO)
 
-endif # WITH_DLL
+endif # BUILD_DLL
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
@@ -471,7 +471,7 @@ $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR)/
 	   plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
 	 fi$(END_ECHO)
 
-ifneq ($(WITH_DLL),yes)
+ifneq ($(BUILD_DLL),yes)
 
 ifeq ($(FOUNDATION_LIB),gnu)
 

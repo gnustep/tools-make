@@ -56,7 +56,7 @@ endif
 #	shared_libext=$(SHARED_LIBEXT))
 # On windows, this is unfortunately required.
 
-ifeq ($(WITH_DLL), yes)
+ifeq ($(BUILD_DLL), yes)
   LINK_PALETTE_AGAINST_ALL_LIBS = yes
 endif
 
@@ -80,7 +80,7 @@ ALL_PALETTE_LIBS =						\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-ifeq ($(WITH_DLL),yes)
+ifeq ($(BUILD_DLL),yes)
 PALETTE_OBJ_EXT = $(DLL_LIBEXT)
 endif
 
@@ -113,7 +113,7 @@ internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
 $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
-ifeq ($(WITH_DLL),yes)
+ifeq ($(BUILD_DLL),yes)
 
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
@@ -122,7 +122,7 @@ $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 		$(ALL_LDFLAGS) \
 		$(ALL_PALETTE_LIBS)$(END_ECHO)
 
-else # WITH_DLL
+else # BUILD_DLL
 
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
@@ -130,7 +130,7 @@ $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	  $(OBJ_FILES_TO_LINK) \
 	  $(ALL_PALETTE_LIBS)$(END_ECHO)
 
-endif # WITH_DLL
+endif # BUILD_DLL
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
