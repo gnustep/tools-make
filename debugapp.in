@@ -216,7 +216,7 @@ else
   # Old versions of gdb don't support --args, so we only use it if
   # 'gdb --help' lists it.
   args=
-  if (gdb --help | grep -e --args > /dev/null); then
+  if (gdb --help | grep -e '\-\-args' > /dev/null); then
     args="--args"
   fi
 
