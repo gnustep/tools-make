@@ -62,7 +62,8 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 #--------------------------------------------------------------------
 INCLUDE_FLAGS=
 case "$target_os" in
-  freebsd*)	INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/local/include"
+  freebsd* | openbsd* )	
+	        INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/local/include"
 		LIBS="$LIBS -L/usr/local/lib";;
   netbsd*)	INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/pkg/include"
 		LIBS="$LIBS -R/usr/pkg/lib -L/usr/pkg/lib";;

@@ -1,5 +1,9 @@
 2003-07-05  Adam Fedor  <fedor@gnu.org>
 
+	* configure.ac: Add flags for openbsd like freebsd.
+
+2003-07-05  Adam Fedor  <fedor@gnu.org>
+
 	* Documentation/GNUmakefile.in (after-install): gzip man files
 	* Documentation/GNUstep.7: Unziped.
 
