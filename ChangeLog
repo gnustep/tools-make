@@ -1,3 +1,13 @@
+Thu Sep 13 23:20:36 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Do not install rootinstall.sh and
+	rootuninstall.sh.
+	(uninstall): Do not uninstall rootinstall.sh and rootuninstall.sh
+	
+Thu Sep 13 23:17:52 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* test-tool.make (internal-check): Removed.
+
 2001-09-12  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (TARGET_SYSTEM_LIBS): Remove -lgcc from
