@@ -84,10 +84,8 @@ internal-distclean::
 	rm -rf Resources
 endif
 
+internal-strings:: $(SUBPROJECT_NAME:=.strings.subproject.variables)
+
 $(SUBPROJECT_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.subproject.variables
-
-## Local variables:
-## mode: makefile
-## End:

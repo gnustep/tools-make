@@ -46,10 +46,8 @@ internal-clean:: $(CTOOLS_WITH_SUBPROJECTS:=.clean.ctool.subprojects)
 internal-distclean:: $(CTOOLS_WITH_SUBPROJECTS:=.distclean.ctool.subprojects)
 endif
 
+internal-strings:: $(CTOOL_NAME:=.strings.ctool.variables)
+
 $(CTOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	         $@.all.ctool.variables
-
-## Local variables:
-## mode: makefile
-## End:

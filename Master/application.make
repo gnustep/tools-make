@@ -74,10 +74,7 @@ internal-clean:: $(APPS_WITH_SUBPROJECTS:=.clean.app.subprojects)
 internal-distclean:: $(APPS_WITH_SUBPROJECTS:=.distclean.app.subprojects)
 endif
 
+internal-strings:: $(APP_NAME:=.strings.app.variables)
+
 $(APP_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
-
-
-## Local variables:
-## mode: makefile
-## End:

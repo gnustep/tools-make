@@ -42,6 +42,8 @@ internal-clean:: $(TEST_TOOLS_WITH_SUBPROJECTS:=.clean.test-tool.subprojects)
 internal-distclean:: $(TEST_TOOLS_WITH_SUBPROJECTS:=.distclean.test-tool.subprojects)
 endif
 
+internal-strings:: $(TEST_TOOL_NAME:=.strings.test-tool.variables)
+
 $(TEST_TOOL_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	         $@.all.test-tool.variables
@@ -51,7 +53,3 @@ internal-install::
 
 internal-uninstall::
 	@ echo Skipping uninstallation of test tools...
-
-## Local variables:
-## mode: makefile
-## End:

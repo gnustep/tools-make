@@ -50,10 +50,8 @@ internal-clean:: $(CLIBRARIES_WITH_SUBPROJECTS:=.clean.clibrary.subprojects)
 internal-distclean:: $(CLIBRARIES_WITH_SUBPROJECTS:=.distclean.clibrary.subprojects)
 endif
 
+internal-strings:: $(CLIBRARY_NAME:=.strings.clibrary.variables)
+
 $(CLIBRARY_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.clibrary.variables
-
-## Local variables:
-## mode: makefile
-## End:

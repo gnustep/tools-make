@@ -56,10 +56,8 @@ internal-distclean::
 	rm -rf Resources
 endif
 
+internal-strings:: $(TOOL_NAME:=.strings.tool.variables)
+
 $(TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	         $@.all.tool.variables
-
-## Local variables:
-## mode: makefile
-## End:

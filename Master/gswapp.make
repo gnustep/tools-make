@@ -71,10 +71,8 @@ internal-clean:: $(GSWAPPS_WITH_SUBPROJECTS:=.clean.gswapp.subprojects)
 internal-distclean:: $(GSWAPPS_WITH_SUBPROJECTS:=.distclean.gswapp.subprojects)
 endif
 
+internal-strings:: $(GSWAPP_NAME:=.strings.gswapp.variables)
+
 $(GSWAPP_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	            $@.all.gswapp.variables
-
-## Local variables:
-## mode: makefile
-## End:

@@ -52,10 +52,8 @@ endif
 
 internal-check:: $(TEST_LIBRARY_NAME:=.check.test-lib.variables)
 
+internal-strings:: $(TEST_LIBRARY_NAME:=.strings.test-lib.variables)
+
 $(TEST_LIBRARY_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.test-lib.variables
-
-## Local variables:
-## mode: makefile
-## End:

@@ -52,11 +52,8 @@ internal-clean:: $(GSWBUNDLES_WITH_SUBPROJECTS:=.clean.gswbundle.subprojects)
 internal-distclean:: $(GSWBUNDLES_WITH_SUBPROJECTS:=.distclean.gswbundle.subprojects)
 endif
 
+internal-all:: $(GSWBUNDLE_NAME:=.all.gswbundle.variables)
+
 $(GSWBUNDLE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.gswbundle.variables
-
-
-## Local variables:
-## mode: makefile
-## End:

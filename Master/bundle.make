@@ -52,11 +52,8 @@ internal-clean:: $(BUNDLES_WITH_SUBPROJECTS:=.clean.bundle.subprojects)
 internal-distclean:: $(BUNDLES_WITH_SUBPROJECTS:=.distclean.bundle.subprojects)
 endif
 
+internal-strings:: $(BUNDLE_NAME:=.strings.bundle.variables)
+
 $(BUNDLE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.bundle.variables
-
-
-## Local variables:
-## mode: makefile
-## End:

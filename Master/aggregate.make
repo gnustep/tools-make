@@ -56,7 +56,7 @@ SUBPROJECTS := $(strip $(SUBPROJECTS))
 
 ifneq ($(SUBPROJECTS),)
 internal-all internal-install internal-uninstall internal-clean \
-  internal-distclean internal-check::
+  internal-distclean internal-check internal-strings::
 	@ operation=$(subst internal-,,$@); \
 	for f in $(SUBPROJECTS); do \
 	  echo "Making $$operation in $$f..."; \

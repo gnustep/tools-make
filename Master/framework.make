@@ -38,10 +38,8 @@ internal-clean:: $(FRAMEWORK_NAME:=.clean.framework.variables)
 
 internal-distclean:: $(FRAMEWORK_NAME:=.distclean.framework.variables)
 
+internal-strings:: $(FRAMEWORK_NAME:=.strings.framework.variables)
+
 $(FRAMEWORK_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 		$@.all.framework.variables
-
-## Local variables:
-## mode: makefile
-## End:

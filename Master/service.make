@@ -59,10 +59,8 @@ internal-clean:: $(SERVICES_WITH_SUBPROJECTS:=.clean.service.subprojects)
 internal-distclean:: $(SERVICES_WITH_SUBPROJECTS:=.distclean.service.subprojects)
 endif
 
+internal-strings:: $(SERVICE_NAME:=.strings.service.variables)
+
 $(SERVICE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	            $@.all.service.variables
-
-## Local variables:
-## mode: makefile
-## End:

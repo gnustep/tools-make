@@ -47,10 +47,8 @@ ifneq ($(PALETTES_WITH_SUBPROJECTS),)
 internal-clean:: $(PALETTES_WITH_SUBPROJECTS:=.clean.palette.subprojects)
 endif
 
+internal-strings:: $(PALETTE_NAME:=.strings.palette.variables)
+
 $(PALETTE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.palette.variables
-
-## Local variables:
-## mode: makefile
-## End:

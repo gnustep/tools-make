@@ -58,6 +58,8 @@ internal-clean:: $(TEST_APPS_WITH_SUBPROJECTS:=.clean.test-app.subprojects)
 internal-distclean:: $(TEST_APPS_WITH_SUBPROJECTS:=.distclean.test-app.subprojects)
 endif
 
+internal-strings:: $(TEST_APP_NAME:=.strings.test-app.variables)
+
 $(TEST_APP_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	         $@.all.test-app.variables
@@ -67,7 +69,3 @@ internal-install::
 
 internal-uninstall::
 	@ echo Skipping uninstallation of test apps...
-
-## Local variables:
-## mode: makefile
-## End:
