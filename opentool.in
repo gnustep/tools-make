@@ -32,8 +32,8 @@ if [ -z "$GNUSTEP_PATHLIST" ]; then
 fi
 
 if [ -z "$1" ]; then
-  echo usage: `basename $0` [--library-combo=...] tool [arguments...]
-  echo `basename $0` --help for help
+  echo usage: `basename "$0"` [--library-combo=...] tool [arguments...]
+  echo `basename "$0"` --help for help
   exit 1
 fi
 
@@ -44,17 +44,17 @@ fi
 # traps the parameters
 while true
 do 
-  case $1 in
+  case "$1" in
     --library-combo=*)
         tmp_root="$GNUSTEP_SYSTEM_ROOT"
         . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep-reset.sh"
-        LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
+        LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
         . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep.sh"
         echo "Switched to library combo $LIBRARY_COMBO"
         shift
         ;;
     --help)
-      echo usage: `basename $0` [--library-combo=...] tool [arguments...]
+      echo usage: `basename "$0"` [--library-combo=...] tool [arguments...]
       echo
       echo tool is the complete or relative name of the tool executable
       echo without any extension, like defaults
@@ -67,21 +67,21 @@ do
   esac
 done
 
-tool=$1;
+tool="$1";
 shift;
 
 if [ -n "$EXEEXT" ]; then
-  tool=$tool$EXEEXT
+  tool="$tool$EXEEXT"
 fi
 
-case $tool in
+case "$tool" in
   /*)	# An absolute path.
-  	full_toolname=$tool;;
+  	full_toolname="$tool";;
   */*)	# A relative path
-	tool_dir=`dirname $tool`; 
-	tool_dir=`(cd $tool_dir; pwd)`; 
-	tool_name=`basename $tool`;
-	full_toolname=${tool_dir}/${tool_name};;
+	tool_dir="`dirname \"$tool\"`"; 
+	tool_dir="`(cd \"$tool_dir\"; pwd)`"; 
+	tool_name="`basename \"$tool\"`";
+	full_toolname="${tool_dir}/${tool_name}";;
   *)	# A path that should be searched into GNUstep tool paths
 
         # Search for a local tool
@@ -100,7 +100,7 @@ case $tool in
         for dir in . obj Tools Tools/obj; do
           # echo "$dir/$tool";
           if [ -x "$dir/$tool" ]; then
-            full_toolname=$dir/$tool
+            full_toolname="$dir/$tool"
             # echo "Found: $dir/$tool";
             break;
           fi
@@ -122,29 +122,29 @@ case $tool in
 	  # (For flattened systems we skip the first two options.
 	  #
           if [ -n "$GNUSTEP_PATHLIST" ]; then
-            SPATH=$GNUSTEP_PATHLIST
+            SPATH="$GNUSTEP_PATHLIST"
 	    IFS=:
 	    for dir in $SPATH; do
-	      tmpdir=$dir/Tools
+	      tmpdir="$dir/Tools"
 	      if [ -z "$GNUSTEP_FLATTENED" ]; then
-	        tmpgnudir=$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-                tmplibdir=$tmpgnudir/$LIBRARY_COMBO
+	        tmpgnudir="$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+                tmplibdir="$tmpgnudir/$LIBRARY_COMBO"
                 # echo "$tmplibdir/$tool";
 		if [ -x "$tmplibdir/$tool" ]; then
                   # echo "Found: $tmplibdir/$tool";
-		  full_toolname=$tmplibdir/$tool
+		  full_toolname="$tmplibdir/$tool"
 		  break;
 		fi
 		if [ -x "$tmpgnudir/$tool" ]; then
                   # echo "Found: $tmpgnudir/$tool";
-		  full_toolname=$tmpgnudir/$tool
+		  full_toolname="$tmpgnudir/$tool"
 		  break;
 		fi
 	      fi
               # echo "$tmpdir/$tool";
 	      if [ -x "$tmpdir/$tool" ]; then
                 # echo "Found: $tmpdir/$tool";
-		full_toolname=$tmpdir/$tool
+		full_toolname="$tmpdir/$tool"
 		break;
 	      fi
 	    done

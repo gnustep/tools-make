@@ -36,16 +36,16 @@ if [ -z "$LIBRARY_COMBO" ]; then
 fi
 
 # Process arguments
-app=$0
+app="$0"
 show_available_platforms=0
 show_relative_path=0
 show_full_path=0
 while true
 do 
-  case $1 in
+  case "$1" in
 
     --script-help)
-	echo usage: `basename $0` [--library-combo=...]
+	echo usage: `basename "$0"` [--library-combo=...]
 	echo "       [--available-platforms][--full-executable-path]"
 	echo "       [--relative-executable-path] [arguments...]"
 	echo
@@ -61,7 +61,7 @@ do
     --library-combo=*)
         tmp_root="$GNUSTEP_SYSTEM_ROOT"
         . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep-reset.sh"
-	LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
+	LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
         . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep.sh"
 	shift
 	;;
@@ -94,28 +94,28 @@ fi
 export LIBRARY_COMBO
 
 # Find path to ourself
-dir=`dirname $app`
+dir="`dirname \"$app\"`"
 
-case $app in
+case "$app" in
   /*)	# An absolute path.
-	full_appname=$dir;;
+	full_appname="$dir";;
   */*)	# A relative path
-	full_appname=`(cd $dir; pwd)`;;
+	full_appname="`(cd \"$dir\"; pwd)`";;
   *)	# A path that needs to be searched
-	if [ -n $GNUSTEP_PATHLIST ]; then
-	    SPATH=$GNUSTEP_PATHLIST
+	if [ -n "$GNUSTEP_PATHLIST" ]; then
+	    SPATH="$GNUSTEP_PATHLIST"
 	else
-	    SPATH=$PATH
+	    SPATH="$PATH"
 	fi
-	SPATH=.:$SPATH
+	SPATH=".:$SPATH"
 	IFS=:
 	for path_dir in $SPATH; do
-	  if [ -d $path_dir/$dir ]; then
-	    full_appname=`(cd $path_dir/$dir; pwd)`
+	  if [ -d "$path_dir/$dir" ]; then
+	    full_appname="`(cd \"$path_dir/$dir\"; pwd)`"
 	    break;
 	  fi
-	  if [ -d $path_dir/Applications/$dir ]; then
-	    full_appname=`(cd $path_dir/Applications/$dir; pwd)`
+	  if [ -d "$path_dir/Applications/$dir" ]; then
+	    full_appname="`(cd \"$path_dir/Applications/$dir\"; pwd)`"
 	    break;
 	  fi
 	done;;
@@ -148,13 +148,13 @@ if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
                 "$full_appname/Resources/Info-gnustep.plist"`
 fi
 if [ -z "$appname" ]; then
-  appname=`basename $app`
+  appname="`basename \"$app\"`"
 fi
 
 appname="$appname$EXEEXT"
 
 if [ $show_available_platforms = 1 ]; then
-  cd $full_appname
+  cd "$full_appname"
   #available_platforms
   exit 0
 fi
@@ -186,18 +186,18 @@ fi
 #
 # Make sure the executable is there
 #
-if [ -x $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname ]; then
-  relative_path=$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
-elif [ -x $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$appname ]; then
-  relative_path=$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$appname
-elif [ -x $full_appname/$GNUSTEP_HOST_CPU/$appname ]; then
-  relative_path=$GNUSTEP_HOST_CPU/$appname
-elif [ $full_appname/$appname != $0 -a -x $full_appname/$appname ]; then
-  relative_path=$appname
+if [ -x "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname" ]; then
+  relative_path="$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname"
+elif [ -x "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$appname" ]; then
+  relative_path="$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$appname"
+elif [ -x "$full_appname/$GNUSTEP_HOST_CPU/$appname" ]; then
+  relative_path="$GNUSTEP_HOST_CPU/$appname"
+elif [ "$full_appname/$appname" != "$0" -a -x "$full_appname/$appname" ]; then
+  relative_path="$appname"
 else
   # Search for a binary for this machine but a different library combo
-  if [ -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
-    tmp_path=`pwd`
+  if [ -d "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" ]; then
+    tmp_path="`pwd`"
     cd "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS";
     found=no
     for lib_combo in * ; do
@@ -224,26 +224,26 @@ else
 fi
 
 if [ $show_relative_path = 1 ]; then
-  echo $relative_path
+  echo "$relative_path"
   exit 0
 fi
 if [ $show_full_path = 1 ]; then
-  echo $full_appname/$relative_path
+  echo "$full_appname/$relative_path"
   exit 0
 fi
 
-if [ "$LIBRARY_COMBO" = nx-nx-nx -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+if [ "$LIBRARY_COMBO" = nx-nx-nx -a "$GNUSTEP_HOST_OS" = nextstep4 ]; then
   if [ -f "$full_appname/library_paths.openapp" ]; then
     additional_library_paths="`cat $full_appname/library_paths.openapp`"
   fi
 else
   if [ -f "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp" ]; then
-    additional_library_paths="`cat $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp`"
+    additional_library_paths="`cat \"$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp\"`"
   fi
 fi
 
 # Load up LD_LIBRARY_PATH
-. $GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/ld_lib_path.sh
+. "$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/ld_lib_path.sh"
 
-exec $full_appname/$relative_path "$@"
+exec "$full_appname/$relative_path" "$@"
 

@@ -25,8 +25,8 @@
 # unmodified to the application.
 
 if [ -z "$1" ]; then
-  echo usage: `basename $0` [--library-combo=...] application [arguments...]
-  echo `basename $0` --help for help
+  echo usage: `basename "$0"` [--library-combo=...] application [arguments...]
+  echo `basename "$0"` --help for help
   exit 1
 fi
 
@@ -40,9 +40,9 @@ if [ -z "$GDB" ]; then
   GDB=gdb
 fi
 
-case $1 in
+case "$1" in
   --help)
-    echo usage: `basename $0` [--library-combo=...] application [arguments...]
+    echo usage: `basename "$0"` [--library-combo=...] application [arguments...]
     echo
     echo [--library-combo=...] specifies a GNUstep backend to use.
     echo It overrides the default LIBRARY_COMBO environment variable.
@@ -57,16 +57,16 @@ case $1 in
     exit 0
     ;;
   --library-combo=*)
-    LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
+    LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
     if [ -z "$2" ]; then
-      echo usage: `basename $0` [--library-combo=...] application [arguments...]
-      echo `basename $0` --help for help
+      echo usage: `basename "$0"` [--library-combo=...] application [arguments...]
+      echo `basename "$0"` --help for help
       exit 1
     fi
-    app=$2; shift; shift
+    app="$2"; shift; shift
     ;;
   *)
-    app=$1; shift;;
+    app="$1"; shift;;
 esac
 
 if [ "$LIBRARY_COMBO" = nx ]; then
@@ -80,28 +80,28 @@ elif [ "$LIBRARY_COMBO" = apple ]; then
 fi
 
 # Remove leading slashes at the end of the application name
-app=`echo $app | sed 's%/*$%%'`
+app="`echo \"$app\" | sed 's%/*$%%'`"
 
-case $app in
+case "$app" in
   /*)	# An absolute path.
-	full_appname=$app;;
+	full_appname="$app";;
   */*)	# A relative path
-	full_appname=`(cd $app; pwd)`;;
+	full_appname="`(cd \"$app\"; pwd)`";;
   *)	# A path that should be searched into the GNUstep paths
-	if [ -n $GNUSTEP_PATHLIST ]; then
-	    SPATH=$GNUSTEP_PATHLIST
+	if [ -n "$GNUSTEP_PATHLIST" ]; then
+	    SPATH="$GNUSTEP_PATHLIST"
 	else
-	    SPATH=$PATH
+	    SPATH="$PATH"
 	fi
-	SPATH=.:$SPATH
+	SPATH=".:$SPATH"
 	IFS=:
 	for dir in $SPATH; do
-	  if [ -d $dir/Applications/$app ]; then
-	    full_appname=`(cd $dir/Applications/$app; pwd)`
+	  if [ -d "$dir/Applications/$app" ]; then
+	    full_appname="`(cd \"$dir/Applications/$app\"; pwd)`"
 	    break;
 	  fi
-	  if [ -d $dir/$app ]; then
-	    full_appname=`(cd $dir/$app; pwd)`
+	  if [ -d "$dir/$app" ]; then
+	    full_appname="`(cd \"$dir/$app\"; pwd)`"
 	    break;
 	  fi
 	done;;
@@ -147,40 +147,40 @@ if [ -z "$GNUSTEP_FLATTENED" ]; then
 	   export GNUSTEP_HOST_OS
 	fi
 	
-	if [ "$LIBRARY_COMBO" = nx-nx-nx -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+	if [ "$LIBRARY_COMBO" = nx-nx-nx -a "$GNUSTEP_HOST_OS" = nextstep4 ]; then
 	  if [ -f "$full_appname/library_paths.openapp" ]; then
-	    additional_library_paths="`cat $full_appname/library_paths.openapp`"
+	    additional_library_paths="`cat \"$full_appname/library_paths.openapp\"`"
 	  fi
 	fi
 else
   if [ -f "$full_appname/library_paths.openapp" ]; then
-    additional_library_paths="`cat $full_appname/library_paths.openapp`"
+    additional_library_paths="`cat \"$full_appname/library_paths.openapp\"`"
   fi
 fi
 
-appname=`echo $app | sed 's/\.[a-z]*$//'`
-appname=`basename $appname`
+appname="`echo \"$app\" | sed 's/\.[a-z]*$//'`"
+appname="`basename \"$appname\"`"
 appname="$appname$EXEEXT"
-. $GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/ld_lib_path.sh
+. "$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/ld_lib_path.sh"
 
 
-if [ "$LIBRARY_COMBO" = nx-nx-nx -a $GNUSTEP_HOST_OS = nextstep4 ]; then
-  if [ ! -f $full_appname/$appname ]; then
+if [ "$LIBRARY_COMBO" = nx-nx-nx -a "$GNUSTEP_HOST_OS" = nextstep4 ]; then
+  if [ ! -f "$full_appname/$appname" ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
   fi
 
   # Support for GDBbundle under OPENSTEP
-  $GDB -connect TextEdit $gdbargs $full_appname/$appname $corefile
+  "$GDB" -connect TextEdit $gdbargs "$full_appname/$appname" "$corefile"
 
 else
   # Determine if the application has a binary for this operating system
-  if [ -z "$GNUSTEP_FLATTENED" -a ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
+  if [ -z "$GNUSTEP_FLATTENED" -a ! -d "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
   fi
 
-  if [ -z "$GNUSTEP_FLATTENED" -a ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO ]; then
+  if [ -z "$GNUSTEP_FLATTENED" -a ! -d "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO" ]; then
     echo "$full_appname application does not have a binary for this combination of libraries: $LIBRARY_COMBO."
     exit 1
   fi
@@ -193,9 +193,9 @@ fi
 
 #Support for GDBbundle under OPENSTEP
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
-    $GDB -connect TextEdit $file_appname $corefile
+    "$GDB" -connect TextEdit "$file_appname" "$corefile"
   else
-    $GDB $file_appname $corefile
+    "$GDB" "$file_appname" "$corefile"
   fi
 
 fi

@@ -1,3 +1,10 @@
+Wed May 14 16:15:16 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* debugapp.in: Added more strict quoting of paths everywhere.
+	* executable.template.in: Idem.
+	* openapp.in: Idem.
+	* opentool.in: Idem.
+
 Fri May  9 12:22:24 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Documentation/install.texi (Flat Structure): Fixed typo.

@@ -66,7 +66,7 @@ case "$1" in
 esac
 
 # Remove leading slashes at the end of the application name
-app=`echo $app | sed 's%/*$%%'`
+app="`echo \"$app\" | sed 's%/*$%%'`"
 
 # Now build the list of directory names we look for.  If the user has
 # given us a full application directory name (for example, Gorm.app)
@@ -97,7 +97,7 @@ case "$app" in
       for appdir in $app_list; do
 	#echo "$appdir"
          if [ -d "$appdir" ]; then
-	   full_appname=`(cd $appdir; pwd)`
+	   full_appname="`(cd \"$appdir\"; pwd)`"
 	   break
 	 fi
       done;;
@@ -119,7 +119,7 @@ case "$app" in
 	    if [ "$d" != "$dir/Applications/"'*'"/$appdir" ]; then
 	      #echo "  $d"
 	      if [ -d "$d" ]; then
-	        full_appname=`(cd "$d"; pwd)`
+	        full_appname="`(cd \"$d\"; pwd)`"
 	        break 3
 	      fi
 	    fi
@@ -127,13 +127,13 @@ case "$app" in
 	  # Now, in $dir/Applications/$appdir
 	  #echo "$dir/Applications/$appdir"
 	  if [ -d "$dir/Applications/$appdir" ]; then
-	    full_appname=`(cd $dir/Applications/$appdir; pwd)`
+	    full_appname="`(cd \"$dir/Applications/$appdir\"; pwd)`"
 	    break 2
 	  fi
 	  # Finally, in $dir/$appdir
 	  #echo "$dir/$appdir"
 	  if [ -d "$dir/$appdir" ]; then
-	    full_appname=`(cd $dir/$appdir; pwd)`
+	    full_appname="`(cd \"$dir/$appdir\"; pwd)`"
 	    break 2
 	  fi
 	done
@@ -152,9 +152,9 @@ fi
 
 # get base app name
 if [ -z "$appname" ]; then
-  appname=`echo $app | sed 's/\.[a-z]*$//'`
+  appname="`echo \"$app\" | sed 's/\.[a-z]*$//'`"
 fi
-appname=`basename $appname`
+appname="`basename \"$appname\"`"
 
 if [ -n "$GNUSTEP_FLATTENED" ]; then
 
@@ -180,4 +180,3 @@ if [ -n "$only_find" ]; then
 fi
 
 exec "$full_appname/$appname" "$@"
-
