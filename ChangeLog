@@ -1,3 +1,10 @@
+1999-02-22  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Substitute version info.
+	* config.make.in: Include version info.
+	* brain.make: Define GNUSTEP if using GNUstep libraries. 
+	* common.make (AUXILARY_CPPFLAGS): Include GNUSTEP and Version defines.
+	
 Sun Feb 21 15:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
 	* target.make (Solaris::AFTER_INSTALL_SHARED_LIB_COMMAND): 

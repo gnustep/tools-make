@@ -125,6 +125,7 @@ ifeq ($(FOUNDATION_LIB),gnu)
 FND_LDFLAGS =
 FND_LIBS = -lgnustep-base
 FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
+GNUSTEP_DEFINE = -DGNUSTEP
 endif
 
 ifeq ($(FOUNDATION_LIB),fd)
@@ -165,6 +166,7 @@ ifeq ($(GUI_LIB),gnu)
 GUI_LDFLAGS =
 GUI_LIBS = -lgnustep-gui -lgmodel -lgnustep-gui
 GUI_DEFINE = -DGNU_GUI_LIBRARY=1
+GNUSTEP_DEFINE = -DGNUSTEP
 endif
 
 ifeq ($(GUI_LIB),nx)
