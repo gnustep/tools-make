@@ -117,10 +117,12 @@ else
   EC = @
 endif
 
-install: all
+move_obsolete:
 	$(EC)(echo "Moving paths from old heirarchy: "; \
-	 $(srcdir)/move_obsolete_paths.sh $(GNUSTEP_SYSTEM_ROOT) $(GNUSTEP_LOCAL_ROOT) $(GNUSTEP_USER_ROOT); \
-	 echo "Creating system domain: $(GNUSTEP_SYSTEM_ROOT)"; \
+	 $(srcdir)/move_obsolete_paths.sh $(GNUSTEP_SYSTEM_ROOT) $(GNUSTEP_LOCAL_ROOT) $(GNUSTEP_USER_ROOT))
+
+install: all @GNUSTEP_MOVE_OBSOLETE@
+	$(EC)(echo "Creating system domain: $(GNUSTEP_SYSTEM_ROOT)"; \
 	 $(srcdir)/create_domain_dir_tree.sh $(GNUSTEP_SYSTEM_ROOT); \
 	 echo "Creating local and network dirs: $(GNUSTEP_LOCAL_ROOT), $(GNUSTEP_NETWORK_ROOT)"; \
 	$(srcdir)/mkinstalldirs $(GNUSTEP_LOCAL_ROOT) $(GNUSTEP_NETWORK_ROOT);\

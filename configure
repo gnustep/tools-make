@@ -841,6 +841,7 @@ Optional Features:
 
 --disable-backend-bundle	Compile gui backend as a library
 --enable-import     Don't warn about usage of deprecated import directive
+--disable-move-obsolete		Disable moving obsolete dir structure
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -4181,6 +4182,29 @@ CPPFLAGS="$user_CPPFLAGS"
 
 
 #--------------------------------------------------------------------
+# Disable updating the obsolete directory structure
+#--------------------------------------------------------------------
+gs_move_obsolete=yes
+# Check whether --enable-move-obsolete or --disable-move-obsolete was given.
+if test "${enable_move_obsolete+set}" = set; then
+  enableval="$enable_move_obsolete"
+  gs_move_obsolete=$enableval
+else
+  gs_move_obsolete=yes
+fi;
+
+if test "$gs_move_obsolete" = "yes"; then
+  GNUSTEP_MOVE_OBSOLETE=move_obsolete;
+  { echo "$as_me:$LINENO: *** WARNING any old GNUstep directories installed before gnustep-make 1.7.0 will be moved to the new locations unless disabled in configure" >&5
+echo "$as_me: *** WARNING any old GNUstep directories installed before gnustep-make 1.7.0 will be moved to the new locations unless disabled in configure" >&6;}
+else
+  GNUSTEP_MOVE_OBSOLETE=
+  { echo "$as_me:$LINENO: Old GNUstep directories will not be moved" >&5
+echo "$as_me: Old GNUstep directories will not be moved" >&6;}
+fi
+
+
+#--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------
 echo "$as_me:$LINENO: checking for the version of gnustep-make we are compiling" >&5
@@ -4839,6 +4863,7 @@ s,@ac_cv_objc_threaded@,$ac_cv_objc_threaded,;t t
 s,@AUTO_DEPENDENCIES@,$AUTO_DEPENDENCIES,;t t
 s,@OBJC_NO_IMPORT_FLAGS@,$OBJC_NO_IMPORT_FLAGS,;t t
 s,@INCLUDE_FLAGS@,$INCLUDE_FLAGS,;t t
+s,@GNUSTEP_MOVE_OBSOLETE@,$GNUSTEP_MOVE_OBSOLETE,;t t
 s,@GNUSTEP_MAKE_VERSION@,$GNUSTEP_MAKE_VERSION,;t t
 s,@GNUSTEP_MAKE_MAJOR_VERSION@,$GNUSTEP_MAKE_MAJOR_VERSION,;t t
 s,@GNUSTEP_MAKE_MINOR_VERSION@,$GNUSTEP_MAKE_MINOR_VERSION,;t t

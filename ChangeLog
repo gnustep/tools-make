@@ -1,3 +1,8 @@
+2003-06-16  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Add option to disable moving obsolete dirs
+	* GNUmakefile.in: Update for change.
+
 2003-06-15  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (openbsd/SHARED_LIB_LINK_CMD): Use gcc to link
