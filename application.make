@@ -28,7 +28,7 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 # The name of the application is in the APP_NAME variable.
 #
 
-APP_DIR_NAME := $(foreach app,$(APP_NAME),$(app).app)
+APP_DIR_NAME := $(APP_NAME:=.app)
 APP_FILE = $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(APP_NAME)$(EXEEXT)
 APP_STAMPS := $(foreach app,$(APP_NAME),stamp-app-$(app))
 APP_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(APP_STAMPS))

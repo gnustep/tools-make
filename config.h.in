@@ -1,0 +1,32 @@
+#ifndef __config_h__
+#define __config_h__
+
+/* Define if you have the <sys/param.h> header file */
+#undef HAVE_SYS_PARAM_H
+
+/* Define if you have the <sys/file.h> header file */
+#undef HAVE_SYS_FILE_H
+
+/* Define if you have the <string.h> header file.  */
+#undef HAVE_STRING_H
+
+/* Define if you have the <stdlib.h> header file.  */
+#define HAVE_STDLIB_H 1
+
+/* Define if you have the <sys/types.h> header file. */
+#undef HAVE_SYS_TYPES_H
+
+/* Define if you have the <sys/stat.h> header file */
+#undef HAVE_SYS_STAT_H
+
+/* Define if you have the <sys/errno.h> header file */
+#undef HAVE_SYS_ERRNO_H
+
+/* The following macros deal with directory entries. */
+#undef HAVE_DIRENT_H
+#undef HAVE_SYS_NDIR_H
+#undef HAVE_SYS_DIR_H
+#undef HAVE_NDIR_H
+#undef HAVE_DIR_H
+
+#endif /* __config_h__ */

@@ -30,8 +30,10 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 ifeq ($(shared), yes)
 LIBRARY_FILE = $(LIBRARY_NAME)$(SHARED_LIBEXT)
+LIBRARY_FILE_EXT=$(SHARED_LIBEXT)
 else
 LIBRARY_FILE = $(LIBRARY_NAME)$(LIBEXT)
+LIBRARY_FILE_EXT=$(LIBEXT)
 endif
 
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
@@ -110,6 +112,11 @@ internal-uninstall-import-lib::
 #
 internal-clean::
 	rm -rf $(GNUSTEP_OBJ_PREFIX)
+
+internal-distclean::
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 #
 # Testing targets

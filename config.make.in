@@ -33,7 +33,7 @@ RCEXT = .rc
 
 LN_S = @LN_S@
 
-LD = gcc
+LD = $(CC)
 LDOUT =
 LDFLAGS = @LDFLAGS@ -o
 
@@ -45,12 +45,12 @@ RANLIB = @RANLIB@
 RC = @RC@
 DLLTOOL = @DLLTOOL@
 
+INSTALL		= @INSTALL@
+INSTALL_PROGRAM	= @INSTALL_PROGRAM@
+INSTALL_DATA	= @INSTALL_DATA@
+
 # The default library combination
 library_combo = @ac_cv_library_combo@
-
-ifeq ($(GNUSTEP_TARGET_OS),nextstep4)
-library_combo = nx_nx_nx_nil
-endif
 
 #
 # X Window System headers and libraries

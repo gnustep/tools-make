@@ -29,7 +29,7 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 #
 # xxx We need to prefix the target name when cross-compiling
 #
-TOOL_LIST := $(foreach tool,$(TOOL_NAME),$(tool).tool)
+TOOL_LIST := $(TOOL_NAME:=.tool)
 TOOL_FILE = $(TOOL_LIST)
 TOOL_STAMPS := $(foreach tool,$(TOOL_NAME),stamp-tool-$(tool))
 TOOL_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TOOL_STAMPS))

@@ -123,7 +123,7 @@ LDFLAGS += -Wl,-read_only_relocs,suppress
 AFTER_INSTALL_STATIC_LIB_COMMAND =
 
 SHARED_CFLAGS   += -dynamic
-SHARED_LIBEXT   = .a
+SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_CFLAGS   =

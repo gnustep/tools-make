@@ -48,6 +48,21 @@ ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) \
 ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
    $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
+LIB_DIRS_NO_SYSTEM = $(ADDITIONAL_LIB_DIRS) -L$(GNUSTEP_LIBRARIES) \
+   -L$(GNUSTEP_TARGET_LIBRARIES)
+
+ALL_TOOL_LIBS := \
+    $(shell TARGET_LIB_DIR=$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+      $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TOOL_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
+ALL_GUI_LIBS := \
+    $(shell TARGET_LIB_DIR=$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+      $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GUI_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
 VPATH = .
 
 .SUFFIXES: .m .c .psw
@@ -263,7 +278,7 @@ after-clean::
 
 before-distclean::
 
-internal-distclean:: clean
+internal-distclean::
 
 after-distclean::
 

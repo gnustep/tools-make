@@ -46,13 +46,10 @@ GNUSTEP_TARGET_OS := $(shell ./clean_os.sh $(GNUSTEP_TARGET_OS))
 makedir = $(prefix)/Makefiles
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
-INSTALL = ./install-sh -c
-INSTALL_DATA = $(INSTALL) -m 644
-INSTALL_PROGRAM = $(INSTALL)
+all: which_lib
 
-all:
-	@echo Nothing needs to be made, just install with
-	@echo make install
+which_lib: which_lib.c
+	$(CC) -O2 -Wall -o $@ $^
 
 install:
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
@@ -68,6 +65,7 @@ install:
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
+	$(INSTALL_PROGRAM) which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:

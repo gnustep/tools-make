@@ -1,3 +1,29 @@
+Fri Oct  3 13:43:18 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* Added support for linking with different types of a library,
+	depending on the flags you specify at the make time.
+	* which_lib.c: New file.
+	* config.h.in: New file.
+	* Makefile.in: Added rule to build and install the which_lib program.
+	* common.make: Added definition for WHICH_LIB_SCRIPT.
+	* rules.make: Added rules to process the libraries list and obtain a
+	new one based upon the debug, profile and shared variables.
+	* configure.in: Added checks for various header files needed to compile
+	the which_lib program.
+	* library.make: Added new variable LIBRARY_FILE_EXT.
+
+	* application.make: Replaced foreach with :.something=.someotherthing.
+	* bundle.make: Likewise.
+	* test.make: Likewise.
+	* tool.make: Likewise.
+
+	* config.make.in: Changed the hard-coded definition of ld to be $(CC).
+	Added definitions for INSTALL programs.
+	* configure.in: Added check for the INSTALL program.
+	* library.make: New target internal-distclean.
+	* rules.make: internal-distclean does not make first the clean target.
+	* target.make: Shared libraries under OS 4.x have the .so extension.
+
 Thu Oct  2 14:56:08 1997  Scott Christley  <scottc@stetson.net-community.com>
 
 	* ld_lib_path.sh: New file.
@@ -14,6 +40,11 @@ Thu Oct  2 14:56:08 1997  Scott Christley  <scottc@stetson.net-community.com>
 	* test.make: New file.
 	* rules.make: Add test building and check rules.
 	* Makefile.in: Install test.make.
+
+Thu Oct  2 10:21:41 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make.in: Remove the default library combo for OPENSTEP 4.x.
+	* configure.in: Add a default library combo for OS 4.x here.
 
 Wed Oct  1 18:04:25 1997  Ovidiu Predescu <ovidiu@net-community.com>
 

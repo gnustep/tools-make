@@ -69,23 +69,23 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 # should check when loading a shared library.
 #
 
-TEST_LIBRARY_LIST := $(foreach lib,$(TEST_LIBRARY_NAME),$(lib).testlib)
-CHECK_LIBRARY_LIST := $(foreach lib,$(TEST_LIBRARY_NAME),$(lib).checklib)
+TEST_LIBRARY_LIST := $(TEST_LIBRARY_NAME:=.testlib)
+CHECK_LIBRARY_LIST := $(TEST_LIBRARY_NAME:=.checklib)
 TEST_LIBRARY_STAMPS := $(foreach lib,$(TEST_LIBRARY_NAME),stamp-testlib-$(lib))
 TEST_LIBRARY_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_LIBRARY_STAMPS))
 
-TEST_BUNDLE_LIST := $(foreach b,$(TEST_BUNDLE_NAME),$(b).testbundle)
-CHECK_BUNDLE_LIST := $(foreach b,$(TEST_BUNDLE_NAME),$(b).checkbundle)
+TEST_BUNDLE_LIST := $(TEST_BUNDLE_NAME:=.testbundle)
+CHECK_BUNDLE_LIST := $(TEST_BUNDLE_NAME:=.checkbundle)
 TEST_BUNDLE_STAMPS := $(foreach b,$(TEST_BUNDLE_NAME),stamp-testbundle-$(b))
 TEST_BUNDLE_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_BUNDLE_STAMPS))
 
-TEST_TOOL_LIST := $(foreach tool,$(TEST_TOOL_NAME),$(tool).testtool)
-CHECK_TOOL_LIST := $(foreach tool,$(TEST_TOOL_NAME),$(tool).checktool)
+TEST_TOOL_LIST := $(TEST_TOOL_NAME:=.testtool)
+CHECK_TOOL_LIST := $(TEST_TOOL_NAME:=.checktool)
 TEST_TOOL_STAMPS := $(foreach tool,$(TEST_TOOL_NAME),stamp-testtool-$(tool))
 TEST_TOOL_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_TOOL_STAMPS))
 
-TEST_APP_LIST := $(foreach app,$(TEST_APP_NAME),$(app).testapp)
-CHECK_APP_LIST := $(foreach app,$(TEST_APP_NAME),$(app).checkapp)
+TEST_APP_LIST := $(TEST_APP_NAME:=.testapp)
+CHECK_APP_LIST := $(TEST_APP_NAME:=.checkapp)
 TEST_APP_STAMPS := $(foreach app,$(TEST_APP_NAME),stamp-testapp-$(app))
 TEST_APP_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TEST_APP_STAMPS))
 
