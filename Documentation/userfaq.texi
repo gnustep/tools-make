@@ -479,5 +479,25 @@ better. When compiling gnustep-back, start with
 ./configure --enable-graphics=art
 @end example
 
+@node No Makefile,  , Problems with gcc3, Troubleshooting
+@subsection No Makefile
+
+I tried to compile something and I get:
+
+@example
+GNUmakefile:27: /Makefiles/common.make: No such file or directory 
+GNUmakefile:39: /Makefiles/aggregate.make: No such file or directory 
+gmake: *** No rule to make target `/Makefiles/aggregate.make'.  Stop. 
+@end example
+
+Make sure you have installed the gnustep-make package and also type:
+
+@example
+source /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+@end example
+
+You can put this line in your @file{.profile} or @file{.bash_profile} file
+so that it is done automatically when you log in.
+
 @bye
 \bye
