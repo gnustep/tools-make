@@ -1,3 +1,17 @@
+Tue Jan 29 13:29:26 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (LIBRARIES_DEPEND_UPON): Pass only
+	target_LIBRARIES_DEPEND_UPON + LIBRARIES_DEPEND_UPON to the
+	submake.  Do not run which_lib here.
+	* library.make (INTERNAL_LIBRARIES_DEPEND_UPON): New variable.
+	Define in terms of LIBRARIES_DEPEND_UPON, after filtering it via
+	which_lib.
+	($(GNUSTEP_OBJ_DIR)/$(DLL_NAME)): Use
+	INTERNAL_LIBRARIES_DEPEND_UPON, not LIBRARIES_DEPEND_UPON.
+	* clibrary.make: Same changes as in library.make.
+	* target.make: Replaced everywhere LIBRARIES_DEPEND_UPON with
+	INTERNAL_LIBRARIES_DEPEND_UPON.
+	
 Tue Jan 29 13:10:17 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* application.make (ALL_GUI_LIBS): Make sure it's not evaluated -
