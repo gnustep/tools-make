@@ -1,3 +1,10 @@
+1999-02-01  Adam Fedor  <fedor@penitente>
+
+	* target.make: Add openbsd target (Patch from Michael Hanni
+	<michael@zaft.state.gov>).
+	Add Irix support.
+	(SHARED_LIB_LINK_CMD): Add /usr/lib/c++rt0.o to *BSD commands.
+
 Thu Jan 28 10:20:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
         * target.make: use '-lm' for freebsd and osf

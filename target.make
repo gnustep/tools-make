@@ -71,6 +71,9 @@ endif
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
+ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+endif
 ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
@@ -286,7 +289,7 @@ ifeq ($(GNUSTEP_TARGET_OS), freebsd3.0)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
 	(cd $(GNUSTEP_OBJ_DIR); \
 	  rm -f $(LIBRARY_FILE); \
 	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
@@ -318,7 +321,7 @@ HAVE_SHARED_LIBS        = no
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
         $(SHARED_LD) -x -Bshareable -Bforcearchive \
-           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
         (cd $(GNUSTEP_OBJ_DIR); \
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
@@ -334,6 +337,38 @@ BUNDLE_LDFLAGS  += -shared
 endif
 #
 # end NetBSD
+#
+####################################################
+
+####################################################
+#
+# OpenBSD 2.x (though set for 2.4)
+#
+ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
+# This is disabled temporarily, because I don't know exactly how
+# to link shared libs. Everything seems to link correctly now but
+# constructor functions in the shared lib failed to get called
+# when the lib is loaded in. I don't know why. ASF.
+HAVE_SHARED_LIBS        = no
+SHARED_LD		= ld
+SHARED_LIB_LINK_CMD     = \
+        $(SHARED_LD) -x -Bshareable -Bforcearchive \
+           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
+        (cd $(GNUSTEP_OBJ_DIR); \
+          rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS   += -shared
+SHARED_LIBEXT   = .so
+
+HAVE_BUNDLES    = no
+BUNDLE_LD	= $(CC)
+#BUNDLE_CFLAGS   += 
+BUNDLE_LDFLAGS  += -shared
+#ADDITIONAL_LDFLAGS += -rdynamic
+endif
+#
+# end OpenBSD 2.x
 #
 ####################################################
 
@@ -422,6 +457,34 @@ BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 endif
 
 # end HP-UX
+#
+####################################################
+
+####################################################
+#
+# IRIX
+#
+ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
+#HAVE_SHARED_LIBS        = yes
+STATIC_LIB_LINK_CMD = \
+	(cd $(GNUSTEP_OBJ_DIR); $(AR) $(ARFLAGS) \
+	$(AROUT)$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
+	$(RANLIB) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+SHARED_LIB_LINK_CMD     = \
+        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` ;\
+          rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS     += -fPIC
+SHARED_LIBEXT   = .sl
+
+HAVE_BUNDLES    = yes
+BUNDLE_LD	= $(CC)
+BUNDLE_CFLAGS   += -fPIC
+BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+endif
+
+# end IRIX
 #
 ####################################################
 
