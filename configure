@@ -4082,7 +4082,7 @@ clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-ac_config_files="$ac_config_files config.h config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec Documentation/GNUmakefile"
+ac_config_files="$ac_config_files config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec Documentation/GNUmakefile"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -4567,7 +4567,6 @@ for ac_config_target in $ac_config_targets
 do
   case "$ac_config_target" in
   # Handling of arguments.
-  "config.h" ) CONFIG_FILES="$CONFIG_FILES config.h" ;;
   "config.make" ) CONFIG_FILES="$CONFIG_FILES config.make" ;;
   "openapp" ) CONFIG_FILES="$CONFIG_FILES openapp" ;;
   "debugapp" ) CONFIG_FILES="$CONFIG_FILES debugapp" ;;
