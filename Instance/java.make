@@ -35,18 +35,18 @@ endif
 # test_JAVA_FILES = gnu/gnustep/base/NSArray.java
 #
 # The relative path is important because things will be installed 
-# in $(JAVA_INSTALLATION_DIR)/{relative_path}; for example, 
+# in $(JAVA_INSTALL_DIR)/{relative_path}; for example, 
 # the file above would be installed in 
-# ${JAVA_INSTALLATION_DIR)/gnu/gnustep/base/NSArray.class
+# ${JAVA_INSTALL_DIR)/gnu/gnustep/base/NSArray.class
 #
-# JAVA_INSTALLATION_DIR contains the directory where you want to
+# JAVA_INSTALL_DIR contains the directory where you want to
 # install your classes - it defaults to $(GNUSTEP_JAVA), which is
 # $(GNUSTEP_LOCAL_ROOT)/Libraries/Java/.
 #
 # If you have all your files in a directory but want them to be
 # installed with a different relative path, you can simply redefine 
-# JAVA_INSTALLATION_DIR, as in the following example - 
-# JAVA_INSTALLATION_DIR = $(GNUSTEP_JAVA)/gnu/gnustep/base/
+# JAVA_INSTALL_DIR, as in the following example - 
+# JAVA_INSTALL_DIR = $(GNUSTEP_JAVA)/gnu/gnustep/base/
 #
 # If you have java sources to be processed throught JAVAH to create
 # JNI headers, specify the files in xxx_JAVA_JNI_FILES.  The headers
@@ -63,13 +63,20 @@ endif
         internal-java_package-install_ \
         internal-java_package-uninstall_
 
-# This is the directory where the java classses get
-# installed. Normally this is /usr/GNUstep/Local/Libraries/Java/
-ifeq ($(JAVA_INSTALLATION_DIR),)
-JAVA_INSTALLATION_DIR = $(GNUSTEP_JAVA)
+#
+# For backwards compatibility ... will be removed!
+#
+ifneq ($(JAVA_INSTALLATION_DIR),)
+JAVA_INSTALL_DIR = $(JAVA_INSTALLATION_DIR)
 endif
 
-GNUSTEP_SHARED_JAVA_INSTALLATION_DIR = $(JAVA_INSTALLATION_DIR)
+# This is the directory where the java classses get
+# installed. Normally this is /usr/GNUstep/Local/Libraries/Java/
+ifeq ($(JAVA_INSTALL_DIR),)
+JAVA_INSTALL_DIR = $(GNUSTEP_JAVA)
+endif
+
+GNUSTEP_SHARED_JAVA_INSTALLATION_DIR = $(JAVA_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/java.make
 
 
