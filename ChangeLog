@@ -1,3 +1,13 @@
+Wed Jul 11 18:17:43 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* framework.make (before-$(TARGET)-all): Do not depend on
+	FRAMEWORK_HEADER_FILES because build-headers already does that.
+	(FRAMEWORK_HEADER_FILES): Use addprefix to manage also header
+	files not ending in .h.
+	(FRAMEWORK_RESOURCE_DIRS): Use addprefix.
+	(FRAMEWORK_WEBSERVER_RESOURCE_DIRS): Idem.
+	(FRAMEWORK_INSTALL_DIR): Use = rather than :=.
+
 Wed Jul 11 15:51:43 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* subproject.make (internal-subproject-all): Only depend on
