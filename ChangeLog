@@ -1,3 +1,9 @@
+2005-03-22  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Instance/application.make (ALL_LDFLAGS): When on a platform
+	where DLLs are built (such as Mingw), automatically generate a
+	.exe.a library for the application.  Required by Gorm.
+
 2005-03-21  Adam Fedor  <fedor@gnu.org>
 
 	* GNUmakefile.in: Don't install .GNUsteprc file

@@ -101,6 +101,19 @@ APP_FILE = $(GNUSTEP_BUILD_DIR)/$(APP_FILE_NAME)
 # Internal targets
 #
 
+# If building on Windows, also generate an import library which can be
+# used by loadable bundles to resolve symbols in the application.  If
+# a loadable bundle/palette needs to use symbols in the application,
+# it just needs to link against this APP_NAME/APP_NAME.exe.a library.
+# We add .exe to the application name to account for Gorm which is
+# using the same name for the library (libGorm.dll.a) and for the
+# application (Gorm.exe).  Using this terminology, just add
+# Gorm.app/Gorm.exe.a to the list of objects you link and you get it
+# working.  TODO: Move this into target.make
+ifeq ($(BUILD_DLL), yes)
+  ALL_LDFLAGS += -Wl,--export-all-symbols -Wl,--out-implib,$(GNUSTEP_BUILD_DIR)/$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE).exe$(LIBEXT)
+endif
+
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 	      $(ALL_GUI_LIBS)$(END_ECHO)
