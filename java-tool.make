@@ -110,6 +110,10 @@ $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME): _FORCE
 	    $(GNUSTEP_MAKEFILES)/java-executable.template \
 	    > $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME); \
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME);
+ifneq ($(CHOWN_TO),)
+	$(CHOWN) $(CHOWN_TO) \
+	         $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)
+endif
 
 _FORCE::
 
