@@ -36,7 +36,7 @@ MASTER_RULES_MAKE_LOADED=yes
 # `tool' called `gsdoc'> - to process these prerequisites, the
 # %.variables rule below is used.  this rule gets an appropriate make
 # subprocess going, with the task of building that specific
-# target-type-operation prerequisite.  The make subprocess will be run
+# instance-type-operation prerequisite.  The make subprocess will be run
 # as in `make internal-tool-all INTERNAL_tool_NAME=gsdoc ...<and other
 # variables>' and this make subprocess wil find the internal-tool-all
 # rule in tool.make, and execute that, building the tool.
@@ -177,14 +177,14 @@ after-check::
 #
 
 # The %.variables target has to be called with the name of the actual
-# target, followed by the operation, then the makefile fragment to be
+# instance, followed by the operation, then the makefile fragment to be
 # called and then the variables word. Suppose for example we build the
 # library libgmodel, the target should look like:
 #
 #	libgmodel.all.library.variables
 #
 # when the rule is executed, $* is libgmodel.all.libray;
-#  target will be libgmodel
+#  instance will be libgmodel
 #  operation will be all
 #  type will be library 
 #
@@ -193,20 +193,20 @@ after-check::
 # the rule then calls a submake, which runs the real code
 
 # the following is the code used in %.variables, %.tools and %.subprojects
-# to extract the target, operation and type from the $* (the stem) of the 
+# to extract the instance, operation and type from the $* (the stem) of the 
 # rule.  with GNU make => 3.78, we could define the following as macros 
 # and use $(call ...) to call them; but because we have users who are using 
 # GNU make older than that, we have to manually `paste' this code 
-# wherever we need to access target or type or operation.
+# wherever we need to access instance or type or operation.
 #
 # Anyway, the following table tells you what these commands do - 
 #
-# target=$(basename $(basename $(1)))
+# instance=$(basename $(basename $(1)))
 # operation=$(subst .,,$(suffix $(basename $(1))))
 # type=$(subst -,_,$(subst .,,$(suffix $(1))))
 #
 # It's very important to notice that $(basename $(basename $*)) in
-# these rules is simply the target (such as libgmodel).
+# these rules is simply the instance (such as libgmodel).
 
 # Before building the real thing, we must build framework tools if
 # any, then subprojects (FIXME - not sure - at what stage should we
@@ -214,15 +214,16 @@ after-check::
 # with it ?)
 %.variables: %.tools %.subprojects
 	@ \
-target=$(basename $(basename $*)); \
+instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
 type=$(subst -,_,$(subst .,,$(suffix $*))); \
-echo Making $$operation for $$type $$target...; \
+echo Making $$operation for $$type $$instance...; \
 $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   internal-$${type}-$$operation \
-  INTERNAL_$${type}_NAME=$$target \
-  TARGET=$$target \
-  GNUSTEP_MAKE_INSTANCE_INVOCATION=YES \
+  GNUSTEP_TYPE=$$type \
+  GNUSTEP_INSTANCE=$$instance \
+  INTERNAL_$${type}_NAME=$$instance \
+  TARGET=$$instance \
   _SUBPROJECTS="$($(basename $(basename $*))_SUBPROJECTS)" \
   OBJC_FILES="$($(basename $(basename $*))_OBJC_FILES)" \
   C_FILES="$($(basename $(basename $*))_C_FILES)" \
@@ -290,12 +291,12 @@ ifneq ($(FRAMEWORK_NAME),)
 #
 %.tools:
 	@ \
-target=$(basename $(basename $*)); \
+instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
 type=$(subst -,_,$(subst .,,$(suffix $*))); \
 if [ "$$operation" != "build-headers" ]; then \
   if [ "$($(basename $(basename $*))_TOOLS)" != "" ]; then \
-    echo Building tools for $$type $$target...; \
+    echo Building tools for $$type $$instance...; \
     for f in $($(basename $(basename $*))_TOOLS) __done; do \
       if [ $$f != __done ]; then       \
         mf=$(MAKEFILE_NAME); \
@@ -327,11 +328,11 @@ endif # end of FRAMEWORK code
 #
 %.subprojects:
 	@ \
-target=$(basename $(basename $*)); \
+instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
 type=$(subst -,_,$(subst .,,$(suffix $*))); \
 if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
-  echo Making $$operation in subprojects of $$type $$target...; \
+  echo Making $$operation in subprojects of $$type $$instance...; \
   for f in $($(basename $(basename $*))_SUBPROJECTS) __done; do \
     if [ $$f != __done ]; then       \
       mf=$(MAKEFILE_NAME); \

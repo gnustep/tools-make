@@ -1,3 +1,14 @@
+Wed Jan 30 17:56:44 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (target): Renamed everywhere to 'instance' to
+	avoid confusion.
+	(%.variables): Pass down the new variables GNUSTEP_TYPE and
+	GNUSTEP_INSTANCE, but not GNUSTEP_MAKE_INSTANCE_INVOCATION.
+	* common.make: Unexport GNUSTEP_INSTANCE and GNUSTEP_TYPE
+	rather than GNUSTEP_MAKE_INSTANCE_INVOCATION.
+	* rules.make: Check for GNUSTEP_INSTANCE to decide whether
+	to include Master/rules.make or not.
+	
 Wed Jan 30 17:54:45 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (BUNDLE_EXTENSION, CURRENT_VERSION_NAME,
