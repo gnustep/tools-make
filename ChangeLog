@@ -1,3 +1,7 @@
+2003-01-03 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: Don't use RUNTIME_FLAG for plain C code, just for ObjC
+
 Fri Jan  3 01:57:46 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* create_domain_dir_tree.sh (mydir): Replaced dirname invocation
