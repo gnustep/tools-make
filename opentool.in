@@ -141,7 +141,7 @@ case $tool in
 	if [ -z "$GNUSTEP_FLATTENED" ]; then
 	  GNUSTEP_HOST_DIR=$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
 	  GNUSTEP_HOST_LDIR=$GNUSTEP_HOST_DIR/$LIBRARY_COMBO
-	
+
 	  # search for a local one
 	  for file in */$GNUSTEP_HOST_LDIR/$tool; do
 	    if [ -x $file ]; then
@@ -149,13 +149,16 @@ case $tool in
 	      break;
 	    fi
 	  done
-	  SPATH=:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_DIR
-	  SPATH=$SPATH:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_LDIR
-	  SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_DIR
-	  SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_LDIR
-	  SPATH=$SPATH:$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_DIR
-	  SPATH=$SPATH:$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_LDIR
-	  SPATH=$SPATH:$PATH
+	  # Only search further if we found no local one
+	  if [ -z "$full_toolname" ]; then
+	    SPATH=:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_DIR
+	    SPATH=$SPATH:$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_LDIR
+	    SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_DIR
+	    SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_LDIR
+	    SPATH=$SPATH:$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_DIR
+	    SPATH=$SPATH:$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_LDIR
+	    SPATH=$SPATH:$PATH
+	  fi
 	else
 	  SPATH=:$GNUSTEP_USER_ROOT/Tools
 	  SPATH=$SPATH:$GNUSTEP_LOCAL_ROOT/Tools
@@ -163,13 +166,16 @@ case $tool in
 	  SPATH=$SPATH:$PATH
 	fi
 
-	IFS=:
-	for dir in $SPATH; do
-	  if [ -x $dir/$tool ]; then
-	    full_toolname=$dir/$tool;
-	    break;
-	  fi
-	done;;
+	# Only search further if we found no local one
+	if [ -z "$full_toolname" ]; then
+	  IFS=:
+	  for dir in $SPATH; do
+	    if [ -x $dir/$tool ]; then
+	      full_toolname=$dir/$tool;
+	      break;
+	    fi
+	  done;
+	fi;;
 esac
 
 if [ -z "$full_toolname" ]; then
