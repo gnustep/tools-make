@@ -159,20 +159,20 @@ ifneq ($(COMPONENTS),)
 	echo "Copying localized components into the framework wrapper..."; \
 	for l in $(LANGUAGES) __done; do \
 	  if [ $$l != __done ]; then \
-	    if [ ! -f $$l.lproj ]; then \
+	    if [ -d ../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj ]; then \
 	      $(MKDIRS) $$l.lproj; \
-	    fi; \
-	  fi; \
-	  cd $$l.lproj; \
-	  for f in $(COMPONENTS) __done; do \
-	    if [ $$f != __done ]; then \
-	      if [ -d ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f ]; then \
-	        cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f .; \
-	      fi; \
-	     fi; \
-	   done; \
-	   cd ..; \
-	  done
+	      cd $$l.lproj; \
+	      for f in $(COMPONENTS) __done; do \
+	        if [ $$f != __done ]; then \
+	          if [ -d ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f ]; then \
+	            cp -r ../../../../../$(SUBPROJECT_ROOT_DIR)/$$l.lproj/$$f .; \
+	          fi; \
+	        fi; \
+	      done; \
+	      cd ..; \
+	    fi;\
+	  fi;\
+	done
 endif
 
 framework-resource-files::
@@ -188,18 +188,20 @@ ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	@ echo "Copying localized resources into the framework wrapper..."; \
 	for l in $(LANGUAGES) __done; do \
 	  if [ $$l != __done ]; then \
-	    if [ ! -f $$l.lproj ]; then \
+	    if [ -d $$l.lproj ]; then \
 	      $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-	     fi; \
-	   fi; \
-	   for f in $(LOCALIZED_RESOURCE_FILES) __done; do \
-	     if [ $$f != __done ]; then \
-	       if [ -f $$l.lproj/$$f ]; then \
-	         cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj/; \
-	       fi; \
-	     fi; \
-	   done; \
-	 done
+	      for f in $(LOCALIZED_RESOURCE_FILES) __done; do \
+	        if [ $$f != __done ]; then \
+	          if [ -f $$l.lproj/$$f ]; then \
+	            cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj/; \
+	          fi; \
+	        fi; \
+	      done; \
+	    else \
+	      echo "Warning - $$l.lproj not found - ignoring"; \
+	    fi;\
+	  fi;\
+	done
 endif
 
 # FIXME - FRAMEWORK_WEBSERVER_RESOURCE_DIRS is not defined ...
