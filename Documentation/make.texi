@@ -165,6 +165,7 @@ build using static libraries instead, as in the above command.
 * framework.make::              
 * java.make::                   
 * library.make::                
+* native-library.make::                
 * objc.make::                   
 * palette.make::                
 * rpm.make::                    
@@ -240,7 +241,7 @@ respects it is similar to a Bundle.
 This project provides rules for building java programs. It also makes it
 easy to make java projects that interact with the GNUstep libraries.
 
-@node library.make, objc.make, java.make, Project Types
+@node library.make, native-library.make, java.make, Project Types
 @subsection Libraries (@file{library.make})
 @menu
 * library.make variables::      
@@ -460,7 +461,29 @@ library reside in the @file{two} subdirectory from where the sources are
 located, and the header files will be installed into the @file{two}
 subdirectory within @code{GNUSTEP_HEADERS}.
 
-@node objc.make, palette.make, library.make, Project Types
+@node native-library.make, objc.make, library.make, Project Types
+@subsection Native Library (@file{native-library.make})
+
+A "native library" is a project which is to be built as a shared
+library on most targets and as a framework on Darwin.  (Currently
+this is only the case for apple-apple-apple.)  In other
+words, it is to be built as the most appropriate native equivalent
+of a traditional shared library (see @ref{library.make} and
+@ref{framework.make}).
+
+@defvr {Native Library project} NATIVE_LIBRARY_NAME
+@code{NATIVE_LIBRARY_NAME} should be the name of the native library,
+without the 'lib'.  All the other variables are the same as
+the ones used in libraries and frameworks.
+@end defvr
+
+To compile something against a native library, you can use
+@code{ADDITIONAL_NATIVE_LIBS += MyLibrary}
+This will be converted into -lMyLibrary link flag on for most
+targets and into -framework MyLibrary link flag for
+apple-apple-apple.
+
+@node objc.make, palette.make, native-library.make, Project Types
 @subsection Objective-C Programs (@file{objc.make})
 @menu
 * objc.make variables::         
@@ -552,20 +575,21 @@ A palette is a Bundle that provides some kind of GUI functionality.
 Otherwise it is similar to the Bundle project.
 
 @node rpm.make, service.make, palette.make, Project Types
-@subsection Rpms (@file{rpm.make})
+@subsection RPMs (@file{rpm.make})
 
-The Rpm project provides rules for automatically generating RPM spec
-files in order to make rpm distributions. Note that this project
+The RPM project provides rules for automatically generating RPM spec
+files in order to make RPM distributions. Note that this project
 makefile is included automatically when you include any other project
 type in your GNUmakefile. It is non necessary to include
 @file{rpm.make}.
 
 Except for @code{PACKAGE_NAME}, which is required, all the following
 variables are optional. It is recommended that you set them anyway in
-order to provide the standard information that is present in most rpm distributions.
+order to provide the standard information that is present in most RPM
+distributions.
 
 @defvr {RPM} PACKAGE_NAME
-@code{PACKAGE_NAME} defines the name of the rpm distribution. In most
+@code{PACKAGE_NAME} defines the name of the RPM distribution. In most
 cases this will be the same as the name of your project type. For
 instance, if you are creating a application, and have set
 @code{APP_NAME} to @samp{MyApplication}, Then set @code{PACKAGE_NAME} to
@@ -1342,9 +1366,9 @@ make GNUSTEP_INSTALLATION_DIR="/GNUstep"
 This command states that the @file{/GNUstep} directory should be used as
 the installation root directory; applications in the package will be
 installed under @file{/GNUstep/Apps} directory, libraries in the package
-will be installed under the @file{/GNUstep/Library/Libraries} directory, command
-line tools will be installed under the @file{/GNUstep/Tools} directory,
-and etc.  By default the Makefile Package sets
+will be installed under the @file{/GNUstep/Library/Libraries} directory,
+command line tools will be installed under the @file{/GNUstep/Tools}
+directory, and etc.  By default the Makefile Package sets
 @code{GNUSTEP_INSTALLATION_DIR} to @code{GNUSTEP_LOCAL_ROOT} unless
 @code{GNUSTEP_LOCAL_ROOT} is empty in which case
 @code{GNUSTEP_INSTALLATION_DIR} will be set to
