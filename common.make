@@ -460,6 +460,15 @@ ifeq ($(JAVADOC),)
   JAVADOC = $(JAVA_HOME)/bin/javadoc
 endif
 
+# We want total control over GNUSTEP_MAKE_INSTANCE_INVOCATION.
+# GNUSTEP_MAKE_INSTANCE_INVOCATION determines wheter it's a Master or
+# an Instance invocation.  Whenever we run a submake, we want it to be
+# a Master invocation, unless we specifically set it to run as an
+# Instance invocation by adding the
+# GNUSTEP_MAKE_INSTANCE_INVOCATION=YES flag.  Tell make not to mess
+# with our games by passing this variable to submakes himself
+unexport GNUSTEP_MAKE_INSTANCE_INVOCATION
+
 endif # COMMON_MAKE_LOADED
 
 ## Local variables:
