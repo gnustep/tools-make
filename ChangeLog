@@ -1,3 +1,17 @@
+Thu Feb 28 18:27:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (PRINCIPAL_CLASS): Do not pass down
+	to submakes.
+	* Instance/application.make (PRINCIPAL_CLASS): Define in terms of
+	$(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS; do not use override when
+	fixing it up if it's empty.
+	* Instance/bundle.make (PRINCIPAL_CLASS): Idem.
+	* Instance/framework.make (PRINCIPAL_CLASS): Idem.
+	* Instance/gswbundle.make (PRINCIPAL_CLASS): Idem.
+	* Instance/java-tool.make (PRINCIPAL_CLASS): Idem.
+	* Instance/palette.make (PRINCIPAL_CLASS): Idem.
+	* Instance/gswapp.make (PRINCIPAL_CLASS): Define.
+
 Thu Feb 28 18:16:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/gswbundle.make (COMPONENTS, LANGUAGES,
