@@ -1,3 +1,8 @@
+Fri Nov 05 11:23:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* application.make: Added comment about including info.plist stuff.
+	* bundle.make: Added support for inclusion of info.plist stuff.
+
 1999-10-03  Lyndon Tremblay  <ltremblay@mezzanine.xnot.com>
 
 	* GNUstep.sh.in: Added CLASSPATH settings.

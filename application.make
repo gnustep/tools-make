@@ -34,6 +34,8 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The list of application resource file are in xxx_RESOURCE_FILES
 # The list of application resource directories are in xxx_RESOURCE_DIRS
 # The name of the application icon (if any) is in xxx_APPLICATION_ICON
+# The name of a file containing info.plist entries to be inserted into
+# Info-gnustep.plist (if any) is xxxInfo.plist
 # where xxx is the application name
 #
 
