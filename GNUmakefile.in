@@ -73,8 +73,7 @@ install: all
 		$(prefix)/Library \
 		$(prefix)/Library/info \
 		$(prefix)/Library/PostScript \
-		$(prefix)/Library/man \
-		$(prefix)/Library/Model
+		$(prefix)/Library/man
 	$(INSTALL_PROGRAM) -m 755 which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
@@ -94,9 +93,6 @@ install: all
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
-	for f in SavePanel.gmodel; do \
-	  $(INSTALL_DATA) $$f $(prefix)/Library/Model; \
-	done
 
 uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib
@@ -118,9 +114,6 @@ uninstall:
 	done
 	rm -f $(prefix)/share/config.site
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
-	for f in SavePanel.gmodel; do \
-	  rm -f $(prefix)/Library/Model/$$f; \
-	done
 
 clean:
 	rm -f *~ which_lib
