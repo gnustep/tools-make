@@ -1,7 +1,7 @@
 Source: gnustep-make
 Section: libs
 Priority: optional
-Maintainer: Nicola Pero <n.pero@mi.flashnet.it>
+Maintainer: Wanted
 Standards-Version: 3.2.1
 Build-Depends: debhelper, gobjc
 
