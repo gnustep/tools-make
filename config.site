@@ -51,9 +51,11 @@ fi
 # Change the binary directory default
 if test "$bindir" = "\${exec_prefix}/bin" ; then
    bindir="\${exec_prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   bindirtop="\${exec_prefix}/Tools"
 fi
 if test "$DIR_BIN" = "/usr/local/bin" ; then
    DIR_BIN="${prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   bindirtop="\${exec_prefix}/Tools"
 fi
 
 # xxx What about sbin?

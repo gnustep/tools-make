@@ -28,8 +28,9 @@
 
 include config.make
 
+GNUSTEP_INSTALLATION_DIR = @prefix@
 srcdir = @srcdir@
-prefix = @prefix@
+prefix = $(GNUSTEP_INSTALLATION_DIR)
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 libdir = @libdir@

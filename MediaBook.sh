@@ -29,11 +29,18 @@ fi
 export MB_ROOT
 
 #
+# Save the original environment variables
+#
+MB_ORIG_PATH=$PATH
+MB_ORIG_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+
+export MB_ORIG_PATH MB_PROD_LD_LIBRARY_PATH
+
+#
 # GCC environment variables
 #
-GCC_EXEC_PREFIX=$GNUSTEP_SYSTEM_ROOT/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/gcc-lib/
-
-export GCC_EXEC_PREFIX
+#GCC_EXEC_PREFIX=$GNUSTEP_SYSTEM_ROOT/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/gcc-lib/
+#export GCC_EXEC_PREFIX
 
 #
 # variables for current system directories

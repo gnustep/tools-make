@@ -35,9 +35,9 @@
 #	libgmodel.all.library.variables
 #
 %.variables:
-	@(target=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\1/' | tr - _`; \
+	@(target=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\1/'`; \
 	operation=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\2/'`; \
-	type=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\3/'`; \
+	type=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\3/' | tr - _`; \
 	$(MAKE) --no-print-directory --no-keep-going TARGET_TYPE=$$type \
 	    OPERATION=$${operation} TARGET=$${target} \
 	    PROCESSED_FIRST_TIME=yes $${target}.build)

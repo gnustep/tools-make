@@ -187,6 +187,10 @@ function c {
 		# Show current MB environment status
 		--status | --statu | --stat | --sta | --st | --s )
 			echo " "
+			echo "  System Root: $GNUSTEP_SYSTEM_ROOT"
+			echo "   Local Root: $GNUSTEP_LOCAL_ROOT"
+			echo "    User Root: $GNUSTEP_USER_ROOT"
+			echo "--------------"
 			echo "  System Name: $MB_CUR"
 			echo "      Version: $MB_CUR_VER"
 			echo "  Description: $MB_SYS"
@@ -490,3 +494,140 @@ function repswitch {
         echo CVSROOT is $CVSROOT
 }
 
+# Determine the host information
+function hostinfo {
+	if [ -z "$GNUSTEP_HOST" ]; then
+		GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess`
+		export GNUSTEP_HOST
+	fi
+	if [ -z "$GNUSTEP_HOST_CPU" ]; then
+		GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
+		GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
+		export GNUSTEP_HOST_CPU
+	fi
+	if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
+		GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
+		GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
+		export GNUSTEP_HOST_VENDOR
+	fi
+	if [ -z "$GNUSTEP_HOST_OS" ]; then
+		GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
+		GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
+		export GNUSTEP_HOST_OS
+	fi
+}
+
+# assign the paths based upon the root variables
+function assignpaths {
+
+	hostinfo
+
+	PATH=$GNUSTEP_SYSTEM_ROOT/Tools:$MB_ORIG_PATH
+	if [ -n "$GNUSTEP_HOST_CPU" ]
+	then
+		if [ -n "$LIBRARY_COMBO" ]
+		then
+			PATH=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
+		fi
+		PATH=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+	fi
+
+	if [ -n "$GNUSTEP_LOCAL_ROOT" ]
+	then
+		PATH=$GNUSTEP_LOCAL_ROOT/Tools:$PATH
+		if [ -n "$GNUSTEP_HOST_CPU" ]
+		then
+			if [ -n "$LIBRARY_COMBO" ]
+			then
+				PATH=$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
+			fi
+			PATH=$GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+		fi
+	fi
+
+	if [ -n "$GNUSTEP_USER_ROOT" ]
+	then
+		PATH=$GNUSTEP_USER_ROOT/Tools:$PATH
+		if [ -n "$GNUSTEP_HOST_CPU" ]
+		then
+			if [ -n "$LIBRARY_COMBO" ]
+			then
+				PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$PATH
+			fi
+			PATH=$GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS:$PATH
+		fi
+	fi
+}
+
+# switch the LIBRARY_COMBO
+function librarycombo {
+	if [ -z "$1" ]
+	then
+		echo Need to specify a library combination
+		echo usage: librarycombo name
+		echo current LIBRARY_COMBO is $LIBRARY_COMBO
+		return 0
+	fi
+
+	LIBRARY_COMBO=$1
+	export LIBRARY_COMBO
+	assignpaths
+}
+
+# switch the GNUSTEP_SYSTEM_ROOT
+function systemroot {
+	if [ -z "$1" ]
+	then
+		echo Need to specify a directory name
+		echo usage: systemroot dir
+		echo current GNUSTEP_SYSTEM_ROOT is $GNUSTEP_SYSTEM_ROOT
+		return 0
+	fi
+
+	if [ -d "$1" ]
+	then
+		GNUSTEP_SYSTEM_ROOT=$1
+		export GNUSTEP_SYSTEM_ROOT
+		assignpaths
+	fi
+}
+
+# switch the GNUSTEP_LOCAL_ROOT
+function localroot {
+	if [ -z $1 ]
+	then
+		echo GNUSTEP_LOCAL_ROOT was $GNUSTEP_LOCAL_ROOT
+		echo making GNUSTEP_LOCAL_ROOT be NULL
+		GNUSTEP_LOCAL_ROOT=
+		export GNUSTEP_LOCAL_ROOT
+		assignpaths
+		return 1
+	fi
+
+	if [ -d $1 ]
+	then
+		GNUSTEP_LOCAL_ROOT=$1
+		export GNUSTEP_LOCAL_ROOT
+		assignpaths
+	fi
+}
+
+# switch the GNUSTEP_USER_ROOT
+function userroot {
+	if [ -z $1 ]
+	then
+		echo GNUSTEP_USER_ROOT was $GNUSTEP_USER_ROOT
+		echo making GNUSTEP_USER_ROOT be NULL
+		GNUSTEP_USER_ROOT=
+		export GNUSTEP_USER_ROOT
+		assignpaths
+		return 1
+	fi
+
+	if [ -d $1 ]
+	then
+		GNUSTEP_USER_ROOT=$1
+		export GNUSTEP_USER_ROOT
+		assignpaths
+	fi
+}
