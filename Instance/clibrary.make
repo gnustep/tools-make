@@ -65,6 +65,3 @@ internal-clibrary-uninstall_:: internal-library-uninstall_
 
 internal-clibrary-check:: internal-library-check
 
-## Local variables:
-## mode: makefile
-## End:
