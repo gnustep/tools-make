@@ -31,7 +31,7 @@ Tue Oct 22 02:11:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 	* GNUmakefile.in (INSTANCE_SHARED_MAKE_FILES): Added the new file.
 	* messages.make (ECHO_MAKING_STRINGS): New variable.
 	(ALWAYS_ECHO_NO_LANGUAGES): New variable.
-	(ALWAYS_ECHO_NO_FILES): New message.
+	(ALWAYS_ECHO_NO_FILES): New variable.
 	* Instance/application.make: Include Instance/Shared/strings.make.
 	* Instance/bundle.make: Idem.
 	* Instance/ctool.make: Idem.
