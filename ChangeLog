@@ -1,4 +1,10 @@
-Tue Sep 23 13:48:02 1997  Scott Christley  <scottc@speedy.net-community.com>
+Tue Sep 23 15:18:08 1997  Scott Christley  <scottc@net-community.com>
+
+	* application.make: Utilize object directory.
+	* tool.make (object_dir): Rename to object-dir.
+	* library.make (object_dir): Rename to object-dir.
+
+Tue Sep 23 13:48:02 1997  Scott Christley  <scottc@net-community.com>
 
 	* DESIGN: New file.
 	* README: New file.
@@ -8,7 +14,7 @@ Tue Sep 23 13:48:02 1997  Scott Christley  <scottc@speedy.net-community.com>
 	* target.make: Remove unneeded code.
 	* tool.make: Put the stamps in the object directory.
 
-Mon Sep 22 17:57:50 1997  Scott Christley  <scottc@speedy.net-community.com>
+Mon Sep 22 17:57:50 1997  Scott Christley  <scottc@net-community.com>
 
 	* common.make: Add support for putting object files in a different
 	directory.
@@ -17,6 +23,6 @@ Mon Sep 22 17:57:50 1997  Scott Christley  <scottc@speedy.net-community.com>
 	* library.make: Add support for shared libraries.
 	* target.make: Likewise.
 
-Mon Sep 22 15:12:14 1997  Scott Christley  <scottc@speedy.net-community.com>
+Mon Sep 22 15:12:14 1997  Scott Christley  <scottc@net-community.com>
 
 	* ChangeLog: New file.

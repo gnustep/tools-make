@@ -39,9 +39,9 @@ SHARED_LIBRARY_FILE = $(LIBRARY_NAME)$(SHARED_LIBEXT).$(VERSION)
 #
 # Compilation targets
 #
-internal-all:: object_dir static-library shared-library import-library
+internal-all:: object-dir static-library shared-library import-library
 
-object_dir::
+object-dir::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		./$(GNUSTEP_OBJ_DIR)
 

@@ -32,12 +32,14 @@ LINK_CMD = $(CC) $(ALL_CFLAGS) $@$(OEXT) -o $@ $(ALL_LDFLAGS)
 
 APP_DIR_NAME := $(foreach app,$(APP_NAME),$(app).app)
 APP_FILE = $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(APP_NAME)$(EXEEXT)
+APP_STAMPS := $(foreach app,$(APP_NAME),stamp-app-$(app))
+APP_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(APP_STAMPS))
 
 #
 # Internal targets
 #
 
-stamp-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/stamp-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(APP_FILE) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
@@ -48,16 +50,20 @@ stamp-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 #
 internal-all:: $(APP_DIR_NAME)
 
-internal-app-all:: build-app-dir build-app
+internal-app-all:: build-app-dir object-dir build-app
 
 build-app-dir::
-	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		$(APP_DIR_NAME) \
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_CPU) \
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR) \
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 
-build-app:: stamp-$(APP_NAME)
+build-app:: $(GNUSTEP_OBJ_DIR)/stamp-$(APP_NAME)
+
+object-dir::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		./$(GNUSTEP_OBJ_DIR)
 
 #
 # Cleaning targets
@@ -66,5 +72,7 @@ internal-clean::
 	for f in $(APP_DIR_NAME); do \
 	  rm -rf $$f ; \
 	done
+	rm -f $(APP_STAMPS)
 
 internal-distclean:: clean
+	rm -rf objs

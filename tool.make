@@ -49,11 +49,11 @@ $(GNUSTEP_OBJ_DIR)/stamp-tool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 #
 internal-all:: $(TOOL_LIST)
 
-internal-tool-all:: object_dir build-tool
+internal-tool-all:: object-dir build-tool
 
 build-tool:: $(GNUSTEP_OBJ_DIR)/stamp-tool-$(TOOL_NAME)
 
-object_dir::
+object-dir::
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		./$(GNUSTEP_OBJ_DIR)
 
