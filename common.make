@@ -95,7 +95,7 @@ ifeq ($(MAKELEVEL),0)
   # But on windows we might need to first fix it up ...
   ifeq ($(findstring mingw, $(GNUSTEP_TARGET_OS)), mingw)
     ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
-      SYS_TOOLS_PATH := $(shell $(GNUSTEP_MAKEFILES)/cygpath -u $(SYS_TOOLS_PATH))
+      SYS_TOOLS_PATH := $(shell cygpath -u $(SYS_TOOLS_PATH))
     endif
   endif
 
