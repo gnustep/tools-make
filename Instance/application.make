@@ -104,10 +104,7 @@ APP_FILE = $(GNUSTEP_BUILD_DIR)/$(APP_FILE_NAME)
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 	      $(ALL_GUI_LIBS)$(END_ECHO)
-ifeq ($(FOUNDATION_LIB), apple)
-	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-		>$(APP_DIR)/Contents/library_paths.openapp$(END_ECHO)
-else
+ifneq ($(FOUNDATION_LIB), apple)
 	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 	        >$(APP_DIR)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
 endif
