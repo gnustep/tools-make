@@ -1,3 +1,8 @@
+Tue Jul 10 12:13:09 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* test-tool.make: Rewritten.
+	* test-application.make: Idem.
+	
 Tue Jul 10 11:32:12 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* documentation.make (internal-doc-clean): Do not print clean
