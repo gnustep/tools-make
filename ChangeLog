@@ -1,3 +1,12 @@
+Fri Sep 22 17:57:50 2017  Scott Christley  <scottc@speedy.net-community.com>
+
+	* common.make: Add support for putting object files in a different
+	directory.
+	* tool.make: Likewise.
+	* rules.make: Likewise.
+	* library.make: Add support for shared libraries.
+	* target.make: Likewise.
+
 Fri Sep 22 15:12:14 2017  Scott Christley  <scottc@speedy.net-community.com>
 
 	* ChangeLog: New file.

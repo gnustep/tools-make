@@ -48,9 +48,13 @@ stamp-tool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 #
 internal-all:: $(TOOL_LIST)
 
-internal-tool-all:: build-tool
+internal-tool-all:: object_dir build-tool
 
 build-tool:: stamp-tool-$(TOOL_NAME)
+
+object_dir::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		./$(GNUSTEP_OBJ_DIR)
 
 #
 # Cleaning targets

@@ -29,6 +29,8 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 #
 
 LIBRARY_FILE = $(LIBRARY_NAME)$(LIBEXT)
+SHARED_LIBRARY_NAME = $(LIBRARY_NAME)$(SHARED_LIBEXT)
+SHARED_LIBRARY_FILE = $(LIBRARY_NAME)$(SHARED_LIBEXT).$(VERSION)
 
 #
 # Internal targets
@@ -37,14 +39,19 @@ LIBRARY_FILE = $(LIBRARY_NAME)$(LIBEXT)
 #
 # Compilation targets
 #
-internal-all:: static-library shared-library import-library
+internal-all:: object_dir static-library shared-library import-library
+
+object_dir::
+	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		./$(GNUSTEP_OBJ_DIR)
 
 static-library:: $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(AR) $(ARFLAGS) $(AROUT)$(LIBRARY_FILE) \
+	$(AR) $(ARFLAGS) $(AROUT)$(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) \
 		 $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(RANLIB) $(LIBRARY_FILE)
+	$(RANLIB) $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
 
-shared-library::
+shared-library:: $(SHARED_C_OBJ_FILES) $(SHARED_OBJC_OBJ_FILES)
+	$(SHARED_LIB_LINK_CMD)
 
 import-library::
 
@@ -74,7 +81,8 @@ internal-install-libs:: internal-install-static-lib \
 
 internal-install-static-lib::
 	if [ -e $(LIBRARY_FILE) ]; then \
-	  $(INSTALL_PROGRAM) $(LIBRARY_FILE) $(GNUSTEP_LIBRARIES) ; \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE) \
+	    $(GNUSTEP_LIBRARIES) ; \
 	  $(RANLIB) $(GNUSTEP_LIBRARIES)/$(LIBRARY_FILE) ; \
 	fi
 
@@ -90,9 +98,10 @@ internal-clean::
 	rm -f $(C_OBJ_FILES)
 	rm -f $(PSWRAP_C_FILES)
 	rm -f $(PSWRAP_H_FILES)
-	rm -f $(LIBRARY_FILE)
+	rm -f $(GNUSTEP_OBJ_DIR)/$(LIBRARY_FILE)
 
 internal-distclean:: clean
+	rm -rf objs
 
 #
 # Testing targets

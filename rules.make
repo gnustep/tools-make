@@ -41,24 +41,28 @@ ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) \
 ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
    $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
+VPATH = .
+
 .SUFFIXES: .m .c .psw
 
-%${OEXT} : %.m
-	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@ $<
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
+	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) \
+		-o $@ $<
 
-%${OEXT} : %.c
-	$(CC) -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@ $<
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
+	$(CC) -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) \
+		-o $@ $<
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
 
-%_pic${OEXT}: %.m
-	$(CC) -c $(ALL_CPPFLAGS) -fPIC -DPIC \
-		$(ALL_OBJCFLAGS) -o $@ $<
+$(GNUSTEP_OBJ_DIR)/%_pic${OEXT}: %.m
+	$(CC) -c $(ALL_CPPFLAGS) $(SHARED_CFLAGS) $(ALL_OBJCFLAGS) \
+		-o $@ $<
 
-%_pic${OEXT}: %.c
-	$(CC) -c $(ALL_CPPFLAGS) -fPIC -DPIC \
-		$(ALL_CFLAGS) -o $@ $<
+$(GNUSTEP_OBJ_DIR)/%_pic${OEXT}: %.c
+	$(CC) -c $(ALL_CPPFLAGS) $(SHARED_CFLAGS) $(ALL_CFLAGS) \
+		-o $@ $<
 
 # The magical app rule, thank you GNU make!
 %.app : FORCE
@@ -87,13 +91,38 @@ ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
 # The list of PSWRAP source files to be compiled
 # are in the PSWRAP_FILES variable.
 
-OBJC_OBJ_FILES = $(OBJC_FILES:.m=${OEXT})
+OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
+OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
+ifeq ($(HAVE_SHARED_LIBS), yes)
+SHARED_OBJC_OBJS = $(OBJC_FILES:.m=_pic${OEXT})
+SHARED_OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(SHARED_OBJC_OBJS))
+else
+SHARED_OBJC_OBJS =
+SHARED_OBJC_OBJ_FILES =
+endif
 
 PSWRAP_C_FILES = $(PSWRAP_FILES:.psw=.c)
 PSWRAP_H_FILES = $(PSWRAP_FILES:.psw=.h)
-PSWRAP_OBJ_FILES = $(PSWRAP_FILES:.psw=${OEXT})
+PSWRAP_OBJS = $(PSWRAP_FILES:.psw=${OEXT})
+PSWRAP_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(PSWRAP_OBJS))
+ifeq ($(HAVE_SHARED_LIBS), yes)
+SHARED_PSWRAP_OBJS = $(PSWRAP_FILES:.psw=_pic${OEXT})
+SHARED_PSWRAP_OBJ_FILES= $(addprefix $(GNUSTEP_OBJ_DIR)/,$(SHARED_PSWRAP_OBJS))
+else
+SHARED_PSWRAP_OBJS =
+SHARED_PSWRAP_OBJ_FILES =
+endif
 
-C_OBJ_FILES = $(C_FILES:.c=${OEXT}) $(PSWRAP_OBJ_FILES)
+C_OBJS = $(C_FILES:.c=${OEXT})
+C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
+ifeq ($(HAVE_SHARED_LIBS), yes)
+SHARED_C_OBJS = $(C_FILES:.c=_pic${OEXT})
+SHARED_C_OBJ_FILES = $(SHARED_PSWRAP_OBJ_FILES) \
+   $(addprefix $(GNUSTEP_OBJ_DIR)/,$(SHARED_C_OBJS))
+else
+SHARED_C_OBJS =
+SHARED_C_OBJ_FILES =
+endif
 
 #
 # Global targets

@@ -19,6 +19,9 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# Default version
+VERSION = 1.0.0
+
 #
 # Scripts to run for parsing canonical names
 #
@@ -48,6 +51,8 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
 # Determine the core libraries
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/core.make
+
+GNUSTEP_OBJ_DIR = objs/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 
 #
 # Variables specifying the installation directory paths
