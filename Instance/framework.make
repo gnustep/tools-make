@@ -118,17 +118,14 @@ ALL_CPPFLAGS += $(TTMP_LIBS)
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
+GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR_NAME)/Resources
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
+
 internal-framework-all:: before-$(GNUSTEP_INSTANCE)-all \
                          $(GNUSTEP_OBJ_DIR) \
                          build-framework \
                          after-$(GNUSTEP_INSTANCE)-all
 
-FRAMEWORK_RESOURCE_DIRS = $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Resources/,$(RESOURCE_DIRS))
-FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/,$(WEBSERVER_RESOURCE_DIRS))
-
-ifeq ($(strip $(LANGUAGES)),)
-  override LANGUAGES="English"
-endif
 ifeq ($(FRAMEWORK_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR = $(GNUSTEP_FRAMEWORKS)
 endif
@@ -167,13 +164,7 @@ endif
 $(FRAMEWORK_LIBRARY_DIR_NAME):
 	$(MKDIRS) $@
 
-$(FRAMEWORK_VERSION_DIR_NAME)/Resources:
-	$(MKDIRS) $@
-
 $(FRAMEWORK_VERSION_DIR_NAME)/Headers:
-	$(MKDIRS) $@
-
-$(FRAMEWORK_RESOURCE_DIRS):
 	$(MKDIRS) $@
 
 $(DERIVED_SOURCES) :
@@ -254,11 +245,9 @@ $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
 
 build-framework:: $(FRAMEWORK_FILE) \
-                  framework-components \
-                  framework-resource-files \
-                  framework-localized-resource-files \
-                  framework-localized-webresource-files \
-                  framework-webresource-files
+                  shared-instance-bundle-all \
+                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist \
+                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
 
 ifeq ($(WITH_DLL),yes)
 
@@ -279,100 +268,6 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 
 endif # WITH_DLL
 
-# NB: In the following rule we do not print a warning if we don't find
-# a .lproj dir here - to avoid spurious or duplicated warnings
-framework-components::
-ifneq ($(strip $(COMPONENTS)),)
-	@ echo "Copying components into the framework wrapper..."; \
-	cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	for component in $(COMPONENTS); do \
-	  if [ -d ../../../../$$component ]; then \
-	    cp -r ../../../../$$component ./; \
-	  fi; \
-	done; \
-	echo "Copying localized components into the framework wrapper..."; \
-	for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
-	    $(MKDIRS) $$l.lproj; \
-	    cd $$l.lproj; \
-	    for f in $(COMPONENTS); do \
-	      if [ -d ../../../../../$$l.lproj/$$f ]; then \
-	        cp -r ../../../../../$$l.lproj/$$f .;\
-	      fi; \
-	    done;\
-	    cd ..; \
-	  fi;\
-	done
-endif
-
-framework-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist\
-                           $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
-ifneq ($(strip $(RESOURCE_FILES)),)
-	@ echo "Copying resources into the framework wrapper..."; \
-	for f in "$(RESOURCE_FILES)"; do \
-	  cp -r $$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
-	done
-endif
-
-framework-localized-resource-files:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist
-ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-	@ echo "Copying localized resources into the framework wrapper..."; \
-	for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
-	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
-	      fi; \
-	    done; \
-	  else \
-	    echo "Warning: $$l.lproj not found - ignoring"; \
-	  fi; \
-	done
-endif
-
-$(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer:
-	$(MKDIRS) $@
-
-$(FRAMEWORK_WEBSERVER_RESOURCE_DIRS):
-	$(MKDIRS) $@
-
-framework-webresource-dir:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer \
-                       $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)
-
-framework-webresource-files::
-
-ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
-framework-webresource-files:: framework-webresource-dir
-	@ echo "Copying webserver resources into the framework wrapper..."; \
-	for ff in $(WEBSERVER_RESOURCE_FILES); do \
-	  if [ -f ./WebServerResources/$$ff ]; then \
-	    cp -r ./WebServerResources/$$ff \
-                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/$$ff; \
-	  fi; \
-	done
-endif
-
-framework-localized-webresource-files::
-
-ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
-framework-localized-webresource-files:: framework-webresource-dir
-	@ echo "Copying localized webserver resources into the framework wrapper..."; \
-	for l in $(LANGUAGES); do \
-	  if [ -d WebServerResources/$$l.lproj ]; then \
-	    $(MKDIRS) \
-	        $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/$$l.lproj;\
-	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-	      if [ -f WebServerResources/$$l.lproj/$$f ]; then \
-	        cp -r WebServerResources/$$l.lproj/$$f \
-	              $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/$$l.lproj/$$f; \
-	      fi;\
-	    done;\
-	  else \
-	   echo "Warning: WebServerResources/$$l.lproj not found - ignoring"; \
-	  fi; \
-	done
-endif
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
