@@ -1,3 +1,8 @@
+Tue Sep 26 10:21:51 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make: Use opentool when running plmerge.
+	* service.make: Use opentool when running make_services.
+
 2000-09-25  Adam Fedor  <fedor@gnu.org>
 
 	* common.make (JAVA_HOME): Revert previous change.
