@@ -39,9 +39,9 @@ RULES_MAKE_LOADED=yes
 #	libgmodel.all.library.variables
 #
 %.variables:
-	@(target=$(word 1,$(subst ., ,$*)); \
-	operation=$(word 2,$(subst ., ,$*)); \
-	type=$(subst -,_,$(word 3,$(subst ., ,$*))); \
+	@(target=$(basename $(basename $*)); \
+	operation=$(subst .,,$(suffix $(basename $*))); \
+	type=$(subst -,_,$(subst .,,$(suffix $*))); \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    TARGET_TYPE=$${type} \
 	    OPERATION=$${operation} TARGET=$${target} \
