@@ -1,3 +1,8 @@
+Wed Dec 17 10:40:02 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* ld_lib_path.sh: Don't treat Solaris' LD_LIBRARY_PATH different (patch
+	from Matthias Klose <Matthias.Klose@cs.tu-berlin.de>).
+
 Fri Nov 28 10:47:11 1997  Scott Christley  <scottc@net-community.com>
 
 	* common.make (GNUSTEP_INSTALLATION_DIR): If the default
