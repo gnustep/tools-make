@@ -630,7 +630,7 @@ if test "${with_network_root+set}" = set; then
   withval="$with_network_root"
   GNUSTEP_NETWORK_ROOT=$withval
 else
-  GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Local
+  GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Network
 
 fi
 
