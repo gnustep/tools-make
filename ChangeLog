@@ -1,3 +1,12 @@
+Wed Nov 28 11:18:01 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in (--with-user-root): New configure option allowing
+	to ask for a different GNUSTEP_USER_ROOT to be used.
+	* configure: Regenerated.
+	* GNUstep.sh.in (GNUSTEP_USER_ROOT): Define from configure if
+	needed.
+	* GNUstep.csh.in: Idem.	
+
 Wed Nov 28 11:08:07 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* brain.make (WO_LDFLAGS, WO_LIBS, WO_DEFINE): Removed.
