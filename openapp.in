@@ -31,9 +31,6 @@ fi
 if [ -z "$GNUSTEP_FLATTENED" ]; then
   GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
 fi
-if [ -z "$EXEEXT" ]; then
-  EXEEXT=@EXEEXT@
-fi
 
 # trap the --library-combo parameter
 case $1 in
@@ -52,10 +49,6 @@ esac
 
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
-
-if [ -n "$EXEEXT" ]; then
-  app=$app$EXEEXT
-fi
 
 case $app in
   /*)	# An absolute path.
@@ -91,11 +84,24 @@ fi
 appname=`echo $app | sed 's/\.[a-z]*$//'`
 appname=`basename $appname`
 
-if [ ! -f $full_appname/$appname ]; then
-  echo "Could not find $full_appname executable/script"
+if [ -n "$GNUSTEP_FLATTENED" ]; then
+
+  if [ -z "$EXEEXT" ]; then
+    EXEEXT=@EXEEXT@
+  fi
+
+  if [ -n "$EXEEXT" ]; then
+    appname="$appname$EXEEXT"
+  fi
+
+fi
+
+
+if [ ! -f "$full_appname/$appname" ]; then
+  echo "Could not find $full_appname/$appname executable/script"
   exit 1
 fi
 
 IFS=" "
-$full_appname/$appname "$@"
+exec "$full_appname/$appname" "$@"
 
