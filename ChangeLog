@@ -1,3 +1,20 @@
+Mon Oct  1 03:16:05 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Warning - backwards incompatible change in API.
+	* common.make (GNUSTEP_LIBRARIES): Redefine to be what was called
+	GNUSTEP_LIBRARIES_ROOT before.  (GNUSTEP_FRAMEWORKS_LIBRARIES):
+	Redefine to be what was called GNUSTEP_FRAMEWORKS_LIBRARIES_ROOT
+	before.  (GNUSTEP_LIBRARIES_ROOT): Deprecated.
+	(GNUSTEP_FRAMEWORKS_LIBRARIES): Deprecated.
+	(GNUSTEP_RESOURCES, GNUSTEP_JAVA): Define standalone without
+	relying on GNUSTEP_LIBRARIES.
+	* framework.make: Updated for change - all occurrences of
+	$(GNUSTEP_FRAMEWORKS_LIBRARIES) replaced with
+	$(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR).
+	* library.make (LIBRARY_INSTALL_DIR): Updated for change - use
+	$(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) rather than
+	$(GNUSTEP_LIBRARIES).
+	
 Mon Oct  1 02:51:10 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (GNUSTEP_TARGET_LIBRARIES): Variable removed.
