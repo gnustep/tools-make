@@ -1,3 +1,11 @@
+Thu May 23 12:22:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/rules.make (OBJ_FILES_TO_LINK): Strip it when it's
+	created, so that we can compare it to '' to check if there is
+	anything to build/link or not.
+	* Instance/bundle.make: Modified everything implementing support
+	for bundles which contain resources, but no object file to load.
+
 Tue May 21 17:07:23 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/rules.make (internal-$(GNUSTEP_TYPE)-install):
