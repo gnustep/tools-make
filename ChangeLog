@@ -1,3 +1,7 @@
+1999-08-03  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* application.make: Make installation directory if necessary.
+
 1999-08-01  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	Fix suggested by beppu@rigel.oac.uci.edu
