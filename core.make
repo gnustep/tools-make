@@ -112,8 +112,22 @@ GUI_LIBS = -lgnustep-gui
 endif
 
 ifeq ($(GUI_LIB),nx)
-GUI_LDFLAGS = -framework AppKit
-GUI_LIBS =
+  ifneq ($(APP_NAME),)
+    # If we're building an application pass the following additional flags to
+    # the linker
+    GUI_LDFLAGS = -sectcreate __ICON __header $(APP_NAME).iconheader \
+		  -segprot __ICON r r -sectcreate __ICON app \
+	/NextLibrary/Frameworks/AppKit.framework/Resources/NSDefaultApplicationIcon.tiff \
+		-framework AppKit
+    GUI_LIBS =
+
+before-link:: $(APP_NAME).iconheader
+
+$(APP_NAME).iconheader:
+	@echo "F	$(APP_NAME).app	$(APP_NAME) app" >$@
+	@echo "F	$(APP_NAME)	$(APP_NAME) app" >>$@
+
+  endif
 endif
 
 BACKEND_LDFLAGS =

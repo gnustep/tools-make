@@ -113,18 +113,35 @@ ifeq ($(GNUSTEP_TARGET_OS), nextstep4)
 HAVE_BUNDLES            = yes
 HAVE_SHARED_LIBS        = yes
 
+ifeq ($(FOUNDATION_LIB),nx)
+# Use the NeXT compiler
+CC = cc
+OBJC_COMPILER = NeXT
+endif
+
 TARGET_LIB_DIR = \
     Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
 
+ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool -dynamic -read_only_relocs suppress -o $@ \
-                /NextLibrary/Frameworks/System.framework/System \
+		-framework System \
                 -L$(GNUSTEP_USER_ROOT)/$(TARGET_LIB_DIR) \
 		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
 		-L$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR) \
 		$(LIBRARIES_DEPEND_UPON) -lobjc -lgcc $^; \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+else
+SHARED_LIB_LINK_CMD     = \
+        /bin/libtool -dynamic -read_only_relocs suppress -o $@ \
+		-framework System \
+                -L$(GNUSTEP_USER_ROOT)/$(TARGET_LIB_DIR) \
+		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
+		-L$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR); \
+	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+endif
 
 STATIC_LIB_LINK_CMD	= \
 	/bin/libtool -static -o $@ $^; \
@@ -138,7 +155,9 @@ AFTER_INSTALL_STATIC_LIB_COMMAND =
 SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .a
 
+ifneq ($(OBJC_COMPILER), NeXT)
 TARGET_SYSTEM_LIBS += -lgcc
+endif
 
 HAVE_BUNDLES    = yes
 BUNDLE_CFLAGS   =

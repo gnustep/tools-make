@@ -247,80 +247,62 @@ int search_for_library_with_type_in_directory(char type, char* path, char* ext)
 
       /* The extension matches. Do a check to see if the suffix of the
 	 library matches the library type we are looking for. */
-      for (i = library_name_len + 3; i < filelen - extlen; i++)
-	{
+      for (i = library_name_len + 3; i < filelen - extlen; i++) {
+	/* Possibly a match */
+	if (type == dirbuf->d_name[i])
+	  found = 1;
+
+	if (dirbuf->d_name[i] == '_') { /* Only one dash allowed */
+	  /* Found another dash or one of the letters first */
+	  if (dash || dfound || sfound || pfound) {
+	    found = 0;
+	    break;
+	  }
+	  else {
+	    dash = 1;
+	    continue;
+	  }
+	}
+	else if (dirbuf->d_name[i] == 'd') { /* Only one d allowed */
+	  /* We must have found the dash already */
+	  if (!dash || dfound) {
+	    found = 0;
+	    break;
+	  }
+	  else {
+	    dfound = 1;
+	    continue;
+	  }
+	}
+	else if (dirbuf->d_name[i] == 'p') { /* Only one p allowed */
+	  /* We must have found the dash already */
+	  if (!dash || pfound) {
+	    found = 0;
+	    break;
+	  }
+	  else {
+	    pfound = 1;
+	    continue;
+	  }
+	}
+	else if (dirbuf->d_name[i] == 's') { /* Only one s allowed */
+	  /* We must have found the dash already */
+	  if (!dash || sfound) {
+	    found = 0;
+	    break;
+	  }
+	  else {
+	    sfound = 1;
+	    continue;
+	  }
+	}
+	else {
 	  /* Skip the libraries that begin with the same name but have
 	     different suffix, eg libobjc.a libobjc-test.a. */
-
-	  /* Possibly a match */
-	  if (type == dirbuf->d_name[i]) {
-	    found = 1;
-	  }
-
-	  /* Only one dash allowed */
-	  if (dirbuf->d_name[i] == '_')
-	    {
-	      /* Found another dash or one of the letters first */
-	      if (dash || dfound || sfound || pfound)
-		{
-		  found = 0;
-		  break;
-		}
-	      else
-		{
-		  dash = 1;
-		  continue;
-		}
-	    }
-
-	  /* Only one d allowed */
-	  if (dirbuf->d_name[i] == 'd')
-	    {
-	      /* We must have found the dash already */
-	      if (!dash || dfound)
-		{
-		  found = 0;
-		  break;
-		}
-	      else
-		{
-		  dfound = 1;
-		  continue;
-		}
-	    }
-
-	  /* Only one p allowed */
-	  if (dirbuf->d_name[i] == 'p')
-	    {
-	      /* We must have found the dash already */
-	      if (!dash || pfound)
-		{
-		  found = 0;
-		  break;
-		}
-	      else
-		{
-		  pfound = 1;
-		  continue;
-		}
-	    }
-
-	  /* Only one s allowed */
-	  if (dirbuf->d_name[i] == 's')
-	    {
-	      /* We must have found the dash already */
-	      if (!dash || sfound)
-		{
-		  found = 0;
-		  break;
-		}
-	      else
-		{
-		  sfound = 1;
-		  continue;
-		}
-	    }
+	  found = 0;
+	  break;
 	}
+      }
 
       if (found) {
 	char filename[PATH_MAX + 1];

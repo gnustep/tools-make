@@ -47,14 +47,6 @@ INSTALL_DATA = $(INSTALL) -m 644
 INSTALL_PROGRAM = $(INSTALL)
 
 #
-# Determine the compilation host and target
-#
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/target.make
-
-GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
-GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
-
-#
 # Get the config information
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
@@ -63,6 +55,14 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
 # Determine the core libraries
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/core.make
+
+#
+# Determine the compilation host and target
+#
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/target.make
+
+GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
+GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
 #
 # Variables specifying the installation directory paths
@@ -113,10 +113,9 @@ GNUSTEP_HEADERS_FND_FLAG = -I$(GNUSTEP_HEADERS_FND) \
 endif
 
 ifeq ($(FOUNDATION_LIB),nx)
-GNUSTEP_FND_DIR = next
-GNUSTEP_HEADERS_FND = $(GNUSTEP_HEADERS)/$(GNUSTEP_FND_DIR)
+GNUSTEP_HEADERS_FND =
+#GNUSTEP_HEADERS_FND_FLAG = -framework Foundation
 FOUNDATION_LIBRARY_DEFINE = -DNeXT_Foundation_LIBRARY=1
-GNUSTEP_HEADERS_FND_FLAG = -I$(GNUSTEP_HEADERS_FND)
 endif
 
 ifeq ($(FOUNDATION_LIB),sun)
@@ -124,13 +123,6 @@ GNUSTEP_FND_DIR = sun
 GNUSTEP_HEADERS_FND = $(GNUSTEP_HEADERS)/$(GNUSTEP_FND_DIR)
 FOUNDATION_LIBRARY_DEFINE = -DSun_Foundation_LIBRARY=1
 GNUSTEP_HEADERS_FND_FLAG = -I$(GNUSTEP_HEADERS_FND)
-endif
-
-ifeq ($(OBJC_COMPILER), NeXT)
-  ifeq ($(FOUNDATION_LIB),nx)
-    GNUSTEP_HEADERS_FND =
-    GNUSTEP_HEADERS_FND_FLAG = -framework Foundation
-  endif
 endif
 
 #
@@ -141,11 +133,9 @@ GNUSTEP_HEADERS_GUI = $(GNUSTEP_HEADERS)/gnustep/gui
 GNUSTEP_HEADERS_GUI_FLAG = -I$(GNUSTEP_HEADERS_GUI)
 endif
 
-ifeq ($(OBJC_COMPILER), NeXT)
-  ifeq ($(FOUNDATION_LIB),nx)
-    GNUSTEP_HEADERS_GUI =
-    GNUSTEP_HEADERS_GUI_FLAG = -framework AppKit
-  endif
+ifeq ($(GUI_LIB),nx)
+GNUSTEP_HEADERS_GUI =
+#GNUSTEP_HEADERS_GUI_FLAG = -framework AppKit
 endif
 
 #
@@ -161,7 +151,9 @@ RUNTIME_DEFINE = -DGNU_RUNTIME=1
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB),nx)
-RUNTIME_FLAG = -fnext-runtime
+  ifneq ($(OBJC_COMPILER), NeXT)
+    RUNTIME_FLAG = -fnext-runtime
+  endif
 RUNTIME_DEFINE = -DNeXT_RUNTIME=1
 endif
 

@@ -365,6 +365,62 @@ profile is turned on the output directory would be shared_profile_debug_obj.
 Of course you also have to specify the library combo if it's different than the
 default.
 
+Naming conventions of the libraries
+===================================
+
+Sometimes you need to have different versions of a library compiled with
+different options. Suppose you want to compile a library with profiling
+information enabled so that you can profile your code. But you don't want to
+overwrite your existing installed library so that only some of the applications
+will work with the profile library, the rest will still use the normal library.
+
+The makefile package supports such a schema by having different names for
+different types of the same library. This works by appending an underscore
+after the name of the library followed by a letter which indicates the type of
+the library:
+
+'s' for a static library
+'p' for a profile library
+'d' for a debug library
+
+So for example if you have the library 'example' compiled with debug
+information as a shared library it would be named libexample_d.so. If the same
+library is compiled as a static library its name would be named
+libexample_sd.a. The reason why the 's' letter for the static library appears
+in name of the library is for systems where the extensions of libraries don't
+matter.
+
+It is possible to compile a library with whatever combination of flags you
+want. The letters are appended in the order specified above, so if you compile
+the library as a static library, with profile and debug information enabled,
+the library name will have the _spd suffix appended.
+
+How a library is chosen
+=======================
+
+What happens if you compile an application with profile enabled and you don't
+have a library compiled with profile info into it, but you do have a normal
+library installed? It would be great if the normal library is chosen instead.
+This is a problem because the library that should be chosen has a different
+name than the profile library.
+
+We do support this schema by requiring the libraries to be specified using the
+short name, without any suffix appended to it. The `example' library in our
+case should be passed to the linker using -lexample, and not using -lexample_p.
+Based upon the shared, profile and debug variables, the makefile package will
+identify which are the libraries that exist on the system and it will come with
+the correct names when linking.
+
+The search order of libraries depending on what type of library is required is
+as follows. First of all an exact match is searched; if one is found it is
+returned. If either debug or profile are required, a library that matches at
+least one of these attributes is returned. For example if there is a
+profile+debug version of a library but only debug is required this library will
+match. If a static version is required but no static versions of the library
+exist, then no library is chosen; in this case the system simply prints out the
+name of the library, assuming a static library is somewhere else in the
+libraries search path of the linker.
+
 The structure of makefiles
 ==========================
 
@@ -410,4 +466,4 @@ The makefile package is installed under $(GNUSTEP_SYSTEM_ROOT)/Makefiles.
 
 Ovidiu Predescu
 
-Last updated: September, 1997
+Last updated: October, 1997

@@ -1,3 +1,23 @@
+Tue Oct 14 15:28:52 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* DESIGN: Wrote about the naming conventions for libraries and how they
+	are chosen by the package.
+	* Makefile.preamble: Use += instead of =.
+	* application.make (stamp-app-% rule): Added before-link target to
+	support building of OPENSTEP 4.x applications.
+	(internal-distclean): New target.
+	* common.make: Changed the order in which target.make gets included.
+	More support for building a native OPENSTEP 4.x application added.
+	* core.make: Write the correct linking flags for building an
+	application under OPENSTEP 4.x. Create the .iconheader file
+	automatically.
+	* openapp.in: Check to see if the application really exists before
+	checking for the binary. Correctly check for the binary under OS 4.x.
+	* target.make: On OS 4.x systems with NeXT's Foundation, use the native
+	compiler. If we don't use the native compiler don't pass the GNU ObjC
+	runtime library and libgcc to libtool.
+	* which_lib.c: Correctly skip the libraries with the same suffix.
+
 Tue Oct 14 11:26:15 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* openapp.in: Add the possibility of passing arguments to the

@@ -58,11 +58,16 @@ case $app in
 	done;;
 esac
 
+if [ -z "$full_appname" ]; then
+  echo "Can't find the required application: $app!"
+  exit 1
+fi
+
 appname=`echo $app | sed 's/\.[a-z]*$//'`
 export_variable=yes . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 if [ "$library_combo" = nx_nx_nx_nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
-  if [ ! -d $full_appname/$appname ]; then
+  if [ ! -f $full_appname/$appname ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
   fi
