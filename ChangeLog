@@ -1,3 +1,7 @@
+Thu Jan 28 10:20:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+        * target.make: use '-lm' for freebsd and osf
+
 Thu Jan  7 16:16:36 1999  Adam Fedor  <fedor@ultra.doc.com>
 
 	* brain.make: Add support for xgps library.
