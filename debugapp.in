@@ -107,15 +107,25 @@ case "$app" in
 	done;;
 esac
 
-corefile=
-if [ -f core ]; then
-	echo -e "Core image has been found in working directory. Use it? ";
-	# Need an argument here for Solaris
-	read REPLY;
-	if [ $REPLY = y ]; then
-		corefile="--core=core";
-	fi
-fi
+# Search for a core file in the current directory.
+corearg=
+corefiles="core*"
+for corefile in $corefiles; do
+  if [ -f "$corefile" ]; then
+    echo -e "Core image ($corefile) has been found in working directory. Use it (y/n)? ";
+    # Need an argument here for Solaris
+    read REPLY;
+    if [ $REPLY = y ]; then
+      echo -e "Using it.";
+      corearg="--core=$corefile";
+      break;
+    else
+      echo -e "Ignoring it.";
+    fi
+  fi
+done
+unset corefile
+unset corefiles
 
 if [ -z "$full_appname" ]; then
   echo "Can't find the required application: $app!"
@@ -171,7 +181,7 @@ if [ "$LIBRARY_COMBO" = nx-nx-nx -a "$GNUSTEP_HOST_OS" = nextstep4 ]; then
   fi
 
   # Support for GDBbundle under OPENSTEP
-  "$GDB" -connect TextEdit $gdbargs "$full_appname/$appname" "$corefile"
+  "$GDB" -connect TextEdit $gdbargs "$full_appname/$appname" "$corearg"
 
 else
   # Determine if the application has a binary for this operating system
@@ -193,15 +203,15 @@ fi
 
 #Support for GDBbundle under OPENSTEP
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
-    "$GDB" -connect TextEdit "$file_appname" "$corefile"
+    "$GDB" -connect TextEdit "$file_appname" "$corearg"
   else
-    if [ -z "$corefile" ]; then
+    if [ -z "$corearg" ]; then
 
        # Arguments passed to debugapp are passed over to the
        # application, in the same way as it happens for openapp.
        "$GDB" --args "$file_appname" "$@"
      else
-       "$GDB" "$file_appname" "$corefile"
+       "$GDB" "$file_appname" "$corearg"
      fi
   fi
 
