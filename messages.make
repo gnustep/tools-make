@@ -35,6 +35,7 @@ ifneq ($(messages),yes)
   ECHO_LINKING   = @(echo " Linking $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) ...";
   ECHO_JAVAHING  = @(echo " Running javah on $< ...";
   ECHO_INSTALLING = @(echo " Installing $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE)...";
+  ECHO_COPYING_INTO_DIR = @(echo " Copying $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) into $(COPY_INTO_DIR)...";
 
   # Instance/Shared/bundle.make
   ECHO_COPYING_RESOURCES = @(echo " Copying resources into the $(GNUSTEP_TYPE) wrapper...";
@@ -45,6 +46,7 @@ ifneq ($(messages),yes)
   ECHO_COPYING_WEBSERVER_LOC_RESOURCES = @(echo " Copying localized webserver resources into the $(GNUSTEP_TYPE) wrapper...";
   ECHO_CREATING_WEBSERVER_LOC_RESOURCE_DIRS = @(echo " Creating localized webserver resource dirs into the $(GNUSTEP_TYPE) wrapper...";
   ECHO_INSTALLING_BUNDLE = @(echo " Installing bundle directory...";
+  ECHO_COPYING_BUNDLE_INTO_DIR = @(echo " Copying bundle directory into $(COPY_INTO_DIR)...";
 
   # Instance/Shared/headers.make
   ECHO_INSTALLING_HEADERS = @(echo " Installing headers...";
@@ -77,6 +79,7 @@ else
   ECHO_LINKING = 
   ECHO_JAVAHING = 
   ECHO_INSTALLING =
+  ECHO_COPYING_INTO_DIR = 
 
   ECHO_COPYING_RESOURCES = 
   ECHO_COPYING_LOC_RESOURCES =
@@ -86,6 +89,7 @@ else
   ECHO_COPYING_WEBSERVER_LOC_RESOURCES = 
   ECHO_CREATING_WEBSERVER_LOC_RESOURCE_DIRS =
   ECHO_INSTALLING_BUNDLE = 
+  ECHO_COPYING_BUNDLE_INTO_DIR = 
 
   ECHO_INSTALLING_HEADERS =
 
