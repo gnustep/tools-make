@@ -1,3 +1,10 @@
+Wed Nov 11 23:30:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	* configure.in: Added checks for thread library on linux
+	* configure: generated from configure.in
+	* config.make.in: Set thread library value
+	* target.make: understand thread library option
+
 Mon Nov  9 23:13:28 1998  Ovidiu Predescu  <ovidiu@slip.net>
 
 	* debugapp.in: Added support for fd-xraw.

@@ -151,14 +151,26 @@ AC_SUBST(ac_cv_library_combo)
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(whether objc has thread support)
 saved_LIBS="$LIBS"
-LIBS="-lobjc $LIBS"
-AC_TRY_RUN([#include "config_thread.m"], objc_threaded=1,
-	objc_threaded=0, objc_threaded=1)
-LIBS="$saved_LIBS"
-if test $objc_threaded = 1; then
-  AC_MSG_RESULT(yes)
+objc_thread_lib=""
+if test $host_os = linux-gnu; then
+  LIBS="-lobjc -lpthread"
+  AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
+	objc_threaded="", objc_threaded="-lpthread")
+  if test x"$objc_threaded" = x""; then
+    LIBS="-lobjc -lpcthread"
+    AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpcthread",
+	objc_threaded="", objc_threaded="-lpcthread")
+  fi
 else
+  LIBS="-lobjc $LIBS"
+  AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lthread",
+	objc_threaded="", objc_threaded="-lthread")
+fi
+LIBS="$saved_LIBS"
+if test x"$objc_threaded" = x""; then
   AC_MSG_RESULT(no)
+else
+  AC_MSG_RESULT(yes)
 fi
 AC_SUBST(objc_threaded)
 

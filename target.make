@@ -36,14 +36,14 @@ endif
 # Target specific libraries
 #
 ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
-  ifeq ($(objc_threaded),1)
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lpthread -ldl -lm
-  else
+  ifeq ("$(objc_threaded)","")
     TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -ldl -lm
+  else
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -ldl -lm
   endif
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-  ifeq ($(objc_threaded),1)
+  ifeq ("$(objc_threaded)","-lthread")
     INTERNAL_CFLAGS = -D_REENTRANT
     INTERNAL_OBJCFLAGS = -D_REENTRANT
     TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lthread -lsocket -lnsl -ldl -lm

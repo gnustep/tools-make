@@ -1558,32 +1558,80 @@ fi
 echo $ac_n "checking whether objc has thread support""... $ac_c" 1>&6
 echo "configure:1560: checking whether objc has thread support" >&5
 saved_LIBS="$LIBS"
-LIBS="-lobjc $LIBS"
-if test "$cross_compiling" = yes; then
-  objc_threaded=1
+objc_thread_lib=""
+if test $host_os = linux-gnu; then
+  LIBS="-lobjc -lpthread"
+  if test "$cross_compiling" = yes; then
+  objc_threaded=-lpthread
 else
   cat > conftest.$ac_ext <<EOF
-#line 1567 "configure"
+#line 1569 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:1571: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:1573: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
-  objc_threaded=1
+  objc_threaded=-lpthread
 else
   echo "configure: failed program was:" >&5
   cat conftest.$ac_ext >&5
   rm -fr conftest*
-  objc_threaded=0
+  objc_threaded=""
 fi
 rm -fr conftest*
 fi
 
-LIBS="$saved_LIBS"
-if test $objc_threaded = 1; then
-  echo "$ac_t""yes" 1>&6
+  if test "$objc_threaded" = ""; then
+    LIBS="-lobjc -lpcthread"
+    if test "$cross_compiling" = yes; then
+  objc_threaded=-lpcthread
 else
+  cat > conftest.$ac_ext <<EOF
+#line 1591 "configure"
+#include "confdefs.h"
+#include "config_thread.m"
+EOF
+if { (eval echo configure:1595: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+then
+  objc_threaded=-lpcthread
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  objc_threaded=""
+fi
+rm -fr conftest*
+fi
+
+  fi
+else
+  LIBS="-lobjc $LIBS"
+  if test "$cross_compiling" = yes; then
+  objc_threaded=-lthread
+else
+  cat > conftest.$ac_ext <<EOF
+#line 1614 "configure"
+#include "confdefs.h"
+#include "config_thread.m"
+EOF
+if { (eval echo configure:1618: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+then
+  objc_threaded=-lthread
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  objc_threaded=""
+fi
+rm -fr conftest*
+fi
+
+fi
+LIBS="$saved_LIBS"
+if test "$objc_threaded" = ""; then
   echo "$ac_t""no" 1>&6
+else
+  echo "$ac_t""yes" 1>&6
 fi
 
 
