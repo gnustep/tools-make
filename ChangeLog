@@ -1,7 +1,7 @@
-Wed Jan 17 15:53:37 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+Wed Jan 17 16:39:13 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
-	* rpm.make ($(SPEC_FILE)): Fixed typo in checking
-	RPM_DISABLE_RELOCATABLE.
+	* rpm.make (rpm): Fixed typo in copying tar gz file.
+	($(SPEC_FILE)): Fixed typo in checking RPM_DISABLE_RELOCATABLE.
 
 Wed Jan 17 13:58:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
