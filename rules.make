@@ -566,6 +566,15 @@ CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(CC_OBJS))
 OBJ_FILES_TO_LINK = $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) \
                     $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 
+# If we are using Windows32 DLLs, for each library that we link
+# against, pass a -Dlib{library_name}_ISDLL=1 option to the
+# preprocessor (for example, -Dlibgnustep_base_ISDLL=1 or
+# -Dlibobjc_ISDLL=1).  This preprocessor define might be used by the
+# library header files to know they are included from external code
+# needing to use the library symbols, so that the library header files
+# can in this case use __declspec(dllimport) to mark symbols as
+# needing to be put into the import table for the
+# executable/library/whatever that is being compiled.
 ifeq ($(WITH_DLL),yes)
 TMP_LIBS := $(LIBRARIES_DEPEND_UPON) $(BUNDLE_LIBS) $(ADDITIONAL_GUI_LIBS) $(ADDITIONAL_OBJC_LIBS) $(ADDITIONAL_LIBRARY_LIBS)
 TMP_LIBS := $(filter -l%, $(TMP_LIBS))
