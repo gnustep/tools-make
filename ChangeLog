@@ -1,3 +1,7 @@
+2001-04-14  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* target.make: fixed target for FreeBSD aout.
+
 2001-04-13  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* target.make: check for freebsd instead of freebsdelf.
