@@ -1,3 +1,9 @@
+Wed Nov  6 15:26:07 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Fixed typo - was installing
+	config.site into GNUSTEP_SYSTEM_ROOT/shared rather than
+	GNUSTEP_SYSTEM_ROOT/share.
+
 Wed Nov  6 12:31:40 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Rewritten framework/subproject interaction so that it supports
