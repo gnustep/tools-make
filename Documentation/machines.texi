@@ -264,21 +264,10 @@ and glibc library (which has the threads library) and install both.
 Unknown
 
 @item Extra libs needed 
-Unknown
+libiconv
 
 @item Special Instructions 
-Can compile with shared libraries on elf architectures, although problems
-persist with the NXConstantString class. Currently, to avoid this you can
-redefine NXConstantString to NXConstantString2 in the libobjc library. Or
-you could do the following (works on NetBSD 1.4Z)
-
-@example
-cd /usr/lib
-ar -dv libobjc_p.a NXConstStr.po
-ar -dv libobjc_pic.a NXConstStr.so
-ar -dv libobjc.a NXConstStr.o
-rm /usr/lib/libobjc.so.0.0
-@end example
+See the README.NetBSD file located in the gnustep-make package.
 
 @end table
 

@@ -1,0 +1,155 @@
+Hi folks,
+
+we have installed GS on NetBSD 1.5 (intel) and this is what we did:
+
+pkg_add means, we have the pkg from the NetBSD package collection.
+
+1.) gnumake:	pkg_add gmake-3.79.1.tgz
+2.) libiconv:	pkg_add libiconv-1.5.tgz
+3.) libxml:
+			./configure
+
+in Makefile: 	Add the following lines:
+
+INLCUDES = -I. -I/usr/local/include -I/usr/pkg/include
+LDFLAGS = -L/usr/pkg/lib -liconv
+
+
+			make
+			su
+			make install
+
+4.) ffcall-1.6b:	./configure
+			make
+			make check
+			su
+			make install
+
+5.) pth-1.3.7:		./configure --enable-pthread --enable-syscall-soft
+			make
+			make test
+			su
+			make install
+			[for removing 'make uninstall']
+
+5.1) 			cd /usr/lib
+			ar -dv libobjc_p.a	NXConstStr.po
+			ar -dv libobjc_pic.a	NXConstStr.so
+			ar -dv libobjc.a	NXConstStr.o
+			rm libobjc.so.0.0
+
+6.) core/make:		#. Version	<-- disable Version
+			./configure --prefix=/usr/GNUstep
+			gmake
+			su
+			gmake install
+
+		File : /usr/GNUstep/System/Makefiles/framework.make
+			change ine: with ... {if($$2 == "R") ...
+			in ... {if($$2 == "D") ...
+
+
+7.) core/base:		source /usr/GNUstep/System/Makefiles/GNustep.csh
+			
+			./configure --prefix=/usr/GNUstep
+
+	File: GSFormat.m	include <wchar.h>   <-- ADD
+				(unichar *)strerror(save_errno); <- REPLACED  
+__strerror_r
+	File: NSCoder.m		LINE 372: remove ";"
+				LINE 373, 374 :
+					return ((((GNU... + 0) * 100
+					+ GNU.. + 0) * 100) + GNU... + 0;
+
+	File:dynamic-load.h	Zeile 93: // sym = dlsym(RTLD_NEXT, symbol);
+					  sym = dlsym(handle, symbol);
+
+			gmake
+			su
+			gmake install
+
+8.) core/gui:		./configure --prefix=/usr/GNUstep
+				    --with-tiff-library=/usr/pkg/lib
+				    --with-jpeg-library=/usr/pkg/lib
+
+File: Source/SharedX/XGBitmapImageRep.m  // include <config.h> <-- uncomment
+	File: Source/XGBitmap.m		// include <config.h>  <-- uncomment
+
+touch Sources/config.h
+
+setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/usr/pkg/lib"
+
+			gmake ADDITIONAL_INCLUDE_DIRS ="-I/usr/pkg/include
+							-I../Headers"
+			       LDFLAGS="-L/usr/pkg/lib -ltiff -ljpeg"
+
+			su
+			gmake install
+
+9.) core/xgps:		./configure --prefix=/usr/GNUstep
+				    --with-tiff-library=/usr/pkg/lib
+				    --with-jpeg-library=/usr/pkg/lib
+
+		setenv LD_LIBRARY_PATH "${LD_LIBRARY_PATH}:/usr/X11R6/lib"
+
+	gmake ADDITIONAL_INCLUDE_DIRS="-I/usr/pkg/include -I../Headers"
+			      LDFLAGS="-L/usr/pkg/lib -L/usr/X11R6/lib
+					-ltiff -lXmu -lXt"
+
+			su
+			gmake install
+
+9.1) extensions:	./configure --prefix=/usr/GNUstep
+			gmake
+			su
+			gmake install
+
+10.)  Prefs:
+/usr/GNUstep/System/Tools/defaults write NSGlobalDomain "Local
+Time Zone" "Europe/Berlin"
+
+
+10.1)  /etc/rc.local:
+
+	GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
+	if [ -f /usr/GNUstep/System/Tools/ix86/netbsdelf1.5/gdomap ]; then
+	  /usr/GNUstep/System/Tools/ix86/netbsdelf1.5/gdomap
+	fi
+
+10.2)  .cshrc:
+	
+	Add this at the end of .cshrc:
+
+	setenv LD_LIBRARY_PATH /usr/X11R6/lib:/usr/local/lib/usr/pkg/lib
+	source /usr/GNUstep/System/Makefiles/GNUstep.csh
+	if ( `gdomap -L GDNCServer | grep -c Found` == '0' ) then
+	  echo "Starting GNUstep services..."
+	  gdnc
+	  gpbs
+	endif
+
+
+11.) GWorkspace:	gmake LDFLAGS="-L/usr/pkg/lib -ltiff -lXmu -lXt"
+
+	start:		openapp GWorkspace.app
+
+
+12.) ProjectCenter:	su
+			gmake install LDFLAGS="-L/usr/pkg/lib -ltiff -lXmu -lXt"
+
+	start:		openapp ProjectCenter.app
+
+
+---
+   _  _
+ _(_)(_)_  David Wetzel, Turbocat's Development,
+(_) __ (_) Buchhorster Strasse 23, D-16567 Muehlenbeck/Berlin, FRG,
+  _/  \_   Fax +49 33056 82835 NeXTmail dave@turbocat.de
+ (______)  http://www.turbocat.de/
+           DEVELOPMENT * CONSULTING * ADMINISTRATION
+
+_______________________________________________
+Discuss-gnustep mailing list
+Discuss-gnustep@gnu.org
+http://mail.gnu.org/mailman/listinfo/discuss-gnustep
+

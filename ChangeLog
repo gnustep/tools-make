@@ -1,3 +1,9 @@
+2001-02-28  Adam Fedor  <fedor@gnu.org>
+
+	* rules.make (LIBRARIES_DEPEND_UPON): Use ALL_LIB_DIRS on 
+	LIB_DIRS_NO_SYSTEM.
+	* Documentation/README.NetBSD: New file.
+
 2001-02-27  Adam Fedor  <fedor@gnu.org>
 
 	* rules.make (LIBRARIES_DEPEND_UPON): Switch order of -L flags so

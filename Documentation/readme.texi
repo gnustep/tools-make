@@ -15,8 +15,10 @@ cross-compiled binaries.
 
 The file @samp{NEWS} has the library's feature history.
 
-The files @samp{INSTALL} or @samp{GNUstep-HOWTO} (from the core package)
-gives instructions for installing the library.
+The files @samp{INSTALL} or @samp{GNUstep-HOWTO} 
+give instructions for installing the library. Also see the machines.texi
+documentation and various machine specific READMEs in the Documentation
+directory.
 
 Files in the @samp{Documentation} directory have information on the
 design of the Makefile system and how to write your own makefiles that
