@@ -19,6 +19,7 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 AC_INIT
+AC_PREREQ(2.57)
 AC_CONFIG_SRCDIR([application.make])
 AC_CONFIG_HEADER(config.h)
 
@@ -492,6 +493,7 @@ fi
 AC_SUBST(AUTO_DEPENDENCIES)
 AC_SUBST(INCLUDES)
 AC_SUBST(LIB_DIR)
+AC_SUBST(OBJCFLAGS)
 
 #---------------------------------------------------------------------
 # Enable/disable warnings for deprecated #import directive as required

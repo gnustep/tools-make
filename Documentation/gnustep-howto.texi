@@ -101,9 +101,8 @@ included parts of ffcall are under GNU LGPL.
 
 @item libffi library (OPTIONAL)
 This is a library that provides stack frame handling for NSInvocation
-and NSConnection similar to ffcall. However, libffi is not as well tested
-as ffcall so you should not use it unless you are familiar with 
-potential problems. Use this instead of ffcall. You don't need both.
+and NSConnection similar to ffcall. 
+Use this instead of ffcall. You don't need both.
 
 @item WindowMaker (Version >= 0.62) (OPTIONAL)
 GNUstep and WindowMaker work together to provide a consistant interface.
@@ -129,7 +128,7 @@ replacement, it can quickly be used by creating another bundle.
 
 @item libiconv (OPTIONAL)
 Note: Do not install this library unless you are sure you need it.
-iconv support except perhaps MinGW.
+You probably don't need it except perhaps on MinGW.
 Unicode support functions (iconv) come with glibc version 2.1 or greater. If
 you don't have glibc (try iconv --version), you can get the separate 
 libiconv library from 
@@ -138,6 +137,7 @@ neither one is required to use GNUstep.
 
 @item gnustep-objc package (for gcc version < 3.0 ONLY) (RECOMMENDED)
 Note: Do not install this library unless you are sure you need it.
+You probably don't need it except on MinGW.
 This is a special version of the Objective-C runtime that include several
 bug fixes and features that were not in gcc versions previous to 3.0.
 It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
