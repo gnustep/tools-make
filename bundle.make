@@ -98,7 +98,9 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the bundle wrapper..."; \
-	  cp -r $(RESOURCE_FILES) $(BUNDLE_DIR_NAME)/Resources; \
+	  for f in $(RESOURCE_FILES); do \
+	    cp -r $$f $(BUNDLE_DIR_NAME)/Resources/$$f; \
+	  done; \
 	fi)
 
 

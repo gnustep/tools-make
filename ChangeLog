@@ -1,3 +1,8 @@
+Mon Jul 20 10:38:25 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* application.make (app-resource-files): Use For loop to copy files.
+	* bundle.make (app-resource-files): Likewise.
+
 Fri Jul 10 21:46:19 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* target.make (HP_UX SHARED_LINK): Fix up including *.o files.

@@ -148,7 +148,9 @@ app-resource-dir::
 app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the application wrapper..."; \
-	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources/$(RESOURCE_FILES); \
+	  for f in $(RESOURCE_FILES); do \
+	    cp -r $$f $(APP_DIR_NAME)/Resources/$$f; \
+	  done \
 	fi)
 
 $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources
