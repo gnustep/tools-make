@@ -60,7 +60,6 @@ endif
 
 makedir = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 tooldir = $(GNUSTEP_SYSTEM_ROOT)/Tools
-librarydir = $(GNUSTEP_SYSTEM_ROOT)/Libraries
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
