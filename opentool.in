@@ -61,29 +61,55 @@ case $tool in
 	full_toolname=${tool_dir}/${tool_name};;
   *)	# A path that should be searched into GNUstep tool paths
 
-        if [ -z "$GNUSTEP_FLATTENED" ]; then
-          # search for a local one
-          for file in */$GNUSTEP_HOST_LDIR/$tool; do
-            if [ -x $file ]; then
-              full_toolname=$file;
-              break;
-            fi
-          done
-	fi
+        # Search for a local tool
 
-        if [ -n $GNUSTEP_PATHPREFIX_LIST ]; then
-          SPATH=$GNUSTEP_PATHPREFIX_LIST
-        else
-          SPATH=$PATH
-        fi
-        SPATH=.:$SPATH
-        IFS=:
-        for dir in $SPATH; do
-          if [ -x $dir/Tools/$tool ]; then
-            full_toolname=$dir/Tools/$tool
+        # We used to scan all ./*/$(GNUSTEP_HOST_LDIR)/ directories,
+        # but this facility was removed (GNUSTEP_HOST_LDIR is no
+        # longer even defined in this file), now we perform a much
+        # simpler search.
+
+        # The really important one is looking into ./obj, anyway here
+        # is the order in which we search local directories - 
+        # First, we search in ./
+        # Second, we search in ./obj
+        # Third, we search in ./Tools/
+        # Fourth, we search in ./Tools/obj
+        for dir in . obj Tools Tools/obj; do
+          # echo "$dir/$tool";
+          if [ -x "$dir/$tool" ]; then
+            full_toolname=$dir/$tool
+            # echo "Found: $dir/$tool";
             break;
           fi
         done
+
+	if [ -z "$full_toolname" ]; then 
+          
+          # Local tool not found - Search for an installed one
+
+          # we search in GNUSTEP_PATHPREFIX_LIST, which means we
+          # search in the order in:
+          # GNUSTEP_USER_ROOT
+          # GNUSTEP_LOCAL_ROOT
+          # GNUSTEP_NETWORK_ROOT
+          # GNUSTEP_SYSTEM_ROOT
+          # If GNUSTEP_PATHPREFIX_LIST is not defined, we search in
+          # PATH (I don't know why)
+          if [ -n "$GNUSTEP_PATHPREFIX_LIST" ]; then
+            SPATH=$GNUSTEP_PATHPREFIX_LIST
+          else
+            SPATH=$PATH
+          fi
+          IFS=:
+          for dir in $SPATH; do
+            # echo "$dir/Tools/$tool";
+            if [ -x "$dir/Tools/$tool" ]; then
+              # echo "Found: $dir/Tools/$tool";
+              full_toolname=$dir/Tools/$tool
+              break;
+            fi
+          done
+        fi
         ;;
 esac
 
