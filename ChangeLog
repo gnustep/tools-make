@@ -1,3 +1,8 @@
+2002-02-01 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUmakeifle: install Master and Instance versions of
+	application.make
+
 Thu Jan 31 17:47:39 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/application.make (APP_EXTENSION): Set it in common.make,
