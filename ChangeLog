@@ -1,3 +1,9 @@
+2001-04-25 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* documentation.make: Revert last change ... it broke javadoc makes
+	for targets like gnu.gnustep.base ... So how do we write proper
+	makefile dependency rules for javadoc?
+
 Wed Apr 25 14:01:32 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* java.make (JAVA_INSTALLATION_DIR): New variable to configure
