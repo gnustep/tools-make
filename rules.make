@@ -479,9 +479,9 @@ $(GNUSTEP_MAKEFILES)/Instance/Documentation/*.make: ;
 
 # The rule to create the objects file directory.
 $(GNUSTEP_OBJ_DIR):
-	@($(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
+	$(ECHO_NOTHING)$(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
 	rm -f obj; \
-	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj)
+	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj$(END_ECHO)
 
 endif
 # rules.make loaded
