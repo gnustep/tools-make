@@ -449,7 +449,10 @@ INTERNAL_OBJCFLAGS += $(ADDITIONAL_FLAGS) $(OPTFLAG) $(OBJCFLAGS) \
 INTERNAL_CFLAGS += $(ADDITIONAL_FLAGS) $(CFLAGS) $(OPTFLAG) $(RUNTIME_FLAG)
 INTERNAL_LDFLAGS += $(LDFLAGS)
 
-GNUSTEP_OBJ_PREFIX = $(shell echo $(OBJ_DIR_PREFIX) | sed 's/ //g')
+# trick needed to replace a space with nothing
+empty:=
+space:= $(empty) $(empty)
+GNUSTEP_OBJ_PREFIX = $(subst $(space),,$(OBJ_DIR_PREFIX))
 
 #
 # Support building of Multiple Architecture Binaries (MAB). The object files
