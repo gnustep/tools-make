@@ -1,7 +1,8 @@
 2000-03-06  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess: Better guess of NetBSD systems.
-	* target.make: Support for shared libs on NetBSD.
+	* target.make: Support for shared libs on NetBSD. (patch from 
+	Peter Cooper <comrade@obverse.com.au>).
 
 	* makeinstalldirs: Add '-p' option to mkdir, which prevents
 	race condition when running make with the '-j' option. Some
