@@ -28,7 +28,7 @@ where to get various files.
 1. First, start up a Cygwin BASH shell and make sure the MinGW tools
 are in your path:
 
-  export PATH=//c/gcc-2.95.2-1/bin:$PATH
+  export PATH=//c/mingw/bin:$PATH
 
 (Put in whatever path you have for the mingw tools).
 

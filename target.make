@@ -35,6 +35,8 @@ endif
 #
 # Target specific libraries
 #
+TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lm
+
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) \
 	-lwsock32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
