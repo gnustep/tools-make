@@ -22,6 +22,10 @@
 # which, when appended to the first one, gives the second one ... more
 # precisely, the path of minimum length with this property.
 #
+# <NB: the paths must be absolute, and can only contain empty path components
+# (ie, as in /usr/./GNUstep/) only in the final part of the paths.  This is
+# a restriction in the implementation ... but it is enough for our needs.>
+#
 # for example,
 #
 # $GNUSTEP_MAKEFILES/relative_path.sh /usr/GNUstep/Local /usr/GNUstep/System
@@ -49,6 +53,8 @@
 # trick and a hack and recommend to use libraries and bundles instead
 # of frameworks, since libraries and bundles are much more portable
 # and stable, anyway here we are.
+#
+
 
 if [ "$#" != 2 ]; then
   exit 1
@@ -75,7 +81,8 @@ fi
 # /zzz/ccc/tt and /kkk/nnn/ppp.
 
 # We first try to match as much as possible between the first and the second
-# So we loop on the fields in the second
+# So we loop on the fields in the second.  The common root must not contain
+# empty path components (/./) for this to work.
 tmp_IFS="$IFS"
 IFS=/
 partial_b=""
@@ -103,7 +110,7 @@ result=""
 tmp_IFS="$IFS"
 IFS=/
 for component in $a; do
-  if [ -n "$component" ]; then
+  if [ -n "$component" -a "$component" != "." ]; then
     if [ -z "$result" ]; then
       result=".."
     else
