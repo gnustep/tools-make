@@ -1,3 +1,11 @@
+Mon Aug  6 19:15:35 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* library.make (internal-install-dirs): Insert a / between
+	$(GNUSTEP_HEADERS) and $(HEADER_FILES_INSTALL_DIR).
+	($(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)): Idem.
+	(internal-install-headers): Idem.
+	(internal-uninstall-headers): Idem.
+	
 2001-08-02  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.sh.in: Look for user script in ~/GNUstep.
