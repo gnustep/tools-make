@@ -1,3 +1,15 @@
+Mon Oct 13 12:55:50 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/application.make (internal-distclean): Do not remove
+	.iconheader files, no longer used.
+	* Master/gswapp.make (internal-clean, internal-distclean): Do not
+	remove .iconheader files.
+	(internal-clean): Obsolete code removed.
+	* Master/service.make (internal-clean): Same changes.
+	* Master/test-application.make (internal-clean,
+	internal-disclean): Same changes.
+	* Instance/gswapp.make: Removed obsolete iconheader code.
+	
 Mon Oct 13 12:25:50 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/palette.make (internal-clean): Remove objects inside

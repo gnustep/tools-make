@@ -47,23 +47,16 @@ internal-uninstall:: $(GSWAPP_NAME:=.uninstall.gswapp.variables)
 
 internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
-ifeq ($(OBJC_COMPILER), NeXT)
-	rm -f *.iconheader
-	for f in *.$(GSWAPP_EXTENSION); do \
-	  rm -f $$f/`basename $$f .$(GSWAPP_EXTENSION)`; \
-	done
-else
 ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 else
 	rm -rf *.$(GSWAPP_EXTENSION)
 endif
-endif
 
 internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.gswa *.debug *.profile *.iconheader
+	  static_profile_debug_obj *.gswa *.debug *.profile
 
 GSWAPPS_WITH_SUBPROJECTS = $(strip $(foreach gswapp,$(GSWAPP_NAME),$(patsubst %,$(gswapp),$($(gswapp)_SUBPROJECTS))))
 ifneq ($(GSWAPPS_WITH_SUBPROJECTS),)

@@ -106,7 +106,7 @@ ifeq ($(FOUNDATION_LIB), apple)
 		>$(APP_DIR_NAME)/library_paths.openapp$(END_ECHO)
 else
 	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-	>$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
+	        >$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
 endif
 
 #

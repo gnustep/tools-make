@@ -38,17 +38,10 @@ _PSWRAP_H_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.p
 
 internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
-ifeq ($(OBJC_COMPILER), NeXT)
-	rm -f *.iconheader
-	for f in *.service; do \
-	  rm -f $$f/`basename $$f .service`; \
-	done
-else
 ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.service/$(GNUSTEP_TARGET_LDIR)
 else
 	rm -rf *.service
-endif
 endif
 
 internal-distclean::

@@ -52,7 +52,7 @@ endif
 internal-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.app *.debug *.profile *.iconheader
+	  static_profile_debug_obj *.app *.debug *.profile
 
 # The following make trick extracts all tools in APP_NAME for which
 # the xxx_SUBPROJECTS variable is set to something non-empty.
