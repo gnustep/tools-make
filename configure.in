@@ -57,6 +57,32 @@ fi
 AC_SUBST(GNUSTEP_ROOT)
 AC_SUBST(root_prefix)
 
+#--------------------------------------------------------------------
+# Process --with-local-root and --with-network-root options
+#--------------------------------------------------------------------
+
+AC_ARG_WITH(local-root,[
+--with-local-root
+    Set the GNUSTEP_LOCAL_ROOT directory.  Use this option if you want 
+to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
+--with-local-root=/usr/local/GNUstep/Local
+],
+GNUSTEP_LOCAL_ROOT=$withval,
+GNUSTEP_LOCAL_ROOT=$GNUSTEP_ROOT/Local
+)
+
+AC_ARG_WITH(network-root,[
+--with-network-root
+    Set the GNUSTEP_NETWORK_ROOT directory.  Use this option if you want 
+to have the GNUSTEP_NETWORK_ROOT directory in a non-standard place.  Example:
+--with-network-root=/usr/local/GNUstep/Network
+],
+GNUSTEP_NETWORK_ROOT=$withval,
+GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Local
+)
+
+AC_SUBST(GNUSTEP_LOCAL_ROOT)
+AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
 #--------------------------------------------------------------------
 # Is the system flattened?
