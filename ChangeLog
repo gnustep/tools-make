@@ -1,3 +1,8 @@
+2001-09-14  Adam Fedor  <fedor@gnu.org>
+
+	* debian/changelog: Minor fixes to get debian to build correctly
+	(suggestions from James.Mills@tenzing.com).
+
 Thu Sep 13 23:20:36 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (install): Do not install rootinstall.sh and
