@@ -153,14 +153,14 @@ AC_CYGWIN
 AC_MINGW32
 AC_EXEEXT
 AC_OBJEXT
-if test $MINGW32 = yes; then
+if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
   export SHELL=zsh
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
-elif $CYGWIN = yes; then
+elif test "$CYGWIN" = yes; then
   echo "hosted on cygwin .."
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
@@ -306,7 +306,7 @@ elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
     AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpcthread",
 	objc_threaded="", objc_threaded="-lpcthread")
   fi
-elif test $MINGW32 = yes; then
+elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
   LIBS="-lobjc $LIBS $extra_LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
