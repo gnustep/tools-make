@@ -1,3 +1,8 @@
+2000-04-13  Adam Fedor  <fedor@gnu.org>
+
+	* gswapp.make: Remove common.make include.
+	* gswbundle.make: Likewise.
+
 2000-04-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* target.make: If 'shared=no' is specified, link with '-static' to

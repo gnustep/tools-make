@@ -30,7 +30,6 @@ GSWAPP_MAKE_LOADED=yes
 # Include in the common makefile rules
 #
 include $(GNUSTEP_MAKEFILES)/rules.make
-include $(GNUSTEP_MAKEFILES)/common.make
 
 GNUSTEP_GSWAPPS=$(GNUSTEP_INSTALLATION_DIR)/GSWApps
 

@@ -29,7 +29,6 @@ GSWBUNDLE_MAKE_LOADED=yes
 # Include in the common makefile rules
 #
 include $(GNUSTEP_MAKEFILES)/rules.make
-include $(GNUSTEP_MAKEFILES)/common.make
 
 GSWBUNDLE_LD= $(BUNDLE_LD)
 GSWBUNDLE_LDFLAGS = $(BUNDLE_LDFLAGS)
