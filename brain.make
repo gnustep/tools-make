@@ -128,7 +128,7 @@ FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
 GNUSTEP_DEFINE = -DGNUSTEP
 # If gc=yes was passed, use the appropriate library and defines
 ifeq ($(gc), yes)
-  OBJC_LIBS = -lobjc_gc
+  OBJC_LIBS = -lobjc_gc -lgc
   AUXILIARY_CPPFLAGS += -DGS_WITH_GC=1
 endif
 endif
