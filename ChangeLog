@@ -1,3 +1,8 @@
+2004-08-24  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.sh.in: Add newline at end of file (avoids bug in Solaris
+	sed).
+
 Fri Aug 20 02:26:12 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Documentation/install.texi (Single-User): Removed mention of

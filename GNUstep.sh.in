@@ -305,3 +305,4 @@ fi
 if [ -n "$GS_ZSH_NEED_TO_RESTORE_SET" ]; then
   set +y
 fi
+# EOF
