@@ -80,7 +80,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	tool.make ctool.make test-library.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
-	documentation.make MediaBook.func \
+	documentation.make \
 	java-executable.template java-tool.make framework.make \
 	source-distribution.make rpm.make \
         spec-rules.template spec-debug-rules.template \
@@ -136,7 +136,7 @@ install: all
 		$(GNUSTEP_NETWORK_ROOT) 
 	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
-		MediaBook.sh clean_cpu.sh clean_os.sh \
+		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh \
 		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
 		ld_lib_path.csh cygpath.sh ; do \
@@ -158,7 +158,7 @@ install: all
 uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib$(EXEEXT)
 	for f in config.guess config.sub install-sh mkinstalldirs \
-		MediaBook.sh clean_cpu.sh clean_os.sh \
+		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
 		transform_paths.sh vendor.sh \
 		ld_lib_path.csh cygpath.sh \
