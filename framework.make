@@ -63,6 +63,10 @@ ADDITIONAL_INCLUDE_DIRS += -I$(DERIVED_SOURCES)
 ifeq ($(INTERNAL_framework_NAME),)
 # This part is included the first time make is invoked.
 
+# A framework has a special task to do before-all, which is to build 
+# the public framework headers.
+before-all:: $(FRAMEWORK_NAME:=.before-all.framework.variables)
+
 internal-all:: $(FRAMEWORK_NAME:=.all.framework.variables)
 
 internal-install:: $(FRAMEWORK_NAME:=.install.framework.variables)
@@ -194,7 +198,10 @@ build-framework-dir::
 	  $(LN_S) Versions/Current/Resources .; \
 	fi;)
 
-build-framework-headers:: build-framework-dir $(DERIVED_SOURCES) $(FRAMEWORK_HEADER_FILES)
+internal-framework-before-all:: build-framework-dir \
+                                $(DERIVED_SOURCES) \
+                                $(FRAMEWORK_HEADER_FILES)
+	@echo Building public headers of framework $(INTERNAL_framework_NAME)...
 
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES) 
 	if [ "$(HEADER_FILES)" != "" ]; then \
