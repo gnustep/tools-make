@@ -64,7 +64,7 @@ if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
 #
 if ( ! ${?GNUSTEP_PATHPREFIX_LIST} ) then
   setenv GNUSTEP_PATHPREFIX_LIST ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_SYSTEM_ROOT}
-endif
+
 set tp = ""
 foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX_LIST}; do echo $i; done'` )
   set tp=${tp}${dir}/Tools:
@@ -90,5 +90,7 @@ endif
 if ( -x ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services ) then
   ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services &
 endif
+
+endif # ( "${GNUSTEP_PATHPREFIX_LIST}" == "" )
 
 endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )

@@ -69,7 +69,7 @@ if [ -z "$GNUSTEP_BUILD_ROOT" ]; then
 if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
   GNUSTEP_PATHPREFIX_LIST=$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
   export GNUSTEP_PATHPREFIX_LIST
-fi
+
 tmp_IFS="$IFS"
 IFS=:
 temp_path=
@@ -104,5 +104,7 @@ if [ -x $GNUSTEP_SYSTEM_ROOT/Tools/make_services ]
 then
   $GNUSTEP_SYSTEM_ROOT/Tools/make_services &
 fi
+
+fi # [ -z "$GNUSTEP_PATHPREFIX_LIST" ]
 
 fi # [ -z "$GNUSTEP_BUILD_ROOT" ]

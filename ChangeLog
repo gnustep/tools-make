@@ -1,3 +1,9 @@
+Mon Sep 20  9:40:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	Patch from cls@seawood.org -
+	* GNUstep.sh.in: avoid multiple GNUstep entries in path
+	* GNUstep.csh.in: avoid multiple GNUstep entries in path
+
 Sun Sep 19  1999  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make (internal-bundle-distclean): Added
