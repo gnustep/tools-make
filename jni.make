@@ -32,6 +32,13 @@ JNI_MAKE_LOADED=yes
 # Default
 JAVA_OS = linux
 
+# MacOS-X
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+  JAVA_OS = darwin
+  JNI_INCLUDE_HEADERS = -I/System/Library/Frameworks/JavaVM.framework/Versions/1.3.1/Headers
+
+else
+
 # Solaris
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
   JAVA_OS = solaris
@@ -49,6 +56,7 @@ endif
 #
 JNI_INCLUDE_HEADERS = -I$(JAVA_HOME)/include/ \
                       -I$(JAVA_HOME)/include/$(JAVA_OS) 
+endif
 
 ADDITIONAL_INCLUDE_DIRS += $(JNI_INCLUDE_HEADERS)
 

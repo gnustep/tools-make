@@ -1,3 +1,8 @@
+2004-03-31 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* jni.make: Add support for MacOS-X ... use the java 1.3.1 headers
+	fromt the JavaVM framework.
+
 Tue Mar 30 02:44:21 2004  Nicola Pero <n.pero@mi.flashnet.it>
 	
 	* Documentation/filesystem.texi: Clarify the differences between
