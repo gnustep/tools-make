@@ -203,7 +203,7 @@ $(BUNDLE_DIR_NAME)/Contents:
 ifneq ($(OBJ_FILES_TO_LINK),)
 $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents \
                                         $(GNUSTEP_STAMP_DEPEND)
-	@(echo "<?xml version='1.0' encoding='utf-8'?>";\
+	$(ECHO_CREATING)(echo "<?xml version='1.0' encoding='utf-8'?>";\
 	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
 	  echo "<!-- Automatically generated, do not edit! -->";\
 	  echo "<plist version='0.9'>";\
@@ -218,11 +218,11 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents \
 	  echo "    <string>$(PRINCIPAL_CLASS)</string>";\
 	  echo "  </dict>";\
 	  echo "</plist>";\
-	) >$@
+	) >$@$(END_ECHO)
 else
 $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents \
                                         $(GNUSTEP_STAMP_DEPEND)
-	@(echo "<?xml version='1.0' encoding='utf-8'?>";\
+	$(ECHO_CREATING)(echo "<?xml version='1.0' encoding='utf-8'?>";\
 	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
 	  echo "<!-- Automatically generated, do not edit! -->";\
 	  echo "<plist version='0.9'>";\
@@ -233,7 +233,7 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents \
 	  echo "    <string>BNDL</string>";\
 	  echo "  </dict>";\
 	  echo "</plist>";\
-	) >$@
+	) >$@$(END_ECHO)
 endif
 
 else # following executed if FOUNDATION_LIB != apple
@@ -242,24 +242,24 @@ ifneq ($(OBJ_FILES_TO_LINK),)
 # GNUstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources \
                                                  $(GNUSTEP_STAMP_DEPEND)
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
-	@(if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	  echo "}") >$@$(END_ECHO)
+	$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	  plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
-	fi)
+	fi$(END_ECHO)
 else # following code for when no object file is built
 # GNUstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources \
                                                  $(GNUSTEP_STAMP_DEPEND)
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
-	  echo "}") >$@
-	@(if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	  echo "}") >$@$(END_ECHO)
+	$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	  plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
-	fi)
+	fi$(END_ECHO)
 endif
 
 endif # FOUNDATION_LIB != apple

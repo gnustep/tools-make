@@ -228,7 +228,7 @@ endif
 
 ifeq ($(FOUNDATION_LIB), apple)
 $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
@@ -239,26 +239,26 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	    sed '1d' "$(GNUSTEP_INSTANCE)Info.plist"; \
 	  else \
 	    echo "}"; \
-	  fi) > $@
+	  fi) > $@$(END_ECHO)
 else
 
 $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
-	 @if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	  echo "}") >$@$(END_ECHO)
+	 $(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	   plmerge $@ "$(GNUSTEP_INSTANCE)Info.plist"; \
-	  fi
+	  fi$(END_ECHO)
 endif
 
 $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 		$(APP_DIR_NAME)/Resources/Info-gnustep.plist
-	@pl2link $^ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop
+	$(ECHO_CREATING)pl2link $^ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop$(END_ECHO)
 
 
 internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir

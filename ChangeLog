@@ -1,3 +1,18 @@
+Tue May 27 11:36:06 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make: Use ECHO_CREATING when building the
+	.plist files.
+	* Instance/bundle.make: Same
+	* Instance/framework.make: Same.
+	* Instance/gswbundle.make: Same.
+	* Instance/palette.make: Same.
+	* Instance/service.make: Same.
+
+	* Instance/application.make: Use ECHO_CREATING when building the
+	.desktop file.
+	* Instance/framework.make ($(DUMMY_FRAMEWORK_FILE)): Use
+	ECHO_CREATING when building the internal framework class file.
+	
 Tue May 27 11:22:44 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/application.make: Use ECHO_CREATING when running MKDIRS

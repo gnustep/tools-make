@@ -230,13 +230,13 @@ $(GSWBUNDLE_DIR_NAME)/bundle-info.plist: $(GSWBUNDLE_DIR_NAME)
 HAS_GSWCOMPONENTS = $($(GNUSTEP_INSTANCE)_HAS_GSWCOMPONENTS)
 
 $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR_NAME)/Resources
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  if [ "$(HAS_GSWCOMPONENTS)" != "" ]; then \
 	    echo "  HasGSWComponents = \"$(HAS_GSWCOMPONENTS)\";"; \
 	  fi; \
-	  echo "}") >$@
+	  echo "}") >$@$(END_ECHO)
 
 $(GSWBUNDLE_DIR_NAME)/Resources:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)

@@ -88,12 +88,12 @@ endif
 
 $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 	$(SERVICE_DIR_NAME)/Resources $(GNUSTEP_INSTANCE)Info.plist 
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  cat $(GNUSTEP_INSTANCE)Info.plist; \
 	  echo "}") >$@ ;\
 	if $(GNUSTEP_MAKE_SERVICES) --test $@; then : ; else rm -f $@; false; \
-	fi
+	fi$(END_ECHO)
 
 #
 # Install targets

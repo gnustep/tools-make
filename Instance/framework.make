@@ -262,7 +262,7 @@ OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # for portability, so we are sure we only print what we want on all
 # platforms.
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
-	@ classes=""; \
+	$(ECHO_CREATING) classes=""; \
 	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
 	  if [ "$$f" != "__dummy__" ]; then \
 	    sym=`nm -Pg $$f | sed -n -e '/^__objc_class_name_[A-Za-z_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z_.]*\) [^U].*/\1/p;}'`; \
@@ -301,7 +301,6 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
 	else \
 	  fw_path="@\"$$fw_path\""; \
 	fi; \
-	echo "Creating $(DUMMY_FRAMEWORK_FILE)"; \
 	echo "#include <Foundation/NSString.h>" > $@; \
 	echo "@interface $(DUMMY_FRAMEWORK)" >> $@; \
 	echo "+ (NSString *)frameworkEnv;" >> $@; \
@@ -315,7 +314,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
 	echo "+ (NSString *)frameworkVersion { return @\"$(CURRENT_VERSION_NAME)\"; }" >> $@; \
 	echo "static NSString *allClasses[] = {$$classlist};" >> $@; \
 	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@;\
-	echo "@end" >> $@
+	echo "@end" >> $@$(END_ECHO)
 
 ifeq ($(FOUNDATION_LIB),gnu)
 $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
@@ -375,22 +374,22 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 
 # MacOSX-S frameworks
 $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
+	  echo "}") >$@$(END_ECHO)
 
 # GNUstep frameworks
 $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
-	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	  echo "}") >$@$(END_ECHO)
+	$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	   plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
-	 fi
+	 fi$(END_ECHO)
 
 ifneq ($(WITH_DLL),yes)
 
