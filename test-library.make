@@ -84,9 +84,13 @@ internal-install:: $(TEST_LIBRARY_NAME:=.install.testlib.variables)
 
 internal-uninstall:: $(TEST_LIBRARY_NAME:=.uninstall.testlib.variables)
 
-internal-clean:: $(TEST_LIBRARY_NAME:=.clean.testlib.variables)
+internal-clean:: $(TEST_LIBRARY_NAME:=.clean.testlib.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(TEST_LIBRARY_NAME:=.distclean.testlib.variables)
+internal-distclean:: $(TEST_LIBRARY_NAME:=.distclean.testlib.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 internal-check:: $(TEST_LIBRARY_NAME:=.check.testlib.variables)
 
@@ -172,13 +176,7 @@ internal-testlib-uninstall::
 #
 # Cleaning targets
 #
-internal-testlib-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-testlib-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
 
 endif
 
