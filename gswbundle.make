@@ -212,7 +212,7 @@ gswbundle-webresource-dir::
 
 gswbundle-webresource-files:: $(GSWBUNDLE_DIR_NAME)/WebServerResources \
                               gswbundle-webresource-dir
-ifneq ($strip $(WEBSERVER_RESOURCE_FILES)),)
+ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking webserver resources into the application wrapper..."; \
 	cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
 	for ff in $(WEBSERVER_RESOURCE_FILES); do \
@@ -270,7 +270,7 @@ ifneq ($(HEADER_FILES),)
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
 	        $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	   fi; \
-	done; \
+	done;
 endif
 endif
 	$(MKDIRS) $(GSWBUNDLE_INSTALL_DIR); \
