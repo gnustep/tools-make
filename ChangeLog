@@ -1,3 +1,13 @@
+Mon Jul  9 18:30:02 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* service.make (internal-svc-install): Depend on
+	$(GNUSTEP_SERVICES).
+	($(GNUSTEP_SERVICES)): Create the directory if it doesn't exist.
+	(.PHONY): Added.
+	(svc-resource-dir): Removed.
+	(svc-resource-files): Use makefile conditional.
+	(internal-svc-install): Run the commands in a single subshell.
+
 Mon Jul  9 18:15:26 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* palette.make (.PHONY): Added.
