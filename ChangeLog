@@ -1,3 +1,8 @@
+Thu Jul  5 10:28:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (INTERNAL_CLASSPATHFLAGS): Moved ADDITIONAL_CLASSPATH
+	before CLASSPATH.
+
 Wed Jul  4 14:37:36 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make (INTERNAL_JAVACFLAGS, INTERNAL_JAVAHFLAGS): 
