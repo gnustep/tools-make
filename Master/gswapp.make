@@ -46,11 +46,10 @@ internal-install:: $(GSWAPP_NAME:=.install.gswapp.variables)
 internal-uninstall:: $(GSWAPP_NAME:=.uninstall.gswapp.variables)
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 else
-	rm -rf *.$(GSWAPP_EXTENSION)
+	rm -rf $(GNUSTEP_OBJ_DIR) *.$(GSWAPP_EXTENSION)
 endif
 
 internal-distclean::

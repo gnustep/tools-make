@@ -42,11 +42,12 @@ _PSWRAP_H_FILES = $(foreach app,$(APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
 _PLIST_INFO_FILES = $(addsuffix Info.plist,$(foreach app,$(APP_NAME),$(patsubst yes,$(app),$($(app)_PREPROCESS_INFO_PLIST))))
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) $(_PLIST_INFO_FILES)
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 else
-	rm -rf *.$(APP_EXTENSION)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION)
 endif
 
 internal-distclean::

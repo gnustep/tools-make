@@ -38,11 +38,12 @@ _PSWRAP_C_FILES = $(foreach palette,$(PALETTE_NAME),$($(palette)_PSWRAP_FILES:.p
 _PSWRAP_H_FILES = $(foreach palette,$(PALETTE_NAME),$($(palette)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf *.palette/$(GNUSTEP_TARGET_LDIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.palette/$(GNUSTEP_TARGET_LDIR)
 else
-	rm -rf *.palette
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.palette
 endif
 
 internal-distclean::

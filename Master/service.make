@@ -37,11 +37,12 @@ _PSWRAP_C_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.p
 _PSWRAP_H_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf *.service/$(GNUSTEP_TARGET_LDIR)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.service/$(GNUSTEP_TARGET_LDIR)
 else
-	rm -rf *.service
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.service
 endif
 
 internal-distclean::
