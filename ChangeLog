@@ -1,3 +1,9 @@
+Thu Jul 12 18:10:31 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* subproject.make (.PHONY): Added.
+	(localized-framework-resource-files): Renamed to
+	framework-localized-resource-files for consistency.
+
 Thu Jul 12 17:26:40 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.variables): Depend on %.tools and %.subprojects.
