@@ -126,6 +126,13 @@ internal-install-java-dirs:: $(_WE_INSTALL_INTO)
 $(_WE_INSTALL_INTO):
 	$(MKDIRS) $(_WE_INSTALL_INTO)
 
+# Say that you have a Pisa.java source file.  Here we install both
+# Pisa.class (the main class) and also, if they exist, all class files
+# with names beginning wih Pisa$ (such as Pisa$1$Nicola.class); these
+# files are generated for nested/inner classes, and must be installed
+# as well.  The fact we need to install these files is the reason why
+# the following is more complicated than you would think at first
+# glance.
 install-java_package:: internal-install-java-dirs
 	 if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
 	    for file in $(JAVA_OBJ_FILES) __done; do \
