@@ -30,11 +30,6 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-# Deprecation warning - will be remove on Dec 2002
-ifneq ($(CTOOL_INSTALLATION_DIR),)
-  $(warning CTOOL_INSTALLATION_DIR is deprecated! Please use CTOOL_INSTALL_DIR instead)
-endif
-
 # This is the directory where the ctools get installed. If you don't
 # specify a directory they will get installed in the GNUstep Local
 # root.
