@@ -1,3 +1,13 @@
+Wed Jan 30 18:43:06 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (%.variables): Do not pass down to the
+	Instance submake invocation _SUBPROJECTS, OBJC_FILES, JAVA_FILES
+	and similar lists of source units.
+	* Instance/rules.make: Set up all those variables here.
+	($(GNUSTEP_OBJ_DIR)): Rule to create the compilation directory
+	moved into the top-level rules.make as it's not actually dependent
+	on the instance.
+	
 Wed Jan 30 18:13:25 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/rules.make: Code to set generic flags and to build
