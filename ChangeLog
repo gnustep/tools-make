@@ -1,3 +1,10 @@
+1999-02-19  Scott Christley  <scottc@golden.net-community.com>
+
+	* MediaBook.sh (MB_GNUSTEP_SOURCE, MB_FINANCE_SOURCE): New variables.
+	(MB.init): Renamed to MBinit.sh and put under GNUSTEP_USER_ROOT.
+	* setlocaltz.sh: New file.
+	* MediaBook.func: Add help for new commands.
+
 1999-02-19  Adam Fedor  <fedor@gnu.org>
 
 	* subproject.make: New file.

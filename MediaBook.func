@@ -167,7 +167,7 @@ function c {
 			echo "            within the MediaBook Environment."
 			echo "ver       : Move to different version directory"
 			echo "            within the same source system."
-			echo "sys       : Move to top-leve directory"
+			echo "sys       : Move to top-level directory"
 			echo "            for the current source system."
 			echo "devswitch : Change Development root."
 			echo "prodswitch: Change Production root."
@@ -181,6 +181,14 @@ function c {
 			echo "tst       : Move to checks or Testing"
 			echo "doc       : Move to doc or Documentation"
 			echo "gde       : Move to version root"
+			echo " "
+			echo "GNUstep source specific commands"
+			echo "make      : Move to root dir of GNUstep Make"
+			echo "base      : Move to root dir of GNUstep Base"
+			echo "gui       : Move to root dir of GNUstep GUI"
+			echo "xraw      : Move to root dir of GNUstep XRaw"
+			echo "xdps      : Move to root dir of GNUstep XDPS"
+			echo "gtests    : Move to root dir of GNUstep tests"
 			echo " "
 			;;
 

@@ -57,15 +57,20 @@ MB_CUR_H=
 MB_CUR_TST=
 MB_CUR_DOC=
 MB_CUR_BIN=
+# specialized systems
+MB_GNUSTEP_SOURCE=
+MB_FINANCE_SOURCE=
 
 export MB_SYS MB_CUR
 export MB_CUR_SYS MB_CUR_TOP
 export MB_CUR_VER MB_CUR_SOU MB_CUR_H MB_CUR_TST MB_CUR_DOC MB_CUR_BIN
+export MB_GNUSTEP_SOURCE
+export MB_FINANCE_SOURCE
 
 #
 # Perform any user initialization
 #
-if [ -e ~/MB.init ]
+if [ -e $GNUSTEP_USER_ROOT/Library/MediaBook/MBinit.sh ]
 then
-	. ~/MB.init
+	. $GNUSTEP_USER_ROOT/Library/MediaBook/MBinit.sh
 fi
