@@ -119,6 +119,15 @@
 #
 #
 
+# A special note: if you need `./configure --prefix=/usr/GNUstep'
+# (/usr/GNUstep being replaced by your GNUSTEP_SYSTEM_ROOT) to be run
+# before compilation (usually only needed for GNUstep core libraries
+# themselves), define the following make variable:
+#
+# PACKAGE_NEEDS_CONFIGURE = YES
+#
+# in your makefile.
+
 #
 # At this point, typing 
 #  `make tgz' will generate the .tgz (can be used outside rpm.make)
@@ -251,19 +260,16 @@ endif
 #
 specfile: $(SPEC_FILE)
 
-#
-# Generate the debugging spec.in and script.spec.in from the normal
-# one if needed - do not add any dependencies here because we want 
-# $(PACKAGE_NAME)-debug.spec.in to be automatically generated *only*
-# if it does not already exists.
-#
-# We should probably remove this rule to force people to write a 
-# different description/summary for the debugging package!
+# 
+# Issue a warning if the $(PACKAGE_NAME)-debug.spec.in file is not found
 #
 $(PACKAGE_NAME)-debug.spec.in: 
 	@echo "WARNING - $(PACKAGE_NAME)-debug.spec.in not found!"
-	@echo "Using $(PACKAGE_NAME).spec.in instead - this is discouraged!"
-	cp $(PACKAGE_NAME).spec.in $(PACKAGE_NAME)-debug.spec.in
+	@echo "You need to create it to build the debugging package." 
+	@echo "If you already have a $(PACKAGE_NAME).spec.in, just take it as"
+	@echo "a start for the $(PACKAGE_NAME)-debug.spec.in - and make"
+	@echo "the little necessary changes in summary and description."
+	@echo ""
 
 #
 # This is the real target - depends on having a correct .spec.in file
@@ -281,6 +287,11 @@ $(SPEC_FILE): $(SPEC_IN)
 	@echo "%define gs_install_dir  $(GNUSTEP_INSTALLATION_DIR)" >> $@
 	@echo "%define gs_name         $(PACKAGE_NAME)" >> $@
 	@echo "%define gs_version      $(VERSION)" >> $@
+	@ if [ "$(PACKAGE_NEEDS_CONFIGURE)" = "yes" ]; then \
+	    echo "%define gs_configure    YES" >> $@;       \
+	  else                                              \
+	    echo "%define gs_configure    NO" >> $@;        \
+	  fi
 	@echo " " >> $@
 	@echo "Name: %{gs_name}$(PACKAGE_EXTENSION)" >> $@
 	@echo "Version: %{gs_version}" >> $@
@@ -305,7 +316,7 @@ $(SPEC_FILE): $(SPEC_IN)
 	    cat $(SPEC_SCRIPT_IN) >> $@;                            \
           fi
 
-rpm: specfile tgz
+rpm: tgz specfile
 	@echo "Generating the rpm...";                                    \
 	if [ "$(RPM_TOPDIR)" = "" ]; then                                 \
 	  echo "I can't build the RPM if you do not set your RPM_TOPDIR"; \
