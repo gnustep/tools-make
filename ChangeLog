@@ -1,3 +1,8 @@
+2003-09-15  Adam Fedor  <fedor@gnu.org>
+
+	* Version: Add VERSION
+	* gnustep-make.spec.in: Update packager.
+
 Sun Sep  7 12:43:59 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* config.site: Fixed Headers directory, it is now in Library/.
