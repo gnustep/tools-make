@@ -44,7 +44,7 @@ endif
 #   (defaults to ./)
 # The directory where to install the header files inside the library
 #   installation directory is xxx_HEADER_FILES_INSTALL_DIR
-#   (defaults to the framework name [without .framework])
+#   (defaults to the framework name [without .framework]).  Can't be `.'
 # The list of framework web server resource directories are in
 #    xxx_WEBSERVER_RESOURCE_DIRS
 # The list of localized framework web server GSWeb components are in
@@ -56,7 +56,8 @@ endif
 # where xxx is the framework name
 #
 #
-# The HEADER_FILES_INSTALL_DIR might look somewhat weird.  At the
+# The HEADER_FILES_INSTALL_DIR might look somewhat weird - because in
+# most if not all cases, you want it to be the framework name.  At the
 # moment, it allows you to put headers for framework XXX in directory
 # YYY, so that you can refer to them by using #include
 # <YYY/MyHeader.h> rather than #include <XXX/MyHeader.h>.  It seems to
@@ -90,8 +91,10 @@ endif
 FRAMEWORK_DIR_NAME = $(GNUSTEP_INSTANCE).framework
 FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
 
-# This is not doing much at the moment, but at least is defining HEADER_FILES,
-# HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR in the standard way.
+# This is not doing much at the moment, but at least is defining
+# HEADER_FILES, HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR in the
+# standard way.  NB: If HEADER_FILES is empty, HEADER_FILES_DIR and
+# HEADER_FILES_INSTALL_DIR are going to be undefined!
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 # FIXME - do we really want to link the framework against all libs ?
@@ -206,11 +209,14 @@ endif
 	    rm -f Headers; \
 	    $(LN_S) Versions/Current/Headers Headers; \
 	  fi;)
+ifneq ($(HEADER_FILES),)
 	@(cd $(DERIVED_SOURCES); \
 	  if [ ! -L "$(HEADER_FILES_INSTALL_DIR)" ]; then \
+	    rm -f ./$(HEADER_FILES_INSTALL_DIR); \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
                     ./$(HEADER_FILES_INSTALL_DIR); \
 	  fi;)
+endif
 
 $(FRAMEWORK_LIBRARY_DIR_NAME):
 	$(MKDIRS) $@
