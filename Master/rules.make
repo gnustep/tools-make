@@ -97,10 +97,10 @@ after-all::
 # install the software elsewhere, because it is likely to be system
 # software like the gnustep-base library.  NB: the check of
 # GNUSTEP_INSTALLATION_DIR against GNUSTEP_SYSTEM_ROOT is not perfect
-# as /usr/GNUstep/System/ might not match /usr/GNUstep/System but what
-# we really want to catch is the GNUSTEP_INSTALLATION_DIR =
-# $(GNUSTEP_SYSTEM_ROOT) command in the makefiles, and the check of
-# course works with it.
+# as /usr/GNUstep/System/ might not match /usr/GNUstep/System (note
+# the missing '/' at the end) but what we really want to catch is the
+# GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT) command in the
+# makefiles, and the check of course works with it.
 internal-check-install-permissions:
 	@if [ -d "$(GNUSTEP_INSTALLATION_DIR)" \
 	      -a ! -w "$(GNUSTEP_INSTALLATION_DIR)" ]; then \
