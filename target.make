@@ -82,9 +82,15 @@ endif
 HAVE_SHARED_LIBS        = yes
 
 ifeq ($(FOUNDATION_LIB),nx)
-# Use the NeXT compiler
-CC = cc
-OBJC_COMPILER = NeXT
+  # Use the NeXT compiler
+  CC = cc
+  OBJC_COMPILER = NeXT
+  ifneq ($(arch),)
+    ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
+    INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
+    INTERNAL_CFLAGS += $(ARCH_FLAGS)
+    INTERNAL_LDFLAGS += $(ARCH_FLAGS)
+  endif
 endif
 
 TARGET_LIB_DIR = \
@@ -92,7 +98,7 @@ TARGET_LIB_DIR = \
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
-        /bin/libtool -dynamic -read_only_relocs suppress -o $@ \
+        /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
 		-framework System \
                 -L$(GNUSTEP_USER_ROOT)/$(TARGET_LIB_DIR) \
 		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
@@ -103,7 +109,7 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 else
 SHARED_LIB_LINK_CMD     = \
-        /bin/libtool -dynamic -read_only_relocs suppress -o $@ \
+        /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
 		-framework System \
                 -L$(GNUSTEP_USER_ROOT)/$(TARGET_LIB_DIR) \
 		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
@@ -114,7 +120,7 @@ SHARED_LIB_LINK_CMD     = \
 endif
 
 STATIC_LIB_LINK_CMD	= \
-	/bin/libtool -static -o $@ $^; \
+	/bin/libtool -static $(ARCH_FLAGS) -o $@ $^; \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
@@ -131,7 +137,7 @@ endif
 
 BUNDLE_LD	= ld
 BUNDLE_CFLAGS   +=
-BUNDLE_LDFLAGS  += -r
+BUNDLE_LDFLAGS  += -r $(ARCH_FLAGS)
 endif
 
 #

@@ -56,7 +56,7 @@ INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
 
 # The default library combination
-library_combo = @ac_cv_library_combo@
+libcombo = @ac_cv_library_combo@
 
 #
 # X Window System headers and libraries

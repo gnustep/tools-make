@@ -19,8 +19,26 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# Handle abbreviations for library combinations
+ifeq ($(libcombo),nx)
+  the_library_combo=nx-nx-nx-nil
+endif
+
+ifeq ($(libcombo),gnu-xdps)
+  the_library_combo=gnu-gnu-gnu-xdps
+endif
+
+ifeq ($(libcombo),fd-xdps)
+  the_library_combo=gnu-fd-gnu-xdps
+endif
+
+ifeq ($(the_library_combo),)
+  the_library_combo=$(libcombo)
+endif
+
+
 # Strip out the individual libraries from the combo string
-combo_list = $(subst _, ,$(library_combo))
+combo_list = $(subst -, ,$(the_library_combo))
 OBJC_RUNTIME_LIB = $(word 1,$(combo_list))
 FOUNDATION_LIB = $(word 2,$(combo_list))
 GUI_LIB = $(word 3,$(combo_list))
@@ -46,7 +64,7 @@ ifneq ($(backend),)
 GUI_BACKEND_LIB = $(backend)
 endif
 
-LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)_$(FOUNDATION_LIB)_$(GUI_LIB)_$(GUI_BACKEND_LIB)
+LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-$(GUI_BACKEND_LIB)
 
 OBJC_LDFLAGS =
 OBJC_LIBS =
@@ -128,7 +146,7 @@ BACKEND_LIBS =
 #
 # Set the GUI Backend library
 #
-ifeq ($(GUI_BACKEND_LIB),xdp)
+ifeq ($(GUI_BACKEND_LIB),xdps)
 BACKEND_LDFLAGS =
 BACKEND_LIBS = -lgnustep-xdps
 endif
@@ -146,7 +164,7 @@ SYSTEM_LIBS =
 # If the backend GUI library is X based
 # then add X headers and libraries
 #
-ifeq ($(GUI_BACKEND_LIB),xdp)
+ifeq ($(GUI_BACKEND_LIB),xdps)
 SYSTEM_INCLUDES = $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(X_LIBS)

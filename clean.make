@@ -31,6 +31,10 @@ export GNUSTEP_TARGET_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_TARGET_CPU))
 export GNUSTEP_TARGET_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_TARGET_VENDOR))
 export GNUSTEP_TARGET_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_TARGET_OS))
 
+ifneq ($(arch),)
+export CLEANED_ARCH = $(foreach a, $(arch), $(shell $(CLEAN_CPU_SCRIPT) $(a)))
+endif
+
 export internal_names_clean=yes
 
 endif

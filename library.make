@@ -6,6 +6,7 @@
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#	     Ovidiu Predescu <ovidiu@net-community.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -26,17 +27,50 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 #
 # The name of the library is in the LIBRARY_NAME variable.
+# The Objective-C files that gets included in the library are in xxx_OBJC_FILES
+# The C files are in xxx_C_FILES
+# The pswrap files are in xxx_PSWRAP_FILES
+# The header files are in xxx_HEADER_FILES
+# The directory where the header files are located is xxx_HEADER_FILES_DIR
+# The directory where to install the header files inside the library
+# installation directory is xxx_HEADER_FILES_INSTALL_DIR
+#
+#	Where xxx is the name of the library
 #
 
-ifeq ($(shared), yes)
-LIBRARY_FILE = $(LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
-LIBRARY_FILE_EXT=$(SHARED_LIBEXT)
-else
-LIBRARY_FILE = $(LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
-LIBRARY_FILE_EXT=$(LIBEXT)
-endif
+ifeq ($(INTERNAL_LIBRARY_NAME),)
+# This part is included the first time make is invoked.
 
+internal-all:: $(LIBRARY_NAME:=.buildlib)
+
+internal-install:: all $(LIBRARY_NAME:=.installlib)
+
+#
+# Cleaning targets
+#
+internal-clean::
+	rm -rf $(GNUSTEP_OBJ_DIR)
+
+internal-distclean::
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
+
+$(LIBRARY_NAME):
+	@$(MAKE) --no-print-directory $@.buildlib
+
+else
+# This part gets included the second time make is invoked.
+
+ifeq ($(shared), yes)
+LIBRARY_FILE = $(INTERNAL_LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
+LIBRARY_FILE_EXT=$(SHARED_LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
+else
+LIBRARY_FILE = $(INTERNAL_LIBRARY_NAME)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
+LIBRARY_FILE_EXT=$(LIBEXT)
+VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
+endif
 
 ifeq ($(strip $(HEADER_FILES_DIR)),)
 HEADER_FILES_DIR = .
@@ -63,24 +97,24 @@ import-library::
 internal-install:: internal-install-dirs internal-install-lib \
 	internal-install-headers
    
-
 before-install:: all
 
 internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(GNUSTEP_LIBRARIES_ROOT) \
-		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_CPU) \
 		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
 		$(GNUSTEP_LIBRARIES) \
-		$(GNUSTEP_HEADERS) \
 		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
 		$(ADDITIONAL_INSTALL_DIRS)
 
 internal-install-headers::
-	for file in $(HEADER_FILES); do \
-	  $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	    $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	done
+	if [ "$(HEADER_FILES)" != "" ]; then \
+	  for file in $(HEADER_FILES) __done; do \
+	    if [ $$file != __done ]; then \
+	      $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
+		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    fi; \
+	  done; \
+	fi
 
 internal-install-libs:: internal-install-lib \
     internal-install-import-lib
@@ -125,3 +159,5 @@ internal-distclean::
 # Testing targets
 #
 internal-check::
+
+endif

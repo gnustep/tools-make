@@ -24,6 +24,11 @@
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
+# This is the directory where the tools get installed. If you don't specify a
+# directory they will get installed in the GNUstep system root.
+TOOL_INSTALLATION_DIR = \
+    $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+
 #
 # The name of the tools is in the TOOL_NAME variable.
 #
@@ -48,6 +53,16 @@ internal-all:: $(GNUSTEP_OBJ_DIR) $(TOOL_LIST)
 
 internal-tool-all:: build-tool
 
+internal-install:: all internal-install-dirs internal-install-tool
+
+internal-install-dirs::
+	$(GNUSTEP_MAKEFILES)/mkinstalldirs $(TOOL_INSTALLATION_DIR)
+
+internal-install-tool::
+	for f in $(TOOL_NAME); do \
+	  $(INSTALL_PROGRAM) -m 0755 $$f $(TOOL_INSTALLATION_DIR); \
+	done
+
 build-tool:: $(TOOL_NAME)
 
 #
@@ -56,3 +71,12 @@ build-tool:: $(TOOL_NAME)
 internal-clean::
 	rm -f $(TOOL_NAME)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)
+
+internal-distclean::
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
+
+$(LIBRARY_NAME):
+	@$(MAKE) --no-print-directory $@.buildlib
+

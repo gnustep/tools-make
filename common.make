@@ -41,18 +41,12 @@ LD_LIB_PATH_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/ld_lib_path.sh
 TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/transform_paths.sh
 
 #
-# Scripts used for installing data and program files
-#
-INSTALL = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/install-sh -c
-INSTALL_DATA = $(INSTALL) -m 644
-INSTALL_PROGRAM = $(INSTALL)
-
-#
 # Determine the compilation host and target
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/names.make
 
 GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
+
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
 #
@@ -71,16 +65,26 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/core.make
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/target.make
 
 #
+# GNUSTEP_INSTALLATION_DIR is the directory where all the things go. If you
+# don't specify it defaults to GNUSTEP_LOCAL_ROOT
+#
+ifeq ($(GNUSTEP_INSTALLATION_DIR),)
+  GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+endif
+
+#
 # Variables specifying the installation directory paths
 #
-GNUSTEP_APPS = $(GNUSTEP_SYSTEM_ROOT)/Apps
-GNUSTEP_TOOLS = $(GNUSTEP_SYSTEM_ROOT)/Tools
-GNUSTEP_HEADERS = $(GNUSTEP_SYSTEM_ROOT)/Headers
+GNUSTEP_APPS = $(GNUSTEP_INSTALLATION_DIR)/Apps
+GNUSTEP_TOOLS = $(GNUSTEP_INSTALLATION_DIR)/Tools
+GNUSTEP_HEADERS = $(GNUSTEP_INSTALLATION_DIR)/Headers
 GNUSTEP_TARGET_HEADERS = $(GNUSTEP_HEADERS)/$(GNUSTEP_TARGET_DIR)
-GNUSTEP_LIBRARIES_ROOT = $(GNUSTEP_SYSTEM_ROOT)/Libraries
+GNUSTEP_LIBRARIES_ROOT = $(GNUSTEP_INSTALLATION_DIR)/Libraries
 GNUSTEP_TARGET_LIBRARIES = $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR)
 GNUSTEP_LIBRARIES = $(GNUSTEP_TARGET_LIBRARIES)/$(LIBRARY_COMBO)
 GNUSTEP_RESOURCES = $(GNUSTEP_LIBRARIES_ROOT)/Resources
+
+# Take the makefiles from the system root
 GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 
 # In case we need to explicitly reference
@@ -182,8 +186,8 @@ endif
 ifeq ($(shared), yes)
   LIB_LINK_CMD = $(SHARED_LIB_LINK_CMD)
   OBJ_DIR_PREFIX += shared_
-  INTERNAL_OBJCFLAGS = $(SHARED_CFLAGS)
-  INTERNAL_CFLAGS = $(SHARED_CFLAGS)
+  INTERNAL_OBJCFLAGS += $(SHARED_CFLAGS)
+  INTERNAL_CFLAGS += $(SHARED_CFLAGS)
   AFTER_INSTALL_LIBRARY_CMD = $(AFTER_INSTALL_SHARED_LIB_COMMAND)
 else
   LIB_LINK_CMD = $(STATIC_LIB_LINK_CMD)
@@ -216,7 +220,19 @@ INTERNAL_CFLAGS += $(ADDITIONAL_FLAGS) $(CFLAGS) $(OPTFLAG) $(RUNTIME_FLAG)
 INTERNAL_LDFLAGS += $(LDFLAGS)
 
 GNUSTEP_OBJ_PREFIX = $(shell echo $(OBJ_DIR_PREFIX) | sed 's/ //g')
-GNUSTEP_OBJ_DIR = $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+
+#
+# Support building of Multiple Architecture Binaries (MAB). The object files
+# directory will be something like shared_obj/ix86_m68k_sun/
+#
+ifeq ($(arch),)
+ARCH_OBJ_DIR = $(GNUSTEP_TARGET_DIR)
+else
+ARCH_OBJ_DIR = \
+      $(shell echo $(CLEANED_ARCH) | sed -e 's/ /_/g')/$(GNUSTEP_TARGET_OS)
+endif
+
+GNUSTEP_OBJ_DIR = $(GNUSTEP_OBJ_PREFIX)/$(ARCH_OBJ_DIR)/$(LIBRARY_COMBO)
 
 # The standard GNUstep directories for finding shared libraries
 GNUSTEP_LD_LIB_DIRS=$(GNUSTEP_USER_LIBRARIES):$(GNUSTEP_LOCAL_LIBRARIES):$(GNUSTEP_SYSTEM_LIBRARIES)

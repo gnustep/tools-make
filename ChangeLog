@@ -1,3 +1,29 @@
+Mon Oct 27 17:18:39 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* core.make: Use dashes instead of underscores in the library combo.
+	Changed the library_combo variable name to libcombo.
+	* DESIGN: Updated.
+
+Mon Oct 27 15:46:56 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* library.make: Don't append the version to a static library (bug fix
+	from Gregor Hoffleit <flight@thefly.mathi.uni-heidelberg.de>).
+	* core.make: Added support for library_combo abbreviations.
+
+Mon Oct 27 14:50:06 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* library.make: Make it recursive so you can build several libraries
+	in the same directory.
+	* common.make: Added GNUSTEP_INSTALLATION_DIR, the directory where all
+	stuff gets installed; by defaults is setup to the local root. Changed
+	all the variables accordingly. Removed definitions of INSTALL programs
+	since they are in config.make.
+	* GNUstep.sh.in: Add the LIBRARY_COMBO variable. Setup the PATH to
+	also point to the tools directory.
+	* rules.make: New implicit rules %.buildlib and %.installlib to support
+	the recursive building of libraries.
+	* tool.make: Install the tools in the proper directory.
+
 Fri Oct 24 20:26:41 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	Added support for the OPENSTEP Foundation library in the testing
