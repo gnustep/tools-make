@@ -27,23 +27,23 @@
 #
 # Set the GNUstep system root and local root
 #
-setenv GNUSTEP_ROOT @GNUSTEP_ROOT@
-setenv GNUSTEP_SYSTEM_ROOT @prefix@
-setenv GNUSTEP_FLATTENED @GNUSTEP_FLATTENED@
+setenv GNUSTEP_ROOT "@GNUSTEP_ROOT@"
+setenv GNUSTEP_SYSTEM_ROOT "@prefix@"
+setenv GNUSTEP_FLATTENED "@GNUSTEP_FLATTENED@"
 if ( ! ${?LIBRARY_COMBO} ) then
-  setenv LIBRARY_COMBO @ac_cv_library_combo@
+  setenv LIBRARY_COMBO "@ac_cv_library_combo@"
 endif
 
-setenv GNUSTEP_LOCAL_ROOT @GNUSTEP_LOCAL_ROOT@
-setenv GNUSTEP_NETWORK_ROOT @GNUSTEP_NETWORK_ROOT@
+setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_LOCAL_ROOT@"
+setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_NETWORK_ROOT@"
 
-setenv GNUSTEP_MAKEFILES ${GNUSTEP_SYSTEM_ROOT}/Makefiles
+setenv GNUSTEP_MAKEFILES "${GNUSTEP_SYSTEM_ROOT}/Makefiles"
 
 if ( "@GNUSTEP_MULTI_PLATFORM@" == "" ) then
-  setenv GNUSTEP_HOST @target@
-  setenv GNUSTEP_HOST_CPU @clean_target_cpu@
-  setenv GNUSTEP_HOST_VENDOR @clean_target_vendor@
-  setenv GNUSTEP_HOST_OS @clean_target_os@
+  setenv GNUSTEP_HOST "@target@"
+  setenv GNUSTEP_HOST_CPU "@clean_target_cpu@"
+  setenv GNUSTEP_HOST_VENDOR "@clean_target_vendor@"
+  setenv GNUSTEP_HOST_OS "@clean_target_os@"
 endif
 
 #
@@ -82,15 +82,15 @@ endif
 #
 if ( ! ${?GNUSTEP_PATHLIST} ) then
   setenv GNUSTEP_PATHLIST \
-         ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_NETWORK_ROOT}:${GNUSTEP_SYSTEM_ROOT}
+         "${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_NETWORK_ROOT}:${GNUSTEP_SYSTEM_ROOT}"
 endif
 
 set temp_path = ""
 foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHLIST}; do echo $i; done'` )
-  set temp_path=${temp_path}${dir}/Tools:
+  set temp_path="${temp_path}${dir}/Tools:"
   if ( "${GNUSTEP_FLATTENED}" == "" ) then
-    set temp_path=${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:
-    set temp_path=${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
+    set temp_path="${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:"
+    set temp_path="${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:"
   endif
 end
 
@@ -101,7 +101,7 @@ else if ( { (echo "$PATH" | fgrep -v "$temp_path" >/dev/null) } ) then
 endif
 unset temp_path dir
 
-source ${GNUSTEP_MAKEFILES}/ld_lib_path.csh
+source "${GNUSTEP_MAKEFILES}/ld_lib_path.csh"
 
 # FIXME/TODO - use GNUSTEP_PATHLIST here
 set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
