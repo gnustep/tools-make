@@ -1,6 +1,7 @@
 Tue Nov 14 23:47:11 2000  Adam Fedor  <fedor@yogi.doc.com>
 
-	* GNUstep.sh.in: Use grep instead of fgrep.
+	* GNUstep.sh.in: Use grep instead of fgrep. Some OSs (Solaris)
+	can't deal with fgrep -v
 	* ld_library_path.sh: Likewise
 
 2000-11-06  Adam Fedor  <fedor@gnu.org>
