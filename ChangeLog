@@ -1,3 +1,8 @@
+Mon Dec  7 16:10:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	* service.make: Applied patch supplied by <doko@cs.tu-berlin.de> to
+	find make_services if it hasn't been installed.
+
 Mon Dec  7  6:45:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
 	* openapp.in: Removed dependency on xargs - don't see how it could

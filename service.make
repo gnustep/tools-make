@@ -115,7 +115,12 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: $(SERVICE_DIR_NAME)/Resources 
 	  echo "  NSExecutable = \"$(INTERNAL_svc_NAME)\";"; \
 	  cat $(INTERNAL_svc_NAME)Info.plist; \
 	  echo "}") >$@ ;\
-	make_services --test $@
+	if [ -n "$(GNUSTEP_OBJ_DIR)" ];then \
+	  _d=$(GNUSTEP_OBJ_DIR)/; \
+	  LD_LIBRARY_PATH=../../base/src/$$_d:../Source/$$_d; \
+	  export LD_LIBRARY_PATH; \
+	fi; \
+	if $${_d}make_services --test $@; then : ; else rm -f $@; false; fi
 
 $(SERVICE_DIR_NAME)/Resources:
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
