@@ -135,8 +135,7 @@ internal-doc-install:: internal-install-dirs
 internal-textdoc-install::
    
 internal-install-dirs::
-	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(GNUSTEP_DOCUMENTATION) \
+	$(MKDIRS) $(GNUSTEP_DOCUMENTATION)
 
 internal-doc-uninstall:: 
 

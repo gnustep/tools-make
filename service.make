@@ -97,12 +97,10 @@ before-$(TARGET)-all::
 after-$(TARGET)-all::
 
 $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 
 svc-resource-dir::
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(SERVICE_RESOURCE_DIRS)
+	@$(MKDIRS) $(SERVICE_RESOURCE_DIRS)
 
 svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist svc-resource-dir
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
@@ -123,7 +121,7 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: $(SERVICE_DIR_NAME)/Resources 
 	if $${_d}make_services --test $@; then : ; else rm -f $@; false; fi
 
 $(SERVICE_DIR_NAME)/Resources:
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
+	@$(MKDIRS) $@
 
 internal-svc-install::
 	rm -rf $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)

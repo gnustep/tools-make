@@ -1,3 +1,21 @@
+Sat Dec 19 01:26:06 1998  Matthias Klose  <doko@cs.tu-berlin.de>
+
+        * config.make.in: New macro MKDIRS defaults to
+          $(GNUSTEP_MAKEFILES)/mkinstalldirs.
+        * application.make: Use macro MKDIRS.
+        * bundle.make: likewise
+        * library.make: likewise
+        * documentation.make: likewise
+        * objc.make: likewise
+        * rules.make: likewise
+        * service.make: likewise
+        * tool.make: likewise
+        * test-library.make: likewise
+
+Sat Dec 19 10:57:22 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* aggregate.make: Look for Makefile.
+
 Thu Dec 17 11:42:06 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* test-library.make (ALL_TEST_LIBRARY_LIBS): Remove duplicate lib.

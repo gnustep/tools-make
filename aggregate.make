@@ -39,13 +39,18 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 #
 internal-all internal-install internal-uninstall internal-clean \
   internal-distclean internal-check::
-	@(target=`echo $@ | sed 's/internal-//'`; \
+	@target=`echo $@ | sed 's/internal-//'`; \
 	for f in $(SUBPROJECTS); do \
-	  echo Making $$target in $$f...;\
-	  if eval "(cd $$f; $(MAKE) -f $(MAKEFILE_NAME) --no-keep-going $$target)"; then \
+	  echo Making $$target in $$f...; \
+	  mf=$(MAKEFILE_NAME); \
+	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	    mf=Makefile; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	  fi; \
+	  if $(MAKE) -C $$f -f $$mf --no-keep-going $$target; then \
 	    :; else exit 1; \
 	  fi; \
-	done)
+	done
 
 endif
 # aggregate.make loaded

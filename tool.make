@@ -85,7 +85,7 @@ after-$(TARGET)-all::
 internal-tool-install:: internal-tool-all internal-install-dirs install-tool
 
 internal-install-dirs::
-	$(GNUSTEP_MAKEFILES)/mkinstalldirs $(TOOL_INSTALLATION_DIR)
+	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
 
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \

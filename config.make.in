@@ -55,6 +55,7 @@ INSTALL		= @HOST_INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
 TAR		= tar
+MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
 
 # The default library combination
 default_library_combo = @ac_cv_library_combo@

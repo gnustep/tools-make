@@ -85,7 +85,7 @@ ifeq ($(strip $(RESOURCE_FILES)),)
 endif
 
 build-bundle-dir::
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+	@$(MKDIRS) \
 		$(BUNDLE_DIR_NAME)/Resources \
 		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
 		$(BUNDLE_RESOURCE_DIRS)
@@ -126,7 +126,7 @@ internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 	tar cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); tar xf -)
 
 $(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
+	@$(MKDIRS) $@
 
 internal-bundle-uninstall::
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)

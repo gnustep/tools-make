@@ -105,7 +105,7 @@ internal-library-install:: internal-install-dirs internal-install-lib \
 	internal-install-headers
 
 internal-install-dirs::
-	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+	$(MKDIRS) \
 		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
 		$(GNUSTEP_LIBRARIES) \
 		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \

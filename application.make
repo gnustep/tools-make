@@ -140,13 +140,11 @@ before-$(TARGET)-all::
 after-$(TARGET)-all::
 
 $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+	@$(MKDIRS) $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 endif
 
 app-resource-dir::
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(APP_RESOURCE_DIRS)
+	@$(MKDIRS) $(APP_RESOURCE_DIRS)
 
 app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
@@ -166,7 +164,7 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources
 	  echo "}") >$@
 
 $(APP_DIR_NAME)/Resources:
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
+	@$(MKDIRS) $@
 
 internal-app-install::
 	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)
