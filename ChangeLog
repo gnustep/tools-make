@@ -1,3 +1,9 @@
+2002-02-14 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.in: New option to specify GNUSTEP_DEFAULTS_ROOT
+	* configure: Regenerated.
+	* GNUstep.sh.in: Use GNUSTEP_DEFAULTS_ROOT
+
 2002-02-13 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure: regenerated

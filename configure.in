@@ -199,7 +199,7 @@ AC_ARG_WITH(user-root,
 [--with-user-root
     Set the GNUSTEP_USER_ROOT directory.  Use this option if you want 
 to have the GNUSTEP_USER_ROOT directory in a non-standard place.  Example:
---with-user-root=~/local/GNUstep
+--with-user-root=~$LOGNAME/local/GNUstep
 ],
 GNUSTEP_USER_ROOT="$withval",
 if test ! -z "$WINDIR"; then
@@ -212,9 +212,22 @@ fi
 )
 AC_MSG_RESULT($GNUSTEP_USER_ROOT)
 
+AC_MSG_CHECKING(for GNUSTEP_DEFAULTS_ROOT to use)
+AC_ARG_WITH(defaults-root,
+[--with-defaults-root
+    Set the GNUSTEP_DEFAULTS_ROOT directory.  Use this option if you want 
+to have the GNUSTEP_DEFAULTS_ROOT directory in a non-standard place.  Example:
+--with-defaults-root=~$LOGNAME
+],
+GNUSTEP_DEFAULTS_ROOT="$withval",
+GNUSTEP_DEFAULTS_ROOT=""
+)
+AC_MSG_RESULT($GNUSTEP_DEFAULTS_ROOT)
+
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 AC_SUBST(GNUSTEP_USER_ROOT)
+AC_SUBST(GNUSTEP_DEFAULTS_ROOT)
 
 #--------------------------------------------------------------------
 # Is the system flattened?
