@@ -282,7 +282,9 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
-
+	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	   plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
+	 fi
 
 ifneq ($(WITH_DLL),yes)
 

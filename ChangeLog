@@ -1,3 +1,10 @@
+Mon May 20 11:11:29 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make
+	($(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist):
+	Merge $(GNUSTEP_INSTANCE)Info.plist - if there is one - into the
+	framework's gnustep plist.
+
 2002-05-15  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/machines.texi: Updated info re Win98
