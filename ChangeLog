@@ -1,3 +1,7 @@
+2001-12-12  Adam Fedor  <fedor@gnu.org>
+
+	* common.make (ADDITIONAL_FLAGS): Defines for diagnose flag.
+
 Wed Dec 12 22:59:00 2001  Manuel Guesdon <mguesdon@oxymium.net>
 
 	* gswapp.make: adding resource-dirs and webresource-dirs

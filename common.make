@@ -441,6 +441,12 @@ else
   ADDITIONAL_FLAGS += -DGSWARN
 endif
 
+ifeq ($(diagnose), no)
+  ADDITIONAL_FLAGS += -UGSDIAGNOSE
+else
+  ADDITIONAL_FLAGS += -DGSDIAGNOSE
+endif
+
 ifneq ($(LIBRARY_NAME_SUFFIX),)
   LIBRARY_NAME_SUFFIX := _$(LIBRARY_NAME_SUFFIX)
 endif
