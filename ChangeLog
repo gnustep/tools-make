@@ -1,3 +1,9 @@
+Sat Dec 14 02:36:00 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac (AC_CONFIG_FILES): Removed config.h, which is 
+	already in AC_CONFIG_HEADER.
+	* configure: Regenerated.
+
 Thu Dec 12 00:03:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make: Fixed typo in warning message.
