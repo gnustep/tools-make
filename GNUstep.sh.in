@@ -92,7 +92,7 @@ if [ -z "$PATH" ]; then
   PATH="$temp_path"
 else
   if ( echo ${PATH}| grep -v "${temp_path}" >/dev/null ); then
-    PATH="$PATH:$temp_path"
+    PATH="${temp_path}${PATH}"
   fi
 fi
 export PATH
