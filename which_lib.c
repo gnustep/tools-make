@@ -1,6 +1,6 @@
 /*
    which_lib.c
-   Copyright (C) 1997 Free Software Foundation, Inc.
+   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 
    Author: Ovidiu Predescu <ovidiu@net-community.com>
    Date: October 1997
@@ -139,82 +139,94 @@ char* libext = ".a";
 char* shared_libext = ".so";
 char* extension;
 
-static void stripstr(unsigned char *s)
+/* Strips off carriage returns, newlines and spaces at the end of the
+   string. (this removes some \r\n issues on Windows)  */
+static void stripstr (unsigned char *s)
 {
-  /* 
-     Strips off carriage returns, newlines and spaces 
-     at the end of the string. (this removes some \r\n issues on Windows)
-  */
   unsigned len;
-  if (s == NULL) return;
-  if ((len = strlen(s)) == 0) return;
 
-  while (len > 0) {
-    len--;
-    if (s[len] < 33) s[len] = '\0';
-  }
+  if (s == NULL)
+    return;
+
+  len = strlen (s);
+
+  while (len > 0) 
+    {
+      len--;
+      if (s[len] < 33) 
+	s[len] = '\0';
+    }
 }
 
 void get_arguments (int argc, char** argv)
 {
   int i;
 
-  for (i = 1; i < argc; i++) {
-    if (!strncmp (argv[i], "-l", 2)) {
-      if (all_libraries)
-        all_libraries = realloc (all_libraries,
-			       (libraries_no + 1) * sizeof (char*));
-      else
-        all_libraries = malloc ((libraries_no + 1) * sizeof (char*));
-      all_libraries[libraries_no] = malloc (strlen (argv[i]) - 1);
-      strcpy (all_libraries[libraries_no], argv[i] + 2);
-      stripstr(all_libraries[libraries_no]);
-      libraries_no++;
+  for (i = 1; i < argc; i++) 
+    {
+      if (!strncmp (argv[i], "-l", 2)) 
+	{
+	  if (all_libraries)
+	    all_libraries = realloc (all_libraries,
+				     (libraries_no + 1) * sizeof (char*));
+	  else
+	    all_libraries = malloc ((libraries_no + 1) * sizeof (char*));
+	  all_libraries[libraries_no] = malloc (strlen (argv[i]) - 1);
+	  strcpy (all_libraries[libraries_no], argv[i] + 2);
+	  stripstr(all_libraries[libraries_no]);
+	  libraries_no++;
+	}
+      else if (!strncmp (argv[i], "-L", 2)) 
+	{
+	  if (library_paths)
+	    library_paths = realloc (library_paths, (paths_no + 1) * sizeof(char*));
+	  else
+	    library_paths = malloc ((paths_no + 1) * sizeof(char*));
+	  library_paths[paths_no] = malloc (strlen (argv[i]) - 1);
+	  strcpy (library_paths[paths_no], argv[i] + 2);
+	  stripstr(library_paths[paths_no]);
+	  paths_no++;
+	}
+      else if (!strncmp (argv[i], "shared=", 7)) 
+	{
+	  shared = !strncmp (argv[i] + 7, "yes", 3);
+	}
+      else if (!strncmp (argv[i], "debug=", 6)) 
+	{
+	  debug = !strncmp (argv[i] + 6, "yes", 3);
+	}
+      else if (!strncmp (argv[i], "profile=", 8)) 
+	{
+	  profile = !strncmp (argv[i] + 8, "yes", 3);
+	}
+      else if (!strncmp (argv[i], "libext=", 7)) 
+	{
+	  libext = malloc (strlen (argv[i] + 7) + 1);
+	  strcpy (libext, argv[i] + 7);
+	}
+      else if (!strncmp (argv[i], "shared_libext=", 14)) 
+	{
+	  shared_libext = malloc (strlen (argv[i] + 14) + 1);
+	  strcpy (shared_libext, argv[i] + 14);
+	}
+      else 
+	{
+	  /* The flag is something different; keep it in the `other_flags' */
+	  if (other_flags)
+	    other_flags = realloc (other_flags,
+				   (other_flags_no + 1) * sizeof (char*));
+	  else
+	    other_flags = malloc ((other_flags_no + 1) * sizeof (char*));
+	  other_flags[other_flags_no] = malloc (strlen (argv[i]) + 1);
+	  strcpy (other_flags[other_flags_no], argv[i]);
+	  other_flags_no++;
+	}
     }
-    else if (!strncmp (argv[i], "-L", 2)) {
-      if (library_paths)
-        library_paths = realloc (library_paths, (paths_no + 1) * sizeof(char*));
-      else
-        library_paths = malloc ((paths_no + 1) * sizeof(char*));
-      library_paths[paths_no] = malloc (strlen (argv[i]) - 1);
-      strcpy (library_paths[paths_no], argv[i] + 2);
-      stripstr(library_paths[paths_no]);
-      paths_no++;
-    }
-    else if (!strncmp (argv[i], "shared=", 7)) {
-      shared = !strncmp (argv[i] + 7, "yes", 3);
-    }
-    else if (!strncmp (argv[i], "debug=", 6)) {
-      debug = !strncmp (argv[i] + 6, "yes", 3);
-    }
-    else if (!strncmp (argv[i], "profile=", 8)) {
-      profile = !strncmp (argv[i] + 8, "yes", 3);
-    }
-    else if (!strncmp (argv[i], "libext=", 7)) {
-      libext = malloc (strlen (argv[i] + 7) + 1);
-      strcpy (libext, argv[i] + 7);
-    }
-    else if (!strncmp (argv[i], "shared_libext=", 14)) {
-      shared_libext = malloc (strlen (argv[i] + 14) + 1);
-      strcpy (shared_libext, argv[i] + 14);
-    }
-    else {
-      /* The flag is something different; keep it in the `other_flags' */
-      if (other_flags)
-        other_flags = realloc (other_flags,
-			       (other_flags_no + 1) * sizeof (char*));
-      else
-        other_flags = malloc ((other_flags_no + 1) * sizeof (char*));
-      other_flags[other_flags_no] = malloc (strlen (argv[i]) + 1);
-      strcpy (other_flags[other_flags_no], argv[i]);
-      other_flags_no++;
-    }
-  }
-
+  
   /* Setup the exact prefix of the library we are looking for */
   libname_suffix = malloc (5);
   *libname_suffix = 0;
-
+  
   if (debug)
     strcat (libname_suffix, "d");
   if (profile)
@@ -222,14 +234,15 @@ void get_arguments (int argc, char** argv)
   if (!shared)
     strcat (libname_suffix, "s");
 
-  if (*libname_suffix) {
-    char tmp[5];
-
-    strcpy (tmp, libname_suffix);
-    strcpy (libname_suffix, "_");
-    strcat (libname_suffix, tmp);
-  }
-
+  if (*libname_suffix) 
+    {
+      char tmp[5];
+      
+      strcpy (tmp, libname_suffix);
+      strcpy (libname_suffix, "_");
+      strcat (libname_suffix, tmp);
+    }
+  
   /* Setup the extension */
   extension = shared ? shared_libext : libext;
 }
@@ -258,7 +271,8 @@ void show_all (void)
     Return 1 if a library with this type matches in 'path' and print to stdout
   the name of the library. */
 
-int search_for_library_with_type_in_directory(char type, char* path, char* ext)
+int search_for_library_with_type_in_directory (char type, char* path, 
+					       char* ext)
 {
   DIR_enum_state* dir;
   DIR_enum_item* dirbuf;
@@ -266,100 +280,117 @@ int search_for_library_with_type_in_directory(char type, char* path, char* ext)
 
   dir = opendir (path);
 
-  while ((dirbuf = readdir (dir))) {
-    int filelen, extlen;
-
-    /* Skip "." and ".." directory entries */
-    if (strcmp(dirbuf->d_name, ".") == 0 
-	|| strcmp(dirbuf->d_name, "..") == 0)
-      continue;
-
-    /* Skip it if the prefix does not match the library name. */
-    if (strncmp (dirbuf->d_name + 3, library_name, library_name_len))
-      continue;
-
-    filelen = strlen (dirbuf->d_name);
-
-    /* Now check if the extension matches */
-    if (ext && (extlen = strlen (ext)) && filelen - extlen > 0) {
-      int dfound = 0, sfound = 0, pfound = 0, dash = 0;
-
-      if (strcmp (dirbuf->d_name + filelen - extlen, ext))
-	/* No luck, skip this file */
+  while ((dirbuf = readdir (dir))) 
+    {
+      int filelen, extlen;
+      
+      /* Skip "." and ".." directory entries */
+      if (strcmp(dirbuf->d_name, ".") == 0 
+	  || strcmp(dirbuf->d_name, "..") == 0)
 	continue;
-
-      /* The extension matches. Do a check to see if the suffix of the
-	 library matches the library type we are looking for. */
-      for (i = library_name_len + 3; i < filelen - extlen; i++) {
-	/* Possibly a match */
-	if (type == dirbuf->d_name[i])
-	  found = 1;
-
-	if (dirbuf->d_name[i] == '_') { /* Only one dash allowed */
-	  /* Found another dash or one of the letters first */
-	  if (dash || dfound || sfound || pfound) {
-	    found = 0;
-	    break;
-	  }
-	  else {
-	    dash = 1;
+      
+      /* Skip it if the prefix does not match the library name. */
+      if (strncmp (dirbuf->d_name + 3, library_name, library_name_len))
+	continue;
+      
+      filelen = strlen (dirbuf->d_name);
+      
+      /* Now check if the extension matches */
+      if (ext && (extlen = strlen (ext)) && filelen - extlen > 0) 
+	{
+	  int dfound = 0, sfound = 0, pfound = 0, dash = 0;
+	  
+	  if (strcmp (dirbuf->d_name + filelen - extlen, ext))
+	    /* No luck, skip this file */
 	    continue;
-	  }
+	  
+	  /* The extension matches. Do a check to see if the suffix of the
+	     library matches the library type we are looking for. */
+	  for (i = library_name_len + 3; i < filelen - extlen; i++) 
+	    {
+	      /* Possibly a match */
+	      if (type == dirbuf->d_name[i])
+		found = 1;
+	      
+	      if (dirbuf->d_name[i] == '_') 
+		{ /* Only one dash allowed */
+		  /* Found another dash or one of the letters first */
+		  if (dash || dfound || sfound || pfound) 
+		    {
+		      found = 0;
+		      break;
+		    }
+		  else 
+		    {
+		      dash = 1;
+		      continue;
+		    }
+		}
+	      else if (dirbuf->d_name[i] == 'd') 
+		{ /* Only one d allowed */
+		  /* We must have found the dash already */
+		  if (!dash || dfound) 
+		    {
+		      found = 0;
+		      break;
+		    }
+		  else 
+		    {
+		      dfound = 1;
+		      continue;
+		    }
+		}
+	      else if (dirbuf->d_name[i] == 'p') 
+		{ /* Only one p allowed */
+		  /* We must have found the dash already */
+		  if (!dash || pfound) 
+		    {
+		      found = 0;
+		      break;
+		    }
+		  else 
+		    {
+		      pfound = 1;
+		      continue;
+		    }
+		}
+	      else if (dirbuf->d_name[i] == 's') 
+		{ /* Only one s allowed */
+		  /* We must have found the dash already */
+		  if (!dash || sfound) 
+		    {
+		      found = 0;
+		      break;
+		    }
+		  else 
+		    {
+		      sfound = 1;
+		      continue;
+		    }
+		}
+	      else 
+		{
+		  /* Skip the libraries that begin with the same name but have
+		     different suffix, eg libobjc.a libobjc-test.a. */
+		  found = 0;
+		  break;
+		}
+	    }
+	  
+	  if (found) 
+	    {
+	      char filename[PATH_MAX + 1];
+	      
+	      /* Copy the name of the library without the "lib" prefix and the
+		 extension. */
+	      strncpy (filename, dirbuf->d_name + 3, filelen - extlen - 3);
+	      filename[filelen - extlen - 3] = 0;
+	      printf (" -l%s", filename);
+	      break;
+	    }
 	}
-	else if (dirbuf->d_name[i] == 'd') { /* Only one d allowed */
-	  /* We must have found the dash already */
-	  if (!dash || dfound) {
-	    found = 0;
-	    break;
-	  }
-	  else {
-	    dfound = 1;
-	    continue;
-	  }
-	}
-	else if (dirbuf->d_name[i] == 'p') { /* Only one p allowed */
-	  /* We must have found the dash already */
-	  if (!dash || pfound) {
-	    found = 0;
-	    break;
-	  }
-	  else {
-	    pfound = 1;
-	    continue;
-	  }
-	}
-	else if (dirbuf->d_name[i] == 's') { /* Only one s allowed */
-	  /* We must have found the dash already */
-	  if (!dash || sfound) {
-	    found = 0;
-	    break;
-	  }
-	  else {
-	    sfound = 1;
-	    continue;
-	  }
-	}
-	else {
-	  /* Skip the libraries that begin with the same name but have
-	     different suffix, eg libobjc.a libobjc-test.a. */
-	  found = 0;
-	  break;
-	}
-      }
-
-      if (found) {
-	char filename[PATH_MAX + 1];
-
-	/* Copy the name of the library without the "lib" prefix and the
-	   extension. */
-	strncpy (filename, dirbuf->d_name + 3, filelen - extlen - 3);
-	filename[filelen - extlen - 3] = 0;
-	printf (" -l%s", filename);
-	break;
-      }
     }
-  }
-
+  
   closedir (dir);
   return found;
 }
@@ -404,12 +435,13 @@ int search_for_library_in_directory (char* path)
   if (stat (full_filename, &statbuf) < 0 && errno != ENOENT) /* Error */
     return 0;
 
-  if ((statbuf.st_mode & S_IFMT) == S_IFREG) { /* Found it! */
-    printf (" -l%s", library_name);
-    if (*libname_suffix)
-      printf ("%s", libname_suffix);
-    return 1;
-  }
+  if ((statbuf.st_mode & S_IFMT) == S_IFREG) 
+    { /* Found it! */
+      printf (" -l%s", library_name);
+      if (*libname_suffix)
+	printf ("%s", libname_suffix);
+      return 1;
+    }
 
   /* The library was not found. If the library needed is a debug version try
      to find a library with debugging info. */
@@ -445,11 +477,12 @@ int main(int argc, char** argv)
   setmode(2, O_BINARY);
 #endif
 
-  if (argc == 1) {
-    printf ("usage: %s [-Lpath ...] -llibrary shared=yes|no debug=yes|no "
-	    "profile=yes|no libext=string shared_libext=string\n", argv[0]);
-    exit (1);
-  }
+  if (argc == 1) 
+    {
+      printf ("usage: %s [-Lpath ...] -llibrary shared=yes|no debug=yes|no "
+	      "profile=yes|no libext=string shared_libext=string\n", argv[0]);
+      exit (1);
+    }
 
   get_arguments (argc, argv);
 
@@ -461,24 +494,30 @@ int main(int argc, char** argv)
   for (i = 0; i < paths_no; i++)
     printf (" -L%s", library_paths[i]);
 
-  for (i = 0; i < libraries_no; i++) {
-    library_name = all_libraries[i];
-    library_name_len = strlen (library_name);
-    found = 0;
-    for (j = 0; j < paths_no; j++)
-      if (search_for_library_in_directory (library_paths[j])) {
-	found = 1;
-	break;
-      }
-
-    if (!found) {
-      /* The library was not found. Assume there is somewhere else in the
-         linker library path and it will find the library. Otherwise a linking
-	 error will happen but this is not our fault ;-). */
-      printf (" -l%s", library_name);
+  for (i = 0; i < libraries_no; i++) 
+    {
+      library_name = all_libraries[i];
+      library_name_len = strlen (library_name);
+      found = 0;
+      for (j = 0; j < paths_no; j++)
+	{
+	  if (search_for_library_in_directory (library_paths[j])) 
+	    {
+	      found = 1;
+	      break;
+	    }
+	}
+      
+      if (!found) 
+	{
+	  /* The library was not found. Assume there is somewhere else
+	     in the linker library path and it will find the
+	     library. Otherwise a linking error will happen but this is
+	     not our fault ;-). */
+	  printf (" -l%s", library_name);
+	}
     }
-  }
-
+  
   /* Output the other flags */
   for (i = 0; i < other_flags_no; i++)
     printf (" %s", other_flags[i]);
