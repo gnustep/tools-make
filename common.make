@@ -174,10 +174,9 @@ endif
 #
 # Variables specifying the installation directory paths
 #
-GNUSTEP_APPS                 = $(GNUSTEP_INSTALLATION_DIR)/Apps
+GNUSTEP_APPS                 = $(GNUSTEP_INSTALLATION_DIR)/Applications
 GNUSTEP_TOOLS                = $(GNUSTEP_INSTALLATION_DIR)/Tools
 GNUSTEP_SERVICES             = $(GNUSTEP_INSTALLATION_DIR)/Library/Services
-GNUSTEP_WOAPPS               = $(GNUSTEP_INSTALLATION_DIR)/WOApps
 GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Headers
 GNUSTEP_BUNDLES 	     = $(GNUSTEP_INSTALLATION_DIR)/Library/Bundles
 GNUSTEP_FRAMEWORKS	     = $(GNUSTEP_INSTALLATION_DIR)/Library/Frameworks
