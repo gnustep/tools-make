@@ -3,10 +3,11 @@
 #
 #   Makefile rules to build GNUstep-based bundles.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -33,7 +34,8 @@ endif
 
 # The name of the bundle is in the BUNDLE_NAME variable.
 # The list of bundle resource file are in xxx_RESOURCE_FILES
-# The list of localized bundle resource files is in xxx_LOCALIZED_RESOURCE_FILES
+# The list of localized bundle resource files is in 
+#                               xxx_LOCALIZED_RESOURCE_FILES
 # The list of languages the bundle supports is in xxx_LANGUAGES
 # The list of bundle resource directories are in xxx_RESOURCE_DIRS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
@@ -55,9 +57,14 @@ internal-install:: $(BUNDLE_NAME:=.install.bundle.variables)
 
 internal-uninstall:: $(BUNDLE_NAME:=.uninstall.bundle.variables)
 
-internal-clean:: $(BUNDLE_NAME:=.clean.bundle.variables)
+internal-clean:: $(BUNDLE_NAME:=.clean.bundle.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR) \
+	       $(addsuffix $(BUNDLE_EXTENSION),$(BUNDLE_NAME))
 
-internal-distclean:: $(BUNDLE_NAME:=.distclean.bundle.variables)
+internal-distclean:: $(BUNDLE_NAME:=.distclean.bundle.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 $(BUNDLE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
@@ -284,17 +291,6 @@ ifneq ($(HEADER_FILES),)
 	done;
 endif
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
-
-#
-# Cleaning targets
-#
-internal-bundle-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(BUNDLE_DIR_NAME)
-
-internal-bundle-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
 
 endif
 

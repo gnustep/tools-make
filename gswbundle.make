@@ -65,9 +65,14 @@ internal-install:: $(GSWBUNDLE_NAME:=.install.bundle.variables)
 
 internal-uninstall:: $(GSWBUNDLE_NAME:=.uninstall.bundle.variables)
 
-internal-clean:: $(GSWBUNDLE_NAME:=.clean.bundle.variables)
+internal-clean:: $(GSWBUNDLE_NAME:=.clean.bundle.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR) \
+	       $(addsuffix $(GSWBUNDLE_EXTENSION),$(BUNDLE_NAME))
 
-internal-distclean:: $(GSWBUNDLE_NAME:=.distclean.bundle.variables)
+internal-distclean:: $(GSWBUNDLE_NAME:=.distclean.bundle.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 $(GSWBUNDLE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
@@ -284,17 +289,6 @@ ifneq ($(HEADER_FILES),)
 	done;
 endif
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
-
-#
-# Cleaning targets
-#
-internal-bundle-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(GSWBUNDLE_DIR_NAME)
-
-internal-bundle-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
 
 endif
 
