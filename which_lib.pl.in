@@ -1,0 +1,230 @@
+#!@PERL@
+
+$| = 1;
+
+$shared_extension = "so";
+$lib_extension = "a";
+
+@L = ();
+@l = ();
+
+%option =  (
+	'shared', 1,
+	'debug', 0,
+	'profile', 0,
+	'gc', 0
+);
+
+if($ARGV[0] eq "-h" || $ARGV[0] eq '') {
+	print "usage: which_lib.pl -xdebug [-Lpath ...] -llibrary shared=yes|no ";
+	print "debug=yes|no profile=yes|no gc=yes|no\n"; 
+	exit;
+}
+
+for $i (0..$#ARGV) {
+	$arg = $ARGV[$i];
+#	print "ARGUMENT: $arg\n";
+	if ($arg =~ /^-x/) {
+		$arg = substr($arg,2);
+		print "setting debuglevel $arg\n" if $arg > 8;
+		$debug = $arg;
+	}
+	elsif ($arg =~ /^-L/) {
+		$arg = substr($arg,2);
+		print "adding library path $arg\n" if $debug > 8;
+		push(@L, $arg);		
+	}
+	elsif ($arg =~ /^-l/) {
+		$arg = substr($arg,2);
+		print "adding lib $arg\n" if $debug > 8;
+		push(@l, $arg);
+	}
+	elsif ($arg =~ /=/ ) {
+		print "parsing option $arg\n" if $debug > 8;
+		
+		($key, $value) = split(/=/, $arg);
+		if ($key eq "shared" || $key eq "debug" || $key eq "profile" || $key eq "gc") { 
+			if ($value =~ /[yY][eE][sS]/) {
+				$option{$key} = 1;
+			}
+			elsif ($value =~ /[nN][oO]/) {
+				$option{$key} = 0;
+			}
+			else {
+				$option{$key} = 0;
+				# die "unknown value $value for option $key\n\n";
+			}
+		}
+	} 
+	else {
+		print "usage: which_lib -xdebug [-Lpath ...] -llibrary shared=yes|no ";
+		print "debug=yes|no profile=yes|no\n"; 
+		exit;
+	}
+}
+
+if ($debug > 1) {
+	print "looking for\n", join("\n", @l), "\nin\n", join("\n", @L), "\n\n";
+	print "using options:\n";
+	print "  shared:  $option{'shared'}\n";
+	print "  debug:   $option{'debug'}\n";
+	print "  profile: $option{'profile'}\n";
+	print "  gc:      $option{'gc'}\n";
+}
+
+foreach $j (0..$#l) {
+
+	$l = $l[$j];
+
+	@possible_libs = ();
+	%pathes = ();
+
+  $preferedlib = '';
+	
+	foreach $i (0..$#L) {
+		local($L) = $L[$i];
+		if (!opendir(DIR, $L)) { 
+			next; 
+		}
+		local(@filenames) = readdir(DIR);
+		closedir(DIR);
+	
+		for (@filenames) {
+			next if $_ eq '.';
+			next if $_ eq '..';
+			local ($file) = $_;
+
+			if ($file =~ /\.$shared_extension$/) {
+				$file =~ s/\.$shared_extension$//;
+			}
+			elsif ($file =~ /\.$lib_extension$/) {
+				$file =~ s/\.$lib_extension$//;
+			} 
+			else {
+				next; 			# file is no lib
+			}
+
+			local ($file2) = $file;
+			local ($k)     = index($file, '_');
+
+			if ($k != -1) {
+				# startindex to be justified for libraries not starting with 'lib'
+				$file2 = substr($file, 3, $k - 3);
+			}
+			if ($file2 ne $l) { next; }
+
+			if ($file =~ /$l/) {
+				# print "lib $l file $file file2 $file2\n";
+
+				if ($pathes{$file} eq '') {
+					$pathes{$file} = $L;
+					push(@possible_libs, $file);
+					print "found $file in $pathes{$file}\n" if $debug > 1;
+				}
+				else {
+					print "\nWARNING: $file found in \n$pathes{$file} and \n$L \nusing \n$pathes{$file}\n\n" if $debug > 1;
+				}
+			}
+			else {
+				print ":$file: don't match :$l:\n" if $debug > 8;
+			}
+		}
+	}
+
+	$sharedflag = 'null';
+	$debugflag = 'null';
+	$profileflag = 'null';
+	$gcflag = 'null';
+	
+	$preferedlib = '';
+
+	for (@possible_libs) {
+		$mypossiblelib = $_;
+		$myflags = $mypossiblelib;
+		$myflags =~ /([_dpsg]{0,5})$/;	
+		$myflags = $1;
+	
+		$mysharedflag = 1;
+		$mysharedflag = 0 if $myflags =~ /s/;
+
+		$mydebugflag = 0;
+		$mydebugflag = 1 if $myflags =~ /d/;
+	
+		$myprofileflag = 0;
+		$myprofileflag = 1 if $myflags =~ /p/;
+
+		$mygcflag = 0;
+		$mygcflag = 1 if $myflags =~ /g/;
+		
+	
+		print "flags found in $mypossiblelib: shared=$mysharedflag, debug=$mydebugflag, profile=$myprofileflag, gc=$mygcflag\n" if $debug > 5;
+
+		if($option{'gc'} == mygcflag) {
+	
+		if ($preferedlib eq '') {
+			$preferedlib = $mypossiblelib;
+			$sharedflag = $mysharedflag;
+			$debugflag = $mydebugflag;
+			$profileflag = $myprofileflag;
+			$gcflag = $mygcflag;
+			print "set prefered lib to $preferedlib because it was first found\n" if $debug > 0;
+		}
+
+		if($option{'shared'} && $mysharedflag && !$sharedflag) {
+			$preferedlib = $mypossiblelib; $sharedflag = $mysharedflag; 
+			$debugflag = $mydebugflag; $profileflag = $myprofileflag;
+			print "set prefered lib to $preferedlib because its first dynamic lib found\n" 
+																																					if $debug > 0;
+		}
+		if(!$option{'shared'} && !$mysharedflag && $sharedflag) {
+			$preferedlib = $mypossiblelib; $sharedflag = $mysharedflag; 
+			$debugflag = $mydebugflag; $profileflag = $myprofileflag;
+			print "set prefered lib to $preferedlib because its first static lib found\n" 
+																																					if $debug > 0;
+		}
+
+		if($option{'debug'} && $mydebugflag && !$debugflag) {
+			if(($option{'shared'} ne 'null') && ($mysharedflag == $option{'shared'})) {
+				$preferedlib = $mypossiblelib; $sharedflag = $mysharedflag; 
+				$debugflag = $mydebugflag; $profileflag = $myprofileflag;
+				print "set prefered lib to $preferedlib (add debugging)\n" if $debug > 0;
+			}
+		}
+		if(!$option{'debug'} && !$mydebugflag && $debugflag) {
+			if(($option{'shared'} ne 'null') && ($mysharedflag == $option{'shared'})) {
+				$preferedlib = $mypossiblelib; $sharedflag = $mysharedflag; 
+				$debugflag = $mydebugflag; $profileflag = $myprofileflag;
+				print "set prefered lib to $preferedlib (disable debugging)\n" if $debug > 0;
+			}
+		}
+
+		if($option{'profile'} && $myprofileflag && !$profileflag) {
+			if(($option{'shared'} ne 'null') && ($mysharedflag == $option{'shared'})) {
+				$preferedlib = $mypossiblelib; $sharedflag = $mysharedflag; 
+				$debugflag = $mydebugflag; $profileflag = $myprofileflag;
+				print "set prefered lib to $preferedlib (add profiling)\n" if $debug > 0;
+			}
+		}
+		if(!$option{'profile'} && !$myprofileflag && $profileflag) {
+			if(($option{'shared'} ne 'null') && ($mysharedflag == $option{'shared'})) {
+				$preferedlib = $mypossiblelib; $sharedflag = $mysharedflag; 
+				$debugflag = $mydebugflag; $profileflag = $myprofileflag;
+				print "set prefered lib to $preferedlib (disable profiling)\n" if $debug > 0;
+			}
+		}
+		}
+		else {
+			print "$mypossiblelib gc flag not matched.\n" if $debug > 0;
+		}
+	}
+
+	
+	$preferedlib =~ s/^lib//;
+	if ($preferedlib eq '') {
+		print "-l$l\n";
+	}
+	else {
+		print "-l$preferedlib\n";
+	}
+}
+
