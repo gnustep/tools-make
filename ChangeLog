@@ -1,3 +1,8 @@
+2001-02-08 Richard Frith-Macdonald <rfm@gnu.org>
+
+	Fix by David Wetzel to framework.make
+	if($$2 == "R") changed to if($$2 == "D")
+
 Tue Feb  6 16:59:20 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	Javadoc support added.

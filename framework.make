@@ -225,7 +225,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(S
 	classes=""; \
 	if [ "$$objcfiles" != "__dummy__" ]; then \
 	  for f in $$objcfiles; do \
-	    sym=`nm -Pg $$f | awk '/__objc_class_name_/ {if($$2 == "R") print $$1}' | sed 's/__objc_class_name_//'`; \
+	    sym=`nm -Pg $$f | awk '/__objc_class_name_/ {if($$2 == "D") print $$1}' | sed 's/__objc_class_name_//'`; \
 	    classes="$$classes $$sym"; \
 	  done; \
 	fi; \
