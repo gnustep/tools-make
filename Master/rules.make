@@ -21,10 +21,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# Prevent multiple inclusions
-ifeq ($(MASTER_RULES_MAKE_LOADED),)
-MASTER_RULES_MAKE_LOADED=yes
-
 #
 # Quick explanation - 
 #
@@ -367,8 +363,6 @@ include $(GNUSTEP_MAKEFILES)/Master/rpm.make
 # 
 #include $(GNUSTEP_MAKEFILES)/Master/deb.make <TODO>
 
-endif
-# Master/rules.make loaded
 
 ## Local variables:
 ## mode: makefile

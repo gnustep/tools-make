@@ -20,13 +20,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# prevent multiple inclusions
-ifeq ($(MASTER_AGGREGATE_MAKE_LOADED),)
-MASTER_AGGREGATE_MAKE_LOADED=yes
-
-#
-# Include in the common makefile rules
-#
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -58,8 +51,6 @@ internal-all internal-install internal-uninstall internal-clean \
 	    fi; \
 	  fi; \
 	done
-
-endif # Master/aggregate.make loaded
 
 ## Local variables:
 ## mode: makefile

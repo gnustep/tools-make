@@ -21,10 +21,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# Prevent multiple inclusions
-ifeq ($(INSTANCE_RULES_MAKE_LOADED),)
-INSTANCE_RULES_MAKE_LOADED=yes
-
 #
 # The list of Objective-C source files to be compiled
 # are in the OBJC_FILES variable.
@@ -101,8 +97,6 @@ ifeq ($(AUTO_DEPENDENCIES),yes)
   endif
 endif
 
-endif
-# Instance/rules.make loaded
 
 ## Local variables:
 ## mode: makefile

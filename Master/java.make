@@ -20,13 +20,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# prevent multiple inclusions
-ifeq ($(MASTER_JAVA_PACKAGE_MAKE_LOADED),)
-MASTER_JAVA_PACKAGE_MAKE_LOADED=yes
-
-#
-# Include in the common makefile rules
-#
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -46,8 +39,6 @@ internal-distclean:: $(JAVA_PACKAGE_NAME:=.distclean.java-package.subprojects)
 $(JAVA_PACKAGE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.java-package.variables
-
-endif # Master/java.make loaded
 
 ## Local variables:
 ## mode: makefile

@@ -28,10 +28,6 @@
 # xxx_PRINCIPAL_CLASS variable.
 #
 
-# prevent multiple inclusions
-ifeq ($(MASTER_JAVA_TOOL_MAKE_LOADED),)
-MASTER_JAVA_TOOL_MAKE_LOADED = yes
-
 JAVA_TOOL_NAME:=$(strip $(JAVA_TOOL_NAME))
 
 ifeq ($(RULES_MAKE_LOADED),)
@@ -51,8 +47,6 @@ internal-distclean:: $(JAVA_TOOL_NAME:=.distclean.java_tool.subprojects)
 $(JAVA_TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	         $@.all.java_tool.variables
-
-endif # Master/java-tool.make loaded
 
 ## Local variables:
 ## mode: makefile

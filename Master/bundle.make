@@ -21,13 +21,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# prevent multiple inclusions
-ifeq ($(MASTER_BUNDLE_MAKE_LOADED),)
-MASTER_BUNDLE_MAKE_LOADED=yes
-
-#
-# Include in the common makefile rules
-#
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -56,8 +49,6 @@ $(BUNDLE_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.bundle.variables
 
-
-endif # Master/bundle.make loaded
 
 ## Local variables:
 ## mode: makefile

@@ -28,10 +28,6 @@
 # xxx_PRINCIPAL_CLASS variable.
 #
 
-# prevent multiple inclusions
-ifeq ($(INSTANCE_JAVA_TOOL_MAKE_LOADED),)
-INSTANCE_JAVA_TOOL_MAKE_LOADED = yes
-
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -98,9 +94,6 @@ internal-java_tool-uninstall:: shared-instance-java-uninstall
 internal-java_tool-clean:: shared-instance-java-clean
 
 internal-java_tool-distclean::
-
-
-endif # Instance/java_tool.make loaded
 
 ## Local variables:
 ## mode: makefile

@@ -20,13 +20,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# prevent multiple inclusions
-ifeq ($(INSTANCE_JAVA_PACKAGE_MAKE_LOADED),)
-INSTANCE_JAVA_PACKAGE_MAKE_LOADED=yes
-
-#
-# Include in the common makefile rules
-#
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -98,7 +91,6 @@ internal-java_package-distclean::
 
 internal-java_package-uninstall:: shared-instance-java-uninstall
 
-endif # Instance/java.make loaded
 
 ## Local variables:
 ## mode: makefile

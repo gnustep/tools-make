@@ -21,10 +21,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# prevent multiple inclusions
-ifeq ($(INSTANCE_BUNDLE_MAKE_LOADED),)
-INSTANCE_BUNDLE_MAKE_LOADED=yes
-
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -286,7 +282,6 @@ $(BUNDLE_INSTALL_DIR):
 internal-bundle-uninstall:: shared-instance-headers-uninstall
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 
-endif # Instance/bundle.make loaded
 
 ## Local variables:
 ## mode: makefile

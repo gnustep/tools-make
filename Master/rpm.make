@@ -182,10 +182,6 @@
 # The generated rpm will be in /usr/src/redhat/RPMS/.
 #
 
-# prevent multiple inclusions
-ifeq ($(RPM_MAKE_LOADED),)
-RPM_MAKE_LOADED=yes
-
 #
 # Internal targets
 #
@@ -346,9 +342,6 @@ ifneq ($(PACKAGE_NAME),)
 internal-distclean::
 	rm -rf $(PACKAGE_NAME).spec $(PACKAGE_NAME)-debug.spec
 endif
-
-endif
-# rpm.make loaded
 
 ## Local variables:
 ## mode: makefile

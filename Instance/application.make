@@ -21,10 +21,6 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
-# prevent multiple inclusions
-ifeq ($(INSTANCE_APPLICATION_MAKE_LOADED),)
-INSTANCE_APPLICATION_MAKE_LOADED=yes
-
 #
 # Include in the common makefile rules
 #
@@ -220,9 +216,6 @@ $(GNUSTEP_APPS):
 
 internal-app-uninstall::
 	(cd $(GNUSTEP_APPS); rm -rf $(APP_DIR_NAME))
-
-endif
-# Instance/application.make loaded
 
 ## Local variables:
 ## mode: makefile

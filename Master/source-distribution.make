@@ -40,10 +40,6 @@
 # current directory.
 #
 
-# prevent multiple inclusions
-ifeq ($(SOURCE_DISTRIBUTION_MAKE_LOADED),)
-SOURCE_DISTRIBUTION_MAKE_LOADED=yes
-
 ifeq ($(CVS_MODULE_NAME),)
   CVS_MODULE_NAME = $(PACKAGE_NAME)
 endif
@@ -152,9 +148,6 @@ ifneq ($(RELEASE_DIR),)
 	fi; \
 	mv $(VERSION_NAME).tar.gz $(RELEASE_DIR)
 endif
-
-endif
-# source-distribution.make loaded
 
 ## Local variables:
 ## mode: makefile
