@@ -546,6 +546,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   internal-$${type}-$$operation \
   INTERNAL_$${type}_NAME=$$target \
   TARGET=$$target \
+  GNUSTEP_MAKE_INSTANCE_INVOCATION=YES \
   _SUBPROJECTS="$($(basename $(basename $*))_SUBPROJECTS)" \
   OBJC_FILES="$($(basename $(basename $*))_OBJC_FILES)" \
   C_FILES="$($(basename $(basename $*))_C_FILES)" \
@@ -801,24 +802,10 @@ $(GNUSTEP_OBJ_DIR):
 	rm -f obj; \
 	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj)
 
-#
-# Now rules for packaging - all automatically included
-# 
-
-#
-# Rules for building source distributions
-#
-include $(GNUSTEP_MAKEFILES)/source-distribution.make
-
-#
-# Rules for building spec files/file lists for RPMs, and RPMs
-#
-include $(GNUSTEP_MAKEFILES)/rpm.make
-
-#
-# Rules for building debian/* scripts for DEBs, and DEBs
-# 
-#include $(GNUSTEP_MAKEFILES)/deb.make <TODO>
+# Include the Master invocation rules
+ifeq ($(GNUSTEP_MAKE_INSTANCE_INVOCATION),)
+include $(GNUSTEP_MAKEFILES)/Master/rules.make
+endif
 
 endif
 # rules.make loaded
