@@ -1,3 +1,8 @@
+2002-01-25 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.sh.in: Add some quoting to make paths to user GNUstep.sh
+	file and make_services files work when there are embedded spaces.
+
 Wed Jan 23 02:53:51 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.csh.in: Fixed setting GNUSTEP_USER_ROOT when it's empty
