@@ -1,3 +1,9 @@
+Thu Mar 28 13:19:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* config.make.in (AWK, SED): Define.  Added extensive comment
+	about why we should not get them from configuration, but simply
+	define them to be 'awk' and 'sed'.
+
 Thu Mar 28 13:08:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/application.make (TTMP_LIBS): Setup for the benefit of
