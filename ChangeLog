@@ -1,3 +1,8 @@
+2004-02-23  Adam Fedor  <fedor@gnu.org>
+
+	* user_home.c (main): Fix check for space in home dir, issue
+	warning if space found (Suggestion from Sheldon Gill).
+
 Wed Feb 18 16:57:46 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Removed --enable-import / --disable-import option.

@@ -204,9 +204,14 @@ int main (int argc, char** argv)
 
       for (i = 0; i < strlen(home); i++)
 	{
-	  if (isspace((int)home[0]))
+	  if (isspace((unsigned int)home[i]))
 	    {
-	      home[0] = '\0';	/* Spaces not permitted! */
+              /*
+               * GNU make doesn't handle spaces in paths.
+               * Broken, wrong and totally unfixable.
+               */
+              fprintf(stderr, "Make cannot handle spaces in paths so the " \
+                          "home directory '%s' may cause problems!\n", home);
 	      break;
 	    }
 	}
