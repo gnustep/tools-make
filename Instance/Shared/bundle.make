@@ -144,6 +144,11 @@ $(FULL_RESOURCE_DIRS):
 # TODO - implement the `Developer` mode :-)
 #
 
+# Please note the trick when copying subproject resources - if there
+# is nothing inside $$subproject/Resources/Subproject/, in
+# $$subproject/Resources/Subproject/* the * expands to itself.  So we
+# check if that is true before trying to copy.
+
 shared-instance-bundle-all: $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH) \
                       $(FULL_RESOURCE_DIRS) \
                       shared-instance-bundle-all-gsweb
@@ -183,7 +188,10 @@ ifneq ($(_SUBPROJECTS),)
 	@(echo "Copying resources from subprojects into the $(GNUSTEP_TYPE) wrapper..."; \
 	for subproject in $(_SUBPROJECTS); do \
 	  if [ -d $$subproject/Resources/Subproject ]; then \
-	    cp -r $$subproject/Resources/Subproject/* $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
+	    if [ "$$subproject/Resources/Subproject/*" != $$subproject'/Resources/Subproject/*' ]; then \
+	      cp -r $$subproject/Resources/Subproject/* \
+	            $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
+	    fi; \
 	  fi; \
 	done)
 endif
