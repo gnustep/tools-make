@@ -107,6 +107,11 @@ DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
 DLL_EXP_LIB      = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
 DLL_EXP_DEF      = $(INTERNAL_library_NAME)$(LIBRARY_NAME_SUFFIX).def
 
+ifeq ($(DLL_INSTALLATION_DIR),)
+  DLL_INSTALLATION_DIR = \
+    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+endif
+
 endif # BUILD_DLL
 
 else # shared
@@ -202,6 +207,7 @@ internal-install-dirs::
 		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
 		$(GNUSTEP_LIBRARIES) \
 		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
+		$(DLL_INSTALLATION_DIR) \
 		$(ADDITIONAL_INSTALL_DIRS)
 
 internal-install-headers::
@@ -219,7 +225,7 @@ ifeq ($(BUILD_DLL),yes)
 internal-install-lib::
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) \
-	      $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/$(LIBRARY_COMBO) ; \
+	    $(DLL_INSTALLATION_DIR) ; \
 	fi
 	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) \
@@ -251,7 +257,7 @@ internal-uninstall-headers::
 ifeq ($(BUILD_DLL),yes)
 
 internal-uninstall-lib::
-	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/$(LIBRARY_COMBO)/$(DLL_NAME)
+	rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME)
 	rm -f $(GNUSTEP_LIBRARIES)/$(DLL_EXP_LIB)
 
 else

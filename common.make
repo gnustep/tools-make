@@ -343,7 +343,7 @@ ifeq ($(JAVA_HOME),)
   ifeq ($(JDK_HOME),)
     # Else, try by finding the path of javac and removing 'bin/javac' from it
     ifeq ($(JAVAC),)
-      JAVA_HOME = $(shell which javac | sed "s/bin\/javac//g")
+      JAVA_HOME = $(shell which javac && which javac | sed "s/bin\/javac//g")
     else # $(JAVAC) != "" 
       JAVA_HOME = $(shell which $(JAVAC) | sed "s/bin\/javac//g")
     endif  
