@@ -1,6 +1,7 @@
 2003-02-06 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/subproject.make: Build dll exported symbols def file.
+	Remove temporary def file on clean.
 	* Instance/rules.make: Make list of subproject def files (thanks Nicola)
 	* Instance/library.make: Use list of subproject def files to put
 	symbols from subprojects into final dll output.

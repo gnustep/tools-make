@@ -48,6 +48,9 @@ $(DLL_DEF_INP): $(DLL_DEF_FILES)
 DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
 endif
 
+internal-subproject-clean::
+	rm -rf $(DLL_DEF_IMP)
+
 internal-subproject-all_:: subproject.def
 
 subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF)
