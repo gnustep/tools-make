@@ -1,3 +1,7 @@
+2003-03-13  Adam Fedor  <fedor@gnu.org>
+
+	* clean_cpu.sh: Make all hppa variants the same.
+
 2003-03-04  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Change sense of --disable-import help line
