@@ -514,7 +514,7 @@ gdnc doesn't work.  If you recompile the kernel then it starts working.
 @node Suse/Intel, Suse 7.x/PPC, Suse 6.x/Intel, Machine Specific
 @section Suse/Intel 
 
-GNUstep has been tested on version 7.0, 8.0, and 8.1 of Suse
+GNUstep has been tested on version 7.0, 8.0, 8.1, and 8.2 of Suse
 
 @table @samp
 @item Recommended compiler

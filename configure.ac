@@ -471,7 +471,7 @@ else
   #  subpattern)
   # \([^0-9].*\) matches a non numeric char followed by anything
   # /\2/ replace the whole lot with the 2^nd subpattern
-  gs_cv_gcc_major_version=`${CC} -dumpversion | sed "s/\(^[[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/"`;
+  gs_cv_gcc_major_version=`${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/"`;
 
   if test "${gs_cv_gcc_major_version}" -ge "3" ; then
     AUTO_DEPENDENCIES=yes
