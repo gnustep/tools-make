@@ -113,3 +113,7 @@ endif
 
 endif
 # objc.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

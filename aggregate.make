@@ -47,3 +47,7 @@ internal-all internal-install internal-uninstall internal-clean \
 
 endif
 # aggregate.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

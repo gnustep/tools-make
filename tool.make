@@ -76,7 +76,7 @@ internal-tool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$@ \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-		$(LIBFOUNDATION_GC_LIBRARY) $(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
+		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
 
 before-$(TARGET)-all::
 
@@ -109,3 +109,7 @@ endif
 
 endif
 # tool.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

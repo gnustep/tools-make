@@ -196,3 +196,7 @@ endif
 
 endif
 # application.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

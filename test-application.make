@@ -66,3 +66,7 @@ endif
 
 endif
 # test-application.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

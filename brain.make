@@ -37,6 +37,9 @@ ifeq ($(the_library_combo),)
   the_library_combo=$(library_combo)
 endif
 
+ifeq ($(gc), yes)
+  the_library_combo := $(the_library_combo)-gc
+endif
 
 # Strip out the individual libraries from the combo string
 combo_list = $(subst -, ,$(the_library_combo))
@@ -65,7 +68,11 @@ ifneq ($(backend),)
 GUI_BACKEND_LIB = $(backend)
 endif
 
+ifeq ($(gc), yes)
+export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-$(GUI_BACKEND_LIB)-gc
+else
 export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-$(GUI_BACKEND_LIB)
+endif
 
 OBJC_LDFLAGS =
 OBJC_LIBS =
@@ -103,9 +110,21 @@ endif
 
 ifeq ($(FOUNDATION_LIB),fd)
 -include $(GNUSTEP_MAKEFILES)/libFoundation.make
+
+FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
 FND_LDFLAGS =
 FND_LIBS = -lFoundation
-FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
+
+# If gc=yes was passed and libFoundation was compiled with Boehm's
+# GC support, use the appropriate libraries
+
+ifeq ($(gc), yes)
+  ifeq ($(LIBFOUNDATION_WITH_GC), yes)
+    OBJC_LIBS = -lobjc_gc $(LIBFOUNDATION_GC_LIBRARY)
+    AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_BOEHM_GC=1
+  endif
+endif
+
 endif
 
 ifeq ($(FOUNDATION_LIB),nx)
@@ -183,3 +202,7 @@ SYSTEM_LIB_DIR =
 SYSTEM_LIBS = -ltiff -lwsock32 -ladvapi32 -lcomctl32 -luser32 \
    -lgdi32 -lcomdlg32
 endif
+
+## Local variables:
+## mode: makefile
+## End:

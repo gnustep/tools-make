@@ -101,7 +101,7 @@ import-library::
 #
 internal-library-install:: internal-install-dirs internal-install-lib \
 	internal-install-headers
-   
+
 internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		$(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR) \
@@ -171,3 +171,7 @@ endif
 
 endif
 # library.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

@@ -32,6 +32,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The name of the bundle is in the BUNDLE_NAME variable.
 # The list of bundle resource file are in xxx_RESOURCES
 # The list of bundle resource directories are in xxx_RESOURCE_DIRS
+# The name of the principal class is xxx_PRINCIPAL_CLASS
 # where xxx is the bundle name
 #
 
@@ -97,9 +98,13 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the bundle wrapper..."; \
-	  cp -r $(RESOURCE_FILES) $(BUNDLE_DIR_NAME)/Resources/$(RESOURCE_FILES); \
+	  cp -r $(RESOURCE_FILES) $(BUNDLE_DIR_NAME)/Resources; \
 	fi)
 
+
+ifeq ($(PRINCIPAL_CLASS),)
+PRINCIPAL_CLASS = $(INTERNAL_bundle_NAME)
+endif
 
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -109,7 +114,7 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  else \
 	    echo "  NSMainNibFile = `echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`;"; \
 	  fi; \
-	  echo "  NSPrincipalClass = $(INTERNAL_bundle_NAME);"; \
+	  echo "  NSPrincipalClass = $(PRINCIPAL_CLASS);"; \
 	  echo "}") >$@
 
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
@@ -137,3 +142,7 @@ endif
 
 endif
 # bundle.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

@@ -1,3 +1,32 @@
+Tue Apr 14 22:45:38 1998  Ovidiu Predescu  <ovidiu@aracnet.com>
+
+	* test-tool.make (internal-testtool-check): New target.
+
+Wed Apr  1 19:37:26 1998  Ovidiu Predescu  <ovidiu@aracnet.com>
+
+	* bundle.make (xxx_PRINCIPAL_CLASS): New variable to support
+ 	specifying the principal class of a bundle.
+	* rules.make: Pass PRINCIPAL_CLASS down in the recursive make.
+	* test-tool.make (internal-testtool-install): New empty rule.
+
+Wed Mar 11 23:28:11 1998  Ovidiu Predescu  <ovidiu@aracnet.com>
+
+	* brain.make: New makefile variable 'gc' used to specify the Boehm's
+	garbage collector (currently works only with libFoundation).
+
+	* Added emacs variables at the end of makefile fragments.
+	* Added the missing /bin/sh line in the shell scripts (bug report from
+	Helge Hess <hh@mdlink.de>).
+
+Wed Mar  4 22:48:04 1998  Ovidiu Predescu  <ovidiu@aracnet.com>
+
+	* tool.make: Don't pass LIBFOUNDATION_GC_LIBRARY when linking the
+ 	program.
+ 	* test-library.make: Likewise.
+	* brain.make (OBJC_LIBS): If working with libFoundation compiled
+ 	with Boehm's garbage collector support, use a special Objective-C
+ 	runtime library (libobjc_gc) and link against the gc library.
+
 Fri May 15 12:00:27 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* application.make (APP_RESOURCE_DIRS): New variable.

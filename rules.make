@@ -189,6 +189,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	    RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
 	    BUNDLE_LIBS="$($*_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
 	    BUNDLE_INSTALL_DIR="$($*_BUNDLE_INSTALL_DIR)" \
+	    PRINCIPAL_CLASS="$($*_PRINCIPAL_CLASS)" \
 	    ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \
 					$($*_INCLUDE_DIRS)" \
 	    ADDITIONAL_GUI_LIBS="$($*_GUI_LIBS) $(ADDITIONAL_GUI_LIBS)" \
@@ -236,3 +237,7 @@ endif
 
 endif
 # rules.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

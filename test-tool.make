@@ -64,5 +64,13 @@ internal-uninstall:: $(TEST_TOOL_NAME:=.uninstall.testtool.variables)
 
 endif
 
+internal-testtool-install::
+
+internal-testtool-check::
+
 endif
 # test-tool.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

@@ -67,3 +67,7 @@ endif
 ifneq ($(arch),)
 export CLEANED_ARCH = $(foreach a, $(arch), $(shell $(CLEAN_CPU_SCRIPT) $(a)))
 endif
+
+## Local variables:
+## mode: makefile
+## End:

@@ -85,11 +85,10 @@ AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
 # Setup the library combination
 #--------------------------------------------------------------------
 AC_ARG_WITH(library-combo,[
-
 --with-library-combo
-    Define the default library combinations that will be used when you type
-    'make'. You can still change the library combination at runtime by
-    specifying the 'library_combo' make variable. For example:
+    Define the default library combinations that will be used when you
+type 'make'. You can still change the library combination at runtime
+by specifying the 'library_combo' make variable. For example:
     
       $ make library_combo=nx-pdo-nx-nil
 ],

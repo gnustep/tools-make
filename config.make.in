@@ -73,3 +73,7 @@ endif
 
 # Any user specified libs, like thread libraries
 CONFIG_SYSTEM_LIBS = @LIBS@
+
+## Local variables:
+## mode: makefile
+## End:

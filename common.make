@@ -298,3 +298,9 @@ GNUSTEP_TEXI2HTML = texi2html
 GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
 GNUSTEP_DVIPS = dvips
 GNUSTEP_DVIPS_FLAGS = 
+
+
+## Local variables:
+## mode: makefile
+## End:
+
