@@ -286,7 +286,8 @@ ifeq ($(FOUNDATION_LIB), apple)
   # plain C files.
   INTERNAL_CFLAGS += -no-cpp-precomp
 
-  INTERNAL_OBJCFLAGS += -traditional-cpp
+  # TODO - Check if we can do without -no-cpp-precomp for Objective-C.
+  INTERNAL_OBJCFLAGS += -no-cpp-precomp
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
     INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
