@@ -37,11 +37,7 @@ GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
 GNUSTEP_USER_ROOT=~/GNUstep
 export GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT
 
-if [ -z "$GNUSTEP_BUILD_ROOT" ]; then
-  GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Makefiles
-else
-  GNUSTEP_MAKEFILES=$GNUSTEP_BUILD_ROOT/Makefiles
-fi
+GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Makefiles
 export GNUSTEP_MAKEFILES
 
 #
@@ -64,11 +60,6 @@ GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
 GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/clean_os.sh $GNUSTEP_HOST_OS`
 
 export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
-
-#
-# the rest of this file is only executed, if the core already is installed.
-#
-if [ -z "$GNUSTEP_BUILD_ROOT" ]; then
 
 #
 # Add the GNUstep tools directories to the path
@@ -129,8 +120,6 @@ else
     $TDIR/make_services &
   fi
 fi
-
-fi # [ -z "$GNUSTEP_BUILD_ROOT" ]
 
 gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"
 

@@ -35,11 +35,7 @@ setenv GNUSTEP_LOCAL_ROOT @GNUSTEP_LOCAL_ROOT@
 setenv GNUSTEP_NETWORK_ROOT @GNUSTEP_NETWORK_ROOT@
 setenv GNUSTEP_USER_ROOT ~/GNUstep
 
-if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
-  setenv GNUSTEP_MAKEFILES ${GNUSTEP_SYSTEM_ROOT}/Makefiles
-else
-  setenv GNUSTEP_MAKEFILES ${GNUSTEP_BUILD_ROOT}/Makefiles
-endif
+setenv GNUSTEP_MAKEFILES ${GNUSTEP_SYSTEM_ROOT}/Makefiles
 
 #
 # Determine the host information
@@ -58,12 +54,6 @@ setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/os.sh $GNUSTEP_HOST`
 setenv GNUSTEP_HOST_CPU `${GNUSTEP_MAKEFILES}/clean_cpu.sh $GNUSTEP_HOST_CPU`
 setenv GNUSTEP_HOST_VENDOR `${GNUSTEP_MAKEFILES}/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
 setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/clean_os.sh $GNUSTEP_HOST_OS`
-
-#
-# the rest of this file is only executed, if the core already is installed.
-#
-
-if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
 
 #
 # Add the GNUstep tools directories to the path
@@ -106,8 +96,6 @@ else
     $TDIR/make_services &
   endif
 endif
-
-endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )
 
 #
 #
