@@ -52,6 +52,9 @@ endif
 endif
 
 internal-distclean::
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj *.service
 
 SERVICES_WITH_SUBPROJECTS = $(strip $(foreach service,$(SERVICE_NAME),$(patsubst %,$(service),$($(service)_SUBPROJECTS))))
 ifneq ($(SERVICES_WITH_SUBPROJECTS),)

@@ -39,8 +39,16 @@ _PSWRAP_H_FILES = $(foreach palette,$(PALETTE_NAME),$($(palette)_PSWRAP_FILES:.p
 
 internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
+ifeq ($(GNUSTEP_FLATTENED),)
+	rm -rf *.palette/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.palette
+endif
 
-internal-distclean:: $(PALETTE_NAME:=.distclean.palette.variables)
+internal-distclean::
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj *.palette
 
 PALETTES_WITH_SUBPROJECTS = $(strip $(foreach palette,$(PALETTE_NAME),$(patsubst %,$(palette),$($(palette)_SUBPROJECTS))))
 ifneq ($(PALETTES_WITH_SUBPROJECTS),)

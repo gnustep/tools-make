@@ -40,8 +40,7 @@ endif
 
 .PHONY: internal-palette-all_ \
         internal-palette-install_ \
-        internal-palette-uninstall_ \
-        internal-palette-distclean
+        internal-palette-uninstall_
 
 # On Solaris we don't need to specifies the libraries the palette needs.
 # How about the rest of the systems? ALL_PALETTE_LIBS is temporary empty.
@@ -117,7 +116,7 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	  ) >$@$(END_ECHO)
 
 #
-# Install, clean targets
+# Install targets
 #
 $(PALETTE_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
@@ -129,10 +128,5 @@ endif
 
 internal-palette-uninstall_:: shared-instance-bundle-uninstall
 
-
-internal-palette-distclean::
-	$(ECHO_NOTHING)rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	       static_debug_obj static_profile_obj shared_profile_debug_obj \
-	       static_profile_debug_obj $(PALETTE_DIR_NAME)$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
