@@ -880,6 +880,14 @@ AFTER_INSTALL_SHARED_LIB_CHOWN =
 
 BUILD_DLL	 = yes
 LIBEXT	 	 = .a
+# Technically, in this Unix-inspired building system, a DLL is
+# composed of a .dll file which goes in the executable path and is the
+# one which is loaded at runtime, and a .dll.a file which goes in the
+# library path and which is linked into the application in order to
+# enable it use the .dll.  Anything in gnustep-make which is looking
+# for shared libs should detect / look for the .dll.a as that's what
+# we link applications against.
+SHARED_LIBEXT    = .dll.a
 DLL_LIBEXT	 = .dll
 #SHARED_CFLAGS	 += 
 
