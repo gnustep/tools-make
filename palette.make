@@ -123,6 +123,11 @@ ifeq ($(PALETTE_ICON),)
 override PALETTE_ICON = $(INTERNAL_palette_NAME)
 endif
 
+ifeq ($(PALETTE_INSTALL_DIR),)
+  PALETTE_INSTALL_DIR := $(GNUSTEP_PALETTES)
+endif
+
+
 $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist: $(PALETTE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(INTERNAL_palette_NAME)\";"; \
@@ -146,16 +151,16 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	  ) >$@
 
 internal-palette-install:: internal-install-dirs
-	tar cf - $(PALETTE_DIR_NAME) | (cd $(GNUSTEP_PALETTES); tar xf -)
+	tar cf - $(PALETTE_DIR_NAME) | (cd $(PALETTE_INSTALL_DIR); tar xf -)
 
 internal-install-dirs::
-	$(MKDIRS) $(GNUSTEP_PALETTES)
+	$(MKDIRS) $(PALETTE_INSTALL_DIR)
 
-$(PALETTE_DIR_NAME)/Resources $(GNUSTEP_PALETTES)::
+$(PALETTE_DIR_NAME)/Resources $(PALETTE_INSTALL_DIR)::
 	@$(MKDIRS) $@
 
 internal-palette-uninstall::
-	rm -rf $(GNUSTEP_PALETTES)/$(PALETTE_DIR_NAME)
+	rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
 
 #
 # Cleaning targets

@@ -1,3 +1,63 @@
+2000-08-06  Adam Fedor  <fedor@gnu.org>
+
+	* Version 0.6.6 released.
+
+2000-08-02  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.sh.in: Add GNUSTEP_NETWORK_ROOT back into prefix list.
+	* GNUstep.csh.in: Likewise. (patches from Jeff Teunissen 
+	<deek@dusknet.dhs.org>).
+
+Sat Jul 29 22:49:23 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make: Added again rule for APPLICATION_ICON which had 
+	been lost.
+
+Fri Jul 28 14:45:21 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* jni.make: New file to be included when compiling JNI projects.
+	* GNUmakefile.in (MAKE_FILES): Added jni.make.
+
+Fri Jul 28 12:17:02 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make: Set INTERNAL_JAVACFLAGS and INTERNAL_JAVAHFLAGS to
+	specify classpath adding ./ at the beginning.
+	* rules.make: Changed ALL_JAVAFLAGS to ALL_JAVACFLAGS.
+
+Thu Jul 27 18:03:34 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make (JAVA_HOME): Set JAVA_HOME if not set, guessing if
+	appropriate; set JAVAC and JAVAH from JAVA_HOME if needed.
+
+Tue Jul 25 15:01:43 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	Added support to build jni headers from java classes.
+	* rules.make: Added rules to build jni headers from java classes
+	using JAVAH; added JAVA_JNI_OBJ_FILES, JAVA_JNI_OBJS; added
+	ALL_JAVAHFLAGS.
+	* java.make (internal-java_package-all): Build also JAVA_JNI_FILES
+	(internal-java_package-clean): Remove the jni headers too.
+	
+2000-07-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUmakefile.in: Use C version of which_lib exclusively.
+
+2000-07-18  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* ctool.make: Changed installation dir to be CTOOL_INSTALLATION_DIR
+	and fixed it to install above the objc library based directory.
+
+2000-07-16  Adam Fedor  <fedor@gnu.org>
+
+	* palette.make (PALETTE_INSTALL_DIR): Default to GNUSTEP_PALETTES
+	if not set.
+
+	* GNUmakefile.in: Use C version of which_lib exclusively.
+
+2000-07-14  Adam Fedor  <fedor@gnu.org>
+
+	* common.make (GNUSTEP_HEADERS_GUI_FLAG): Remove.
+
 2000-06-30  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.sh.in: Add .../${LIBRARY_COMBO} dir back into path (for

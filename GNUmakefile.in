@@ -57,25 +57,16 @@ INSTALL_DATA	= @INSTALL_DATA@
 PERL = @PERL@
 
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
-	common.make brain.make java.make library.make rules.make target.make \
-	tool.make ctool.make test-library.make names.make objc.make \
-	test-application.make test-tool.make subproject.make \
+	common.make brain.make java.make jni.make library.make rules.make \
+	target.make tool.make ctool.make test-library.make names.make \
+	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make woapp.make wobundle.make  \
 	documentation.make MediaBook.func executable.template
 
 all: generated-files which_lib$(EXEEXT)
 
-ifeq ($(GNUSTEP_TARGET_OS),mingw32)
-  PERL=none
-endif
-ifeq ($(PERL),none)
 which_lib$(EXEEXT): which_lib.c
 	$(CC) @CFLAGS@ -Wall -o $@ $^
-else
-which_lib$(EXEEXT): which_lib.pl
-	cp which_lib.pl which_lib$(EXEEXT)
-	chmod +x which_lib$(EXEEXT)
-endif
 
 install: all
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \

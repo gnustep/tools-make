@@ -31,7 +31,7 @@ if ( ! ${?LIBRARY_COMBO} ) then
 endif
 
 setenv GNUSTEP_LOCAL_ROOT "${GNUSTEP_ROOT}/Local"
-setenv GNUSTEP_NETWORK_ROOT 
+setenv GNUSTEP_NETWORK_ROOT "${GNUSTEP_ROOT}/Network"
 setenv GNUSTEP_USER_ROOT ~/GNUstep
 
 if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
@@ -69,7 +69,7 @@ if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
 #
 if ( ! ${?GNUSTEP_PATHPREFIX} ) then
   setenv GNUSTEP_PATHPREFIX \
-         ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_SYSTEM_ROOT}
+         ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_NETWORK_ROOT}:${GNUSTEP_SYSTEM_ROOT}
 endif
 
 set tp = ""
@@ -102,7 +102,7 @@ endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )
 #
 #
 #
-set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
+set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
 
 if ( ! ${?CLASSPATH} ) then
   setenv CLASSPATH "${gnustep_class_path}"
