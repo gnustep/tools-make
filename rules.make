@@ -398,9 +398,11 @@ ifneq ($(GNUSTEP_INSTANCE),)
 include $(GNUSTEP_MAKEFILES)/Instance/rules.make
 endif
 
-
-
-
+# The rule to create the objects file directory.
+$(GNUSTEP_OBJ_DIR):
+	@($(MKDIRS) ./$(GNUSTEP_OBJ_DIR); \
+	rm -f obj; \
+	$(LN_S) ./$(GNUSTEP_OBJ_DIR) obj)
 
 endif
 # rules.make loaded
