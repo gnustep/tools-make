@@ -40,8 +40,7 @@ at the user FAQ for more user oriented questions.
 @subsection Is it easy to port OPENSTEP programs to GNUstep?
 
 It is probably easy for simple programs. There are some portability
-tools to make this easier
-(@url{http://www.gnustep.org/resources/sources.html}), or rewrite
+tools to make this easier, or rewrite
 the Makefiles yourself.  You will also have to translate the NIB files
 (if there are any) to GNUstep model files using the nib2gmodel program
 (from @url{ftp://ftp.gnustep.org/pub/gnustep/dev-apps}).
@@ -579,10 +578,6 @@ currently doesn't work.
 Display Ghostscript runs on top of X Windows.
 
 @c ------------------ GNUstep DisplayGhostScript Server ---------------
-
-@format
-All trademarks mentioned on in this FAQ belong to their owners.
-@end format
 
 @bye
 \bye
