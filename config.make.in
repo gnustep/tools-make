@@ -57,7 +57,7 @@ INSTALL_DATA	= @INSTALL_DATA@
 TAR		= tar
 
 # The default library combination
-library_combo = @ac_cv_library_combo@
+default_library_combo = @ac_cv_library_combo@
 
 #
 # X Window System headers and libraries

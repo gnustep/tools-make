@@ -20,6 +20,7 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 # Handle abbreviations for library combinations
+the_library_combo=$(default_library_combo)
 ifeq ($(library_combo),nx)
   the_library_combo=nx-nx-nx-nil
 endif
