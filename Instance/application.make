@@ -270,7 +270,7 @@ $(APP_INSTALL_DIR):
 
 internal-app-install_:: shared-instance-bundle-install
 ifeq ($(strip),yes)
-	$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE)
+	$(ECHO_STRIPPING)$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE)$(END_ECHO)
 endif
 
 internal-app-uninstall_:: shared-instance-bundle-uninstall

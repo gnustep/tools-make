@@ -331,10 +331,10 @@ internal-gswapp-install_::
 	rm -rf $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME); \
 	$(TAR) ch --exclude=CVS --to-stdout $(GSWAPP_DIR_NAME) | (cd $(GNUSTEP_GSWAPPS); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
-	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME)
+	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_GSWAPPS)/$(GSWAPP_DIR_NAME)$(END_ECHO)
 endif
 ifeq ($(strip),yes)
-	$(STRIP) $(GNUSTEP_GSWAPPS)/$(GSWAPP_FILE) 
+	$(ECHO_STRIPPING)$(STRIP) $(GNUSTEP_GSWAPPS)/$(GSWAPP_FILE)$(END_ECHO)
 endif
 
 internal-gswapp-uninstall_::

@@ -107,10 +107,10 @@ internal-service-install_:: $(GNUSTEP_SERVICES)
 	$(TAR) cf - $(SERVICE_DIR_NAME) \
 	  | (cd $(GNUSTEP_SERVICES); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
-	$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)
+	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(GNUSTEP_SERVICES)/$(SERVICE_DIR_NAME)$(END_ECHO)
 endif
 ifeq ($(strip),yes)
-	$(STRIP) $(GNUSTEP_SERVICES)/$(SERVICE_FILE) 
+	$(ECHO_STRIPPING)$(STRIP) $(GNUSTEP_SERVICES)/$(SERVICE_FILE)$(END_ECHO)
 endif
 
 internal-service-uninstall_::
