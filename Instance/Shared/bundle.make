@@ -364,7 +364,3 @@ endif
 
 shared-instance-bundle-uninstall::
 	(cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); rm -rf $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH))
-
-## Local variables:
-## mode: makefile
-## End:
