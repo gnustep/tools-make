@@ -1,3 +1,9 @@
+Wed Nov  6 10:56:55 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make (.PHONY): Added
+	internal-app-copy_into_dir.
+	(internal-app-copy_into_dir): Implemented.
+
 2002-11-05  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.MinGW: Add note about setting
