@@ -89,10 +89,6 @@ ALL_GSW_LIBS =								\
 	debug=$(debug) profile=$(profile) shared=$(shared)		\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-
-# Don't include these definitions the first time make is invoked. This part is
-# included when make is invoked the second time from the %.build rule (see
-# rules.make).
 GSWAPP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(GSWAPP_EXTENSION))
 GSWAPP_DIR = $(GNUSTEP_BUILD_DIR)/$(GSWAPP_DIR_NAME)
 GSWAPP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(GSWAPP_DIR)/Resources/$(d))
@@ -119,10 +115,7 @@ $(GSWAPP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 	      $(ALL_GSW_LIBS)$(END_ECHO)
 
-ifeq ($(FOUNDATION_LIB), apple)
-	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-		>$(GSWAPP_DIR)/library_paths.openapp$(END_ECHO)
-else
+ifneq ($(FOUNDATION_LIB), apple)
 	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 	        >$(GSWAPP_DIR)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
 endif
