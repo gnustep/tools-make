@@ -186,7 +186,14 @@ tgz:
 	  mv gnustep-make-$(GNUSTEP_MAKE_VERSION) $$SNAPSHOT_DIR;                       \
         fi;
 
-rpm: tgz
+test-RPM_TOPDIR:
+	@(if [ -z "$(RPM_TOPDIR)" ]; then                                  \
+	  echo "Error - RPM_TOPDIR variable not set.";                     \
+	  echo "You need to set it to the top of your rpm directory tree"; \
+	  exit 1;                                                          \
+	fi)
+
+rpm: test-RPM_TOPDIR tgz
 	cp ../gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/
 	cp gnustep-make.spec $(RPM_TOPDIR)/SPECS/
 	cd $(RPM_TOPDIR)/SPECS/
