@@ -1,5 +1,16 @@
 Thu Oct  2 14:56:08 1997  Scott Christley  <scottc@stetson.net-community.com>
 
+	* ld_lib_path.sh: New file.
+	* common.make: Add variables which define explicit paths to the
+	system, local, and user library directories.
+	* rules.make (ALL_LD_LIB_DIRS): Variable which specifies the
+	standard GNUstep and the user's specific directories of where
+	the dynamic loader can find shared libraries.
+	* target.make (LD_LIB_PATH): Call shell script which returns the
+	name of the environment variable used by the dynamic loader.
+	* test.make: Set the dynamic loader environment variable
+	when running tests.
+
 	* test.make: New file.
 	* rules.make: Add test building and check rules.
 	* Makefile.in: Install test.make.

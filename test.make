@@ -65,6 +65,9 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 # xxx_LIB_DIRS and xxx_LIBS are additional libraries directories and
 # libraries to link against, respectively to link the xxx test driver.
 #
+# xxx_LD_LIB_DIRS are additional directories that the dynamic loader
+# should check when loading a shared library.
+#
 
 TEST_LIBRARY_LIST := $(foreach lib,$(TEST_LIBRARY_NAME),$(lib).testlib)
 CHECK_LIBRARY_LIST := $(foreach lib,$(TEST_LIBRARY_NAME),$(lib).checklib)
@@ -140,19 +143,19 @@ internal-test-build:: test-libs test-bundles test-tools test-apps
 
 test-libs:: $(TEST_LIBRARY_LIST)
 
-test-bundles::
+test-bundles:: $(TEST_BUNDLE_LIST)
 
 test-tools:: $(TEST_TOOL_LIST)
 
-test-apps::
+test-apps:: $(TEST_APP_LIST)
 
 internal-testlib-all:: $(GNUSTEP_OBJ_DIR)/stamp-testlib-$(TEST_LIBRARY_NAME)
 
-internal-testbundle-all::
+internal-testbundle-all:: $(GNUSTEP_OBJ_DIR)/stamp-testbundle-$(TEST_BUNDLE_NAME)
 
 internal-testtool-all:: $(GNUSTEP_OBJ_DIR)/stamp-testtool-$(TEST_TOOL_NAME)
 
-internal-testapp-all::
+internal-testapp-all:: $(GNUSTEP_OBJ_DIR)/stamp-testapp-$(TEST_APP_NAME)
 
 #
 # Check targets (actually running the tests)
@@ -162,28 +165,32 @@ internal-check:: config/unix.exp check-libs check-bundles check-tools check-apps
 
 check-libs:: $(CHECK_LIBRARY_LIST)
 
-check-bundles::
+check-bundles:: $(CHECK_BUNDLE_LIST)
 
-check-tools::
+check-tools:: $(CHECK_TOOL_LIST)
 
-check-apps::
+check-apps:: $(CHECK_APP_LIST)
 
 internal-check-lib::
 	for f in $(CHECK_SCRIPT_DIRS); do \
-		runtest --tool $$f --srcdir . PROG=./$(TEST_LIBRARY_NAME) ; \
+	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
+	   runtest --tool $$f --srcdir . PROG=./$(TEST_LIBRARY_NAME)) ; \
 	done
 
 internal-check-bundle::
 	for f in $(CHECK_SCRIPT_DIRS); do \
-		runtest --tool $$f --srcdir . PROG=./$(TEST_BUNDLE_NAME) ; \
+	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
+	   runtest --tool $$f --srcdir . PROG=./$(TEST_BUNDLE_NAME) ; \
 	done
 
 internal-check-tool::
 	for f in $(CHECK_SCRIPT_DIRS); do \
-		runtest --tool $$f --srcdir . PROG=./$(TEST_TOOL_NAME) ; \
+	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
+	   runtest --tool $$f --srcdir . PROG=./$(TEST_TOOL_NAME) ; \
 	done
 
 internal-check-app::
-	for f in $(CHECK_SCRIPT_DIRS); do \
-		runtest --tool $$f --srcdir . PROG=./$(TEST_APP_NAME) ; \
+	for f in $(CHECK_SCRIPT_DIRS); do \	
+	  ($(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
+	   runtest --tool $$f --srcdir . PROG=./$(TEST_APP_NAME) ; \
 	done

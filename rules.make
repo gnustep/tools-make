@@ -162,28 +162,34 @@ ALL_TEST_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(BACKEND_LIBS) $(GUI_LIBS) \
 		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)"
 
 # These are for running the tests
+ALL_LD_LIB_DIRS = $(ADDITIONAL_LD_LIB_DIRS)$(GNUSTEP_LD_LIB_DIRS)
+
 %.checklib : FORCE
 	@echo Checking $*...
 	$(MAKE) --no-print-directory internal-check-lib \
 		  TEST_LIBRARY_NAME=$* \
+		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
 
 %.checkbundle : FORCE
 	@echo Checking $*...
 	$(MAKE) --no-print-directory internal-check-bundle \
 		  TEST_BUNDLE_NAME=$* \
+		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
 
 %.checktool : FORCE
 	@echo Checking $*...
 	$(MAKE) --no-print-directory internal-check-tool \
 		  TEST_TOOL_NAME=$* \
+		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
 
 %.checkapp : FORCE
 	@echo Checking $*...
 	$(MAKE) --no-print-directory internal-check-app \
 		  TEST_APP_NAME=$* \
+		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
 
 #
