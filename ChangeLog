@@ -1,14 +1,16 @@
 2000-06-27  Adam Fedor  <fedor@gnu.org>
 
-	* common.make: Remove -fno-strict-aliasing (Doesn't work on old
-	compilers).
-	* target.make: Add posix4 back to Solaris when threaded
+	* common.make (OPTFLAG): Remove -fno-strict-aliasing (Doesn't 
+	work on old gcc2.8.0).
+	* target.make (solaris/TARGET_SYSTEM_LIBS): Readd posix4 when threaded
+	(Solaris/BUNDLE_LDFLAGS): Go back to old flags - new ones don't
+	work with gcc 2.8.0.
 	* configure.in: Cache search for libwraster, fix searching for
 	other graphics libs.
 
 2000-06-22  Adam Fedor  <fedor@gnu.org>
 
-	* configure.in: Fix for exporting vars on broken sh's.
+	* configure.in: Fix for exporting vars on old sh's.
 
 Thu Jun 22 18:58:41 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
