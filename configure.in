@@ -476,16 +476,16 @@ echo "Checking for libxml"
 AC_CHECK_HEADERS(libxml/xmlversion.h)
 if test $ac_cv_header_libxml_xmlversion_h = no; then
   echo "Could not find libxml headers"
-  echo "Check to make sure you have libxml version 2 or later installed"
+  echo "Check to make sure you have libxml version 2.2.3 or later installed"
   AC_MSG_WARN(Could not find libxml headers)
 else
   AC_TRY_CPP([#include "libxml/xmlversion.h"
-    #if LIBXML_VERSION < 20000
+    #if LIBXML_VERSION < 20203
     #error
     #endif], libxml2plus=1, libxml2plus=0)
   if test $libxml2plus = 0; then
-    echo "libxml version older than 2.0.0"
-    AC_MSG_WARN(libxml version older than 2.0.0)
+    echo "libxml version older than 2.2.3"
+    AC_MSG_WARN(libxml version older than 2.2.3)
   else
     AC_CHECK_LIB(xml, xmlNewDoc, xml_ok=yes, xml_ok=no)
     if test "$xml_ok" = yes; then

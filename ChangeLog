@@ -1,3 +1,7 @@
+2000-09-29  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.in: Check for libxml 2.2.3 or later
+
 Tue Sep 26 10:21:51 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* application.make: Use opentool when running plmerge.
