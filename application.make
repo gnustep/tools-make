@@ -96,9 +96,10 @@ $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
 endif
 
 app-resource-files::
-	for f in $(RESOURCE_FILES); do \
-	  $(INSTALL_DATA) $$f $(APP_DIR_NAME)/$$f ;\
-	done
+	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
+	  echo "Copying resources into the application wrapper..."; \
+	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME); \
+	fi)
 
 else
 # This part gets included by the first invoked make process.

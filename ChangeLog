@@ -1,3 +1,10 @@
+Tue Oct 21 17:31:27 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* application.make (app-resource-files): Check to see if the
+	RESOURCE_FILES variable is defined so we don't get sh parse errors.
+	* target.make (OPENSTEP targets): Also search for libraries when
+	building a shared library in ADDITIONAL_LIB_DIRS.
+
 Mon Oct 20 08:48:02 1997  Scott Christley  <scottc@net-community.com>
 
 	* rules.make: (%.tool): Rename to %.buildtool.
