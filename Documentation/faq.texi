@@ -60,7 +60,7 @@ Cocoa:
 @item Do not use CoreFoundation
 @item Do not use Objective-C++
 @item Do not use Quicktime or other proprietary extension
-@item You need to convert .nib files (see next question  @pxref(Tools for porting))
+@item You need to convert .nib files (see next question  @pxref{Tools for porting})
 @item Some unfinished classes include NSToolBar and Drawers.
 @end itemize
 

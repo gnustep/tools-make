@@ -17,13 +17,13 @@ more popular operating systems. Some machines marked with
 * FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
-* GNU-Linux/Intel::             
 * GNU-Linux/PowerPC::           
 * Irix 6.5/MIPS::               
 * MkLinux/PowerPC::             
+* RedHat/Intel::                
 * NetBSD::                      
 * Netwinder::                   
-* OpenBSD 2.x::                 
+* OpenBSD 3.x::                 
 * OSF/Alpha::                   
 * Slackware/Intel::             
 * Solaris 2.5.1/Sparc::         
@@ -83,7 +83,7 @@ you completely remove all of it, including installed init scripts.
 
 @c -----------------------------------------
 @node Darwin 6.x/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
-@section Darwin 6.x/PowerPC (@emph{Unstable!})
+@section Darwin 6.x/PowerPC
 
 @table @samp
 @item Recommended compiler
@@ -199,7 +199,7 @@ flags to configure: @code{CFLAGS="-I/usr/local/include"} and
 @end table
 
 @c -----------------------------------------
-@node FreeBSD 2.x, GNU-Linux/Intel, FreeBSD 3.x, Machine Specific
+@node FreeBSD 2.x, GNU-Linux/PowerPC, FreeBSD 3.x, Machine Specific
 @section FreeBSD 2.x (@emph{Unstable!})
 
 @table @samp
@@ -226,59 +226,19 @@ You need to use gmake not make to compile the GNUstep packages.
 @end table
 
 @c -----------------------------------------
-@node GNU-Linux/Intel, GNU-Linux/PowerPC, FreeBSD 2.x, Machine Specific
-@section GNU-Linux/Intel (RedHat 5.x, 6.x, and 7.0)
-
-@table @samp
-@item Recommended compiler
-With 5.x, the egcs compiler that comes with RedHat. Later versions may
-have gcc installed, although 7.0 comes with a snapshot of gcc (called
-2.96) which is unsuitable for compiling Objective-C code. For 7.0 you
-should install the egcs compatibility packages (or an official gcc release).
-For RedHat 7.2 or later, the default gcc apparently works fine 
-(even if it is 2.96)
-
-@item Extra libs needed 
-Unknown
-
-@item Special Instructions 
-Make sure you have a decent version of the compiler. Try @samp{cc -v}
-or @samp{gcc -v} to get the version of the compiler. 
-With 5.x, make sure you set CC=egcs before configuring, as
-in:
-
-@example
-export CC=egcs 
-configure ....
-@end example
-
-Since RedHat 5.x also comes standard with an old version of gcc.
-
-On RedHat 7.0, configure like this
-@example
-CC=egcs LDFLAGS="-u shmctl@@GLIBC_2.2 -L/lib -lc -u getpwuid_r@@GLIBC_2.1.2
--L/lib -lc -u getpwnam_r@@GLIBC_2.1.2 -L/lib -lc" ./configure
-@end example
-@end table
-
-@c -----------------------------------------
-@node GNU-Linux/PowerPC, Irix 6.5/MIPS, GNU-Linux/Intel, Machine Specific
+@node GNU-Linux/PowerPC, Irix 6.5/MIPS, FreeBSD 2.x, Machine Specific
 @section GNU-Linux/PowerPC (LinuxPPC, Yellowdog)
 
 @table @samp
 @item Recommended compiler
-The default compiler. gcc-3.x works, but you need a new gdb also to debug.
+Standard
 
 @item Extra libs needed 
-None.
+Standard (ffcall or libffi)
 
 @item Special Instructions 
 
 @end table
-
-ffcall or libffi is required for 
-invocations (and DO) to work well. The major problem is sending data
-with data sizes less than 4 bytes (chars, shorts, etc). 
 
 @c -----------------------------------------
 @node Irix 6.5/MIPS, MkLinux/PowerPC, GNU-Linux/PowerPC, Machine Specific
@@ -307,7 +267,7 @@ No libffi-support: Use ffcall
 @end table
 
 @c -----------------------------------------
-@node MkLinux/PowerPC, NetBSD, Irix 6.5/MIPS, Machine Specific
+@node MkLinux/PowerPC, RedHat/Intel, Irix 6.5/MIPS, Machine Specific
 @section MkLinux/PowerPC (@emph{Obsolete})
 
 This configuration is no longer being tested, but it may still work.
@@ -332,7 +292,22 @@ and glibc library (which has the threads library) and install both.
 @end table
 
 @c -----------------------------------------
-@node NetBSD, Netwinder, MkLinux/PowerPC, Machine Specific
+@node RedHat/Intel, NetBSD, MkLinux/PowerPC, Machine Specific
+@section RedHat/Intel
+
+@table @samp
+@item Recommended compiler
+Standard
+
+@item Extra libs needed 
+Standard (ffcall or libffi)
+
+@item Special Instructions 
+None
+@end table
+
+@c -----------------------------------------
+@node NetBSD, Netwinder, RedHat/Intel, Machine Specific
 @section NetBSD 
 
 @table @samp
@@ -348,7 +323,7 @@ See the README.NetBSD file located in the gnustep-make package.
 @end table
 
 @c -----------------------------------------
-@node Netwinder, OpenBSD 2.x, NetBSD, Machine Specific
+@node Netwinder, OpenBSD 3.x, NetBSD, Machine Specific
 @section Netwinder (@emph{Unstable!})
 
 @table @samp
@@ -363,8 +338,8 @@ See @url{http://www.netwinder.org/~patrix}
 @end table
 
 @c -----------------------------------------
-@node OpenBSD 2.x, OSF/Alpha, Netwinder, Machine Specific
-@section OpenBSD 2.x  (@emph{Unstable!})
+@node OpenBSD 3.x, OSF/Alpha, Netwinder, Machine Specific
+@section OpenBSD 3.x  (@emph{Unstable!})
 
 @table @samp
 @item Recommended compiler
@@ -374,12 +349,11 @@ Unknown
 Unknown
 
 @item Special Instructions 
-Can only compile with static libraries. Gives a lot of warnings.
 Try reading the README.NetBSD which might work the same on OpenBSD.
 @end table
 
 @c -----------------------------------------
-@node OSF/Alpha, Slackware/Intel, OpenBSD 2.x, Machine Specific
+@node OSF/Alpha, Slackware/Intel, OpenBSD 3.x, Machine Specific
 @section OSF Alpha  (@emph{Unstable!})
 @c Contact: suzukis@file.phys.tohoku.ac.jp
 
@@ -452,7 +426,6 @@ tiff, Don't use the one in /usr/openwin
 No libffi-support unless you use the patch
 @url{http://gcc.gnu.org/ml/java-patches/2002-q3/msg00036.html} (not
 particularly recommended).
-
 
 Using a POSIX shell (zsh or bash, which should come with Solaris) is
 highly recommended. In fact, some functions, such as compiling frameworks,
@@ -671,7 +644,7 @@ for shared libs. It's a good idea to remove the libobjc.a that comes with gcc
 (gcc -v for location) so that it isn't accidentally found.
 For ffcall, you should get version 1.8b or above (the earlier ones don't
 compile). There are still some problems with structure passing, but that is
-generally not supportred on any architecture.
+generally not supportred on any architecture. libffi not supported.
 
 @item Special Instructions
 On later versions of Cygwin you may be required to include the win32api

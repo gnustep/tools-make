@@ -257,19 +257,6 @@ cvs-snapshot:
 	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
 	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
 
-dist:
-	@echo "Generating gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz";                 \
-	echo "in the parent directory...";                                    \
-	SNAPSHOT_DIR=`basename $$(pwd)`;                                      \
-	cd ..;                                                                \
-	if [ "$$SNAPSHOT_DIR" != "gnustep-make-$(GNUSTEP_MAKE_VERSION)" ]; then         \
-	  mv $$SNAPSHOT_DIR gnustep-make-$(GNUSTEP_MAKE_VERSION);                       \
-        fi;                                                                   \
-	tar cfz gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION); \
-	if [ "$$SNAPSHOT_DIR" != "gnustep-make-$(GNUSTEP_MAKE_VERSION)" ]; then         \
-	  mv gnustep-make-$(GNUSTEP_MAKE_VERSION) $$SNAPSHOT_DIR;                       \
-        fi;
-
 test-RPM_TOPDIR:
 	@(if [ -z "$(RPM_TOPDIR)" ]; then                                  \
 	  echo "Error - RPM_TOPDIR variable not set.";                     \

@@ -1,3 +1,9 @@
+2003-10-04  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in (dist): Remove
+	* Documentation/machines.texi: Doc updates.
+	* Documentation/faq.texi, Documentattion/userfaq.texi: Idem.
+
 2003-09-29  Adam Fedor  <fedor@gnu.org>
 
 	* Simplify use of user-defined flags.
