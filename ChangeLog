@@ -1,3 +1,8 @@
+Tue May 27 16:52:27 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Documentation/javadoc.make (internal-doc-install_): Fixed line breaking
+	typo.
+
 Tue May 27 13:21:57 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/objc.make: Remove old deprecation warning.
