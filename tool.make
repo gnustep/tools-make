@@ -150,21 +150,9 @@ install-tool::
 	$(INSTALL_PROGRAM) -m 0755 \
 		$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT) \
 		$(TOOL_INSTALLATION_DIR)
-ifeq ($(GNUSTEP_FLATTENED),)
-ifeq ($(FRAMEWORK_NAME),)
-	$(INSTALL_DATA) $(GNUSTEP_MAKEFILES)/executable.template \
-	   $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME); \
-	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME);
-else
-	cp $(GNUSTEP_MAKEFILES)/executable.template \
-	   $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME); \
-	chmod a+x $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(INTERNAL_tool_NAME);
-endif
-endif
 
 internal-tool-uninstall::
 	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)
-	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
 
 #
 # Cleaning targets
