@@ -154,10 +154,10 @@ ifeq ($(LANGUAGES),)
 endif
 
 $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(FULL_RESOURCE_DIRS):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 
 #
@@ -276,7 +276,7 @@ WEBSERVER_FULL_RESOURCE_DIRS = \
 $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$(d))
 
 $(WEBSERVER_FULL_RESOURCE_DIRS):
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 endif
 
@@ -290,7 +290,7 @@ shared-instance-bundle-all-gsweb: shared-instance-bundle-all-webresources \
 ifneq ($(WEBSERVER_RESOURCE_FILES),)
 
 $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer:
-	$(MKDIRS) $@
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 shared-instance-bundle-all-webresources: \
   $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer \
@@ -375,4 +375,4 @@ shared-instance-bundle-copy_into_dir::
 	  | (cd $(COPY_INTO_DIR); $(TAR) xf -)$(END_ECHO)
 
 shared-instance-bundle-uninstall::
-	(cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); rm -rf $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH))
+	$(ECHO_NOTHING)cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); rm -rf $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)$(END_ECHO)

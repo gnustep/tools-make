@@ -104,12 +104,12 @@ endif
 
 shared-instance-java-install-dirs: $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)
 ifneq ($(JAVA_OBJ_FILES),)
-	@$(MKINSTALLDIRS) \
-           $(addprefix $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES)))
+	$(ECHO_NOTHING)$(MKINSTALLDIRS) \
+           $(addprefix $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/,$(dir $(JAVA_OBJ_FILES))$(END_ECHO)
 endif
 
 $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR):
-	@$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 shared-instance-java-clean:
 	rm -f $(JAVA_OBJ_FILES) \

@@ -104,20 +104,20 @@ shared-instance-headers-install: \
   $(addprefix $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/,$(HEADER_FILES))
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/% : $(HEADER_FILES_DIR)/%
-	$(INSTALL_DATA) $< $@
+	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
 endif
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
-	$(MKINSTALLDIRS) $@
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 
 shared-instance-headers-uninstall:
-	for file in $(HEADER_FILES) __done; do \
+	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 
 # TODO - during uninstall, it would be pretty to remove
 # $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) if it's empty.
