@@ -11,7 +11,7 @@ Wed Feb 20 10:48:04 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 	compressions. (Patch by Stefan Urbanek <stefanurbanek@yahoo.fr>
 	modified).
 	* Master/source-distribution.make: Added support for a 
-	.dist-ignore file specifying files to not include in distribution
+	.dist-ignore file specifying files not to include in distribution
 	files.  (Suggestion by Stefan Urbanek).
 	
 2002-02-14 Richard Frith-Macdonald <rfm@gnu.org>
