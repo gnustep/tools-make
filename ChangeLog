@@ -1,3 +1,10 @@
+Thu Feb 21 14:37:37 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/Shared/headers.make: Removed
+	xxx_EMPTY_HEADER_FILES_INSTALL_DIR.  People can simply set
+	xxx_HEADER_FILES_INSTALL_DIR to `.' if they want to force it
+	to be like empty.
+
 Wed Feb 20 16:56:43 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Instance/library.make (FINAL_LIBRARY_INSTALL_DIR): Only set 
