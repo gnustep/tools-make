@@ -32,6 +32,10 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+ifeq ($(strip $(GSWBUNDLE_EXTENSION)),)
+GSWBUNDLE_EXTENSION = .gswbundle
+endif
+
 GSWBUNDLE_LD= $(BUNDLE_LD)
 GSWBUNDLE_LDFLAGS = $(BUNDLE_LDFLAGS)
 
@@ -67,7 +71,7 @@ internal-uninstall:: $(GSWBUNDLE_NAME:=.uninstall.bundle.variables)
 
 internal-clean:: $(GSWBUNDLE_NAME:=.clean.bundle.subprojects)
 	rm -rf $(GNUSTEP_OBJ_DIR) \
-	       $(addsuffix $(GSWBUNDLE_EXTENSION),$(BUNDLE_NAME))
+	       $(addsuffix $(GSWBUNDLE_EXTENSION),$(GSWBUNDLE_NAME))
 
 internal-distclean:: $(GSWBUNDLE_NAME:=.distclean.bundle.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
@@ -169,8 +173,8 @@ ifneq ($(strip $(COMPONENTS)),)
         done; \
 	echo "Linking localized components into the bundle wrapper..."; \
         for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then \
-	    $(MKDIRS) $$l.lproj; fi; \
+	  if [ -d ../../$$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj; \
 	    cd $$l.lproj; \
 	    for f in $(COMPONENTS); do \
 	      if [ -d ../../../$$l.lproj/$$f ]; then \
@@ -178,6 +182,7 @@ ifneq ($(strip $(COMPONENTS)),)
 	      fi;\
 	    done;\
 	    cd ..; \
+	  fi;\
 	done)
 endif
 
@@ -196,14 +201,18 @@ ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	@(echo "Linking localized resources into the bundle wrapper..."; \
 	cd $(GSWBUNDLE_DIR_NAME)/Resources; \
 	for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
-	  cd $$l.lproj; \
-	  for f in $(LOCALIZED_RESOURCE_FILES); do \
-	    if [ -f ../../../$$l.lproj/$$f ]; then \
-	      $(LN_S) -f ../../../$$l.lproj/$$f .;\
-	    fi;\
-	  done;\
-	cd ..; \
+	  if [ -d ../../$$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj; \
+	    cd $$l.lproj; \
+	    for f in $(LOCALIZED_RESOURCE_FILES); do \
+	      if [ -f ../../../$$l.lproj/$$f ]; then \
+	        $(LN_S) -f ../../../$$l.lproj/$$f .;\
+	      fi;\
+	    done;\
+	    cd ..;\
+	  else\
+	   echo "Warning - $$l.lproj not found - ignoring";\
+	  fi;\
 	done)
 endif
 
@@ -226,16 +235,20 @@ ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking localized web resources into the application wrapper..."; \
 	cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
 	for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then $(MKDIRS) $$l.lproj; fi; \
-	  cd $$l.lproj; \
-	  for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
-	    if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
-	      if [ ! -r $$f ]; then \
-	        $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
+	  if [ -d ../../WebServerResources/$$l.lproj ]; then \
+	    $(MKDIRS) $$l.lproj; \
+	    cd $$l.lproj; \
+	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
+	      if [ -f ../../../WebServerResources/$$l.lproj/$$f ]; then \
+	        if [ ! -r $$f ]; then \
+	          $(LN_S) ../../../WebServerResources/$$l.lproj/$$f $$f;\
+	        fi;\
 	      fi;\
-	    fi;\
-	  done;\
-	  cd ..; \
+	    done;\
+	    cd ..; \
+	  else \
+	    echo "Warning - WebServerResources/$$l.lproj not found - ignoring";\
+	  fi;\
 	done)
 endif
 
