@@ -1,3 +1,10 @@
+Thu Dec  6 09:11:51 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make (internal-bundle-install): Use h option with tar to
+	dereference symbolic links to external files if any; use --exclude
+	Contents/Resources with tar; create the Contents/Resources -->
+	Resources link manually after installing the bundle with tar.
+	
 Mon Dec  3 10:09:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* documentation.make ($(INTERNAL_doc_NAME).tar.gz): Bug fix: added
