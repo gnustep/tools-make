@@ -58,11 +58,7 @@
 #define lowlevelstringify(X) #X
 #define stringify(X) lowlevelstringify(X)
 
-#if defined(__MINGW__)
-# define SEP "\\"
-#else
-# define SEP "/"
-#endif
+#define SEP "/"
 
 /*
  * This tool is intended to produce a definitive form of the
@@ -196,7 +192,7 @@ int main (int argc, char** argv)
 
       for (i = 0; i < len0; i++)
 	{
-	  if (isspace(buf[0]))
+	  if (isspace(buf0[0]))
 	    {
 	      len0 = 0;	/* Spaces not permitted! */
 	    }
@@ -418,6 +414,41 @@ int main (int argc, char** argv)
 	  strcat(path, "GNUstep");
 	}
     }
+#if defined(__MINGW__)
+  /*
+   * We always want to use unix style paths.
+   */
+  if (strlen(path) > 1 && path[1] == ':')
+    {
+      char	*ptr = path;
+
+      while (*ptr != '\0')
+	{
+	  if (*ptr == '\\')
+	    {
+	      *ptr = '/';
+	    }
+	  if (*ptr == '/' && ptr > path && ptr[-1] == '/')
+	    {
+	      memmove(ptr, &ptr[1], strlen(ptr)+1);
+	    }
+	  else
+	    {
+	      ptr++;
+	    }
+	}
+      if (path[2] == '/' || path[2] == '\0')
+	{
+	  path[1] = path[0];
+	}
+      else
+	{
+	  memmove(&path[1], path, strlen(path)+1);
+	  path[2] = '/';
+	}
+      path[0] = '/';
+    }
+#endif
   printf("%s", path);
   return 0;
 }
