@@ -28,7 +28,7 @@ GSDOC_OBJECT_FILES = $(patsubst %.gsdoc,%.html,$(GSDOC_FILES))
 internal-doc-all_:: $(GSDOC_OBJECT_FILES)
 
 $(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
-	gsdoc $(GSDOC_FILES)
+	autogsdoc $(GSDOC_FILES)
 
 internal-doc-install_:: \
 	$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
