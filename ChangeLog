@@ -1,3 +1,20 @@
+Thu Jan 31 17:47:39 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/application.make (APP_EXTENSION): Set it in common.make,
+	so that it can be overridden at will.
+	* Instance/application.make (INTERNAL_app_NAME, TARGET): Replaced
+	everywhere by GNUSTEP_INSTANCE.
+	
+Thu Jan 31 17:38:17 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make: Replaced with a makefile which includes
+	Master/application.make or Instance/application.make or nothing
+	depending on case.  The original code broken in two and move into
+	Master/application.make and Instance/application.make.
+	* Master/application.make: New file.
+	* Instance/application.make: new file.
+	* GNUmakefile.in: Install the new files.
+	
 Thu Jan 31 11:27:06 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in: Moved determination of host, target and build
