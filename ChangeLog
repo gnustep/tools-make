@@ -1,3 +1,8 @@
+Mon Jul  9 18:15:26 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* palette.make (.PHONY): Added.
+	(palette-resource-files): Use makefile conditional.
+
 Mon Jul  9 17:58:33 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* objc.make (.PHONY): Added.
