@@ -158,7 +158,9 @@ ifeq ($(OBJC_RUNTIME_LIB),nx)
 RUNTIME_DEFINE = -DNeXT_RUNTIME=1
 endif
 
+ifneq ($(debug), yes)
 OPTFLAG = -O2
+endif
 
 # Enable building shared libraries by default. If the user wants to build a
 # static library, he/she has to specify shared=no explicitly.

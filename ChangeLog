@@ -1,3 +1,8 @@
+Thu Oct 16 12:04:32 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* common.make: Turn off the optimizations when compiling with debug
+	enabled.
+
 Thu Oct 16 11:23:05 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* ld_lib_path.sh: Set IFS to blank and newline to make the for loop
