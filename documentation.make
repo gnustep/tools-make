@@ -56,7 +56,9 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The installation directory is in the xxx_DOC_INSTALL_DIR variable
 # (eg, Gui_DOC_INSTALL_DIR = Developer/Gui/Reference
 #  Things should be installed under `Developer/YourProjectName' or 
-#  `User/YourProjectName' - for Javadoc, use `Developer/Java/YourProjectName')
+#  `User/YourProjectName' - for Javadoc, use `Developer/YourProjectName' or 
+#   `Developer/YourProjectName/Java' if your project has both java and 
+#   non java)
 #
 #	Where xxx is the name of the document
 #
