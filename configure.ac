@@ -507,27 +507,6 @@ AC_SUBST(INCLUDES)
 AC_SUBST(LIB_DIR)
 AC_SUBST(OBJCFLAGS)
 
-#---------------------------------------------------------------------
-# Enable/disable warnings for deprecated #import directive as required
-#---------------------------------------------------------------------
-AC_MSG_CHECKING(whether to disable compiler warnings about deprecated import)
-
-#
-# GCC recommends that you use `--disable-import' here, since #import
-# is seriously deprecated.  If you are unsure, please use --disable-import.
-#
-AC_ARG_ENABLE(import,
-[--enable-import     Don't warn about usage of deprecated import directive], 
-  ac_cv_import=$enableval,  
-  ac_cv_import="no")
-
-AC_MSG_RESULT($ac_cv_import)
-
-if test "$ac_cv_import" = "yes"; then
-  OBJC_NO_IMPORT_FLAGS=-Wno-import;
-fi
-AC_SUBST(OBJC_NO_IMPORT_FLAGS)
-
 #--------------------------------------------------------------------
 # Shall we strip makefiles upon installation ?
 #--------------------------------------------------------------------

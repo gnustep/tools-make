@@ -358,7 +358,7 @@ endif
 # compiler warnings.  But we really need to investigate why the
 # warning appear in the first place, if they are serious or not, and
 # what can be done about it.
-OBJCFLAGS = $(OBJC_NO_IMPORT_FLAGS) -fno-strict-aliasing
+OBJCFLAGS = -fno-strict-aliasing
 CFLAGS =
 OBJ_DIR_PREFIX =
 
