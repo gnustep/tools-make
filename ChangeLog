@@ -1,3 +1,8 @@
+Thu Oct 31 11:30:00 1997  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* which_lib.c: Modified for systems where realloc() doesn't handle
+	nul pointers correctly.
+
 Thu Oct 30 17:22:13 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* rules.make: Don't use an additional variable for specifying the
