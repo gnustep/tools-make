@@ -62,13 +62,25 @@ endif
 # as we can't run the tools (not even using opentool as we can't even
 # run opentool if PATH is wrong)
 ifeq ($(MAKELEVEL),0)
-  ifeq ($(findstring $(GNUSTEP_SYSTEM_ROOT)/Tools,$(PATH)),)
+
+  # We want to check that this path is in the PATH
+  SYS_TOOLS_PATH = $(GNUSTEP_SYSTEM_ROOT)/Tools
+
+  # But on windows we might need to first fix it up ...
+  ifeq ($(findstring mingw, $(GNUSTEP_TARGET_OS)), mingw)
+    ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
+      SYS_TOOLS_PATH := $(shell cygpath -u $(SYS_TOOLS_PATH))
+    endif
+  endif
+
+  ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
     $(warning WARNING - Your PATH is not set up correctly !)
     $(warning You need to run the GNUstep configuration script to fix this)
 # Well - hopefully if we (common.make) has been found, we can trust that 
 # at least $(GNUSTEP_MAKEFILES) is set up correctly :-)
     $(warning try running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
   endif
+
 endif
 
 #
