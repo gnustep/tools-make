@@ -27,6 +27,9 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
 #
 # The name of the application is in the APP_NAME variable.
+# The list of application resource file are in xxx_RESOURCES
+# The list of application resource directories are in xxx_RESOURCE_DIRS
+# where xxx is the application name
 #
 
 # Determine the application directory extension
@@ -74,7 +77,7 @@ endif
 #
 ifeq ($(OBJC_COMPILER), NeXT)
 internal-all:: $(INTERNAL_APP_NAME).iconheader $(GNUSTEP_OBJ_DIR) \
-	$(APP_DIR_NAME) $(APP_FILE)
+   $(APP_DIR_NAME) $(APP_FILE) app-resource-files
 
 $(INTERNAL_APP_NAME).iconheader:
 	@(echo "F	$(INTERNAL_APP_NAME).$(APP_EXTENSION)	$(INTERNAL_APP_NAME)	$(APP_EXTENSION)"; \
@@ -84,12 +87,18 @@ $(APP_DIR_NAME):
 	mkdir $@
 else
 internal-all:: $(GNUSTEP_OBJ_DIR) \
-	$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(APP_FILE)
+   $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(APP_FILE) \
+   app-resource-files
 
 $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 endif
+
+app-resource-files::
+	for f in $(RESOURCE_FILES); do \
+	  $(INSTALL_DATA) $$f $(APP_DIR_NAME)/$$f ;\
+	done
 
 else
 # This part gets included by the first invoked make process.

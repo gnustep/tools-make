@@ -1,3 +1,17 @@
+Mon Oct 20 08:26:01 1997  Scott Christley  <scottc@net-community.com>
+
+	* debugapp is like openapp except it runs gdb for the app.
+	* debugapp.in: New file.
+	* Makefile.in: Install debugapp.
+	* configure.in (AC_OUTPUT): Add debugapp.
+	* configure: Regenerate for configure.in changes.
+
+	* application.make: Copy resource files into application.
+
+	* rules.make (AUXILIARY_TOOL_LIBS, AUXILIARY_GUI_LIBS)): Add new
+	variables which auxiliary library makefile fragments can modify
+	so as to have their libraries linked in.
+
 Fri Oct 17 14:17:40 1997  Scott Christley  <scottc@net-community.com>
 
 	* test.make: Add comment about variable.

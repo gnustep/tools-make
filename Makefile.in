@@ -67,6 +67,7 @@ install: all
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
+	$(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
 	for f in aggregate.make application.make bundle.make clean.make \
 		common.make core.make library.make rules.make target.make \
 		tool.make test.make names.make MediaBook.func; do \
