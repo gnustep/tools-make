@@ -57,7 +57,7 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
 #
 # Determine the core libraries
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/core.make
+include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/brain.make
 
 #
 # Determine target specific settings
