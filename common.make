@@ -253,7 +253,7 @@ ifeq ($(LD), $(CC))
 LDFLAGS = -pg -o
 endif
 OBJ_DIR_PREFIX += profile_
-  LIBRARY_NAME_SUFFIX := p$(LIBRARY_NAME_SUFFIX)
+LIBRARY_NAME_SUFFIX := p$(LIBRARY_NAME_SUFFIX)
 endif
 
 ifeq ($(debug), yes)

@@ -1,3 +1,22 @@
+Mon Nov  9 23:13:28 1998  Ovidiu Predescu  <ovidiu@slip.net>
+
+	* debugapp.in: Added support for fd-xraw.
+	* openapp.in: Likewise.
+	* test-library.make: Use :: for the $(TEST_LIBRARY_NAME) target.
+	* test-tool.make: Likewise for the $(TEST_TOOL_NAME) target.
+
+Fri Jun  5 02:40:11 1998  Ovidiu Predescu  <ovidiu@aracnet.com>
+
+	* GNUstep.csh.in: Use braces around variables.
+	* target.make: Added support for AIX 4.1.
+
+Tue May 26 16:01:37 1998  Ovidiu Predescu  <ovidiu@aracnet.com>
+
+	* bundle.make (internal-bundle-install): Don't remove the
+ 	installed bundle if it exists to avoid removing other binaries
+ 	already installed.
+	* test-tool.make (internal-testtool-uninstall): New target.
+
 Mon Nov  9 16:34:20 1998  Adam Fedor  <fedor@doc.com>
 
 	* configure.in: Don't assume . in path (Fix from Christopher

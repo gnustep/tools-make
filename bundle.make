@@ -123,7 +123,6 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  echo "}") >$@
 
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
-	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 	tar cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); tar xf -)
 
 $(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::

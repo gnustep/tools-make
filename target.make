@@ -60,6 +60,9 @@ endif
 ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
     TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
 endif
+ifeq ($(findstring aix4.1, $(GNUSTEP_TARGET_OS)), aix4.1)
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+endif
 
 #
 # Specific settings for building shared libraries, static libraries,

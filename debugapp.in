@@ -50,6 +50,8 @@ elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
   LIBRARY_COMBO=gnu-gnu-gnu-xdps
 elif [ "$LIBRARY_COMBO" = gnu-xraw ]; then
   LIBRARY_COMBO=gnu-gnu-gnu-xraw
+elif [ "$LIBRARY_COMBO" = fd-xraw ]; then
+  LIBRARY_COMBO=gnu-fd-gnu-xraw
 elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
   LIBRARY_COMBO=gnu-fd-gnu-xdps
 fi

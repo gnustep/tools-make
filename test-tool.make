@@ -37,7 +37,7 @@ internal-clean:: $(TEST_TOOL_NAME:=.clean.tool.variables)
 
 internal-distclean:: $(TEST_TOOL_NAME:=.distclean.tool.variables)
 
-$(TEST_TOOL_NAME):
+$(TEST_TOOL_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.tool.variables
 
 else
@@ -65,6 +65,8 @@ internal-uninstall:: $(TEST_TOOL_NAME:=.uninstall.testtool.variables)
 endif
 
 internal-testtool-install::
+
+internal-testtool-uninstall::
 
 internal-testtool-check::
 
