@@ -8,6 +8,7 @@
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Java additions by Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -115,6 +116,16 @@ DPS_DEFINE=@DPS_DEFINE@
 
 # Any user specified libs, like thread libraries
 CONFIG_SYSTEM_LIBS = @LIBS@
+
+#
+# Java configuration
+#
+JAVA_INCLUDE := @JAVA_INCLUDE@
+ifeq ($(JAVA_INCLUDE,-INONE)
+	JAVA_INCLUDE=
+endif
+
+JAVAC = @JAVAC@
 
 ## Local variables:
 ## mode: makefile

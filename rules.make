@@ -7,6 +7,7 @@
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Java support by Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -129,6 +130,9 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    $(GNUSTEP_LOCAL_HEADERS_FLAG) $(GNUSTEP_NETWORK_HEADERS_FLAG) \
    -I$(GNUSTEP_SYSTEM_HEADERS)
 
+ALL_JAVAFLAGS = $(INTERNAL_JAVAFLAGS) $(ADDITIONAL_JAVAFLAGS) \
+	$(AUXILIARY_JAVAFLAGS)
+
 ALL_LDFLAGS = $(ADDITIONAL_LDFLAGS) $(AUXILIARY_LDFLAGS) $(GUI_LDFLAGS) \
    $(BACKEND_LDFLAGS) $(SYSTEM_LDFLAGS) $(INTERNAL_LDFLAGS)
 
@@ -156,7 +160,7 @@ endif
 # General rules
 VPATH = .
 
-.SUFFIXES: .m .c .psw
+.SUFFIXES: .m .c .psw .java
 
 .PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
 
@@ -165,6 +169,12 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@ $<
+
+Java/%.class : %.java
+	@(if [ ! -x Java ]; then \
+		$(MKDIRS) Java; \
+	  fi)
+	$(JAVAC) $(ALL_JAVAFLAGS) $< && (mv $(<:.java=.class) $@)
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
@@ -192,6 +202,8 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	    SUBPROJECTS="$($*_SUBPROJECTS)" \
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
+		JAVA_FILES="$($*_JAVA_FILES)" \
+		JAVA_JOBS_FILES="$($*_JOBS_FILES)" \
 	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 	    HEADER_FILES="$($*_HEADER_FILES)" \
 	    TEXI_FILES="$($*_TEXI_FILES)" \
@@ -239,6 +251,9 @@ endif
 
 OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
+
+JAVA_OBJS = $(JAVA_FILES:.java=.class)
+JAVA_OBJ_FILES = $(addprefix Java/,$(JAVA_OBJS))
 
 PSWRAP_C_FILES = $(PSWRAP_FILES:.psw=.c)
 PSWRAP_H_FILES = $(PSWRAP_FILES:.psw=.h)

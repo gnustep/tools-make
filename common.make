@@ -7,6 +7,7 @@
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Java support by Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -280,6 +281,7 @@ endif
 ifeq ($(debug), yes)
 OPTFLAG := $(filter-out -O%, $(OPTFLAG))
 ADDITIONAL_FLAGS += -g -Wall -DDEBUG
+ADDITIONAL_JAVAFLAGS += -g
 OBJ_DIR_PREFIX += debug_
   LIBRARY_NAME_SUFFIX := d$(LIBRARY_NAME_SUFFIX)
 endif
@@ -330,6 +332,9 @@ GNUSTEP_DVIPS_FLAGS =
 #
 # Common variables for subprojects
 SUBPROJECT_PRODUCT = subproject$(OEXT)
+
+# FIXME: the JAVAC variable is blank otherwise, even though it's defined in config.make
+JAVAC = javac
 
 ## Local variables:
 ## mode: makefile

@@ -6,6 +6,7 @@
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Java support by Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -223,7 +224,7 @@ SYSTEM_LIBS =
 # then add X headers and libraries
 #
 ifeq ($(GUI_BACKEND_LIB),xdps)
-SYSTEM_INCLUDES = $(TIFF_INCLUDE) $(JPEG_INCLUDE) $(X_INCLUDE)
+SYSTEM_INCLUDES = $(JAVA_INCLUDE) $(TIFF_INCLUDE) $(JPEG_INCLUDE) $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(TIFF_LIB) $(JPEG_LIB) $(X_LIBS)
 SYSTEM_LIBS = -ltiff $(JPEG) -ldpstk -ldps -lpsres -lXt $(X_PRE_LIBS) -lXext -lX11
@@ -234,14 +235,14 @@ endif
 # then add X headers and libraries
 #
 ifeq ($(GUI_BACKEND_LIB),xraw)
-SYSTEM_INCLUDES = $(TIFF_INCLUDE) $(JPEG_INCLUDE) $(X_INCLUDE)
+SYSTEM_INCLUDES = $(JAVA_INCLUDE) $(TIFF_INCLUDE) $(JPEG_INCLUDE) $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(TIFF_LIB) $(JPEG_LIB) $(X_LIBS)
 SYSTEM_LIBS = -ltiff $(JPEG) -lX11
 endif
 
 ifeq ($(GUI_BACKEND_LIB),xgps)
-SYSTEM_INCLUDES = $(TIFF_INCLUDE) $(JPEG_INCLUDE) $(X_INCLUDE)
+SYSTEM_INCLUDES = $(JAVA_INCLUDE) $(TIFF_INCLUDE) $(JPEG_INCLUDE) $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(TIFF_LIB) $(JPEG_LIB) $(X_LIBS)
 SYSTEM_LIBS = -ltiff $(JPEG) -lXext -lX11

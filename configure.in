@@ -290,6 +290,20 @@ AC_SUBST(TIFF_LIB)
 AC_SUBST(TIFF_INCLUDE)
 
 #--------------------------------------------------------------------
+# Look for Java stuff
+#--------------------------------------------------------------------
+AC_ARG_WITH(javac,
+			[  --with-javac=CMD        Java compiler], ,
+			JAVAC=/usr/bin/javac)
+AC_ARG_WITH(java_include,
+			[  --with-java-include=DIR Java include files are in DIR], ,
+			JAVA_INCLUDE=/usr/include/kaffe)
+
+AC_SUBST(JAVAC)
+AC_SUBST(JAVA_INCLUDE)
+#AC_CHECK_HEADER(jni.h, JNI_CreateJavaVM, JAVA_INCLUDE=$with_hava_include, java_ok=no)
+
+#--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
 AC_ARG_WITH(library-combo,[

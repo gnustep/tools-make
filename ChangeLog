@@ -1,3 +1,19 @@
+1999-10-30  Lyndon Tremblay  <ltremblay@mezzanine.xnot.com>
+
+	* brain.make: Added Java support.
+	* common.make: Likewise
+	* config.make.in: Added JAVA_INCLUDE/JAVAC vars.
+	* configure: New build for Java support.
+	* configure.in: Added JAVA_INCLUDE/JAVAC vars.
+	* java-application.make: Added, but not worked on yet.
+	* java-executable.template: Added basics, not complete.
+	* java-wrapper.make: Working as close to Apple's bridget tool as I know.
+	* rules.make: Added Java support.
+
+	NOTE: building a java wrapper right now is basically useless now, until
+	I commit the bridging library and tools, which are in the works.
+	
+
 1999-10-23  Adam Fedor  <fedor@gnu.org>
 
 	* debugapp: Allow debugger to be set from environment (patch from 
