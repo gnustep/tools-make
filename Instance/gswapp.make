@@ -26,6 +26,11 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+# FIXME/TODO - this file has not been updated to use
+# Instance/Shared/bundle.make because it is linking resources instead of
+# copying them.
+
+
 #
 # The name of the application is in the GSWAPP_NAME variable.
 # The list of languages the app is localized in are in xxx_LANGUAGES <==
