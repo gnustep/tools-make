@@ -260,6 +260,8 @@ else
   PACKAGE_EXTENSION="-debug"
 endif
 
+.PHONY: specfile rpm
+
 #
 # The user will type `make specfile' to generate the specfile
 #
@@ -292,23 +294,23 @@ $(SPEC_FILE): $(SPEC_IN)
 	@echo "%define gs_install_dir  $(GNUSTEP_INSTALLATION_DIR)" >> $@
 	@echo "%define gs_name         $(PACKAGE_NAME)" >> $@
 	@echo "%define gs_version      $(VERSION)" >> $@
-	@ if [ "$(PACKAGE_NEEDS_CONFIGURE)" = "YES" ]; then \
-	    echo "%define gs_configure    YES" >> $@;       \
-	  else                                              \
-	    echo "%define gs_configure    NO" >> $@;        \
-	  fi
+ifeq ($(PACKAGE_NEEDS_CONFIGURE),YES)
+	@echo "%define gs_configure    YES" >> $@
+else
+	@echo "%define gs_configure    NO" >> $@
+endif
 	@echo " " >> $@
 	@echo "Name: %{gs_name}$(PACKAGE_EXTENSION)" >> $@
 	@echo "Version: %{gs_version}" >> $@
 	@echo "BuildRoot: /var/tmp/%{gs_name}-buildroot" >> $@
-	@ if [ "$(RPM_DISABLE_RELOCATABLE)" != "YES" ]; then \
-	    echo "Prefix: %{gs_install_dir}" >> $@;          \
-	  fi
-	@ if [ "$(debug)" = "yes" ]; then                          \
-            if [ "$(standalone)" != "yes" ]; then                  \
-	      echo "requires: %{gs_name} = %{gs_version}" >> $@;   \
-            fi;                                                    \
-	  fi
+ifeq ($(RPM_DISABLE_RELOCATABLE),YES)
+	@echo "Prefix: %{gs_install_dir}" >> $@
+endif
+ifeq ($(debug),yes)
+ifneq ($(standalone),yes)
+	@echo "requires: %{gs_name} = %{gs_version}" >> $@
+endif
+endif
 	@echo "" >> $@
 	@echo "## Code from $(SPEC_IN)" >> $@
 	@cat $(SPEC_IN) >> $@
