@@ -110,6 +110,15 @@ case $app in
 	done;;
 esac
 
+corefile=
+if [ -f core ]; then
+	echo -e "Core image has been found in working directory. Use it? ";
+	read;
+	if [ $REPLY = y ]; then
+		corefile="--core=core";
+	fi
+fi
+
 if [ -z "$full_appname" ]; then
   echo "Can't find the required application: $app!"
   exit 1
@@ -160,7 +169,7 @@ if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   fi
 
   # Support for GDBbundle under OPENSTEP
-  gdb -connect TextEdit $gdbargs $full_appname/$appname
+  gdb -connect TextEdit $gdbargs $full_appname/$appname $corefile
 
 else
   # Determine if the application has a binary for this operating system
@@ -176,9 +185,9 @@ else
 
   # Support for GDBbundle under OPENSTEP
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
-    gdb -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
+    gdb -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
   else
-    gdb $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
+    gdb $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname $corefile
   fi
 
 fi
