@@ -1,0 +1,82 @@
+#!/bin/sh
+#
+# Copyright (C) 1997 Free Software Foundation, Inc.
+#
+# Author: Ovidiu Predescu <ovidiu@net-community.com>
+# Date: October 1997
+# 
+# This file is part of the GNUstep Makefile Package.
+#
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+# 
+# You should have received a copy of the GNU General Public
+# License along with this library; see the file COPYING.LIB.
+# If not, write to the Free Software Foundation,
+# 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+
+# Try to execute the application passed as argument. The application is
+# searched through the GNUstep directories if a complete or relative path name
+# is not specified.
+
+if [ -z "$1" ]; then
+  echo usage: `basename $0` [--library-combo=...] application
+  exit 1
+fi
+
+library_combo=@ac_cv_library_combo@
+
+while [ -n "$*" ]; do
+  case $1 in
+    --library-combo=*)	library_combo=`echo $1 | sed 's/--library-combo=//'`;;
+    *)			app=$1;;
+  esac
+  shift
+done
+
+case $app in
+  /*)	# An absolute path.
+	full_appname=$app;;
+  */*)	# A relative path
+	full_appname=`(cd $app; pwd)`;;
+  *)	# A path that should be searched into the GNUstep paths
+	SPATH=.:$GNUSTEP_USER_ROOT/Apps:$GNUSTEP_LOCAL_ROOT/Apps:$GNUSTEP_SYSTEM_ROOT/Apps:$PATH
+	IFS=:
+	for dir in $SPATH; do
+	  if [ -d $dir/$app ]; then
+	    full_appname=`(cd $dir/$app; pwd)`
+	    break;
+	  fi
+	done;;
+esac
+
+appname=`echo $app | sed 's/\.[a-z]*$//'`
+export_variable=yes . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
+
+if [ "$library_combo" = nx_nx_nx_nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+  if [ ! -d $full_appname/$appname ]; then
+    echo "$full_appname application does not have a binary for this kind of machine and operating system."
+    exit 1
+  fi
+
+  exec $full_appname/$appname
+
+else
+  # Determine if the application has a binary for this operating system
+  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
+    echo "$full_appname application does not have a binary for this kind of machine and operating system."
+    exit 1
+  fi
+
+  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo ]; then
+    echo "$full_appname application does not have a binary for this combination of libraries ($library_combo)."
+    exit 1
+  fi
+
+  exec $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+
+fi
+
+echo "Cannot exec the specified application!"

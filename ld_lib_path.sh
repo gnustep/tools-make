@@ -8,7 +8,7 @@
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
-#
+#   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #   This file is part of the GNUstep Makefile Package.
 #
 #   This library is free software; you can redistribute it and/or
@@ -23,17 +23,37 @@
 #
 
 # The first (and only) parameter to this script is the canonical
-# operating system name
+# operating system name. If the environment variable export_variable
+# is not set to `yes' it prints the name of the variable whose
+# value keeps the paths searched for libraries
 
-# LD_LIBRARY_PATH is the default name
-ld_lib_path="LD_LIBRARY_PATH"
+last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo
 
-case "$1" in
+host_os=$GNUSTEP_HOST_OS
 
-    *nextstep4*)
-	ld_lib_path="DYLD_LIBRARY_PATH"
-	;;
+if [ -z "$host_os" ]; then
+  host_os=$1
+fi
 
-esac   
+case "$host_os" in
 
-echo $ld_lib_path
+  *nextstep4*)
+    ld_lib_path="DYLD_LIBRARY_PATH"
+    DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$DYLD_LIBRARY_PATH"
+    export DYLD_LIBRARY_PATH;;
+
+  *solaris*)
+    ld_lib_path="LD_LIBRARY_PATH"
+    LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part;$GNUSTEP_LOCAL_ROOT/$last_path_part;$GNUSTEP_SYSTEM_ROOT/$last_path_part;$LD_LIBRARY_PATH"
+    export LD_LIBRARY_PATH;;
+
+  *)
+    ld_lib_path="LD_LIBRARY_PATH"
+    LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$LD_LIBRARY_PATH"
+    export LD_LIBRARY_PATH;;
+
+esac
+
+if [ "$export_variable" != yes ]; then
+  echo $ld_lib_path
+fi

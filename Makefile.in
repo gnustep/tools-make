@@ -44,6 +44,7 @@ GNUSTEP_TARGET_VENDOR := $(shell ./clean_vendor.sh $(GNUSTEP_TARGET_VENDOR))
 GNUSTEP_TARGET_OS := $(shell ./clean_os.sh $(GNUSTEP_TARGET_OS))
 
 makedir = $(prefix)/Makefiles
+tooldir = $(prefix)/Tools
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
 INSTALL		= @INSTALL@
@@ -59,11 +60,13 @@ install: all
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
+		$(tooldir) \
 		$(prefix)/share
 	$(INSTALL_PROGRAM) -m 755 which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs *.sh; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
+	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	for f in aggregate.make application.make bundle.make clean.make \
 		common.make core.make library.make rules.make target.make \
 		tool.make test.make MediaBook.func; do \

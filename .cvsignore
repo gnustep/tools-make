@@ -1,0 +1,9 @@
+config.log
+config.make
+config.cache
+which_lib
+Makefile
+GNUstep.sh
+config.h
+config.status
+openapp

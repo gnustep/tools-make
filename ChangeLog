@@ -1,3 +1,12 @@
+Mon Oct 13 16:06:12 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* openapp.in: New file.
+	* GNUstep.sh.in: Added $GNUSTEP_SYSTEM_ROOT/Tools to the PATH.
+	* Makefile.in: Install openapp in $GNUSTEP_SYSTEM_ROOT/Tools.
+	* configure.in: Create openapp.
+	* ld_lib_path.sh: Changed to export the library path for different
+	systems.
+
 Mon Oct 13 12:21:59 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* configure.in: Check to see if a DPS directory exists inside the X11
