@@ -1,3 +1,11 @@
+Mon Mar 29 12:41:58 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Master/rules.make (PACKAGE_NAME): Set it here; set it to
+	unnamed-package if not set.
+	(PACKAGE_VERSION): Set it to 0.0.1 if not set.
+	* Master/source-distribution.make (PACKAGE_NAME): Do not set it
+	here.
+	
 Mon Mar 29 12:19:38 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Version: Do not define VERSION.

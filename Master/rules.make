@@ -383,11 +383,25 @@ fi
 # Now rules for packaging - all automatically included
 # 
 
+PACKAGE_NAME := $(strip $(PACKAGE_NAME))
+
+ifeq ($(PACKAGE_NAME),)
+  # Use a default of unnamed-package if nothing better is provided.
+  PACKAGE_NAME := unnamed-package
+endif
+
 # For backwards compatibility, take value of PACKAGE_VERSION from
 # VERSION.  New GNUmakefiles should all use the PACKAGE_VERSION
 # variable rather than the VERSION variable.
 ifeq ($(PACKAGE_VERSION),)
+
   PACKAGE_VERSION = $(VERSION)
+
+  # Use a default of 0.0.1 if nothing better is provided.
+  ifeq ($(PACKAGE_VERSION),)
+    PACKAGE_VERSION = 0.0.1
+  endif
+
 endif
 
 #
