@@ -1687,7 +1687,7 @@ if test -f $GNUSTEP_HDIR/objc/objc.h; then
   fi
 fi
 gcc_shared_libobjc=`gcc -print-file-name=libobjc.so`
-if test -f $gcc_shared_libobjc; then
+if test -f "$gcc_shared_libobjc"; then
   gs_cv_objc_libdir=`dirname $gcc_shared_libobjc`
 fi
 

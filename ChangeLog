@@ -1,3 +1,7 @@
+2001-07-10  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Quote $gcc_shared_libobjc in test.
+
 Tue Jul 10 18:13:51 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 	
 	* rules.make (%.build): Modified message when processing
