@@ -37,7 +37,7 @@ endif
 setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_LOCAL_ROOT@"
 setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_NETWORK_ROOT@"
 
-setenv GNUSTEP_MAKEFILES "${GNUSTEP_SYSTEM_ROOT}/Makefiles"
+setenv GNUSTEP_MAKEFILES "${GNUSTEP_SYSTEM_ROOT}/@MAKEFILES_SUFFIX@"
 
 if ( "@GNUSTEP_MULTI_PLATFORM@" == "" ) then
   setenv GNUSTEP_HOST "@target@"
@@ -104,7 +104,7 @@ unset temp_path dir
 source "${GNUSTEP_MAKEFILES}/ld_lib_path.csh"
 
 # FIXME/TODO - use GNUSTEP_PATHLIST here
-set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
+set gnustep_class_path="${GNUSTEP_USER_ROOT}/Library/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Library/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Library/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Library/Libraries/Java"
 
 if ( ! ${?CLASSPATH} ) then
   setenv CLASSPATH "${gnustep_class_path}"

@@ -1,3 +1,24 @@
+2003-04-027  Adam Fedor  <fedor@gnu.org>
+
+	* New filesystem structure.
+	Use @MAKEFILE_SUFFIX@ instead of Makefiles.
+	Replace $GNUSTEP_SYSTEM_ROOT/Makefiles with $GNUSTEP_MAKEFILES	
+	Replace Libraries with Library/Libraries
+	Replace Headers with Library/Headers
+	Replace Documentation with Library/Documentation
+	* GNUmakefile.in, GNustep.csh.in, common.make, config.site,
+	debugapp.in, executable.template.in, gnustep-make.spec.in,
+	java-executable.template, ld_lib_path.csh, ld_lib_path.sh,
+	opentool.in, relative_path.sh, setlocaltz.sh,
+	spec-debug-alone-rules.template, spec-debug-rules.template,
+	spec-rules.template, target.make, which_lib.c, gswbundle.make,
+	java.make, test-library.make: Idem.
+	* configure.ac (MAKEFILES_SUFFIX): Define to Library/Makefiles
+	* create_domain_dir_tree.sh: Add additional Library dirs.
+	* resource-set.make (RESOURCE_FILES_FULL_INSTALL_DIR): Use
+	$(GNUSTEP_RESOURCES), not $(GNUSTEP_INSTALLATION_DIR).
+	* move_obsolete_paths.sh: New file used in installation
+
 Fri Apr 25 17:02:55 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.csh.in: Use the grep -v trick to make sure that

@@ -183,12 +183,19 @@ AC_SUBST(GNUSTEP_ROOT)
 AC_SUBST(root_prefix)
 AC_MSG_RESULT($prefix)
 
+# Makefiles directory location is in a bit of flux now. To keep the
+# Makefiles dir in the previous location, reset this variable to
+# 'Makefiles' and regenerate configure. Note this doesn't change all
+# occurances.
+MAKEFILES_SUFFIX=Library/Makefiles
+AC_SUBST(MAKEFILES_SUFFIX)
+
 # HOST_INSTALL is the name of the install program in config.make so set it up
 # to point to the install-sh script in the GNUstep tree if no system install is
 # found.
 AC_SUBST(HOST_INSTALL)
 if test "$INSTALL" = "$ac_install_sh"; then
-  HOST_INSTALL="$prefix/Makefiles/$INSTALL"
+  HOST_INSTALL="$prefix/$MAKEFILES_SUFFIX/$INSTALL"
 else
   HOST_INSTALL="$INSTALL"
 fi
@@ -302,14 +309,14 @@ AC_SUBST(BACKEND_BUNDLE)
 CFLAGS=`echo $CFLAGS | sed -e 's/-g //'`
 
 # Set location of GNUstep dirs for later use
-GNUSTEP_HDIR="$prefix/Headers"
+GNUSTEP_HDIR="$prefix/Library/Headers"
 if test "$GNUSTEP_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$prefix/Libraries"
+  GNUSTEP_LDIR="$prefix/Library/Libraries"
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir="$clean_target_cpu/$clean_target_os"
-  GNUSTEP_LDIR="$prefix/Libraries/$obj_dir"
+  GNUSTEP_LDIR="$prefix/Library/Libraries/$obj_dir"
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
@@ -335,7 +342,7 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 
 # The following are needed to compile the test programs
 if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
-  OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Headers"
+  OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Library/Headers"
   OBJC_LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 fi
 
@@ -413,7 +420,7 @@ else
 	objc_threaded="-lthread $extra_LIBS",
 	objc_threaded="", objc_threaded="")
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS""
+    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS"
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lpthread $extra_LIBS", 
 	objc_threaded="", objc_threaded="")

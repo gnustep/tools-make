@@ -1342,7 +1342,7 @@ make GNUSTEP_INSTALLATION_DIR="/GNUstep"
 This command states that the @file{/GNUstep} directory should be used as
 the installation root directory; applications in the package will be
 installed under @file{/GNUstep/Apps} directory, libraries in the package
-will be installed under the @file{/GNUstep/Libraries} directory, command
+will be installed under the @file{/GNUstep/Library/Libraries} directory, command
 line tools will be installed under the @file{/GNUstep/Tools} directory,
 and etc.  By default the Makefile Package sets
 @code{GNUSTEP_INSTALLATION_DIR} to @code{GNUSTEP_LOCAL_ROOT} unless

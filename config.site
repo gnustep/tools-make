@@ -32,16 +32,16 @@ if test -z "$target" -o "$target" = NONE; then
    GNUSTEP_TARGET_OS=$GNUSTEP_HOST_OS
 else
    # The user did specify a target, so canonicalize and clean
-   GNUSTEP_TARGET=`$GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $target`
-   GNUSTEP_TARGET_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_TARGET`
-   GNUSTEP_TARGET_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_TARGET`
-   GNUSTEP_TARGET_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_TARGET`
+   GNUSTEP_TARGET=`$GNUSTEP_MAKEFILES/config.sub $target`
+   GNUSTEP_TARGET_CPU=`$GNUSTEP_MAKEFILES/cpu.sh $GNUSTEP_TARGET`
+   GNUSTEP_TARGET_VENDOR=`$GNUSTEP_MAKEFILES/vendor.sh $GNUSTEP_TARGET`
+   GNUSTEP_TARGET_OS=`$GNUSTEP_MAKEFILES/os.sh $GNUSTEP_TARGET`
 fi
 
 # Clean the target
-GNUSTEP_TARGET_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_TARGET_OS`
-GNUSTEP_TARGET_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_TARGET_VENDOR`
-GNUSTEP_TARGET_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_TARGET_CPU`
+GNUSTEP_TARGET_OS=`$GNUSTEP_MAKEFILES/clean_os.sh $GNUSTEP_TARGET_OS`
+GNUSTEP_TARGET_VENDOR=`$GNUSTEP_MAKEFILES/clean_vendor.sh $GNUSTEP_TARGET_VENDOR`
+GNUSTEP_TARGET_CPU=`$GNUSTEP_MAKEFILES/clean_cpu.sh $GNUSTEP_TARGET_CPU`
 
 # Set the installation prefix
 if test "$prefix" = NONE ; then
@@ -71,7 +71,7 @@ fi
 
 # Change the data directory default
 if test "$datadir" = "\${prefix}/share" ; then
-   datadir="\${prefix}/Libraries/share"
+   datadir="\${prefix}/Library/Libraries/share"
 fi
 
 # xxx What about sysconfdir?
@@ -81,9 +81,9 @@ fi
 # Change the library directory default
 if test "$libdir" = "\${exec_prefix}/lib" ; then
   if [ -z "$GNUSTEP_FLATTENED" ]; then
-     libdir="\${exec_prefix}/Libraries/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
+     libdir="\${exec_prefix}/Library/Libraries/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
   else
-     libdir="\${exec_prefix}/Libraries"
+     libdir="\${exec_prefix}/Library/Libraries"
   fi
 fi
 
@@ -96,11 +96,11 @@ fi
 
 # Change the info directory default
 if test "$infodir" = "\${prefix}/info" ; then
-   infodir="\${prefix}/Documentation/info"
+   infodir="\${prefix}/Library/Documentation/info"
 fi
 
 # Change the man directory default
 if test "$mandir" = "\${prefix}/man" ; then
-   mandir="\${prefix}/Documentation/man"
+   mandir="\${prefix}/Library/Documentation/man"
 fi
 

@@ -51,35 +51,35 @@ fi
 # Determine the host information if needed
 #
 if [ -z "$GNUSTEP_HOST" ]; then
-    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.guess)`
-    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Makefiles/config.sub $GNUSTEP_HOST)`
+    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/config.guess)`
+    GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/config.sub $GNUSTEP_HOST)`
     export GNUSTEP_HOST
 fi
 if [ -z "$GNUSTEP_HOST_CPU" ]; then
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/cpu.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
+    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Library/Makefiles/cpu.sh $GNUSTEP_HOST`
+    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/Library/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
     export GNUSTEP_HOST_CPU
 fi
 if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/vendor.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
+    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Library/Makefiles/vendor.sh $GNUSTEP_HOST`
+    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/Library/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
     export GNUSTEP_HOST_VENDOR
 fi
 if [ -z "$GNUSTEP_HOST_OS" ]; then
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
-    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
+    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Library/Makefiles/os.sh $GNUSTEP_HOST`
+    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Library/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
    export GNUSTEP_HOST_OS
 fi
 
 #
 # Load up LD_LIBRARY_PATH
 #
-. $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
+. $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/ld_lib_path.sh
 
 #
 # Load up CLASSPATH
 #
-gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"
+gnustep_class_path="$GNUSTEP_USER_ROOT/Library/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Library/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Library/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Java"
 
 if [ -z "$CLASSPATH" ]; then
   CLASSPATH="$gnustep_class_path"

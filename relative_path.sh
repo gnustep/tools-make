@@ -37,7 +37,7 @@
 # need this for frameworks, which are particularly complex and
 # delicate.  For example, to create the link
 #
-# /usr/GNUstep/System/Libraries/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so
+# /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so
 #   --> ../../../../Frameworks/nicola.framework/Versions/Current/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so
 #
 # (and where the paths are actually computed by make variables which
@@ -45,8 +45,8 @@
 # it's not obvious what the relationship is between the two paths, and
 # you only have the absolute paths) we do -
 #
-# cd /usr/GNUstep/System/Libraries/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so
-# $(LN_S) `$(RELATIVE_PATH_SCRIPT) /usr/GNUstep/System/Frameworks/nicola.framework/Versions/Current/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so /usr/GNUstep/System/Libraries/ix86/linux-gnu/gnu-gnu-gnu/`
+# cd /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so
+# $(LN_S) `$(RELATIVE_PATH_SCRIPT) /usr/GNUstep/System/Frameworks/nicola.framework/Versions/Current/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/`
 #
 # which creates the link.  We need to use the minimum path because
 # that is the most relocatable possible path.  I consider all this a

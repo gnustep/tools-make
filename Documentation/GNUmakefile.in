@@ -43,7 +43,7 @@ INSTALL_DATA            = @INSTALL_DATA@
 MKDIRS	                = ../mkinstalldirs
 
 # The documents to be generated
-DOCUMENT_NAME = gnustep-howto faq internals machines make userfaq
+DOCUMENT_NAME = gnustep-howto faq filesystem internals machines make userfaq
 
 # The text documents to be generated
 DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE

@@ -29,7 +29,7 @@ echo "press ^D on its own line when you are done"
 TZNAME=`cat`
 echo " "
 
-GNUSTEP_TIMEZONE=$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones
+GNUSTEP_TIMEZONE=$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-base/NSTimeZones
 if [ -f $GNUSTEP_TIMEZONE/zones/$TZNAME ]; then
     echo Setting timezone to $TZNAME
     defaults write NSGlobalDomain "Local Time Zone" $TZNAME

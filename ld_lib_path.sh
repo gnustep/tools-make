@@ -44,9 +44,9 @@ for dir in $GNUSTEP_PATHLIST; do
 
   # prepare the path_fragment for this dir
   if [ -z "$GNUSTEP_FLATTENED" ]; then
-    path_fragment="$dir/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+    path_fragment="$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
   else
-    path_fragment="$dir/Libraries"
+    path_fragment="$dir/Library/Libraries"
   fi
 
   # Append the path_fragment to lib_paths

@@ -47,9 +47,9 @@ do
   case $1 in
     --library-combo=*)
         tmp_root="$GNUSTEP_SYSTEM_ROOT"
-        . "$tmp_root/Makefiles/GNUstep-reset.sh"
+        . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep-reset.sh"
         LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
-        . "$tmp_root/Makefiles/GNUstep.sh"
+        . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep.sh"
         echo "Switched to library combo $LIBRARY_COMBO"
         shift
         ;;

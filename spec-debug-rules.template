@@ -9,7 +9,7 @@
 #
 %build
 if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
-  . %{gs_root}/Makefiles/GNUstep.sh 
+  . %{gs_root}/Library/Makefiles/GNUstep.sh 
 fi
 if [ "%{gs_configure}" = "YES" ]; then 
   CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_root}
@@ -22,7 +22,7 @@ make debug=yes
 #
 %install
 if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
-  . %{gs_root}/Makefiles/GNUstep.sh 
+  . %{gs_root}/Library/Makefiles/GNUstep.sh 
 fi
 # build the non debugging file list
 mkdir tmp-rpm-build-%{gs_name}

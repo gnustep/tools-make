@@ -66,7 +66,7 @@ if [ -z "$LIBRARY_COMBO" ]; then
 fi
 export GNUSTEP_ROOT GNUSTEP_SYSTEM_ROOT GNUSTEP_FLATTENED LIBRARY_COMBO
 
-GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Makefiles
+GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@
 export GNUSTEP_MAKEFILES
 
 GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
@@ -231,9 +231,9 @@ gnustep_class_path=
 for dir in $GNUSTEP_PATHLIST; do
 
   if [ -z "$gnustep_class_path" ]; then
-    gnustep_class_path="$dir/Libraries/Java"
+    gnustep_class_path="$dir/Library/Libraries/Java"
   else
-    gnustep_class_path="$gnustep_class_path:$dir/Libraries/Java"
+    gnustep_class_path="$gnustep_class_path:$dir/Library/Libraries/Java"
   fi
 
 done
@@ -261,9 +261,9 @@ guile_paths=
 for dir in $GNUSTEP_PATHLIST; do
 
   if [ -z "$guile_paths" ]; then
-    guile_paths="$dir/Libraries/Guile"
+    guile_paths="$dir/Library/Libraries/Guile"
   else
-    guile_paths="$guile_paths:$dir/Libraries/Guile"
+    guile_paths="$guile_paths:$dir/Library/Libraries/Guile"
   fi
 
 done

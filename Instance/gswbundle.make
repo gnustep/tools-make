@@ -47,7 +47,7 @@ GSWBUNDLE_LD = $(BUNDLE_LD)
 GSWBUNDLE_LDFLAGS = $(BUNDLE_LDFLAGS)
 
 ifeq ($(GSWBUNDLE_INSTALL_DIR),)
-GSWBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Libraries
+GSWBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/Libraries
 endif
 # The name of the bundle is in the BUNDLE_NAME variable.
 # The list of languages the bundle is localized in are in xxx_LANGUAGES

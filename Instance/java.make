@@ -41,7 +41,7 @@ endif
 #
 # JAVA_INSTALL_DIR contains the directory where you want to
 # install your classes - it defaults to $(GNUSTEP_JAVA), which is
-# $(GNUSTEP_LOCAL_ROOT)/Libraries/Java/.
+# $(GNUSTEP_LOCAL_ROOT)/Library/Libraries/Java/.
 #
 # If you have all your files in a directory but want them to be
 # installed with a different relative path, you can simply redefine 
@@ -71,7 +71,7 @@ JAVA_INSTALL_DIR = $(JAVA_INSTALLATION_DIR)
 endif
 
 # This is the directory where the java classses get
-# installed. Normally this is /usr/GNUstep/Local/Libraries/Java/
+# installed. Normally this is /usr/GNUstep/Local/Library/Libraries/Java/
 ifeq ($(JAVA_INSTALL_DIR),)
 JAVA_INSTALL_DIR = $(GNUSTEP_JAVA)
 endif

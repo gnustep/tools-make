@@ -2898,12 +2898,19 @@ fi
 echo "$as_me:$LINENO: result: $prefix" >&5
 echo "${ECHO_T}$prefix" >&6
 
+# Makefiles directory location is in a bit of flux now. To keep the
+# Makefiles dir in the previous location, reset this variable to
+# 'Makefiles' and regenerate configure. Note this doesn't change all
+# occurances.
+MAKEFILES_SUFFIX=Library/Makefiles
+
+
 # HOST_INSTALL is the name of the install program in config.make so set it up
 # to point to the install-sh script in the GNUstep tree if no system install is
 # found.
 
 if test "$INSTALL" = "$ac_install_sh"; then
-  HOST_INSTALL="$prefix/Makefiles/$INSTALL"
+  HOST_INSTALL="$prefix/$MAKEFILES_SUFFIX/$INSTALL"
 else
   HOST_INSTALL="$INSTALL"
 fi
@@ -3030,14 +3037,14 @@ fi
 CFLAGS=`echo $CFLAGS | sed -e 's/-g //'`
 
 # Set location of GNUstep dirs for later use
-GNUSTEP_HDIR="$prefix/Headers"
+GNUSTEP_HDIR="$prefix/Library/Headers"
 if test "$GNUSTEP_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$prefix/Libraries"
+  GNUSTEP_LDIR="$prefix/Library/Libraries"
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir="$clean_target_cpu/$clean_target_os"
-  GNUSTEP_LDIR="$prefix/Libraries/$obj_dir"
+  GNUSTEP_LDIR="$prefix/Library/Libraries/$obj_dir"
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
@@ -3068,7 +3075,7 @@ echo "${ECHO_T}$gs_cv_objc_libdir" >&6
 
 # The following are needed to compile the test programs
 if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
-  OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Headers"
+  OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Library/Headers"
   OBJC_LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 fi
 
@@ -4022,6 +4029,38 @@ objc_threaded=""
 fi
 rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS"
+    if test "$cross_compiling" = yes; then
+  objc_threaded=""
+else
+  cat >conftest.$ac_ext <<_ACEOF
+#line $LINENO "configure"
+#include "confdefs.h"
+#include "config_thread.m"
+_ACEOF
+rm -f conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  objc_threaded="-lpthread $extra_LIBS"
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+cat conftest.$ac_ext >&5
+( exit $ac_status )
+objc_threaded=""
+fi
+rm -f core core.* *.core conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+  fi
 fi
 LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
@@ -4753,6 +4792,7 @@ s,@TAR@,$TAR,;t t
 s,@CHOWN@,$CHOWN,;t t
 s,@GNUSTEP_ROOT@,$GNUSTEP_ROOT,;t t
 s,@root_prefix@,$root_prefix,;t t
+s,@MAKEFILES_SUFFIX@,$MAKEFILES_SUFFIX,;t t
 s,@HOST_INSTALL@,$HOST_INSTALL,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t

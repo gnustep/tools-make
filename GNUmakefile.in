@@ -54,7 +54,7 @@ else
   GNUSTEP_TARGET_LDIR = .
 endif
 
-makedir = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
+makedir = $(GNUSTEP_SYSTEM_ROOT)/@MAKEFILES_SUFFIX@
 tooldir = $(GNUSTEP_SYSTEM_ROOT)/Tools
 
 INSTALL		= @INSTALL@
@@ -118,7 +118,9 @@ else
 endif
 
 install: all
-	$(EC)(echo "Creating system domain: $(GNUSTEP_SYSTEM_ROOT)"; \
+	$(EC)(echo "Moving paths from old heirarchy: "; \
+	 $(srcdir)/move_obsolete_paths.sh $(GNUSTEP_SYSTEM_ROOT) $(GNUSTEP_LOCAL_ROOT) $(GNUSTEP_USER_ROOT); \
+	 echo "Creating system domain: $(GNUSTEP_SYSTEM_ROOT)"; \
 	 $(srcdir)/create_domain_dir_tree.sh $(GNUSTEP_SYSTEM_ROOT); \
 	 echo "Creating local and network dirs: $(GNUSTEP_LOCAL_ROOT), $(GNUSTEP_NETWORK_ROOT)"; \
 	$(srcdir)/mkinstalldirs $(GNUSTEP_LOCAL_ROOT) $(GNUSTEP_NETWORK_ROOT);\
@@ -133,6 +135,8 @@ install: all
 		$(makedir)/Instance \
 		$(makedir)/Instance/Shared \
 		$(makedir)/Instance/Documentation)
+	-$(EC) (rm -f $(GNUSTEP_SYSTEM_ROOT)/Makefiles; \
+	   $(LN_S)  @MAKEFILES_SUFFIX@ $(GNUSTEP_SYSTEM_ROOT)/Makefiles)
 	 $(EC)(echo "Installing gnustep-make support software"; \
 	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
 	     $(makedir)/$(GNUSTEP_TARGET_DIR); \

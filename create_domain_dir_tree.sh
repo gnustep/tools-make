@@ -46,20 +46,28 @@ basepath="$1"
 
 ${mydir}/mkinstalldirs  "$basepath" \
 		"$basepath"/Applications \
-		"$basepath"/Libraries/${GNUSTEP_TARGET_LDIR} \
-		"$basepath"/Libraries/Resources \
-		"$basepath"/Libraries/Java \
-		"$basepath"/Headers/${GNUSTEP_TARGET_DIR} \
+		"$basepath"/Developer/Palettes \
 		"$basepath"/Tools/${GNUSTEP_TARGET_LDIR} \
 		"$basepath"/Tools/Resources \
 		"$basepath"/Tools/Java \
+		"$basepath"/Library/ApplicationSupport \
 		"$basepath"/Library/Bundles \
+		"$basepath"/Library/ColorPickers \
 		"$basepath"/Library/Colors \
+		"$basepath"/Library/DocTemplates \
+		"$basepath"/Library/Documentation/Developer \
+		"$basepath"/Library/Documentation/User \
+		"$basepath"/Library/Documentation/info \
+		"$basepath"/Library/Documentation/man \
+		"$basepath"/Library/Fonts \
 		"$basepath"/Library/Frameworks \
+		"$basepath"/Library/Headers/${GNUSTEP_TARGET_DIR} \
+		"$basepath"/Library/Images \
+		"$basepath"/Library/KeyBindings \
+		"$basepath"/Library/Libraries/${GNUSTEP_TARGET_LDIR} \
+		"$basepath"/Library/Libraries/Resources \
+		"$basepath"/Library/Libraries/Java \
 		"$basepath"/Library/PostScript \
 		"$basepath"/Library/Services \
-		"$basepath"/Documentation/Developer \
-		"$basepath"/Documentation/User \
-		"$basepath"/Documentation/info \
-		"$basepath"/Documentation/man \
-		"$basepath"/Developer/Palettes
+		"$basepath"/Library/Sounds
+

@@ -317,7 +317,7 @@ mkdir GNUstep
 
 Next, set your local time zone.  There are four ways to do this, pick
 one (see
-@file{$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/zones} for
+@file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-bsae/NSTimeZones/zones} for
 typical time zones):
 
 @enumerate
@@ -327,7 +327,7 @@ something like ``defaults write NSGlobalDomain "Local Time Zone" GB''.
 
 @item Set the @var{GNUSTEP_TZ} environment variable.
 
-@item Create the file @file{$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/localtime} with the name of the local time zone in it.
+@item Create the file @file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-base/NSTimeZones/localtime} with the name of the local time zone in it.
 
 @item Set the @var{TZ} environment variable (this may conflict with other
 software on your system though).
@@ -343,7 +343,7 @@ app:
 @itemize @bullet
 @item gdomap - Put this in a system startup file, like @file{/etc/rc.local} or @file{/etc/rc.d/rc.local} (customize for your system)
 @example
-GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
+GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
 if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap ]; then
   $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap
 fi

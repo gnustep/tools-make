@@ -27,8 +27,8 @@
 
   * a list of library search paths in the GCC notation, as in 
     -L/usr/lib/opt/hack/
-    -L/usr/GNUstep/Local/Libraries/ix86/linux-gnu/gnu-gnu-gnu
-    -L/usr/GNUstep/System/Libraries/ix86/linux-gnu/gnu-gnu-gnu
+    -L/usr/GNUstep/Local/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu
+    -L/usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu
     (order is important, paths are searched in the order they are listed);
 
   * a list of libraries in the GCC notation, as in

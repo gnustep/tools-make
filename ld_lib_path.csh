@@ -26,11 +26,11 @@
 # operating system name.
 
 if ( "$GNUSTEP_FLATTENED" == "" ) then
-  set last_path_part="Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}"
-  set tool_path_part="Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+  set last_path_part="Library/Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}"
+  set tool_path_part="Library/Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
 else
-  set last_path_part="Libraries"
-  set tool_path_part="Libraries"
+  set last_path_part="Library/Libraries"
+  set tool_path_part="Library/Libraries"
 endif
 
 set host_os=${GNUSTEP_HOST_OS}
