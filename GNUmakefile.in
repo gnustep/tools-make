@@ -61,7 +61,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	target.make tool.make ctool.make test-library.make names.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make woapp.make wobundle.make  \
-	documentation.make MediaBook.func executable.template
+	documentation.make MediaBook.func executable.template framework.make
 
 all: generated-files which_lib$(EXEEXT)
 

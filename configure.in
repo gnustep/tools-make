@@ -93,6 +93,14 @@ fi
 AC_SUBST(ac_cv_library_combo)
 
 #--------------------------------------------------------------------
+# specific target_os options
+#--------------------------------------------------------------------
+case "$target_os" in
+  freebsd*)	CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+		LIBS="$LIBS -L/usr/local/lib";;
+esac
+
+#--------------------------------------------------------------------
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
 if test $host_os = mingw32 -o $host_os = mingw; then
@@ -473,6 +481,24 @@ AC_SUBST(ac_cv_objc_threaded)
 # Check recent libxml for Properytlists, GSXML, GSDoc etc.
 #--------------------------------------------------------------------
 echo "Checking for libxml"
+AC_ARG_WITH(libxml-include,
+  [  --with-libxml-include=PATH  include path for libxml headers],
+  libxml_incdir="$withval", libxml_incdir="no")
+
+AC_ARG_WITH(libxml-library,
+  [  --with-libxml-library=PATH  library path for libxml libraries],
+  libxml_libdir="$withval", libxml_libdir="no")
+
+cppflags_temp=$CFLAGS
+libs_temp=$LIBS
+
+if test "$libxml_incdir" != "no"; then
+  CPPFLAGS="$CPPFLAGS -I$libxml_incdir"
+fi
+if test "$libxml_libdir" != "no"; then
+  LIBS="$LIBS -L$libxml_libdir"
+fi
+
 AC_CHECK_HEADERS(libxml/xmlversion.h)
 if test $ac_cv_header_libxml_xmlversion_h = no; then
   echo "Could not find libxml headers"
@@ -495,6 +521,10 @@ else
   fi
 fi
 
+if test "$HAVE_LIBXML" = "0"; then
+  CPPFLAGS="$cppflags_temp";
+  LIBS="$libs_temp";
+fi
 
 #--------------------------------------------------------------------
 # Check for iconv support (for Unicode conversion).
@@ -503,11 +533,22 @@ fi
 AC_CHECK_FUNCS(iconv)
 if test $ac_cv_func_iconv = no; then
   # Check if we have a libiconv library
+  AC_ARG_WITH(libiconv-library,
+    [  --with-libiconv-library=PATH  library path for libiconv libraries],
+    libiconv_libdir="$withval", libiconv_libdir="no")
+  libs_temp=$LIBS
+
+  if test "$libiconv_libdir" != "no"; then
+    LIBS="$LIBS -L$libiconv_libdir"
+  fi
+
   AC_CHECK_LIB(iconv, main)
   if test x"$av_cv_lib_iconv_main" = xyes; then
     LIBS="$LIBS -liconv"
     AC_SUBST(LIBS)
     SYSTEM_DEFS="-DHAVE_ICONV $SYSTEM_DEFS"
+  else
+    LIBS="$libs_temp";
   fi
 else
   SYSTEM_DEFS="-DHAVE_ICONV $SYSTEM_DEFS"

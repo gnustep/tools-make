@@ -52,6 +52,8 @@ $(SUBPROJECT_NAME):
 else
 # This part gets included the second time make is invoked.
 
+FRAMEWORK_HEADER_FILES := $(patsubst %.h,$(FRAMEWORK_VERSION_DIR_NAME)/Headers/%.h,$(HEADER_FILES))
+
 #
 # Internal targets
 #
@@ -60,17 +62,65 @@ else
 # Compilation targets
 #
 internal-subproj-all:: before-all before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-                   $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
-                   after-$(TARGET)-all after-all
+                  $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
+                  framework-resource-files localized-framework-resource-files \
+                  after-$(TARGET)-all after-all
 
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES)
 	$(OBJ_MERGE_CMD)
 
-before-$(TARGET)-all::
+before-$(TARGET)-all:: $(FRAMEWORK_HEADER_FILES)
 
 after-$(TARGET)-all::
 
 after-all::
+
+build-framework-headers:: $(FRAMEWORK_HEADER_FILES)
+
+$(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
+	if [ "$(FRAMEWORK_NAME)" != "" ]; then \
+	  if [ "$(HEADER_FILES)" != "" ]; then \
+	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Headers; \
+	    if test ! -L "$(DERIVED_SOURCES)/$(INTERNAL_framework_NAME)"; then \
+	      $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
+	      $(DERIVED_SOURCES)/$(INTERNAL_framework_NAME); \
+	    fi; \
+	    for file in $(HEADER_FILES) __done; do \
+	      if [ $$file != __done ]; then \
+		$(INSTALL_DATA) ./$$file \
+		$(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
+	      fi; \
+	    done; \
+	  fi; \
+	fi;
+
+framework-resource-files::
+	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
+	  if [ "$(RESOURCE_FILES)" != "" ]; then \
+	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
+	    echo "Copying resources into the framework wrapper..."; \
+	    for f in "$(RESOURCE_FILES)"; do \
+	      cp -r $$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources; \
+	    done; \
+	  fi; \
+	fi;)
+
+localized-framework-resource-files::
+	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
+	  if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
+	    echo "Copying localized resources into the framework wrapper..."; \
+	    for l in $(LANGUAGES); do \
+	      if [ ! -f $$l.lproj ]; then \
+	        $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+	      fi; \
+	      for f in $(LOCALIZED_RESOURCE_FILES); do \
+		if [ -f $$l.lproj/$$f ]; then \
+		  cp -r $$l.lproj/$$f $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$$l.lproj; \
+		fi; \
+	      done; \
+	    done; \
+	  fi; \
+	fi;)
 
 #
 # Installation targets
@@ -88,8 +138,13 @@ internal-install-subproj-headers::
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
 	    if [ $$file != __done ]; then \
-	      $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
+	      if [ "$(FRAMEWORK_NAME)" == "" ]; then \
+		$(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
 		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	      else; \
+		$(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
+		$(FRAMEWORK_VERSION_DIR_NAME)/$$file ; \
+	      fi; \
 	    fi; \
 	  done; \
 	fi
@@ -101,7 +156,9 @@ before-uninstall after-uninstall::
 internal-uninstall-headers::
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    if [ "$(FRAMEWORK_NAME)" == "" ]; then \
+	      rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    fi; \
 	  fi; \
 	done
 
@@ -124,3 +181,7 @@ endif
 
 endif
 # subproject.make loaded
+
+## Local variables:
+## mode: makefile
+## End:

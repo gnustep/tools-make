@@ -1,3 +1,21 @@
+2000-10-28  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* configure.in:  added --with-libxml-include, --with-libxml-library
+	and --with-libiconv-library.
+	Added -I/usr/local/include and -L/usr/local/lib for FreeBSD.
+
+	* framework.make: new file.
+	* common.make: added common frameworks defines (library, header paths).
+	* bundle.make: added ALL_FRAMEWORKS_DIRS
+	* rules.make: added frameworks headers flags. Prebuild framework
+	header dir. Set framework name/dir/version.
+	* subproject.make: build framework headers and resource files.
+	* target.make: added SHARED_FRAMEWORK_LINK_CMD
+	* tool.make: added ALL_FRAMEWORKS_DIRS
+	* ld_lib_path.csh: added paths for frameworks.
+	* ld_lib_path.sh (lib_paths): added paths for frameworks.
+	* GNUmakefile.in (MAKE_FILES): added framework.make
+
 Thu Oct 19 15:46:02 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* opentool.in: Fix for passing arguments protected by quote.
