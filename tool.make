@@ -29,20 +29,17 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 #
 # xxx We need to prefix the target name when cross-compiling
 #
-TOOL_LIST := $(TOOL_NAME:=.tool)
+TOOL_LIST := $(TOOL_NAME:=.buildtool)
 TOOL_FILE = $(TOOL_LIST)
-TOOL_STAMPS := $(foreach tool,$(TOOL_NAME),stamp-tool-$(tool))
-TOOL_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(TOOL_STAMPS))
 
 #
 # Internal targets
 #
 
-$(GNUSTEP_OBJ_DIR)/stamp-tool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+$(TOOL_NAME) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(TOOL_NAME) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
-	touch $@
 
 #
 # Compilation targets
@@ -51,7 +48,7 @@ internal-all:: $(GNUSTEP_OBJ_DIR) $(TOOL_LIST)
 
 internal-tool-all:: build-tool
 
-build-tool:: $(GNUSTEP_OBJ_DIR)/stamp-tool-$(TOOL_NAME)
+build-tool:: $(TOOL_NAME)
 
 #
 # Cleaning targets

@@ -92,7 +92,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 		  RESOURCE_FILES="$($*_RESOURCES)" \
 		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)"
 
-%.tool : FORCE
+%.buildtool : FORCE
 	@echo Making $*...
 	@$(MAKE) --no-print-directory internal-tool-all \
 		  TOOL_NAME=$* \
