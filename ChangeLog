@@ -1,3 +1,9 @@
+Sun Nov  7 04:07:50 2004  David Wetzel <dave@turbocat.de>
+
+	* Instance/Shared/bundle.make: Everywhere use the '-f' flag to 'cp
+	-r' so that read-only files such as subversions dirs can be
+	written and overwritten.
+
 Thu Nov  4 08:39:29 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* common.make (RM_LN_S): New variable.

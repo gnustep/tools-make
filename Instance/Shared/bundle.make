@@ -195,14 +195,17 @@ $(FULL_RESOURCE_DIRS):
 # create the file {bundle}/Language.lproj/xxx/yyy, because we want to
 # mirror the Language.lproj directory faithfully.  There is no
 # possible confusion here.
-
+#
+# Important: we pass the '-f' argument to 'cp' to make sure that you
+# can write and overwrite RESOURCE_FILES which are -r--r--r--.
+#
 shared-instance-bundle-all: $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH) \
                       $(FULL_RESOURCE_DIRS) \
                       shared-instance-bundle-all-gsweb
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_COPYING_RESOURCES)for f in $(RESOURCE_FILES); do \
 	  if [ -f $$f -o -d $$f ]; then \
-	    cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
+	    cp -fr $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
 	  else \
 	    echo "Warning: $$f not found - ignoring"; \
 	  fi; \
@@ -226,7 +229,7 @@ ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	    $(MKDIRS) $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
 	      if [ -f $$l.lproj/$$f -o -d $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f \
+	        cp -fr $$l.lproj/$$f \
 	              $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj/$$f; \
 	      else \
 	        echo "Warning: $$l.lproj/$$f not found - ignoring"; \
@@ -242,7 +245,7 @@ ifneq ($(_SUBPROJECTS),)
 	  if [ -d $$subproject/Resources/Subproject ]; then \
 	    for f in $$subproject/Resources/Subproject/*; do \
 	      if [ $$f != $$subproject'/Resources/Subproject/*' ]; then \
-	        cp -r $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
+	        cp -fr $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
 	      fi; \
 	    done; \
 	  fi; \
@@ -300,7 +303,7 @@ shared-instance-bundle-all-webresources: \
 	$(ECHO_COPYING_WEBSERVER_RESOURCES)for f in $(WEBSERVER_RESOURCE_FILES); do \
 	  if [ -f ./WebServerResources/$$f \
 	       -o -d ./WebServerResources/$$f ]; then \
-	    cp -r ./WebServerResources/$$f \
+	    cp -fr ./WebServerResources/$$f \
 	       $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$$f; \
 	  else \
 	    echo "Warning: WebServerResources/$$f not found - ignoring"; \
@@ -337,7 +340,7 @@ ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_FILES),)
 	  for f in $(WEBSERVER_LOCALIZED_RESOURCE_FILES); do \
 	   if [ -f ./WebServerResources/$$l.lproj/$$f \
 	        -o -d ./WebServerResources/$$l.lproj/$$f ]; then \
-	    cp -r ./WebServerResources/$$l.lproj/$$f \
+	    cp -fr ./WebServerResources/$$l.lproj/$$f \
 	          $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj/$$f; \
 	      else \
 	        echo "Warning: WebServerResources/$$l.lproj/$$f not found - ignoring"; \
