@@ -1,3 +1,11 @@
+Fri Oct 11 16:31:35 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* spec-debug-alone-rules.template: Remove %install string from
+	comment.
+	* spec-debug-rules.template: Idem.
+	* spec-rules.template: Idem.
+	(Suggested by Jiri Novak <Jiri.Novak@i.cz>).
+	
 Fri Oct 11 11:54:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make ($(DUMMY_FRAMEWORK_FILE)): Rewritten the
