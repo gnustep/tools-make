@@ -1,3 +1,13 @@
+Fri Jun  7 14:29:50 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* executable.template.in (--library-combo): Fixed switching
+	library combo to perform a full reset of the environment to the
+	new library combo using GNUstep-reset.sh followed by GNUstep.sh.
+	* executable.template.in: If a binary for the currently specified
+	LIBRARY_COMBO can not be found, automatically search and run the
+	first available binary for any other LIBRARY_COMBO for this
+	machine/os.
+
 Fri Jun  7 13:39:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Patch by Manuel Guesdom <ml@sbuilders.com>:
