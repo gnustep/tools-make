@@ -1,4 +1,5 @@
 #!/bin/sh
+#
 # transform_paths.sh
 #
 # Copyright (C) 1997 Free Software Foundation, Inc.

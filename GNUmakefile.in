@@ -62,12 +62,21 @@ install: all
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(tooldir) \
-		$(prefix)/share
+		$(prefix)/share \
+		$(prefix)/Apps \
+		$(prefix)/Libraries/$(GNUSTEP_TARGET_DIR) \
+		$(prefix)/Headers/$(GNUSTEP_TARGET_DIR) \
+		$(prefix)/Tools/$(GNUSTEP_TARGET_DIR) \
+		$(prefix)/Library \
+		$(prefix)/Library/info \
+		$(prefix)/Library/PostScript \
+		$(prefix)/Library/man
 	$(INSTALL_PROGRAM) -m 755 which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
-		transform_paths.sh vendor.sh ; do \
+		transform_paths.sh vendor.sh \
+		GNUstep.csh ld_lib_path.csh ; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
@@ -75,7 +84,8 @@ install: all
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
-		test-application.make test-tool.make MediaBook.func; do \
+		test-application.make test-tool.make \
+		documentation.make MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
@@ -86,7 +96,8 @@ uninstall:
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
-		transform_paths.sh vendor.sh ; do \
+		transform_paths.sh vendor.sh \
+		GNUstep.csh ld_lib_path.csh ; do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(tooldir)/openapp; \
@@ -94,7 +105,8 @@ uninstall:
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
-		test-application.make test-tool.make MediaBook.func; do \
+		test-application.make test-tool.make \
+		documentation.make MediaBook.func; do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(prefix)/share/config.site
@@ -107,12 +119,15 @@ distclean: clean
 	rm -f GNUmakefile config.make
 	rm -f config.cache config.log config.status
 
-generated-files: GNUmakefile GNUstep.sh config.h config.make debugapp openapp
+generated-files: GNUmakefile GNUstep.sh GNUstep.csh config.h config.make debugapp openapp
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
 
 GNUstep.sh: GNUstep.sh.in
+	$(SHELL) config.status
+
+GNUstep.csh: GNUstep.csh.in
 	$(SHELL) config.status
 
 config.h: config.h.in

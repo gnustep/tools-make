@@ -1,3 +1,24 @@
+Sun Apr  5 19:07:54 1998  Scott Christley  <scottc@net-community.com>
+
+	* GNUmakefile.in: install/uninstall new files; create full
+	target subdirectories.
+	* GNUstep.sh.in: Add shell magic name.
+	* MediaBook.sh: Likewise.
+	* clean_cpu.sh: Likewise.
+	* clean_os.sh: Likewise.
+	* clean_vendor.sh: Likewise.
+
+	* Add csh support.
+	* GNUstep.csh.in: New file.
+	* ld_lib_path.csh: New file.
+	* configure.in: Add GNUstep.csh.in to output files
+	* configure: Regenerate.
+
+	* Add documentation support.
+	* documentation.make: New file.
+	* common.make: Define documentation variables.
+	* rules.make: Pass documentation variables to sub-makes.
+
 Tue Mar 24 15:54:55 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* bundle.make (BUNDLE_RESOURCE_DIRS): Make all dirs a subdirectory

@@ -4,6 +4,7 @@ config.cache
 which_lib
 GNUmakefile
 GNUstep.sh
+GNUstep.csh
 config.h
 config.status
 openapp
