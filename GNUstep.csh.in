@@ -111,7 +111,7 @@ unset gnustep_class_path
 # Perform any user initialization
 #
 if ( -e "$GNUSTEP_USER_ROOT/GNUstep.csh" ) then
-  . "$GNUSTEP_USER_ROOT/GNUstep.csh"
+  source "$GNUSTEP_USER_ROOT/GNUstep.csh"
 endif
 
 #
