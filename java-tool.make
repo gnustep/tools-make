@@ -103,10 +103,17 @@ $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)
 	  for file in $(JAVA_OBJ_FILES) __done; do \
 	    if [ $$file != __done ]; then \
 	      $(INSTALL_DATA) $$file $(JAVA_TOOL_INSTALLATION_DIR)/$$file ; \
+	      base=`dirname $$file`/`basename $$file .class` ; \
+	      for sub in $${base}[$$]*.class __done; do \
+	        if [ $$sub != __done ]; then \
+		  $(INSTALL_DATA) $$sub $(JAVA_TOOL_INSTALLATION_DIR)/$$sub ; \
+		fi; \
+	      done; \
 	    fi; \
 	  done; \
 	fi
 
+# TODO - uninstall nested/inner classes as well
 internal-java_tool-uninstall::
 	rm -f $(JAVA_TOOL_INSTALLATION_DIR)/$(JAVA_OBJ_FILES)
 	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)
@@ -116,6 +123,17 @@ internal-java_tool-uninstall::
 #
 internal-java_tool-clean::
 	rm -f $(JAVA_OBJ_FILES)
+	for file in $(JAVA_OBJ_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    base=`dirname $$file`/`basename $$file .class` ; \
+	    for sub in $${base}[$$]*.class __done; do \
+	      if [ $$sub != __done ]; then \
+		rm -f $$sub; \
+	      fi; \
+	    done; \
+	  fi; \
+	done;
+
 
 internal-java_tool-distclean::
 
