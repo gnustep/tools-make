@@ -2,7 +2,7 @@
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Darwin 6.x/PowerPC, , (DIR)
-@node Machine Specific, Darwin 6.x/PowerPC, , (DIR)
+@node Machine Specific
 @chapter Machines
 @end ifclear
 
@@ -14,17 +14,19 @@ more popular operating systems. Some machines marked with
 @menu
 * Darwin 6.x/PowerPC::          
 * Debian/DEC-Alpha::            
+* Debian/i386::                 
+* Debian/PowerPC::              
+* Debian/SPARC::                
 * FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
-* GNU-Linux/PowerPC::           
 * Irix 6.5/MIPS::               
 * MkLinux/PowerPC::             
-* RedHat/Intel::                
 * NetBSD::                      
 * Netwinder::                   
 * OpenBSD 3.x::                 
 * OSF/Alpha::                   
+* RedHat/Intel::                
 * Slackware/Intel::             
 * Solaris 2.5.1/Sparc::         
 * Solaris/Sparc::               
@@ -35,6 +37,7 @@ more popular operating systems. Some machines marked with
 * Unixware-2.1.3/Intel::        
 * Windows with CYGWIN::         
 * Windows with MinGW::          
+* Yellowdog/PowerPC::           
 @end menu
 
 A recommended compiler is listed for each machine, if known. You should try
@@ -121,7 +124,7 @@ Make sure to configure gnustep-make with ./configure
 @end table
 
 @c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 6.x/PowerPC, Machine Specific
+@node Debian/DEC-Alpha, Debian/i386, Darwin 6.x/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -132,11 +135,59 @@ Unknown
 Unknown
 
 @item Special Instructions 
-Unknown
+None
 @end table
 
 @c -----------------------------------------
-@node FreeBSD 4.x, FreeBSD 3.x, Debian/DEC-Alpha, Machine Specific
+@node Debian/i386, Debian/PowerPC, Debian/DEC-Alpha, Machine Specific
+@section Debian/i386
+
+Tested on sid.
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+None
+@end table
+
+@c -----------------------------------------
+@node Debian/PowerPC, Debian/SPARC, Debian/i386, Machine Specific
+@section Debian/PowerPC
+
+Tested on sid.
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+None
+@end table
+
+@c -----------------------------------------
+@node Debian/SPARC, FreeBSD 4.x, Debian/PowerPC, Machine Specific
+@section Debian/SPARC
+
+Tested on sid.
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+None
+@end table
+
+@c -----------------------------------------
+@node FreeBSD 4.x, FreeBSD 3.x, Debian/SPARC, Machine Specific
 @section FreeBSD 4.x
 
 @table @samp
@@ -202,7 +253,7 @@ flags to configure: @code{CFLAGS="-I/usr/local/include"} and
 @end table
 
 @c -----------------------------------------
-@node FreeBSD 2.x, GNU-Linux/PowerPC, FreeBSD 3.x, Machine Specific
+@node FreeBSD 2.x, Irix 6.5/MIPS, FreeBSD 3.x, Machine Specific
 @section FreeBSD 2.x (@emph{Unstable!})
 
 @table @samp
@@ -229,22 +280,7 @@ You need to use gmake not make to compile the GNUstep packages.
 @end table
 
 @c -----------------------------------------
-@node GNU-Linux/PowerPC, Irix 6.5/MIPS, FreeBSD 2.x, Machine Specific
-@section GNU-Linux/PowerPC (LinuxPPC, Yellowdog)
-
-@table @samp
-@item Recommended compiler
-Standard
-
-@item Extra libs needed 
-Standard (ffcall or libffi)
-
-@item Special Instructions 
-
-@end table
-
-@c -----------------------------------------
-@node Irix 6.5/MIPS, MkLinux/PowerPC, GNU-Linux/PowerPC, Machine Specific
+@node Irix 6.5/MIPS, MkLinux/PowerPC, FreeBSD 2.x, Machine Specific
 @section Irix 6.5/MIPS
 
 @table @samp
@@ -270,21 +306,20 @@ No libffi-support: Use ffcall
 @end table
 
 @c -----------------------------------------
-@node MkLinux/PowerPC, RedHat/Intel, Irix 6.5/MIPS, Machine Specific
+@node MkLinux/PowerPC, NetBSD, Irix 6.5/MIPS, Machine Specific
 @section MkLinux/PowerPC (@emph{Obsolete})
 
 This configuration is no longer being tested, but it may still work.
 
 @table @samp
 @item Recommended compiler
-egcs-2.90.25 980302 (egcs-1.0.2 prerelease) which comes standard with
-DR 3.
+gcc 3.x allthough earlier ones should work if you also install gnustep-objc
 
 @item Extra libs needed 
 None.
 
 @item Special Instructions 
-Comes with a good version of gcc.
+DR3 comes with a good version of gcc.
 Seems to compile and install ok, althouth DR3 has an old version of
 glibc, which requires some workarounds which should be taken care of in
 the configuration. Not completely tested, so some aspects, particular
@@ -295,22 +330,7 @@ and glibc library (which has the threads library) and install both.
 @end table
 
 @c -----------------------------------------
-@node RedHat/Intel, NetBSD, MkLinux/PowerPC, Machine Specific
-@section RedHat/Intel
-
-@table @samp
-@item Recommended compiler
-Standard
-
-@item Extra libs needed 
-Standard (ffcall or libffi)
-
-@item Special Instructions 
-None
-@end table
-
-@c -----------------------------------------
-@node NetBSD, Netwinder, RedHat/Intel, Machine Specific
+@node NetBSD, Netwinder, MkLinux/PowerPC, Machine Specific
 @section NetBSD 
 
 @table @samp
@@ -356,7 +376,7 @@ Try reading the README.NetBSD which might work the same on OpenBSD.
 @end table
 
 @c -----------------------------------------
-@node OSF/Alpha, Slackware/Intel, OpenBSD 3.x, Machine Specific
+@node OSF/Alpha, RedHat/Intel, OpenBSD 3.x, Machine Specific
 @section OSF Alpha  (@emph{Unstable!})
 @c Contact: suzukis@file.phys.tohoku.ac.jp
 
@@ -380,7 +400,22 @@ ADDTIONAL_TOOL_LIBS in the GNUmakefile(.preamble).
 @end table
 
 @c -----------------------------------------
-@node Slackware/Intel, Solaris 2.5.1/Sparc, OSF/Alpha, Machine Specific
+@node RedHat/Intel, Slackware/Intel, OSF/Alpha, Machine Specific
+@section RedHat/Intel
+
+@table @samp
+@item Recommended compiler
+Standard
+
+@item Extra libs needed 
+Standard (ffcall or libffi)
+
+@item Special Instructions 
+None
+@end table
+
+@c -----------------------------------------
+@node Slackware/Intel, Solaris 2.5.1/Sparc, RedHat/Intel, Machine Specific
 @section Slackware/Intel 
 
 @table @samp
@@ -664,7 +699,7 @@ shared library (like libtiff) will cause odd and untraceable problems.
 See @file{README.Cygwin} for information on compiling.
 
 @c -----------------------------------------
-@node Windows with MinGW,  , Windows with CYGWIN, Machine Specific
+@node Windows with MinGW, Yellowdog/PowerPC, Windows with CYGWIN, Machine Specific
 @section Windows with MinGW (@emph{Unstable! As always...})
 
 @table @samp
@@ -679,6 +714,21 @@ See the @file{README.MinGW} file located in the gnustep-make Documentation
 directory for instructions. Windows NT/2000/XP only. Win98 machines and
 earlier are very buggy and are not supported.
 Native GUI backend is alpha version.
+@end table
+
+@c -----------------------------------------
+@node Yellowdog/PowerPC,  , Windows with MinGW, Machine Specific
+@section Yellowdog/PowerPC
+
+@table @samp
+@item Recommended compiler
+Standard
+
+@item Extra libs needed 
+Standard (ffcall or libffi)
+
+@item Special Instructions 
+
 @end table
 
 @ifclear HOWTO

@@ -227,7 +227,6 @@ endif
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 ifeq ($(OBJC_RUNTIME_LIB), apple)
   HAVE_BUNDLES     = yes
-  OBJC_COMPILER    = NeXT
   # Set flags to ignore the MacOSX headers
   ifneq ($(FOUNDATION_LIB), apple)
     INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
@@ -237,13 +236,15 @@ endif
 HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
-ifeq ($(FOUNDATION_LIB), apple)
+ifeq ($(CC_TYPE), apple)
   # Not sure why, but without -no-cpp-precomp, it doesn't compile
   # plain C files.
   INTERNAL_CFLAGS += -no-cpp-precomp
 
   # TODO - Check if we can do without -no-cpp-precomp for Objective-C.
   INTERNAL_OBJCFLAGS += -no-cpp-precomp
+endif
+ifeq ($(FOUNDATION_LIB), apple)
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
     INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
@@ -265,7 +266,7 @@ DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
 
-ifneq ($(OBJC_COMPILER), NeXT)
+ifneq ($(CC_TYPE), apple)
 # GNU compiler
 SHARED_LD_PREFLAGS += -arch_only ppc -noall_load -read_only_relocs warning \
 	-flat_namespace -undefined warning
@@ -292,7 +293,7 @@ BUNDLE_LD       =  /usr/bin/ld
 BUNDLE_LDFLAGS  += -bundle  -flat_namespace -undefined suppress /usr/lib/bundle1.o
 
 else 
-# NeXT Compiler
+# Apple Compiler
 
 #DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
 
@@ -322,7 +323,7 @@ SHARED_CFLAGS   += -dynamic
 BUNDLE_LD	=  $(CC)
 BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
 
-endif # OBJC_COMPILER
+endif # CC_TYPE
 
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \

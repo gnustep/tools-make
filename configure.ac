@@ -60,6 +60,18 @@ AC_MSG_RESULT($ac_cv_library_combo)
 OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 
 #--------------------------------------------------------------------
+# Check if we are using Apple cc
+# FIXME: It would be nicer if there was a better way to test this.
+#--------------------------------------------------------------------
+save_CFLAGS="$CFLAGS"
+CFLAGS="$CFLAGS -faltivec"
+AC_MSG_CHECKING([if we are using the apple compiler])
+AC_COMPILE_IFELSE([[int main() {return 0;}]], cc_type=apple, cc_type=gnu)
+AC_MSG_RESULT($cc_type)
+AC_SUBST(cc_type)
+CFLAGS="$save_CFLAGS"
+
+#--------------------------------------------------------------------
 # specific target_os options
 #--------------------------------------------------------------------
 INCLUDES=

@@ -1,3 +1,11 @@
+2004-01-15  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Add check for Apple cc
+	* config.make.in: Add CC_TYPE
+	* target.make (darwin): Use it instead of OBJC_COMPILER.
+
+	* Documentation/machines.texi: Update
+
 Wed Jan 14 18:59:25 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rpm.make: Use PACKAGE_VERSION instead of VERSION.
