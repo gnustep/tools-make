@@ -344,8 +344,8 @@ app:
 @item gdomap - Put this in a system startup file, like @file{/etc/rc.local} or @file{/etc/rc.d/rc.local} (customize for your system)
 @example
 GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
-if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap ]; then
-  $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap
+if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/gdomap ]; then
+  $GNUSTEP_SYSTEM_ROOT/Tools/gdomap
 fi
 @end example
 @item gdnc - Start after sourcing @file{GNUstep.sh} (e.g. in .profile)

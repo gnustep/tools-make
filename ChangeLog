@@ -1,3 +1,13 @@
+2003-07-21  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Set thread library in AUXILIARY_OBJC_LIBS. Set
+        reentrant flags for all targets if threaded. Remove duplicates.
+
+
+	* Documentation/README.MinGW: Updated for default flattened
+	structure.
+	* Documentation/gnustep-howto.texi: Idem.
+	
 Mon Jul 21 10:42:42 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* debugapp.in: Detect core files with name core.xxx, not just

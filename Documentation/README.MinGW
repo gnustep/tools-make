@@ -194,8 +194,8 @@ First, in the shell window in which you have set up your GNUstep
 environment, type
 
 ./configure --prefix=$GNUSTEP_SYSTEM_ROOT \
- --libdir=$GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32 \
- --includedir=$GNUSTEP_SYSTEM_ROOT/Headers
+ --libdir=$GNUSTEP_SYSTEM_ROOT/Library/Libraries \
+ --includedir=$GNUSTEP_SYSTEM_ROOT/Library/Headers
 
 Now you can now build and install it simply by typing:
 
@@ -218,9 +218,9 @@ libiconv
   Get the binary package from
   http://www.zlatkovic.com/projects/libxml/index.html
   Unpack this and
-    cp include/iconv.h $GNUSTEP_SYSTEM_ROOT/Headers
-    cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libiconv.a
-    cp lib/iconv.dll $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32/iconv.dll
+    cp include/iconv.h $GNUSTEP_SYSTEM_ROOT/Library/Headers
+    cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libiconv.a
+    cp lib/iconv.dll $GNUSTEP_SYSTEM_ROOT/Tools/iconv.dll
 
 libtiff, libjpeg, and zlib
   Needed for image handling support in the GNUstep gui libary
@@ -235,9 +235,9 @@ libtiff, libjpeg, and zlib
   http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-bin.zip
   
   Unpack and install
-  the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Headers
-  the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
-  the dll files in $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
+  the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Library/Headers
+  the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Library/Libraries
+  the dll files in $GNUSTEP_SYSTEM_ROOT/Tools
 
   Be sure to rename the .lib files to .a!
 
@@ -256,10 +256,10 @@ libxml2
   http://www.zlatkovic.com/projects/libxml/binaries.html
   Unpack this and
     cd include
-    tar -cf - libxml | (cd $GNUSTEP_SYSTEM_ROOT/Headers; tar -xvf -)
+    tar -cf - libxml | (cd $GNUSTEP_SYSTEM_ROOT/Library/Headers; tar -xvf -)
     cd ../lib
-    cp libxml2.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libxml2.a
-    cp libxml2.dll $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
+    cp libxml2.lib $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libxml2.a
+    cp libxml2.dll $GNUSTEP_SYSTEM_ROOT/Tools
 
 openssl
   Needed for the SSL bundle, providing HTTPS support for NSURL.
@@ -268,9 +268,9 @@ openssl
   Get the binary package from
   http://www.kix.or.jp/~fujino/openssl
   Unpack this and
-    tar -cf - openssl | (cd $GNUSTEP_SYSTEM_ROOT/Headers; tar -xvf -)
-    cp *.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
-    cp *.dll *.exe $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
+    tar -cf - openssl | (cd $GNUSTEP_SYSTEM_ROOT/Library/Headers; tar -xvf -)
+    cp *.lib $GNUSTEP_SYSTEM_ROOT/Library/Libraries
+    cp *.dll *.exe $GNUSTEP_SYSTEM_ROOT/Tools
 
 
 

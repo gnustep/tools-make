@@ -357,7 +357,7 @@ time and priority to get this done. You can ask about or lobby for this -
 see @url{http://sources.redhat.com/gdb/}.
 
 There are patches available on the gnustep web site if you want
-to compile your own gdb (see @url{http://www.gnustep.org/pub/gnustep/patches}).
+to compile your own gdb (see @url{ftp://ftp.gnustep.org/pub/gnustep/patches}).
 
 
 @c -------------------------------------------------------------------

@@ -34,7 +34,15 @@ endif
 #
 # Target specific libraries
 #
-TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS)
+TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lm
+ifneq ("$(objc_threaded)","")
+  INTERNAL_CFLAGS = -D_REENTRANT
+  INTERNAL_OBJCFLAGS = -D_REENTRANT
+  AUXILIARY_OBJC_LIBS += $(objc_threaded)
+ifeq ($(shared), no)
+  TARGET_SYSTEM_LIBS += $(objc_threaded)
+endif
+endif
 
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) \
@@ -44,64 +52,11 @@ endif
 ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
   TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm -I. 
 endif
-ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
-  ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
-  else
-    INTERNAL_CFLAGS = -D_REENTRANT
-    INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
-  endif
-endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-  ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
-  else
-    INTERNAL_CFLAGS    = -D_REENTRANT
-    INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -lm
-  endif
-endif
-ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
-  ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
-  else
-    INTERNAL_CFLAGS = -D_REENTRANT
-    INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
-  endif
-endif
-ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
 endif
 ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
-endif
-ifeq ($(findstring aix4.1, $(GNUSTEP_TARGET_OS)), aix4.1)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
-endif
-ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
-  ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
-  else
-    INTERNAL_CFLAGS = -D_REENTRANT
-    INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
-  endif
-endif
-ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
-  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
-  ifneq ("$(objc_threaded)","")
-    INTERNAL_CFLAGS = -D_REENTRANT
-    INTERNAL_OBJCFLAGS = -D_REENTRANT
-    AUXILIARY_OBJC_LIBS += $(objc_threaded)
-  endif
-endif
-ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
-endif
-ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
 endif
 
 #
