@@ -1,3 +1,9 @@
+Thu Jan 30 17:32:37 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Documentation/gsdoc.make: Use autogsdoc, not gsdoc, to
+	compile gsdoc files.  gsdoc is not even installed in the latest
+	gnustep-base.
+
 Sun Jan 26 04:54:09 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: New --enable-multi-platform option, off by
