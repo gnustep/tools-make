@@ -521,7 +521,8 @@ internal-framework-uninstall::
 # Cleaning targets
 #
 internal-framework-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(FRAMEWORK_DIR_NAME) $(DERIVED_SOURCES)
+	rm -rf $(GNUSTEP_OBJ_DIR) $(PSWRAP_C_FILES) $(PSWRAP_H_FILES) \
+	       $(FRAMEWORK_DIR_NAME) $(DERIVED_SOURCES)
 
 internal-framework-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
