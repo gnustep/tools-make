@@ -147,9 +147,10 @@ ALL_CPPFLAGS += $(TTMP_LIBS)
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
-internal-framework-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-		build-framework-dir build-framework \
-		after-$(TARGET)-all
+internal-framework-all:: before-$(TARGET)-all \
+                         $(GNUSTEP_OBJ_DIR) \
+                         build-framework \
+                         after-$(TARGET)-all
 
 before-$(TARGET)-all:: $(FRAMEWORK_HEADER_FILES)
 
@@ -180,48 +181,61 @@ ifeq ($(FRAMEWORK_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR := $(GNUSTEP_FRAMEWORKS)
 endif
 
-
-build-framework-dir::
-	@$(MKDIRS) \
-		$(FRAMEWORK_LIBRARY_DIR_NAME) \
-		$(FRAMEWORK_VERSION_DIR_NAME)/Resources \
-		$(FRAMEWORK_RESOURCE_DIRS)
-	@(if [ "$(DEPLOY_WITH_CURRENT_VERSION)" = "yes" ]; then \
-	  rm -f $(FRAMEWORK_DIR_NAME)/Versions/Current; \
-	fi;)
-	@(cd $(FRAMEWORK_DIR_NAME)/Versions; \
-	if test ! -L "Current"; then \
-	  $(LN_S) $(CURRENT_VERSION_NAME) Current; \
-	fi;)
-	@(cd $(FRAMEWORK_DIR_NAME); \
-	if test ! -L "Resources"; then \
-	  $(LN_S) Versions/Current/Resources .; \
-	fi;)
-
-internal-framework-build-headers:: build-framework-dir \
-                                   $(DERIVED_SOURCES) \
+internal-framework-build-headers:: build-framework-dirs \
                                    $(FRAMEWORK_HEADER_FILES)
 
-$(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES) 
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Headers; \
-	  if test ! -L "$(DERIVED_SOURCES)/$(INTERNAL_framework_NAME)"; then \
+build-framework-dirs:: $(DERIVED_SOURCES) \
+                       $(FRAMEWORK_LIBRARY_DIR_NAME) \
+                       $(FRAMEWORK_VERSION_DIR_NAME)/Headers \
+                       $(FRAMEWORK_VERSION_DIR_NAME)/Resources \
+                       $(FRAMEWORK_RESOURCE_DIRS)
+ifeq ($(DEPLOY_WITH_CURRENT_VERSION),yes)
+	@rm -f $(FRAMEWORK_DIR_NAME)/Versions/Current
+endif
+	@(cd $(FRAMEWORK_DIR_NAME)/Versions; \
+	  if [ ! -L "Current" ]; then \
+	    rm -f Current; \
+	    $(LN_S) $(CURRENT_VERSION_NAME) Current; \
+	  fi;)
+	@(cd $(FRAMEWORK_DIR_NAME); \
+	  if [ ! -L "Resources" ]; then \
+	    rm -f Resources; \
+	    $(LN_S) Versions/Current/Resources Resources; \
+	  fi; \
+	  if [ ! -L "Headers" ]; then \
+	    rm -f Headers; \
+	    $(LN_S) Versions/Current/Headers Headers; \
+	  fi;)
+	@(cd $(DERIVED_SOURCES); \
+	  if [ ! -L "$(INTERNAL_framework_NAME)" ]; then \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
-	    $(DERIVED_SOURCES)/$(INTERNAL_framework_NAME); \
-	  fi; \
-	  if test ! -L "$(FRAMEWORK_DIR_NAME)/Headers"; then \
-	    $(LN_S) Versions/Current/Headers $(FRAMEWORK_DIR_NAME); \
-	  fi; \
-	  for file in $(HEADER_FILES) __done; do \
-	    if [ $$file != __done ]; then \
-	      $(INSTALL_DATA) ./$$file \
-	      $(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
-	    fi; \
-	  done; \
-	fi;
+                    ./$(INTERNAL_framework_NAME); \
+	  fi;)
+
+$(FRAMEWORK_LIBRARY_DIR_NAME):
+	$(MKDIRS) $@
+
+$(FRAMEWORK_VERSION_DIR_NAME)/Resources:
+	$(MKDIRS) $@
+
+$(FRAMEWORK_VERSION_DIR_NAME)/Headers:
+	$(MKDIRS) $@
+
+$(FRAMEWORK_RESOURCE_DIRS):
+	$(MKDIRS) $@
 
 $(DERIVED_SOURCES) :
 	$(MKDIRS) $@
+
+$(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
+ifneq ($(HEADER_FILES),)
+	  for file in $(HEADER_FILES) __done; do \
+	    if [ $$file != __done ]; then \
+	      $(INSTALL_DATA) ./$$file \
+	                      $(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
+	    fi; \
+	  done
+endif
 
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES) GNUmakefile
 	@(if [ "$(OBJC_OBJ_FILES)" != "" ]; then objcfiles="$(OBJC_OBJ_FILES)"; \
