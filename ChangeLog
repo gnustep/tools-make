@@ -1,3 +1,8 @@
+Wed Dec 12 14:57:47 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* tool.make ($(TOOL_INSTALLATION_DIR)): Use MKINSTALLDIRS, not
+	MKDIRS.
+
 Wed Dec 12 14:44:16 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* mkinstalldirs: Do not run chown if mkdir fails.
