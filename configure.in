@@ -167,11 +167,19 @@ AC_SUBST(SYSTEM_DEFS)
 AC_PATH_XTRA
 
 if test "x$GRAPHIC_LIBS" = x; then
-  if test -n "$x_includes"; then
-    GRAPHIC_CFLAGS="-I$x_includes $GRAPHIC_CFLAGS"
-  fi
-  if test -n "$x_libraries"; then
-    GRAPHIC_LFLAGS="-L$x_libraries $GRAPHIC_LFLAGS"
+  GRAPHIC_CFLAGS="$X_CFLAGS"
+  GRAPHIC_LFLAGS="$X_LIBS"
+  GRAPHIC_LIBS="-lXext -lX11 $X_EXTRA_LIBS"
+
+  lib_save_header=${CPPFLAGS}
+  lib_save_libs=${LIBS}
+  CPPFLAGS="${GRAPHIC_CFLAGS} ${GRAPHIC_LFLAGS} ${CPPFLAGS}"
+  LIBS="${GRAPHIC_LIBS} ${LIBS}"
+  AC_CHECK_LIB(Xmu, main, have_xmu=1, have_xmu=0)
+  CPPFLAGS="${lib_save_header}"
+  LIBS="${lib_save_libs}"
+  if test $have_xmu = 1; then
+    GRAPHIC_LIBS="-lXmu ${GRAPHIC_LIBS}"
   fi
 fi
 if test -r $x_includes/X11/DPS; then

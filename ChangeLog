@@ -1,3 +1,8 @@
+2000-03-20  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in (GRAPHIC_LIBS): Check for libXmu if libwraster
+	not found. Add X libs if libwraster not found.
+
 2000-03-19  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* rules.make: added rule for GSDOC
