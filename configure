@@ -44,13 +44,13 @@ ac_help="$ac_help
 --with-user-root
     Set the GNUSTEP_USER_ROOT directory.  Use this option if you want 
 to have the GNUSTEP_USER_ROOT directory in a non-standard place.  Example:
---with-user-root=~$LOGNAME/local/GNUstep
+--with-user-root=/MyHome/local/GNUstep
 "
 ac_help="$ac_help
 --with-defaults-root
     Set the GNUSTEP_DEFAULTS_ROOT directory.  Use this option if you want 
 to have the GNUSTEP_DEFAULTS_ROOT directory in a non-standard place.  Example:
---with-defaults-root=~$LOGNAME
+--with-defaults-root=$HOME
 "
 ac_help="$ac_help
 --enable-flattened		Use flattened directory structure"
@@ -1648,7 +1648,7 @@ else
   # because HOMEDRIVE and HOMEPATH are only expanded inside GNUstep.sh
   GNUSTEP_USER_ROOT='$HOMEDRIVE/$HOMEPATH/GNUstep'
 else
-  GNUSTEP_USER_ROOT='~$LOGNAME/GNUstep'
+  GNUSTEP_USER_ROOT='$HOME/GNUstep'
 fi
 
 fi

@@ -1,3 +1,8 @@
+2002-02-28 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.in: Set default user root to $HOME/GNUstep as a
+	quick hack solution to problems with LOGNAME
+
 2002-02-27  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.MinGW: Update.
