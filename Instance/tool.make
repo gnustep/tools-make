@@ -47,10 +47,6 @@ ifeq ($(TOOL_INSTALL_DIR),)
   TOOL_INSTALL_DIR = $(GNUSTEP_TOOLS)
 endif
 
-ifneq ($(FRAMEWORK_NAME),)
-  TOOL_INSTALL_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Resources
-endif
-
 ALL_TOOL_LIBS =								\
     $(shell $(WHICH_LIB_SCRIPT)						\
        $(ALL_LIB_DIRS)							\
@@ -66,26 +62,18 @@ ALL_TOOL_LIBS =								\
 internal-tool-all_:: $(GNUSTEP_OBJ_DIR) \
                      $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
-ifneq ($(FRAMEWORK_NAME),)
-internal-tool-all_:: internal-install-dirs install-tool
-endif
-
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 		$(OBJ_FILES_TO_LINK) \
 		$(ALL_TOOL_LIBS)$(END_ECHO)
 
-ifneq ($(FRAMEWORK_NAME),)
-ifneq ($(FRAMEWORK_OPERATION),all)
-   NULL_INSTALL = yes
-endif
-endif
+internal-tool-copy_into_dir::
+	$(ECHO_COPYING_INTO_DIR)$(MKDIRS) $(COPY_INTO_DIR)/$(GNUSTEP_TARGET_LDIR);\
+	  $(INSTALL_PROGRAM) -m 0755 \
+	  $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
+	  $(COPY_INTO_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
-ifeq ($(NULL_INSTALL),yes)
-internal-tool-install_::
-else
 internal-tool-install_:: internal-install-dirs install-tool
-endif
 
 # Depend on having created the installation dir
 internal-install-dirs:: $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
@@ -99,10 +87,8 @@ install-tool::
 		$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
 		$(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
-ifneq ($(NULL_INSTALL),yes)
 internal-tool-uninstall_::
 	rm -f $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
-endif
 
 #
 # Cleaning targets
@@ -130,6 +116,7 @@ GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(TOOL_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-tool-all_:: shared-instance-bundle-all
+internal-tool-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
 $(TOOL_INSTALL_DIR):
 	@$(MKINSTALLDIRS) $@
