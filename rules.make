@@ -236,6 +236,34 @@ else
 endif
 
 #
+# If INSTALL_AS_USER and/or INSTALL_AS_GROUP are defined, pass them down
+# to submakes.  There are two reasons - 
+#
+# 1. so that if you set them in a GNUmakefile, they get passed down
+#    to automatically generated sources/GNUmakefiles (such as Java wrappers)
+# 2. so that if you type `make install INSTALL_AS_USER=nicola' in a directory,
+#    the INSTALL_AS_USER=nicola gets automatically used in all subdirectories.
+#
+# Warning - if you want to hardcode a INSTALL_AS_USER in a GNUmakefile, then
+# you shouldn't rely on us to pass it down to subGNUmakefiles - you should
+# rather hardcode INSTALL_AS_USER in all your GNUmakefiles (or better have
+# a makefile fragment defining INSTALL_AS_USER in the top-level and include
+# it in all GNUmakefiles) - otherwise what happens is that if you go in a
+# subdirectory and type 'make install' there, it will not get the 
+# INSTALL_AS_USER from the higher level GNUmakefile, so it will install with
+# the wrong user!  For this reason, if you need to hardcode INSTALL_AS_USER
+# in GNUmakefiles, make sure it's hardcoded *everywhere*.
+#
+ifneq ($(INSTALL_AS_USER),)
+  export INSTALL_AS_USER
+endif
+
+ifneq ($(INSTALL_AS_GROUP),)
+  export INSTALL_AS_GROUP
+endif
+
+
+#
 # If this is part of the compilation of a framework,
 # add -I[../../../etc]derived_src so that the code can include 
 # framework headers simply using `#include <MyFramework/MyHeader.h>'
