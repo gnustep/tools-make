@@ -123,11 +123,13 @@ ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
 
-build-bundle-dir::
-	@$(MKDIRS) \
-		$(GSWBUNDLE_DIR_NAME)/Resources \
-		$(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-		$(GSWBUNDLE_RESOURCE_DIRS)
+build-bundle-dir:: $(GSWBUNDLE_DIR_NAME)/Resources $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(GSWBUNDLE_RESOURCE_DIRS)
+
+$(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+	@$(MKDIRS) $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+
+$(GSWBUNDLE_RESOURCE_DIRS):
+	@$(MKDIRS) $(GSWBUNDLE_RESOURCE_DIRS)
 
 build-bundle:: $(GSWBUNDLE_FILE) gswbundle-components gswbundle-resource-files localized-gswbundle-resource-files gswbundle-localized-webresource-files gswbundle-webresource-files
 

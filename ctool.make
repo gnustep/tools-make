@@ -104,8 +104,10 @@ after-$(TARGET)-all::
 
 internal-ctool-install:: internal-ctool-all internal-install-dirs install-ctool
 
-internal-install-dirs::
+$(CTOOL_INSTALLATION_DIR):
 	$(MKDIRS) $(CTOOL_INSTALLATION_DIR)
+
+internal-install-dirs:: $(CTOOL_INSTALLATION_DIR)
 
 ifeq ($(GNUSTEP_FLATTENED),)
 install-ctool::

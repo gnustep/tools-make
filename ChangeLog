@@ -1,3 +1,21 @@
+Wed Mar 14 11:48:10 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make: Optimization: rearranged targets as not to run
+	mkdirs to create directories if the directories already exists.
+	* bundle.make: Idem.
+	* documentation.make: Idem.
+	* library.make: Idem.
+	* java.make: Idem.
+	* tool.make: Idem.
+
+	* ctool.make: Same optimization but I had not the opportunity to
+	test it.  Please anybody having, do and fix it if needed.
+	* gswapp.make: Idem.
+	* gswbundle.make: Idem.
+	* objc.make: Idem.
+	* palette.make: Idem.
+	* service.make: Idem.
+
 2001-03-14 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* rules.make: Quicks hack in before-all... create a symbolic link

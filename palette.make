@@ -92,11 +92,13 @@ ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
 endif
 
-build-palette-dir::
-	@$(MKDIRS) \
-		$(PALETTE_DIR_NAME)/Resources \
-		$(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-		$(PALETTE_RESOURCE_DIRS)
+build-palette-dir::$(PALETTE_DIR_NAME)/Resources $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(PALETTE_RESOURCE_DIRS)
+
+$(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+	$(MKDIRS) $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+
+$(PALETTE_RESOURCE_DIRS):
+	$(MKDIRS) $(PALETTE_RESOURCE_DIRS)
 
 build-palette:: $(PALETTE_FILE) palette-resource-files
 
@@ -153,11 +155,13 @@ $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 internal-palette-install:: internal-install-dirs
 	tar cf - $(PALETTE_DIR_NAME) | (cd $(PALETTE_INSTALL_DIR); tar xf -)
 
-internal-install-dirs::
+internal-install-dirs:: $(PALETTE_INSTALL_DIR)
+
+$(PALETTE_INSTALL_DIR):
 	$(MKDIRS) $(PALETTE_INSTALL_DIR)
 
-$(PALETTE_DIR_NAME)/Resources $(PALETTE_INSTALL_DIR)::
-	@$(MKDIRS) $@
+$(PALETTE_DIR_NAME)/Resources:
+	$(MKDIRS) $@
 
 internal-palette-uninstall::
 	rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)

@@ -221,7 +221,9 @@ gswapp-components:: $(GSWAPP_DIR_NAME)
 		done;\
 	fi)
 
-gswapp-webresource-dir::
+gswapp-webresource-dir:: $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
+
+$(GSWAPP_WEBSERVER_RESOURCE_DIRS):
 	@$(MKDIRS) $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
 
 gswapp-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources gswapp-webresource-dir
@@ -251,7 +253,9 @@ gswapp-localized-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources gswap
           done;\
 	fi)
 
-gswapp-resource-dir::
+gswapp-resource-dir:: $(GSWAPP_RESOURCE_DIRS)
+
+$(GSWAPP_RESOURCE_DIRS):
 	@$(MKDIRS) $(GSWAPP_RESOURCE_DIRS)
 
 gswapp-resource-files:: $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist gswapp-resource-dir

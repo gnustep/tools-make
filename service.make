@@ -102,8 +102,10 @@ after-$(TARGET)-all::
 $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 
-svc-resource-dir::
-	@$(MKDIRS) $(SERVICE_RESOURCE_DIRS)
+svc-resource-dir:: $(SERVICE_RESOURCE_DIRS)
+
+$(SERVICE_RESOURCE_DIRS):
+	$(MKDIRS) $(SERVICE_RESOURCE_DIRS)
 
 svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist svc-resource-dir
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
