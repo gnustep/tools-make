@@ -1,3 +1,9 @@
+Mon Oct  7 18:19:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make ($(DUMMY_FRAMEWORK_OBJ_FILE)): Wrap the
+	compilation in ECHO_COMPILE / END_ECHO (Patch by Stefan Urbanek
+	<urbanek@host.sk>).
+
 Sat Oct  5 01:59:47 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* ld_lib_path.sh (guile_paths): Removed setting up guile_paths
