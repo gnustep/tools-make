@@ -110,8 +110,14 @@ BUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
 BUNDLE_DIR = $(GNUSTEP_BUILD_DIR)/$(BUNDLE_DIR_NAME)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
-  BUNDLE_FILE_NAME = \
-    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)
+  ifneq ($(FOUNDATION_LIB), apple)
+    BUNDLE_FILE_NAME = \
+      $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)
+  else
+    BUNDLE_FILE_NAME = \
+      $(BUNDLE_DIR_NAME)/Contents/MacOS/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)
+  endif
+
   BUNDLE_FILE = $(GNUSTEP_BUILD_DIR)/$(BUNDLE_FILE_NAME)
 endif
 
@@ -140,10 +146,17 @@ GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(BUNDLE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 ifneq ($(OBJ_FILES_TO_LINK),)
+ifneq ($(FOUNDATION_LIB),apple)
 build-bundle:: $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
              $(BUNDLE_FILE) \
              $(BUNDLE_INFO_PLIST_FILE) \
              shared-instance-bundle-all
+else
+build-bundle:: $(BUNDLE_DIR)/Contents/MacOS \
+             $(BUNDLE_FILE) \
+             $(BUNDLE_INFO_PLIST_FILE) \
+             shared-instance-bundle-all
+endif
 
 # The rule to build $(BUNDLE_DIR)/Resources is already provided
 # by Instance/Shared/bundle.make
@@ -189,13 +202,21 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 # file inside GNUSTEP_STAMP_DIR, and rebuild Info.plist if
 # GNUSTEP_STAMP_STRING changes
 GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(MAIN_MODEL_FILE)
+ifneq ($(FOUNDATION_LIB), apple)
 GNUSTEP_STAMP_DIR = $(BUNDLE_DIR)
+else
+# Everything goes in Contents/ on Apple
+GNUSTEP_STAMP_DIR = $(BUNDLE_DIR)/Contents
+endif
 
 ifeq ($(FOUNDATION_LIB), apple)
-# For efficiency, depend on the rule to build BUNDLE_DIR/Contents
-# (which would be used anyway when building the bundle), rather than
-# executing a separate rule.
-$(GNUSTEP_STAMP_DIR): $(BUNDLE_DIR)/Contents
+# For efficiency, depend on the rule to build
+# BUNDLE_DIR/Contents/Resources (which would be used anyway when
+# building the bundle), so that first we use the rule to create
+# BUNDLE_DIR/Contents/Resources, and then we can avoid executing a
+# separate rule/subshell to create GNUSTEP_STAMP_DIR which has already
+# been implicitly created by the other rule!
+$(GNUSTEP_STAMP_DIR): $(BUNDLE_DIR)/Contents/Resources
 
 else
 $(GNUSTEP_STAMP_DIR): $(BUNDLE_DIR)/Resources
@@ -208,6 +229,9 @@ ifeq ($(FOUNDATION_LIB), apple)
 # MacOSX bundles
 
 $(BUNDLE_DIR)/Contents:
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+$(BUNDLE_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
