@@ -340,17 +340,23 @@ internal-doc-uninstall_::
 	done
 endif
 
+# TODO ... what about man pages ?  are we installing them ?
+
 #
 # texi installation
 #
 ifneq ($(TEXI_FILES),)
 
 # NB: Only install HTML if it has been generated
+
+# We install all info files in the same directory, which is
+# GNUSTEP_DOCUMENTATION_INFO.  TODO: I think we should run
+# install-info too - to keep up-to-date the dir index in that
+# directory.  
 internal-doc-install_::
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info $(GNUSTEP_DOCUMENTATION_INFO)
 	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
@@ -360,7 +366,7 @@ internal-doc-uninstall_::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps
 	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).info
+          $(GNUSTEP_DOCUMENTATION_INFO)/$(GNUSTEP_INSTANCE).info
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
 endif # TEXI_FILES
