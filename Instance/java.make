@@ -96,7 +96,7 @@ internal-java_package-clean:: shared-instance-java-clean
 
 internal-java_package-distclean::
 
-# TODO - uninstall rule
+internal-java_package-uninstall:: shared-instance-java-uninstall
 
 endif # Instance/java.make loaded
 
