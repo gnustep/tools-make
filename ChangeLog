@@ -1,3 +1,8 @@
+Fri Feb 22 15:49:01 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/documentation.make: Removed doubled installation of
+	$(GNUSTEP_INSTANCE)_INSTALL_FILES.
+
 Fri Feb 22 13:18:43 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/rules.make (SERVICE_INSTALL_DIR): Unused variable
