@@ -533,6 +533,51 @@ ifeq ($(JAVADOC),)
   JAVADOC = $(JAVA_HOME)/bin/javadoc
 endif
 
+#
+# Prepare the arguments to install to set user/group of installed files
+#
+INSTALL_AS = 
+
+ifneq ($(INSTALL_AS_USER),)
+INSTALL_AS += -o $(INSTALL_AS_USER)
+endif
+
+ifneq ($(INSTALL_AS_GROUP),)
+INSTALL_AS += -g $(INSTALL_AS_GROUP)
+endif
+
+# Redefine INSTALL to include these flags.  This automatically
+# redefines INSTALL_DATA and INSTALL_PROGRAM as well, because they are
+# define in terms of INSTALL.
+INSTALL += $(INSTALL_AS)
+
+# Sometimes, we install without using INSTALL - typically using tar.
+# In those cases, we run chown after having installed, in order to
+# fixup the user/group.
+
+#
+# Prepare the arguments to chown to set user/group of installed files.
+#
+ifneq ($(INSTALL_AS_GROUP),)
+CHOWN_TO = $(strip $(INSTALL_AS_USER)).$(strip $(INSTALL_AS_GROUP))
+else 
+CHOWN_TO = $(strip $(INSTALL_AS_USER))
+endif
+
+# You need to run CHOWN manually, but only if CHOWN_TO is non-empty.
+
+#
+# Pass the CHOWN_TO argument to MKINSTALLDIRS
+# All installation directories should be created using MKINSTALLDIRS
+# to make sure we set the correct user/group.  Local directories should
+# be created using MKDIRS instead because we don't want to set user/group.
+#
+ifneq ($(CHOWN_TO),)
+MKINSTALLDIRS = $(MKDIRS) -c $(CHOWN_TO)
+else
+MKINSTALLDIRS = $(MKDIRS)
+endif
+
 endif # COMMON_MAKE_LOADED
 
 ## Local variables:
