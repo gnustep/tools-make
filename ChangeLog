@@ -1,3 +1,7 @@
+1999-03-14  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Add check for cygwin32
+
 1999-03-12  Adam Fedor  <fedor@gnu.org>
 
 	* target.make: Turn off shared libs for FreeBSD 2.x

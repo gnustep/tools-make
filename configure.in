@@ -253,6 +253,8 @@ ac_cv_library_combo=$ac_cv_library_combo
 if test "$ac_cv_library_combo" = ""; then
   if test $host_os = nextstep4; then
     ac_cv_library_combo=nx-nx-nx-nil
+  elif test $host_os = cygwin32; then
+    ac_cv_library_combo=gnu-gnu-gnu-w32gui
   else
     ac_cv_library_combo=gnu-gnu-gnu-xdps
   fi
