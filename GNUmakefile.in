@@ -88,6 +88,7 @@ install: all
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
+		$(makedir)/Additional \
 		$(tooldir) \
 		$(prefix)/share \
 		$(prefix)/Apps \
