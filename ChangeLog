@@ -1,3 +1,8 @@
+2002-12-03  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* Instance/framework.make ($(FRAMEWORK_FILE)): remove the link before
+	creating a new one.
+
 2002-12-02  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* Instance/framework.make ($(FRAMEWORK_FILE)): link
