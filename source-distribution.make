@@ -41,8 +41,8 @@
 #
 
 # prevent multiple inclusions
-ifeq ($(TGZ_MAKE_LOADED),)
-TGZ_MAKE_LOADED=yes
+ifeq ($(SOURCE_DISTRIBUTION_MAKE_LOADED),)
+SOURCE_DISTRIBUTION_MAKE_LOADED=yes
 
 ifeq ($(CVS_MODULE_NAME),)
   CVS_MODULE_NAME = $(PACKAGE_NAME)
@@ -56,12 +56,12 @@ VERSION_NAME = $(PACKAGE_NAME)-$(VERSION)
 
 VERTAG = `echo $(VERSION) | tr '.' '_'`
 
-.PHONY: tgz cvs-tag cvs-dist cvs-snapshot internal-cvs-export
+.PHONY: dist cvs-tag cvs-dist cvs-snapshot internal-cvs-export
 
 #
 # Build a .tgz with the whole directory tree
 #
-tgz: distclean
+dist: distclean
 	@echo "Generating $(VERSION_NAME).tar.gz in the parent directory..."; \
 	SNAPSHOT_DIR=`basename $$(pwd)`; \
 	cd ..;                           \
@@ -159,3 +159,4 @@ endif
 ## Local variables:
 ## mode: makefile
 ## End:
+
