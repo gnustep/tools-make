@@ -1,3 +1,10 @@
+Fri Feb  8 16:15:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/java-tool.make (internal-distclean): Depend on
+	subprojects, not variables, to spare the recursive make
+	invocation.
+	* Master/java.make (internal-distclean): Idem.
+
 Fri Feb  8 13:32:33 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/java.make (internal-java_package-uninstall): Added.
