@@ -139,7 +139,7 @@ fi
 # get base app name
 if [ -z "$appname" ]; then
   appname=`echo $app | sed 's/\.[a-z]*$//'`
-fi;
+fi
 appname=`basename $appname`
 
 if [ -n "$GNUSTEP_FLATTENED" ]; then
