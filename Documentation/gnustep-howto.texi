@@ -144,8 +144,11 @@ XML-based property-lists. It is recommended but not currently required.
 
 @item openssl
 The openssl library is used to provide support for https connections by
-the NSURL and HSURLHandle classes.
-It is recommended but not currently required.
+the NSURL and HSURLHandle classes. To enable this option
+you need to have the openssl libraries installed and add the option
+@code{--enable-openssl} when running the @file{configure} script. Note that
+the OpenSSL license is not compatible with GPL, so do not use this option
+if you want your programs to be GPL compatible.
 
 @item libiconv
 Unicode support functions (iconv) come with glibc version 2.1 or greater. If
@@ -159,7 +162,7 @@ and NSConnection. This library is highly recommended. The previous
 builtin method for stack frame handling is no longer supported and
 may be removed in the future.
 
-@item gnustep-objc package (for gcc version <= 3.0)
+@item gnustep-objc package (for gcc version < 3.0)
 This is a special version of the Objective-C runtime that include several
 bug fixes and features that have not been officially released yet.
 It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
