@@ -69,6 +69,9 @@ ifneq ($(messages),yes)
   # Instance/Shared/strings.make
   ECHO_MAKING_STRINGS = @(echo " Making/updating strings files...";
 
+  # Instance/Documentation/autogsdoc.make
+  ECHO_AUTOGSDOC = @(echo " Generating reference documentation...";
+
   END_ECHO = )
 
 #
@@ -114,6 +117,7 @@ else
   ECHO_INSTALLING_PROPERTIES_FILES = 
 
   ECHO_MAKING_STRINGS = 
+  ECHO_AUTOGSDOC = 
 
   END_ECHO = 
 

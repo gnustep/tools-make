@@ -42,7 +42,7 @@ $(GNUSTEP_INSTANCE):
 # autogsdoc ... this simplistic rule inefficiently runs autogsdoc
 # every time.
 generate-autogsdoc: $(GNUSTEP_INSTANCE)
-	$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
+	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
 
 internal-doc-install_:: 
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \

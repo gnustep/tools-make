@@ -3,6 +3,9 @@
 	* user_home.c: Use HOMEPATH in preference to USERPROFILE for
 	OPENSTEP compatibility and because USERPROFILE generally doesn't
 	work due to the presence of spaces.
+	* messages.make: Make documentation generation less verbose.
+	* Instance/Documentation/autogsdoc.make: ditto
+
 
 2003-07-21  Adam Fedor  <fedor@gnu.org>
 
