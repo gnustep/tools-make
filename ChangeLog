@@ -1,3 +1,11 @@
+1999-08-15  Adam Fedor  <fedor@gnu.org>
+
+	* subproject.make (internal-subproj-all): Make sure files from
+	subprojects of subprojects get linked. (Patch from Pedro Ivo 
+	Andrade Tavares <ptavares@iname.com>).
+
+	* target.make: Add partial OSF support.
+
 1999-08-09  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.csh.in: Fix the setting of GNUSTEP_MAKEFILES (patch
