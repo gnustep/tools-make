@@ -1,3 +1,12 @@
+Sat Dec 14 02:42:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library-combo.make: Quick attempt at fixing/updating
+	foundation/appkit flags to compile with nx library-combo on Mac
+	OSX.  Dropped NeXTstep iconheader code.
+	* Instance/application.make: Quick attempt at fixing/updating
+	building nx applications.  Added missing rule to build directory,
+	and dropped NeXTstep iconheader code.
+	
 Sat Dec 14 02:36:00 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac (AC_CONFIG_FILES): Removed config.h, which is 
