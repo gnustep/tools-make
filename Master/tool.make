@@ -40,6 +40,16 @@ internal-distclean:: $(TOOL_NAME:=.distclean.tool.subprojects)
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
 
+# On distclean, we also want to efficiently wipe out the Resources/
+# directory if (and only if) there are tools for which
+# xxx_HAS_RESOURCE_BUNDLE=yes
+TOOLS_WITH_RESOURCE_BUNDLES = $(strip $(foreach tool,$(TOOL_NAME),$($(tool)_HAS_RESOURCE_BUNDLE:yes=$(tool))))
+
+ifneq ($(TOOLS_WITH_RESOURCE_BUNDLES),)
+internal-distclean::
+	rm -rf Resources
+endif
+
 $(TOOL_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	         $@.all.tool.variables
