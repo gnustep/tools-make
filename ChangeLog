@@ -1,3 +1,10 @@
+Tue Mar  9 17:25:16 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (GNUSTEP_HEADERS_DIRS, GNUSTEP_LIBRARIES_DIRS,
+	GNUSTEP_HEADER_FND_DIRS): Rewritten the code creating the list of
+	-I and -L flags to pass to the compiler and linker so that if two
+	GNUSTEP_XXX_ROOT are the same, the flags are added only once.
+
 Tue Mar  9 17:21:34 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: Removed stale debugging statement.
