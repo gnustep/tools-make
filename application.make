@@ -212,14 +212,16 @@ app-localized-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
 ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	@(echo "Copying localized resources into the application wrapper..."; \
 	for l in $(LANGUAGES); do \
-	  if [ ! -f $$l.lproj ]; then \
+	  if [ -d $$l.lproj ]; then \
 	    $(MKDIRS) $(APP_DIR_NAME)/Resources/$$l.lproj; \
+	    for f in $(LOCALIZED_RESOURCE_FILES); do \
+	      if [ -f $$l.lproj/$$f ]; then \
+	        cp -r $$l.lproj/$$f $(APP_DIR_NAME)/Resources/$$l.lproj; \
+	      fi; \
+	    done; \
+	  else \
+	    echo "Warning: $$l.lproj not found - ignoring"; \
 	  fi; \
-	  for f in $(LOCALIZED_RESOURCE_FILES); do \
-	    if [ -f $$l.lproj/$$f ]; then \
-	      cp -r $$l.lproj/$$f $(APP_DIR_NAME)/Resources/$$l.lproj; \
-	    fi; \
-	  done; \
 	done;)
 endif
 
