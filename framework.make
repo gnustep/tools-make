@@ -90,6 +90,12 @@ ALL_FRAMEWORK_LIBS =						\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
+INTERNAL_LIBRARIES_DEPEND_UPON =				\
+  $(shell $(WHICH_LIB_SCRIPT)					\
+   $(ALL_LIB_DIRS)						\
+   $(LIBRARIES_DEPEND_UPON)					\
+   debug=$(debug) profile=$(profile) shared=$(shared)		\
+   libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 DUMMY_FRAMEWORK = NSFramework_$(INTERNAL_framework_NAME)
 DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES)/$(DUMMY_FRAMEWORK).m
