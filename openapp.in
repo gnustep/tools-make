@@ -122,6 +122,7 @@ else
 fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`
+appname=`basename $appname`
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
