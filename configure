@@ -1977,7 +1977,7 @@ case "${target_os}" in
 esac
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c"
+CFLAGS="$CFLAGS -x objective-c -I$srcdir"
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi
@@ -2193,7 +2193,7 @@ fi
 #--------------------------------------------------------------------
 echo $ac_n "checking for the version of gnustep-make we are compiling""... $ac_c" 1>&6
 echo "configure:2196: checking for the version of gnustep-make we are compiling" >&5
-. ./Version
+. "$srcdir/Version"
 echo "$ac_t""$GNUSTEP_MAKE_VERSION" 1>&6
 DATE=`date +"%Y%m%d"`
 
