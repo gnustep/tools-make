@@ -48,7 +48,7 @@ internal-all internal-install internal-uninstall internal-clean \
 	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
 	  fi; \
 	  if $(MAKE) -C $$f -f $$mf --no-keep-going $$target; then \
-	    :; else exit 1; \
+	    :; else exit $$?; \
 	  fi; \
 	done
 
