@@ -90,7 +90,7 @@ INSTANCE_MAKE_FILES = \
         resource-set.make service.make subproject.make test-application.make \
         test-library.make test-tool.make tool.make
 
-INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make
+INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make strings.make
 
 all: generated-files which_lib$(EXEEXT) user_home$(EXEEXT)
 
