@@ -1,3 +1,9 @@
+Mon Oct 27 18:01:38 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* Makefile: Renamed to GNUmakefile.
+	* Makefile.preamble: Renamed to GNUmakefile.preamble.
+	* Makefile.postamble: Renamed to GNUmakefile.postamble.
+
 Mon Oct 27 17:18:39 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* core.make: Use dashes instead of underscores in the library combo.

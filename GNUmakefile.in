@@ -1,7 +1,7 @@
 #
-#   Makefile.in
+#   GNUmakefile.in
 #
-#   Main makefile for the GNUstep Makefile Package.
+#   Main GNUmakefile for the GNUstep GNUmakefile Package.
 #
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
@@ -20,8 +20,8 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #
-# I've thought about using the makefile package files
-# to install the makefile package, a cool little recursion,
+# I've thought about using the Makefile package files
+# to install the GNUmakefile package, a cool little recursion,
 # but there is nothing to made, and the files get installed
 # in a special directory, so it was simpler this way.
 #
@@ -83,8 +83,8 @@ clean:
 	rm -f *~ which_lib
 
 distclean: clean
-	rm -f Makefile config.make
+	rm -f GNUmakefile config.make
 	rm -f config.cache config.log config.status
 
-Makefile: Makefile.in config.status
+GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
