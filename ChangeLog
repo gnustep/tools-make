@@ -1,3 +1,7 @@
+2003-09-25  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (darwin): Fix up bundle flags for GNU compiler.
+
 2003-09-19  Leigh Smith  <leigh@leighsmith.com> 
 
         * library.make: Changed the full .inp declaration to $(DLL_DEF_INP). 
