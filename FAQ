@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-   Last updated 19 May 2003.  Please send corrections to
+   Last updated 20 June 2003.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -12,11 +12,10 @@ Is it easy to port OPENSTEP programs to GNUstep?
 ------------------------------------------------
 
    It is probably easy for simple programs. There are some portability
-tools to make this easier
-(<http://www.gnustep.org/resources/sources.html>), or rewrite the
-Makefiles yourself.  You will also have to translate the NIB files (if
-there are any) to GNUstep model files using the nib2gmodel program
-(from <ftp://ftp.gnustep.org/pub/gnustep/dev-apps>).
+tools to make this easier, or rewrite the Makefiles yourself.  You will
+also have to translate the NIB files (if there are any) to GNUstep
+model files using the nib2gmodel program (from
+<ftp://ftp.gnustep.org/pub/gnustep/dev-apps>).
 
 How about porting between Cocoa and GNUstep?
 --------------------------------------------
@@ -498,6 +497,4 @@ What is the relationship between the Display Ghostscript Server and X Windows?
 ------------------------------------------------------------------------------
 
    Display Ghostscript runs on top of X Windows.
-
-All trademarks mentioned on in this FAQ belong to their owners.
 
