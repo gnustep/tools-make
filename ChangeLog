@@ -1,3 +1,9 @@
+Mon Jun  2 10:21:11 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (install): Only create the symlink Makefiles -->
+	Library/Makefiles if symbolic links are available.  (Problems
+	reported by Matt Rice).
+
 Sat May 31 09:13:07 2003  Matt Rice <ratmice@yahoo.com>, 
 	                  David Ayers <d.ayers@inode.at>
 
