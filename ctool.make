@@ -38,9 +38,9 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 
 # This is the directory where the ctools get installed. If you don't specify a
 # directory they will get installed in the GNUstep system root.
-ifeq ($(TOOL_INSTALLATION_DIR),)
-  TOOL_INSTALLATION_DIR = \
-    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+ifeq ($(CTOOL_INSTALLATION_DIR),)
+  CTOOL_INSTALLATION_DIR = \
+    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 endif
 
 ifeq ($(INTERNAL_ctool_NAME),)
@@ -105,16 +105,16 @@ after-$(TARGET)-all::
 internal-ctool-install:: internal-ctool-all internal-install-dirs install-ctool
 
 internal-install-dirs::
-	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
+	$(MKDIRS) $(CTOOL_INSTALLATION_DIR)
 
 install-ctool::
 	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) \
-	    $(TOOL_INSTALLATION_DIR);
+	    $(CTOOL_INSTALLATION_DIR);
 	cp $(GNUSTEP_MAKEFILES)/executable.template $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_ctool_NAME)
 
 internal-ctool-uninstall::
-	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)
+	rm -f $(CTOOL_INSTALLATION_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)
 
 #
 # Cleaning targets

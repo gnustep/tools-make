@@ -1,3 +1,8 @@
+2000-07-18  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* ctool.make: Changed installation dir to be CTOOL_INSTALLATION_DIR
+	and fixed it to install above the objc library based directory.
+
 2000-07-16  Adam Fedor  <fedor@gnu.org>
 
 	* palette.make (PALETTE_INSTALL_DIR): Default to GNUSTEP_PALETTES
