@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/subproject.make
 #
 #   Instance Makefile rules to build subprojects in GNUstep projects.
@@ -42,39 +42,42 @@ $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
 #
 # Build-header target for framework subprojects
 #
-ifneq ($(FRAMEWORK_NAME),)
+# If we are called with OWNING_PROJECT_HEADER_DIR which is not empty,
+# we need to copy our headers into that directory during the
+# build-headers stage, and to disable installation/uninstallation of
+# headers.
+#
+ifneq ($(OWNING_PROJECT_HEADER_DIR),)
 .PHONY: internal-subproject-build-headers
 
 HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
-FRAMEWORK_HEADERS_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Headers/
-FRAMEWORK_HEADER_FILES = $(patsubst %.h,$(FRAMEWORK_HEADERS_DIR)%.h,$(HEADER_FILES))
+OWNING_PROJECT_HEADER_FILES = $(patsubst %.h,$(OWNING_PROJECT_HEADER_DIR)/%.h,$(HEADER_FILES))
 
-internal-subproject-build-headers:: $(FRAMEWORK_HEADER_FILES)
+internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_FILES)
 
-# We need to build the FRAMEWORK_HEADERS_DIR directory here because
-# this rule could be executed before the top-level framework has built
-# his dirs
-$(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES) $(FRAMEWORK_HEADERS_DIR)
+# We need to build the OWNING_PROJECT_HEADER_DIR directory here
+# because this rule could be executed before the top-level framework
+# has built his dirs
+$(OWNING_PROJECT_HEADER_FILES):: $(HEADER_FILES) $(OWNING_PROJECT_HEADER_DIR)
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) ./$$file $(FRAMEWORK_HEADERS_DIR)/$$file ; \
+	    $(INSTALL_DATA) ./$$file $(OWNING_PROJECT_HEADER_DIR)/$$file ; \
 	  fi; \
 	done
 endif # we got HEADER_FILES
 
-$(FRAMEWORK_HEADERS_DIR):
+$(OWNING_PROJECT_HEADER_DIR):
 	$(MKDIRS) $@
 
-endif # FRAMEWORK code
-
-
+# End FRAMEWORK code
+else
+# Start no FRAMEWORK code
 
 #
 # Installation targets - we only need to install headers and only 
 # if this is not in a framework
 #
-ifeq ($(FRAMEWORK_NAME),)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
@@ -82,7 +85,7 @@ internal-subproject-install_:: shared-instance-headers-install
 
 internal-subproject-uninstall_:: shared-instance-headers-uninstall
 
-endif # no FRAMEWORK_NAME
+endif # no FRAMEWORK
 
 
 #
