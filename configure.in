@@ -142,10 +142,11 @@ AC_CHECK_LIB(jpeg, jpeg_destroy_decompress,
       AC_MSG_WARN(*** Cannot find libjpeg ***)
       AC_MSG_WARN(*** To build GUI library JPEG library is required ***))
 if test "$jpeg_ok" = yes; then
-  AC_MSG_CHECKING([for jpeg.h])
+  AC_MSG_CHECKING([for jpeglib.h])
   AC_TRY_CPP([#include <stdio.h>
               #undef PACKAGE
 	      #undef VERSION
+	      #undef HAVE_STDLIB_H
               #include <jpeglib.h>],
  	      jpeg_ok=yes,
 	      jpeg_ok=no)
