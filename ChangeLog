@@ -1,3 +1,12 @@
+Wed Jan 17 13:58:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* GNUmakefile.in (cvs-snapshot), (rpm): New targets.
+	* source-distribution.make (tgz): Generate .tar.gz rather than
+	.tgz.
+	* rpm.make: Modified example to use .tar.gz source rather than
+	.tgz.
+	* gnustep-make.spec.in: Heavily simplified, rewritten. 
+
 Wed Jan 17 10:29:22 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rpm.make ($(SPEC_FILE)): Add line to set %{gs_configure} to YES
