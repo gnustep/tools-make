@@ -259,7 +259,7 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@$(END_ECHO)
-	 $(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	 -$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	   plmerge $@ "$(GNUSTEP_INSTANCE)Info.plist"; \
 	  fi$(END_ECHO)
 endif

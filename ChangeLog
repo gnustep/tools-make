@@ -4,6 +4,9 @@
 	Mac OS X for all library combos (patch from Quentin Mathe
 	<gnustep-quentin@club-internet.fr>).
 
+	* Instance/application.make ($(APP_INFO_PLIST_FILE)): Don't fail
+	if plmerge does not work.
+
 	* Documentation/README.Cygwin: Update
 	* Documentation/machines.texi: Add Mac OS X section.
 	* Documentation/news.texi: Update.
