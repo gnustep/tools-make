@@ -1,3 +1,8 @@
+Tue Jun  3 11:51:02 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Documentation/autogsdoc.make (internal-doc-install_):
+	Fixed typo - added missing ";".
+
 2003-06-02 18:16  Alexander Malmberg <alexander@malmberg.org>
 
 	* Instance/Documentation/autogsdoc.make (internal-doc-install_):
