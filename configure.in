@@ -147,39 +147,24 @@ esac
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
-if test $host_os = mingw32 -o $host_os = mingw; then
+AC_CYGWIN
+AC_MINGW32
+AC_EXEEXT
+AC_OBJEXT
+if test $MINGW32 = yes; then
   echo "hosted on mingw32 .."
-  export MINGW32=1
   export SHELL=zsh
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
-  export program_suffix=${program_suffix:-.exe}
-  if test "x$program_suffix" = "xNONE"; then
-    export program_suffix=.exe
-  fi
-elif test $host_os = cygwin; then
+elif $CYGWIN = yes; then
   echo "hosted on cygwin .."
-  export MINGW32=0
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
-  export program_suffix=${program_suffix:-.exe}
-  if test "x$program_suffix" = "xNONE"; then
-    export program_suffix=.exe
-  fi
-else
-  MINGW32=0
-  export MINGW32
 fi
-
-EXEEXT=
-if test "x$program_suffix" != "xNONE"; then
-  EXEEXT=$program_suffix 
-fi
-AC_SUBST(EXEEXT)
 
 #--------------------------------------------------------------------
 # Find the binary and compile tools
@@ -321,6 +306,12 @@ elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
     AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpcthread",
 	objc_threaded="", objc_threaded="-lpcthread")
   fi
+elif test $MINGW32 = yes; then
+  # Mingw doesn't need anything extra for threads
+  LIBS="-lobjc $LIBS $extra_LIBS"
+  AC_TRY_RUN([#include "config_thread.m"], 
+	objc_threaded="works",
+	objc_threaded="", objc_threaded="")
 else
   LIBS="-lobjc $LIBS -lthread $extra_LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
@@ -333,6 +324,9 @@ if test x"$objc_threaded" = x""; then
   AC_MSG_RESULT(no)
 else
   AC_MSG_RESULT(yes)
+  if test x"$objc_threaded" = x"works"; then
+    objc_threaded="",
+  fi
 fi
 ac_cv_objc_threaded="$objc_threaded"
 AC_SUBST(objc_threaded)
