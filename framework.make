@@ -237,7 +237,12 @@ ifneq ($(HEADER_FILES),)
 	done
 endif
 
-$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES) GNUmakefile
+# FIXME - I don't think we can depend on GNUmakefile - rather we should 
+# FORCE then because GNUmakefile might include other arbitrary files outside
+# our control
+$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) \
+                         $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+                         $(OBJ_FILES) GNUmakefile
 	@(if [ "$(OBJC_OBJ_FILES)" != "" ]; then objcfiles="$(OBJC_OBJ_FILES)"; \
 	fi; \
 	if [ "$(SUBPROJECT_OBJ_FILES)" != "" ]; then objcfiles="$$objcfiles $(SUBPROJECT_OBJ_FILES)"; \
@@ -307,23 +312,32 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(S
 $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
 
-build-framework:: $(FRAMEWORK_FILE) framework-components framework-resource-files localized-framework-resource-files framework-localized-webresource-files framework-webresource-files
+build-framework:: $(FRAMEWORK_FILE) \
+                  framework-components \
+                  framework-resource-files \
+                  localized-framework-resource-files \
+                  framework-localized-webresource-files \
+                  framework-webresource-files
 
 ifeq ($(WITH_DLL),yes)
 
-$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) \
+                    $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 	$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(FRAMEWORK_FILE) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES) \
+		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+                $(OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_FRAMEWORK_LIBS)
 
-else # WITH_DLL
+else # without DLL
 
-$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) \
+                    $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 	$(FRAMEWORK_LINK_CMD)
 	@(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
 	  rm -f $(INTERNAL_framework_NAME); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(INTERNAL_framework_NAME))
+	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) \
+                  $(INTERNAL_framework_NAME))
 
 endif # WITH_DLL
 
@@ -442,7 +456,9 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
-internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) $(GNUSTEP_FRAMEWORKS_LIBRARIES) $(GNUSTEP_FRAMEWORKS_HEADERS)
+internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
+                             $(GNUSTEP_FRAMEWORKS_LIBRARIES) \
+                             $(GNUSTEP_FRAMEWORKS_HEADERS)
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
 	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
 	@(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
