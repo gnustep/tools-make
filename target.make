@@ -292,10 +292,12 @@ else
 
 #DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
 
-
+# Useful optimization flag: -Wl,-single_module.  This flag is included
+# by default just because it doesn't work on Mac OS X 10.2; it only
+# works starting with 10.3.
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
-		-dynamiclib $(ARCH_FLAGS) -dynamic	\
+		-dynamiclib $(ARCH_FLAGS) -prebind \
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
 		-install_name $(LIB_LINK_INSTALL_NAME)	\
