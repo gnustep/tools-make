@@ -1,3 +1,10 @@
+Wed Jul  9 16:28:14 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Made flattened directory structure the default.
+	Explicitly print a message saying if we use flattened or
+	non-flattened directory structure.
+	* configure: Regenerated.
+	
 2003-07-06  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Remove '^' match from gcc version sed script.

@@ -235,21 +235,25 @@ AC_SUBST(GNUSTEP_NETWORK_ROOT)
 #--------------------------------------------------------------------
 # Is the system flattened?
 #--------------------------------------------------------------------
+AC_MSG_CHECKING(for flattened directory structure)
 AC_ARG_ENABLE(flattened, 
-[--enable-flattened		Use flattened directory structure], 
-  ac_cv_flattened=$enableval,  
+[--disable-flattened		Disable flattened directory structure], 
+  ac_cv_flattened=$enableval,
   ac_cv_flattened="undefined")
 
-if test "$ac_cv_flattened" = "yes"; then
-  GNUSTEP_FLATTENED=yes;
+if test "$ac_cv_flattened" = "no"; then
+  GNUSTEP_FLATTENED=;
 else
-  if test "$ac_cv_flattened" = "no"; then
-    GNUSTEP_FLATTENED=;
-  else
-    GNUSTEP_FLATTENED=$GNUSTEP_FLATTENED;
-  fi
+  GNUSTEP_FLATTENED=yes;
 fi
 AC_SUBST(GNUSTEP_FLATTENED)
+
+if test "$GNUSTEP_FLATTENED" = "yes"; then
+  AC_MSG_RESULT(yes);
+else
+  AC_MSG_RESULT(no);
+fi
+
 
 #--------------------------------------------------------------------
 # Is the system multi-platform?
