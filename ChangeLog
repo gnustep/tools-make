@@ -1,3 +1,8 @@
+Wed Dec 25 02:53:19 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/application.make (internal-clean): Removed special code
+	for OBJC_COMPILER = NeXT.
+
 Fri Dec 20 17:27:16 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* library-combo.make (LIBRARIES_DEPEND_UPON, BUNDLE_LIBS): For nx
