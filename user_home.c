@@ -186,6 +186,10 @@ int main (int argc, char** argv)
 	      sprintf(home, "C:%s", buf0);
 	    }
 	}
+      else
+	{
+	  strcpy(home, buf0);
+	}
     }
   else
     {

@@ -1,3 +1,9 @@
+2005-03-10  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* user_home.c (main): Fixed missing case for Windows ... if
+	HOMEPATH was already a full path, the code would forget to copy
+	the path into home.
+
 2005-03-09  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* configure.ac: Detect libobjc.dll.a as a custom ObjC library.
