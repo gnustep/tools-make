@@ -35,6 +35,7 @@ ifneq ($(messages),yes)
   ECHO_COPYING_WEBSERVER_RESOURCES = @(echo " Copying webserver resources into the $(GNUSTEP_TYPE) wrapper...";
   ECHO_COPYING_WEBSERVER_LOC_RESOURCES = @(echo " Copying localized webserver resources into the $(GNUSTEP_TYPE) wrapper...";
   ECHO_CREATING_WEBSERVER_LOC_RESOURCE_DIRS = @(echo " Creating localized webserver resource dirs into the $(GNUSTEP_TYPE) wrapper...";
+  ECHO_INSTALLING_BUNDLE = @(echo " Installing bundle directory...";
 
   # Instance/Shared/headers.make
   ECHO_INSTALLING_HEADERS = @(echo " Installing headers...";
@@ -72,6 +73,7 @@ else
   ECHO_COPYING_WEBSERVER_RESOURCES =
   ECHO_COPYING_WEBSERVER_LOC_RESOURCES = 
   ECHO_CREATING_WEBSERVER_LOC_RESOURCE_DIRS =
+  ECHO_INSTALLING_BUNDLE = 
 
   ECHO_INSTALLING_HEADERS =
 
