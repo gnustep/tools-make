@@ -1,3 +1,10 @@
+Thu Jul 12 11:54:28 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make: Removed PROCESS_SECOND_TIME.
+	(%.variables, %.build): Merged the two rules, which removes a make
+	invocation per operation.  The new rule is called %.variables, so
+	we no longer have a %.build rule.
+
 Wed Jul 11 19:18:57 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* framework.make (framework-components): Use a makefile
