@@ -1,3 +1,8 @@
+Fri Sep 24 19:30:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* GNUstep.sh.in: Fix so that paths are set up correctly again.
+	* GNUstep.csh.in: ditto.
+
 Mon Sep 20  9:40:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	Patch from cls@seawood.org -
