@@ -1,3 +1,9 @@
+Tue Apr  2 13:23:58 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/documentation.make (internal-doc-install_,
+	internal-doc-uninstall_): Install/uninstall .info file into
+	GNUSTEP_DOCUMENTATION_INFO.
+
 Thu Mar 28 13:19:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* config.make.in (AWK, SED): Define.  Added extensive comment
