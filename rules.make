@@ -211,6 +211,9 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    $(GNUSTEP_LOCAL_HEADERS_FLAG) $(GNUSTEP_NETWORK_HEADERS_FLAG) \
    -I$(GNUSTEP_SYSTEM_HEADERS)
 
+# if you need, you can define ADDITIONAL_CCFLAGS to add C++ specific flags
+ALL_CCFLAGS = $(ADDITIONAL_CCFLAGS) $(AUXILIARY_CCFLAGS)
+
 INTERNAL_CLASSPATHFLAGS = -classpath ./$(subst ::,:,:$(strip $(ADDITIONAL_CLASSPATH)):)$(CLASSPATH)
 
 ALL_JAVACFLAGS = $(INTERNAL_CLASSPATHFLAGS) $(ADDITIONAL_JAVACFLAGS) \
@@ -255,7 +258,7 @@ endif
 # General rules
 VPATH = .
 
-.SUFFIXES: .m .c .psw .java .h
+.SUFFIXES: .m .c .psw .java .h .cpp .cxx .C .cc .cp
 
 .PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
 
@@ -264,6 +267,21 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
+
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.C
+	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cc
+	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cpp
+	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cxx
+	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
+	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
 
 %.class : %.java
 	$(JAVAC) $(ALL_JAVACFLAGS) $<
@@ -336,6 +354,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   _SUBPROJECTS="$($(basename $(basename $*))_SUBPROJECTS)" \
   OBJC_FILES="$($(basename $(basename $*))_OBJC_FILES)" \
   C_FILES="$($(basename $(basename $*))_C_FILES)" \
+  CC_FILES="$($(basename $(basename $*))_CC_FILES)" \
   JAVA_FILES="$($(basename $(basename $*))_JAVA_FILES)" \
   JAVA_JNI_FILES="$($(basename $(basename $*))_JAVA_JNI_FILES)" \
   OBJ_FILES="$($(basename $(basename $*))_OBJ_FILES)" \
@@ -470,6 +489,9 @@ fi
 # The list of C source files to be compiled
 # are in the C_FILES variable.
 #
+# The list of C++ source files to be compiled
+# are in the CC_FILES variable.
+#
 # The list of PSWRAP source files to be compiled
 # are in the PSWRAP_FILES variable.
 #
@@ -515,6 +537,21 @@ PSWRAP_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(PSWRAP_OBJS))
 
 C_OBJS = $(C_FILES:.c=${OEXT})
 C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
+
+# C++ files might end in .C, .cc, .cpp, .cxx, .cp so we replace multiple times
+CC_OBJS = $(patsubst %.cc,%${OEXT},\
+           $(patsubst %.C,%${OEXT},\
+            $(patsubst %.cp,%${OEXT},\
+             $(patsubst %.cpp,%${OEXT},\
+              $(patsubst %.cxx,%${OEXT},$(CC_FILES))))))
+CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(CC_OBJS))
+
+# OBJ_FILES_TO_LINK is the set of all .o files which will be linked
+# into the result - please note that you can add to OBJ_FILES_TO_LINK
+# by defining manually some special xxx_OBJ_FILES for your
+# tool/app/whatever
+OBJ_FILES_TO_LINK = $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) \
+                    $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 
 ifeq ($(WITH_DLL),yes)
 TMP_LIBS := $(LIBRARIES_DEPEND_UPON) $(BUNDLE_LIBS) $(ADDITIONAL_GUI_LIBS) $(ADDITIONAL_OBJC_LIBS) $(ADDITIONAL_LIBRARY_LIBS)
