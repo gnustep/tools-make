@@ -1,3 +1,7 @@
+Wed Dec 12 14:44:16 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* mkinstalldirs: Do not run chown if mkdir fails.
+
 Wed Dec 12 13:25:21 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Implemented INSTALL_AS_USER and INSTALL_AS_GROUP.
