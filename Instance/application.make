@@ -178,9 +178,37 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 
 # FIXME: Missing dependency on $(GNUSTEP_INSTANCE)Info.plist files
 
-# You can have a single xxxInfo.plist for both GNUstep and Apple if
-# you put in it all fields required by both GNUstep and Apple; they
-# differ at the moment.
+# You can have a single xxxInfo.plist for both GNUstep and Apple.
+
+# Often enough, you can just put in it all fields required by both
+# GNUstep and Apple; if there is a conflict, you can add
+# xxx_PREPROCESS_PLIST = yes to your GNUmakefile, and provide a
+# xxxInfo.cplist (please note the suffix!) - that file is
+# automatically run through the C preprocessor to generate a
+# xxxInfo.plist file from it.  The preprocessor will define GNUSTEP
+# when using gnustep-base, APPLE when using Apple FoundationKit, NEXT
+# when using NeXT/OPENStep FoundationKit, and UNKNOWN when using
+# something else, so you can use
+# #ifdef GNUSTEP
+#   ... some plist code for GNUstep ...
+# #else
+#   ... some plist code for Apple ...
+# #endif
+# to have your .cplist use different code for each.
+#
+
+# The following is really a hack, but very elegant.  Our problem is
+# that we'd like to always depend on xxxInfo.plist if it's there, and
+# not depend on it if it's not there - but we don't have a solution to
+# this problem at the moment, so we don't depend on it.  Adding
+# xxx_PREPROCESS_INFO_PLIST = yes at the moment just turns on the
+# dependency on xxxInfo.plist, which is then built from xxxInfo.cplist
+# using the %.plist: %.cplist rules.
+ifeq ($($(GNUSTEP_INSTANCE)_PREPROCESS_INFO_PLIST), yes)
+  GNUSTEP_PLIST_DEPEND = $(GNUSTEP_INSTANCE)Info.plist
+else
+  GNUSTEP_PLIST_DEPEND =
+endif
 
 # On Apple we assume that xxxInfo.plist has a '{' (and nothing else)
 # on the first line, and the rest of the file is a plain property list
@@ -199,7 +227,7 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 # nothing else).
 
 ifeq ($(FOUNDATION_LIB), apple)
-$(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
+$(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -213,7 +241,8 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
 	    echo "}"; \
 	  fi) > $@
 else
-$(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND)
+
+$(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
