@@ -212,7 +212,7 @@ libiconv
   Needed for multilingual character support (unicode etc)
 
   Get the binary package from
-  http://www.fh-frankfurt.de/~igor/projects/libxml
+  http://www.zlatkovic.com/projects/libxml/binaries.html
   Unpack this and
     cp include/iconv.h $GNUSTEP_SYSTEM_ROOT/Headers
     cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libiconv.a
@@ -244,7 +244,7 @@ libxml2
   been ported to windows - but when it is, you will need this package.
 
   Get the binary package from
-  http://www.fh-frankfurt.de/~igor/projects/libxml
+  http://www.zlatkovic.com/projects/libxml/binaries.html
   Unpack this and
     cd include
     tar -cf - libxml | (cd $GNUSTEP_SYSTEM_ROOT/Headers; tar -xvf -)
