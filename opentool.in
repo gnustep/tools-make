@@ -163,4 +163,4 @@ fi
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 IFS=" "
-$full_toolname $@
+$full_toolname "$@"
