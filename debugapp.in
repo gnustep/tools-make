@@ -77,7 +77,7 @@ fi
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
 
-if [ -z "$EXEEXT" ]; then
+if [ -n "$EXEEXT" ]; then
   app=$app$EXEEXT
 fi
 
