@@ -28,13 +28,7 @@ MINOR_VERSION    = 0
 SUBMINOR_VERSION = 0
 VERSION          = ${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}
 
-#
-# Installation scripts
-#
-INSTALL_LN_S = $(LN_S)
-REMOVE_INSTALLED_LN_S = rm -f
-REMOVE_INSTALLED_DIR = rm -rf
-INSTALL_COMPLETE_DIR = $(GNUSTEP_MAKEFILES)/install-complete-dir.sh
+# GNUSTEP_BASE_INSTALL by default is `' - this is correct
 
 #
 # Scripts to run for parsing canonical names
