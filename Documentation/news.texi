@@ -1,26 +1,32 @@
 @c -*-texinfo-*-
 @ifclear ANNOUNCE-ONLY
 @chapter NEWS
-@end ifclear
 
 @ifset TEXT-ONLY
 @include version.texi
 @end ifset
 
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
+@end ifclear
 
 @section Changes in version @samp{1.2.0pre1}
 
 @itemize @bullet
+@item The core rules and internals of gnustep-make have been fundamentally
+   redesigned and rewritten.  notably, gnustep-make now works using only
+   a single recursive sub-make invocation rather than two, which makes
+   it consistently faster and simpler in all circumstances.
+@item The clean rules have been heavily optimized - they no longer use 
+   recursive sub-make invocations at all and so they are really fast.
 @item Many improvements to java support. Optimized management of nested classes
 @item Better conformance to make conventions.
-@item New variables, fixes to reduce the number of evaluations
 @item Fixed darwin support
 @item Support for C++ files.
-@item Bunches of variables removed or changed for simplification.
 @item Made use of library installation dir consistent with other installation.
 @item Much improved Windows path support
 @end itemize
+
+@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.0.1}
 
@@ -30,8 +36,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item Remove backend part of LIBRARY_COMBO.
 @item Fixes to run on FreeBSD, Solaris.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.0.0}
 

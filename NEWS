@@ -6,18 +6,23 @@ The currently released version is `1.2.0pre1'.
 Changes in version `1.2.0pre1'
 ==============================
 
+   * The core rules and internals of gnustep-make have been
+     fundamentally    redesigned and rewritten.  notably, gnustep-make
+     now works using only    a single recursive sub-make invocation
+     rather than two, which makes    it consistently faster and simpler
+     in all circumstances.
+
+   * The clean rules have been heavily optimized - they no longer use
+     recursive sub-make invocations at all and so they are really fast.
+
    * Many improvements to java support. Optimized management of nested
      classes
 
    * Better conformance to make conventions.
 
-   * New variables, fixes to reduce the number of evaluations
-
    * Fixed darwin support
 
    * Support for C++ files.
-
-   * Bunches of variables removed or changed for simplification.
 
    * Made use of library installation dir consistent with other
      installation.
