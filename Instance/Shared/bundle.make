@@ -59,7 +59,7 @@
 #  $(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES : a list of localized
 #  resource files to install.
 #
-#  $(GNUSTEP_INSTANCE)_RESOURCE_DIRS : a list of additional localized
+#  $(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_DIRS : a list of additional localized
 #  resource dirs to create.
 #
 #  $(GNUSTEP_INSTANCE)_COMPONENTS : a list of directories which are
