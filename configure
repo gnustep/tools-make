@@ -1646,7 +1646,7 @@ echo "configure:1646: checking for GNUSTEP_USER_ROOT to be forced for all users"
 # Check whether --with-user-root or --without-user-root was given.
 if test "${with_user_root+set}" = set; then
   withval="$with_user_root"
-  FORCE_USER_ROOT="-DFORCE_USER_ROOT=$withval"
+  FORCE_USER_ROOT="-DFORCE_USER_ROOT=\"$withval\""
 else
   FORCE_USER_ROOT=""
 
@@ -1660,7 +1660,7 @@ echo "configure:1660: checking for GNUSTEP_DEFAULTS_ROOT to be forced for all us
 # Check whether --with-defaults-root or --without-defaults-root was given.
 if test "${with_defaults_root+set}" = set; then
   withval="$with_defaults_root"
-  FORCE_DEFAULTS_ROOT="-DFORCE_DEFAULTS_ROOT=$withval"
+  FORCE_DEFAULTS_ROOT="-DFORCE_DEFAULTS_ROOT=\"$withval\""
 else
   FORCE_DEFAULTS_ROOT=""
 
