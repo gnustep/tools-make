@@ -319,14 +319,22 @@ internal-gswapp-uninstall::
 # Cleaning targets
 #
 internal-gswapp-clean::
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+endif
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(GSWAPP_EXTENSION); do \
 	  rm -f $$f/`basename $$f .$(GSWAPP_EXTENSION)`; \
 	done
 else
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.$(GSWAPP_EXTENSION)
+endif
 endif
 
 

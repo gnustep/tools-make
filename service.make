@@ -134,14 +134,22 @@ internal-svc-uninstall::
 # Cleaning targets
 #
 internal-svc-clean::
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+endif
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.service; do \
 	  rm -f $$f/`basename $$f .service`; \
 	done
 else
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.service/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.service
+endif
 endif
 
 

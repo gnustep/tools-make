@@ -231,14 +231,22 @@ internal-app-uninstall::
 # Cleaning targets
 #
 internal-app-clean::
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+endif
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(APP_EXTENSION); do \
 	  rm -f $$f/`basename $$f .$(APP_EXTENSION)`; \
 	done
 else
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.$(APP_EXTENSION)
+endif
 endif
 
 

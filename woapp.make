@@ -306,14 +306,22 @@ internal-woapp-uninstall::
 # Cleaning targets
 #
 internal-woapp-clean::
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
+endif
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(WOAPP_EXTENSION); do \
 	  rm -f $$f/`basename $$f .$(WOAPP_EXTENSION)`; \
 	done
 else
+ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.$(WOAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+else
+	rm -rf *.$(WOAPP_EXTENSION)
+endif
 endif
 
 
