@@ -48,6 +48,7 @@ case $1 in
     echo It overrides the default LIBRARY_COMBO environment variable.
     echo --library-combo=gnu for GNUstep 
     echo --library-combo=nx for NeXT OPENSTEP
+    echo --library-combo=apple for Apple OSX
     echo
     echo application is the complete or relative name of the application
     echo program with the .app extension, like Edit.app.
@@ -74,6 +75,8 @@ elif [ "$LIBRARY_COMBO" = gnu ]; then
   LIBRARY_COMBO=gnu-gnu-gnu
 elif [ "$LIBRARY_COMBO" = fd ]; then
   LIBRARY_COMBO=gnu-fd
+elif [ "$LIBRARY_COMBO" = apple ]; then
+  LIBRARY_COMBO=apple-apple-apple
 fi
 
 # Remove leading slashes at the end of the application name

@@ -88,6 +88,8 @@ elif [ "$LIBRARY_COMBO" = gnu ]; then
   LIBRARY_COMBO=gnu-gnu-gnu
 elif [ "$LIBRARY_COMBO" = fd ]; then
   LIBRARY_COMBO=gnu-fd-gnu
+elif [ "$LIBRARY_COMBO" = apple ]; then
+  LIBRARY_COMBO=apple-apple-apple
 fi
 export LIBRARY_COMBO
 
