@@ -27,8 +27,8 @@
 # unmodified to the application.
 
 if [ -z "$1" ]; then
-  echo usage: `basename $0` application [--library-combo=...] [arguments...]
-  echo `basename $0` --help for help
+  echo usage: openapp [--find] application [arguments...]
+  echo openapp --help for more help
   exit 1
 fi
 
@@ -36,17 +36,31 @@ if [ -z "$GNUSTEP_FLATTENED" ]; then
   GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
 fi
 
-# trap the --library-combo parameter
+only_find=
+
+# TODO: implement a --library-combo parameter
 case "$1" in
   --help)
-    echo usage: `basename $0` application [--library-combo=...] [arguments...]
+    echo usage: openapp [--find] application [arguments...]
     echo
     echo application is the complete or relative name of the application
-    echo program with the .app extension, like Ink.app.
+    echo program with or without the .app extension, like Ink.app.
     echo
     echo [arguments...] are the arguments to the application.     
+    echo 
+    echo If --find is used as first argument, openapp prints out
+    echo the full path of the application executable which would be 
+    echo executed, without actually executing it as it would normally do.
+    echo 
     exit 0
     ;;
+  --find)
+    only_find=yes;
+    if [ -z "$2" ]; then
+      echo Missing application name.  Please try openapp --help for more help.
+      exit 1
+    fi
+    app="$2"; shift; shift;;
   *)
     app="$1"; shift;;
 esac
@@ -158,6 +172,11 @@ fi
 if [ ! -f "$full_appname/$appname" ]; then
   echo "Could not find $full_appname/$appname executable/script"
   exit 1
+fi
+
+if [ -n "$only_find" ]; then
+  echo "$full_appname/$appname"
+  exit 0
 fi
 
 exec "$full_appname/$appname" "$@"
