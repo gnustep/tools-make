@@ -1,3 +1,11 @@
+Thu Jun 13 10:28:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make (RESOURCE_FILES): 
+	Strip the variables after concatenating them, not before.
+	(LOCALIZED_RESOURCE_FILES): Idem.
+	(WEBSERVER_RESOURCE_FILES): Idem.
+	(WEBSERVER_LOCALIZED_RESOURCE_FILES): Idem.
+
 Wed Jun 12 12:32:40 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/bundle.make: Fixed typo in ifneq which was
