@@ -169,7 +169,7 @@ endif
 ifeq ($(FOUNDATION_LIB),apple)
   ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-framework $(lib))
 else
-  ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-l $(lib))
+  ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-l$(lib))
 endif
 
 #
