@@ -1,3 +1,8 @@
+Sun Apr  5 20:06:03 1998  Scott Christley  <scottc@net-community.com>
+
+	* documentation.make: Have html rule be based upon the table
+	of contents file.
+
 Sun Apr  5 19:07:54 1998  Scott Christley  <scottc@net-community.com>
 
 	* GNUmakefile.in: install/uninstall new files; create full

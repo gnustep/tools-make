@@ -75,7 +75,7 @@ else
 internal-doc-all:: before-all before-$(TARGET)-all \
                    $(INTERNAL_doc_NAME).info \
                    $(INTERNAL_doc_NAME).ps \
-                   $(INTERNAL_doc_NAME).html \
+                   $(INTERNAL_doc_NAME)_toc.html \
                    after-$(TARGET)-all after-all
 
 internal-textdoc-all:: before-all before-$(TARGET)-all \
@@ -102,7 +102,7 @@ $(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
 	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
 		$(INTERNAL_doc_NAME).dvi -o $@
 
-$(INTERNAL_doc_NAME).html: $(TEXI_FILES)
+$(INTERNAL_doc_NAME)_toc.html: $(TEXI_FILES)
 	for i in $(TEXI_FILES); do \
 	   sed -e 's,@email{\([^}]*\)},<A HREF="mailto:\1">\1</A>,g' \
 		$$i \
