@@ -1,3 +1,17 @@
+Thu Sep 26 03:11:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Implemented resource bundles for tools.
+	* Master/tool.make (internal-distclean): Wipe out the Resources/
+	directory if there is any tool with xxx_HAS_RESOURCE_BUNDLE = yes.
+	* Instance/tool.make: If xxx_HAS_RESOURCE_BUNDLE = yes, include
+	Shared/Instance/bundle.make with the appropriate parameters and
+	use its rules.  All the standard xxx_RESOURCE_FILES etc options
+	are then available; the bundle is automatically created in
+	./Resources/tool_name, managed and installed in the appropriate
+	dir, and automatically available to the tool code -- both before
+	and after installation -- via gnustep-base's [NSBundle
+	+mainBundle].
+
 Thu Sep 26 03:08:04 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/bundle.make: Implemented rules to install and
