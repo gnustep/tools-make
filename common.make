@@ -214,25 +214,6 @@ GNUSTEP_HEADERS_FND_FLAG += -I$(GNUSTEP_USER_HEADERS)/$(GNUSTEP_FND_DIR)/$(GNUST
 endif
 
 #
-# Determine AppKit header subdirectory based upon library combo
-#
-ifeq ($(GUI_LIB),gnu)
-GNUSTEP_GUI_DIR = gnustep/gui
-ifneq ($(GNUSTEP_USER_ROOT),)
-GNUSTEP_HEADERS_GUI_FLAG += -I$(GNUSTEP_USER_HEADERS)/$(GNUSTEP_GUI_DIR)
-endif
-ifneq ($(GNUSTEP_LOCAL_ROOT),)
-GNUSTEP_HEADERS_GUI_FLAG += -I$(GNUSTEP_LOCAL_HEADERS)/$(GNUSTEP_GUI_DIR)
-endif
-GNUSTEP_HEADERS_GUI_FLAG += -I$(GNUSTEP_SYSTEM_HEADERS)/$(GNUSTEP_GUI_DIR)
-endif
-
-ifeq ($(GUI_LIB),nx)
-GNUSTEP_GUI_DIR =
-#GNUSTEP_HEADERS_GUI_FLAG = -framework AppKit
-endif
-
-#
 # Overridable compilation flags
 #
 OBJCFLAGS = -Wno-import
@@ -355,18 +336,41 @@ GNUSTEP_DVIPS_FLAGS     =
 SUBPROJECT_PRODUCT = subproject$(OEXT)
 
 #
-# The Java Compiler.  Override this by setting the JAVAC environment variable
+# Set JAVA_HOME if not set.
 #
-ifeq ($(JAVAC),)
-JAVAC = javac
+ifeq ($(JAVA_HOME),)
+  # Else, try JDK_HOME
+  ifeq ($(JDK_HOME),)
+    # Else, try by finding the path of javac and removing 'bin/javac' from it
+    ifeq ($(JAVAC),)
+      JAVA_HOME = $(shell which javac | sed "s/bin\/javac//g")
+    else # $(JAVAC) != "" 
+      JAVA_HOME = $(shell which $(JAVAC) | sed "s/bin\/javac//g")
+    endif  
+  else # $(JDK_HOME) != ""
+    JAVA_HOME = $(JDK_HOME) 
+  endif
 endif
 
 #
-# The Java Header Compiler.  
+# The Java Compiler.
+#
+ifeq ($(JAVAC),)
+  JAVAC = $(JAVA_HOME)/bin/javac
+endif
+
+#
+# The Java Header Compiler.
 #
 ifeq ($(JAVAH),)
-JAVAH = javah
+  JAVAH = $(JAVA_HOME)/bin/javah
 endif
+
+#
+# Flags useful for compilation
+#
+INTERNAL_JAVACFLAGS = -classpath ./:$(CLASSPATH)
+INTERNAL_JAVAHFLAGS = -classpath ./:$(CLASSPATH)
 
 ## Local variables:
 ## mode: makefile

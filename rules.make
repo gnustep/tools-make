@@ -138,8 +138,11 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    $(GNUSTEP_LOCAL_HEADERS_FLAG) $(GNUSTEP_NETWORK_HEADERS_FLAG) \
    -I$(GNUSTEP_SYSTEM_HEADERS)
 
-ALL_JAVAFLAGS = $(INTERNAL_JAVAFLAGS) $(ADDITIONAL_JAVAFLAGS) \
-	$(AUXILIARY_JAVAFLAGS)
+ALL_JAVACFLAGS = $(INTERNAL_JAVACFLAGS) $(ADDITIONAL_JAVACFLAGS) \
+	$(AUXILIARY_JAVACFLAGS)
+
+ALL_JAVAHFLAGS = $(INTERNAL_JAVAHFLAGS) $(ADDITIONAL_JAVAHFLAGS) \
+	$(AUXILIARY_JAVAHFLAGS)
 
 ALL_LDFLAGS = $(ADDITIONAL_LDFLAGS) $(AUXILIARY_LDFLAGS) $(GUI_LDFLAGS) \
    $(BACKEND_LDFLAGS) $(SYSTEM_LDFLAGS) $(INTERNAL_LDFLAGS)
@@ -168,7 +171,7 @@ endif
 # General rules
 VPATH = .
 
-.SUFFIXES: .m .c .psw .java
+.SUFFIXES: .m .c .psw .java .h
 
 .PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
 
@@ -179,7 +182,14 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
 
 %.class : %.java
-	$(JAVAC) $(ALL_JAVAFLAGS) $<
+	$(JAVAC) $(ALL_JAVACFLAGS) $<
+
+# A jni header file which is created using JAVAH
+# Example of how this rule will be applied: 
+# gnu/gnustep/base/NSObject.h : gnu/gnustep/base/NSObject.java
+#	javah -o gnu/gnustep/base/NSObject.h gnu.gnustep.base.NSObject
+%.h : %.java
+	$(JAVAH) $(ALL_JAVAHFLAGS) -o $@ $(subst /,.,$*) 
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
@@ -210,6 +220,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
 	    JAVA_FILES="$($*_JAVA_FILES)" \
+	    JAVA_JNI_FILES="$($*_JAVA_JNI_FILES)" \
 	    OBJ_FILES="$($*_OBJ_FILES)" \
 	    PSWRAP_FILES="$($*_PSWRAP_FILES)" \
 	    HEADER_FILES="$($*_HEADER_FILES)" \
@@ -231,6 +242,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	    RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
 	    BUNDLE_LIBS="$($*_BUNDLE_LIBS) $(BUNDLE_LIBS)" \
 	    SERVICE_INSTALL_DIR="$($*_SERVICE_INSTALL_DIR)" \
+	    APPLICATION_ICON="$($*_APPLICATION_ICON)" \
 	    PALETTE_ICON="$($*_PALETTE_ICON)" \
 	    PRINCIPAL_CLASS="$($*_PRINCIPAL_CLASS)" \
 	    DLL_DEF="$($*_DLL_DEF)" \
@@ -265,6 +277,10 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 # The list of JAVA source files to be compiled
 # are in the JAVA_FILES variable.
 #
+# The list of JAVA source files from which to generate jni headers
+# are in the JAVA_JNI_FILES variable.
+#
+
 
 ifneq ($($*_SUBPROJECTS),)
   SUBPROJECT_OBJ_FILES = $(foreach d, $($*_SUBPROJECTS), \
@@ -286,6 +302,9 @@ OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
 
 JAVA_OBJS = $(JAVA_FILES:.java=.class)
 JAVA_OBJ_FILES = $(JAVA_OBJS)
+
+JAVA_JNI_OBJS = $(JAVA_JNI_FILES:.java=.h)
+JAVA_JNI_OBJ_FILES = $(JAVA_JNI_OBJS)
 
 PSWRAP_C_FILES = $(PSWRAP_FILES:.psw=.c)
 PSWRAP_H_FILES = $(PSWRAP_FILES:.psw=.h)
