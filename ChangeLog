@@ -1,3 +1,7 @@
+2004-12-26  Quentin Mathe <qmathe@club-internet.fr>
+       
+        * Documentation/README.Darwin: Improved indentation and presentation.
+
 2004-12-19 Richard Frith-Macdonald <rfm@gnu.org>
 
         * target.make: For gnu compiler on darwin, use flat namespace and
