@@ -1,3 +1,14 @@
+Tue Sep 11 10:44:11 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (internal-doc-clean): Added a complete
+	recursive cleaning of the INTERNAL_doc_NAME directory for javadoc.
+
+Tue Sep 11 10:39:39 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (internal-doc-clean): Removed buggy `;' at
+	the end of line which was causing the last files to be considered
+	a command by the shell rather than arguments to `rm'.
+
 Mon Sep 10 15:40:06 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* documentation.make (internal-doc-clean): Fixed make clean for
