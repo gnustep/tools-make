@@ -1,3 +1,9 @@
+Tue Feb 27 04:45:42 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.in (Version): source it as ./Version rather than just
+	Version (suggested by Juliusz Chroboczek <jch@pps.jussieu.fr>).
+	* configure: Regenerated.
+	
 2001-02-26  Adam Fedor  <fedor@gnu.org>
 
 	* Documenation/makedoc.make: New file mostly copied from
