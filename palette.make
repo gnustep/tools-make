@@ -121,7 +121,7 @@ $(PALETTE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 
 palette-resource-files:: $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
                          $(PALETTE_DIR_NAME)/Resources/palette.table
-ifneq $(strip $(RESOURCE_FILES)
+ifneq ($(strip $(RESOURCE_FILES)),)
 	echo "Copying resources into the palette wrapper..."; \
 	for f in "$(RESOURCE_FILES)"; do \
 	  cp -r $$f $(PALETTE_DIR_NAME)/Resources; \
