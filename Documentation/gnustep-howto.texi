@@ -388,8 +388,8 @@ if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap ]; then
   $GNUSTEP_SYSTEM_ROOT/Tools/ix86/linux-gnu/gdomap
 fi
 @end example
-@item gdnc - Put this after executing @file{GNUstep.sh} in your local .profile
-@item gpbs - Put this after executing @file{GNUstep.sh} in your local .profile
+@item gdnc - Start after sourcing @file{GNUstep.sh} (e.g. in .profile)
+@item gpbs - Same as with gdnc, make sure X-Windows is running.
 @end itemize
 
 @example

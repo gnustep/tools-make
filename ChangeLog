@@ -1,3 +1,10 @@
+2002-07-21  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (Darwin): Changes to compile with GNU compiler/runtime.
+	(Irix): Has shared libs. Add OBJ_MERGE_CMD. 
+	* Documentation/machines.texi (Darwin): Update ffcall instructions.
+	(Reports from Carl Eugen).
+
 2002-07-03  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.3.4
