@@ -58,6 +58,12 @@
 #define lowlevelstringify(X) #X
 #define stringify(X) lowlevelstringify(X)
 
+#if defined(__MINGW__)
+# define SEP "\\"
+#else
+# define SEP "/"
+#endif
+
 /*
  * This tool is intended to produce a definitive form of the
  * user specific root directories for a GNUstep user.  It must
@@ -193,11 +199,11 @@ int main (int argc, char** argv)
 #else
   /* Then environment variable HOMEPATH holds the home directory
      for the user on Windows NT; Win95 has no concept of home. */
-  len0 = GetEnvironmentVariable("HOMEPATH", buf0, 1024);
+  len0 = GetEnvironmentVariable("HOMEDRIVE", buf0, 1024);
   if (len0 > 0 && len0 < 1024)
     {
       buf0[len0] = '\0';
-      len1 = GetEnvironmentVariable("HOMEDRIVE", buf1, 128);
+      len1 = GetEnvironmentVariable("HOMEPATH", buf1, 128);
       if (len1 > 0 && len1 < 128)
 	{
 	  buf1[len1] = '\0';
@@ -205,13 +211,13 @@ int main (int argc, char** argv)
 	}
       else
 	{
-	  fprintf(stderr, "Unable to determine HOMEDRIVE\n");
+	  fprintf(stderr, "Unable to determine HOMEPATH\n");
 	  return 1;
 	}
     }
   else
     {
-      fprintf(stderr, "Unable to determine HOMEPATH\n");
+      fprintf(stderr, "Unable to determine HOMEDRIVE\n");
       return 1;
     }
 #endif
@@ -226,7 +232,9 @@ int main (int argc, char** argv)
       char	*user = "";
       char	*defs = "";
 
-      sprintf(path, "%s/.GNUsteprc", home);
+      strcpy(path, home);
+      strcat(path, SEP);
+      strcat(path, ".GNUsteprc");
       fptr = fopen(path, "r");
       path[0] = '\0';
       if (fptr != 0)
@@ -279,7 +287,9 @@ int main (int argc, char** argv)
 
       if (*path == '\0')
 	{
-	  sprintf(path, "%s/GNUstep", home);
+	  strcpy(path, home);
+	  strcat(path, SEP);
+	  strcat(path, "GNUstep");
 	}
     }
   printf("%s", path);
