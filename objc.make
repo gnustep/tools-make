@@ -3,9 +3,10 @@
 #
 #   Makefile rules to build ObjC-based (but not GNUstep) programs.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -47,9 +48,13 @@ internal-install:: $(OBJC_PROGRAM_NAME:=.install.objc-program.variables)
 
 internal-uninstall:: $(OBJC_PROGRAM_NAME:=.uninstall.objc-program.variables)
 
-internal-clean:: $(OBJC_PROGRAM_NAME:=.clean.objc-program.variables)
+internal-clean:: $(OBJC_PROGRAM_NAME:=.clean.objc-program.subprojects)
+	rm -rf $(GNUSTEP_OBJ_PREFIX)
 
-internal-distclean:: $(OBJC_PROGRAM_NAME:=.distclean.objc-program.variables)
+internal-distclean:: $(OBJC_PROGRAM_NAME:=.distclean.objc-program.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 $(OBJC_PROGRAM_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
@@ -60,15 +65,13 @@ else
 .PHONY: internal-objc_program-all \
         internal-objc_program-install \
         internal-objc_program-uninstall \
-        internal-objc_program-clean \
-        internal-objc_program-distclean \
         before-$(TARGET)-all \
         after-$(TARGET)-all \
         install-objc_program
 
 # This is the directory where the objc programs get installed. If you
-# don't specify a directory they will get installed in the GNUstep
-# system root.
+# don't specify a directory they will get installed in the Tools
+# directory in GNUSTEP_LOCAL_ROOT.
 OBJC_PROGRAM_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 
 ALL_OBJC_LIBS = $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
@@ -76,8 +79,8 @@ ALL_OBJC_LIBS = $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
 
 ALL_OBJC_LIBS := \
     $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_OBJC_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+            debug=$(debug) profile=$(profile) shared=$(shared) \
+            libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 ifeq ($(WITH_DLL),yes)
 TTMP_LIBS := $(ALL_TOOL_LIBS)
@@ -104,8 +107,8 @@ endif
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT): \
                 $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(ALL_OBJC_LIBS)
+	      $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+	      $(ALL_LIB_DIRS) $(ALL_OBJC_LIBS)
 
 #
 # Compilation targets
@@ -130,17 +133,6 @@ install-objc_program::
 	$(INSTALL_PROGRAM) -m 0755 \
 	    $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT) \
 	    $(OBJC_PROGRAM_INSTALLATION_DIR)
-
-#
-# Cleaning targets
-#
-internal-objc_program-clean::
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
-
-internal-objc_program-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
 
 endif
 
