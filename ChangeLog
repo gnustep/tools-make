@@ -1,3 +1,10 @@
+Tue Mar  5 14:37:58 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in (GNUSTEP_USER_ROOT): Fixed setting in case
+	GNUSTEP_FLATTENED (Suggestion from Marcus Müller
+	<znek@mulle-kybernetik.com>).
+	* GNUstep.csh.in: Idem.
+	
 Tue Mar  5 13:54:36 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (COMPONENTS, LANGUAGES,

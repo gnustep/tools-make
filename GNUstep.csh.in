@@ -64,7 +64,11 @@ if ( ! ${?GNUSTEP_HOST_OS} ) then
   setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/clean_os.sh ${GNUSTEP_HOST_OS}`
 endif
 
-setenv GNUSTEP_USER_ROOT `${GNUSTEP_MAKEFILES}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/user_home user`
+if ( "${GNUSTEP_FLATTENED}" == "" ) then
+  setenv GNUSTEP_USER_ROOT `${GNUSTEP_MAKEFILES}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/user_home user`
+else
+  setenv GNUSTEP_USER_ROOT `${GNUSTEP_MAKEFILES}/user_home user`
+endif
 
 #
 # Add the GNUstep tools directories to the path
