@@ -117,7 +117,8 @@ elif test $host_os = cygwin; then
     export program_suffix=.exe
   fi
 else
-  export MINGW32=0
+  MINGW32=0
+  export MINGW32
 fi
 
 EXEEXT=
