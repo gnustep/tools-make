@@ -1,3 +1,7 @@
+2000-11-15  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.in: Check for OpenSSL
+
 Tue Nov 14 23:47:11 2000  Adam Fedor  <fedor@yogi.doc.com>
 
 	* GNUstep.sh.in: Use grep instead of fgrep. Some OSs (Solaris)
