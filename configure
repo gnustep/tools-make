@@ -317,7 +317,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -879,6 +879,13 @@ to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
     Set the GNUSTEP_NETWORK_ROOT directory.  Use this option if you want
 to have the GNUSTEP_NETWORK_ROOT directory.  Example:
 --with-network-root=/usr/local/GNUstep/Network
+
+--with-user-root
+    Set the GNUSTEP_USER_ROOT directory for all users.  '~' is allowed
+    at the beginning to mean the user's home directory.  Use this
+    option if you want to have the GNUSTEP_USER_ROOT directory in a non
+    default place for all users.
+    Example: --with-user-root='~/gnustep'
 
 --with-thread-lib		Specify alternate thread library
 
@@ -3203,6 +3210,22 @@ echo "${ECHO_T}$GNUSTEP_NETWORK_ROOT" >&6
 
 
 
+echo "$as_me:$LINENO: checking for GNUSTEP_USER_ROOT to use" >&5
+echo $ECHO_N "checking for GNUSTEP_USER_ROOT to use... $ECHO_C" >&6
+
+# Check whether --with-user-root or --without-user-root was given.
+if test "${with_user_root+set}" = set; then
+  withval="$with_user_root"
+  GNUSTEP_USER_ROOT="$withval"
+else
+  # The default is to have user roots in ~/GNUstep
+GNUSTEP_USER_ROOT="~/GNUstep"
+
+fi;
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_ROOT" >&5
+echo "${ECHO_T}$GNUSTEP_USER_ROOT" >&6
+
+
 #--------------------------------------------------------------------
 # Is the system flattened?
 #--------------------------------------------------------------------
@@ -4751,7 +4774,7 @@ clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-                                                                                                    ac_config_files="$ac_config_files config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec"
+                                                                                                              ac_config_files="$ac_config_files config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec GNUsteprc"
 
           ac_config_commands="$ac_config_commands default"
 
@@ -5299,6 +5322,7 @@ do
   "GNUstep.csh" ) CONFIG_FILES="$CONFIG_FILES GNUstep.csh" ;;
   "fixpath.sh" ) CONFIG_FILES="$CONFIG_FILES fixpath.sh" ;;
   "gnustep-make.spec" ) CONFIG_FILES="$CONFIG_FILES gnustep-make.spec" ;;
+  "GNUsteprc" ) CONFIG_FILES="$CONFIG_FILES GNUsteprc" ;;
   "default" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
@@ -5426,6 +5450,7 @@ s,@MAKEFILES_SUFFIX@,$MAKEFILES_SUFFIX,;t t
 s,@HOST_INSTALL@,$HOST_INSTALL,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t
+s,@GNUSTEP_USER_ROOT@,$GNUSTEP_USER_ROOT,;t t
 s,@GNUSTEP_FLATTENED@,$GNUSTEP_FLATTENED,;t t
 s,@GNUSTEP_MULTI_PLATFORM@,$GNUSTEP_MULTI_PLATFORM,;t t
 s,@BACKEND_BUNDLE@,$BACKEND_BUNDLE,;t t
