@@ -1,4 +1,4 @@
-#!/bin/csh
+#! /bin/echo This file must be sourced inside csh using: source
 #
 #   GNUstep.csh.in
 #
@@ -69,60 +69,68 @@ endif
 #
 # Add the GNUstep tools directories to the path
 #
-if ( ! ${?GNUSTEP_PATHPREFIX} ) then
-  setenv GNUSTEP_PATHPREFIX \
+if ( ! ${?GNUSTEP_PATHPREFIX_LIST} ) then
+  setenv GNUSTEP_PATHPREFIX_LIST \
          ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_NETWORK_ROOT}:${GNUSTEP_SYSTEM_ROOT}
 endif
 
-set tp = ""
-foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX}; do echo $i; done'` )
-  set tp=${tp}${dir}/Tools:
-  if ( ! ${?GNUSTEP_FLATTENED} ) then
-    set tp=${tp}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
+set temp_path = ""
+foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHPREFIX_LIST}; do echo $i; done'` )
+  set temp_path=${temp_path}${dir}/Tools:
+  if ( "${GNUSTEP_FLATTENED}" == "" ) then
+    set temp_path=${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:
+    set temp_path=${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:
   endif
 end
-setenv GNUSTEP_PATHPREFIX_LIST $GNUSTEP_PATHPREFIX
-setenv PATH ${tp}${PATH}
+
+if ( ! ${?PATH} ) then
+  setenv PATH "${temp_path}"
+else if ( { (echo "$PATH" | fgrep -v "$temp_path" >/dev/null) } ) then
+  setenv PATH "${temp_path}${PATH}"
+endif
+unset temp_path dir
+
 
 # directory for gcc's 3.x shared libraries
 setenv GCC_SO_DIR @GCC_SO_DIR@
 
-source ${GNUSTEP_SYSTEM_ROOT}/Makefiles/ld_lib_path.csh
+source ${GNUSTEP_MAKEFILES}/ld_lib_path.csh
 
 #
 set gnustep_class_path="${GNUSTEP_USER_ROOT}/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Libraries/Java"
 
 if ( ! ${?CLASSPATH} ) then
   setenv CLASSPATH "${gnustep_class_path}"
-else
+else if ( { (echo "${CLASSPATH}" | fgrep -v "${gnustep_class_path}" >/dev/null) } ) then
   setenv CLASSPATH "${CLASSPATH}:${gnustep_class_path}"
 endif
 
-#
-#
-
+unset gnustep_class_path
 
 #
 # Perform any user initialization
 #
-if ( -e ~/GNUstep/GNUstep.csh ) then
-  . ~/GNUstep/GNUstep.csh
+if ( -e "$GNUSTEP_USER_ROOT/GNUstep.csh" ) then
+  . "$GNUSTEP_USER_ROOT/GNUstep.csh"
 endif
 
-if ( ${?GNUSTEP_FLATTENED} ) then
+#
+# Run 'make_services' in background if possible - updates cache of services
+# and applications/file-extensions known to the applications.
+#
+if ( "${GNUSTEP_FLATTENED}" == "" ) then
   set TDIR=${GNUSTEP_SYSTEM_ROOT}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}
-  if ( -e $TDIR/$LIBRARY_COMBO/make_services ) then
+  if ( -x $TDIR/$LIBRARY_COMBO/make_services ) then
     $TDIR/$LIBRARY_COMBO/make_services &
-    if ( -e $TDIR/make_services ) then
+    if ( -x $TDIR/make_services ) then
       $TDIR/make_services &
     endif
   endif
 else
   set TDIR=${GNUSTEP_SYSTEM_ROOT}/Tools
-  if ( -e $TDIR/make_services ) then
+  if ( -x $TDIR/make_services ) then
     $TDIR/make_services &
   endif
 endif
 
-#
-#
+unset TDIR
