@@ -429,7 +429,7 @@ endif
 	  if test -d "$(HEADER_FILES_INSTALL_DIR)"; then \
 	    rm -Rf $(HEADER_FILES_INSTALL_DIR); \
 	  fi; \
-          $(MKINSTALLDIRS) $(GNUSTEP_INSTANCE); \
+          $(MKINSTALLDIRS) $(HEADER_FILES_INSTALL_DIR); \
 	  cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
             $(TAR) cf - . | (cd  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR); \
             $(TAR) xf - ); \
