@@ -1,3 +1,13 @@
+Sat Dec  8 14:22:43 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library-combo.make (OBJC_RUNTIME_LIB, FOUNDATION_LIB, GUI_LIB):
+	Modified code setting these variables to allow the user to
+	override their definition manually.
+	(runtime, foundation, gui): Variables removed - obsoleted - the
+	user should set OBJC_RUNTIME_LIB, FOUNDATION_LIB and GUI_LIB
+	directly.
+	(library_combo, the_library_combo): Simplified code.
+	
 Sat Dec  8 13:27:12 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* brain.make: Renamed to library-combo.make.
