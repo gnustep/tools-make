@@ -317,7 +317,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_type CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_type CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded HAS_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4520,8 +4520,6 @@ rm -f core core.* *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext 
 fi
   fi
 fi
-LIBS="$saved_LIBS"
-CFLAGS="$saved_CFLAGS"
 if test x"$objc_threaded" = x""; then
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
@@ -4535,6 +4533,58 @@ fi
 ac_cv_objc_threaded="$objc_threaded"
 
 
+
+# Do not restore LIBS and CFLAGS yet as we need to test if the
+# compiler supports native exceptions.
+
+#--------------------------------------------------------------------
+# Check if GCC supports -fobjc-exceptions, and if so, turn it on!
+#--------------------------------------------------------------------
+echo "$as_me:$LINENO: checking if the compiler supports native ObjC exceptions" >&5
+echo $ECHO_N "checking if the compiler supports native ObjC exceptions... $ECHO_C" >&6
+
+# What we want to do: set HAS_OBJC_EXCEPTIONS to yes if we can compile
+# something with @try/@catch/@finally in it.
+
+if test ! ${GCC} = "yes" ; then
+  HAS_OBJC_EXCEPTIONS=""
+  echo "$as_me:$LINENO: result: no: it's not gcc" >&5
+echo "${ECHO_T}no: it's not gcc" >&6
+else
+  CFLAGS="$CFLAGS -fobjc-exceptions"
+  cat >conftest.$ac_ext <<_ACEOF
+int main() {@try{; } @finally{; }; return 0;}
+_ACEOF
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+         { ac_try='test -s conftest.$ac_objext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  HAS_OBJC_EXCEPTIONS=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+HAS_OBJC_EXCEPTIONS=no
+fi
+rm -f conftest.$ac_objext conftest.$ac_ext
+  echo "$as_me:$LINENO: result: $HAS_OBJC_EXCEPTIONS" >&5
+echo "${ECHO_T}$HAS_OBJC_EXCEPTIONS" >&6
+fi
+
+
+
+# Restore LIBS and CFLAGS - we are going to compile C code in the next
+# test.
+LIBS="$saved_LIBS"
+CFLAGS="$saved_CFLAGS"
 
 #--------------------------------------------------------------------
 # Check if compiler supports -MMD -MP to generate %.d files ...
@@ -5343,6 +5393,7 @@ s,@BACKEND_BUNDLE@,$BACKEND_BUNDLE,;t t
 s,@EGREP@,$EGREP,;t t
 s,@objc_threaded@,$objc_threaded,;t t
 s,@ac_cv_objc_threaded@,$ac_cv_objc_threaded,;t t
+s,@HAS_OBJC_EXCEPTIONS@,$HAS_OBJC_EXCEPTIONS,;t t
 s,@AUTO_DEPENDENCIES@,$AUTO_DEPENDENCIES,;t t
 s,@INCLUDES@,$INCLUDES,;t t
 s,@LIB_DIR@,$LIB_DIR,;t t

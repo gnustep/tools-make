@@ -1,3 +1,12 @@
+Fri Jun 18 18:49:16 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* configure.ac: Detect native exception handler support in the
+	compiler, and set HAS_OBJC_EXCEPTIONS to yes if it's there.
+	* configure: Regenerated.
+	* config.make.in: New variable HAS_OBJC_EXCEPTIONS.
+	* common.make: If HAS_OBJC_EXCEPTIONS is set, add
+	-fobjc-exceptions to the ObjC flags.
+	
 2004-06-16  Adam Fedor  <fedor@gnu.org>
 
 	* GNUmakefile (distclean): Remove duplicate GNUmakefile removal

@@ -401,6 +401,11 @@ OBJCFLAGS = -fno-strict-aliasing
 CFLAGS =
 OBJ_DIR_PREFIX =
 
+# If the compiler supports native ObjC exceptions, turn them on!
+ifeq ($(HAS_OBJC_EXCEPTIONS), yes)
+  OBJCFLAGS += -fobjc-exceptions
+endif
+
 #
 # Now decide whether to build shared objects or not.  Nothing depending
 # on the value of the shared variable is allowed before this point!

@@ -464,8 +464,6 @@ else
 	objc_threaded="", objc_threaded="")
   fi
 fi
-LIBS="$saved_LIBS"
-CFLAGS="$saved_CFLAGS"
 if test x"$objc_threaded" = x""; then
   AC_MSG_RESULT(no)
 else
@@ -477,6 +475,33 @@ fi
 ac_cv_objc_threaded="$objc_threaded"
 AC_SUBST(objc_threaded)
 AC_SUBST(ac_cv_objc_threaded)
+
+# Do not restore LIBS and CFLAGS yet as we need to test if the
+# compiler supports native exceptions.
+
+#--------------------------------------------------------------------
+# Check if GCC supports -fobjc-exceptions, and if so, turn it on!
+#--------------------------------------------------------------------
+AC_MSG_CHECKING(if the compiler supports native ObjC exceptions)
+
+# What we want to do: set HAS_OBJC_EXCEPTIONS to yes if we can compile
+# something with @try/@catch/@finally in it.
+
+if test ! ${GCC} = "yes" ; then
+  HAS_OBJC_EXCEPTIONS=""
+  AC_MSG_RESULT(no: it's not gcc)
+else
+  CFLAGS="$CFLAGS -fobjc-exceptions"
+  AC_COMPILE_IFELSE([[int main() {@try{; } @finally{; }; return 0;}]], HAS_OBJC_EXCEPTIONS=yes, HAS_OBJC_EXCEPTIONS=no)
+  AC_MSG_RESULT($HAS_OBJC_EXCEPTIONS)
+fi
+
+AC_SUBST(HAS_OBJC_EXCEPTIONS)
+
+# Restore LIBS and CFLAGS - we are going to compile C code in the next
+# test.
+LIBS="$saved_LIBS"
+CFLAGS="$saved_CFLAGS"
 
 #--------------------------------------------------------------------
 # Check if compiler supports -MMD -MP to generate %.d files ...

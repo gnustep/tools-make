@@ -121,3 +121,9 @@ CONFIG_SYSTEM_LIB_DIR = @LIB_DIR@
 # used to compile them) via -MMD -MP flags
 #
 AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
+
+#
+# Whether the ObjC compiler supports native ObjC exceptions via
+# @try/@catch/@finally/@throw.
+#
+HAS_OBJC_EXCEPTIONS = @HAS_OBJC_EXCEPTIONS@
