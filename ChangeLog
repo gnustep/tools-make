@@ -1,3 +1,30 @@
+2002-07-29  Adam Fedor  <fedor@gnu.org>
+
+	* Changes from 1.4.0 merged into main branch.
+
+2002-07-27  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.4.0
+
+Wed Jul 24 16:31:14 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* debian/: Outdated directory removed - the debian maintainers are
+	maintaining the updated one elsewhere.  (Suggested by Matthias
+	Klose <doko@cs.tu-berlin.de>).
+
+Mon Jul 22 12:34:49 2002  Georg Fleischmann <georg@vhf.de>
+
+	* Instance/Shared/bundle.make (shared-instance-bundle-all):
+	Copying of localized resources from subprojects with multiple
+	languages corrected.
+
+2002-07-21  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (Darwin): Changes to compile with GNU compiler/runtime.
+	(Irix): Has shared libs. Add OBJ_MERGE_CMD. Remove extra section.
+	* Documentation/machines.texi (Darwin): Update ffcall instructions.
+	(Reports from Carl Eugen).
+
 2002-07-03  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.3.4

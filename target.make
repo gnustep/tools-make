@@ -59,7 +59,13 @@ ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
   endif
 endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  ifeq ("$(objc_threaded)","")
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  else
+    INTERNAL_CFLAGS = -D_REENTRANT
+    INTERNAL_OBJCFLAGS = -D_REENTRANT
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lm
+  endif
 endif
 ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
@@ -306,7 +312,9 @@ endif
 ifeq ($(findstring darwin5, $(GNUSTEP_TARGET_OS)), darwin5)
 ifeq ($(OBJC_RUNTIME), NeXT)
   HAVE_BUNDLES     = yes
-  OBJC_COMPILER = NeXT
+  OBJC_COMPILER    = NeXT
+  # Set flags to ignore the MacOSX headers
+  INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
 endif
 
 HAVE_SHARED_LIBS = yes
@@ -322,10 +330,6 @@ ifeq ($(FOUNDATION_LIB),nx)
     INTERNAL_CFLAGS    += $(ARCH_FLAGS)
     INTERNAL_LDFLAGS   += $(ARCH_FLAGS)
   endif
-endif
-ifeq ($(FOUNDATION_LIB),gnu)
-  # Set flags to ignore the MacOSX headers
-  INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
 endif
 
 TARGET_LIB_DIR = \
@@ -346,23 +350,28 @@ endif
 
 ifneq ($(OBJC_COMPILER), NeXT)
 # GNU compiler
-
-DYLIB_DEF_FRAMEWORKS += -framework System
-
+SHARED_LD_PREFLAGS += -arch_only ppc -noall_load
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) \
-		-dynamiclib $(ARCH_FLAGS) -dynamic	\
+	/usr/bin/libtool -flat_namespace -undefined warning \
+		$(SHARED_LD_PREFLAGS) \
+		$(ARCH_FLAGS) -dynamic	\
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
 		-install_name $(DYLIB_INSTALL_NAME)	\
 		-o $@					\
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
-		-lobjc $^ $(SHARED_LD_POSTFLAGS); \
+		$^ $(SHARED_LD_POSTFLAGS); \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
-else # OBJC_COMPILER=NeXT
+HAVE_BUNDLES = no
+BUNDLE_LD	=  /usr/bin/ld
+BUNDLE_CFLAGS   += -fno-common
+BUNDLE_LDFLAGS  += -dynamic -flat_namespace -undefined warning $(ARCH_FLAGS)
+
+else 
+# NeXT Compiler
 
 DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
 #DYLIB_DEF_FRAMEWORKS += -framework Foundation
@@ -382,6 +391,13 @@ SHARED_LIB_LINK_CMD     = \
 		$^ $(SHARED_LD_POSTFLAGS); \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS   += -dynamic
+
+BUNDLE_LD	=  $(CC)
+BUNDLE_CFLAGS   +=
+BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
+
 endif # OBJC_COMPILER
 
 OBJ_MERGE_CMD = \
@@ -391,14 +407,12 @@ STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
 	$(STATIC_LD_POSTFLAGS)
 
-AFTER_INSTALL_STATIC_LIB_COMMAND =
+AFTER_INSTALL_STATIC_LIB_COMMAND = \
+	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
+	$(RANLIB) $(VERSION_LIBRARY_FILE))
 
-SHARED_CFLAGS   += -dynamic -fno-common
-SHARED_LIBEXT   = .dylib
+SHARED_CFLAGS   += -fno-common
 
-BUNDLE_LD	=  $(CC)
-BUNDLE_CFLAGS   += 
-BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
 endif
 #
 # end MacOSX 10.1.1, darwin5.1
@@ -865,23 +879,28 @@ endif
 # IRIX
 #
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
-#HAVE_SHARED_LIBS        = yes
+HAVE_SHARED_LIBS        = yes
 STATIC_LIB_LINK_CMD = \
         (cd $(GNUSTEP_OBJ_DIR); $(AR) $(ARFLAGS) \
         $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
         $(RANLIB) $(VERSION_LIBRARY_FILE)
 SHARED_LIB_LINK_CMD     = \
-        (cd $(GNUSTEP_OBJ_DIR); $(CC) $(SHARED_LD_PREFLAGS) -v $(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` $(SHARED_LD_POSTFLAGS);\
+        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_LD_PREFLAGS) \
+	$(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o` \
+	$(INTERNAL_LIBRARIES_DEPEND_UPON) $(SHARED_LD_POSTFLAGS);\
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
 SHARED_CFLAGS     += -fPIC
-SHARED_LIBEXT   = .sl
+SHARED_LIBEXT   = .so
+
+OBJ_MERGE_CMD		= \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD       = $(CC)
 BUNDLE_CFLAGS   += -fPIC
-BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+BUNDLE_LDFLAGS  += -shared
 endif
 
 # end IRIX
@@ -1075,35 +1094,6 @@ endif
 # end HP-UX
 #
 ####################################################
-
-####################################################
-#
-# IRIX
-#
-ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
-#HAVE_SHARED_LIBS        = yes
-STATIC_LIB_LINK_CMD = \
-	(cd $(GNUSTEP_OBJ_DIR); $(AR) $(ARFLAGS) \
-	$(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
-	$(RANLIB) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
-SHARED_LIB_LINK_CMD     = \
-        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` ;\
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-
-SHARED_CFLAGS     += -fPIC
-SHARED_LIBEXT   = .sl
-
-HAVE_BUNDLES    = yes
-BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS   += -fPIC
-BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
-endif
-
-# end IRIX
-#
-####################################################
-
 
 ## Local variables:
 ## mode: makefile

@@ -18,7 +18,7 @@ how to install the entire GNUstep package (including this package).
 GNUstep-HOWTO comes with this distribution.
 
 This should be the first GNUstep package you install. After installing
-this package, install ffcall and any other libraries that GNUstep may
+this package, install ffcall or libffi and any other libraries that GNUstep may
 need (see the GNUstep-HOWTO). Then install gnustep-base.
 
 When you configure additional libraries, make sure you use the same

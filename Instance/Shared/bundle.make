@@ -209,10 +209,11 @@ endif
 ifneq ($(_SUBPROJECTS),)
 	$(ECHO_COPYING_RESOURCES_FROM_SUBPROJS)for subproject in $(_SUBPROJECTS); do \
 	  if [ -d $$subproject/Resources/Subproject ]; then \
-	    if [ $$subproject/Resources/Subproject/* != $$subproject'/Resources/Subproject/*' ]; then \
-	      cp -r $$subproject/Resources/Subproject/* \
-	            $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
-	    fi; \
+	    for f in $$subproject/Resources/Subproject/*; do \
+	      if [ $$f != $$subproject'/Resources/Subproject/*' ]; then \
+	        cp -r $$f $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
+	      fi; \
+	    done; \
 	  fi; \
 	done$(END_ECHO)
 endif
