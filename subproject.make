@@ -45,7 +45,20 @@ endif
 
 internal-all:: $(SUBPROJECT_NAME:=.all.subproject.variables)
 
-internal-install::
+# for frameworks, headers are copied by build-headers into the
+# framework directory, and are automatically installed when you
+# install the framework; for other projects, we need to install each
+# subproject's headers separately
+ifeq ($(FRAMEWORK_NAME),)
+# WARNING - if you type `make install' in a framework's subproject dir
+# you are going to install the headers in the wrong place - can't fix
+# that - but you can prevent it by adding `FRAMEWORK_NAME = xxx' to
+# all subprojects' GNUmakefiles.
+internal-install:: $(SUBPROJECT_NAME:=.install.subproject.variables)
+
+internal-uninstall:: $(SUBPROJECT_NAME:=.uninstall.subproject.variables)
+
+endif
 
 internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.variables)
 
@@ -58,7 +71,8 @@ $(SUBPROJECT_NAME):
 else
 # This part gets included the second time make is invoked.
 
-FRAMEWORK_HEADER_FILES := $(patsubst %.h,$(FRAMEWORK_VERSION_DIR_NAME)/Headers/%.h,$(HEADER_FILES))
+FRAMEWORK_HEADERS_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Headers/
+FRAMEWORK_HEADER_FILES = $(patsubst %.h,$(FRAMEWORK_HEADERS_DIR)%.h,$(HEADER_FILES))
 
 #
 # Internal targets
@@ -77,7 +91,9 @@ internal-subproject-all:: before-$(TARGET)-all \
                        framework-localized-webresource-files \
                        after-$(TARGET)-all
 
-$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES)
+# We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
+$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+                                          $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 	$(OBJ_MERGE_CMD)
 
 before-$(TARGET)-all::
@@ -87,20 +103,17 @@ after-$(TARGET)-all::
 ifneq ($(FRAMEWORK_NAME),)
 internal-subproject-build-headers:: $(FRAMEWORK_HEADER_FILES)
 
-$(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
-	  if [ "$(HEADER_FILES)" != "" ]; then \
-	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Headers; \
-	    if test ! -L "$(DERIVED_SOURCES)/$(FRAMEWORK_NAME)"; then \
-	      $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
-	      $(DERIVED_SOURCES)/$(FRAMEWORK_NAME); \
-	    fi; \
-	    for file in $(HEADER_FILES) __done; do \
-	      if [ $$file != __done ]; then \
-		$(INSTALL_DATA) ./$$file \
-		$(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
-	      fi; \
-	    done; \
-	  fi
+$(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES) $(FRAMEWORK_HEADERS_DIR)
+ifneq ($(HEADER_FILES),)
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) ./$$file $(FRAMEWORK_HEADERS_DIR)/$$file ; \
+	  fi; \
+	done
+endif
+
+$(FRAMEWORK_HEADERS_DIR):
+	$(MKDIRS) $@
 endif
 
 framework-components::
@@ -214,46 +227,44 @@ framework-localized-webresource-files:: framework-webresource-dir
 	fi;)
 
 #
-# Installation targets
+# Installation targets - we only need to install headers and only 
+# if this is not in a framework
 #
+ifeq ($(FRAMEWORK_NAME),)
 
-internal-subproject-install:: internal-install-subproject-dirs \
-                           internal-install-subproject-headers
+ifeq ($(strip $(HEADER_FILES_DIR)),)
+override HEADER_FILES_DIR = .
+endif
 
-internal-install-subproject-dirs::
-	$(MKDIRS) \
-		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
-		$(ADDITIONAL_INSTALL_DIRS)
+internal-subproject-install:: $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
+                              $(ADDITIONAL_INSTALL_DIRS) \
+                              internal-install-headers
 
-internal-install-subproject-headers::
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  for file in $(HEADER_FILES) __done; do \
-	    if [ $$file != __done ]; then \
-	      if [ "$(FRAMEWORK_NAME)" == "" ]; then \
-		$(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-		$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	      else; \
-		$(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-		$(FRAMEWORK_VERSION_DIR_NAME)/$$file ; \
-	      fi; \
-	    fi; \
-	  done; \
-	fi
+$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR):
+	$(MKDIRS) $@
 
-internal-library-uninstall:: before-uninstall \
-                             internal-uninstall-headers \
-                             after-uninstall
+$(ADDITIONAL_INSTALL_DIRS):
+	$(MKDIRS) $@
 
-before-uninstall after-uninstall::
-
-internal-uninstall-headers::
+internal-install-headers::
+ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    if [ "$(FRAMEWORK_NAME)" == "" ]; then \
-	      rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	    fi; \
+	    $(INSTALL_DATA) \
+	      $(HEADER_FILES_DIR)/$$file \
+	      $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	  fi; \
+	done;
+endif
+
+internal-subproject-uninstall::
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done
+
+endif
 
 #
 # Cleaning targets
