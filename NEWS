@@ -1,7 +1,26 @@
 NEWS
 ****
 
-The currently released version is `1.9.2'.
+The currently released version is `1.10.0'.
+
+Changes in version `1.10.0'
+===========================
+
+   * a GNUsteprc file is now automatically created and installed in
+     $GNUSTEP_SYSTEM_ROOT, which sets the system-wide default for the
+     user root directory (default=~/GNUstep, which can be overriden
+     with the `--with-user-root' argument to configure, or by modifying
+     GNUsteprc after configuration.)
+
+   * make_services is not run by GNUstep.sh anymore. You must run this
+     manually now (see the gnustep-gui documentation).
+
+   * Palettes use a plist instead of a strings format file now for the
+     palette.table file.
+
+   * You can use the `--enable-native-objc-exceptions' argument to
+     configure to enable use of built in objc exceptions with compilers
+     that support it.
 
 Changes in version `1.9.2'
 ==========================

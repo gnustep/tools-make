@@ -61,7 +61,7 @@ Cocoa:
 @item Do not use Objective-C++
 @item Do not use Quicktime or other proprietary extension
 @item You need to convert .nib files (see next question  @pxref{Tools for porting})
-@item Some unfinished classes include NSToolBar and Drawers.
+@item Some unfinished classes include  Drawers.
 @end itemize
 
 @node Tools for porting, Can I transfer archived data from GNUstep to Cocoa?, How about porting between Cocoa and GNUstep?, Compatibility
@@ -128,10 +128,10 @@ why this won't work either.
 @node Is there an Interface Builder for GNUstep?, Can I use my original NIB files?, Does distributed objects work between GNUstep and Cocoa?, Compatibility
 @subsection Is there an Interface Builder for GNUstep?
 
-There is an Interface Builder for GNUstep called Gorm, but it is
-in alpha release, so it may not work perfectly. You can download it from
-the ftp site or via http.
-The Project Manager ProjectCenter is also available.
+There is an Interface Builder for GNUstep called Gorm. A lot of work
+has been put into it and it works very well.  You can download it from
+the ftp site or via http.  The Project Manager ProjectCenter is also
+available.
 
 @node Can I use my original NIB files?, Can one use the hybrid "Objective-C++", Is there an Interface Builder for GNUstep?, Compatibility
 @subsection  Can I use my original NIB files?
@@ -383,12 +383,8 @@ out-of-date (or wrong) and update/mark-as-outdated as required.
 @node Why doesn't GDB support Objective-C?,  , How can I help with the GNUstep website?, Compiling and Developing
 @subsection Why doesn't GDB support Objective-C?
 
-Update: GDB 6.0, which should come out sometime in September 2003 
-supports debugging of Objective-C code.
-
-There are patches available on the gnustep web site for earlier versions
-of gdb (see @url{ftp://ftp.gnustep.org/pub/gnustep/patches}).
-
+Um, it does. As of GDB 6.0, gdb supports debugging of Objective-C
+code.
 
 @c -------------------------------------------------------------------
 
@@ -484,7 +480,7 @@ objects implementations, but, since it is free software, it can be
 ported to platforms for which other distributed objects implementations
 are not available.
 
-[NOTE: The GNU distributed object facilities have the same ease-of-use
+[ NOTE: The GNU distributed object facilities have the same ease-of-use
 as NeXT's; be warned, however, that they are not compatible with each
 other.  They have different class hierarchies, different instance
 variables, different method names, different implementation strategies
@@ -497,7 +493,7 @@ target for the method encoding types and caches the results; GNU
 NSDistantObject gets the types directly from the local GNU "typed selector"
 mechanism if the information is known locally and only queries the remote
 target or caching encoding types when using a method that is not known to
-the local process.  The NSProxy for the remote root object always has name 0
+the local process.  The NSProxy for the remote root object always has name
 and, once set, you cannot change the root object of a NSConnection; the GNU
 Proxy for the remote root object has a target address value just like
 all other Proxy's, and you can change the root object as many times as
@@ -568,7 +564,7 @@ This is a very good backend that draws using the libart package and
 freetype with near PostScript quality and functionality. At some point 
 it will become the standard.
 @item w32
-This backend works on Windows and is currently very alpha quality.
+This backend works on Windows and is currently beta quality.
 @end table
 
 @c ------------------------- GNUstep GUI Library -----------------------

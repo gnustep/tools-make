@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-Last updated 9 June 2004.  Please send corrections to
+Last updated 3 September 2004.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -37,7 +37,7 @@ GNUstep yet. Plus there are some other issues. If you start with Cocoa:
    * You need to convert .nib files (see next question  *note Tools for
      porting::)
 
-   * Some unfinished classes include NSToolBar and Drawers.
+   * Some unfinished classes include  Drawers.
 
 Tools for porting
 -----------------
@@ -102,8 +102,8 @@ why this won't work either.
 Is there an Interface Builder for GNUstep?
 ------------------------------------------
 
-There is an Interface Builder for GNUstep called Gorm, but it is in
-alpha release, so it may not work perfectly. You can download it from
+There is an Interface Builder for GNUstep called Gorm. A lot of work
+has been put into it and it works very well.  You can download it from
 the ftp site or via http.  The Project Manager ProjectCenter is also
 available.
 
@@ -340,11 +340,7 @@ out-of-date (or wrong) and update/mark-as-outdated as required.
 Why doesn't GDB support Objective-C?
 ------------------------------------
 
-Update: GDB 6.0, which should come out sometime in September 2003
-supports debugging of Objective-C code.
-
-   There are patches available on the gnustep web site for earlier
-versions of gdb (see <ftp://ftp.gnustep.org/pub/gnustep/patches>).
+Um, it does. As of GDB 6.0, gdb supports debugging of Objective-C code.
 
 GNU Objective C Compiler and Runtime
 ====================================
@@ -422,7 +418,7 @@ objects implementations, but, since it is free software, it can be
 ported to platforms for which other distributed objects implementations
 are not available.
 
-   [NOTE: The GNU distributed object facilities have the same
+   [ NOTE: The GNU distributed object facilities have the same
 ease-of-use as NeXT's; be warned, however, that they are not compatible
 with each other.  They have different class hierarchies, different
 instance variables, different method names, different implementation
@@ -435,7 +431,7 @@ the method encoding types and caches the results; GNU NSDistantObject
 gets the types directly from the local GNU "typed selector" mechanism
 if the information is known locally and only queries the remote target
 or caching encoding types when using a method that is not known to the
-local process.  The NSProxy for the remote root object always has name 0
+local process.  The NSProxy for the remote root object always has name
 and, once set, you cannot change the root object of a NSConnection; the
 GNU Proxy for the remote root object has a target address value just
 like all other Proxy's, and you can change the root object as many
@@ -497,7 +493,7 @@ There are several backends currently available:
      point it will become the standard.
 
 `w32'
-     This backend works on Windows and is currently very alpha quality.
+     This backend works on Windows and is currently beta quality.
 
 GNUstep DisplayGhostScript Server
 =================================

@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.9.2 is now available.
+The GNUstep Makefile Package version 1.10.0 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -12,17 +12,29 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-Changes in version `1.9.2'
-==========================
+Changes in version `1.10.0'
+===========================
 
-   * Application and Bundles use the latest convention on Apple.
+   * a GNUsteprc file is now automatically created and installed in
+     $GNUSTEP_SYSTEM_ROOT, which sets the system-wide default for the
+     user root directory (default=~/GNUstep, which can be overriden
+     with the `--with-user-root' argument to configure, or by modifying
+     GNUsteprc after configuration.)
 
-   * Improve/Simplify dependency checking when making docs
+   * make_services is not run by GNUstep.sh anymore. You must run this
+     manually now (see the gnustep-gui documentation).
+
+   * Palettes use a plist instead of a strings format file now for the
+     palette.table file.
+
+   * You can use the `--enable-native-objc-exceptions' argument to
+     configure to enable use of built in objc exceptions with compilers
+     that support it.
 
 Obtaining gnustep-make
 ======================
 
-You can get the gstep-make-1.9.2.tar.gz distribution file at
+You can get the gstep-make-1.10.0.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please log bug reports on the GNUstep project page

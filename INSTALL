@@ -249,8 +249,3 @@ directory.  It may be overridden on a system-wide basis by supplying a
      # Set up to store GNUstep files directly in my home directory
      GNUSTEP_USER_ROOT=~
 
-   The system-wide .GNUsteprc file can also contain aa line saying
-     FORCE_USER_ROOT
-   Which will force the value supplied in the system wide file to be
-used irrespective of any user specific .GNUsteprc file settings.
-

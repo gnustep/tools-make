@@ -24,7 +24,6 @@ at the (developer) FAQ for more developer oriented questions.
 * What platforms does GNUstep run on?::  
 * Does GNUstep run on Windows?::  
 * What is GNUstep's position towards KDE and the GNOME project?::  
-* Which Foundation Library can I use?::  
 * How can I get GNUstep?::      
 * How do you run GNUstep?::     
 * Is there a web site?::        
@@ -62,7 +61,7 @@ See the list of supported platforms at
 @url{http://www.gnustep.org/information/machines_toc.html} for
 information on what machines GNUstep builds on and what the status of
 the ports is. Probably a few days porting to any other Unix system where
-current gcc/egcs compilers and gdb debugger work.
+current gcc compilers and gdb debugger work.
 
 @node Does GNUstep run on Windows?, What is GNUstep's position towards KDE and the GNOME project?, What platforms does GNUstep run on?, GNUstep General Information
 @subsection  Does GNUstep run on Windows?
@@ -70,23 +69,23 @@ current gcc/egcs compilers and gdb debugger work.
   The primary targets for GNUstep are free 'Unix' platforms such
 as GNU/Linux.
 
-That being said, the base library should run on Windows-NT,98 with the
+That being said, the base library should run on Windows-NT,98,2000 with the
 Cygwin unix emulation library from Cygnus
 (http://sourceware.cygnus.com/cygwin/) or the MinGW libraries.  At
 present there are a few problems with networking (Distributed Objects)
 support, but the library is believed to work.
 
-The gui library needs a win32 backend library to work under
-Windows-NT.  The backend library is a thin layer that converts the
+The gui library uses the win32 backend library to work under
+Windows.  The backend library is a thin layer that converts the
 GNUstep methods to handle drawing of GUI elements to calls to the
-win32 API.  This is a project is in an alpha state.
+win32 API.  This project is in beta.
 
 The application-wrapper used for GNUstep already allows for multiple
 binaries to be stored for different systems, so you should be able
 to write once, deploy anywhere.
 
 
-@node What is GNUstep's position towards KDE and the GNOME project?, Which Foundation Library can I use?, Does GNUstep run on Windows?, GNUstep General Information
+@node What is GNUstep's position towards KDE and the GNOME project?, How can I get GNUstep?, Does GNUstep run on Windows?, GNUstep General Information
 @subsection  What is GNUstep's position towards KDE and the GNOME project?
 
   You can use GNUstep with GNOME and/or KDE.  GNUstep displays
@@ -100,20 +99,7 @@ work of developing an OS independent framework from scratch. It
 gives you lots of basic functionality, from Font Panels to Unicode
 strings to Distributed Objects.
 
-@node Which Foundation Library can I use?, How can I get GNUstep?, What is GNUstep's position towards KDE and the GNOME project?, GNUstep General Information
-@subsection  Which Foundation Library can I use?
-
-  That depends ...
-
-If you only want to use the database package - gnustep-db, you can
-use either the gnustep base library or libFoundation.
-
-If you want to develop/use GNUstep gui applications, you must use
-the gnustep-base library since libFoundation is (13-Feb-2000)
-missing much essential functionality.
-
-
-@node How can I get GNUstep?, How do you run GNUstep?, Which Foundation Library can I use?, GNUstep General Information
+@node How can I get GNUstep?, How do you run GNUstep?, What is GNUstep's position towards KDE and the GNOME project?, GNUstep General Information
 @subsection  How can I get GNUstep?
 
 Get the HOWTO from 
@@ -171,15 +157,15 @@ snapshots.
 
 @itemize @bullet
 @item gnustep-make does pretty much what the makefiles in NeXTstep do.
-@item gnustep-base (Foundation) stuff should work fine for almost all projects.
-@item gnustep-db is only EOF-1.0 compatible but should work OK.
+@item gnustep-base (Foundation) works well and is used in production evironments.
+@item gnustep-gdl2 works well and is used in production evironments.
 @item gnustep-gui (AppKit) has a lot working but there is still stuff missing.
-@item DGS (Display Ghostscript) is usable but slow.
 @end itemize
 
 What does this mean for users? Many applications will run quite well.
-Applications that require very complex drawing and some unusual features may
-not.
+Applications that require very complex text handling and some unusual
+features and/or some of the latest additions to Cocoa may not work as
+well.
 
 @c ****************************************************************
 @node Compiling and Installing, Compatibility and Layout, GNUstep General Information, Top
@@ -203,9 +189,8 @@ GNUstep web site.
 @subsection Are there any precompiled packages available?
 
 Check @url{http://www.gnustep.org/resources/sources.html} for links to
-RPMS. Debian packages are also available.  You can check the debian
-site(s) for preconfigured GNUstep packages. Also check the BSD sites for
-GNUstep ports.
+RPMS, Debain packages, and BSD ports. Also Windows installers, MacOSX biniaries
+and others.
 
 @node What are these type and size warnings?, What are these import warnings?, Are there any precompiled packages available?, Compiling and Installing
 @subsection What are these type and size warnings?
@@ -281,14 +266,8 @@ this. Actually we're hoping someone will volunteer to do it.
 
 First of all, GNUstep uses a slightly different directory structure than
 NeXT or MacOSX. Part of this is historical, part is because we can't do
-things the same way (see @pxref{Why not use Frameworks?}).
-
-GNUstep also stores libraries and binaries in subdirectories based on
-the operating system and cpu. This is so you can compile and store
-binaries for different systems in the same directory structure. MacOSX
-uses Fat binaries to accomplish this (another reason we do it
-differently). If you want, you can get rid of this using the
-@samp{--enable-flattened} option to the gnustep-make package.
+things the same way (see @pxref{Why not use Frameworks?}). Although currently
+the structure is very similar to the it is done in MacOSX.
 
 @node Why not use Frameworks?,  , What's up with the directory structure?, Compatibility and Layout
 @subsection Why not use Frameworks?
