@@ -1,7 +1,7 @@
 Tue Nov 13 14:02:06 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rpm.make: Fixed check for debug variable so that it correctly 
-	manage debug = no.
+	manages debug = no.
 
 Tue Nov 13 13:57:13 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
