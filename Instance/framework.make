@@ -378,8 +378,10 @@ framework-localized-webresource-files:: framework-webresource-dir
 	done
 endif
 
+PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
+
 ifeq ($(PRINCIPAL_CLASS),)
-override PRINCIPAL_CLASS = $(GNUSTEP_INSTANCE)
+  PRINCIPAL_CLASS = $(GNUSTEP_INSTANCE)
 endif
 
 # MacOSX-S frameworks

@@ -133,8 +133,10 @@ internal-application-build-template:
 endif
 endif
 
+PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
+
 ifeq ($(PRINCIPAL_CLASS),)
-override PRINCIPAL_CLASS = NSApplication
+  PRINCIPAL_CLASS = NSApplication
 endif
 
 APPLICATION_ICON = $($(GNUSTEP_INSTANCE)_APPLICATION_ICON)

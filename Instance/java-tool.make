@@ -55,6 +55,8 @@ internal-java_tool-all:: before-$(GNUSTEP_INSTANCE)-all \
 internal-java_tool-install:: shared-instance-java-install \
                         $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)
 
+PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
+
 ifeq ($(PRINCIPAL_CLASS),)
   $(warning You must specify PRINCIPAL_CLASS)
   # But then, we are good, and try guessing
