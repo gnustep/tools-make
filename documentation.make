@@ -366,54 +366,49 @@ internal-textdoc-uninstall::
 # Cleaning targets
 #
 internal-doc-clean::
-	rm -f $(INTERNAL_doc_NAME).aux
-	rm -f $(INTERNAL_doc_NAME).cp
-	rm -f $(INTERNAL_doc_NAME).cps
-	rm -f $(INTERNAL_doc_NAME).dvi
-	rm -f $(INTERNAL_doc_NAME).fn
-	rm -f $(INTERNAL_doc_NAME).info
-	rm -f $(INTERNAL_doc_NAME).ky
-	rm -f $(INTERNAL_doc_NAME).log
-	rm -f $(INTERNAL_doc_NAME).pg
-	rm -f $(INTERNAL_doc_NAME).ps
-	rm -f $(INTERNAL_doc_NAME).toc
-	rm -f $(INTERNAL_doc_NAME).tp
-	rm -f $(INTERNAL_doc_NAME).vr
-	rm -f $(INTERNAL_doc_NAME).vrs
-	rm -f $(INTERNAL_doc_NAME)_*.html
-	rm -f $(INTERNAL_doc_NAME).ps.gz
-	rm -f $(INTERNAL_doc_NAME).tar.gz
-	-rm -f $(INTERNAL_doc_NAME)/*
+	rm -f $(INTERNAL_doc_NAME).aux  \
+	      $(INTERNAL_doc_NAME).cp   \
+	      $(INTERNAL_doc_NAME).cps  \
+	      $(INTERNAL_doc_NAME).dvi  \
+	      $(INTERNAL_doc_NAME).fn   \
+	      $(INTERNAL_doc_NAME).info \
+	      $(INTERNAL_doc_NAME).ky   \
+	      $(INTERNAL_doc_NAME).log  \
+	      $(INTERNAL_doc_NAME).pg   \
+	      $(INTERNAL_doc_NAME).ps   \
+	      $(INTERNAL_doc_NAME).toc  \
+	      $(INTERNAL_doc_NAME).tp   \
+	      $(INTERNAL_doc_NAME).vr   \
+	      $(INTERNAL_doc_NAME).vrs  \
+	      $(INTERNAL_doc_NAME)_*.html \
+	      $(INTERNAL_doc_NAME).ps.gz  \
+	      $(INTERNAL_doc_NAME).tar.gz \
+	      $(INTERNAL_doc_NAME)/*
 ifneq ($(GSDOC_FILES),)
 	for i in $(GSDOC_FILES); do \
 	  rm -f $(GSDOC_OBJECT_FILES) ; \
 	done
 endif
 ifneq ($(LATEX_FILES),)
-	for i in $(LATEX_FILES); do \
-	  rm -f `basename $$i .tex`.aux ; \
-	done
+	rm -f *.aux
 endif
 
 internal-textdoc-clean::
 	rm -f $(INTERNAL_textdoc_NAME)
 
-ifneq ($(JAVADOC_FILES),)
-
-internal-doc-distclean::
-	rm -Rf $(INTERNAL_doc_NAME)
-
-endif # JAVADOC_FILES
-
 ifneq ($(LATEX_FILES),)
+ifneq ($(LATEX2HTML),)
+internal-doc-distclean::
+	if [ -d "$(INTERNAL_doc_NAME)" ]; then \
+	  rm -rf $(INTERNAL_doc_NAME)/; \
+	fi
+endif
+endif
 
+ifneq ($(JAVADOC_FILES),)
 internal-doc-distclean::
-	rm -Rf *~ 
-	rm -Rf *.aux
-else # ! LATEX_FILES
-internal-doc-distclean::
-	rm -Rf *~ 
-endif # LATEX_FILES
+	rm -rf $(INTERNAL_doc_NAME)
+endif 
 
 internal-textdoc-distclean::
 
