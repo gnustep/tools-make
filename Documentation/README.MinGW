@@ -21,10 +21,10 @@ providing a minimal set of tools needed to build programs using MingGW.
 If you wish to build for MinGW by cross-compiling from a Cygwin
 environment, please read README.cygwin instead.
 
-The base library is not completely ported to run on MinGW yet, but most
-stuff works, including networking/distributed objects.
-Probably background file handle operations (other than networking) and
-advanced parts of NSTask code do not currently work.
+The base library is only recently ported to run on MinGW.  While most
+stuff works, including networking/distributed objects, there are probably
+bits that have been overlooked or are untested as yet.  The only *known*
+areas of code not yet ported are the zlib, SSL and XML extensions.
 
 
 PRELIMINARIES
@@ -43,7 +43,7 @@ to be a system administrator on your machine to install this software.
 You should be able to use it without changing/setting any special
 configuration options.  The one thing to remember is that the checkbox
 to select whether to use unix line terminators instead of windows/DOS
-line terminators should be se to the unix option.
+line terminators should be set to the unix option.
 
 
 Installing and setting up MINGW and MSYS
@@ -56,12 +56,16 @@ and install it.
 Next, download MinGW-1.1 or later from
 http://sourceforge.net/project/mingw
 and extract this into c:/msys/version-number/mingw
+
 This will unpack the mingw source tree within the msys hierarchy.
 Unpacking mingw into the correct location within msys will ensure that the
 path set up in /etc/profile in msys picks up the mingw tools too.
 
-Remove the mingw make.exe file - mingw make is not good.
-Rename the msys gmake.exe to make.exe, so we will use this make program.
+You may need to edit /mingw/include/winsock2.h to change the size of the
+sa_data field in the sockaddr structure from 14 to 22 ... this is because
+newer versions of windoze have changed the layout of this structure.
+This modification is needed to be able to correctly determine the
+network interface details for your machine.
 
 It's a good idea to remove the libobjc.a and include/objc header that come
 with gcc (gcc -v for location) so that they are not accidentally found
@@ -70,10 +74,9 @@ instead of the libobjc DLL that you will compile below.
 Now you can double click on the c:/msys/version-number/bin/sh program to
 open a window containing a shell.
 
-In the shell window, type '. /etc/profile' to set up your path.
-You may also want to set the HOMEDRIVE and HOMEPATH environment variables
-to point to the home directory you wish to work from (though the defaults
-may be ok for you).
+At this point you may want to set the HOMEDRIVE and HOMEPATH environment
+variables to point to the home directory you wish to work from (though
+the defaults may be ok for you).
 NB. This home directory for building software must *not* contain spaces.
 (aside - MSYS uses the unix-style HOME environment variable, but windows
 programs, including GNUstep programs under windows, use the HOMEDRIVE and
@@ -107,8 +110,8 @@ In the GNUstep-make (core/make) package, do 'configure
 install the GNUstep system in an alternative location, but it is
 important that the path you use is a full windows style path with a
 drive letter and colon at the start of it.  This is because, while the
-msys shell and other tools automatically map unix style paths to
-windows paths, the mingw compiler does not!
+msys shell and other msys tools automatically map unix style paths to
+windows paths, other windows tools including the mingw compiler do not!
 
 IMPORTANT: The msys tools all handle unix style paths and map them to
 windows style paths internally.  The mingw tools only handle windows
@@ -120,7 +123,7 @@ with configure. The configure script may use the msys shell and other
 tools to locate binaries etc, and the msys tools will supply those
 locations as unix style paths.  If the configure script then causes
 those paths to be built in to makefiles, the make process is likely to
-fall over.
+fall over. 
 
 Now you can type 'make install' to build and install the make package.
 
@@ -129,7 +132,6 @@ environment.  The environment for building software is now completely
 set up, but for ease of use later, you might set up a script to be
 used to set up any new shell windows you create.  Something like this:
 
-. /etc/profile
 export HOMEDRIVE=C:
 export HOMEPATH=/home/myname
 export GNUSTEP_SYSTEM_DIR=C:/GNUstep/System
@@ -145,16 +147,9 @@ You should get the latest ffcall archive from
 http://ftp.gnustep.org/pub/gnustep/libs.  Currently this is
 ffcall-1.8d.tar.gz
 
-Ignore any other instructions for builting this ...
+Ignore any other instructions for building this ...
 
-First, rename the msys/version-number/bin/ln.exe file ...  this
-program creates 'symbolic links' using windows 'shortcuts' ...  but
-some tools like the compiler won't follow them - so renaming this
-program forces configure scripts to use the 'cp' program instead.  If
-you don't do this, the configure scripts for ffcall will produce
-makefiles which won't work properly!
-
-Next, in the shell window in which you have set up your GNUstep
+First, in the shell window in which you have set up your GNUstep
 environment, type
 
 RANLIB=touch ./configure --prefix=`$GNUSTEP_MAKEFILES/fixpath.sh -u $GNUSTEP_SYSTEM_ROOT`
@@ -169,7 +164,7 @@ it simply by typing:
 
 make install
 
-Finally, rename the ln.exe program back into place.
+
 
 
 Building and installing libobjc
@@ -184,6 +179,8 @@ Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
 make install
 
 This should build and install the ObjectiveC runtime and headers for you.
+
+
 
 
 Optional libraries
