@@ -97,5 +97,5 @@ if [ ! -f $full_appname/$appname ]; then
 fi
 
 IFS=" "
-$full_appname/$appname $@
+$full_appname/$appname "$@"
 
