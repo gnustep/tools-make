@@ -110,7 +110,6 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	@(echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NibFile = \"$(MAIN_MODEL_FILE)\";"; \
-	  fi; \
 	  echo "  Class = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "  Icon = \"$(PALETTE_ICON)\";"; \
 	  if [ -r "$(GNUSTEP_INSTANCE)palette.table" ]; then \
