@@ -39,7 +39,13 @@ ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -ldl -lm
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
+  ifeq ($(objc_threaded),1)
+    INTERNAL_CFLAGS = -D_REENTRANT
+    INTERNAL_OBJCFLAGS = -D_REENTRANT
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lthread -lsocket -lnsl -ldl -lm
+  else
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
+  endif
 endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
@@ -223,7 +229,7 @@ endif
 ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) -shared -W,l,soname=$(LIBRARY_FILE) \
+        $(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
            -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
         (cd $(GNUSTEP_OBJ_DIR); \
           rm -f $(LIBRARY_FILE); \

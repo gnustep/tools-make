@@ -27,7 +27,7 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-if [ -z "$LIBRARY_COMBO ]; then
+if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
 

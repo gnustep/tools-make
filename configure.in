@@ -106,6 +106,22 @@ fi
 AC_SUBST(ac_cv_library_combo)
 
 #--------------------------------------------------------------------
+# Check if libobjc was compiled with thread support.
+#--------------------------------------------------------------------
+AC_MSG_CHECKING(whether objc has thread support)
+saved_LIBS="$LIBS"
+LIBS="-lobjc $LIBS"
+AC_TRY_RUN([#include "config_thread.m"], objc_threaded=1,
+	objc_threaded=0, objc_threaded=1)
+LIBS="$saved_LIBS"
+if test $objc_threaded = 1; then
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+fi
+AC_SUBST(objc_threaded)
+
+#--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
 AC_OUTPUT(config.h config.make openapp debugapp GNUmakefile

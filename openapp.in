@@ -27,12 +27,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-if [ -z "$LIBRARY_COMBO ]; then
+if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
 
 case $1 in
-  --library_combo=*)
   --library-combo=*)
     LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
     if [ -z "$2" ]; then

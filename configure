@@ -1473,6 +1473,41 @@ fi
 
 
 #--------------------------------------------------------------------
+# Check if libobjc was compiled with thread support.
+#--------------------------------------------------------------------
+echo $ac_n "checking whether objc has thread support""... $ac_c" 1>&6
+echo "configure:1480: checking whether objc has thread support" >&5
+saved_LIBS="$LIBS"
+LIBS="-lobjc $LIBS"
+if test "$cross_compiling" = yes; then
+  objc_threaded=1
+else
+  cat > conftest.$ac_ext <<EOF
+#line 1487 "configure"
+#include "confdefs.h"
+#include "config_thread.m"
+EOF
+if { (eval echo configure:1491: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+then
+  objc_threaded=1
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -fr conftest*
+  objc_threaded=0
+fi
+rm -fr conftest*
+fi
+
+LIBS="$saved_LIBS"
+if test $objc_threaded = 1; then
+  echo "$ac_t""yes" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+
+#--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
 trap '' 1 2 15
@@ -1632,6 +1667,7 @@ s%@LN_S@%$LN_S%g
 s%@X_INCLUDE@%$X_INCLUDE%g
 s%@X_LIBS@%$X_LIBS%g
 s%@ac_cv_library_combo@%$ac_cv_library_combo%g
+s%@objc_threaded@%$objc_threaded%g
 
 CEOF
 EOF

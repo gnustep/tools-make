@@ -59,6 +59,9 @@ TAR		= tar
 # The default library combination
 default_library_combo = @ac_cv_library_combo@
 
+# Is libobjc threaded?
+objc_threaded = @objc_threaded@
+
 #
 # X Window System headers and libraries
 #

@@ -30,6 +30,12 @@ setenv LIBRARY_COMBO @ac_cv_library_combo@
 setenv GNUSTEP_LOCAL_ROOT @prefix@/Local
 setenv GNUSTEP_USER_ROOT ~/GNUstep
 
+if ( "${GNUSTEP_BUILD_ROOT}" == "" ) then
+      set GNUSTEP_MAKEFILES=${GNUSTEP_SYSTEM_ROOT}/Makefiles
+else
+      set GNUSTEP_MAKEFILES=${GNUSTEP_BUILD_ROOT}/Makefiles
+endif
+
 #
 # Determine the host information
 #
@@ -42,6 +48,12 @@ setenv GNUSTEP_HOST_OS `$(GNUSTEP_SYSTEM_ROOT}/Makefiles/os.sh $GNUSTEP_HOST`
 setenv GNUSTEP_HOST_CPU `$(GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_cpu.sh $GNUSTEP_HOST_CPU`
 setenv GNUSTEP_HOST_VENDOR `$(GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
 setenv GNUSTEP_HOST_OS `$(GNUSTEP_SYSTEM_ROOT}/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
+
+#
+# the rest of this file is only executed, if the core already is installed.
+#
+
+if ( "${GNUSTEP_BUILD_ROOT}" == "" ) then
 
 #
 # Add the GNUstep tools directories to the path
@@ -62,3 +74,5 @@ source $(GNUSTEP_SYSTEM_ROOT}/Makefiles/ld_lib_path.csh
 if ( -e ~/.GNUstep/GNUstep.csh ) then
 	. ~/.GNUstep/GNUstep.csh
 endif
+
+endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )
