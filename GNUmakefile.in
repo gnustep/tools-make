@@ -85,10 +85,10 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
         spec-debug-alone-rules.template
 
 MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make \
-        aggregate.make application.make
+        aggregate.make application.make java.make
 
 INSTANCE_MAKE_FILES = rules.make \
-        application.make
+        application.make java.make
 
 all: generated-files which_lib$(EXEEXT)
 
