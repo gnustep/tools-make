@@ -1,4 +1,4 @@
-Date:	09-Jan-2003 (tested under Windows XP)
+Date:	18-Feb-2005 (tested under Windows XP)
 Update: 23-Feb-2003 (also tested under Windows 2000)
 Author: Richard Frith-Macdonald <rfm@gnu.org>
 
@@ -42,16 +42,19 @@ the instructions for other helpful information.
 Installing and setting up MINGW and MSYS
 ----------------------------------------
 
-Download msys-1.08 or later from
+Download MSYS-1.0.10 or later from
 http://sourceforge.net/projects/mingw
-and install it.
+and install it (provides a shell to work from).
 
-Next, download MinGW-2.0.0-3 or later from
+Download msysDTK-1.0.1 or later from
 http://sourceforge.net/projects/mingw
-and install it inside the msys installation
-(usually in c:/msys/1.0/mingw)
+and install it (provides cvs and ssh etc).
 
-If you didn't install mingw in the standard location within the msys
+Download MinGW-3.1.0-1 or later from
+http://sourceforge.net/projects/mingw
+and install it (provides compiler, headers, libraries etc).
+
+If you didn't install mingw within the msys
 installation, then after installing mingw, create a file called fstab in
 c:/msys/<version-number>/etc, or wherever you installed msys, and make
 sure it contains the line
@@ -59,10 +62,17 @@ c:/mingw /mingw
 which also should be changed accordingly if you installed MinGW
 somewhere else.
 
+Download the most recent MinGW runtime (unless you got MinGW-3.2 or later)
+and untar it into the same location you installed MinGW in.  This is needed
+because earliet versions of the runtime had a critical bug in unicode
+filesystem support.
+
+Next
+
 You may need to edit /mingw/include/winsock2.h to change the size of the
 sa_data field in the sockaddr structure from 14 to 22 ... this is because
-newer versions of Windows have changed the layout of this structure.
-This modification is needed to be able to correctly determine the
+some versions of Windows have changed the layout of this structure.
+This modification may be needed to be able to correctly determine the
 network interface details for your machine.
 
 It's a good idea to remove the libobjc.a and include/objc header that come
@@ -88,8 +98,9 @@ IMPORTANT NOTE
 The msys make program sometimes crashes and core-dumps (usually while
 installing software).  If this happens, repeat the make command a few
 times until it works ... the crash in make is not reliably repeatable
-(which is probably why it has not been tracked down and fixed yet),
 which means that a retry will usually work.
+NB. I have not experienced this crash with the MSYS version listed above,
+so it may have been fixed.
 
 
 Obtaining GNUstep
@@ -104,7 +115,7 @@ You need things in the following order:
 
 GNUstep-make (release, snapshot, or cvs core module)
 libffcall (http://ftp.gnustep.org/pub/gnustep/lib)
-GNUstep-objc (release, snapshot, or cvs dev-apps module)
+GNUstep-objc (release, snapshot, or cvs dev-libs module)
 GNUstep-base (snapshot, or cvs core module)
 
 For gui, GNUstep-gui and GNUstep-back (snapshot, or cvs core module)
@@ -208,37 +219,33 @@ libiconv
     cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libiconv.a
     cp lib/iconv.dll $GNUSTEP_SYSTEM_ROOT/Tools/iconv.dll
 
+
 zlib
-  (not required for GNUstep-base, though zlib can be used by the base library).
-
   Get the binary packages from -
-  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-lib.zip
-  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-bin.zip
+  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.2.1-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.2.1-bin.zip
   
-  Unpack and install in the standard place, or:
-  the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Library/Headers
-  the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Library/Libraries
-  the dll files in $GNUSTEP_SYSTEM_ROOT/Tools
-
-  Be sure to rename the .lib files to .a!
-
-libxml2
-  Needed for XML parsing support, for MacOS-X compatible
-  property lists, and for documentation processing.
-  NB. at the time of writing, XML support in GNUstep base has *not*
-  been ported to Windows - but when it is, you will need this package.
-
-  Get the binary package from
-  http://www.zlatkovic.com/projects/libxml/binaries.html
-  Unpack this and
-    cd include
-    tar -cf - libxml | (cd $GNUSTEP_SYSTEM_ROOT/Library/Headers; tar -xvf -)
-    cd ../lib
-    cp libxml2.lib $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libxml2.a
-    cp libxml2.dll $GNUSTEP_SYSTEM_ROOT/Tools
+  Unpack the lib package and
+    cp include/zlib.h include/zconf.h  $GNUSTEP_SYSTEM_ROOT/Library/Headers
+    cp lib/libz.lib   $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libz.a
+  Unpack the bin package and
+    cp bin/zlib1.dll  $GNUSTEP_SYSTEM_ROOT/Tools
+ 
 
 The following are libraries which are not currently used, but which will
 be required at some point in the future -
+
+libxml2
+  Needed for MacOS-X style property list parsing and for autogsdoc.
+  Get the binary package from -
+  http://www.zlatkovic.com/projects/libxml/index.html
+
+  Unpack this and
+    cp -r include/libxml2/libxml  $GNUSTEP_SYSTEM_ROOT/Library/Headers
+    cp lib/libzml2.lib   $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libxml2.a
+  Unpack the bin package and
+    cp bin/libxml2.dll  $GNUSTEP_SYSTEM_ROOT/Tools
+    cp bin/xml2-config  $GNUSTEP_SYSTEM_ROOT/Tools
 
 openssl
   Needed for the SSL bundle, providing HTTPS support for NSURL.
@@ -258,12 +265,15 @@ Building and installing GNUstep-base
 
 Go to gnustep-base (or from CVS into the core/base directory), and type
 
+  configure --disable-xml
   make install
 
-This should automatically run the configure script for you, build the
-base library and some tools, and install the whole lot (along with some
+This should configure the base library for you, build it
+and some tools, and install the whole lot (along with some
 system resources).
 
+I have read a report that libxml2 can be made to work, but my attempts have
+failed at runtime with windows saying it can't find symbols in the dll :-(
 
 
 Additional gui libraries
@@ -273,17 +283,15 @@ These are additional libraries required or at least highly recommended when
 installing the gui portion of GNUstep.
 
 
-libtiff, libjpeg, zlib, libpng
+libtiff, libjpeg, libpng
   Needed for image handling support in the GNUstep gui libary
-  (not required for GNUstep-base, though zlib can be used by the base library).
+  (not required for GNUstep-base)
 
   Get these binary packages (or later versions) from -
   http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-lib.zip
   http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-bin.zip
   http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-lib.zip
   http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-bin.zip
-  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-lib.zip
-  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-bin.zip
   
   Unpack and install. You can put them in the standard locations, or also:
   the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Library/Headers
