@@ -1,3 +1,8 @@
+Mon Dec  3 09:44:26 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make: New target - Mac OS X 10.1.1 darwin5.1 (Patch by
+	Helge Hess <helge.hess@skyrix.com>).
+
 Wed Nov 28 18:17:50 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* clibrary.make (LIBRARY_FILE): Fixed typo for BUILD_DLL ... 
