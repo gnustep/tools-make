@@ -78,7 +78,7 @@ SONAME_LIBRARY_FILE=$(LIBRARY_FILE)
 endif
 
 ifeq ($(strip $(HEADER_FILES_DIR)),)
-HEADER_FILES_DIR = .
+override HEADER_FILES_DIR = .
 endif
 
 #
