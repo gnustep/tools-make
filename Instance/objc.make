@@ -34,11 +34,6 @@ endif
         internal-objc_program-install_ \
         internal-objc_program-uninstall_
 
-# Deprecation warning - will be remove on Dec 2002
-ifneq ($(OBJC_PROGRAM_INSTALLATION_DIR),)
-  $(warning OBJC_PROGRAM_INSTALLATION_DIR is deprecated! Please use OBJC_PROGRAM_INSTALL_DIR instead)
-endif
-
 # This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the Tools
 # directory in GNUSTEP_LOCAL_ROOT.

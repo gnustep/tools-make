@@ -35,11 +35,6 @@ endif
         internal-tool-uninstall_ \
         internal-tool-copy_into_dir
 
-# Deprecation warning - will be remove on Dec 2002
-ifneq ($(TOOL_INSTALLATION_DIR),)
-  $(warning TOOL_INSTALLATION_DIR is deprecated! Please use TOOL_INSTALL_DIR instead)
-endif
-
 # This is the directory where the tools get installed. If you don't specify a
 # directory they will get installed in the GNUstep Local Root.
 ifeq ($(TOOL_INSTALL_DIR),)
