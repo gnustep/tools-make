@@ -1,3 +1,7 @@
+2003-11-13  David Ayers  <d.ayers@inode.at>
+
+	* Instance/framework.make: Remove symlink.
+
 Sat Nov  8 22:41:03 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make: Use $(ALL_LDFLAGS) when linking shared stuff.

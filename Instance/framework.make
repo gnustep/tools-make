@@ -553,7 +553,8 @@ $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
 $(GNUSTEP_HEADERS) :
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-# FIXME - uninstall doesn't work - it should be removing all the symlinks!
+# NB: We use 'rm -f' to remove the symlink to insure
+#     that we do not remove customized real directories.  
 internal-framework-uninstall_::
 	$(ECHO_UNINSTALLING)if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
@@ -561,6 +562,9 @@ internal-framework-uninstall_::
 	      rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	    fi; \
 	  done; \
+	fi; \
+	if [ -n "$(HEADER_FILES)" ]; then \
+	  rm -f $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) ; \
 	fi; \
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
 
