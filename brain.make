@@ -219,7 +219,7 @@ ifeq ($(GUI_BACKEND_LIB),xdps)
 SYSTEM_INCLUDES = $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(X_LIBS)
-SYSTEM_LIBS = -ltiff -ldpstk -ldps -lpsres -lX11
+SYSTEM_LIBS = -ltiff -ljpeg -ldpstk -ldps -lpsres -lX11
 endif
 
 #
@@ -230,14 +230,14 @@ ifeq ($(GUI_BACKEND_LIB),xraw)
 SYSTEM_INCLUDES = $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(X_LIBS)
-SYSTEM_LIBS = -ltiff -lX11
+SYSTEM_LIBS = -ltiff -ljpeg -lX11
 endif
 
 ifeq ($(GUI_BACKEND_LIB),xgps)
 SYSTEM_INCLUDES = $(X_INCLUDE)
 SYSTEM_LDFLAGS =
 SYSTEM_LIB_DIR = $(X_LIBS)
-SYSTEM_LIBS = -ltiff -lX11
+SYSTEM_LIBS = -ltiff -ljpeg -lX11
 endif
 
 #
