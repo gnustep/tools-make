@@ -381,11 +381,11 @@ ifneq ($(GSDOC_FILES),)
 
 internal-doc-install_::
 	$(INSTALL_DATA) $(GSDOC_OBJECT_FILES) \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 internal-doc-uninstall_:: 
 	rm -f \
-	  $(addprefix $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/,\
-	              $(GSDOC_OBJECT_FILES))
+	  $(addprefix $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/\
+	    $(GNUSTEP_INSTANCE)/,$(GSDOC_OBJECT_FILES))
 endif # GSDOC_FILES
 
 #
