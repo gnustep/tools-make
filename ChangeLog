@@ -1,3 +1,19 @@
+Sat Feb  9 11:45:16 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/headers.make: New file - the code is new, 
+	and has improvements over the code found in old makefiles.
+	* GNUmakefile.in (INSTANCE_SHARED_MAKE_FILES): Added headers.make.
+	* Instance/bundle.make: Simplified and improved management of
+	headers by using Instance/Shared/headers.make to manage headers.
+	
+Sat Feb  9 11:22:10 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make: Broken into Master and Instance.
+	* Master/bundle.make: New file.
+	* Instance/bundle.make: New file.
+	* GNUmakefile.in (INSTANCE_MAKE_FILES, MASTER_MAKE_FILES): 
+	Added bundle.make.
+
 Fri Feb  8 16:15:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/java-tool.make (internal-distclean): Depend on
