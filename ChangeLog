@@ -1,3 +1,8 @@
+Tue Dec  7  5:24:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* rules.make: Escape some dollar signs - patch by Jonathon Gapen
+	for an earlier fix somehow reverted.
+
 1999-12-02  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.csh.in: Run GNUSTEP_HOST through config.sub to get correct
