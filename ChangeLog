@@ -1,3 +1,8 @@
+Fri Sep 21 13:39:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* application.make ($(APP_FILE)): Added ALL_FRAMEWORK_DIRS to 
+	the link command.
+
 Wed Sep 19 18:40:00 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* palette.make ($(PALETTE_FILE)): Fixed typo, OBJC_FILES_TO_LINK
