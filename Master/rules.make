@@ -229,8 +229,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   HEADER_FILES_INSTALL_DIR="$($(basename $(basename $*))_HEADER_FILES_INSTALL_DIR)" \
   COMPONENTS="$($(basename $(basename $*))_COMPONENTS)" \
   LANGUAGES="$($(basename $(basename $*))_LANGUAGES)" \
-  HAS_GSWCOMPONENTS="$($(basename $(basename $*))_HAS_GSWCOMPONENTS)" \
-  GSWAPP_INFO_PLIST="$($(basename $(basename $*))_GSWAPP_INFO_PLIST)" \
   WEBSERVER_RESOURCE_FILES="$($(basename $(basename $*))_WEBSERVER_RESOURCE_FILES)" \
   LOCALIZED_WEBSERVER_RESOURCE_FILES="$($(basename $(basename $*))_LOCALIZED_WEBSERVER_RESOURCE_FILES)" \
   WEBSERVER_RESOURCE_DIRS="$($(basename $(basename $*))_WEBSERVER_RESOURCE_DIRS)" \
