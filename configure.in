@@ -504,7 +504,7 @@ AC_CHECK_FUNCS(iconv)
 if test $ac_cv_func_iconv = no; then
   # Check if we have a libiconv library
   AC_CHECK_LIB(iconv, main)
-  if test $av_cv_lib_iconv_main = yes; then
+  if test x"$av_cv_lib_iconv_main" = xyes; then
     LIBS="$LIBS -liconv"
     AC_SUBST(LIBS)
     SYSTEM_DEFS="-DHAVE_ICONV $SYSTEM_DEFS"

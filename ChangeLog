@@ -1,3 +1,7 @@
+2000-10-02  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Work even if $av_cv_lib_iconv_main not defined.
+
 2000-09-29  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.in: Check for libxml 2.2.3 or later
