@@ -1,3 +1,8 @@
+Mon Jan 14 20:06:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* which_lib.c (search_for_library_with_type): Bug fix - check that
+	the return value of opendir is not NULL.
+
 Mon Jan 14 19:45:50 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* executable.template.in (appname): Fixed extracting executable
