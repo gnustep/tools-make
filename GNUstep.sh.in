@@ -175,11 +175,23 @@ tmp_IFS="$IFS"
 IFS=:
 temp_path=
 for dir in $GNUSTEP_PATHPREFIX_LIST; do
-  temp_path="$temp_path$dir/Tools:"
+
+  # Prepare the path_fragment
   if [ -z "$GNUSTEP_FLATTENED" ]; then
-    temp_path="$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:"
-    temp_path="$temp_path$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:"
+    path_fragment="$dir/Tools:$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+  else
+    path_fragment="$dir/Tools"
   fi
+
+  # Add it to temp_path
+  if [ -z "$temp_path" ]; then
+    temp_path="$path_fragment"
+  else
+    temp_path="$temp_path:$path_fragment"
+  fi
+
+  unset path_fragment
+
 done
 IFS="$tmp_IFS"
 unset tmp_IFS
@@ -188,7 +200,7 @@ if [ -z "$PATH" ]; then
   PATH="$temp_path"
 else
   if ( echo ${PATH}| grep -v "${temp_path}" >/dev/null ); then
-    PATH="${temp_path}${PATH}"
+    PATH="${temp_path}:${PATH}"
   fi
 fi
 unset temp_path
@@ -200,8 +212,13 @@ tmp_IFS="$IFS"
 IFS=:
 gnustep_class_path=
 for dir in $GNUSTEP_PATHPREFIX_LIST; do
-  # FIXME - ugly to add the ':' at the end of the CLASSPATH
-  gnustep_class_path="$gnustep_class_path$dir/Libraries/Java:"
+
+  if [ -z "$gnustep_class_path" ]; then
+    gnustep_class_path="$dir/Libraries/Java"
+  else
+    gnustep_class_path="$gnustep_class_path:$dir/Libraries/Java"
+  fi
+
 done
 IFS="$tmp_IFS"
 unset tmp_IFS
