@@ -36,13 +36,14 @@ internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
 
 ifeq ($(BUILD_DLL),yes)
 
-DLL_DEF_FILES = $(SUBPROJECT_DEF_FILES) $($(GNUSTEP_INSTANCE)_DLL_DEF)
+DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
+DLL_DEF_FILES = $(SUBPROJECT_DEF_FILES) $(DLL_DEF)
 
 ifneq ($(strip $(DLL_DEF_FILES)),)
 DLL_DEF_INP = $(GNUSTEP_INSTANCE).inp
 
 $(DLL_DEF_INP): $(DLL_DEF_FILES)
-	cat $< > $@
+	cat $(DLL_DEF_FILES) > $@
 
 DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
 endif
