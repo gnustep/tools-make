@@ -1,3 +1,9 @@
+Mon Nov 12 18:57:13 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: in the check that GNUSTEP_SYSTEM_ROOT/Tools is in
+	the PATH, for windows use cygpath not cygpath.sh (Suggested by
+	Stephen Brandon).
+
 2001-11-11  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.2.0
