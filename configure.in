@@ -217,6 +217,13 @@ AC_LN_S
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)
 
 #--------------------------------------------------------------------
+# specific target_os options
+#--------------------------------------------------------------------
+case "$target_os" in
+  freebsd*)	TAR="tar"
+esac
+
+#--------------------------------------------------------------------
 # Miscellaneous flags and setup
 #--------------------------------------------------------------------
 # Strip '-g' off of CFLAGS, since debug=yes adds that anyway
