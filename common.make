@@ -425,9 +425,11 @@ endif
 ifeq ($(debug), yes)
   OPTFLAG := $(filter-out -O%, $(OPTFLAG))
   ADDITIONAL_FLAGS += -g -Wall -DDEBUG -fno-omit-frame-pointer
-  ADDITIONAL_JAVAFLAGS += -g
+  INTERNAL_JAVACFLAGS += -g -deprecation
   OBJ_DIR_PREFIX += debug_
   LIBRARY_NAME_SUFFIX := d$(LIBRARY_NAME_SUFFIX)
+else
+  INTERNAL_JAVACFLAGS += -O
 endif
 
 OBJ_DIR_PREFIX += obj
