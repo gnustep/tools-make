@@ -35,9 +35,9 @@ setenv GNUSTEP_NETWORK_ROOT
 setenv GNUSTEP_USER_ROOT ~/GNUstep
 
 if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
-      setenv GNUSTEP_MAKEFILES ${GNUSTEP_SYSTEM_ROOT}/Makefiles
+  setenv GNUSTEP_MAKEFILES ${GNUSTEP_SYSTEM_ROOT}/Makefiles
 else
-      setenv GNUSTEP_MAKEFILES ${GNUSTEP_BUILD_ROOT}/Makefiles
+  setenv GNUSTEP_MAKEFILES ${GNUSTEP_BUILD_ROOT}/Makefiles
 endif
 
 #
@@ -87,7 +87,7 @@ source ${GNUSTEP_SYSTEM_ROOT}/Makefiles/ld_lib_path.csh
 # Perform any user initialization
 #
 if ( -e ~/.GNUstep/GNUstep.csh ) then
-	. ~/.GNUstep/GNUstep.csh
+  . ~/.GNUstep/GNUstep.csh
 endif
 
 if ( -x ${GNUSTEP_SYSTEM_ROOT}/Tools/make_services ) then
@@ -99,10 +99,10 @@ endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )
 #
 # Set the Java CLASSPATH  (i haven't tested this csh version yet)
 #
-if ( ! ${CLASSPATH} ) then
-	setenv MY_CLASSPATH .
+if ( ! ${?CLASSPATH} ) then
+  setenv MY_CLASSPATH .
 else
-	setenv MY_CLASSPATH ${CLASSPATH}:.
+  setenv MY_CLASSPATH ${CLASSPATH}:.
 endif
 
 setenv CLASSPATH ${GNUSTEP_SYSTEM_ROOT}/Java/:${GNUSTEP_USER_ROOT}/Java/:${GNUSTEP_LOCAL_ROOT}/Java/:${GNUSTEP_NETWORK_ROOT}/Java/:${MY_CLASSPATH}

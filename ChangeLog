@@ -1,3 +1,7 @@
+Thu Nov 11 12:22:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* GNUstep.csh.in: Fix for typo reported by Pascal Bourguignon.
+
 1999-11-11  David Lazaro Saz  <khelekir@encomix.es>
 
 	* configure.in (objc_thread_lib): Added support for FreeBSD native
