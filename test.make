@@ -109,10 +109,10 @@ $(GNUSTEP_OBJ_DIR)/stamp-testlib-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 		$(ALL_LIB_DIRS) $(ALL_TEST_LIBRARY_LIBS)
 	touch $@
 
-$(GNUSTEP_OBJ_DIR)/stamp-testbundle-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$(GNUSTEP_OBJ_DIR)/$(TEST_BUNDLE_NAME) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(ALL_TEST_BUNDLE_LIBS)
+$(GNUSTEP_OBJ_DIR)/stamp-testbundle-%: $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
+	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+		$(LDOUT)$(BUNDLE_FILE) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+		$(ALL_LIB_DIRS) $(BUNDLE_LIBS)
 	touch $@
 
 $(GNUSTEP_OBJ_DIR)/stamp-testtool-% : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
@@ -161,7 +161,8 @@ test-apps:: $(TEST_APP_LIST)
 
 internal-testlib-all:: $(GNUSTEP_OBJ_DIR)/stamp-testlib-$(TEST_LIBRARY_NAME)
 
-internal-testbundle-all:: $(GNUSTEP_OBJ_DIR)/stamp-testbundle-$(TEST_BUNDLE_NAME)
+internal-testbundle-all:: \
+	$(GNUSTEP_OBJ_DIR)/stamp-testbundle-$(TEST_BUNDLE_NAME)
 
 internal-testtool-all:: $(GNUSTEP_OBJ_DIR)/stamp-testtool-$(TEST_TOOL_NAME)
 
@@ -181,13 +182,17 @@ check-tools:: $(CHECK_TOOL_LIST)
 
 check-apps:: $(CHECK_APP_LIST)
 
+dejagnu_vars = "FOUNDATION_LIBRARY=$(FOUNDATION_LIB)" \
+		"OBJC_RUNTIME=$(OBJC_RUNTIME)"
+
 internal-check-%:: $(SCRIPTS_DIRECTORY)/config/unix.exp
 	@(for f in $(CHECK_SCRIPT_DIRS); do \
 	  $(LD_LIB_PATH)=$(ALL_LD_LIB_DIRS); export $(LD_LIB_PATH); \
 	  if [ "$(SCRIPTS_DIRECTORY)" != "" ]; then \
-	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME)"; \
-	    (cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME)); \
+	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)"; \
+	    (cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)); \
 	  else \
-	    runtest --tool $$f --srcdir . PROG=./$(TEST_$*_NAME) ; \
+	    runtest --tool $$f --srcdir . PROG=./$(TEST_$*_NAME) \
+		  $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS); \
 	  fi; \
 	done)

@@ -94,7 +94,7 @@ FND_LIBS =
 endif
 
 ifeq ($(FOUNDATION_LIB), nx)
-FND_DEFINE = -DNeXT_foundation_LIBRARY=1
+FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
 endif
 
 ifeq ($(FOUNDATION_LIB), sun)

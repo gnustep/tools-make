@@ -1,3 +1,18 @@
+Fri Oct 24 20:26:41 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	Added support for the OPENSTEP Foundation library in the testing
+	related makefiles.
+	* bundle.make: Replace LD with BUNDLE_LD.
+	* common.make: Define a directory for the extensions under OPENSTEP.
+	* core.make: Change the definition of NeXT_foundation_LIBRARY to
+	NeXT_Foundation_LIBRARY.
+	* rules.make (ALL_TEST_LIBRARY_LIBS): Include an additional variable
+	AUXILIARY_LIBS.
+	* target.make: Set HAVE_BUNDLES to yes only for NeXT runtime. Define
+	BUNDLE_LD appropriate for all the targets.
+	* test.make: Use BUNDLE_LD when building a bundle. Define the
+	Foundation and the runtime used when running DejaGnu.
+
 Tue Oct 21 17:31:27 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* application.make (app-resource-files): Check to see if the

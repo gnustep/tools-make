@@ -44,10 +44,13 @@ $(GNUSTEP_OBJ_DIR)/stamp-bundle-% : $(BUNDLE_FILE) bundle-resource-files
 	touch $@
 
 $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
-	$(LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		$(LDOUT)$(BUNDLE_FILE) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(BUNDLE_LIBS)
+
+before-bundle-all::
+after-bundle-all::
 
 #
 # Compilation targets

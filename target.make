@@ -75,7 +75,10 @@ HAVE_BUNDLES = no
 # OpenStep 4.x
 #
 ifeq ($(GNUSTEP_TARGET_OS), nextstep4)
+ifeq ($(OBJC_RUNTIME), NeXT)
 HAVE_BUNDLES            = yes
+endif
+
 HAVE_SHARED_LIBS        = yes
 
 ifeq ($(FOUNDATION_LIB),nx)
@@ -126,8 +129,9 @@ ifneq ($(OBJC_COMPILER), NeXT)
 TARGET_SYSTEM_LIBS += -lgcc
 endif
 
-HAVE_BUNDLES    = yes
-BUNDLE_CFLAGS   =
+BUNDLE_LD	= ld
+BUNDLE_CFLAGS   +=
+BUNDLE_LDFLAGS  += -r
 endif
 
 #
@@ -146,6 +150,7 @@ SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
+BUNDLE_LD	= gcc
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
 endif
@@ -167,6 +172,7 @@ SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
+BUNDLE_LD	= gcc
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
 endif
