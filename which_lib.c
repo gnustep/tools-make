@@ -121,6 +121,9 @@ char** library_paths = NULL;
 int libraries_no = 0;
 char** all_libraries = NULL;
 
+int other_flags_no = 0;
+char** other_flags = NULL;
+
 int library_name_len;
 char* library_name = NULL;
 char *libname_suffix;
@@ -135,7 +138,7 @@ void get_arguments (int argc, char** argv)
 {
   int i;
 
-  for (i = 0; i < argc; i++) {
+  for (i = 1; i < argc; i++) {
     if (!strncmp (argv[i], "-l", 2)) {
       if (all_libraries)
         all_libraries = realloc (all_libraries,
@@ -171,6 +174,17 @@ void get_arguments (int argc, char** argv)
     else if (!strncmp (argv[i], "shared_libext=", 14)) {
       shared_libext = malloc (strlen (argv[i] + 14) + 1);
       strcpy (shared_libext, argv[i] + 14);
+    }
+    else {
+      /* The flag is something different; keep it in the `other_flags' */
+      if (other_flags)
+        other_flags = realloc (other_flags,
+			       (other_flags_no + 1) * sizeof (char*));
+      else
+        other_flags = malloc ((other_flags_no + 1) * sizeof (char*));
+      other_flags[other_flags_no] = malloc (strlen (argv[i]) + 1);
+      strcpy (other_flags[other_flags_no], argv[i]);
+      other_flags_no++;
     }
   }
 
@@ -415,6 +429,10 @@ int main(int argc, char** argv)
       printf (" -l%s", library_name);
     }
   }
+
+  /* Output the other flags */
+  for (i = 0; i < other_flags_no; i++)
+    printf (" %s", other_flags[i]);
 
   puts ("");
 

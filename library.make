@@ -131,7 +131,9 @@ internal-install-lib::
 
 internal-install-import-lib::
 
-internal-library-uninstall:: internal-uninstall-headers internal-uninstall-lib
+internal-library-uninstall:: before-uninstall internal-uninstall-headers internal-uninstall-lib after-uninstall
+
+before-uninstall after-uninstall::
 
 internal-uninstall-headers::
 	for file in $(HEADER_FILES) __done; do \

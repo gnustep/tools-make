@@ -104,7 +104,7 @@ endif
 ifeq ($(FOUNDATION_LIB),fd)
 -include $(GNUSTEP_MAKEFILES)/libFoundation.make
 FND_LDFLAGS =
-FND_LIBS = -lFoundation $(LIBFOUNDATION_GC_LIBRARY)
+FND_LIBS = -lFoundation
 FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
 endif
 

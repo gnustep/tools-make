@@ -1,3 +1,18 @@
+Mon Feb  9 00:23:33 1998  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* brain.make: Added the initial support for the integration of Boehm's
+	garbage collector into libFoundation. Include libFoundation.make in
+	case it's present and add the Boehm's GC library to the list of
+	Foundation libraries.
+	* library.make (internal-library-uninstall): Added the before-uninstall
+	and after-uninstall.
+	* test-library.make: Added LIBFOUNDATION_GC_LIBRARY to the list of
+	files used when linking.
+	* tool.make: Likewise.
+	* which_lib.c: Collect the rest of flags and output them at the end. We
+	should change this mechanism to keep the order in which the flags
+	appear on the command line.
+
 Fri Feb  6 12:25:51 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* common.make (GNUSTEP_MAKEFILES): Set only if not already set.
