@@ -1,3 +1,8 @@
+Wed Nov 28 18:17:50 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* clibrary.make (LIBRARY_FILE): Fixed typo for BUILD_DLL ... 
+	library_name being used instead of clibrary_name.
+
 Wed Nov 28 11:18:01 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in (--with-user-root): New configure option allowing
