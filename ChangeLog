@@ -1,3 +1,8 @@
+1998-02-09  Ovidiu Predescu  <ovidiu@net-community.com>
+
+	* common.make (GNUSTEP_MAKEFILES): Moved the definition to the top
+ 	of the file because it is needed to include several files.
+
 Mon Feb  9 00:23:33 1998  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* brain.make: Added the initial support for the integration of Boehm's

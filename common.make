@@ -40,6 +40,11 @@ WHICH_LIB_SCRIPT = $(GNUSTEP_MAKEFILES)/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/w
 LD_LIB_PATH_SCRIPT = $(GNUSTEP_MAKEFILES)/ld_lib_path.sh
 TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_MAKEFILES)/transform_paths.sh
 
+# Take the makefiles from the system root
+ifeq ($(GNUSTEP_MAKEFILES),)
+  GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
+endif
+
 #
 # Determine the compilation host and target
 #
@@ -87,11 +92,6 @@ GNUSTEP_LIBRARIES_ROOT = $(GNUSTEP_INSTALLATION_DIR)/Libraries
 GNUSTEP_TARGET_LIBRARIES = $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR)
 GNUSTEP_LIBRARIES = $(GNUSTEP_TARGET_LIBRARIES)/$(LIBRARY_COMBO)
 GNUSTEP_RESOURCES = $(GNUSTEP_LIBRARIES_ROOT)/Resources
-
-# Take the makefiles from the system root
-ifeq ($(GNUSTEP_MAKEFILES),)
-  GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
-endif
 
 # The default name of the makefile to be used in recursive invocations of make
 ifeq ($(MAKEFILE_NAME),)
