@@ -4663,7 +4663,7 @@ clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-                                                                                                              ac_config_files="$ac_config_files config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec Documentation/GNUmakefile"
+                                                                                                    ac_config_files="$ac_config_files config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec"
 
           ac_config_commands="$ac_config_commands default"
 
@@ -5211,7 +5211,6 @@ do
   "GNUstep.csh" ) CONFIG_FILES="$CONFIG_FILES GNUstep.csh" ;;
   "fixpath.sh" ) CONFIG_FILES="$CONFIG_FILES fixpath.sh" ;;
   "gnustep-make.spec" ) CONFIG_FILES="$CONFIG_FILES gnustep-make.spec" ;;
-  "Documentation/GNUmakefile" ) CONFIG_FILES="$CONFIG_FILES Documentation/GNUmakefile" ;;
   "default" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5

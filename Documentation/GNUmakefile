@@ -1,47 +1,65 @@
 #
-#  Documentation makefile for the GNUstep Makefile Package 
-#  Copyright (C) 2000 Free Software Foundation, Inc.
+# This GNUmakefile needs to build the gnustep-make documentation.
 #
-#  Written: Adam Fedor <fedor@gnu.org>
-#
-#  This library is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU Library General Public
-#  License as published by the Free Software Foundation; either
-#  version 2 of the License, or (at your option) any later version.
-#
-#  This library is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
-#  Library General Public License for more details.
-#
-#  You should have received a copy of the GNU Library General Public
-#  License along with this library; if not, write to the Free
-#  Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111 USA.
 
-# Install into the system root by default
-prefix = @prefix@
-GNUSTEP_INSTALLATION_DIR = $(prefix)
-GNUSTEP_DOCUMENTATION = $(GNUSTEP_INSTALLATION_DIR)/Library/Documentation
-GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOCUMENTATION)/info
-GNUSTEP_DOCUMENTATION_MAN = $(GNUSTEP_DOCUMENTATION)/man
-MAKEFILE_NAME = GNUmakefile
+# The GNUmakefile itself is written using gnustep-make.  If we find an
+# existing gnustep-make installation, we use it.  Otherwise, we
+# configure, compile and install gnustep-make into a temporary
+# subdirectory, then we use that copy.
 
-include ../Version
+# In the very unlikely event that gnustep-make does not even install
+# on your machine, please get a pre-generated copy of the
+# documentation from the internet!  Or just read the documentation in
+# source format. :-)
 
-GNUSTEP_MAKEINFO        = makeinfo
-GNUSTEP_MAKEINFO_FLAGS  = -D NO-TEXI2HTML
-GNUSTEP_MAKETEXT        = makeinfo
-GNUSTEP_MAKETEXT_FLAGS  = -D NO-TEXI2HTML -D TEXT-ONLY --no-header --no-split
-GNUSTEP_TEXI2DVI        = texi2dvi
-GNUSTEP_TEXI2DVI_FLAGS  =
-GNUSTEP_TEXI2HTML       = texi2html
-GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo -init_file gnustep.init
-GNUSTEP_DVIPS           = dvips
-GNUSTEP_DVIPS_FLAGS     =
-TAR                     = @TAR@
-INSTALL	                = @INSTALL@
-INSTALL_DATA            = @INSTALL_DATA@
-MKDIRS	                = ../mkinstalldirs
+ifeq ($(GNUSTEP_MAKEFILES),)
+
+# We have no gnustep-make installation to use.  We need gnustep-make
+# to generate the documentation.
+
+# To help lazy cows who want to type 'make' and have all work
+# automatically without installating gnustep-make first, if we don't
+# have a gnustep-make installation to use, we create a temporary one
+# in the subdirectory ./tmp-installation, execute GNUstep.sh in that
+# directory, then run make again.
+
+# To execute all, or clean, or install, we first depend on a local
+# temporary installation of gnustep-make; when we have it, we source
+# GNUstep.sh, then we run the make command again.  Please note that
+# "make install" will install into our temporary gnustep-make
+# directory, which is usually not particularly useful, but anyway.
+all clean install: ./tmp-installation/System/Library/Makefiles/GNUstep.sh
+	@echo "** Running 'make $@' using the local/temporary gnustep-make installation **"
+	(. ./tmp-installation/System/Library/Makefiles/GNUstep.sh; \
+	$(MAKE) $@)
+
+CURRENT_DIR = $(shell pwd)
+
+# This creates a local temporary installation of GNUstep-make
+./tmp-installation/System/Library/Makefiles/GNUstep.sh:
+	@echo "** No gnustep-make installation found, attempting to create a local/temporary one. **"
+	(mkdir tmp-build; \
+	cd tmp-build; \
+	../../configure --prefix="$(CURRENT_DIR)/tmp-installation"; \
+	make; \
+	make install)
+
+distclean:
+	-(if [ -f ./tmp-installation/System/Library/Makefiles/GNUstep.sh ]; then \
+	  . ./tmp-installation/System/Library/Makefiles/GNUstep.sh; \
+	  $(MAKE) $@; \
+	fi)
+	rm -Rf tmp-installation tmp-build
+
+else
+
+# We have a gnustep-make installation to use.  The following is a
+# normal gnustep-make GNUmakefile for documentation.
+
+# We normally install into System
+GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT)
+
+include $(GNUSTEP_MAKEFILES)/common.make
 
 # The documents to be generated
 DOCUMENT_NAME = gnustep-howto faq filesystem internals machines make userfaq
@@ -110,17 +128,20 @@ ANNOUNCE_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 MAN1_PAGES = openapp.1
 MAN7_PAGES = GNUstep.7
 
-include makerules.make
-include makedoc.make
+include $(GNUSTEP_MAKEFILES)/documentation.make
 
+# Typing 'make regenerate' should build all, then install the files
+# top-level.  This is mostly for making gnustep-make releases.
 regenerate: all
 	mv -f $(TOP_DOC_FILES) ..
 
+# Generate the version.texi file from the Version of gnustep-make.
 version.texi: ../Version
 	rm -f version.texi
 	echo '@set GNUSTEP-MAKE-VERSION' $(GNUSTEP_MAKE_VERSION) \
 	 > version.texi
 
+# Install manually man pages
 after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
 	$(INSTALL_DATA) DESIGN $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
 	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN) ]; then \
@@ -147,10 +168,20 @@ after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
 	  fi; \
 	done;
 
+#  Uninstall manually man pages
 after-uninstall::
 	rm -f $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual/DESIGN
+	for file in $(MAN1_PAGES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file; \
+	  fi; \
+	done;
 	for file in $(MAN7_PAGES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
 	  fi; \
 	done;
+
+after-distclean::
+	rm -f version.texi
+endif
