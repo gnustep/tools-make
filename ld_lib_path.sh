@@ -40,7 +40,11 @@ IFS="
 case "$host_os" in
 
   *nextstep4*)
-    DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$DYLD_LIBRARY_PATH"
+    if [ -z $DYLD_LIBRARY_PATH ]; then
+	DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part"
+    else
+	DYLD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$DYLD_LIBRARY_PATH"
+    fi
     if [ -n "$additional_library_paths" ]; then
       for dir in $additional_library_paths; do
 	additional="${additional}${dir}:"
@@ -51,7 +55,11 @@ case "$host_os" in
     ;;
 
   *)
-    LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$LD_LIBRARY_PATH"
+    if [ -z $LD_LIBRARY_PATH ]; then
+	LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part"
+    else
+	LD_LIBRARY_PATH="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$LD_LIBRARY_PATH"
+    fi
     if [ -n "$additional_library_paths" ]; then
       for dir in $additional_library_paths; do
 	additional="${additional}${dir}:"

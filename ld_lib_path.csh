@@ -37,8 +37,12 @@ endif
 switch ( "${host_os}" )
 
   case *nextstep4* :
-    setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${DYLD_LIBRARY_PATH}"
-    if ( "${additional_library_paths}" != "" ) then
+    if ( $?DYLD_LIBRARY_PATH == 0 ) then
+	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}"
+    else
+	setenv DYLD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${DYLD_LIBRARY_PATH}"
+    endif
+    if ( $?additional_library_paths == 1) then
       foreach dir (${additional_library_paths})
 	set additional="${additional}${dir}:"
       end
@@ -50,8 +54,12 @@ switch ( "${host_os}" )
     breaksw
 
   case * :
-    setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${LD_LIBRARY_PATH}"
-    if ( "${additional_library_paths}" != ) then
+    if ( $?LD_LIBRARY_PATH == 0 ) then
+	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}"
+    else
+	setenv LD_LIBRARY_PATH "${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${LD_LIBRARY_PATH}"
+    endif
+    if ( $?additional_library_paths == 1) then
       foreach dir (${additional_library_paths})
 	set additional="${additional}${dir}:"
       end

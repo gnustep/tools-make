@@ -27,7 +27,9 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-LIBRARY_COMBO=@ac_cv_library_combo@
+if [ -z "$LIBRARY_COMBO ]; then
+  LIBRARY_COMBO=@ac_cv_library_combo@
+fi
 
 case $1 in
   --library_combo=*)
@@ -47,6 +49,8 @@ if [ "$LIBRARY_COMBO" = nx ]; then
   LIBRARY_COMBO=nx-nx-nx-nil
 elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
   LIBRARY_COMBO=gnu-gnu-gnu-xdps
+elif [ "$LIBRARY_COMBO" = gnu-xraw ]; then
+  LIBRARY_COMBO=gnu-gnu-gnu-xraw
 elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
   LIBRARY_COMBO=gnu-fd-gnu-xdps
 fi

@@ -1,3 +1,4 @@
+
 #
 #   brain.make
 #
@@ -21,6 +22,11 @@
 
 # Handle abbreviations for library combinations
 
+ifndef library_combo
+  ifdef LIBRARY_COMBO
+    library_combo:=$(LIBRARY_COMBO)
+  endif
+endif
 ifdef library_combo
   the_library_combo=$(library_combo)
 else

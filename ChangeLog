@@ -1,3 +1,13 @@
+Thu Aug 20 11:41:48 1998  Adam Fedor  <fedor@doc.com>
+
+	* openapp.in, debugapp.in: Set LIBRARY_COMBO only if not set.
+	* brain.make: Likewise for library_combo.
+	* GNUstep.csh: Add braces around some variables (Changes from
+	Christopher Seawood <cls@seawood.org>).
+	* ld_lib_path.sh,ld_lib_path.csh: Check if variables set before
+	changing. 
+	* whichlib.c: Fixup dirent includes.
+	
 Wed Aug 12 15:25:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
 	* openapp.in: export LIBRARY_COMBO.
