@@ -123,10 +123,10 @@ build-bundle:: $(GSWBUNDLE_FILE) \
 
 
 $(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
-	$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) \
+	$(ECHO_LINKING)$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) \
 	                $(ALL_LDFLAGS) -o $(LDOUT)$(GSWBUNDLE_FILE) \
 			$(OBJ_FILES_TO_LINK) \
-	                $(ALL_GSWBUNDLE_LIBS)
+	                $(ALL_GSWBUNDLE_LIBS)$(END_ECHO)
 
 gswbundle-components :: $(GSWBUNDLE_DIR_NAME)
 ifneq ($(strip $(COMPONENTS)),)
