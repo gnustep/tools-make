@@ -43,6 +43,12 @@ LIBEXT = .a
 
 LN_S = @LN_S@
 
+# This is the best we can do given the current autoconf, which only
+# returns LN_S
+ifeq ($(LN_S), ln -s)
+  HAS_LN_S = yes
+endif
+
 LD = $(CC)
 LDOUT =
 LDFLAGS = @LDFLAGS@ 
