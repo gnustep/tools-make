@@ -1,3 +1,12 @@
+1999-04-22  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.csh.in: Don't define LIBRARY_COMBO if already set.
+	* GNUstep.sh.in: Likewise.
+
+	* configure.in: Check to see if -lz is needed by -ltiff.
+
+	* target.make (SHARED_CFLAGS): Use +z on HP when CC=cc
+
 Wed Apr  7 21:35:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* brain.make: Add extension X lib for xgps.

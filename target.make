@@ -515,12 +515,17 @@ SHARED_LIB_LINK_CMD     = \
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
-SHARED_CFLAGS     += -fPIC
+ifeq ($(CC), cc)
+SHARED_CFLAGS   += +z
+BUNDLE_CFLAGS   += +z
+else
+SHARED_CFLAGS   += -fPIC
+BUNDLE_CFLAGS   += -fPIC
+endif
 SHARED_LIBEXT   = .sl
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 endif
 

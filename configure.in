@@ -200,8 +200,9 @@ AC_DEFUN(AC_CHECK_TIFFLIB,
 [tiff_check_lib_save_header=${CPPFLAGS}
 tiff_check_lib_save_libs=${LIBS}
 CPPFLAGS="-L$1 ${JPEG_LIB} -I$2 ${JPEG_INCLUDE} ${CPPFLAGS}"
+AC_CHECK_LIB(z, main, HAVE_LIBZ=1, HAVE_LIBZ=0)
 
-AC_MSG_CHECKING(for -ltiff without -ljpeg)
+AC_MSG_CHECKING(for -ltiff without -ljpeg nor -lz)
 LIBS="-ltiff -lm $LIBS"
 AC_TRY_LINK([char TIFFReadScanline();], [TIFFReadScanline()],
     jpeg_notneeded=yes,
@@ -212,6 +213,20 @@ JPEG=
 if test "$jpeg_notneeded" = no; then
   JPEG=-ljpeg
 fi
+
+if test $HAVE_LIBZ = 1; then
+  AC_MSG_CHECKING(for -ltiff without -lz)
+  LIBS="-ltiff $JPEG -lm $LIBS"
+  AC_TRY_LINK([char TIFFReadScanline();], [TIFFReadScanline()],
+      libz_notneeded=yes,
+      libz_notneeded=no)
+  AC_MSG_RESULT($libz_notneeded)
+  LIBS=${tiff_check_lib_save_libs}
+  if test "$libz_notneeded" = no; then
+    JPEG="$JPEG -lz"
+  fi
+fi
+
 AC_CHECK_LIB(tiff, TIFFReadScanline,
       tiff_ok=yes,
       tiff_ok=no

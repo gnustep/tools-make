@@ -25,7 +25,9 @@
 # Set the GNUstep system root and local root
 #
 setenv GNUSTEP_SYSTEM_ROOT @prefix@
-setenv LIBRARY_COMBO @ac_cv_library_combo@
+if ( ! ${?LIBRARY_COMBO} ) then
+  setenv LIBRARY_COMBO @ac_cv_library_combo@
+endif
 
 setenv GNUSTEP_LOCAL_ROOT @prefix@/Local
 setenv GNUSTEP_USER_ROOT ~/GNUstep
