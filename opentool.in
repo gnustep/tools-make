@@ -23,6 +23,12 @@
 # is not specified. The arguments passed after the tool name are passed
 # unmodified to the tool.
 
+if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
+  echo "The GNUSTEP_PATHPREFIX_LIST environment variable is missing."
+  echo "Did you forget to set up your environment using GNUstep.sh ?"
+  exit 1
+fi
+
 if [ -z "$1" ]; then
   echo usage: `basename $0` tool [--library-combo=...] [arguments...]
   echo `basename $0` --help for help
