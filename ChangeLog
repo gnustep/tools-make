@@ -1,3 +1,19 @@
+Sun Jan 20 03:47:03 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: Further simplification - removed
+	GNUSTEP_USER_FRAMEWORKS_HEADERS_FLAGS,
+	GNUSTEP_USER_FRAMEWORKS_LIBRARIES_FLAGS,
+	GNUSTEP_USER_HEADERS_FLAGS, GNUSTEP_USER_LIBRARIES_FLAGS and
+	similar for LOCAL, NETWORK and ROOT, in favour of new
+	GNUSTEP_FRAMEWORKS_HEADERS_FLAGS,
+	GNUSTEP_FRAMEWORKS_LIBRARIES_FLAGS, GNUSTEP_HEADERS_FLAGS,
+	GNUSTEP_LIBRARIES_FLAGS variables.
+	* rules.make (ALL_OBJCFLAGS): Use the new variables.
+	 (ALL_CFLAGS): Idem.
+	 (ALL_FRAMEWORK_DIRS): Idem.
+	 (ALL_LIB_DIRS): Idem.
+	 (LIB_DIRS_NO_SYSTEM): Idem.
+	
 Sun Jan 20 00:19:05 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: Removed GNUSTEP_SYSTEM_HEADERS,
