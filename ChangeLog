@@ -1,3 +1,12 @@
+Tue Mar 24 15:54:55 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* bundle.make (BUNDLE_RESOURCE_DIRS): Make all dirs a subdirectory
+	of Resources.
+	(bundle-resource-files): Include full RESOURCE_FILES path in cp
+	to-file. 
+
+	* target.make: Add specifications for HP-UX.
+
 Sat Feb 14 16:32:14 1998  Scott Christley  <scottc@net-community.com>
 
 	* tool.make (TOOL_INSTALLATION_DIR): Move definition outside

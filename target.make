@@ -44,6 +44,9 @@ endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
+ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+endif
 
 #
 # Specific settings for building shared libraries, static libraries,
@@ -264,3 +267,28 @@ endif
 # end Solaris
 #
 ####################################################
+
+####################################################
+#
+# HP-UX 
+#
+ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
+HAVE_SHARED_LIBS        = yes
+SHARED_LIB_LINK_CMD     = \
+        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) *o ;\
+          rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS     += -fPIC
+SHARED_LIBEXT   = .sl
+
+HAVE_BUNDLES    = yes
+BUNDLE_LD	= gcc
+BUNDLE_CFLAGS   += -fPIC
+BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+endif
+
+# end HP-UX
+#
+####################################################
+
