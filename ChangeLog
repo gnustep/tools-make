@@ -1,3 +1,7 @@
+Tun Feb 16 16:26:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* services.make: Tidied with removal of some unneccessary dependencies.
+
 1999-02-14  Scott Christley  <scottc@net-community.com>
 
 	* ld_lib_path.sh (DYLD_LIBRARY_PATH, LD_LIBRARY_PATH): Add the tool
