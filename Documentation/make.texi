@@ -584,136 +584,33 @@ directory. Typically this is either @code{$(GNUSTEP_SYSTEM_ROOT)}),
 it defaults to @code{$(GNUSTEP_LOCAL_ROOT)}.
 @end defvr
 
-@defvr {RPM} PACKAGE_SOURCE
-This is typically set to the location and name of the original source
-file. For example,
-@file{ftp://ftp.gnustep.org/pub/gnustep/libs/libobjc-%@{ver@}.tar.gz}.
-Notice the @file{%@{ver@}} construct which is a rpm macro that gets
-replaced by the version number of the package.
+@defvr {RPM} RPM_DISABLE_RELOCATABLE
+Set this to @code{YES} if the package must be in @code{$(GNUSTEP_SYSTEM_ROOT)}
+and is not relocatable.
 @end defvr
 
-@defvr {RPM} PACKAGE_COPYRIGHT
-This should describe the license the package is released under, such as
-@code{GPL}. 
+@defvr {RPM} PACKAGE_NEEDS_CONFIGURE
+Set this to @code{YES} if a configure script needs to be run before
+compilation
 @end defvr
 
-@defvr {RPM} PACKAGE_SUMMARY
-This is a short (one line) summary of the package.
-@end defvr
+In addition you need to provide a stub spec file named for the package
+name, such as this example @file{libobjc.spec.in} file:
 
-@defvr {RPM} PACKAGE_DESCRIPTION
-This is a longer description of the package. Note that the text in this
-variable is formated like a printf statement, so remember to add
-@code{\n} and other appropriate formatting characters here.
-@end defvr
+@example
+Release:        1
+Source:         ftp://ftp.gnustep.org/pub/gnustep/libs/%@{gs_name@}-%@{gs_version@}.
+tar.gz
+Copyright:      GPL
+Group:          Development/Libraries
+Summary:        Objective-C Runtime Library
+Packager:       Adam Fedor <fedor@@gnu.org>
+Vendor:         The GNUstep Project
+URL:            http://www.gnustep.org/
 
-@defvr {RPM} PACKAGER
-Set this to the name and e-mail address of the packager. Note that
-these variables are set via a shell script so you should escape
-the standard e-mail braces (e.g. @code{Mr. GNUstep \<gnustep@@gnustep.org\>}).
-@end defvr
-
-@defvr {RPM} PACKAGE_URL
-Set this to a URL which provides more information about the package.
-@end defvr
-
-@defvr {RPM} RPM_GROUP
-The project group that the project falls under. such as
-@code{Applications/Productivity}. See the rpm documentation
-(@file{GROUPS}) for a list of valid groups. @file{rpm.make} tries to set
-a reasonable value, but it is rarely correct.
-@end defvr
-
-@@defvr {RPM} PACKAGE_SUMMARY_DEVEL
-Library projects generate both a user rpm and a @file{devel} rpm. This
-variable is used to describe the contents of the devel rpm. Typically it
-would be something like @code{Headers and other files for developing
-projects with the $(PACKAGE_NAME) library}. This varaible is only used
-for library projects.
-@end defvr
-
-@defvr {RPM} PACKAGE_DESCRIPTION_DEVEL
-This is the description for the devel rpm package. See the
-@code{PACKAGE_DESCRIPTION} variable for more information.
-@end defvr
-
-The following variables are not required, and are generally not needed
-for most normal projects. Complex or speciallized projects that perform
-compilation or installation outside the normal GNUstep system might
-need to use some of these to customize the spec file.
-
-@defvr {RPM} RPM_RELEASE
-The rpm release number, which defaults to @code{1} if not set. You would
-only need to change this if you made a new rpm release without changing
-the original source (for instance, if the first rpm release was somehow
-corrupted). 
-@end defvr
-
-defvr {RPM} RPM_DIST
-Set to the rpm distributor
-@end defvr
-
-@defvr {RPM} RPM_VENDOR
-Set to the rpm vendor
-@end defvr
-
-@defvr {RPM} RPM_CONFLICTS
-A list of packages with which this package conflicts.
-@end defvr
-
-@defvr {RPM} RPM_REQUIRES
-A list of packages that this package requires.
-@end defvr
-
-@defvr {RPM} RPM_SETUP
-@end defvr
-
-@defvr {RPM} RPM_CONFIGURE
-A shell command that provides additional configuration, such as a
-configure script
-@end defvr
-
-@defvr {RPM} RPM_ADDITIONAL_INSTALL
-Additional installation instructions (beyond @code{make install}).
-@end defvr
-
-@defvr {RPM} RPM_POST
-@end defvr
-
-@defvr {RPM} RPM_PREUNINSTALL
-@end defvr
-
-@defvr {RPM} RPM_POSTUNINSTALL
-@end defvr
-
-@defvr {RPM} RPM_FILELIST
-Additional files that should be included in the package. Note this text
-is formated with printf, so insert a @code{\n} after each file.
-@end defvr
-
-@defvr {RPM} RPM_FILELIST_DEVEL
-Additional files that should be included in the devel package. Note this text
-is formated with printf, so insert a @code{\n} after each file.
-@end defvr
-
-@defvr {RPM} RPM_DIRLIST
-Additional dirs that are owned by the package. Note this text
-is formated with printf, so insert a @code{\n} after each file.
-@end defvr
-
-@defvr {RPM} RPM_DIRLIST_DEVEL
-Additional dirs that are owned by the devel package. Note this text
-is formated with printf, so insert a @code{\n} after each file.
-@end defvr
-
-@defvr {RPM} RPM_CONFLICTS_DEVEL
-Packages that conflict with the devel package
-@end defvr
-
-@defvr {RPM} RPM_REQUIRES_DEVEL
-Packages required by the devel package.
-@end defvr
-
+%description
+Library containing the Objective-C runtime.
+@end example
 
 @node service.make, subproject.make, rpm.make, Project Types
 @subsection Services (@file{service.make})

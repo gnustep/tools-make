@@ -1,3 +1,10 @@
+2001-02-21  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/make.texi: Update
+	* Documentation/news.texi: Likewise
+	* Documentation/install.texi: Likewise
+	* NEWS, INSTALL: Regenerate
+
 2001-02-19  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in: Accept --with-local-root and --with-network-root 

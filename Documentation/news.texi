@@ -9,6 +9,20 @@
 
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
+@section Changes in version @samp{0.9.1}
+
+Make has been reoganized so that it only relies on libraries and other things
+that are necessary for the Makefile package itself. Any libraries wanting to
+add extra package information can do so by installing a make stub in the
+@file{Additional} directory. This greatly simplifies compilation and packaging.
+
+@itemize @bullet
+@item Javadoc support added.
+@item debian directory added for dpkg
+@item RPM support rewritten from scratch.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
 @section Changes in version @samp{0.9.0}
 
 ffcall library is highly recommended for use with the GNUstep base
@@ -23,7 +37,6 @@ package. See the INSTALL file.
 @item Added support for Frameworks
 @end itemize
 
-@ifclear ANNOUNCE-ONLY
 @section Noteworthy changes in version @samp{0.6.6}
 
 The GNUstep system libraries are now installed in a separate system root

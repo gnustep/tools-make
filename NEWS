@@ -1,7 +1,22 @@
 NEWS
 ****
 
-The currently released version is `0.6.7'.
+The currently released version is `0.9.0'.
+
+Changes in version `0.9.1'
+==========================
+
+   Make has been reoganized so that it only relies on libraries and
+other things that are necessary for the Makefile package itself. Any
+libraries wanting to add extra package information can do so by
+installing a make stub in the `Additional' directory. This greatly
+simplifies compilation and packaging.
+
+   * Javadoc support added.
+
+   * debian directory added for dpkg
+
+   * RPM support rewritten from scratch.
 
 Changes in version `0.9.0'
 ==========================
