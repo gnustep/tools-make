@@ -22,18 +22,17 @@
 
 # Run config.guess to guess the host
 
-ifneq ($(internal_names_clean), yes)
-  ifeq ($(GNUSTEP_HOST),)
-    GNUSTEP_HOST_GUESS := $(shell (cd /tmp; $(CONFIG_GUESS_SCRIPT)))
-    GNUSTEP_HOST := $(shell (cd /tmp; $(CONFIG_SUB_SCRIPT) $(GNUSTEP_HOST_GUESS)))
-    GNUSTEP_HOST_CPU := $(shell (cd /tmp; $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST)))
-    GNUSTEP_HOST_VENDOR := $(shell (cd /tmp; $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST)))
-    GNUSTEP_HOST_OS := $(shell (cd /tmp; $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST)))
+ifeq ($(GNUSTEP_HOST),)
+GNUSTEP_HOST_GUESS := $(shell (cd /tmp; $(CONFIG_GUESS_SCRIPT)))
+GNUSTEP_HOST := $(shell (cd /tmp; $(CONFIG_SUB_SCRIPT) $(GNUSTEP_HOST_GUESS)))
 
-    GNUSTEP_HOST_CPU := $(shell (cd /tmp; $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU)))
-    GNUSTEP_HOST_VENDOR := $(shell (cd /tmp; $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR)))
-    GNUSTEP_HOST_OS := $(shell (cd /tmp; $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS)))
-  endif
+GNUSTEP_HOST_CPU := $(shell (cd /tmp; $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST)))
+GNUSTEP_HOST_VENDOR := $(shell (cd /tmp; $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST)))
+GNUSTEP_HOST_OS := $(shell (cd /tmp; $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST)))
+
+GNUSTEP_HOST_CPU := $(shell (cd /tmp; $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU)))
+GNUSTEP_HOST_VENDOR := $(shell (cd /tmp; $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR)))
+GNUSTEP_HOST_OS := $(shell (cd /tmp; $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS)))
 endif
 
 #
@@ -55,6 +54,7 @@ else
 #
 
 GNUSTEP_TARGET := $(shell (cd /tmp; $(CONFIG_SUB_SCRIPT) $(target)))
+
 GNUSTEP_TARGET_CPU := $(shell (cd /tmp; $(CONFIG_CPU_SCRIPT) $(GNUSTEP_TARGET)))
 GNUSTEP_TARGET_VENDOR := $(shell (cd /tmp; $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_TARGET)))
 GNUSTEP_TARGET_OS := $(shell (cd /tmp; $(CONFIG_OS_SCRIPT) $(GNUSTEP_TARGET)))
