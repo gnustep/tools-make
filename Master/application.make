@@ -40,17 +40,10 @@ _PSWRAP_H_FILES = $(foreach app,$(APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
-ifeq ($(OBJC_COMPILER), NeXT)
-	rm -f *.iconheader
-	for f in *.$(APP_EXTENSION); do \
-	  rm -f $$f/`basename $$f .$(APP_EXTENSION)`; \
-	done
-else
 ifeq ($(GNUSTEP_FLATTENED),)
 	rm -rf *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
 else
 	rm -rf *.$(APP_EXTENSION)
-endif
 endif
 
 internal-distclean::
