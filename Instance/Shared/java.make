@@ -112,29 +112,29 @@ $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 shared-instance-java-clean:
-	rm -f $(JAVA_OBJ_FILES) \
+	$(ECHO_NOTHING)rm -f $(JAVA_OBJ_FILES) \
 	      $(ADDITIONAL_JAVA_OBJ_FILES) \
-	      $(JAVA_JNI_OBJ_FILES)
+	      $(JAVA_JNI_OBJ_FILES)$(END_ECHO)
 
 shared-instance-java-uninstall:
 ifneq ($(JAVA_OBJ_FILES),)
-	for file in $(JAVA_OBJ_FILES) __done; do \
+	$(ECHO_NOTHING)for file in $(JAVA_OBJ_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -f $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif
 ifneq ($(ADDITIONAL_JAVA_OBJ_FILES),)
-	for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
+	$(ECHO_NOTHING)for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -f $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif
 ifneq ($(JAVA_PROPERTIES_FILES),)
-	for file in $(JAVA_PROPERTIES_FILES) __done; do \
+	$(ECHO_NOTHING)for file in $(JAVA_PROPERTIES_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -f $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif
