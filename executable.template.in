@@ -21,13 +21,6 @@
 # of the same name based on the current host and library_combo.
 
 #--------------------------------------------------------------------------
-# Functions
-#--------------------------------------------------------------------------
-available-platforms() {
-  echo -- NOT IMPLEMENTED YET ---
-}
-
-#--------------------------------------------------------------------------
 # Main body
 #--------------------------------------------------------------------------
 if [ -z "$EXEEXT" ]; then
@@ -134,13 +127,14 @@ fi
 #
 app=`echo $app | sed 's/\.[a-z]*$//'`
 app=`basename $app`
+appname=
 if [ -f $full_appname/Resources/Info-gnustep.plist ]; then
   appname=`grep NSExecutable $full_appname/Resources/Info-gnustep.plist`
   if [ -n '$appname' ]; then
     appname=`echo '$appname' | sed 's,\", ,g' | awk '{print $3}'`
   fi
 fi
-if [ -z $appname ]; then
+if [ -z "$appname" ]; then
   appname=$app
 fi
 
@@ -150,7 +144,7 @@ fi
 
 if [ $show_available_platforms = 1 ]; then
   cd $full_appname
-  available_platforms
+  #available_platforms
   exit 0
 fi
 
