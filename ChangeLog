@@ -1,3 +1,11 @@
+Mon Nov 27 16:16:00 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* documentation.make (internal-doc-clean): Ignore errors when
+	removing the HTML generated from latex - because the error could
+	be caused by a CVS subdir.
+	(internal-doc-distclean): for latex, don't remove HTML document
+	directory (might contain CVS subdir).
+	
 2000-11-18  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.in: Check for GMP
