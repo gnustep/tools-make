@@ -47,13 +47,6 @@
 #  be $(APP_INSTALL_DIR); for a library or tool, $(LIBRARY_INSTALL_DIR),
 #  or $(TOOL_INSTALL_DIR).
 #
-#  GNUSTEP_SHARED_BUNDLE_PRESERVE_LINK_PATH : the path
-#  to a symlink to preserve when installing.  Normally symlinks are
-#  dereferenced, but we have support to preserve a single symlink.
-#  This is used when building bundles on MacOSX.  If not set, it's
-#  ignored. (not supported yet, which is why Instance/bundle.make
-#  is not using the facilities of this file to install the bundle)
-#
 #  $(GNUSTEP_INSTANCE)_RESOURCE_FILES : a list of resource files to install.
 #  They are recursively copied (/symlinked), so it might also include dirs.
 #
