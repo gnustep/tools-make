@@ -46,11 +46,13 @@ make debug=yes \
 # `-v' inverts the matching, so lines which do not match are outputted
 #
 mv file-list-debug file-list.tmp
-grep -f file-list -v -x file-list.tmp >> file-list-debug.tmp
-rm -f file-list.tmp
-echo "%attr (-, root, root)" > file-list-debug
-cat file-list-debug.tmp >> file-list-debug
+for file in `cat file-list`; do
+  grep -v -x $file file-list.tmp >> file-list-debug.tmp
+  mv file-list-debug.tmp file-list.tmp
+done
+
 rm -f file-list-debug.tmp
+mv file-list.tmp file-list-debug
 
 #
 # Clean commands
