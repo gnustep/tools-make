@@ -59,7 +59,6 @@ endif
 DERIVED_SOURCES = derived_src
 ADDITIONAL_INCLUDE_DIRS += -I$(DERIVED_SOURCES)
 
-
 ifeq ($(INTERNAL_framework_NAME),)
 # This part is included the first time make is invoked.
 
@@ -96,7 +95,7 @@ DUMMY_FRAMEWORK = NSFramework_$(INTERNAL_framework_NAME)
 DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES)/$(DUMMY_FRAMEWORK).m
 DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
 
-FRAMEWORK_HEADER_FILES := $(patsubst %.h,$(FRAMEWORK_VERSION_DIR_NAME)/Headers/%.h,$(HEADER_FILES))
+FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Headers/,$(HEADER_FILES))
 
 
 ifneq ($(BUILD_DLL),yes)
@@ -152,12 +151,13 @@ internal-framework-all:: before-$(TARGET)-all \
                          build-framework \
                          after-$(TARGET)-all
 
-before-$(TARGET)-all:: $(FRAMEWORK_HEADER_FILES)
+before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-FRAMEWORK_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(d))
-FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$(d))
+FRAMEWORK_RESOURCE_DIRS = $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Resources/,$(RESOURCE_DIRS))
+FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/,$(WEBSERVER_RESOURCE_DIRS))
+
 
 ifeq ($(strip $(COMPONENTS)),)
   override COMPONENTS=""
@@ -178,7 +178,7 @@ ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
 ifeq ($(FRAMEWORK_INSTALL_DIR),)
-  FRAMEWORK_INSTALL_DIR := $(GNUSTEP_FRAMEWORKS)
+  FRAMEWORK_INSTALL_DIR = $(GNUSTEP_FRAMEWORKS)
 endif
 
 internal-framework-build-headers:: build-framework-dirs \
