@@ -1,3 +1,9 @@
+2001-02-27  Adam Fedor  <fedor@gnu.org>
+
+	* rules.make (LIBRARIES_DEPEND_UPON): Switch order of -L flags so
+	additional flags are first.
+	* target.make (SHARED_LIB_LINK_CMD): Remove redundant -L flags.
+
 Tue Feb 27 04:45:42 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.in (Version): source it as ./Version rather than just
