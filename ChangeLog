@@ -1,3 +1,22 @@
+Fri Nov 28 10:47:11 1997  Scott Christley  <scottc@net-community.com>
+
+	* common.make (GNUSTEP_INSTALLATION_DIR): If the default
+	GNUSTEP_LOCAL_ROOT is empty then use GNUSTEP_SYSTEM_ROOT.
+	(GNUSTEP_LOCAL_HEADERS_FLAG, GNUSTEP_USER_HEADERS_FLAG): New variable.
+	(GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAG): New variable.
+	(GNUSTEP_LOCAL_LIBRARIES_FLAG): New variable.
+	(GNUSTEP_USER_TARGET_LIBRARIES_FLAG): New variable.
+	(GNUSTEP_USER_LIBRARIES_FLAG): New variable.
+	In places where GNUSTEP_LOCAL_ROOT and GNUSTEP_USER_ROOT are
+	used, check to see if they are not blank before using them.
+	(GNUSTEP_FND_DIR): Change to just gnustep.
+	* objc.make (OBJC_PROGRAM_INSTALLATION_DIR): Add the target
+	subdirectory path.
+	(objc-program): Change to objc_program for target names.
+	* rules.make (ALL_OBJCFLAGS, ALL_CFLAGS): Use flag variables
+	for local and user header directories in case they are blank.
+	(ALL_LIB_DIRS, LIB_DIRS_NO_SYSTEM): Likewise.
+
 Wed Nov 19 13:07:37 1997  Scott Christley  <scottc@net-community.com>
 
 	* COPYING: New file.

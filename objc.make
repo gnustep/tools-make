@@ -56,7 +56,7 @@ else
 # don't specify a directory they will get installed in the GNUstep
 # system root.
 OBJC_PROGRAM_INSTALLATION_DIR = \
-    $(GNUSTEP_INSTALLATION_DIR)/Tools
+    $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_TARGET_DIR)
 
 ALL_OBJC_LIBS = $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
 	 $(TARGET_SYSTEM_LIBS)
@@ -79,30 +79,31 @@ $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME): \
 #
 # Compilation targets
 #
-internal-objc-program-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
+internal-objc_program-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME) after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-internal-objc-program-install:: internal-install-objc-dirs install-objc-program
+internal-objc_program-install:: internal-install-objc-dirs install-objc_program
 
 internal-install-objc-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs $(OBJC_PROGRAM_INSTALLATION_DIR)
 
-install-objc-program::
-	$(INSTALL_PROGRAM) -m 0755 $(INTERNAL_objc_program_NAME) \
+install-objc_program::
+	$(INSTALL_PROGRAM) -m 0755 \
+	    $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME) \
 	    $(OBJC_PROGRAM_INSTALLATION_DIR);
 
 #
 # Cleaning targets
 #
-internal-objc-program-clean::
+internal-objc_program-clean::
 	rm -f $(OBJC_PROGRAM_NAME)
 	rm -rf $(GNUSTEP_OBJ_PREFIX)
 
-internal-objc-program-distclean::
+internal-objc_program-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
