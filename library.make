@@ -105,7 +105,7 @@ else # This part gets included the second time make is invoked.
 # This is the directory where the libs get installed. Normally this
 # includes the target arch and os directory and library_combo.
 ifeq ($(LIBRARY_INSTALL_DIR),)
-  LIBRARY_INSTALL_DIR = $(GNUSTEP_LIBRARIES)
+  LIBRARY_INSTALL_DIR = $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 ifeq ($(shared), yes)
