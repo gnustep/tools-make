@@ -603,12 +603,8 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
                       $(ADDITIONAL_LDFLAGS)" \
   ADDITIONAL_CLASSPATH="$($(basename $(basename $*))_CLASSPATH) \
                         $(ADDITIONAL_CLASSPATH)" \
-  LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
-   $($(basename $(basename $*))_LIB_DIRS) $(ADDITIONAL_LIB_DIRS) \
-   $(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) \
-   $($(basename $(basename $*))_LIBRARIES_DEPEND_UPON) debug=$(debug) \
-     profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-     shared_libext=$(SHARED_LIBEXT))" \
+  LIBRARIES_DEPEND_UPON="$($(basename $(basename $*))_LIBRARIES_DEPEND_UPON) \
+                         $(LIBRARIES_DEPEND_UPON)" \
   SCRIPTS_DIRECTORY="$($(basename $(basename $*))_SCRIPTS_DIRECTORY)" \
   CHECK_SCRIPT_DIRS="$($(basename $(basename $*))_SCRIPT_DIRS)"
 
