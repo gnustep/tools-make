@@ -70,7 +70,8 @@ install: all
 	$(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
 	for f in aggregate.make application.make bundle.make \
 		common.make brain.make library.make rules.make target.make \
-		tool.make test.make names.make objc.make MediaBook.func; do \
+		tool.make test-library.make names.make objc.make \
+		MediaBook.func; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
