@@ -52,11 +52,13 @@ ifeq ($(profile), yes)
   APP_EXTENSION = profile
 else
   ifeq ($(debug), yes)
-    APP_EXTENSION=debug
+    APP_EXTENSION = debug
   else
-    APP_EXTENSION=app
+    APP_EXTENSION = app
   endif
 endif
+
+$(warning APP_EXTENSION is $(APP_EXTENSION))
 
 ifeq ($(INTERNAL_app_NAME),)
 # This part gets included by the first invoked make process.
@@ -67,11 +69,7 @@ internal-install:: $(APP_NAME:=.install.app.variables)
 internal-uninstall:: $(APP_NAME:=.uninstall.app.variables)
 
 internal-clean:: $(APP_NAME:=.clean.app.subprojects)
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
-endif
+	rm -rf $(GNUSTEP_OBJ_DIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(APP_EXTENSION); do \

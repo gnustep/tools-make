@@ -70,11 +70,7 @@ internal-install:: $(GSWAPP_NAME:=.install.gswapp.variables)
 internal-uninstall:: $(GSWAPP_NAME:=.uninstall.gswapp.variables)
 
 internal-clean:: $(GSWAPP_NAME:=.clean.gswapp.subprojects)
-ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_PREFIX)/$(GNUSTEP_TARGET_LDIR)
-else
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
-endif
+	rm -rf $(GNUSTEP_OBJ_DIR)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
 	for f in *.$(GSWAPP_EXTENSION); do \
