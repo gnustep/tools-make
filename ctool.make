@@ -39,8 +39,9 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-# This is the directory where the ctools get installed. If you don't specify a
-# directory they will get installed in the GNUstep system root.
+# This is the directory where the ctools get installed. If you don't
+# specify a directory they will get installed in the GNUstep Local
+# root.
 ifeq ($(CTOOL_INSTALLATION_DIR),)
   CTOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 endif
