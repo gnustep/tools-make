@@ -269,7 +269,7 @@ fi
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
 # If so, there are probably other libraries that we want there also, so
 # leave the proper includes in CPPFLAGS and LDFLAGS
-AC_MSG_CHECKING(for shared objc library)
+AC_MSG_CHECKING(for custom shared objc library)
 AC_CACHE_VAL(gs_cv_objc_libdir,
 [dnl
 gs_cv_objc_libdir=NONE
