@@ -55,7 +55,8 @@ internal-install:: $(PALETTE_NAME:=.install.palette.variables)
 
 internal-uninstall:: $(PALETTE_NAME:=.uninstall.palette.variables)
 
-internal-clean:: $(PALETTE_NAME:=.clean.palette.variables)
+internal-clean:: $(PALETTE_NAME:=.clean.palette.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
 internal-distclean:: $(PALETTE_NAME:=.distclean.palette.variables)
 
@@ -69,7 +70,6 @@ else
 .PHONY: internal-palette-all \
         internal-palette-install \
         internal-palette-uninstall \
-        internal-palette-clean \
         internal-palette-distclean \
         before-$(TARGET)-all \
         after-$(TARGET)-all \
@@ -179,16 +179,10 @@ $(PALETTE_DIR_NAME)/Resources:
 internal-palette-uninstall::
 	rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
 
-#
-# Cleaning targets
-#
-internal-palette-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
-
 internal-palette-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj $(PALETTE_DIR_NAME)
+	       static_debug_obj static_profile_obj shared_profile_debug_obj \
+	       static_profile_debug_obj $(PALETTE_DIR_NAME)
 
 endif
 
