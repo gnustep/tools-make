@@ -205,19 +205,36 @@ endif # LATEX_FILES
 #
 ifneq ($(JAVADOC_FILES),)
 
-internal-doc-all:: before-$(TARGET)-all \
-                   $(INTERNAL_doc_NAME)/index.html \
-                   after-$(TARGET)-all
-
 ifeq ($(JAVADOC_SOURCEPATH),)
   INTERNAL_JAVADOCFLAGS = -sourcepath ./
 else
   INTERNAL_JAVADOCFLAGS = -sourcepath ./:$(strip $(JAVADOC_SOURCEPATH))
 endif
 
+# incremental compilation with javadoc is not supported - you can only
+# build once, or always.  by default we build only once - use
+# `JAVADOC_BUILD_ALWAYS = YES' to force rebuilding it always
+
+ifneq ($(JAVADOC_BUILD_ALWAYS),YES) # Build only once
+
+internal-doc-all:: before-$(TARGET)-all \
+                   $(INTERNAL_doc_NAME)/index.html \
+                   after-$(TARGET)-all
 $(INTERNAL_doc_NAME)/index.html:
 	$(MKDIRS) $(INTERNAL_doc_NAME); \
 	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(INTERNAL_doc_NAME)
+
+else # Build always
+
+internal-doc-all:: before-$(TARGET)-all \
+                   generate-javadoc \
+                   after-$(TARGET)-all
+generate-javadoc:
+	$(MKDIRS) $(INTERNAL_doc_NAME); \
+	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(INTERNAL_doc_NAME)
+
+endif
+
 
 endif # JAVADOC_FILES
 
