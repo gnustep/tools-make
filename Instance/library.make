@@ -1,4 +1,4 @@
-#   -*-makefile-*-
+ #  -*-makefile-*-
 #   Instance/library.make
 #
 #   Instance Makefile rules to build GNUstep-based libraries.
@@ -66,6 +66,17 @@ ifeq ($(FINAL_LIBRARY_INSTALL_DIR),)
   FINAL_LIBRARY_INSTALL_DIR = $(LIBRARY_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 endif
 
+# 
+# Manage the case that LIBRARY_NAME starts with 'lib', and the case
+# that it doesn't start with 'lib'.  In both cases, we need to create
+# a .so file whose name starts with 'lib'.
+#
+ifneq ($(filter lib%,$(GNUSTEP_INSTANCE)),)
+  LIBRARY_NAME_WITH_LIB = $(GNUSTEP_INSTANCE)
+else
+  LIBRARY_NAME_WITH_LIB = lib$(GNUSTEP_INSTANCE)
+endif
+
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
   $(shell $(WHICH_LIB_SCRIPT)					\
    $(ALL_LIB_DIRS)						\
@@ -77,7 +88,7 @@ ifeq ($(shared), yes)
 
 ifneq ($(BUILD_DLL),yes)
 
-LIBRARY_FILE = $(GNUSTEP_INSTANCE)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
+LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
 LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 
@@ -119,11 +130,11 @@ SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(SOVERSION)
 
 else # BUILD_DLL
 
-LIBRARY_FILE     = $(GNUSTEP_INSTANCE)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
+LIBRARY_FILE     = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
 LIBRARY_FILE_EXT = $(DLL_LIBEXT)
 DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
-DLL_EXP_LIB      = $(GNUSTEP_INSTANCE)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
-DLL_EXP_DEF      = $(GNUSTEP_INSTANCE)$(LIBRARY_NAME_SUFFIX).def
+DLL_EXP_LIB      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
+DLL_EXP_DEF      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX).def
 
 ifeq ($(DLL_INSTALLATION_DIR),)
   DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
@@ -133,7 +144,7 @@ endif # BUILD_DLL
 
 else # shared
 
-LIBRARY_FILE         = $(GNUSTEP_INSTANCE)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
+LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(LIBEXT)
 LIBRARY_FILE_EXT     = $(LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
@@ -177,7 +188,7 @@ endif
 # library header files can use this preprocessor define to know that
 # they are included during compilation of the library itself, and can
 # then use __declspec(dllexport) to export symbols
-CLEAN_library_NAME = $(shell echo $(GNUSTEP_INSTANCE)|tr '-' '_')
+CLEAN_library_NAME = $(shell echo $(LIBRARY_NAME_WITH_LIB)|tr '-' '_')
 SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
 internal-library-all_:: \
