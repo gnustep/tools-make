@@ -23,13 +23,13 @@
 #
 # input variables:
 #
-#  $(JAVA_OBJ_FILES), $(JAVA_JNI_OBJ_FILES), $(SUBPROJECT_OBJ_FILES) :
+#  JAVA_OBJ_FILES, JAVA_JNI_OBJ_FILES, SUBPROJECT_OBJ_FILES :
 #  the list of object files (built by Instance/rules.make)
 #
 #  $(GNUSTEP_INSTANCE)_JAVA_PROPERTIES_FILES : the list of .properties files
 #  to install together with the .java files
 #
-#  $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR) : the base directory where to
+#  GNUSTEP_SHARED_JAVA_INSTALLATION_DIR : the base directory where to
 #  install the files.
 #
 
