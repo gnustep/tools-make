@@ -192,7 +192,7 @@ RPM_MAKE_LOADED=yes
 
 # If we have been called with something like
 #
-# make GNUSTEP_INSTALL_BASE=/var/tmp/package-build/ \
+# make INSTALL_ROOT_DIR=/var/tmp/package-build/ \
 #      GNUSTEP_INSTALLATION_DIR=/var/tmp/package-build/usr/GNUstep/Local \
 #      filelist=yes install
 #
@@ -215,20 +215,20 @@ ifeq ($(filelist),yes)
 
   # install - done by other GNUmakefiles - NB: must install everything inside
   # GNUSTEP_INSTALLATION_DIR, or prefix all installation dirs with 
-  # $GNUSTEP_INSTALL_BASE such as 
-  # $(INSTALL_DATA) page.html $(GNUSTEP_INSTALL_BASE)/usr/local/MySoftware/
+  # $INSTALL_ROOT_DIR such as 
+  # $(INSTALL_DATA) page.html $(INSTALL_ROOT_DIR)/usr/local/MySoftware/
   # instead of $(INSTALL_DATA) page.html /usr/local/MySoftware/
 
   # Get the list of files inside GNUSTEP_INSTALL_BASE
   after-install::
-	for file in `$(TAR) Pcf - $(GNUSTEP_INSTALL_BASE) | $(TAR) t`; do \
+	for file in `$(TAR) Pcf - $(INSTALL_ROOT_DIR) | $(TAR) t`; do \
 	  if [ -d "$$file" ]; then                                \
 	    echo "%dir $$file" > /dev/null;                       \
 	  else                                                    \
 	    echo "$$file" >> $(FILE_LIST);                        \
 	  fi;                                                     \
 	done                                                    
-	sed -e "s|$(GNUSTEP_INSTALL_BASE)||" $(FILE_LIST) > file-list.tmp
+	sed -e "s|$(INSTALL_ROOT_DIR)||" $(FILE_LIST) > file-list.tmp
 	mv file-list.tmp $(FILE_LIST)                             
 
 endif # filelist == yes

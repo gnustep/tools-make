@@ -24,7 +24,7 @@ if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
   . %{gs_root}/Makefiles/GNUstep.sh 
 fi
 
-make GNUSTEP_INSTALL_BASE=$RPM_BUILD_ROOT \
+make INSTALL_ROOT_DIR=$RPM_BUILD_ROOT \
   GNUSTEP_INSTALLATION_DIR=$RPM_BUILD_ROOT%{gs_install_dir} \
   filelist=yes install
 
