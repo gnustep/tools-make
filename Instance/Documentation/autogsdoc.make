@@ -32,16 +32,16 @@ AGSDOC_FLAGS = $($(GNUSTEP_INSTANCE)_AGSDOC_FLAGS)
 INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
+INTERNAL_AGSDOCFLAGS += -MakeDependencies $(GNUSTEP_INSTANCE).stamp
 
-internal-doc-all_:: generate-autogsdoc
+internal-doc-all_:: $(GNUSTEP_INSTANCE).stamp
+
+-include	$(GNUSTEP_INSTANCE).stamp
 
 $(GNUSTEP_INSTANCE):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-# FIXME: We need appropriate rules here to determine when to run
-# autogsdoc ... this simplistic rule inefficiently runs autogsdoc
-# every time.
-generate-autogsdoc: $(GNUSTEP_INSTANCE)
+$(GNUSTEP_INSTANCE).stamp:
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
 
 internal-doc-install_:: 

@@ -5,7 +5,8 @@
 	work due to the presence of spaces.
 	* messages.make: Make documentation generation less verbose.
 	* Instance/Documentation/autogsdoc.make: ditto
-
+	Also use autogsdoc -MakeDependencies to avoid unnecessary
+	regeneration of documentation.
 
 2003-07-21  Adam Fedor  <fedor@gnu.org>
 
