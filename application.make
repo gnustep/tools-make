@@ -205,6 +205,7 @@ $(APP_RESOURCE_DIRS):
 	$(MKDIRS) $(APP_RESOURCE_DIRS)
 
 app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
+		     $(APP_DIR_NAME)/Resources/$(INTERNAL_app_NAME).desktop \
                      $(APP_RESOURCE_DIRS)
 ifneq ($(strip $(RESOURCE_FILES)),)
 	@(echo "Copying resources into the application wrapper..."; \
@@ -249,6 +250,10 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	  @ if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
 	    plmerge $@ $(INTERNAL_app_NAME)Info.plist; \
 	  fi
+
+$(APP_DIR_NAME)/Resources/$(INTERNAL_app_NAME).desktop: \
+		$(APP_DIR_NAME)/Resources/Info-gnustep.plist
+	@pl2link $^ $(APP_DIR_NAME)/Resources/$(INTERNAL_app_NAME).desktop
 
 $(APP_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
