@@ -35,17 +35,17 @@ AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then
     echo /usr/GNUstep ;
   fi
 else
-  echo $GNUSTEP_SYSTEM_ROOT ;
+  echo "$GNUSTEP_SYSTEM_ROOT" ;
 fi`)
 if test "x$prefix" = "xNONE"; then
-  prefix=$ac_default_prefix ;
+  prefix="$ac_default_prefix" ;
 fi
 AC_ARG_WITH(system-root, 
 [--without-system-root		Don't use separate system root directory], 
-  ac_cv_system_root=$withval,  
+  ac_cv_system_root="$withval",  
   ac_cv_system_root=yes)
 
-GNUSTEP_ROOT=$prefix
+GNUSTEP_ROOT="$prefix"
 root_prefix='${prefix}'
 if test $ac_cv_system_root = yes; then
   if test "x`basename $prefix`" = xSystem; then
@@ -54,7 +54,7 @@ if test $ac_cv_system_root = yes; then
     if test "x$prefix" = "x/"; then
       prefix=/System
     else
-      prefix=$prefix/System
+      prefix="$prefix/System"
     fi
   fi
   root_prefix='${prefix}/..'
@@ -72,8 +72,8 @@ AC_ARG_WITH(local-root,
 to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
 --with-local-root=/usr/local/GNUstep/Local
 ],
-GNUSTEP_LOCAL_ROOT=$withval,
-GNUSTEP_LOCAL_ROOT=$GNUSTEP_ROOT/Local
+GNUSTEP_LOCAL_ROOT="$withval",
+GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
 )
 
 AC_ARG_WITH(network-root,
@@ -82,8 +82,8 @@ AC_ARG_WITH(network-root,
 to have the GNUSTEP_NETWORK_ROOT directory in a non-standard place.  Example:
 --with-network-root=/usr/local/GNUstep/Network
 ],
-GNUSTEP_NETWORK_ROOT=$withval,
-GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Network
+GNUSTEP_NETWORK_ROOT="$withval",
+GNUSTEP_NETWORK_ROOT="$GNUSTEP_ROOT/Network"
 )
 
 AC_ARG_WITH(user-root,
@@ -92,7 +92,7 @@ AC_ARG_WITH(user-root,
 to have the GNUSTEP_USER_ROOT directory in a non-standard place.  Example:
 --with-user-root=/home/nicola/local/GNUstep
 ],
-GNUSTEP_USER_ROOT=$withval,
+GNUSTEP_USER_ROOT="$withval",
 GNUSTEP_USER_ROOT=""
 )
 
@@ -218,9 +218,9 @@ AC_PROG_INSTALL
 # found.
 AC_SUBST(HOST_INSTALL)
 if test "$INSTALL" = "$ac_install_sh"; then
-  HOST_INSTALL=$prefix/Makefiles/$INSTALL
+  HOST_INSTALL="$prefix/Makefiles/$INSTALL"
 else
-  HOST_INSTALL=$INSTALL
+  HOST_INSTALL="$INSTALL"
 fi
 
 AC_LN_S
@@ -228,7 +228,7 @@ AC_LN_S
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)
 AC_ARG_WITH(tar,
 [--with-tar                      Set the name of the tar program to use],
-  TAR=$withval,)
+  TAR="$withval",)
 
 AC_CHECK_PROG(CHOWN, chown, chown, none)
 if test "$CHOWN" = "none"; then
@@ -250,14 +250,14 @@ fi
 AC_SUBST(FORCE_CPPFLAGS)
 
 # Set location of GNUstep dirs for later use
-GNUSTEP_HDIR=$prefix/Headers
+GNUSTEP_HDIR="$prefix/Headers"
 if test "$GNUSTEP_FLATTENED" = yes; then
-  GNUSTEP_LDIR=$prefix/Libraries
+  GNUSTEP_LDIR="$prefix/Libraries"
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
-  obj_dir=$clean_target_cpu/$clean_target_os
-  GNUSTEP_LDIR=$prefix/Libraries/$obj_dir
+  obj_dir="$clean_target_cpu/$clean_target_os"
+  GNUSTEP_LDIR="$prefix/Libraries/$obj_dir"
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
@@ -267,9 +267,9 @@ AC_MSG_CHECKING(for shared objc library)
 AC_CACHE_VAL(gs_cv_objc_libdir,
 [dnl
 gs_cv_objc_libdir=NONE
-if test -f $GNUSTEP_HDIR/objc/objc.h; then
-  if test -f $GNUSTEP_LDIR/libobjc.a -o -f $GNUSTEP_LDIR/libobjc.so; then
-    gs_cv_objc_libdir=$GNUSTEP_LDIR
+if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
+  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so"; then
+    gs_cv_objc_libdir="$GNUSTEP_LDIR"
   else
     gs_cv_objc_libdir=NONE
   fi
@@ -292,7 +292,7 @@ GCC_SO_DIR=NONE
   if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
     CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
   else
-    GCC_SO_DIR=$gs_cv_objc_libdir
+    GCC_SO_DIR="$gs_cv_objc_libdir"
   fi
   LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 
