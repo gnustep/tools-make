@@ -59,7 +59,7 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean.make
 #
 # Host and target specific settings
 #
-ifeq ($(GNUSTEP_TARGET_OS),solaris2)
+ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 X_INCLUDES := $(X_INCLUDES)/X11
 endif
 
@@ -68,6 +68,9 @@ endif
 #
 ifeq ($(GNUSTEP_TARGET_OS),linux-gnu)
 TARGET_SYSTEM_LIBS := -lpcthread -ldl -lm
+endif
+ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
+TARGET_SYSTEM_LIBS := -lsocket -lnsl -ldl -lm
 endif
 
 #
@@ -117,8 +120,12 @@ endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) -G -o $@ $^
+        $(CC) -G -o $(SHARED_LIBRARY_FILE) $^ ;\
+        mv $(SHARED_LIBRARY_FILE) $(GNUSTEP_OBJ_DIR) ;\
+        (cd $(GNUSTEP_OBJ_DIR); \
+          rm -f $(SHARED_LIBRARY_NAME); \
+          $(LN_S) $(SHARED_LIBRARY_FILE) $(SHARED_LIBRARY_NAME))
 
 SHARED_CFLAGS     += -fpic -fPIC
-SHARE_LIBEXT   = .so
+SHARED_LIBEXT   = .so
 endif

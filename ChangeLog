@@ -1,3 +1,7 @@
+Wed Sep 24 17:54:41 1997  Scott Christley  <scottc@speedy.net-community.com>
+
+	* target.make: Correct settings for solaris.
+
 Wed Sep 24 14:00:03 1997  Scott Christley  <scottc@net-community.com>
 
 	* Makefile.in: Run scripts in current directory.
