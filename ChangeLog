@@ -1,3 +1,14 @@
+Wed Mar 14 00:15:15 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Huge speed up.  As an example of the order of magnitude, on my
+	home system these optimizations reduce the time taken by gnustep
+	to install the base library to 40% of the original time.
+	* common.make (GNUSTEP_OBJ_PREFIX): Major optimization: replace
+	invocation of sed with invocation of the make internal function
+	subst.
+	* rules.make (%.variables): Optimization: replaced three sed calls
+	with subst and word.
+	
 2001-03-13  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in (objc_thread_lib): Correct test for threading
