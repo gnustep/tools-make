@@ -3,7 +3,7 @@
 #
 #   Instance makefile rules to build GNUstep-based bundles.
 #
-#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001, 2002 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
@@ -50,6 +50,11 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
         bundle-resource-files \
         bundle-localized-resource-files 
 
+# In some cases, a bundle without any object file in it is useful - to
+# just store some resources which can be loaded comfortably using the 
+# gnustep-base NSBundle API.  In this case - which we detect because
+# OBJ_FILES_TO_LINK is empty - we skip any code related to linking etc
+ifneq ($(OBJ_FILES_TO_LINK),)
 # NB: we don't need to link the bundle against the system libraries,
 # which are already linked in the application ... linking them both in
 # the bundle and in the application would just make things more
@@ -76,6 +81,8 @@ ifeq ($(WITH_DLL),yes)
 BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
 endif
 
+endif # OBJ_FILES_TO_LINK
+
 internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) \
                        build-bundle \
                        build-macosx-bundle
@@ -85,13 +92,16 @@ BUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
 GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH = $(BUNDLE_DIR_NAME)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
+ifneq ($(OBJ_FILES_TO_LINK),)
 BUNDLE_FILE = \
 $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)
+endif
 
 ifeq ($(BUNDLE_INSTALL_DIR),)
   BUNDLE_INSTALL_DIR = $(GNUSTEP_BUNDLES)
 endif
 
+ifneq ($(OBJ_FILES_TO_LINK),)
 build-bundle:: $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
                $(BUNDLE_FILE) \
                $(BUNDLE_DIR_NAME)/Resources \
@@ -129,6 +139,15 @@ ifeq ($(PRINCIPAL_CLASS),)
   PRINCIPAL_CLASS = $(GNUSTEP_INSTANCE)
 endif
 
+else 
+# Following code for the case OBJ_FILES_TO_LINK is empty - bundle with
+# no shared object in it.
+build-bundle:: $(BUNDLE_DIR_NAME)/Resources \
+               $(BUNDLE_DIR_NAME)/Resources/Info.plist \
+               $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist \
+               shared-instance-bundle-all
+endif # OBJ_FILES_TO_LINK
+
 # MacOSX bundles
 
 $(BUNDLE_DIR_NAME)/Contents :
@@ -139,6 +158,7 @@ $(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents \
 	@(cd $(BUNDLE_DIR_NAME)/Contents; rm -f Resources; \
 	  $(LN_S) ../Resources .)
 
+ifneq ($(OBJ_FILES_TO_LINK),)
 $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
 	@(echo "<?xml version='1.0' encoding='utf-8'?>";\
 	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
@@ -156,6 +176,21 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
 	  echo "  </dict>";\
 	  echo "</plist>";\
 	) >$@
+else
+$(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
+	@(echo "<?xml version='1.0' encoding='utf-8'?>";\
+	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
+	  echo "<!-- Automatically generated, do not edit! -->";\
+	  echo "<plist version='0.9'>";\
+	  echo "  <dict>";\
+	  echo "    <key>CFBundleInfoDictionaryVersion</key>";\
+	  echo "    <string>6.0</string>";\
+	  echo "    <key>CFBundlePackageType</key>";\
+	  echo "    <string>BNDL</string>";\
+	  echo "  </dict>";\
+	  echo "</plist>";\
+	) >$@
+endif
 
 build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
                        $(BUNDLE_DIR_NAME)/Contents/Resources \
@@ -163,6 +198,7 @@ build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
+ifneq ($(OBJ_FILES_TO_LINK),)
 # NeXTstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info.plist:
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -181,6 +217,22 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	  plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
 	fi
+else # following code for when no object file is built
+# NeXTstep bundles
+$(BUNDLE_DIR_NAME)/Resources/Info.plist:
+	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
+	  echo "}") >$@
+
+# GNUstep bundles
+$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
+	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
+	  echo "}") >$@
+	@if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
+	  plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
+	fi
+endif
 
 # Comment on the tar options used in the rule below - 
 
