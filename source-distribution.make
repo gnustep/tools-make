@@ -33,10 +33,9 @@ TGZ_MAKE_LOADED=yes
 
 #
 # Build a .tgz with the whole directory tree
-# Attention - the source tree should be clean !
 #
-tgz:
-	@echo "Generating the .tgz...";                                    \
+tgz: distclean
+	@echo "Generating the .tgz in the parent directory...";            \
 	SNAPSHOT_DIR=`basename $$(pwd)`;                                   \
 	cd ..;                                                             \
 	if [ "$$SNAPSHOT_DIR" != "$(PACKAGE_NAME)-$(VERSION)" ]; then      \
