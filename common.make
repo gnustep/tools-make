@@ -285,7 +285,7 @@ endif
 #
 # Overridable compilation flags
 #
-OBJCFLAGS = -Wno-import
+OBJCFLAGS = $(OBJC_NO_IMPORT_FLAGS) 
 CFLAGS =
 OBJ_DIR_PREFIX =
 
