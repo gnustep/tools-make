@@ -2,7 +2,7 @@
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Darwin 1.x/PowerPC, , (DIR)
-@node Machine Specific, Darwin 1.x/PowerPC, , (DIR)
+@node Machine Specific
 @chapter Machines
 @end ifclear
 
@@ -14,6 +14,7 @@ more popular operating systems. Some machines marked with
 @menu
 * Darwin 1.x/PowerPC::          
 * Debian/DEC-Alpha::            
+* FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
 * GNU-Linux/Intel::             
@@ -77,7 +78,7 @@ configure (gnustep-make) like this:
 
 
 @c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 3.x, Darwin 1.x/PowerPC, Machine Specific
+@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 1.x/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -92,7 +93,25 @@ Unknown
 @end table
 
 @c -----------------------------------------
-@node FreeBSD 3.x, FreeBSD 2.x, Debian/DEC-Alpha, Machine Specific
+@node FreeBSD 4.x, FreeBSD 3.x, Debian/DEC-Alpha, Machine Specific
+@section FreeBSD 3.x
+
+@table @samp
+@item Recommended compiler
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+If you're using zsh, some shell variables may not be set correctly when
+executing GNUstep.sh. Try turing on SH_WORD_SPLIT (e.g. 'zsh
+--sh-word-split', 'zsh -o shwordsplit', 'zsh -y' or by setting 'setopt
+SH_WORD_SPLIT' in one of zsh's startup files.)
+
+@end table
+
+@c -----------------------------------------
+@node FreeBSD 3.x, FreeBSD 2.x, FreeBSD 4.x, Machine Specific
 @section FreeBSD 3.x
 @c contact: David Lazaro <khelekir@encomix.es>
 

@@ -1,3 +1,11 @@
+2002-04-11  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in (gcc version): Use -dumpversion to check gcc
+	version.
+
+	* Documentation/README.MinGW: Minor updates.
+	* Documentation/machines.texi: Add FreeBSD 4.x
+
 Wed Apr 10 14:39:24 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/documentation.make (internal-doc-install_): Install all
