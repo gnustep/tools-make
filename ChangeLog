@@ -1,8 +1,8 @@
-2003-03-14  Adam Fedor  <fedor@Eldorado.local.>
+2003-03-17  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.6.0
 
-2003-03-14  Adam Fedor  <fedor@Eldorado.local.>
+2003-03-14  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Check for -lpthread on unknown hosts (e.g. irix)
 	* target.make (darwin): Add -read_only_reolcs warning. 
