@@ -562,7 +562,9 @@ gcc 2.95.3 (Cygwin release 1.1.8)
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
-for shared libs. ffcall is not ported to cygwin so don't try to use it (some
+for shared libs. It's a good idea to remove the libobjc.a that comes with gcc
+(gcc -v for location) so that it isn't accidentally found.
+Ffcall is not ported to cygwin so don't try to use it (some
 invocation and DO stuff will not work).
 
 @item Special Instructions 

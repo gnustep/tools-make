@@ -17,6 +17,8 @@ libraries, read the file GNUstep-HOWTO for more complete instructions on
 how to install the entire GNUstep package (including this package).
 GNUstep-HOWTO comes with this distribution.
 
+This should be the first GNUstep package you install.
+
 When you configure additional libraries, make sure you use the same
 configuration options as with gstep-make.
 

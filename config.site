@@ -50,11 +50,19 @@ fi
 
 # Change the binary directory default
 if test "$bindir" = "\${exec_prefix}/bin" ; then
-   bindir="\${exec_prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   if [ -z "$GNUSTEP_FLATTENED" ]; then
+     bindir="\${exec_prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   else
+     bindir="\${exec_prefix}/Tools"
+   fi
    bindirtop="\${exec_prefix}/Tools"
 fi
 if test "$DIR_BIN" = "/usr/local/bin" ; then
-   DIR_BIN="\${prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   if [ -z "$GNUSTEP_FLATTENED" ]; then
+     DIR_BIN="\${prefix}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+   else
+     DIR_BIN="\${exec_prefix}/Tools"
+   fi
    bindirtop="\${exec_prefix}/Tools"
 fi
 
@@ -72,7 +80,11 @@ fi
 
 # Change the library directory default
 if test "$libdir" = "\${exec_prefix}/lib" ; then
-   libdir="\${exec_prefix}/Libraries/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
+   if [ -z "$GNUSTEP_FLATTENED" ]; then
+     libdir="\${exec_prefix}/Libraries/${GNUSTEP_TARGET_CPU}/${GNUSTEP_TARGET_OS}"
+  else
+     libdir="\${exec_prefix}/Libraries
+  fi
 fi
 
 # Change the include directory default

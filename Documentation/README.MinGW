@@ -9,6 +9,15 @@ subtle problems with running GNU tools on Windows, so any problems you
 may encounter may just as easly have to do with the compilation tools
 you are using as with GNUstep.
 
+The base library is not completely ported to run on MinGW yet.
+In particular, anything using sockets, RunLoops and FileHandles will probably
+not work.
+
+Note for compiling with shared libraries (DLLs), it's a good idea to
+remove the libobjc.a that comes with gcc (gcc -v for location) so that
+it isn't accidentally found instead of the libobjc DLL that you will
+compile below.
+
 MinGW on Cygwin
 ---------------
 
@@ -76,13 +85,6 @@ variable to 'win32'. Then:
   ./configure --target=i386-mingw32 
   /usr/bin/make target=i386-mingw32 shared=yes
   /usr/bin/make target=i386-mingw32 shared=yes install
-
-Note that the base library is not completely ported to run on MinGW yet.
-In particular, anything using sockets, RunLoops and FileHandles.
-Alos, the gnustep-base DLL doesn't seem to be set up correctly.
-To compile the gstep-base as a static library, use:
-
-  /usr/bin/make shared=no target=i386-mingw32
 
 If you get tired of typing  "target=i386-mingw32" all the time, then before
 you exec the GNUstep.sh script, just set the GNUSTEP_HOST:
