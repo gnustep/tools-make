@@ -44,7 +44,7 @@ for file in ${1+"$@"} ; do
         echo "$MKDIR $pathcomp" 1>&2
 	if test ! -z "${CHOWN_TO}"; then
           echo "chown $CHOWN_TO $pathcomp" 1>&2
-          ($MKDIR "${pathcomp}"; chown $CHOWN_TO "${pathcomp}") || errstatus=$?
+          ($MKDIR "${pathcomp}" && chown $CHOWN_TO "${pathcomp}") || errstatus=$?
 	else
           $MKDIR "${pathcomp}" || errstatus=$?
 	fi;
