@@ -1,3 +1,7 @@
+2004-03-07  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/machines.texi: Updates, add URL's for README's.
+
 Sun Mar  7 15:22:37 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Updated application and bundle file structure on Apple to the

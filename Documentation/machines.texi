@@ -3,8 +3,8 @@
 @settitle Platform Compatibility
 
 @ifclear HOWTO
-@c Machine Specific, Darwin 6.x/PowerPC, , (DIR)
-@node Machine Specific, Darwin 6.x/PowerPC, , (DIR)
+@c Machine Specific, Darwin/ix86, , (DIR)
+@node Machine Specific, Darwin/ix86, , (DIR)
 @chapter Machines
 @end ifclear
 
@@ -14,7 +14,8 @@ more popular operating systems. Some machines marked with
 @emph{Unstable} may have some trouble or may not work at all.
 
 @menu
-* Darwin 6.x/PowerPC::          
+* Darwin/ix86::                 
+* Darwin/PowerPC::              
 * Debian/DEC-Alpha::            
 * Debian/i386::                 
 * Debian/PowerPC::              
@@ -52,7 +53,7 @@ Compiler notes: If a recommended compiler is not listed, take note of the
 following information before choosing the compiler you use.
 @table @samp
 @item egcs or gcc < 2.95
-Probably will work, but few people use these now.
+Might work, but few people use these now.
 @item gcc 2.95.x
 Probably the oldest compiler that GNUstep is regularly tested with.
 @item gcc 2.96
@@ -87,31 +88,41 @@ and installing gcc and make. If you had GNUstep previously installed, make sure
 you completely remove all of it, including installed init scripts.
 
 @c -----------------------------------------
-@node Darwin 6.x/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
-@section Darwin 6.x/PowerPC
+@node Darwin/ix86, Darwin/PowerPC, Machine Specific, Machine Specific
+@section Darwin/ix86
+
+Currently tested on Darwin 7.x
 
 @table @samp
 @item Recommended compiler
 gcc 3.3.2. Older versions will not compile on Darwin.
 
-Default compiler has some odd memory(?) related problems.
+Default compiler has unknown problems.
 Use the GNU runtime. Download the gcc compiler and configure it with
 --enable-threads=posix. You don't need binutils or anything else.
 
-Optional: Usually the installed compiler will produce object
-files for the NeXT runtime if you don't say gcc -fgnu-runtime. To change
-this behaviour, edit src-dir/gcc/config/darwin.h: You have to change the
-word #define in line 73 to #undef. Then the runtime default is gnu. When
-bootstrapping the compiler a nice working objective C gnu-runtime library
-(which is a little bit faster than Apple's runtime) will be compiled
-and installed when make install. To use it, there is one (important) thing
-left: After installing the compiler, you have to go to
-install-dir/lib and produce the following dynamic link:
-@example
-ln -s libobjc.a libobjc.dylib
-@end example
-This might seem senseless, but it forces the linker to use this library
-instead of the NeXT-runtime!
+@item Extra libs needed 
+
+@item Special Instructions 
+
+Read the @url{README.Darwin} file in the gnustep-make/Documentation directory for
+complete instructions.
+
+@end table
+
+@c -----------------------------------------
+@node Darwin/PowerPC, Debian/DEC-Alpha, Darwin/ix86, Machine Specific
+@section Darwin/PowerPC
+
+Currently tested on Darwin 6.x, 7.x
+
+@table @samp
+@item Recommended compiler
+gcc 3.3.2. Older versions will not compile on Darwin.
+
+Default compiler has unknown problems.
+Use the GNU runtime. Download the gcc compiler and configure it with
+--enable-threads=posix. You don't need binutils or anything else.
 
 @item Extra libs needed 
 Use libffi (not ffcall). This should be enabled by default in gnustep-base
@@ -120,13 +131,13 @@ so you don't have to type --enable-libffi. Also you need the dlcompat library
 
 @item Special Instructions 
 
-Make sure to configure gnustep-make with ./configure
---with-library-combo=gnu-gnu-gnu if you want to use all the GNUstep libraries.
+Read the @url{README.Darwin} file in the gnustep-make/Documentation directory for
+complete instructions.
 
 @end table
 
 @c -----------------------------------------
-@node Debian/DEC-Alpha, Debian/i386, Darwin 6.x/PowerPC, Machine Specific
+@node Debian/DEC-Alpha, Debian/i386, Darwin/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -309,9 +320,9 @@ No libffi-support: Use ffcall
 
 @c -----------------------------------------
 @node MkLinux/PowerPC, NetBSD, Irix 6.5/MIPS, Machine Specific
-@section MkLinux/PowerPC (@emph{Obsolete})
+@section MkLinux/PowerPC 
 
-This configuration is no longer being tested, but it may still work.
+Tested with R2 RC2 (2004/03/04).
 
 @table @samp
 @item Recommended compiler
@@ -321,14 +332,8 @@ gcc 3.x allthough earlier ones should work if you also install gnustep-objc
 None.
 
 @item Special Instructions 
-DR3 comes with a good version of gcc.
-Seems to compile and install ok, althouth DR3 has an old version of
-glibc, which requires some workarounds which should be taken care of in
-the configuration. Not completely tested, so some aspects, particular
-object invocations and DO may not work properly.
+Unknown.
 
-If you want threads, you'll probably have to get the latest gcc compiler
-and glibc library (which has the threads library) and install both.
 @end table
 
 @c -----------------------------------------
@@ -343,7 +348,7 @@ Unknown
 libiconv
 
 @item Special Instructions 
-See the README.NetBSD file located in the gnustep-make package.
+See the @url{README.NetBSD} file located in the gnustep-make package.
 
 @end table
 
@@ -374,7 +379,7 @@ Unknown
 Unknown
 
 @item Special Instructions 
-Try reading the README.NetBSD which might work the same on OpenBSD.
+Try reading the @url{README.NetBSD} which might work the same on OpenBSD.
 @end table
 
 @c -----------------------------------------
@@ -698,7 +703,7 @@ CPPFLAGS=-I/usr/include/win32api ./configure
 
 Make sure you have good shared libraries for everthing. Sometimes a bad
 shared library (like libtiff) will cause odd and untraceable problems.
-See @file{README.Cygwin} for information on compiling.
+See @url{README.Cygwin} for information on compiling.
 
 @c -----------------------------------------
 @node Windows with MinGW, Yellowdog/PowerPC, Windows with CYGWIN, Machine Specific
@@ -712,7 +717,7 @@ See below.
 See below.
 
 @item Special Instructions 
-See the @file{README.MinGW} file located in the gnustep-make Documentation
+See the @url{README.MinGW} file located in the gnustep-make Documentation
 directory for instructions. Windows NT/2000/XP only. Win98 machines and
 earlier are very buggy and are not supported.
 Native GUI backend is alpha version.
