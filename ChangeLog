@@ -1,3 +1,14 @@
+Thu Oct 10 18:21:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* create_domain_dir_tree.sh: New script to create the domain
+	directory tree inside a directory.
+	* GNUmakefile.in (install): Rewritten.  Use the
+	create_domain_dir_tree.sh to create the System domain; create only
+	the top-level directories of the Local and Network domain; print
+	short messages about installation rather than displaying the full
+	shell commands unless messages=yes is given on the command line.
+	(EC): New variable to implement messages=yes.
+
 2002-10-09  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/GNUmakefile: Add userfaq target
