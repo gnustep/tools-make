@@ -172,7 +172,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@ $<
 
 $(JAVA_OBJ_PREFIX)%.class : %.java
-	if [ $< -nt $(JAVA_OBJ_PREFIX)/`(grep \"package\" $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ ]; then \
+	if [ $< -nt $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ -o ! -f $(JAVA_OBJ_PREFIX)/`(grep package $< | awk '{ print $$2 }') | sed -e "s/\./\//g" -e "s/\;//"`/$@ ]; then \
 		$(JAVAC) $(ALL_JAVAFLAGS) $< -d $(JAVA_OBJ_PREFIX); \
 	fi
 

@@ -272,7 +272,7 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
           if [ x$(LIBRARY_NAME_SUFFIX) = x_d ]; then \
-             $(LN_S) $(LIBRARY_FILE) `echo $(LIBRARY_FILE) | sed -e 's/_d//'`; \
+             $(LN_S) -f $(LIBRARY_FILE) `echo $(LIBRARY_FILE) | sed -e 's/_d//'`; \
           fi; \
 	)
 AFTER_INSTALL_SHARED_LIB_COMMAND = \
@@ -281,7 +281,7 @@ AFTER_INSTALL_SHARED_LIB_COMMAND = \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
           if [ x$(LIBRARY_NAME_SUFFIX) = x_d ]; then \
-             $(LN_S) $(LIBRARY_FILE) `echo $(LIBRARY_FILE) | sed -e 's/_d//'`; \
+             $(LN_S) -f $(LIBRARY_FILE) `echo $(LIBRARY_FILE) | sed -e 's/_d//'`; \
           fi; \
 	)
 OBJ_MERGE_CMD		= \
