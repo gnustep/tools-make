@@ -33,9 +33,9 @@ setenv GNUSTEP_LOCAL_ROOT @prefix@/Local
 setenv GNUSTEP_USER_ROOT ~/GNUstep
 
 if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
-      set GNUSTEP_MAKEFILES=${GNUSTEP_SYSTEM_ROOT}/Makefiles
+      setenv GNUSTEP_MAKEFILES=${GNUSTEP_SYSTEM_ROOT}/Makefiles
 else
-      set GNUSTEP_MAKEFILES=${GNUSTEP_BUILD_ROOT}/Makefiles
+      setenv GNUSTEP_MAKEFILES=${GNUSTEP_BUILD_ROOT}/Makefiles
 endif
 
 #

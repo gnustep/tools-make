@@ -1,3 +1,9 @@
+1999-08-01  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	Fix suggested by beppu@rigel.oac.uci.edu
+	* GNUstep.sh.in: Put GNUSTEP_MAKEFILES in the environment.
+	* GNUstep.csh.in: Likewise
+
 1999-07-29  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess: Updated from latest version + fix for Netwinder.

@@ -39,6 +39,7 @@ if [ -z "$GNUSTEP_BUILD_ROOT" ]; then
 else
       GNUSTEP_MAKEFILES=$GNUSTEP_BUILD_ROOT/Makefiles
 fi
+export GNUSTEP_MAKEFILES
 
 #
 # Determine the host information
