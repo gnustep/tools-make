@@ -105,10 +105,9 @@ ifndef objc_threaded
   objc_threaded:=@objc_threaded@
 endif
 
-# Any user specified libs, like thread libraries
-CONFIG_SYSTEM_INCL = @INCLUDE_FLAGS@
+# Any user specified libs
+CONFIG_SYSTEM_INCL=@INCLUDES@
 CONFIG_SYSTEM_LIBS = @LIBS@
-CONFIG_SYSTEM_DEFS = 
 
 #
 # Whether the C/ObjC/C++ compiler supports auto-dependencies

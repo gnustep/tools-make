@@ -396,7 +396,7 @@ endif
 ifeq ($(profile), yes)
   ADDITIONAL_FLAGS += -pg
   ifeq ($(LD), $(CC))
-    LDFLAGS += -pg
+    INTERNAL_LDFLAGS += -pg
   endif
   OBJ_DIR_PREFIX += profile_
   LIBRARY_NAME_SUFFIX := p$(LIBRARY_NAME_SUFFIX)
@@ -437,7 +437,6 @@ AUXILIARY_CPPFLAGS += $(GNUSTEP_DEFINE) \
 INTERNAL_OBJCFLAGS += $(ADDITIONAL_FLAGS) $(OPTFLAG) $(OBJCFLAGS) \
 			$(RUNTIME_FLAG)
 INTERNAL_CFLAGS += $(ADDITIONAL_FLAGS) $(CFLAGS) $(OPTFLAG)
-INTERNAL_LDFLAGS += $(LDFLAGS)
 
 # trick needed to replace a space with nothing
 empty:=

@@ -42,6 +42,7 @@ if test "$ac_cv_library_combo" = ""; then
   case "$host_os" in
     darwin*)   ac_cv_library_combo=apple-apple-apple ;;
     nextstep4) ac_cv_library_combo=nx-nx-nx          ;;
+    openstep4) ac_cv_library_combo=nx-nx-nx          ;;
     *)         ac_cv_library_combo=gnu-gnu-gnu       ;;
   esac
 fi
@@ -60,19 +61,14 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 #--------------------------------------------------------------------
 # specific target_os options
 #--------------------------------------------------------------------
-INCLUDE_FLAGS=
+INCLUDES=
 case "$target_os" in
   freebsd* | openbsd* )	
-	        INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/local/include"
-		LIBS="$LIBS -L/usr/local/lib";;
-  netbsd*)	INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/pkg/include"
-		LIBS="$LIBS -Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
+	        INCLUDES="-I/usr/local/include"
+		LDFLAGS="$LDFLAGS -L/usr/local/lib";;
+  netbsd*)	INCLUDES="-I/usr/pkg/include"
+		LDFLAGS="$LDFLAGS -Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
 esac
-# Save the user supplied CPPFLAGS so we can restore them later.
-user_CPPFLAGS="$CPPFLAGS"
-# This is just for configuring. Later, in config.make, INCLUDE_FLAGS
-# goes in CONFIG_SYSTEM_INCL and the original CPPFLAGS goes in unaltered
-CPPFLAGS="$CPPFLAGS $INCLUDE_FLAGS"
 
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
@@ -349,9 +345,9 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 # The following are needed to compile the test programs
 if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
   if test "$GNUSTEP_FLATTENED" = yes; then
-    OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Library/Headers"
+    OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$prefix/Library/Headers"
   else
-    OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Library/Headers/${ac_cv_library_combo}"
+    OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$prefix/Library/Headers/${ac_cv_library_combo}"
   fi
   OBJC_LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 fi
@@ -380,12 +376,6 @@ OBJC_THREAD=
 
 
 AC_MSG_CHECKING(whether objc has thread support)
-extra_LIBS=""
-case "${target_os}" in
-  solaris*)
-        extra_LIBS="-lposix4"
-        ;;
-esac
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
@@ -399,9 +389,9 @@ if test "$OBJC_RUNTIME_LIB" = "apple"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi
 if test "$OBJC_THREAD" != ""; then
-  LIBS="-lobjc $LIBS $OBJC_THREAD $extra_LIBS"
+  LIBS="-lobjc $LIBS $OBJC_THREAD"
   AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="$OBJC_THREAD $extra_LIBS",
+	objc_threaded="$OBJC_THREAD",
 	objc_threaded="", objc_threaded="")
 elif test "$host_os" = linux-gnu; then
   LIBS="-lobjc -lpthread"
@@ -423,25 +413,32 @@ elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
   fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
-  LIBS="-lobjc $LIBS $extra_LIBS"
+  LIBS="-lobjc $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="works")
 else
-  LIBS="-lobjc $LIBS $extra_LIBS"
+  LIBS="-lobjc $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="")
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS"
+    LIBS="-lobjc $saved_LIBS -lpthread "
     AC_TRY_RUN([#include "config_thread.m"], 
-    	objc_threaded="-lpthread $extra_LIBS", 
+    	objc_threaded="-lpthread", 
 	objc_threaded="", objc_threaded="")
   fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lthread $extra_LIBS"
+    # Solaris, OpenBSD/sparc
+    LIBS="-lobjc $saved_LIBS -lpthread -lposix4"
     AC_TRY_RUN([#include "config_thread.m"], 
-    	objc_threaded="-lthread $extra_LIBS", 
+    	objc_threaded="-lpthread -lposix4", 
+	objc_threaded="", objc_threaded="")
+  fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="-lobjc $saved_LIBS -lthread "
+    AC_TRY_RUN([#include "config_thread.m"], 
+    	objc_threaded="-lthread", 
 	objc_threaded="", objc_threaded="")
   fi
 fi
@@ -451,7 +448,7 @@ if test x"$objc_threaded" = x""; then
   AC_MSG_RESULT(no)
 else
   if test x"$objc_threaded" = x"works"; then
-    objc_threaded="$extra_LIBS"
+    objc_threaded=""
   fi
   AC_MSG_RESULT(yes: $objc_threaded)
 fi
@@ -492,6 +489,7 @@ else
 fi
 
 AC_SUBST(AUTO_DEPENDENCIES)
+AC_SUBST(INCLUDES)
 
 #---------------------------------------------------------------------
 # Enable/disable warnings for deprecated #import directive as required
@@ -513,9 +511,6 @@ if test "$ac_cv_import" = "yes"; then
   OBJC_NO_IMPORT_FLAGS=-Wno-import;
 fi
 AC_SUBST(OBJC_NO_IMPORT_FLAGS)
-
-CPPFLAGS="$user_CPPFLAGS"
-AC_SUBST(INCLUDE_FLAGS)
 
 #--------------------------------------------------------------------
 # Disable updating the obsolete directory structure
