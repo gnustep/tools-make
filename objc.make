@@ -107,7 +107,7 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-internal-objc_program-install:: internal-objc_program-all internal-install-objc-dirs install-objc_program
+internal-objc_program-install:: internal-install-objc-dirs install-objc_program
 
 internal-install-objc-dirs:: $(OBJC_PROGRAM_INSTALLATION_DIR)
 

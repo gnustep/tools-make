@@ -120,7 +120,7 @@ endif
 ifeq ($(NULL_INSTALL),yes)
 internal-tool-install::
 else
-internal-tool-install:: internal-tool-all internal-install-dirs install-tool
+internal-tool-install:: internal-install-dirs install-tool
 endif
 
 # Depend on having created the installation dir

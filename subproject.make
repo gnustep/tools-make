@@ -39,7 +39,7 @@ ifeq ($(INTERNAL_subproj_NAME),)
 
 internal-all:: $(SUBPROJECT_NAME:=.all.subproj.variables)
 
-internal-install:: all
+internal-install::
 
 internal-clean:: $(SUBPROJECT_NAME:=.clean.subproj.variables)
 

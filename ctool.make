@@ -102,7 +102,7 @@ before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-internal-ctool-install:: internal-ctool-all internal-install-dirs install-ctool
+internal-ctool-install:: internal-install-dirs install-ctool
 
 $(CTOOL_INSTALLATION_DIR):
 	$(MKDIRS) $(CTOOL_INSTALLATION_DIR)

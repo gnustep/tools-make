@@ -59,7 +59,7 @@ ifeq ($(INTERNAL_bundle_NAME),)
 
 internal-all:: $(GSWBUNDLE_NAME:=.all.bundle.variables)
 
-internal-install:: all $(GSWBUNDLE_NAME:=.install.bundle.variables)
+internal-install:: $(GSWBUNDLE_NAME:=.install.bundle.variables)
 
 internal-uninstall:: $(GSWBUNDLE_NAME:=.uninstall.bundle.variables)
 

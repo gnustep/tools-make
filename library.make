@@ -74,7 +74,7 @@ ifeq ($(INTERNAL_library_NAME),)
 
 internal-all:: $(LIBRARY_NAME:=.all.library.variables)
 
-internal-install:: all $(LIBRARY_NAME:=.install.library.variables)
+internal-install:: $(LIBRARY_NAME:=.install.library.variables)
 
 internal-uninstall:: $(LIBRARY_NAME:=.uninstall.library.variables)
 

@@ -219,7 +219,7 @@ $(APP_DIR_NAME)/Resources:
 
 _FORCE::
 
-internal-app-install:: internal-app-all internal-install-dirs
+internal-app-install:: internal-install-dirs
 	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)
 	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
 

@@ -72,7 +72,7 @@ ifeq ($(INTERNAL_doc_NAME)$(INTERNAL_textdoc_NAME),)
 internal-all:: $(DOCUMENT_NAME:=.all.doc.variables) \
                $(DOCUMENT_TEXT_NAME:=.all.textdoc.variables)
 
-internal-install:: all $(DOCUMENT_NAME:=.install.doc.variables) \
+internal-install:: $(DOCUMENT_NAME:=.install.doc.variables) \
                    $(DOCUMENT_TEXT_NAME:=.install.textdoc.variables)
 
 internal-uninstall:: $(DOCUMENT_NAME:=.uninstall.doc.variables) \

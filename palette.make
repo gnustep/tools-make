@@ -49,7 +49,7 @@ ifeq ($(INTERNAL_palette_NAME),)
 
 internal-all:: $(PALETTE_NAME:=.all.palette.variables)
 
-internal-install:: all $(PALETTE_NAME:=.install.palette.variables)
+internal-install:: $(PALETTE_NAME:=.install.palette.variables)
 
 internal-uninstall:: $(PALETTE_NAME:=.uninstall.palette.variables)
 

@@ -63,7 +63,7 @@ ifeq ($(INTERNAL_framework_NAME),)
 
 internal-all:: $(FRAMEWORK_NAME:=.all.framework.variables)
 
-internal-install:: all $(FRAMEWORK_NAME:=.install.framework.variables)
+internal-install:: $(FRAMEWORK_NAME:=.install.framework.variables)
 
 internal-uninstall:: $(FRAMEWORK_NAME:=.uninstall.framework.variables)
 
