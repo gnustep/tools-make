@@ -1,3 +1,9 @@
+Fri Jan  4 08:09:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (SHARED_LIBEXT): For HP-UX IA64, use .so rather than
+	.sl as the shared library extension (Patch from Dominique Dumont
+	<domi@komarr.grenoble.hp.com>).
+
 2001-12-29  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.NetBSD: Typos.

@@ -1055,7 +1055,12 @@ else
 SHARED_CFLAGS   += -fPIC
 BUNDLE_CFLAGS   += -fPIC
 endif
+
+ifeq ($(GNUSTEP_HOST_CPU), ia64)
+SHARED_LIBEXT   = .so
+else
 SHARED_LIBEXT   = .sl
+endif
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
