@@ -111,7 +111,9 @@ APP_FILE = $(GNUSTEP_BUILD_DIR)/$(APP_FILE_NAME)
 # Gorm.app/Gorm.exe.a to the list of objects you link and you get it
 # working.  TODO: Move this into target.make
 ifeq ($(BUILD_DLL), yes)
+ifneq ($(OLD_DLL_SUPPORT),yes)
   ALL_LDFLAGS += -Wl,--export-all-symbols -Wl,--out-implib,$(GNUSTEP_BUILD_DIR)/$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE).exe$(LIBEXT)
+endif
 endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
