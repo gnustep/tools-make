@@ -90,6 +90,8 @@ MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make \
 INSTANCE_MAKE_FILES = rules.make \
         application.make java.make java-tool.make
 
+INSTANCE_SHARED_MAKE_FILES = java.make
+
 all: generated-files which_lib$(EXEEXT)
 
 which_lib$(EXEEXT): which_lib.c
@@ -103,6 +105,7 @@ install: all
 		$(makedir)/Additional \
 		$(makedir)/Master \
 		$(makedir)/Instance \
+		$(makedir)/Instance/Shared \
 		$(tooldir) \
 		$(GNUSTEP_SYSTEM_ROOT)/share \
 		$(GNUSTEP_SYSTEM_ROOT)/Apps \
@@ -161,6 +164,10 @@ install: all
 	done
 	for f in $(INSTANCE_MAKE_FILES); do \
 	  $(INSTALL_DATA) $(srcdir)/Instance/$$f $(makedir)/Instance; \
+	done
+	for f in $(INSTANCE_SHARED_MAKE_FILES); do \
+	  $(INSTALL_DATA) $(srcdir)/Instance/Shared/$$f \
+	                  $(makedir)/Instance/Shared; \
 	done
 	$(INSTALL_DATA) executable.template $(makedir)
 	$(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share
