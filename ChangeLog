@@ -1,3 +1,12 @@
+Mon Jul  9 15:53:54 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* ctool.make (.PHONY): Added.
+	(internal-install-dirs): Removed.
+	(internal-ctool-install): Depend directly on
+	$(CTOOL_INSTALLATION_DIR) rather than internal-install-dirs.
+	(install-ctool): Reorganized for readability.
+	* tool.make (install-tool): Reorganized for readability.
+	
 Mon Jul  9 14:32:37 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* bundle.make (.PHONY): Added.
