@@ -1,3 +1,10 @@
+Thu Jun 21 12:51:34 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* java.make (install-java_package), (internal-java_package-clean):
+	Fixed, simplified, and optimized management of nested classes.
+	* java-tool.make (install-java_tool), (internal-java_tool-clean),
+	(internal-java_tool-uninstall): Idem.
+	
 Thu Jun 21 10:13:55 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (.PHONY): Fixed typo ('=' was used instead of ':')

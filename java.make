@@ -133,36 +133,40 @@ $(_WE_INSTALL_INTO):
 # as well.  The fact we need to install these files is the reason why
 # the following is more complicated than you would think at first
 # glance.
+
+# Build efficiently the list of possible inner/nested classes 
+
+# We first build a list like in `Pisa[$]*.class Roma[$]*.class' by
+# taking the JAVA_OBJ_FILES and replacing .class with [$]*.class, then
+# we use wildcard to get the list of all files matching the pattern
+UNESCAPED_ADD_JAVA_OBJ_FILES = $(wildcard $(JAVA_OBJ_FILES:.class=[$$]*.class))
+
+# Finally we need to escape the $s before passing the filenames to the
+# shell
+ADDITIONAL_JAVA_OBJ_FILES = $(subst $$,\$$,$(UNESCAPED_ADD_JAVA_OBJ_FILES))
+
 install-java_package:: internal-install-java-dirs
-	 if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
-	    for file in $(JAVA_OBJ_FILES) __done; do \
-	      if [ $$file != __done ]; then \
-	        $(INSTALL_DATA) $$file $(_WE_INSTALL_INTO)/$$file ; \
-		base=`dirname $$file`/`basename $$file .class` ; \
-		for sub in $${base}[$$]*.class __done; do \
-	          if [ $$sub != __done ]; then \
-		    $(INSTALL_DATA) $$sub $(_WE_INSTALL_INTO)/$$sub ; \
-		  fi; \
-		done; \
-	      fi; \
-	    done; \
-	  fi
+	if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
+	  for file in $(JAVA_OBJ_FILES) __done; do \
+	    if [ $$file != __done ]; then \
+	      $(INSTALL_DATA) $$file $(_WE_INSTALL_INTO)/$$file ; \
+	    fi; \
+	  done; \
+	fi; \
+	if [ "$(ADDITIONAL_JAVA_OBJ_FILES)" != "" ]; then \
+	  for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
+	    if [ $$file != __done ]; then \
+	      $(INSTALL_DATA) $$file $(_WE_INSTALL_INTO)/$$file ; \
+	    fi;    \
+	  done;    \
+	fi
 
 #
 # Cleaning targets
 #
 internal-java_package-clean::
 	rm -f $(JAVA_OBJ_FILES)
-	for file in $(JAVA_OBJ_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    base=`dirname $$file`/`basename $$file .class` ; \
-	    for sub in $${base}[$$]*.class __done; do \
-	      if [ $$sub != __done ]; then \
-		rm -f $$sub; \
-	      fi; \
-	    done; \
-	  fi; \
-	done;
+	rm -f $(ADDITIONAL_JAVA_OBJ_FILES)
 	rm -f $(JAVA_JNI_OBJ_FILES)
 
 internal-java_package-distclean::

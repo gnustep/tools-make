@@ -97,25 +97,32 @@ $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME):
 	    > $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME); \
 	chmod a+x $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME);
 
+# See java.make for comments on ADDITIONAL_JAVA_OBJ_FILES
+UNESCAPED_ADD_JAVA_OBJ_FILES = $(wildcard $(JAVA_OBJ_FILES:.class=[$$]*.class))
+ADDITIONAL_JAVA_OBJ_FILES = $(subst $$,\$$,$(UNESCAPED_ADD_JAVA_OBJ_FILES))
+
 install-java_tool:: internal-install-java_tool-dirs \
 $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)
 	if [ "$(JAVA_OBJ_FILES)" != "" ]; then \
 	  for file in $(JAVA_OBJ_FILES) __done; do \
 	    if [ $$file != __done ]; then \
 	      $(INSTALL_DATA) $$file $(JAVA_TOOL_INSTALLATION_DIR)/$$file ; \
-	      base=`dirname $$file`/`basename $$file .class` ; \
-	      for sub in $${base}[$$]*.class __done; do \
-	        if [ $$sub != __done ]; then \
-		  $(INSTALL_DATA) $$sub $(JAVA_TOOL_INSTALLATION_DIR)/$$sub ; \
-		fi; \
-	      done; \
 	    fi; \
 	  done; \
+	fi; \
+	if [ "$(ADDITIONAL_JAVA_OBJ_FILES)" != "" ]; then \
+	  for file in $(ADDITIONAL_JAVA_OBJ_FILES) __done; do \
+	    if [ $$file != __done ]; then \
+	      $(INSTALL_DATA) $$file $(JAVA_TOOL_INSTALLATION_DIR)/$$file ; \
+	    fi;    \
+	  done;    \
 	fi
 
-# TODO - uninstall nested/inner classes as well
+# Warning - to uninstall nested classes you need to have a compiled 
+# source available ...
 internal-java_tool-uninstall::
 	rm -f $(JAVA_TOOL_INSTALLATION_DIR)/$(JAVA_OBJ_FILES)
+	rm -f $(JAVA_TOOL_INSTALLATION_DIR)/$(ADDITIONAL_JAVA_OBJ_FILES)
 	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_java_tool_NAME)
 
 #
@@ -123,17 +130,7 @@ internal-java_tool-uninstall::
 #
 internal-java_tool-clean::
 	rm -f $(JAVA_OBJ_FILES)
-	for file in $(JAVA_OBJ_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    base=`dirname $$file`/`basename $$file .class` ; \
-	    for sub in $${base}[$$]*.class __done; do \
-	      if [ $$sub != __done ]; then \
-		rm -f $$sub; \
-	      fi; \
-	    done; \
-	  fi; \
-	done;
-
+	rm -f $(ADDITIONAL_JAVA_OBJ_FILES)
 
 internal-java_tool-distclean::
 
