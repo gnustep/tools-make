@@ -242,7 +242,7 @@ endif # filelist == yes
 #
 # Manage debug vs non-debug
 #
-ifeq ($(debug),)
+ifneq ($(debug), yes)
   SPEC_FILE=$(PACKAGE_NAME).spec
   SPEC_RULES_TEMPLATE=$(GNUSTEP_MAKEFILES)/spec-rules.template
   SPEC_IN=$(PACKAGE_NAME).spec.in
