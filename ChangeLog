@@ -1,3 +1,7 @@
+2000-05-01  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* clean_os.sh: removed os version number for FreeBSD-elf
+
 2000-04-21  Jonathan Gapen  <jagapen@whitewater.chem.wisc.edu>
 
 	* application.make: Incorporate appnameInfo.plist into Info.plist
