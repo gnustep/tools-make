@@ -1,4 +1,4 @@
-2003-06-03  Adam Fedor  <fedor@Eldorado.local.>
+2003-06-03  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (darwin/BUNDLE_LD): Use libtool
 	(darwin/AFTER_INSTALL_SHARED_LIB_CMD): Link to the LIB_LINK_FILE
