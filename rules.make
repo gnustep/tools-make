@@ -278,36 +278,99 @@ VPATH = .
 
 .PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
 
+#
+# In exceptional conditions, you might need to want to use different compiler
+# flags for a file (for example, if a file doesn't compile with optimization
+# turned on, you might want to compile that single file with optimizations
+# turned off).  gnustep-make allows you to do this - you can specify special 
+# flags to be used when compiling a *specific* file in two ways - 
+#
+# xxx_FILE_FLAGS (where xxx is the file name, such as main.m) 
+#                are special compilation flags to be used when compiling xxx
+#
+# xxx_FILE_FILTER_OUT_FLAGS (where xxx is the file name, such as mframe.m)
+#                is a filter-out make pattern of flags to be filtered out 
+#                from the compilation flags when compiling xxx.
+#
+# Typical examples:
+#
+# Disable optimization flags for the file NSInvocation.m:
+# NSInvocation.m_FILE_FILTER_OUT_FLAGS = -O%
+#
+# Disable optimization flags for the same file, and also remove 
+# -fomit-frame-pointer:
+# NSInvocation.m_FILE_FILTER_OUT_FLAGS = -O% -fomit-frame-pointer
+#
+# Force the compiler to warn for #import if used in file file.m:
+# file.m_FILE_FLAGS = -Wimport
+# file.m_FILE_FILTER_OUT_FLAGS = -Wno-import
+#
+
+# Please don't be scared by the following rules ... In normal
+# situations, $<_FILTER_OUT_FLAGS is empty, and $<_FILE_FLAGS is empty
+# as well, so the following rule is simply equivalent to
+# $(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@
+# and similarly all the rules below
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
-	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@
+	$(CC) $< -c $($<_FILE_FLAGS) \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)) \
+	      -o $@
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
-	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@
+	$(CC) $< -c $($<_FILE_FLAGS) \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_OBJCFLAGS)) \
+	      -o $@
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.C
-	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+	$(CC) $< -c $($<_FILE_FLAGS) \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)   \
+	                                                $(ALL_CCFLAGS)) \
+	      -o $@
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cc
-	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+	$(CC) $< -c $($<_FILE_FLAGS) \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)   \
+	                                                $(ALL_CCFLAGS)) \
+	      -o $@
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cpp
-	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+	$(CC) $< -c $($<_FILE_FLAGS) \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)   \
+	                                                $(ALL_CCFLAGS)) \
+	      -o $@
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cxx
-	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+	$(CC) $< -c $($<_FILE_FLAGS) \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)   \
+	                                                $(ALL_CCFLAGS)) \
+	      -o $@
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
-	$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) $(ALL_CCFLAGS) -o $@
+	$(CC) $< -c $($<_FILE_FLAGS) \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)   \
+	                                                $(ALL_CCFLAGS)) \
+	      -o $@
 
 %.class : %.java
-	$(JAVAC) $(ALL_JAVACFLAGS) $<
+	$(JAVAC) $($<_FILE_FLAGS) \
+	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
+	         $<
 
 # A jni header file which is created using JAVAH
 # Example of how this rule will be applied: 
 # gnu/gnustep/base/NSObject.h : gnu/gnustep/base/NSObject.java
 #	javah -o gnu/gnustep/base/NSObject.h gnu.gnustep.base.NSObject
 %.h : %.java
-	$(JAVAH) $(ALL_JAVAHFLAGS) -o $@ $(subst /,.,$*) 
+	$(JAVAH) $($<_FILE_FLAGS) \
+	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVAHFLAGS)) \
+	         -o $@ $(subst /,.,$*) 
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
