@@ -225,9 +225,7 @@ OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # FIXME - I don't think we can depend on GNUmakefile - rather we should 
 # FORCE then because GNUmakefile might include other arbitrary files outside
 # our control
-$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) \
-                         $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-                         $(OBJ_FILES) GNUmakefile
+$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
 	@ classes=""; \
 	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
 	  if [ "$$f" != "__dummy__" ]; then \
@@ -295,18 +293,15 @@ build-framework:: $(FRAMEWORK_FILE) \
 
 ifeq ($(WITH_DLL),yes)
 
-$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) \
-                    $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(FRAMEWORK_FILE) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-                $(OBJ_FILES) \
+		$(OBJ_FILES_TO_LINK) \
 		$(ALL_LIB_DIRS) $(ALL_FRAMEWORK_LIBS)
 
 else # without DLL
 
-$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(C_OBJ_FILES) \
-                    $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(FRAMEWORK_LINK_CMD)
 	@(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
 	  rm -f $(INTERNAL_framework_NAME); \

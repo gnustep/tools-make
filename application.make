@@ -133,10 +133,9 @@ endif
 # Internal targets
 #
 
-$(APP_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-		$(SUBPROJECT_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
+$(APP_FILE): $(OBJ_FILES_TO_LINK)
+	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
+	      $(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
 ifeq ($(OBJC_COMPILER), NeXT)
 	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 		>$(APP_DIR_NAME)/library_paths.openapp

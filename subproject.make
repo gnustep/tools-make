@@ -111,8 +111,7 @@ internal-subproject-all:: before-$(TARGET)-all \
 endif
 
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
-$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-                                          $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
 	$(OBJ_MERGE_CMD)
 
 before-$(TARGET)-all::

@@ -155,11 +155,10 @@ build-bundle:: $(GSWBUNDLE_FILE) \
                gswbundle-webresource-files
 
 
-$(GSWBUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) 
+$(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) \
 	                $(ALL_LDFLAGS) -o $(LDOUT)$(GSWBUNDLE_FILE) \
-	                $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-	                $(SUBPROJECT_OBJ_FILES) \
+			$(OBJ_FILES_TO_LINK) \
 	                $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)
 
 gswbundle-components :: $(GSWBUNDLE_DIR_NAME)

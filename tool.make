@@ -118,9 +118,9 @@ ifneq ($(FRAMEWORK_NAME),)
 internal-tool-all:: internal-install-dirs install-tool
 endif
 
-$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+		$(OBJ_FILES_TO_LINK) \
 		$(ALL_FRAMEWORK_DIRS) $(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
 
 before-$(TARGET)-all::

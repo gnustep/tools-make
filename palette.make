@@ -115,10 +115,10 @@ $(PALETTE_RESOURCE_DIRS):
 
 build-palette:: $(PALETTE_FILE) palette-resource-files
 
-$(PALETTE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
+$(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
-	  $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+	  $(OBJC_FILES_TO_LINK) \
 	  $(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS)
 
 palette-resource-files:: $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \

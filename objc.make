@@ -105,9 +105,8 @@ endif
 #
 
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT): \
-                $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
-	      $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+                $(OBJ_FILES_TO_LINK)
+	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
 	      $(ALL_LIB_DIRS) $(ALL_OBJC_LIBS)
 
 #

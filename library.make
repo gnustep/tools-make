@@ -179,21 +179,18 @@ internal-library-clean::
 $(DERIVED_SOURCES):
 	$(MKDIRS) $@
 
-DLL_OFILES = $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES) \
-             $(SUBPROJECT_OBJ_FILES)
-
-$(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def: $(DLL_OFILES) $(DLL_DEF)
-	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(DLL_OFILES)
+$(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def: $(OBJ_FILES_TO_LINK) $(DLL_DEF)
+	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)
 
 $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB): $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
 	$(DLLTOOL) --dllname $(DLL_NAME) --def $< --output-lib $@
 
-$(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(DLL_OFILES) \
+$(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
                                $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def
 	$(DLLWRAP) --driver-name $(CC) \
 	  $(SHARED_LD_PREFLAGS) \
 	  --def $(DERIVED_SOURCES)/$(INTERNAL_library_NAME).def \
-	  -o $@ $(DLL_OFILES) \
+	  -o $@ $(OBJ_FILES_TO_LINK) \
 	  $(ALL_LIB_DIRS) \
 	  $(LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) $(SHARED_LD_POSTFLAGS) 
 
@@ -204,9 +201,7 @@ internal-library-all:: before-$(TARGET)-all \
                        $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
                        after-$(TARGET)-all
 
-$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-                                            $(OBJ_FILES) \
-                                            $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(OBJ_FILES_TO_LINK)
 	$(LIB_LINK_CMD)
 
 endif # BUILD_DLL
