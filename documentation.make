@@ -226,7 +226,9 @@ endif # GSDOC_FILES
 #
 internal-doc-install:: internal-install-dirs
 
-internal-install-dirs::
+internal-install-dirs:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+
+$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 	$(MKDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 #
