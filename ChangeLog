@@ -1,4 +1,4 @@
-Mon Jul 28 10:59:21 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+Mon Jul 28 10:59:21 2003  Pete French <pete@twisted.org.uk>
 
 	* rules.make (%.plist): Filter the result through sed to drop #pragma
 	statements.
