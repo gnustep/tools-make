@@ -29,8 +29,14 @@
 include config.make
 include Version
 
-prefix = @prefix@
-root_prefix = @root_prefix@
+# To install everything inside a temporary directory (say as part of
+# building a binary package - deb or rpm), use something like `make
+# install special_prefix=/var/tmp/gnustep-make'
+special_prefix = 
+
+GNUSTEP_SYSTEM_ROOT = $(special_prefix)/@prefix@
+GNUSTEP_LOCAL_ROOT  = $(special_prefix)/@GNUSTEP_LOCAL_ROOT@
+GNUSTEP_NETWORK_ROOT = $(special_prefix)/@GNUSTEP_NETWORK_ROOT@
 srcdir = @srcdir@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
@@ -57,9 +63,9 @@ else
   GNUSTEP_TARGET_LDIR = .
 endif
 
-makedir = $(prefix)/Makefiles
-tooldir = $(prefix)/Tools
-librarydir = $(prefix)/Libraries
+makedir = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
+tooldir = $(GNUSTEP_SYSTEM_ROOT)/Tools
+librarydir = $(GNUSTEP_SYSTEM_ROOT)/Libraries
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
@@ -84,30 +90,30 @@ which_lib$(EXEEXT): which_lib.c
 	$(CC) @CFLAGS@ -Wall -o $@ $^
 
 install: all
-	$(srcdir)/mkinstalldirs  $(prefix) $(makedir) \
+	$(srcdir)/mkinstalldirs  $(GNUSTEP_SYSTEM_ROOT) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(makedir)/Additional \
 		$(tooldir) \
-		$(prefix)/share \
-		$(prefix)/Apps \
-		$(prefix)/Libraries/$(GNUSTEP_TARGET_DIR) \
-		$(prefix)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-		$(prefix)/Headers/$(GNUSTEP_TARGET_DIR) \
-		$(prefix)/Tools/$(GNUSTEP_TARGET_DIR) \
-		$(prefix)/Tools/$(GNUSTEP_TARGET_LDIR) \
-		$(prefix)/Library \
-		$(prefix)/Library/Colors \
-		$(prefix)/Library/PostScript \
-		$(prefix)/Library/Services \
-		$(prefix)/Documentation/Developer \
-		$(prefix)/Documentation/User \
-		$(prefix)/Documentation/info \
-		$(prefix)/Documentation/man \
-		$(root_prefix)/Local \
-		$(root_prefix)/Local/Users \
-		$(root_prefix)/Local/Users/Administrator \
-		$(root_prefix)/Network
+		$(GNUSTEP_SYSTEM_ROOT)/share \
+		$(GNUSTEP_SYSTEM_ROOT)/Apps \
+		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Tools/$(GNUSTEP_TARGET_DIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Tools/$(GNUSTEP_TARGET_LDIR) \
+		$(GNUSTEP_SYSTEM_ROOT)/Library \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/Colors \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/PostScript \
+		$(GNUSTEP_SYSTEM_ROOT)/Library/Services \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/Developer \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/User \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/info \
+		$(GNUSTEP_SYSTEM_ROOT)/Documentation/man \
+		$(GNUSTEP_LOCAL_ROOT) \
+		$(GNUSTEP_LOCAL_ROOT)/Users \
+		$(GNUSTEP_LOCAL_ROOT)/Users/Administrator \
+		$(GNUSTEP_NETWORK_ROOT) 
 	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
@@ -123,7 +129,7 @@ install: all
 	for f in $(MAKE_FILES); do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
-	$(INSTALL_DATA) config.site $(prefix)/share
+	$(INSTALL_DATA) config.site $(GNUSTEP_SYSTEM_ROOT)/share
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
@@ -142,7 +148,7 @@ uninstall:
 	for f in $(MAKE_FILES); do \
 	  rm -f $(makedir)/$$f; \
 	done
-	rm -f $(prefix)/share/config.site
+	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
 
 clean:
@@ -167,8 +173,21 @@ cvs-snapshot:
 	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
 	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
 
-rpm:
-	cp gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/
+tgz:
+	@echo "Generating gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz";                 \
+	echo "in the parent directory...";                                    \
+	SNAPSHOT_DIR=`basename $$(pwd)`;                                      \
+	cd ..;                                                                \
+	if [ "$$SNAPSHOT_DIR" != "gnustep-make-$(GNUSTEP_MAKE_VERSION)" ]; then         \
+	  mv $$SNAPSHOT_DIR gnustep-make-$(GNUSTEP_MAKE_VERSION);                       \
+        fi;                                                                   \
+	tar cfz gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION); \
+	if [ "$$SNAPSHOT_DIR" != "gnustep-make-$(GNUSTEP_MAKE_VERSION)" ]; then         \
+	  mv gnustep-make-$(GNUSTEP_MAKE_VERSION) $$SNAPSHOT_DIR;                       \
+        fi;
+
+rpm: tgz
+	cp ../gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/
 	cp gnustep-make.spec $(RPM_TOPDIR)/SPECS/
 	cd $(RPM_TOPDIR)/SPECS/
 	rpm -ba gnustep-make.spec
