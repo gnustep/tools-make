@@ -32,7 +32,16 @@ if [ -z "$*" ]; then
   exit 0
 fi
 
-mydir=`dirname "$0"`
+# The original code
+# mydir=`dirname "$0"`
+
+# But it seems that on OpenStep, dirname is not available, so we use
+# the following trick.  The sed expression replaces /[^/]*$ (which
+# means '/' followed by a sequence of zero or more non-'/' characters,
+# followed by end-of-line) with nothing (that is, it deletes it), and
+# what remains is the dirname.
+mydir=`echo "$0" | sed -e "s#/[^/]*\\\$##"`
+
 basepath="$1"
 
 ${mydir}/mkinstalldirs  "$basepath" \
