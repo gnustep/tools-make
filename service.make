@@ -113,7 +113,7 @@ svc-resource-files:: $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist svc-resour
 $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: $(SERVICE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = $(INTERNAL_svc_NAME);"; \
-	  cat $(INTERNAL_svc_NAMESERVICE_NAME)Info.plist; \
+	  cat $(INTERNAL_svc_NAME)Info.plist; \
 	  echo "}") >$@
 	make_services --test $@
 
