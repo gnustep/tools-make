@@ -705,7 +705,7 @@ ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 # to link shared libs. Everything seems to link correctly now but
 # constructor functions in the shared lib failed to get called
 # when the lib is loaded in. I don't know why. ASF.
-HAVE_SHARED_LIBS        = no
+HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
 	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
@@ -725,10 +725,10 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
-SHARED_CFLAGS   += -fpic
+SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
 
-HAVE_BUNDLES    = no
+HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
 BUNDLE_LDFLAGS  += -shared -fpic
 #ADDITIONAL_LDFLAGS += -rdynamic
