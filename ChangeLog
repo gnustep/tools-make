@@ -1,3 +1,12 @@
+Mon Mar 18 14:07:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep-reset.sh: New file.  Sourcing this file resets the
+	environment from the GNUstep variables.  It can be used to switch
+	LIBRARY_COMBO on the fly - you first reset the existing
+	environment using this script, then export the new LIBRARY_COMBO,
+	then source GNUstep.sh again.
+	* GNUmakefile.in (install): Install GNUstep-reset.sh
+	
 Mon Mar 18 10:37:49 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/test-library.make: Fixed typo, internal-test_lib-*
