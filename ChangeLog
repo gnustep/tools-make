@@ -1,3 +1,10 @@
+Wed Nov 12 19:12:20 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* bundle.make: Changed to work with the new rules.make rules.
+	* library.make: Make the install target depend on all.
+	* test.make: Reworked for the new rules.make.
+	* rules.make: Removed the definitions needed by test.make.
+
 Wed Nov 12 13:29:24 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* common.make (OBJCFLAGS): Removed the -Wno-implicit flag since it

@@ -133,43 +133,6 @@ LIB_DIRS_NO_SYSTEM = $(ADDITIONAL_LIB_DIRS) \
    -L$(GNUSTEP_SYSTEM_LIBRARIES) -L$(GNUSTEP_SYSTEM_LIBRARIES_ROOT)
 
 
-ifeq (1, 0)
-# Macros used by test.make
-ALL_TEST_LIBRARY_LIBS = $(ADDITIONAL_LIBRARY_LIBS) $(AUXILIARY_LIBS) \
-    -lobjc-test \
-    $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
-
-ALL_TEST_BUNDLE_LIBS = $(ADDITIONAL_BUNDLE_LIBS)
-
-ALL_TEST_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
-
-ALL_TEST_APP_LIBS = $(ADDITIONAL_APP_LIBS) $(AUXILIARY_GUI_LIBS) \
-   $(BACKEND_LIBS) $(GUI_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-
-ALL_TEST_LIBRARY_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_LIBRARY_LIBS)\
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
-
-ALL_TEST_BUNDLE_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_BUNDLE_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
-
-ALL_TEST_TOOL_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_TOOL_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
-
-ALL_TEST_APP_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_APP_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
-endif
-
-
 ifneq ($(LIBRARIES_DEPEND_UPON),)
 LIBRARIES_DEPEND_UPON := \
     $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON)\

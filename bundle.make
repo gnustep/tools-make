@@ -6,6 +6,7 @@
 #   Copyright (C) 1997 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
+#   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -30,13 +31,45 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 # where xxx is the bundle name
 #
 
-BUNDLE_DIR_NAME := $(BUNDLE_NAME:=$(BUNDLE_EXTENSION))
-BUNDLE_FILE := $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)
-BUNDLE_RESOURCE_DIRS = $(foreach d,$(RESOURCE_DIRS),$(BUNDLE_DIR_NAME)/$(d))
+ifeq ($(INTERNAL_bundle_NAME),)
+# This part is included the first time make is invoked.
 
-#
-# Internal targets
-#
+internal-all:: $(BUNDLE_NAME:=.all.bundle.variables)
+
+internal-install:: all $(BUNDLE_NAME:=.install.bundle.variables)
+
+internal-uninstall:: $(BUNDLE_NAME:=.uninstall.bundle.variables)
+
+internal-clean:: $(BUNDLE_NAME:=.clean.bundle.variables)
+
+internal-distclean:: $(BUNDLE_NAME:=.distclean.bundle.variables)
+
+$(BUNDLE_NAME):
+	@$(MAKE) --no-print-directory $@.all.bundle.variables
+
+else
+# This part gets included the second time make is invoked.
+
+internal-bundle-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
+		build-bundle-dir build-bundle \
+		after-$(TARGET)-all
+
+before-$(TARGET)-all::
+
+after-$(TARGET)-all::
+
+BUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(BUNDLE_EXTENSION))
+BUNDLE_FILE := \
+    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)
+BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/$(d))
+
+build-bundle-dir::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
+		$(BUNDLE_DIR_NAME)/Resources \
+		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
+		$(BUNDLE_RESOURCE_DIRS)
+
+build-bundle:: $(BUNDLE_FILE) bundle-resource-files
 
 $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
@@ -44,63 +77,29 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(BUNDLE_LIBS)
 
-before-bundle-all::
-after-bundle-all::
-
-#
-# Compilation targets
-#
-internal-all:: $(GNUSTEP_OBJ_DIR) $(BUNDLE_DIR_NAME)
-
-internal-bundle-all:: $(GNUSTEP_OBJ_DIR) build-bundle-dir build-bundle
-
-build-bundle-dir::
-	@$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(BUNDLE_DIR_NAME) \
-		$(BUNDLE_DIR_NAME)/Resources \
-		$(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) \
-		$(BUNDLE_RESOURCE_DIRS)
-
-build-bundle:: $(BUNDLE_FILE) bundle-resource-files
-
 bundle-resource-files::
-	for f in $(RESOURCE_FILES); do \
-	  $(INSTALL_DATA) $$f $(BUNDLE_DIR_NAME)/$$f ;\
+	for f in $(RESOURCE_FILES) __done; do \
+	  if [ $$f != __done ]; then \
+	    $(INSTALL_DATA) $$f $(BUNDLE_DIR_NAME)/$$f ;\
+	  fi; \
 	done
 
-#
-# Install targets
-#
-internal-install:: internal-install-dir internal-install-bundle
+internal-bundle-install::
+	tar cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); tar xf -)
 
-internal-install-dir::
-	$(GNUSTEP_MAKEFILES)/mkinstalldirs \
-		$(BUNDLE_INSTALL_DIR) \
-		$(ADDITIONAL_INSTALL_DIRS)
-
-internal-install-bundle::
-	for f in $(BUNDLE_DIR_NAME); do \
-	  cp -dprf $$f $(BUNDLE_INSTALL_DIR) ; \
-	done
-
-#
-# Uninstall targets
-#
-internal-uninstall::
-	for f in $(BUNDLE_DIR_NAME); do \
-	  rm -rf $(BUNDLE_INSTALL_DIR)/$$f ; \
-	done
+internal-bundle-install::
+	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 
 #
 # Cleaning targets
 #
-internal-clean::
-	for f in $(BUNDLE_DIR_NAME); do \
-	  rm -rf $$f ; \
-	done
-	rm -rf $(GNUSTEP_OBJ_PREFIX)
+internal-bundle-clean::
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean::
+internal-bundle-distclean::
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj
+
+endif
+
