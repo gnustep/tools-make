@@ -585,7 +585,7 @@ work.
 
 @table @samp
 @item Recommended compiler
-gcc 2.95.3 (Cygwin release 1.1.8)
+gcc 2.95.3 (Cygwin release 1.1.8) or later
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
@@ -604,19 +604,15 @@ CPPFLAGS=-I/usr/include/win32api ./configure
 @end example
 @end table
 
-For shared libs, make sure to specify @var{shared=yes} explicitly when 
-building:
+Make sure you have good shared libraries for everthing. Sometimes a bad
+shared library (like libtiff) will cause odd and untraceable problems.
+See the README.MinGW for information on good libraries.
 
-@example
-make shared=yes
-@end example
-
-For static libs, use @code{shared=no}, Make sure files and compilation
+Make sure files and compilation
 done in Unix mode (no ^M in files, @var{export CYGWIN=binmode} usually
 works if cygwin is not buggy).  Gdomap services not set up
 correctly. Must add services lines to @file{C:\WINDOWS\services} (on
-Windows 98) or xxx (on Windows NT).  Base library only. No native GUI
-backend.
+Windows 98) or xxx (on Windows NT).  Native GUI backend is alpha version.
 
 @c -----------------------------------------
 @node Windows with MinGW,  , Windows with CYGWIN, Machine Specific
@@ -624,19 +620,16 @@ backend.
 
 @table @samp
 @item Recommended compiler
-gcc 2.95.3-5
+See below.
 
 @item Extra libs needed 
-Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
-for shared libs. 
-For ffcall, you should get version 1.8b or above (the earlier ones don't
-compile). There are still some problems with structure passing, but that is
-generally not supportred on any architecture.
+See below.
 
 @item Special Instructions 
 See the @file{README.MinGW} file located in the gnustep-make Documentation
-directory for instructions.
-Base library only. No native GUI backend.
+directory for instructions. Windows NT/2000/XP only. Win98 machines and
+earlier are very buggy and are not supported.
+Native GUI backend is alpha version.
 @end table
 
 @ifclear HOWTO

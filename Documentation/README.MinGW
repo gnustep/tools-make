@@ -294,27 +294,6 @@ In the back directory, type
 Troubleshooting
 ---------------
 
-The following tips should not be necessary if you have done a clean
-install, they are really for conditions found due to having older
-software installed...
-
-[1] Running 'make' gives 'premission denied' and/or a dialog box
-about a missing DLL.
-
-  mv /bin/make /bin/make.old
-
-So now you will be using /mingw/bin/make.exe
-
-[2] When running configure in ffcall, I get 'no acceptable ld found...'. Use:
-
-  LD=ld ./configure ...
-
-[3] When installing ffcall (avcall.h) "The system cannot find..."
-
-make install INSTALL=install
-
-
-
 Good Sites for Pre-Compiled Binaries
 ------------------------------------
 
