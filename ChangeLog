@@ -1,3 +1,9 @@
+Mon Jul 22 12:34:49 2002  Georg Fleischmann <georg@vhf.de>
+
+	* Instance/Shared/bundle.make (shared-instance-bundle-all):
+	Copying of localized resources from subprojects with multiple
+	languages corrected.
+
 2002-07-21  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (Darwin): Changes to compile with GNU compiler/runtime.
