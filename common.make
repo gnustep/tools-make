@@ -178,6 +178,9 @@ ifeq ($(GNUSTEP_INSTALLATION_DIR),)
   GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 endif
 
+# Make it public and available to all submakes invocations
+export GNUSTEP_INSTALLATION_DIR
+
 #
 # Variables specifying the installation directory paths
 #
