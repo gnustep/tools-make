@@ -66,7 +66,7 @@ endif
 # On Apple, two-level namespaces require all symbols in bundles
 # to be resolved at link time.
 ifeq ($(FOUNDATION_LIB), apple)
-  LINK_BUNDLE_AGAINST_ALL_LIBS = yes  
+  LINK_BUNDLE_AGAINST_ALL_LIBS = yes
 endif
 
 ifeq ($(LINK_BUNDLE_AGAINST_ALL_LIBS), yes)
