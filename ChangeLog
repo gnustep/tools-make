@@ -1,3 +1,13 @@
+Mon Mar 29 12:58:34 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* common.make (MAJOR_VERSION): Variable removed.
+	(MINOR_VERSION): Variable removed.
+	(SUBMINOR_VERSION): Variable removed.
+	(VERSION): Variable removed.
+	* Instance/framework.make (VERSION): Set VERSION from xxx_VERSION
+	if available.  Use 0.0.1 as default.
+	* Instance/library.make (VERSION): Similar changes.
+	
 Mon Mar 29 12:41:58 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (PACKAGE_NAME): Set it here; set it to
