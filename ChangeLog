@@ -1,3 +1,7 @@
+2000-02-18  Adam Fedor  <fedor@gnu.org>
+
+	* GNustep.sh.in: Use pushd/popd to changes dirs.
+
 2000-01-26  Adam Fedor  <fedor@gnu.org>
 
 	* rules.make: Revert previous change of parens around tmp.

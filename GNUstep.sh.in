@@ -47,10 +47,10 @@ export GNUSTEP_MAKEFILES
 # Determine the host information
 #
 if [ -z "$GNUSTEP_HOST" ]; then
-  pushd /tmp
+  pushd /tmp >> /dev/null
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.guess`
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.sub $GNUSTEP_HOST`
-  popd
+  popd >> /dev/null
 fi
 GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/cpu.sh $GNUSTEP_HOST`
 GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/vendor.sh $GNUSTEP_HOST`
