@@ -263,6 +263,17 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  plmerge $@ $(INTERNAL_bundle_NAME)Info.plist; \
 	fi
 
+# Comment on the tar options used in the rule below - 
+
+# The `h' option to tar makes sure the bundle can contain symbolic
+# links to external files (for example templates), and when you
+# install the bundle, the symbolic links are replaced with the actual
+# files.  The --exclude Contents/Resources is used because otherwise
+# the `h' option would dereference the Contents/Resources-->Resources
+# symbolic link, and install the Resources directory twice.  Instead,
+# we exclude the symbolic link from the tar file, then rebuild the
+# link by hand in the installation directory.
+
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 ifneq ($(HEADER_FILES_INSTALL_DIR),)
 	$(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR);
@@ -276,7 +287,11 @@ ifneq ($(HEADER_FILES),)
 endif
 endif
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME); \
-	$(TAR) cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
+	$(TAR) ch --exclude=$(BUNDLE_DIR_NAME)/Contents/Resources \
+	          --to-stdout $(BUNDLE_DIR_NAME) \
+	    | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -); \
+	(cd $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)/Contents; \
+	    rm -f Resources; $(LN_S) ../Resources .)
 
 $(BUNDLE_DIR_NAME)/Resources:
 	$(MKDIRS) $@
