@@ -1,3 +1,8 @@
+Thu Apr  4 14:02:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.sh.in: Rewritten code setting GNUSTEP_PATHPREFIX_LIST so
+	that duplicated entries are removed.
+
 Thu Apr  4 13:14:35 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	This should fix RPM builds on virgin envs -
