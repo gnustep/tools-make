@@ -1,3 +1,27 @@
+Fri Jan 12 17:38:06 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in (AC_OUTPUT): Added install-complete-dir.sh and
+	log_install_dir.sh.
+	* configure: Regenerated.
+	* log_install_sh: New file.
+	* log_install_ln_s.sh: New file.
+	* log_install_dir.sh.in: New file.
+	* install-complete-dir.sh.in: New file.
+	* GNUmakefile.in (MAKE_FILES): Added file-list.make.
+	* GNUmakefile.in (install): Install log_install.sh,
+	log_install_ln_s.sh, log_install_dir.sh, install-complete-dir.sh.
+	* rules.make: Include file-list.make.
+	* file-list.make: New file.
+	* target.make (AFTER_INSTALL_SHARED_LIB_COMMAND): Use
+	$(REMOVE_INSTALLED_LN_S) rather than rm -f, and $(INSTALL_LN_S)
+	rather than $(LN_S).
+	* common.make: Define INSTALL_LN_S to be the same as LN_S;
+	REMOVE_INSTALLED_LN_S to be rm -f; INSTALL_COMPLETE_DIR to point
+	to the install-complete-dir.sh script.
+	* application.make: Use INSTALL_COMPLETE_DIR when installing.
+	* bundle.make: Idem.
+	* framework.make: Idem.
+	
 2001-01-10  Adam Fedor  <fedor@gnu.org>
 
 	* Version: Prerelease version 0.9.0
