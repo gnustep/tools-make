@@ -41,7 +41,7 @@ function reset_path
 
   # NB: We need to use eval because we want to access a variable
   # whose name is another variable!
-  original_path=`eval echo \$"$1"`
+  original_path=$(eval echo \$$1)
   tmp_IFS="$IFS"
   IFS=:
   temp_path=
@@ -51,10 +51,12 @@ function reset_path
     # a path in GNUSTEP_PATHPREFIX_LIST as prefix
     found=no;
     for gnustep_dir in $GNUSTEP_PATHPREFIX_LIST; do
-      case $dir in
-        $gnustep_dir*)  found=yes; break;;
-        *);;
-      esac;
+      if [ -n "$gnustep_dir" ]; then
+        case $dir in
+          $gnustep_dir*)  found=yes; break;;
+          *);;
+        esac;
+      fi;
     done;
     if [ "$found" = "no" ]; then
       if [ -z "$temp_path" ]; then
@@ -67,7 +69,7 @@ function reset_path
   IFS=$tmp_IFS
 
   # Not set the path variable.
-  eval "$1=$temp_path"
+  eval "$1=\$temp_path"
   # Export it only if non empty, otherwise remove it completely from
   # the shell environment.
   temp_path=`eval echo \$"$1"`
