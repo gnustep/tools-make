@@ -156,7 +156,7 @@ endif
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh GNUstep-reset.sh \
 		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
-		ld_lib_path.csh relative_path.sh ; do \
+		ld_lib_path.csh relative_path.sh strip_makefiles.sh; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)
 	$(EC)($(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
@@ -164,8 +164,7 @@ endif
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 strip_makefiles.sh $(makedir))
+	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir))
 	 $(EC)(echo "Installing makefiles"; \
 	   for f in $(MAKE_FILES); do \
 	     $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
