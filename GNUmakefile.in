@@ -85,10 +85,11 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
         spec-debug-alone-rules.template
 
 MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make \
-        aggregate.make application.make bundle.make java.make java-tool.make
+        aggregate.make application.make bundle.make ctool.make \
+        java.make java-tool.make
 
 INSTANCE_MAKE_FILES = rules.make \
-        application.make bundle.make java.make java-tool.make
+        application.make bundle.make ctool.make java.make java-tool.make
 
 INSTANCE_SHARED_MAKE_FILES = headers.make java.make
 
