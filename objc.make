@@ -76,7 +76,7 @@ OBJC_PROGRAM_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 
 ALL_OBJC_LIBS =								\
     $(shell $(WHICH_LIB_SCRIPT)						\
-	$(LIB_DIRS_NO_SYSTEM)						\
+	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
         $(TARGET_SYSTEM_LIBS)						\
         debug=$(debug) profile=$(profile) shared=$(shared)		\
@@ -107,7 +107,7 @@ endif
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT): \
                 $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
-	      $(ALL_LIB_DIRS) $(ALL_OBJC_LIBS)
+	      $(ALL_OBJC_LIBS)
 
 #
 # Compilation targets

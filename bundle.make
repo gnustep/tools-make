@@ -99,7 +99,7 @@ else
 
 ALL_BUNDLE_LIBS =						\
     $(shell $(WHICH_LIB_SCRIPT)					\
-	$(LIB_DIRS_NO_SYSTEM)					\
+	$(ALL_LIB_DIRS)						\
 	$(BUNDLE_LIBS)						\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
@@ -165,7 +165,7 @@ $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_LIB_DIRS) $(ALL_BUNDLE_LIBS)
+		$(ALL_BUNDLE_LIBS)
 
 else # WITH_DLL
 
@@ -173,7 +173,7 @@ $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_LIB_DIRS) $(ALL_BUNDLE_LIBS)
+		$(ALL_BUNDLE_LIBS)
 
 endif # WITH_DLL
 

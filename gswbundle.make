@@ -109,7 +109,7 @@ else
 	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 #ALL_GSWBUNDLE_LIBS = 
 #ALL_GSWBUNDLE_LIBS = \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GSWBUNDLE_LIBS) \
+    $(shell $(WHICH_LIB_SCRIPT) $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS) \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
@@ -159,7 +159,7 @@ $(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) \
 	                $(ALL_LDFLAGS) -o $(LDOUT)$(GSWBUNDLE_FILE) \
 			$(OBJ_FILES_TO_LINK) \
-	                $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)
+	                $(ALL_GSWBUNDLE_LIBS)
 
 gswbundle-components :: $(GSWBUNDLE_DIR_NAME)
 ifneq ($(strip $(COMPONENTS)),)

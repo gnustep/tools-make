@@ -80,7 +80,8 @@ ifneq ($(FRAMEWORK_NAME),)
 endif
 
 ALL_TOOL_LIBS =								\
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM)			\
+    $(shell $(WHICH_LIB_SCRIPT)						\
+       $(ALL_LIB_DIRS)							\
        $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS)	\
        $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
        $(TARGET_SYSTEM_LIBS)						\
@@ -120,7 +121,7 @@ endif
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
+		$(ALL_TOOL_LIBS)
 
 before-$(TARGET)-all::
 

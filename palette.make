@@ -88,7 +88,7 @@ else
    $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
 #ALL_PALETTE_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_PALETTE_LIBS) \
+    $(shell $(WHICH_LIB_SCRIPT) $(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS) \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
 
@@ -122,7 +122,7 @@ $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
 	  $(OBJ_FILES_TO_LINK) \
-	  $(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS)
+	  $(ALL_PALETTE_LIBS)
 
 palette-resource-files:: $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
                          $(PALETTE_DIR_NAME)/Resources/palette.table

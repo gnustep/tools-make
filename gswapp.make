@@ -111,7 +111,7 @@ else
 # Libraries that go before the WO libraries
 ALL_GSW_LIBS =								\
     $(shell $(WHICH_LIB_SCRIPT)						\
-	$(LIB_DIRS_NO_SYSTEM)						\
+	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS)	\
 	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)			\
 	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
@@ -144,7 +144,7 @@ endif
 
 $(GSWAPP_FILE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
-	    $(ALL_LIB_DIRS) $(ALL_GSW_LIBS)
+	      $(ALL_GSW_LIBS)
 
 ifeq ($(OBJC_COMPILER), NeXT)
 	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \

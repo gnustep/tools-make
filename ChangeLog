@@ -1,3 +1,29 @@
+Wed Jan 30 12:50:04 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (LIB_DIRS_NO_SYSTEM): Removed.
+	* application.make (ALL_GUI_LIBS): Use ALL_LIB_DIRS, not 
+	LIB_DIRS_NO_SYSTEM.
+	($(APP_FILE)): Do not add ALL_LIB_DIRS when linking.
+	* bundle.make (ALL_BUNDLE_LIBS, $(BUNDLE_FILE)): Idem.
+	* ctool.make (ALL_TOOL_LIBS,
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT)): Idem.
+	* framework.make (ALL_FRAMEWORK_LIBS, $(FRAMEWOK_FILE)): Idem.
+	* gswapp.make (ALL_GSW_LIBS, $(GSWAPP_FILE)): Idem.
+	* gswbundle.make ($(GSWBUNDLE_FILE)): Idem.
+	* objc.make (ALL_OBJC_LIBS,
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_objc_program_NAME)$(EXEEXT)): Idem.
+	* palette.make ($(PALETTE_FILE)): Idem.
+	* service.make (ALL_SERVICE_LIBS, $(SERVICE_FILE)): Idem.
+	* test-library.make (ALL_TEST_LIBRARY_LIBS,
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_testlib_NAME)): Idem.
+	* tool.make (ALL_TOOL_LIBS,
+	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)): Idem.
+	* library.make ($(GNUSTEP_OBJ_DIR)/$(DLL_NAME)): Do not 
+	add ALL_LIB_DIRS
+	(INTERNAL_LIBRARIES_DEPEND_UPON): Do not add
+	$($(INTERNAL_library_NAME)_LIB_DIRS) and $(ADDITIONAL_LIB_DIRS).
+	* clibrary.make: Similar changes.
+	
 Tue Jan 29 13:29:26 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (LIBRARIES_DEPEND_UPON): Pass only

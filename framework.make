@@ -3,9 +3,10 @@
 #
 #   Makefile rules to build GNUstep-based frameworks.
 #
-#   Copyright (C) 2000 Free Software Foundation, Inc.
+#   Copyright (C) 2000, 2001 Free Software Foundation, Inc.
 #
 #   Author: Mirko Viviani <mirko.viviani@rccr.cremona.it>
+#   Author: Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -84,7 +85,7 @@ else
 
 ALL_FRAMEWORK_LIBS =						\
     $(shell $(WHICH_LIB_SCRIPT)					\
-	    $(LIB_DIRS_NO_SYSTEM)				\
+	    $(ALL_LIB_DIRS)					\
 	$(FRAMEWORK_LIBS)					\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
@@ -296,7 +297,7 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(FRAMEWORK_FILE) \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_LIB_DIRS) $(ALL_FRAMEWORK_LIBS)
+		$(ALL_FRAMEWORK_LIBS)
 
 else # without DLL
 

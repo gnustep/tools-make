@@ -107,7 +107,7 @@ else
 
 ALL_GUI_LIBS =								     \
     $(shell $(WHICH_LIB_SCRIPT)						     \
-     $(LIB_DIRS_NO_SYSTEM)						     \
+     $(ALL_LIB_DIRS)							     \
      $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS)		     \
      $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	     \
      $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
@@ -139,7 +139,7 @@ endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK) \
-	      $(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
+	      $(ALL_GUI_LIBS)
 ifeq ($(OBJC_COMPILER), NeXT)
 	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 		>$(APP_DIR_NAME)/library_paths.openapp

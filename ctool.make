@@ -77,7 +77,7 @@ else
 
 ALL_TOOL_LIBS =							\
     $(shell $(WHICH_LIB_SCRIPT)					\
-     $(LIB_DIRS_NO_SYSTEM)					\
+     $(ALL_LIB_DIRS)						\
      $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)		\
      $(TARGET_SYSTEM_LIBS)					\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
@@ -114,7 +114,7 @@ $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT): $(C_OBJ_FILES) \
                                                     $(SUBPROJECT_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 	      $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
-	      $(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
+	      $(ALL_TOOL_LIBS)
 
 before-$(TARGET)-all::
 
