@@ -1,3 +1,8 @@
+Wed Oct  9 12:38:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (exec_prefix, bindir, libdir, includedir,
+	datadir): Unused variables removed.
+
 Wed Oct  9 12:26:21 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (librarydir): Unused variable removed.

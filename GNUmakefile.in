@@ -37,11 +37,6 @@ GNUSTEP_LOCAL_ROOT  = $(special_prefix)@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT = $(special_prefix)@GNUSTEP_NETWORK_ROOT@
 srcdir = @srcdir@
 VPATH = @srcdir@
-exec_prefix = @exec_prefix@
-bindir = @bindir@
-libdir = @libdir@
-includedir = @includedir@
-datadir = @datadir@
 
 GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
 GNUSTEP_TARGET_CPU = @clean_target_cpu@
