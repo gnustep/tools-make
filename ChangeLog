@@ -1,3 +1,13 @@
+Fri Feb 22 12:24:17 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/test-application.make (internal-check): Target removed.
+
+Fri Feb 22 12:14:08 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* test-application.make: Broken into Master and Instance.
+	* Master/test-application.make: New file.
+	* Instance/test-application.make: New file.
+	
 Fri Feb 22 12:02:55 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/rules.make (APPLICATION_ICON): Do not pass this
