@@ -58,31 +58,6 @@ ifeq ($(GNUSTEP_MAKEFILES),)
   GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 endif
 
-# Sanity check on $PATH - NB: if PATH is wrong, we can't do anything
-# as we can't run the tools (not even using opentool as we can't even
-# run opentool if PATH is wrong)
-ifeq ($(MAKELEVEL),0)
-
-  # We want to check that this path is in the PATH
-  SYS_TOOLS_PATH = $(GNUSTEP_SYSTEM_ROOT)/Tools
-
-  # But on windows we might need to first fix it up ...
-  ifeq ($(findstring mingw, $(GNUSTEP_TARGET_OS)), mingw)
-    ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
-      SYS_TOOLS_PATH := $(shell cygpath -u $(SYS_TOOLS_PATH))
-    endif
-  endif
-
-  ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
-    $(warning WARNING - Your PATH is not set up correctly !)
-    $(warning You need to run the GNUstep configuration script to fix this)
-# Well - hopefully if we (common.make) has been found, we can trust that 
-# at least $(GNUSTEP_MAKEFILES) is set up correctly :-)
-    $(warning try running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
-  endif
-
-endif
-
 #
 # Determine the compilation host and target
 #
@@ -104,6 +79,35 @@ endif
 # Get the config information
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
+
+# Sanity check on $PATH - NB: if PATH is wrong, we can't do anything
+# as we can't run the tools (not even using opentool as we can't even
+# run opentool if PATH is wrong)
+ifeq ($(MAKELEVEL),0)
+
+  # NB - we can't trust PATH here because it's what we are trying to
+  # check ... but hopefully if we (common.make) have been found, we
+  # can trust that at least $(GNUSTEP_MAKEFILES) is set up correctly :-)
+
+  # We want to check that this path is in the PATH
+  SYS_TOOLS_PATH = $(GNUSTEP_SYSTEM_ROOT)/Tools
+
+  # But on windows we might need to first fix it up ...
+  ifeq ($(findstring mingw, $(GNUSTEP_TARGET_OS)), mingw)
+    ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
+      SYS_TOOLS_PATH := $(shell $(GNUSTEP_MAKEFILES)/cygpath -u $(SYS_TOOLS_PATH))
+    endif
+  endif
+
+  ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
+    $(warning WARNING - Your PATH is not set up correctly !)
+    $(warning You need to run the GNUstep configuration script to fix this)
+    $(warning try running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+  endif
+
+endif
+
+
 
 #
 # Get flags/config options for core libraries
