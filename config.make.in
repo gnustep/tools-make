@@ -70,6 +70,11 @@ default_library_combo = @ac_cv_library_combo@
 #
 # Do threading stuff.
 #
+# Warning - the base library's configure.in will extract the thread
+# flags from the following line using grep/sed - so if you change the
+# following lines you *need* to update the base library configure.in
+# too.
+#
 ifndef objc_threaded
   objc_threaded:=@objc_threaded@
 endif
