@@ -25,10 +25,19 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
 #
-# The names of the subproject is in the SUBPROJECT_NAME variable.
+# The name of the subproject is in the SUBPROJECT_NAME variable.
 #
 
 SUBPROJECT_NAME := $(strip $(SUBPROJECT_NAME))
+
+# Count the number of subprojects - we can support only one!
+ifneq ($(words $(SUBPROJECT_NAME)), 1)
+
+SUBPROJECT_NAME := $(word 1, $(SUBPROJECT_NAME))
+$(warning Only a single subproject can be built in any directory!)
+$(warning Ignoring all subprojects and building only $(SUBPROJECT_NAME))
+
+endif
 
 ifneq ($(FRAMEWORK_NAME),)
 .PHONY: build-headers
@@ -52,17 +61,22 @@ internal-uninstall:: $(SUBPROJECT_NAME:=.uninstall.subproject.variables)
 
 endif
 
-_PSWRAP_C_FILES = $(foreach subproject,$(SUBPROJECT_NAME),$($(subproject)_PSWRAP_FILES:.psw=.c))
-_PSWRAP_H_FILES = $(foreach subproject,$(SUBPROJECT_NAME),$($(subproject)_PSWRAP_FILES:.psw=.h))
+_PSWRAP_C_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.c)
+_PSWRAP_H_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.h)
 
 internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.subprojects)
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	       Resources/Subproject
+	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 
 internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproject.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj Resources
+	  static_profile_debug_obj
+
+# If the subproject has a resource bundle, destroy it on distclean
+ifeq ($($(SUBPROJECT_NAME)_HAS_RESOURCE_BUNDLE), yes)
+internal-distclean::
+	rm -rf Resources
+endif
 
 $(SUBPROJECT_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
