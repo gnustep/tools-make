@@ -1,3 +1,10 @@
+2003-03-04  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Change sense of --disable-import help line
+	* configure: Regen.
+	* Documentation/install.texi: Update import section
+	* Documentation/userfaq.texi: Add import section.
+
 Tue Mar  4 17:13:46 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Enable GCC deprecation warnings for #import.

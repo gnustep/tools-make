@@ -189,6 +189,7 @@ not.
 * How do I compile GNUstep on my machine? ::  
 * Are there any precompiled packages available?::  
 * What are these type and size warnings?::  
+* What are these import warnings?::  
 @end menu
 
 @node How do I compile GNUstep on my machine? , Are there any precompiled packages available?, Compiling and Installing, Compiling and Installing
@@ -206,7 +207,7 @@ RPMS. Debian packages are also available.  You can check the debian
 site(s) for preconfigured GNUstep packages. Also check the BSD sites for
 GNUstep ports.
 
-@node What are these type and size warnings?,  , Are there any precompiled packages available?, Compiling and Installing
+@node What are these type and size warnings?, What are these import warnings?, Are there any precompiled packages available?, Compiling and Installing
 @subsection What are these type and size warnings?
 
 These warnings:
@@ -218,6 +219,34 @@ These warnings:
 are a common occurence and are due to a mismatch between gcc and
 ld. They don't do any harm so they can be safely ignored. They have been
 fixed in GCC version 3.1.
+
+@node What are these import warnings?,  , What are these type and size warnings?, Compiling and Installing
+@subsection What are these import warnings?
+
+Do you get these obnoxious warning whenever you compile an application, tool,
+or Objective-C program:
+
+@example
+warning: using `#import' is not recommended
+[...]
+@end example
+
+This is quite annoying for many people, particularly since almost any
+book on Objective-C you read recommends using #import instead of
+#include.  If you are wondering why #import is deprecated, please
+search the web and the GCC and GNUstep mailing list archives - there
+are very precise and sound technical reasons.
+Due to these problems, the gcc maintainers are seriously considering
+removing support for #import altogether in the next release.
+
+If you still like to use #import, you can get rid of these warnings when
+you configure gnustep-make, with
+
+@example
+./configure --enable-import
+@end example
+
+But beware, this may not even work on future versions of the gcc compiler.
 
 
 @c ****************************************************************
