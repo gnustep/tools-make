@@ -78,7 +78,7 @@ to have the GNUSTEP_NETWORK_ROOT directory in a non-standard place.  Example:
 --with-network-root=/usr/local/GNUstep/Network
 ],
 GNUSTEP_NETWORK_ROOT=$withval,
-GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Local
+GNUSTEP_NETWORK_ROOT=$GNUSTEP_ROOT/Network
 )
 
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
