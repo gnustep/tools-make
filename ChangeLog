@@ -1,3 +1,10 @@
+Thu Oct 30 17:22:13 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* rules.make: Don't use an additional variable for specifying the
+	dynamic linker paths, use the normal linker paths.
+	* test.make: Likewise. Correctly process the additional library paths
+	so it contains only absolute paths.
+
 Thu Oct 30 15:49:53 1997  Scott Christley  <scottc@stetson.net-community.com>
 
 	* rules.make: Fix variables when building test applications.

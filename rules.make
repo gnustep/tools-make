@@ -274,7 +274,7 @@ ALL_TEST_APP_LIBS := \
 	@echo Checking $*...
 	@$(MAKE) --no-print-directory --no-keep-going internal-check-LIBRARY \
 		  TEST_LIBRARY_NAME=$* \
-		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
@@ -282,7 +282,7 @@ ALL_TEST_APP_LIBS := \
 	@echo Checking $*...
 	@$(MAKE) --no-print-directory --no-keep-going internal-check-BUNDLE \
 		  TEST_BUNDLE_NAME=$* \
-		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
@@ -290,7 +290,7 @@ ALL_TEST_APP_LIBS := \
 	@echo Checking $*...
 	@$(MAKE) --no-print-directory --no-keep-going internal-check-TOOL \
 		  TEST_TOOL_NAME=$* \
-		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 
@@ -298,7 +298,7 @@ ALL_TEST_APP_LIBS := \
 	@echo Checking $*...
 	@$(MAKE) --no-print-directory --no-keep-going internal-check-APP \
 		  TEST_APP_NAME=$* \
-		  ADDITIONAL_LD_LIB_DIRS="$($*_LD_LIB_DIRS)" \
+		  ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS)" \
 		  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
 		  SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)"
 

@@ -68,9 +68,7 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 #
 # xxx_LIB_DIRS and xxx_LIBS are additional libraries directories and
 # libraries to link against, respectively to link the xxx test driver.
-#
-# xxx_LD_LIB_DIRS are additional directories that the dynamic loader
-# should check when loading a shared library.
+# The same paths are passed to the dynamic linker.
 #
 
 TEST_LIBRARY_LIST := $(TEST_LIBRARY_NAME:=.testlib)
@@ -260,7 +258,8 @@ dejagnu_vars = "FOUNDATION_LIBRARY=$(FOUNDATION_LIB)" \
 
 internal-check-%:: $(SCRIPTS_DIRECTORY)/config/unix.exp
 	@(for f in $(CHECK_SCRIPT_DIRS); do \
-	  additional_library_paths=$(ALL_LD_LIB_DIRS) \
+	  additional_library_paths="`echo $(ADDITIONAL_LIB_DIRS) | sed 's/-L//g'`"; \
+	  additional_library_paths="`$(GNUSTEP_SYSTEM_ROOT)/Makefiles/transform_paths.sh $$additional_library_paths`" \
 		. $(GNUSTEP_SYSTEM_ROOT)/Makefiles/ld_lib_path.sh; \
 	  if [ "$(SCRIPTS_DIRECTORY)" != "" ]; then \
 	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)"; \
