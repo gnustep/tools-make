@@ -39,6 +39,14 @@ SUBPROJECT_NAME:=$(strip $(SUBPROJECT_NAME))
 ifeq ($(INTERNAL_subproj_NAME),)
 # This part is included the first time make is invoked.
 
+# if we are part of a framework, we need to build the public headers 
+# before all 
+# FIXME - before-all might be called twice when you compile from top level, 
+# is that correct ?
+ifneq ($(FRAMEWORK_NAME),)
+before-all:: $(SUBPROJECT_NAME:=.before-all.subproj.variables)
+endif
+
 internal-all:: $(SUBPROJECT_NAME:=.all.subproj.variables)
 
 internal-install::
@@ -63,32 +71,33 @@ FRAMEWORK_HEADER_FILES := $(patsubst %.h,$(FRAMEWORK_VERSION_DIR_NAME)/Headers/%
 #
 # Compilation targets
 #
-internal-subproj-all:: before-all before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-                  $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
-                  framework-components \
-                  framework-resource-files localized-framework-resource-files \
-                  framework-webresource-files \
-                  framework-localized-webresource-files \
-                  after-$(TARGET)-all after-all
+internal-subproj-all:: before-$(TARGET)-all \
+                       $(GNUSTEP_OBJ_DIR) \
+                       $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
+                       framework-components \
+                       framework-resource-files \
+                       localized-framework-resource-files \
+                       framework-webresource-files \
+                       framework-localized-webresource-files \
+                       after-$(TARGET)-all
 
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(OBJ_FILES)
 	$(OBJ_MERGE_CMD)
 
-before-$(TARGET)-all:: $(FRAMEWORK_HEADER_FILES)
+before-$(TARGET)-all::
 
 after-$(TARGET)-all::
 
-after-all::
-
-build-framework-headers:: $(FRAMEWORK_HEADER_FILES)
+ifneq ($(FRAMEWORK_NAME),)
+internal-subproj-before-all:: $(FRAMEWORK_HEADER_FILES)
+	@ echo Building public headers for subproject $(INTERNAL_subproj_NAME)
 
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
-	if [ "$(FRAMEWORK_NAME)" != "" ]; then \
 	  if [ "$(HEADER_FILES)" != "" ]; then \
 	    $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Headers; \
-	    if test ! -L "$(DERIVED_SOURCES)/$(INTERNAL_framework_NAME)"; then \
+	    if test ! -L "$(DERIVED_SOURCES)/$(FRAMEWORK_NAME)"; then \
 	      $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
-	      $(DERIVED_SOURCES)/$(INTERNAL_framework_NAME); \
+	      $(DERIVED_SOURCES)/$(FRAMEWORK_NAME); \
 	    fi; \
 	    for file in $(HEADER_FILES) __done; do \
 	      if [ $$file != __done ]; then \
@@ -96,8 +105,8 @@ $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
 		$(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
 	      fi; \
 	    done; \
-	  fi; \
-	fi
+	  fi
+endif
 
 framework-components::
 	@(if [ "$(FRAMEWORK_NAME)" != "" ]; then \
@@ -214,7 +223,7 @@ framework-localized-webresource-files:: framework-webresource-dir
 #
 
 internal-subproj-install:: internal-install-subproj-dirs \
-	internal-install-subproj-headers
+                           internal-install-subproj-headers
 
 internal-install-subproj-dirs::
 	$(MKDIRS) \
@@ -236,7 +245,9 @@ internal-install-subproj-headers::
 	  done; \
 	fi
 
-internal-library-uninstall:: before-uninstall internal-uninstall-headers after-uninstall
+internal-library-uninstall:: before-uninstall \
+                             internal-uninstall-headers \
+                             after-uninstall
 
 before-uninstall after-uninstall::
 
