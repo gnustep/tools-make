@@ -144,7 +144,7 @@ internal-install-dirs:: $(TOOL_INSTALLATION_DIR)
 
 # This rule runs $(MKDIRS) only if needed
 $(TOOL_INSTALLATION_DIR):
-	$(MKDIRS) $(TOOL_INSTALLATION_DIR)
+	$(MKDIRS) $@
 
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 \
@@ -164,6 +164,7 @@ endif
 
 internal-tool-uninstall::
 	rm -f $(TOOL_INSTALLATION_DIR)/$(INTERNAL_tool_NAME)$(EXEEXT)
+	rm -f $(GNUSTEP_INSTALLATION_DIR)/Tools/$(INTERNAL_tool_NAME)
 
 #
 # Cleaning targets
