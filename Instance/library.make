@@ -269,6 +269,4 @@ endif
 #
 internal-library-check::
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

@@ -105,6 +105,4 @@ internal-subproject-all_:: shared-instance-bundle-all
 
 endif
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

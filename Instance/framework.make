@@ -429,6 +429,4 @@ internal-framework-distclean::
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj $(DERIVED_SOURCES)
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

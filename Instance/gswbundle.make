@@ -260,6 +260,4 @@ $(GSWBUNDLE_INSTALL_DIR)::
 internal-gswbundle-uninstall_:: shared-instance-headers-uninstall
 	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

@@ -126,6 +126,4 @@ internal-service-distclean::
 	  static_profile_debug_obj *.app *.debug *.profile *.iconheader \
 	  $(SERVICE_DIR_NAME)
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

@@ -140,10 +140,4 @@ internal-test_lib-install_::
 
 internal-test_lib-uninstall_::
 
-#
-# Cleaning targets
-#
-
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

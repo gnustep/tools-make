@@ -242,7 +242,5 @@ endif
 internal-bundle-uninstall_:: shared-instance-headers-uninstall \
                        shared-instance-bundle-uninstall
 
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
 
-## Local variables:
-## mode: makefile
-## End:

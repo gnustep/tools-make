@@ -77,6 +77,5 @@ $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR):
 internal-ctool-uninstall_::
 	rm -f $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
+

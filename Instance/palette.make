@@ -141,6 +141,4 @@ internal-palette-distclean::
 	       static_debug_obj static_profile_obj shared_profile_debug_obj \
 	       static_profile_debug_obj $(PALETTE_DIR_NAME)
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

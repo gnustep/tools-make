@@ -73,6 +73,4 @@ $(OBJC_PROGRAM_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR):
 internal-objc_program-uninstall_::
 	rm -f $(OBJC_PROGRAM_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
-## Local variables:
-## mode: makefile
-## End:
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
