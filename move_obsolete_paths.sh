@@ -182,9 +182,9 @@ for dir in $@; do
   # 
   # Remove these - obsolete
   #
-  if [ -d $dir/Developer ]; then
-    rm -rf $dir/Developer
-    echo Removed $dir/Developer
-  fi
+  #if [ -d $dir/Developer ]; then
+  #  rm -rf $dir/Developer
+  #  echo Removed $dir/Developer
+  #fi
 
 done

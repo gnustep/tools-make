@@ -1,3 +1,7 @@
+2003-06-11  Adam Fedor  <fedor@gnu.org>
+
+	* move_obsolete_paths.sh: Don't remove the Developer dir.
+
 2003-06-06  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (openbsd/OBJ_MERGE_CMD): Add.
