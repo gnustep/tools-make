@@ -161,6 +161,7 @@ ifneq ($(strip $(DLL_DEF)),)
 DLL_DEF_FLAG = --input-def $(DLL_DEF)
 endif
 
+# Pass -DBUILD_lib{library_name}_DLL=1 to the preprocessor
 CLEAN_library_NAME = $(shell echo $(INTERNAL_library_NAME)|tr '-' '_')
 SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
