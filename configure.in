@@ -137,7 +137,8 @@ wraster_check_save_libs=${LIBS}
 CPPFLAGS="$1 $2 ${CPPFLAGS}"
 LIBS="$3 $LIBS"
 
-AC_CHECK_LIB(wraster, main, wraster_ok=yes, wraster_ok=no)
+# Check for RFillImage which is only in version 2.0 or libwraster
+AC_CHECK_LIB(wraster, RFillImage, wraster_ok=yes, wraster_ok=no)
 if test "$wraster_ok" = yes; then
   AC_CHECK_HEADERS(wraster.h, wraster_ok=yes, wraster_ok=no)
 fi
