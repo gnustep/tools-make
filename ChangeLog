@@ -1,3 +1,13 @@
+Tue Mar 26 18:23:32 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* openapp.in: Do not add EXEEXT at the end of the application name
+	if we are not flattened; if we are, add it in the proper way.
+	Quoted a path.  Exec the application wrapper rather than simply
+	running it.  Fixed comment when application script not found.
+	* opentool.in: Quoted a path.
+	* debugapp.in: Fixed adding EXEEXT at the end of the application
+	name.
+	
 2002-03-26 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Updated to reflect current state
