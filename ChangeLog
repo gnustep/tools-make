@@ -1,3 +1,7 @@
+Fri Feb 25 13:32:00 2000  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* rules.make: replace rule for PALETTE_ICON that somehow got lost.
+
 Thu Feb 24 21:12:00 2000  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* bundle.make: fixes to permit use of BUNDLE_INSTALL_DIR variable.
