@@ -1,3 +1,15 @@
+Sun Sep 30 14:03:02 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAGS): Variable
+	removed.  Flag moved into GNUSTEP_LOCAL_LIBRARIES_FLAGS.
+	(GNUSTEP_USER_TARGET_LIBRARIES_FLAGS): Idem.
+	(GNUSTEP_NETWORK_TARGET_LIBRARIES_FLAGS): Idem.
+	* rules.make (ALL_LIB_DIRS, LIB_DIRS_NO_SYSTEM): No longer need
+	to add GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAGS as
+	GNUSTEP_LOCAL_LIBRARIES_FLAGS is enough now.  Similar for
+	GNUSTEP_USER_TARGET_LIBRARIES_FLAGS and
+	GNUSTEP_NETWORK_TARGET_LIBRARIES_FLAGS.
+	
 Sun Sep 30 13:46:38 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* test-library.make ($(SCRIPTS_DIRECTORY)/config/unix.exp): Do not
