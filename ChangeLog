@@ -1,3 +1,7 @@
+2001-02-25  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Separate def of LD_LIBRARY_PATH freom export.
+
 2001-02-24  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.in (GNUSTEP_NETWORK_ROOT): Fixed typo.

@@ -277,7 +277,8 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
   LDFLAGS="$LDFLAGS -L$GNUSTEP_LDIR"
 
   # And the following to execute them
-  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$GNUSTEP_LDIR"
+  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$GNUSTEP_LDIR"
+  export LD_LIBRARY_PATH
 
 #fi
 
