@@ -1,3 +1,20 @@
+Fri Sep 27 03:16:57 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Warning - minor incompatible change/update in API.
+	* Master/subproject.make (internal-clean): Do not remove
+	Resources/Subproject.
+	(internal-distclean): Only remove Resources/ if the subproject has
+	xxx_HAS_RESOURCE_BUNDLE = yes.
+	* Instance/subproject.make: Only build the Resources/ bundle if
+	`xxx_HAS_RESOURCE_BUNDLE = yes' is set in the GNUmakefile.
+
+Fri Sep 27 03:12:46 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/subproject.make (SUBPROJECT_NAME): If SUBPROJECT_NAME
+	contains more than one word, emit warnings, and drop all words
+	except the first one.
+	(internal-clean): Simplified expression to compute pswrap files.
+	
 Thu Sep 26 03:11:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Implemented resource bundles for tools.
