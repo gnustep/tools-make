@@ -37,10 +37,9 @@ to the libraries freely available. You should read the COPYING.LIB file
 for more information.
 
 GNUstep tools, test programs, and other files are covered under the GNU
-General Public License. This means if you make changes to these
-programs, you cannot charge a fee, other than distribution fees, for
-others to use the program. You should read the COPYING file for more
-information.
+General Public License. The GNU GPL is a free software license, which
+requires that all the released improved versions be free software as
+well.  You should read the COPYING file for more information.
 
 With GNUstep-Base, we strongly recommend the use of the ffcall
 libraries, which provides stack frame handling for NSInvocation and
