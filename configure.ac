@@ -1,11 +1,12 @@
 #
 #   configure.ac
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2004 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #	     Ovidiu Predescu <ovidiu@net-community.com>
 #   Rewrite: Adam Fedor <fedor@gnu.org>
+#            Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -231,11 +232,18 @@ AC_MSG_CHECKING(for GNUSTEP_NETWORK_ROOT to use)
 AC_ARG_WITH(network-root,
 [--with-network-root
     Set the GNUSTEP_NETWORK_ROOT directory.  Use this option if you want 
-to have the GNUSTEP_NETWORK_ROOT directory in a non-standard place.  Example:
+to have the GNUSTEP_NETWORK_ROOT directory.  Example:
 --with-network-root=/usr/local/GNUstep/Network
 ],
 GNUSTEP_NETWORK_ROOT="$withval",
-GNUSTEP_NETWORK_ROOT="$GNUSTEP_ROOT/Network"
+# By default we disable network root, by setting GNUSTEP_NETWORK_ROOT
+# to be the same as GNUSTEP_LOCAL_ROOT.  GNUSTEP_NETWORK_ROOT is very
+# rarely used, and most users prefer simpler systems with shorter
+# paths and shorter command lines.  To turn on GNUSTEP_NETWORK_ROOT
+# again, you can use the --with-network-root=xxx option; pass
+# something like --with-network-root=/usr/GNUstep/Network on the
+# configure command line.
+GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
 )
 AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 
