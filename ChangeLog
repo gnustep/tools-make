@@ -1,3 +1,11 @@
+Mon Oct 14 13:09:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/rpm.make (rpm): Look for rpmbuild, and use it instead of
+	rpm -ba if available; print a warning if neither rpm or rpmbuild
+	is found. (Originated from a suggestion by Jiri Novak
+	<Jiri.Novak@i.cz>).
+	* GNUmakefile.in (rpm): Similar change.
+	
 Fri Oct 11 16:31:35 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* spec-debug-alone-rules.template: Remove %install string from
