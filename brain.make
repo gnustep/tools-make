@@ -96,6 +96,9 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), nx)
   OBJC_RUNTIME = NeXT
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
+  ifeq ($(FOUNDATION_LIB),gnu)
+    OBJC_LIBS=-lobjc
+  endif
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), sun)

@@ -201,9 +201,9 @@ endif
 
 ####################################################
 #
-# MacOSX public beta, darwin1.2
+# MacOSX public beta, darwin1.x
 #
-ifeq ($(findstring darwin1.2, $(GNUSTEP_TARGET_OS)), darwin1.2)
+ifeq ($(findstring darwin1, $(GNUSTEP_TARGET_OS)), darwin1)
 ifeq ($(OBJC_RUNTIME), NeXT)
 HAVE_BUNDLES     = yes
 endif

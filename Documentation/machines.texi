@@ -584,7 +584,7 @@ building:
 make shared=yes
 @end example
 
-For static libs, use @var{shared=no}, Make sure files and compilation
+For static libs, use @code{shared=no}, Make sure files and compilation
 done in Unix mode (no ^M in files, @var{export CYGWIN=binmode} usually
 works if cygwin is not buggy).  Gdomap services not set up
 correctly. Must add services lines to @file{C:\WINDOWS\services} (on

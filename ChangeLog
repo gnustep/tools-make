@@ -1,3 +1,8 @@
+2001-09-11  Adam Fedor  <fedor@gnu.org>
+
+	* brain.make: If nx-gnu-gnu, add -lobjc to OBJC_LIBS
+	* target.make: Extend darwin1.1 rule to darwin1.x
+
 Tue Sep 11 12:19:24 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (before-install): Removed code to check installation
