@@ -1,3 +1,9 @@
+Mon Jan 21 16:36:58 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in (objc_threaded): When printing out the results
+	of the test, print the thread flags we found as well.
+	* configure: Regenerated.
+
 Mon Jan 21 16:09:12 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* executable.template.in (appname): Modified to extract the
