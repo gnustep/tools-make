@@ -68,6 +68,7 @@ compile, and also when you install).
 @menu
 * Backend Bundles::             
 * Alternate Libraries::         
+* Alternate Thread Library::    
 * Cross-Compiling::             
 * Flat Structure::              
 @end menu
@@ -86,20 +87,41 @@ instance, if bundles do not work on your platform), it can be disabled using
 
 in the arguments to configure.
 
-@node Alternate Libraries, Cross-Compiling, Backend Bundles, Configuration
+@node Alternate Libraries, Alternate Thread Library, Backend Bundles, Configuration
 @subsection Alternate Library Setup
 
 You can specify compilation of alternate libraries by using the
-with-library-combo option. You need to have these libraries unpacked in a
-subdirectory under the gstep directory, then you can say
+with-library-combo option. 
 
 @example
 ./configure --with-library-combo=nx-gnu-gnu
 @end example
 
-to compile with Apple's (NexT's) runtime on Darwin, for example.
+to compile with Apple's (NexT's) runtime on Darwin, for example. See the DESIGN
+document for more examples of the variety of library combos.
 
-@node Cross-Compiling, Flat Structure, Alternate Libraries, Configuration
+@node Alternate Thread Library, Cross-Compiling, Alternate Libraries, Configuration
+@subsection Alternate Thread Library
+
+You can specify compilation of an alternate thread library from the one that
+is normally used (or if GNUstep does not know what your normal library is)
+with the with-thread-lib option. 
+
+@example
+./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
+@end example
+
+to use libgthread as your threading library. Note that the Objective-C
+runtime (gnustep-objc) must have a compatible threading backend in order to
+use this threading library and you must set the appropriate threading backend
+by hand in the GNUmakefile when compiling gnustep-objc. If you also need
+to set compiler flags, use the CFLAGS variable when calling configure:
+
+@example
+CFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
+@end example
+
+@node Cross-Compiling, Flat Structure, Alternate Thread Library, Configuration
 @subsection Configuring the GNUstep makefile package for a cross-compile target
 
 By default when you run configure, it assumes that you want to create
