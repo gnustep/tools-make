@@ -1,3 +1,54 @@
+Tue Oct 14 01:07:22 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Implemented support for building in a build directory outside the
+	source tree.  Not supported for Java and doc yet.
+	* common.make (GNUSTEP_BUILD_DIR): New variable.
+	(GNUSTEP_OBJ_DIR_NAME): New variable.
+	(GNUSTEP_OBJ_DIR): Define using GNUSTEP_BUILD_DIR.
+	* rules.make (DERIVED_SOURCES_DIR): New variable.
+	(DERIVED_SOURCES_HEADERS_FLAG): Check using
+	OWNING_PROJECT_HEADER_DIR_NAME instead of
+	OWNING_PROJECT_HEADER_DIR.
+	($(GNUSTEP_BUILD_DIR)): New rule to create GNUSTEP_BUILD_DIR.
+	($(GNUSTEP_OBJ_DIR)): Modified the rule to create
+	GNUSTEP_OBJ_DIR_NAME inside GNUSTEP_BUILD_DIR.
+	* Master/aggregate.make: Pass GNUSTEP_BUILD_DIR to submake
+	invocations.	
+	* Master/rules.make (all): Depend on creating GNUSTEP_BUILD_DIR
+	if any is specified.	
+	(ABS_GNUSTEP_BUILD_DIR): New variable - compute if needed.
+	(%.variables, %.subprojects): Pass GNUSTEP_BUILD_DIR to submake
+	invocations; pass OWNING_PROJECT_DIR_NAME rather than
+	OWNING_PROJECT_DIR to submake invocations.
+	* Master/application.make: Modified all clean targets to clean
+	in GNUSTEP_BUILD_DIR.
+	* Master/bundle.make: The same.
+	* Master/clibrary.make: The same.
+	* Master/ctool.make: The same.
+	* Master/gswapp.make: The same.
+	* Master/gswbundle.make: The same.
+	* Master/library.make: The same.
+	* Master/objc.make: The same.
+	* Master/palette.make: The same.
+	* Master/rules.make: The same. 
+	* Master/service.make: The same.
+	* Master/subproject.make: The same.
+	* Master/test-application.make: The same.
+	* Master/test-library.make: The same.
+	* Master/test-tool.make: The same.
+	* Master/tool.make: The same.
+	* Instance/application.make: Modified all code as required to
+	implement the new functionality.
+	* Instance/bundle.make: The same.
+	* Instance/framework.make: The same.
+	* Instance/gswapp.make: The same.
+	* Instance/gswbundle.make: The same.
+	* Instance/library.make: The same.
+	* Instance/palette.make: The same.
+	* Instance/rules.make: The same.
+	* Instance/service.make: The same.
+	* Instance/Shared/bundle.make: The same.
+	
 Tue Oct 14 00:34:57 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/library.make (DERIVED_SOURCES): Do not define here;
