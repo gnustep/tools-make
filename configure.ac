@@ -65,7 +65,7 @@ case "$target_os" in
   freebsd*)	INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/local/include"
 		LIBS="$LIBS -L/usr/local/lib";;
   netbsd*)	INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/pkg/include"
-		LIBS="$LIBS -L/usr/pkg/lib";;
+		LIBS="$LIBS -R/usr/pkg/lib -L/usr/pkg/lib";;
 esac
 # Save the user supplied CPPFLAGS so we can restore them later.
 user_CPPFLAGS="$CPPFLAGS"

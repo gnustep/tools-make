@@ -31,6 +31,11 @@ case "$1" in
 	echo freebsd
 	exit 0
 	;;
+    # Remove version number for NetBSD ELF targets
+    netbsdelf*)
+	echo netbsdelf
+	exit 0
+	;;
     # Remove version number for Darwin
     darwin6*)
         echo darwin6

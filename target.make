@@ -90,7 +90,12 @@ ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
   endif
 endif
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
-TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+  ifneq ("$(objc_threaded)","")
+    INTERNAL_CFLAGS = -D_REENTRANT
+    INTERNAL_OBJCFLAGS = -D_REENTRANT
+    AUXILIARY_OBJC_LIBS += $(objc_threaded)
+  endif
 endif
 ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
@@ -687,7 +692,7 @@ SHARED_LIBEXT	= .so
 HAVE_BUNDLES	= yes
 BUNDLE_LD	= $(CC)
 BUNDLE_LDFLAGS	+= -shared
-ADDITIONAL_LDFLAGS += -rdynamic -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
+ADDITIONAL_LDFLAGS += -rdynamic -Wl,-R/usr/pkg/lib -L/usr/pkg/lib -Wl,-R/usr/X11R6/lib -L/usr/X11R6/lib
 ADDITIONAL_INCLUDE_DIRS += -I/usr/pkg/include
 STATIC_LDFLAGS += -static
 endif
