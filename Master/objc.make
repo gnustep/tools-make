@@ -42,14 +42,12 @@ internal-distclean::
 
 OBJC_PROGRAMS_WITH_SUBPROJECTS = $(strip $(foreach objc_program,$(OBJC_PROGRAM_NAME),$(patsubst %,$(objc_program),$($(objc_program)_SUBPROJECTS))))
 ifneq ($(OBJC_PROGRAMS_WITH_SUBPROJECTS),)
-internal-clean:: $(OBJC_PROGRAMS_WITH_SUBPROJECTS:=.clean.objc_program.subprojects)
-internal-distclean:: $(OBJC_PROGRAMS_WITH_SUBPROJECTS:=.distclean.objc_program.subprojects)
+internal-clean:: $(OBJC_PROGRAMS_WITH_SUBPROJECTS:=.clean.objc-program.subprojects)
+internal-distclean:: $(OBJC_PROGRAMS_WITH_SUBPROJECTS:=.distclean.objc-program.subprojects)
 endif
+
+internal-strings:: $(OBJC_PROGRAM_NAME:=.strings.objc-program.variables)
 
 $(OBJC_PROGRAM_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.objc-program.variables
-
-## Local variables:
-## mode: makefile
-## End:
