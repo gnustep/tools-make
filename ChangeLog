@@ -1,3 +1,7 @@
+1999-02-25  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (IRIX/SHARED_LIB_LINK_CMD): Fix typo.
+
 Thu Feb 25 03:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
 	* configure.in: Added macros to check existence of jpeg and tiff.
