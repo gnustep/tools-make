@@ -50,21 +50,17 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
         bundle-resource-files \
         bundle-localized-resource-files 
 
-ifeq ($(WITH_DLL),yes)
-# This is only for Windows ... on other systems, we don't need to link
-# the bundle against the system libraries, which are already linked in
-# the application ... linking them both in the bundle and in the
-# application would just make things more difficult when the bundle is
-# loaded (eg, if the application and the bundle end up being linked to
-# different versions of the system libraries ...)
-#
-# On the contrary, we need it on Windows (FIXME - add an explanation
-# of why we need it on Windows)
-BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-endif
+# NB: we don't need to link the bundle against the system libraries,
+# which are already linked in the application ... linking them both in
+# the bundle and in the application would just make things more
+# difficult when the bundle is loaded (eg, if the application and the
+# bundle end up being linked to different versions of the system
+# libraries ...)
+#BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
+#   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
+#   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+#   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+
 
 ALL_BUNDLE_LIBS =						\
     $(shell $(WHICH_LIB_SCRIPT)					\
@@ -74,23 +70,8 @@ ALL_BUNDLE_LIBS =						\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 ifeq ($(WITH_DLL),yes)
-TTMP_LIBS := $(ALL_BUNDLE_LIBS)
-TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
-# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
-TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_s,  $(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_dps,$(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_ps, $(TTMP_LIBS))
-# strip away -l, _p and _d ..
-TTMP_LIBS := $(TTMP_LIBS:-l%=%)
-TTMP_LIBS := $(TTMP_LIBS:%_d=%)
-TTMP_LIBS := $(TTMP_LIBS:%_p=%)
-TTMP_LIBS := $(TTMP_LIBS:%_dp=%)
-TTMP_LIBS := $(shell echo $(TTMP_LIBS)|tr '-' '_')
-TTMP_LIBS := $(TTMP_LIBS:%=-Dlib%_ISDLL=1)
-ALL_CPPFLAGS += $(TTMP_LIBS)
 BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
-endif # WITH_DLL
+endif
 
 internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) \
                        build-bundle \

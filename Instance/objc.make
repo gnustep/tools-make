@@ -49,24 +49,6 @@ ALL_OBJC_LIBS =								\
         debug=$(debug) profile=$(profile) shared=$(shared)		\
         libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-ifeq ($(WITH_DLL),yes)
-TTMP_LIBS := $(ALL_OBJC_LIBS)
-TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
-# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
-TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_s,  $(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_dps,$(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_ps, $(TTMP_LIBS))
-# strip away -l, _p and _d ..
-TTMP_LIBS := $(TTMP_LIBS:-l%=%)
-TTMP_LIBS := $(TTMP_LIBS:%_d=%)
-TTMP_LIBS := $(TTMP_LIBS:%_p=%)
-TTMP_LIBS := $(TTMP_LIBS:%_dp=%)
-TTMP_LIBS := $(shell echo $(TTMP_LIBS)|tr '-' '_')
-TTMP_LIBS := $(TTMP_LIBS:%=-Dlib%_ISDLL=1)
-ALL_CPPFLAGS += $(TTMP_LIBS)
-endif
-
 internal-objc_program-all_:: \
                   $(GNUSTEP_OBJ_DIR) \
                   $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)

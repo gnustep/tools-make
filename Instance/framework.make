@@ -54,6 +54,9 @@ endif
 
 HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 
+# FIXME - do we really want to link the framework against all libs ?
+# That easily makes problems when the framework is loaded as a bundle,
+# doesn't it ?
 ALL_FRAMEWORK_LIBS =						\
     $(shell $(WHICH_LIB_SCRIPT)					\
 	    $(ALL_LIB_DIRS)					\
@@ -73,7 +76,6 @@ DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES)/$(DUMMY_FRAMEWORK).m
 DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
 
 FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Headers/,$(HEADER_FILES))
-
 
 ifneq ($(BUILD_DLL),yes)
 
@@ -104,21 +106,6 @@ endif
 endif # BUILD_DLL
 
 ifeq ($(WITH_DLL),yes)
-TTMP_LIBS := $(ALL_FRAMEWORK_LIBS)
-TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
-# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
-TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_s,  $(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_dps,$(TTMP_LIBS))
-TTMP_LIBS := $(filter-out -l%_ps, $(TTMP_LIBS))
-# strip away -l, _p and _d ..
-TTMP_LIBS := $(TTMP_LIBS:-l%=%)
-TTMP_LIBS := $(TTMP_LIBS:%_d=%)
-TTMP_LIBS := $(TTMP_LIBS:%_p=%)
-TTMP_LIBS := $(TTMP_LIBS:%_dp=%)
-TTMP_LIBS := $(shell echo $(TTMP_LIBS)|tr '-' '_')
-TTMP_LIBS := $(TTMP_LIBS:%=-Dlib%_ISDLL=1)
-ALL_CPPFLAGS += $(TTMP_LIBS)
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
