@@ -1,3 +1,8 @@
+Tue Dec 31 16:10:49 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make: For darwin: link to LIB_LINK_SONAME_FILE, not to
+	LIB_LINK_INSTALL_NAME, so that it works when building frameworks.
+
 2002-12-30  Adam Fedor  <fedor@gnu.org>
 
 	* ld_lib_path.sh: Use DYLD_LIBRARY_PATH on darwin
