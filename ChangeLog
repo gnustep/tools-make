@@ -1,3 +1,10 @@
+Tue Mar  5 09:21:12 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/resource-set.make (internal-all): Do nothing, not even
+	subproject processing.
+	(internal-clean): Idem.
+	(internal-distclean): Idem.
+
 Tue Mar  5 07:26:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/gswapplication.make: Renamed bundle directory where
