@@ -215,13 +215,9 @@ fi
 AC_LN_S
 
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)
-
-#--------------------------------------------------------------------
-# specific target_os options
-#--------------------------------------------------------------------
-case "$target_os" in
-  freebsd*)	TAR="tar"
-esac
+AC_ARG_WITH(tar,
+[--with-tar                      Set the name of the tar program to use],
+  TAR=$withval,)
 
 #--------------------------------------------------------------------
 # Miscellaneous flags and setup

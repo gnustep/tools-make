@@ -1,3 +1,8 @@
+2001-11-08  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in (TAR): Undo last patch, add configure option
+	to set name of tar command.
+
 Wed Nov  7 23:43:19 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: Moved check that GNUSTEP_SYSTEM_ROOT/Tools is in
