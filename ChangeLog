@@ -1,3 +1,11 @@
+2004-08-24  Quentin Mathe  <qmathe@club-internet.fr>
+
+        * ld_lib_path.sh:
+	* ld_lib_path.csh:
+	Added comments to explain why we set DYLD_FRAMEWORK_PATH on Darwin with
+	any library combo and not just apple-apple-apple (it is a temporary
+	solution).
+
 2004-08-24  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.sh.in: Add newline at end of file (avoids bug in Solaris

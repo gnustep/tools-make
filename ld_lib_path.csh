@@ -83,6 +83,27 @@ switch ( "${host_os}" )
        setenv DYLD_LIBRARY_PATH="${additional}${DYLD_LIBRARY_PATH}"
       endif
     endif
+    
+# The code below has been temporarily removed, because...
+# With GNUstep -make on any platform, when you compile a
+# framework, it is supported by creating a link like
+# Librairies/libMyFramework.dylib ->
+# Frameworks/MyFramework.framework/Versions/Current/libMyFramework.dylib, to
+# mitigate the fact that FSF GCC supports to link frameworks with the -frameworks
+# flag only on Darwin . 
+# Well concerning library GNUstep -make on Darwin, the problem lies in the fact
+# the Darwin linker seems to be unable to link the library when you pass the
+# flag -lMyFramework to compile an application which depends on it, strangely it
+# links the framework directly.  You can see that with otool -L
+# Whatever/MyApplication.app/MyApplication which will output 
+# MyFramework.framework/MyFramework and not libMyFramework.dylib .
+# So because a framework is linked when it is present even when you want to
+# link the equivalent library, the application will not find the framework when
+# you launch it with DYLD_FRAMEWORK_PATH empty. To correct that, we must
+# set DYLD_FRAMEWORK_PATH in any cases until the Darwin linker behaves correctly.
+#
+#    if ( ( "${LIBRARY_COMBO}" == "apple-apple-apple" ) \ 
+#         || ( "${LIBRARY_COMBO}" == "apple") ) then
 
     unset additional
 
