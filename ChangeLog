@@ -1,3 +1,16 @@
+1999-06-01  Adam Fedor  <fedor@gnu.org>
+
+	* executable.template.in: New file to be used as shell script
+	application/tool starter.
+	* configure.in: Configure it.
+	* GNUmakefile.in: Install it.
+	* GNUstep.sh.in: Use simpler path and add GNUSTEP_PATHPREFIX_LIST
+	* GNUstep.csh.in: Likewise.
+	* openapp.in: Use GNUSTEP_PATHPREFIX_LIST and simpler path search
+	* debugapp.in: Likewise.
+	* application.make: Copy it to main app directory (using app name).
+	* tool.make: Install it to main Tool directory when installing.
+
 Fri May 28  6:10:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* application.make: Incorporate appnameInfo.plist into the Info.plist

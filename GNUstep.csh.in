@@ -60,13 +60,12 @@ if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
 #
 # Add the GNUstep tools directories to the path
 #
-setenv PATH ${GNUSTEP_SYSTEM_ROOT}/Tools:$PATH
-setenv PATH ${GNUSTEP_SYSTEM_ROOT}/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/${LIBRARY_COMBO}:$PATH
-setenv PATH ${GNUSTEP_SYSTEM_ROOT}/Tools/$GNUSTEP_HOST_CPU/${GNUSTEP_HOST_OS}:$PATH
-setenv PATH $GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/${LIBRARY_COMBO}:$PATH
-setenv PATH $GNUSTEP_LOCAL_ROOT/Tools/$GNUSTEP_HOST_CPU/${GNUSTEP_HOST_OS}:$PATH
-setenv PATH $GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/${LIBRARY_COMBO}:$PATH
-setenv PATH $GNUSTEP_USER_ROOT/Tools/$GNUSTEP_HOST_CPU/${GNUSTEP_HOST_OS}:$PATH
+if ( ! ${?GNUSTEP_PATHPREFIX_LIST} ) then
+  setenv GNUSTEP_PATHPREFIX_LIST ${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_SYSTEM_ROOT}
+endif
+foreach dir $GNUSTEP_PATHPREFIX_LIST
+  setenv PATH $PATH:$dir/Tools
+end
 
 source ${GNUSTEP_SYSTEM_ROOT}/Makefiles/ld_lib_path.csh
 
@@ -77,12 +76,6 @@ if ( -e ~/.GNUstep/GNUstep.csh ) then
 	. ~/.GNUstep/GNUstep.csh
 endif
 
-set TDIR=${GNUSTEP_SYSTEM_ROOT}/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-if ( -e $TDIR/$LIBRARY_COMBO/make_services ) then
-  $TDIR/$LIBRARY_COMBO/make_services &
-  if ( -e $TDIR/make_services ) then
-    $TDIR/make_services &
-  endif
-endif
+${GNUSTEP_SYSTEM_ROOT}/Tools/make_services &
 
 endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )

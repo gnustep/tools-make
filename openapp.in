@@ -94,11 +94,16 @@ case $app in
   */*)	# A relative path
 	full_appname=`(cd $app; pwd)`;;
   *)	# A path that should be searched into the GNUstep paths
-	SPATH=.:$GNUSTEP_USER_ROOT/Apps:$GNUSTEP_LOCAL_ROOT/Apps:$GNUSTEP_SYSTEM_ROOT/Apps:$PATH
+	if [ -n $GNUSTEP_PATHPREFIX_LIST ]; then
+	    SPATH=$GNUSTEP_PATHPREFIX_LIST
+	else
+	    SPATH=$PATH
+	fi
+	SPATH=.:$SPATH
 	IFS=:
 	for dir in $SPATH; do
-	  if [ -d $dir/$app ]; then
-	    full_appname=`(cd $dir/$app; pwd)`
+	  if [ -d $dir/Apps/$app ]; then
+	    full_appname=`(cd $dir/Apps/$app; pwd)`
 	    break;
 	  fi
 	done;;

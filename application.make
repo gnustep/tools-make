@@ -133,11 +133,12 @@ $(INTERNAL_app_NAME).iconheader:
 
 $(APP_DIR_NAME):
 	mkdir $@
+
 else
 
 internal-app-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO) $(APP_FILE) \
-   app-resource-files after-$(TARGET)-all
+   $(APP_DIR_NAME)/$(INTERNAL_app_NAME) app-resource-files after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -145,6 +146,10 @@ after-$(TARGET)-all::
 
 $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
 	@$(MKDIRS) $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+
+$(APP_DIR_NAME)/$(INTERNAL_app_NAME):
+	cp $(GNUSTEP_MAKEFILES)/executable.template $(APP_DIR_NAME)/$(INTERNAL_app_NAME)
+	chmod a+x $(APP_DIR_NAME)/$(INTERNAL_app_NAME)
 endif
 
 app-resource-dir::

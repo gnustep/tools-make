@@ -91,7 +91,7 @@ install: all
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
-		documentation.make MediaBook.func; do \
+		documentation.make MediaBook.func executable.template; do \
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
@@ -114,7 +114,7 @@ uninstall:
 		common.make brain.make library.make rules.make target.make \
 		tool.make test-library.make names.make objc.make \
 		test-application.make test-tool.make subproject.make \
-		documentation.make MediaBook.func; do \
+		documentation.make MediaBook.func executable.template; do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(prefix)/share/config.site

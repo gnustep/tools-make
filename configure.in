@@ -339,5 +339,5 @@ AC_SUBST(GNUSTEP_MINOR_VERSION)
 # Produce the output files
 #--------------------------------------------------------------------
 AC_OUTPUT(config.h config.make openapp debugapp which_lib.pl opentool 
-GNUmakefile GNUstep.sh GNUstep.csh,
-chmod a+x openapp debugapp which_lib.pl opentool)
+executable.template GNUmakefile GNUstep.sh GNUstep.csh,
+chmod a+x openapp debugapp which_lib.pl opentool executable.template)

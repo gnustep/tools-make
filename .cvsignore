@@ -2,6 +2,7 @@ config.log
 config.make
 config.cache
 which_lib
+which_lib.pl
 GNUmakefile
 GNUstep.sh
 GNUstep.csh
@@ -9,3 +10,4 @@ config.h
 config.status
 openapp
 debugapp
+executable.template
