@@ -1,0 +1,472 @@
+\input texinfo   @c -*-texinfo-*-
+@c GNUstep installation instructions
+@c %**start of header
+@setfilename gnustep-howto.info
+@settitle GNUstep HOWTO
+@c %**end of header
+@set HOWTO
+@setcontentsaftertitlepage
+@smallbook
+
+@titlepage
+@title GNUstep HOWTO
+@subtitle Installing the GNUstep developement system
+
+@vskip 0pt plus 1filll
+@emph{This document explains how to build the different components of
+the GNUstep core libraries.}
+
+Last Update: @today{}
+
+@page
+@vskip 0pt plus 1filll
+Copyright @copyright{}  1996 - 2001 Free Software Foundation, Inc.
+   
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.1 or
+any later version published by the Free Software Foundation.
+
+@end titlepage
+
+@ifinfo
+@format
+   GNUstep HOWTO
+   *************
+
+   Last Update: @today{}
+
+   This document explains how to build the different components of the
+   GNUstep core libraries.
+
+   Copyright (C) 1996 - 2001 Free Software Foundation, Inc.
+   
+   Permission is granted to copy, distribute and/or modify this document
+   under the terms of the GNU Free Documentation License, Version 1.1 or
+   any later version published by the Free Software Foundation.
+@end format
+
+@end ifinfo
+
+@include version.texi
+
+@node Top, Introduction, (dir), (dir)
+
+@menu
+* Introduction::                
+* Summary::                     
+* Compiling and Installing::    
+* Additional Installation::     
+* Tools and Applications::      
+* Machine Specific::            
+* Anonymous CVS::               
+* Other::                       
+@end menu
+
+@node Introduction, Summary, Top, Top
+@chapter Introduction
+
+This document explains how to build the GNUstep core libraries. The core
+libraries, along with associated tools and other files provide
+everything necessary for a working GNUstep system.
+
+In order to easily compile and debug GNUstep projects, you will need the
+GNU Objective-C compiler @samp{GCC} as well as various other GNU packages.
+
+You will need at least 80Mb of hard disk space (150Mb prefered) in order
+to compile the GNUstep core libraries.  
+
+@node Summary, Compiling and Installing, Introduction, Top
+@chapter Summary
+
+In order to compile the libraries, you need to compile and install
+the following packages first (if you don't already have them):
+
+@itemize @bullet
+@item gcc (Version 2.8.0 or greater)
+@item GNU make (Version 3.75 or greater)
+@item The TIFF library (libtiff) (Version 3.4beta36 or greater)
+@end itemize
+
+After installing these packages, get the following individual packages:
+
+@itemize @bullet
+@item gnustep-make
+@item gnustep-base
+@item gnustep-gui
+@item gnustep-xdps
+@item gnustep-xgps
+@end itemize
+
+See @url{http://www.gnustep.org} for information on where to get these
+packages.  Only one of gnustep-xgps or gnustep-xdps is required. We
+currently recommend gnustep-xgps.  Other packages you may need to get
+depending on the type of system you are using, include:
+
+@table @samp
+@item WindowMaker (Version >= 0.62)
+GNUstep and WindowMaker work together to provide a consistant interface.
+Although it is not required, GNUstep will work much better if you use it
+with the WindowMaker window manager. In addition, WindowMaker includes some
+functionality that GNUstep uses that would otherwise not be available.
+Get WindowMaker from @url{http://www.windowmaker.org}.
+
+@item DGS, the XFree86 DPS extension, or Adobe DPS
+If you want to use the features of a Display Postscript
+(DPS)backend. Note that it is not required since you can use the XGPS
+backend that is Xlib based.  Note that the DPS backend is also still
+experimental and not recommended.  DPS can be obtained from the
+following locations:
+
+@itemize @bullet
+@item DGS client/server, @url{ftp://ftp.gnustep.org/pub/gnustep/dgs}
+@item XFree86 DPS, @url{http://dps.sourceforge.net/}
+@item Adobe DPS, (contact your OS distributor)
+@end itemize
+
+@item PCThreads
+For GNU/Linux systems on Intel x86 processors. PCThreads is
+no longer necessary (and should not be used) on GNU/Linux systems with
+glibc version 2, such as Debian 2.0 and RedHat 5.x and greater.
+
+@item GDB and Objective-C patch
+GDB can be obtained from @url{ftp://ftp.gnu.org/gnu/gdb}. The patch to
+make it work better with GNUstep can be obtained from
+@url{ftp://ftp.gnustep.org/pub/gnustep}
+    
+@item libxml
+The libxml library (Version 2) is used to translate some of the
+documentation for GNUstep and to provide suport for MacOS-X compatible
+XML-based property-lists. It is recommended but not currently required.
+
+@item openssl
+The openssl library is used to provide support for https connections by
+the NSURL and HSURLHandle classes.
+It is recommended but not currently required.
+
+@item libiconv
+Unicode support functions (iconv) come with glibc version 2.1 or greater. If
+you don't have this, you can get the separate libiconv library
+from @url{ http://clisp.cons.org/~haible/packages-libiconv.html}. However,
+neither one is required to use GNUstep.
+
+@item ffcall libraries
+This is a library that provides stack frame handling for NSInvocation
+and NSConnection. This library is highly recommended. The previous
+builtin method for stack frame handling is no longer supported and
+may be removed in the future.
+
+@item libobjc library snapshot (for gcc version <= 2.95.2)
+This is a special version of the Objective-C runtime that include several
+bug fixes and features that have not been officially released yet.
+It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
+compiles using the GNUstep Makefile package (so you don't have to get the
+entire gcc dist). Make sure to set the THREADING variable in the GNUmakefile.
+It might also be best to compile the library static (make shared=no) and
+just copy to the place where the gcc libobjc library is (type gcc -v to
+get this location).
+@end table
+
+@node Compiling and Installing, Additional Installation, Summary, Top
+@chapter Compiling and Installing the packages
+
+Make sure you install all the previously mentioned libraries first
+before configuring and building GNUstep (Except you need to install
+libobjc after installing gnustep-make, unless your installing it as part
+of gcc).
+
+Note: you will need to be able to install packages as root (at least
+the base library) for applications to work correctly.
+
+For installation on MinGW systems, read the README.MinGW file in the 
+make package.
+
+@menu
+* DPS System::                  
+* Core Package::                
+@end menu
+
+@node DPS System, Core Package, Compiling and Installing, Compiling and Installing
+@section Using a Display Postscript System
+
+Install a Display PostScript system if you want to use the XDPS backend.
+You do not need it if you want to use the XGPS backend.
+Some systems, like Sun Microcomputers(TM) already have a DPS system installed.
+Linux/GNU systems need to use a free implementation of DPS (described in
+the Introduction.)
+
+If you are installing DGS, follow the installation instructions included with
+the DGS package. If you are installing the XFree86 DPS extension, follow the 
+instructions included with that package (and note that you need to be
+running XFree86 version 4.0 or greater).
+
+@node Core Package,  , DPS System, Compiling and Installing
+@section Installing the Core Libraries
+
+The GNUstep packages uses the Autoconf mechanism for
+configuration; it checks some host capabilties which are used by
+all GNUstep software.  To configure just type:
+
+@example
+./configure
+@end example
+
+The GNUstep makefile package needs a root directory.  If the
+GNUSTEP_SYSTEM_ROOT environment variable is set then configure will
+use its value as the root directory.  You can also specify the root
+directory when you run configure with the prefix paramter; the
+following command makes /usr/local/GNUstep the root directory:
+
+@example
+./configure --prefix=/usr/local/GNUstep
+@end example
+
+If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
+and you do not specify a root directory when running configure, then
+configure will use /usr/GNUstep as the default root directory.
+
+@menu
+* Alternate Library Setup::     
+* Individual Packages::         
+@end menu
+
+@node Alternate Library Setup, Individual Packages, Core Package, Core Package
+@subsection Alternate Library Setup
+
+You can specify compilation of alternate libraries by using the
+--with-library-combo option:
+
+@example
+./configure --with-library-combo=gnu-gnu-gnu-xdps
+@end example
+
+to compile with the xdps library rather than the default xgps backend.  
+IMPORTANT: The xdps backend is still experimental. Do not use it unless
+you are willing to deal with PostScript problems and other bugs.
+
+Read the installation instructions in the Makefile package (make) for more
+installation options. Make sure you use the same
+configuration options when configuring each GNUstep library.
+
+@node Individual Packages,  , Alternate Library Setup, Core Package
+@subsection Building the Package
+
+To build the individual packages, use the familiar set of commands for
+each pacakge:
+
+@example
+./configure
+make
+make install
+@end example
+
+Start with the Makefile Pacakge (gnustep-make), then do gnustep-base,
+gnustep-gui and finally gnustep-xgps (or gnustep-xdps). After installing
+gnustep-make you need to execute GNUstep's shell configuration
+script, as follows:
+
+@example
+ . /usr/GNUstep/System/Makefiles/GNUstep.sh
+@end example
+
+before proceeding any further.
+
+NOTE: If you are trying to install the packages without root permission,
+you need to change one thing in the base library. Edit the file
+gnustep-base/Tools/gdomap.h and uncomment the last line.
+
+@node Additional Installation, Tools and Applications, Compiling and Installing, Top
+@chapter Additional Installation
+
+Add the shell script @file{GNUstep.sh} located in the Makefile
+package to your shell startup file (such as @file{.profile}). For instance:
+
+@example
+GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
+export GNUSTEP_SYSTEM_ROOT
+. $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+@end example
+
+in your @file{.profile} file will work (Note the period at the beginning
+of the line). It defines environment variables that are needed to find
+GNUstep files and executables.  Users of csh need to use the
+@file{GNUstep.csh} script. Read the make package @file{README} for more
+info. Some systems, like GNU/Linux have an @file{/etc/profile.d}
+directory where scripts can be executed automatically. If you want to
+set up GNUstep for every user on your system, you can try
+copying/linking the @file{GNUstep.sh} there. For csh or tcsh, try
+
+@example
+setenv GNUSTEP_SYSTEM_ROOT /usr/GNUstep
+source $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.csh
+@end example
+
+Set up your home GNUstep directory. This is where user defaults are
+kept, and in the future, other files may be kept there.
+
+@example
+cd
+mkdir GNUstep
+@end example
+
+Next, set your local time zone.  There are four ways to do this, pick
+one (see @file{$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/zones} for typical time zones):
+
+@enumerate
+@item Use the defaults utility to set ``Local Time Zone'' to your local
+time zone (defaults is installed with GNUstep in the Tools directory). Type
+something like ``defaults write NSGlobalDomain "Local Time Zone" GB''.
+
+@item Set the @var{GNUSTEP_TZ} environment variable.
+
+@item Create the file @file{$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/localtime} with the name of the local time zone in it.
+
+@item Set the @var{TZ} environment variable (this may conflict with other
+software on your system though).
+@end enumerate
+
+If you are using a built-in DPS server, you may need to set the PSRESOURCEPATH
+environment variable (on Solaris, it's set to @file{/usr/openwin/lib/X11}).
+
+Set up your system to execute some GNUstep deamons. If you don't do this, they will be started automatically when you run your  first GNUstep app:
+
+@itemize @bullet
+@item gdomap - Put this in a system startup file, like @file{/etc/rc.local} or @file{/etc/rc.d/rc.local} (customize for your system)
+@example
+GNUSTEP_SYSTEM_ROOT=/usr/GNUstep
+if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/powerpc/linux-gnu/gdomap ]; then
+  $GNUSTEP_SYSTEM_ROOT/Tools/powerpc/linux-gnu/gdomap
+fi
+@end example
+@item gdnc - Put this after executing @file{GNUstep.sh} in your local .profile
+@item gpbs - Put this after executing @file{GNUstep.sh} in your local .profile
+@end itemize
+
+@example
+if [ `gdomap -L GDNCServer | grep -c Found` == '0' ]; then
+  echo "Starting GNUstep services..."
+  gdnc
+  gpbs
+fi
+@end example
+
+
+@node Tools and Applications, Machine Specific, Additional Installation, Top
+@chapter Test Tools and Applications
+
+Test programs for the base library are in @file{base/Testing}. Example
+applications are located in the gstep-examples package.  To make these,
+just uncompress and untar this package, cd to the appropriate
+directory, and type make. Generally you will need to install GNUstep
+first before doing this.
+
+To run the examples. Use the openapp utility that is part of the GNUstep
+makefile package (and stored in
+@file{$GNUSTEP_SYSTEM_ROOT/Tools}). Usage is:
+
+@example
+openapp [--library-combo=...] application [additional arguments to app]
+@end example
+
+Good Luck!
+
+@node Machine Specific, Anonymous CVS, Tools and Applications, Top
+@chapter Machine Specific Instructions
+
+@include machines.texi
+
+
+@node Anonymous CVS, Other, Machine Specific, Top
+@chapter Getting Libraries via Anonymous CVS
+
+   If you didn't get one of the snapshots, or if you want to be sure
+to stay on the bleading edge, then you should get the core via CVS:
+
+The quick and painless CVS tutorial (by michael hanni (slightly modified) 
+
+    First, set the CVSROOT environment variable. If you are using
+bash/sh you can do something like this at the prompt:
+@example
+export CVSROOT=":pserver:anoncvs@@cvs.net-community.com:/gnustep" 
+@end example
+
+    Second, if this is the first time loging into the CVS server:
+@example
+cvs login <press enter> 
+@end example
+
+    You should get a password prompt soon after:
+@example
+(Logging in to anoncvs@@cvs.net-community.com) 
+CVS password:  
+@end example
+
+    Enter the password @samp{anoncvs}. This should return you to your
+prompt. From here you can checkout any module in the CVS server you
+like. To checkout a module you do this:
+@example
+cvs -z3 checkout modulename <press enter> 
+@end example
+
+    The -z3 merely tells the cvs server to compess everything to a
+certain compression level before it sends it to you. 
+
+    If you haven't already done so, change to the directory, where you
+want the source to reside.
+    
+    Next, you want to get the whole core, so you do:
+@example
+cvs -z3 checkout core
+@end example
+
+    After you have checked out the source you can compile it as
+usual. To update the source, go into the directory of the source tree
+you want to update, for example, go into 'xgps', and type:
+
+@example
+cvs -z3 update -Pd
+@end example
+
+    You don't have to re-checkout after you have the source, just update!
+Also try @samp{cvs checkout -c} to get a list of available modules.
+
+@node Other,  , Anonymous CVS, Top
+@chapter Other Instructions
+
+@menu
+* Better Debugging::            
+@end menu
+
+@node Better Debugging,  , Other, Other
+@section Better debugging with Objective-C runtime
+
+Normally, the Objective-C runtime is compiled with debugging information,
+which actually makes debugging of user apps frustrating because stepping
+into a method call will actually cause gdb to step into the internal
+Objective-C method call mechanism, which you don't want most of the time.
+
+The way to avoid this is to compile the Objective-C runtime library without
+debugging information. Here's how:
+
+@example
+cd egcs-build-directory/gcc
+rm -f objc/*.o
+make CFLAGS=-O2 libobjc.a
+cp libobjc.a your-egcs-installation-dir
+@end example
+
+
+
+@chapter Acknowledgements
+
+@format
+   Authors:  Adam Fedor <fedor@@gnu.org>,
+             Pascal Forget <pascal@@wsc.com>,
+             Ovidiu Predescu <ovidiu@@net-community.com>,
+             Camille Troillard <tuscland@@wanadoo.fr>
+             Richard Frith-MacDonald <richard@@brainstorm.co.uk>
+
+   This file is part of GNUstep.
+@end format
+
+@bye
+\bye

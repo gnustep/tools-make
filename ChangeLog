@@ -1,6 +1,17 @@
+2001-02-26  Adam Fedor  <fedor@gnu.org>
+
+	* Documenation/makedoc.make: New file mostly copied from
+	documenation.make. 
+	* Documenation/makerules.make: New mostly copied from rules.make
+	* Documenation/gnustep-howto.texi: Moved from core/Documenation
+	* Documenation/faq.texi: Likewise.
+	* Documenation/machines.texi: Likewise.
+	* GNUstep-HOWTO, FAQ: Regenerated.
+	* README.MinGW: Moved from core
+
 2001-02-25  Adam Fedor  <fedor@gnu.org>
 
-	* configure.in: Separate def of LD_LIBRARY_PATH freom export.
+	* configure.in: Separate def of LD_LIBRARY_PATH from export.
 
 2001-02-24  Nicola Pero  <n.pero@mi.flashnet.it>
 

@@ -1,0 +1,587 @@
+@c \input texinfo   @c -*-texinfo-*-
+@setfilename machines.info
+@ifclear HOWTO
+@c Machine Specific, Debian/DEC-Alpha, , (DIR)
+@node Machine Specific, Debian/DEC-Alpha, , (DIR)
+@chapter Machines
+@end ifclear
+
+Below is a list of machines that people have attempted to compile
+GNUstep on. GNUstep compiles with little or no trouble on many of the
+more popular operating systems. Some machines marked with
+@emph{Unstable} may have some trouble or may not work at all.
+
+@menu
+* Debian/DEC-Alpha::            
+* FreeBSD 3.x::                 
+* FreeBSD 2.x::                 
+* GNU-Linux/Intel::             
+* GNU-Linux/PowerPC 4::         
+* GNU-Linux/PowerPC 5::         
+* Irix 6.4/MIPS::               
+* MkLinux/PowerPC::             
+* NetBSD::                      
+* Netwinder::                   
+* OpenBSD 2.x::                 
+* OSF/Alpha::                   
+* Solaris 2.5.1/Sparc::         
+* Solaris 2.6/Sparc::           
+* Solaris 2.7/Intel::           
+* Suse 6.x/Intel::              
+* Suse 7.x/Intel::              
+* Unixware-2.1.3/Intel::        
+* Windows with CYGWIN::         
+@end menu
+
+A recommended compiler is listed for each machine, if known. You should try
+to use the recommended compiler for compiling GNUstep, as GNUstep is quite
+complex and tends provoke a lot of errors in some compilers. Even versions
+newer than the listed compiler may not work, so don't just get the latest
+version of a compiler expecting it to be better than previous versions.
+
+If you have compiled GNUstep on a specific machine, please send information
+about what you needed and any special instructions needed to the
+GNUstep maintainer @email{gnustep-maintainers@@gnu.org}.
+
+If your having mysterious trouble with a machine, try compiling GNUstep without optimization. Particularly in the newer GCC compilers, optimization can break
+some code. The easiest way to do this is when
+configuring: @samp{CFLAGS="" ./configure}. Or @samp{make OPTFLAG=""}.
+
+@c -----------------------------------------
+@node Debian/DEC-Alpha, FreeBSD 3.x, Machine Specific, Machine Specific
+@section Debian/DEC-Alpha
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Unknown
+@end table
+
+@c -----------------------------------------
+@node FreeBSD 3.x, FreeBSD 2.x, Debian/DEC-Alpha, Machine Specific
+@section FreeBSD 3.x
+@c contact: David Lazaro <khelekir@encomix.es>
+
+Compiles "out of the box" on FreeBSD 3.4.
+
+@table @samp
+@item Recommended compiler
+gcc 2.95.2
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+
+You need to use gmake not make to compile the GNUstep packages. A special
+port of gdb can be used with the Objective-C patches from
+@url{ftp://ftp.pcnet.com/users/eischen/FreeBSD/gdb-4.17-port.tar.gz}
+
+The best compiler for GNUstep is the latest release of the GNU Compiler
+Collection (GCC).  You can find it at @url{http://egcs.cygnus.com/}.
+
+If you want to use the native POSIX threads support from @file{libc_r} pass
+@code{--enable-threads=posix} to configure.  This is the recommended option as 
+this is the FreeBSD threads package that gives the best results --with others
+you may be unable to run some examples like @file{diningPhilosophers}.
+
+The whole compilation process can fail if you have another threads library
+installed so watch out for installed packages like @file{pth} and such.
+Besides the support for libc_r, GNUstep will also look for @file{pth} and
+@file{pcthreads}, so if you have installed them and they aren't detected
+prepare to write a nice bug report.
+
+This can be done more much easily by using the port version.  Just @code{cd}
+to @file{/usr/ports/lang/egcs} and do a @code{"make WANT_THREADS=yes install"}.
+Easy.
+
+If configure cannot find tiff.h or the tiff library and you have it installed
+in a non-standard place (even @file{/usr/local}), you may need to pass these
+flags to configure: @code{CFLAGS="-I/usr/local/include"} and
+@code{LDFLAGS="-L/usr/local/lib"}.
+
+@end table
+
+@c -----------------------------------------
+@node FreeBSD 2.x, GNU-Linux/Intel, FreeBSD 3.x, Machine Specific
+@section FreeBSD 2.x (@emph{Unstable!})
+
+@table @samp
+@item Recommended compiler
+gcc 2.8.x
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Only static libraries work on this system.
+Use /stand/sysinstall to install these packages if you have not
+already done so:
+
+@format
+gmake           (GNU make)
+gcc 2.8.x
+@end format
+
+Seems to compile ok, but some tests crash. Possibly due to a
+performace 'hack' in base. Might be a good idea to upgrade to FreeBSD 3.x.
+You need to use gmake not make to compile the GNUstep packages.
+
+@end table
+
+@c -----------------------------------------
+@node GNU-Linux/Intel, GNU-Linux/PowerPC 4, FreeBSD 2.x, Machine Specific
+@section GNU-Linux/Intel (RedHat 5.x, 6.x, and 7.0)
+
+@table @samp
+@item Recommended compiler
+With 5.x, the egcs compiler that comes with RedHat. Later versions may
+have gcc installed, although 7.0 comes with a snapshot of gcc (called
+2.96) which is unsuitable for compiling Objective-C code. For 7.0 you
+should install the egcs compatibility packages (or an official gcc release).
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Make sure you have a decent version of the compiler. Try @samp{cc -v}
+or @samp{gcc -v} to get the version of the compiler. 
+With 5.x, make sure you set CC=egcs before configuring, as
+in:
+
+@example
+export CC=egcs 
+configure ....
+@end example
+
+Since RedHat 5.x also comes standard with an old version of gcc.
+
+On RedHat 7.0, configure like this
+@example
+CC=egcs LDFLAGS="-u shmctl@@GLIBC_2.2 -L/lib -lc -u getpwuid_r@@GLIBC_2.1.2
+-L/lib -lc -u getpwnam_r@@GLIBC_2.1.2 -L/lib -lc" ./configure
+@end example
+@end table
+
+@c -----------------------------------------
+@node GNU-Linux/PowerPC 4, GNU-Linux/PowerPC 5, GNU-Linux/Intel, Machine Specific
+@section GNU-Linux/PowerPC (LinuxPPC 4.x)
+
+@table @samp
+@item Recommended compiler
+egcs-2.90.25 980302 (egcs-1.0.2 prerelease).
+glibc-0.961212-1h.
+gdb: 4.16.97.
+
+@item Extra libs needed 
+None.
+
+@item Special Instructions 
+egcs-1.1.2 does NOT work.
+@end table
+
+@c -----------------------------------------
+@node GNU-Linux/PowerPC 5, Irix 6.4/MIPS, GNU-Linux/PowerPC 4, Machine Specific
+@section GNU-Linux/PowerPC (LinuxPPC 5.x)
+
+@table @samp
+@item Recommended compiler
+egcs-1.1.2 (default compiler), or
+gcc-2.95 
+
+@item Extra libs needed 
+None.
+
+@item Special Instructions 
+You need to compile without optimization or the compiler will not
+be able to compile several files (CFLAGS="" ./configure). Compiling
+with CFLAGS="-O" also works. The gcc-2.95 compiler fixes this problem.
+There may be a problem with the X server that causes programs to crash with a X_QueryColors error. If so, get a newer X server
+at @url{ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm}. 
+
+@end table
+
+Invocations (and DO) do not work well. The major problem is sending data
+with data sizes less than 4 bytes (chars, shorts, etc).  To fix this, we
+recommend using the ffcall libraries via the @code{--enable-ffcall}
+option when configuring (Read the instructions on this in the
+configuration section).
+
+@c -----------------------------------------
+@node Irix 6.4/MIPS, MkLinux/PowerPC, GNU-Linux/PowerPC 5, Machine Specific
+@section Irix 6.4/MIPS (@emph{Unstable!})
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Not ported at all to this machine. Might be better now, but no current
+testing.  Some files don't compile - get internal compiler
+errors using gcc 2.8.1.
+
+@end table
+
+@c -----------------------------------------
+@node MkLinux/PowerPC, NetBSD, Irix 6.4/MIPS, Machine Specific
+@section MkLinux/PowerPC (MkLinux DR 3)
+@c Contact: Adam Fedor <fedor@gnu.org>
+
+@table @samp
+@item Recommended compiler
+egcs-2.90.25 980302 (egcs-1.0.2 prerelease) which comes standard with
+DR 3.
+
+@item Extra libs needed 
+None.
+
+@item Special Instructions 
+Comes with a good version of gcc.
+Seems to compile and install ok, althouth DR3 has an old version of
+glibc, which requires some workarounds which should be taken care of in
+the configuration. Not completely tested, so some aspects, particular
+object invocations and DO may not work properly.
+
+If you want threads, you'll probably have to get the latest gcc compiler
+and glibc library (which has the threads library) and install both.
+@end table
+
+@c -----------------------------------------
+@node NetBSD, Netwinder, MkLinux/PowerPC, Machine Specific
+@section NetBSD 
+@c Contact: : David Wetzel <dave@turbocat.de>
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Can compile with shared libraries on elf architectures, although problems
+persist with the NXConstantString class. Currently, to avoid this you can
+redefine NXConstantString to NXConstantString2 in the libobjc library. Or
+you could do the following (works on NetBSD 1.4Z)
+
+@example
+cd /usr/lib
+ar -dv libobjc_p.a NXConstStr.po
+ar -dv libobjc_pic.a NXConstStr.so
+ar -dv libobjc.a NXConstStr.o
+rm /usr/lib/libobjc.so.0.0
+@end example
+
+@end table
+
+@c -----------------------------------------
+@node Netwinder, OpenBSD 2.x, NetBSD, Machine Specific
+@section Netwinder (@emph{Unstable!})
+
+@table @samp
+@item Recommended compiler
+Build #12 of the system.
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+See @url{http://www.netwinder.org/~patrix}
+@end table
+
+@c -----------------------------------------
+@node OpenBSD 2.x, OSF/Alpha, Netwinder, Machine Specific
+@section OpenBSD 2.x  (@emph{Unstable!})
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Can only compile with static libraries. Gives a lot of warnings
+
+GNUstep 0.6.0 uses code to access the /proc filesystem, which may be broken 
+on BSD machines. To avoid this configure with the argument --enable-fake-main.
+Later versions of GNUstep should check for a broken /proc filesystem.
+@end table
+
+@c -----------------------------------------
+@node OSF/Alpha, Solaris 2.5.1/Sparc, OpenBSD 2.x, Machine Specific
+@section OSF Alpha  (@emph{Unstable!})
+@c Contact: suzukis@file.phys.tohoku.ac.jp
+
+Information is for Version 3.2C
+
+@table @samp
+@item Recommended compiler
+egcs-1.1.1/1.1.2, gcc-2.95
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Can only compile with static libraries. Compiler may fail when
+linking executables (e.g. gdnc). Standard ranlib and ar programs are
+to feable to create libraries. Should use GNU binutils versions. Linker
+sometimes fails to find symbols, in which case you may need to link with 
+a library twice. For instance, add an extra -lgnustep-xgps in
+ADDTIONAL_TOOL_LIBS in the GNUmakefile(.preamble).
+
+@end table
+
+@c -----------------------------------------
+@node Solaris 2.5.1/Sparc, Solaris 2.6/Sparc, OSF/Alpha, Machine Specific
+@section Solaris 2.5.1/Sparc
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+tiff, Don't use the one in /usr/openwin
+
+@item Special Instructions 
+See the Solaris 2.6 section for more instructions.
+@end table
+
+@c -----------------------------------------
+@node Solaris 2.6/Sparc, Solaris 2.7/Intel, Solaris 2.5.1/Sparc, Machine Specific
+@section Solaris 2.6/Sparc
+@c Contact?: Benhur Stein <Benhur-de-Oliveira.Stein@imag.fr>
+
+@table @samp
+@item Recommended compiler
+egcs-2.91.60 (1.1.2?), egcs-1.0.1, gcc 2.8.1, gcc 2.95.2
+
+@item Extra libs needed 
+tiff, Don't use the one in /usr/openwin
+
+@item Special Instructions 
+GCC 2.8.0 induced a problem on Solaris/Sparc
+systems; however, there is a patch to fix this in the contrib directory
+on the ftp sites (This is also true for all versions of gcc/egcs up
+through 2.95.2 (possibly fixed in later versions)).
+
+To avoid using the tiff library in /usr/openwin, configure like this:
+@example
+LIBS=-L/usr/local/lib ./configure
+@end example
+if, for instance, you have put a newer tiff library in /usr/local/lib
+@end table
+
+Even with the about patch, invocations (and DO) still don't
+work well. The major problem is sending messages with more than four arguments.
+We recommend using the ffcall libraries via the @code{--enable-ffcall} option
+when configuring (Read the instructions on this in the configuration section).
+
+If you are using threads, make sure the Objective-C runtime (libobjc that comes
+with gcc) is compiled with threads enabled (This is true by default) AND that
+it is compiled with the _REENTRANT flag defined (This does not seem to be
+true by default).
+
+@c -----------------------------------------
+@node Solaris 2.7/Intel, Suse 6.x/Intel, Solaris 2.6/Sparc, Machine Specific
+@section Solaris 2.7/Intel 
+@c Contact?: Sebastian Niesen <sniesen@niesen.net>
+
+@table @samp
+@item Recommended compiler
+egcs 1.1.2
+
+@item Extra libs needed 
+Unknown
+
+@item Special Instructions 
+Make sure there are no -g compiler flags (specify @samp{CFLAGS=
+./configure}, when configuring) or remove it from @samp{OPTFLAG}
+make/config.make. You will probable get a lot of text relocation
+warnings, which probably can be ignored. See the other Solaris
+instructions above for more information.
+
+@end table
+
+@c -----------------------------------------
+@node Suse 6.x/Intel, Suse 7.x/Intel, Solaris 2.7/Intel, Machine Specific
+@section Suse 6.x/Intel 
+@c Contact?: colin@news.sift.co.uk
+
+GNUstep has been tested on version 6.2-6.4 of Suse
+
+@table @samp
+@item Recommended compiler
+Standard
+
+@item Extra libs needed 
+None
+
+@item Special Instructions 
+It seems that there is a problem with the default kernel build
+distributed with Suse  which means that the socket binding used by
+gdnc doesn't work.  If you recompile the kernel then it starts working.
+
+@end table
+
+@c -----------------------------------------
+@node Suse 7.x/Intel, Unixware-2.1.3/Intel, Suse 6.x/Intel, Machine Specific
+@section Suse 7.x/Intel 
+@c Contact? Fred Kiefer <FredKiefer@gmx.de>
+
+GNUstep has been tested on version 7.0 of Suse
+
+@table @samp
+@item Recommended compiler
+Standard
+
+@item Extra libs needed 
+None
+
+@item Special Instructions 
+See the instructions for Suse 6.x
+
+@end table
+
+@c -----------------------------------------
+@node Unixware-2.1.3/Intel, Windows with CYGWIN, Suse 7.x/Intel, Machine Specific
+@section Unixware-2.1.3/Intel
+@c Contact?: Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Unknown
+
+@end table 
+
+Special Instructions for GNUstep installation on Unixware 2.1 systems
+
+@table @asis
+
+@item   1
+Tune the kernel to increase the argument space so that we can pass long
+command-line argument strings to processes (which the makefiles do)
+(/etc/conf/bin/idtune ARG_MAX 102400)
+
+@item   2
+Install raft of the latest GNU software
+
+@format
+gzip            (you need this to unpack other stuff)
+make            (to build everything)
+m4              (for autoconf etc)
+autoconf        (if you need to change anything)
+bison
+flex
+binutils        (required by gcc if you want to debug)
+gcc-2.8.1
+                (configure --with-gnu-as --with-gnu-ld --with-stabs)
+                NB. gcc-2.8.1 needs a fix to __do_global_dtors_aux()
+                in crtstuff.c on Unixware 2.1.3
+                (and possibly other unixware versions)
+                The fix is already in recent versions of egcs.
+
+@end format
+
+@example
+==================================
+static void
+__do_global_dtors_aux ()
+@{
+  static func_ptr *p = __DTOR_LIST__ + 1;
+  static int completed = 0;
+
+  if (completed)
+    return;
+
+  while (*p)
+    @{
+      p++;
+      (*(p-1)) ();
+    @}
+
+#ifdef EH_FRAME_SECTION_ASM_OP
+  __deregister_frame_info (__EH_FRAME_BEGIN__);
+#endif
+  completed = 1;
+@}
+======================================
+@end example
+
+@item   3
+Having got gcc working - it's probably a good idea to rebuild 
+all your GNU software using it!
+
+@item   4
+Build gstep as normal.
+
+@item   5
+The SIOCGIFCONF ioctl sometimes doesn't work on unixware after applying
+some of the OS patches.
+
+So I have added a '-a' flag to gdomap to give it the name of a file
+containing IP address and netmask information for the network interfaces
+on the system.
+
+You need to set up a file (I suggest '/etc/gdomap_addresses') containing
+the information for your machine and modify your system startup files in
+/etc/rc?.d to run gdomap, telling it to use that file.
+
+eg. If your machine has an IP address of '193.111.111.2' and is on a
+class-C network, your /etc/gdomap_addresses file would contain the line
+
+@example
+193.111.111.2 255.255.255.0
+@end example
+
+and your startup file would contain the lines
+
+@example
+. /usr/local/GNUstep/Makefiles/GNUstep.sh
+gdomap -a /etc/gdomap_addresses
+@end example
+
+@end table
+
+If you don't set gdomap up correctly, Distributed Objects will not
+work.
+
+@c -----------------------------------------
+@node Windows with CYGWIN,  , Unixware-2.1.3/Intel, Machine Specific
+@section Windows with CYGWIN (@emph{Unstable!})
+@c Contact?: Adam Fedor <fedor@gnu.org>
+
+@table @samp
+@item Recommended compiler
+gcc 2.95.2 (Cygwin release 1.1.2 or later)
+
+@item Extra libs needed 
+Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/contrib})
+for shared libs.
+
+@item Special Instructions 
+Static libs require no extra effort (just make shared=no), however, DLLs
+(shared=yes) are compiled by default, and for this you need a special
+version of the Objective-C library that also compiles as a DLL. Make sure
+files and compilation done in Unix mode (no ^M in files). Due to some 
+interesting dependancies, it is recommended that you compile and install
+each sub-package (make, base, etc) independantly. Gdomap services
+not set up correctly. Must add services lines to @file{C:\WINDOWS\services}
+(on Windows 98) or xxx (on Windows NT).
+Base library only. No native GUI backend.
+@end table
+
+@ifclear HOWTO
+@include end.texi
+@end ifclear
