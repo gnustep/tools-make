@@ -1,3 +1,10 @@
+2003-02-06 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/subproject.make: Build dll exported symbols def file.
+	* Instance/rules.make: Make list of subproject def files (thanks Nicola)
+	* Instance/library.make: Use list of subproject def files to put
+	symbols from subprojects into final dll output.
+
 Wed Feb  5 04:07:05 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* library-combo.make (BUNDLE_LIBS): For apple library-combo,

@@ -34,10 +34,23 @@ endif
 internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
                            $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)
 
+ifeq ($(BUILD_DLL),yes)
+
+DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
+ifneq ($(strip $(DLL_DEF)),)
+DLL_DEF_FLAG = --input-def $(DLL_DEF)
+endif
+
+internal-subproject-all_:: subproject.def
+
+subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF)
+	$(ECHO_LINKING)$(DLLTOOL) $(SUBPROJECT_DEF_FILES) $(DLL_DEF_FLAG) --output-def subproject.def $(OBJ_FILES_TO_LINK)$(END_ECHO)
+
+endif
+
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(OBJ_MERGE_CMD)$(END_ECHO)
-
 
 #
 # Build-header target for framework subprojects
