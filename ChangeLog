@@ -1,3 +1,8 @@
+Wed Feb 17 17:15:47 1999  Adam Fedor  <fedor@ultra.doc.com>
+
+	* bundle.make (PRINCIPAL_CLASS): Override if not set (Report from
+	Julian van Greunen <vangrn@lantic.co.za>). 
+
 1999-02-17  Scott Christley  <scottc@net-community.com>
 
 	* opentool.in: New file.

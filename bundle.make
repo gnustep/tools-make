@@ -108,9 +108,8 @@ bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
 	  done \
 	fi)
 
-
 ifeq ($(PRINCIPAL_CLASS),)
-PRINCIPAL_CLASS = $(INTERNAL_bundle_NAME)
+override PRINCIPAL_CLASS = $(INTERNAL_bundle_NAME)
 endif
 
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources

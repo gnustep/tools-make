@@ -524,7 +524,7 @@ ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
 #HAVE_SHARED_LIBS        = yes
 STATIC_LIB_LINK_CMD = \
 	(cd $(GNUSTEP_OBJ_DIR); $(AR) $(ARFLAGS) \
-	$(AROUT)$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
+	$(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
 	$(RANLIB) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
 SHARED_LIB_LINK_CMD     = \
         (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` ;\
