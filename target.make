@@ -89,11 +89,12 @@ endif
 #  LIB_LINK_SONAME_FILE: this is only used for shared libraries; it 
 #    should be passed in the -Wl,-soname argument of most linkers when 
 #    building the LIB_LINK_VERSION_FILE. Typically `libgnustep-base.so.1' 
-#    (but might also be `libgnustep-base.so.1.0' if SOVERSION has been 
-#    manually changed when using library.make).  On many platforms, 
-#    it's appropriate/standard to also create this file as a symlink to 
-#    LIB_LINK_VERSION_FILE.  If LIB_LINK_VERSION_FILE is the same as
-#    LIB_LINK_SONAME_FILE, then the symlink should not be created.
+#    (but might also be `libgnustep-base.so.1.0' if INTERFACE_VERSION
+#    has been manually changed when using library.make).  On many
+#    platforms, it's appropriate/standard to also create this file as
+#    a symlink to LIB_LINK_VERSION_FILE.  If LIB_LINK_VERSION_FILE is
+#    the same as LIB_LINK_SONAME_FILE, then the symlink should not be
+#    created.
 #  LIB_LINK_FILE: this is only used for shared libraries; it should
 #    be created as a symlink to LIB_LINK_VERSION_FILE (or to 
 #    LIB_LINK_SONAME_FILE if it's created on that platform).
