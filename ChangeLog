@@ -1,3 +1,9 @@
+Fri Feb 22 12:02:55 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/rules.make (APPLICATION_ICON): Do not pass this
+	down to submake Instance invocation.
+	* Instance/application.make: Define it here instead.
+
 Fri Feb 22 11:55:42 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Instance/library.make: Do not define HEADER_FILES_DIR here.
