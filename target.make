@@ -20,6 +20,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# This file should not contain any conditional based on the value of
+# the 'shared' variable, because we have not set it up yet when this
+# file is processed!
+
 #
 # Host and target specific settings
 #
@@ -197,7 +201,6 @@ SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .dylib
 
 BUNDLE_LD	=  $(CC)
-BUNDLE_CFLAGS   += 
 BUNDLE_LDFLAGS  += -bundle -undefined suppress $(ARCH_FLAGS)
 endif
 #
@@ -297,7 +300,6 @@ SHARED_CFLAGS   += -dynamic -fno-common
 SHARED_LIBEXT   = .dylib
 
 BUNDLE_LD	=  $(CC)
-BUNDLE_CFLAGS   += 
 BUNDLE_LDFLAGS  += -bundle -undefined suppress $(ARCH_FLAGS)
 endif
 #
@@ -369,7 +371,6 @@ SHARED_LIB_LINK_CMD     = \
 
 HAVE_BUNDLES = no
 BUNDLE_LD	=  /usr/bin/ld
-BUNDLE_CFLAGS   += -fno-common
 BUNDLE_LDFLAGS  += -dynamic -flat_namespace -undefined warning $(ARCH_FLAGS)
 
 else 
@@ -397,7 +398,6 @@ SHARED_LIB_LINK_CMD     = \
 SHARED_CFLAGS   += -dynamic
 
 BUNDLE_LD	=  $(CC)
-BUNDLE_CFLAGS   +=
 BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
 
 endif # OBJC_COMPILER
@@ -484,7 +484,6 @@ SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .a
 
 BUNDLE_LD	= ld
-BUNDLE_CFLAGS   +=
 BUNDLE_LDFLAGS  += -r $(ARCH_FLAGS)
 endif
 #
@@ -549,7 +548,6 @@ SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .a
 
 BUNDLE_LD	= ld
-BUNDLE_CFLAGS   +=
 BUNDLE_LDFLAGS  += -r $(ARCH_FLAGS)
 endif
 #
@@ -600,12 +598,10 @@ SHARED_LIBEXT      =  .so
 
 HAVE_BUNDLES       =  yes
 BUNDLE_LD	   =  $(CC)
-BUNDLE_CFLAGS      += -fPIC
 BUNDLE_LDFLAGS     += -shared
 ADDITIONAL_LDFLAGS += -rdynamic
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
-endif
+STATIC_LDFLAGS += -static
+
 endif
 #
 # end Linux ELF
@@ -639,12 +635,9 @@ SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
 BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
-endif
+STATIC_LDFLAGS += -static
 endif
 #
 # end FreeBSD A.out
@@ -694,12 +687,9 @@ SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
 BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
-endif
+STATIC_LDFLAGS += -static
 endif
 endif
 #
@@ -739,12 +729,9 @@ SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
-#BUNDLE_CFLAGS   += 
 BUNDLE_LDFLAGS  += -shared -fpic
 #ADDITIONAL_LDFLAGS += -rdynamic
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
-endif
+STATIC_LDFLAGS += -static
 endif
 #
 # end NetBSD
@@ -784,13 +771,10 @@ SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
 BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
 ADDITIONAL_INCLUDE_DIRS += -I/usr/pkg/include
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static -L/usr/pkg/lib
-endif
+STATIC_LDFLAGS += -static
 endif
 #
 # end NetBSD
@@ -828,12 +812,9 @@ SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = no
 BUNDLE_LD	= $(CC)
-#BUNDLE_CFLAGS   += 
 BUNDLE_LDFLAGS  += -shared -fpic
 #ADDITIONAL_LDFLAGS += -rdynamic
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
-endif
+STATIC_LDFLAGS += -static
 endif
 #
 # end OpenBSD 2.x
@@ -867,12 +848,9 @@ SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
 BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
-endif
+STATIC_LDFLAGS += -static
 # Newer gcc's don't define this in Objective-C programs:
 AUXILIARY_CPPFLAGS += -D__LANGUAGES_C__
 endif
@@ -906,7 +884,6 @@ OBJ_MERGE_CMD		= \
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD       = $(CC)
-BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
 endif
 
@@ -934,7 +911,6 @@ OBJ_MERGE_CMD = \
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
-BUNDLE_CFLAGS  = 
 BUNDLE_LDFLAGS += -nodefaultlibs -Xlinker -r
 endif
 
@@ -962,7 +938,6 @@ OBJ_MERGE_CMD = \
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
-BUNDLE_CFLAGS  = 
 BUNDLE_LDFLAGS += -nodefaultlibs -Xlinker -r
 endif
 
@@ -1014,7 +989,6 @@ SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
-BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  = -shared -mimpure-text
 #BUNDLE_LDFLAGS  = -nodefaultlibs -Xlinker -r
 endif
@@ -1050,7 +1024,6 @@ SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD       = $(CC)
-BUNDLE_CFLAGS   += -fPIC
 #BUNDLE_LDFLAGS  += -shared -mimpure-text
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 endif
@@ -1077,10 +1050,8 @@ SHARED_LIB_LINK_CMD     = \
 
 ifeq ($(CC), cc)
 SHARED_CFLAGS   += +z
-BUNDLE_CFLAGS   += +z
 else
 SHARED_CFLAGS   += -fPIC
-BUNDLE_CFLAGS   += -fPIC
 endif
 
 ifeq ($(GNUSTEP_HOST_CPU), ia64)
@@ -1093,9 +1064,7 @@ HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 ADDITIONAL_LDFLAGS += -Xlinker +s
-ifeq ($(shared), no)
-ADDITIONAL_LDFLAGS += -static
-endif
+STATIC_LDFLAGS += -static
 endif
 
 # end HP-UX

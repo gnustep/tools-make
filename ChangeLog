@@ -1,3 +1,19 @@
+Thu Sep 12 15:53:50 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (ADDITIONAL_LDFLAGS): All concerned targets: do not
+	add -static when shared=no.  We can't perform conditionals on the
+	value of shared in this file, since it has not yet been set up!
+	(STATIC_LDFLAGS): New variable.  Set it to -static in all
+	concerned cases.
+	* rules.make (ALL_LDFLAGS): Add STATIC_LDFLAGS.
+	* target.make (BUNDLE_CFLAGS): This variable was no longer used, and
+	can't be fixed.  Removed for all targets.
+	* common.make: Force shared=yes to be used whenever bundles are
+	built.  Static bundles are meaningless, and we want the flags for
+	shared objects, such as -fPIC, to be automatically used when
+	compiling bundle object files, otherwise linking the bundle will
+	fail on some platforms.
+
 Thu Sep 12 10:23:19 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* openapp.in: Implemented calling openapp with an application name

@@ -356,13 +356,29 @@ ifeq ($(OBJC_RUNTIME_LIB),nx)
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
 endif
 
+#
+# Now decide whether to build shared objects or not.  Nothing depending
+# on the value of the shared variable is allowed before this point!
+#
+
+#
+# Fixup bundles to be always built as shared even when shared=no is given
+#
+ifeq ($(shared), no)
+  ifeq ($(GNUSTEP_TYPE), bundle)
+    $(warning "Static bundles are meaningless!  I am using shared=yes!")
+    override shared = yes
+    export shared
+  endif
+endif
+
 # Enable building shared libraries by default. If the user wants to build a
 # static library, he/she has to specify shared=no explicitly.
 ifeq ($(HAVE_SHARED_LIBS), yes)
-  ifeq ($(shared), no)
-    shared=no
-  else
-    shared=yes
+  # Unless shared=no has been purposedly set ...
+  ifneq ($(shared), no)
+    # ... set shared = yes
+    shared = yes
   endif
 endif
 
