@@ -210,8 +210,6 @@ else
   AC_PROG_RANLIB
 fi
 
-AC_PATH_PROG(PERL, perl, none)
-
 AC_PROG_INSTALL
 # HOST_INSTALL is the name of the install program in config.make so set it up
 # to point to the install-sh script in the GNUstep tree if no system install is
@@ -436,7 +434,7 @@ AC_SUBST(DATE)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_OUTPUT(config.h config.make openapp debugapp which_lib.pl opentool 
+AC_OUTPUT(config.h config.make openapp debugapp opentool 
 executable.template GNUmakefile GNUstep.sh GNUstep.csh gnustep-make.spec 
-Documentation/GNUmakefile, chmod a+x openapp debugapp which_lib.pl \
+Documentation/GNUmakefile, chmod a+x openapp debugapp \
 opentool executable.template)
