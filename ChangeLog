@@ -1,3 +1,7 @@
+Fri Feb  8 13:32:33 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/java.make (internal-java_package-uninstall): Added.
+
 Fri Feb  8 13:19:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/java.make (shared-instance-java-uninstall):
