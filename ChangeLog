@@ -1,3 +1,9 @@
+Sun Sep 30 12:09:52 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: (GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAG): Define -
+	fixing the bug that -L/opt/GNUstep/Local/Libraries/ix86/linux-gnu
+	was missing on the link line.
+	
 2001-09-25  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.MinGW: Update
