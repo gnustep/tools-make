@@ -1,3 +1,32 @@
+Fri Feb 22 11:36:40 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/gswbundle.make: Updated/modified to use
+	Instance/Shared/headers.make to manage headers.
+
+Fri Feb 22 11:34:22 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/gswbundle.make: All rules changed to invoke
+	internal-gswbundle-* rules rather than internal-bundle-* rules.
+	* Instance/gswbundle.make: All internal-bundle-* rules changed
+	to be internal-gswbundle-*.
+	* gswbundle.make: Corresponding update.
+
+Fri Feb 22 11:33:29 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+	
+	* gswbundle.make: Broken into Master and Instance.
+	* Master/gswbundle.make: New file.
+	* Instance/gswbundle.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added gswbundle.make
+	(INSTANCE_MAKE_FILES): Adde gswbundle.make
+	
+Fri Feb 22 11:25:36 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* gswapp.make: Broken into Master and Instance.
+	* Master/gswapp.make: New file.
+	* Instance/gswapp.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added gswapp.make.
+	(INSTANCE_MAKE_FILES): Added gswapp.make
+	
 Fri Feb 22 01:10:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rules.make (TEXI_FILES, GSDOC_FILES, AGSDOC_FILES,
