@@ -12,6 +12,9 @@ errstatus=0
 mkdir -p .test-mkdir || errstatus=$?
 rmdir .test-mkdir
 if test $errstatus != 0 -o -d "-p"; then
+  if test -d "-p"; then
+    rmdir -p
+  fi
   MKDIR="mkdir"
 else
   MKDIR="mkdir -p"
