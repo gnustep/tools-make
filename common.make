@@ -115,7 +115,7 @@ endif
 #
 
 # First, work out precisely library combos etc
-include $(GNUSTEP_MAKEFILES)/brain.make
+include $(GNUSTEP_MAKEFILES)/library-combo.make
 # Then include custom makefiles with flags/config options
 # This is meant to be used by the core libraries to override loading
 # of the system makefiles from $(GNUSTEP_MAKEFILES)/Additional/*.make

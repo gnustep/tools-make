@@ -1,3 +1,9 @@
+Sat Dec  8 13:27:12 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* brain.make: Renamed to library-combo.make.
+	* GNUmakefile.in (MAKE_FILES): Updated for change.
+	* common.make: Updated for change.
+	
 Thu Dec  6 09:11:51 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make (internal-bundle-install): Use h option with tar to
