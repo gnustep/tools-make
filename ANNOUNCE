@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.5.0 is now available.
+The GNUstep Makefile Package version 1.5.1 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -12,15 +12,30 @@ write a project without having to deal with the complex issues
 associated with configuration, building, installation, and packaging.
 It also allows the user to easily create cross-compiled binaries.
 
-Changes in version `1.5.0'
+Changes in version `1.5.1'
 ==========================
 
-   * Add NetBSD Elf support
+   * Framework support rewritten, also supports multiple names.
+
+   * API change: Replace frameowork's xxx_TOOLS by xxx_COPY_INTO_DIR.
+
+   * Unified link commands between libraries and frameworks
+     (LIB_LINK_*).
+
+   * New 'make strings' target for localization support.
+
+   * Speed improvements.
+
+   * Doesn't try to build OSX bundle on GNUstep and vice versa.
+
+   * API change: Tools/Subproj can have resources.
+
+   * API change: TOOL_INSTALL_DIR.
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.5.0.tar.gz distribution file at
+   You can get the gstep-make-1.5.1.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please send bug reports to <bug-gnustep@gnu.org>.

@@ -1,5 +1,10 @@
 2002-11-19  Adam Fedor  <fedor@gnu.org>
 
+	* Version: 1.5.1
+	* Documentation/news.texi: Updated.
+
+2002-11-19  Adam Fedor  <fedor@gnu.org>
+
 	* create_domain_dir_tree.sh (mydir): Use `command` not
 	$(command), which doesn't work with all sh's.
 

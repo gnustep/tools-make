@@ -9,13 +9,26 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.5.1}
+
+@itemize @bullet
+@item Framework support rewritten, also supports multiple names.
+@item API change: Replace frameowork's xxx_TOOLS by xxx_COPY_INTO_DIR.
+@item Unified link commands between libraries and frameworks (LIB_LINK_*).
+@item New 'make strings' target for localization support.
+@item Speed improvements.
+@item Doesn't try to build OSX bundle on GNUstep and vice versa.
+@item API change: Tools/Subproj can have resources.
+@item API change: TOOL_INSTALL_DIR.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.5.0}
 
 @itemize @bullet
 @item Add NetBSD Elf support
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.4.0}
 

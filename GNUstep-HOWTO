@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 23 September 2002
+   Last Update: 19 November 2002
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -347,10 +347,10 @@ Usage is:
 Machine Specific Instructions
 *****************************
 
-   Below is a list of machines that people have attempted to compile
-GNUstep on. GNUstep compiles with little or no trouble on many of the
-more popular operating systems. Some machines marked with _Unstable_
-may have some trouble or may not work at all.
+   \input texinfo    Below is a list of machines that people have
+attempted to compile GNUstep on. GNUstep compiles with little or no
+trouble on many of the more popular operating systems. Some machines
+marked with _Unstable_ may have some trouble or may not work at all.
 
    A recommended compiler is listed for each machine, if known. You
 should try to use the recommended compiler for compiling GNUstep, as
@@ -358,6 +358,30 @@ GNUstep is quite complex and tends provoke a lot of errors in some
 compilers. Even versions newer than the listed compiler may not work,
 so don't just get the latest version of a compiler expecting it to be
 better than previous versions.
+
+   Compiler notes: If a recommended compiler is not listed, take note
+of the following information before choosing the compiler you use.
+`egcs or gcc < 2.95'
+     Probably will work, but few people use these now.
+
+`gcc 2.95.x'
+     Probably the oldest compiler that GNUstep is regularly tested with.
+
+`gcc 2.96'
+     Not an official gcc release. Some versions (Redhat, Mandrake) have
+     problems that prevent GNUstep from being compiled correctly and
+     cause mysterious errors.
+
+`gcc 3.0.x'
+     A fairly good compiler. Recommended.
+
+`gcc 3.1'
+     Several bugs where introduced in the version. It's probably better
+     to avoid this one, although it might work fine.
+
+`gcc 3.2'
+     Pretty good, although at the time of this writing it hasn't been
+     fully tested on many platforms. Recommended.
 
    If you have compiled GNUstep on a specific machine, please send
 information about what you needed and any special instructions needed
@@ -431,7 +455,7 @@ Debian/DEC-Alpha
 `Special Instructions'
      Unknown
 
-FreeBSD 3.x
+FreeBSD 4.x
 ===========
 
 `Recommended compiler'
@@ -444,6 +468,10 @@ FreeBSD 3.x
      when executing GNUstep.sh. Try turing on SH_WORD_SPLIT (e.g. 'zsh
      -sh-word-split', 'zsh -o shwordsplit', 'zsh -y' or by setting
      'setopt SH_WORD_SPLIT' in one of zsh's startup files.)
+
+     For gcc 3.0.4, make WANT_THREADS_SUPPORT=YES
+
+     For libxml2 2.4.24, make WITHOUT_PYTHON=YES
 
 FreeBSD 3.x
 ===========
@@ -539,26 +567,16 @@ GNU-Linux/PowerPC (LinuxPPC, Yellowdog)
 =======================================
 
 `Recommended compiler'
-     egcs-1.1.2 (default compiler), or gcc-2.95. gcc-3.x works, but gdb
-     can't debug GNUstep executables.
+     The default compiler. gcc-3.x works, but you need a new gdb also
+     to debug.
 
 `Extra libs needed'
      None.
 
 `Special Instructions'
-     You need to compile without optimization or the compiler will not
-     be able to compile several files (CFLAGS="" ./configure).
-     Compiling with CFLAGS="-O" also works. The gcc-2.95 compiler fixes
-     this problem.  There may be a problem with the X server that
-     causes programs to crash with a X_QueryColors error. If so, get a
-     newer X server at
-     <ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm>
-     (or better).
-
-   Invocations (and DO) do not work well. The major problem is sending
-data with data sizes less than 4 bytes (chars, shorts, etc).  To fix
-this, we recommend using the ffcall libraries (Read the instructions on
-this in the configuration section).
+   ffcall or libffi is required for invocations (and DO) to work well.
+The major problem is sending data with data sizes less than 4 bytes
+(chars, shorts, etc).
 
 Irix 6.5/MIPS
 =============
@@ -578,8 +596,10 @@ Irix 6.5/MIPS
 `Special Instructions'
      Static libs only (make shared=no).
 
-MkLinux/PowerPC (MkLinux DR 3)
-==============================
+MkLinux/PowerPC (_Obsolete_)
+============================
+
+   This configuration is no longer being tested, but it may still work.
 
 `Recommended compiler'
      egcs-2.90.25 980302 (egcs-1.0.2 prerelease) which comes standard
@@ -633,7 +653,8 @@ OpenBSD 2.x  (_Unstable!_)
      Unknown
 
 `Special Instructions'
-     Can only compile with static libraries. Gives a lot of warnings
+     Can only compile with static libraries. Gives a lot of warnings.
+     Try reading the README.NetBSD which might work the same on OpenBSD.
 
 OSF Alpha  (_Unstable!_)
 ========================
@@ -658,8 +679,6 @@ OSF Alpha  (_Unstable!_)
 Slackware/Intel
 ===============
 
-   GNUstep has been tested on version 8.0 of Suse
-
 `Recommended compiler'
      Unknown.
 
@@ -669,8 +688,10 @@ Slackware/Intel
 `Special Instructions'
      Unknown.
 
-Solaris 2.5.1/Sparc
-===================
+Solaris 2.5.1/Sparc (_Obsolete_)
+================================
+
+   This configuration is no longer being tested, but it may still work.
 
 `Recommended compiler'
      Unknown
@@ -749,17 +770,17 @@ Suse 6.x/Intel
 Suse/Intel
 ==========
 
-   GNUstep has been tested on version 7.0 and 8.0 of Suse
+   GNUstep has been tested on version 7.0, 8.0, and 8.1 of Suse
 
 `Recommended compiler'
-     Standard. gcc2.95.x, gcc3.0.x and gc3.1 work, but 2.95 is faster.
-     Compile with -threads-enabled (non-standard).
+     Standard. gcc2.95.x, gcc3.0.x, 3.1 and 3.2 work, but 2.95 is
+     faster.  Compile with -threads-enabled (non-standard).
 
 `Extra libs needed'
      None
 
 `Special Instructions'
-     Unknown.
+     None.
 
 Suse 7.x/PPC
 ============
@@ -887,13 +908,7 @@ Windows with CYGWIN (_Unstable!_)
 
    Make sure you have good shared libraries for everthing. Sometimes a
 bad shared library (like libtiff) will cause odd and untraceable
-problems.  See the README.MinGW for information on good libraries.
-
-   Make sure files and compilation done in Unix mode (no ^M in files,
-EXPORT CYGWIN=BINMODE usually works if cygwin is not buggy).  Gdomap
-services not set up correctly. Must add services lines to
-`C:\WINDOWS\services' (on Windows 98) or xxx (on Windows NT).  Native
-GUI backend is alpha version.
+problems.  See `README.Cygwin' for information on compiling.
 
 Windows with MinGW (_Unstable! As always..._)
 =============================================

@@ -379,7 +379,7 @@ If you get
 GNUSTEP Internal Error:
 The private GNUstep function to establish the argv and environment
 variables was not called.
-Please report the error to bug-gnustep@gnu.org.
+Please report the error to bug-gnustep@@gnu.org.
 @end example
 
 when compiling the gui library, there could be several things wrong. One

@@ -1,4 +1,4 @@
-@i \input texinfo   @c -*-texinfo-*-
+\input texinfo   @c -*-texinfo-*-
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Darwin 5.x/PowerPC, , (DIR)
