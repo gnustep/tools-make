@@ -19,6 +19,15 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# Helpful messages which are always printed
+
+# Instance/Shared/strings.make
+ALWAYS_ECHO_NO_FILES = @(echo " No files specified ... nothing done.")
+ALWAYS_ECHO_NO_LANGUAGES = @(echo " No LANGUAGES specified ... nothing done.")
+
+# Eventual translation of the ALWAYS_ECHO_XXX messages should be done
+# here ...
+
 ifneq ($(messages),yes)
 
   # General messages
@@ -44,6 +53,9 @@ ifneq ($(messages),yes)
   ECHO_INSTALLING_CLASS_FILES = @(echo " Installing class files...";
   ECHO_INSTALLING_ADD_CLASS_FILES = @(echo " Installing nested class files...";
   ECHO_INSTALLING_PROPERTIES_FILES = @(echo " Installing property files...";
+
+  # Instance/Shared/strings.make
+  ECHO_MAKING_STRINGS = @(echo " Making/updating strings files...";
 
   END_ECHO = )
 
@@ -80,6 +92,8 @@ else
   ECHO_INSTALLING_CLASS_FILES = 
   ECHO_INSTALLING_ADD_CLASS_FILES = 
   ECHO_INSTALLING_PROPERTIES_FILES = 
+
+  ECHO_MAKING_STRINGS = 
 
   END_ECHO = 
 
