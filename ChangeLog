@@ -1,3 +1,26 @@
+Fri Feb  8 13:19:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/java.make (shared-instance-java-uninstall):
+	Implemented.
+
+Fri Feb  8 13:17:45 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/java.make: New makefile fragment built from
+	code common in java.make and java-tool.make.
+	* Instance/java-tool.make: Simplified a lot by using
+	Instance/Shared/java.make to do most of the work.
+	* Instance/java.make: Idem.
+	* GNUmakefile.in (INSTANCE_SHARED_MAKE_FILES): Install 
+	Instance/Shared/java.make.
+	
+Fri Feb  8 12:36:01 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared: New directory.
+	* Instance/Shared/README: New file.
+	* GNUmakefile.in (INSTANCE_SHARED_MAKE_FILES): New variable.
+	(install): Create the GNUSTEP_MAKEFILES/Instance/Shared directory.
+	Install INSTANCE_SHARED_MAKE_FILES in there.
+
 Fri Feb  8 12:37:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/rules.make (JAVA_JNI_OBJS): Fixed typo/bug - underscore
