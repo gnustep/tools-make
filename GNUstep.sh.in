@@ -113,3 +113,16 @@ then
 fi
 
 fi # [ -z "$GNUSTEP_BUILD_ROOT" ]
+
+
+#
+# Set the Java CLASSPATH
+#
+
+if [ -z "$CLASSPATH" ]; then
+	MY_CLASSPATH=.
+else
+	MY_CLASSPATH=$CLASSPATH:.
+fi # [ -z "$CLASSPATH" ]
+
+export CLASSPATH=$GNUSTEP_SYSTEM_ROOT/Java/:$GNUSTEP_USER_ROOT/Java/:$GNUSTEP_LOCAL_ROOT/Java/:$GNUSTEP_NETWORK_ROOT/Java/:$MY_CLASSPATH
