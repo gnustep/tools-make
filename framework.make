@@ -57,7 +57,6 @@ endif
 #
 
 DERIVED_SOURCES = derived_src
-ADDITIONAL_INCLUDE_DIRS += -I$(DERIVED_SOURCES)
 
 ifeq ($(INTERNAL_framework_NAME),)
 # This part is included the first time make is invoked.

@@ -1,3 +1,8 @@
+Sat Jan 19 23:35:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* framework.make (ADDITIONAL_INCLUDE_DIRS): Do not add 
+	-I$(DERIVED_SOURCES).
+
 Tue Jan 15 00:42:23 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* which_lib.c: Reorganized and rewritten most code again.
