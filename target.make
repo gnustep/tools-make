@@ -359,6 +359,35 @@ endif
 
 ####################################################
 #
+# NetBSD ELF
+#
+ifeq ($(findstring netbsdelf, $(GNUSTEP_TARGET_OS)), netbsdelf)
+HAVE_SHARED_LIBS	= yes
+SHARED_LIB_LINK_CMD = \
+	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
+	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+	(cd $(GNUSTEP_OBJ_DIR); \
+	  rm -f $(LIBRARY_FILE); \
+	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+OBJ_MERGE_CMD		= \
+	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+SHARED_CFLAGS	+= -fPIC
+SHARED_LIBEXT	= .so
+
+HAVE_BUNDLES	= yes
+BUNDLE_LD	= $(CC)
+BUNDLE_CFLAGS	+= -fPIC
+BUNDLE_LDFLAGS	+= -shared
+ADDITIONAL_LDFLAGS += -rdynamic
+endif
+#
+# end NetBSD
+#
+####################################################
+
+####################################################
+#
 # NetBSD
 #
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)

@@ -22,8 +22,8 @@ for file in ${1+"$@"} ; do
      pathcomp="${pathcomp}${d}"
 
      if test ! -d "${pathcomp}"; then
-        echo "mkdir $pathcomp" 1>&2
-        mkdir "${pathcomp}" || errstatus=$?
+        echo "mkdir -p $pathcomp" 1>&2
+        mkdir -p "${pathcomp}" || errstatus=$?
      fi
 
      pathcomp="${pathcomp}/"
