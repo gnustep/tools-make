@@ -42,8 +42,6 @@
 	    OPERATION=$${operation} TARGET=$${target} \
 	    PROCESSED_FIRST_TIME=yes $${target}.build)
 
-#	echo variables: target=$$target operation=$$operation type=$$type;
-
 #
 # Global targets
 #

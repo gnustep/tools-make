@@ -42,6 +42,14 @@ case $1 in
     app=$1; shift;;
 esac
 
+if [ "$LIBRARY_COMBO" = nx ]; then
+  LIBRARY_COMBO=nx-nx-nx-nil
+elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
+  LIBRARY_COMBO=gnu-gnu-gnu-xdps
+elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
+  LIBRARY_COMBO=gnu-fd-gnu-xdps
+fi
+
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
 

@@ -109,4 +109,5 @@ AC_SUBST(ac_cv_library_combo)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_OUTPUT(config.h config.make openapp debugapp GNUmakefile GNUstep.sh)
+AC_OUTPUT(config.h config.make openapp debugapp GNUmakefile GNUstep.sh,
+chmod a+x openapp debugapp)

@@ -31,7 +31,7 @@ library_combo=@ac_cv_library_combo@
 
 case $1 in
   --library-combo=*)
-    library_combo=`echo $1 | sed 's/--library-combo=//'`
+    LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
     if [ -z "$2" ]; then
       echo usage: `basename $0` [--library-combo=...] application [arguments...]
       exit 1
@@ -41,6 +41,14 @@ case $1 in
   *)
     app=$1; shift;;
 esac
+
+if [ "$LIBRARY_COMBO" = nx ]; then
+  LIBRARY_COMBO=nx-nx-nx-nil
+elif [ "$LIBRARY_COMBO" = gnu-xdps ]; then
+  LIBRARY_COMBO=gnu-gnu-gnu-xdps
+elif [ "$LIBRARY_COMBO" = fd-xdps ]; then
+  LIBRARY_COMBO=gnu-fd-gnu-xdps
+fi
 
 # Remove leading slashes at the end of the application name
 app=`echo $app | sed 's%/*$%%'`
@@ -97,7 +105,7 @@ appname=`echo $app | sed 's/\.[a-z]*$//'`
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 
-if [ "$library_combo" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
   if [ ! -f $full_appname/$appname ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
@@ -113,16 +121,16 @@ else
     exit 1
   fi
 
-  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo ]; then
-    echo "$full_appname application does not have a binary for this combination of libraries: $library_combo."
+  if [ ! -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO ]; then
+    echo "$full_appname application does not have a binary for this combination of libraries: $LIBRARY_COMBO."
     exit 1
   fi
 
   # Support for GDBbundle under OPENSTEP
   if [ $GNUSTEP_HOST_OS = nextstep4 ]; then
-    gdb -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+    gdb -connect TextEdit $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
   else
-    gdb $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$library_combo/$appname
+    gdb $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
   fi
 
 fi

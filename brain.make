@@ -125,9 +125,11 @@ GUI_LIBS =
 ifeq ($(GUI_LIB),gnu)
 GUI_LDFLAGS =
 GUI_LIBS = -lgnustep-gui
+GUI_DEFINE = -DGNU_GUI_LIBRARY=1
 endif
 
 ifeq ($(GUI_LIB),nx)
+GUI_DEFINE = -DNeXT_GUI_LIBRARY=1
   ifneq ($(INTERNAL_app_NAME),)
     # If we're building an application pass the following additional flags to
     # the linker
@@ -146,6 +148,7 @@ BACKEND_LIBS =
 ifeq ($(GUI_BACKEND_LIB),xdps)
 BACKEND_LDFLAGS =
 BACKEND_LIBS = -lgnustep-xdps
+BACKEND_DEFINE = -DXDPS_BACKEND_LIBRARY=1
 endif
 
 ifeq ($(GUI_BACKEND_LIB),w32)

@@ -1844,7 +1844,7 @@ cat >> $CONFIG_STATUS <<EOF
 
 EOF
 cat >> $CONFIG_STATUS <<\EOF
-
+chmod a+x openapp debugapp
 exit 0
 EOF
 chmod +x $CONFIG_STATUS

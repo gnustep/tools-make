@@ -1,3 +1,11 @@
+Fri Nov 14 09:53:50 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* brain.make: Added defines for the GUI and backend libraries.
+	* configure.in: Set the executable flag for openapp and debugapp.
+	* openapp.in: Added support for target abbreviations.
+	* debugapp.in: Likewise.
+	* rules.make: Removed the debugging comments.
+
 Fri Nov 14 09:31:47 1997  Scott Christley  <scottc@net-community.com>
 
 	* config.make.in (library_combo): Rename to default_library_combo.
