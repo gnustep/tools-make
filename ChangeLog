@@ -1,3 +1,9 @@
+Sat Jun 29 12:35:56 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep.csh.in: Use source, not `.', to execute the user
+	specific GNUstep.csh (Patch by Lars Sonchocky-Helldorf
+	<lars.sonchocky-helldorf@hamburg.de).
+
 Wed Jun 26 15:51:33 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep-reset.sh: Quoted two variables.
