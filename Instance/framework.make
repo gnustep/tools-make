@@ -38,7 +38,6 @@ endif
 # The list of languages the framework supports is in xxx_LANGUAGES
 # The list of framework resource directories are in xxx_RESOURCE_DIRS
 # The list of framework subprojects directories are in xxx_SUBPROJECTS
-# The list of framework tools directories are in xxx_TOOLS
 # The name of the principal class is xxx_PRINCIPAL_CLASS
 # The header files are in xxx_HEADER_FILES
 # The list of framework web server resource directories are in
@@ -111,6 +110,13 @@ endif # WITH_DLL
 
 ifeq ($(FRAMEWORK_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR = $(GNUSTEP_FRAMEWORKS)
+endif
+
+#
+# Emit a warning for old deprecated functionality
+#
+ifneq ($($(GNUSTEP_INSTANCE)_TOOLS),)
+  $(warning "Support for xxx_TOOLS has been removed from gnustep-make! Please rewrite your makefile code by compiling the tools separately, then add a xxx_COPY_INTO_DIR command for each of them to copy them into the framework.  Ask for help on gnustep mailing lists if you're confused.")
 endif
 
 #
