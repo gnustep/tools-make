@@ -39,80 +39,65 @@ gnustep-objc
 gnustep-base
 
 See the GNUstep-HOWTO file for more information on where to get
-various files.
+various files. You need to build and install each package separately,
+as described below.
 
 1. First, start up a Cygwin BASH shell and make sure the MinGW tools
 are in your path:
 
   export PATH=//c/mingw/bin:$PATH
 
-(Put in whatever path you have for the mingw tools). This is also a good
-time to compile and install the ffcall package (Version 1.8b or above). It's
-simply a C library so it requires no special tools other than the compiler.
-For MinGW, configure the ffcall package like this:
+(Put in whatever path you have for the mingw tools). 
 
-  ./configure --host=i386-mingw32 --prefix=//c/mingw
-
-(or set the prefix to some other location that is in the compiler search path).
-Then
-
-  make
-  make install
-
-NOTES: On some systems, configure has trouble when mingw's bin is in the
-path (probably because of mingw's make).
-
-2. The default location for GNUstep on Unix systems in /usr/GNUstep, but
-there is no default for Windows machines, so you need to set that up
-first with the GNUSTEP_SYSTEM_ROOT environment variable. To put it in
-a similar location, you might try:
-
-  export GNUSTEP_SYSTEM_ROOT=//c/mingw/GNUstep/System
-
-But you can put it anywhere you like (as long as you specify the full
-path with the disk label so MinGW can find it). You can also specify this
-with configure, using the --prefix=//c/mingw/GNUstep/System option.
-
-3. You need to build and install each sub-package separately. So
-first, go to the 'gnustep-make' package and configure:
+2. Configure and compile gnustep-make.
+The default location for GNUstep on Windows systems in C:/GNUstep.
+To use another location you can use the --prefix argument to configure.
+First, go to the 'gnustep-make' package and configure:
 
   cd gnustep-make
   ./configure --target=i386-mingw32
 
-4. Now build the gnustep-make package. Occationally, the make that comes
+3. Now build the gnustep-make package. Occationally, the make that comes
 with MinGW doesn't like the way GNUstep makefiles are setup (or perhaps
 it's that MingW make doesn't work with bash), so you can try
-using Cygwin's make instead:
+using Cygwin's make instead (/usr/bin/make instead of just make):
 
   /usr/bin/make target=i386-mingw32
   /usr/bin/make target=i386-mingw32 install
 
-5. Now source the GNUstep.sh file so the rest of the packages will
+4. Now source the GNUstep.sh file so the rest of the packages will
 compile correctly:
 
-  . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+  . C:/GNUstep/System/Makefiles/GNUstep.sh
 
-Also put this command in your shell startup script.
-I also install a special script in the file ~/GNUstep/GNUstep.sh with the
-lines:
+Also put this command in your shell startup script. Be sure to adjust
+this path to match your real GNUstep root directory if you changed it
+when configuring gnustep-make.
 
-if [ $GNUSTEP_HOST_OS = "mingw32" ]; then
-  GNUSTEP_SYSTEM_ROOT=`cygpath -w $GNUSTEP_SYSTEM_ROOT | tr '\\\' '/'`
-fi
+5. Compile and install the ffcall package (Version 1.8b or above). It's
+simply a C library so it requires no special tools other than the compiler.
 
-So both Cygwin's shell and MinGW tools can understand the GNUstep directories
-(You can add similar lines for GNUSTEP_LOCAL_ROOT, GNUSTEP_USER_ROOT, etc.)
-This automatically gets executed by the above command.
+LD=`which ld` RANLIB=/usr/bin/ranlib ./configure --target=i386-mingw32 \
+	--prefix=`cygpath -u $GNUSTEP_SYSTEM_ROOT`
 
-6. Now you can compile the Objective-C runtime DLL (unless you already
-have one installed):
+which installs the libraries in the GNUstep directory structure (There is
+a script in ffcall-1.8c and higher that automatically configures ffcall
+and installs, called compile-mingw). Then
+
+  make
+  make install
+
+6. Now you can compile the Objective-C runtime DLL, gnustep-objc (unless 
+you already have one installed):
 
   cd gnustep-objc
   /usr/bin/make target=i386-mingw32 shared=yes
   /usr/bin/make target=i386-mingw32 shared=yes install
 
 Make sure to remove libobjc.a that comes with gcc, otherwise it will find that
-one instead of the one we want. 
+one instead of the one we want. The libobjc library that comes with gcc-3.x
+MAY work if you add some extra lines to the .def file, but I won't go into
+that here. It's good just to use gnustep-objc.
 
 7. Now we can configure and build the gnustep-base library.
 
@@ -141,10 +126,9 @@ need to get a port of sh (probably zsh) for Windows
 1. Make sure $HOST_CC or $CC is set to MinGW's gcc. The default seems to be 
 wrong.
 
-2. Now configure. You may need to set the installation directory, because
-the default installation dir is for Unix machines:
+2. Now configure. 
 
-  ./configure --prefix=/usr/GNUstep/System
+  ./configure 
 
 (Make sure the drive is specified correctly in the path).
 
@@ -162,17 +146,9 @@ compile correctly:
 Problems?
 ---------
 
-Compiling ffcall:
-
-./configure --host=i386-mingw32 --prefix=//c/mingw
-
 Problems compiling ffcall with MingWs gcc? Use Cygwin gcc:
 
 export CC="gcc -mno-cygwin"
-
-Configure problem finding ld with MingW?
-
-LD=ld ./configure
 
 Good Sites for Pre-Compiled Binaries
 ------------------------------------

@@ -120,7 +120,7 @@ install: all
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh \
 		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
-		GNUstep.csh ld_lib_path.csh ; do \
+		GNUstep.csh ld_lib_path.csh cygpath.sh ; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \

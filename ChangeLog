@@ -1,3 +1,21 @@
+2001-10-16  Adam Fedor  <fedor@gnu.org>
+
+	* Make paths work correctly on Windows/MinGW
+	* GNUmakefile.in: Add cygpath.sh
+	* cygpath.sh: New file.
+	* GNUstep.sh.in: Use Windows method of getting user dir, use
+	cygpath to mangle PATHs.
+	* framework.make (internal-framework-install): Windows (DLL)
+	specific installation.
+	(patches from stephen@brandonitconsulting.co.uk).
+
+	* configure.in: Simple test for Windows - use C:/GNUstep for
+	default if true.
+	* Documentation/README.MinGW: Updated.
+
+	* debugapp.in: Use argument with read.
+	* executable.template.in: Print cpu/os on an error.
+
 2001-10-15  Adam Fedor  <fedor@gnu.org>
 
 	* bundle.make ($(BUNDLE_DIR_NAME)/Contents/Resources): Remove

@@ -180,7 +180,7 @@ elif [ -x $full_appname/$GNUSTEP_HOST_CPU/$appname ]; then
 elif [ $appname != $app -a -x $full_appname/$appname ]; then
   relative_path=$appname
 else
-  echo "$full_appname application does not have a binary for this kind of machine/operating system."
+  echo "$full_appname application does not have a binary for this kind of machine/operating system ($GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS)."
   exit 1
 fi
 

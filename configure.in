@@ -26,11 +26,16 @@ AC_CONFIG_HEADER(config.h)
 # The GNUstep root directory.
 # The user should have the GNUSTEP_SYSTEM_ROOT environment variable
 # defined, but if not then we have a global default.
+# Also test for the C: directory, which means we're on Windows
 #--------------------------------------------------------------------
 AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
-echo /usr/GNUstep ;
+  if test -d C: ; then
+    echo C:/GNUstep;
+  else
+    echo /usr/GNUstep ;
+  fi
 else
-echo $GNUSTEP_SYSTEM_ROOT ;
+  echo $GNUSTEP_SYSTEM_ROOT ;
 fi`)
 if test "x$prefix" = "xNONE"; then
   prefix=$ac_default_prefix ;

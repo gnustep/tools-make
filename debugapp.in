@@ -109,7 +109,8 @@ esac
 corefile=
 if [ -f core ]; then
 	echo -e "Core image has been found in working directory. Use it? ";
-	read;
+	# Need an argument here for Solaris
+	read REPLY;
 	if [ $REPLY = y ]; then
 		corefile="--core=core";
 	fi

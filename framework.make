@@ -437,6 +437,9 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
+
+ifneq ($(WITH_DLL),yes)
+
 internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_FRAMEWORKS_HEADERS)
@@ -464,6 +467,36 @@ internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
 	  $(LN_S) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE) $(SONAME_FRAMEWORK_FILE); \
 	fi; \
 	$(LN_S) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) $(VERSION_FRAMEWORK_LIBRARY_FILE);)
+
+else # install DLL
+
+internal-framework-install:: $(FRAMEWORK_INSTALL_DIR) \
+                      $(GNUSTEP_FRAMEWORKS_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
+                      $(GNUSTEP_FRAMEWORKS_HEADERS) \
+                      $(DLL_INSTALLATION_DIR)
+	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
+	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)
+	(cd $(GNUSTEP_FRAMEWORKS_HEADERS); \
+	if [ "$(HEADER_FILES)" != "" ]; then \
+	  if test -d "$(INTERNAL_framework_NAME)"; then \
+	    rm -Rf $(INTERNAL_framework_NAME); \
+	  fi; \
+          $(MKDIRS) $(INTERNAL_framework_NAME); \
+	  cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
+            $(TAR) cf - . | (cd  $(GNUSTEP_FRAMEWORKS_HEADERS)/$(INTERNAL_framework_NAME); \
+            $(TAR) xf - ); \
+	fi;)
+	(cd $(DLL_INSTALLATION_DIR); \
+	if test -f "$(FRAMEWORK_FILE)"; then \
+	  rm -f $(FRAMEWORK_FILE); \
+	fi;)
+	$(INSTALL_PROGRAM) -m 0755 $(FRAMEWORK_FILE) \
+          $(DLL_INSTALLATION_DIR)/$(FRAMEWORK_FILE);
+
+endif
+
+$(DLL_INSTALLATION_DIR)::
+	$(MKDIRS) $@
 
 $(FRAMEWORK_DIR_NAME)/Resources $(FRAMEWORK_INSTALL_DIR)::
 	@$(MKDIRS) $@
