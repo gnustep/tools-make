@@ -1,3 +1,7 @@
+Fri Jul 10 21:46:19 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* target.make (HP_UX SHARED_LINK): Fix up including *.o files.
+
 Wed Jun 17 10:00:20 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* brain.make: Add xraw library combo option
