@@ -1,3 +1,16 @@
+Mon Oct 13 12:25:50 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/palette.make (internal-clean): Remove objects inside
+	.palette on clean.
+	(internal-distclean): Remove *.palette and similar on distclean
+	without performing a recursive make invocation.
+	* Instance/palette.make (internal-palette-distclean_): Removed.
+	
+	* Master/service.make (internal-distclean): Remove *.service and
+	similar on distclean without performing a recursive make
+	invocation.
+	* Instance/service.make (internal-service-distclean_): Removed.
+	
 Sun Oct 12 18:43:20 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/subproject.make (internal-subproject-clean): Fixed typo
