@@ -1,5 +1,8 @@
 Date:	17-Sep-2002 (tested under windows-xp)
 Author: Ildar Mulyukov <ildar@users.sourceforge.net>
+Update:	23-Oct-2004 (tested under windows-2000)
+Author: Adam Fedor <fedor@gnu.org>
+
 
 PURPOSE
 -------
@@ -22,7 +25,7 @@ Win32 API so be warned.
 
 Several people have reported that GNUstep installation on Cygwin works
 fine, but as always, a slightly different Window's setup can cause
-unforseen problems. Yo should be relatively confident at working with
+unforseen problems. You should be relatively confident at working with
 Cygwin before attempting to install GNUstep.
 
 ADDITIONAL COMMENTS
@@ -60,59 +63,39 @@ Before you start, you need Cygwin in some programming-oriented
 configuration (full configuration is OK but it's VERY big
 now). Installation instructions are on Cygwin site.
 
-In fact Cygwin already contains every package needed for GNUstep.
+Cygwin already contains every package needed for GNUstep. The default
+installation, however, does not include every package needed. See the
+GNUstep-HOWTO lists all the packages you might need. A probably incomplete
+list is given below:
 
-Building GCC and GDB
---------------------
+For base (non-GUI):
+gcc-objc
+libxml2
+libxslt
 
-Cygwin contains it's own GCC and GDB packages that work very good in Cygwin 
-environment. But they lack Objective-C language support so for us these are
-completely unusable. See http://cygwin.com/faq/faq_4.html#SEC90
+For GUI:
+X11 installation
+libtiff
+libtiff-devel
+libjpg
+libpng
 
-So you have to build these two from sources.
-
-Please note that generally GDB is optional! It's up to you whether to
-use it or not. If you don't use it you don't need to build it.
-
-1. GCC. Get sources from http://gcc.gnu.org.
-Get sources (including languages you need),
-unpack, build. Before installing uninstall previous version of GCC via
-setup.exe program.  
-
-Note: GCC provided in Cygwin was patched to behave better in
-Windows/Cygwin environment. Cygwin team has done some changes that
-were not committed to GCC CVS tree and they lost Objective-C
-support. That's why you can't use even Cygwin GCC source. But don't
-worry: newly built GCC works fine and I believe can do all those
-"-mno-cygwin" and "-shared" things by fixing specs file.  
-
-Note2: You can make packages from programs you built with utility
-provided in APPENDIX A. These packages can be installed with setup.exe
-
-2. GDB. Sources are here: http://www.gnu.org/software/gdb/ . See
-http://mail.gnu.org/pipermail/discuss-gnustep/2002-August/017238.html
-Adam Fedor has made wonderful patch for current CVS GDB. It's probable
-that you may use Cygwin GDB sources but I don't know really. Unpack,
-apply patch, make, install. This may be non-trivial. Good luck.
 
 Obtaining GNUstep
 -----------------
 
 The main GNUstep project pages tell you how to get hold of this. You
-can get the latest release of the following libraries. However, since
-Cygwin support is currently evolving, I recommend that you get the
-latest snapshot or code from CVS.
+can get the latest release of the following libraries. 
 
-You need things in the following order:
+You need these packages:
 
-GNUstep-make (release, snapshot, or cvs core module)
-libffcall (http://ftp.gnustep.org/pub/gnustep/lib)
-GNUstep-libobjc (release, snapshot, or cvs dev-apps module)
-GNUstep-base (snapshot, or cvs core module)
+GNUstep-make 
+ffcall
+GNUstep-objc
+GNUstep-base
 
-For gui ... GNUstep-gui and GNUstep-back (snapshot, or cvs core module)
-
-
+GNUstep-gui 
+GNUstep-back
 
 
 Building and installing libraries
@@ -121,61 +104,51 @@ Building and installing libraries
 FFCALL: Unpack, configure, make, make install. See GNUstep-HOWTO for details.
 Note again: you can make package. See APPENDIX A
 
-libiconv, libtiff, libjpeg, zlib, libxml2 and openssl are all in
-Cygwin distro.  Don't forget to install respective *-devel packages.
-
 
 Building and installing gnustep-make
 ------------------------------------
 
-As ususal. E.g. I use ../clear.cvs/gnustep/core/make/configure
---prefix=/usr/GNUstep --with-thread-lib=-lkernel32 && make && make
-install
+As ususal. e.g. 
+
+./configure
+make
+make install
+
 
 Building and installing libobjc
 -------------------------------
 
 You need to install gnustep-objc as it properly exports symbols for
-DLLs and it's DLL (I don't know whether it works OK in static form)
+DLLs and it's DLL.
 
-Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
+Unpack gnustep-objc, and type:
 
   make install
 
-This should build and install the ObjectiveC runtime and headers for you.
-Note: I strongly suggest removing gcc's own objc/*.h and libobjc.a files.
+Note: do not use configure.
 
 
 Building and installing GNUstep-base
 ------------------------------------
 
-Go to gnustep-base (or from CVS into the core/base directory), and type
+Unpack gnustep-base, and type:
 
   make install
 
 This should automatically run the configure script for you, build the
-base library and some tools, and install the whole lot (along with some
-system resources).
-
+base library and some tools, and install the whole lot.
 
 
 Building and installing GNUstep-gui
 -----------------------------------
 
-To build the gui, you need to have libtiff installed ...
-
-Go to gnustep-gui (or from CVS into the core/gui directory), and type
+Unpack to gnustep-gui, and type:
 
   make install
 
 
-
-
 Building and installing GNUstep-back
 ------------------------------------
-
-This software is PRE-ALPHA ... it is present in CVS for people who which to
-help porting the GNUstep backend to windows!
 
 In the back directory, type
 
@@ -183,23 +156,8 @@ In the back directory, type
 
 
 
-
 Troubleshooting
 ---------------
-
-Pre-Compiled Binaries
----------------------
-
-I don't currently know about any resource. I have ones but don't have
-a place to put them.
-
-ACKNOWLEDGMENTS
----------------
-
-Thanks to all the GNUstep hackers for this wonderful project.  Thanks
-to Richard Frith-Macdonald <rfm@gnu.org> for his README.MinGW as I
-have copy-pasted structure of this document from his README.MinGW
-
 
 APPENDIX A
 ----------

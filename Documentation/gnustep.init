@@ -20,4 +20,4 @@ sub nothing
 
 $T2H_print_About = \&nothing;
 $T2H_SECTION_NAVIGATION = 0;
-$T2H_print_navigation = \&nothing;
+#$T2H_print_navigation = \&nothing;

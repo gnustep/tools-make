@@ -80,6 +80,7 @@ libart2   (Optional, but required in the case you choose to use the art backend)
 freetype2 (Optional, but required in the case you choose to use the art backend)
 
 dlcompat (Required, to be able to load bundles, included with Fink installation)
+	 (No longer required with Mac OS X 10.3.5 or later)
 
 Obtaining GNUstep
 -----------------

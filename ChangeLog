@@ -1,3 +1,9 @@
+2004-10-29  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.Cygwin: Updated
+	* Documentation/README.Darwin: Minor update
+	* Documentation/gnustep.init: Add navigation tags back
+
 2004-10-18  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.MinGW: Mention Windows installer. Update links
