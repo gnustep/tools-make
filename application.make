@@ -170,7 +170,7 @@ endif
 
 $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(PRINCIPAL_CLASS)\";"; \
+	  echo "  NSExecutable = \"$(INTERNAL_app_NAME)\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
@@ -179,7 +179,7 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	  if [ "$(APPLICATION_ICON)" != "" ]; then \
 	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
-	  echo "  NSPrincipalClass = NSApplication;"; \
+	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
 	    cat $(INTERNAL_app_NAME)Info.plist; \
 	  fi; \
