@@ -21,11 +21,6 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 #
-# Determine the environment variable name used by the dynamic loader
-#
-LD_LIB_PATH := $(shell $(LD_LIB_PATH_SCRIPT) $(GNUSTEP_HOST_OS))
-
-#
 # Host and target specific settings
 #
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
