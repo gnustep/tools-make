@@ -182,7 +182,7 @@ $(GSDOC_OBJECT_FILES): $(GSDOC_FILES)
 endif # GSDOC_FILES
 
 #
-# processing of agsdoc files
+# Processing of agsdoc files
 #
 ifneq ($(AGSDOC_FILES),)
 
@@ -190,11 +190,15 @@ INTERNAL_AGSDOCFLAGS = $(AGSDOC_FLAGS)
 INTERNAL_AGSDOCFLAGS += -Project $(INTERNAL_doc_NAME)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(INTERNAL_doc_NAME)
 
+# The autogsdoc program has built-in dependency handling, so we can
+# simply run it and it will work out what needs to be rebuilt.
 internal-doc-all:: before-$(TARGET)-all \
                    generate-autogsdoc \
                    after-$(TARGET)-all
 
-# If autogsdoc is not present, simply continue
+# If autogsdoc is not present, the '-' at the start of the next command
+# lets the makefile system simply continue without generating any
+# documentation from headers etc.
 generate-autogsdoc:
 	-$(MKDIRS) $(INTERNAL_doc_NAME); \
 	autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
