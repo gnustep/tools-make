@@ -1,3 +1,10 @@
+Fri Apr 27 10:53:50 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	Implemented support for Java tools.
+	* java-tool.make: New file.
+	* java-executable.template: New file.
+	* GNUmakefile.in: Install the new files.
+	
 2001-04-26  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in (with-thread-lib): New option to specify alternate
