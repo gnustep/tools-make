@@ -288,8 +288,7 @@ Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
 
 DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
 DYLIB_CURRENT_VERSION       = -current_version 1
-DYLIB_INSTALL_NAME = \
-$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE)
+DYLIB_INSTALL_NAME = $(FINAL_LIBRARY_INSTALL_DIR)/$(LIB_LINK_FILE)
 
 # Remove empty dirs from the compiler/linker flags (ie, remove -Idir and 
 # -Ldir flags where dir is empty).
@@ -398,8 +397,7 @@ Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
 
 DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
 DYLIB_CURRENT_VERSION       = -current_version 1
-DYLIB_INSTALL_NAME = \
-$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE)
+DYLIB_INSTALL_NAME = $(FINAL_LIBRARY_INSTALL_DIR)/$(LIB_LINK_FILE)
 
 # Remove empty dirs from the compiler/linker flags (ie, remove -Idir and 
 # -Ldir flags where dir is empty).
