@@ -1,3 +1,13 @@
+Mon Jul  9 12:26:59 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make (internal-install-dirs): Removed.
+	(internal-app-install): Depend on $(GNUSTEP_APPS) directly.
+	(app-resource-dir): Removed.
+	(app-resource-files, app-localized-resource-files): Depend on
+	$(APP_RESOURCE_DIRS) directly.
+	($(APP_DIR_NAME)/$(INTERNAL_app_NAME), internal-app-install):
+	Run the shell commands in a single subshell.
+
 Mon Jul  9 11:54:20 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* tool.make (.PHONY): Added.

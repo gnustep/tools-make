@@ -130,9 +130,13 @@ endif
 # Compilation targets
 #
 ifeq ($(OBJC_COMPILER), NeXT)
-internal-app-all:: before-$(TARGET)-all $(INTERNAL_app_NAME).iconheader \
-	$(GNUSTEP_OBJ_DIR) $(APP_DIR_NAME) $(APP_FILE) app-resource-files \
-	after-$(TARGET)-all
+internal-app-all:: before-$(TARGET)-all \
+                   $(INTERNAL_app_NAME).iconheader \
+                   $(GNUSTEP_OBJ_DIR) \
+                   $(APP_DIR_NAME) \
+                   $(APP_FILE) \
+                   app-resource-files \
+                   after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -147,10 +151,14 @@ $(APP_DIR_NAME):
 
 else
 
-internal-app-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-   $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(APP_FILE) \
-   $(APP_DIR_NAME)/$(INTERNAL_app_NAME) app-resource-files \
-   app-localized-resource-files after-$(TARGET)-all
+internal-app-all:: before-$(TARGET)-all \
+                   $(GNUSTEP_OBJ_DIR) \
+                   $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                   $(APP_FILE) \
+                   $(APP_DIR_NAME)/$(INTERNAL_app_NAME) \
+                   app-resource-files \
+                   app-localized-resource-files \
+                   after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -161,7 +169,8 @@ $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 
 ifeq ($(GNUSTEP_FLATTENED),)
 $(APP_DIR_NAME)/$(INTERNAL_app_NAME):
-	cp $(GNUSTEP_MAKEFILES)/executable.template $(APP_DIR_NAME)/$(INTERNAL_app_NAME)
+	cp $(GNUSTEP_MAKEFILES)/executable.template \
+	   $(APP_DIR_NAME)/$(INTERNAL_app_NAME); \
 	chmod a+x $(APP_DIR_NAME)/$(INTERNAL_app_NAME)
 endif
 endif
@@ -169,15 +178,15 @@ endif
 $(APP_RESOURCE_DIRS):
 	$(MKDIRS) $(APP_RESOURCE_DIRS)
 
-app-resource-dir:: $(APP_RESOURCE_DIRS)
-
-app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
+app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
+                     $(APP_RESOURCE_DIRS)
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the application wrapper..."; \
 	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
 	fi)
 
-app-localized-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist app-resource-dir
+app-localized-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist \
+                               $(APP_RESOURCE_DIRS)
 	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying localized resources into the application wrapper..."; \
 	  for l in $(LANGUAGES); do \
@@ -219,11 +228,9 @@ $(APP_DIR_NAME)/Resources:
 
 _FORCE::
 
-internal-app-install:: internal-install-dirs
-	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)
+internal-app-install:: $(GNUSTEP_APPS)
+	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME); \
 	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
-
-internal-install-dirs:: $(GNUSTEP_APPS)
 
 $(GNUSTEP_APPS):
 	$(MKDIRS) $(GNUSTEP_APPS)
