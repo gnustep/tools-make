@@ -24,10 +24,16 @@
 #
 #  $(GNUSTEP_INSTANCE)_HEADER_FILES : the list of .h files to install
 #
-#  $(GNUSTEP_INSTANCE)_HEADER_FILES_DIR : the dir in which the .h files are
+#  $(GNUSTEP_INSTANCE)_HEADER_FILES_DIR : the dir in which the .h files are;
+#  defaults to `.' if no set.
 #
 #  $(GNUSTEP_INSTANCE)_HEADER_FILES_INSTALL_DIR : the dir in which to install
-#  the .h files
+#  the .h files; defaults to $(GNUSTEP_INSTANCE) if not set.
+#
+#  $(GNUSTEP_INSTANCE)_EMPTY_HEADER_FILES_INSTALL_DIR : if this is set to YES
+#  then an empty $(GNUSTEP_INSTANCE)_HEADER_FILES_INSTALL_DIR is tollerated 
+#  and the $(GNUSTEP_INSTANCE) default not used.  This is an exceptional 
+#  behaviour and you don't want it unless you really know what you're doing.
 #
 
 #
@@ -65,9 +71,10 @@ endif
 override HEADER_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_INSTALL_DIR)
 
 ifeq ($(HEADER_FILES_INSTALL_DIR),)
+ifneq ($($(GNUSTEP_INSTANCE)_EMPTY_HEADER_FILES_INSTALL_DIR),YES)
 override HEADER_FILES_INSTALL_DIR = $(GNUSTEP_INSTANCE)
 endif
-
+endif
 
 shared-instance-headers-install: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
 	for file in $(HEADER_FILES) __done; do \
