@@ -1,3 +1,8 @@
+Thu Apr 11 23:39:45 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* ld_lib_path.sh (IFS): Fixed bug - was not resetting IFS
+	correctly.
+
 2002-04-11  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in (gcc version): Use -dumpversion to check gcc
