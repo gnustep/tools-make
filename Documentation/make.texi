@@ -404,7 +404,7 @@ This example makefile illustrates two libraries, @file{libone} and
 #
 
 # Include the common variables defined by the Makefile Package
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/common.make
+include $(GNUSTEP_MAKEFILES)/common.make
 
 # Two libraries
 LIBRARY_NAME = libone libtwo
@@ -510,7 +510,7 @@ This makefile illustrates two Objective-C programs, @file{simple} and
 #
 
 # Include the common variables defined by the Makefile Package
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/common.make
+include $(GNUSTEP_MAKEFILES)/common.make
 
 # Build a simple Objective-C program
 OBJC_PROGRAM_NAME = simple list

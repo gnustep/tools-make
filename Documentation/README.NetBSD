@@ -60,7 +60,7 @@ gmake install
 gmake distclean
 
 
-source /usr/local/GNUstep/System/Makefiles/GNUstep.csh
+source /usr/local/GNUstep/System/Library/Makefiles/GNUstep.csh
 
 
 tar zxvf gnustep-objc-1.0.1.tar.gz
@@ -119,7 +119,7 @@ fi
 
 [Add `~/.cshrc']
 setenv GNUSTEP_TZ Japan
-source /usr/local/GNUstep/System/Makefiles/GNUstep.csh
+source /usr/local/GNUstep/System/Library/Makefiles/GNUstep.csh
 if (`gdomap -L GDNCServer | grep -c Found` == '0') then
     echo 'Starting GNUstep services.'
     gdnc
@@ -212,12 +212,12 @@ LDFLAGS = -L/usr/pkg/lib -liconv
 			su
 			gmake install
 
-		File : /usr/GNUstep/System/Makefiles/framework.make
+		File : /usr/GNUstep/System/Library/Makefiles/framework.make
 			change ine: with ... {if($$2 == "R") ...
 			in ... {if($$2 == "D") ...
 
 
-7.) core/base:		source /usr/GNUstep/System/Makefiles/GNustep.csh
+7.) core/base:		source /usr/GNUstep/System/Library/Makefiles/GNustep.csh
 			
 			./configure --prefix=/usr/GNUstep
 
@@ -289,7 +289,7 @@ Time Zone" "Europe/Berlin"
 	Add this at the end of .cshrc:
 
 	setenv LD_LIBRARY_PATH /usr/X11R6/lib:/usr/local/lib/usr/pkg/lib
-	source /usr/GNUstep/System/Makefiles/GNUstep.csh
+	source /usr/GNUstep/System/Library/Makefiles/GNUstep.csh
 	if ( `gdomap -L GDNCServer | grep -c Found` == '0' ) then
 	  echo "Starting GNUstep services..."
 	  gdnc

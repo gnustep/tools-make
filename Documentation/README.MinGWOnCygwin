@@ -89,7 +89,7 @@ using Cygwin's make instead (/usr/bin/make instead of just make).
 4. Now source the GNUstep.sh file so the rest of the packages will
 compile correctly:
 
-  . C:/GNUstep/System/Makefiles/GNUstep.sh
+  . C:/GNUstep/System/Library/Makefiles/GNUstep.sh
 
 Also put this command in your shell startup script. Be sure to adjust
 this path to match your real GNUstep root directory if you changed it
@@ -134,7 +134,7 @@ If you get tired of typing  "target=i386-mingw32" all the time, then before
 you exec the GNUstep.sh script, just set the GNUSTEP_HOST:
 
   export GNUSTEP_HOST=i586-pc-mingw32
-  . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+  . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
 
 Problems?
 ---------

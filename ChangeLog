@@ -1,3 +1,15 @@
+Sat Nov  8 16:40:59 2003  Matt Rice <ratmice@yahoo.com>
+
+	* Documentation/DESIGN: Updated makefiles location.
+	* Documentation/README.MinGW: Updated makefiles location.  Added
+	comment on buggy 'ln -s' on mingw.
+	* Documentation/README.Cygwin: Updated makefiles location.
+	* Documentation/README.NetBSD: Updated makefiles location.
+	* Documentation/install.texi: Updated makefiles location.
+	* Documentation/machines.texi: Updated makefiles location.
+	* Documentation/make.texi: Updated makefiles location, use
+	GNUSTEP_MAKEFILES variable.
+	
 Mon Nov  3 23:48:41 2003  Marcus Muller <znek@mulle-kybernetik.com>
 
 	* target.make (SHARED_LIB_LINK_CMD): Use -prebind flag on Apple.

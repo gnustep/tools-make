@@ -253,7 +253,7 @@ lines similar to these:
 
 @example
 # Setup for the GNUstep environment
-. /usr/GNUstep/System/Makefiles/GNUstep.sh
+. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 @end example
 
 This will source in the GNUstep.sh file and set the environment
@@ -294,8 +294,8 @@ you can add the following lines to that file:
 
 @example
 # Setup for the GNUstep environment
-if [ -f $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh ]; then
-  . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+if [ -f $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh ]; then
+  . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
 fi
 @end example
 

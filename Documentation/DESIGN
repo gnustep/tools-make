@@ -476,7 +476,7 @@ intended for redefining the standard variables or for adding to
 them. The second one is intended for adding additional rules or
 targets.
 
-The makefile package is installed under $(GNUSTEP_SYSTEM_ROOT)/Makefiles.
+The makefile package is installed under $(GNUSTEP_SYSTEM_ROOT)/Library/Makefiles.
 
 
 Ovidiu Predescu

@@ -155,13 +155,17 @@ export HOMEDRIVE=C:
 export HOMEPATH=/home/myname
 export HOME=/C/home/myname
 export GNUSTEP_SYSTEM_ROOT=/C/GNUstep/System
-. $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+. $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
 
 NOTE: Sometimes the HOME variable may already be set by Windows to be
 %USERPROFILE% (which is the Windows variable that contains the path of
 your home folder). MSYS has problems with that as it doesn't recognise
 that %USERPROFILE% is a variable name. Be sure to check that if you run
 into errors.
+     
+     MinGW comes with a buggy 'ln -s' and Makefiles are no longer
+     installed into $GNUSTEP_SYSTEM_ROOT/Makefiles so there is 
+     no compatibility symlink to $GNUSTEP_SYSTEM_ROOT/Library/Makefiles
 
 
 

@@ -624,7 +624,7 @@ class-C network, your /etc/gdomap_addresses file would contain the line
 and your startup file would contain the lines
 
 @example
-. /usr/local/GNUstep/Makefiles/GNUstep.sh
+. /usr/local/GNUstep/Library/Makefiles/GNUstep.sh
 gdomap -a /etc/gdomap_addresses
 @end example
 
