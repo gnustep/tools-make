@@ -92,7 +92,8 @@ endif
 #    (but might also be `libgnustep-base.so.1.0' if SOVERSION has been 
 #    manually changed when using library.make).  On many platforms, 
 #    it's appropriate/standard to also create this file as a symlink to 
-#    LIB_LINK_VERSION_FILE.
+#    LIB_LINK_VERSION_FILE.  If LIB_LINK_VERSION_FILE is the same as
+#    LIB_LINK_SONAME_FILE, then the symlink should not be created.
 #  LIB_LINK_FILE: this is only used for shared libraries; it should
 #    be created as a symlink to LIB_LINK_VERSION_FILE (or to 
 #    LIB_LINK_SONAME_FILE if it's created on that platform).
@@ -280,8 +281,11 @@ SHARED_LIB_LINK_CMD     = \
 		$^ $(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 BUNDLE_LD       =  /usr/bin/ld
@@ -306,8 +310,11 @@ SHARED_LIB_LINK_CMD     = \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$^ $(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS   += -dynamic
@@ -319,8 +326,11 @@ endif # OBJC_COMPILER
 
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
-         rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-	 $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+         rm -f $(LIB_LINK_FILE); \
+         if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+         fi; \
          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE) )
 
 OBJ_MERGE_CMD = \
@@ -489,14 +499,20 @@ SHARED_LIB_LINK_CMD     = \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CHOWN = \
@@ -564,13 +580,19 @@ SHARED_LIB_LINK_CMD = \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
-	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
 	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE))
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
-	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
 	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CHOWN = \
@@ -676,13 +698,19 @@ SHARED_LIB_LINK_CMD = \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
-	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
 	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE))
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
-	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
 	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 
@@ -748,14 +776,20 @@ SHARED_LIB_LINK_CMD     = \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CHOWN = \
@@ -848,14 +882,20 @@ SHARED_LIB_LINK_CMD     = \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
 	(cd $(LIB_LINK_OBJ_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
-          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          rm -f $(LIB_LINK_FILE); \
+          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
+            rm -f $(LIB_LINK_SONAME_FILE);\
+            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          fi; \
           $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CHOWN = \

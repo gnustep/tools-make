@@ -1,3 +1,12 @@
+Mon Jan 12 11:47:00 2004  Jeff Teunissen <deek@d2dc.net>,
+	                  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (SHARED_LIB_LINK_CMD, AFTER_INSTALL_SHARED_LIB_CMD):
+	Do not remove LIB_LINK_SONAME_FILE and do not create the symlink
+	LIB_LINK_SONAME_FILE --> LIB_LINK_VERSION_FILE if
+	LIB_LINK_SONAME_FILE and LIB_LINK_VERSION_FILE are equal, which
+	happens for example if you use 'A' as version.
+
 2004-01-05  David Ayers  <d.ayers@inode.at>
 
 	* Instance/framework.make (internal-framework-uninstall_):
