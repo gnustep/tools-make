@@ -1,3 +1,8 @@
+2003-09-27  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (darwin/BUNDLE_LDFLAGS): Supress warnings
+	* Documentation/machines.texi: Update darwin.
+
 2003-09-25  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (darwin): Fix up bundle flags for GNU compiler.

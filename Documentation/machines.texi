@@ -61,6 +61,9 @@ Several bugs where introduced in the version. It's probably better to
 avoid this one, although it might work fine.
 @item gcc 3.2.x
 Pretty good. Recommended.
+@item gcc 3.3.x
+Recommended. Fixes some bugs relating to protocols as well as other
+improvements.
 @end table
 
 If you have compiled GNUstep on a specific machine, please send information
@@ -106,7 +109,8 @@ Make sure to configure gnustep-make with ./configure
 
 @item Extra libs needed 
 Use libffi (not ffcall). This should be enabled by default in gnustep-base
-so you don't have to type --enable-libffi
+so you don't have to type --enable-libffi. Also need the dlcompat library
+(from @url{www.opendarwin.org}) to load bundles.
 
 @item Special Instructions 
 
