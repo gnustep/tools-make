@@ -1,3 +1,7 @@
+Fri Nov 12 11:52:14 1999  Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
+
+	* rules.make: Moved some Java rules into gstep-java.
+	
 Fri Nov 12  7:43:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* GNUstep.sh.in: Fix error in exporting CLASSPATH
