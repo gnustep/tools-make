@@ -53,21 +53,20 @@ line terminators should be set to the unix option.
 Installing and setting up MINGW and MSYS
 ----------------------------------------
 
-Next, download msys-1.06 or later from
+Next, download msys-1.07 or later from
 http://sourceforge.net/projects/mingw
 and install it.
 
-Next, download MinGW-1.1 or later from
+Next, download MinGW-2.0.0-3 or later from
 http://sourceforge.net/projects/mingw
-and extract this into the msys hierarchy
-(usually c:/msys/<version-number>/mingw)
+and install it (usually in c:/mingw)
 
-This will unpack the mingw source tree within the msys hierarchy.
-Unpacking mingw into the correct location within msys will ensure that the
-path set up in /etc/profile in msys picks up the mingw tools too.
-
-Delete or rename the file bin/make.exe so that the mingw make program will
-not be used, and the msys make program will be used instead.
+After installing ming, create a file called fstab in
+c:/msys/<version-number>/etc, or wherever you installed msys, and make
+sure it contains the line
+c:/mingw /mingw
+which also should be changed accordingly if you installed MinGW
+somewhere else.
 
 You may need to edit /mingw/include/winsock2.h to change the size of the
 sa_data field in the sockaddr structure from 14 to 22 ... this is because
@@ -79,8 +78,8 @@ It's a good idea to remove the libobjc.a and include/objc header that come
 with gcc (gcc -v for location) so that they are not accidentally found
 instead of the libobjc DLL that you will compile below.
 
-Now you can double click on the c:/msys/version-number/bin/sh program to
-open a window containing a shell.
+Now you can open a window containg a shell by choosing MSYS from the
+start menu.
 
 At this point you may want to set the HOMEDRIVE and HOMEPATH environment
 variables to point to the home directory you wish to work from (though
@@ -143,7 +142,8 @@ Now you can type 'make install' to build and install the make package.
 Once this is done, type '. GNUstep.sh' to set up your GNUstep
 environment.  The environment for building software is now completely
 set up, but for ease of use later, you might set up a script to be
-used to set up any new shell windows you create.  Something like this:
+used to set up any new shell windows you create.  Something like this
+in your ~/.profile would do nicely:
 
 export HOMEDRIVE=C:
 export HOMEPATH=/home/myname
@@ -166,14 +166,12 @@ Ignore any other instructions for building this ...
 First, in the shell window in which you have set up your GNUstep
 environment, type
 
-RANLIB=touch; ./configure --prefix=$GNUSTEP_SYSTEM_ROOT
-
-We use 'touch' as a substitute for 'ranlib', as windows does not have
-(and does not need) ranlib.
+./configure --prefix=$GNUSTEP_SYSTEM_ROOT --includedir=$GNUSTEP_SYSTEM_ROOT/Headers
 
 Having configured the ffcall library, you can now build and install
 it simply by typing:
 
+  make
   make install
 
 
@@ -192,8 +190,10 @@ Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
 
 This should build and install the ObjectiveC runtime and headers for you.
 
-
-
+If you encounter problems linking the runtime, copy the files
+libavcall.a, libavcall.la, libcallback.a, libcallback.la,
+libtrampoline.a and libvacall.a from C:\GNUstep\System\lib to
+C:\MinGW\lib.
 
 Optional libraries
 ------------------
@@ -261,15 +261,8 @@ openssl
 Building and installing GNUstep-base
 ------------------------------------
 
-Go to gnustep-base (or from CVS into the core/base directory), and type
-
-  make install
-
-This should automatically run the configure script for you, build the
-base library and some tools, and install the whole lot (along with some
-system resources).
-
-If you are using gcc 3.x, you should change the line
+If you are using MinGW 2.0.0 or higher you are using gcc 3.x, and
+consequently should change the line
 
 __objc_class_name_NXConstantString
 
@@ -278,6 +271,14 @@ to
 __objc_class_name_NSConstantString
 
 in Source/libgnustep-base.def before doing a make.
+
+Go to gnustep-base (or from CVS into the core/base directory), and type
+
+  make install
+
+This should automatically run the configure script for you, build the
+base library and some tools, and install the whole lot (along with some
+system resources).
 
 
 
