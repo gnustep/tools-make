@@ -85,7 +85,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
         spec-debug-alone-rules.template
 
 MASTER_MAKE_FILES = source-distribution.make rpm.make rules.make \
-        application.make
+        aggregate.make application.make
 
 INSTANCE_MAKE_FILES = rules.make \
         application.make
