@@ -1,3 +1,8 @@
+2002-12-05  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* Instance/framework.make ($(FRAMEWORK_FILE)): create the link with
+	GNUSTEP_INSTANCE name instead of FRAMEWORK_NAME.
+
 2002-12-03  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* Instance/framework.make ($(FRAMEWORK_FILE)): remove the link before
