@@ -45,8 +45,7 @@ endif
         internal-app-install_ \
         internal-app-uninstall_ \
         internal-app-copy_into_dir \
-        internal-application-build-template \
-        _FORCE
+        internal-application-build-template
 
 #
 # Determine where to install.  By default, install into GNUSTEP_APPS.
@@ -105,6 +104,7 @@ endif
 #
 # Compilation targets
 #
+
 ifeq ($(OBJC_COMPILER), NeXT)
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_DIR_NAME) \
@@ -151,7 +151,24 @@ APPLICATION_ICON = $($(GNUSTEP_INSTANCE)_APPLICATION_ICON)
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
-$(APP_DIR_NAME)/Resources/Info-gnustep.plist: _FORCE
+
+# We must recreate Info.plist if PRINCIPAL_CLASS and/or
+# APPLICATION_ICON and/or MAIN_MODEL_FILE has changed since last time
+# we built Info.plist.  We use stamp-string.make, which will store the
+# variables in a stamp file inside GNUSTEP_STAMP_DIR, and rebuild
+# Info.plist iff GNUSTEP_STAMP_STRING changes.
+GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(APPLICATION_ICON)-$(MAIN_MODEL_FILE)
+GNUSTEP_STAMP_DIR = $(APP_DIR_NAME)
+
+ifneq ($(FOUNDATION_LIB),nx)
+# Only for efficiency
+$(GNUSTEP_STAMP_DIR): $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+endif
+
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
+
+
+$(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(GNUSTEP_STAMP_DEPEND)
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -168,7 +185,6 @@ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 		$(APP_DIR_NAME)/Resources/Info-gnustep.plist
 	@pl2link $^ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop
 
-_FORCE::
 
 internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
