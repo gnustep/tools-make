@@ -1,3 +1,7 @@
+Sun Apr 21 11:47:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/bundle.make (BUNDLE_LIBS): Readded BUNDLE_LIBS for Windows.
+
 Thu Apr 18 10:54:33 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Warning - after this change, header files for libraries building
