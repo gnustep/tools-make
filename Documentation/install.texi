@@ -30,6 +30,22 @@ particular operating system and CPU. These instructions come with the
 GNUstep-HOWTO and are also located at the GNUstep web site at
 @url{http://www.gnustep.org}.
 
+Quick installation instructions:
+
+@example
+./configure
+make
+make install
+@end example
+
+To make and install the documentation:
+
+@example
+cd Documentation
+make
+make install
+@end example
+
 @node Configuration, Installation, Introduction, Top
 @section Configuration
 

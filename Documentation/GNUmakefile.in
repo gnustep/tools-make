@@ -131,7 +131,8 @@ after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
 	for file in $(MAN7_PAGES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
-	    which gzip && gzip -9 $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
+	    which gzip && rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file.gz \
+		&& gzip -9 $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
 	  fi; \
 	done;
 
