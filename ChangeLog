@@ -1,3 +1,8 @@
+Fri Mar 16 14:48:51 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* configure.in: Fixed syntax of some new tests.
+	* configure: Regenerated.
+	
 2001-03-15  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Use autoconf tests to detect CYGWIN, MINGW32,
