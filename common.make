@@ -83,8 +83,13 @@ include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
 
 # Sanity check on $PATH - NB: if PATH is wrong, we can't do certain things
 # because we can't run the tools (not even using opentool as we can't even
-# run opentool if PATH is wrong)
+# run opentool if PATH is wrong) - this is particularly bad for gui stuff
 ifeq ($(MAKELEVEL),0)
+
+  # Skip the check if we are on an Apple system.  I was told that you can't
+  # source GNUstep.sh before running Apple's PB and that the only
+  # friendly solution is to disable the check.
+  ifneq ($(FOUNDATION_LIB),nx)
 
   # NB - we can't trust PATH here because it's what we are trying to
   # check ... but hopefully if we (common.make) have been found, we
@@ -105,6 +110,8 @@ ifeq ($(MAKELEVEL),0)
     $(warning You need to run the GNUstep configuration script to fix this)
     $(warning try running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
   endif
+
+  endif # code used when FOUNDATION_LIB != nx
 
 endif
 
