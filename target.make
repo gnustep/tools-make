@@ -277,6 +277,10 @@ HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
 ifeq ($(FOUNDATION_LIB), apple)
+  # Not sure why, but without -no-cpp-precomp, it doesn't compile
+  # plain C files.
+  INTERNAL_CFLAGS += -no-cpp-precomp
+
   INTERNAL_OBJCFLAGS += -traditional-cpp
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))

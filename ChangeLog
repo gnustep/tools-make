@@ -1,3 +1,8 @@
+Fri Jan 10 05:48:06 GMT 2003 Nicola Pero <n.pero@mi.flashnet.it>
+
+	* target.make (INTERNAL_CFLAGS): On darwin, apple foundation, add
+	-no-cpp-precomp.
+
 2003-01-09 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Updated for current cod, fixing a few
