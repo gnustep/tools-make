@@ -295,6 +295,9 @@ BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
 ADDITIONAL_LDFLAGS += -rdynamic
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 endif
 #
 # end Linux ELF
@@ -322,6 +325,9 @@ BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 endif
 #
 # end FreeBSD A.out
@@ -351,6 +357,9 @@ BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 endif
 #
 # end FreeBSD
@@ -383,6 +392,9 @@ BUNDLE_LD	= $(CC)
 #BUNDLE_CFLAGS   += 
 BUNDLE_LDFLAGS  += -shared
 #ADDITIONAL_LDFLAGS += -rdynamic
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 endif
 #
 # end NetBSD
@@ -412,6 +424,9 @@ BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 endif
 #
 # end NetBSD
@@ -444,6 +459,9 @@ BUNDLE_LD	= $(CC)
 #BUNDLE_CFLAGS   += 
 BUNDLE_LDFLAGS  += -shared
 #ADDITIONAL_LDFLAGS += -rdynamic
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 endif
 #
 # end OpenBSD 2.x
@@ -473,6 +491,9 @@ BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS	+= -fPIC
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
+ifeq ($(shared), no)
+ADDITIONAL_LDFLAGS += -static
+endif
 # Newer gcc's don't define this in Objective-C programs:
 AUXILIARY_CPPFLAGS += -D__LANGUAGES_C__
 endif
