@@ -1,3 +1,10 @@
+2002-12-30  Adam Fedor  <fedor@gnu.org>
+
+	* ld_lib_path.sh: Use DYLD_LIBRARY_PATH on darwin
+	* ld_lib_path.csh: Idem.
+	* target.make (darwin): Don't set DYLIB_COMPATIBILITY_VERSION,
+	set DYLIB_CURRENT_VERSION correctly, link to LIB_LINK_INSTALL_NAME.
+
 Mon Dec 30 16:38:16 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	A new library-combo apple-apple-apple has been added, and made the

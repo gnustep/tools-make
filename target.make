@@ -286,8 +286,9 @@ ifeq ($(FOUNDATION_LIB), apple)
   endif
 endif
 
-DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
-DYLIB_CURRENT_VERSION       = -current_version 1
+# The developer should set this explicitly
+#DYLIB_COMPATIBILITY_VERSION = -compatibility_version $(VERSION)
+DYLIB_CURRENT_VERSION       = -current_version $(VERSION)
 
 # Remove empty dirs from the compiler/linker flags (ie, remove -Idir and 
 # -Ldir flags where dir is empty).
@@ -313,6 +314,8 @@ SHARED_LIB_LINK_CMD     = \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$^ $(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+	  rm -f $(LIB_LINK_INSTALL_NAME); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_INSTALL_NAME); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 HAVE_BUNDLES = no
@@ -336,6 +339,8 @@ SHARED_LIB_LINK_CMD     = \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$^ $(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+	  rm -f $(LIB_LINK_INSTALL_NAME); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_INSTALL_NAME); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS   += -dynamic
@@ -344,6 +349,11 @@ BUNDLE_LD	=  $(CC)
 BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
 
 endif # OBJC_COMPILER
+
+AFTER_INSTALL_SHARED_LIB_CMD = \
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	 rm -f $(LIB_LINK_INSTALL_NAME); \
+	 $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_INSTALL_NAME))
 
 OBJ_MERGE_CMD = \
 	$(CC) -nostdlib -r -d -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;

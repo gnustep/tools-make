@@ -94,6 +94,17 @@ case "$host_os" in
     export DYLD_LIBRARY_PATH
     ;;
 
+  *darwin*)
+    if [ -z "$DYLD_LIBRARY_PATH" ]; then
+      DYLD_LIBRARY_PATH="$lib_paths"
+    else
+      if ( echo ${DYLD_LIBRARY_PATH}|fgrep -v "${lib_paths}" >/dev/null ); then
+	DYLD_LIBRARY_PATH="$lib_paths:$DYLD_LIBRARY_PATH"
+      fi
+    fi
+    export DYLD_LIBRARY_PATH
+    ;;
+
   *hpux*)
     if [ -z "$SHLIB_PATH" ]; then
       SHLIB_PATH="$lib_paths"
