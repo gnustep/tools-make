@@ -65,10 +65,13 @@ endif
 ifeq ($(findstring aix4.1, $(GNUSTEP_TARGET_OS)), aix4.1)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
-ifeq ($(findstring freebsd3.0, $(GNUSTEP_TARGET_OS)), freebsd3.0)
+ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+endif
+ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
 
