@@ -161,7 +161,10 @@ ifneq ($(strip $(DLL_DEF)),)
 DLL_DEF_FLAG = --input-def $(DLL_DEF)
 endif
 
-# Pass -DBUILD_lib{library_name}_DLL=1 to the preprocessor
+# Pass -DBUILD_lib{library_name}_DLL=1 to the preprocessor.  The
+# library header files can use this preprocessor define to know that
+# they are included during compilation of the library itself, and can
+# then use __declspec(dllexport) to export symbols
 CLEAN_library_NAME = $(shell echo $(INTERNAL_library_NAME)|tr '-' '_')
 SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
