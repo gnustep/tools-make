@@ -1656,7 +1656,7 @@ else
   echo "$ac_t""no" 1>&6
 jpeg_ok=no
       echo "configure: warning: *** Cannot find libjpeg ***" 1>&2
-      { echo "configure: error: *** To build GUI library JPEG library is required ***" 1>&2; exit 1; }
+      echo "configure: warning: *** To build GUI library JPEG library is required ***" 1>&2
 fi
 
 if test "$jpeg_ok" = yes; then
@@ -1693,7 +1693,7 @@ rm -f conftest*
     export JPEG_INCLUDE
   else
    echo "configure: warning: *** Cannot find libjpeg header ***" 1>&2
-   { echo "configure: error: *** To build GUI library JPEG library is required ***" 1>&2; exit 1; }
+   echo "configure: warning: *** To build GUI library JPEG library is required ***" 1>&2
   fi
 fi
 LIBS="${jpeg_check_lib_save_lib}"
@@ -1771,7 +1771,7 @@ else
   echo "$ac_t""no" 1>&6
 tiff_ok=no
       echo "configure: warning: *** Cannot find libtiff ***" 1>&2
-      { echo "configure: error: *** To build GUI library TIFF library is required ***" 1>&2; exit 1; }
+      echo "configure: warning: *** To build GUI library TIFF library is required ***" 1>&2
 fi
 
 if test "$tiff_ok" = yes; then
@@ -1816,7 +1816,7 @@ fi
     export TIFF_INCLUDE
   else
    echo "configure: warning: *** Cannot find libtiff header ***" 1>&2
-   { echo "configure: error: *** To build GUI library TIFF library is required ***" 1>&2; exit 1; }
+   echo "configure: warning: *** To build GUI library TIFF library is required ***" 1>&2
   fi
 fi
 LIBS="${tiff_check_lib_save_lib}"
