@@ -98,7 +98,7 @@ BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
 internal-bundle-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-		build-bundle-dir build-bundle \
+		build-bundle-dir build-bundle build-macosx-bundle \
 		after-$(TARGET)-all
 
 before-$(TARGET)-all::
@@ -175,17 +175,37 @@ ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(INTERNAL_bundle_NAME)
 endif
 
-# MacOSX-S bundles
-$(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
-	  fi; \
-	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
+# MacOSX bundles
+
+$(BUNDLE_DIR_NAME)/Contents :
+	@$(MKDIRS) $@
+
+$(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents
+$(BUNDLE_DIR_NAME)/Resources
+	@(cd $(BUNDLE_DIR_NAME)/Contents;\
+	  $(LN_S) -f ../Resources .)
+
+$(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
+	@(echo "<?xml version='1.0' encoding='utf-8'?>";\
+	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
+	  echo "<!-- Automatically generated, do not edit! -->";\
+	  echo "<plist version='0.9'>";\
+	  echo "  <dict>";\
+	  echo "    <key>CFBundleExecutable</key>";\
+	  echo "    <string>$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}</string>";\
+	  echo "    <key>CFBundleInfoDictionaryVersion</key>";\
+	  echo "    <string>6.0</string>";\
+	  echo "    <key>CFBundlePackageType</key>";\
+	  echo "    <string>BNDL</string>";\
+	  echo "    <key>NSPrincipalClass</key>";\
+	  echo "    <string>$(PRINCIPAL_CLASS)</string>";\
+	  echo "  </dict>";\
+	  echo "</plist>";\
+	) >$@
+
+build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents
+$(BUNDLE_DIR_NAME)/Contents/Resources
+$(BUNDLE_DIR_NAME)/Contents/Info.plist
 
 # GNUstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
