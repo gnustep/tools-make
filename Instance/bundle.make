@@ -170,6 +170,7 @@ $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(OBJ_FILES_TO_LINK) \
+		$(ALL_LDFLAGS) \
 		$(ALL_BUNDLE_LIBS)$(END_ECHO)
 
 else # WITH_DLL
