@@ -1,3 +1,8 @@
+Wed Nov 19 10:58:28 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* debugapp.in: Changed library_combo variable to LIBRARY_COMBO.
+	* tool.make: When installing take the tool from GNUSTEP_OBJ_DIR.
+
 Mon Nov 17 13:05:44 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* application.make: Output the file containing the paths for the

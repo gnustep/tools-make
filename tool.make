@@ -86,7 +86,7 @@ internal-install-dirs::
 	$(GNUSTEP_MAKEFILES)/mkinstalldirs $(TOOL_INSTALLATION_DIR)
 
 install-tool::
-	$(INSTALL_PROGRAM) -m 0755 $(INTERNAL_tool_NAME) \
+	$(INSTALL_PROGRAM) -m 0755 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_tool_NAME) \
 	    $(TOOL_INSTALLATION_DIR);
 
 internal-tool-uninstall::
