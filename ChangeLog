@@ -1,3 +1,12 @@
+Fri Jul 13 16:48:29 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make (internal-clean): Commands to make clean moved
+	here; depend on .subprojects.
+	(internal-distclean): Idem.
+	(internal-app-clean, internal-app-distclean): Removed.
+	(.PHONY): Removed internal-app-clean and internal-app-distclean.
+	* gswapp.make: Identical changes.
+	
 Fri Jul 13 16:17:36 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* tool.make (internal-clean): Short-cut the recursive make
