@@ -1,3 +1,9 @@
+Mon Sep 10 15:40:06 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (internal-doc-clean): Fixed make clean for
+	gsdoc - removed old useless shell loop which was causing rm to be
+	run unnecessarily many times.
+
 Mon Sep 10 11:25:58 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rootinstall.sh: Removed as obsolete.
