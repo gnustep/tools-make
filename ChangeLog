@@ -1,3 +1,11 @@
+2002-02-28  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (darwin5): Correct compile flags. Add
+	flags to ignore MacOSX headers if FOUNDATION_LIB is gnu.
+	(darwin1): Correct compile flags.
+	(nextstep4): Likewise.
+	(nextstep3): Likewise.
+
 2002-02-28 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.in: setup variables to force particular paths for user

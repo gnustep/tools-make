@@ -207,7 +207,7 @@ ifeq ($(findstring darwin1, $(GNUSTEP_TARGET_OS)), darwin1)
 ifeq ($(OBJC_RUNTIME), NeXT)
   HAVE_BUNDLES     = yes
   # Use the NeXT compiler
-  CC = cc -traditional-cpp
+  INTERNAL_OBJCFLAGS += -traditional-cpp
   OBJC_COMPILER = NeXT
 endif
 
@@ -305,7 +305,8 @@ endif
 #
 ifeq ($(findstring darwin5, $(GNUSTEP_TARGET_OS)), darwin5)
 ifeq ($(OBJC_RUNTIME), NeXT)
-HAVE_BUNDLES     = yes
+  HAVE_BUNDLES     = yes
+  OBJC_COMPILER = NeXT
 endif
 
 HAVE_SHARED_LIBS = yes
@@ -313,14 +314,18 @@ SHARED_LIBEXT    = .dylib
 
 ifeq ($(FOUNDATION_LIB),nx)
   # Use the NeXT compiler
-  CC = cc -traditional-cpp
-  OBJC_COMPILER = NeXT
+  CC = cc
+  INTERNAL_OBJCFLAGS += -traditional-cpp
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
     INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
     INTERNAL_CFLAGS    += $(ARCH_FLAGS)
     INTERNAL_LDFLAGS   += $(ARCH_FLAGS)
   endif
+endif
+ifeq ($(FOUNDATION_LIB),gnu)
+  # Set flags to ignore the MacOSX headers
+  INTERNAL_OBJCFLAGS += -no-cpp-precomp -nostdinc -I/usr/include
 endif
 
 TARGET_LIB_DIR = \
@@ -355,8 +360,8 @@ SHARED_LIB_LINK_CMD     = \
 
 else # OBJC_COMPILER=NeXT
 
-DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined error -fno-common
-DYLIB_DEF_FRAMEWORKS += #-framework Foundation
+DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
+#DYLIB_DEF_FRAMEWORKS += -framework Foundation
 DYLIB_DEF_LIBS	     = -lobjc
 
 SHARED_LIB_LINK_CMD     = \
@@ -382,9 +387,6 @@ STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
 	$(STATIC_LD_POSTFLAGS)
 
-# This doesn't work with 4.1, what about others?
-#ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
-
 AFTER_INSTALL_STATIC_LIB_COMMAND =
 
 SHARED_CFLAGS   += -dynamic -fno-common
@@ -405,7 +407,8 @@ endif
 #
 ifeq ($(GNUSTEP_TARGET_OS), nextstep4)
 ifeq ($(OBJC_RUNTIME), NeXT)
-HAVE_BUNDLES            = yes
+  HAVE_BUNDLES            = yes
+  OBJC_COMPILER = NeXT
 endif
 
 HAVE_SHARED_LIBS        = yes
@@ -413,7 +416,6 @@ HAVE_SHARED_LIBS        = yes
 ifeq ($(FOUNDATION_LIB),nx)
   # Use the NeXT compiler
   CC = cc
-  OBJC_COMPILER = NeXT
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
     INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
@@ -476,7 +478,8 @@ endif
 #
 ifeq ($(GNUSTEP_TARGET_OS), nextstep3)
 ifeq ($(OBJC_RUNTIME), NeXT)
-HAVE_BUNDLES            = yes
+  HAVE_BUNDLES            = yes
+  OBJC_COMPILER = NeXT
 endif
 
 HAVE_SHARED_LIBS        = yes
@@ -484,7 +487,6 @@ HAVE_SHARED_LIBS        = yes
 ifeq ($(FOUNDATION_LIB),nx)
   # Use the NeXT compiler
   CC = cc
-  OBJC_COMPILER = NeXT
   ifneq ($(arch),)
     ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
     INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
