@@ -1,3 +1,9 @@
+2003-06-03  Adam Fedor  <fedor@Eldorado.local.>
+
+	* target.make (darwin/BUNDLE_LD): Use libtool
+	(darwin/AFTER_INSTALL_SHARED_LIB_CMD): Link to the LIB_LINK_FILE
+	as well.
+
 Tue Jun  3 11:51:02 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Documentation/autogsdoc.make (internal-doc-install_):

@@ -323,8 +323,7 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
-HAVE_BUNDLES = no
-BUNDLE_LD	=  /usr/bin/ld
+BUNDLE_LD	=  /usr/bin/libtool
 BUNDLE_LDFLAGS  += -dynamic -flat_namespace -undefined warning $(ARCH_FLAGS)
 
 else 
@@ -357,8 +356,9 @@ endif # OBJC_COMPILER
 
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
-	 rm -f $(LIB_LINK_SONAME_FILE); \
-	 $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE))
+         rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+	 $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+         $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE) )
 
 OBJ_MERGE_CMD = \
 	$(CC) -nostdlib -r -d -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
