@@ -1,4 +1,10 @@
-Tue Nov  6 15:41:18 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+Wed Nov  7 08:49:18 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make ($(GNUSTEP_OBJ_DIR)/%${OEXT}): Put the $<_FILE_FLAGS
+	after the other flags so that they take precendence over them.
+	(%.class, %.h): Idem.
+	
+Wed Nov  7 08:41:18 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make ($(GNUSTEP_OBJ_DIR)/%${OEXT}): Implemented support
 	for file specific compilation flags - xxx_FILE_FLAGS to add and
