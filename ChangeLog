@@ -1,3 +1,9 @@
+Mon Dec 10 23:18:52 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rules.make (%.h): Added rule to build %.h files from %.psw files,
+	needed when installing %.h files generated from %.psw files in
+	frameworks (Patch from Jay McCarthy <jay@kenyamountain.com>).
+
 Mon Dec 10 23:02:24 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* bundle.make (internal-bundle-install): Do not attempt to make
