@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   common.make
 #
 #   Set all of the common environment variables.
@@ -239,6 +239,12 @@ GS_LIBRARY_PATH = $(dir)/Library/Libraries
 
 endif
 
+ifeq ($(FOUNDATION_LIB), apple)
+GS_FRAMEWORK_PATH = $(dir)/Library/Frameworks
+else
+GS_FRAMEWORK_PATH =
+endif
+
 # First, we add paths based on GNUSTEP_USER_ROOT.
 
 # Please note that the following causes GS_HEADER_PATH to be evaluated
@@ -246,6 +252,7 @@ endif
 # effect we wanted.
 GNUSTEP_HEADERS_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_HEADER_PATH))
 GNUSTEP_LIBRARIES_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_LIBRARY_PATH))
+GNUSTEP_FRAMEWORKS_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_FRAMEWORK_PATH))
 
 # Second, if GNUSTEP_LOCAL_ROOT is different from GNUSTEP_USER_ROOT
 # (which has already been added), we add the paths based on
@@ -253,6 +260,7 @@ GNUSTEP_LIBRARIES_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_LIBRARY_PATH))
 ifneq ($(GNUSTEP_LOCAL_ROOT), $(GNUSTEP_USER_ROOT))
 GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_HEADER_PATH))
 GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_LIBRARY_PATH))
+GNUSTEP_FRAMEWORKS_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_FRAMEWORK_PATH))
 endif
 
 # Third, if GNUSTEP_NETWORK_ROOT is different from GNUSTEP_USER_ROOT and
@@ -262,6 +270,7 @@ ifneq ($(GNUSTEP_NETWORK_ROOT), $(GNUSTEP_USER_ROOT))
 ifneq ($(GNUSTEP_NETWORK_ROOT), $(GNUSTEP_LOCAL_ROOT))
 GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_HEADER_PATH))
 GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_LIBRARY_PATH))
+GNUSTEP_FRAMEWORKS_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_FRAMEWORK_PATH))
 endif
 endif
 
@@ -273,6 +282,7 @@ ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_LOCAL_ROOT))
 ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_NETWORK_ROOT))
 GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_HEADER_PATH))
 GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_LIBRARY_PATH))
+GNUSTEP_FRAMEWORKS_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_FRAMEWORK_PATH))
 endif
 endif
 endif
@@ -301,10 +311,13 @@ ifeq ($(REMOVE_EMPTY_DIRS),yes)
    $(addprefix -I,$(foreach dir,$(GNUSTEP_HEADERS_DIRS),$(remove_if_empty)))
  GNUSTEP_LIBRARIES_FLAGS = \
    $(addprefix -L,$(foreach dir,$(GNUSTEP_LIBRARIES_DIRS),$(remove_if_empty)))
+ GNUSTEP_FRAMEWORKS_FLAGS = \
+   $(addprefix -F,$(foreach dir,$(GNUSTEP_FRAMEWORKS_DIRS),$(remove_if_empty))
 else
  # Default case, just add -I / -L
  GNUSTEP_HEADERS_FLAGS = $(addprefix -I,$(GNUSTEP_HEADERS_DIRS))
  GNUSTEP_LIBRARIES_FLAGS = $(addprefix -L,$(GNUSTEP_LIBRARIES_DIRS))
+ GNUSTEP_FRAMEWORKS_FLAGS = $(addprefix -F,$(GNUSTEP_FRAMEWORKS_DIRS))
 endif
 
 ifeq ($(FOUNDATION_LIB), fd)

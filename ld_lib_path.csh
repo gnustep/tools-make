@@ -41,6 +41,10 @@ endif
 
 set lib_paths="${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
 
+set last_path_part="Library/Frameworks"
+
+set fw_paths="${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}"
+
 switch ( "${host_os}" )
 
   case *nextstep4* :
@@ -77,6 +81,28 @@ switch ( "${host_os}" )
     if ( "${?additional}" == "1" ) then
       if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
        setenv DYLD_LIBRARY_PATH="${additional}${DYLD_LIBRARY_PATH}"
+      endif
+    endif
+
+    if ( ( "${LIBRARY_COMBO}" == "apple-apple-apple" ) \
+         || ( "${LIBRARY_COMBO}" == "apple") ) then
+      unset additional
+
+      if ( $?DYLD_FRAMEWORK_PATH == 0 ) then
+        setenv DYLD_FRAMEWORK_PATH "${fw_paths}"
+      else if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${fw_paths}" >/dev/null) } ) then
+        setenv DYLD_FRAMEWORK_PATH "${fw_paths}:${DYLD_FRAMEWORK_PATH}"
+      endif
+      if ( $?additional_framework_paths == 1) then
+        foreach dir (${additional_framework_paths})
+          set additional="${additional}${dir}:"
+        end
+      endif
+
+      if ( "${?additional}" == "1" ) then
+        if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
+          setenv DYLD_FRAMEWORK_PATH="${additional}${DYLD_FRAMEWORK_PATH}"
+        endif
       endif
     endif
     breaksw
@@ -139,5 +165,5 @@ switch ( "${host_os}" )
 
 endsw
 
-unset tool_path_part last_path_part host_os additional dir lib_paths
+unset tool_path_part last_path_part host_os additional dir lib_paths fw_paths
 

@@ -40,9 +40,10 @@ fi
 old_IFS="$IFS"
 IFS=:
 lib_paths=
+fw_paths=
 for dir in $GNUSTEP_PATHLIST; do
 
-  # prepare the path_fragment for this dir
+  # prepare the path_fragment for libraries and this dir
   if [ -z "$GNUSTEP_FLATTENED" ]; then
     path_fragment="$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
   else
@@ -54,6 +55,16 @@ for dir in $GNUSTEP_PATHLIST; do
     lib_paths="$path_fragment"
   else
     lib_paths="$lib_paths:$path_fragment"
+  fi
+
+  # prepare the path_fragment for frameworks and this dir
+  path_fragment="$dir/Library/Frameworks"
+
+  # Append the path_fragment to fw_paths
+  if [ -z "$fw_paths" ]; then
+    fw_paths="$path_fragment"
+  else
+    fw_paths="$fw_paths:$path_fragment"
   fi
 
   unset path_fragment
@@ -75,6 +86,23 @@ if [ -n "$additional_library_paths" ]; then
   unset dir
 
   lib_paths="${additional}${lib_paths}"
+
+  unset additional
+  IFS="$old_IFS"
+  unset old_IFS
+fi
+
+if [ -n "$additional_framework_paths" ]; then
+  old_IFS="$IFS"
+  IFS="
+"
+  additional=""
+  for dir in $additional_framework_paths; do
+    additional="${additional}${dir}:"
+  done
+  unset dir
+
+  fw_paths="${additional}${fw_paths}"
 
   unset additional
   IFS="$old_IFS"
@@ -103,6 +131,18 @@ case "$host_os" in
       fi
     fi
     export DYLD_LIBRARY_PATH
+    if [ "$LIBRARY_COMBO" = "apple-apple-apple" -o \
+         "$LIBRARY_COMBO" = "apple" ]; then
+      if [ -z "$DYLD_FRAMEWORK_PATH" ]; then
+        DYLD_FRAMEWORK_PATH="$fw_paths"
+      else
+        if ( echo ${DYLD_FRAMEWORK_PATH}|
+             fgrep -v "${fw_paths}" >/dev/null ); then
+          DYLD_FRAMEWORK_PATH="$fw_paths:$DYLD_FRAMEWORK_PATH"
+        fi
+      fi
+      export DYLD_FRAMEWORK_PATH
+    fi
     ;;
 
   *hpux*)
@@ -137,4 +177,5 @@ esac
 
 unset host_os
 unset lib_paths
+unset fw_paths
 

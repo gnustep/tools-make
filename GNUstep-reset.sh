@@ -83,6 +83,8 @@ function reset_path
 reset_path CLASSPATH
 reset_path GUILE_LOAD_PATH
 reset_path LD_LIBRARY_PATH
+reset_path DYLD_LIBRARY_PATH
+reset_path DYLD_FRAMEWORK_PATH
 reset_path PATH
 
 # Make sure we destroy the reset_path function after using it - we don't
