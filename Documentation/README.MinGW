@@ -290,8 +290,8 @@ libtiff, libjpeg, libpng
   Get these binary packages (or later versions) from -
   http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-lib.zip
   http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-bin.zip
-  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-lib.zip
-  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-bin.zip
+  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-3-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-3-bin.zip
   
   Unpack and install. You can put them in the standard locations, or also:
   the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Library/Headers

@@ -187,8 +187,6 @@ endif
 	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR))
 	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
 	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
-	 $(EC)(echo "Installing system GNUsteprc"; \
-	   $(INSTALL_DATA) GNUsteprc $(GNUSTEP_SYSTEM_ROOT)/.GNUsteprc)
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
 	   echo "Stripping makefiles and shell scripts..."; \
 	   cd $(makedir); ./strip_makefiles.sh; \
@@ -240,7 +238,6 @@ uninstall:
 	rm -f $(makedir)/executable.template
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
-	rm -f $(GNUSTEP_SYSTEM_ROOT)/.GNUsteprc
 	-for f in $(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(makedir)/Additional \

@@ -1,3 +1,10 @@
+2005-03-21  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in: Don't install .GNUsteprc file
+	* GNUstep.conf: New file.
+	* Documentation/README.Darwin,  Documentation/README.MinGW,
+	Documentation/faq.texi, Documentation/machines.texi: Updates.
+
 2005-03-21  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Instance/palette.make (internal-palette-all_): Use the old dll

@@ -56,13 +56,15 @@ GNUstep yet. Plus there are some other issues. If you start with
 Cocoa:
 
 @itemize @bullet
-@item Be careful with Cocoa.h includes (Use #ifndef GNUSTEP, for instance)
+@item Use #ifndef GNUSTEP for Apple only code.
 @item Do not use CoreFoundation
 @item Do not use Objective-C++
 @item Do not use Quicktime or other proprietary extension
 @item You need to convert .nib files (see next question  @pxref{Tools for porting})
-@item Some unfinished classes include  Drawers.
 @end itemize
+
+See also @url{http://mediawiki.gnustep.org/index.php/Writing_portable_code}
+for more information.
 
 @node Tools for porting, Can I transfer archived data from GNUstep to Cocoa?, How about porting between Cocoa and GNUstep?, Compatibility
 @subsection Tools for porting
@@ -87,6 +89,11 @@ files, using an open, standard format describing the logic of the
 interface.  It has a number of advantages over the proprietary nib format:
 portability, open standard, easy localization, themeability, and 
 intelligent autolayout.
+
+@item Gorm
+The equivalent of the Interface Builder in GNUstep. It might be easier to
+just recreate the interface using Gorm rather than dealing with 
+translations.
 
 @item OpenStep2GNUConverter and nfmake
 Two programs that allow you to convert PB files to GNUstep makefiles or

@@ -381,6 +381,13 @@ path, for example, with Fink installation type:
 
      export DYLD_LIBRARY_PATH=/sw/lib:$DYLD_LIBRARY_PATH
 
+NOTE: I found also that even though the X11SDK.pkg package has freetype2,
+it is missing a crucial include file and also has some undefined symbols. I
+had to install the freetype2-dev package from fink and add this to my path
+so that it could be found:
+PATH=/sw/lib/freetype/bin:$PATH
+make sure in config.make that -L/sw/lib/freetype2/lib is included before -L/usr/X11R6/lib (Adam Fedor <fedor@gnu.org>)
+
 Then you should be able to configure back and install it:
 
      ./configure --enable-graphics=art [CC='<gcc install dir>/bin/gcc']
