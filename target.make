@@ -336,6 +336,10 @@ DYLIB_CURRENT_VERSION       = -current_version 1
 DYLIB_INSTALL_NAME = \
 $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
 
+# Remove empty dirs from the compiler/linker flags (ie, remove -Idir and 
+# -Ldir flags where dir is empty).
+REMOVE_EMPTY_DIRS = yes
+
 ifeq ($(FOUNDATION_LIB),nx)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif

@@ -1,3 +1,10 @@
+Mon Mar 18 16:57:20 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: If REMOVE_EMPTY_DIRS is yes, remove efficiently all
+	empty directories from include and library flags (ie, -I and -L
+	flags).	 (Suggestion by Markus Hitter <mah@jump-ing.de>).
+	* target.make (REMOVE_EMPTY_DIRS): Set to yes in the case of OS X.
+
 Mon Mar 18 14:07:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep-reset.sh: New file.  Sourcing this file resets the
