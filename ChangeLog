@@ -1,3 +1,8 @@
+2002-03-11 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* cygpath.sh: Removed ... replaced by fixpath.sh which should handle
+	either cygwin or mingw/msys paths.
+	
 2002-03-10 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* target.make: Force shared=yes for cygwin and mingw as stuff simply
