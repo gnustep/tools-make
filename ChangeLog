@@ -1,3 +1,7 @@
+Mon Nov  4 12:44:07 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (distclean): Remove fixpath.sh.
+
 Mon Nov  4 12:08:58 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Documentation: New directory.

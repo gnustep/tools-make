@@ -223,6 +223,7 @@ distclean: clean
 	rm -f GNUmakefile
 	rm -f GNUstep.sh
 	rm -f GNUstep.csh
+	rm -f fixpath.sh
 	rm -f gnustep-make.spec
 	rm -f Documentation/GNUmakefile
 
