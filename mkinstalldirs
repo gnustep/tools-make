@@ -11,10 +11,10 @@ errstatus=0
 # Test mkdir -p
 mkdir -p .test-mkdir || errstatus=$?
 rmdir .test-mkdir
-if test $errstatus = 0; then
-  MKDIR="mkdir -p"
-else
+if test $errstatus != 0 -o -d "-p"; then
   MKDIR="mkdir"
+else
+  MKDIR="mkdir -p"
 fi
 
 for file in ${1+"$@"} ; do 
