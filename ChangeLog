@@ -1,3 +1,11 @@
+2000-02-23  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Make separate sytem root the default. Disable by
+	using --without-system-root when configuring.
+
+	* rules.make: Change compilation rule so filename is at beginning
+	of line (patch from David Relson <relson@expressgate.net>).
+
 2000-02-20  Matthias Klose  <doko@cs.tu-berlin.de>
 
 	* names.make: GNUSTEP_HOST: Use value of GNUSTEP_HOST_GUESS.

@@ -38,22 +38,24 @@ if test "x$prefix" = "xNONE"; then
 fi
 GNUSTEP_ROOT=$prefix
 GNUSTEP_PREFIX='$(prefix)'
-AC_ARG_ENABLE(system-root, 
-  [  --enable-system-root    Use separate system root directory], 
-  [ 
-    if test `basename $prefix` = System; then
-      GNUSTEP_ROOT=`dirname $prefix`
-    else
-      prefix=$prefix/System
-      GNUSTEP_PREFIX='$(prefix)/..'
-    fi
-  ],
-  [
-    if test `basename $prefix` = System; then
-      GNUSTEP_ROOT=`dirname $prefix`
-      GNUSTEP_PREFIX="$(prefix)/.."
-    fi
-  ])
+AC_ARG_WITH(system-root, 
+  [  --without-system-root    Dont use separate system root directory], 
+  ac_cv_system_root=$withval,  
+  ac_cv_system_root=yes)
+
+if test $ac_cv_system_root = yes; then
+  if test `basename $prefix` = System; then
+    GNUSTEP_ROOT=`dirname $prefix`
+  else
+    prefix=$prefix/System
+    GNUSTEP_PREFIX='$(prefix)/..'
+  fi
+else
+  if test `basename $prefix` = System; then
+    GNUSTEP_ROOT=`dirname $prefix`
+    GNUSTEP_PREFIX="$(prefix)/.."
+  fi
+fi
 AC_SUBST(GNUSTEP_ROOT)
 AC_SUBST(GNUSTEP_PREFIX)
 
