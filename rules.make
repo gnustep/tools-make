@@ -503,7 +503,7 @@ endif
 $(GNUSTEP_OBJ_DIR):
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME); \
-	rm -f obj; \
+	$(RM_LN_S) obj; \
 	$(LN_S) ./$(GNUSTEP_OBJ_DIR_NAME) obj$(END_ECHO)
 
 endif

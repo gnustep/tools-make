@@ -251,7 +251,7 @@ ifeq ($(MAKE_CURRENT_VERSION),yes)
 UPDATE_CURRENT_SYMLINK_RULE = update-current-symlink
 update-current-symlink:: $(FRAMEWORK_VERSION_DIR)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
-	rm -f Current; \
+	$(RM_LN_S) Current; \
 	$(LN_S) $(CURRENT_VERSION_NAME) Current$(END_ECHO)
 
 else
@@ -268,17 +268,17 @@ build-framework-dirs:: $(DERIVED_SOURCES_DIR) \
                        $(UPDATE_CURRENT_SYMLINK_RULE)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR); \
 	  if [ ! -h "Resources" ]; then \
-	    rm -f Resources; \
+	    $(RM_LN_S) Resources; \
 	    $(LN_S) Versions/Current/Resources Resources; \
 	  fi; \
 	  if [ ! -h "Headers" ]; then \
-	    rm -f Headers; \
+	    $(RM_LN_S) Headers; \
 	    $(LN_S) Versions/Current/Headers Headers; \
 	  fi$(END_ECHO)
 ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)cd $(DERIVED_SOURCES_DIR); \
 	  if [ ! -h "$(HEADER_FILES_INSTALL_DIR)" ]; then \
-	    rm -f ./$(HEADER_FILES_INSTALL_DIR); \
+	    $(RM_LN_S) ./$(HEADER_FILES_INSTALL_DIR); \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
                     ./$(HEADER_FILES_INSTALL_DIR); \
 	  fi$(END_ECHO)
@@ -404,7 +404,7 @@ build-framework:: $(FRAMEWORK_FILE) \
 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
 ifeq ($(MAKE_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework; \
-	rm -f $(GNUSTEP_INSTANCE); \
+	$(RM_LN_S) $(GNUSTEP_INSTANCE); \
 	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE)$(END_ECHO)
 endif
 
@@ -435,7 +435,7 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING) \
 	$(LIB_LINK_CMD); \
 	(cd $(LIB_LINK_OBJ_DIR); \
-	  rm -f $(GNUSTEP_INSTANCE); \
+	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
 	  $(LN_S) $(LIB_LINK_FILE) $(GNUSTEP_INSTANCE)) \
 	$(END_ECHO)
 
@@ -488,7 +488,7 @@ ifeq ($(strip),yes)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
-	  rm -f $(HEADER_FILES_INSTALL_DIR); \
+	  $(RM_LN_S) $(HEADER_FILES_INSTALL_DIR); \
 	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(HEADER_FILES_INSTALL_DIR); \
 	fi;$(END_ECHO)
 ifneq ($(CHOWN_TO),)
@@ -498,9 +498,9 @@ ifneq ($(CHOWN_TO),)
 	fi$(END_ECHO)
 endif
 	$(ECHO_NOTHING)cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
-	rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	rm -f $(SONAME_FRAMEWORK_FILE); \
-	rm -f $(VERSION_FRAMEWORK_LIBRARY_FILE); \
+	$(RM_LN_S) $(FRAMEWORK_LIBRARY_FILE); \
+	$(RM_LN_S) $(SONAME_FRAMEWORK_FILE); \
+	$(RM_LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE); \
 	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(FRAMEWORK_LIBRARY_FILE)` $(FRAMEWORK_LIBRARY_FILE); \
 	if test -r "$(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE)"; then \
 	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE)` $(SONAME_FRAMEWORK_FILE); \
@@ -585,7 +585,7 @@ $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
 $(GNUSTEP_HEADERS) :
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-# NB: We use 'rm -f' to remove the symlinks to insure
+# NB: We use '$(RM_LN_S)' to remove the symlinks to insure
 #     that we do not remove customized real directories.  
 internal-framework-uninstall_::
 	$(ECHO_UNINSTALLING)if [ "$(HEADER_FILES)" != "" ]; then \
@@ -596,13 +596,13 @@ internal-framework-uninstall_::
 	  done; \
 	fi; \
 	if [ -n "$(HEADER_FILES)" ]; then \
-	  rm -f $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) ; \
+	  $(RM_LN_S) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) ; \
 	fi; \
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME) ; \
 	cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
-	rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	rm -f $(SONAME_FRAMEWORK_FILE); \
-	rm -f $(VERSION_FRAMEWORK_LIBRARY_FILE); \
+	$(RM_LN_S) $(FRAMEWORK_LIBRARY_FILE); \
+	$(RM_LN_S) $(SONAME_FRAMEWORK_FILE); \
+	$(RM_LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE); \
 	$(END_ECHO)
 
 #

@@ -1,3 +1,12 @@
+Thu Nov  4 08:39:29 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* common.make (RM_LN_S): New variable.
+	* target.make: Replaced 'rm -f', when used before creating a
+	symlink, with $(RM_LN_S).
+	* rules.make ($(GNUSTEP_OBJ_DIR)): Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswbundle.make: Same change.
+
 2004-10-29  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.Cygwin: Updated

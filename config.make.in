@@ -50,8 +50,24 @@ ifeq ($(LN_S), ln -s)
   HAS_LN_S = yes
 endif
 
+# Special case - on mingw32, autoconf sets LN_S to 'ln -s', but then
+# that does a recursive copy (ie, cp -r).
 ifeq (@target_os@,mingw32)
   HAS_LN_S = no
+endif
+
+# This is used to remove an existing symlink before creating a new
+# one.  We don't trust 'ln -s -f' as it's unportable so we remove
+# manually the existing symlink (if any) before creating a new one.
+# If symlinks are supported on the platform, RM_LN_S is just 'rm -f';
+# if they are not, we assume they are copies (like cp -r) and we go
+# heavy-handed with 'rm -Rf'.  Note - this code might need rechecking
+# for the case where LN_S = 'ln', if that ever happens on some
+# platforms.
+ifeq ($(HAS_LN_S), yes)
+  RM_LN_S = rm -f
+else
+  RM_LN_S = rm -Rf
 endif
 
 LD = $(CC)
