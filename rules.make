@@ -163,11 +163,10 @@ endif
 # Implement ADDITIONAL_NATIVE_LIBS
 #
 # A native lib is a framework on apple, and a shared library
-# everywhere else.  Here we provide the appropriate compile/link flags
+# everywhere else.  Here we provide the appropriate link flags
 # to support it transparently on the two platforms.
 #
 ifeq ($(FOUNDATION_LIB),apple)
-  ADDITIONAL_INCLUDE_DIRS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-framework $(lib))
   ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-framework $(lib))
 else
   ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-l $(lib))
