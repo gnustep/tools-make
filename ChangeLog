@@ -1,3 +1,9 @@
+2002-02-25 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* target.make: Use winsocks2 library ... we will never support
+	systems that only have the old one, and we need the new one
+	for our networking.
+
 Sun Feb 24 13:22:09 2002  Matthias Klose <doko@cs.tu-berlin.de>:
 
 	* GNUstep.sh.in, GNUstep.csh.in: Start make_services in a

@@ -34,7 +34,7 @@ TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS)
 
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) \
-	-lwsock32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
+	-lws2_32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
 	-lmpr -lnetapi32 -lm -I. # the -I is a dummy to avoid -lm^M
 endif
 ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
