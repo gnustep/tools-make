@@ -105,7 +105,7 @@ INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make
 all: generated-files which_lib$(EXEEXT) user_home$(EXEEXT)
 
 # Please note that you should use a bit of care in the following rule,
-# because it must work in a directory which is not the current
+# because it must work in a directory which is not the source
 # directory - so for example $<, rather than which_lib.c, must be
 # used. (I mean: 'cd core/make; cd ..; mkdir make-build; cd
 # make-build; ../make/configure --disable-import; make;' must work)
