@@ -1611,13 +1611,11 @@ fi
 
 
 if test "x$JPEG_LIB" = x; then
-  jpeg_check_lib_save_lib=${LIBS}
-LIBS="-L${with_jpeg_library} ${LIBS}"
-jpeg_check_lib_save_header=${CPPFLAGS}
-CPPFLAGS="-I${with_jpeg_include} ${CPPFLAGS}"
+  jpeg_check_lib_save_header=${CPPFLAGS}
+CPPFLAGS="-L${with_jpeg_library} -I${with_jpeg_include} ${CPPFLAGS}"
 
 echo $ac_n "checking for jpeg_destroy_decompress in -ljpeg""... $ac_c" 1>&6
-echo "configure:1621: checking for jpeg_destroy_decompress in -ljpeg" >&5
+echo "configure:1619: checking for jpeg_destroy_decompress in -ljpeg" >&5
 ac_lib_var=`echo jpeg'_'jpeg_destroy_decompress | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
@@ -1625,7 +1623,7 @@ else
   ac_save_LIBS="$LIBS"
 LIBS="-ljpeg  $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1629 "configure"
+#line 1627 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1636,7 +1634,7 @@ int main() {
 jpeg_destroy_decompress()
 ; return 0; }
 EOF
-if { (eval echo configure:1640: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1638: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1655,23 +1653,22 @@ if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
 else
   echo "$ac_t""no" 1>&6
 jpeg_ok=no
-      echo "configure: warning: *** Cannot find libjpeg ***" 1>&2
-      { echo "configure: error: *** To build GUI library JPEG library is required ***" 1>&2; exit 1; }
 fi
 
 if test "$jpeg_ok" = yes; then
-  echo $ac_n "checking for jpeg.h""... $ac_c" 1>&6
-echo "configure:1665: checking for jpeg.h" >&5
+  echo $ac_n "checking for jpeglib.h""... $ac_c" 1>&6
+echo "configure:1661: checking for jpeglib.h" >&5
   cat > conftest.$ac_ext <<EOF
-#line 1667 "configure"
+#line 1663 "configure"
 #include "confdefs.h"
 #include <stdio.h>
               #undef PACKAGE
 	      #undef VERSION
+	      #undef HAVE_STDLIB_H
               #include <jpeglib.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1675: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1672: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1691,12 +1688,8 @@ rm -f conftest*
     export JPEG_LIB
     JPEG_INCLUDE="-I${with_jpeg_include}"
     export JPEG_INCLUDE
-  else
-   echo "configure: warning: *** Cannot find libjpeg header ***" 1>&2
-   { echo "configure: error: *** To build GUI library JPEG library is required ***" 1>&2; exit 1; }
   fi
 fi
-LIBS="${jpeg_check_lib_save_lib}"
 CPPFLAGS="${jpeg_check_lib_save_header}"
 fi
 
@@ -1726,21 +1719,47 @@ fi
 
 
 if test "x$TIFF_LIB" = x; then
-  tiff_check_lib_save_lib=${LIBS}
-LIBS="-L${with_tiff_library} ${JPEG_LIB} ${LIBS}"
-tiff_check_lib_save_header=${CPPFLAGS}
-CPPFLAGS="-I${with_tiff_include} ${JPEG_INCLUDE} ${CPPFLAGS}"
+  tiff_check_lib_save_header=${CPPFLAGS}
+tiff_check_lib_save_libs=${LIBS}
+CPPFLAGS="-L${with_tiff_library} ${JPEG_LIB} -I${with_tiff_include} ${JPEG_INCLUDE} ${CPPFLAGS}"
 
+echo $ac_n "checking for -ltiff without -ljpeg""... $ac_c" 1>&6
+echo "configure:1728: checking for -ltiff without -ljpeg" >&5
+LIBS="-ltiff -lm $LIBS"
+cat > conftest.$ac_ext <<EOF
+#line 1731 "configure"
+#include "confdefs.h"
+char TIFFReadScanline();
+int main() {
+TIFFReadScanline()
+; return 0; }
+EOF
+if { (eval echo configure:1738: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+  rm -rf conftest*
+  jpeg_notneeded=yes
+else
+  echo "configure: failed program was:" >&5
+  cat conftest.$ac_ext >&5
+  rm -rf conftest*
+  jpeg_notneeded=no
+fi
+rm -f conftest*
+echo "$ac_t""$jpeg_notneeded" 1>&6
+LIBS=${tiff_check_lib_save_libs}
+JPEG=
+if test "$jpeg_notneeded" = no; then
+  JPEG=-ljpeg
+fi
 echo $ac_n "checking for TIFFReadScanline in -ltiff""... $ac_c" 1>&6
-echo "configure:1736: checking for TIFFReadScanline in -ltiff" >&5
+echo "configure:1755: checking for TIFFReadScanline in -ltiff" >&5
 ac_lib_var=`echo tiff'_'TIFFReadScanline | sed 'y%./+-%__p_%'`
 if eval "test \"`echo '$''{'ac_cv_lib_$ac_lib_var'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   ac_save_LIBS="$LIBS"
-LIBS="-ltiff -ljpeg -lm $LIBS"
+LIBS="-ltiff $JPEG -lm $LIBS"
 cat > conftest.$ac_ext <<EOF
-#line 1744 "configure"
+#line 1763 "configure"
 #include "confdefs.h"
 /* Override any gcc2 internal prototype to avoid an error.  */
 /* We use char because int might match the return type of a gcc2
@@ -1751,7 +1770,7 @@ int main() {
 TIFFReadScanline()
 ; return 0; }
 EOF
-if { (eval echo configure:1755: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
+if { (eval echo configure:1774: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest; then
   rm -rf conftest*
   eval "ac_cv_lib_$ac_lib_var=yes"
 else
@@ -1770,24 +1789,31 @@ if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
 else
   echo "$ac_t""no" 1>&6
 tiff_ok=no
-      echo "configure: warning: *** Cannot find libtiff ***" 1>&2
-      { echo "configure: error: *** To build GUI library TIFF library is required ***" 1>&2; exit 1; }
+      echo "configure: warning: Cannot find libtiff" 1>&2
+      echo "* The GUI library reqiures the TIFF library"
+      echo "* Use --with-tiff-library to specify the tiff library"
+      echo "* directory if it is not in the usual place(s)"
+      echo "* You may also have to specify --with-jpeg-library if the jpeg"
+      echo "* Library is needed by tiff"
+      if test "x$CONFIGURING_CORE_LIBRARIES" != x; then
+        { echo "configure: error: You must have proper libraries installed to compile core" 1>&2; exit 1; }
+      fi
 fi
 
 if test "$tiff_ok" = yes; then
   ac_safe=`echo "tiffio.h" | sed 'y%./+-%__p_%'`
 echo $ac_n "checking for tiffio.h""... $ac_c" 1>&6
-echo "configure:1781: checking for tiffio.h" >&5
+echo "configure:1807: checking for tiffio.h" >&5
 if eval "test \"`echo '$''{'ac_cv_header_$ac_safe'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
   cat > conftest.$ac_ext <<EOF
-#line 1786 "configure"
+#line 1812 "configure"
 #include "confdefs.h"
 #include <tiffio.h>
 EOF
 ac_try="$ac_cpp conftest.$ac_ext >/dev/null 2>conftest.out"
-{ (eval echo configure:1791: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
+{ (eval echo configure:1817: \"$ac_try\") 1>&5; (eval $ac_try) 2>&5; }
 ac_err=`grep -v '^ *+' conftest.out`
 if test -z "$ac_err"; then
   rm -rf conftest*
@@ -1815,13 +1841,18 @@ fi
     TIFF_INCLUDE="-I${with_tiff_include}"
     export TIFF_INCLUDE
   else
-   echo "configure: warning: *** Cannot find libtiff header ***" 1>&2
-   { echo "configure: error: *** To build GUI library TIFF library is required ***" 1>&2; exit 1; }
+    echo "configure: warning: Cannot find libtiff header tiffio" 1>&2
+    echo "* The GUI library requres the TIFF library"
+    echo "* Use --with-tiff-include to specify the tiff header directory"
+    echo "* if it is not in the usual place(s)"
+    if test "x$CONFIGURING_CORE_LIBRARIES" != x; then
+      { echo "configure: error: You must have proper libraries installed to compile core" 1>&2; exit 1; }
+    fi
   fi
 fi
-LIBS="${tiff_check_lib_save_lib}"
-CPPFLAGS="{tiff_check_lib_save_header}"
+CPPFLAGS="${tiff_check_lib_save_header}"
 fi
+
 
 
 
@@ -1852,7 +1883,7 @@ fi
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
 echo $ac_n "checking whether objc has thread support""... $ac_c" 1>&6
-echo "configure:1856: checking whether objc has thread support" >&5
+echo "configure:1887: checking whether objc has thread support" >&5
 saved_LIBS="$LIBS"
 objc_thread_lib=""
 if test $host_os = linux-gnu; then
@@ -1861,11 +1892,11 @@ if test $host_os = linux-gnu; then
   objc_threaded="-lpthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 1865 "configure"
+#line 1896 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:1869: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:1900: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lpthread"
 else
@@ -1883,11 +1914,11 @@ fi
   objc_threaded="-lpcthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 1887 "configure"
+#line 1918 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:1891: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:1922: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lpcthread"
 else
@@ -1906,11 +1937,11 @@ else
   objc_threaded="-lthread"
 else
   cat > conftest.$ac_ext <<EOF
-#line 1910 "configure"
+#line 1941 "configure"
 #include "confdefs.h"
 #include "config_thread.m"
 EOF
-if { (eval echo configure:1914: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
+if { (eval echo configure:1945: \"$ac_link\") 1>&5; (eval $ac_link) 2>&5; } && test -s conftest && (./conftest; exit) 2>/dev/null
 then
   objc_threaded="-lthread"
 else
@@ -2104,6 +2135,7 @@ s%@X_INCLUDE@%$X_INCLUDE%g
 s%@X_LIBS@%$X_LIBS%g
 s%@JPEG_LIB@%$JPEG_LIB%g
 s%@JPEG_INCLUDE@%$JPEG_INCLUDE%g
+s%@JPEG@%$JPEG%g
 s%@TIFF_LIB@%$TIFF_LIB%g
 s%@TIFF_INCLUDE@%$TIFF_INCLUDE%g
 s%@ac_cv_library_combo@%$ac_cv_library_combo%g

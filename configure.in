@@ -131,21 +131,18 @@ AC_ARG_WITH(jpeg_includes,
         with_jpeg_include=/usr/local/include)
 
 AC_DEFUN(AC_CHECK_JPEGLIB,
-[jpeg_check_lib_save_lib=${LIBS}
-LIBS="-L$1 ${LIBS}"
-jpeg_check_lib_save_header=${CPPFLAGS}
-CPPFLAGS="-I$2 ${CPPFLAGS}"
+[jpeg_check_lib_save_header=${CPPFLAGS}
+CPPFLAGS="-L$1 -I$2 ${CPPFLAGS}"
 
 AC_CHECK_LIB(jpeg, jpeg_destroy_decompress,
       jpeg_ok=yes,
-      jpeg_ok=no
-      AC_MSG_WARN(*** Cannot find libjpeg ***)
-      AC_MSG_ERROR(*** To build GUI library JPEG library is required ***))
+      jpeg_ok=no)
 if test "$jpeg_ok" = yes; then
-  AC_MSG_CHECKING([for jpeg.h])
+  AC_MSG_CHECKING([for jpeglib.h])
   AC_TRY_CPP([#include <stdio.h>
               #undef PACKAGE
 	      #undef VERSION
+	      #undef HAVE_STDLIB_H
               #include <jpeglib.h>],
  	      jpeg_ok=yes,
 	      jpeg_ok=no)
@@ -156,12 +153,8 @@ if test "$jpeg_ok" = yes; then
     export JPEG_LIB
     JPEG_INCLUDE="-I$2"
     export JPEG_INCLUDE
-  else
-   AC_MSG_WARN(*** Cannot find libjpeg header ***)
-   AC_MSG_ERROR(*** To build GUI library JPEG library is required ***)
   fi
 fi
-LIBS="${jpeg_check_lib_save_lib}"
 CPPFLAGS="${jpeg_check_lib_save_header}"])
 
 if test "x$JPEG_LIB" = x; then
@@ -182,17 +175,34 @@ AC_ARG_WITH(tiff_includes,
         with_tiff_include=/usr/local/include)
 
 AC_DEFUN(AC_CHECK_TIFFLIB,
-[tiff_check_lib_save_lib=${LIBS}
-LIBS="-L$1 ${JPEG_LIB} ${LIBS}"
-tiff_check_lib_save_header=${CPPFLAGS}
-CPPFLAGS="-I$2 ${JPEG_INCLUDE} ${CPPFLAGS}"
+[tiff_check_lib_save_header=${CPPFLAGS}
+tiff_check_lib_save_libs=${LIBS}
+CPPFLAGS="-L$1 ${JPEG_LIB} -I$2 ${JPEG_INCLUDE} ${CPPFLAGS}"
 
+AC_MSG_CHECKING(for -ltiff without -ljpeg)
+LIBS="-ltiff -lm $LIBS"
+AC_TRY_LINK([char TIFFReadScanline();], [TIFFReadScanline()],
+    jpeg_notneeded=yes,
+    jpeg_notneeded=no)
+AC_MSG_RESULT($jpeg_notneeded)
+LIBS=${tiff_check_lib_save_libs}
+JPEG=
+if test "$jpeg_notneeded" = no; then
+  JPEG=-ljpeg
+fi
 AC_CHECK_LIB(tiff, TIFFReadScanline,
       tiff_ok=yes,
       tiff_ok=no
-      AC_MSG_WARN(*** Cannot find libtiff ***)
-      AC_MSG_ERROR(*** To build GUI library TIFF library is required ***),
-      -ljpeg -lm)
+      AC_MSG_WARN(Cannot find libtiff)
+      echo "* The GUI library reqiures the TIFF library"
+      echo "* Use --with-tiff-library to specify the tiff library"
+      echo "* directory if it is not in the usual place(s)"
+      echo "* You may also have to specify --with-jpeg-library if the jpeg"
+      echo "* Library is needed by tiff"
+      if test "x$CONFIGURING_CORE_LIBRARIES" != x; then
+        AC_MSG_ERROR(You must have proper libraries installed to compile core)
+      fi,
+      $JPEG -lm)
 if test "$tiff_ok" = yes; then
   AC_CHECK_HEADER(tiffio.h,
                   tiff_ok=yes,
@@ -203,17 +213,22 @@ if test "$tiff_ok" = yes; then
     TIFF_INCLUDE="-I$2"
     export TIFF_INCLUDE
   else
-   AC_MSG_WARN(*** Cannot find libtiff header ***)
-   AC_MSG_ERROR(*** To build GUI library TIFF library is required ***)
+    AC_MSG_WARN(Cannot find libtiff header tiffio)
+    echo "* The GUI library requres the TIFF library"
+    echo "* Use --with-tiff-include to specify the tiff header directory"
+    echo "* if it is not in the usual place(s)"
+    if test "x$CONFIGURING_CORE_LIBRARIES" != x; then
+      AC_MSG_ERROR(You must have proper libraries installed to compile core)
+    fi
   fi
 fi
-LIBS="${tiff_check_lib_save_lib}"
-CPPFLAGS="{tiff_check_lib_save_header}"])
+CPPFLAGS="${tiff_check_lib_save_header}"])
 
 if test "x$TIFF_LIB" = x; then
   AC_CHECK_TIFFLIB(${with_tiff_library}, ${with_tiff_include})
 fi
 
+AC_SUBST(JPEG)
 AC_SUBST(TIFF_LIB)
 AC_SUBST(TIFF_INCLUDE)
 

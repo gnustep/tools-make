@@ -108,7 +108,7 @@ JPEG_LIB := @JPEG_LIB@
 ifeq ($(JPEG_LIB),-LNONE)
         JPEG_LIB=
 endif
-
+JPEG = @JPEG@
 
 DPS_DEFINE=@DPS_DEFINE@
 

@@ -1,3 +1,7 @@
+1999-03-08  Adam Fedor  <fedor@gnu.org>
+
+	* Merge dawn branch into main.
+
 Tue Mar  2 08:57:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
         * make/target.make: Include GNUSTEP_SYSTEM_LIBRARIES in link list to
@@ -6,6 +10,41 @@ Tue Mar  2 08:57:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 Tue Mar  2 08:04:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* Merge in 'dawn' CVS branch.
+
+1999-02-22  Scott Christley  <scottc@golden.net-community.com>
+
+	* opentool: New file.
+
+1999-02-19  Scott Christley  <scottc@golden.net-community.com>
+
+	* MediaBook.sh (MB_GNUSTEP_SOURCE, MB_FINANCE_SOURCE): New variables.
+	(MB.init): Renamed to MBinit.sh and put under GNUSTEP_USER_ROOT.
+	* setlocaltz.sh: New file.
+	* MediaBook.func: Add help for new commands.
+
+1999-03-08  Adam Fedor  <fedor@gnu.org>
+
+	* Version 0.5.5 Released.
+
+1999-03-05  Adam Fedor  <fedor@gnu.org>
+
+	* brain.make: Switch order of TIFF_INCLUDE and X_INCLUDE.
+
+1999-03-04  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Check if tiff libary nees jpeg. Rearrange tiff and
+	jpeg checks so they exit if not found and compiling core libraries.
+	* config.make.in (JPEG): New variable to hold "-ljpeg" if needed.
+	* brain.make: Use it. Switch order of TIFF_LIB and X_LIBS (For solaris).
+	
+Wed Mar  3 06:56:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* configure.in: Fix to detect jpeglib.h on redhat
+
+Tue Mar  2 17:05:57 1999  Adam Fedor  <fedor@ultra.doc.com>
+
+	* configure.in: Make AC_ERROR into AC_WARN (since make could be
+	used with non-gui libs).
 
 1999-03-01  Adam Fedor  <fedor@gnu.org>
 
@@ -64,10 +103,6 @@ Thu Feb 25 03:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 	* brain.make: Define GNUSTEP if using GNUstep libraries. 
 	* common.make (AUXILARY_CPPFLAGS): Include GNUSTEP and Version defines.
 	
-1999-02-22  Scott Christley  <scottc@golden.net-community.com>
-
-	* opentool: New file.
-
 Sun Feb 21 15:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
 	* target.make (Solaris::AFTER_INSTALL_SHARED_LIB_COMMAND): 
@@ -76,13 +111,6 @@ Sun Feb 21 15:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 Sun Feb 21 13:49:55 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
 	* rules.make (%.build): Check the length of string, $($*_SUBPROJECTS).
-
-1999-02-19  Scott Christley  <scottc@golden.net-community.com>
-
-	* MediaBook.sh (MB_GNUSTEP_SOURCE, MB_FINANCE_SOURCE): New variables.
-	(MB.init): Renamed to MBinit.sh and put under GNUSTEP_USER_ROOT.
-	* setlocaltz.sh: New file.
-	* MediaBook.func: Add help for new commands.
 
 1999-02-19  Adam Fedor  <fedor@gnu.org>
 
