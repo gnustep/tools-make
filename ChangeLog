@@ -1,3 +1,51 @@
+Tue Oct 22 02:29:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/objc.make (internal-clean): Fixed typo, objc_program for
+	objc-program.
+	(internal-distclean): Idem.
+
+Tue Oct 22 02:11:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+	
+	Implemented 'make strings' target, which runs make_strings to
+	create/update .strings files.
+	* Master/rules.make (strings, before-strings, internal-strings,
+	after-strings): New targets
+	* Master/aggregate.make (internal-strings): New target implemented.
+	* Master/application.make (internal-strings): Idem.
+	* Master/bundle.make (internal-strings): Idem.
+	* Master/clibrary.make (internal-strings): Idem.
+	* Master/ctool.make (internal-strings): Idem.
+	* Master/framework.make (internal-strings): Idem.
+	* Master/gswapp.make (internal-strings): Idem.
+	* Master/gswbundle.make (internal-all): Idem.
+	* Master/library.make (internal-strings): Idem.
+	* Master/objc.make (internal-strings): Idem.
+	* Master/palette.make (internal-strings): Idem.
+	* Master/service.make (internal-strings): Idem.
+	* Master/subproject.make (internal-strings): Idem.
+	* Master/test-application.make (internal-strings): Idem.
+	* Master/test-library.make (internal-strings): Idem.
+	* Master/test-tool.make (internal-strings): Idem.
+	* Master/tool.make (internal-strings): Idem.
+	* Instance/Shared/strings.make: New file.
+	* GNUmakefile.in (INSTANCE_SHARED_MAKE_FILES): Added the new file.
+	* messages.make (ECHO_MAKING_STRINGS): New variable.
+	(ALWAYS_ECHO_NO_LANGUAGES): New variable.
+	(ALWAYS_ECHO_NO_FILES): New message.
+	* Instance/application.make: Include Instance/Shared/strings.make.
+	* Instance/bundle.make: Idem.
+	* Instance/ctool.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/gswapp.make: Idem.
+	* Instance/gswbundle.make: Idem.
+	* Instance/library.make: Idem.
+	* Instance/objc.make: Idem.
+	* Instance/palette.make: Idem.
+	* Instance/service.make: Idem.
+	* Instance/subproject.make: Idem.
+	* Instance/test-library.make: Idem.
+	* Instance/tool.make: Idem.
+		
 Tue Oct 22 00:59:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make ($(GNUSTEP_MAKEFILES)/Instance/Shared/*.make): New
