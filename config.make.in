@@ -79,18 +79,10 @@ ifndef objc_threaded
   objc_threaded:=@objc_threaded@
 endif
 
-#
-# Graphic and X Window System headers and libraries
-#
-GRAPHIC_LIBS=@GRAPHIC_LIBS@
-GRAPHIC_CFLAGS=@GRAPHIC_CFLAGS@
-GRAPHIC_LFLAGS=@GRAPHIC_LFLAGS@
-X_PRE_LIBS=@X_PRE_LIBS@
-
 # Any user specified libs, like thread libraries
 CONFIG_SYSTEM_INCL = @CPPFLAGS@
 CONFIG_SYSTEM_LIBS = @LIBS@
-CONFIG_SYSTEM_DEFS = @SYSTEM_DEFS@ @DPS_DEFINE@
+CONFIG_SYSTEM_DEFS = 
 
 ## Local variables:
 ## mode: makefile
