@@ -6,7 +6,7 @@
 %define gs_version	@GNUSTEP_MAKE_VERSION@
 %define gs_name         gnustep-make
 %define gs_prefix 	/usr/GNUstep
-%define libcombo        gnu-gnu-gnu-xgps
+%define gs_libcombo     gnu-gnu-gnu-xgps
 #
 Name: 		%{gs_name}
 Version: 	%{gs_version}
@@ -40,13 +40,13 @@ BuildRoot: 	/var/tmp/build-%{gs_name}
 %description
 This package contains the basic scripts, makefiles and directory layout
 needed to run and compile any GNUstep software.  This package was configured
-for library combo %{libcombo}.
+for library combo %{gs_libcombo}.
 
 %prep
 %setup -n %{gs_name}-%{gs_version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%{libcombo}
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%{gs_libcombo}
 make
 
 %install
@@ -83,6 +83,33 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/profile.d/GNUstep.sh
 %config /etc/profile.d/GNUstep.csh
 %endif # Linux
+
+#
+# FIXME - do we want to add dirs to the library path or not
+#
+
+#%post
+#if [ $1 = 1]; then
+#%ifos Linux
+# if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
+#    . %{gs_root}/Makefiles/GNUstep.sh 
+# fi
+# grep -q '%{gs_prefix}/System/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}' /etc/ld.so.conf || echo "%{gs_prefix}/System/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}" >> /etc/ld.so.conf
+#%endif
+#fi
+
+#%postun
+#if [ $1 = 0 ]; then
+#%ifos Linux
+# if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
+#    . %{gs_root}/Makefiles/GNUstep.sh 
+# fi
+# mv -f /etc/ld.so.conf /etc/ld.so.conf.orig
+# grep -v "^%{gs_prefix}/System/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}" /etc/ld.so.conf.orig > /etc/ld.so.conf
+# rm -f /etc/ld.so.conf.orig
+#%endif
+#fi
+
 
 %changelog
 * Wed Jan 17 2001  Nicola Pero  <nicola@brainstorm.co.uk>
