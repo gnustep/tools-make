@@ -3,6 +3,8 @@ Fri Jan  7  6:05:00 2000  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 	* application.make: use xxx_PRINCIPAL_CLASS to override the value
 	of NSExecutable in Info.plist so we can have callses other than
 	NSApplication as the app class.
+	* palette.make: use PRINCIPAL_CLASS rather than PALETTE_CLASS
+	* rules.make: remove PALETTE_CLASS
 
 1999-12-09  Adam Fedor  <fedor@gnu.org>
 

@@ -33,7 +33,8 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The name of the palette is in the PALETTE_NAME variable.
 # The list of palette resource file are in xxx_RESOURCE_FILES
 # The list of palette resource directories are in xxx_RESOURCE_DIRS
-# The name of the palette class is xxx_PALETTE_CLASS
+# The name of the palette class is xxx_PRINCIPAL_CLASS
+# The name of the palette nib is xxx_MAIN_MODEL_FILE
 # The name of the palette icon is xxx_PALETTE_ICON
 # The name of a file containing info.plist entries to be inserted into
 # Info-gnustep.plist (if any) is xxxInfo.plist where xxx is the palette name
@@ -114,8 +115,8 @@ $(PALETTE_DIR_NAME)/Resources/palette.table
 	  done \
 	fi)
 
-ifeq ($(PALETTE_CLASS),)
-override PALETTE_CLASS = $(INTERNAL_palette_NAME)
+ifeq ($(PRINCIPAL_CLASS),)
+override PRINCIPAL_CLASS = $(INTERNAL_palette_NAME)
 endif
 
 ifeq ($(PALETTE_ICON),)
@@ -132,12 +133,12 @@ $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist: $(PALETTE_DIR_NAME)/Resources
 
 $(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
 	@(echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  if [ "$(PALETTE_NIB)" = "" ]; then \
+	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NibFile = \"\";"; \
 	  else \
-	    echo "  NibFile = \"`echo $(PALETTE_NIB) | sed 's/.gmodel//'`\";"; \
+	    echo "  NibFile = \"`echo $(MAIN_MODEL_FILE) | sed -e 's/.gmodel//' -e 's/.gorm//' -e 's/.nib//'`\";"; \
 	  fi; \
-	  echo "  Class = \"$(PALETTE_CLASS)\";"; \
+	  echo "  Class = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "  Icon = \"$(PALETTE_ICON)\";"; \
 	  if [ -r "$(INTERNAL_palette_NAME)palette.table" ]; then \
 	    cat $(INTERNAL_palette_NAME)palette.table; \

@@ -120,7 +120,7 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
+	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed -e 's/.gmodel//' -e 's/.gorm//' -e 's/.nib//'`\";"; \
 	  fi; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  if [ -r "$(INTERNAL_bundle_NAME)Info.plist" ]; then \
