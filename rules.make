@@ -241,6 +241,10 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	pswrap -h $*.h -o $@ $<
 
 
+# Prevent make from trying to remove stuff like
+# libcool.library.all.subprojects thinking that it is a temporary file
+.PRECIOUS: %.variables %.tools %.subprojects
+
 #
 ## The magical %.variables rules, thank you GNU make!
 #
@@ -261,58 +265,19 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 
 # the rule then calls a submake, which runs the real code
 
-# These functions are used in the following %.variables rule to extract
-# the target, operation and type from the $* (the stem) of the rule.
-# for example, $(call target,$*) will be the target.
+# The following functions are used in the %.variables, %.tools,
+# %.subprojects rules to extract the target, operation and type from
+# the $* (the stem) of the rule.  for example, $(call target,$*) will
+# be the target.
 target=$(basename $(basename $(1)))
 operation=$(subst .,,$(suffix $(basename $(1))))
 type=$(subst -,_,$(subst .,,$(suffix $(1))))
 
-%.variables:
-ifneq ($(FRAMEWORK_NAME),)
-	@ if [ "$(call operation,$*)" != "build-headers" ]; then \
-	  if [ "$($(call target,$*)_TOOLS)" != "" ]; then \
-	    echo Building tools for $(call type,$*) $(call target,$*)...; \
-	    for f in $($(call target,$*)_TOOLS); do \
-	      mf=$(MAKEFILE_NAME); \
-	      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	        mf=Makefile; \
-	        echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
-	      fi; \
-	      if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
-	           FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-	           FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-	           FRAMEWORK_OPERATION="$(call operation,$*)" \
-	           TOOL_OPERATION="$(call operation,$*)" \
-	           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-	           SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	         ; then \
-	         :; \
-	      else exit $$?; \
-	      fi; \
-	    done; \
-	  fi; \
-	fi
-endif # end of FRAMEWORK code
-	@ if [ "$($(call target,$*)_SUBPROJECTS)" != "" ]; then \
-	echo Making $(call operation,$*) in subprojects of $(call type,$*) $(call target,$*)...; \
-	for f in $($(call target,$*)_SUBPROJECTS); do \
-	  mf=$(MAKEFILE_NAME); \
-	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
-	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-	        FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-	        DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-	        SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	      ; then \
-	      :; \
-	  else exit $$?; \
-	  fi; \
-	done; \
-	fi
+# Before building the real thing, we must build framework tools if
+# any, then subprojects (FIXME - not sure - at what stage should we
+# build framework tools ? perhaps after the framework so we can link
+# with it ?)
+%.variables: %.tools %.subprojects
 	@ echo Making $(call operation,$*) for $(call type,$*) $(call target,$*)...; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(call type,$*)-$(call operation,$*) \
@@ -377,6 +342,64 @@ endif # end of FRAMEWORK code
 		shared_libext=$(SHARED_LIBEXT))" \
 	    SCRIPTS_DIRECTORY="$($(call target,$*)_SCRIPTS_DIRECTORY)" \
 	    CHECK_SCRIPT_DIRS="$($(call target,$*)_SCRIPT_DIRS)"
+
+
+ifneq ($(FRAMEWORK_NAME),)
+#
+# This rule is executed only for frameworks to build the framework tools.
+# It is currently executed before %.subprojects (FIXME order).
+#
+%.tools:
+	@ if [ "$(call operation,$*)" != "build-headers" ]; then \
+	  if [ "$($(call target,$*)_TOOLS)" != "" ]; then \
+	    echo Building tools for $(call type,$*) $(call target,$*)...; \
+	    for f in $($(call target,$*)_TOOLS); do \
+	      mf=$(MAKEFILE_NAME); \
+	      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	        mf=Makefile; \
+	        echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
+	      fi; \
+	      if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
+	           FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+	           FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+	           FRAMEWORK_OPERATION="$(call operation,$*)" \
+	           TOOL_OPERATION="$(call operation,$*)" \
+	           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+	           SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	         ; then \
+	         :; \
+	      else exit $$?; \
+	      fi; \
+	    done; \
+	  fi; \
+	fi
+else # no FRAMEWORK
+%.tools: ;
+endif # end of FRAMEWORK code
+
+#
+# This rule is executed before %.variables to process (eventual) subprojects
+#
+%.subprojects:
+	@ if [ "$($(call target,$*)_SUBPROJECTS)" != "" ]; then \
+	echo Making $(call operation,$*) in subprojects of $(call type,$*) $(call target,$*)...; \
+	for f in $($(call target,$*)_SUBPROJECTS); do \
+	  mf=$(MAKEFILE_NAME); \
+	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	    mf=Makefile; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	  fi; \
+	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
+	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+	        FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+	        DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+	        SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	      ; then \
+	      :; \
+	  else exit $$?; \
+	  fi; \
+	done; \
+	fi
 
 #
 # The list of Objective-C source files to be compiled
