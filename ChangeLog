@@ -1,3 +1,8 @@
+Sun Feb 24 13:22:09 2002  Matthias Klose <doko@cs.tu-berlin.de>:
+
+	* GNUstep.sh.in, GNUstep.csh.in: Start make_services in a
+	subshell, disables "Done" messages for shells with job control.
+
 Fri Feb 22 18:08:39 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* openapp.in: Quote the arguments when executing the app.
