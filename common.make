@@ -129,14 +129,14 @@ ifeq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
     SYS_TOOLS_PATH := $(shell $(GNUSTEP_MAKEFILES)/fixpath.sh -u $(SYS_TOOLS_PATH))
   endif
 endif
-ifeq ($(findstring mingw, $(GNUSTEP_HOST_OS)), cygwin)
+ifeq ($(findstring cygwin, $(GNUSTEP_HOST_OS)), cygwin)
   ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
     SYS_TOOLS_PATH := $(shell $(GNUSTEP_MAKEFILES)/fixpath.sh -u $(SYS_TOOLS_PATH))
   endif
 endif
 
 ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
-  $(warning WARNING: Your PATH is not set up correctly !)
+  $(warning WARNING: Your PATH may not be set up correctly !)
   $(warning Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
 endif
 
