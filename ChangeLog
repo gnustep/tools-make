@@ -1,10 +1,14 @@
-Mon Nov 27 16:16:00 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+Mon Nov 27 16:28:12 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* documentation.make (internal-doc-clean): Ignore errors when
 	removing the HTML generated from latex - because the error could
 	be caused by a CVS subdir.
 	(internal-doc-distclean): for latex, don't remove HTML document
 	directory (might contain CVS subdir).
+	(internal-doc-install): For latex2html, install only html and css
+	files and not the full latex2html output.
+	(internal-doc-uninstall): For latex2html, uninstall only html and
+	css files.
 	
 2000-11-18  Richard Frith-Macdonald <rfm@gnu.org>
 
