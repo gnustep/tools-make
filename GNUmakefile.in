@@ -1,5 +1,4 @@
-#
-#   GNUmakefile.in
+#   @configure_input@
 #
 #   Main GNUmakefile for the GNUstep GNUmakefile Package.
 #

@@ -1,5 +1,7 @@
 #!/bin/sh
 #
+# @configure_input@
+#
 # Copyright (C) 1999 Free Software Foundation, Inc.
 #
 # Author: Adam Fedor <fedor@gnu.org>

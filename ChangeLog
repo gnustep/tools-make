@@ -1,3 +1,12 @@
+2002-05-02  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Updated using autoconf 2.53 from configure.in
+	* configure, config.h.in: Regenerate.
+	* GNUmakefile.in: Add @configure_input@ comment
+	* GNUstep.csh.in, GNUstep.sh.in, debugapp.in, fixpath.sh.in, 
+	openapp.in, debugapp.in, opentool.in: Idem.
+	* aclocal.m4: Remove.
+
 2002-04-30  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.3.2

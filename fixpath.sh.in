@@ -1,6 +1,6 @@
 #! /bin/sh
 #
-#   fixpath.sh
+#   @configure_input@
 #
 #   Script for converting between windows and unix-style paths.
 #

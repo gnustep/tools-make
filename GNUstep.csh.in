@@ -1,6 +1,6 @@
 #! /bin/echo This file must be sourced inside csh using: source
 #
-#   GNUstep.csh.in
+#   @configure_input@
 #
 #   Shell initialization for the GNUstep environment.
 #
