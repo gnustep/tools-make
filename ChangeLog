@@ -1,3 +1,18 @@
+Mon Jul  9 16:45:09 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* gswbundle.make (localized-gswbundle-resource-files): Renamed to
+	gswbundle-localized-resource-files for consistency with the other
+	makefiles.
+	(.PHONY): Added.
+	(gswbundle-components): Turned shell conditional into makefile
+	conditional.
+	(gswbundle-webresource-files): Idem.
+	(gswbundle-localized-webresource-files): Idem.
+	(gswbundle-resource-files): Idem.
+	(gswbundle-localized-resource-files): Idem.
+	(internal-bundle-install): Idem.
+	(internal-bundle-uninstall): Idem.
+
 Mon Jul  9 16:23:19 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* gswapp.make (.PHONY): Added.
