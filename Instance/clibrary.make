@@ -30,6 +30,14 @@
 #
 # It all works as for library.make but we install outside library-combo
 #
+# Other differences are: 
+#
+# The name of the library is in the CLIBRARY_NAME variable, rather
+# than in the LIBRARY_NAME variable as it happens for libraries.
+#
+# Similarly, the install dir is controlled by CLIBRARY_INSTALL_DIR
+# rather than LIBRARY_INSTALL_DIR.
+#
 
 .PHONY: internal-clibrary-all_ \
         internal-clibrary-install_ \

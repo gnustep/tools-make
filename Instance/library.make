@@ -28,7 +28,8 @@ endif
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 #
-# The name of the library is in the LIBRARY_NAME variable.
+# The name of the library (including the 'lib' prefix) is 
+# in the LIBRARY_NAME variable.
 # The Objective-C files that gets included in the library are in xxx_OBJC_FILES
 # The C files are in xxx_C_FILES
 # The pswrap files are in xxx_PSWRAP_FILES
