@@ -125,8 +125,12 @@ $(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
 	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
 		$(INTERNAL_doc_NAME).dvi -o $@
 
+# Some systems don't have GNUSTEP_TEXI2HTML.  Simply don't build the
+# HTML in these cases - but without aborting compilation.  Below, we
+# don't install the result if it doesn't exist.
+
 $(INTERNAL_doc_NAME)_toc.html: $(TEXI_FILES)
-	$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
+	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
 		$(INTERNAL_doc_NAME).texi
 
 $(INTERNAL_textdoc_NAME): $(TEXI_FILES) $(TEXT_MAIN)
@@ -235,13 +239,18 @@ $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 # texi installation
 #
 ifneq ($(TEXI_FILES),)
+
+# NB: Only install HTML if it has been generated
 internal-doc-install::
 	$(INSTALL_DATA) $(INTERNAL_doc_NAME).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(INTERNAL_doc_NAME).info \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(INTERNAL_doc_NAME)_*.html \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	if [ -f $(INTERNAL_doc_NAME)_toc.html ]; then \
+	  $(INSTALL_DATA) $(INTERNAL_doc_NAME)_*.html \
+	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
+	fi
+
 internal-doc-uninstall:: 
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME).ps
