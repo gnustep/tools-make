@@ -203,11 +203,7 @@ fi
 
 AC_LN_S
 
-TAR=
-AC_CHECK_PROG(TAR, gtar, gtar)
-if test "$TAR" = ""; then
-  TAR=tar
-fi
+AC_CHECK_PROGS(TAR, gnutar gtar, tar)
 
 #--------------------------------------------------------------------
 # Miscellaneous flags and setup
