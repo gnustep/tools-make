@@ -42,8 +42,8 @@
 HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 
 .PHONY: \
-shared-install-headers-install \
-shared-install-headers-uninstall
+shared-instance-headers-install \
+shared-instance-headers-uninstall
 
 ifeq ($(HEADER_FILES),)
 

@@ -44,11 +44,11 @@
 
 
 .PHONY: \
-shared-install-java-all \
-shared-install-java-install \
-shared-install-java-install-dirs \
-shared-install-java-uninstall \
-shared-install-java-clean \
+shared-instance-java-all \
+shared-instance-java-install \
+shared-instance-java-install-dirs \
+shared-instance-java-uninstall \
+shared-instance-java-clean \
 
 
 shared-instance-java-all: $(JAVA_OBJ_FILES) \
@@ -138,7 +138,3 @@ ifneq ($(JAVA_PROPERTIES_FILES),)
 	  fi; \
 	done
 endif
-
-## Local variables:
-## mode: makefile
-## End:
