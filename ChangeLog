@@ -1,3 +1,10 @@
+Fri Jun 29 14:53:51 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Documentation/.latex2html-init: New file.
+	* Documentation/internals.tex: New document.
+	* Documentation/GNUmakefile.in: Define TAR.  Compile 
+	internals.
+
 Fri Jun 29 14:22:33 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* java.make: Removed old obsolete JAVA_PACKAGE_PREFIX support.
