@@ -1,3 +1,9 @@
+Fri Dec 26 17:40:23 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* debugapp.in: Iterate over command line arguments to be able to
+	process more than one of them at the same time.  Added
+	--gdb=... command line flag.  Documented it.
+
 2003-11-3- Richard Frith-Macdonald <rfm@gnu.org>
 
 	* user_home.c: Use name of current user under unix (rather than

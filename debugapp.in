@@ -25,7 +25,7 @@
 # unmodified to the application.
 
 if [ -z "$1" ]; then
-  echo usage: `basename "$0"` [--library-combo=...] application [arguments...]
+  echo usage: `basename "$0"` [--library-combo=...] [--gdb=...] application [arguments...]
   echo `basename "$0"` --help for help
   exit 1
 fi
@@ -40,34 +40,43 @@ if [ -z "$GDB" ]; then
   GDB=gdb
 fi
 
-case "$1" in
-  --help)
-    echo usage: `basename "$0"` [--library-combo=...] application [arguments...]
-    echo
-    echo [--library-combo=...] specifies a GNUstep backend to use.
-    echo It overrides the default LIBRARY_COMBO environment variable.
-    echo --library-combo=gnu for GNUstep 
-    echo --library-combo=nx for NeXT OPENSTEP
-    echo --library-combo=apple for Apple OSX
-    echo
-    echo application is the complete or relative name of the application
-    echo program with the .app extension, like Edit.app.
-    echo
-    echo [arguments...] are the arguments to the application.
-    exit 0
-    ;;
-  --library-combo=*)
-    LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
-    if [ -z "$2" ]; then
-      echo usage: `basename "$0"` [--library-combo=...] application [arguments...]
-      echo `basename "$0"` --help for help
-      exit 1
-    fi
-    app="$2"; shift; shift
-    ;;
-  *)
-    app="$1"; shift;;
-esac
+# Read command line arguments now
+while [ x"$1" != x ]; do
+  case "$1" in
+    --help)
+      echo usage: `basename "$0"` [--library-combo=...] [--gbd=...] application [arguments...]
+      echo
+      echo [--library-combo=...] specifies a GNUstep backend to use.
+      echo It overrides the default LIBRARY_COMBO environment variable.
+      echo --library-combo=gnu for GNUstep 
+      echo --library-combo=nx for NeXT OPENSTEP
+      echo --library-combo=apple for Apple OSX
+      echo
+      echo [--gdb=...] specifies the debugger to use.
+      echo It overrides the default GDB environment variable.  If the --gdb=...
+      echo flag is not used, and the GDB variable is not set, then the program
+      echo called \"gdb\" is invoked.
+      echo
+      echo application is the complete or relative name of the application
+      echo program with the .app or .debug extension, like Edit.debug.
+      echo
+      echo [arguments...] are the arguments to the application.
+      exit 0
+      ;;
+
+    --library-combo=*)
+      LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
+      shift;;
+
+    --gdb=*)
+      GDB=`echo "$1" | sed 's/--gdb=//'`
+      shift;;
+
+    *)
+      app="$1";
+      shift;;
+  esac
+done
 
 if [ "$LIBRARY_COMBO" = nx ]; then
   LIBRARY_COMBO=nx-nx-nx
