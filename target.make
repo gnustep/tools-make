@@ -401,6 +401,35 @@ endif
 
 ####################################################
 #
+# IRIX
+#
+ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
+#HAVE_SHARED_LIBS        = yes
+STATIC_LIB_LINK_CMD = \
+        (cd $(GNUSTEP_OBJ_DIR); $(AR) $(ARFLAGS) \
+        $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
+        $(RANLIB) $(VERSION_LIBRARY_FILE)
+SHARED_LIB_LINK_CMD     = \
+        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o 
+$(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` ;\
+          rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+SHARED_CFLAGS     += -fPIC
+SHARED_LIBEXT   = .sl
+
+HAVE_BUNDLES    = yes
+BUNDLE_LD       = $(CC)
+BUNDLE_CFLAGS   += -fPIC
+BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+endif
+
+# end IRIX
+#
+####################################################
+
+####################################################
+#
 # Solaris
 #
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)

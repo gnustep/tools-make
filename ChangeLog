@@ -1,3 +1,7 @@
+Mon Feb 15 1999		Michael Hanni <mhanni@sprintmail.com>
+
+	* Added IRIX to target.make as requested.
+
 Mon Feb 15  8:48:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* aggregate.make: Strip space from name variable before use.
