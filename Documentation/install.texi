@@ -303,11 +303,4 @@ a .GNUsteprc file in the GNUSTEP_SYSTEM_ROOT directory.
 GNUSTEP_USER_ROOT=~
 @end example
 
-The system-wide .GNUsteprc file can also contain aa line saying
-@example
-FORCE_USER_ROOT
-@end example
-Which will force the value supplied in the system wide file to be used
-irrespective of any user specific .GNUsteprc file settings.
-
 @bye
