@@ -1,3 +1,10 @@
+2001-01-02  Adam Fedor  <fedor@gnu.org>
+
+	* bundle.make (BUNDLE_FILE): Use INTERNAL_bundle_NAME.
+	($(BUNDLE_DIR_NAME)/Contents/Info.plist): Likewise.
+	($(BUNDLE_DIR_NAME)/Resources/Info.plist): Likewise.
+	(Fixes building of multiple bundles in one directory).
+
 2000-01-02  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* target.make (SHARED_LIB_LINK_CMD, SHARED_FRAMEWORK_LINK_CMD): removed

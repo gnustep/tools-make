@@ -107,7 +107,7 @@ after-$(TARGET)-all::
 
 BUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := \
-    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)$(BUNDLE_OBJ_EXT)
+    $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_bundle_NAME)$(BUNDLE_OBJ_EXT)
 BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resources/$(d))
 ifeq ($(strip $(RESOURCE_FILES)),)
   override RESOURCE_FILES=""
@@ -192,7 +192,7 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
 	  echo "<plist version='0.9'>";\
 	  echo "  <dict>";\
 	  echo "    <key>CFBundleExecutable</key>";\
-	  echo "    <string>$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}</string>";\
+	  echo "    <string>$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_bundle_NAME)${BUNDLE_OBJ_EXT}</string>";\
 	  echo "    <key>CFBundleInfoDictionaryVersion</key>";\
 	  echo "    <string>6.0</string>";\
 	  echo "    <key>CFBundlePackageType</key>";\
@@ -210,7 +210,7 @@ build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
 # NeXTstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(BUNDLE_NAME)${BUNDLE_OBJ_EXT}\";"; \
+	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_bundle_NAME)${BUNDLE_OBJ_EXT}\";"; \
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
