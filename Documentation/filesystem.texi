@@ -74,9 +74,7 @@ important thing is the differing purpose of the Local domain, as it is
 meant as the location for installing software which was not included
 with your GNUstep distribution.  These may include third party 
 applications, custom extension libraries and their related header files,
-etc.  Another difference is the possible permission for normal users to
-install software in this location without having to ask the system 
-administrator for permission to do so.  The Local domain is - as the name 
+etc.  The Local domain is - as the name 
 suggests - usually installed as @file{Local} on your GNUstep system.
 
 
@@ -111,10 +109,11 @@ related files which shall not be available to other users on the
 system but only to the user owning them.  This includes the GNUstep
 defaults database, which holds system settings, application
 preferences and customized resources, as well as temporary data
-related to services and file type associations for programs.  In
+related to services and file type associations for programs. It also
+holds user installed applications and tools (each user has the ability
+to install their own version of an application or tool).  In
 addition to these special files, the User domain features the same
 structure as the other domains.
-
 
 
 
@@ -158,8 +157,6 @@ Local/
 Network/
         Applications/
         Library/
-        Servers/
-        Users/
 @end example
 
 @node User Hierarchy, Library Folder, Network Hierarchy, Hierarchy
@@ -201,7 +198,6 @@ Network/
 @item   @tab	@tab	@tab TextConverters			
 @item Makefiles @tab @tab @tab				@tab @emph{system only}
 @item 	@tab Additional					
-@item Palettes						
 @item PostScript						
 @item	@tab PPD					
 @item Services						
@@ -219,8 +215,6 @@ Network/
 * Applications::                
 * Tools::                       
 * Library::                     
-* Network/Servers::             
-* Network/Users::               
 @end menu
 
 @node System Description, Local Description, Description, Description
@@ -291,7 +285,7 @@ Tools that are written in languages other than Objective-C, or are developed
 to work with other runtime environments may have their own directory within
 the Tools directory (for example: @file{Tools/Java}).
 
-@node Library, Network/Servers, Tools, Description
+@node Library,  , Tools, Description
 @subsection Library
 
 The @file{Library} directory contains most of the functional
@@ -318,7 +312,6 @@ developers with a relatively common hierarchy to work within.
 * KeyBindings::                 
 * Libraries::                   
 * Makefiles::                   
-* Palettes::                    
 * PostScript::                  
 * Services::                    
 * Sounds::                      
@@ -338,10 +331,11 @@ in a @file{Preferences} subdirectory.
 @node Bundles, ColorPickers, ApplicationSupport, Library
 @subsubsection Bundles
 
-This directory contains application bundles. Bundles are
-collections of executable code and associated resources that may be
-loaded at runtime by an application or tool.  All bundles must have
-the extension @file{bundle}, to indicate their usage.
+This directory contains bundles. Bundles are collections of executable
+code and associated resources that may be loaded at runtime by an
+application or tool.  Note: this directory is depreciated. Use
+ApplicationSupport to install bundles that can be used by an
+application.
 
 @node ColorPickers, Colors, Bundles, Library
 @subsubsection ColorPickers
@@ -424,7 +418,7 @@ This directory contains libraries.  (NOTE: The Libraries directory
 being in Library may sound somewhat redundant, however, it could be
 read as "a Library of shared libraries".)
 
-@node Makefiles, Palettes, Libraries, Library
+@node Makefiles, PostScript, Libraries, Library
 @subsubsection Makefiles
 
 This directory contains the different types of makefiles used by the
@@ -435,13 +429,7 @@ GNUstep development environment.
 
 This directory only exists in the System domain.
 
-@node Palettes, PostScript, Makefiles, Library
-@subsubsection Palettes
-
-This directory contains additional development palettes
-for Gorm, the GNUstep Interface Builder clone.
-
-@node PostScript, Services, Palettes, Library
+@node PostScript, Services, Makefiles, Library
 @subsubsection PostScript
 
 This directory contains directories for specific 
@@ -461,21 +449,6 @@ that are installed on the system must an extension of ".service".
 @subsubsection Sounds
 
 This directory contains sound files.
-
-@node Network/Servers, Network/Users, Library, Description
-@subsection  Network/Servers
-
-The @file{Network/Servers} directory contains the mount points for
-remotely mounted filesystems.  If you wish to mount the
-Network/Applications directory from MachineA, and you are using
-MachineB, you would mount MachineA:Network/Applications on
-/Network/Servers/MachineA on MachineB.
-
-@node Network/Users,  , Network/Servers, Description
-@subsection Network/Users
-
-The @file{Network/Users} directory contains user home directories that
-have been remotely mounted on the local computer.
 
 @bye
 \bye

@@ -1,3 +1,8 @@
+2003-04-24  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/filesystem.texi: Clarify Local installation
+	rights, Remove Network/{Server,Users}.
+
 Wed Apr 23 09:18:07 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* config.make.in (CPP): Added.  (GENERAL_CPP): Removed.
