@@ -1,3 +1,12 @@
+Mon Nov 17 13:05:44 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* application.make: Output the file containing the paths for the
+	dynamic linker for each library combo instead of a global file for all
+	the combinations.
+	* openapp.in: Support the above change.
+	* debugapp.in: Likewise.
+	* rules.m (ALL_OBJCFLAGS, ALL_CFLAGS): Remove unnecessary -I.
+
 Fri Nov 14 12:51:16 1997  Scott Christley  <scottc@net-community.com>
 
 	* test-application.make: New file.

@@ -74,10 +74,6 @@ if [ -z "$full_appname" ]; then
   exit 1
 fi
 
-if [ -f "$full_appname/library_paths.openapp" ]; then
-  additional_library_paths="`cat $full_appname/library_paths.openapp`"
-fi
-
 #
 # Determine the host information
 #
@@ -99,6 +95,16 @@ if [ -z "$GNUSTEP_HOST_OS" ]; then
     GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/os.sh $GNUSTEP_HOST`
     GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/Makefiles/clean_os.sh $GNUSTEP_HOST_OS`
    export GNUSTEP_HOST_OS
+fi
+
+if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
+  if [ -f "$full_appname/library_paths.openapp" ]; then
+    additional_library_paths="`cat $full_appname/library_paths.openapp`"
+  fi
+else
+  if [ -f "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp" ]; then
+    additional_library_paths="`cat $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp`"
+  fi
 fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`
