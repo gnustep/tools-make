@@ -68,6 +68,9 @@ DOCUMENT_NAME = gnustep-howto faq filesystem internals machines make userfaq
 DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE
 
 TOP_DOC_FILES = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE
+README_FILES = README.Darwin README.MinGWOnCygwin README.Cygwin \
+	README.MinGW README.NetBSD
+
 
 GNUstep-HOWTO_TEXI_FILES = version.texi
 GNUstep-HOWTO_TEXT_MAIN = gnustep-howto.texi
@@ -146,8 +149,11 @@ version.texi: ../Version
 	 > version.texi
 
 # Install manually man pages
-after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
+after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual $(GNUSTEP_DOCUMENTATION)/User/GNUstep
 	$(INSTALL_DATA) DESIGN $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
+	for file in $(README_FILES); do \
+	  $(INSTALL_DATA) $$file $(GNUSTEP_DOCUMENTATION)/User/GNUstep/$$file; \
+	done;
 	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN) ]; then \
 	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN); \
 	fi; \

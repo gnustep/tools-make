@@ -138,7 +138,7 @@ This section is for building the complete GNUstep system.
 This system will not interact at all with Mac OS X/Cocoa. It uses different
 complilers, different display systems, etc. For building GNUstep extensions
 to be used with Mac OS X (for instance, if you want to build something based
-on GNUstep, such as GSWeb or GNUMail, see the MacOSX/PowerPC section).
+on GNUstep, such as GSWeb or GNUMail), see the MacOSX/PowerPC section.
 
 Currently tested on Darwin 6.x, 7.x
 
