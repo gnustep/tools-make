@@ -1,3 +1,13 @@
+Mon Oct 13 15:07:53 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/java.make (.PHONY): Removed line continuation in
+	excess.
+
+Mon Oct 13 13:56:00 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/palette.make: Tidied up the way in which code was
+	commented.
+
 Mon Oct 13 13:09:53 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/application.make (internal-clean): Do the entire
