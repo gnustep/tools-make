@@ -51,11 +51,12 @@ all: which_lib
 which_lib: which_lib.c
 	$(CC) -O2 -Wall -o $@ $^
 
-install:
+install: all
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(prefix)/share
+	$(INSTALL_PROGRAM) -m 755 which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs *.sh; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
@@ -65,7 +66,6 @@ install:
 	  $(INSTALL_DATA) $$f $(makedir); \
 	done
 	$(INSTALL_DATA) config.site $(prefix)/share
-	$(INSTALL_PROGRAM) which_lib $(makedir)/$(GNUSTEP_TARGET_DIR)
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
 uninstall:
