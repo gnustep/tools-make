@@ -1,3 +1,7 @@
+2001-02-22  Adam Fedor  <fedor@gnu.org>
+
+	* which_lib.c (main): Add back the -L paths.
+
 2001-02-23  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* opentool.in: If a local tool is found, do not search further in

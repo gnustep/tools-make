@@ -440,6 +440,9 @@ int main(int argc, char** argv)
 
   //  show_all ();
 
+  for (i = 0; i < paths_no; i++)
+    printf (" -L%s", library_paths[i]);
+
   for (i = 0; i < libraries_no; i++) {
     library_name = all_libraries[i];
     library_name_len = strlen (library_name);
