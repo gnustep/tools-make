@@ -1,3 +1,23 @@
+Mon Nov  4 12:08:58 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Documentation: New directory.
+	* Instance/Documentation/autogsdoc.make: New file.
+	* Instance/Documentation/gsdoc.make: New file.
+	* Instance/Documentation/javadoc.make: New file.
+	* Instance/Documentation/latex.make: New file.
+	* Instance/Documentation/texi.make: New file.
+	* Instance/documentation.make: Include only the appropriate
+	documentation makefiles; most code moved into the specific
+	documentation makefiles.
+	* GNUmakefile.in (install): Create the
+	GNUSTEP_MAKEFILES/Instance/Documentation directory.
+	(INSTANCE_DOC_MAKE_FILES): List the new makefiles in this
+	variable.
+	(install): Install them.
+	* rules.make ($(GNUSTEP_MAKEFILES)/Instance/Documentation/*.make):
+	New rule to let make know that all documentation makefiles are
+	always up to date.
+	
 Fri Nov  1 14:00:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (GNUSTEP_MAKEINFO, GNUSTEP_MAKEINFO_FLAGS,
