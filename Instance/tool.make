@@ -38,7 +38,7 @@ endif
 # This is the directory where the tools get installed. If you don't specify a
 # directory they will get installed in the GNUstep Local Root.
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
-  TOOLD_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
+  TOOL_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
 endif
 
 ifeq ($(TOOL_INSTALL_DIR),)

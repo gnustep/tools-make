@@ -2,7 +2,7 @@ if (defined($ENV{'GNUSTEP_WEB_ROOT'})) {
   open(TMPL,"<$ENV{'GNUSTEP_WEB_ROOT'}/secondary.html.template");
   $tmpl=join("",<TMPL>);
   close(TMPL);
-  ($T2H_EXTRA_HEAD,$T2H_AFTER_BODY_OPEN,$T2H_PRE_BODY_CLOSE) =
+  ($T2H_EXTRA_HEAD,$T2H_AFTER_BODY_OPEN,$T2H_PRE_BODY_CLOSE_BAD) =
     ($tmpl=~/<\/title>(.*)<\/head>.*<body>(.*<div id="main">).*(<\/div><\/div>.*)<\/body>/sm);
   }
 else {

@@ -20,41 +20,29 @@ you are using as with GNUstep.
 MSYS is a very much cut down version of the Cygwin environment ...
 providing a minimal set of tools needed to build programs using MingGW.
 If you wish to build for MinGW by cross-compiling from a Cygwin
-environment, please read README.cygwin instead.
+environment, please read README.Cygwin instead.
 
-The base library is only recently ported to run on MinGW.  While most
-stuff works, including networking/distributed objects, there are probably
-bits that have been overlooked or are untested as yet.  The only *known*
-areas of code not yet ported are the zlib, SSL and XML extensions.
-
-The gui library is only partially ported to run under MinGW ... you can
-play with it, but expect to have to work on porting the library rather
-than developing user applications.
-
+The gui library is only partially ported to run under MinGW. The look
+and behavior may not be consistant.
 
 PRELIMINARIES
 -------------
 
-Before we start, we need to get some preliminary Windows software -
-a tool for fetching source code via CVS.
+One way to vastly simplify installing GNUstep, is to use the Windows-based
+GNUstep installer. Currently, this installer only installs the non-gui
+portion of GNUstep. Get it from
 
-If you don't want to use Windows tools for this, you can get the
-latest cygwin distribution and use the cvs client in that. The following is
-for people who don't want to download all that cygwin stuff.
+http://www.gnustep.org/resources/sources.html#windows
 
-To get stuff from CVS you can download and install WinCVS ... which
-you can find at http://sourceforge.net/projects/cvsgui You will need
-to be a system administrator on your machine to install this software.
-You should be able to use it without changing/setting any special
-configuration options.  The one thing to remember is that the checkbox
-to select whether to use UNIX line terminators instead of Windows/DOS
-line terminators should be set to the unix option.
+If you have already installed this, you can skip to the section
+'Additional gui libraries '. Although you may want to read the rest of
+the instructions for other helpful information.
 
 
 Installing and setting up MINGW and MSYS
 ----------------------------------------
 
-Next, download msys-1.08 or later from
+Download msys-1.08 or later from
 http://sourceforge.net/projects/mingw
 and install it.
 
@@ -119,12 +107,7 @@ libffcall (http://ftp.gnustep.org/pub/gnustep/lib)
 GNUstep-objc (release, snapshot, or cvs dev-apps module)
 GNUstep-base (snapshot, or cvs core module)
 
-For gui ... GNUstep-back (snapshot, or cvs core module)
-
-NB. Ensure that the GNUstep code you are attempting to use has a date
-later than the date at the top of this document!  The instructions do
-not apply to earlier code.
-
+For gui, GNUstep-gui and GNUstep-back (snapshot, or cvs core module)
 
 Setting up the GNUstep make environment
 ---------------------------------------
@@ -189,8 +172,7 @@ Building and installing FFCALL
 
 The next priority is to get the ffcall library built and installed.
 You should get the latest ffcall archive from
-http://ftp.gnustep.org/pub/gnustep/libs.  Currently this is
-ffcall-1.8d.tar.gz
+http://ftp.gnustep.org/pub/gnustep/libs. 
 
 Ignore any other instructions for building this ...
 
@@ -208,7 +190,7 @@ Now you can now build and install it simply by typing:
 
 
 
-Additional libraries
+Additional non-gui libraries
 --------------------
 
 There are some optional (but very strongly recommended) libraries you
@@ -226,19 +208,14 @@ libiconv
     cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Library/Libraries/libiconv.a
     cp lib/iconv.dll $GNUSTEP_SYSTEM_ROOT/Tools/iconv.dll
 
-libtiff, libjpeg, and zlib
-  Needed for image handling support in the GNUstep gui libary
+zlib
   (not required for GNUstep-base, though zlib can be used by the base library).
 
   Get the binary packages from -
-  http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-lib.zip
-  http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-bin.zip
-  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-lib.zip
-  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-bin.zip
   http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-lib.zip
   http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-bin.zip
   
-  Unpack and install
+  Unpack and install in the standard place, or:
   the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Library/Headers
   the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Library/Libraries
   the dll files in $GNUSTEP_SYSTEM_ROOT/Tools
@@ -289,10 +266,32 @@ system resources).
 
 
 
+Additional gui libraries
+--------------------
+
+These are additional libraries required or at least highly recommended when 
+installing the gui portion of GNUstep.
+
+
+libtiff, libjpeg, zlib, libpng
+  Needed for image handling support in the GNUstep gui libary
+  (not required for GNUstep-base, though zlib can be used by the base library).
+
+  Get these binary packages (or later versions) from -
+  http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/tiff-3.5.7-bin.zip
+  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/libjpeg-6b-bin.zip
+  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-lib.zip
+  http://prdownloads.sourceforge.net/gnuwin32/zlib-1.1.4-bin.zip
+  
+  Unpack and install. You can put them in the standard locations, or also:
+  the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Library/Headers
+  the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Library/Libraries
+  the dll files in $GNUSTEP_SYSTEM_ROOT/Tools
+
 Building and installing GNUstep-gui
 -----------------------------------
-
-To build the gui, you need to have libtiff installed ...
 
 Go to gnustep-gui (or from CVS into the core/gui directory), and type
 
@@ -300,18 +299,15 @@ Go to gnustep-gui (or from CVS into the core/gui directory), and type
 
 
 
-
 Building and installing GNUstep-back
 ------------------------------------
 
-This software is PRE-ALPHA ... it is present in CVS for people who wish to
-help porting the GNUstep backend to Windows!
+This software is ALPHA ... please help porting the GNUstep backend to
+Windows!
 
 In the back directory, type
 
   make install
-
-
 
 
 

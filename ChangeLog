@@ -1,3 +1,11 @@
+2004-10-18  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.MinGW: Mention Windows installer. Update links
+	* Documentation/gnustep-howto.texi: Some setup no longer needed.
+	* Documentation/gnustep.init: Don't add links - currently not 
+	referenced correctly.
+	* Documentation/machines.texi: Add compilers section.
+
 2004-09-07  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.10.0

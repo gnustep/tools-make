@@ -3,8 +3,8 @@
 @settitle Platform Compatibility
 
 @ifclear HOWTO
-@c Machine Specific, Darwin/ix86, , (DIR)
-@node Machine Specific, Darwin/ix86, , (DIR)
+@c Machine Specific, Compilers, , (DIR)
+@node Machine Specific, Compilers, , (DIR)
 @chapter Machines
 @end ifclear
 
@@ -17,7 +17,12 @@ and need someone to help with reporting problems and fixes.
 Platforms marked @emph{Obsolete} are very old distributions. No one really
 knows if GNUstep works on these although they may.
 
+If you have compiled GNUstep on a specific machine, please send information
+about what you needed and any special instructions needed to
+GNUstep @email{bug-gnustep@@gnu.org}.
+
 @menu
+* Compilers::                   
 * Darwin/ix86::                 
 * Darwin/PowerPC::              
 * Debian/DEC-Alpha::            
@@ -49,6 +54,10 @@ knows if GNUstep works on these although they may.
 * Yellowdog/PowerPC::           
 @end menu
 
+@c -----------------------------------------
+@node Compilers, Darwin/ix86, Machine Specific, Machine Specific
+@section Compilers
+
 A recommended compiler is listed for each machine, if known. You should try
 to use the recommended compiler for compiling GNUstep, as GNUstep is quite
 complex and tends provoke a lot of errors in some compilers. Even versions
@@ -57,7 +66,7 @@ version of a compiler expecting it to be better than previous versions.
 
 Compiler notes: If a recommended compiler is not listed, take note of the
 following information before choosing the compiler you use.
-@table @samp
+@table @var
 @item egcs or gcc < 2.95
 Might work, but few people use these now.
 @item gcc 2.95.x
@@ -77,18 +86,15 @@ Pretty good. Recommended.
 Recommended. Fixes some bugs relating to protocols as well as other
 improvements.
 @item gcc 3.4
-No info yet.
+Not recommended. There are several reports that GNUstep programs compiled
+with this compiler will segfault when unarchiving data.
 @end table
-
-If you have compiled GNUstep on a specific machine, please send information
-about what you needed and any special instructions needed to
-GNUstep @email{bug-gnustep@@gnu.org}.
 
 If your having mysterious trouble with a machine, try compiling GNUstep
 without optimization. Particularly in the newer GCC compilers,
 optimization can break some code. The easiest way to do this is when
-configuring, @samp{CFLAGS="" ./configure}. Or when building, 
-@samp{make OPTFLAG=""}.
+configuring, @kbd{CFLAGS="" ./configure}. Or when building, 
+@kbd{make OPTFLAG=""}.
 
 Also if you manually upgraded gcc and/or make, we recommend reading the
 documentation at @url{http://www.LinuxFromScratch.org} for tips on compiling
@@ -96,12 +102,12 @@ and installing gcc and make. If you had GNUstep previously installed, make sure
 you completely remove all of it, including installed init scripts.
 
 @c -----------------------------------------
-@node Darwin/ix86, Darwin/PowerPC, Machine Specific, Machine Specific
+@node Darwin/ix86, Darwin/PowerPC, Compilers, Machine Specific
 @section Darwin/ix86
 
 Currently tested on Darwin 7.x
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 3.3.2. Older versions will not compile on Darwin.
 
@@ -124,7 +130,7 @@ directory for complete instructions.
 
 Currently tested on Darwin 6.x, 7.x
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 3.3.2. Older versions will not compile on Darwin.
 
@@ -150,7 +156,7 @@ See also the MacOSX/PowerPC section
 @node Debian/DEC-Alpha, Debian/i386, Darwin/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -166,7 +172,7 @@ None
 @section Debian/i386
 
 Tested on sid.
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -182,7 +188,7 @@ None
 @section Debian/PowerPC
 
 Tested on sid.
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -198,7 +204,7 @@ None
 @section Debian/SPARC
 
 Tested on sid.
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -214,7 +220,7 @@ None
 @section FreeBSD 5.x
 
 Tested on 5.0 and 5.1
-@table @samp
+@table @var
 @item Recommended compiler
 
 @item Extra libs needed 
@@ -231,7 +237,7 @@ are installed. See the GNUstep-HOWTO for list of libraries.
 @node FreeBSD 4.x, FreeBSD 3.x, FreeBSD 5.x, Machine Specific
 @section FreeBSD 4.x
 
-@table @samp
+@table @var
 @item Recommended compiler
 
 @item Extra libs needed 
@@ -250,7 +256,7 @@ For libxml2 2.4.24, make WITHOUT_PYTHON=YES
 
 Compiles "out of the box" on FreeBSD 3.4.
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 2.95.2
 
@@ -292,7 +298,7 @@ flags to configure: @code{CFLAGS="-I/usr/local/include"} and
 @node FreeBSD 2.x, Irix 6.5/MIPS, FreeBSD 3.x, Machine Specific
 @section FreeBSD 2.x (@emph{Obsolete,Unstable})
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 2.8.x
 
@@ -319,7 +325,7 @@ You need to use gmake not make to compile the GNUstep packages.
 @node Irix 6.5/MIPS, MacOSX/PowerPC, FreeBSD 2.x, Machine Specific
 @section Irix 6.5/MIPS
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 3.2.1
 
@@ -347,7 +353,7 @@ No libffi-support: Use ffcall
 
 Currently tested on MacOSX 10.2, 10.3
 
-@table @samp
+@table @var
 @item Recommended compiler
 Default.
 
@@ -379,7 +385,7 @@ See also the Darwin/PowerPC section.
 
 Tested with R2 RC2 (2004/03/04).
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 3.x allthough earlier ones should work if you also install gnustep-objc
 
@@ -395,7 +401,7 @@ Unknown.
 @node NetBSD, Netwinder, MkLinux/PowerPC, Machine Specific
 @section NetBSD 
 
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -411,7 +417,7 @@ See the @url{README.NetBSD} file located in the gnustep-make package.
 @node Netwinder, OpenBSD 3.x, NetBSD, Machine Specific
 @section Netwinder (@emph{Unstable})
 
-@table @samp
+@table @var
 @item Recommended compiler
 Build #12 of the system.
 
@@ -426,7 +432,7 @@ See @url{http://www.netwinder.org/~patrix}
 @node OpenBSD 3.x, OSF/Alpha, Netwinder, Machine Specific
 @section OpenBSD 3.x  (@emph{Needs Testing})
 
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -444,7 +450,7 @@ Try reading the @url{README.NetBSD} which might work the same on OpenBSD.
 
 Information is for Version 3.2C
 
-@table @samp
+@table @var
 @item Recommended compiler
 egcs-1.1.1/1.1.2, gcc-2.95
 
@@ -465,7 +471,7 @@ ADDTIONAL_TOOL_LIBS in the GNUmakefile(.preamble).
 @node RedHat/Intel, Slackware/Intel, OSF/Alpha, Machine Specific
 @section RedHat/Intel
 
-@table @samp
+@table @var
 @item Recommended compiler
 Standard
 
@@ -480,7 +486,7 @@ None
 @node Slackware/Intel, Solaris 2.5.1/Sparc, RedHat/Intel, Machine Specific
 @section Slackware/Intel 
 
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown.
 
@@ -498,7 +504,7 @@ Unknown.
 
 This configuration is no longer being tested, but it may still work.
 
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -515,7 +521,7 @@ See the Solaris 2.6 section for more instructions.
 
 Tested on Solaris version 6, 7, and 8
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 3.2.1 or greater
 gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
@@ -547,7 +553,7 @@ set to 'posix' not 'solaris'.
 @section Solaris 2.7/Intel 
 @c Contact?: Sebastian Niesen <sniesen@niesen.net>
 
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown.
 
@@ -558,7 +564,7 @@ Unknown
 Make sure there are no -g compiler flags (i.e. compiling with debug=yes
 might be a problem). Unsure of correct bundle flags - You might need
 to use the alternate flags listed in target.make, line 989. Also, 
-configuring gnustep-make with @samp{--disable-backend-bundle} might be
+configuring gnustep-make with @option{--disable-backend-bundle} might be
 necessary if you can't get bundles to work.
 You will probable get a lot of text relocation
 warnings, which probably can be ignored. See the other Solaris
@@ -572,7 +578,7 @@ instructions above for more information.
 
 GNUstep has been tested on version 6.2-6.4 of Suse
 
-@table @samp
+@table @var
 @item Recommended compiler
 Standard
 
@@ -592,7 +598,7 @@ gdnc doesn't work.  If you recompile the kernel then it starts working.
 
 GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, and 9.1 of Suse
 
-@table @samp
+@table @var
 @item Recommended compiler
 The default compiler that comes with Susu is fine. Also 
 gcc2.95.x, gcc3.0.x, 3.1 and 3.2 work, but 2.95 is faster.
@@ -612,7 +618,7 @@ None.
 
 GNUstep has been tested on version 7.0 of Suse/PPC
 
-@table @samp
+@table @var
 @item Recommended compiler
 Standard. gcc2.95.x, gcc3.0.x and gc3.1 work, but 2.95 is faster.
 Compile with --threads-enabled (non-standard).
@@ -629,7 +635,7 @@ None
 @section Unixware-2.1.3/Intel
 @c Contact?: Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
-@table @samp
+@table @var
 @item Recommended compiler
 Unknown
 
@@ -734,7 +740,7 @@ work.
 @node Windows with CYGWIN, Windows with MinGW, Unixware-2.1.3/Intel, Machine Specific
 @section Windows with CYGWIN (@emph{Needs Testing})
 
-@table @samp
+@table @var
 @item Recommended compiler
 gcc 3.3.1 or later (with libobjc and libjava (if using libffi))
 
@@ -758,7 +764,7 @@ See @url{README.Cygwin} for information on compiling.
 @node Windows with MinGW, Yellowdog/PowerPC, Windows with CYGWIN, Machine Specific
 @section Windows with MinGW
 
-@table @samp
+@table @var
 @item Recommended compiler
 See below.
 
@@ -776,7 +782,7 @@ Native GUI backend is alpha version.
 @node Yellowdog/PowerPC,  , Windows with MinGW, Machine Specific
 @section Yellowdog/PowerPC
 
-@table @samp
+@table @var
 @item Recommended compiler
 Standard
 

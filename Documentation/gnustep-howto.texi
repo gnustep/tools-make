@@ -322,36 +322,26 @@ source /usr/GNUstep/System/Library/Makefiles/GNUstep.csh
 @node GNUstep Home, Time Zone, Environment Setup, Additional Installation
 @section GNUstep Home
 
-Set up your home GNUstep directory. This should be done automatically
-if you don't do it. This is where user defaults are kept as well as
+Your home GNUstep directory should be created automatically the first
+time you use a GNUstep tool or application.
+This is where user defaults are kept as well as
 other user configuration files. User installed apps, libraries, etc
-are also here (if the default user directory is used).
-
-@example
-cd
-mkdir GNUstep
-@end example
+are also here (if the default user directory is used). By default this
+is the directory @file{GNUstep} under your home directory, but you can change
+this (see the gnustep-make installation documentation).
 
 @node Time Zone, GNUstep deamons, GNUstep Home, Additional Installation
 @section Time Zone
 
-Next, set your local time zone.  There are four ways to do this, pick
-one (see
-@file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-bsae/NSTimeZones/zones} for
-typical time zones):
+In most cases, GNUstep should be able to determine your time zone, if
+you have already set it up correctly when setting up your
+computer. However, in some cases this might fail or the correct
+information may not be available.  You can set it manually using the
+GNUstep defaults utility to set @kbd{Local Time Zone} to your local time
+zone. Type something like @kbd{defaults write NSGlobalDomain "Local
+Time Zone" GB}.  Where @kbd{GB} is a time zone abbreviation.
 
-@enumerate
-@item Use the defaults utility to set ``Local Time Zone'' to your local
-time zone (defaults is installed with GNUstep in the Tools directory). Type
-something like ``defaults write NSGlobalDomain "Local Time Zone" GB''.
-
-@item Set the @var{GNUSTEP_TZ} environment variable.
-
-@item Create the file @file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-base/NSTimeZones/localtime} with the name of the local time zone in it.
-
-@item Set the @var{TZ} environment variable (this may conflict with other
-software on your system though).
-@end enumerate
+See @file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-bsae/NSTimeZones/zones} for typical time zones):
 
 @node GNUstep deamons,  , Time Zone, Additional Installation
 @section GNUstep deamons
@@ -384,8 +374,7 @@ fi
 @node Tools and Applications, Machine Specific, Additional Installation, Top
 @chapter Test Tools and Applications
 
-Test programs for the base library are in @file{base/Testing}. Example
-applications are located in the gstep-examples package.  To make these,
+Example applications are located in the gstep-examples package.  To make these,
 just uncompress and untar this package, cd to the appropriate
 directory, and type make. You will need to install the GNUstep core libraries
 first before doing this.
