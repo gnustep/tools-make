@@ -24,14 +24,14 @@
 
 ifneq ($(internal_names_clean), yes)
   ifeq ($(GNUSTEP_HOST),)
-    GNUSTEP_HOST := $(shell $(CONFIG_GUESS_SCRIPT))
-    GNUSTEP_HOST_CPU := $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST))
-    GNUSTEP_HOST_VENDOR := $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST))
-    GNUSTEP_HOST_OS := $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST))
+    GNUSTEP_HOST := $(shell (cd /tmp; $(CONFIG_GUESS_SCRIPT)))
+    GNUSTEP_HOST_CPU := $(shell (cd /tmp; $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST)))
+    GNUSTEP_HOST_VENDOR := $(shell (cd /tmp; $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST)))
+    GNUSTEP_HOST_OS := $(shell (cd /tmp; $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST)))
 
-    GNUSTEP_HOST_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU))
-    GNUSTEP_HOST_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR))
-    GNUSTEP_HOST_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS))
+    GNUSTEP_HOST_CPU := $(shell (cd /tmp; $(CLEAN_CPU_SCRIPT) $(GNUSTEP_HOST_CPU)))
+    GNUSTEP_HOST_VENDOR := $(shell (cd /tmp; $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_HOST_VENDOR)))
+    GNUSTEP_HOST_OS := $(shell (cd /tmp; $(CLEAN_OS_SCRIPT) $(GNUSTEP_HOST_OS)))
   endif
 endif
 
@@ -53,19 +53,19 @@ else
 # Parse the target variable
 #
 
-GNUSTEP_TARGET := $(shell $(CONFIG_SUB_SCRIPT) $(target))
-GNUSTEP_TARGET_CPU := $(shell $(CONFIG_CPU_SCRIPT) $(GNUSTEP_TARGET))
-GNUSTEP_TARGET_VENDOR := $(shell $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_TARGET))
-GNUSTEP_TARGET_OS := $(shell $(CONFIG_OS_SCRIPT) $(GNUSTEP_TARGET))
+GNUSTEP_TARGET := $(shell (cd /tmp; $(CONFIG_SUB_SCRIPT) $(target)))
+GNUSTEP_TARGET_CPU := $(shell (cd /tmp; $(CONFIG_CPU_SCRIPT) $(GNUSTEP_TARGET)))
+GNUSTEP_TARGET_VENDOR := $(shell (cd /tmp; $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_TARGET)))
+GNUSTEP_TARGET_OS := $(shell (cd /tmp; $(CONFIG_OS_SCRIPT) $(GNUSTEP_TARGET)))
 
-GNUSTEP_TARGET_CPU := $(shell $(CLEAN_CPU_SCRIPT) $(GNUSTEP_TARGET_CPU))
-GNUSTEP_TARGET_VENDOR := $(shell $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_TARGET_VENDOR))
-GNUSTEP_TARGET_OS := $(shell $(CLEAN_OS_SCRIPT) $(GNUSTEP_TARGET_OS))
+GNUSTEP_TARGET_CPU := $(shell (cd /tmp; $(CLEAN_CPU_SCRIPT) $(GNUSTEP_TARGET_CPU)))
+GNUSTEP_TARGET_VENDOR := $(shell (cd /tmp; $(CLEAN_VENDOR_SCRIPT) $(GNUSTEP_TARGET_VENDOR)))
+GNUSTEP_TARGET_OS := $(shell (cd /tmp; $(CLEAN_OS_SCRIPT) $(GNUSTEP_TARGET_OS)))
 
 endif
 
 ifneq ($(arch),)
-export CLEANED_ARCH = $(foreach a, $(arch), $(shell $(CLEAN_CPU_SCRIPT) $(a)))
+export CLEANED_ARCH = $(foreach a, $(arch), $(shell (cd /tmp; $(CLEAN_CPU_SCRIPT) $(a))))
 endif
 
 ## Local variables:
