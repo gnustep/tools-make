@@ -549,25 +549,43 @@ work.
 @c -----------------------------------------
 @node Windows with CYGWIN,  , Unixware-2.1.3/Intel, Machine Specific
 @section Windows with CYGWIN (@emph{Unstable!})
-@c Contact?: Adam Fedor <fedor@gnu.org>
 
 @table @samp
 @item Recommended compiler
 gcc 2.95.2 (Cygwin release 1.1.2 or later)
 
 @item Extra libs needed 
-Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/contrib})
+Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
 for shared libs.
 
 @item Special Instructions 
 Static libs require no extra effort (just make shared=no), however, DLLs
 (shared=yes) are compiled by default, and for this you need a special
 version of the Objective-C library that also compiles as a DLL. Make sure
-files and compilation done in Unix mode (no ^M in files). Due to some 
-interesting dependancies, it is recommended that you compile and install
-each sub-package (make, base, etc) independantly. Gdomap services
+files and compilation done in Unix mode (no ^M in files). For shared libs
+you have to type @samp{make BUILD_DLL=yes WITH_DLL=yes} for all packages,
+despite the fact that this should be set automatically.
+Gdomap services
 not set up correctly. Must add services lines to @file{C:\WINDOWS\services}
 (on Windows 98) or xxx (on Windows NT).
+Base library only. No native GUI backend.
+@end table
+
+@c -----------------------------------------
+@node Windows with MinGW,  , Unixware-2.1.3/Intel, Machine Specific
+@section Windows with MinGW (@emph{Unstable!})
+
+@table @samp
+@item Recommended compiler
+gcc 2.95.2 (MingW release 1999-11-07)
+
+@item Extra libs needed 
+Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
+for shared libs.
+
+@item Special Instructions 
+See the @file{README.MinGW} file located in the gnustep-make Documentation
+directory for instructions.
 Base library only. No native GUI backend.
 @end table
 
