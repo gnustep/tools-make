@@ -7,7 +7,6 @@
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
-#   Java support by Lyndon Tremblay <ltremblay@mezzanine.xnot.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -99,6 +98,7 @@ GNUSTEP_LIBRARIES_ROOT     = $(GNUSTEP_INSTALLATION_DIR)/Libraries
 GNUSTEP_TARGET_LIBRARIES   = $(GNUSTEP_LIBRARIES_ROOT)/$(GNUSTEP_TARGET_DIR)
 GNUSTEP_LIBRARIES          = $(GNUSTEP_TARGET_LIBRARIES)/$(LIBRARY_COMBO)
 GNUSTEP_RESOURCES          = $(GNUSTEP_LIBRARIES_ROOT)/Resources
+GNUSTEP_JAVA               = $(GNUSTEP_LIBRARIES_ROOT)/Java
 GNUSTEP_DOCUMENTATION      = $(GNUSTEP_INSTALLATION_DIR)/Library
 GNUSTEP_DOCUMENTATION_MAN  = $(GNUSTEP_DOCUMENTATION)/man
 GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOCUMENTATION)/info
@@ -358,10 +358,13 @@ GNUSTEP_DVIPS_FLAGS     =
 #
 SUBPROJECT_PRODUCT = subproject$(OEXT)
 
-# FIXME: the JAVAC variable is blank otherwise, even though it's defined in config.make
+#
+# The Java Compiler.  Override this by setting the JAVAC environment variable
+#
+ifeq ($(JAVAC),)
 JAVAC = javac
+endif
 
 ## Local variables:
 ## mode: makefile
 ## End:
-
