@@ -424,9 +424,6 @@ AC_SUBST(AUTO_DEPENDENCIES)
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for the version of gnustep-make we are compiling)
 . ./Version
-if test -f "../Version"; then
-  . ../Version
-fi
 AC_MSG_RESULT($GNUSTEP_MAKE_VERSION)
 DATE=`date +"%Y%m%d"`
 AC_SUBST(GNUSTEP_MAKE_VERSION)
