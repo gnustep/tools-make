@@ -70,7 +70,12 @@ ALL_GUI_LIBS =								     \
 
 APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
 
+#
+# Now include the standard resource-bundle routines from Shared/bundle.make
+#
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Resources
+GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(APP_DIR_NAME)
+GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(APP_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 # Support building NeXT applications
@@ -169,22 +174,17 @@ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 
 _FORCE::
 
-internal-app-install_:: $(APP_INSTALL_DIR)
-	$(ECHO_INSTALLING)rm -rf $(APP_INSTALL_DIR)/$(APP_DIR_NAME); \
-	$(TAR) cf - $(APP_DIR_NAME) | (cd $(APP_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
-ifneq ($(CHOWN_TO),)
-	$(CHOWN) -R $(CHOWN_TO) $(APP_INSTALL_DIR)/$(APP_DIR_NAME)
-endif
-ifeq ($(strip),yes)
-	$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE)
-endif
-
+# install/uninstall targets
 
 $(APP_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
 
-internal-app-uninstall_::
-	(cd $(APP_INSTALL_DIR); rm -rf $(APP_DIR_NAME))
+internal-app-install_:: shared-instance-bundle-install
+ifeq ($(strip),yes)
+	$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE)
+endif
+
+internal-app-uninstall_:: shared-instance-bundle-uninstall
 
 ## Local variables:
 ## mode: makefile
