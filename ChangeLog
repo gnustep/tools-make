@@ -1,3 +1,7 @@
+Wed Jun 26 15:51:33 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUstep-reset.sh: Quoted two variables.
+
 Wed Jun 26 15:05:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Use the gnugc-gnu-gnu library combo for garbage collecting.
