@@ -211,7 +211,7 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources _FORCE
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 	  @(if [ -r "$(INTERNAL_app_NAME)Info.plist" ]; then \
-	    opentool plmerge $@ $(INTERNAL_app_NAME)Info.plist; \
+	    plmerge $@ $(INTERNAL_app_NAME)Info.plist; \
 	  fi)
 
 $(APP_DIR_NAME)/Resources:
