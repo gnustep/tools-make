@@ -1,3 +1,11 @@
+Mon Jan 14 14:33:12 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* which_lib.c: Rewritten.  The main user visible change is that
+	the new version searches libraries in a different -- much more
+	logical -- order, which should finally fix the recurrent
+	bugs/problems in library searches reported for the old version.  A
+	show_all=yes flag is provided for helping people in debugging it.
+
 Mon Jan 14 10:01:07 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* configure.in: Quoted most paths.
