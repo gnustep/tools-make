@@ -145,6 +145,7 @@ after-clean::
 before-distclean::
 
 internal-distclean::
+	rm -f core
 
 after-distclean::
 
