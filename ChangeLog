@@ -1,3 +1,26 @@
+Thu Jun 21 10:13:55 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (.PHONY): Fixed typo ('=' was used instead of ':')
+	which was causing the phony target declaration to be ignored.
+
+	* rules.make (install): Depend on `all' target at makelevel 0.
+	* application.make (internal-app-install): Do not depend on
+	internal-app-all.
+	* bundle.make (internal-install): Do not depend on all.
+	* ctool.make (internal-ctool-install): Do not depend on
+	internal-ctool-all.
+	* documentation.make (internal-install): Do not depend on all.
+	* framework.make (internal-install): Do not depend on all.
+	* gswbundle.make (internal-install): Do not depend on all.
+	* library.make (internal-install): Do not depend on all.
+	* objc.make (internal-objc_program-install): Do not depend on
+	internal-objc_program-all.
+	* palette.make (internal-install): Do not depend on all.
+	* subproject.make (internal-install): Do not depend on all.
+	* tool.make (internal-tool-install): Do not depend on
+	internal-tool-all.
+	* wobundle.make (internal-install): Do not depend on all.
+	
 Wed Jun 20 12:24:35 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (.PHONY): Added internal-after-install.
