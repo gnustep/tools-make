@@ -73,7 +73,7 @@ case "$host_os" in
     if [ -z "$LD_LIBRARY_PATH" ]; then
       LD_LIBRARY_PATH="$lib_paths"
     else
-      if ( echo ${LD_LIBRARY_PATH}|fgrep -v "${lib_paths}" >/dev/null ); then
+      if ( echo ${LD_LIBRARY_PATH}| grep -v "${lib_paths}" >/dev/null ); then
 	LD_LIBRARY_PATH="$lib_paths:$LD_LIBRARY_PATH"
       fi
     fi
@@ -83,7 +83,7 @@ case "$host_os" in
     if [ -z "$LD_LIBRARY_PATH" ]; then
       LD_LIBRARY_PATH="$lib_paths"
     else
-      if ( echo ${LD_LIBRARY_PATH}|fgrep -v "${lib_paths}" >/dev/null ); then
+      if ( echo ${LD_LIBRARY_PATH}| grep -v "${lib_paths}" >/dev/null ); then
 	LD_LIBRARY_PATH="$lib_paths:$LD_LIBRARY_PATH"
       fi
     fi

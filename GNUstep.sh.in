@@ -120,7 +120,7 @@ gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Librar
 if [ -z "$CLASSPATH" ]; then
   CLASSPATH="$gnustep_class_path"
 else
-  if ( echo ${CLASSPATH}|fgrep -v "${gnustep_class_path}" >/dev/null ); then
+  if ( echo ${CLASSPATH}| grep -v "${gnustep_class_path}" >/dev/null ); then
     CLASSPATH="$CLASSPATH:$gnustep_class_path"
   fi
 fi
