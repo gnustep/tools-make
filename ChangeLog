@@ -1,3 +1,17 @@
+Fri Feb 22 12:55:01 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/rules.make (SCRIPTS_DIRECTORY, CHECK_SCRIPT_DIRS): Do not
+	define here.
+	* Instance/test-library.make: But rather here.
+
+Fri Feb 22 12:53:43 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+	
+	* test-library.make: Broken into Master and Instance.
+	* Master/test-library.make: New file.
+	* Instance/test-library.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added test-library.make.
+	(INSTANCE_MAKE_FILES): Idem.
+
 Fri Feb 22 12:38:59 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* tool.make: Broken into Master and Instance.
