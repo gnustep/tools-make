@@ -1,3 +1,15 @@
+Wed Jun 12 11:44:47 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* relative_path.sh: Do not run sed to remove the partial_match
+	from the paths if partial_match is empty.  This fixes processing
+	absolute paths which have no path in common.
+
+Wed Jun 12 11:24:23 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* relative_path.sh: Changed syntax for running subcommands, `xxx`
+	is more portable than $(xxx).
+	(Patch by Marcus Muller <znek@mulle-kybernetik.com>).
+	
 2002-06-10  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 1.3.3
