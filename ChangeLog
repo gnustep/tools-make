@@ -1,3 +1,9 @@
+Thu Sep 26 02:50:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make (APP_INSTALL_DIR): New variable.
+	Implemented support for both APP_INSTALL_DIR and xxx_INSTALL_DIR.
+	Updated the whole makefile for the change.
+
 Thu Sep 26 02:16:48 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/ctool.make
