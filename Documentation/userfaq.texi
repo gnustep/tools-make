@@ -236,11 +236,6 @@ As a result, the GCC compiler automatically emitted a warning whenever
 #import was used.  As of gcc 3.4, this problem has been fixed, so
 presumably, this warning is no longer emitted when code is compiled.
 
-You can suppress these warnings when you configure gnustep-make, with
-@example
-./configure --enable-import
-@end example
-
 @c ****************************************************************
 @node Compatibility and Layout, Troubleshooting, Compiling and Installing, Top
 @section Compatibility and Layout
