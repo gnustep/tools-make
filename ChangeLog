@@ -1,3 +1,10 @@
+Thu Nov 16 14:56:35 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* documentation.make (internal-doc-all): Fixed dependency of LaTeX
+	output on all LATEX_FILES.  (internal-doc-clean): Remove generated
+	.aux files if LaTeX is involved.  (internal-doc-distclean): Remove
+	any .aux files in the directory if LaTeX is involved.
+
 2000-11-15  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.in: Check for OpenSSL
