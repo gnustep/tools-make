@@ -488,13 +488,13 @@ SHARED_LIB_LINK_CMD     = \
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
-SHARED_CFLAGS   += -shared
+SHARED_CFLAGS   += -shared -fpic
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
 #BUNDLE_CFLAGS   += 
-BUNDLE_LDFLAGS  += -shared
+BUNDLE_LDFLAGS  += -shared -fpic
 #ADDITIONAL_LDFLAGS += -rdynamic
 ifeq ($(shared), no)
 ADDITIONAL_LDFLAGS += -static
@@ -542,11 +542,7 @@ endif
 # OpenBSD 2.x (though set for 2.4)
 #
 ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
-# This is disabled temporarily, because I don't know exactly how
-# to link shared libs. Everything seems to link correctly now but
-# constructor functions in the shared lib failed to get called
-# when the lib is loaded in. I don't know why. ASF.
-HAVE_SHARED_LIBS        = no
+HAVE_SHARED_LIBS        = yes
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
         $(SHARED_LD) $(SHARED_LD_PREFLAGS) -x -Bshareable -Bforcearchive \
@@ -556,13 +552,13 @@ SHARED_LIB_LINK_CMD     = \
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
-SHARED_CFLAGS   += -shared
+SHARED_CFLAGS   += -shared -fpic
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = no
 BUNDLE_LD	= $(CC)
 #BUNDLE_CFLAGS   += 
-BUNDLE_LDFLAGS  += -shared
+BUNDLE_LDFLAGS  += -shared -fpic
 #ADDITIONAL_LDFLAGS += -rdynamic
 ifeq ($(shared), no)
 ADDITIONAL_LDFLAGS += -static
