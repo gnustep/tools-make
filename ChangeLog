@@ -1,3 +1,10 @@
+Wed Dec 12 16:00:54 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (AFTER_INSTALL_LIBRARY_CMD): Append
+	AFTER_INSTALL_SHARED_LIB_CHOWN if we are creating shared libs and
+	CHOWN_TO is defined.
+	* target.make (AFTER_INSTALL_SHARED_LIB_CHOWN): New variable.
+
 Wed Dec 12 14:57:47 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* tool.make ($(TOOL_INSTALLATION_DIR)): Use MKINSTALLDIRS, not
