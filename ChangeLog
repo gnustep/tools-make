@@ -1,3 +1,10 @@
+Fri Jun  7 13:39:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Patch by Manuel Guesdom <ml@sbuilders.com>:
+	* Instance/Shared/bundle.make (LOCALIZED_COMPONENTS): New
+	variable.
+	(shared-instance-bundle-all): Install LOCALIZED_COMPONENTS.
+
 2002-06-06  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/machines.texi: Update

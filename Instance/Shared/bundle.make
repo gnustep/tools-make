@@ -61,7 +61,11 @@
 #
 #  $(GNUSTEP_INSTANCE)_COMPONENTS : a list of directories which are
 #  recursively copied (/locally symlinked if symlinks are available)
-#  into the resource bundle. <FIXME - not sure this will be kept>
+#  into the resource bundle.
+#
+#  $(GNUSTEP_INSTANCE)_LOCALIZED_COMPONENTS : a list of localized
+#  directories which are recursively copied (/locally symlinked if
+#  symlinks are available) into the resource bundle.
 #
 #  $(GNUSTEP_INSTANCE)_SUBPROJECTS : the list of subprojects is used
 #  because the resources from each subproject are merged into the bundle
@@ -99,6 +103,7 @@ RESOURCE_DIRS = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_DIRS))
 LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
 LOCALIZED_RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES))
 COMPONENTS = $(strip $($(GNUSTEP_INSTANCE)_COMPONENTS))
+LOCALIZED_COMPONENTS = $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_COMPONENTS))
 
 # NB: Use _SUBPROJECTS, not SUBPROJECTS here as that might conflict
 # with what is used in aggregate.make.
@@ -182,6 +187,24 @@ ifneq ($(COMPONENTS),)
 	 if [ -d $$component ]; then \
 	  cp -r $$component $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/;\
 	 fi; \
+	done)
+endif
+ifneq ($(LOCALIZED_COMPONENTS),)
+	@(echo "Copying localized components into the $(GNUSTEP_TYPE) wrapper..."; \
+	for l in $(LANGUAGES); do \
+	  if [ -d $$l.lproj ]; then \
+	    $(MKDIRS) $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
+	    for component in $(LOCALIZED_COMPONENTS); do \
+	      if [ -d $$l.lproj/$$component ]; then \
+	        cp -r $$l.lproj/$$component \
+	              $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
+	      else \
+	        echo "Warning: $$l.lproj/$$component not found - ignoring"; \
+	      fi; \
+	    done; \
+	  else \
+	    echo "Warning: $$l.lproj not found - ignoring"; \
+	  fi; \
 	done)
 endif
 ifneq ($(_SUBPROJECTS),)
