@@ -38,7 +38,7 @@ ac_help="$ac_help
 --with-user-root
     Set the GNUSTEP_USER_ROOT directory.  Use this option if you want 
 to have the GNUSTEP_USER_ROOT directory in a non-standard place.  Example:
---with-user-root=/home/nicola/local/GNUstep
+--with-user-root=~/local/GNUstep
 "
 ac_help="$ac_help
 --enable-flattened		Use flattened directory structure"
