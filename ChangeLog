@@ -1,5 +1,10 @@
 2005-04-06  Nicola Pero <n.pero@mi.flashnet.it>
 
+	* GNUstep.conf (USER_GNUSTEP_RC): Fixed typo, it was spelt
+	as .GNusteprc instead of .GNUsteprc.
+
+2005-04-06  Nicola Pero <n.pero@mi.flashnet.it>
+
 	* Instance/framework.make: Create header directories and copy them
 	even if HEADER_FILES is empty.  This fixes problems when
 	subprojects have headers, but the top-level framework does not.
