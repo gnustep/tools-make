@@ -1,3 +1,10 @@
+Wed Dec 12 17:12:54 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make: Moved all INSTALL_AS_USER and INSTALL_AS_GROUP
+	related code to rules.make so that INSTALL_AS_USER and
+	INSTALL_AS_GROUP can be safely defined in the
+	GNUmakefile.preamble.
+
 Wed Dec 12 16:00:54 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (AFTER_INSTALL_LIBRARY_CMD): Append
