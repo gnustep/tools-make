@@ -144,6 +144,8 @@ ifeq ($(FOUNDATION_LIB),nx)
   INTERNAL_OBJCFLAGS += -framework Foundation
   FND_LIBS   = -framework Foundation
   FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
+  LIBRARIES_DEPEND_UPON += -framework Foundation
+  BUNDLE_LIBS += -framework Foundation
 endif
 
 ifeq ($(FOUNDATION_LIB), sun)
@@ -187,6 +189,8 @@ ifeq ($(GUI_LIB),nx)
   # -framework AppKit is used both to find headers, and to find the library
   INTERNAL_OBJCFLAGS += -framework AppKit
   GUI_LIBS = -framework AppKit
+  LIBRARIES_DEPEND_UPON += -framework AppKit
+  BUNDLE_LIBS += -framework AppKit
 endif
 
 SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL)
