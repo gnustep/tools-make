@@ -36,9 +36,13 @@ ifeq ($(INTERNAL_tool_NAME),)
 
 internal-all:: $(TEST_TOOL_NAME:=.all.tool.variables)
 
-internal-clean:: $(TEST_TOOL_NAME:=.clean.tool.variables)
+internal-clean:: $(TEST_TOOL_NAME:=.clean.tool.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(TEST_TOOL_NAME:=.distclean.tool.variables)
+internal-distclean:: $(TEST_TOOL_NAME:=.distclean.tool.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 internal-check:: $(TEST_TOOL_NAME:=.check.tool.variables)
 
