@@ -1,7 +1,18 @@
 NEWS
 ****
 
-The currently released version is `1.3.0'.
+The currently released version is `1.3.2'.
+
+Changes in version `1.3.2'
+==========================
+
+   * Instructions for building on Windows with MSYS
+
+   * Resolve library dependencies better on Windows
+
+   * Fix frameworks in RPMs and DEBs
+
+   * Continued reorganization.
 
 Changes in version `1.3.0'
 ==========================

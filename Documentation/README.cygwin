@@ -32,7 +32,7 @@ been depreciated. You'll need to use /cygwin/path or C: style paths now.
 MinGW on Cygwin
 ---------------
 
-Not recommended ... this is a corss compilation solution ... using native
+Not recommended. This is a cross compilation solution. Using native
 mingw/msys is simpler and less error prone.
 
 Uses the Cygwin tools to help out with the configuration and compilation of
@@ -101,8 +101,8 @@ HOMEDRIVE and HOMEPATH, since these aren't defined normally.
 5. Compile and install the ffcall package (Version 1.8b). It's
 simply a C library so it requires no special tools other than the compiler.
 
-LD=`which ld` RANLIB=/usr/bin/ranlib ./configure --target=i386-mingw32 \
-	--prefix=`cygpath -u $GNUSTEP_SYSTEM_ROOT`
+LD=ld RANLIB=touch ./configure --target=i386-mingw32 \
+	--prefix=`$GNUSTEP_MAKEFILES/fixpath.sh -u $GNUSTEP_SYSTEM_ROOT`
 
 which installs the libraries in the GNUstep directory structure (There is
 a script in ffcall-1.8d and higher that automatically configures ffcall

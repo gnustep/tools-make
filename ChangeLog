@@ -1,3 +1,9 @@
+2002-04-30  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.3.2
+	* Documentation/news.texi, gnustep-howto.texi: Update
+	* NEWS: Regen.
+
 Sun Apr 21 11:47:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/bundle.make (BUNDLE_LIBS): Readded BUNDLE_LIBS for Windows.

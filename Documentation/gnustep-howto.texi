@@ -101,6 +101,12 @@ be removed in the future.  ffcall is under GNU GPL. As a special
 exception, if used in GNUstep or in derivate works of GNUstep, the
 included parts of ffcall are under GNU LGPL.
 
+@item libffi library (OPTIONAL)
+This is a library that provides stack frame handling for NSInvocation
+and NSConnection similarl to ffcall. However, libffi is still somewhat
+experimental so you should not use it unless you are familiar with 
+potential problems. Use this instead of ffcall. You don't need both.
+
 @item WindowMaker (Version >= 0.62) (OPTIONAL)
 GNUstep and WindowMaker work together to provide a consistant interface.
 Although it is not required, GNUstep will work much better if you use it
@@ -161,7 +167,7 @@ glibc version 2, such as Debian 2.0 and RedHat 5.x and greater.
 @item GDB and Objective-C patch (OPTIONAL)
 GDB can be obtained from @url{ftp://ftp.gnu.org/gnu/gdb}. The patch to
 make it work better with GNUstep can be obtained from
-@url{ftp://ftp.gnustep.org/pub/gnustep}
+@url{ftp://ftp.gnustep.org/pub/gnustep/patches}
     
 @end table
 
@@ -387,7 +393,7 @@ fi
 @end itemize
 
 @example
-if [ `gdomap -L GDNCServer | grep Unable` ]; then
+if [ `gdomap -L GDNCServer | grep -c Unable` == 1 ]; then
   echo "Starting GNUstep services..."
   gdnc
   gpbs

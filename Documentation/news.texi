@@ -9,6 +9,17 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.3.2}
+
+@itemize @bullet
+@item Instructions for building on Windows with MSYS
+@item Resolve library dependencies better on Windows
+@item Fix frameworks in RPMs and DEBs
+@item Continued reorganization.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.3.0}
 
 The package has gone through an extensive reorganization to break up
@@ -25,8 +36,6 @@ effect, it also increased the speed of the code by at least a factor of
 @item Changed Apps directory to Applications
 @item Fixes for MacOSX, MingW
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.2.1}
 

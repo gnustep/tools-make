@@ -2,7 +2,7 @@
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Darwin 1.x/PowerPC, , (DIR)
-@node Machine Specific
+@node Machine Specific, Darwin 1.x/PowerPC, , (DIR)
 @chapter Machines
 @end ifclear
 
@@ -192,6 +192,8 @@ With 5.x, the egcs compiler that comes with RedHat. Later versions may
 have gcc installed, although 7.0 comes with a snapshot of gcc (called
 2.96) which is unsuitable for compiling Objective-C code. For 7.0 you
 should install the egcs compatibility packages (or an official gcc release).
+For RedHat 7.2 or later, the default gcc apparently works fine 
+(even if it is 2.96)
 
 @item Extra libs needed 
 Unknown
