@@ -320,11 +320,12 @@ LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
 export LD_LIBRARY_PATH
 
 #--------------------------------------------------------------------
-# Miscellaneous headers (only used for compiling which_lib.c)
+# Miscellaneous headers (only used for compiling which_lib.c and user_home.c)
 #--------------------------------------------------------------------
 AC_HEADER_DIRENT
 AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
-		sys/stat.h)
+		sys/stat.h pwd.h unistd.h)
+AC_CHECK_FUNCS(getpwnam getpwuid geteuid getlogin)
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

@@ -102,10 +102,13 @@ INSTANCE_MAKE_FILES = \
 
 INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make
 
-all: generated-files which_lib$(EXEEXT)
+all: generated-files which_lib$(EXEEXT) user_home$(EXEEXT)
 
-which_lib$(EXEEXT): which_lib.c
-	$(CC) @CFLAGS@ -Wall -I. -o $@ $^
+which_lib$(EXEEXT): which_lib.c config.h
+	$(CC) @CFLAGS@ -Wall -I. -o $@ which_lib.c
+
+user_home$(EXEEXT): user_home.c config.h
+	$(CC) @CFLAGS@ -Wall -I. -o $@ user_home.c
 
 
 install: all
@@ -153,7 +156,10 @@ install: all
 		$(GNUSTEP_LOCAL_ROOT)/Users \
 		$(GNUSTEP_LOCAL_ROOT)/Users/Administrator \
 		$(GNUSTEP_NETWORK_ROOT) 
-	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
+	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
+	  $(makedir)/$(GNUSTEP_TARGET_DIR)
+	$(INSTALL_PROGRAM) -m 755 user_home$(EXEEXT) \
+	  $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh \
@@ -198,6 +204,7 @@ install: all
 
 uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib$(EXEEXT)
+	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/user_home$(EXEEXT)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
@@ -217,7 +224,8 @@ uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
 
 clean:
-	rm -f *~ which_lib$(EXEEXT) Master/*~ Instance/*~ Instance/Shared/*~
+	rm -f *~ which_lib$(EXEEXT) user_home$(EXEEXT) \
+	  Master/*~ Instance/*~ Instance/Shared/*~
 
 distclean: clean
 	rm -f GNUmakefile config.make config.h
