@@ -1,3 +1,8 @@
+2001-01-03  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Change test for objc forwarding hook to match gcc
+	patch.
+
 2001-01-02  Adam Fedor  <fedor@gnu.org>
 
 	* bundle.make (BUNDLE_FILE): Use INTERNAL_bundle_NAME.
