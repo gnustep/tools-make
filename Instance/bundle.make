@@ -59,7 +59,17 @@ ifneq ($(OBJ_FILES_TO_LINK),)
 # libraries ...)
 
 # On windows, this is unfortunately required.
-ifeq ($(WITH_DLL),yes)
+ifeq ($(WITH_DLL), yes)
+  LINK_BUNDLE_AGAINST_ALL_LIBS = yes
+endif
+
+# On Apple, two-level namespaces require all symbols in bundles
+# to be resolved at link time.
+ifeq ($(FOUNDATION_LIB), apple)
+  LINK_BUNDLE_AGAINST_ALL_LIBS = yes  
+endif
+
+ifeq ($(LINK_BUNDLE_AGAINST_ALL_LIBS), yes)
 BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
    $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
    $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \

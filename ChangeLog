@@ -1,3 +1,10 @@
+Wed Feb  5 04:07:05 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* library-combo.make (BUNDLE_LIBS): For apple library-combo,
+	do not add -framework Foundation and -framework AppKit.
+	* Instance/bundle.make: Link bundle to all libs on Apple so
+	that it can be made to work with two-level namespaces.
+	
 Fri Jan 31 01:20:59 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* openapp.in: Added new option --find.  Calling 'openapp --find

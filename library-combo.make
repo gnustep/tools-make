@@ -164,7 +164,6 @@ ifeq ($(FOUNDATION_LIB), apple)
   FND_LIBS   = -framework Foundation
   FND_DEFINE = -DNeXT_Foundation_LIBRARY=1
   LIBRARIES_DEPEND_UPON += -framework Foundation
-  BUNDLE_LIBS += -framework Foundation
 endif
 
 #
@@ -214,7 +213,6 @@ ifeq ($(GUI_LIB), apple)
   INTERNAL_OBJCFLAGS += -framework AppKit
   GUI_LIBS = -framework AppKit
   LIBRARIES_DEPEND_UPON += -framework AppKit
-  BUNDLE_LIBS += -framework AppKit
 endif
 
 SYSTEM_INCLUDES = $(CONFIG_SYSTEM_INCL)
