@@ -54,6 +54,12 @@ combo_list = $(subst -, ,$(the_library_combo))
 # FOUNDATION_LIB and the GUI_LIB variable manually overriding our
 # determination.
 
+# gc=yes is just another way of saying you want OBJC_RUNTIME_LIB = gnugc
+# to be used!
+ifeq ($(gc), yes)
+  OBJC_RUNTIME_LIB = gnugc
+endif
+
 ifeq ($(OBJC_RUNTIME_LIB),)
   OBJC_RUNTIME_LIB = $(word 1,$(combo_list))
 endif
@@ -73,11 +79,7 @@ endif
 # replaced it with a library_combo provided on the command line, or we
 # might have fixed up parts of it in accordance to some custom
 # OBJC_RUNTIME_LIB, FOUNDATION_LIB and/or GUI_LIB !
-ifeq ($(gc), yes)
-  export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)-gc
-else
-  export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)
-endif
+export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)
 
 OBJC_LDFLAGS =
 OBJC_LIBS =
@@ -92,11 +94,19 @@ ifeq ($(OBJC_RUNTIME_LIB), gnu)
   RUNTIME_DEFINE = -DGNU_RUNTIME=1
 endif
 
+ifeq ($(OBJC_RUNTIME_LIB), gnugc)
+  OBJC_LDFLAGS = 
+  OBJC_LIB_DIR =
+  OBJC_LIBS = -lobjc_gc -lgc
+  OBJC_RUNTIME = GNU
+  RUNTIME_DEFINE = -DGNU_RUNTIME=1
+endif
+
 ifeq ($(OBJC_RUNTIME_LIB), nx)
   OBJC_RUNTIME = NeXT
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
   ifeq ($(FOUNDATION_LIB),gnu)
-    OBJC_LIBS=-lobjc
+    OBJC_LIBS = -lobjc
   endif
 endif
 
@@ -142,7 +152,6 @@ ifeq ($(FOUNDATION_LIB),fd)
 
   ifeq ($(gc), yes)
     ifeq ($(LIBFOUNDATION_WITH_GC), yes)
-      OBJC_LIBS = -lobjc $(LIBFOUNDATION_GC_LIBRARY)
       ifeq ($(leak), yes)
         AUXILIARY_CPPFLAGS += -DLIB_FOUNDATION_LEAK_GC=1
       else
