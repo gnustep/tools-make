@@ -2,10 +2,13 @@
 #
 # @configure_input@
 #
-# Copyright (C) 1999 Free Software Foundation, Inc.
+# Copyright (C) 1999-2002 Free Software Foundation, Inc.
 #
 # Author: Adam Fedor <fedor@gnu.org>
 # Date: May 1999
+#
+# Author: Nicola Pero <n.pero@mi.flashnet.it>
+# Date: 2001, 2002
 # 
 # This file is part of the GNUstep Makefile Package.
 #
@@ -56,7 +59,10 @@ do
 	exit 0
 	;;
     --library-combo=*)
+        tmp_root="$GNUSTEP_SYSTEM_ROOT"
+        . "$tmp_root/Makefiles/GNUstep-reset.sh"
 	LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
+        . "$tmp_root/Makefiles/GNUstep.sh"
 	shift
 	;;
     --available-platforms)
@@ -190,8 +196,32 @@ elif [ -x $full_appname/$GNUSTEP_HOST_CPU/$appname ]; then
 elif [ $appname != $app -a -x $full_appname/$appname ]; then
   relative_path=$appname
 else
-  echo "$full_appname application does not have a binary for this kind of machine/operating system ($GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS)."
-  exit 1
+  # Search for a binary for this machine but a different library combo
+  if [ -d $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS ]; then
+    tmp_path=`pwd`
+    cd "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS";
+    found=no
+    for lib_combo in * ; do
+      if [ "$lib_combo" != '*' ]; then
+        if [ -x "$lib_combo/$appname" ]; then
+          # Switch LIBRARY_COMBO on the fly
+          tmp_root="$GNUSTEP_SYSTEM_ROOT"
+          . "$tmp_root/Makefiles/GNUstep-reset.sh"
+          LIBRARY_COMBO="$lib_combo"
+          . "$tmp_root/Makefiles/GNUstep.sh"
+          # Use the found executable
+          relative_path="$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname"
+          found=yes
+          break
+        fi
+      fi
+    done
+    cd "$tmp_path"
+    if [ "$found" != yes ]; then
+      echo "$full_appname application does not have a binary for this kind of machine/operating system ($GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS)."
+      exit 1
+    fi
+  fi
 fi
 
 if [ $show_relative_path = 1 ]; then
