@@ -61,7 +61,7 @@ endif
 $(APP_FILE): $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(LD) $(ALL_LDFLAGS) $(LDOUT)$@ $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_GUI_LIBS)
-	$(TRANSFORM_PATHS_SCRIPT) `echo $(ALL_LIB_DIRS) | sed 's/-L//g'` \
+	@$(TRANSFORM_PATHS_SCRIPT) `echo $(ALL_LIB_DIRS) | sed 's/-L//g'` \
 		>$(APP_DIR_NAME)/library_paths.openapp
 ifeq ($(OBJC_COMPILER), NeXT)
 # This is a hack for OPENSTEP systems to remove the iconheader file
