@@ -54,7 +54,10 @@ RULES_MAKE_LOADED=yes
 #
 all:: before-all internal-all after-all
 
-install:: before-install internal-install after-install
+# internal-after-install is used by packaging to get the list of files 
+# installed (see rpm.make); it must come after *all* the installation 
+# rules have been executed.
+install:: before-install internal-install after-install internal-after-install
 
 uninstall:: before-uninstall internal-uninstall after-uninstall
 
@@ -83,6 +86,9 @@ before-install::
 internal-install::
 
 after-install::
+
+# The following for exclusive use of packaging code
+internal-after-install::
 
 before-uninstall::
 

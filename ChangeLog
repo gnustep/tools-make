@@ -1,3 +1,12 @@
+Mon Mar 19 14:30:01 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (install): Depend on internal-after-install after all
+	the other rules.  (internal-after-install): Added empty rule.
+	* rpm.make (after-install): Rule moved to
+	(internal-after-install).  This makes sure the file list is always 
+	generated *after* all application installation code, after-install 
+	included, has been run.
+	
 Mon Mar 19 14:09:08 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* GNUmakefile.in (test-RPM_TOPDIR): New target to test that
