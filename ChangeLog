@@ -1,3 +1,9 @@
+Tue Feb 12 16:37:51 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* framework.make (INTERNAL_LIBRARIES_DEPEND_UPON): Set this
+	variable in the same way as it is done in library.make (Suggestion
+	from Stephen Brandon <stephen@brandonitconsulting.co.uk>).
+
 Tue Feb 12 09:04:38 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* config.guess: Updated to latest version.
