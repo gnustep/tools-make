@@ -15,7 +15,7 @@ Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/%{gs_name}-%{gs_version}.tar.gz
 Copyright: 	GPL
 Group: 		System Environment/Base
 Summary: 	GNUstep Makefile package
-Packager:	Adam Fedor <fedor@gnu.org>
+Packager:	GNUstep Development <bug-gnustep@gnu.org>
 Vendor:		The GNUstep Project
 URL:		http://www.gnustep.org/
 BuildRoot: 	/var/tmp/build-%{gs_name}

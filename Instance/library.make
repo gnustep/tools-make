@@ -185,7 +185,7 @@ SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 internal-library-all_:: \
 	$(GNUSTEP_OBJ_DIR)			\
 	$(DERIVED_SOURCES)			\
-	$(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).inp \
+	$(DLL_DEF_INP)				\
 	$(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def	\
 	$(GNUSTEP_OBJ_DIR)/$(DLL_NAME)		\
 	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)
@@ -230,8 +230,7 @@ internal-library-install_:: internal-install-dirs \
 
 # Depend on creating all the dirs
 internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
-                          $(DLL_INSTALLATION_DIR) \
-                          $(ADDITIONAL_INSTALL_DIRS)
+                          $(DLL_INSTALLATION_DIR)
 
 # Now the rule to create each dir.  NB: Nothing gets executed if the dir 
 # already exists
@@ -240,10 +239,6 @@ $(FINAL_LIBRARY_INSTALL_DIR):
 
 $(DLL_INSTALLATION_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
-
-$(ADDITIONAL_INSTALL_DIRS):
-	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
-
 
 ifeq ($(BUILD_DLL),yes)
 

@@ -9,6 +9,27 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.8.0}
+
+Read the NEWS file for a complete list of changes since the last stable
+release. The major difference from 1.6.0 is that the locations of certain
+directories have changed. Generally this will not cause a problem unless
+your GNUstep directory is shared by multiple machines running this and
+earlier (1.6.x) versions of the software.
+
+@ifclear ANNOUNCE-ONLY
+
+@section Changes in version @samp{1.7.4}
+
+Bug fixes.
+
+@section Changes in version @samp{1.7.3}
+
+@itemize @bullet
+@item Adds library combo to Headers directory if not flattened.
+@item Add Markup file (Renaissance) support.
+@end itemize
+
 @section Changes in version @samp{1.7.2}
 
 --enable-flattened (Flat directory structure) is on by default.
@@ -17,8 +38,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item On WIN32 use HOMEPATH in preference to USERPROFILE
 @item netbsd and openbsd compile fixes.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.7.1}
 
