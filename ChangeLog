@@ -1,3 +1,9 @@
+Wed Apr 23 09:18:07 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* config.make.in (CPP): Added.  (GENERAL_CPP): Removed.
+	* rules.make (ALL_CPLISTFLAGS): Added -x c -traditional.
+	(%.plist): Use CPP, not GENERAL_CPP.
+
 Tue Apr 22 16:11:14 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (%.c): New rules to generate .c files from .l files
