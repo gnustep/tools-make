@@ -94,6 +94,23 @@ endif
         internal-textdoc-install_ \
         internal-textdoc-uninstall_
 
+#
+# Common code. 
+#
+
+# Installation directory - always created.  This rule should be before
+# the makefile fragments' internal-doc-install_, so that
+# GNUSTEP_DOCUMENTATION/DOC_INSTALL_DIR is built before their targets
+# are.  FIXME: Maybe this dependency should be in the submakefiles
+# themselves.
+internal-doc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+
+$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
+	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+
+$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE):
+	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
+
 ifneq ($(TEXI_FILES),)
   include $(GNUSTEP_MAKEFILES)/Instance/Documentation/texi.make
 endif
@@ -117,19 +134,6 @@ endif
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_FILES),)
   include $(GNUSTEP_MAKEFILES)/Instance/Documentation/install_files.make
 endif
-
-#
-# Common code. 
-#
-
-# Installation directory - always created.
-internal-doc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-
-$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
-	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-
-$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE):
-	$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
 
 #
 # textdoc targets - these are meant to be used with texi.make ... maybe

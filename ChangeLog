@@ -1,3 +1,9 @@
+Mon Nov  4 14:59:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/documentation.make (internal-doc-install_): Moved
+	before the submakefile fragments are included, to fix installation
+	problem.
+
 Mon Nov  4 12:44:07 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (distclean): Remove fixpath.sh.
