@@ -295,7 +295,7 @@ $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWAPP_DIR_NAME)/Resources
 	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
+	    echo "  NSMainNibFile = \"$(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$(MAIN_MODEL_FILE))))\";"; \
 	  fi; \
 	  if [ -r "$(INTERNAL_gswapp_NAME)Info.plist" ]; then \
 	    cat $(INTERNAL_gswapp_NAME)Info.plist; \
