@@ -1,3 +1,9 @@
+Thu Oct 17 02:17:01 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	A further speedup for make all/install.
+	* Master/rules.make (%.variables): Inlined code from
+	%.subprojects; do not depend on %.subprojects.
+
 Wed Oct 16 05:11:48 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in: Renamed `tgz' target to `dist'.
