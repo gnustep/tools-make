@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Shared/bundle.make
 #
 #   Makefile fragment with rules to copy resource files 
