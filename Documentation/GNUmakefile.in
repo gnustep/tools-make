@@ -98,7 +98,7 @@ ANNOUNCE_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 include makerules.make
 include makedoc.make
 
-regenerate: $(DOCUMENT_TEXT_NAME)
+regenerate: all
 	mv -f $(TOP_DOC_FILES) ..
 
 version.texi: ../Version
