@@ -442,6 +442,17 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
 	          $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPLISTFLAGS))\
 	          $($<_FILE_FLAGS) $< -o $@$(END_ECHO)
 
+# The following rule builds a .c file from a lex .l file.
+# You can define LEX_FLAGS if you need them.
+%.c: %.l
+	$(LEX) $(LEX_FLAGS) -t $< > $@
+
+# The following rule builds a .c file from a yacc/bison .y file.
+# You can define YACC_FLAGS if you need them.
+%.c: %.y
+	$(YACC) $(YACC_FLAGS) $<
+	mv -f y.tab.c $@
+
 # The following dummy rules are needed for performance - we need to
 # prevent make from spending time trying to compute how/if to rebuild
 # the system makefiles!  the following rules tell him that these files
