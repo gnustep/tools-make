@@ -37,7 +37,6 @@ if test "x$prefix" = "xNONE"; then
   prefix=$ac_default_prefix ;
 fi
 GNUSTEP_ROOT=$prefix
-GNUSTEP_PREFIX='$(prefix)'
 AC_ARG_WITH(system-root, 
   [  --without-system-root    Dont use separate system root directory], 
   ac_cv_system_root=$withval,  
@@ -48,16 +47,9 @@ if test $ac_cv_system_root = yes; then
     GNUSTEP_ROOT=`dirname $prefix`
   else
     prefix=$prefix/System
-    GNUSTEP_PREFIX='$(prefix)/..'
-  fi
-else
-  if test `basename $prefix` = System; then
-    GNUSTEP_ROOT=`dirname $prefix`
-    GNUSTEP_PREFIX="$(prefix)/.."
   fi
 fi
 AC_SUBST(GNUSTEP_ROOT)
-AC_SUBST(GNUSTEP_PREFIX)
 
 
 #--------------------------------------------------------------------
@@ -215,14 +207,14 @@ fi
 AC_SUBST(FORCE_CPPFLAGS)
 
 # Set location of GNUstep dirs for later use
-GNUSTEP_HDIR=$GNUSTEP_SYSTEM_ROOT/Headers
+GNUSTEP_HDIR=$prefix/Headers
 if test "$GNUSTEP_FLATTENED" = yes; then
-  GNUSTEP_LDIR=$GNUSTEP_SYSTEM_ROOT/Libraries
+  GNUSTEP_LDIR=$prefix/Libraries
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir=$clean_target_cpu/$clean_target_os
-  GNUSTEP_LDIR=$GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir
+  GNUSTEP_LDIR=$prefix/Libraries/$obj_dir
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
@@ -249,7 +241,7 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 #if test "$gs_cv_objc_libdir" != "NONE"; then
 
   # The following are needed to compile the test programs
-  CPPFLAGS="$CPPFLAGS -I$GNUSTEP_SYSTEM_ROOT/Headers"
+  CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
   LDFLAGS="$LDFLAGS -L$GNUSTEP_LDIR"
 
   # And the following to execute them

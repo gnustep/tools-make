@@ -31,7 +31,7 @@ include Version
 
 prefix = @prefix@
 GNUSTEP_INSTALLATION_DIR=$(prefix)
-GNUSTEP_PREFIX = @GNUSTEP_PREFIX@
+GNUSTEP_ROOT = @GNUSTEP_ROOT@
 srcdir = @srcdir@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
@@ -85,7 +85,7 @@ which_lib$(EXEEXT): which_lib.c
 	$(CC) @CFLAGS@ -Wall -o $@ $^
 
 install: all
-	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \
+	$(srcdir)/mkinstalldirs $(GNUSTEP_ROOT) $(prefix) $(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(makedir)/Additional \
@@ -105,10 +105,10 @@ install: all
 		$(prefix)/Documentation/User \
 		$(prefix)/Documentation/info \
 		$(prefix)/Documentation/man \
-		$(GNUSTEP_PREFIX)/Local \
-		$(GNUSTEP_PREFIX)/Local/Users \
-		$(GNUSTEP_PREFIX)/Local/Users/Administrator \
-		$(GNUSTEP_PREFIX)/Network
+		$(GNUSTEP_ROOT)/Local \
+		$(GNUSTEP_ROOT)/Local/Users \
+		$(GNUSTEP_ROOT)/Local/Users/Administrator \
+		$(GNUSTEP_ROOT)/Network
 	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \

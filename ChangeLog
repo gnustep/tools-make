@@ -1,3 +1,8 @@
+2001-01-29  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Correct setting of prefix and GNUSTEP_ROOT.
+	* GNUmakefile.in: Replace GNUSTEP_PREFIX with GNUSTEP_ROOT
+
 Mon Jan 29 16:57:53 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* GNUmakefile.in (install): Create the
