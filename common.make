@@ -26,12 +26,6 @@ COMMON_MAKE_LOADED = yes
 
 SHELL = /bin/sh
 
-# Default version
-MAJOR_VERSION    = 1
-MINOR_VERSION    = 0
-SUBMINOR_VERSION = 0
-VERSION          = ${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}
-
 # GNUSTEP_BASE_INSTALL by default is `' - this is correct
 
 # GNUSTEP_BUILD_DIR is the directory in which anything generated
