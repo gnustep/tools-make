@@ -1,3 +1,17 @@
+Wed Dec 12 11:15:13 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make (internal-bundle-install): Added a '/' between
+	GNUSTEP_HEADERS and HEADER_FILES_INSTALL_DIR.
+	(internal-bundle-uninstall): Idem.
+	* framework.make (internal-framework-uninstall): Idem.
+	* gswbundle.make (internal-bundle-install): Idem.
+	(internal-bundle-uninstall): Idem.
+	* subproject.make
+	($(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)): Idem.
+	(internal-install-headers): Idem.
+	(internal-subproject-install): Idem.
+	(internal-subproject-uninstall): Idem.
+
 Wed Dec 12 11:07:41 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* gswbundle.make (internal-bundle-install): Removed MKDIRS 

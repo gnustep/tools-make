@@ -511,7 +511,7 @@ internal-framework-uninstall::
 	if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
 	    if [ $$file != __done ]; then \
-	      rm -rf $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	      rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	    fi; \
 	  done; \
 	fi; \

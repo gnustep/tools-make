@@ -275,12 +275,12 @@ $(GSWBUNDLE_DIR_NAME)/WebServerResources:
 
 internal-bundle-install:: $(GSWBUNDLE_INSTALL_DIR)
 ifneq ($(HEADER_FILES_INSTALL_DIR),)
-	$(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR);
+	$(MKDIRS) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR);
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	        $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	        $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	   fi; \
 	done;
 endif
@@ -295,7 +295,7 @@ internal-bundle-uninstall::
 ifneq ($(HEADER_FILES),)
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    rm -rf $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done;
 endif

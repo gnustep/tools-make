@@ -269,11 +269,11 @@ endif
         internal-install-headers \
         internal-subproject-uninstall
 
-internal-subproject-install:: $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR) \
+internal-subproject-install:: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
                               $(ADDITIONAL_INSTALL_DIRS) \
                               internal-install-headers
 
-$(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR):
+$(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
 	$(MKDIRS) $@
 
 $(ADDITIONAL_INSTALL_DIRS):
@@ -285,7 +285,7 @@ ifneq ($(HEADER_FILES),)
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) \
 	      $(HEADER_FILES_DIR)/$$file \
-	      $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	      $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done
 endif
@@ -293,7 +293,7 @@ endif
 internal-subproject-uninstall::
 	for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    rm -f $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done
 
