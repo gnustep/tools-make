@@ -75,4 +75,12 @@ if ( -e ~/.GNUstep/GNUstep.csh ) then
 	. ~/.GNUstep/GNUstep.csh
 endif
 
+set TDIR=${GNUSTEP_SYSTEM_ROOT}/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+if ( -e $TDIR/$LIBRARY_COMBO/make_services ) then
+  $TDIR/$LIBRARY_COMBO/make_services &
+  if ( -e $TDIR/make_services ) then
+    $TDIR/make_services &
+  endif
+endif
+
 endif # ( "${GNUSTEP_BUILD_ROOT}" == "" )

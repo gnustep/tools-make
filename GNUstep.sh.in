@@ -79,4 +79,19 @@ then
 	. ~/.GNUstep/GNUstep.sh
 fi
 
+#
+# Run 'make_services' in background if possible - updates cache of services
+# and applications/file-extensions known to the applications.
+#
+TDIR=$GNUSTEP_SYSTEM_ROOT/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
+if [ -f $TDIR/$LIBRARY_COMBO/make_services ]
+then
+  $TDIR/$LIBRARY_COMBO/make_services &
+else
+  if [ -f $TDIR/make_services ]
+  then
+    $TDIR/make_services &
+  fi
+fi
+
 fi # [ -z "$GNUSTEP_BUILD_ROOT" ]

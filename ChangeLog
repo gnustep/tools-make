@@ -1,3 +1,8 @@
+Thu Jan  7 18:00:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* GNUstep.sh.in: Run make_services to rebuild caches.
+        * GNUstep.csh.in: ditto
+
 Sat Jan  2 12:26:20 1999  Adam Fedor  <fedor@ultra.doc.com>
 
 	* configure.in: Check for DPS/dpsNXargs.h header.
