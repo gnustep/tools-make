@@ -79,7 +79,7 @@ support, but the library is believed to work.
 The gui library needs a win32 backend library to work under
 Windows-NT.  The backend library is a thin layer that converts the
 GNUstep methods to handle drawing of GUI elements to calls to the
-win32 API.  This is a project looking for a volunteer.
+win32 API.  This is a project is in an alpha state.
 
 The application-wrapper used for GNUstep already allows for multiple
 binaries to be stored for different systems, so you should be able
@@ -143,7 +143,7 @@ development tools, a GUI desktop/workspace application, etc.
 At no stage will you ever 'run' GNUstep - you will run applications
 and tools and will make use of it's services (though at some point
 you may well find packages distributed as 'GNUstep' systems in the
-way that you get 'Linux' systems packaged today).
+way that you get 'GNU/Linux' systems packaged today).
 
 If you want to see a sample GUI application running you need to build
 GNUstep and look at the example applications in the gnustep-examples

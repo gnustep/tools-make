@@ -96,7 +96,7 @@ No. at present the GNU compiler (gcc) does not support
 "Objective-C++". Apple has submitted patches for this, but it is up to
 the GCC steering commitee to decide if they want to add them. If you
 would like to see this, please politely and respectfully lobby them at
-@url{gcc@@gnu.org}.
+@email{gcc@@gnu.org}.
 
 @node Is there a plan to support Java/YellowBox Bindings?, What if I compile GNUstep under OPENSTEP/MacOS X Server?, Can one use the hybrid "Objective-C++", Compatibility
 @subsection  Is there a plan to support the Java/YellowBox Bindings?

@@ -2,7 +2,7 @@
 @setfilename machines.info
 @ifclear HOWTO
 @c Machine Specific, Darwin 1.x/PowerPC, , (DIR)
-@node Machine Specific, Darwin 1.x/PowerPC, , (DIR)
+@node Machine Specific
 @chapter Machines
 @end ifclear
 
@@ -12,14 +12,14 @@ more popular operating systems. Some machines marked with
 @emph{Unstable} may have some trouble or may not work at all.
 
 @menu
-* Darwin 1.x/PowerPC::          
+* Darwin 5.x/PowerPC::          
 * Debian/DEC-Alpha::            
 * FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
 * GNU-Linux/Intel::             
 * GNU-Linux/PowerPC 5::         
-* Irix 6.4/MIPS::               
+* Irix 6.5/MIPS::               
 * MkLinux/PowerPC::             
 * NetBSD::                      
 * Netwinder::                   
@@ -30,6 +30,7 @@ more popular operating systems. Some machines marked with
 * Solaris 2.7/Intel::           
 * Suse 6.x/Intel::              
 * Suse 7.x/Intel::              
+* Suse 7.x/PPC::                
 * Unixware-2.1.3/Intel::        
 * Windows with CYGWIN::         
 * Windows with MinGW::          
@@ -52,33 +53,52 @@ configuring, @samp{CFLAGS="" ./configure}. Or when building,
 @samp{make OPTFLAG=""}.
 
 @c -----------------------------------------
-@node Darwin 1.x/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
-@section Darwin 1.x/PowerPC (@emph{Unstable!})
+@node Darwin 5.x/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
+@section Darwin 5.x/PowerPC (@emph{Unstable!})
 
 @table @samp
 @item Recommended compiler
-Unknown
+Default compiler has some odd memory(?) related problems.
+Use the GNU runtime. Download the gcc3.1 compiler and configure it with
+--enable-threads=posix. Usually the installed compiler will produce object
+files for the NeXT runtime if you don't say gcc -fgnu-runtime. To change
+this behaviour, edit src-dir/gcc/config/darwin.h: You have to change the
+word #define in line 73 to #undef. Then the runtime default is gnu. When
+bootstrapping the compiler a nice working objective C gnu-runtime library
+(which is a little bit faster than apples NeXT-runtime) will be compiled
+and installed when make install. To use it, there is one (important) thing
+left: After installing the compiler, you have to go (probably as root) to
+install-dir/lib and produce the following dynamic link:
+ln -s libobjc.a libobjc.dylib
+This might seem senseless, but it forces the linker to use this library
+instead of the NeXT-runtime!
 
 @item Extra libs needed 
-Don't use gnustep-objc or ffcall.
+Compile ffcall if you want to
+use Distributed Ojects: Download and untar it, configure it with CC=cc or
+CC=gcc (both seem to work). Then change to avcall, rm
+avcall-rs6000-sysv4.s, compile a new one with (g)cc avcall-rs6000.c -S -o
+avcall-rs6000-sysv4.s, make, make install-lib and make tests. When running
+tests, you already see which arguments may be passed (and returned) and
+which won't work...
+Then change to ../callback/trampoline_r, ln -s trampoline_r.h.in
+trampoline_r.h, rm cache-rs6000-sysv4.s tramp-rs6000-sysv4.s, compile new
+ones with (g)cc cache.c -S -o cache-rs6000-sysv4.s and (g)cc trampoline.c
+-S -o tramp-rs6000-sysv4.s. Then change to ../vacall_r, rm
+vacall-rs6000-sysv4.s, (g)cc vacall-rs6000.c -S -o vacall-rs6000-sysv4.s
+-DREENTRANT.
+Now you can make and make install-lib in callback. Don't run the tests,
+they simply wont't work.
 
 @item Special Instructions 
+Now you have to edit gnustep-base-1.1.0/Source/NSDecimal.m: Move the line
+#include <Foundation/NSDecimal.h> up so that NSDecimal.h is included
+before any other files.
+
 @end table
 
-GNUstep is being ported to Darwin. The current Darwin compiler doesn't
-handle __builtin functions, so these are diabled, which may cause
-problems with invocations and DO. Other than that it mostly
-compiles. Expect some other irritations that haven't been found yet.
-You need to use the ObjC runtime that comes with Darwin. To do this
-configure (gnustep-make) like this:
-
-@example
-./configure --with-library-combo=nx-gnu-gnu
-@end example
-
-
 @c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 1.x/PowerPC, Machine Specific
+@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 5.x/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -219,7 +239,7 @@ CC=egcs LDFLAGS="-u shmctl@@GLIBC_2.2 -L/lib -lc -u getpwuid_r@@GLIBC_2.1.2
 @end table
 
 @c -----------------------------------------
-@node GNU-Linux/PowerPC 5, Irix 6.4/MIPS, GNU-Linux/Intel, Machine Specific
+@node GNU-Linux/PowerPC 5, Irix 6.5/MIPS, GNU-Linux/Intel, Machine Specific
 @section GNU-Linux/PowerPC (LinuxPPC 5.x)
 
 @table @samp
@@ -246,25 +266,28 @@ recommend using the ffcall libraries (Read the instructions on this in the
 configuration section).
 
 @c -----------------------------------------
-@node Irix 6.4/MIPS, MkLinux/PowerPC, GNU-Linux/PowerPC 5, Machine Specific
-@section Irix 6.4/MIPS (@emph{Unstable!})
+@node Irix 6.5/MIPS, MkLinux/PowerPC, GNU-Linux/PowerPC 5, Machine Specific
+@section Irix 6.5/MIPS
 
 @table @samp
 @item Recommended compiler
-Unknown
+You can't compile the base library with gcc2.95.x, and 3.1 compiles more
+of the Testing programs (nsarray) than 3.0.4 so 3.1 should be the
+recommended compiler. To use threads, it's necessary to bootstrap a
+compiler yourself: configure with --enable-threads=posix, that will work
+as long as you link EVERY objective C executable with -lpthread, no matter
+what warnings the irix linker produces!
 
 @item Extra libs needed 
 Unknown
 
 @item Special Instructions 
-Not ported at all to this machine. Might be better now, but no current
-testing.  Some files don't compile - get internal compiler
-errors using gcc 2.8.1.
+Static libs only (make shared=no).
 
 @end table
 
 @c -----------------------------------------
-@node MkLinux/PowerPC, NetBSD, Irix 6.4/MIPS, Machine Specific
+@node MkLinux/PowerPC, NetBSD, Irix 6.5/MIPS, Machine Specific
 @section MkLinux/PowerPC (MkLinux DR 3)
 @c Contact: Adam Fedor <fedor@gnu.org>
 
@@ -380,29 +403,20 @@ See the Solaris 2.6 section for more instructions.
 @table @samp
 @item Recommended compiler
 gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
+gcc 3.04. Not 3.1 - does not compile parts of GNUstep.
 
 @item Extra libs needed 
 tiff, Don't use the one in /usr/openwin
 
 @item Special Instructions 
-There is no need to patch the compiler for the builtin_apply problem unless
-you are not using the ffcall libraries.
-There is a patch to fix this in the contrib directory
-on the ftp sites (This is also true for all versions of gcc/egcs up
-through 2.95.2 (possibly fixed in later versions)).
+I think gcc provides posix threads on
+this system even if not configured whith --enable-threads, but to use
+them, you have to tell the gnumake configure script: The libraries you
+have to link with are -lpthread -lrt (read man libposix4 for more
+details). You have to call configure --with-thread-lib=-lpthread to avoid
+using -lthread which doesn't work!
 
-To avoid using the tiff library in /usr/openwin, configure like this:
-@example
-LIBS=-L/usr/local/lib ./configure
-@end example
-if, for instance, you have put a newer tiff library in /usr/local/lib
-@end table
-
-Even with the above patch, invocations (and DO) still don't
-work well. The major problem is sending messages with more than four arguments.
-We recommend using the ffcall libraries
-when configuring (Read the instructions on this in the configuration section).
-
+Older Instructions:
 If you are using threads, make sure the Objective-C runtime (libobjc that comes
 with gcc) is compiled with threads enabled (This is true by default) AND that
 it is compiled with the _REENTRANT flag defined (This does not seem to be
@@ -416,7 +430,7 @@ set to 'posix' not 'solaris'.
 
 @table @samp
 @item Recommended compiler
-egcs 1.1.2, unknown
+Unknown.
 
 @item Extra libs needed 
 Unknown
@@ -455,15 +469,15 @@ gdnc doesn't work.  If you recompile the kernel then it starts working.
 @end table
 
 @c -----------------------------------------
-@node Suse 7.x/Intel, Unixware-2.1.3/Intel, Suse 6.x/Intel, Machine Specific
+@node Suse 7.x/Intel, Suse 7.x/PPC, Suse 6.x/Intel, Machine Specific
 @section Suse 7.x/Intel 
-@c Contact? Fred Kiefer <FredKiefer@gmx.de>
 
 GNUstep has been tested on version 7.0 of Suse
 
 @table @samp
 @item Recommended compiler
-Standard
+Standard. gcc2.95.x, gcc3.0.x and gc3.1 work, but 2.95 is faster.
+Compile with --threads-enabled (non-standard).
 
 @item Extra libs needed 
 None
@@ -474,7 +488,25 @@ See the instructions for Suse 6.x
 @end table
 
 @c -----------------------------------------
-@node Unixware-2.1.3/Intel, Windows with CYGWIN, Suse 7.x/Intel, Machine Specific
+@node Suse 7.x/PPC, Unixware-2.1.3/Intel, Suse 7.x/Intel, Machine Specific
+@section Suse 7.x/PPC 
+
+GNUstep has been tested on version 7.0 of Suse
+
+@table @samp
+@item Recommended compiler
+Standard. gcc2.95.x, gcc3.0.x and gc3.1 work, but 2.95 is faster.
+Compile with --threads-enabled (non-standard).
+
+@item Extra libs needed 
+None
+
+@item Special Instructions 
+
+@end table
+
+@c -----------------------------------------
+@node Unixware-2.1.3/Intel, Windows with CYGWIN, Suse 7.x/PPC, Machine Specific
 @section Unixware-2.1.3/Intel
 @c Contact?: Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
@@ -616,7 +648,7 @@ Windows 98) or xxx (on Windows NT).  Native GUI backend is alpha version.
 
 @c -----------------------------------------
 @node Windows with MinGW,  , Windows with CYGWIN, Machine Specific
-@section Windows with MinGW (@emph{Unstable!})
+@section Windows with MinGW (@emph{Unstable! As always...})
 
 @table @samp
 @item Recommended compiler
