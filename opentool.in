@@ -47,7 +47,7 @@ case $1 in
     tool=$1; shift;;
 esac
 
-if [ -z "$EXEEXT" ]; then
+if [ -n "$EXEEXT" ]; then
   tool=$tool$EXEEXT
 fi
 
