@@ -17,6 +17,14 @@
 	in the default generate/install/uninstall rules.  Add <instance>.html
 	to the list of files installed/uninstalled for HTML.
 
+2004-06-23 01:47  Alexander Malmberg <alexander@malmberg.org>
+
+	* common.make, config.make.in: Rename HAS_OBJC_EXCEPTIONS to
+	USE_OBJC_EXCEPTIONS.
+	* configure.ac: Same. Also add --enable-native-objc-exceptions
+	argument and make the test for this feature stricter.
+	* configure: Rebuild.
+
 Fri Jun 19 13:01:02 2004  Nicola Pero <n.pero@mi.flashnet.it>,
 	                  Yves de Champlain <yves@gnu-darwin.org>
 
