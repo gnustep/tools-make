@@ -1,3 +1,11 @@
+Wed Oct 30 12:38:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (AFTER_INSTALL_STATIC_LIB_COMMAND): Renamed
+	to AFTER_INSTALL_STATIC_LIB_CMD for consistency with other
+	variables.
+	(AFTER_INSTALL_SHARED_LIB_COMMAND): Idem.
+	* common.make (AFTER_INSTALL_LIBRARY_CMD): Updated for changes.
+	
 Mon Oct 28 10:48:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make (Resources/Info.plist): Use
