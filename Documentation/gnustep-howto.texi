@@ -81,7 +81,7 @@ In order to compile the libraries, you need to compile and install
 the following packages first (if you don't already have them):
 
 @itemize @bullet
-@item gcc (Version 2.9.5 or greater, 3.0.4 or greater recommended)
+@item gcc (Version 2.95 or greater, 3.0.4 or greater recommended)
 @item GNU make (Version 3.75 or greater)
 @item gdb, if you plan to do any debugging
 @end itemize

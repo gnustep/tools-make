@@ -110,11 +110,9 @@ whenever possible, and even if you use #import, you should protect all
 your headers against multiple inclusions.  The GCC compiler
 automatically emits a warning whenever you use #import.  Because many
 users are annoyed by these warnings and want to use #import (usually for
-compatibility with other systems), gnustep-make automatically disables
-these warnings.  But if you want to make sure your Objective-C code is
-not using any deprecated feature, you can configure gnustep-make with
--disable-import:
-     ./configure --disable-import
+compatibility with other systems), gnustep-make can disable these
+warnings:
+     ./configure --enable-import
    If you are a legacy or MacOS X user, and wonder why #import is
 deprecated, please search the web and the GCC and GNUstep mailing list
 archives - there are very precise and sound technical reasons.

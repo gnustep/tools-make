@@ -9,7 +9,7 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
-@section Changes in version @samp{1.5.2}
+@section Changes in version @samp{1.6.0}
 
 Make now configures by default for only one system. To compile and run
 GNUstep for multiple platforms from the same directory, use the

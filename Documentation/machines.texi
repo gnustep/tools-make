@@ -13,7 +13,6 @@ more popular operating systems. Some machines marked with
 
 @menu
 * Darwin 6.x/PowerPC::          
-* Darwin 5.x/PowerPC::          
 * Debian/DEC-Alpha::            
 * FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
@@ -80,7 +79,7 @@ and installing gcc and make. If you had GNUstep previously installed, make sure
 you completely remove all of it, including installed init scripts.
 
 @c -----------------------------------------
-@node Darwin 6.x/PowerPC, Darwin 5.x/PowerPC, Machine Specific, Machine Specific
+@node Darwin 6.x/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
 @section Darwin 6.x/PowerPC (@emph{Unstable!})
 
 @table @samp
@@ -115,7 +114,7 @@ so you don't have to type --enable-libffi
 @end table
 
 @c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 5.x/PowerPC, Machine Specific
+@node Debian/DEC-Alpha, FreeBSD 4.x, Darwin 6.x/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -456,6 +455,9 @@ highly recommended. In fact, some functions, such as compiling frameworks,
 will not work without it. 
 
 @end table 
+
+Some people have reported problems when using binutils assembler and linker.
+Using the native Solaris assmebler and linker should work fine.
 
 Older Instructions:
 If you are using threads, make sure the Objective-C runtime (libobjc that comes
