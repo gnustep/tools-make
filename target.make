@@ -245,6 +245,7 @@ HAVE_BUNDLES    = yes
 BUNDLE_LD	= gcc
 BUNDLE_CFLAGS   += -fPIC
 BUNDLE_LDFLAGS  += -shared
+ADDITIONAL_LDFLAGS += -rdynamic
 endif
 #
 # end Linux ELF

@@ -1,3 +1,8 @@
+Wed Oct 21 21:00:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	* target.make: Add -rdynamic to ld flags on linux so that bundles
+	work correctly.
+
 Mon Oct  5 09:12:41 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* GNUstep.csh.in: Fix up syntax problems (from Don Bottstein
