@@ -1,3 +1,7 @@
+Wed Apr  7 21:35:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* brain.make: Add extension X lib for xgps.
+
 1999-04-01  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Handle cross-platform compilation better by
