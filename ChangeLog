@@ -1,3 +1,11 @@
+Tue Mar  9 17:28:37 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Make by default GNUSTEP_NETWORK_ROOT the same as
+	GNUSTEP_LOCAL_ROOT.  This has the effect of disabling
+	GNUSTEP_NETWORK_ROOT by default, which is very rarely used - if
+	ever, and simplifying paths and flags.
+	* configure: Regenerated.
+
 Tue Mar  9 17:25:16 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make (GNUSTEP_HEADERS_DIRS, GNUSTEP_LIBRARIES_DIRS,
