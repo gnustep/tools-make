@@ -1,3 +1,7 @@
+2004-03-4  Quentin Mathe  <qmathe@club-internet.fr>
+
+	* Documentation/README.Darwin: Minor improvements.
+
 Thu Mar  4 13:06:22 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/framework.make (xxx_DEPLOY_WITH_CURRENT_VERSION):
@@ -41,7 +45,7 @@ Thu Mar  4 10:41:21 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 2004-02-28  Quentin Mathe  <qmathe@club-internet.fr>
 
 	* Documentation/README.Darwin: Update with the detailed and
-	complete installation process on Mac OS X and Darwin (with the
+	complete installation process on Mac OS X And Darwin (with the
 	help of Nicolas Roard).
 
 2004-02-23  Adam Fedor  <fedor@gnu.org>
