@@ -1,3 +1,9 @@
+Tue Nov 25 12:23:20 2003  Manuel Guesdon <ml@orange-concept.com>
+
+	* Instance/Shared/bundle.make
+	(shared-instance-bundle-all-localized-webresources): Fixed syntax
+	error.
+
 2003-11-13  David Ayers  <d.ayers@inode.at>
 
 	* Instance/framework.make: Remove symlink.
