@@ -33,7 +33,7 @@ endif
 # The list of localized framework resource files is in
 #    xxx_LOCALIZED_RESOURCE_FILES
 # The list of localized framework web server resource files is in
-#    xxx_LOCALIZED_WEBSERVER_RESOURCE_FILES
+#    xxx_WEBSERVER_LOCALIZED_RESOURCE_FILES
 # The list of framework GSWeb components are in xxx_COMPONENTS
 # The list of languages the framework supports is in xxx_LANGUAGES
 # The list of framework resource directories are in xxx_RESOURCE_DIRS
@@ -44,7 +44,7 @@ endif
 # The list of framework web server resource directories are in
 #    xxx_WEBSERVER_RESOURCE_DIRS
 # The list of localized framework web server GSWeb components are in
-#    xxx_LOCALIZED_WEBSERVER_RESOURCE_DIRS
+#    xxx_WEBSERVER_LOCALIZED_RESOURCE_DIRS
 # CURRENT_VERSION_NAME is the compiled version name (default "A")
 # DEPLOY_WITH_CURRENT_VERSION deploy with current version or not (default
 #       "yes")
