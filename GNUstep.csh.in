@@ -31,8 +31,8 @@ if ( ! ${?LIBRARY_COMBO} ) then
   setenv LIBRARY_COMBO @ac_cv_library_combo@
 endif
 
-setenv GNUSTEP_LOCAL_ROOT "${GNUSTEP_ROOT}/Local"
-setenv GNUSTEP_NETWORK_ROOT "${GNUSTEP_ROOT}/Network"
+setenv GNUSTEP_LOCAL_ROOT @GNUSTEP_LOCAL_ROOT@
+setenv GNUSTEP_NETWORK_ROOT @GNUSTEP_NETWORK_ROOT@
 setenv GNUSTEP_USER_ROOT ~/GNUstep
 
 if ( ! ${?GNUSTEP_BUILD_ROOT} ) then
