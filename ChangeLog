@@ -1,3 +1,8 @@
+2002-03-20 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/GNUstep-howto.texi: Correct and expand on the
+	instructions for installing gdomap.
+
 Tue Mar 19 13:05:52 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Simplified implementation of before-$(GNUSTEP_INSTANCE)-all and

@@ -287,8 +287,15 @@ gnustep-xdps). For GNUstep Launchpad, do gnustep-guile and jigs
 (although both of these are optional).
 
 NOTE: If you are trying to install the packages without root permission,
-you need to change one thing in the base library. Edit the file
-gnustep-base/Tools/gdomap.h and uncomment the last line.
+you may need to change one thing in the base library. Edit the file
+gnustep-base/Tools/gdomap.h to uncomment the last line and modify
+the specified port number to a port which you @emph{know} is not in use on
+your network.  You should only do this if absolutely necessary since
+making this change will break communications with any systems where
+an identical change has not been made.  Also, the standard gdomap port
+is the one officially registered with IANA and is reserved for use by
+gdomap - it should only be changed if you can't get your system
+administrator to start the gdomap server using it.
 
 @node Additional Installation, Tools and Applications, Compiling and Installing, Top
 @chapter Additional Installation
