@@ -171,17 +171,14 @@ endif
 # FIXME - FRAMEWORK_WEBSERVER_RESOURCE_DIRS is not defined ...
 framework-webresource-dir::
 	@(if [ "$(WEBSERVER_RESOURCE_FILES)" != "" ] || [ "$(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)" != "" ]; then \
-	  $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	  $(MKDIRS) $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer; \
 	  $(MKDIRS) $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS); \
-	  if test ! -L "$(FRAMEWORK_DIR_NAME)/WebServerResources"; then \
-	    $(LN_S) Versions/Current/WebServerResources $(FRAMEWORK_DIR_NAME);\
-	  fi; \
 	fi;)
 
 framework-webresource-files:: framework-webresource-dir
 ifneq ($(WEBSERVER_RESOURCE_FILES),)
 	@ echo "Copying webserver resources into the framework wrapper..."; \
-	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer; \
 	for ff in $(WEBSERVER_RESOURCE_FILES) __done; do \
 	  if [ $$ff != __done ]; then \
 	    if [ -f ../../../../$(SUBPROJECT_ROOT_DIR)/WebServerResources/$$ff ]; then \
@@ -194,7 +191,7 @@ endif
 framework-localized-webresource-files:: framework-webresource-dir
 ifneq ($(LOCALIZED_WEBSERVER_RESOURCE_FILES),)
 	@ echo "Copying localized webserver resources into the framework wrapper..."; \
-	cd $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources; \
+	cd $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer; \
 	for l in $(LANGUAGES) __done; do \
 	  if [ $$l != __done ]; then \
 	    if [ ! -f $$l.lproj ]; then \

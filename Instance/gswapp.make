@@ -85,7 +85,7 @@ ALL_GSW_LIBS =								\
 # rules.make).
 GSWAPP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(GSWAPP_EXTENSION))
 GSWAPP_RESOURCE_DIRS =  $(foreach d, $(RESOURCE_DIRS), $(GSWAPP_DIR_NAME)/Resources/$(d))
-GSWAPP_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWAPP_DIR_NAME)/WebServerResources/$(d))
+GSWAPP_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWAPP_DIR_NAME)/Resources/WebServer/$(d))
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
@@ -190,6 +190,8 @@ ifneq ($(strip $(COMPONENTS)),)
 	done
 endif
 
+# FIXME - this is behaving differently than in gswbundle.make !
+# It's also not behaving consistently with xxx_RESOURCE_DIRS
 gswapp-webresource-dir:: $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
 ifneq ($(strip $(WEBSERVER_RESOURCE_DIRS)),)
 	@ echo "Linking webserver Resource Dirs into the application wrapper..."; \
@@ -204,20 +206,20 @@ endif
 $(GSWAPP_WEBSERVER_RESOURCE_DIRS):
 	#@$(MKDIRS) $(GSWAPP_WEBSERVER_RESOURCE_DIRS)
 
-gswapp-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources \
+gswapp-webresource-files:: $(GSWAPP_DIR_NAME)/Resources/WebServer \
                            gswapp-webresource-dir
 ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
 	@echo "Linking webserver resources into the application wrapper..."; \
-        cd $(GSWAPP_DIR_NAME)/WebServerResources; \
+        cd $(GSWAPP_DIR_NAME)/Resources/WebServer; \
         for ff in $(WEBSERVER_RESOURCE_FILES); do \
 	  $(LN_S) -f ../../WebServerResources/$$ff .;\
         done
 endif
 
-gswapp-localized-webresource-files:: $(GSWAPP_DIR_NAME)/WebServerResources gswapp-webresource-dir
+gswapp-localized-webresource-files:: $(GSWAPP_DIR_NAME)/Resources/WebServer gswapp-webresource-dir
 ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 	@ echo "Linking localized web resources into the application wrapper..."; \
-	cd $(GSWAPP_DIR_NAME)/WebServerResources; \
+	cd $(GSWAPP_DIR_NAME)/Resources/WebServer; \
 	for l in $(LANGUAGES); do \
 	  if [ -d ../../WebServerResources/$$l.lproj ]; then \
 	    $(MKDIRS) $$l.lproj;\
@@ -236,6 +238,8 @@ ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 	done
 endif
 
+# This is not consistent with what other projects do ... so it can't stay
+# this way.  Use COMPONENTS instead.
 gswapp-resource-dir:: $(GSWAPP_RESOURCE_DIRS)
 ifneq ($(strip $(RESOURCE_DIRS)),)
 	@ echo "Linking Resource Dirs into the application wrapper..."; \
@@ -315,7 +319,7 @@ $(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWAPP_DIR_NAME)/Resources
 $(GSWAPP_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
 
-$(GSWAPP_DIR_NAME)/WebServerResources:
+$(GSWAPP_DIR_NAME)/Resources/WebServer:
 	@$(MKDIRS) $@
 
 internal-gswapp-install::

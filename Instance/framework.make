@@ -124,7 +124,7 @@ internal-framework-all:: before-$(GNUSTEP_INSTANCE)-all \
                          after-$(GNUSTEP_INSTANCE)-all
 
 FRAMEWORK_RESOURCE_DIRS = $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Resources/,$(RESOURCE_DIRS))
-FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/,$(WEBSERVER_RESOURCE_DIRS))
+FRAMEWORK_WEBSERVER_RESOURCE_DIRS =  $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/,$(WEBSERVER_RESOURCE_DIRS))
 
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
@@ -331,18 +331,14 @@ ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	done
 endif
 
-$(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources:
+$(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer:
 	$(MKDIRS) $@
 
 $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS):
 	$(MKDIRS) $@
 
-framework-webresource-dir:: $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources\
-                            $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)
-	@ if [ ! -L "$(FRAMEWORK_DIR_NAME)/WebServerResources" ]; then \
-	  rm -f $(FRAMEWORK_DIR_NAME)/WebServerResources; \
-	  $(LN_S) Versions/Current/WebServerResources $(FRAMEWORK_DIR_NAME);\
-	fi
+framework-webresource-dir:: $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer \
+                       $(FRAMEWORK_WEBSERVER_RESOURCE_DIRS)
 
 framework-webresource-files::
 
@@ -352,7 +348,7 @@ framework-webresource-files:: framework-webresource-dir
 	for ff in $(WEBSERVER_RESOURCE_FILES); do \
 	  if [ -f ./WebServerResources/$$ff ]; then \
 	    cp -r ./WebServerResources/$$ff \
-                  $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$$ff; \
+                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/$$ff; \
 	  fi; \
 	done
 endif
@@ -365,11 +361,11 @@ framework-localized-webresource-files:: framework-webresource-dir
 	for l in $(LANGUAGES); do \
 	  if [ -d WebServerResources/$$l.lproj ]; then \
 	    $(MKDIRS) \
-	        $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$$l.lproj;\
+	        $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/$$l.lproj;\
 	    for f in $(LOCALIZED_WEBSERVER_RESOURCE_FILES); do \
 	      if [ -f WebServerResources/$$l.lproj/$$f ]; then \
 	        cp -r WebServerResources/$$l.lproj/$$f \
-	              $(FRAMEWORK_VERSION_DIR_NAME)/WebServerResources/$$l.lproj/$$f; \
+	              $(FRAMEWORK_VERSION_DIR_NAME)/Resources/WebServer/$$l.lproj/$$f; \
 	      fi;\
 	    done;\
 	  else \

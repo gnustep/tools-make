@@ -105,7 +105,7 @@ GSWBUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(GSWBUNDLE_EXTENSION))
 GSWBUNDLE_FILE = \
     $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
 GSWBUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/Resources/$(d))
-GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/WebServerResources/$(d))
+GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/Resources/WebServer/$(d))
 
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
@@ -193,21 +193,21 @@ endif
 gswbundle-webresource-dir::
 	@$(MKDIRS) $(GSWBUNDLE_WEBSERVER_RESOURCE_DIRS)
 
-gswbundle-webresource-files:: $(GSWBUNDLE_DIR_NAME)/WebServerResources \
+gswbundle-webresource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/WebServer \
                               gswbundle-webresource-dir
 ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking webserver resources into the application wrapper..."; \
-	cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
+	cd $(GSWBUNDLE_DIR_NAME)/Resources/WebServer; \
 	for ff in $(WEBSERVER_RESOURCE_FILES); do \
 	  $(LN_S) -f ../../WebServerResources/$$ff .;\
 	done)
 endif
 
-gswbundle-localized-webresource-files:: $(GSWBUNDLE_DIR_NAME)/WebServerResources \
+gswbundle-localized-webresource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/WebServer \
                                         gswbundle-webresource-dir
 ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking localized web resources into the application wrapper..."; \
-	cd $(GSWBUNDLE_DIR_NAME)/WebServerResources; \
+	cd $(GSWBUNDLE_DIR_NAME)/Resources/WebServer; \
 	for l in $(LANGUAGES); do \
 	  if [ -d ../../WebServerResources/$$l.lproj ]; then \
 	    $(MKDIRS) $$l.lproj; \
@@ -249,7 +249,7 @@ $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR_NAME)/Resour
 $(GSWBUNDLE_DIR_NAME)/Resources:
 	@$(MKDIRS) $@
 
-$(GSWBUNDLE_DIR_NAME)/WebServerResources:
+$(GSWBUNDLE_DIR_NAME)/Resources/WebServer:
 	@$(MKDIRS) $@
 
 internal-gswbundle-install:: $(GSWBUNDLE_INSTALL_DIR) shared-instance-headers-install
