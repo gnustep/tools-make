@@ -1,3 +1,24 @@
+Tue Jan 29 13:10:17 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make (ALL_GUI_LIBS): Make sure it's not evaluated -
+	which causes a subprocess to be run - unless needed to link.
+	* bundle.make (ALL_BUNDLE_LIBS): Idem.
+	* ctool.make (ALL_TOOL_LIBS): Idem.
+	* framework.make (ALL_FRAMEWORK_LIBS): Idem.
+	* gswapp.make (ALL_GSW_LIBS): Idem.
+	* objc.make (ALL_OBJC_LIBS): Idem.
+	* service.make (ALL_SERVICE_LIBS): Idem.
+	* test-library.make (ALL_TEST_LIBRARY_LIBS): Idem.
+	* tool.make (ALL_TOOL_LIBS): Idem.
+
+Tue Jan 29 12:39:53 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* objc.make (TTMP_LIBS): Fixed - was using ALL_TOOL_LIBS instead
+	of ALL_OBJC_LIBS.
+	* service.make (ALL_SERVICE_LIBS): Rename from ALL_GUI_LIBS.
+	(TTMP_LIBS): Use ALL_SERVICE_LIBS instead of ALL_GUI_LIBS.
+	($(SERVICE_FILE)): Use ALL_SERVICE_LIBS when compiling.
+	
 2002-01-28  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.MinGW: Update
