@@ -1,3 +1,9 @@
+Fri Nov 12  6:36:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* which_lib.c: Fix for bug reported by Pascal Bourguignon.
+	If 'shared=no' and 'debug=yes', but no debug library exists, then
+	find a static library.
+
 Thu Nov 11 12:22:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* GNUstep.csh.in: Fix for typo reported by Pascal Bourguignon.

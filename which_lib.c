@@ -394,7 +394,7 @@ int search_for_library_in_directory (char* path)
     return 1;
 
   /* Return a static library that matches the 'library_name' */
-  if (search_for_library_with_type_in_directory (0, path, libext))
+  if (search_for_library_with_type_in_directory ('s', path, libext))
     return 1;
 
   return 0;
