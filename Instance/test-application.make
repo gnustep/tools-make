@@ -25,5 +25,5 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/application.make
 
-internal-testapp-all:: internal-app-all
+internal-test_app-all:: internal-app-all
 

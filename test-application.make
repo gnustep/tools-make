@@ -23,7 +23,7 @@ ifeq ($(GNUSTEP_INSTANCE),)
 include $(GNUSTEP_MAKEFILES)/Master/test-application.make
 else
 
-ifeq ($(GNUSTEP_TYPE),testapp)
+ifeq ($(GNUSTEP_TYPE),test_app)
 include $(GNUSTEP_MAKEFILES)/Instance/test-application.make
 endif
 

@@ -27,12 +27,12 @@ endif
 # Building of test applications works as in application.make, except
 # you can't install them!
 
-internal-all:: $(TEST_APP_NAME:=.all.testapp.variables)
+internal-all:: $(TEST_APP_NAME:=.all.test-app.variables)
 
 _PSWRAP_C_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
 
-internal-clean:: $(TEST_APP_NAME:=.clean.testapp.subprojects)
+internal-clean:: $(TEST_APP_NAME:=.clean.test-app.subprojects)
 	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
 ifeq ($(OBJC_COMPILER), NeXT)
 	rm -f *.iconheader
@@ -47,13 +47,14 @@ else
 endif
 endif
 
-internal-distclean:: $(TEST_APP_NAME:=.distclean.testapp.subprojects)
+internal-distclean:: $(TEST_APP_NAME:=.distclean.test-app.subprojects)
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj *.app *.debug *.profile *.iconheader
 
 $(TEST_APP_NAME)::
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.testapp.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
+	         $@.all.test-app.variables
 
 internal-install::
 	@ echo Skipping installation of test apps...

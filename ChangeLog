@@ -1,3 +1,10 @@
+Fri Feb 22 12:33:13 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/test-application.make: Use test-app, not testapp, as
+	GNUSTEP_TYPE.
+	* Instance/test-application.make: Updated all rules.
+	* test-application.make: Updated.
+	
 Fri Feb 22 12:24:17 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/test-application.make (internal-check): Target removed.
