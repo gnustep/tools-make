@@ -1,3 +1,10 @@
+Thu Nov 22 00:43:33 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* rpm.make (check-RPM_TOPDIR): New target.
+	(rpm): Code to check RPM_TOPDIR moved in the new check-RPM_TOPDIR
+	target; if RELEASE_DIR is set, copy the .tar.gz file from there.
+	(.PHONY): Added check-RPM_TOPDIR.
+
 Thu Nov 22 00:06:02 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* source-distribution.make: Rewritten.  Bug fixes; new features;
