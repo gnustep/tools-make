@@ -3,6 +3,8 @@
 	* palette.make (PALETTE_INSTALL_DIR): Default to GNUSTEP_PALETTES
 	if not set.
 
+	* GNUmakefile.in: Use C version of which_lib exclusively.
+
 2000-07-14  Adam Fedor  <fedor@gnu.org>
 
 	* common.make (GNUSTEP_HEADERS_GUI_FLAG): Remove.
