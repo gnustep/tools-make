@@ -1,3 +1,9 @@
+Thu Jul 12 16:54:01 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.variables): Pass TARGET down to submake so that
+	the before-$(TARGET)-all and after-$(TARGET)-all rules actually
+	work.
+	
 Thu Jul 12 11:54:28 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make: Removed PROCESS_SECOND_TIME.
