@@ -278,15 +278,13 @@ ifeq ($(PRINCIPAL_CLASS),)
   PRINCIPAL_CLASS = $(GNUSTEP_INSTANCE)
 endif
 
+MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
+
 # MacOSX-S frameworks
 $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(FRAMEWORK_NAME)${FRAMEWORK_OBJ_EXT}\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
-	  fi; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
@@ -294,11 +292,7 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME
 $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
-	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
-	    echo "  NSMainNibFile = \"\";"; \
-	  else \
-	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
-	  fi; \
+	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@
 
