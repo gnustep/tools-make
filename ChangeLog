@@ -1,3 +1,8 @@
+2001-10-15  Adam Fedor  <fedor@gnu.org>
+
+	* bundle.make ($(BUNDLE_DIR_NAME)/Contents/Resources): Remove
+	-f (Solaris ln -f doesn't work).
+
 Tue Oct 16 03:30:08 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Warning - very minor backwards incompatible change in the API, 
