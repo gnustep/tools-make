@@ -1,3 +1,25 @@
+Thu Feb 28 13:03:12 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Instance/rules.make (before-$(GNUSTEP_INSTANCE)-all): Added.
+	(after-$(GNUSTEP_INSTANCE)-all): Added.
+	* Instance/application.make: Removed from here.
+	* Instance/bundle.make: Idem.
+	* Instance/ctool.make: Idem.
+	* Instance/documentation.make: Idem.
+	* Instance/framework.make: Idem.
+	* Instance/gswapp.make: Idem.
+	* Instance/gswbundle.make: Idem.
+	* Instance/java-tool.make: Idem.
+	* Instance/java.make: Idem.
+	* Instance/library.make: Idem.
+	* Instance/objc.make: Idem.
+	* Instance/palette.make: Idem.
+	* Instance/rules.make: Idem.
+	* Instance/service.make: Idem.
+	* Instance/subproject.make: Idem.
+	* Instance/test-library.make: Idem.
+	* Instance/tool.make: Idem.
+	
 Thu Feb 28 11:06:51 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make (GNUSTEP_WOAPPS): Removed.
