@@ -277,6 +277,13 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 # we exclude the symbolic link from the tar file, then rebuild the
 # link by hand in the installation directory.
 
+# When rebuilding the link, we need to make sure that we can manage
+# the case that tar was actually broken and didn't honour the
+# --exclude option (and/or the h option).  This was reported to have
+# happened.  To manage this, we simply do not build the link if
+# Resources already exists and is a directory (either a real one or a
+# symbolic link, we don't care).
+
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 ifneq ($(HEADER_FILES_INSTALL_DIR),)
 	$(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR);
@@ -294,7 +301,9 @@ endif
 	              $(BUNDLE_DIR_NAME) \
 	    | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -); \
 	(cd $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)/Contents; \
-	    rm -f Resources; $(LN_S) ../Resources .)
+	    if [ ! -d Resources ]; then \
+	      rm -f Resources; $(LN_S) ../Resources .; \
+	    fi;)
 
 $(BUNDLE_DIR_NAME)/Resources:
 	$(MKDIRS) $@
