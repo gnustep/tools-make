@@ -1,3 +1,8 @@
+Mon Oct 28 10:48:26 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make (Resources/Info.plist): Use
+	GNUSTEP_INSTANCE, not FRAMEWORK_NAME, when building NSExecutable.
+
 2002-10-26 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/documentation.make: Fix gsdoc install location
