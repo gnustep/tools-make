@@ -1,3 +1,10 @@
+Thu Oct 31 21:52:45 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/tool.make (internal-install-dirs, install-tool):
+	Simplified rules removing these intermediate targets.
+	(.PHONY): Removed those targets; added
+	internal-tool-copy_into_dir.
+
 Thu Oct 31 13:51:41 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Warning: removed framework's xxx_TOOLS API; replaced it with
