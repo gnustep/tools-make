@@ -46,8 +46,13 @@
 #
 
 # The first time you invoke `make', if you have not given a target,
-# `all' is executed as it is the first one.
+# `all' is executed as it is the first one.  If a GNUSTEP_BUILD_DIR is
+# specifed, make sure to create it before anything else is done.
+ifeq ($(GNUSTEP_BUILD_DIR),.)
 all:: before-all internal-all after-all
+else
+all:: $(GNUSTEP_BUILD_DIR) before-all internal-all after-all
+endif
 
 # internal-after-install is used by packaging to get the list of files 
 # installed (see rpm.make); it must come after *all* the installation 
@@ -140,14 +145,14 @@ after-uninstall::
 before-clean::
 
 internal-clean::
-	rm -rf *~ obj
+	rm -rf $(GNUSTEP_BUILD_DIR)/*~ $(GNUSTEP_BUILD_DIR)/obj
 
 after-clean::
 
 before-distclean::
 
 internal-distclean::
-	rm -f core
+	rm -f $(GNUSTEP_BUILD_DIR)/core
 
 after-distclean::
 
@@ -219,6 +224,51 @@ after-strings::
 
 # Before building the real thing, we must build the subprojects
 
+# If we are at the very first make invocation, convert
+# GNUSTEP_BUILD_DIR into an absolute path.  All other make invocations
+# can then assume it is already an absolute path form, and avoid the
+# shell invocation to convert into absolute path.  Let's avoid the
+# shell invocation unless strictly necessary - it's slow.
+ifeq ($(MAKELEVEL),0)
+  ifneq ($(GNUSTEP_BUILD_DIR),.)
+
+    # We can't use ':=' here (which we'd like, since it would guarantee
+    # that the shell command is executed only once) because ':=' would
+    # cause the shell command to be executed immediately, which is *now*
+    # during parsing, before any rule has been executed; in particular,
+    # before the rule which creates GNUSTEP_BUILD_DIR has been executed
+    # (if it had to be executed), and that might cause the 'cd' in the
+    # following shell command to fail.  So what we do, is we define this
+    # as a simple variable with '=', which means it will be evaluated
+    # every time it is used, but not before, and then we make sure to
+    # use it as little as possible and only in rules which are executed
+    # after the rule to build GNUSTEP_BUILD_DIR.  Please note that in
+    # this setup, *any* reference to this variable causes a slow
+    # subshell invocation.  At the moment, it's used when running
+    # the subprojects/variables and when running the aggregate
+    # projects.
+
+    # That makes 1 invocation per type of project per type of target
+    # used in the top-level makefile.  For example, if the top-level
+    # makefile includes aggregate.make and documentation.make and does
+    # a make all, we evaluate this variable twice.  If it does a make
+    # distclean (which automatically invokes make clean as well) we
+    # evaluate this variable 4 times.  All non-top-level make code 
+    # is free from overhead.
+    # In the rules which need the ABS_GNUSTEP_BUILD_DIR variable more
+    # than once we copy it into a shell variable and reuse the shell
+    # variable to avoid evaluating ABS_GNUSTEP_BUILD_DIR multiple
+    # times in the same rule.
+    # DO NOT EVER USE THIS VARIABLE UNLESS YOU FULLY UNDERSTAND THE
+    # PERFORMANCE IMPLICATIONS JUST DESCRIBED.
+    ABS_GNUSTEP_BUILD_DIR = $(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))
+  else
+    ABS_GNUSTEP_BUILD_DIR = .
+  endif
+else
+  ABS_GNUSTEP_BUILD_DIR = $(strip $(GNUSTEP_BUILD_DIR))
+endif
+
 # If you change the subprojects code here, make sure to update the
 # %.subprojects rule below too!  The code from the %.subprojects rule
 # below is 'inlined' here for speed (so that we don't run a separate
@@ -228,6 +278,7 @@ after-strings::
 instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
 type=$(subst -,_,$(subst .,,$(suffix $*))); \
+abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
 if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
   echo Making $$operation in subprojects of $$type $$instance...; \
   for f in $($(basename $(basename $*))_SUBPROJECTS) __done; do \
@@ -237,7 +288,12 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
         mf=Makefile; \
         echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
       fi; \
-      if [ "$(OWNING_PROJECT_HEADER_DIR)" = "" ]; then \
+      if [ "$${abs_build_dir}" = "." ]; then \
+        gsbuild="."; \
+      else \
+        gsbuild="$${abs_build_dir}/$$f"; \
+      fi; \
+      if [ "$(OWNING_PROJECT_HEADER_DIR_NAME)" = "" ]; then \
         if [ "$$type" = "framework" ]; then \
           framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
           if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
@@ -245,11 +301,12 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
        else owning_project_header_dir=""; \
        fi; \
       else \
-        owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR)"; \
+        owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR_NAME)"; \
       fi; \
       if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
-          OWNING_PROJECT_HEADER_DIR="$${owning_project_header_dir}" \
+          OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+          GNUSTEP_BUILD_DIR="$$gsbuild" \
         ; then \
         :; \
       else exit $$?; \
@@ -263,7 +320,8 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
     GNUSTEP_TYPE=$$type \
     GNUSTEP_INSTANCE=$$instance \
     INTERNAL_$${type}_NAME=$$instance \
-    TARGET=$$instance
+    TARGET=$$instance \
+    GNUSTEP_BUILD_DIR="$${abs_build_dir}"
 
 #
 # This rule provides exactly the same code as the %.variables one with
@@ -271,7 +329,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 # want to run make clean in subprojects but do not need a full Instance
 # invocation.  In that case, they can depend on %.subprojects only.
 #
-# NB: The OWNING_PROJECT_HEADER_DIR hack in this rule is sort of
+# NB: The OWNING_PROJECT_HEADER_DIR_NAME hack in this rule is sort of
 # horrible, because it pollutes this general rule with code specific
 # to the framework implementation (eg, where the framework headers are
 # located).  Still, it's the least evil we could think of at the
@@ -284,6 +342,7 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
 type=$(subst -,_,$(subst .,,$(suffix $*))); \
+abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
 if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
   echo Making $$operation in subprojects of $$type $$instance...; \
   for f in $($(basename $(basename $*))_SUBPROJECTS) __done; do \
@@ -293,7 +352,12 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
         mf=Makefile; \
         echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
       fi; \
-      if [ "$(OWNING_PROJECT_HEADER_DIR)" = "" ]; then \
+      if [ "$${abs_build_dir}" = "." ]; then \
+        gsbuild="."; \
+      else \
+        gsbuild="$${abs_build_dir}/$$f"; \
+      fi; \
+      if [ "$(OWNING_PROJECT_HEADER_DIR_NAME)" = "" ]; then \
         if [ "$$type" = "framework" ]; then \
           framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
           if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
@@ -301,11 +365,12 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
        else owning_project_header_dir=""; \
        fi; \
       else \
-        owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR)"; \
+        owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR_NAME)"; \
       fi; \
       if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
-          OWNING_PROJECT_HEADER_DIR="$${owning_project_header_dir}" \
+          OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+          GNUSTEP_BUILD_DIR="$$gsbuild" \
         ; then \
         :; \
       else exit $$?; \
