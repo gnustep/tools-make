@@ -125,10 +125,18 @@ app=`echo $app | sed 's/\.[a-z]*$//'`
 app=`basename $app`
 appname=
 if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
-  appname=`grep NSExecutable $full_appname/Resources/Info-gnustep.plist`
-  if [ -n "$appname" ]; then
-    appname=`echo "$appname" | tr -d '\";=' | awk '{print $2}'`
-  fi
+# -n disable auto-print (for portability reasons)
+#   /^[ ]*NSExecutable[ ]*=/ matches every line beginning with 
+#        zero or more spaces, followed by 'NSExecutable', followed by zero or
+#        more spaces, followed by '='
+#   to this line we apply the following commands:
+#   s/^[ ]*NSExecutable[ ]*=[ ]*"\?\([^ ]*\)"\?[ ]*;/\1/p;
+#     which replaces 'NSExecutable = "Gorm";' with Gorm, then, because
+#     of the 'p' at the end, prints out the result 
+#   q; which quits sed since we know there must be a single line to replace.
+  appname=`sed -n -e '/^[ ]*NSExecutable[ ]*=/ \
+           {s/^[ ]*NSExecutable[ ]*=[ ]*"\?\([^ ]*\)"\?[ ]*;/\1/p; q;}' \
+                "$full_appname/Resources/Info-gnustep.plist"`
 fi
 if [ -z "$appname" ]; then
   appname=$app
