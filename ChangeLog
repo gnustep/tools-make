@@ -1,3 +1,21 @@
+2005-03-21  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Instance/palette.make (internal-palette-all_): Use the old dll
+	rules only if OLD_DLL_SUPPORT is YES.  In all other cases,
+	including Mingw, use the standard ones.
+	(Info-gnustep.plist): Include PALETTE_OBJ_EXT in NSExecutable.
+
+2005-03-21  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Instance/bundle.make: Use make quotes, not shell quotes, for
+	BUNDLE_OBJ_EXT when used in rules.
+	
+2005-03-21  Nicola Pero <n.pero@mi.flashnet.it>
+	
+	* target.make (SHARED_LIBEXT): Set to .dll.a for Mingw so that
+	which_lib manages to find the libs and building with debug=yes now
+	works on Mingw.
+
 2005-03-10  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Instance/library.make: On Windows, try to link against all 
