@@ -1,3 +1,16 @@
+Fri Jul 13 17:48:55 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (internal-doc-clean): Ignore problems 
+	in make clean.
+
+Fri Jul 13 17:35:13 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* subproject.make (internal-clean): Commands to make clean moved
+	here; depend on .subprojects.
+	(internal-distclean): Idem.
+	(internal-subproject-clean, internal-subproject-distclean):
+	Removed.
+	
 Fri Jul 13 17:26:49 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* palette.make (internal-clean): Commands to make clean moved
