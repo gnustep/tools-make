@@ -19,6 +19,10 @@
 #   If not, write to the Free Software Foundation,
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
+# Don't reload all the rules if already loaded
+ifneq ($(RULES_LOADED),yes)
+RULES_LOADED := yes
+
 ALL_CPPFLAGS = $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS)
 
 ALL_OBJCFLAGS = $(INTERNAL_OBJCFLAGS) $(ADDITIONAL_OBJCFLAGS) \
@@ -64,7 +68,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 # The magical app rule, thank you GNU make!
 %.app : FORCE
 	@echo Making $*...
-	@$(MAKE) internal-app-all \
+	@$(MAKE) --no-print-directory internal-app-all \
 		  APP_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
@@ -72,11 +76,21 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 
 %.tool : FORCE
 	@echo Making $*...
-	@$(MAKE) internal-tool-all \
+	@$(MAKE) --no-print-directory internal-tool-all \
 		  TOOL_NAME=$* \
 		  OBJC_FILES="$($*_OBJC_FILES)" \
 		  C_FILES="$($*_C_FILES)" \
 		  PSWRAP_FILES="$($*_PSWRAP_FILES)"
+
+%.bundle : FORCE
+	@echo Making $*...
+	$(MAKE) --no-print-directory internal-bundle-all \
+		  BUNDLE_NAME=$* \
+		  OBJC_FILES="$($*_OBJC_FILES)" \
+		  C_FILES="$($*_C_FILES)" \
+		  PSWRAP_FILES="$($*_PSWRAP_FILES)" \
+		  RESOURCE_FILES="$($*_RESOURCES)" \
+		  RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
 
 #
 # The list of Objective-C source files to be compiled
@@ -160,3 +174,6 @@ internal-check::
 after-check::
 
 FORCE:
+
+# Rules loaded
+endif

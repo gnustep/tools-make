@@ -81,7 +81,8 @@ TARGET_SYSTEM_LIBS := -lsocket -lnsl -ldl -lm
 endif
 
 #
-# Specific settings for building shared or static libraries on various systems
+# Specific settings for building shared libraries, static libraries,
+# and bundles on various systems
 #
 HAVE_SHARED_LIBS = no
 STATIC_LIB_LINK_CMD = \
@@ -96,12 +97,14 @@ AFTER_INSTALL_SHARED_LIB_COMMAND = \
 	(cd $(GNUSTEP_LIBRARIES); \
 	 rm -f $(LIBRARY_FILE); \
 	 $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+HAVE_BUNDLES = no
 
 
 #
 # OpenStep 4.x
 #
 ifeq ($(GNUSTEP_TARGET_OS), nextstep4)
+HAVE_BUNDLES            = yes
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool -dynamic -o $@ \
@@ -127,8 +130,11 @@ STATIC_LIB_LINK_CMD	= \
 endif
 AFTER_INSTALL_STATIC_LIB_COMMAND =
 
-SHARED_CFLAGS     += -dynamic
+SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .a
+
+HAVE_BUNDLES    = yes
+BUNDLE_CFLAGS   =
 endif
 
 #
@@ -143,8 +149,12 @@ SHARED_LIB_LINK_CMD     = \
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
-SHARED_CFLAGS     += -fPIC
+SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
+
+HAVE_BUNDLES    = yes
+BUNDLE_CFLAGS   += -fPIC
+BUNDLE_LDFLAGS  += -shared
 endif
 
 
@@ -162,4 +172,8 @@ SHARED_LIB_LINK_CMD     = \
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
+
+HAVE_BUNDLES    = yes
+BUNDLE_CFLAGS   += -fPIC
+BUNDLE_LDFLAGS  += -shared
 endif

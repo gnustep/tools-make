@@ -24,10 +24,8 @@
 #
 include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 
-LINK_CMD = $(CC) $(ALL_CFLAGS) $@$(OEXT) -o $@ $(ALL_LDFLAGS)
-
 #
-# The name of the library is in the APP_NAME variable.
+# The name of the application is in the APP_NAME variable.
 #
 
 APP_DIR_NAME := $(foreach app,$(APP_NAME),$(app).app)
@@ -68,7 +66,4 @@ internal-clean::
 	for f in $(APP_DIR_NAME); do \
 	  rm -rf $$f ; \
 	done
-	rm -f $(APP_STAMPS)
-
-internal-distclean:: clean
-	rm -rf objs
+	rm -rf $(GNUSTEP_OBJ_PREFIX)

@@ -1,3 +1,13 @@
+Tue Sep 30 14:24:20 1997  Scott Christley  <scottc@net-community.com>
+
+	* Add bundle support.
+	* bundle.make: Define rules and variables.
+	* rules.make: Add main bundle rule.  Surround complete file
+	with if to prevent multiple inclusion.
+	* target.make: Define bundle variables.
+
+	* application.make: Delete old code.
+
 Tue Sep 30 08:27:28 1997  Scott Christley  <scottc@net-community.com>
 
 	* Makefile.preamble (ADDITIONAL_TOOL_LIBS, ADDITIONAL_GUI_LIBS): Add
