@@ -1,3 +1,8 @@
+Mon Dec 10 17:32:52 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* bundle.make (internal-bundle-install): Use `f -' instead 
+	of --to-stdout option to tar.
+
 Mon Dec 10 09:54:09 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* application.make (internal-clean): Remove .c and .h files 
