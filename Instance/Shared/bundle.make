@@ -169,18 +169,16 @@ shared-instance-bundle-all: $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH) \
                       $(FULL_RESOURCE_DIRS) \
                       shared-instance-bundle-all-gsweb
 ifneq ($(RESOURCE_FILES),)
-	@(echo "Copying resources into the $(GNUSTEP_TYPE) wrapper..."; \
-	for f in $(RESOURCE_FILES); do \
+	$(ECHO_COPYING_RESOURCES)for f in $(RESOURCE_FILES); do \
 	  if [ -f $$f -o -d $$f ]; then \
 	    cp -r $$f $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH); \
 	  else \
 	    echo "Warning: $$f not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 endif
 ifneq ($(LOCALIZED_RESOURCE_DIRS),)
-	@(echo "Creating localized resource dirs into the $(GNUSTEP_TYPE) wrapper..."; \
-	for l in $(LANGUAGES); do \
+	$(ECHO_CREATING_LOC_RESOURCE_DIRS)for l in $(LANGUAGES); do \
 	  if [ -d $$l.lproj ]; then \
 	    $(MKDIRS) $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_DIRS); do \
@@ -189,11 +187,10 @@ ifneq ($(LOCALIZED_RESOURCE_DIRS),)
 	  else \
 	    echo "Warning: $$l.lproj not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 endif
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
-	@(echo "Copying localized resources into the $(GNUSTEP_TYPE) wrapper..."; \
-	for l in $(LANGUAGES); do \
+	$(ECHO_COPYING_LOC_RESOURCES)for l in $(LANGUAGES); do \
 	  if [ -d $$l.lproj ]; then \
 	    $(MKDIRS) $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
@@ -207,18 +204,17 @@ ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	  else \
 	    echo "Warning: $$l.lproj not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 endif
 ifneq ($(_SUBPROJECTS),)
-	@(echo "Copying resources from subprojects into the $(GNUSTEP_TYPE) wrapper..."; \
-	for subproject in $(_SUBPROJECTS); do \
+	$(ECHO_COPYING_RESOURCES_FROM_SUBPROJS)for subproject in $(_SUBPROJECTS); do \
 	  if [ -d $$subproject/Resources/Subproject ]; then \
 	    if [ $$subproject/Resources/Subproject/* != $$subproject'/Resources/Subproject/*' ]; then \
 	      cp -r $$subproject/Resources/Subproject/* \
 	            $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/; \
 	    fi; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 endif
 
 ##
@@ -269,8 +265,7 @@ $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer:
 shared-instance-bundle-all-webresources: \
   $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer \
   $(WEBSERVER_FULL_RESOURCE_DIRS)
-	@(echo "Copying webserver resources into the $(GNUSTEP_TYPE) wrapper..."; \
-	for f in $(WEBSERVER_RESOURCE_FILES); do \
+	$(ECHO_COPYING_WEBSERVER_RESOURCES)for f in $(WEBSERVER_RESOURCE_FILES); do \
 	  if [ -f ./WebServerResources/$$f \
 	       -o -d ./WebServerResources/$$f ]; then \
 	    cp -r ./WebServerResources/$$f \
@@ -278,7 +273,7 @@ shared-instance-bundle-all-webresources: \
 	  else \
 	    echo "Warning: WebServerResources/$$f not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 else
 
 shared-instance-bundle-all-webresources:
@@ -289,8 +284,7 @@ ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_FILES)$(WEBSERVER_LOCALIZED_RESOURCE_DIRS)
 shared-instance-bundle-all-localized-webresources: \
   $(WEBSERVER_FULL_RESOURCE_DIRS)
 ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_DIRS),)
-	@(echo "Creating localized webserver resource dirs into the $(GNUSTEP_TYPE) wrapper..."; \
-	for l in $(LANGUAGES); do \
+	$(ECHO_CREATING_WEBSERVER_LOC_RESOURCE_DIRS)for l in $(LANGUAGES); do \
 	 if [ -d ./WebServerResources/$$l.lproj ]; then \
 	  $(MKDIRS) \
 	   $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj; \
@@ -301,10 +295,10 @@ ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_DIRS),)
 	  else \
 	    echo "Warning: WebServer/$$l.lproj not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 endif
-	@(echo "Copying localized webserver resources into the $(GNUSTEP_TYPE) wrapper..."; \
-	for l in $(LANGUAGES); do \
+ifneq ($(WEBSERVER_LOCALIZED_RESOURCE_FILES)
+	$(ECHO_COPYING_WEBSERVER_LOC_RESOURCES)for l in $(LANGUAGES); do \
 	 if [ -d ./WebServerResources/$$l.lproj ]; then \
 	  $(MKDIRS) \
 	  $(GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH)/WebServer/$$l.lproj;\
@@ -320,7 +314,8 @@ endif
 	  else \
 	    echo "Warning: WebServerResources/$$l.lproj not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
+endif
 
 else
 
