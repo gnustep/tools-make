@@ -1,3 +1,7 @@
+Tue Nov 11 14:43:56 1997  Adam Fedor  <fedor@doc.com>
+
+	* target.make (Solaris/BUNDLE_LDFLAGS): Change the flags.
+
 Sat Nov  1 13:17:07 1997  Scott Christley  <scottc@net-community.com>
 
 	* brain.make: Export LIBRARY_COMBO.
