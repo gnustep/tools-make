@@ -1,3 +1,10 @@
+Wed May 13 16:00:37 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* GNUmakefile.in: Create GNUSTEP_LIB_COMBO directory.
+	* brain.make (GUI_LIBS): Include -lgnustep-gui twice.
+	* target.make (OPENSTEP 4.X): Fix libtool flags.
+	* tool.make (TOOL_INSTALLATION_DIR): Conditionally set this.
+
 Sun Apr  5 20:06:03 1998  Scott Christley  <scottc@net-community.com>
 
 	* documentation.make: Have html rule be based upon the table

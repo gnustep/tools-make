@@ -36,8 +36,10 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 
 # This is the directory where the tools get installed. If you don't specify a
 # directory they will get installed in the GNUstep system root.
-TOOL_INSTALLATION_DIR = \
+ifeq ($(TOOL_INSTALLATION_DIR),)
+  TOOL_INSTALLATION_DIR = \
     $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+endif
 
 ifeq ($(INTERNAL_tool_NAME),)
 

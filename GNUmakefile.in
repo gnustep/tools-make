@@ -39,6 +39,7 @@ datadir = @datadir@
 
 GNUSTEP_TARGET_CPU := @target_cpu@
 GNUSTEP_TARGET_OS := @target_os@
+GNUSTEP_LIB_COMBO := @ac_cv_library_combo@
 
 GNUSTEP_TARGET_CPU := $(shell ./clean_cpu.sh $(GNUSTEP_TARGET_CPU))
 GNUSTEP_TARGET_VENDOR := $(shell ./clean_vendor.sh $(GNUSTEP_TARGET_VENDOR))
@@ -46,6 +47,7 @@ GNUSTEP_TARGET_OS := $(shell ./clean_os.sh $(GNUSTEP_TARGET_OS))
 
 makedir = $(prefix)/Makefiles
 tooldir = $(prefix)/Tools
+librarydir = $(prefix)/Libraries
 GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 
 INSTALL		= @INSTALL@
@@ -65,6 +67,7 @@ install: all
 		$(prefix)/share \
 		$(prefix)/Apps \
 		$(prefix)/Libraries/$(GNUSTEP_TARGET_DIR) \
+		$(prefix)/Libraries/$(GNUSTEP_TARGET_DIR)/$(GNUSTEP_LIB_COMBO) \
 		$(prefix)/Headers/$(GNUSTEP_TARGET_DIR) \
 		$(prefix)/Tools/$(GNUSTEP_TARGET_DIR) \
 		$(prefix)/Library \

@@ -101,7 +101,8 @@ TARGET_LIB_DIR = \
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
-	/bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) -o $@ \
+	/bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) -o $@ \
 		-framework System \
 		$(ALL_LIB_DIRS) \
 		$(LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
@@ -111,7 +112,7 @@ SHARED_LIB_LINK_CMD     = \
 else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
-		$(ALL_LDFLAGS) $@ \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) $(ALL_LDFLAGS) $@ \
 		-framework System \
 		$(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) \
 		$(LIBRARIES_FOUNDATION_DEPEND_UPON) $^; \
@@ -122,7 +123,8 @@ endif
 STATIC_LIB_LINK_CMD	= \
 	/bin/libtool -static $(ARCH_FLAGS) -o $@ $^
 
-ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
+# This doesn't work with 4.1, what about others?
+#ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
 
 AFTER_INSTALL_STATIC_LIB_COMMAND =
 
