@@ -69,7 +69,6 @@ endif
 FRAMEWORK_NAME := $(strip $(FRAMEWORK_NAME))
 FRAMEWORK_DIR_NAME := $(FRAMEWORK_NAME:=.framework)
 FRAMEWORK_VERSION_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
-SUBPROJECT_ROOT_DIR := "."
 DERIVED_SOURCES = derived_src
 
 # Always include all the compilation flags and generic compilation
@@ -144,6 +143,16 @@ endif
 #
 ifneq ($(FRAMEWORK_NAME),)
 CURRENT_FRAMEWORK_HEADERS_FLAG = -I$(DERIVED_SOURCES)
+endif
+
+#
+# Include rules to built the instance
+#
+# this fixes up ADDITIONAL_XXXFLAGS as well, which is why we include it
+# before using ADDITIONAL_XXXFLAGS
+#
+ifneq ($(GNUSTEP_INSTANCE),)
+include $(GNUSTEP_MAKEFILES)/Instance/rules.make
 endif
 
 #
@@ -391,13 +400,6 @@ $(GNUSTEP_MAKEFILES)/Additional/*.make: ;
 $(GNUSTEP_MAKEFILES)/Master/*.make: ;
 
 $(GNUSTEP_MAKEFILES)/Instance/*.make: ;
-
-#
-# Include rules to built the instance
-#
-ifneq ($(GNUSTEP_INSTANCE),)
-include $(GNUSTEP_MAKEFILES)/Instance/rules.make
-endif
 
 # The rule to create the objects file directory.
 $(GNUSTEP_OBJ_DIR):
