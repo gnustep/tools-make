@@ -305,7 +305,7 @@ endif # end of code not executed by before-all
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
-	    SUBPROJECTS="$($*_SUBPROJECTS)" \
+	    _SUBPROJECTS="$($*_SUBPROJECTS)" \
 	    OBJC_FILES="$($*_OBJC_FILES)" \
 	    C_FILES="$($*_C_FILES)" \
 	    JAVA_FILES="$($*_JAVA_FILES)" \
@@ -374,21 +374,24 @@ endif # end of code not executed by before-all
 # are in the JAVA_JNI_FILES variable.
 #
 
+#
+# Please note the subtle difference:
+#
+# At `user' level (ie, in the user's GNUmakefile), 
+# the SUBPROJECTS variable is reserved for use with aggregate.make; 
+# the xxx_SUBPROJECTS variable is reserved for use with subproject.make.
+#
+# This separation *must* be enforced strictly, because nothing prevents 
+# a GNUmakefile from including both aggregate.make and subproject.make!
+#
+# For this reason, when we pass xxx_SUBPROJECTS to a submake invocation,
+# we call the new variable _SUBPROJECTS rather than SUBPROJECTS
+#
 
-ifneq ($($*_SUBPROJECTS),)
-  SUBPROJECT_OBJ_FILES = $(foreach d, $($*_SUBPROJECTS), \
+ifneq ($(_SUBPROJECTS),)
+  SUBPROJECT_OBJ_FILES = $(foreach d, $(_SUBPROJECTS), \
     $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
-else
-  ifneq ($(SUBPROJECTS),)
-    SUBPROJECT_OBJ_FILES = $(foreach d, $(SUBPROJECTS), \
-      $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
-  endif
 endif
-
-#ifneq ($(SUBPROJECTS),)
-#  SUBPROJECT_OBJ_FILES = $(foreach d, $(SUBPROJECTS), \
-#    $(addprefix $(d)/, $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)))
-#endif
 
 OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
