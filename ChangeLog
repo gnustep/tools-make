@@ -1,3 +1,8 @@
+2001-05-05  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* target.make: fix library soname for FreeBSD ELF.
+	(patch by Kim Shrier <kim@tinker.com>)
+
 Sat May  5 12:40:39 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in (CLASSPATH): Set classpath before the user
