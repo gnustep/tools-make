@@ -31,7 +31,6 @@ Tue Apr 20 10:27:16 2004  Matt Rice <ratmice@yahoo.com>
 	* Documentation/announce.texi: Fix bug url.
 	* Documentation/gnustep-howto.texi: Add more dependancy explanations.
 	* Documentation/machines.texi: Add FreeBSD 5.x.
-	
 
 2004-04-02  David Ayers  <d.ayers@inode.at>
 
