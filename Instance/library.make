@@ -163,10 +163,15 @@ ifeq ($(BUILD_DLL),yes)
 
 DERIVED_SOURCES = derived_src
 
-DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
+DLL_DEF_FILES = $(SUBPROJECT_DEF_FILES) $($(GNUSTEP_INSTANCE)_DLL_DEF)
 
-ifneq ($(strip $(DLL_DEF)),)
-DLL_DEF_FLAG = --input-def $(DLL_DEF)
+ifneq ($(strip $(DLL_DEF_FILES)),)
+DLL_DEF_INP = $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).inp
+
+$(DLL_DEF_INP): $(DLL_DEF_FILES)
+	cat $< > $@
+
+DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
 endif
 
 # Pass -DBUILD_lib{library_name}_DLL=1 to the preprocessor.  The
@@ -179,6 +184,7 @@ SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 internal-library-all_:: \
 	$(GNUSTEP_OBJ_DIR)			\
 	$(DERIVED_SOURCES)			\
+	$(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).inp \
 	$(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def	\
 	$(GNUSTEP_OBJ_DIR)/$(DLL_NAME)		\
 	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)
@@ -189,8 +195,8 @@ internal-library-clean::
 $(DERIVED_SOURCES):
 	$(MKDIRS) $@
 
-$(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def: $(OBJ_FILES_TO_LINK) $(DLL_DEF)
-	$(DLLTOOL) $(SUBPROJECT_DEF_FILES) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)
+$(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def: $(OBJ_FILES_TO_LINK) $(DLL_DEF_INP)
+	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)
 
 $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB): $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def
 	$(DLLTOOL) --dllname $(DLL_NAME) --def $< --output-lib $@
