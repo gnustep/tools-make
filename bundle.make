@@ -97,9 +97,11 @@ ALL_CPPFLAGS += $(TTMP_LIBS)
 BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
-internal-bundle-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
-		build-bundle-dir build-bundle build-macosx-bundle \
-		after-$(TARGET)-all
+internal-bundle-all:: before-$(TARGET)-all \
+                      $(GNUSTEP_OBJ_DIR) \
+                      build-bundle-dir \
+                      build-bundle build-macosx-bundle \
+                      after-$(TARGET)-all
 
 before-$(TARGET)-all::
 
@@ -122,7 +124,9 @@ ifeq ($(BUNDLE_INSTALL_DIR),)
   BUNDLE_INSTALL_DIR := $(GNUSTEP_BUNDLES)
 endif
 
-build-bundle-dir:: $(BUNDLE_DIR_NAME)/Resources $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) $(BUNDLE_RESOURCE_DIRS)
+build-bundle-dir:: $(BUNDLE_DIR_NAME)/Resources \
+                   $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                   $(BUNDLE_RESOURCE_DIRS)
 
 $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	$(MKDIRS) $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
@@ -134,15 +138,18 @@ build-bundle:: $(BUNDLE_FILE) bundle-resource-files localized-bundle-resource-fi
 
 ifeq ($(WITH_DLL),yes)
 
-$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+                 $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 	$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
-		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES) \
+		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+                $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES) \
 		$(ALL_FRAMEWORKS_DIRS) $(ALL_LIB_DIRS) $(ALL_BUNDLE_LIBS)
 
 else # WITH_DLL
 
-$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
+$(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
+                 $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
@@ -150,7 +157,8 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_
 
 endif # WITH_DLL
 
-bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info.plist $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info.plist \
+                        $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the bundle wrapper..."; \
 	  for f in "$(RESOURCE_FILES)"; do \
@@ -183,7 +191,7 @@ $(BUNDLE_DIR_NAME)/Contents :
 	$(MKDIRS) $@
 
 $(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents \
-	$(BUNDLE_DIR_NAME)/Resources
+                                        $(BUNDLE_DIR_NAME)/Resources
 	@(cd $(BUNDLE_DIR_NAME)/Contents; rm -f Resources; \
 	  $(LN_S) -f ../Resources .)
 
@@ -206,8 +214,8 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
 	) >$@
 
 build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
-	$(BUNDLE_DIR_NAME)/Contents/Resources \
-	$(BUNDLE_DIR_NAME)/Contents/Info.plist
+                       $(BUNDLE_DIR_NAME)/Contents/Resources \
+                       $(BUNDLE_DIR_NAME)/Contents/Info.plist
 
 # NeXTstep bundles
 $(BUNDLE_DIR_NAME)/Resources/Info.plist: $(BUNDLE_DIR_NAME)/Resources
