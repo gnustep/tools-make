@@ -1,3 +1,13 @@
+2004-06-05  Adam Fedor  <fedor@gnu.org>
+
+	* ld_lib_path.[c]sh: Allow seting of GNUstep framework location on
+	Mac OS X for all library combos (patch from Quentin Mathe
+	<gnustep-quentin@club-internet.fr>).
+
+	* Documentation/README.Cygwin: Update
+	* Documentation/machines.texi: Add Mac OS X section.
+	* Documentation/news.texi: Update.
+
 Tue Jun  1 15:43:45 BST 2004  Riccardo Mottola <rollei@tiscalinet.it>
 
 	* debugapp.in (appname): Fixed escaping of --args argument to work

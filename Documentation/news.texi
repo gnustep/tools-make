@@ -9,6 +9,14 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.9.2}
+
+@itemize @bullet
+@item Application and Bundles use the latest convention on Apple.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.9.1}
 
 @itemize @bullet
@@ -16,8 +24,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item README.Darwin for darwin/MacOSX install
 @item Framework version and naming clarified.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.9.0}
 

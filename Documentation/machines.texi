@@ -25,6 +25,7 @@ more popular operating systems. Some machines marked with
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
 * Irix 6.5/MIPS::               
+* MacOSX/PowerPC::              
 * MkLinux/PowerPC::             
 * NetBSD::                      
 * Netwinder::                   
@@ -127,8 +128,8 @@ Use the GNU runtime. Download the gcc compiler and configure it with
 
 @item Extra libs needed 
 Use libffi (not ffcall). This should be enabled by default in gnustep-base
-so you don't have to type --enable-libffi. Also you need the dlcompat library
-(from @url{www.opendarwin.org}) to load bundles (like the backend bundle).
+so you don't have to type --enable-libffi. For 6.x, you need the dlcompat 
+library (from @url{www.opendarwin.org}) to load bundles (not needed for 7.x).
 
 @item Special Instructions 
 
@@ -136,6 +137,8 @@ Read the @url{README.Darwin} file in the gnustep-make/Documentation
 directory for complete instructions.
 
 @end table
+
+See also the MacOSX/PowerPC section
 
 @c -----------------------------------------
 @node Debian/DEC-Alpha, Debian/i386, Darwin/PowerPC, Machine Specific
@@ -312,7 +315,7 @@ You need to use gmake not make to compile the GNUstep packages.
 @end table
 
 @c -----------------------------------------
-@node Irix 6.5/MIPS, MkLinux/PowerPC, FreeBSD 2.x, Machine Specific
+@node Irix 6.5/MIPS, MacOSX/PowerPC, FreeBSD 2.x, Machine Specific
 @section Irix 6.5/MIPS
 
 @table @samp
@@ -338,7 +341,39 @@ No libffi-support: Use ffcall
 @end table
 
 @c -----------------------------------------
-@node MkLinux/PowerPC, NetBSD, Irix 6.5/MIPS, Machine Specific
+@node MacOSX/PowerPC, MkLinux/PowerPC, Irix 6.5/MIPS, Machine Specific
+@section MacOSX/PowerPC
+
+Currently tested on MacOSX 10.2, 10.3
+
+@table @samp
+@item Recommended compiler
+Default.
+
+@item Extra libs needed 
+None.
+
+@item Special Instructions 
+By default, on Mac OS X, only the GNUstep extensions are built. This
+is if you want to build gdl2, etc on Mac OS X. Xcode project files
+exist, but they may not be up-to-date. Try:
+
+@example
+cd make
+./configure --with-library-combo=apple-apple-apple
+make install debug=yes
+
+cd ../base
+./configure --with-xml-prefix=/usr --disable-xmltest
+make install debug=yes
+@end example
+
+@end table
+
+See also the Darwin/PowerPC section.
+
+@c -----------------------------------------
+@node MkLinux/PowerPC, NetBSD, MacOSX/PowerPC, Machine Specific
 @section MkLinux/PowerPC 
 
 Tested with R2 RC2 (2004/03/04).
@@ -555,7 +590,7 @@ gdnc doesn't work.  If you recompile the kernel then it starts working.
 @node Suse/Intel, Suse 7.x/PPC, Suse 6.x/Intel, Machine Specific
 @section Suse/Intel 
 
-GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, and 9.0 of Suse
+GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, and 9.1 of Suse
 
 @table @samp
 @item Recommended compiler
@@ -701,7 +736,7 @@ work.
 
 @table @samp
 @item Recommended compiler
-gcc 2.95.3 (Cygwin release 1.1.8) or later
+gcc 3.3.1 or later (with libobjc and libjava (if using libffi))
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/windows/cygwin})
@@ -709,20 +744,15 @@ for shared libs. It's a good idea to remove the libobjc.a that comes with gcc
 (gcc -v for location) so that it isn't accidentally found.
 For ffcall, you should get version 1.8b or above (the earlier ones don't
 compile). There are still some problems with structure passing, but that is
-generally not supportred on any architecture.  libffi also works.
+generally not supported on any architecture.  libffi also works.
 
 @item Special Instructions
-On later versions of Cygwin you may be required to include the win32api
-directory in CPPFLAGS when configuring:
-
-@example
-CPPFLAGS=-I/usr/include/win32api ./configure
-@end example
-@end table
 
 Make sure you have good shared libraries for everthing. Sometimes a bad
 shared library (like libtiff) will cause odd and untraceable problems.
 See @url{README.Cygwin} for information on compiling.
+
+@end table
 
 @c -----------------------------------------
 @node Windows with MinGW, Yellowdog/PowerPC, Windows with CYGWIN, Machine Specific

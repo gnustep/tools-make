@@ -58,8 +58,7 @@ Before you start, you need Cygwin in some programming-oriented
 configuration (full configuration is OK but it's VERY big
 now). Installation instructions are on Cygwin site.
 
-In fact Cygwin already contains every package needed for GNUstep
-except GCC and GDB. Please see below.
+In fact Cygwin already contains every package needed for GNUstep.
 
 Building GCC and GDB
 --------------------
@@ -73,9 +72,8 @@ So you have to build these two from sources.
 Please note that generally GDB is optional! It's up to you whether to
 use it or not. If you don't use it you don't need to build it.
 
-1. GCC. Get sources from http://gcc.gnu.org . I suggest version 2.xx.x
-(last stable in gcc-2 branch e.g. 2.95.3) because gnustep-objc suits
-to version 2 of GCC. Get sources (including languages you need),
+1. GCC. Get sources from http://gcc.gnu.org.
+Get sources (including languages you need),
 unpack, build. Before installing uninstall previous version of GCC via
 setup.exe program.  
 

@@ -84,25 +84,22 @@ switch ( "${host_os}" )
       endif
     endif
 
-    if ( ( "${LIBRARY_COMBO}" == "apple-apple-apple" ) \
-         || ( "${LIBRARY_COMBO}" == "apple") ) then
-      unset additional
+    unset additional
 
-      if ( $?DYLD_FRAMEWORK_PATH == 0 ) then
-        setenv DYLD_FRAMEWORK_PATH "${fw_paths}"
-      else if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${fw_paths}" >/dev/null) } ) then
-        setenv DYLD_FRAMEWORK_PATH "${fw_paths}:${DYLD_FRAMEWORK_PATH}"
-      endif
-      if ( $?additional_framework_paths == 1) then
-        foreach dir (${additional_framework_paths})
-          set additional="${additional}${dir}:"
-        end
-      endif
+    if ( $?DYLD_FRAMEWORK_PATH == 0 ) then
+      setenv DYLD_FRAMEWORK_PATH "${fw_paths}"
+    else if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${fw_paths}" >/dev/null) } ) then
+      setenv DYLD_FRAMEWORK_PATH "${fw_paths}:${DYLD_FRAMEWORK_PATH}"
+    endif
+    if ( $?additional_framework_paths == 1) then
+      foreach dir (${additional_framework_paths})
+        set additional="${additional}${dir}:"
+      end
+    endif
 
-      if ( "${?additional}" == "1" ) then
-        if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
-          setenv DYLD_FRAMEWORK_PATH="${additional}${DYLD_FRAMEWORK_PATH}"
-        endif
+    if ( "${?additional}" == "1" ) then
+      if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
+        setenv DYLD_FRAMEWORK_PATH="${additional}${DYLD_FRAMEWORK_PATH}"
       endif
     endif
     breaksw
