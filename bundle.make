@@ -243,8 +243,8 @@ internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 	    done; \
 	  fi; \
         fi; \
-	$(REMOVE_INSTALLED_DIR) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
-	$(INSTALL_COMPLETE_DIR) $(BUNDLE_DIR_NAME) $(BUNDLE_INSTALL_DIR)
+	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
+	$(TAR) cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
 
 $(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::
 	@$(MKDIRS) $@

@@ -218,8 +218,8 @@ $(APP_DIR_NAME)/Resources:
 _FORCE::
 
 internal-app-install:: internal-app-all internal-install-dirs
-	$(REMOVE_INSTALLED_DIR) $(GNUSTEP_APPS)/$(APP_DIR_NAME)
-	$(INSTALL_COMPLETE_DIR) $(APP_DIR_NAME) $(GNUSTEP_APPS)
+	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)
+	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
 
 internal-install-dirs::
 	$(MKDIRS) $(GNUSTEP_APPS)
