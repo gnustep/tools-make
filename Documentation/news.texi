@@ -9,6 +9,15 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.7.3}
+
+@itemize @bullet
+@item Adds library combo to Headers directory if not flattened.
+@item Add Markup file (Renaissance) support.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.7.2}
 
 --enable-flattened (Flat directory structure) is on by default.
@@ -17,8 +26,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item On WIN32 use HOMEPATH in preference to USERPROFILE
 @item netbsd and openbsd compile fixes.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.7.1}
 

@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.7.2 is now available.
+The GNUstep Makefile Package version 1.7.3 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -16,19 +16,17 @@ It also allows the user to easily create cross-compiled binaries.
 number, y, in x.y.z) are unstable releases (like 1.5.2), which even
 minor release numbers (1.4.1) are stable releases.
 
-Changes in version `1.7.1'
+Changes in version `1.7.3'
 ==========================
 
-   -enable-flattened (Flat directory structure) is on by default.
+   * Adds library combo to Headers directory if not flattened.
 
-   * On WIN32 use HOMEPATH in preference to USERPROFILE
-
-   * netbsd and openbsd compile fixes.
+   * Add Markup file (Renaissance) support.
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.7.2.tar.gz distribution file at
+   You can get the gstep-make-1.7.3.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please log bug reports on the GNUstep project page

@@ -1,3 +1,7 @@
+2003-08-23  Adam Fedor  <fedor@gnu.org>
+
+	* Version 1.7.3
+
 2003-08-22  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: On netbsd, Use -Wl to pass linker options.

@@ -1,9 +1,16 @@
 NEWS
 ****
 
-The currently released version is `1.7.2'.
+The currently released version is `1.7.3'.
 
-Changes in version `1.7.1'
+Changes in version `1.7.3'
+==========================
+
+   * Adds library combo to Headers directory if not flattened.
+
+   * Add Markup file (Renaissance) support.
+
+Changes in version `1.7.2'
 ==========================
 
    -enable-flattened (Flat directory structure) is on by default.
