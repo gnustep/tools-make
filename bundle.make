@@ -55,6 +55,18 @@ $(BUNDLE_NAME):
 else
 # This part gets included the second time make is invoked.
 
+# On Solaris we don't need to specifies the libraries the bundle needs.
+# How about the rest of the systems? ALL_BUNDLE_LIBS is temporary empty.
+#ALL_BUNDLE_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
+   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
+   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+
+#ALL_BUNDLE_LIBS := \
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_BUNDLE_LIBS) \
+	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
+	shared_libext=$(SHARED_LIBEXT))
+
 internal-bundle-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 		build-bundle-dir build-bundle \
 		after-$(TARGET)-all
@@ -80,19 +92,34 @@ $(BUNDLE_FILE) : $(C_OBJ_FILES) $(OBJC_OBJ_FILES)
 	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		$(LDOUT)$(BUNDLE_FILE) \
 		$(C_OBJ_FILES) $(OBJC_OBJ_FILES) \
-		$(ALL_LIB_DIRS) $(BUNDLE_LIBS)
+		$(ALL_LIB_DIRS) $(ALL_BUNDLE_LIBS)
 
-bundle-resource-files::
-	for f in $(RESOURCE_FILES) __done; do \
-	  if [ $$f != __done ]; then \
-	    $(INSTALL_DATA) $$f $(BUNDLE_DIR_NAME)/$$f ;\
+bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
+	  echo "Copying resources into the bundle wrapper..."; \
+	  cp -r $(RESOURCE_FILES) $(BUNDLE_DIR_NAME)/Resources; \
+	fi)
+
+
+$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
+	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	  echo "  NSExecutable = $(INTERNAL_bundle_NAME);"; \
+	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
+	    echo "  NSMainNibFile = \"\";"; \
+	  else \
+	    echo "  NSMainNibFile = `echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`;"; \
 	  fi; \
-	done
+	  echo "  NSPrincipalClass = $(INTERNAL_bundle_NAME);"; \
+	  echo "}") >$@
 
-internal-bundle-install::
+internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
+	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 	tar cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); tar xf -)
 
-internal-bundle-install::
+$(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
+
+internal-bundle-uninstall::
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 
 #

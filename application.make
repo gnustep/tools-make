@@ -140,23 +140,28 @@ $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 endif
 
-app-resource-files:: Info-gnustep.plist
+app-resource-files:: $(APP_DIR_NAME)/Resources/Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the application wrapper..."; \
 	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
 	fi)
 
-Info-gnustep.plist: $(APP_DIR_NAME)/Resources
+$(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = $(INTERNAL_app_NAME);"; \
-	  echo "  NSMainNibFile = `echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`;"; \
+	  if [ "$(MAIN_MODEL_FILE)" = "" ]; then \
+	    echo "  NSMainNibFile = \"\";"; \
+	  else \
+	    echo "  NSMainNibFile = `echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`;"; \
+	  fi; \
 	  echo "  NSPrincipalClass = NSApplication;"; \
-	  echo "}") >$(APP_DIR_NAME)/Resources/$@
+	  echo "}") >$@
 
 $(APP_DIR_NAME)/Resources:
 	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
 
 internal-app-install::
+	rm -rf $(GNUSTEP_APPS)/$(APP_DIR_NAME)
 	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)
 
 internal-app-uninstall::

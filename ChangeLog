@@ -1,3 +1,23 @@
+Fri Jan 30 14:14:40 1998  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* application.make: Create the Resources/Info-gnustep.plist to
+ 	keep information about the application resources. Copy the
+ 	resource file in the Resources directory.
+	(internal-app-install): Remove first the target.
+	* brain.make: Add to GUI_LIBS the extensions library.
+	* bundle.make: Add support for building the bundle wrapper. Create
+ 	the Info-gnustep.plist file automatically to keep information
+ 	about the main bundle class and executable. New target for
+ 	uninstalling a bundle.
+	* library.make (internal-uninstall-headers): Change to support
+ 	empty HEADER_FILES variables.
+	* rules.make (%.build): Pass in the BUNDLE_LIBS variable the
+ 	global libraries beside those required by a given bundle. Also
+ 	pass the bundle's installation directory.
+	* bundle.make (Solaris/BUNDLE_LDFLAGS): Revert the changes made by
+ 	Adam to support bundles with 2.7.2.1; these changes also work with
+ 	2.8.
+
 Tue Jan 27 15:38:12 1998  Adam Fedor  <fedor@doc.com>
 
 	* target.make (Solaris/BUNDLE_LDFLAGS): New flags for gcc2.8.0

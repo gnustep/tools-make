@@ -134,8 +134,10 @@ internal-install-import-lib::
 internal-library-uninstall:: internal-uninstall-headers internal-uninstall-lib
 
 internal-uninstall-headers::
-	for file in $(HEADER_FILES); do \
-	  rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -f $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	  fi; \
 	done
 
 internal-uninstall-libs:: internal-uninstall-lib \
