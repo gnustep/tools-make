@@ -1,3 +1,9 @@
+Thu Sep 26 02:56:50 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make: Implemented rules to install and
+	uninstall.
+	* Instance/application.make: Use them.
+	
 Thu Sep 26 02:50:02 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/application.make (APP_INSTALL_DIR): New variable.
