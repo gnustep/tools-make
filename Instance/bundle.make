@@ -42,13 +42,9 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 #
 
 .PHONY: internal-bundle-all_ \
-        internal-bundle-install_ \
-        internal-bundle-uninstall_ \
-        build-bundle-dir \
-        build-bundle \
-        build-macosx-bundle \
-        bundle-resource-files \
-        bundle-localized-resource-files 
+       internal-bundle-install_ \
+       internal-bundle-uninstall_ \
+       build-bundle
 
 # In some cases, a bundle without any object file in it is useful - to
 # just store some resources which can be loaded comfortably using the 
@@ -83,14 +79,23 @@ endif
 
 endif # OBJ_FILES_TO_LINK
 
-internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) \
-                       build-bundle \
-                       build-macosx-bundle
+#
+# GNUstep bundles are built in the following way on all platforms:
+# xxx.bundle/Resources/Info-gnustep.plist
+# xxx.bundle/Resources/<all resources here>
+#
+# We also support building Apple bundles using Apple frameworks
+# on Apple platforms - in which case, the bundle has a different
+# structure:
+# xxx.bundle/Contents/Info.plist
+# xxx.bundle/Contents/Resources/<all resources here>
+# This second way of building bundles is triggered by FOUNDATION_LIB =
+# nx.
+#
+
+internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) build-bundle
 
 BUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
-
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(BUNDLE_DIR_NAME)/Resources
-include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 ifneq ($(OBJ_FILES_TO_LINK),)
 BUNDLE_FILE = \
@@ -101,19 +106,30 @@ ifeq ($(BUNDLE_INSTALL_DIR),)
   BUNDLE_INSTALL_DIR = $(GNUSTEP_BUNDLES)
 endif
 
+ifneq ($(FOUNDATION_LIB),nx)
+  # GNUstep bundle
+  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(BUNDLE_DIR_NAME)/Resources
+  BUNDLE_INFO_PLIST_FILE = $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+else
+  # OSX bundle
+  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(BUNDLE_DIR_NAME)/Contents/Resources
+  BUNDLE_INFO_PLIST_FILE = $(BUNDLE_DIR_NAME)/Contents/Info.plist
+endif
+GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(BUNDLE_DIR_NAME)
+GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(BUNDLE_INSTALL_DIR)
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
+
 ifneq ($(OBJ_FILES_TO_LINK),)
 build-bundle:: $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
-               $(BUNDLE_FILE) \
-               $(BUNDLE_DIR_NAME)/Resources \
-               $(BUNDLE_DIR_NAME)/Resources/Info.plist \
-               $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist \
-               shared-instance-bundle-all
+             $(BUNDLE_FILE) \
+             $(BUNDLE_INFO_PLIST_FILE) \
+             shared-instance-bundle-all
 
 # The rule to build $(BUNDLE_DIR_NAME)/Resources is already provided
 # by Instance/Shared/bundle.make
 
 $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	$(MKDIRS) $@
+	@$(MKDIRS) $@
 
 ifeq ($(WITH_DLL),yes)
 
@@ -142,21 +158,14 @@ endif
 else 
 # Following code for the case OBJ_FILES_TO_LINK is empty - bundle with
 # no shared object in it.
-build-bundle:: $(BUNDLE_DIR_NAME)/Resources \
-               $(BUNDLE_DIR_NAME)/Resources/Info.plist \
-               $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist \
-               shared-instance-bundle-all
+build-bundle:: $(BUNDLE_INFO_PLIST_FILE) shared-instance-bundle-all
 endif # OBJ_FILES_TO_LINK
 
+ifeq ($(FOUNDATION_LIB),nx)
 # MacOSX bundles
 
-$(BUNDLE_DIR_NAME)/Contents :
+$(BUNDLE_DIR_NAME)/Contents:
 	@$(MKDIRS) $@
-
-$(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents \
-                                        $(BUNDLE_DIR_NAME)/Resources
-	@(cd $(BUNDLE_DIR_NAME)/Contents; rm -f Resources; \
-	  $(LN_S) ../Resources .)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
 $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
@@ -192,23 +201,13 @@ $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
 	) >$@
 endif
 
-build-macosx-bundle :: $(BUNDLE_DIR_NAME)/Contents \
-                       $(BUNDLE_DIR_NAME)/Contents/Resources \
-                       $(BUNDLE_DIR_NAME)/Contents/Info.plist
+else # following executed if FOUNDATION_LIB != nx
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
 ifneq ($(OBJ_FILES_TO_LINK),)
-# NeXTstep bundles
-$(BUNDLE_DIR_NAME)/Resources/Info.plist:
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
-	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
-	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
-	  echo "}") >$@
-
 # GNUstep bundles
-$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
+$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${BUNDLE_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -218,14 +217,8 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 	  plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
 	fi)
 else # following code for when no object file is built
-# NeXTstep bundles
-$(BUNDLE_DIR_NAME)/Resources/Info.plist:
-	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
-	  echo "}") >$@
-
 # GNUstep bundles
-$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
+$(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "}") >$@
@@ -234,53 +227,20 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist:
 	fi)
 endif
 
-# Comment on the tar options used in the rule below - 
-
-# The h option to tar makes sure the bundle can contain symbolic links
-# to external files (for example templates), and when you install the
-# bundle, the symbolic links are replaced with the actual files.  The
-# X option is used because otherwise the -h option would dereference
-# the Contents/Resources-->Resources symbolic link, and install the
-# Resources directory twice.  Instead, we exclude the symbolic link
-# from the tar file, then rebuild the link by hand in the installation
-# directory.
-
-# Because of compatibility issues with older versions of GNU tar (not
-# to speak of non-GNU tars), we use the X option rather than the
-# --exclude= option.  The X option requires as argument a file listing
-# files to exclude.  We create a temporary file for this, then remove
-# it immediately afterwards.
-
-# When rebuilding the link, just as yet another compatibility safety
-# measure, we need to make sure that we can manage the case that tar
-# was actually broken and didn't honour the X option (and/or the h
-# option).  To manage this, we simply do not build the link if
-# Resources already exists and is a directory (either a real one or a
-# symbolic link, we don't care).
-
-internal-bundle-install_:: $(BUNDLE_INSTALL_DIR) shared-instance-headers-install
-	$(ECHO_INSTALLING)rm -f .tmp.gnustep.exclude; \
-	echo "$(BUNDLE_DIR_NAME)/Contents/Resources" > .tmp.gnustep.exclude;\
-	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME); \
-	$(TAR) chfX - .tmp.gnustep.exclude $(BUNDLE_DIR_NAME) \
-	    | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -); \
-	rm -f .tmp.gnustep.exclude; \
-	(cd $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)/Contents; \
-	    if [ ! -d Resources ]; then \
-	      rm -f Resources; $(LN_S) ../Resources .; \
-	    fi;)$(END_ECHO)
-ifneq ($(CHOWN_TO),)
-	$(CHOWN) -R $(CHOWN_TO) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
-endif
-ifeq ($(strip),yes)
-	$(STRIP) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_FILE)
-endif
+endif # FOUNDATION_LIB != nx
 
 $(BUNDLE_INSTALL_DIR):
 	$(MKINSTALLDIRS) $@
 
-internal-bundle-uninstall_:: shared-instance-headers-uninstall
-	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
+internal-bundle-install_:: shared-instance-headers-install \
+                     shared-instance-bundle-install
+ifeq ($(strip),yes)
+	$(STRIP) $(BUNDLE_INSTALL_DIR)/$(BUNDLE_FILE)
+endif
+
+
+internal-bundle-uninstall_:: shared-instance-headers-uninstall \
+                       shared-instance-bundle-uninstall
 
 
 ## Local variables:

@@ -346,9 +346,16 @@ shared-instance-bundle-all-localized-webresources:
 
 endif
 
+# In the following rule, tar has the 'h' option, which dereferences
+# symbolic links.  The idea is that you could specify symbolic links
+# to some templates as some of the resource files; then building the
+# bundle is quick, because you only copy the symlinks - not the actual
+# files; and the symlinks are dereferenced when the bundle is
+# installed (which is why the 'h' option is there).  I've never used
+# this feature, but it was requested by some of our users.
 shared-instance-bundle-install:: $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)
 	$(ECHO_INSTALLING_BUNDLE)rm -rf $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
-	$(TAR) cf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH) \
+	$(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH) \
 	  | (cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) \
