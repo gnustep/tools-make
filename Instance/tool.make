@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/tool.make
 #
 #   Instance Makefile rules to build GNUstep-based command line tools.
