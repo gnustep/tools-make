@@ -196,46 +196,76 @@ ifeq ($(MAKEFILE_NAME),)
 MAKEFILE_NAME = GNUmakefile
 endif
 
-#
-# Now prepare the library and header flags
-#
+# Now prepare the library and header flags - we first prepare the list
+# of directories, then optionally remove the empty ones, then prepend
+# -I / -L to them.
 ifeq ($(GNUSTEP_FLATTENED),)
 
-GNUSTEP_HEADERS_FLAGS = \
-  -I$(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-  -I$(GNUSTEP_USER_ROOT)/Headers \
-  -I$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-  -I$(GNUSTEP_LOCAL_ROOT)/Headers \
-  -I$(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-  -I$(GNUSTEP_NETWORK_ROOT)/Headers \
-  -I$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
-  -I$(GNUSTEP_SYSTEM_ROOT)/Headers
+GNUSTEP_HEADERS_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_USER_ROOT)/Headers \
+  $(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_LOCAL_ROOT)/Headers \
+  $(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_NETWORK_ROOT)/Headers \
+  $(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_SYSTEM_ROOT)/Headers
 
-GNUSTEP_LIBRARIES_FLAGS = \
-  -L$(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  -L$(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
-  -L$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  -L$(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
-  -L$(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  -L$(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
-  -L$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
-  -L$(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR)
+GNUSTEP_LIBRARIES_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  $(GNUSTEP_USER_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  $(GNUSTEP_LOCAL_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  $(GNUSTEP_NETWORK_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR) \
+  $(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_LDIR) \
+  $(GNUSTEP_SYSTEM_ROOT)/Libraries/$(GNUSTEP_TARGET_DIR)
 
 else # GNUSTEP_FLATTENED
 
-GNUSTEP_HEADERS_FLAGS = \
-  -I$(GNUSTEP_USER_ROOT)/Headers \
-  -I$(GNUSTEP_LOCAL_ROOT)/Headers \
-  -I$(GNUSTEP_NETWORK_ROOT)/Headers \
-  -I$(GNUSTEP_SYSTEM_ROOT)/Headers
+GNUSTEP_HEADERS_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Headers \
+  $(GNUSTEP_LOCAL_ROOT)/Headers \
+  $(GNUSTEP_NETWORK_ROOT)/Headers \
+  $(GNUSTEP_SYSTEM_ROOT)/Headers
 
-GNUSTEP_LIBRARIES_FLAGS = \
-  -L$(GNUSTEP_USER_ROOT)/Libraries \
-  -L$(GNUSTEP_LOCAL_ROOT)/Libraries \
-  -L$(GNUSTEP_NETWORK_ROOT)/Libraries \
-  -L$(GNUSTEP_SYSTEM_ROOT)/Libraries
+GNUSTEP_LIBRARIES_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Libraries \
+  $(GNUSTEP_LOCAL_ROOT)/Libraries \
+  $(GNUSTEP_NETWORK_ROOT)/Libraries \
+  $(GNUSTEP_SYSTEM_ROOT)/Libraries
 
 endif # GNUSTEP_FLATTENED
+
+ifeq ($(REMOVE_EMPTY_DIRS),yes)
+ # This variable, when evaluated, gives $(dir) if dir is non-empty, and
+ # nothing if dir is empty.
+ remove_if_empty = $(dir $(word 1,$(wildcard $(dir)/*)))
+
+ # Build the GNUSTEP_HEADER_FLAGS by removing the empty dirs from
+ # GNUSTEP_HEADER_DIRS, then prepending -I to each of them
+ #
+ # Important - because this variable is defined with = and not :=, it
+ # is only evaluated when it is used.  Which is good - it means we don't 
+ # scan the directories and try to remove the empty one on each make 
+ # invocation (eg, on 'make clean') - we only scan the dirs when we are using
+ # GNUSTEP_HEADERS_FLAGS to compile.  Please make sure to keep this
+ # behaviour otherwise scanning the directories each time a makefile is
+ # read might slow down the package unnecessarily for operations like
+ # make clean, make distclean etc.
+ #
+ # Doing this filtering still gives a 5% to 10% slowdown in compilation times
+ # due to directory scanning, which is why is normally turned off by
+ # default - by default we put all directories in compilation commands.
+ GNUSTEP_HEADERS_FLAGS = \
+   $(addprefix -I,$(foreach dir,$(GNUSTEP_HEADERS_DIRS),$(remove_if_empty)))
+ GNUSTEP_LIBRARIES_FLAGS = \
+   $(addprefix -L,$(foreach dir,$(GNUSTEP_LIBRARIES_DIRS),$(remove_if_empty)))
+else
+ # Default case, just add -I / -L
+ GNUSTEP_HEADERS_FLAGS = $(addprefix -I,$(GNUSTEP_HEADERS_DIRS))
+ GNUSTEP_LIBRARIES_FLAGS = $(addprefix -L,$(GNUSTEP_LIBRARIES_DIRS))
+endif
 
 #
 # Determine Foundation header subdirectory based upon library combo
@@ -270,18 +300,28 @@ ifeq ($(FOUNDATION_LIB),sun)
   FOUNDATION_LIBRARY_DEFINE = -DSun_Foundation_LIBRARY=1
 endif
 
-GNUSTEP_HEADERS_FND_FLAG = \
-  -I$(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
-  -I$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
-  -I$(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
-  -I$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)
+GNUSTEP_HEADERS_FND_DIRS = \
+  $(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
+  $(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
+  $(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
+  $(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)
 
 ifeq ($(FOUNDATION_LIB), fd)
-  GNUSTEP_HEADERS_FND_FLAG += \
-    -I$(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-    -I$(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-    -I$(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-    -I$(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
+  GNUSTEP_HEADERS_FND_DIRS += \
+    $(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+    $(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+    $(GNUSTEP_NETWORK_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+    $(GNUSTEP_SYSTEM_ROOT)/Headers/$(GNUSTEP_FND_DIR)/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
+endif
+
+ifeq ($(REMOVE_EMPTY_DIRS),yes)
+ # Build the GNUSTEP_HEADERS_FND_FLAG by removing the empty dirs
+ # from GNUSTEP_HEADERS_FND_DIRS, then prepending -I to each of them
+ GNUSTEP_HEADERS_FND_FLAG = \
+  $(addprefix -I,$(foreach dir,$(GNUSTEP_HEADERS_FND_DIRS),$(remove_if_empty)))
+else
+ # default case - simply prepend -I
+ GNUSTEP_HEADERS_FND_FLAG = $(addprefix -I,$(GNUSTEP_HEADERS_FND_DIRS))
 endif
 
 #
