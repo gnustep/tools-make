@@ -51,12 +51,18 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 #--------------------------------------------------------------------
 # specific target_os options
 #--------------------------------------------------------------------
+INCLUDE_FLAGS=
 case "$target_os" in
-  freebsd*)	CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+  freebsd*)	INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/local/include"
 		LIBS="$LIBS -L/usr/local/lib";;
-  netbsd*)	CPPFLAGS="$CPPFLAGS -I/usr/pkg/include"
+  netbsd*)	INCLUDE_FLAGS="$INCLUDE_FLAGS -I/usr/pkg/include"
 		LIBS="$LIBS -L/usr/pkg/lib";;
 esac
+# Save the user supplied CPPFLAGS so we can restore them later.
+user_CPPFLAGS="$CPPFLAGS"
+# This is just for configuring. Later, in config.make, INCLUDE_FLAGS
+# goes in CONFIG_SYSTEM_INCL and the original CPPFLAGS goes in unaltered
+$CPPFLAGS="$CPPFLAGS $INCLUDE_FLAGS"
 
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
@@ -249,14 +255,6 @@ AC_SUBST(BACKEND_BUNDLE)
 # Strip '-g' off of CFLAGS, since debug=yes adds that anyway
 CFLAGS=`echo $CFLAGS | sed -e 's/-g //'`
 
-# CPPFLAGS are used throughout for additional includes, which eventually
-# goes in the SYSTEM_CONFIG_INCL variable. If someone really wants to
-# set CPPFLAGS, set FORCE_CPPFLAGS instead (see config.make.in)
-if test "$FORCE_CPPFLAGS" = ""; then
-  FORCE_CPPFLAGS=
-fi
-AC_SUBST(FORCE_CPPFLAGS)
-
 # Set location of GNUstep dirs for later use
 GNUSTEP_HDIR="$prefix/Headers"
 if test "$GNUSTEP_FLATTENED" = yes; then
@@ -291,7 +289,7 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 
 # The following are needed to compile the test programs
 if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
-  OBJC_CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
+  OBJC_CPPFLAGS="$INCLUDE_FLAGS -I$prefix/Headers"
   OBJC_LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 fi
 
@@ -434,6 +432,9 @@ if test "$ac_cv_import" = "yes"; then
   OBJC_NO_IMPORT_FLAGS=-Wno-import;
 fi
 AC_SUBST(OBJC_NO_IMPORT_FLAGS)
+
+CPPFLAGS="$user_CPPFLAGS"
+AC_SUBST(INCLUDE_FLAGS)
 
 #--------------------------------------------------------------------
 # Record the version

@@ -120,10 +120,10 @@ to use libgthread as your threading library. Note that the Objective-C
 runtime (libobjc) must have a compatible threading backend in order to
 use this threading library and you must set the appropriate threading backend
 by hand in the GNUmakefile if you are using gnustep-objc. If you also need
-to set compiler flags, use the CFLAGS variable when calling configure:
+to set compiler flags, use the CPPFLAGS variable when calling configure:
 
 @example
-CFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
+CPPFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
 @end example
 
 @node Warnings for deprecated #import, Cross-Compiling, Alternate Thread Library, Configuration

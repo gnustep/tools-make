@@ -457,17 +457,5 @@ cvs -z3 update -Pd
 
 You don't have to re-checkout after you have the source, just update!
 
-@chapter Acknowledgements
-
-@format
-   Authors:  Adam Fedor <fedor@@gnu.org>,
-             Pascal Forget <pascal@@wsc.com>,
-             Ovidiu Predescu <ovidiu@@net-community.com>,
-             Camille Troillard <tuscland@@wanadoo.fr>
-             Richard Frith-MacDonald <richard@@brainstorm.co.uk>
-
-   This file is part of GNUstep.
-@end format
-
 @bye
 \bye

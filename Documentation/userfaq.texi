@@ -141,9 +141,10 @@ support tools and service providing daemons, plus various GUI
 development tools, a GUI desktop/workspace application, etc.
 
 At no stage will you ever 'run' GNUstep - you will run applications
-and tools and will make use of it's services (though at some point
+and tools and will make use of it's services. At some point
 you may well find packages distributed as 'GNUstep' systems in the
-way that you get 'GNU/Linux' systems packaged today).
+way that you get 'GNU/Linux' systems packaged today. Look at
+Simply GNUstep @url{http://simplygnustep.sourceforge.net/} for instance.
 
 If you want to see a sample GUI application running you need to build
 GNUstep and look at the example applications in the gnustep-examples
@@ -161,7 +162,7 @@ See @url{http://www.gnustep.org/}.
 @node When is GNUstep intended to be available?, What is usable?, Is there a web site?, GNUstep General Information
 @subsection  When is GNUstep intended to be available?
 
-It's usable now. Releases are made about every six months. However, if
+It's usable now. Major releases are made about every six months. However, if
 you are a serious developer, it's probably best to use the latest
 snapshots.
 
