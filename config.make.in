@@ -108,6 +108,7 @@ endif
 # Any user specified libs
 CONFIG_SYSTEM_INCL=@INCLUDES@
 CONFIG_SYSTEM_LIBS = @LIBS@
+CONFIG_SYSTEM_LIB_DIR = @LIB_DIR@
 
 #
 # Whether the C/ObjC/C++ compiler supports auto-dependencies

@@ -62,12 +62,13 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 # specific target_os options
 #--------------------------------------------------------------------
 INCLUDES=
+LIB_DIR=
 case "$target_os" in
   freebsd* | openbsd* )	
 	        INCLUDES="-I/usr/local/include"
-		LDFLAGS="$LDFLAGS -L/usr/local/lib";;
+		LIB_DIR="-L/usr/local/lib";;
   netbsd*)	INCLUDES="-I/usr/pkg/include"
-		LDFLAGS="$LDFLAGS -Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
+		LIB_DIR="-Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
 esac
 
 #--------------------------------------------------------------------
@@ -349,7 +350,7 @@ if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
   else
     OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$prefix/Library/Headers/${ac_cv_library_combo}"
   fi
-  OBJC_LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
+  OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
 fi
 
 # And the following to execute them
@@ -490,6 +491,7 @@ fi
 
 AC_SUBST(AUTO_DEPENDENCIES)
 AC_SUBST(INCLUDES)
+AC_SUBST(LIB_DIR)
 
 #---------------------------------------------------------------------
 # Enable/disable warnings for deprecated #import directive as required

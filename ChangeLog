@@ -1,3 +1,10 @@
+2003-10-09  Adam Fedor  <fedor@gnu.org>
+
+	* Correct problem where *bsd lib flags were not getting used.
+	* configure.ac: Use LIB_DIR not LDFLAGS
+	* config.make.in (CONFIG_SYSTEM_LIB_DIR): New var for LIB_DIRs
+	* library-combo.make (SYSTEM_LIB_DIR): Use it.
+
 2003-10-05  Adam Fedor  <fedor@gnu.org>
 
 	* Version: Bump to 1.8.90
