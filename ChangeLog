@@ -1,3 +1,7 @@
+Sat Feb  9 11:52:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in (clean): Remove Instance/Shared/*~.
+
 Sat Feb  9 11:45:16 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/headers.make: New file - the code is new, 
