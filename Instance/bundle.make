@@ -60,7 +60,7 @@ ifneq ($(OBJ_FILES_TO_LINK),)
 # libraries ...)
 
 # On windows, this is unfortunately required.
-ifeq ($(WITH_DLL), yes)
+ifeq ($(BUILD_DLL), yes)
   LINK_BUNDLE_AGAINST_ALL_LIBS = yes
 endif
 
@@ -84,7 +84,7 @@ ALL_BUNDLE_LIBS =						\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-ifeq ($(WITH_DLL),yes)
+ifeq ($(BUILD_DLL),yes)
 BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
 endif
 
@@ -164,7 +164,8 @@ endif
 $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-ifeq ($(WITH_DLL),yes)
+# OLD_DLL_SUPPORT should really be deprecated and dropped.
+ifeq ($(OLD_DLL_SUPPORT),yes)
 
 $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
@@ -173,7 +174,7 @@ $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 		$(ALL_LDFLAGS) \
 		$(ALL_BUNDLE_LIBS)$(END_ECHO)
 
-else # WITH_DLL
+else # Standard bundle build using the rules for this target
 
 $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
@@ -181,7 +182,7 @@ $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 		$(OBJ_FILES_TO_LINK) \
 		$(ALL_BUNDLE_LIBS)$(END_ECHO)
 
-endif # WITH_DLL
+endif # OLD_DLL_SUPPORT
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
