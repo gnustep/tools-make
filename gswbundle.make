@@ -108,7 +108,7 @@ else
 	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) \
 	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 #ALL_GSWBUNDLE_LIBS = 
-#ALL_GSWBUNDLE_LIBS := \
+#ALL_GSWBUNDLE_LIBS = \
     $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GSWBUNDLE_LIBS) \
 	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
 	shared_libext=$(SHARED_LIBEXT))
