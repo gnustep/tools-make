@@ -1,3 +1,8 @@
+Fri Oct 13 11:26:49 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* service.make (internal-svc-distclean): Remove the service 
+	directory when making a distclean.
+
 2000-10-02  Adam Fedor  <fedor@gnu.org>
 
 	* configure.in: Work even if $av_cv_lib_iconv_main not defined.
