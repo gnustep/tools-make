@@ -29,22 +29,10 @@ endif
         internal-subproject-uninstall_
 
 #
-# A subproject can have resources, which it stores into the
-# Resources/Subproject directory.  The project which owns us can then
-# copy recursively this directory into its own Resources directory
-# (that is done automatically if the project uses
-# Instance/Shared/bundle.make to manage its own resource bundle)
-#
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = Resources/Subproject
-include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
-
-
-#
 # Compilation targets
 #
 internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
-                           $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) \
-                           shared-instance-bundle-all
+                           $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)
 
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
@@ -95,6 +83,27 @@ internal-subproject-install_:: shared-instance-headers-install
 internal-subproject-uninstall_:: shared-instance-headers-uninstall
 
 endif # no FRAMEWORK_NAME
+
+
+#
+# A subproject can have resources, which it stores into the
+# Resources/Subproject directory.  If you want your subproject
+# to have resources, you need to put
+# xxx_HAS_RESOURCE_BUNDLE = yes
+# in your GNUmakefile.  The project which owns us can then
+# copy recursively this directory into its own Resources directory
+# (that is done automatically if the project uses
+# Instance/Shared/bundle.make to manage its own resource bundle)
+#
+ifeq ($($(GNUSTEP_INSTANCE)_HAS_RESOURCE_BUNDLE), yes)
+
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = Resources/Subproject
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
+
+# Only build, not install
+internal-subproject-all_:: shared-instance-bundle-all
+
+endif
 
 ## Local variables:
 ## mode: makefile
