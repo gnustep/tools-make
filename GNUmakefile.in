@@ -72,7 +72,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make woapp.make wobundle.make  \
 	documentation.make MediaBook.func executable.template framework.make \
-	rpm.make template.spec.in
+	file-list.make rpm.make template.spec.in
 
 all: generated-files which_lib$(EXEEXT)
 
@@ -106,10 +106,11 @@ install: all
 	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
-		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
-		transform_paths.sh vendor.sh \
-		rootinstall.sh rootuninstall.sh \
-		GNUstep.csh ld_lib_path.csh ; do \
+		clean_vendor.sh cpu.sh install-complete-dir.sh \
+		log_install.sh log_install_ln_s.sh log_install_dir.sh \
+		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
+		rootinstall.sh rootuninstall.sh GNUstep.csh \
+		ld_lib_path.csh ; do \
 	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
 	done
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
