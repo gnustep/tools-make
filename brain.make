@@ -154,20 +154,6 @@ ifeq ($(FOUNDATION_LIB),fd)
 
 endif
 
-#
-# Set the WO library flags
-#
-
-#
-# FIXME - Move these flags into gnustepweb, installing them inside 
-# $(GNUSTEP_MAKEFILES)/Additional/gnustepweb.make
-#
-WO_LDFLAGS =
-WO_LIBS    = -lNGObjWeb -lNGHttp -lNGMime -lNGZlib \
-	     -lNGNet -lNGStreams -lNGExtensions
-WO_DEFINE  = -DNGObjWeb_LIBRARY=1
-
-
 GUI_LDFLAGS =
 GUI_LIBS = 
 #
