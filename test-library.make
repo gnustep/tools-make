@@ -107,13 +107,14 @@ ifeq ($(SCRIPTS_DIRECTORY),)
 SCRIPTS_DIRECTORY = .
 endif
 
-ALL_TEST_LIBRARY_LIBS = $(ADDITIONAL_LIBRARY_LIBS) $(AUXILIARY_LIBS) \
-    $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS)
-
-ALL_TEST_LIBRARY_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TEST_LIBRARY_LIBS)\
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+ALL_TEST_LIBRARY_LIBS =						\
+    $(shell $(WHICH_LIB_SCRIPT)					\
+	$(LIB_DIRS_NO_SYSTEM)					\
+	$(ADDITIONAL_LIBRARY_LIBS) $(AUXILIARY_LIBS)		\
+	$(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(OBJC_LIBS)		\
+	$(TARGET_SYSTEM_LIBS)					\
+	debug=$(debug) profile=$(profile) shared=$(shared)	\
+	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 internal-testlib-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_testlib_NAME) after-$(TARGET)-all

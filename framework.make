@@ -82,12 +82,12 @@ $(FRAMEWORK_NAME):
 else
 # This part gets included the second time make is invoked.
 
-ALL_FRAMEWORK_LIBS = $(FRAMEWORK_LIBS)
-
-ALL_FRAMEWORK_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_FRAMEWORK_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+ALL_FRAMEWORK_LIBS =						\
+    $(shell $(WHICH_LIB_SCRIPT)					\
+	    $(LIB_DIRS_NO_SYSTEM)				\
+	$(FRAMEWORK_LIBS)					\
+	debug=$(debug) profile=$(profile) shared=$(shared)	\
+	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 
 DUMMY_FRAMEWORK = NSFramework_$(INTERNAL_framework_NAME)

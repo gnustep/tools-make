@@ -109,15 +109,15 @@ else
         gswapp-localized-resource-files
 
 # Libraries that go before the WO libraries
-ALL_GSW_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) \
-	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) \
-        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-
-ALL_GSW_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GSW_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+ALL_GSW_LIBS =								\
+    $(shell $(WHICH_LIB_SCRIPT)						\
+	$(LIB_DIRS_NO_SYSTEM)						\
+	$(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS)	\
+	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)			\
+	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
+        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)		\
+	debug=$(debug) profile=$(profile) shared=$(shared)		\
+	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 
 # Don't include these definitions the first time make is invoked. This part is

@@ -79,14 +79,13 @@ ifneq ($(FRAMEWORK_NAME),)
   TOOL_INSTALLATION_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Resources/$(GNUSTEP_TARGET_LDIR)
 endif
 
-ALL_TOOL_LIBS = $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) \
-   $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(TARGET_SYSTEM_LIBS)
-
-ALL_TOOL_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_TOOL_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+ALL_TOOL_LIBS =								\
+    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM)			\
+       $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS)	\
+       $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
+       $(TARGET_SYSTEM_LIBS)						\
+	debug=$(debug) profile=$(profile) shared=$(shared)		\
+	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 ifeq ($(WITH_DLL),yes)
 TTMP_LIBS := $(ALL_TOOL_LIBS)

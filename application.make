@@ -105,16 +105,15 @@ else
         app-localized-resource-files \
         _FORCE
 
-# Libraries that go before the GUI libraries
-ALL_GUI_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS) \
-   $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-
-ALL_GUI_LIBS := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(ALL_GUI_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+ALL_GUI_LIBS =								     \
+    $(shell $(WHICH_LIB_SCRIPT)						     \
+     $(LIB_DIRS_NO_SYSTEM)						     \
+     $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS)		     \
+     $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	     \
+     $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+     $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)				     \
+        debug=$(debug) profile=$(profile) shared=$(shared)		     \
+	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 
 # Don't include these definitions the first time make is invoked. This part is
