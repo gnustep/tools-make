@@ -91,7 +91,7 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 ifneq ($(FOUNDATION_LIB), apple)
 APP_FILE_NAME = $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 else
-APP_FILE_NAME = $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+APP_FILE_NAME = $(APP_DIR_NAME)/Contents/MacOS/$(GNUSTEP_INSTANCE)$(EXEEXT)
 endif
 
 APP_FILE = $(GNUSTEP_BUILD_DIR)/$(APP_FILE_NAME)
@@ -106,7 +106,7 @@ $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	      $(ALL_GUI_LIBS)$(END_ECHO)
 ifeq ($(FOUNDATION_LIB), apple)
 	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-		>$(APP_DIR)/library_paths.openapp$(END_ECHO)
+		>$(APP_DIR)/Contents/library_paths.openapp$(END_ECHO)
 else
 	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
 	        >$(APP_DIR)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
@@ -118,12 +118,12 @@ endif
 
 ifeq ($(FOUNDATION_LIB), apple)
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
-                    $(APP_DIR) \
+                    $(APP_DIR)/Contents/MacOS \
                     $(APP_FILE) \
                     shared-instance-bundle-all \
                     $(APP_INFO_PLIST_FILE)
 
-$(APP_DIR):
+$(APP_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 else
@@ -172,11 +172,15 @@ MAIN_MARKUP_FILE = $(strip $(subst .gsmarkup,,$($(GNUSTEP_INSTANCE)_MAIN_MARKUP_
 # inside GNUSTEP_STAMP_DIR, and rebuild Info.plist iff
 # GNUSTEP_STAMP_STRING changes.
 GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(APPLICATION_ICON)-$(MAIN_MODEL_FILE)-$(MAIN_MARKUP_FILE)
+
+ifneq ($(FOUNDATION_LIB),apple)
 GNUSTEP_STAMP_DIR = $(APP_DIR)
 
-ifneq ($(FOUNDATION_LIB), apple)
 # Only for efficiency
 $(GNUSTEP_STAMP_DIR): $(APP_DIR)/$(GNUSTEP_TARGET_LDIR)
+else
+# Everything goes in $(APP_DIR)/Contents on Apple
+GNUSTEP_STAMP_DIR = $(APP_DIR)/Contents
 endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
