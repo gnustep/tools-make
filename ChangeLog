@@ -1,3 +1,24 @@
+Tue Jan 16 16:39:04 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	RPM support redesigned and rewritten from scratch.
+	* source-distribution.make: New file.
+	* rpm.make: Rewritten from scratch.
+	* spec-rules.template: New file.
+	* spec-debug-rules.template: New file.
+	* spec-debug-alone-rules.template: New file.
+	* template-spec.in: Removed.
+	* rules.make: Include source-distribution.make.
+	* common.make: Removed the new variables for installation.
+	* application.make, bundle.make, framework.make, target.make:
+	Reverted to old code.
+	* file-list.make: Removed.
+	* rules.make: Do not include file-list.make
+	* log_install_dir.sh.in: Removed.
+	* log_install_ln_s.sh: Removed.
+	* log_install.sh: Removed.
+	* install-complete-dir.sh.in: Removed.
+	* GNUmakefile.in: Updated for added/removed files.
+	
 Mon Jan 15 16:45:48 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make (REMOVE_INSTALLED_DIR): New variable to be used to
