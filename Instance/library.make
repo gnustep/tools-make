@@ -191,16 +191,16 @@ internal-library-all_:: \
 	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)
 
 internal-library-clean::
-	rm -rf $(DERIVED_SOURCES)
+	$(ECHO_NOTHING)rm -rf $(DERIVED_SOURCES)$(END_ECHO)
 
 $(DERIVED_SOURCES):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def: $(OBJ_FILES_TO_LINK) $(DLL_DEF_INP)
-	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)
+	$(ECHO_NOTHING)$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB): $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def
-	$(DLLTOOL) --dllname $(DLL_NAME) --def $< --output-lib $@
+	$(ECHO_NOTHING)$(DLLTOOL) --dllname $(DLL_NAME) --def $< --output-lib $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
                                $(DERIVED_SOURCES)/$(GNUSTEP_INSTANCE).def
@@ -271,15 +271,15 @@ endif
 ifeq ($(BUILD_DLL),yes)
 
 internal-library-uninstall_:: shared-instance-headers-uninstall
-	rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME) \
-	      $(FINAL_LIBRARY_INSTALL_DIR)/$(DLL_EXP_LIB)
+	$(ECHO_UNINSTALLING)rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME) \
+	      $(FINAL_LIBRARY_INSTALL_DIR)/$(DLL_EXP_LIB)$(END_ECHO)
 
 else
 
 internal-library-uninstall_:: shared-instance-headers-uninstall
-	rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
+	$(ECHO_UNINSTALLING)rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE) \
-	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)
+	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)$(END_ECHO)
 endif
 
 #

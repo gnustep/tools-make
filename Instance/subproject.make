@@ -43,18 +43,18 @@ ifneq ($(strip $(DLL_DEF_FILES)),)
 DLL_DEF_INP = $(GNUSTEP_INSTANCE).inp
 
 $(DLL_DEF_INP): $(DLL_DEF_FILES)
-	cat $(DLL_DEF_FILES) > $@
+	$(ECHO_CREATING)cat $(DLL_DEF_FILES) > $@$(END_ECHO)
 
 DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
 endif
 
 internal-subproject-clean::
-	rm -rf $(DLL_DEF_IMP)
+	$(ECHO_NOTHING)rm -rf $(DLL_DEF_IMP)$(END_ECHO)
 
 internal-subproject-all_:: subproject.def
 
 subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF)
-	$(DLLTOOL) $(DLL_DEF_FLAG) --output-def subproject.def $(OBJ_FILES_TO_LINK)
+	$(ECHO_NOTHING)$(DLLTOOL) $(DLL_DEF_FLAG) --output-def subproject.def $(OBJ_FILES_TO_LINK)$(END_ECHO)
 
 endif
 
@@ -83,11 +83,11 @@ internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_FILES)
 # has built his dirs
 $(OWNING_PROJECT_HEADER_FILES):: $(HEADER_FILES) $(OWNING_PROJECT_HEADER_DIR)
 ifneq ($(HEADER_FILES),)
-	for file in $(HEADER_FILES) __done; do \
+	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) ./$$file $(OWNING_PROJECT_HEADER_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif # we got HEADER_FILES
 
 $(OWNING_PROJECT_HEADER_DIR):

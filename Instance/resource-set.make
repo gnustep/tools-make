@@ -91,15 +91,15 @@ internal-resource_set-install_: \
   $(RESOURCE_FILES_FULL_INSTALL_DIR) \
   $(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(RESOURCE_DIRS))
 ifneq ($(RESOURCE_FILES),)
-	@(for file in $(RESOURCE_FILES) __done; do \
+	$(ECHO_NOTHING)for file in $(RESOURCE_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(RESOURCE_FILES_DIR)/$$file \
 	                    $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$file; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 endif
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
-	@(for l in $(LANGUAGES); do \
+	$(ECHO_NOTHING)for l in $(LANGUAGES); do \
 	  if [ -d $$l.lproj ]; then \
 	    $(MKINSTALLDIRS) $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
@@ -113,7 +113,7 @@ ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	  else \
 	    echo "Warning: $$l.lproj not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 endif
 
 else # Following code turned on by setting GNUSTEP_DEVELOPER=YES in the shell
@@ -123,7 +123,7 @@ else # Following code turned on by setting GNUSTEP_DEVELOPER=YES in the shell
 # One optimized for recurrent installations during development - this
 # rule installs a single file only if strictly needed
 $(RESOURCE_FILES_FULL_INSTALL_DIR)/% : $(RESOURCE_FILES_DIR)/%
-	$(INSTALL_DATA) $< $@
+	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
 # This rule depends on having installed all files
 internal-resource_set-install_: \
@@ -147,7 +147,7 @@ $(addsuffix .lproj,$(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(LANGUAGES))
 # be found, rather than aborting with an error as make would do.
 internal-resource-set-install-languages: \
 $(addsuffix .lproj,$(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(LANGUAGES)))
-	@(for l in $(LANGUAGES); do \
+	$(ECHO_NOTHING)for l in $(LANGUAGES); do \
 	  if [ -d $$l.lproj ]; then \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
 	      if [ -f $$l.lproj/$$f ]; then \
@@ -162,7 +162,7 @@ $(addsuffix .lproj,$(addprefix $(RESOURCE_FILES_FULL_INSTALL_DIR)/,$(LANGUAGES))
 	  else \
 	    echo "Warning: $$l.lproj not found - ignoring"; \
 	  fi; \
-	done)
+	done$(END_ECHO)
 
 
 endif # LOCALIZED_RESOURCE_FILES
@@ -172,15 +172,15 @@ endif
 
 internal-resource_set-uninstall_:
 ifneq ($(RESOURCE_FILES),)
-	for file in $(RESOURCE_FILES); do \
+	$(ECHO_NOTHING)for file in $(RESOURCE_FILES); do \
 	  rm -rf $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$file ; \
-	done
+	done$(END_ECHO)
 endif
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
-	for language in $(LANGUAGES); do \
+	$(ECHO_NOTHING)for language in $(LANGUAGES); do \
 	  for file in $(LOCALIZED_RESOURCE_FILES); do \
 	    rm -rf $(RESOURCE_FILES_FULL_INSTALL_DIR)/$$language.lproj/$$file;\
 	  done; \
-	done;
+	done$(END_ECHO)
 endif
 

@@ -134,11 +134,11 @@ $(PALETTE_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $(PALETTE_INSTALL_DIR)$(END_ECHO)
 
 internal-palette-uninstall_::
-	rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)
+	$(ECHO_NOTHING)rm -rf $(PALETTE_INSTALL_DIR)/$(PALETTE_DIR_NAME)$(END_ECHO)
 
 internal-palette-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	$(ECHO_NOTHING)rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	       static_debug_obj static_profile_obj shared_profile_debug_obj \
-	       static_profile_debug_obj $(PALETTE_DIR_NAME)
+	       static_profile_debug_obj $(PALETTE_DIR_NAME)$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

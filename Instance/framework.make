@@ -193,9 +193,9 @@ build-framework-dirs:: $(DERIVED_SOURCES) \
                        $(FRAMEWORK_VERSION_DIR_NAME)/Resources \
                        $(FRAMEWORK_RESOURCE_DIRS)
 ifeq ($(DEPLOY_WITH_CURRENT_VERSION),yes)
-	@rm -f $(FRAMEWORK_DIR_NAME)/Versions/Current
+	$(ECHO_NOTHING)rm -f $(FRAMEWORK_DIR_NAME)/Versions/Current$(END_ECHO)
 endif
-	@(cd $(FRAMEWORK_DIR_NAME)/Versions; \
+	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR_NAME)/Versions; \
 	  if [ ! -L "Current" ]; then \
 	    rm -f Current; \
 	    $(LN_S) $(CURRENT_VERSION_NAME) Current; \
@@ -208,14 +208,14 @@ endif
 	  if [ ! -L "Headers" ]; then \
 	    rm -f Headers; \
 	    $(LN_S) Versions/Current/Headers Headers; \
-	  fi;)
+	  fi$(END_ECHO)
 ifneq ($(HEADER_FILES),)
-	@(cd $(DERIVED_SOURCES); \
+	$(ECHO_NOTHING)cd $(DERIVED_SOURCES); \
 	  if [ ! -L "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    rm -f ./$(HEADER_FILES_INSTALL_DIR); \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
                     ./$(HEADER_FILES_INSTALL_DIR); \
-	  fi;)
+	  fi$(END_ECHO)
 endif
 
 $(FRAMEWORK_LIBRARY_DIR_NAME):
@@ -230,12 +230,12 @@ $(DERIVED_SOURCES):
 # Need to share this code with the headers code ... but how.
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
 ifneq ($(HEADER_FILES),)
-	for file in $(HEADER_FILES) __done; do \
+	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
 	                    $(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 endif
 
 OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
@@ -329,9 +329,9 @@ ifeq ($(FOUNDATION_LIB), apple)
 OPTIONAL_TOP_LEVEL_LINK = $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 
 $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
-	(cd $(GNUSTEP_INSTANCE).framework; \
+	$(ECHO_NOTHING)cd $(GNUSTEP_INSTANCE).framework; \
 	rm -f $(GNUSTEP_INSTANCE); \
-	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE))
+	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE)$(END_ECHO)
 else
 OPTIONAL_TOP_LEVEL_LINK = 
 endif
@@ -419,7 +419,7 @@ ifneq ($(CHOWN_TO),)
 	  $(CHOWN) $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
 	fi$(END_ECHO)
 endif
-	@(cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
+	$(ECHO_NOTHING)cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
 	if test -f "$(FRAMEWORK_LIBRARY_FILE)"; then \
 	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
 	fi; \
@@ -433,7 +433,7 @@ endif
 	if test -f "$(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE)"; then \
 	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE)` $(SONAME_FRAMEWORK_FILE); \
 	fi; \
-	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)` $(VERSION_FRAMEWORK_LIBRARY_FILE);)
+	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)` $(VERSION_FRAMEWORK_LIBRARY_FILE)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
 	$(CHOWN) $(CHOWN_TO) $(FRAMEWORK_LIBRARY_FILE); \
@@ -489,12 +489,12 @@ ifneq ($(CHOWN_TO),)
 	  $(CHOWN) -R $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
 	fi$(END_ECHO)
 endif
-	(cd $(DLL_INSTALLATION_DIR); \
+	$(ECHO_NOTHING)cd $(DLL_INSTALLATION_DIR); \
 	if test -f "$(FRAMEWORK_FILE)"; then \
 	  rm -f $(FRAMEWORK_FILE); \
-	fi;)
-	$(INSTALL_PROGRAM) -m 0755 $(FRAMEWORK_FILE) \
-          $(DLL_INSTALLATION_DIR)/$(FRAMEWORK_FILE);
+	fi$(END_ECHO)
+	$(ECHO_NOTHING)$(INSTALL_PROGRAM) -m 0755 $(FRAMEWORK_FILE) \
+          $(DLL_INSTALLATION_DIR)/$(FRAMEWORK_FILE)$(END_ECHO)
 
 endif
 
@@ -515,25 +515,25 @@ $(GNUSTEP_HEADERS) :
 
 # FIXME - uninstall doesn't work - it should be removing all the symlinks!
 internal-framework-uninstall_::
-	if [ "$(HEADER_FILES)" != "" ]; then \
+	$(ECHO_UNINSTALLING)if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
 	    if [ $$file != __done ]; then \
 	      rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	    fi; \
 	  done; \
 	fi; \
-	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)
+	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
 
 #
 # Cleaning targets
 #
 internal-framework-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(PSWRAP_C_FILES) $(PSWRAP_H_FILES) \
-	       $(FRAMEWORK_DIR_NAME) $(DERIVED_SOURCES)
+	$(ECHO_NOTHING)rm -rf $(GNUSTEP_OBJ_DIR) $(PSWRAP_C_FILES) $(PSWRAP_H_FILES) \
+	       $(FRAMEWORK_DIR_NAME) $(DERIVED_SOURCES)$(END_ECHO)
 
 internal-framework-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	$(ECHO_NOTHING)rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+	  static_profile_debug_obj$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

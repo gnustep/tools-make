@@ -102,11 +102,11 @@ $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 	      $(ALL_GUI_LIBS)$(END_ECHO)
 ifeq ($(FOUNDATION_LIB), apple)
-	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-		>$(APP_DIR_NAME)/library_paths.openapp
+	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
+		>$(APP_DIR_NAME)/library_paths.openapp$(END_ECHO)
 else
-	@$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-	>$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp
+	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
+	>$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
 endif
 
 #
@@ -141,9 +141,9 @@ ifeq ($(GNUSTEP_FLATTENED),)
 internal-application-build-template: $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)
 
 $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE):
-	@cp $(GNUSTEP_MAKEFILES)/executable.template \
+	$(ECHO_NOTHING)cp $(GNUSTEP_MAKEFILES)/executable.template \
 	   $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE); \
-	chmod a+x $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)
+	chmod a+x $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 else
 internal-application-build-template:
 

@@ -70,10 +70,10 @@ ESCAPED_PRINCIPAL_CLASS = $(subst /,\/,$(PRINCIPAL_CLASS))
 
 # Always rebuild this because if the PRINCIPAL_CLASS changes...
 $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE): _FORCE
-	sed -e 's/JAVA_OBJ_FILE/$(ESCAPED_PRINCIPAL_CLASS)/g' \
+	$(ECHO_NOTHING)sed -e 's/JAVA_OBJ_FILE/$(ESCAPED_PRINCIPAL_CLASS)/g' \
 	    $(GNUSTEP_MAKEFILES)/java-executable.template \
 	    > $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE); \
-	chmod a+x $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE);
+	chmod a+x $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) $(CHOWN_TO) \
 	         $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
@@ -83,7 +83,7 @@ _FORCE::
 
 
 internal-java_tool-uninstall_:: shared-instance-java-uninstall
-	rm -f $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)
+	$(ECHO_UNINSTALLING)rm -f $(JAVA_TOOL_INSTALLATION_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 
 internal-java_tool-clean:: shared-instance-java-clean
 

@@ -37,11 +37,11 @@ internal-doc-install_::
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 internal-doc-uninstall_:: 
-	rm -f \
-	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps
+	$(ECHO_UNINSTALLING)rm -f \
+	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps$(END_ECHO)
 
 internal-doc-clean::
-	@ -rm -f $(GNUSTEP_INSTANCE).aux  \
+	-$(ECHO_NOTHING)rm -f $(GNUSTEP_INSTANCE).aux  \
 	         $(GNUSTEP_INSTANCE).cp   \
 	         $(GNUSTEP_INSTANCE).cps  \
 	         $(GNUSTEP_INSTANCE).dvi  \
@@ -59,7 +59,7 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
 	         $(GNUSTEP_INSTANCE)/* \
-	         *.aux
+	         *.aux$(END_ECHO)
 
 #
 # Targets built only if we can find `latex2html'
@@ -88,11 +88,11 @@ internal-doc-install_::
 # Yeah - I know - the following is dangerous if you have misused the 
 # DOC_INSTALL_DIR - but it's the only way to do it
 internal-doc-uninstall_:: 
-	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.html
-	-rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.css
+	-$(ECHO_UNINSTALLING)rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.html; \
+	rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.css$(END_ECHO)
 
 internal-doc-distclean::
-	@ if [ -d "$(GNUSTEP_INSTANCE)" ]; then \
+	$(ECHO_NOTHING) if [ -d "$(GNUSTEP_INSTANCE)" ]; then \
 	    rm -rf $(GNUSTEP_INSTANCE)/; \
-	  fi
+	  fi$(END_ECHO)
 endif # LATEX2HTML

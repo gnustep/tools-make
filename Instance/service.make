@@ -114,16 +114,16 @@ ifeq ($(strip),yes)
 endif
 
 internal-service-uninstall_::
-	(cd $(GNUSTEP_SERVICES); rm -rf $(SERVICE_DIR_NAME))
+	$(ECHO_UNINSTALLING)cd $(GNUSTEP_SERVICES); rm -rf $(SERVICE_DIR_NAME)$(END_ECHO)
 
 
 #
 # Cleaning targets
 #
 internal-service-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	$(ECHO_NOTHING)rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
 	  static_profile_debug_obj *.app *.debug *.profile *.iconheader \
-	  $(SERVICE_DIR_NAME)
+	  $(SERVICE_DIR_NAME)$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

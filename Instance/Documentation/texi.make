@@ -85,7 +85,7 @@ $(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
 		-o $@ $(TEXT_MAIN)
 
 internal-doc-clean::
-	@ -rm -f $(GNUSTEP_INSTANCE).aux  \
+	-$(ECHO_NOTHING) rm -f $(GNUSTEP_INSTANCE).aux  \
 	         $(GNUSTEP_INSTANCE).cp   \
 	         $(GNUSTEP_INSTANCE).cps  \
 	         $(GNUSTEP_INSTANCE).dvi  \
@@ -102,7 +102,7 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE)_*.html \
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
-	         $(GNUSTEP_INSTANCE)/*
+	         $(GNUSTEP_INSTANCE)/*$(END_ECHO)
 
 # NB: Only install HTML if it has been generated
 

@@ -21,16 +21,16 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 
 internal-doc-install_::
-	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
+	$(ECHO_INSTALLING)for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file \
 	               $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)
 
 internal-doc-uninstall_::
-	for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
+	$(ECHO_UNINSTALLING)for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
 	  fi; \
-	done
+	done$(END_ECHO)

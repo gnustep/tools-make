@@ -140,15 +140,15 @@ endif
 # they should be moved in there
 #
 internal-textdoc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	$(ECHO_NOTHING)$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
+	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)$(END_ECHO)
 
 internal-textdoc-uninstall_::
-	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
+	$(ECHO_UNINSTALLING)rm -f \
+          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 
 internal-textdoc-clean::
-	@ rm -f $(GNUSTEP_INSTANCE)
+	$(ECHO_NOTHING) rm -f $(GNUSTEP_INSTANCE) $(END_ECHO)
 
 internal-textdoc-distclean::
 

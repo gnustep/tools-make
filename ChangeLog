@@ -1,3 +1,49 @@
+Tue May 27 13:12:59 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make: Use ECHO_NOTHING in commands which
+	were using @ or printing the command.
+	* Instance/documentation.make: The same.
+	* Instance/framework.make: The same.
+	* Instance/gswapp.make: The same.
+	* Instance/java-tool.make: The same.
+	* Instance/library.make: The same.
+	* Instance/palette.make: The same.	
+	* Instance/resource-set.make: The same.
+	* Instance/service.make: The same.
+	* Instance/subproject.make: The same.	
+	* Instance/Documentation/autogsdoc.make: The same.
+	* Instance/Documentation/gsdoc.make: The same.
+	* Instance/Documentation/javadoc.make: The same.
+	* Instance/Documentation/latex.make: The same.
+	* Instance/Documentation/texi.make: The same.	
+	* Instance/Shared/java.make: The same.
+	
+	* Instance/ctool.make (internal-ctool-uninstall_): Use ECHO_UNINSTALLING.
+	* Instance/document.make (internal-textdoc-uninstall_): The same.
+	* Instance/framework.make (internal-framework-uninstall_): The same.
+	* Instance/gswapp.make (internal-gswapp-uninstall_): The same.
+	* Instance/gswbundle.make (internal-gswbundle-uninstall_): The same.
+	* Instance/java-tool.make (internal-java_tool-uninstall_): The same.
+	* Instance/library.make (internal-library-uninstall_): The same.
+	* Instance/objc.make (internal-objc-uninstall_): The same.
+	* Instance/service.make (internal-service-uninstall_): The same.
+	* Instance/Documentation/autogsdoc.make (internal-doc-uninstall_): The same.	
+	* Instance/Documentation/gsdoc.make (internal-doc-uninstall_): The same.
+	* Instance/Documentation/install_files.make (internal-doc-uninstall_): The same.
+	* Instance/Documentation/javadoc.make (internal-doc-uninstall_): The same.
+	* Instance/Documentation/latex.make (internal-doc-uninstall_): The same.	
+	
+	* Instance/gswbundle.make (internal-gswbundle-install_): Use ECHO_INSTALLING.
+	* Instance/Documentation/autogsdoc.make (internal-doc-install_): The same.
+	* Instance/Documentation/gsdoc.make (internal-doc-install_): The same.
+	* Instance/Documentation/install_files.make (internal-doc-install_): The same.
+	* Instance/Documentation/javadoc.make (internal-doc-install_): The same.
+
+	* Instance/gswapp.make: Use ECHO_CREATING when building the
+	various files.
+	* Instance/subproject.make: Use ECHO_CREATING when building the
+	DLL_DEF_INP file.
+	
 Tue May 27 12:04:38 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* messages.make (ECHO_CHOWNING, ECHO_STRIPPING): New variables.

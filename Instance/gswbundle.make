@@ -245,8 +245,8 @@ $(GSWBUNDLE_DIR_NAME)/Resources/WebServer:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 internal-gswbundle-install_:: $(GSWBUNDLE_INSTALL_DIR) shared-instance-headers-install
-	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
-	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)
+	$(ECHO_INSTALLING)rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
+	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)$(END_ECHO)
 endif
@@ -258,6 +258,6 @@ $(GSWBUNDLE_INSTALL_DIR)::
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-gswbundle-uninstall_:: shared-instance-headers-uninstall
-	rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)
+	$(ECHO_UNINSTALLING)rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
