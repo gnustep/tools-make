@@ -1,3 +1,11 @@
+Fri Feb  1 11:33:11 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* Master/aggregate.make: New file with code taken from
+	aggregate.make.
+	* aggregate.make: If this is a Master invocation, include
+	Master/aggregate.make, otherwise include nothing.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Install aggregate.make.
+	
 2002-02-01 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUmakeifle: install Master and Instance versions of
