@@ -219,6 +219,8 @@ internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
 internal-framework-build-headers:: build-framework-dirs \
                                    $(FRAMEWORK_HEADER_FILES)
 
+# Please note that test -h must be used instead of test -L because on old
+# Sun Solaris, test -h works but test -L does not.
 build-framework-dirs:: $(DERIVED_SOURCES_DIR) \
                        $(FRAMEWORK_LIBRARY_DIR) \
                        $(FRAMEWORK_VERSION_DIR)/Headers \
@@ -228,22 +230,22 @@ ifeq ($(DEPLOY_WITH_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)rm -f $(FRAMEWORK_DIR)/Versions/Current$(END_ECHO)
 endif
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
-	  if [ ! -L "Current" ]; then \
+	  if [ ! -h "Current" ]; then \
 	    rm -f Current; \
 	    $(LN_S) $(CURRENT_VERSION_NAME) Current; \
 	  fi; \
 	  cd ../; \
-	  if [ ! -L "Resources" ]; then \
+	  if [ ! -h "Resources" ]; then \
 	    rm -f Resources; \
 	    $(LN_S) Versions/Current/Resources Resources; \
 	  fi; \
-	  if [ ! -L "Headers" ]; then \
+	  if [ ! -h "Headers" ]; then \
 	    rm -f Headers; \
 	    $(LN_S) Versions/Current/Headers Headers; \
 	  fi$(END_ECHO)
 ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)cd $(DERIVED_SOURCES_DIR); \
-	  if [ ! -L "$(HEADER_FILES_INSTALL_DIR)" ]; then \
+	  if [ ! -h "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    rm -f ./$(HEADER_FILES_INSTALL_DIR); \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
                     ./$(HEADER_FILES_INSTALL_DIR); \

@@ -1,3 +1,8 @@
+Mon Jan  5 00:33:00 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make (build-framework-dirs): Replaced test -L
+	with test -h because test -L does not work on some old Sun Solaris.
+
 2003-12-29  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/gnustep-howto.texi: Update.
