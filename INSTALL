@@ -9,7 +9,9 @@ libraries, read the file GNUstep-HOWTO for more complete instructions on
 how to install the entire GNUstep package (including this package).
 GNUstep-HOWTO comes with this distribution.
 
-   This should be the first GNUstep package you install.
+   This should be the first GNUstep package you install. After
+installing this package, install ffcall and any other libraries that
+GNUstep may need (see the GNUstep-HOWTO). Then install gnustep-base.
 
    When you configure additional libraries, make sure you use the same
 configuration options as with gstep-make.
@@ -196,9 +198,10 @@ as `/etc/bashrc', where you could add lines similar to these:
 
    This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for all users. Before executing
-this script, you can setup a default path for searching for tools and
-apps by defining the variable GNUSTEP_PATHPREFIX_LIST (and exporting
-it). By default, it's set to
+this script, you can setup a default path for scripts in the makefiles
+package to use for searching for tools and apps by defining the
+variable GNUSTEP_PATHPREFIX_LIST (and exporting it). By default, it's
+set to
 
      $GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
 
@@ -207,6 +210,10 @@ it). By default, it's set to
      ~/GNUstep:/usr/GNUstep/Local:/usr/GNUstep/System
 
    when all is done.
+
+   NB. This path is NOT used by GNUstep tools and applications
+themselves ... they use a standard function
+NSSearchPathForDirectoriesInDomains() to locate files instead.
 
 Setting up the GNUstep environment for a single user
 ----------------------------------------------------
@@ -228,4 +235,12 @@ add the following lines to that file:
 
    This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for the user.
+
+   The GNUstep.sh file will set up GNUSTEP_USER_ROOT to the GNUstep
+subdirectory of the users home directory by default.  This may be
+overridden by a user providing a .GNUsteprc file in their home
+directory.
+
+     # Set up to store GNUstep files directly in my home directory
+     GNUSTEP_USER_ROOT=~
 

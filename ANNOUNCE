@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.2.1 is now available.
+The GNUstep Makefile Package version 1.3.0 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -12,28 +12,33 @@ write a project without having to deal with the complex issues
 associated with configuration, building, installation, and packaging.
 It also allows the user to easily create cross-compiled binaries.
 
-Changes in version `1.2.1'
+Changes in version `1.3.0'
 ==========================
 
-   * the source distribution code has been rewritten to be more general
-     and extended.  Packages built using gnustep-make now automatically
-     have handy targets building tarballs from sources or from CVS
-     imports.
+   The package has gone through an extensive reorganization to break up
+each sub-make into two separate components. This allows for much
+simplified code and lots of code sharing between components. As a side
+effect, it also increased the speed of the code by at least a factor of
+2.
 
-   * implemented support for auto-dependencies, which means that any
-     object file automatically depends on all the header files which
-     were used to build it.  Only works with newer compilers.
+   * Force shared=yes for cygwin and mingw
 
-   * implemented INSTALL_AS_USER and INSTALL_AS_GROUP.
+   * Bundles copy resources from subprojects.
 
-   * implemented a strip=yes option.
+   * Better resource management. Resources handled accross all project
+     types.
 
-   * various bug fixes and minor improvements.
+   * Simplified and fixed user root location between make and base
+     libraries.
+
+   * Changed Apps directory to Applications
+
+   * Fixes for MacOSX, MingW
 
 Obtaining gnustep-make
 ======================
 
-   You can get the gstep-make-1.2.1.tar.gz distribution file at
+   You can get the gstep-make-1.3.0.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please send bug reports to <bug-gnustep@gnu.org>.

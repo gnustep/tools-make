@@ -383,7 +383,7 @@ fi
 @end itemize
 
 @example
-if [ `gdomap -L GDNCServer | grep -c Found` == '0' ]; then
+if [ `gdomap -L GDNCServer | grep Unable` ]; then
   echo "Starting GNUstep services..."
   gdnc
   gpbs

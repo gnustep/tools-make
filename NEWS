@@ -1,7 +1,30 @@
 NEWS
 ****
 
-The currently released version is `1.2.1'.
+The currently released version is `1.3.0'.
+
+Changes in version `1.3.0'
+==========================
+
+   The package has gone through an extensive reorganization to break up
+each sub-make into two separate components. This allows for much
+simplified code and lots of code sharing between components. As a side
+effect, it also increased the speed of the code by at least a factor of
+2.
+
+   * Force shared=yes for cygwin and mingw
+
+   * Bundles copy resources from subprojects.
+
+   * Better resource management. Resources handled accross all project
+     types.
+
+   * Simplified and fixed user root location between make and base
+     libraries.
+
+   * Changed Apps directory to Applications
+
+   * Fixes for MacOSX, MingW
 
 Changes in version `1.2.1'
 ==========================

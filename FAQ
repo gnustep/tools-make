@@ -1,261 +1,12 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-   Last updated 1 January 2002 Please send corrections to
-<gnustep-maintainer@gnu.org>.
-
-GNUstep General Information
-===========================
-
-What is GNUstep?
-----------------
-
-   GNUstep is the Free Software Foundation's effort to implement NeXT
-Software Inc.'s (now Apple Inc.) OpenStep Standard.  The project is not
-finished, however some components are useable now.
-
-   The GNUstep project consists of the following sub-projects:
-
-   * GNU Objective C Compiler and Objective C Runtime Library -
-     Although not actually a component of GNUstep, GCC and the GNU
-     Objective C Runtime Library are integral to GNUstep, since they
-     are used to make every GNU Objective C program.
-
-   * GNUstep Base Library - Code for non-graphical objects, such as
-     strings, collections, archiving support and distributed objects
-     messaging.  (Including functionality similar to OpenStep's
-     `FoundationKit'.)
-
-   * GNUstep GUI Library - Code for graphical objects used in making a
-     Graphical User Interface (GUI).  This includes buttons, sliders,
-     text fields, windows, menus, etc.  (Including functionality
-     similar to OpenStep's `AppKit'.)
-
-   * GNUstep DisplayGhostscript Server - A server that draws PostScript
-     graphics to the screen, and receives events from the keyboard and
-     mouse.  It is based on GNU GhostScript. There is also an DPS
-     extension to Xfree*6 that is usable.
-
-   * Various Tools and applications, including GORM, The GNUstep
-     interface builder for graphically assembling application
-     interfaces, and ProjectCenter, a project manager.
-
-
-What is the OpenStep standard?
-------------------------------
-
-   OpenStep is an Application Programming Interface (API) for creating
-applications using the Objective C language.  It was published by NeXT
-Computer Inc. in 1994.
-
-   OpenStep consists of three parts: the `FoundationKit', a library of
-non-graphical objects; the `AppKit', a library of objects usful in
-creating graphical applications; and `Display Postscript', an interface
-for drawing to the screen using the PostScript graphics language.
-
-   You can obtain a copy of the OpenStep standard from the GNUstep web
-site <http://www.gnustep.org> or it's mirror sites.
-
-What platforms does GNUstep run on?
------------------------------------
-
-   See the list of supported platforms at
-<http://www.gnustep.org/information/machines_toc.html> for information
-on what machines GNUstep builds on and what the status of the ports is.
-Probably a few days porting to any other Unix system where current
-gcc/egcs compilers and gdb debugger work.
-
-Does GNUstep run on Windows?
-----------------------------
-
-   The primary targets for GNUstep are free 'Unix' platforms such as
-GNU/Linux.
-
-   That being said, the base library should run on Windows-NT,98 with
-the Cygwin unix emulation library from Cygnus
-(http://sourceware.cygnus.com/cygwin/) or the MinGW libraries.  At
-present there are a few problems with networking (Distributed Objects)
-support, but the library is believed to work.
-
-   The gui library needs a win32 backend library to work under
-Windows-NT.  The backend library is a thin layer that converts the
-GNUstep methods to handle drawing of GUI elements to calls to the win32
-api.  This is a project looking for a volunteer.
-
-   The application-wrapper used for GNUstep already allows for multiple
-binaries to be stored for different systems, so you should be able to
-write once, deploy anywhere.
-
-What is GNUstep's position towards KDE and the GNOME project?
--------------------------------------------------------------
-
-   You can use GNUstep with GNOME and/or KDE.  GNUstep displays on top
-of X11. You can still do programming in C (since Objective-C is just a
-superset of C), and when (if?) GCC gets around to it, you'll be able to
-mix C++ and Objective-C code in the SAME file.
-
-   GNUstep, is much more than a window manager or desktop environment.
-It frees you to develop cross-platform applications without the work of
-developing an OS independent framework from scratch. It gives you lots
-of basic functionality, from Font Panels to Unicode strings to
-Distributed Objects.
-
-Is the Objective C API for GTK related?
----------------------------------------
-
-   No.  GNUstep applications provide their GUI via the OpenStep API,
-which provides fully object-oriented access to GUI manipulation.
-
-   The object-oriented nature of the libraries and language make it
-much easier for new users to create their own subclasses rather than
-simply using the supplied widgets as in other frameworks.
-
-How about implementing parts of the Application Kit with GTK?
--------------------------------------------------------------
-
-   Yes and No - The GNUstep architecture provides a single,
-platform-independent, API for handling all aspects of GUI interaction
-(implemented in the gstep-gui library), with a backend architecture
-that permits you to have different display models (display postscript,
-X-windows, win32, berlin ...) while letting you use the same code for
-printing as for displaying. Use of GTK in the frontend gui library
-would remove some of those advantages without adding any.
-
-   That being said, a backend library could be implemented using gtk if
-anyone wanted to do so.  Since the frontend library handles most of the
-work involved in implementing the OpenStep API, the backend is a
-relatively thin layer and the advantages of GTK over direct xlib or
-win32 calls is likely to be minimal.  If/when GTK is ported to more
-systems, a backend written using it could be a valuable asset -
-volunteers are, as always, wecome.
-
-Which compiler can I use? Where can I get it?
----------------------------------------------
-
-   Use gcc-2.8.1 or later, from any GNU ftp site or, on some platforms
-you must use egcs-1.1.1 or later, from http://egcs.cygnus.com/
-
-Which Foundation Library can I use?
------------------------------------
-
-   That depends ...
-
-   If you only want to use the database package - gnustep-db, you can
-use either the gnustep base library or libFoundation.
-
-   If you want to develop/use GNUstep gui applications, you must use
-the gnustep-base library since libFoundation is (13-Feb-2000) missing
-much essential functionality.
-
-How do you use the gnustep-make package?
-----------------------------------------
-
-   Good question.  Read the tutorials at the GNUstep web site. Also,
-use the makefiles in the libraries, tool directories, and test
-applications as examples.
-
-How can I get GNUstep?
-----------------------
-
-   Get the HOWTO from
-<http://www.gnustep.org/resources/documentation/GNUstep-HOWTO> Get the
-latest release from <ftp://ftp.gnustep.org>. If you're really
-adventurous, get the latest snapshot by anonymous ftp from
-<ftp://ftp.gnustep.org:/pub/daily-snapshots>
-
-   Use anonymous CVS to keep up to date - instructions are in the HOWTO.
-
-How do you run GNUstep?
------------------------
-
-   You are presumably under the misapprehension that GNUstep is some
-sort of window manager.
-
-   It isn't.
-
-   GNUstep is a whole load of things - primarily a set of libraries for
-developing software.
-
-   At present, it's those libraries, plus various command-line based
-support tools and service providing daemons.  In the future, it will be
-the libraries, plus the support tools, plus various GUI development
-tools, a GUI desktop/workspace application etc.
-
-   At no stage will you ever 'run' GNUstep - you will run applications
-and tools and will make use of it's services (though at some point you
-may well find packages distributed as 'GNUstep' systems in the way that
-you get 'Linux' systems packaged today).
-
-   Current tools are -
-
-     The makefiles package
-       To make building GNUstep tools and apps simple.
-     The 'openapp' script
-       To start up a GUI application from the command line.
-     The defaults tools
-       To read, create, delete, and modify user defaults from the command
-       line.
-     The name server
-       To permit applications and tools to locate each other and
-       communicate.
-     The pasteboard server
-       To permit cut-and-paste, drag-and-drop, and to let applicationsm
-       and tools transparently provide services to each other.
-     The distributed notification center
-       To permit applications and tools to be notified of arbitrary
-       external events.
-     The 'make_services' program
-       To locate (and cache information about) applications that are
-       willing to provide services to other applications.
-     The 'set_show_service' program
-       A command-line utility to determine what services an application
-       should be permitted to offer on it's 'services' menu.
-
-   If you want to see a sample GUI application running you need to build
-GNUstep and look at the example applications in the gstep-examples
-package.  Build 'Finger' or 'Ink' and start it with 'openapp Finger.app'
-or 'openapp Ink.app'
-
-   To look best - use WindowMaker (the currently preferred GNUstep
-window manager) as your window manager.
-
-Is there a web site?
---------------------
-
-   See <http://www.gnustep.org/>.
-
-When is GNUstep intended to be available?
------------------------------------------
-
-   It's usable now. Releases are made about every six months. However,
-if you are a serious developer, it's probably best to use the latest
-snapshots.  See the GNUstep web site for a release schedule.
-
-What is usable?
----------------
-
-   * gstep-make does pretty much what the makefiles in NeXTstep do.
-
-   * gstep-base (Foundation) stuff should work fine for almost all
-     projects.
-
-   * gstep-db is only EOF-1.0 compatible but should work ok.
-
-   * gstep-gui (AppKit) has a lot working but there is still stuff
-     missing.
-
-   * DGS (Display Ghostscript) is usable but slow.
-
-Compatibility with OPENSTEP/Cocoa/MacOSX
-========================================
-
-Can I run NeXT OPENSTEP or Apple Rhapsody programs on GNUstep?
---------------------------------------------------------------
-
-   You can't run these programs on GNUstep, but if you have the source
-code for the programs, you should be able to port them to GNUstep and
-compile them. Whether or not you will be able to run them depends on how
-complete GNUstep is at the time.
+   Last updated 14 March 2002.  Please send corrections to
+<gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
+oriented questions.
+
+Compatibility
+=============
 
 Is it easy to port OPENSTEP and Rhapsody programs to GNUstep?
 -------------------------------------------------------------
@@ -311,38 +62,14 @@ archive format (which can be edited by Gorm).  There IS a conversion
 tool called nib2gmodel that can be compiled under OPENSTEP to convert
 OPENSTEP nib files to GNUstep gmodel files.
 
-Will code without NIB files work?
----------------------------------
-
-   Well, GNUstep implements the OpenStep API, not the old NeXTstep API
-but, Yes - once the gui library is complete, OpenStep or MacOS-X code
-should work without translation under GNUstep.
-
-Is GNUstep following Apple's Changes to OpenStep?
--------------------------------------------------
-
-   Yes - gstep-base already contains the documented changes in the
-Foundation library.  GNUstep aims to be compatible with both the
-OpenStep specification and with MacOS-X It should be easy to write an
-application that compiles cleanly under both GNUstep and Yellow Box.
-
-Do we have to have the NeXTstep look and feel?
-----------------------------------------------
-
-   Gnustep is aiming for something like the NeXTstep-3.3 look and feel.
-This is mostly determined by the gui backend library. In the case of
-the two existing backends (xdps and xgps), both are designed to look
-like NeXTstep/OPENSTEP.  If someone wants to write a backend with a
-different look, they can.  This would only be a few man-months work.
-
 Can one use the hybrid "Objective-C++"
 --------------------------------------
 
-   that one could on the NeXT?
-
-   No - at present the GNU compiler (gcc) does not support
-"Objective-C++" There are no specific plans to make it do so, but any
-volunteers to do it would be welcome.
+   No. at present the GNU compiler (gcc) does not support
+"Objective-C++". Apple has submitted patches for this, but it is up to
+the GCC steering commitee to decide if they want to add them. If you
+would like to see this, please politely and respectfully lobby them at
+<gcc@gnu.org>.
 
 Is there a plan to support the Java/YellowBox Bindings?
 -------------------------------------------------------
@@ -360,15 +87,51 @@ objective-C objects.
 What if I compile GNUstep under OPENSTEP/MacOS X Server?
 --------------------------------------------------------
 
-   No - GNUstep uses the X-windows display postscript extension - the
+   GNUstep uses the X-windows display postscript extension.  The
 interface to that is not the same as the interface to the
 OPENSTEP/MacOS-X windows server.  While someone could write a backend
 library to provide the interface, nobody has bothered to date.
 
    Also, the GNUstep base library is still being ported to Darwin.
 
+Is the Objective C API for GTK related?
+---------------------------------------
+
+   No.  GNUstep applications provide their GUI via the OpenStep API,
+which provides fully object-oriented access to GUI manipulation.
+
+   The object-oriented nature of the libraries and language make it
+much easier for new users to create their own subclasses rather than
+simply using the supplied widgets as in other frameworks.
+
+How about implementing parts of the Application Kit with GTK?
+-------------------------------------------------------------
+
+   Yes and No - The GNUstep architecture provides a single,
+platform-independent, API for handling all aspects of GUI interaction
+(implemented in the gstep-gui library), with a backend architecture
+that permits you to have different display models (display postscript,
+X-windows, win32, berlin ...) while letting you use the same code for
+printing as for displaying. Use of GTK in the frontend gui library
+would remove some of those advantages without adding any.
+
+   That being said, a backend library could be implemented using gtk if
+anyone wanted to do so.  Since the frontend library handles most of the
+work involved in implementing the OpenStep API, the backend is a
+relatively thin layer and the advantages of GTK over direct xlib or
+win32 calls is likely to be minimal.  If/when GTK is ported to more
+systems, a backend written using it could be a valuable asset -
+volunteers are, as always, wecome.
+
 Compiling and Developing
 ========================
+
+How can I get started programming?
+----------------------------------
+
+   Good question.  Read the tutorials at the GNUstep web site. Also
+look at Apple's documentation (pointers in the Resources section on the
+GNUstep web site.
 
 How can I help with GNUstep?
 ----------------------------
@@ -377,7 +140,7 @@ How can I help with GNUstep?
 
   2. Write documentation
 
-  3. Update the TODO list and library headers
+  3. Update the task list and library headers
 
   4. Write applications
 
@@ -402,8 +165,12 @@ you have take on too large/complex a project.  It's much better to
 'resign' and take on a smaller job than to just stop without telling
 anyone.
 
-How do I start writing code?
-----------------------------
+   Please document the code you add or change (using autogsdoc comments
+that begin with a slash and two asterices). But PLEASE, do not copy from
+the Apple documentation or any other copyrighted documentation.
+
+Helping develop GNUstep
+-----------------------
 
    There is plenty of unimplemented stuff in the gui library and
 backend libraries that volunteers can work on - just browse through the
@@ -415,8 +182,8 @@ website.
    Once you have coded something, you could always write a testcase and
 documentation for it :-)
 
-How do I start writing documentation?
--------------------------------------
+Helping document GNUstep
+------------------------
 
    All class documentation is written directly in the source code itself
 and translated using the autogsdoc program. See the source code and
@@ -441,19 +208,21 @@ Software Foundation.
 How do I update the task list?
 ------------------------------
 
-   The task list (<http://www.gnustep.org/developers/tasks.html>) is
-supposed to tell people what jobs are waiting to be done.
+   The task list (<http://savannah.gnu.org/pm/?group_id=99>) is
+supposed to tell people what jobs are waiting to be done. Feel free to
+add to it or update the tasks that are there (you need to create a login
+for yourself first).
 
    One job of major importance that pretty much anyone can do is to
 look for jobs to add to the task list.  In the case of methods from the
 OpenStep specification or the MacOS-X documentation not being present
-in the GNustep libraries, it is also helpful to add the method
+in the GNUstep libraries, it is also helpful to add the method
 prototypes to the library header files.
 
    Send any changes or additions to <bug-gnustep@gnu.org>.
 
    A beginner can look through the MacOS-X documentation, the OpenStep
-specification and the GNUstep source and contribute TODO items.
+specification and the GNUstep source and contribute task items.
 
    If a class or method is in MacOS-X and OpenStep but is not in
 GNUstep - it's a high priority TODO and should at least be added to the
@@ -482,8 +251,8 @@ latest GNUstep snapshots you can find. Then checkout the 'tests' module
 from CVS.  In the 'tests' directory, you will find a regression testing
 framework.  In order to use this you will also need a recent (v 1.3.2
 or later) copy of Guile (you can get this from a GNU ftp site) and will
-need to hacke checked out, built, and installed the 'guile' package
-from the GNUstep CVS repository.
+need to check-out, built, and installed the 'guile' package from the
+GNUstep CVS repository.
 
 How do I start writing applications?
 ------------------------------------
@@ -498,13 +267,13 @@ How can I help with the GNUstep website?
    Talk to Adam Fedor <fedor@gnu.org>, the maintainer.
 
    The GNUstep website is kept as a CVS module, but the largest portions
-of it (the FAQ, the TODO list, and the Documentation) are actually
-generated from files in the individual GNUstep packages.
+of it (the FAQ and the Documentation) are actually generated from files
+in the individual GNUstep packages.
 
-   If you want to update the FAQ or TODO list or documentation  - grab
-the latest snapshot of the GNUstep core you can find, update it from
-the CVS repository, and work with the contents of the appropriate
-documentation directory.
+   If you want to update the FAQ or documentation  - grab the latest
+snapshot of the GNUstep core you can find, update it from the CVS
+repository, and work with the contents of the appropriate documentation
+directory.
 
    If you want to work on other parts of the website, you can grab a
 copy of the website via anonymous CVS. See
@@ -514,36 +283,11 @@ do that.
    The main task with the website is to figure out which bits are
 out-of-date (or wrong) and update/mark-as-outdated as required.
 
-How do I compile GNUstep on my machine?
----------------------------------------
+GNU Objective C Compiler and Runtime
+====================================
 
-   Read the file `GNUstep-HOWTO', which comes with the GNUstep
-distribution, and also is available separately on the GNUstep web site.
-
-Are there any precompiled packages available?
----------------------------------------------
-
-   Check <http://www.gnustep.org/resources/sources.html> for links to
-sites with RPMS, and perhaps in the future, Debian packages.  In some
-cases. You can check the debian site for preconfigured GNUstep
-packages. Also check the BSD sites for GNUstep ports.
-
-What are these type and size warnings?
---------------------------------------
-
-   These warnings:
-     /usr/bin/ld: warning: type and size of dynamic symbol
-     `__objc_class_name_NSConstantString' are not defined
-
-   are a common occurence and are due to a mismatch between gcc and ld.
-They don't do any harm so they can be safely ignored. Apparently no one
-has bothered to fix them yet.
-
-GNU Objective C Compiler and Objective C Runtime Library
-========================================================
-
-What is the Objective C Runtime Library?
-----------------------------------------
+What is the Objective C Runtime?
+--------------------------------
 
    The Objective C Runtime Library provides C functions and data
 structures required to execute an Objective C program.
@@ -584,24 +328,11 @@ initialization of static instances (such as @""-style string objects).
      corresponding NeXT functions; the GNU names conform to the GNU
      coding standards.
 
-   * NeXT's compiler, `cc', is based on an old version of `gcc'.  GNU's
-     compiler is, of course, the latest version of `gcc', and therefore
-     contains all the latest enhancements.
-
 
 Does it allow a mixture of Objective C and C++?
 -----------------------------------------------
 
-   No.  Unlike NeXT's `cc', GNU GCC does not support source files
-containing both Objective C and C++.  Apple seems to be willing to
-merge their code back into the main GCC project, but this may take some
-convincing of the GCC maintainers due to the large number of changes
-necessary. Send email to `discuss-gnustep@gnu.org' if you are
-interesting in pushing this issue, so that the efforts of all those
-people interested can be coordinated.
-
-   Also, unlike NeXT's `cc', GNU GCC does not support the `extern
-"Objective-C"' construct.
+   No.  See *note Can one use the hybrid "Objective-C++"::
 
 Where can I find more information?
 ----------------------------------
@@ -647,7 +378,7 @@ ease-of-use as NeXT's; be warned, however, that they are not compatible
 with each other.  They have different class heirarchies, different
 instance variables, different method names, different implementation
 strategies and different network message formats.  You cannot
-communicate with a NeXT NSConnection using a GNU Connection.
+communicate with a NeXT NSConnection using a GNU NSConnection.
 
    Here are some differences between GNU distributed objects and NeXT's
 distributed objects: NeXT NSDistantObject asks it's remote target for
@@ -688,12 +419,11 @@ front-end contains the majority of implementation, but leaves out the
 low-level drawing and event code.  A back-end can override whatever
 methods necessary in order to implement low-level drawing event
 receiving.  Different back-ends will make GNUstep available on various
-platforms.  The default GNU back-end will run on top of X Windows and
-the DisplayGhostScript Server.  Other back-ends could allow GNUstep to
-run on OpenGL, OS/2, and WIN32 graphics/event platforms.  Much work
-will be saved by this clean separation between front- and back-end,
-because it allows different platforms to share the large amount of
-front-end code.
+platforms.  The default GNU back-end will run on top of X Windows.
+Other back-ends could allow GNUstep to run on OpenGL and WIN32
+graphics/event platforms.  Much work will be saved by this clean
+separation between front- and back-end, because it allows different
+platforms to share the large amount of front-end code.
 
 What is the current state of development of the front-end?
 ----------------------------------------------------------

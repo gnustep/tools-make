@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 1 January 2002
+   Last Update: 14 March 2002
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -33,34 +33,25 @@ Summary
    In order to compile the libraries, you need to compile and install
 the following packages first (if you don't already have them):
 
-   * gcc (Version 2.8.0 or greater)
+   * gcc (Version 2.8.0 or greater, 3.0.4 or greater recommended)
 
    * GNU make (Version 3.75 or greater)
 
-   * The TIFF library (libtiff) (Version 3.4beta36 or greater)
+   * gdb, if you plan to do any debugging
 
-   After installing these packages, get the following individual
-packages:
+   You may also need to install some of the following libraries and
+packages described below. Most of these packages are optional, but some
+are required.
 
-   * gnustep-make
+`ffcall libraries (HIGHLY RECOMMENDED)'
+     This is a library that provides stack frame handling for
+     NSInvocation and NSConnection. This library is highly recommended.
+     The previous builtin method for stack frame handling is no longer
+     supported and may be removed in the future.  ffcall is under GNU
+     GPL. As a special exception, if used in GNUstep or in derivate
+     works of GNUstep, the included parts of ffcall are under GNU LGPL.
 
-   * gnustep-base
-
-   * gnustep-gui
-
-   * gnustep-xdps
-
-   * gnustep-xgps
-
-   For GNUstep Launchpad, substitue `gnustep-guile' and `jigs' for
-`gnustep-gui' and `gnustep-xgps/xdps'.
-
-   See <http://www.gnustep.org> for information on where to get these
-packages.  Only one of gnustep-xgps or gnustep-xdps is required. We
-currently recommend gnustep-xgps.  Other packages you may need to get
-depending on the type of system you are using, include:
-
-`WindowMaker (Version >= 0.62)'
+`WindowMaker (Version >= 0.62) (OPTIONAL)'
      GNUstep and WindowMaker work together to provide a consistant
      interface.  Although it is not required, GNUstep will work much
      better if you use it with the WindowMaker window manager. In
@@ -68,7 +59,43 @@ depending on the type of system you are using, include:
      uses that would otherwise not be available.  Get WindowMaker from
      <http://www.windowmaker.org>.
 
-`DGS, the XFree86 DPS extension, or Adobe DPS'
+`libxml2 (OPTIONAL)'
+     The libxml library (Version 2) is used to translate some of the
+     documentation for GNUstep and to provide suport for MacOS-X
+     compatible XML-based property-lists. It is recommended but not
+     currently required.
+
+`openssl (OPTIONAL)'
+     The openssl library is used to provide support for https
+     connections by the NSURL and HSURLHandle classes.  This
+     functionality is compiled as a separate bundle since the OpenSSL
+     license is not compatible with GPL, and in the hopes that if
+     someone writes an openssl replacement, it can quickly be used by
+     creating another bundle.
+
+`libiconv (OPTIONAL)'
+     Unicode support functions (iconv) come with glibc version 2.1 or
+     greater. If you don't have this, you can get the separate libiconv
+     library from <
+     http://clisp.cons.org/~haible/packages-libiconv.html>. However,
+     neither one is required to use GNUstep.
+
+`gnustep-objc package (for gcc version < 3.0) (RECOMMENDED)'
+     This is a special version of the Objective-C runtime that include
+     several bug fixes and features that were not in gcc versions
+     previous to 3.0.  It is available at
+     <ftp://ftp.gnustep.org/pub/gnustep/libs> which compiles using the
+     GNUstep Makefile package (so you don't have to get the entire gcc
+     dist). Make sure to set the THREADING variable in the GNUmakefile.
+     It's possible to compile the library static (make shared=no) and
+     just copy to the place where the gcc libobjc library is (type gcc
+     -v to get this location). Note you have to install gnustep-make
+     (below) before installing this library.
+
+`The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)'
+     The GUI library uses this to handle loading and saving TIFF images.
+
+`DGS, the XFree86 DPS extension, or Adobe DPS (OPTIONAL)'
      If you want to use the features of a Display Postscript
      (DPS)backend. Note that it is not required since you can use the
      XGPS backend that is Xlib based.  Note that the DPS backend is
@@ -81,63 +108,39 @@ depending on the type of system you are using, include:
 
         * Adobe DPS, (contact your OS distributor)
 
-`PCThreads'
+`PCThreads (OPTIONAL)'
      For GNU/Linux systems on Intel x86 processors. PCThreads is no
      longer necessary (and should not be used) on GNU/Linux systems with
      glibc version 2, such as Debian 2.0 and RedHat 5.x and greater.
 
-`GDB and Objective-C patch'
+`GDB and Objective-C patch (OPTIONAL)'
      GDB can be obtained from <ftp://ftp.gnu.org/gnu/gdb>. The patch to
      make it work better with GNUstep can be obtained from
      <ftp://ftp.gnustep.org/pub/gnustep>
 
-`libxml'
-     The libxml library (Version 2) is used to translate some of the
-     documentation for GNUstep and to provide suport for MacOS-X
-     compatible XML-based property-lists. It is recommended but not
-     currently required.
-
-`openssl'
-     The openssl library is used to provide support for https
-     connections by the NSURL and HSURLHandle classes.  This
-     functionality is compiled as a separate bundle since the OpenSSL
-     license is not compatible with GPL, and in the hopes that if
-     someone writes an openssl replacement, it can quickly be used by
-     creating another bundle.
-
-`libiconv'
-     Unicode support functions (iconv) come with glibc version 2.1 or
-     greater. If you don't have this, you can get the separate libiconv
-     library from <
-     http://clisp.cons.org/~haible/packages-libiconv.html>. However,
-     neither one is required to use GNUstep.
-
-`ffcall libraries'
-     This is a library that provides stack frame handling for
-     NSInvocation and NSConnection. This library is highly recommended.
-     The previous builtin method for stack frame handling is no longer
-     supported and may be removed in the future.  ffcall is under GNU
-     GPL. As a special exception, if used in GNUstep or in derivate
-     works of GNUstep, the included parts of ffcall are under GNU LGPL.
-
-`gnustep-objc package (for gcc version < 3.0)'
-     This is a special version of the Objective-C runtime that include
-     several bug fixes and features that were not in gcc versions
-     previous to 3.0.  It is available at
-     <ftp://ftp.gnustep.org/pub/gnustep/libs> which compiles using the
-     GNUstep Makefile package (so you don't have to get the entire gcc
-     dist). Make sure to set the THREADING variable in the GNUmakefile.
-     It's possible to compile the library static (make shared=no) and
-     just copy to the place where the gcc libobjc library is (type gcc
-     -v to get this location).
-
 Compiling and Installing the packages
 *************************************
 
+   Get the following individual packages:
+
+   * gnustep-make
+
+   * gnustep-base
+
+   * gnustep-gui
+
+   * gnustep-xgps
+
+   For GNUstep Launchpad, substitue `gnustep-guile' and `jigs' for
+`gnustep-gui' and `gnustep-xgps/xdps'.
+
+   See <http://www.gnustep.org> for information on where to get these
+packages.  Only one of gnustep-xgps or gnustep-xdps is required. We
+currently recommend gnustep-xgps.
+
    Make sure you install all the previously mentioned libraries first
 before configuring and building GNUstep (Except you need to install
-gnustep-objc after installing gnustep-make, unless your installing it
-as part of gcc).
+gnustep-objc after installing gnustep-make).
 
    Note: you will need to be able to install packages as root (at least
 the base library) for applications to work correctly.
@@ -149,6 +152,10 @@ Windows).
 
 Using a Display Postscript System
 =================================
+
+   Please skip this instruction unless you really know what you are
+doing. The DPS backend is not well developed. You are better off
+sticking to the gnustep-xgps backend.
 
    Install a Display PostScript system if you want to use the XDPS
 backend.  You do not need it if you want to use the XGPS backend.  Some
@@ -301,7 +308,7 @@ app:
 
    * gpbs - Put this after executing `GNUstep.sh' in your local .profile
 
-     if [ `gdomap -L GDNCServer | grep -c Found` == '0' ]; then
+     if [ `gdomap -L GDNCServer | grep Unable` ]; then
        echo "Starting GNUstep services..."
        gdnc
        gpbs
@@ -632,15 +639,18 @@ Solaris 2.7/Intel
 =================
 
 `Recommended compiler'
-     egcs 1.1.2
+     egcs 1.1.2, unknown
 
 `Extra libs needed'
      Unknown
 
 `Special Instructions'
-     Make sure there are no -g compiler flags (specify `CFLAGS=
-     ./configure', when configuring) or remove it from `OPTFLAG'
-     make/config.make. You will probable get a lot of text relocation
+     Make sure there are no -g compiler flags (i.e. compiling with
+     debug=yes might be a problem). Unsure of correct bundle flags -
+     You might need to use the alternate flags listed in target.make,
+     line 989. Also, configuring gnustep-make with
+     `--disable-backend-bundle' might be necessary if you can't get
+     bundles to work.  You will probable get a lot of text relocation
      warnings, which probably can be ignored. See the other Solaris
      instructions above for more information.
 
