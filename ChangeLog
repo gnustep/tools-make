@@ -1,3 +1,14 @@
+Fri Oct 25 18:25:37 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/rules.make (ADDITIONAL_CFLAGS): Add to it xxx_CFLAGS.
+	(ADDITIONAL_OBJCFLAGS): Idem.
+	(ADDITIONAL_CCFLAGS): Idem.
+	
+Fri Oct 25 18:24:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/rules.make (ADDITIONAL_CPPFLAGS): Add to it
+	XXX_CPPFLAGS (Patch by David Ayers <d.ayers@inode.at>).
+
 Fri Oct 25 18:08:49 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Documentation/readme.texi: Rewritten ultra short description of
