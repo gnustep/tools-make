@@ -13,3 +13,5 @@ debugapp
 executable.template
 opentool
 gnustep-make.spec
+log_install_dir.sh
+install-complete-dir.sh
