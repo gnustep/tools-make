@@ -1,3 +1,22 @@
+Wed Jul 11 19:18:57 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* framework.make (framework-components): Use a makefile
+	conditional.
+	(framework-resource-files): Idem.
+	(framework-localized-resource-files): Idem.
+	(framework-localized-webresource-files): Idem.
+	(framework-webresource-files): Idem
+	(framework-webresource-files): Have two rules, include the one
+	which depends on framework-webresource-dir only if we have
+	WEBSERVER_RESOURCE_FILES.
+	(framework-localized-webresource-files): Idem.
+	(framework-webresource-dir): Reorganized to build directories only
+	when needed.  Remove the non-link file - if any - before making
+	the link.
+	(localized-framework-resource-files): Renamed to
+	framework-localized-resource-files for consistency.
+	(framework-webresource-files): Rewritten code.
+	
 Wed Jul 11 18:36:14 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* framework.make ($(DUMMY_FRAMEWORK_FILE)): Simplified,
