@@ -1006,7 +1006,7 @@ EOF
 	exit 0 ;;
 esac
 
-tmp=`gcc -dumpmachine|grep mingw32`
+tmp=`$CC_FOR_BUILD -dumpmachine|grep mingw32`
 if test "x$tmp" != "x"; then
   echo i386-pc-mingw32
   exit 0
