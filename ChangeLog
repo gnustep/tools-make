@@ -1,3 +1,8 @@
+Tue Jul 10 11:16:47 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* GNUmakefile.in (MAKE_FILES): Removed woapp.make and
+	wobundle.make.
+
 Tue Jul 10 11:13:47 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* documentation.make (internal-doc-clean): Use a single rm command
