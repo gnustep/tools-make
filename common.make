@@ -28,22 +28,22 @@ VERSION = 1.0.0
 #
 # Scripts to run for parsing canonical names
 #
-CONFIG_GUESS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/config.guess
-CONFIG_SUB_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/config.sub
-CONFIG_CPU_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/cpu.sh
-CONFIG_VENDOR_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/vendor.sh
-CONFIG_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/os.sh
-CLEAN_CPU_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_cpu.sh
-CLEAN_VENDOR_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_vendor.sh
-CLEAN_OS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/clean_os.sh
-WHICH_LIB_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/which_lib
-LD_LIB_PATH_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/ld_lib_path.sh
-TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_SYSTEM_ROOT)/Makefiles/transform_paths.sh
+CONFIG_GUESS_SCRIPT = $(GNUSTEP_MAKEFILES)/config.guess
+CONFIG_SUB_SCRIPT = $(GNUSTEP_MAKEFILES)/config.sub
+CONFIG_CPU_SCRIPT = $(GNUSTEP_MAKEFILES)/cpu.sh
+CONFIG_VENDOR_SCRIPT = $(GNUSTEP_MAKEFILES)/vendor.sh
+CONFIG_OS_SCRIPT = $(GNUSTEP_MAKEFILES)/os.sh
+CLEAN_CPU_SCRIPT = $(GNUSTEP_MAKEFILES)/clean_cpu.sh
+CLEAN_VENDOR_SCRIPT = $(GNUSTEP_MAKEFILES)/clean_vendor.sh
+CLEAN_OS_SCRIPT = $(GNUSTEP_MAKEFILES)/clean_os.sh
+WHICH_LIB_SCRIPT = $(GNUSTEP_MAKEFILES)/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/which_lib
+LD_LIB_PATH_SCRIPT = $(GNUSTEP_MAKEFILES)/ld_lib_path.sh
+TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_MAKEFILES)/transform_paths.sh
 
 #
 # Determine the compilation host and target
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/names.make
+include $(GNUSTEP_MAKEFILES)/names.make
 
 GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
 
@@ -52,17 +52,17 @@ GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
 #
 # Get the config information
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/$(GNUSTEP_TARGET_DIR)/config.make
+include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
 
 #
 # Determine the core libraries
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/brain.make
+include $(GNUSTEP_MAKEFILES)/brain.make
 
 #
 # Determine target specific settings
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/target.make
+include $(GNUSTEP_MAKEFILES)/target.make
 
 #
 # GNUSTEP_INSTALLATION_DIR is the directory where all the things go. If you
@@ -89,7 +89,9 @@ GNUSTEP_LIBRARIES = $(GNUSTEP_TARGET_LIBRARIES)/$(LIBRARY_COMBO)
 GNUSTEP_RESOURCES = $(GNUSTEP_LIBRARIES_ROOT)/Resources
 
 # Take the makefiles from the system root
-GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
+ifeq ($(GNUSTEP_MAKEFILES),)
+  GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
+endif
 
 # The default name of the makefile to be used in recursive invocations of make
 ifeq ($(MAKEFILE_NAME),)

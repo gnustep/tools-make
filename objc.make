@@ -32,7 +32,7 @@ OBJC_PROGRAM_MAKE_LOADED=yes
 #
 # Include in the common makefile rules
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
+include $(GNUSTEP_MAKEFILES)/rules.make
 
 ifeq ($(INTERNAL_objc_program_NAME),)
 

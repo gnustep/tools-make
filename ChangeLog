@@ -1,3 +1,9 @@
+Fri Feb  6 12:25:51 1998  Adam Fedor  <fedor@ultra.doc.com>
+
+	* common.make (GNUSTEP_MAKEFILES): Set only if not already set.
+	* *.make: Use GNUSTEP_MAKEFILES in place of
+	$(GNUSTEP_SYSTEM_ROOT)/Makefiles.
+
 1998-02-05  Ovidiu Predescu  <ovidiu@net-community.com>
 
 	* brain.make (GUI_LIBS): Changed the order of the gui and gmodel

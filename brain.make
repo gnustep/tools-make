@@ -102,7 +102,7 @@ FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
 endif
 
 ifeq ($(FOUNDATION_LIB),fd)
--include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/libFoundation.make
+-include $(GNUSTEP_MAKEFILES)/libFoundation.make
 FND_LDFLAGS =
 FND_LIBS = -lFoundation $(LIBFOUNDATION_GC_LIBRARY)
 FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1

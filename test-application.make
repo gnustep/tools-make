@@ -26,7 +26,7 @@ TEST_APPLICATION_MAKE_LOADED=yes
 #
 # Include in the common makefile rules
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
+include $(GNUSTEP_MAKEFILES)/rules.make
 
 # building of test applications calls the application.make rules
 ifeq ($(INTERNAL_app_NAME),)
@@ -43,7 +43,7 @@ $(TEST_APP_NAME):
 else
 
 # We use the application.make rules for building
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/application.make
+include $(GNUSTEP_MAKEFILES)/application.make
 
 endif
 

@@ -26,7 +26,7 @@ TEST_TOOL_MAKE_LOADED=yes
 #
 # Include in the common makefile rules
 #
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
+include $(GNUSTEP_MAKEFILES)/rules.make
 
 # building of test tools calls the tool.make rules
 ifeq ($(INTERNAL_tool_NAME),)
@@ -43,7 +43,7 @@ $(TEST_TOOL_NAME):
 else
 
 # We use the tool.make rules for building
-include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/tool.make
+include $(GNUSTEP_MAKEFILES)/tool.make
 
 endif
 
