@@ -48,7 +48,7 @@ internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
 
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
-	$(OBJ_MERGE_CMD)
+	$(ECHO_LINKING)$(OBJ_MERGE_CMD)$(END_ECHO)
 
 
 #
