@@ -119,7 +119,8 @@ $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
 	  echo "}") >$@ ;\
 	if [ -n "$(GNUSTEP_OBJ_DIR)" ];then \
 	  _d=$(GNUSTEP_OBJ_DIR)/; \
-	  LD_LIBRARY_PATH=../../base/Source/$$_d:../Source/$$_d; \
+          tmp=`echo ${SYSTEM_LIB_DIR} | sed -e 's/ //g' | sed -e 's/-L/:/g'`; \
+	  LD_LIBRARY_PATH="../../base/Source/$$_d:../Source/$$_d$$tmp"; \
 	  export LD_LIBRARY_PATH; \
 	fi; \
 	if $${_d}make_services --test $@; then : ; else rm -f $@; false; fi

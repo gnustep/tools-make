@@ -1,3 +1,10 @@
+Thu Feb 25 20:25:04 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* service.make ($(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist:): 
+	Added contents of SYSTEM_LIB_DIR to LD_LIBRARY_PATH.
+	
+	* configure.in (AC_ARG_WITH(jpeg_library)): Fix a typo. (DIS->DIR).
+
 1999-02-25  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (IRIX/SHARED_LIB_LINK_CMD): Fix typo.

@@ -20,7 +20,7 @@ fi`
 ac_help="$ac_help
   --with-x                use the X Window System"
 ac_help="$ac_help
-  --with-jpeg-library=DIS  JPEG library file are in DIR"
+  --with-jpeg-library=DIR  JPEG library file are in DIR"
 ac_help="$ac_help
   --with-jpeg-include=DIR  JPEG include files are in DIR"
 ac_help="$ac_help

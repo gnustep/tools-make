@@ -92,7 +92,7 @@ AC_HAVE_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
 # Find for JPEG
 #--------------------------------------------------------------------
 AC_ARG_WITH(jpeg_library, 
-           [  --with-jpeg-library=DIS  JPEG library file are in DIR], ,
+           [  --with-jpeg-library=DIR  JPEG library file are in DIR], ,
            with_jpeg_library=/usr/local/lib)
 AC_ARG_WITH(jpeg_includes,  
 	[  --with-jpeg-include=DIR  JPEG include files are in DIR], ,
