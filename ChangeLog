@@ -1,3 +1,8 @@
+Thu Mar 11 02:26:20 2004  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/gswapp.make: Do not create library_paths.openapp on
+	Apple.  ($(GNUSTEP_INSTANCE).iconheader): Rule removed.
+	
 2004-03-09  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/GNUMakefile.in (GNUSTEP_TEXI2HTML_FLAGS): Add
