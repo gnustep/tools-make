@@ -510,6 +510,8 @@ endif
 # FreeBSD a.out (2.2.x)
 #
 ifeq ($(findstring freebsd2, $(GNUSTEP_TARGET_OS)), freebsd2)
+freebsd2 = yes
+
 HAVE_SHARED_LIBS	= no
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
@@ -546,7 +548,8 @@ endif
 #
 # FreeBSD ELF
 #
-ifeq ($(findstring freebsdelf, $(GNUSTEP_TARGET_OS)), freebsdelf)
+ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
+ifneq ($(freebsd2), yes)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
@@ -578,6 +581,7 @@ BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 ifeq ($(shared), no)
 ADDITIONAL_LDFLAGS += -static
+endif
 endif
 endif
 #

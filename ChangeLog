@@ -1,3 +1,8 @@
+2001-04-13  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
+	* target.make: check for freebsd instead of freebsdelf.
+	* clean_os.sh: likewise.
+
 2001-04-13  Adam Fedor  <fedor@gnu.org>
 
 	* GUI Backend built as bundle by default. Remove backend component

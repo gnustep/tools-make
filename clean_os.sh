@@ -23,8 +23,12 @@
 # Nothing to clean right now
 case "$1" in
     # Remove version number for FreeBSD
-    freebsdelf*)
-	echo freebsdelf
+    freebsd2*)
+	echo freebsdaout
+	exit 0
+	;;
+    freebsd*)
+	echo freebsd
 	exit 0
 	;;
     *)
