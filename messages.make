@@ -37,6 +37,12 @@ ifneq ($(messages),yes)
   ECHO_JAVAHING  = @(echo " Running javah on $< ...";
   ECHO_INSTALLING = @(echo " Installing $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE)...";
   ECHO_COPYING_INTO_DIR = @(echo " Copying $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) into $(COPY_INTO_DIR)...";
+  ECHO_CREATING = @(echo " Creating $@...";
+
+  # ECHO_NOTHING is still better than hardcoding @(, because ECHO_NOTHING
+  # prints nothing if messages=no, but it prints all messages when
+  # messages=yes, while hardcoding @( never prints anything.
+  ECHO_NOTHING = @(
 
   # Instance/Shared/bundle.make
   ECHO_COPYING_RESOURCES = @(echo " Copying resources into the $(GNUSTEP_TYPE) wrapper...";
@@ -81,6 +87,8 @@ else
   ECHO_JAVAHING = 
   ECHO_INSTALLING =
   ECHO_COPYING_INTO_DIR = 
+  ECHO_CREATING =
+  ECHO_NOTHING =
 
   ECHO_COPYING_RESOURCES = 
   ECHO_COPYING_LOC_RESOURCES =
