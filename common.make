@@ -259,8 +259,6 @@ GNUSTEP_LIBRARIES_DIRS = \
 endif # GNUSTEP_FLATTENED
 
 
-$(shell echo "$(GNUSTEP_LIBRARIES_FLAGS)")
-
 ifeq ($(REMOVE_EMPTY_DIRS),yes)
  # This variable, when evaluated, gives $(dir) if dir is non-empty, and
  # nothing if dir is empty.
