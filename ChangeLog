@@ -1,6 +1,6 @@
 2001-08-02  Adam Fedor  <fedor@gnu.org>
 
-	* GNUstep.sh.in: Look for use scriptin ~/GNUstep.
+	* GNUstep.sh.in: Look for user script in ~/GNUstep.
 	* GNUstep.csh.in: Likewise.
 
 Mon Jul 30 20:15:48 2001  Nicola Pero  <n.pero@mi.flashnet.it>

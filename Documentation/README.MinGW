@@ -88,7 +88,7 @@ compile correctly:
   . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 
 Also put this command in your shell startup script.
-I also install a special script in the file ~/.GNUstep/GNUstep.sh with the
+I also install a special script in the file ~/GNUstep/GNUstep.sh with the
 lines:
 
 if [ $GNUSTEP_HOST_OS = "mingw32" ]; then
