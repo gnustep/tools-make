@@ -1,6 +1,76 @@
+Tue Mar  2 08:04:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
+
+	* Merge in 'dawn' CVS branch.
+
+1999-03-01  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: New search for DPS libraries.
+
+1999-02-27  Matthias Klose  <doko@cs.tu-berlin.de>
+
+        * make/target.make: Link shared libs against other libs (Linux only,
+          should be possible for all ELF targets).
+
+1999-02-28  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in: Use CFLAGS from configure rather than setting
+	our own.
+	* config.make.in (OPTFLAG): Use CFLAGS from configure.
+	* common.make (OPTFLAG): Remove -O if debugging
+
+	* debugapp.in: Remove basename so debugapp can be used to run
+	programs in other directories.
+	(patches submitted by Christopher Seawood <cls@seawood.org>).
+
+Thu Feb 25 20:25:04 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* service.make ($(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist:): 
+	Added contents of SYSTEM_LIB_DIR to LD_LIBRARY_PATH.
+	
+	* configure.in (AC_ARG_WITH(jpeg_library)): Fix a typo. (DIS->DIR).
+
+1999-02-25  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (IRIX/SHARED_LIB_LINK_CMD): Fix typo.
+
+Thu Feb 25 03:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* configure.in: Added macros to check existence of jpeg and tiff.
+        Stolen from gimp-1.0.0/configure.in.
+
+	* config.make.in (TIFF_INCLUDE): New variable definitions.
+	(TIFF_LIB): Likewise.
+	(JPEG_INCLUDE): Likewise.
+	(JPEG_LIB): Likewise.
+
+	* brain.make (SYSTEM_INCLUDES): Added $(TIFF_INCLUDE) $(JPEG_INCLUDE)
+	(SYSTEM_LIB_DIR): Added $(TIFF_LIB) $(JPEG_LIB).
+
+1999-02-24  Matthias Klose  <doko@cs.tu-berlin.de>
+
+	* Makefiles/rules.make (%.build): evaluate LIBRARIES_DEPEND_UPON
+	  in this target, not when the file is read, else library names in
+	  foo_LIBRARIES_DEPEND_UPON macros are not transformed.
+
+1999-02-22  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Substitute version info.
+	* config.make.in: Include version info.
+	* brain.make: Define GNUSTEP if using GNUstep libraries. 
+	* common.make (AUXILARY_CPPFLAGS): Include GNUSTEP and Version defines.
+	
 1999-02-22  Scott Christley  <scottc@golden.net-community.com>
 
 	* opentool: New file.
+
+Sun Feb 21 15:01:48 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* target.make (Solaris::AFTER_INSTALL_SHARED_LIB_COMMAND): 
+	Removed two duplicated lines.
+
+Sun Feb 21 13:49:55 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
+
+	* rules.make (%.build): Check the length of string, $($*_SUBPROJECTS).
 
 1999-02-19  Scott Christley  <scottc@golden.net-community.com>
 

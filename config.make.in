@@ -25,6 +25,7 @@
 # Binary and compile tools
 #
 CC = @CC@
+OPTFLAG = @CFLAGS@
 
 EXEEXT = @EXEEXT@
 OEXT = .o
@@ -57,6 +58,11 @@ INSTALL_DATA	= @INSTALL_DATA@
 TAR		= tar
 MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
 
+# Version information
+GNUSTEP_VERSION_DEFINE = -DGNUSTEP_VERSION=@GNUSTEP_VERSION@ \
+	-DGNUSTEP_MAJOR_VERSION=@GNUSTEP_MAJOR_VERSION@ \
+	-DGNUSTEP_MINOR_VERSION=@GNUSTEP_MINOR_VERSION@
+
 # The default library combination
 default_library_combo = @ac_cv_library_combo@
 
@@ -78,6 +84,31 @@ X_LIBS := @X_LIBS@
 ifeq ($(X_LIBS),-LNONE)
 	X_LIBS=
 endif
+
+#
+# Tiff header and library
+#
+TIFF_INCLUDE := @TIFF_INCLUDE@
+ifeq ($(TIFF_INCLUDE),-INONE)
+        TIFF_INCLUDE=
+endif
+TIFF_LIB := @TIFF_LIB@
+ifeq ($(TIFF_LIB),-LNONE)
+        TIFF_LIB=
+endif
+
+#
+# Jpeg header and library
+# 
+JPEG_INCLUDE := @JPEG_INCLUDE@
+ifeq ($(JPEG_INCLUDE),-INONE)
+        JPEG_INCLUDE=
+endif
+JPEG_LIB := @JPEG_LIB@
+ifeq ($(JPEG_LIB),-LNONE)
+        JPEG_LIB=
+endif
+
 
 DPS_DEFINE=@DPS_DEFINE@
 

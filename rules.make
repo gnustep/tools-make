@@ -137,15 +137,6 @@ LIB_DIRS_NO_SYSTEM = $(ADDITIONAL_LIB_DIRS) \
    $(GNUSTEP_LOCAL_LIBRARIES_FLAG) $(GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAG) \
    -L$(GNUSTEP_SYSTEM_LIBRARIES) -L$(GNUSTEP_SYSTEM_TARGET_LIBRARIES)
 
-
-ifneq ($(LIBRARIES_DEPEND_UPON),)
-LIBRARIES_DEPEND_UPON := \
-    $(shell $(WHICH_LIB_SCRIPT) $(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON)\
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
-endif
-
-
 #
 # The bundle extension (default is .bundle) is defined by BUNDLE_EXTENSION.
 #
@@ -173,17 +164,20 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 # The magical application rules, thank you GNU make!
 %.build:
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
-	for f in $($*_SUBPROJECTS); do \
-	  mf=$(MAKEFILE_NAME); \
-	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION); then \
-	    :; \
-	  else exit $$?; \
-	  fi; \
-	done; \
+        tmp="$($*_SUBPROJECTS)"; \
+        if test "x$(tmp)" != x ; then \
+          for f in $tmp; do \
+	    mf=$(MAKEFILE_NAME); \
+	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	      mf=Makefile; \
+	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	    fi; \
+	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(OPERATION); then \
+	      :; \
+	    else exit $$?; \
+	    fi; \
+	  done; \
+        fi; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
@@ -210,8 +204,11 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	    ADDITIONAL_LIBRARY_LIBS="$($*_LIBS)" \
 	    ADDITIONAL_LIB_DIRS="$($*_LIB_DIRS) $(ADDITIONAL_LIB_DIRS)" \
 	    ADDITIONAL_LDFLAGS="$($*_LDFLAGS) $(ADDITIONAL_LDFLAGS)" \
-	    LIBRARIES_DEPEND_UPON="$($*_LIBRARIES_DEPEND_UPON) \
-					$(LIBRARIES_DEPEND_UPON)" \
+	    LIBRARIES_DEPEND_UPON="$(shell $(WHICH_LIB_SCRIPT) \
+		$(LIB_DIRS_NO_SYSTEM) $(LIBRARIES_DEPEND_UPON) \
+		$($*_LIBRARIES_DEPEND_UPON) debug=$(debug) profile=$(profile) \
+		shared=$(shared) libext=$(LIBEXT) \
+		shared_libext=$(SHARED_LIBEXT))" \
 	    SCRIPTS_DIRECTORY="$($*_SCRIPTS_DIRECTORY)" \
 	    CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)" \
 	)

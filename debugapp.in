@@ -140,6 +140,7 @@ else
 fi
 
 appname=`echo $app | sed 's/\.[a-z]*$//'`
+appname=`basename $appname`
 . $GNUSTEP_SYSTEM_ROOT/Makefiles/ld_lib_path.sh
 
 

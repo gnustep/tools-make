@@ -254,7 +254,14 @@ ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         $(CC) -shared -Wl,-soname,$(SONAME_LIBRARY_FILE) \
-           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
+           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ \
+	   $(GNUSTEP_USER_TARGET_LIBRARIES_FLAG) \
+	   $(GNUSTEP_LOCAL_TARGET_LIBRARIES_FLAG) \
+	   -L$(GNUSTEP_SYSTEM_TARGET_LIBRARIES) \
+	   $(SYSTEM_LIB_DIR) \
+	   $(ADDITIONAL_LIB_DIRS) \
+	   $(LIBRARIES_DEPEND_UPON) \
+	   $(TARGET_SYSTEM_LIBS); \
 	(cd $(GNUSTEP_OBJ_DIR); \
           rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
@@ -414,8 +421,8 @@ STATIC_LIB_LINK_CMD = \
         $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
         $(RANLIB) $(VERSION_LIBRARY_FILE)
 SHARED_LIB_LINK_CMD     = \
-        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o 
-$(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` ;\
+        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_CFLAGS) -shared -o \
+	  $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` ;\
           rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 
@@ -448,9 +455,6 @@ SHARED_LIB_LINK_CMD     = \
 	)
 AFTER_INSTALL_SHARED_LIB_COMMAND = \
 	(cd $(GNUSTEP_LIBRARIES); \
-          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(SONAME_LIBRSTEP_LIBRARIES); \
           rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
           $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \

@@ -57,7 +57,7 @@ INSTALL_DATA	= @INSTALL_DATA@
 all: generated-files which_lib$(EXEEXT)
 
 which_lib$(EXEEXT): which_lib.c
-	$(CC) -O2 -Wall -o $@ $^
+	$(CC) @CFLAGS@ -Wall -o $@ $^
 
 install: all
 	$(srcdir)/mkinstalldirs $(prefix) $(makedir) \

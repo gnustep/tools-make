@@ -125,6 +125,7 @@ ifeq ($(FOUNDATION_LIB),gnu)
 FND_LDFLAGS =
 FND_LIBS = -lgnustep-base
 FND_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
+GNUSTEP_DEFINE = -DGNUSTEP
 endif
 
 ifeq ($(FOUNDATION_LIB),fd)
@@ -165,6 +166,7 @@ ifeq ($(GUI_LIB),gnu)
 GUI_LDFLAGS =
 GUI_LIBS = -lgnustep-gui -lgmodel -lgnustep-gui
 GUI_DEFINE = -DGNU_GUI_LIBRARY=1
+GNUSTEP_DEFINE = -DGNUSTEP
 endif
 
 ifeq ($(GUI_LIB),nx)
@@ -216,9 +218,9 @@ SYSTEM_LIBS =
 # then add X headers and libraries
 #
 ifeq ($(GUI_BACKEND_LIB),xdps)
-SYSTEM_INCLUDES = $(X_INCLUDE)
+SYSTEM_INCLUDES = $(X_INCLUDE) $(TIFF_INCLUDE) $(JPEG_INCLUDE)
 SYSTEM_LDFLAGS =
-SYSTEM_LIB_DIR = $(X_LIBS)
+SYSTEM_LIB_DIR = $(X_LIBS) $(TIFF_LIB) $(JPEG_LIB)
 SYSTEM_LIBS = -ltiff -ljpeg -ldpstk -ldps -lpsres -lX11
 endif
 
@@ -227,16 +229,16 @@ endif
 # then add X headers and libraries
 #
 ifeq ($(GUI_BACKEND_LIB),xraw)
-SYSTEM_INCLUDES = $(X_INCLUDE)
+SYSTEM_INCLUDES = $(X_INCLUDE) $(TIFF_INCLUDE) $(JPEG_INCLUDE)
 SYSTEM_LDFLAGS =
-SYSTEM_LIB_DIR = $(X_LIBS)
+SYSTEM_LIB_DIR = $(X_LIBS) $(TIFF_LIB) $(JPEG_LIB)
 SYSTEM_LIBS = -ltiff -ljpeg -lX11
 endif
 
 ifeq ($(GUI_BACKEND_LIB),xgps)
-SYSTEM_INCLUDES = $(X_INCLUDE)
+SYSTEM_INCLUDES = $(X_INCLUDE) $(TIFF_INCLUDE) $(JPEG_INCLUDE)
 SYSTEM_LDFLAGS =
-SYSTEM_LIB_DIR = $(X_LIBS)
+SYSTEM_LIB_DIR = $(X_LIBS) $(TIFF_LIB) $(JPEG_LIB)
 SYSTEM_LIBS = -ltiff -ljpeg -lX11
 endif
 
