@@ -1,3 +1,19 @@
+Mon Oct 20 14:49:03 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make (internal-framework-distclean): Delete
+	from GNUSTEP_BUILD_DIR.
+
+Mon Oct 20 14:44:57 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Write the list of classes belonging to a framework into the
+	framework's Info-gnustep.plist too.
+	* Instance/framework.make (DUMMY_FRAMEWORK_CLASS_LIST): New
+	variable.
+	($(DUMMY_FRAMEWORK_FILE)): Build a classarray list of classes in
+	the framework, and store it in $DUMMY_FRAMEWORK_CLASS_LIST.
+	(Info-gnustep.plist): Add a Classes key/value.  Depend on
+	DUMMY_FRAMEWORK_FILE.
+	
 2003-10-19  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/gnustep-howto.texi: Updates, clearer instructions.
