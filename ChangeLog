@@ -1,3 +1,8 @@
+Tue Mar 30 02:01:59 2004  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Documentation/make.texi (PACKAGE_NAME, PACKAGE_VERSION): Updated
+	documentation.
+
 Mon Mar 29 12:58:34 2004  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* common.make (MAJOR_VERSION): Variable removed.

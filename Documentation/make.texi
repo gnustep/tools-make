@@ -593,12 +593,13 @@ distributions.
 cases this will be the same as the name of your project type. For
 instance, if you are creating a application, and have set
 @code{APP_NAME} to @samp{MyApplication}, Then set @code{PACKAGE_NAME} to
-the same thing, or just use @code{PACKAGE_NAME=$(APP_NAME)}.
+the same thing, or just use @code{PACKAGE_NAME=$(APP_NAME)}.  if 
+@code{PACKAGE_NAME} is not set, it defaults to @code{unnamed-package}
 @end defvr
 
-@defvr {RPM} VERSION
-Set @code{VERSION} to the release version number of your package. If not
-set, it defaults to 1.0.0
+@defvr {RPM} PACKAGE_VERSION
+Set @code{PACKAGE_VERSION} to the release version number of your package. If not
+set, it defaults to 0.0.1
 @end defvr
 
 @defvr {RPM} GNUSTEP_INSTALLATION_DIR
