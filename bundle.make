@@ -212,7 +212,7 @@ internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
 	  fi; \
         fi; \
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
-	$(TAR) ch --exclude=CVS --to-stdout $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
+	$(TAR) cf -X CVS - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
 
 $(BUNDLE_DIR_NAME)/Resources $(BUNDLE_INSTALL_DIR)::
 	@$(MKDIRS) $@

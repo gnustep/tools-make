@@ -84,6 +84,8 @@ if test "$ac_cv_library_combo" = ""; then
     ac_cv_library_combo=gnu-gnu-gnu-win32
   elif test $host_os = mingw32; then
     ac_cv_library_combo=gnu-gnu-gnu-win32
+  elif test $host_os = mingw; then
+    ac_cv_library_combo=gnu-gnu-gnu-win32
   else
     ac_cv_library_combo=gnu-gnu-gnu-xgps
   fi
@@ -93,7 +95,7 @@ AC_SUBST(ac_cv_library_combo)
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
-if test $host_os = mingw32 ; then
+if test $host_os = mingw32 -o $host_os = mingw; then
   echo "hosted on mingw32 .."
   export MINGW32=1
   export SHELL=zsh
