@@ -83,7 +83,7 @@ ALL_TEST_LIBRARY_LIBS =						\
 	debug=$(debug) profile=$(profile) shared=$(shared)	\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
-internal-testlib-all:: before-$(GNUSTEP_INSTANCE)-all $(GNUSTEP_OBJ_DIR) \
+internal-test_lib-all:: before-$(GNUSTEP_INSTANCE)-all $(GNUSTEP_OBJ_DIR) \
 	$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE) after-$(GNUSTEP_INSTANCE)-all
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE): $(OBJ_FILES_TO_LINK)
@@ -94,10 +94,10 @@ $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE): $(OBJ_FILES_TO_LINK)
 dejagnu_vars = "FOUNDATION_LIBRARY=$(FOUNDATION_LIB)" \
 		"OBJC_RUNTIME=$(OBJC_RUNTIME)"
 
-internal-testlib-check:: $(SCRIPTS_DIRECTORY)/config/unix.exp \
+internal-test_lib-check:: $(SCRIPTS_DIRECTORY)/config/unix.exp \
 	really-testlib-check
 
-really-testlib-check:
+really-test_lib-check:
 	@(additional_library_paths="`echo $(ADDITIONAL_LIB_DIRS) | sed 's/-L//g'`"; \
 	  additional_library_paths="`$(GNUSTEP_MAKEFILES)/transform_paths.sh $$additional_library_paths`"; \
 		. $(GNUSTEP_MAKEFILES)/ld_lib_path.sh; \
@@ -136,9 +136,9 @@ $(SCRIPTS_DIRECTORY)/config/unix.exp: _FORCE
 	echo "# Maintain your own code in local.exp"; \
 	echo "source \"config/local.exp\"") >>$@)
 
-internal-testlib-install::
+internal-test_lib-install::
 
-internal-testlib-uninstall::
+internal-test_lib-uninstall::
 
 #
 # Cleaning targets
