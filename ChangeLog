@@ -1,3 +1,8 @@
+Fri Nov  6 13:15:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	* target.make: If objc library built with threads, assume we need to
+	link with -lpthread on linux.
+
 Tue Nov  3 10:30:12 1998  Adam Fedor  <fedor@doc.com>
 
 	* target.make (netbsd): New (attempt at) shared lib target.
