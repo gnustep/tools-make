@@ -53,6 +53,9 @@ endif
 ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
 endif
+ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
+endif
 
 #
 # Specific settings for building shared libraries, static libraries,
