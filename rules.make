@@ -353,22 +353,25 @@ ifneq ($(FRAMEWORK_NAME),)
 	@ if [ "$(call operation,$*)" != "build-headers" ]; then \
 	  if [ "$($(call target,$*)_TOOLS)" != "" ]; then \
 	    echo Building tools for $(call type,$*) $(call target,$*)...; \
-	    for f in $($(call target,$*)_TOOLS); do \
-	      mf=$(MAKEFILE_NAME); \
-	      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	        mf=Makefile; \
-	        echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
-	      fi; \
-	      if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
-	           FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-	           FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-	           FRAMEWORK_OPERATION="$(call operation,$*)" \
-	           TOOL_OPERATION="$(call operation,$*)" \
-	           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-	           SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	         ; then \
-	         :; \
-	      else exit $$?; \
+	    for f in $($(call target,$*)_TOOLS) __done; do \
+	      if [ $$f != __done ]; then       \
+	        mf=$(MAKEFILE_NAME); \
+	        if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	          mf=Makefile; \
+	          echo "WARNING: No $(MAKEFILE_NAME) found for tool $$f; using 'Makefile'"; \
+	        fi; \
+	        if $(MAKE) -C $$f -f $$mf --no-keep-going \
+                           $(call operation,$*) \
+	             FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+	             FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+	             FRAMEWORK_OPERATION="$(call operation,$*)" \
+	             TOOL_OPERATION="$(call operation,$*)" \
+	             DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+	             SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	           ; then \
+	           :; \
+	        else exit $$?; \
+	        fi; \
 	      fi; \
 	    done; \
 	  fi; \
@@ -383,20 +386,22 @@ endif # end of FRAMEWORK code
 %.subprojects:
 	@ if [ "$($(call target,$*)_SUBPROJECTS)" != "" ]; then \
 	echo Making $(call operation,$*) in subprojects of $(call type,$*) $(call target,$*)...; \
-	for f in $($(call target,$*)_SUBPROJECTS); do \
-	  mf=$(MAKEFILE_NAME); \
-	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-	    mf=Makefile; \
-	    echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
-	        FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
-	        FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
-	        DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
-	        SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
-	      ; then \
-	      :; \
-	  else exit $$?; \
+	for f in $($(call target,$*)_SUBPROJECTS) __done; do \
+	  if [ $$f != __done ]; then       \
+	    mf=$(MAKEFILE_NAME); \
+	    if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
+	      mf=Makefile; \
+	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
+	    fi; \
+	    if $(MAKE) -C $$f -f $$mf --no-keep-going $(call operation,$*) \
+	          FRAMEWORK_NAME="$(FRAMEWORK_NAME)" \
+	          FRAMEWORK_VERSION_DIR_NAME="../$(FRAMEWORK_VERSION_DIR_NAME)" \
+	          DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
+	          SUBPROJECT_ROOT_DIR="$(SUBPROJECT_ROOT_DIR)/$$f" \
+	        ; then \
+	        :; \
+	    else exit $$?; \
+	    fi; \
 	  fi; \
 	done; \
 	fi
