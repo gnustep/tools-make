@@ -1,3 +1,7 @@
+Thu Nov 22 02:52:42 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* depend.make: Obsolete file removed.
+	
 Thu Nov 22 00:43:33 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rpm.make (check-RPM_TOPDIR): New target.
