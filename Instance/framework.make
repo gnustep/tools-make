@@ -80,21 +80,9 @@ ifeq ($(CURRENT_VERSION_NAME),)
   CURRENT_VERSION_NAME = A
 endif
 
-
-# DEPLOY_WITH_CURRENT_VERSION deprecated 6 Nov 2002.  Remove any time
-# after 6 Nov 2004.
-ifneq ($(DEPLOY_WITH_CURRENT_VERSION),)
-  $(warning DEPLOY_WITH_CURRENT_VERSION is deprecated.  Please use MAKE_CURRENT_VERSION instead.)
-  MAKE_CURRENT_VERSION = DEPLOY_WITH_CURRENT_VERSION
-endif
-
-# xxx_DEPLOY_WITH_CURRENT_VERSION deprecated 4 Mar 2004.  Remove any
-# time after 4 Mar 2006.
-ifneq ($($(GNUSTEP_INSTANCE)_DEPLOY_WITH_CURRENT_VERSION),)
-  $(warning xxx_DEPLOY_WITH_CURRENT_VERSION is deprecated.  Please use xxx_MAKE_CURRENT_VERSION instead.)
-  MAKE_CURRENT_VERSION = $($(GNUSTEP_INSTANCE)_DEPLOY_WITH_CURRENT_VERSION)
-endif
-
+# xxx_MAKE_CURRENT_VERSION can be set to 'no' if you do not want the
+# framework version that we are building from becoming the Current
+# one.
 ifneq ($($(GNUSTEP_INSTANCE)_MAKE_CURRENT_VERSION),)
   MAKE_CURRENT_VERSION = $($(GNUSTEP_INSTANCE)_MAKE_CURRENT_VERSION)
 endif
