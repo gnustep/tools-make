@@ -196,12 +196,14 @@ internal-doc-all:: before-$(TARGET)-all \
                    generate-autogsdoc \
                    after-$(TARGET)-all
 
+$(INTERNAL_doc_NAME):
+	$(MKDIRS) $@
+
 # If autogsdoc is not present, the '-' at the start of the next command
 # lets the makefile system simply continue without generating any
 # documentation from headers etc.
-generate-autogsdoc:
-	-$(MKDIRS) $(INTERNAL_doc_NAME); \
-	autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
+generate-autogsdoc: $(INTERNAL_doc_NAME)
+	-autogsdoc $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)
 
 endif # AGSDOC_FILES
 
