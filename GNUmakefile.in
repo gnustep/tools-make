@@ -37,6 +37,7 @@ GNUSTEP_SYSTEM_ROOT = $(special_prefix)@prefix@
 GNUSTEP_LOCAL_ROOT  = $(special_prefix)@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT = $(special_prefix)@GNUSTEP_NETWORK_ROOT@
 srcdir = @srcdir@
+VPATH = @srcdir@
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 libdir = @libdir@
@@ -48,9 +49,9 @@ GNUSTEP_TARGET_CPU := @target_cpu@
 GNUSTEP_TARGET_OS := @target_os@
 GNUSTEP_TARGET_VENDOR := @target_vendor@
 
-GNUSTEP_TARGET_CPU := $(shell ./clean_cpu.sh $(GNUSTEP_TARGET_CPU))
-GNUSTEP_TARGET_VENDOR := $(shell ./clean_vendor.sh $(GNUSTEP_TARGET_VENDOR))
-GNUSTEP_TARGET_OS := $(shell ./clean_os.sh $(GNUSTEP_TARGET_OS))
+GNUSTEP_TARGET_CPU := $(shell $(srcdir)/clean_cpu.sh $(GNUSTEP_TARGET_CPU))
+GNUSTEP_TARGET_VENDOR := $(shell $(srcdir)/clean_vendor.sh $(GNUSTEP_TARGET_VENDOR))
+GNUSTEP_TARGET_OS := $(shell $(srcdir)/clean_os.sh $(GNUSTEP_TARGET_OS))
 
 GNUSTEP_LIB_COMBO := @ac_cv_library_combo@
 
@@ -79,7 +80,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	tool.make ctool.make test-library.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
-	documentation.make MediaBook.func executable.template \
+	documentation.make MediaBook.func \
 	java-executable.template java-tool.make framework.make \
 	source-distribution.make rpm.make \
         spec-rules.template spec-debug-rules.template \
@@ -88,7 +89,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 all: generated-files which_lib$(EXEEXT)
 
 which_lib$(EXEEXT): which_lib.c
-	$(CC) @CFLAGS@ -Wall -o $@ $^
+	$(CC) @CFLAGS@ -Wall -I. -o $@ $^
 
 
 install: all
@@ -135,28 +136,33 @@ install: all
 		$(GNUSTEP_NETWORK_ROOT) 
 	$(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) $(makedir)/$(GNUSTEP_TARGET_DIR)
 	for f in config.guess config.sub install-sh mkinstalldirs \
-		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
+		MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh \
 		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
-		GNUstep.csh ld_lib_path.csh cygpath.sh ; do \
-	  $(INSTALL_PROGRAM) -m 755 $$f $(makedir); \
+		ld_lib_path.csh cygpath.sh ; do \
+	  $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	done
+	$(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
+	$(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
 	$(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	$(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
-	$(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
+	$(INSTALL_PROGRAM) -m 755 opentool $(tooldir);
 	for f in $(MAKE_FILES); do \
-	  $(INSTALL_DATA) $$f $(makedir); \
+	  $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
 	done
-	$(INSTALL_DATA) config.site $(GNUSTEP_SYSTEM_ROOT)/share
+	$(INSTALL_DATA) executable.template $(makedir)
+	$(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
+
 
 uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib$(EXEEXT)
 	for f in config.guess config.sub install-sh mkinstalldirs \
-		GNUstep.sh MediaBook.sh clean_cpu.sh clean_os.sh \
+		MediaBook.sh clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
 		transform_paths.sh vendor.sh \
-		GNUstep.csh ld_lib_path.csh ; do \
+		ld_lib_path.csh cygpath.sh \
+	        GNUstep.sh GNUstep.csh ; do \
 	  rm -f $(makedir)/$$f; \
 	done
 	rm -f $(tooldir)/openapp; \
@@ -165,6 +171,7 @@ uninstall:
 	for f in $(MAKE_FILES); do \
 	  rm -f $(makedir)/$$f; \
 	done
+	rm -f $(makedir)/executable.template
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
 
