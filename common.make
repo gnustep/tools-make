@@ -336,17 +336,34 @@ GNUSTEP_DVIPS_FLAGS     =
 SUBPROJECT_PRODUCT = subproject$(OEXT)
 
 #
-# The Java Compiler.  Override this by setting the JAVAC environment variable
+# Set JAVA_HOME if not set.
 #
-ifeq ($(JAVAC),)
-JAVAC = javac
+ifeq ($(JAVA_HOME),)
+  # Else, try JDK_HOME
+  ifeq ($(JDK_HOME),)
+    # Else, try by finding the path of javac and removing 'bin/javac' from it
+    ifeq ($(JAVAC),)
+      JAVA_HOME = $(shell which javac | sed "s/bin\/javac//g")
+    else # $(JAVAC) != "" 
+      JAVA_HOME = $(shell which $(JAVAC) | sed "s/bin\/javac//g")
+    endif  
+  else # $(JDK_HOME) != ""
+    JAVA_HOME = $(JDK_HOME) 
+  endif
 endif
 
 #
-# The Java Header Compiler.  
+# The Java Compiler.
+#
+ifeq ($(JAVAC),)
+  JAVAC = $(JAVA_HOME)/bin/javac
+endif
+
+#
+# The Java Header Compiler.
 #
 ifeq ($(JAVAH),)
-JAVAH = javah
+  JAVAH = $(JAVA_HOME)/bin/javah
 endif
 
 ## Local variables:
