@@ -53,7 +53,7 @@ internal-subproject-clean::
 
 internal-subproject-all_:: subproject.def
 
-subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF)
+subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF) $(DLL_DEF_INP)
 	$(ECHO_NOTHING)$(DLLTOOL) $(DLL_DEF_FLAG) --output-def subproject.def $(OBJ_FILES_TO_LINK)$(END_ECHO)
 
 endif

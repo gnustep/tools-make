@@ -1,3 +1,7 @@
+Wed Jun 25 15:47:46 2003  Tom Koelman <tkoelman@xs4all.nl>
+
+	* Instance/subproject.make (subproject.def): Depend on DLL_DEF_INP.
+
 2003-06-21  Adam Fedor  <fedor@gnu.org>
 
 	* Instance/Documentation/autogsdoc.make: If not BASE_MAKE_LOADED
