@@ -82,6 +82,7 @@ TTMP_LIBS := $(TTMP_LIBS:-l%=%)
 TTMP_LIBS := $(TTMP_LIBS:%_d=%)
 TTMP_LIBS := $(TTMP_LIBS:%_p=%)
 TTMP_LIBS := $(TTMP_LIBS:%_dp=%)
+TTMP_LIBS := $(shell echo $(TTMP_LIBS)|tr '-' '_')
 TTMP_LIBS := $(TTMP_LIBS:%=-Dlib%_ISDLL=1)
 ALL_CPPFLAGS += $(TTMP_LIBS)
 endif

@@ -216,9 +216,7 @@ LIBS="${wraster_check_save_libs}"
 AC_MSG_RESULT($gs_cv_have_wraster)
 ])
 
-if test "x$GRAPHIC_LIBS" != x; then
-  AC_CHECK_WRASTER(${GRAPHIC_CFLAGS}, ${GRAPHIC_LFLAGS}, ${GRAPHIC_LIBS})
-fi
+AC_CHECK_WRASTER(${GRAPHIC_CFLAGS}, ${GRAPHIC_LFLAGS}, ${GRAPHIC_LIBS})
 
 AC_SUBST(GRAPHIC_LIBS)
 AC_SUBST(GRAPHIC_CFLAGS)
@@ -409,8 +407,8 @@ AC_CACHE_VAL(gs_cv_objc_libdir,
 [dnl
 gs_cv_objc_libdir=NONE
 if test -f $GNUSTEP_SYSTEM_ROOT/Headers/objc/objc.h; then
-  clean_target_os=`clean_os.sh $target_os`
-  clean_target_cpu=`clean_cpu.sh $target_cpu`
+  clean_target_os=`$srcdir/clean_os.sh $target_os`
+  clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir=$clean_target_cpu/$clean_target_os/$ac_cv_library_combo
   if test -f $GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir/libobjc.a; then
     gs_cv_objc_libdir=$GNUSTEP_SYSTEM_ROOT/Libraries/$obj_dir

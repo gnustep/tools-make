@@ -1,14 +1,27 @@
+2000-06-30  Adam Fedor  <fedor@gnu.org>
+
+	* GNUstep.sh.in: Add .../${LIBRARY_COMBO} dir back into path (for
+	DLL search).
+	* configure.in: Always run search for libwraster.
+
+	* bundle.make: Filter '-' out of defines.
+	* ctool.make: Likewise.
+	* rules.make: Likewise.
+	* tool.make: Likewise.
+	* woapp.make: Likewise.
+	* wobundle.make: Likewise.
+
 2000-06-27  Adam Fedor  <fedor@gnu.org>
 
 	* common.make (OPTFLAG): Remove -fno-strict-aliasing (Doesn't 
 	work on old gcc2.8.0).
-	* target.make (solaris/TARGET_SYSTEM_LIBS): Readd posix4 when threaded
+	* target.make (solaris/TARGET_SYSTEM_LIBS): Re-add posix4 when threaded
 	(Solaris/BUNDLE_LDFLAGS): Go back to old flags - new ones don't
 	work with gcc 2.8.0.
 	* configure.in: Cache search for libwraster, fix searching for
 	other graphics libs.
 	* GNUstep.csh.in: Shorted GNUSTEP_PATHPREFIX_LIST since length of
-	variable breaks some csh's. Check if CLSSPATH exists before setting.
+	variable breaks some csh's. Check if CALSSPATH exists before setting.
 
 2000-06-22  Adam Fedor  <fedor@gnu.org>
 
@@ -60,6 +73,7 @@ Tue Jun 20 19:59:19 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 2000-06-12  Adam Fedor  <fedor@gnu.org>
 
+	Patches from Helge Hess for Windows/DLL support
 	* GNUmakefile.in: Use  perl which_lib script on machines that have it.
 	* GNUstep.csh.in: Remove GNUSTEP_NETWORK_ROOT from PATHPREFIX_LIST.
 	* GNUstep.sh.in: Likewise.

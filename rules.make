@@ -308,6 +308,7 @@ TMP_LIBS := $(TMP_LIBS:-l%=%)
 TMP_LIBS := $(TMP_LIBS:%_d=%)
 TMP_LIBS := $(TMP_LIBS:%_p=%)
 TMP_LIBS := $(TMP_LIBS:%_dp=%)
+TMP_LIBS := $(shell echo $(TMP_LIBS)|tr '-' '_')
 ALL_CPPFLAGS += $(TMP_LIBS:%=-Dlib%_ISDLL=1)
 endif
 
