@@ -389,9 +389,7 @@ internal-doc-clean::
 	         $(INTERNAL_doc_NAME).tar.gz; \
 	         $(INTERNAL_doc_NAME)/*
 ifneq ($(GSDOC_FILES),)
-	@ for i in $(GSDOC_FILES); do \
-	    rm -f $(GSDOC_OBJECT_FILES) ; \
-	  done
+	@ -rm -f $(GSDOC_OBJECT_FILES)
 endif
 ifneq ($(LATEX_FILES),)
 	@ rm -f *.aux
