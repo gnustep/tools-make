@@ -1,3 +1,12 @@
+Mon Jul  9 12:49:02 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* application.make (.PHONY): Added.
+	(app-resource-files): Turned shell conditional into makefile
+	conditional; use strip on RESOURCE_FILES.
+	(app-localized-resource-files): Idem.
+	(RESOURCE_FILES, LOCALIZED_RESOURCE_FILES): Do not override them
+	to "" if they contain only spaces.
+
 Mon Jul  9 12:26:59 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* application.make (internal-install-dirs): Removed.
