@@ -235,7 +235,7 @@ None
 @node FreeBSD 5.x, FreeBSD 4.x, Debian/SPARC, Machine Specific
 @section FreeBSD 5.x
 
-Tested on 5.0 and 5.1
+Tested on 5.0, 5.1, 5.3
 @table @var
 @item Recommended compiler
 
@@ -245,6 +245,9 @@ None.
 @item Special Instructions
 Can install via /usr/ports/devel/gnustep, but not all required dependancies
 are installed. See the GNUstep-HOWTO for list of libraries.
+
+For 5.3, there is a bug in libkvm that requires that /proc be mounted. Use
+'mount_procfs proc /proc' or see the procfs man page.
 
 @end table
 

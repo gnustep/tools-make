@@ -1,3 +1,10 @@
+2005-02-19  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.MinGW: Minor edit.
+	* Documentation/faq.texi: Add question.
+	* Documentation/gnustep-howto.texi: Add service
+	* Documentation/machines.texi: Edit FreeBSD 5.x	
+
 2005-02-18  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Update with my latest experiences.

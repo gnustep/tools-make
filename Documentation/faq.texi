@@ -215,6 +215,7 @@ asset - volunteers are, as always, welcome.
 * How can I help with GNUstep?::  
 * Helping develop GNUstep::     
 * Helping document GNUstep::    
+* How do I assign my contribution?::  
 * How do I update the task list?::  
 * How do I start writing tests?::  
 * How do I start writing applications?::  
@@ -246,8 +247,7 @@ maintainers.  Ask questions in the discussion mailing list.
 Do remember that any changes beyond a few lines of code (or
 documentation) require a disclaimer or copyright assignment to the
 Free Software Foundation before they can be incorporated into the
-project.  Get in touch with the maintainer of the library you are
-working on about this.
+project.  Get in touch with the GNUstep maintainer about this.
 
 Don't start with large-scale reorganization of anything - instead,
 get a general idea in mind of what you want to do, and proceed as
@@ -278,7 +278,7 @@ website.
 Once you have coded something, you could always write a testcase
 and documentation for it :-)
 
-@node Helping document GNUstep, How do I update the task list?, Helping develop GNUstep, Compiling and Developing
+@node Helping document GNUstep, How do I assign my contribution?, Helping develop GNUstep, Compiling and Developing
 @subsection  Helping document GNUstep
 
 All class documentation is written directly in the source code itself
@@ -302,7 +302,19 @@ format into gsdoc.
 GNUstep documentation should have copyright assigned to the Free
 Software Foundation.
 
-@node How do I update the task list?, How do I start writing tests?, Helping document GNUstep, Compiling and Developing
+@node How do I assign my contribution?, How do I update the task list?, Helping document GNUstep, Compiling and Developing
+@subsection How do I assign my contribution?
+
+Everyone who contributes more than 20 lines of code or so needs to
+sign a copyright assignment so that the FSF can have legal control of
+the copyright. This makes it easier to defend against any copyright
+infringement suits.  Contact the GNUstep maintainer for instructions
+on how to do this or download and fill out the form
+@url{http://www.gnustep.org/resources/request-assign.future}
+(instructions are included).
+
+
+@node How do I update the task list?, How do I start writing tests?, How do I assign my contribution?, Compiling and Developing
 @subsection  How do I update the task list?
 
  The task list (@url{http://savannah.gnu.org/pm/?group_id=99}) is 

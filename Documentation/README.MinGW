@@ -298,6 +298,8 @@ libtiff, libjpeg, libpng
   the library (.lib) files in $GNUSTEP_SYSTEM_ROOT/Library/Libraries
   the dll files in $GNUSTEP_SYSTEM_ROOT/Tools
 
+  Be sure to rename the .lib files to .a!
+
 Building and installing GNUstep-gui
 -----------------------------------
 

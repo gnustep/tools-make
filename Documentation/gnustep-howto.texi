@@ -360,6 +360,8 @@ fi
 @end example
 @item gdnc - Start after sourcing @file{GNUstep.sh} (e.g. in .profile)
 @item gpbs - Same as with gdnc, make sure X-Windows is running.
+@item make_services - Not a deamon, but a tool that needs to be run everytime
+you install a new Application or service. This is NOT run automatically.
 @end itemize
 
 @example
@@ -368,6 +370,7 @@ if [ `gdomap -L GDNCServer | grep -c Unable` == 1 ]; then
   gdnc
   gpbs
 fi
+make_services
 @end example
 
 
