@@ -277,36 +277,6 @@ endif
 #
 # Determine Foundation header subdirectory based upon library combo
 #
-ifeq ($(FOUNDATION_LIB),gnu)
-  GNUSTEP_FND_DIR           = gnustep
-  FOUNDATION_LIBRARY_NAME   = gnustep-base
-  FOUNDATION_LIBRARY_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
-endif
-
-ifeq ($(FOUNDATION_LIB),fd)
-  GNUSTEP_FND_DIR           = libFoundation
-  FOUNDATION_LIBRARY_NAME   = Foundation
-  FOUNDATION_LIBRARY_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
-  ifeq ($(gc),yes)
-    ifneq ($(leak),yes)
-      FOUNDATION_LIBRARY_DEFINE += -DLIB_FOUNDATION_BOEHM_GC=1
-    else
-      FOUNDATION_LIBRARY_DEFINE += -DLIB_FOUNDATION_LEAK_GC=1
-    endif
-  endif
-endif
-
-ifeq ($(FOUNDATION_LIB),nx)
-  GNUSTEP_FND_DIR           = NeXT
-  FOUNDATION_LIBRARY_NAME   =
-  FOUNDATION_LIBRARY_DEFINE = -DNeXT_Foundation_LIBRARY=1
-endif
-
-ifeq ($(FOUNDATION_LIB),sun)
-  GNUSTEP_FND_DIR           = sun
-  FOUNDATION_LIBRARY_DEFINE = -DSun_Foundation_LIBRARY=1
-endif
-
 GNUSTEP_HEADERS_FND_DIRS = \
   $(GNUSTEP_USER_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
   $(GNUSTEP_LOCAL_ROOT)/Headers/$(GNUSTEP_FND_DIR) \
@@ -337,27 +307,6 @@ endif
 OBJCFLAGS = $(OBJC_NO_IMPORT_FLAGS) 
 CFLAGS =
 OBJ_DIR_PREFIX =
-
-ifeq ($(OBJC_RUNTIME_LIB),gnu)
-  RUNTIME_FLAG   = -fgnu-runtime
-  RUNTIME_DEFINE = -DGNU_RUNTIME=1
-endif
-
-# GNU runtime compiled with Boehm GC
-ifeq ($(OBJC_RUNTIME_LIB),gnugc)
-  RUNTIME_FLAG   = -fgnu-runtime
-  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DOBJC_WITH_GC=1
-  ifeq ($(debug),yes)
-    RUNTIME_DEFINE += -DGC_DEBUG
-  endif
-endif
-
-ifeq ($(OBJC_RUNTIME_LIB),nx)
-  ifneq ($(OBJC_COMPILER), NeXT)
-    RUNTIME_FLAG = -fnext-runtime
-  endif
-  RUNTIME_DEFINE = -DNeXT_RUNTIME=1
-endif
 
 #
 # Now decide whether to build shared objects or not.  Nothing depending

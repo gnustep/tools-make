@@ -91,6 +91,7 @@ ifeq ($(OBJC_RUNTIME_LIB), gnu)
   OBJC_LIB_DIR =
   OBJC_LIBS = -lobjc
   OBJC_RUNTIME = GNU
+  RUNTIME_FLAG   = -fgnu-runtime
   RUNTIME_DEFINE = -DGNU_RUNTIME=1
 endif
 
@@ -99,11 +100,18 @@ ifeq ($(OBJC_RUNTIME_LIB), gnugc)
   OBJC_LIB_DIR =
   OBJC_LIBS = -lobjc_gc -lgc
   OBJC_RUNTIME = GNU
-  RUNTIME_DEFINE = -DGNU_RUNTIME=1
+  RUNTIME_FLAG   = -fgnu-runtime
+  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DOBJC_WITH_GC=1
+  ifeq ($(debug),yes)
+    RUNTIME_DEFINE += -DGC_DEBUG
+  endif
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), nx)
   OBJC_RUNTIME = NeXT
+  ifneq ($(OBJC_COMPILER), NeXT)
+    RUNTIME_FLAG = -fnext-runtime
+  endif
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
   ifeq ($(FOUNDATION_LIB),gnu)
     OBJC_LIBS = -lobjc
@@ -120,6 +128,11 @@ FND_LIBS =
 #
 # Set the appropriate Foundation library
 #
+ifeq ($(FOUNDATION_LIB),gnu)
+  GNUSTEP_FND_DIR           = gnustep
+  FOUNDATION_LIBRARY_NAME   = gnustep-base
+  FOUNDATION_LIBRARY_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
+endif
 
 #
 # Third-party foundations not using make package
@@ -143,6 +156,7 @@ endif
 ifeq ($(FOUNDATION_LIB),fd)
   -include $(GNUSTEP_MAKEFILES)/libFoundation.make
 
+  GNUSTEP_FND_DIR = libFoundation
   FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
   FND_LDFLAGS =
   FND_LIBS = -lFoundation

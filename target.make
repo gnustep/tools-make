@@ -424,9 +424,7 @@ BUNDLE_LDFLAGS  += -dynamic -flat_namespace -undefined warning $(ARCH_FLAGS)
 else 
 # NeXT Compiler
 
-DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
-#DYLIB_DEF_FRAMEWORKS += -framework Foundation
-DYLIB_DEF_LIBS	     = -lobjc
+#DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
 
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
@@ -437,8 +435,6 @@ SHARED_LIB_LINK_CMD     = \
 		-install_name $(DYLIB_INSTALL_NAME)	\
 		-o $@					\
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
-		$(DYLIB_DEF_FRAMEWORKS)			\
-		$(DYLIB_DEF_LIBS)			\
 		$^ $(SHARED_LD_POSTFLAGS); \
 	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))

@@ -1,3 +1,14 @@
+2002-11-15  Adam Fedor  <fedor@gnu.org>
+
+	* common.make: Remove duplicate OBJC_RUNTIME_LIB and FOUNDATION_LIB
+	setup
+	* library-combo.make (GNUSTEP_FND_DIR, RUNTIME_FLAG): Extra flags
+	moved from common.make
+	(FOUNDAION_LIB=gnu): setup moved from common.make.
+
+	* target.make (darwin5/NeXT cc) (DYLIB_EXTRA_FLAGS,
+	DYLIB_DEF_FRAMEWORKS, DYLIB_DEF_LIBS): Comment out or remove.
+
 Wed Nov  6 15:26:07 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (install): Fixed typo - was installing
