@@ -127,31 +127,3 @@ esac
 unset host_os
 unset lib_paths
 
-#
-# Setup path for loading guile modules too.
-#
-old_IFS="$IFS"
-IFS=:
-guile_paths=
-for dir in $GNUSTEP_PATHLIST; do
-
-  if [ -z "$guile_paths" ]; then
-    guile_paths="$dir/Libraries/Guile"
-  else
-    guile_paths="$guile_paths:$dir/Libraries/Guile"
-  fi
-
-done
-IFS="$old_IFS"
-unset old_IFS
-unset dir
-
-if [ -z "$GUILE_LOAD_PATH" ]; then
-  GUILE_LOAD_PATH="$guile_paths"
-else
-  if ( echo ${GUILE_LOAD_PATH}| grep -v "${guile_paths}" >/dev/null ); then
-    GUILE_LOAD_PATH="$guile_paths:$GUILE_LOAD_PATH"
-  fi
-fi
-export GUILE_LOAD_PATH
-unset guile_paths
