@@ -37,12 +37,14 @@ _PSWRAP_C_FILES = $(foreach lib,$(CLIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach lib,$(CLIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES))
 
 internal-distclean::
+	(cd $(GNUSTEP_BUILD_DIR); \
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+	  static_profile_debug_obj)
 
 CLIBRARIES_WITH_SUBPROJECTS = $(strip $(foreach clibrary,$(CLIBRARY_NAME),$(patsubst %,$(clibrary),$($(clibrary)_SUBPROJECTS))))
 ifneq ($(CLIBRARIES_WITH_SUBPROJECTS),)

@@ -39,17 +39,20 @@ _PSWRAP_H_FILES = $(foreach palette,$(PALETTE_NAME),$($(palette)_PSWRAP_FILES:.p
 
 internal-clean::
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.palette/$(GNUSTEP_TARGET_LDIR)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.palette/$(GNUSTEP_TARGET_LDIR))
 else
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.palette
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.palette)
 endif
 
 internal-distclean::
+	(cd $(GNUSTEP_BUILD_DIR); \
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.palette
+	  static_profile_debug_obj *.palette)
 
 PALETTES_WITH_SUBPROJECTS = $(strip $(foreach palette,$(PALETTE_NAME),$(patsubst %,$(palette),$($(palette)_SUBPROJECTS))))
 ifneq ($(PALETTES_WITH_SUBPROJECTS),)

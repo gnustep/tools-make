@@ -34,17 +34,20 @@ _PSWRAP_H_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
 else
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.$(APP_EXTENSION)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.$(APP_EXTENSION))
 endif
 
 internal-distclean::
+	(cd $(GNUSTEP_BUILD_DIR); \
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.app *.debug *.profile
+	  static_profile_debug_obj *.app *.debug *.profile)
 
 TEST_APPS_WITH_SUBPROJECTS = $(strip $(foreach test-app,$(TEST_APP_NAME),$(patsubst %,$(test-app),$($(test-app)_SUBPROJECTS))))
 ifneq ($(TEST_APPS_WITH_SUBPROJECTS),)

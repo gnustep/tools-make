@@ -43,17 +43,20 @@ _PLIST_INFO_FILES = $(addsuffix Info.plist,$(foreach app,$(APP_NAME),$(patsubst 
 
 internal-clean::
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
 else
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION))
 endif
 
 internal-distclean::
+	(cd $(GNUSTEP_BUILD_DIR); \
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.app *.debug *.profile
+	  static_profile_debug_obj *.app *.debug *.profile)
 
 # The following make trick extracts all tools in APP_NAME for which
 # the xxx_SUBPROJECTS variable is set to something non-empty.
@@ -73,5 +76,7 @@ endif
 
 internal-strings:: $(APP_NAME:=.strings.app.variables)
 
+# FIXME - GNUSTEP_BUILD_DIR here.  Btw should we remove this or
+# provide a better more general way of doing it ?
 $(APP_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables

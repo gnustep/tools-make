@@ -32,9 +32,10 @@ internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 
 internal-distclean::
+	(cd $(GNUSTEP_OBJ_DIR); \
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+	  static_profile_debug_obj)
 
 TEST_TOOLS_WITH_SUBPROJECTS = $(strip $(foreach test-tool,$(TEST_TOOL_NAME),$(patsubst %,$(test-tool),$($(test-tool)_SUBPROJECTS))))
 ifneq ($(TEST_TOOLS_WITH_SUBPROJECTS),)

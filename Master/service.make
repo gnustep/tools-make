@@ -38,17 +38,20 @@ _PSWRAP_H_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.p
 
 internal-clean::
 ifeq ($(GNUSTEP_FLATTENED),)
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.service/$(GNUSTEP_TARGET_LDIR)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.service/$(GNUSTEP_TARGET_LDIR))
 else
-	rm -rf $(GNUSTEP_OBJ_DIR) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.service
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
+	  *.service)
 endif
 
 internal-distclean::
+	(cd $(GNUSTEP_BUILD_DIR); \
 	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
 	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.service
+	  static_profile_debug_obj *.service)
 
 SERVICES_WITH_SUBPROJECTS = $(strip $(foreach service,$(SERVICE_NAME),$(patsubst %,$(service),$($(service)_SUBPROJECTS))))
 ifneq ($(SERVICES_WITH_SUBPROJECTS),)
