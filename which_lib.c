@@ -199,13 +199,12 @@ static char *normalize_and_check_dir (char *path)
     {
       /* Convert //server/ to a format Windows functions understand. */
       char *s;
-      
 
-      /* Convert //server/path/to/ --> server/path/to */
+      /* Convert //server/path/to/ --> server/path/to/ */
       normalized_path = malloc (length * sizeof (char));
       strcpy (normalized_path, &(path[2]));
       
-      /* Convert server/path/to/ --> server:/path/to */
+      /* Convert server/path/to/ --> server:/path/to/ */
       s = strchr (normalized_path, '/');
       if (s)
 	{
