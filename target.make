@@ -45,12 +45,10 @@ ifeq ($(findstring linux-gnu, $(GNUSTEP_TARGET_OS)), linux-gnu)
   endif
 endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-  ifeq ("$(objc_threaded)","")
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm -lposix4
-  else
+  TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -ldl -lm -lposix4
+  ifneq ("$(objc_threaded)","")
     INTERNAL_CFLAGS = -D_REENTRANT
     INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -ldl -lm
   endif
 endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
