@@ -18,8 +18,9 @@ Information
 
    The file `NEWS' has the library's feature history.
 
-   The files `INSTALL' or `GNUstep-HOWTO' (from the core package) gives
-instructions for installing the library.
+   The files `INSTALL' or `GNUstep-HOWTO' give instructions for
+installing the library. Also see the machines.texi documentation and
+various machine specific READMEs in the Documentation directory.
 
    Files in the `Documentation' directory have information on the
 design of the Makefile system and how to write your own makefiles that

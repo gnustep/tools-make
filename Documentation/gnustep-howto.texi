@@ -178,7 +178,8 @@ Note: you will need to be able to install packages as root (at least
 the base library) for applications to work correctly.
 
 For installation on MinGW systems, read the README.MinGW file in the 
-make package.
+Documentation directory. For other systems, see the machines documentation
+or appropriate README files in the Documentation directory.
 
 @menu
 * DPS System::                  

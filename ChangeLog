@@ -1,5 +1,6 @@
 2001-03-10  Adam Fedor  <fedor@gnu.org>
 
+	* Version 0.9.2
 	* objc.make (WITH_DLL): Add DLL defs when WITH_DLL=yes
 
 2001-03-08  Adam Fedor  <fedor@gnu.org>
@@ -41,7 +42,7 @@ Tue Feb 27 04:45:42 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 2001-02-26  Adam Fedor  <fedor@gnu.org>
 
 	* Documenation/makedoc.make: New file mostly copied from
-	documenation.make. 
+	documentation.make. 
 	* Documenation/makerules.make: New mostly copied from rules.make
 	* Documenation/gnustep-howto.texi: Moved from core/Documenation
 	* Documenation/faq.texi: Likewise.
