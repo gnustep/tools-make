@@ -5,7 +5,7 @@
 
 2001-02-28  Adam Fedor  <fedor@gnu.org>
 
-	* rules.make (LIBRARIES_DEPEND_UPON): Use ALL_LIB_DIRS on 
+	* rules.make (LIBRARIES_DEPEND_UPON): Use ALL_LIB_DIRS not 
 	LIB_DIRS_NO_SYSTEM.
 	* Documentation/README.NetBSD: New file.
 
