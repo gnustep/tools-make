@@ -3,10 +3,9 @@
 #
 #   Makefile rules to build a set of GNUstep-base subprojects.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 2002 Free Software Foundation, Inc.
 #
-#   Author:  Scott Christley <scottc@net-community.com>
-#   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -24,40 +23,9 @@
 ifeq ($(AGGREGATE_MAKE_LOADED),)
 AGGREGATE_MAKE_LOADED=yes
 
-#
-# Include in the common makefile rules
-#
-ifeq ($(RULES_MAKE_LOADED),)
-include $(GNUSTEP_MAKEFILES)/rules.make
+ifeq ($(GNUSTEP_INSTANCE),)
+include $(GNUSTEP_MAKEFILES)/Master/aggregate.make
 endif
-
-#
-# The list of directory names with the subprojects is in the makefile 
-# variable SUBPROJECTS
-#
-SUBPROJECTS:=$(strip $(SUBPROJECTS))
-
-#
-# Internal targets
-#
-internal-all internal-install internal-uninstall internal-clean \
-  internal-distclean internal-check::
-	@ target=$(subst internal-,,$@); \
-	for f in $(SUBPROJECTS) __done; do \
-	  if [ $$f != __done ]; then       \
-	    echo Making $$target in $$f...; \
-	    mf=$(MAKEFILE_NAME); \
-	    if [ ! -f "$$f/$$mf" -a -f "$$f/Makefile" ]; then \
-	      mf=Makefile; \
-	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-	    fi; \
-	    if $(MAKE) -C $$f -f $$mf --no-keep-going \
-		GNUSTEP_INSTALLATION_DIR="$(GNUSTEP_INSTALLATION_DIR)" \
-	        $$target; then \
-	      :; else exit $$?; \
-	    fi; \
-	  fi; \
-	done
 
 endif
 # aggregate.make loaded
