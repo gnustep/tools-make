@@ -1,3 +1,11 @@
+Fri Feb  8 10:07:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* java.make: Broken into Master and Instance.
+	* Instance/java.make: New file.
+	* Master/java.make: New file.
+	* GNUmakefile.in (INSTANCE_MAKE_FILES): Added java.make
+	(MASTER_MAKE_FILES): Added java.make.
+	
 Thu Feb  7 12:58:52 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* java.make (install-java_package): Recognize and install
