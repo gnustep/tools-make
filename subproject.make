@@ -3,9 +3,10 @@
 #
 #   Makefile rules to build subprojects in GNUstep projects.
 #
-#   Copyright (C) 1998 Free Software Foundation, Inc.
+#   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
 #
 #   Author:  Jonathan Gapen <jagapen@whitewater.chem.wisc.edu>
+#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -61,9 +62,13 @@ internal-uninstall:: $(SUBPROJECT_NAME:=.uninstall.subproject.variables)
 
 endif
 
-internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.variables)
+internal-clean:: $(SUBPROJECT_NAME:=.clean.subproject.subprojects)
+	rm -rf $(GNUSTEP_OBJ_DIR)
 
-internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproject.variables)
+internal-distclean:: $(SUBPROJECT_NAME:=.distclean.subproject.subprojects)
+	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
+	  static_debug_obj static_profile_obj shared_profile_debug_obj \
+	  static_profile_debug_obj
 
 $(SUBPROJECT_NAME):
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
@@ -288,27 +293,15 @@ internal-subproject-uninstall::
 	  fi; \
 	done
 
-endif
-
-#
-# Cleaning targets
-#
-internal-subproject-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
-
-internal-subproject-distclean::
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj
+endif # no FRAMEWORK_NAME
 
 #
 # Testing targets
 #
 
-endif
+endif # second make invocation
 
-endif
-# subproject.make loaded
+endif # subproject.make loaded
 
 ## Local variables:
 ## mode: makefile
