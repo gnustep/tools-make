@@ -1,4 +1,4 @@
-Date:	15-March-2002
+Date:	7-May-2002 (tested under windoze-xp)
 Author: Richard Frith-Macdonald <rfm@gnu.org>
 
 PURPOSE
@@ -86,6 +86,14 @@ to the home directory is C:\MyHome).
 
 From this window we can now start building things.
 
+IMPORTANT NOTE
+The mingw make program sometimes crashes and core-dumps (usually while
+installing software).  If this happens, repeat the make command a few
+times until it works ... the crash in make is not reliably repeatable
+(which is probably why it has not been tracked down and fixed yet),
+which means that a retry will usually work.
+
+
 Obtaining GNUstep
 -----------------
 
@@ -106,24 +114,12 @@ Setting up the GNUstep make environment
 ---------------------------------------
 
 In the GNUstep-make (core/make) package, do './configure
---prefix=C:/GNUstep' You can of course use a different prefix to
-install the GNUstep system in an alternative location, but it is
-important that the path you use is a full windows style path with a
-drive letter and colon at the start of it.  This is because, while the
-msys shell and other msys tools automatically map unix style paths to
-windows paths, other windows tools including the mingw compiler do not!
-
-IMPORTANT: The msys tools all handle unix style paths and map them to
-windows style paths internally.  The mingw tools only handle windows
-style paths.  In particular this means that where absolute paths are
-given for commands within makefiles, and where paths for headers and
-libraries are supplied to the compiler, these paths must be in windows
-format, not unix format!!!  The big place where things go wrong is
-with configure. The configure script may use the msys shell and other
-tools to locate binaries etc, and the msys tools will supply those
-locations as unix style paths.  If the configure script then causes
-those paths to be built in to makefiles, the make process is likely to
-fall over. 
+--prefix=/C/GNUstep' You can of course use a different prefix to
+install the GNUstep system in an alternative location.
+The leading '/C' is the MSYS way of specifying that the 'C' drive is
+to be used.  Older versions of the tools required a windows style
+path (eg. C:/GNUstep), but using the MSYS style path is important as
+it will avoid problems later!
 
 Now you can type 'make install' to build and install the make package.
 
@@ -134,7 +130,8 @@ used to set up any new shell windows you create.  Something like this:
 
 export HOMEDRIVE=C:
 export HOMEPATH=/home/myname
-export GNUSTEP_SYSTEM_DIR=C:/GNUstep/System
+export HOME=/C/home/myname
+export GNUSTEP_SYSTEM_DIR=/C/GNUstep/System
 . $GNUSTEP_SYSTEM_DIR/Makefiles/GNUstep.sh
 
 
@@ -152,17 +149,15 @@ Ignore any other instructions for building this ...
 First, in the shell window in which you have set up your GNUstep
 environment, type
 
-RANLIB=touch ./configure --prefix=`$GNUSTEP_MAKEFILES/fixpath.sh -u $GNUSTEP_SYSTEM_ROOT`
+RANLIB=touch ./configure --prefix=$GNUSTEP_SYSTEM_ROOT
 
 We use 'touch' as a substitute for 'ranlib', as windows does not have
-(and does not need) ranlib.  We provided the installation prefix as a
-unix style pathname, since the libtool scripts barf on windows style
-paths.
+(and does not need) ranlib.
 
 Having configured the ffcall library, you can now build and install
 it simply by typing:
 
-make install
+  make install
 
 
 
@@ -174,9 +169,9 @@ Despite the statement in the GNUstep-HOWTO, even if you have a 3.x
 compiler, you still need to install gnustep-objc as it properly
 exports symbols for DLLs.
 
-Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type 
+Go to gnustep-objc (or from CVS, into dev-apps/libobjc), and type
 
-make install
+  make install
 
 This should build and install the ObjectiveC runtime and headers for you.
 
@@ -194,10 +189,27 @@ libiconv
 
   Get the binary package from
   http://www.fh-frankfurt.de/~igor/projects/libxml
-  Unpack this and 
+  Unpack this and
     cp include/iconv.h $GNUSTEP_SYSTEM_ROOT/Headers
     cp lib/iconv.lib $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32/libiconv.a
     cp lib/iconv.dll $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32/iconv.dll
+
+libtiff
+  Needed for image handling support in the GNUstep gui libary
+  (not required for GNUstep-base).
+
+  Get the binary packages from -
+  http://prdownloads.sourceforge.net/mingwrep/libtiff-3.4-1.zip
+  http://prdownloads.sourceforge.net/mingwrep/libtiff-devel-3.4-1.zip
+  Unpack and install
+  the header (.h) files in $GNUSTEP_SYSTEM_ROOT/Headers
+  the library (.a) files in $GNUSTEP_SYSTEM_ROOT/Libraries/ix86/mingw32
+  the dll (.dll) files in $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
+
+
+
+The following are libraries which are not currently used, but which will
+be required at some point in the future -
 
 libxml2
   Needed for XML parsing support, for MacOS-X compatible
@@ -207,7 +219,7 @@ libxml2
 
   Get the binary package from
   http://www.fh-frankfurt.de/~igor/projects/libxml
-  Unpack this and 
+  Unpack this and
     cd include
     tar -cf - libxml | (cd $GNUSTEP_SYSTEM_ROOT/Headers; tar -xvf -)
     cd ../lib
@@ -226,20 +238,53 @@ openssl
     cp *.dll *.exe $GNUSTEP_SYSTEM_ROOT/Tools/ix86/mingw32
 
 
+
 Building and installing GNUstep-base
 ------------------------------------
 
 Go to gnustep-base (or from CVS into the core/base directory), and type
 
-make install
+  make install
 
 This should automatically run the configure script for you, build the
 base library and some tools, and install the whole lot (along with some
 system resources).
 
 
+
+Building and installing GNUstep-gui
+-----------------------------------
+
+To build the gui, you need to have libtiff installed ...
+
+Go to gnustep-gui (or from CVS into the core/gui directory), and type
+
+  make install
+
+
+
+
+Building and installing GNUstep-back
+------------------------------------
+
+This software is PRE-ALPHA ... it is present in CVS for people who which to
+help porting the GNUstep backend to windows!
+
+In the back directory, type
+
+  make install
+
+
+
+
+
 Troubleshooting
 ---------------
+
+The following tips should not be necessary if you have done a clean
+install, they are really for conditions found due to having older
+software installed...
+
 [1] Running 'make' gives 'premission denied' and/or a dialog box
 about a missing DLL.
 
@@ -254,7 +299,8 @@ So now you will be using /mingw/bin/make.exe
 [3] When installing ffcall (avcall.h) "The system cannot find..."
 
 make install INSTALL=install
-  
+
+
 
 Good Sites for Pre-Compiled Binaries
 ------------------------------------
@@ -269,7 +315,7 @@ MingW guile from
 
 <http://www.textsure.net/~ela/devel.html>.
 
-also need guile from 
+also need guile from
 
 <http://sourceforge.net/project/showfiles.php?group_id=7382>
 

@@ -1,3 +1,8 @@
+2002-05-07 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Updated to reflect experience of a full
+	rebuild this morning ... including the GUI code!
+
 2002-05-02  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Updated using autoconf 2.53 from configure.in
