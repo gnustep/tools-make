@@ -318,9 +318,9 @@ ifeq ($(TOOL_NAME),)
 	  CHECK_SCRIPT_DIRS="$($*_SCRIPT_DIRS)"
 endif
 endif
-ifneq ($($*_TOOLS),)
 ifneq ($(OPERATION), build-framework-headers)
-	@ echo Building tools for $(TARGET_TYPE) $*...; \
+	@ if [ "$($*_TOOLS)" != "" ]; then \
+	echo Building tools for $(TARGET_TYPE) $*...; \
 	for f in $($*_TOOLS); do \
 	  mf=$(MAKEFILE_NAME); \
 	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
@@ -338,12 +338,12 @@ ifneq ($(OPERATION), build-framework-headers)
 	          :; \
 	  else exit $$?; \
 	  fi; \
-	done
-endif
+	done; \
+	fi
 endif
 endif # end of FRAMEWORK code
-ifneq ($($*_SUBPROJECTS),)
-	@ echo Building subprojects for $(TARGET_TYPE) $*...; \
+	@ if [ "$($*_SUBPROJECTS)" != "" ]; then \
+	echo Building subprojects for $(TARGET_TYPE) $*...; \
 	for f in $($*_SUBPROJECTS); do \
 	  mf=$(MAKEFILE_NAME); \
 	  if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
@@ -359,8 +359,8 @@ ifneq ($($*_SUBPROJECTS),)
 	         :; \
 	  else exit $$?; \
 	  fi; \
-	done
-endif
+	done; \
+	fi
 	@ echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
 	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
