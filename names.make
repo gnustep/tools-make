@@ -24,7 +24,8 @@
 
 ifneq ($(internal_names_clean), yes)
   ifeq ($(GNUSTEP_HOST),)
-    GNUSTEP_HOST := $(shell (cd /tmp; $(CONFIG_SUB_SCRIPT) $(CONFIG_GUESS_SCRIPT)))
+    GNUSTEP_HOST_GUESS := $(shell (cd /tmp; $(CONFIG_GUESS_SCRIPT)))
+    GNUSTEP_HOST := $(shell (cd /tmp; $(CONFIG_SUB_SCRIPT) $(CONFIG_HOST_GUESS)))
     GNUSTEP_HOST_CPU := $(shell (cd /tmp; $(CONFIG_CPU_SCRIPT) $(GNUSTEP_HOST)))
     GNUSTEP_HOST_VENDOR := $(shell (cd /tmp; $(CONFIG_VENDOR_SCRIPT) $(GNUSTEP_HOST)))
     GNUSTEP_HOST_OS := $(shell (cd /tmp; $(CONFIG_OS_SCRIPT) $(GNUSTEP_HOST)))

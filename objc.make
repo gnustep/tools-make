@@ -59,7 +59,7 @@ else
 # don't specify a directory they will get installed in the GNUstep
 # system root.
 OBJC_PROGRAM_INSTALLATION_DIR = \
-    $(GNUSTEP_INSTALLATION_DIR)/Tools/$(GNUSTEP_TARGET_DIR)
+    $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_DIR)
 
 ALL_OBJC_LIBS = $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
 	 $(TARGET_SYSTEM_LIBS)
