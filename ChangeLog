@@ -1,3 +1,20 @@
+Sat Feb  9 13:05:27 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make: Do not protect against multiple
+	inclusions.
+	* Instance/bundle.make: Idem.
+	* Instance/java.make: Idem.
+	* Instance/java-tool.make: Idem.
+	* Instance/rules.make: Idem.
+	* Master/aggregate.make: Idem.
+	* Master/application.make: Idem.
+	* Master/bundle.make: Idem.
+	* Master/java.make: Idem.
+	* Master/java-tool.make: Idem.
+	* Master/rules.make: Idem.
+	* Master/rpm.make: Idem.
+	* Master/source-distribution.make: Idem.
+	
 Sat Feb  9 11:52:11 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUmakefile.in (clean): Remove Instance/Shared/*~.
