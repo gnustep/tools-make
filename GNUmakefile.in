@@ -70,7 +70,6 @@ librarydir = $(GNUSTEP_SYSTEM_ROOT)/Libraries
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
-PERL = @PERL@
 
 VERTAG = `echo $(GNUSTEP_MAKE_VERSION) | tr '.' '_'`
 
@@ -194,7 +193,6 @@ distclean: clean
 	rm -f config.cache config.log config.status
 	rm -f openapp
 	rm -f debugapp
-	rm -f which_lib.pl
 	rm -f opentool
 	rm -f executable.template
 	rm -f GNUmakefile
