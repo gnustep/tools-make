@@ -258,7 +258,7 @@ endif
 
 ifeq ($(debug), yes)
 OPTFLAG := $(filter-out -O%, $(OPTFLAG))
-ADDITIONAL_FLAGS += -g -DDEBUG
+ADDITIONAL_FLAGS += -g -Wall -DDEBUG
 OBJ_DIR_PREFIX += debug_
   LIBRARY_NAME_SUFFIX := d$(LIBRARY_NAME_SUFFIX)
 endif
