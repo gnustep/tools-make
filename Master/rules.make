@@ -212,18 +212,18 @@ after-check::
 # any, then subprojects (FIXME - remove framework tools and replace
 # this with a better API which works for everything and not only
 # frameworks and not only tools)
+
 %.variables: %.tools %.subprojects
-	@ \
-instance=$(basename $(basename $*)); \
-operation=$(subst .,,$(suffix $(basename $*))); \
-type=$(subst -,_,$(subst .,,$(suffix $*))); \
-echo Making $$operation for $$type $$instance...; \
-$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-  internal-$${type}-$$operation \
-  GNUSTEP_TYPE=$$type \
-  GNUSTEP_INSTANCE=$$instance \
-  INTERNAL_$${type}_NAME=$$instance \
-  TARGET=$$instance
+	@ instance=$(basename $(basename $*)); \
+	  operation=$(subst .,,$(suffix $(basename $*))); \
+	  type=$(subst -,_,$(subst .,,$(suffix $*))); \
+	  echo Making $$operation for $$type $$instance...; \
+	  $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	    internal-$${type}-$$operation \
+	    GNUSTEP_TYPE=$$type \
+	    GNUSTEP_INSTANCE=$$instance \
+	    INTERNAL_$${type}_NAME=$$instance \
+	    TARGET=$$instance
 
 ifneq ($(FRAMEWORK_NAME),)
 #
