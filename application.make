@@ -33,6 +33,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 # The name of the application is in the APP_NAME variable.
 # The list of application resource file are in xxx_RESOURCE_FILES
 # The list of application resource directories are in xxx_RESOURCE_DIRS
+# The name of the application icon (if any) is in xxx_APPLICATION_ICON
 # where xxx is the application name
 #
 
@@ -162,6 +163,9 @@ $(APP_DIR_NAME)/Resources/Info-gnustep.plist: $(APP_DIR_NAME)/Resources
 	    echo "  NSMainNibFile = \"\";"; \
 	  else \
 	    echo "  NSMainNibFile = \"`echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`\";"; \
+	  fi; \
+	  if [ "$(APPLICATION_ICON)" != "" ]; then \
+	    echo "  NSIcon = \"$(APPLICATION_ICON)\";"; \
 	  fi; \
 	  echo "  NSPrincipalClass = NSApplication;"; \
 	  echo "}") >$@
