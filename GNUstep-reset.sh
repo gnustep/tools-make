@@ -52,7 +52,7 @@ function reset_path
     found=no;
     for gnustep_dir in $GNUSTEP_PATHLIST; do
       if [ -n "$gnustep_dir" ]; then
-        case $dir in
+        case "$dir" in
           $gnustep_dir*)  found=yes; break;;
           *);;
         esac;
@@ -66,7 +66,7 @@ function reset_path
       fi;
     fi
   done
-  IFS=$tmp_IFS
+  IFS="$tmp_IFS"
 
   # Not set the path variable.
   eval "$1=\$temp_path"
