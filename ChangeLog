@@ -1,3 +1,13 @@
+2001-07-09  Adam Fedor  <fedor@gnu.org>
+
+
+	* aggregate.make: Propogate GNUSTEP_INSTALLTION_DIR to subprojects.
+
+	* configure.in: Look for gcc's libobjc.so library. Use it to run
+	tests.
+	* GNUstep.sh.in (GCC_SO_DIR):  Holds location of libobjc.so from gcc
+	(Need to pass this along so it is put in LD_LIBRARY_PATH).
+
 Mon Jul  9 18:46:59 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rpm.make (.PHONY): Added.

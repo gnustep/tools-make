@@ -164,7 +164,7 @@ may be removed in the future.
 
 @item gnustep-objc package (for gcc version < 3.0)
 This is a special version of the Objective-C runtime that include several
-bug fixes and features that have not been officially released yet.
+bug fixes and features that were not in gcc versions previous to 3.0.
 It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
 compiles using the GNUstep Makefile package (so you don't have to get the
 entire gcc dist). Make sure to set the THREADING variable in the GNUmakefile.

@@ -239,7 +239,7 @@ fi
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
 # If so, there are probably other libraries that we want there also, so
 # leave the proper includes in CPPFLAGS and LDFLAGS
-AC_MSG_CHECKING(for alternate objc library)
+AC_MSG_CHECKING(for shared objc library)
 AC_CACHE_VAL(gs_cv_objc_libdir,
 [dnl
 gs_cv_objc_libdir=NONE
@@ -250,6 +250,10 @@ if test -f $GNUSTEP_HDIR/objc/objc.h; then
     gs_cv_objc_libdir=NONE
   fi
 fi
+gcc_shared_libobjc=`gcc -print-file-name=libobjc.so`
+if test -f $gcc_shared_libobjc; then
+  gs_cv_objc_libdir=`dirname $gcc_shared_libobjc`
+fi
 ])
 AC_MSG_RESULT($gs_cv_objc_libdir)
 
@@ -257,17 +261,24 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 # needs to be installed before other libraries, but if so, then
 # we will end up not including these dirs. For now, just include them
 # all the time:
+GCC_SO_DIR=NONE
 #if test "$gs_cv_objc_libdir" != "NONE"; then
 
   # The following are needed to compile the test programs
-  CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
-  LDFLAGS="$LDFLAGS -L$GNUSTEP_LDIR"
+  if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
+    CPPFLAGS="$CPPFLAGS -I$prefix/Headers"
+  else
+    GCC_SO_DIR=$gs_cv_objc_libdir
+  fi
+  LDFLAGS="$LDFLAGS -L$gs_cv_objc_libdir"
 
   # And the following to execute them
-  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$GNUSTEP_LDIR"
+  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
   export LD_LIBRARY_PATH
 
 #fi
+
+AC_SUBST(GCC_SO_DIR)
 
 
 #--------------------------------------------------------------------

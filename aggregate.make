@@ -49,7 +49,9 @@ internal-all internal-install internal-uninstall internal-clean \
 	      mf=Makefile; \
 	      echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
 	    fi; \
-	    if $(MAKE) -C $$f -f $$mf --no-keep-going $$target; then \
+	    if $(MAKE) -C $$f -f $$mf --no-keep-going \
+		GNUSTEP_INSTALLATION_DIR="$(GNUSTEP_INSTALLATION_DIR)" \
+	        $$target; then \
 	      :; else exit $$?; \
 	    fi; \
 	  fi; \
