@@ -1,3 +1,12 @@
+Tue Oct 14 10:03:04 1997  Scott Christley  <scottc@net-community.com>
+
+	* README: Update installation instructions.
+	* bundle.make (BUNDLE_DIR_NAME): Elminate period.
+	* config.make.in (YACC, BISON, FLEX, LEX): New variables.
+	* which_lib.c (search_for_library_with_type_in_directory):
+	Correct testing of filename so that only legitimate combinations
+	of name suffixes are recognized.
+
 Mon Oct 13 16:06:12 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* openapp.in: New file.

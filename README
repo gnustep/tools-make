@@ -41,11 +41,11 @@ configure will use /usr/GNUstep as the default root directory.
 Installing the GNUstep makefile package
 =======================================
 
-After you configure the GNUstep makefile package, then you are ready
-to install it.  There is nothing to be "made"; the GNUstep makefile
-package is a set of predefined makefile and shell scripts, so they
-just need to be installed into the appropriate place.  To install the
-makefile package into the configured root directory type:
+After you configure the GNUstep makefile package, then you need to
+compile the programs that come with the package.  Currently there is
+only a single C program which needs to be compiled; all of the other
+files are either shell scripts or makefile fragments, so you can
+compile and install the makefile package in one step with:
 
 make install
 

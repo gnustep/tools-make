@@ -30,7 +30,7 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 # where xxx is the bundle name
 #
 
-BUNDLE_DIR_NAME := $(BUNDLE_NAME:=.$(BUNDLE_EXTENSION))
+BUNDLE_DIR_NAME := $(BUNDLE_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/$(BUNDLE_NAME)
 BUNDLE_STAMPS := $(foreach bundle,$(BUNDLE_NAME),stamp-bundle-$(bundle))
 BUNDLE_STAMPS := $(addprefix $(GNUSTEP_OBJ_DIR)/,$(BUNDLE_STAMPS))
