@@ -1,3 +1,9 @@
+Fri Mar  1 15:20:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/palette.make: Use Instance/Shared/bundle.make to install
+	resources.  This automatically implements localizable resources
+	for palettes.  Removed internal targets, simplified code.
+
 Fri Mar  1 14:36:43 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/Shared/headers.make: Added specific optimization for
