@@ -26,6 +26,11 @@ case "$1" in
 	echo ix86
 	exit 0
 	;;
+    # Make all alpha variants the same
+    alpha*)
+	echo alpha
+	exit 0
+	;;
     *)
 	echo $1
         exit 0

@@ -1,3 +1,7 @@
+2001-03-08  Adam Fedor  <fedor@gnu.org>
+
+	* clean_cpu.sh: Make all alpha variants the same.
+
 2001-03-07  Adam Fedor  <fedor@gnu.org>
 
 	* GNUstep.sh.in: Switch PATH back to the way it was so GNUstep
