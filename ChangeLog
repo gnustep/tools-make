@@ -1,3 +1,8 @@
+Tue Jul 10 15:46:38 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (%.build): Reverted some makefile conditionals to
+	shell conditionals.
+
 Tue Jul 10 15:28:21 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make: Protect from multiple inclusions (suggested by
