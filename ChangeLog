@@ -1,3 +1,8 @@
+2002-11-19  Adam Fedor  <fedor@gnu.org>
+
+	* create_domain_dir_tree.sh (mydir): Use `command` not
+	$(command), which doesn't work with all sh's.
+
 2002-11-15  Adam Fedor  <fedor@gnu.org>
 
 	* common.make: Remove duplicate OBJC_RUNTIME_LIB and FOUNDATION_LIB

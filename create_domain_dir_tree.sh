@@ -32,7 +32,7 @@ if [ -z "$*" ]; then
   exit 0
 fi
 
-mydir=$(dirname "$0")
+mydir=`dirname "$0"`
 basepath="$1"
 
 ${mydir}/mkinstalldirs  "$basepath" \
