@@ -48,27 +48,27 @@ if [ -z "$GNUSTEP_USER_ROOT" ]; then
   fi
 fi
 
-ac_save_ifs="$IFS"; IFS=":"
+save_ifs="$IFS"; IFS=":"
 
 cygpath=
-ac_word=cygpath.exe
-ac_dummy="$PATH"
-for ac_dir in $ac_dummy; do
-  test -z "$ac_dir" && ac_dir=.
-  if test -f $ac_dir/$ac_word; then
-    cygpath=$ac_word
+word=cygpath.exe
+dummy="$PATH"
+for dir in $dummy; do
+  test -z "$dir" && dir=.
+  if test -f $dir/$word; then
+    cygpath=$word
     break
   fi
 done
 # Because this file is sourced rather than executed, we need to unset
 # every temporary variable when we are done with it, otherwise they
 # pollute the calling environment!
-unset ac_word
-unset ac_dummy
-unset ac_dir
+unset word
+unset dummy
+unset dir
 
-IFS="$ac_save_ifs"
-unset ac_save_ifs
+IFS="$save_ifs"
+unset save_ifs
 
 if [ -z "$cygpath" ]; then
   cygpath=$GNUSTEP_MAKEFILES/cygpath.sh
