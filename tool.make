@@ -144,7 +144,7 @@ internal-install-dirs:: $(TOOL_INSTALLATION_DIR)
 
 # This rule runs $(MKDIRS) only if needed
 $(TOOL_INSTALLATION_DIR):
-	$(MKDIRS) $@
+	$(MKINSTALLDIRS) $@
 
 install-tool::
 	$(INSTALL_PROGRAM) -m 0755 \
