@@ -1,3 +1,15 @@
+2001-10-24  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.2.0pre1
+
+	* Documentation/README.MinGW: Update.
+	* Documentation/machines.texi: Likewise.
+	* Documentation/news.texi: Likewise.
+	* Documentation/readme.texi: Likewise.
+
+	* target.make (Solaris BUNDLE_LDFLAGS): Change flags to more
+	modern version.
+
 Tue Oct 23 10:47:39 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* clibrary.make (FINAL_LIBRARY_INSTALL_DIR): Define and 

@@ -383,7 +383,8 @@ when configuring (Read the instructions on this in the configuration section).
 If you are using threads, make sure the Objective-C runtime (libobjc that comes
 with gcc) is compiled with threads enabled (This is true by default) AND that
 it is compiled with the _REENTRANT flag defined (This does not seem to be
-true by default). Or use the gnustep-objc package.
+true by default). Or use the gnustep-objc package. Also make sure THREADS is
+set to 'posix' not 'solaris'.
 
 @c -----------------------------------------
 @node Solaris 2.7/Intel, Suse 6.x/Intel, Solaris 2.6/Sparc, Machine Specific

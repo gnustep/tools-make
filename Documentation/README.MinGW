@@ -20,6 +20,9 @@ compile below. Also note that, despite the statement in the GNUstep-HOWTO,
 even if you have 3.x, you still need to install gnustep-objc as it properly 
 exports symbols for DLLs.
 
+Note also that the //c construct for specifying paths with drives has
+been depreciated. You'll need to use /cygwin/path or C: style paths now.
+
 MinGW on Cygwin
 ---------------
 
@@ -45,7 +48,7 @@ as described below.
 1. First, start up a Cygwin BASH shell and make sure the MinGW tools
 are in your path:
 
-  export PATH=//c/mingw/bin:$PATH
+  export PATH=/c/mingw/bin:$PATH
 
 (Put in whatever path you have for the mingw tools). 
 
@@ -60,10 +63,10 @@ First, go to the 'gnustep-make' package and configure:
 3. Now build the gnustep-make package. Occationally, the make that comes
 with MinGW doesn't like the way GNUstep makefiles are setup (or perhaps
 it's that MingW make doesn't work with bash), so you can try
-using Cygwin's make instead (/usr/bin/make instead of just make):
+using Cygwin's make instead (/usr/bin/make instead of just make).
 
-  /usr/bin/make target=i386-mingw32
-  /usr/bin/make target=i386-mingw32 install
+  make target=i386-mingw32
+  make target=i386-mingw32 install
 
 4. Now source the GNUstep.sh file so the rest of the packages will
 compile correctly:
@@ -73,6 +76,9 @@ compile correctly:
 Also put this command in your shell startup script. Be sure to adjust
 this path to match your real GNUstep root directory if you changed it
 when configuring gnustep-make.
+
+NOTE for WIN98 users: You should also define the environment variables
+HOMEDRIVE and HOMEPATH, since these aren't defined normally.
 
 5. Compile and install the ffcall package (Version 1.8b or above). It's
 simply a C library so it requires no special tools other than the compiler.
@@ -91,8 +97,8 @@ and installs, called compile-mingw). Then
 you already have one installed):
 
   cd gnustep-objc
-  /usr/bin/make target=i386-mingw32 shared=yes
-  /usr/bin/make target=i386-mingw32 shared=yes install
+  make target=i386-mingw32 shared=yes
+  make target=i386-mingw32 shared=yes install
 
 Make sure to remove libobjc.a that comes with gcc, otherwise it will find that
 one instead of the one we want. The libobjc library that comes with gcc-3.x
@@ -103,8 +109,8 @@ that here. It's good just to use gnustep-objc.
 
   cd gnustep-base 
   ./configure --target=i386-mingw32 
-  /usr/bin/make target=i386-mingw32 shared=yes
-  /usr/bin/make target=i386-mingw32 shared=yes install
+  make target=i386-mingw32 shared=yes
+  make target=i386-mingw32 shared=yes install
 
 If you get tired of typing  "target=i386-mingw32" all the time, then before
 you exec the GNUstep.sh script, just set the GNUSTEP_HOST:

@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 19 September 2001
+   Last Update: 24 October 2001
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -623,6 +623,7 @@ arguments.  We recommend using the ffcall libraries when configuring
 that comes with gcc) is compiled with threads enabled (This is true by
 default) AND that it is compiled with the _REENTRANT flag defined (This
 does not seem to be true by default). Or use the gnustep-objc package.
+Also make sure THREADS is set to 'posix' not 'solaris'.
 
 Solaris 2.7/Intel
 =================

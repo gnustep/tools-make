@@ -1,7 +1,28 @@
 NEWS
 ****
 
-The currently released version is `1.0.1'.
+The currently released version is `1.2.0pre1'.
+
+Changes in version `1.2.0pre1'
+==============================
+
+   * Many improvements to java support. Optimized management of nested
+     classes
+
+   * Better conformance to make conventions.
+
+   * New variables, fixes to reduce the number of evaluations
+
+   * Fixed darwin support
+
+   * Support for C++ files.
+
+   * Bunches of variables removed or changed for simplification.
+
+   * Made use of library installation dir consistent with other
+     installation.
+
+   * Much improved Windows path support
 
 Changes in version `1.0.1'
 ==========================

@@ -9,6 +9,19 @@
 
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
+@section Changes in version @samp{1.2.0pre1}
+
+@itemize @bullet
+@item Many improvements to java support. Optimized management of nested classes
+@item Better conformance to make conventions.
+@item New variables, fixes to reduce the number of evaluations
+@item Fixed darwin support
+@item Support for C++ files.
+@item Bunches of variables removed or changed for simplification.
+@item Made use of library installation dir consistent with other installation.
+@item Much improved Windows path support
+@end itemize
+
 @section Changes in version @samp{1.0.1}
 
 @itemize @bullet

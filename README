@@ -61,6 +61,8 @@ with ideas.
 
    Nicola Pero <nicola@brainstorm.co.uk> rewrote much of the rule
 procedures to increase the speed of the package by over a factor of 7.
+He also rewrote much of the rest of the system to make it simpler and
+more effective.
 
 How can you help?
 =================

@@ -879,8 +879,8 @@ SHARED_LIBEXT   = .so
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(CC)
 BUNDLE_CFLAGS   += -fPIC
-#BUNDLE_LDFLAGS  = -shared -mimpure-text
-BUNDLE_LDFLAGS  = -nodefaultlibs -Xlinker -r
+BUNDLE_LDFLAGS  = -shared -mimpure-text
+#BUNDLE_LDFLAGS  = -nodefaultlibs -Xlinker -r
 endif
 
 # end Solaris
