@@ -92,7 +92,6 @@ fi
 export LIBRARY_COMBO
 
 # Find path to ourself
-app=`echo $app | sed 's%/*$%%'`
 dir=`dirname $app`
 
 case $app in
@@ -129,8 +128,6 @@ fi
 #
 # get base app name
 #
-app=`echo $app | sed 's/\.[a-z]*$//'`
-app=`basename $app`
 appname=
 if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
 # -n disable auto-print (for portability reasons)
@@ -149,7 +146,7 @@ if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
                 "$full_appname/Resources/Info-gnustep.plist"`
 fi
 if [ -z "$appname" ]; then
-  appname=$app
+  appname=`basename $app`
 fi
 
 appname="$appname$EXEEXT"
@@ -193,7 +190,7 @@ elif [ -x $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$appname ]; then
   relative_path=$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$appname
 elif [ -x $full_appname/$GNUSTEP_HOST_CPU/$appname ]; then
   relative_path=$GNUSTEP_HOST_CPU/$appname
-elif [ $appname != $app -a -x $full_appname/$appname ]; then
+elif [ $full_appname/$appname != $0 -a -x $full_appname/$appname ]; then
   relative_path=$appname
 else
   # Search for a binary for this machine but a different library combo
