@@ -65,10 +65,8 @@ ifneq ($(INSTALL_AS_GROUP),)
 endif
 
 
-# FIXME - what to do with these
-FRAMEWORK_NAME := $(strip $(FRAMEWORK_NAME))
-FRAMEWORK_DIR_NAME := $(FRAMEWORK_NAME:=.framework)
-FRAMEWORK_VERSION_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
+# In subprojects, will be set by the recursive make invocation on the
+# make command line to be [../../]../derived_src
 DERIVED_SOURCES = derived_src
 
 # Always include all the compilation flags and generic compilation
@@ -141,8 +139,12 @@ endif
 # add -I[../../../etc]derived_src so that the code can include 
 # framework headers simply using `#include <MyFramework/MyHeader.h>'
 #
-ifneq ($(FRAMEWORK_NAME),)
-CURRENT_FRAMEWORK_HEADERS_FLAG = -I$(DERIVED_SOURCES)
+# If it's a framework makefile, FRAMEWORK_NAME will be non-empty.  If
+# it's a framework subproject, OWNING_PROJECT_HEADER_DIR will be
+# non-empty.
+#
+ifneq ($(FRAMEWORK_NAME)$(OWNING_PROJECT_HEADER_DIR),)
+  DERIVED_SOURCES_HEADERS_FLAG = -I$(DERIVED_SOURCES)
 endif
 
 #
@@ -216,7 +218,7 @@ ALL_CPPFLAGS = $(AUTO_DEPENDENCIES_FLAGS) $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) \
 ALL_OBJCFLAGS = $(INTERNAL_OBJCFLAGS) $(ADDITIONAL_OBJCFLAGS) \
    $(AUXILIARY_OBJCFLAGS) $(ADDITIONAL_INCLUDE_DIRS) \
    $(AUXILIARY_INCLUDE_DIRS) \
-   $(CURRENT_FRAMEWORK_HEADERS_FLAG) \
+   $(DERIVED_SOURCES_HEADERS_FLAG) \
    -I. $(SYSTEM_INCLUDES) \
    $(GNUSTEP_HEADERS_FND_FLAG) $(GNUSTEP_HEADERS_GUI_FLAG) \
    $(GNUSTEP_HEADERS_FLAGS)
@@ -224,7 +226,7 @@ ALL_OBJCFLAGS = $(INTERNAL_OBJCFLAGS) $(ADDITIONAL_OBJCFLAGS) \
 ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    $(AUXILIARY_CFLAGS) $(ADDITIONAL_INCLUDE_DIRS) \
    $(AUXILIARY_INCLUDE_DIRS) \
-   $(CURRENT_FRAMEWORK_HEADERS_FLAG) \
+   $(DERIVED_SOURCES_HEADERS_FLAG) \
    -I. $(SYSTEM_INCLUDES) \
    $(GNUSTEP_HEADERS_FND_FLAG) $(GNUSTEP_HEADERS_GUI_FLAG) \
    $(GNUSTEP_HEADERS_FLAGS) 
