@@ -343,11 +343,11 @@ endif # GSDOC_FILES
 #
 # autogsdoc installation
 #
-ifneq ($(JAVADOC_FILES),)
+ifneq ($(AGSDOC_FILES),)
 
 internal-doc-install:: 
 	rm -rf $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(INTERNAL_doc_NAME)
-	$(TAR) cf - $(INTERNAL_doc_NAME) |  \
+	$(TAR) cf - $(INTERNAL_doc_NAME) | \
 	  (cd $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); $(TAR) xf -)
 ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) \
