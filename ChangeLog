@@ -1,3 +1,14 @@
+Thu Nov 22 03:05:33 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Implemented support for auto dependencies.  Only works with gcc =>
+	3.x.
+	* rules.make: Include appropriate .d dependency files if
+	AUTO_DEPENDENCIES is yes.
+	(AUTO_DEPENDENCIES_FLAGS): Define to be -MMD -MP if
+	AUTO_DEPENDENCIES is yes.
+	(ALL_CPPFLAGS): Add AUTO_DEPENDENCIES_FLAGS.
+	(Idea by Malmberg <malmberg@malmberg.org>).
+
 Thu Nov 22 02:52:42 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* depend.make: Obsolete file removed.
