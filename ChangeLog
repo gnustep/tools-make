@@ -1,3 +1,24 @@
+Wed Jan 30 16:39:41 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	Started a major reorganization of the package.
+	* Master/: New directory.
+	* Instance/: New directory.
+	* rpm.make: Moved into Master/rpm.make.
+	* source-distribution.make: Moved into
+	Master/source-distribution.make.
+	* Master/rules.make: New file.
+	* Master/README: New file.
+	* GNUmakefile.in: Create GNUSTEP_MAKEFILES/Master and
+	GNUSTEP_MAKEFILES/Instance.  Install rpm.make and
+	source-distribution.make and Master/rules.make into
+	GNUSTEP_MAKEFILES/Master.
+	* rules.make (GNUSTEP_MAKE_INSTANCE_INVOCATION): Pass down
+	to the submake with value of YES.
+	(source-distribution.make, rpm.make): Code including them
+	moved into Master/rules.make.
+	(Master/rules.make): Include it, but only if
+	GNUSTEP_MAKE_INSTANCE_INVOCATION is undefined.
+	
 Wed Jan 30 12:50:04 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (LIB_DIRS_NO_SYSTEM): Removed.
