@@ -146,7 +146,7 @@ SHARED_LIB_LINK_CMD     = \
 else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool -dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) $(ALL_LDFLAGS) $@ \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) $(ALL_LDFLAGS) -o $@ \
 		-framework System \
 		$(ALL_LIB_DIRS) $(LIBRARIES_DEPEND_UPON) \
 		$(LIBRARIES_FOUNDATION_DEPEND_UPON) $^; \

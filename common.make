@@ -250,7 +250,7 @@ endif
 ifeq ($(profile), yes)
 ADDITIONAL_FLAGS += -pg
 ifeq ($(LD), $(CC))
-LDFLAGS = -pg -o
+LDFLAGS = -pg
 endif
 OBJ_DIR_PREFIX += profile_
 LIBRARY_NAME_SUFFIX := p$(LIBRARY_NAME_SUFFIX)

@@ -1,3 +1,10 @@
+1999-09-14  Adam Fedor  <fedor@gnu.org>
+
+	* common.make, config.make.in: Remove -o from LDFLAGS.
+	* application.make, bundle.make, ctool.make, objc.make,
+	service.make, target.make, test-library.make, tool.make: Add -o
+	in LD command.
+
 1999-09-11  Adam Fedor  <fedor@gnu.org>
 
 	* target.make: Remove two erronous newlines in the MacOSX section.

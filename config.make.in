@@ -37,7 +37,7 @@ LN_S = @LN_S@
 
 LD = $(CC)
 LDOUT =
-LDFLAGS = @LDFLAGS@ -o
+LDFLAGS = @LDFLAGS@ 
 
 AR      = @AR@
 AROUT   =

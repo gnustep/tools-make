@@ -75,7 +75,7 @@ internal-ctool-all:: before-$(TARGET)-all $(GNUSTEP_OBJ_DIR) \
 	$(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT) after-$(TARGET)-all
 
 $(GNUSTEP_OBJ_DIR)/$(INTERNAL_ctool_NAME)$(EXEEXT): $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
-	$(LD) $(ALL_LDFLAGS) $(LDOUT)$@ \
+	$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 		$(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
 		$(ALL_LIB_DIRS) $(ALL_TOOL_LIBS)
 
