@@ -1,3 +1,8 @@
+2001-02-14  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in (cvs-tag): New targete for maintainance
+	* source-distribution.make (cvs-tag): Likewise.
+
 2001-02-13  Adam Fedor  <fedor@gnu.org>
 
 	* Version: 0.9.1

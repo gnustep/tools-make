@@ -10,7 +10,7 @@
 #
 Name: 		%{gs_name}
 Version: 	%{gs_version}
-Release: 	2
+Release: 	1
 Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/%{gs_name}-%{gs_version}.tar.gz
 Copyright: 	GPL
 Group: 		System Environment/Base

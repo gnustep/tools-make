@@ -152,6 +152,9 @@ distclean: clean
 	rm -f GNUmakefile config.make
 	rm -f config.cache config.log config.status
 
+cvs-tag:
+	cvs -z3 rtag make-$(VERTAG) make
+
 cvs-dist:
 	cvs -z3 export -r make-$(VERTAG) make
 	mv make gnustep-make-$(GNUSTEP_MAKE_VERSION)

@@ -33,6 +33,7 @@ TGZ_MAKE_LOADED=yes
 
 # Striped package name, probably only useful for GNUstep libraries
 PDIR_NAME = $(subst gnustep-,,$(PACKAGE_NAME))
+VERTAG = `echo $(VERSION) | tr '.' '_'`
 
 #
 # Build a .tgz with the whole directory tree
@@ -49,6 +50,9 @@ tgz: distclean
 	if [ "$$SNAPSHOT_DIR" != "$(PACKAGE_NAME)-$(VERSION)" ]; then         \
 	  mv $(PACKAGE_NAME)-$(VERSION) $$SNAPSHOT_DIR;                       \
         fi;
+
+cvs-tag:
+	cvs -z3 rtag $(PDIR_NAME)-$(VERTAG) $(PDIR_NAME)
 
 cvs-dist:
 	cvs -z3 export -r $(PDIR_NAME)-$(VERTAG) $(PDIR_NAME)
