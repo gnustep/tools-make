@@ -238,7 +238,18 @@ int main (int argc, char** argv)
 	}
 #else 
       {
-	strcpy(path, (const char*)getenv("GNUSTEP_SYSTEM_ROOT"));
+	const char *gnustep_system_root = (const char*)getenv("GNUSTEP_SYSTEM_ROOT");
+
+	if (gnustep_system_root != 0)
+	  {
+	    strcpy(path, gnustep_system_root);
+	  }
+	else
+	  {
+	    /* On my machine the strcpy was segfaulting when
+	     * gnustep_system_root == 0.  */
+	    path[0] = '\0';
+	  }
       }
 #endif
       strcat(path, SEP);
