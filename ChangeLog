@@ -1,3 +1,8 @@
+Wed Nov 28 11:08:07 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* brain.make (WO_LDFLAGS, WO_LIBS, WO_DEFINE): Removed.
+	(Suggested by Helge Hess <helge.hess@skyrix.com>).
+	
 2001-11-26  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.NetBSD: Update from jnqt@fbe.freeserve.ne.jp.
