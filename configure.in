@@ -703,5 +703,5 @@ AC_SUBST(DATE)
 #--------------------------------------------------------------------
 AC_OUTPUT(config.h config.make openapp debugapp which_lib.pl opentool 
 executable.template GNUmakefile GNUstep.sh GNUstep.csh gnustep-make.spec 
-install-complete-dir.sh log_install_dir.sh Documentation/GNUmakefile,
-chmod a+x openapp debugapp which_lib.pl opentool executable.template)
+Documentation/GNUmakefile, chmod a+x openapp debugapp which_lib.pl \
+opentool executable.template)
