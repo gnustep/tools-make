@@ -1,7 +1,7 @@
 2001-12-26  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (darwin1): Use NeXT Compiler when using NeXT
-	runtime. Remove -undefined warning from DYLIB_EXTRA_FLAGS.
+	runtime. 
 
 Tue Dec 25 08:57:37 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 

@@ -255,7 +255,7 @@ SHARED_LIB_LINK_CMD     = \
 
 else # OBJC_COMPILER=NeXT
 
-DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -fno-common
+DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
 DYLIB_DEF_FRAMEWORKS += #-framework Foundation
 DYLIB_DEF_LIBS	     = -lobjc
 
