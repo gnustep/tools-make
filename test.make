@@ -61,6 +61,9 @@ include $(GNUSTEP_SYSTEM_ROOT)/Makefiles/rules.make
 # xxx_SCRIPT_DIRS is a list of directories containing the test scripts
 # which will be performed by dejagnu for the xxx test driver.
 #
+# xxx_SCRIPTS_DIRECTORY is the directory where the xxx_SCRIPT_DIRS
+# are located for the xxx test driver.
+#
 # xxx_INCLUDE_DIRS are additional headers directories to be searched
 #
 # xxx_LIB_DIRS and xxx_LIBS are additional libraries directories and
