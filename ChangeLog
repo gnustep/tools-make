@@ -1,3 +1,8 @@
+Wed Dec 25 03:09:34 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/application.make: Implemented support for Apple native
+	bundle organization, and Apple Info.plist.
+
 Wed Dec 25 03:04:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (DYLIB_INSTALL_NAME): Variable removed, replaced
