@@ -40,6 +40,13 @@ internal-distclean:: $(TEST_APP_NAME:=.distclean.app.variables)
 $(TEST_APP_NAME)::
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
 
+# if a subproject is the target, cd to it's dir and make it
+$(SUBPROJECTS)::
+	@(target=`echo $@ | sed 's/internal-//'`; \
+	echo Making $$target in $$target...;\
+	(cd $$target; $(MAKE) -f $(MAKEFILE_NAME) --no-keep-going $$target \
+	after-all); )
+
 else
 
 # We use the application.make rules for building

@@ -1,3 +1,10 @@
+Thu Nov 12 1998  Felipe A. Rodriguez  <far@ix.netcom.com>
+
+	* test-application.make add support for building individual subprojects
+      using the typical command line of "make mySubproject". 
+	* application.make revert resource copying to original 0.5.0 in order to
+      fix resource copy bug in xraw/Workspace example.
+
 Wed Nov 11 23:30:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
 	* configure.in: Added checks for thread library on linux
