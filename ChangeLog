@@ -1,3 +1,9 @@
+2000-02-16  Adam Fedor  <fedor@gnu.org>
+
+	* GNUmakefile.in: Standardize prefix/GNUSTEP_INSTALLATION_DIR
+	settings.
+	* gnustep-make.spec: Newfile
+
 2000-02-08  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess: New version

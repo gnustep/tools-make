@@ -28,10 +28,10 @@
 
 include config.make
 
+prefix = @prefix@
+GNUSTEP_INSTALLATION_DIR=$(prefix)
 GNUSTEP_PREFIX = @GNUSTEP_PREFIX@
-GNUSTEP_INSTALLATION_DIR = @prefix@
 srcdir = @srcdir@
-prefix = $(GNUSTEP_INSTALLATION_DIR)
 exec_prefix = @exec_prefix@
 bindir = @bindir@
 libdir = @libdir@
