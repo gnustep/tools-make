@@ -46,6 +46,13 @@ ifeq ($(TOOL_INSTALL_DIR),)
   TOOL_INSTALL_DIR = $(GNUSTEP_TOOLS)
 endif
 
+# This is the 'final' directory in which we copy the tool executable, including
+# the target and library-combo paths.  You can override it in special occasions
+# (eg, installing an executable into a web server's cgi dir).
+ifeq ($(FINAL_TOOL_INSTALL_DIR),)
+  FINAL_TOOL_INSTALL_DIR = $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
+endif
+
 ALL_TOOL_LIBS =								\
     $(shell $(WHICH_LIB_SCRIPT)						\
        $(ALL_LIB_DIRS)							\
@@ -73,16 +80,16 @@ internal-tool-copy_into_dir::
 	  $(COPY_INTO_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
 # This rule runs $(MKDIRS) only if needed
-$(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR):
+$(FINAL_TOOL_INSTALL_DIR):
 	@$(MKINSTALLDIRS) $@
 
-internal-tool-install_:: $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
+internal-tool-install_:: $(FINAL_TOOL_INSTALL_DIR)
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \
 		$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT) \
-		$(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
+		$(FINAL_TOOL_INSTALL_DIR)$(END_ECHO)
 
 internal-tool-uninstall_::
-	rm -f $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+	rm -f $(FINAL_TOOL_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
 # NB: We don't have any cleaning targets for tools here, because we
 # clean during the Master make invocation.
