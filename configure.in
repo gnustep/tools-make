@@ -247,8 +247,14 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 # we will end up not including these dirs. For now, just include them
 # all the time:
 #if test "$gs_cv_objc_libdir" != "NONE"; then
+
+  # The following are needed to compile
   CPPFLAGS="$CPPFLAGS -I$GNUSTEP_SYSTEM_ROOT/Headers"
   LDFLAGS="$LDFLAGS -L$GNUSTEP_LDIR"
+
+  # And the following to execute our test programs
+  export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$GNUSTEP_LDIR"
+
 #fi
 
 
