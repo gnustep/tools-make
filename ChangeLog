@@ -1,3 +1,13 @@
+Fri Oct 11 11:14:28 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (OBJC_CLASS_SECTION): Removed.
+
+Fri Oct 11 11:13:53 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make ($(DUMMY_FRAMEWORK_FILE)): Use all
+	references to classes not in the U section (Patch by Stefan
+	Urbanek <urbanek@host.sk>).
+	
 Thu Oct 10 18:21:30 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* create_domain_dir_tree.sh: New script to create the domain
