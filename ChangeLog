@@ -1,3 +1,8 @@
+Tue Jul 24 13:48:24 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* rules.make (ALL_JAVADOCFLAGS): Readded INTERNAL_JAVADOCFLAGS
+	which had been removed by mistaked.
+
 2001-07-19  Adam Fedor  <fedor@gnu.org>
 
 	* documentation.make (LATEX2HTML): Filter out which error messages.
