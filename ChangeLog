@@ -1,3 +1,10 @@
+2001-05-08  Adam Fedor  <fedor@gnu.org>
+
+	* bundle.make ($(BUNDLE_DIR_NAME)/Contents/Resources): Remove
+	link before making it (Solaris ln -f doesn't work).
+	* openapp.in: Add linefeed at end (Solaris sed doesn't work well
+	without it).
+
 2001-05-05  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
 	* target.make: fix library soname for FreeBSD ELF.

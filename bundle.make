@@ -184,7 +184,7 @@ $(BUNDLE_DIR_NAME)/Contents :
 
 $(BUNDLE_DIR_NAME)/Contents/Resources : $(BUNDLE_DIR_NAME)/Contents \
 	$(BUNDLE_DIR_NAME)/Resources
-	@(cd $(BUNDLE_DIR_NAME)/Contents;\
+	@(cd $(BUNDLE_DIR_NAME)/Contents; rm -f Resources; \
 	  $(LN_S) -f ../Resources .)
 
 $(BUNDLE_DIR_NAME)/Contents/Info.plist: $(BUNDLE_DIR_NAME)/Contents
