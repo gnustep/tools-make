@@ -1,3 +1,8 @@
+Fri Oct 17 11:32:24 1997  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* application.make: Don't print the commands for building the
+	.iconheader file on OS systems.
+
 Thu Oct 16 17:31:43 1997  Scott Christley  <scottc@net-community.com>
 
 	* names.make: New file.
