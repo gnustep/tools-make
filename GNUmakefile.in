@@ -114,6 +114,7 @@ which_lib$(EXEEXT): which_lib.c config.h
 
 user_home$(EXEEXT): user_home.c config.h
 	$(CC) @CFLAGS@ @FORCE_USER_ROOT@ @FORCE_DEFAULTS_ROOT@ \
+	  -DGNUSTEP_SYSTEM_ROOT=$(GNUSTEP_SYSTEM_ROOT) \
 	  -Wall -I. -o $@ $<
 
 install: all

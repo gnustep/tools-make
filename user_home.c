@@ -236,6 +236,21 @@ int main (int argc, char** argv)
       strcat(path, SEP);
       strcat(path, ".GNUsteprc");
       fptr = fopen(path, "r");
+      if (fptr == 0)
+	{
+	  path[0] = '\0';
+#if defined (__MINGW32__)
+	  len0 = GetEnvironmentVariable("SystemDrive", buf0, 128);
+	  if (len0 > 0)
+	    {
+	      strcpy(path, buf0);
+	    }
+#endif
+	  strcat(path, stringify(GNUSTEP_SYSTEM_ROOT));
+	  strcat(path, SEP);
+	  strcat(path, ".GNUsteprc");
+	  fptr = fopen(path, "r");
+	}
       path[0] = '\0';
       if (fptr != 0)
 	{
@@ -260,13 +275,31 @@ int main (int argc, char** argv)
 
 		  if (strcmp(key, "GNUSTEP_USER_ROOT") == 0)
 		    {
-		      user = malloc(strlen(val)+1);
-		      strcpy(user, val);
+		      if (*val == '~')
+			{
+			  user = malloc(strlen(val) + strlen(home));
+			  strcpy(user, home);
+			  strcat(user, &val[1]);
+			}
+		      else
+			{
+			  user = malloc(strlen(val) + 1);
+			  strcpy(user, val);
+			}
 		    }
 		  else if (strcmp(key, "GNUSTEP_DEFAULTS_ROOT") == 0)
 		    {
-		      defs = malloc(strlen(val)+1);
-		      strcpy(user, val);
+		      if (*val == '~')
+			{
+			  defs = malloc(strlen(val) + strlen(home));
+			  strcpy(defs, home);
+			  strcat(defs, &val[1]);
+			}
+		      else
+			{
+			  defs = malloc(strlen(val) + 1);
+			  strcpy(defs, val);
+			}
 		    }
 		}
 	    }
