@@ -28,7 +28,7 @@ endif
         internal-subproject-install   \
         internal-subproject-uninstall
 
-override HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
+HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 
 FRAMEWORK_HEADERS_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Headers/
 FRAMEWORK_HEADER_FILES = $(patsubst %.h,$(FRAMEWORK_HEADERS_DIR)%.h,$(HEADER_FILES))

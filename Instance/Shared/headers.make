@@ -39,12 +39,7 @@
 #  shared-instance-headers-uninstall
 #
 
-
-# NB: The 'override' in all this file are needed to override the
-# Master/rules.make setting of HEADER_FILES and similar variables.
-# Once that setting will be removed (as it should be), the 'override'
-# in this file should be removed as well.
-override HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
+HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 
 .PHONY: \
 shared-install-headers-install \
@@ -58,17 +53,17 @@ shared-instance-headers-uninstall:
 
 else # we have some HEADER_FILES
 
-override HEADER_FILES_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_DIR)
+HEADER_FILES_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_DIR)
 
 ifeq ($(HEADER_FILES_DIR),)
-override HEADER_FILES_DIR = .
+  HEADER_FILES_DIR = .
 endif
 
-override HEADER_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_INSTALL_DIR)
+HEADER_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_INSTALL_DIR)
 
 # Please use `.' to force it to stay empty
 ifeq ($(HEADER_FILES_INSTALL_DIR),)
-override HEADER_FILES_INSTALL_DIR = $(GNUSTEP_INSTANCE)
+  HEADER_FILES_INSTALL_DIR = $(GNUSTEP_INSTANCE)
 endif
 
 #
