@@ -356,8 +356,7 @@ ifneq ($(TEXI_FILES),)
 internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info $(GNUSTEP_DOCUMENTATION_INFO)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info-* $(GNUSTEP_DOCUMENTATION_INFO)
+	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOCUMENTATION_INFO)
 	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
@@ -370,9 +369,7 @@ internal-doc-uninstall_::
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps
 	rm -f \
-          $(GNUSTEP_DOCUMENTATION_INFO)/$(GNUSTEP_INSTANCE).info
-	rm -f \
-          $(GNUSTEP_DOCUMENTATION_INFO)/$(GNUSTEP_INSTANCE).info-*
+          $(GNUSTEP_DOCUMENTATION_INFO)/$(GNUSTEP_INSTANCE).info*
 	rm -f \
           $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
 endif # TEXI_FILES
@@ -477,7 +474,7 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).cps  \
 	         $(GNUSTEP_INSTANCE).dvi  \
 	         $(GNUSTEP_INSTANCE).fn   \
-	         $(GNUSTEP_INSTANCE).info \
+	         $(GNUSTEP_INSTANCE).info* \
 	         $(GNUSTEP_INSTANCE).ky   \
 	         $(GNUSTEP_INSTANCE).log  \
 	         $(GNUSTEP_INSTANCE).pg   \
