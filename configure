@@ -1992,7 +1992,7 @@ fi
 else
   LIBS="-lobjc $LIBS -lthread $extra_LIBS"
   if test "$cross_compiling" = yes; then
-  objc_threaded=""
+  objc_threaded="works"
 else
   cat > conftest.$ac_ext <<EOF
 #line 1999 "configure"
