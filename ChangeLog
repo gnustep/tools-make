@@ -1,3 +1,10 @@
+Mon Jan 21 17:34:35 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* MediaBook.sh: Removed.
+	* MediaBook.func: Removed.
+	* GNUmakefile.in: Removed all references to MediaBook.sh and
+	MediaBook.func.
+	
 Mon Jan 21 17:12:18 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* ctool.make (internal-ctool-uninstall): Uninstall the 
