@@ -1,3 +1,7 @@
+Tue Aug  4 12:50:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	*brain.make: use -ldps even with xraw library.
+
 Tues Aug 4 1998  Felipe A. Rodriguez  <far@ix.netcom.com>
 
 	* test-application.make set $(TEST_APP_NAME) to be a double colon target. 
