@@ -1,3 +1,8 @@
+2001-02-23  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* opentool.in: If a local tool is found, do not search further in
+	other directories.
+
 2001-02-21  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/make.texi: Update
