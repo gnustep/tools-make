@@ -1,3 +1,11 @@
+Tue Feb  6 16:59:20 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	Javadoc support added.
+	* common.make (JAVADOC): Set it. 
+	* rules.make (ALL_JAVADOCFLAGS): Set it.  (%.build): Pass
+	JAVADOC_FILES and JAVADOC_SOURCEPATH down.
+	* documentation.make: Added support for javadoc documentation.
+	
 Sun Feb  4 23:19:38 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* debian/*: Applied patches by Matthias Klose <doko@debian.org> to
