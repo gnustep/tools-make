@@ -1,3 +1,13 @@
+Tue Mar  5 12:20:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/Shared/bundle.make: Added support for gsweb resources;
+	bug fixes and tidyups everywhere.
+	* Instance/application.make (GNUSTEP_SHARED_INSTANCE_BUNDLE_RESOURCE_PATH): Use
+	this variable, not GNUSTEP_SHARED_INSTANCE_BUNDLE_PATH.
+	* Instance/bundle.make: Idem.
+	* Instance/service.make: Idem.
+	* Instance/palette.make: Idem.
+
 Tue Mar  5 10:10:45 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Instance/resource-set.make: Added localized resource support, 
