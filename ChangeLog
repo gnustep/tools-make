@@ -1,3 +1,9 @@
+Mon Sep  3 17:24:43 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* gswbundle.make (gswbundle-webresource-files): Fixed misplaced
+	parenthesis in check for empty WEBSERVER_RESOURCE_FILES.
+	(internal-bundle-install): Removed \ in excess.
+	
 Mon Sep  3 15:13:49 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (before-install): If MAKELEVEL is 0, check that
