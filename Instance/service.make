@@ -37,8 +37,6 @@ endif
         internal-service-distclean \
         internal-service-install \
         internal-service-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         service-resource-files
 
 # Libraries that go before the GUI libraries

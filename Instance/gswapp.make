@@ -55,8 +55,6 @@ GNUSTEP_GSWAPPS = $(GNUSTEP_INSTALLATION_DIR)/GSWApps
 .PHONY: internal-gswapp-all \
         internal-gswapp-install \
         internal-gswapp-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         gswapp-components \
         gswapp-webresource-dir \
         gswapp-webresource-files \
@@ -147,10 +145,6 @@ internal-gswapp-all:: \
    gswapp-resource-files \
    $(GSWAPP_DIR_NAME)/$(GNUSTEP_INSTANCE).sh \
    after-$(GNUSTEP_INSTANCE)-all
-
-before-$(GNUSTEP_INSTANCE)-all::
-
-after-$(GNUSTEP_INSTANCE)-all::
 
 $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 	@$(MKDIRS) $(GSWAPP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)

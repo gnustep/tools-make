@@ -86,8 +86,6 @@ TEXT_MAIN = $($(GNUSTEP_INSTANCE)_TEXT_MAIN)
         internal-textdoc-install \
         internal-doc-uninstall \
         internal-textdoc-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         generate-javadoc
 
 #
@@ -206,10 +204,9 @@ $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).igsdoc: $(AGSDOC_GSDOC_FILES)
 	autogsdoc $(INTERNAL_AGSDOCFLAGS) -GenerateHtml NO $(AGSDOC_GSDOC_FILES)
 
 internal-doc-all:: before-$(GNUSTEP_INSTANCE)-all \
+                     $(GNUSTEP_INSTANCE) \
                      $(AGSDOC_HTML_FILES) \
                      after-$(GNUSTEP_INSTANCE)-all
-
-before-$(GNUSTEP_INSTANCE)-all:: $(GNUSTEP_INSTANCE)
 
 else
 

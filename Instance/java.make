@@ -61,9 +61,7 @@ endif
         internal-java_package-clean \
         internal-java_package-distclean \
         internal-java_package-install \
-        internal-java_package-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all
+        internal-java_package-uninstall
 
 # This is the directory where the java classses get
 # installed. Normally this is /usr/GNUstep/Local/Libraries/Java/

@@ -37,8 +37,6 @@ endif
         internal-java_tool-distclean \
         internal-java_tool-install \
         internal-java_tool-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         _FORCE
 
 # This is the directory where the tools get installed. If you don't specify a

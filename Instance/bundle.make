@@ -46,8 +46,6 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
         internal-bundle-distclean \
         internal-bundle-install \
         internal-bundle-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         build-bundle-dir \
         build-bundle \
         build-macosx-bundle \

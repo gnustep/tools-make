@@ -39,9 +39,7 @@ endif
 
 .PHONY: internal-ctool-all \
         internal-ctool-install \
-        internal-ctool-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all
+        internal-ctool-uninstall
 
 ALL_TOOL_LIBS =							\
     $(shell $(WHICH_LIB_SCRIPT)					\

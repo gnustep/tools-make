@@ -44,8 +44,6 @@ endif
 .PHONY: internal-app-all \
         internal-app-install \
         internal-app-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         app-resource-files \
         app-localized-resource-files \
         _FORCE

@@ -39,8 +39,6 @@ endif
 .PHONY: internal-tool-all       \
         internal-tool-install   \
         internal-tool-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all    \
-        after-$(GNUSTEP_INSTANCE)-all     \
         internal-install-dirs   \
         install-tool 
 

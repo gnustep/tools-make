@@ -58,8 +58,6 @@ endif
         internal-gswbundle-distclean \
         internal-gswbundle-install \
         internal-gswbundle-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         build-bundle-dir \
         build-bundle \
         gswbundle-components \

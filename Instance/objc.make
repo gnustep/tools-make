@@ -32,9 +32,7 @@ endif
 
 .PHONY: internal-objc_program-all \
        internal-objc_program-install \
-       internal-objc_program-uninstall \
-       before-$(GNUSTEP_INSTANCE)-all \
-       after-$(GNUSTEP_INSTANCE)-all
+       internal-objc_program-uninstall
 
 # This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the Tools

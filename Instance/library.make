@@ -44,8 +44,6 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 .PHONY: internal-library-all \
         internal-library-install \
         internal-library-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         internal-install-lib \
         internal-install-dirs
 

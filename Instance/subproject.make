@@ -26,9 +26,7 @@ endif
 
 .PHONY: internal-subproject-all       \
         internal-subproject-install   \
-        internal-subproject-uninstall \
-        before-$(GNUSTEP_INSTANCE)-all    \
-        after-$(GNUSTEP_INSTANCE)-all
+        internal-subproject-uninstall
 
 FRAMEWORK_HEADERS_DIR = $(FRAMEWORK_VERSION_DIR_NAME)/Headers/
 FRAMEWORK_HEADER_FILES = $(patsubst %.h,$(FRAMEWORK_HEADERS_DIR)%.h,$(HEADER_FILES))

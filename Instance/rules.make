@@ -28,6 +28,8 @@
 # the user can add them if he wants, but if he doesn't, make doesn't
 # complain about missing targets.
 
+.PHONY: before-$(GNUSTEP_INSTANCE)-all after-$(GNUSTEP_INSTANCE)-all
+
 before-$(GNUSTEP_INSTANCE)-all::
 
 after-$(GNUSTEP_INSTANCE)-all::

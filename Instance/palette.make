@@ -42,8 +42,6 @@ endif
         internal-palette-install \
         internal-palette-uninstall \
         internal-palette-distclean \
-        before-$(GNUSTEP_INSTANCE)-all \
-        after-$(GNUSTEP_INSTANCE)-all \
         build-palette-dir \
         build-palette \
         palette-resource-files
