@@ -1,3 +1,9 @@
+Mon Dec  2 12:43:23 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make: Added support for XXX_HEADER_FILES_DIR
+	and XXX_HEADER_FILES_INSTALL_DIR (Patch from David Ayers
+	<d.ayers@inode.at>).
+
 2002-11-29  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (darwin1): Remove
