@@ -299,6 +299,106 @@ endif
 
 ####################################################
 #
+# MacOSX 10.1.1, darwin5.1
+#
+ifeq ($(findstring darwin5, $(GNUSTEP_TARGET_OS)), darwin5)
+ifeq ($(OBJC_RUNTIME), NeXT)
+HAVE_BUNDLES     = yes
+endif
+
+HAVE_SHARED_LIBS = yes
+SHARED_LIBEXT    = .dylib
+
+ifeq ($(FOUNDATION_LIB),nx)
+  # Use the NeXT compiler
+  CC = cc -traditional-cpp
+  OBJC_COMPILER = NeXT
+  ifneq ($(arch),)
+    ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
+    INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
+    INTERNAL_CFLAGS    += $(ARCH_FLAGS)
+    INTERNAL_LDFLAGS   += $(ARCH_FLAGS)
+  endif
+endif
+
+TARGET_LIB_DIR = \
+Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
+
+DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
+DYLIB_CURRENT_VERSION       = -current_version 1
+DYLIB_INSTALL_NAME = \
+$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
+
+ifeq ($(FOUNDATION_LIB),nx)
+DYLIB_DEF_FRAMEWORKS += -framework Foundation
+endif
+
+ifneq ($(OBJC_COMPILER), NeXT)
+# GNU compiler
+
+DYLIB_DEF_FRAMEWORKS += -framework System
+
+SHARED_LIB_LINK_CMD     = \
+	$(CC) $(SHARED_LD_PREFLAGS) \
+		-dynamiclib $(ARCH_FLAGS) -dynamic	\
+		$(DYLIB_COMPATIBILITY_VERSION)		\
+		$(DYLIB_CURRENT_VERSION)		\
+		-install_name $(DYLIB_INSTALL_NAME)	\
+		-o $@					\
+		$(DYLIB_DEF_FRAMEWORKS)			\
+		$(LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
+		-lobjc $^ $(SHARED_LD_POSTFLAGS); \
+	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+
+else # OBJC_COMPILER=NeXT
+
+DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined error -fno-common
+DYLIB_DEF_FRAMEWORKS += #-framework Foundation
+DYLIB_DEF_LIBS	     = -lobjc
+
+SHARED_LIB_LINK_CMD     = \
+	$(CC) $(SHARED_LD_PREFLAGS) \
+		-dynamiclib $(ARCH_FLAGS) -dynamic	\
+		$(DYLIB_COMPATIBILITY_VERSION)		\
+		$(DYLIB_CURRENT_VERSION)		\
+		$(DYLIB_EXTRA_FLAGS)			\
+		-install_name $(DYLIB_INSTALL_NAME)	\
+		-o $@					\
+		$(LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
+		$(DYLIB_DEF_FRAMEWORKS)			\
+		$(DYLIB_DEF_LIBS)			\
+		$^ $(SHARED_LD_POSTFLAGS); \
+	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
+          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+endif # OBJC_COMPILER
+
+OBJ_MERGE_CMD = \
+	$(CC) -nostdlib -r -d -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+STATIC_LIB_LINK_CMD	= \
+	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) -o $@ $^ \
+	$(STATIC_LD_POSTFLAGS)
+
+# This doesn't work with 4.1, what about others?
+#ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
+
+AFTER_INSTALL_STATIC_LIB_COMMAND =
+
+SHARED_CFLAGS   += -dynamic -fno-common
+SHARED_LIBEXT   = .dylib
+
+BUNDLE_LD	=  $(CC)
+BUNDLE_CFLAGS   += 
+BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
+endif
+#
+# end MacOSX 10.1.1, darwin5.1
+#
+####################################################
+
+####################################################
+#
 # OpenStep 4.x
 #
 ifeq ($(GNUSTEP_TARGET_OS), nextstep4)
