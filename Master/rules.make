@@ -224,14 +224,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
   GNUSTEP_INSTANCE=$$instance \
   INTERNAL_$${type}_NAME=$$instance \
   TARGET=$$instance \
-  _SUBPROJECTS="$($(basename $(basename $*))_SUBPROJECTS)" \
-  OBJC_FILES="$($(basename $(basename $*))_OBJC_FILES)" \
-  C_FILES="$($(basename $(basename $*))_C_FILES)" \
-  CC_FILES="$($(basename $(basename $*))_CC_FILES)" \
-  JAVA_FILES="$($(basename $(basename $*))_JAVA_FILES)" \
-  JAVA_JNI_FILES="$($(basename $(basename $*))_JAVA_JNI_FILES)" \
-  OBJ_FILES="$($(basename $(basename $*))_OBJ_FILES)" \
-  PSWRAP_FILES="$($(basename $(basename $*))_PSWRAP_FILES)" \
   HEADER_FILES="$($(basename $(basename $*))_HEADER_FILES)" \
   TEXI_FILES="$($(basename $(basename $*))_TEXI_FILES)" \
   GSDOC_FILES="$($(basename $(basename $*))_GSDOC_FILES)" \
