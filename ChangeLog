@@ -1,3 +1,8 @@
+2003-02-23 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* user_home.c: fix HOMEPATH and HOMEDRIVE handling for mingw to
+	only use the drive if there isn't one in the path.
+
 2003-02-17  Tom Koelman <tkoelman@xs4all.nl>
 
 	* Documentation/README.MingW: Update URLs.
