@@ -170,8 +170,8 @@ install: all
 	   done; \
 	   $(INSTALL_DATA) executable.template $(makedir); \
 	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR))
-	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/shared; \
-	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/shared)
+	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
+	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
 
 #
 # NICOLA - Need to clean the following message and print it at the end
