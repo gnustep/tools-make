@@ -49,7 +49,8 @@ internal-clean:: $(BUNDLE_NAME:=.clean.bundle.variables)
 internal-distclean:: $(BUNDLE_NAME:=.distclean.bundle.variables)
 
 $(BUNDLE_NAME):
-	@$(MAKE) --no-print-directory $@.all.bundle.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
+		$@.all.bundle.variables
 
 else
 # This part gets included the second time make is invoked.

@@ -42,7 +42,7 @@ internal-all internal-install internal-uninstall internal-clean \
 	@(target=`echo $@ | sed 's/internal-//'`; \
 	for f in $(SUBPROJECTS); do \
 		echo Making $$target in $$f...;\
-		(cd $$f; $(MAKE) --no-keep-going $$target); \
+		(cd $$f; $(MAKE) -f $(MAKEFILE_NAME) --no-keep-going $$target); \
 	done)
 
 endif

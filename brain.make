@@ -124,7 +124,7 @@ GUI_LIBS =
 #
 ifeq ($(GUI_LIB),gnu)
 GUI_LDFLAGS =
-GUI_LIBS = -lgnustep-gui
+GUI_LIBS = -lgmodel -lgnustep-gui
 GUI_DEFINE = -DGNU_GUI_LIBRARY=1
 endif
 

@@ -95,7 +95,7 @@ SHARED_LIB_LINK_CMD     = \
 		-L$(GNUSTEP_LOCAL_ROOT)/$(TARGET_LIB_DIR) \
 		-L$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR) \
 		$(ADDITIONAL_LIB_DIRS) \
-		$(LIBRARIES_DEPEND_UPON) -lobjc -lgcc $^; \
+		$(LIBRARIES_DEPEND_UPON) -lobjc -lgcc -undefined warning $^; \
 	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
           $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
 else

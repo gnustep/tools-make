@@ -38,7 +38,7 @@ internal-clean:: $(TEST_APP_NAME:=.clean.app.variables)
 internal-distclean:: $(TEST_APP_NAME:=.distclean.app.variables)
 
 $(TEST_APP_NAME):
-	@$(MAKE) --no-print-directory $@.all.app.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
 
 else
 

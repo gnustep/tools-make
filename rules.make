@@ -42,7 +42,8 @@ RULES_MAKE_LOADED=yes
 	@(target=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\1/'`; \
 	operation=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\2/'`; \
 	type=`echo $* | sed -e 's/\(.*\)\.\(.*\)\.\(.*\)/\3/' | tr - _`; \
-	$(MAKE) --no-print-directory --no-keep-going TARGET_TYPE=$$type \
+	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	    TARGET_TYPE=$${type} \
 	    OPERATION=$${operation} TARGET=$${target} \
 	    PROCESS_SECOND_TIME=yes $${target}.build)
 
@@ -170,7 +171,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 # The magical application rules, thank you GNU make!
 %.build:
 	@(echo Making $(OPERATION) for $(TARGET_TYPE) $*...; \
-	$(MAKE) --no-print-directory --no-keep-going \
+	$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	    internal-$(TARGET_TYPE)-$(OPERATION) \
 	    INTERNAL_$(TARGET_TYPE)_NAME=$* \
 	    OBJC_FILES="$($*_OBJC_FILES)" \
@@ -180,6 +181,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	    HEADER_FILES_DIR="$($*_HEADER_FILES_DIR)" \
 	    HEADER_FILES_INSTALL_DIR="$($*_HEADER_FILES_INSTALL_DIR)" \
 	    RESOURCE_FILES="$($*_RESOURCES)" \
+	    MAIN_MODEL_FILE="$($*_MAIN_MODEL_FILE)" \
 	    RESOURCE_DIRS="$($*_RESOURCE_DIRS)" \
 	    BUNDLE_LIBS="$($*_BUNDLE_LIBS)" \
 	    ADDITIONAL_INCLUDE_DIRS="$(ADDITIONAL_INCLUDE_DIRS) \

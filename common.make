@@ -91,6 +91,11 @@ GNUSTEP_RESOURCES = $(GNUSTEP_LIBRARIES_ROOT)/Resources
 # Take the makefiles from the system root
 GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 
+# The default name of the makefile to be used in recursive invocations of make
+ifeq ($(MAKEFILE_NAME),)
+MAKEFILE_NAME = GNUmakefile
+endif
+
 # In case we need to explicitly reference
 # the system, local, and user library directories
 GNUSTEP_SYSTEM_LIBRARIES_ROOT = $(GNUSTEP_SYSTEM_ROOT)/Libraries

@@ -60,7 +60,7 @@ internal-clean:: $(APP_NAME:=.clean.app.variables)
 internal-distclean:: $(APP_NAME:=.distclean.app.variables)
 
 $(APP_NAME):
-	@$(MAKE) --no-print-directory $@.all.app.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
 
 else
 
@@ -140,11 +140,21 @@ $(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO):
 		$(APP_DIR_NAME)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 endif
 
-app-resource-files::
+app-resource-files:: Info-gnustep.plist
 	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
 	  echo "Copying resources into the application wrapper..."; \
-	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME); \
+	  cp -r $(RESOURCE_FILES) $(APP_DIR_NAME)/Resources; \
 	fi)
+
+Info-gnustep.plist: $(APP_DIR_NAME)/Resources
+	@(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
+	  echo "  NSExecutable = $(INTERNAL_app_NAME);"; \
+	  echo "  NSMainNibFile = `echo $(MAIN_MODEL_FILE) | sed 's/.gmodel//'`;"; \
+	  echo "  NSPrincipalClass = NSApplication;"; \
+	  echo "}") >$(APP_DIR_NAME)/Resources/$@
+
+$(APP_DIR_NAME)/Resources:
+	@$(GNUSTEP_MAKEFILES)/mkinstalldirs $@
 
 internal-app-install::
 	$(TAR) cf - $(APP_DIR_NAME) | (cd $(GNUSTEP_APPS); $(TAR) xf -)

@@ -48,7 +48,8 @@ internal-clean:: $(OBJC_PROGRAM_NAME:=.clean.objc-program.variables)
 internal-distclean:: $(OBJC_PROGRAM_NAME:=.distclean.objc-program.variables)
 
 $(OBJC_PROGRAM_NAME):
-	@$(MAKE) --no-print-directory $@.all.objc-program.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
+		$@.all.objc-program.variables
 
 else
 

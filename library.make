@@ -56,7 +56,8 @@ internal-clean:: $(LIBRARY_NAME:=.clean.library.variables)
 internal-distclean:: $(LIBRARY_NAME:=.distclean.library.variables)
 
 $(LIBRARY_NAME):
-	@$(MAKE) --no-print-directory $@.all.library.variables
+	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
+		$@.all.library.variables
 
 else
 # This part gets included the second time make is invoked.

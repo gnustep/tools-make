@@ -1,3 +1,30 @@
+Fri Jan  9 12:16:19 1998  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* aggregate.make: Run the recursive make using the makefile specified
+	in the MAKEFILE_NAME variable.
+	* bundle.make: Likewise.
+	* library.make: Likewise.
+	* objc.make: Likewise.
+	* rules.make: Likewise.
+	* test-application.make: Likewise.
+	* test-library.make: Likewise.
+	* test-tool.make: Likewise.
+	* tool.make: Likewise.
+	* application.make: Likewise. Copy the resource files into the
+	Resources directory inside the app wrapper. Added rule to generate the
+	Info-gnustep.plist file.
+	* brain.make: Add the gmodel library to the list of GUI libraries.
+	* common.make: Define the default value of MAKEFILE_NAME to be
+	GNUmakefile.
+	* target.make: Added flag to libtool so that we don't treat undefined
+	symbols as errors when building a shared library under OPENSTEP.
+
+Tue Jan  6 11:06:27 1998  Ovidiu Predescu <ovidiu@net-community.com>
+
+	* target.make (target OPENSTEP): Added -undefined warning to the
+	libtool command line to make possible the creation of shared libraries
+	that include symbols defined in the startup object files.
+
 Wed Dec 17 10:40:02 1997  Ovidiu Predescu <ovidiu@net-community.com>
 
 	* ld_lib_path.sh: Don't treat Solaris' LD_LIBRARY_PATH different (patch
