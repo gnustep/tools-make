@@ -60,8 +60,7 @@ ALL_GUI_LIBS =								     \
 ifeq ($(WITH_DLL),yes)
 TTMP_LIBS := $(ALL_GUI_LIBS)
 TTMP_LIBS := $(filter -l%, $(TTMP_LIBS))
-# filter all non-static libs (static libs are those ending in _ds, _s, 
-_ps..)
+# filter all non-static libs (static libs are those ending in _ds, _s, _ps..)
 TTMP_LIBS := $(filter-out -l%_ds, $(TTMP_LIBS))
 TTMP_LIBS := $(filter-out -l%_s,  $(TTMP_LIBS))
 TTMP_LIBS := $(filter-out -l%_dps,$(TTMP_LIBS))
