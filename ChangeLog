@@ -1,3 +1,8 @@
+2003-06-05  Adam Fedor  <fedor@gnu.org>
+
+	* config_thread.m: More complete thread test.
+	* configure.ac: Add runtime based on RUNTIME_LIB
+
 2003-06-03  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (darwin/BUNDLE_LD): Use libtool

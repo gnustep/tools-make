@@ -379,6 +379,9 @@ esac
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
+if test "$OBJC_RUNTIME_LIB" = "gnu"; then
+  CFLAGS="$CFLAGS -fgnu-runtime"
+fi
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi
@@ -417,7 +420,7 @@ elif test "$MINGW32" = yes; then
 else
   LIBS="-lobjc $LIBS $extra_LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="OK",
+	objc_threaded="works",
 	objc_threaded="", objc_threaded="")
   if test x"$objc_threaded" = x""; then
     LIBS="-lobjc $saved_LIBS -lpthread $extra_LIBS"
@@ -431,19 +434,16 @@ else
     	objc_threaded="-lthread $extra_LIBS", 
 	objc_threaded="", objc_threaded="")
   fi
-  if test x"$objc_threaded" = x"OK"; then  
-    objc_threaded="$extra_LIBS"
-  fi
 fi
 LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
 if test x"$objc_threaded" = x""; then
   AC_MSG_RESULT(no)
 else
-  AC_MSG_RESULT(yes: $objc_threaded)
   if test x"$objc_threaded" = x"works"; then
-    objc_threaded=""
+    objc_threaded="$extra_LIBS"
   fi
+  AC_MSG_RESULT(yes: $objc_threaded)
 fi
 ac_cv_objc_threaded="$objc_threaded"
 AC_SUBST(objc_threaded)

@@ -7,11 +7,13 @@
 @end
 #endif
 
-/* From thr.c */
-extern int __objc_init_thread_system(void);
+#include <objc/thr.h>
+#include <objc/Object.h>
 
 int
 main()
 {
-  return (__objc_init_thread_system());
+  id o = [Object new];
+
+  return (objc_thread_detach (@selector(hash), o, nil) == NULL) ? -1 : 0;
 }
