@@ -53,33 +53,35 @@ ALL_SERVICE_LIBS =							\
 # included when make is invoked the second time from the %.build rule (see
 # rules.make).
 SERVICE_DIR_NAME = $(GNUSTEP_INSTANCE:=.service)
+SERVICE_DIR = $(GNUSTEP_BUILD_DIR)/$(SERVICE_DIR_NAME)
 
 #
 # Internal targets
 #
-SERVICE_FILE = $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
+SERVICE_FILE_NAME = $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
+SERVICE_FILE = $(GNUSTEP_BUILD_DIR)/$(SERVICE_FILE_NAME)
 
 ifeq ($(SERVICE_INSTALL_DIR),)
   SERVICE_INSTALL_DIR = $(GNUSTEP_SERVICES)
 endif
 
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(SERVICE_DIR_NAME)/Resources
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(SERVICE_DIR)/Resources
 GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(SERVICE_DIR_NAME)
 GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(SERVICE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
-                        $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                        $(SERVICE_DIR)/$(GNUSTEP_TARGET_LDIR) \
                         $(SERVICE_FILE) \
-                        $(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist \
+                        $(SERVICE_DIR)/Resources/Info-gnustep.plist \
                         shared-instance-bundle-all
 
 $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ $(OBJ_FILES_TO_LINK)\
 		$(ALL_SERVICE_LIBS)$(END_ECHO)
 
-$(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	$(ECHO_CREATING)$(MKDIRS) $(SERVICE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
+$(SERVICE_DIR)/$(GNUSTEP_TARGET_LDIR):
+	$(ECHO_CREATING)$(MKDIRS) $(SERVICE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
 
 # Allow the gui library to redefine make_services to use its local one
@@ -87,8 +89,8 @@ ifeq ($(GNUSTEP_MAKE_SERVICES),)
   GNUSTEP_MAKE_SERVICES = make_services
 endif
 
-$(SERVICE_DIR_NAME)/Resources/Info-gnustep.plist: \
-	$(SERVICE_DIR_NAME)/Resources $(GNUSTEP_INSTANCE)Info.plist 
+$(SERVICE_DIR)/Resources/Info-gnustep.plist: \
+	$(SERVICE_DIR)/Resources $(GNUSTEP_INSTANCE)Info.plist 
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  cat $(GNUSTEP_INSTANCE)Info.plist; \
@@ -104,7 +106,7 @@ $(SERVICE_INSTALL_DIR):
 
 internal-service-install_:: shared-instance-bundle-install
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(SERVICE_INSTALL_DIR)/$(SERVICE_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(SERVICE_INSTALL_DIR)/$(SERVICE_FILE_NAME)$(END_ECHO)
 endif
 
 internal-service-uninstall_:: shared-instance-bundle-uninstall

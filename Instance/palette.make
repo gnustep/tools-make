@@ -55,27 +55,29 @@ endif
 #	shared_libext=$(SHARED_LIBEXT))
 
 PALETTE_DIR_NAME = $(GNUSTEP_INSTANCE).palette
-PALETTE_FILE = $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
+PALETTE_DIR = $(GNUSTEP_BUILD_DIR)/$(PALETTE_DIR_NAME)
+PALETTE_FILE_NAME = $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(PALETTE_NAME)
+PALETTE_FILE = $(GNUSTEP_BUILD_DIR)/$(PALETTE_FILE_NAME)
 
 ifeq ($(PALETTE_INSTALL_DIR),)
   PALETTE_INSTALL_DIR = $(GNUSTEP_PALETTES)
 endif
 
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(PALETTE_DIR_NAME)/Resources
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(PALETTE_DIR)/Resources
 GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(PALETTE_DIR_NAME)
 GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(PALETTE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
-                        $(PALETTE_DIR_NAME)/Resources \
-                        $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                        $(PALETTE_DIR)/Resources \
+                        $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR) \
                         $(PALETTE_FILE) \
-                        $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist \
-                        $(PALETTE_DIR_NAME)/Resources/palette.table \
+                        $(PALETTE_DIR)/Resources/Info-gnustep.plist \
+                        $(PALETTE_DIR)/Resources/palette.table \
                         shared-instance-bundle-all
 
-$(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
+$(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
+	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
@@ -95,7 +97,7 @@ ifeq ($(PALETTE_ICON),)
   PALETTE_ICON = $(GNUSTEP_INSTANCE)
 endif
 
-$(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist: $(PALETTE_DIR_NAME)/Resources
+$(PALETTE_DIR)/Resources/Info-gnustep.plist: $(PALETTE_DIR)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
@@ -105,7 +107,7 @@ $(PALETTE_DIR_NAME)/Resources/Info-gnustep.plist: $(PALETTE_DIR_NAME)/Resources
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
-$(PALETTE_DIR_NAME)/Resources/palette.table: $(PALETTE_DIR_NAME)/Resources
+$(PALETTE_DIR)/Resources/palette.table: $(PALETTE_DIR)/Resources
 	$(ECHO_CREATING)(echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  Class = \"$(PRINCIPAL_CLASS)\";"; \
@@ -123,7 +125,7 @@ $(PALETTE_INSTALL_DIR):
 
 internal-palette-install_:: shared-instance-bundle-install
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(PALETTE_INSTALL_DIR)/$(PALETTE_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(PALETTE_INSTALL_DIR)/$(PALETTE_FILE_NAME)$(END_ECHO)
 endif
 
 internal-palette-uninstall_:: shared-instance-bundle-uninstall

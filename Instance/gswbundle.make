@@ -94,22 +94,24 @@ internal-gswbundle-all_:: $(GNUSTEP_OBJ_DIR) \
                           build-bundle
 
 GSWBUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(GSWBUNDLE_EXTENSION))
-GSWBUNDLE_FILE = \
+GSWBUNDLE_DIR = $(GNUSTEP_BUILD_DIR)/$(GSWBUNDLE_DIR_NAME)
+GSWBUNDLE_FILE_NAME = \
     $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
-GSWBUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/Resources/$(d))
-GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWBUNDLE_DIR_NAME)/Resources/WebServer/$(d))
+GSWBUNDLE_FILE = $(GNUSTEP_BUILD_DIR)/$(GSWBUNDLE_FILE_NAME)
+GSWBUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(GSWBUNDLE_DIR)/Resources/$(d))
+GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWBUNDLE_DIR)/Resources/WebServer/$(d))
 
 ifeq ($(strip $(LANGUAGES)),)
   LANGUAGES="English"
 endif
 
 
-build-bundle-dir:: $(GSWBUNDLE_DIR_NAME)/Resources \
-                   $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+build-bundle-dir:: $(GSWBUNDLE_DIR)/Resources \
+                   $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
                    $(GSWBUNDLE_RESOURCE_DIRS)
 
-$(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
-	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
+$(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
+	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
 $(GSWBUNDLE_RESOURCE_DIRS):
 	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_RESOURCE_DIRS)$(END_ECHO)
@@ -128,10 +130,10 @@ $(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 			$(OBJ_FILES_TO_LINK) \
 	                $(ALL_GSWBUNDLE_LIBS)$(END_ECHO)
 
-gswbundle-components :: $(GSWBUNDLE_DIR_NAME)
+gswbundle-components :: $(GSWBUNDLE_DIR)
 ifneq ($(strip $(COMPONENTS)),)
 	@(echo "Linking components into the bundle wrapper..."; \
-        cd $(GSWBUNDLE_DIR_NAME)/Resources; \
+        cd $(GSWBUNDLE_DIR)/Resources; \
         for component in $(COMPONENTS); do \
 	  if [ -d ../../$$component ]; then \
 	    $(LN_S) -f ../../$$component ./;\
@@ -152,20 +154,20 @@ ifneq ($(strip $(COMPONENTS)),)
 	done)
 endif
 
-gswbundle-resource-files:: $(GSWBUNDLE_DIR_NAME)/bundle-info.plist \
-                           $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+gswbundle-resource-files:: $(GSWBUNDLE_DIR)/bundle-info.plist \
+                           $(GSWBUNDLE_DIR)/Resources/Info-gnustep.plist
 ifneq ($(strip $(RESOURCE_FILES)),)
 	@(echo "Linking resources into the bundle wrapper..."; \
-	cd $(GSWBUNDLE_DIR_NAME)/Resources/; \
+	cd $(GSWBUNDLE_DIR)/Resources/; \
 	for ff in $(RESOURCE_FILES); do \
 	  $(LN_S) -f ../../$$ff .;\
 	done)
 endif
 
-gswbundle-localized-resource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+gswbundle-localized-resource-files:: $(GSWBUNDLE_DIR)/Resources/Info-gnustep.plist
 ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	@(echo "Linking localized resources into the bundle wrapper..."; \
-	cd $(GSWBUNDLE_DIR_NAME)/Resources; \
+	cd $(GSWBUNDLE_DIR)/Resources; \
 	for l in $(LANGUAGES); do \
 	  if [ -d ../../$$l.lproj ]; then \
 	    $(MKDIRS) $$l.lproj; \
@@ -185,21 +187,21 @@ endif
 gswbundle-webresource-dir::
 	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_WEBSERVER_RESOURCE_DIRS)$(END_ECHO)
 
-gswbundle-webresource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/WebServer \
+gswbundle-webresource-files:: $(GSWBUNDLE_DIR)/Resources/WebServer \
                               gswbundle-webresource-dir
 ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking webserver resources into the application wrapper..."; \
-	cd $(GSWBUNDLE_DIR_NAME)/Resources/WebServer; \
+	cd $(GSWBUNDLE_DIR)/Resources/WebServer; \
 	for ff in $(WEBSERVER_RESOURCE_FILES); do \
 	  $(LN_S) -f ../../WebServerResources/$$ff .;\
 	done)
 endif
 
-gswbundle-localized-webresource-files:: $(GSWBUNDLE_DIR_NAME)/Resources/WebServer \
+gswbundle-localized-webresource-files:: $(GSWBUNDLE_DIR)/Resources/WebServer \
                                         gswbundle-webresource-dir
 ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking localized web resources into the application wrapper..."; \
-	cd $(GSWBUNDLE_DIR_NAME)/Resources/WebServer; \
+	cd $(GSWBUNDLE_DIR)/Resources/WebServer; \
 	for l in $(LANGUAGES); do \
 	  if [ -d ../../WebServerResources/$$l.lproj ]; then \
 	    $(MKDIRS) $$l.lproj; \
@@ -224,12 +226,12 @@ ifeq ($(PRINCIPAL_CLASS),)
   PRINCIPAL_CLASS = $(GNUSTEP_INSTANCE)
 endif
 
-$(GSWBUNDLE_DIR_NAME)/bundle-info.plist: $(GSWBUNDLE_DIR_NAME)
-	@(cd $(GSWBUNDLE_DIR_NAME); $(LN_S) -f ../bundle-info.plist .)
+$(GSWBUNDLE_DIR)/bundle-info.plist: $(GSWBUNDLE_DIR)
+	@(cd $(GSWBUNDLE_DIR); $(LN_S) -f ../bundle-info.plist .)
 
 HAS_GSWCOMPONENTS = $($(GNUSTEP_INSTANCE)_HAS_GSWCOMPONENTS)
 
-$(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR_NAME)/Resources
+$(GSWBUNDLE_DIR)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
@@ -238,20 +240,20 @@ $(GSWBUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(GSWBUNDLE_DIR_NAME)/Resour
 	  fi; \
 	  echo "}") >$@$(END_ECHO)
 
-$(GSWBUNDLE_DIR_NAME)/Resources:
+$(GSWBUNDLE_DIR)/Resources:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-$(GSWBUNDLE_DIR_NAME)/Resources/WebServer:
+$(GSWBUNDLE_DIR)/Resources/WebServer:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 internal-gswbundle-install_:: $(GSWBUNDLE_INSTALL_DIR) shared-instance-headers-install
 	$(ECHO_INSTALLING)rm -rf $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME); \
-	$(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) ch --exclude=CVS --to-stdout $(GSWBUNDLE_DIR_NAME)) | (cd $(GSWBUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_DIR_NAME)$(END_ECHO)
 endif
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_FILE_NAME)$(END_ECHO)
 endif
 
 $(GSWBUNDLE_INSTALL_DIR)::

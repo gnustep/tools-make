@@ -25,18 +25,20 @@
 #
 
 #
-#  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH : the path to the
-#  local resource bundle (this might be a subdirectory of the actual
-#  bundle directory).  Resource files will be copied into this path.
-#  For example, for a normal bundle it would be
-#  $(BUNDLE_DIR_NAME)/Resources; for an application it would be
-#  $(APP_DIR_NAME)/Resources; for a library or a tool,
-#  Resources/$(GNUSTEP_INSTANCE).  This variable is used during build,
-#  to copy the resources in place.
+#  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH : the path to the local
+#  resource bundle (this might be a subdirectory of the actual bundle
+#  directory).  This path must include GNUSTEP_BUILD_DIR.  Resource
+#  files will be copied into this path.  For example, for a normal
+#  bundle it would be $(BUNDLE_DIR)/Resources; for an application it
+#  would be $(APP_DIR)/Resources; for a library or a tool,
+#  $(GNUSTEP_BUILD_DIR)/Resources/$(GNUSTEP_INSTANCE).  This variable
+#  is used during build, to copy the resources in place.
+#
+#  GNUSTEP_BUILD_DIR : Implicitly used to find the bundle.
 #
 #  GNUSTEP_SHARED_BUNDLE_MAIN_PATH : the path to the top level bundle
-#  directory to install, relative to the current dir during build
-#  (/installation dir when installed).  For example, for a normal
+#  directory to install, relative to GNUSTEP_BUILD_DIR during build
+#  (and installation dir when installed).  For example, for a normal
 #  bundle it would be $(BUNDLE_DIR_NAME); for an application it would
 #  be $(APP_DIR_NAME); for a library or a tool,
 #  Resources/$(GNUSTEP_INSTANCE).
@@ -362,7 +364,7 @@ endif
 # this feature, but it was requested by some of our users.
 shared-instance-bundle-install:: $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)
 	$(ECHO_INSTALLING_BUNDLE)rm -rf $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
-	$(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH) \
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
 	  | (cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
@@ -371,7 +373,7 @@ endif
 
 shared-instance-bundle-copy_into_dir::
 	$(ECHO_COPYING_BUNDLE_INTO_DIR)rm -rf $(COPY_INTO_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
-	$(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH) \
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chf - $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
 	  | (cd $(COPY_INTO_DIR); $(TAR) xf -)$(END_ECHO)
 
 shared-instance-bundle-uninstall::

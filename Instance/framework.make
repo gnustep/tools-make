@@ -89,7 +89,9 @@ ifeq ($(DEPLOY_WITH_CURRENT_VERSION),)
 endif
 
 FRAMEWORK_DIR_NAME = $(GNUSTEP_INSTANCE).framework
+FRAMEWORK_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_DIR_NAME)
 FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
+FRAMEWORK_VERSION_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
 
 # This is not doing much at the moment, but at least is defining
 # HEADER_FILES, HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR in the
@@ -118,17 +120,20 @@ ifeq ($(FOUNDATION_LIB),gnu)
   # On GNUstep, build our dummy class to store information which
   # gnustep-base can find at run time
   DUMMY_FRAMEWORK = NSFramework_$(GNUSTEP_INSTANCE)
-  DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES)/$(DUMMY_FRAMEWORK).m
+  DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES_DIR)/$(DUMMY_FRAMEWORK).m
   DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
 endif
 
-FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR_NAME)/Headers/,$(HEADER_FILES))
+FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
 
 ifneq ($(BUILD_DLL),yes)
 
 FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/Current
+FRAMEWORK_CURRENT_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_DIR_NAME)
 FRAMEWORK_LIBRARY_DIR_NAME := $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+FRAMEWORK_LIBRARY_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
 FRAMEWORK_CURRENT_LIBRARY_DIR_NAME := $(FRAMEWORK_CURRENT_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+FRAMEWORK_CURRENT_LIBRARY_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)
 
 FRAMEWORK_LIBRARY_FILE = lib$(GNUSTEP_INSTANCE)$(SHARED_LIBEXT)
 FRAMEWORK_LIBRARY_FILE_EXT     = $(SHARED_LIBEXT)
@@ -136,12 +141,14 @@ VERSION_FRAMEWORK_LIBRARY_FILE = $(FRAMEWORK_LIBRARY_FILE).$(VERSION)
 SOVERSION             = $(word 1,$(subst ., ,$(VERSION)))
 SONAME_FRAMEWORK_FILE = $(FRAMEWORK_LIBRARY_FILE).$(SOVERSION)
 
-FRAMEWORK_FILE := $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)
+FRAMEWORK_FILE_NAME := $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)
+FRAMEWORK_FILE := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_FILE_NAME)
 
 else # BUILD_DLL
 
-FRAMEWORK_FILE     = $(GNUSTEP_INSTANCE)$(FRAMEWORK_NAME_SUFFIX)$(DLL_LIBEXT)
-FRAMEWORK_FILE_EXT = $(DLL_LIBEXT)
+FRAMEWORK_FILE_NAME = $(GNUSTEP_INSTANCE)$(FRAMEWORK_NAME_SUFFIX)$(DLL_LIBEXT)
+FRAMEWORK_FILE      = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_FILE_NAME)
+FRAMEWORK_FILE_EXT  = $(DLL_LIBEXT)
 DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
 DLL_EXP_LIB      = $(GNUSTEP_INSTANCE)$(FRAMEWORK_NAME_SUFFIX)$(SHARED_LIBEXT)
 DLL_EXP_DEF      = $(GNUSTEP_INSTANCE)$(FRAMEWORK_NAME_SUFFIX).def
@@ -171,14 +178,14 @@ endif
 # Now prepare the variables which are used by target-dependent commands
 # defined in target.make
 #
-LIB_LINK_OBJ_DIR = $(FRAMEWORK_LIBRARY_DIR_NAME)
+LIB_LINK_OBJ_DIR = $(FRAMEWORK_LIBRARY_DIR)
 LIB_LINK_VERSION_FILE = $(VERSION_FRAMEWORK_LIBRARY_FILE)
 LIB_LINK_SONAME_FILE = $(SONAME_FRAMEWORK_FILE)
 LIB_LINK_FILE = $(FRAMEWORK_LIBRARY_FILE)
 LIB_LINK_INSTALL_NAME = $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 LIB_LINK_INSTALL_DIR = $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
 
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR_NAME)/Resources
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
@@ -187,15 +194,15 @@ internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
 internal-framework-build-headers:: build-framework-dirs \
                                    $(FRAMEWORK_HEADER_FILES)
 
-build-framework-dirs:: $(DERIVED_SOURCES) \
-                       $(FRAMEWORK_LIBRARY_DIR_NAME) \
-                       $(FRAMEWORK_VERSION_DIR_NAME)/Headers \
-                       $(FRAMEWORK_VERSION_DIR_NAME)/Resources \
+build-framework-dirs:: $(DERIVED_SOURCES_DIR) \
+                       $(FRAMEWORK_LIBRARY_DIR) \
+                       $(FRAMEWORK_VERSION_DIR)/Headers \
+                       $(FRAMEWORK_VERSION_DIR)/Resources \
                        $(FRAMEWORK_RESOURCE_DIRS)
 ifeq ($(DEPLOY_WITH_CURRENT_VERSION),yes)
-	$(ECHO_NOTHING)rm -f $(FRAMEWORK_DIR_NAME)/Versions/Current$(END_ECHO)
+	$(ECHO_NOTHING)rm -f $(FRAMEWORK_DIR)/Versions/Current$(END_ECHO)
 endif
-	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR_NAME)/Versions; \
+	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
 	  if [ ! -L "Current" ]; then \
 	    rm -f Current; \
 	    $(LN_S) $(CURRENT_VERSION_NAME) Current; \
@@ -210,7 +217,7 @@ endif
 	    $(LN_S) Versions/Current/Headers Headers; \
 	  fi$(END_ECHO)
 ifneq ($(HEADER_FILES),)
-	$(ECHO_NOTHING)cd $(DERIVED_SOURCES); \
+	$(ECHO_NOTHING)cd $(DERIVED_SOURCES_DIR); \
 	  if [ ! -L "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    rm -f ./$(HEADER_FILES_INSTALL_DIR); \
 	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
@@ -218,13 +225,13 @@ ifneq ($(HEADER_FILES),)
 	  fi$(END_ECHO)
 endif
 
-$(FRAMEWORK_LIBRARY_DIR_NAME):
+$(FRAMEWORK_LIBRARY_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-$(FRAMEWORK_VERSION_DIR_NAME)/Headers:
+$(FRAMEWORK_VERSION_DIR)/Headers:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-$(DERIVED_SOURCES):
+$(DERIVED_SOURCES_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
@@ -233,7 +240,7 @@ ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	                    $(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
+	                    $(FRAMEWORK_VERSION_DIR)/Headers/$$file ; \
 	  fi; \
 	done$(END_ECHO)
 endif
@@ -261,7 +268,7 @@ OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # with XXXX, and prints the result. '-n' disables automatic printing
 # for portability, so we are sure we only print what we want on all
 # platforms.
-$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(OBJ_FILES_TO_LINK) GNUmakefile
+$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR) $(OBJ_FILES_TO_LINK) GNUmakefile
 	$(ECHO_CREATING) classes=""; \
 	for f in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
 	  if [ "$$f" != "__dummy__" ]; then \
@@ -326,10 +333,10 @@ ifeq ($(FOUNDATION_LIB), apple)
 # top-level symlink xxx.framework/xxx ---> the framework shared
 # library
 
-OPTIONAL_TOP_LEVEL_LINK = $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
+OPTIONAL_TOP_LEVEL_LINK = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 
-$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
-	$(ECHO_NOTHING)cd $(GNUSTEP_INSTANCE).framework; \
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework; \
 	rm -f $(GNUSTEP_INSTANCE); \
 	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE)$(END_ECHO)
 else
@@ -338,8 +345,8 @@ endif
 
 build-framework:: $(FRAMEWORK_FILE) \
                   shared-instance-bundle-all \
-                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist \
-                  $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist \
+                  $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
+                  $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist \
                   $(OPTIONAL_TOP_LEVEL_LINK)
 
 
@@ -373,7 +380,7 @@ endif
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
 # MacOSX-S frameworks
-$(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
+$(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -381,7 +388,7 @@ $(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR_NAME
 	  echo "}") >$@$(END_ECHO)
 
 # GNUstep frameworks
-$(FRAMEWORK_VERSION_DIR_NAME)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR_NAME)/Resources
+$(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -399,12 +406,12 @@ internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_HEADERS)
 	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
-	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) cf - $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
 endif
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE_NAME)$(END_ECHO)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
@@ -441,12 +448,12 @@ else
 
 internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR)
 	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
-	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) cf - $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
 endif
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE_NAME)$(END_ECHO)
 endif
 
 endif
@@ -458,12 +465,12 @@ internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_HEADERS) \
                       $(DLL_INSTALLATION_DIR)
 	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
-	$(TAR) cf - $(FRAMEWORK_DIR_NAME) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) cf - $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
 endif
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_FILE_NAME)$(END_ECHO)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	if [ "$(HEADER_FILES)" != "" ]; then \
@@ -482,18 +489,18 @@ ifneq ($(CHOWN_TO),)
 	fi$(END_ECHO)
 endif
 	$(ECHO_NOTHING)cd $(DLL_INSTALLATION_DIR); \
-	if test -r "$(FRAMEWORK_FILE)"; then \
-	  rm -f $(FRAMEWORK_FILE); \
+	if test -r "$(FRAMEWORK_FILE_NAME)"; then \
+	  rm -f $(FRAMEWORK_FILE_NAME); \
 	fi$(END_ECHO)
 	$(ECHO_NOTHING)$(INSTALL_PROGRAM) -m 0755 $(FRAMEWORK_FILE) \
-          $(DLL_INSTALLATION_DIR)/$(FRAMEWORK_FILE)$(END_ECHO)
+          $(DLL_INSTALLATION_DIR)/$(FRAMEWORK_FILE_NAME)$(END_ECHO)
 
 endif
 
 $(DLL_INSTALLATION_DIR)::
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-$(FRAMEWORK_DIR_NAME)/Resources::
+$(FRAMEWORK_DIR)/Resources::
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 $(FRAMEWORK_INSTALL_DIR)::
@@ -521,7 +528,7 @@ internal-framework-uninstall_::
 #
 internal-framework-clean::
 	$(ECHO_NOTHING)rm -rf $(GNUSTEP_OBJ_DIR) $(PSWRAP_C_FILES) $(PSWRAP_H_FILES) \
-	       $(FRAMEWORK_DIR_NAME) $(DERIVED_SOURCES)$(END_ECHO)
+	       $(FRAMEWORK_DIR) $(DERIVED_SOURCES_DIR)$(END_ECHO)
 
 internal-framework-distclean::
 	$(ECHO_NOTHING)rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \

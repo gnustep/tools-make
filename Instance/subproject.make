@@ -40,7 +40,7 @@ DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
 DLL_DEF_FILES = $(SUBPROJECT_DEF_FILES) $(DLL_DEF)
 
 ifneq ($(strip $(DLL_DEF_FILES)),)
-DLL_DEF_INP = $(GNUSTEP_INSTANCE).inp
+DLL_DEF_INP = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).inp
 
 $(DLL_DEF_INP): $(DLL_DEF_FILES)
 	$(ECHO_CREATING)cat $(DLL_DEF_FILES) > $@$(END_ECHO)
@@ -51,10 +51,11 @@ endif
 internal-subproject-clean::
 	$(ECHO_NOTHING)rm -rf $(DLL_DEF_INP)$(END_ECHO)
 
-internal-subproject-all_:: subproject.def
+internal-subproject-all_:: $(GNUSTEP_BUILD_DIR)/subproject.def
 
-subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF) $(DLL_DEF_INP)
-	$(ECHO_NOTHING)$(DLLTOOL) $(DLL_DEF_FLAG) --output-def subproject.def $(OBJ_FILES_TO_LINK)$(END_ECHO)
+$(GNUSTEP_BUILD_DIR)/subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF) \
+                                     $(DLL_DEF_INP)
+	$(ECHO_NOTHING)$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)$(END_ECHO)
 
 endif
 
@@ -65,14 +66,15 @@ $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
 #
 # Build-header target for framework subprojects
 #
-# If we are called with OWNING_PROJECT_HEADER_DIR which is not empty,
+# If we are called with OWNING_PROJECT_HEADER_DIR_NAME which is not empty,
 # we need to copy our headers into that directory during the
 # build-headers stage, and to disable installation/uninstallation of
 # headers.
 #
-ifneq ($(OWNING_PROJECT_HEADER_DIR),)
+ifneq ($(OWNING_PROJECT_HEADER_DIR_NAME),)
 .PHONY: internal-subproject-build-headers
 
+OWNING_PROJECT_HEADER_DIR = $(GNUSTEP_BUILD_DIR)/$(OWNING_PROJECT_HEADER_DIR_NAME)
 HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 OWNING_PROJECT_HEADER_FILES = $(patsubst %.h,$(OWNING_PROJECT_HEADER_DIR)/%.h,$(HEADER_FILES))
 

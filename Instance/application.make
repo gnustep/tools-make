@@ -69,6 +69,7 @@ ALL_GUI_LIBS =								     \
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
+APP_DIR = $(GNUSTEP_BUILD_DIR)/$(APP_DIR_NAME)
 
 #
 # Now include the standard resource-bundle routines from Shared/bundle.make
@@ -76,23 +77,25 @@ APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
 
 ifneq ($(FOUNDATION_LIB), apple)
   # GNUstep bundle
-  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Resources
-  APP_INFO_PLIST_FILE = $(APP_DIR_NAME)/Resources/Info-gnustep.plist
+  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR)/Resources
+  APP_INFO_PLIST_FILE = $(APP_DIR)/Resources/Info-gnustep.plist
 else
   # OSX bundle
-  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR_NAME)/Contents/Resources
-  APP_INFO_PLIST_FILE = $(APP_DIR_NAME)/Contents/Info.plist
+  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(APP_DIR)/Contents/Resources
+  APP_INFO_PLIST_FILE = $(APP_DIR)/Contents/Info.plist
 endif
 GNUSTEP_SHARED_BUNDLE_MAIN_PATH = $(APP_DIR_NAME)
 GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(APP_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 ifneq ($(FOUNDATION_LIB), apple)
-APP_FILE = \
-    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+APP_FILE_NAME = $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 else
-APP_FILE = $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+APP_FILE_NAME = $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 endif
+
+APP_FILE = $(GNUSTEP_BUILD_DIR)/$(APP_FILE_NAME)
+
 
 #
 # Internal targets
@@ -103,10 +106,10 @@ $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	      $(ALL_GUI_LIBS)$(END_ECHO)
 ifeq ($(FOUNDATION_LIB), apple)
 	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-		>$(APP_DIR_NAME)/library_paths.openapp$(END_ECHO)
+		>$(APP_DIR)/library_paths.openapp$(END_ECHO)
 else
 	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-	        >$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
+	        >$(APP_DIR)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
 endif
 
 #
@@ -115,35 +118,35 @@ endif
 
 ifeq ($(FOUNDATION_LIB), apple)
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
-                    $(APP_DIR_NAME) \
+                    $(APP_DIR) \
                     $(APP_FILE) \
                     shared-instance-bundle-all \
                     $(APP_INFO_PLIST_FILE)
 
-$(APP_DIR_NAME):
+$(APP_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 else
 
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
-                    $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR) \
+                    $(APP_DIR)/$(GNUSTEP_TARGET_LDIR) \
                     $(APP_FILE) \
                     internal-application-build-template \
-                    $(APP_DIR_NAME)/Resources \
+                    $(APP_DIR)/Resources \
                     $(APP_INFO_PLIST_FILE) \
-                    $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop \
+                    $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop \
                     shared-instance-bundle-all
 
-$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
+$(APP_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 ifeq ($(GNUSTEP_FLATTENED),)
-internal-application-build-template: $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)
+internal-application-build-template: $(APP_DIR)/$(GNUSTEP_INSTANCE)
 
-$(APP_DIR_NAME)/$(GNUSTEP_INSTANCE):
+$(APP_DIR)/$(GNUSTEP_INSTANCE):
 	$(ECHO_NOTHING)cp $(GNUSTEP_MAKEFILES)/executable.template \
-	   $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE); \
-	chmod a+x $(APP_DIR_NAME)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+	   $(APP_DIR)/$(GNUSTEP_INSTANCE); \
+	chmod a+x $(APP_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 else
 internal-application-build-template:
 
@@ -169,11 +172,11 @@ MAIN_MARKUP_FILE = $(strip $(subst .gsmarkup,,$($(GNUSTEP_INSTANCE)_MAIN_MARKUP_
 # inside GNUSTEP_STAMP_DIR, and rebuild Info.plist iff
 # GNUSTEP_STAMP_STRING changes.
 GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(APPLICATION_ICON)-$(MAIN_MODEL_FILE)-$(MAIN_MARKUP_FILE)
-GNUSTEP_STAMP_DIR = $(APP_DIR_NAME)
+GNUSTEP_STAMP_DIR = $(APP_DIR)
 
 ifneq ($(FOUNDATION_LIB), apple)
 # Only for efficiency
-$(GNUSTEP_STAMP_DIR): $(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+$(GNUSTEP_STAMP_DIR): $(APP_DIR)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
@@ -260,9 +263,9 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	  fi$(END_ECHO)
 endif
 
-$(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop: \
-		$(APP_DIR_NAME)/Resources/Info-gnustep.plist
-	$(ECHO_CREATING)pl2link $^ $(APP_DIR_NAME)/Resources/$(GNUSTEP_INSTANCE).desktop$(END_ECHO)
+$(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop: \
+		$(APP_DIR)/Resources/Info-gnustep.plist
+	$(ECHO_CREATING)pl2link $^ $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop$(END_ECHO)
 
 
 internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir
@@ -274,7 +277,7 @@ $(APP_INSTALL_DIR):
 
 internal-app-install_:: shared-instance-bundle-install
 ifeq ($(strip),yes)
-	$(ECHO_STRIPPING)$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE)$(END_ECHO)
+	$(ECHO_STRIPPING)$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE_NAME)$(END_ECHO)
 endif
 
 internal-app-uninstall_:: shared-instance-bundle-uninstall
