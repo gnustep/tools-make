@@ -92,6 +92,10 @@ INSTANCE_MAKE_FILES = \
 
 INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make strings.make
 
+INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
+                          javadoc.make latex.make texi.make
+
+
 all: generated-files which_lib$(EXEEXT) user_home$(EXEEXT)
 
 # Please note that you should use a bit of care in the following rule,
@@ -126,7 +130,8 @@ install: all
 		$(makedir)/Auxiliary \
 		$(makedir)/Master \
 		$(makedir)/Instance \
-		$(makedir)/Instance/Shared)
+		$(makedir)/Instance/Shared \
+		$(makedir)/Instance/Documentation)
 	 $(EC)(echo "Installing gnustep-make support software"; \
 	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
 	     $(makedir)/$(GNUSTEP_TARGET_DIR); \
@@ -158,6 +163,10 @@ install: all
 	   for f in $(INSTANCE_SHARED_MAKE_FILES); do \
 	     $(INSTALL_DATA) $(srcdir)/Instance/Shared/$$f \
 	                     $(makedir)/Instance/Shared; \
+	   done; \
+	   for f in $(INSTANCE_DOC_MAKE_FILES); do \
+	     $(INSTALL_DATA) $(srcdir)/Instance/Documentation/$$f \
+	                     $(makedir)/Instance/Documentation; \
 	   done; \
 	   $(INSTALL_DATA) executable.template $(makedir); \
 	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR))
