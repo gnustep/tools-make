@@ -1,3 +1,9 @@
+Mon Oct  8 14:06:30 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* service.make (CPP_FLAGS): Add the DLL flags for ALL_GUI_LIBS if
+	WITH_DLL is yes (patch prepared with Stephen Brandon
+	<stephen@brandonitconsulting.co.uk>).
+	
 Mon Oct  1 03:16:05 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Warning - backwards incompatible change in API.
