@@ -1,3 +1,11 @@
+Wed Feb 27 16:51:34 2002  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* subproject.make: Broken into Master and Instance.
+	* Instance/subproject.make: New file.
+	* Master/subproject.make: New file.
+	* GNUmakefile.in (MASTER_MAKE_FILES): Added subproject.make.
+	(INSTANCE_MAKE_FILES): Added subproject.make.
+
 Wed Feb 27 16:38:36 2002  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Master/rules.make (PALETTE_ICON): Do not pass it to submakes.
