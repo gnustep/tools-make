@@ -303,7 +303,6 @@ esac
 saved_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -x objective-c"
 saved_LIBS="$LIBS"
-objc_thread_lib=""
 if test $host_os = linux-gnu; then
   LIBS="-lobjc -lpthread"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
@@ -323,9 +322,10 @@ elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
 	objc_threaded="", objc_threaded="-lpcthread")
   fi
 else
-  LIBS="-lobjc $LIBS $extra_LIBS"
-  AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lthread",
-	objc_threaded="", objc_threaded="-lthread")
+  LIBS="-lobjc $LIBS -lthread $extra_LIBS"
+  AC_TRY_RUN([#include "config_thread.m"], 
+	objc_threaded="-lthread $extra_LIBS",
+	objc_threaded="", objc_threaded="")
 fi
 LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
@@ -334,7 +334,7 @@ if test x"$objc_threaded" = x""; then
 else
   AC_MSG_RESULT(yes)
 fi
-ac_cv_objc_threaded=$objc_threaded
+ac_cv_objc_threaded="$objc_threaded"
 AC_SUBST(objc_threaded)
 AC_SUBST(ac_cv_objc_threaded)
 

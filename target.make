@@ -56,7 +56,7 @@ ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
   else
     INTERNAL_CFLAGS    = -D_REENTRANT
     INTERNAL_OBJCFLAGS = -D_REENTRANT
-    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -ldl -lm -lposix4
+    TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) $(objc_threaded) -lsocket -lnsl -ldl -lm
   endif
 endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)

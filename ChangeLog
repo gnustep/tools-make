@@ -1,3 +1,12 @@
+2001-03-13  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in (objc_thread_lib): Correct test for threading
+	on non GNU/Linux, no bsd systems - actually add -lthread to link
+	line. Don't set -lthread when cross-compiling. Also add extra_LIBS
+	to objc_thread_lib.
+	* target.make (solaris/TARGET_SYSTEM_LIBS): Don't add posix4 (should
+	be in objc_thread_lib if needed.
+
 2001-03-10  Adam Fedor  <fedor@gnu.org>
 
 	* Version 0.9.2
