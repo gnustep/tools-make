@@ -87,12 +87,12 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 MASTER_MAKE_FILES = \
         aggregate.make source-distribution.make rpm.make rules.make \
         application.make bundle.make clibrary.make ctool.make \
-        java.make java-tool.make
+        library.make java.make java-tool.make
 
 INSTANCE_MAKE_FILES = \
         rules.make \
         application.make bundle.make clibrary.make ctool.make \
-        java.make java-tool.make
+        library.make java.make java-tool.make
 
 INSTANCE_SHARED_MAKE_FILES = headers.make java.make
 
@@ -177,6 +177,18 @@ install: all
 	$(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share
 	$(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR)
 
+#
+# NICOLA - Need to clean the following message and print it at the end
+# of the install rule
+#
+#	@echo ""
+#	@echo "IMPORTANT: you need to execute a shell initialization script"
+#	@echo "before you can use gnustep-make.  The command to run the shell"
+#	@echo "initialization script is:"
+#	@echo ". $(makedir)/GNUstep.sh"
+#	@echo "(be careful to put the space after the dot)"
+#	@echo "Please run it now."
+#	@echo ""
 
 uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib$(EXEEXT)
