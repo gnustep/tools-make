@@ -229,12 +229,12 @@ $(DERIVED_SOURCES) :
 
 $(FRAMEWORK_HEADER_FILES):: $(HEADER_FILES)
 ifneq ($(HEADER_FILES),)
-	  for file in $(HEADER_FILES) __done; do \
-	    if [ $$file != __done ]; then \
-	      $(INSTALL_DATA) ./$$file \
-	                      $(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
-	    fi; \
-	  done
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) ./$$file \
+	                    $(FRAMEWORK_VERSION_DIR_NAME)/Headers/$$file ; \
+	  fi; \
+	done
 endif
 
 $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES) GNUmakefile
