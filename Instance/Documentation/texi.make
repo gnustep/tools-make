@@ -60,28 +60,29 @@ internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
 
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
+# If we don't have these programs, just don't build them but don't
+# abort the make. This allows projects to automatically build documentation
+# without worring that the build will crash if the user doesn't have the
+# doc programs. Also don't install them if they haven't been generated.
+
 $(GNUSTEP_INSTANCE).info: $(TEXI_FILES)
-	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) $(ADDITIONAL_MAKEINFO_FLAGS) \
+	-$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) $(ADDITIONAL_MAKEINFO_FLAGS) \
 		-o $@ $(GNUSTEP_INSTANCE).texi
 
 $(GNUSTEP_INSTANCE).dvi: $(TEXI_FILES)
-	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(ADDITIONAL_TEXI2DVI_FLAGS) \
+	-$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(ADDITIONAL_TEXI2DVI_FLAGS) \
 	        $(GNUSTEP_INSTANCE).texi
 
 $(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
-	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
+	-$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
 		$(GNUSTEP_INSTANCE).dvi -o $@
-
-# Some systems don't have GNUSTEP_TEXI2HTML.  Simply don't build the
-# HTML in these cases - but without aborting compilation.  Below, we
-# don't install the result if it doesn't exist.
 
 $(GNUSTEP_INSTANCE)_toc.html: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi
 
 $(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
-	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) $(ADDITIONAL_MAKETEXT_FLAGS) \
+	-$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) $(ADDITIONAL_MAKETEXT_FLAGS) \
 		-o $@ $(TEXT_MAIN)
 
 internal-doc-clean::
@@ -104,16 +105,20 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).tar.gz \
 	         $(GNUSTEP_INSTANCE)/*$(END_ECHO)
 
-# NB: Only install HTML if it has been generated
+# NB: Only install doc files if they have been generated
 
 # We install all info files in the same directory, which is
 # GNUSTEP_DOCUMENTATION_INFO.  TODO: I think we should run
 # install-info too - to keep up-to-date the dir index in that
 # directory.  
 internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
+	if [ -f $(GNUSTEP_INSTANCE).ps ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
-	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOCUMENTATION_INFO)
+	fi
+	if [ -f $(GNUSTEP_INSTANCE).info ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOCUMENTATION_INFO)
+	fi
 	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \

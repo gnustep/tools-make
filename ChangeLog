@@ -1,3 +1,8 @@
+2003-06-17  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/Documentation/texi.make: Don't abort make if
+	texi programs aren't available. Don't install if files not made.
+
 2003-06-16  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Add option to disable moving obsolete dirs
