@@ -64,6 +64,20 @@ $(BUNDLE_NAME):
 else
 # This part gets included the second time make is invoked.
 
+.PHONY: internal-bundle-all \
+        internal-bundle-clean \
+        internal-bundle-distclean \
+        internal-bundle-install \
+        internal-bundle-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        build-bundle-dir \
+        build-bundle \
+        build-macosx-bundle \
+        bundle-resource-files \
+        bundle-localized-resource-files 
+
+
 # On Solaris we don't need to specifies the libraries the bundle needs.
 # How about the rest of the systems? ALL_BUNDLE_LIBS is temporary empty.
 #ALL_BUNDLE_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
@@ -100,7 +114,8 @@ endif # WITH_DLL
 internal-bundle-all:: before-$(TARGET)-all \
                       $(GNUSTEP_OBJ_DIR) \
                       build-bundle-dir \
-                      build-bundle build-macosx-bundle \
+                      build-bundle \
+                      build-macosx-bundle \
                       after-$(TARGET)-all
 
 before-$(TARGET)-all::
@@ -111,12 +126,6 @@ BUNDLE_DIR_NAME := $(INTERNAL_bundle_NAME:=$(BUNDLE_EXTENSION))
 BUNDLE_FILE := \
     $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(INTERNAL_bundle_NAME)$(BUNDLE_OBJ_EXT)
 BUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(BUNDLE_DIR_NAME)/Resources/$(d))
-ifeq ($(strip $(RESOURCE_FILES)),)
-  override RESOURCE_FILES=""
-endif
-ifeq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
-  override LOCALIZED_RESOURCE_FILES=""
-endif
 ifeq ($(strip $(LANGUAGES)),)
   override LANGUAGES="English"
 endif
@@ -134,7 +143,9 @@ $(BUNDLE_DIR_NAME)/$(GNUSTEP_TARGET_LDIR):
 $(BUNDLE_RESOURCE_DIRS):
 	$(MKDIRS) $(BUNDLE_RESOURCE_DIRS)
 
-build-bundle:: $(BUNDLE_FILE) bundle-resource-files localized-bundle-resource-files
+build-bundle:: $(BUNDLE_FILE) \
+               bundle-resource-files \
+               bundle-localized-resource-files
 
 ifeq ($(WITH_DLL),yes)
 
@@ -159,27 +170,27 @@ endif # WITH_DLL
 
 bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info.plist \
                         $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
-	@(if [ "$(RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying resources into the bundle wrapper..."; \
-	  for f in "$(RESOURCE_FILES)"; do \
-	    cp -r $$f $(BUNDLE_DIR_NAME)/Resources; \
-	  done \
-	fi)
+ifneq ($(strip $(RESOURCE_FILES)),)
+	@(echo "Copying resources into the bundle wrapper..."; \
+	for f in "$(RESOURCE_FILES)"; do \
+	  cp -r $$f $(BUNDLE_DIR_NAME)/Resources; \
+	done)
+endif
 
-localized-bundle-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
-	@(if [ "$(LOCALIZED_RESOURCE_FILES)" != "" ]; then \
-	  echo "Copying localized resources into the bundle wrapper..."; \
-	  for l in $(LANGUAGES); do \
-	    if [ ! -f $$l.lproj ]; then \
-	      $(MKDIRS) $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
+bundle-localized-resource-files:: $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist
+ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
+	@(echo "Copying localized resources into the bundle wrapper..."; \
+	for l in $(LANGUAGES); do \
+	  if [ ! -f $$l.lproj ]; then \
+	    $(MKDIRS) $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
+	  fi; \
+	  for f in $(LOCALIZED_RESOURCE_FILES); do \
+	    if [ -f $$l.lproj/$$f ]; then \
+	      cp -r $$l.lproj/$$f $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
 	    fi; \
-	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        cp -r $$l.lproj/$$f $(BUNDLE_DIR_NAME)/Resources/$$l.lproj; \
-	      fi; \
-	    done; \
 	  done; \
-	fi)
+	done;
+endif
 
 ifeq ($(PRINCIPAL_CLASS),)
 override PRINCIPAL_CLASS = $(INTERNAL_bundle_NAME)
@@ -242,18 +253,18 @@ $(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist: $(BUNDLE_DIR_NAME)/Resources
 	  echo "}") >$@
 
 internal-bundle-install:: $(BUNDLE_INSTALL_DIR)
-	if [ "$(HEADER_FILES_INSTALL_DIR)" != "" ]; then \
-	  $(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR); \
-	  if [ "$(HEADER_FILES)" != "" ]; then \
-	    for file in $(HEADER_FILES) __done; do \
-	      if [ $$file != __done ]; then \
-	        $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-		 $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	      fi; \
-	    done; \
+ifneq ($(HEADER_FILES_INSTALL_DIR),)
+	$(MKDIRS) $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR);
+ifneq ($(HEADER_FILES),)
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
+	      $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
-        fi; \
-	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
+	done;
+endif
+endif
+	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME); \
 	$(TAR) cf - $(BUNDLE_DIR_NAME) | (cd $(BUNDLE_INSTALL_DIR); $(TAR) xf -)
 
 $(BUNDLE_DIR_NAME)/Resources:
@@ -263,13 +274,13 @@ $(BUNDLE_INSTALL_DIR):
 	$(MKDIRS) $@
 
 internal-bundle-uninstall::
-	if [ "$(HEADER_FILES)" != "" ]; then \
-	  for file in $(HEADER_FILES) __done; do \
-	    if [ $$file != __done ]; then \
-	      rm -rf $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
-	    fi; \
-	  done; \
-	fi; \
+ifneq ($(HEADER_FILES),)
+	for file in $(HEADER_FILES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -rf $(GNUSTEP_HEADERS)$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	  fi; \
+	done;
+endif
 	rm -rf $(BUNDLE_INSTALL_DIR)/$(BUNDLE_DIR_NAME)
 
 #

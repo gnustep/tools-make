@@ -1,3 +1,18 @@
+Mon Jul  9 14:32:37 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* bundle.make (.PHONY): Added.
+	(bundle-resource-files): Turned shell conditional into makefile
+	conditional; strip RESORCE_FILES.
+	(localized-bundle-resource-files): Idem.
+	(RESOURCE_FILES, LOCALIZED_RESOURCE_FILES): Do not override them
+	to "" if they contain only spaces.
+	(internal-bundle-install): Turned shell conditionals into makefile
+	conditionals.
+	(internal-bundle-uninstall): Idem.
+	(localized-bundle-resource-files): Renamed to
+	bundle-localized-resource-files for consistency with other
+	makefiles.
+	
 Mon Jul  9 12:49:02 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* application.make (.PHONY): Added.
