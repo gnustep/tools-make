@@ -541,13 +541,6 @@ ifeq ($(JAVADOC),)
   JAVADOC = $(JAVA_HOME)/bin/javadoc
 endif
 
-#
-# Flags useful for compilation
-#
-INTERNAL_JAVACFLAGS = -classpath ./:$(CLASSPATH)
-INTERNAL_JAVAHFLAGS = -classpath ./:$(CLASSPATH)
-#INTERNAL_JAVADOCFLAGS = 
-
 ## Local variables:
 ## mode: makefile
 ## End:

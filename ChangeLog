@@ -1,3 +1,14 @@
+Wed Jul  4 14:37:36 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make (INTERNAL_JAVACFLAGS, INTERNAL_JAVAHFLAGS): 
+	Removed.
+	* rules.make (INTERNAL_CLASSPATHFLAGS): New flags; add 
+	ADDITIONAL_CLASSPATH to the -classpath option as well.
+	(ALL_JAVACFLAGS, ALL_JAVAHFLAGS): Use INTERNAL_CLASSPATHFLAGS
+	rather than INTERNAL_JAVACFLAGS and INTERNAL_JAVAHFLAGS.
+	(ALL_JAVADOCFLAGS): Added INTERNAL_CLASSPATHFLAGS.
+	(%.build): Pass ADDITIONAL_CLASSPATH to subprocesses.
+	
 Fri Jun 29 14:53:51 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* Documentation/.latex2html-init: New file.
