@@ -41,6 +41,9 @@ endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -ldl -lm
 endif
+ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
+TARGET_SYSTEM_LIBS := $(CONFIG_SYSTEM_LIBS) -lm
+endif
 
 #
 # Specific settings for building shared libraries, static libraries,
