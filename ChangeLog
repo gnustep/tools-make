@@ -1,3 +1,9 @@
+Mon Dec  7  6:45:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	* openapp.in: Removed dependency on xargs - don't see how it could
+	have caused the recent problems reported of openapp silently failing
+	but it's a possibility.
+
 Wed Nov 25 16:25:09 1998  Adam Fedor  <fedor@doc.com>
 
 	* configure.in (ac_cv_library_combo): Take old value if not set.

@@ -76,6 +76,8 @@ case $app in
 	done;;
 esac
 
+IFS= " "
+
 if [ -z "$full_appname" ]; then
   echo "Can't find the required application: $app!"
   exit 1
@@ -123,9 +125,7 @@ if [ "$LIBRARY_COMBO" = nx-nx-nx-nil -a $GNUSTEP_HOST_OS = nextstep4 ]; then
     exit 1
   fi
 
-  # From some reasons $@ does not correctly pass the arguments to the binary
-  # so I use xargs to do this.
-  echo $@ | xargs $full_appname/$appname
+  $full_appname/$appname $@
 
 else
   # Determine if the application has a binary for this operating system
@@ -139,8 +139,6 @@ else
     exit 1
   fi
 
-  # From some reasons $@ does not correctly pass the arguments to the binary
-  # so I use xargs to do this.
-  echo $@ | xargs $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname
+  $full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname £@
 
 fi
