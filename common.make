@@ -29,6 +29,13 @@ SUBMINOR_VERSION = 0
 VERSION          = ${MAJOR_VERSION}.${MINOR_VERSION}.${SUBMINOR_VERSION}
 
 #
+# Installation scripts
+#
+INSTALL_LN_S = $(LN_S)
+REMOVE_INSTALLED_LN_S = rm -f
+INSTALL_COMPLETE_DIR = $(GNUSTEP_MAKEFILES)/install-complete-dir.sh
+
+#
 # Scripts to run for parsing canonical names
 #
 CONFIG_GUESS_SCRIPT    = $(GNUSTEP_MAKEFILES)/config.guess
