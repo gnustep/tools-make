@@ -208,7 +208,9 @@ endif
 
 # Warning - the following variable name might change
 ifeq ($(AUTO_DEPENDENCIES),yes)
+ifeq ($(AUTO_DEPENDENCIES_FLAGS),)
   AUTO_DEPENDENCIES_FLAGS = -MMD -MP
+endif
 endif
 
 ALL_CPPFLAGS = $(AUTO_DEPENDENCIES_FLAGS) $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) \
