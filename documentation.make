@@ -92,6 +92,20 @@ internal-distclean:: $(DOCUMENT_NAME:=.distclean.doc.variables) \
 else
 # This part gets included the second time make is invoked.
 
+.PHONY: internal-doc-all \
+        internal-textdoc-all \
+        internal-doc-clean \
+        internal-textdoc-clean \
+        internal-doc-distclean \
+        internal-textdoc-distclean \
+        internal-doc-install \
+        internal-textdoc-install \
+        internal-doc-uninstall \
+        internal-textdoc-uninstall \
+        before-$(TARGET)-all \
+        after-$(TARGET)-all \
+        generate-javadoc
+
 #
 # Internal targets
 #
@@ -251,9 +265,7 @@ endif # JAVADOC_FILES
 #
 # Installation directory - always created
 #
-internal-doc-install:: internal-install-dirs
-
-internal-install-dirs:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+internal-doc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
 $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
 	$(MKDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
@@ -340,7 +352,7 @@ endif # JAVADOC_FILES
 #
 # text file installation
 #
-internal-textdoc-install:: internal-install-dirs
+internal-textdoc-install:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(INTERNAL_textdoc_NAME) \
 	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
 
@@ -402,13 +414,6 @@ internal-doc-distclean::
 endif # LATEX_FILES
 
 internal-textdoc-distclean::
-
-#
-# Testing targets
-#
-internal-doc-check::
-
-internal-textdoc-check::
 
 endif
 
