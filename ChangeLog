@@ -1,3 +1,20 @@
+Sun Mar 18 17:49:59 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* application.make ($(APP_DIR_NAME)/Resources/Info-gnustep.plist):
+	Micro optimization: replaced sed call with subst.
+	* palette.make ($(PALETTE_DIR_NAME)/Resources/palette.table): Idem.
+
+	* bundle.make ($(BUNDLE_DIR_NAME)/Resources/Info.plist),
+	($(BUNDLE_DIR_NAME)/Resources/Info-gnustep.plist): Idem, plus
+	strip .gorm and .nib extensions as well as .gmodel.
+	* gswapp.make ($(GSWAPP_DIR_NAME)/Resources/Info-gnustep.plist):
+	Idem.
+	
+Sun Mar 18 16:47:05 2001  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* opentool.in: Do not run sed to attempt remove slashes at the 
+	end of tool name.  This makes sense for apps, but not for tools.
+
 Sun Mar 18 16:19:49 2001  Nicola Pero  <n.pero@mi.flashnet.it>
 	
 	* service.make: Define GNUSTEP_MAKE_SERVICES to be make_services
