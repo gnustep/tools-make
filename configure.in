@@ -33,6 +33,9 @@ echo $GNUSTEP_SYSTEM_ROOT ;
 else
 echo $GNUSTEP_SYSTEM_ROOT ;
 fi`)
+if test "x$prefix" = "x"; then
+  prefix=$ac_default_prefix ;
+fi
 
 #--------------------------------------------------------------------
 # Determine the host, build, and target systems
