@@ -1,3 +1,10 @@
+1999-03-04  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Check if tiff libary nees jpeg. Rearrange tiff and
+	jpeg checks so they exit if not found and compiling core libraries.
+	* config.make.in (JPEG): New variable to hold "-ljpeg" if needed.
+	* brain.make: Use it.
+
 Wed Mar  3 06:56:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* configure.in: Fix to detect jpeglib.h on redhat
