@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/framework.make
 #
 #   Instance Makefile rules to build GNUstep-based frameworks.
@@ -109,15 +109,25 @@ ifeq ($(WITH_DLL),yes)
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # WITH_DLL
 
+ifeq ($(FRAMEWORK_INSTALL_DIR),)
+  FRAMEWORK_INSTALL_DIR = $(GNUSTEP_FRAMEWORKS)
+endif
+
+#
+# Now prepare the variables which are used by target-dependent commands
+# defined in target.make
+#
+LIB_LINK_OBJ_DIR = $(FRAMEWORK_LIBRARY_DIR_NAME)
+LIB_LINK_VERSION_FILE = $(VERSION_FRAMEWORK_LIBRARY_FILE)
+LIB_LINK_SONAME_FILE = $(SONAME_FRAMEWORK_FILE)
+LIB_LINK_FILE = $(FRAMEWORK_LIBRARY_FILE)
+LIB_LINK_INSTALL_DIR = $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
+
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR_NAME)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
                           build-framework
-
-ifeq ($(FRAMEWORK_INSTALL_DIR),)
-  FRAMEWORK_INSTALL_DIR = $(GNUSTEP_FRAMEWORKS)
-endif
 
 internal-framework-build-headers:: build-framework-dirs \
                                    $(FRAMEWORK_HEADER_FILES)
@@ -266,11 +276,7 @@ $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 else # without DLL
 
 $(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
-	$(ECHO_LINKING)$(FRAMEWORK_LINK_CMD)$(END_ECHO)
-	@(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(GNUSTEP_INSTANCE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) \
-                  $(GNUSTEP_INSTANCE))
+	$(ECHO_LINKING)$(LIB_LINK_CMD)$(END_ECHO)
 
 endif # WITH_DLL
 

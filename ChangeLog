@@ -1,3 +1,17 @@
+Wed Oct 30 13:16:15 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Unified link commands for libraries and frameworks.
+	* target.make: Changed all the variable names used in all link and
+	post-link commands, in such a way that library.make and
+	framework.make can use the same commands, and differentiate what
+	is done by setting LIB_LINK_* variables.  Documented extensively
+	what these variables are.
+	* Instance/framework.make: Set the appropriate LIB_LINK_* variables.
+	Replaced FRAMEWORK_LINK_CMD with LIB_LINK_CMD.
+	* Instance/library.make: Set the appropriate LIB_LINK_* variables.
+	* common.make (FRAMEWORK_LINK_CMD): Variable removed.
+	* target.make (SHARED_FRAMEWORK_LINK_CMD): Variable removed.
+	
 Wed Oct 30 12:38:42 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (AFTER_INSTALL_STATIC_LIB_COMMAND): Renamed

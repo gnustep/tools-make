@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/library.make
 #
 #   Instance Makefile rules to build GNUstep-based libraries.
@@ -102,7 +102,7 @@ VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 #  If you redefine SOVERSION to be for example 1.0, then we prepare
 #  the symlink libgnustep-base.so.1.0 --> libgnustep-base.so.1.0.0
 #  instead, and tell the linker to remember 1.0.  So at runtime, the
-#  dynamical linker will search for libgnustep-base.so.1.0.  The
+#  dynamic linker will search for libgnustep-base.so.1.0.  The
 #  effect of changing SOVERSION to major.minor as in this example is
 #  that if you install a new version with the same major.minor
 #  version, that replaces the old one also for old applications, but
@@ -139,6 +139,16 @@ VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 
 endif # shared
+
+#
+# Now prepare the variables which are used by target-dependent commands
+# defined in target.make
+#
+LIB_LINK_OBJ_DIR = $(GNUSTEP_OBJ_DIR)
+LIB_LINK_VERSION_FILE = $(VERSION_LIBRARY_FILE)
+LIB_LINK_SONAME_FILE = $(SONAME_LIBRARY_FILE)
+LIB_LINK_FILE = $(LIBRARY_FILE)
+LIB_LINK_INSTALL_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
 
 #
 # Internal targets

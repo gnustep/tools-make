@@ -103,23 +103,73 @@ endif
 # Specific settings for building shared libraries, static libraries,
 # and bundles on various systems
 #
+
+#
+# For each target, a few target-specific variables need to be set.
+#
+# The first one is SHARED_LIB_LINK_CMD - which should be set to the
+# command(s) to use to link a shared library on that platform.  Please
+# note that the variables (stuff like $(CC)) in it are not expanded
+# until SHARED_LIB_LINK_CMD is actually used (STATIC_LIB_LINK_CMD is
+# the equivalent variable, used for static libraries).
+#
+# SHARED_LIB_LINK_CMD will be used to link standard shared libraries,
+# and frameworks.  It should use the following variables (which are set
+# by library.make or framework.make before executing
+# SHARED_LIB_LINK_CMD) to refer to what it needs to link (please note
+# that STATIC_LIB_LINK_CMD will also use these variables with similar
+# meanings; but not all of them, as noted):
+#
+#  LIB_LINK_OBJ_DIR: where the newly created library should be. 
+#    Usually GNUSTEP_OBJ_DIR for libraries, and FRAMEWORK_LIBRARY_DIR_NAME 
+#    for frameworks.
+#  LIB_LINK_VERSION_FILE: the final file to create, having full
+#     version information: typically `libgnustep-base.so.1.5.3' for shared
+#     libraries, and `libgnustep-base.a' for static libraries.
+#  LIB_LINK_SONAME_FILE: this is only used for shared libraries; it 
+#    should be passed in the -Wl,-soname argument of most linkers when 
+#    building the LIB_LINK_VERSION_FILE. Typically `libgnustep-base.so.1' 
+#    (but might also be `libgnustep-base.so.1.0' if SOVERSION has been 
+#    manually changed when using library.make).  On many platforms, 
+#    it's appropriate/standard to also create this file as a symlink to 
+#    LIB_LINK_VERSION_FILE.
+#  LIB_LINK_FILE: this is only used for shared libraries; it should
+#    be created as a symlink to LIB_LINK_VERSION_FILE (or to 
+#    LIB_LINK_SONAME_FILE if it's created on that platform).
+#    Typically `libgnustep-base.so'.
+#
+# AFTER_INSTALL_SHARED_LIB_CMD provides commands to be executed after
+# installation (at least for libraries, not for frameworks at the
+# moment), and is supposed to setup symlinks properly in the
+# installation directory.  It uses the same variables, except for
+# LIB_LINK_INSTALL_DIR which is the full final path to where the
+# library (and symlinks) is going to be installed.
+#
+# AFTER_INSTALL_STATIC_LIB_CMD is similar.
+#
+
+#
+# This is the generic version - if the target is not in the following list,
+# this setup will be used.  It the target does not override variables here
+# with its own version, these generic definitions will be used.
+#
 HAVE_SHARED_LIBS = no
 STATIC_LIB_LINK_CMD = \
-	$(AR) $(ARFLAGS) $(AROUT)$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^;\
-	$(RANLIB) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+	$(AR) $(ARFLAGS) $(AROUT)$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^;\
+	$(RANLIB) $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE)
 AFTER_INSTALL_STATIC_LIB_CMD = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	$(RANLIB) $(VERSION_LIBRARY_FILE))
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	$(RANLIB) $(LIB_LINK_VERSION_FILE))
 SHARED_LIB_LINK_CMD =
 SHARED_CFLAGS =
 SHARED_LIBEXT =
 AFTER_INSTALL_SHARED_LIB_CMD = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	 rm -f $(LIBRARY_FILE); \
-	 $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	 rm -f $(LIB_LINK_FILE); \
+	 $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 AFTER_INSTALL_SHARED_LIB_CHOWN = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	chown $(CHOWN_TO) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 HAVE_BUNDLES = no
 
 ####################################################
@@ -160,27 +210,27 @@ SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
 		-o $@ \
 		-framework Foundation \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		-lobjc -lgcc $^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 else # OBJC_COMPILER=NeXT
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
 		-read_only_relocs warning -undefined warning \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
 		-o $@ \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		-framework Foundation \
 		$^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 endif # OBJC_COMPILER
 
 OBJ_MERGE_CMD = \
@@ -236,7 +286,7 @@ Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
 DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
 DYLIB_CURRENT_VERSION       = -current_version 1
 DYLIB_INSTALL_NAME = \
-$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
+$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE)
 
 ifeq ($(FOUNDATION_LIB),nx)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
@@ -257,8 +307,8 @@ SHARED_LIB_LINK_CMD     = \
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		-lobjc $^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 else # OBJC_COMPILER=NeXT
 
@@ -278,8 +328,8 @@ SHARED_LIB_LINK_CMD     = \
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$(DYLIB_DEF_LIBS)			\
 		$^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 endif # OBJC_COMPILER
 
 OBJ_MERGE_CMD = \
@@ -340,7 +390,7 @@ Libraries/$(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)/$(LIBRARY_COMBO)
 DYLIB_COMPATIBILITY_VERSION = -compatibility_version 1
 DYLIB_CURRENT_VERSION       = -current_version 1
 DYLIB_INSTALL_NAME = \
-$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE)
+$(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE)
 
 # Remove empty dirs from the compiler/linker flags (ie, remove -Idir and 
 # -Ldir flags where dir is empty).
@@ -364,8 +414,8 @@ SHARED_LIB_LINK_CMD     = \
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		$^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 HAVE_BUNDLES = no
 BUNDLE_LD	=  /usr/bin/ld
@@ -390,8 +440,8 @@ SHARED_LIB_LINK_CMD     = \
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$(DYLIB_DEF_LIBS)			\
 		$^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS   += -dynamic
 
@@ -408,8 +458,8 @@ STATIC_LIB_LINK_CMD	= \
 	$(STATIC_LD_POSTFLAGS)
 
 AFTER_INSTALL_STATIC_LIB_CMD = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	$(RANLIB) $(VERSION_LIBRARY_FILE))
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	$(RANLIB) $(LIB_LINK_VERSION_FILE))
 
 SHARED_CFLAGS   += -fno-common
 
@@ -449,24 +499,24 @@ ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
 	/bin/libtool $(SHARED_LD_PREFLAGS) \
 		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
 		-o $@ \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		-lobjc -lgcc $^ $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool $(SHARED_LD_PREFLAGS) \
 		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIBRARY_FILE) $(ALL_LDFLAGS) $@ \
+		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) $(ALL_LDFLAGS) $@ \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) \
 		$(LIBRARIES_FOUNDATION_DEPEND_UPON) $^ \
 		$(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 endif
 
 STATIC_LIB_LINK_CMD	= \
@@ -521,8 +571,8 @@ SHARED_LIB_LINK_CMD     = \
 		 $(ARCH_FLAGS) -o $@ -framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) -lobjc -lgcc -undefined warning $^ \
 		$(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool $(SHARED_LD_PREFLAGS) \
@@ -530,8 +580,8 @@ SHARED_LIB_LINK_CMD     = \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $^ \
 		$(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 endif
 
 STATIC_LIB_LINK_CMD	= \
@@ -560,33 +610,25 @@ endif
 ifeq ($(GNUSTEP_TARGET_OS), linux-gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(SONAME_LIBRARY_FILE) \
-           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ \
+        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
-	(cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+	(cd $(LIB_LINK_OBJ_DIR); \
+          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
-SHARED_FRAMEWORK_LINK_CMD = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-           -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
-	   $(SHARED_LD_POSTFLAGS);\
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
 AFTER_INSTALL_SHARED_LIB_CMD = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+	(cd $(LIB_LINK_INSTALL_DIR); \
+          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CHOWN = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	chown $(CHOWN_TO) $(SONAME_LIBRARY_FILE); \
-	chown $(CHOWN_TO) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
+	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
@@ -615,18 +657,11 @@ freebsdaout = yes
 
 HAVE_SHARED_LIBS	= no
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
-	(cd $(GNUSTEP_OBJ_DIR); \
-	  rm -f $(LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-SHARED_FRAMEWORK_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	   -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ /usr/lib/c++rt0.o \
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
+	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
+	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o;\
+	(cd $(LIB_LINK_OBJ_DIR); \
+	  rm -f $(LIB_LINK_FILE); \
+	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -650,33 +685,24 @@ ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
 ifneq ($(freebsdaout), yes)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(SONAME_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ \
+	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
-	(cd $(GNUSTEP_OBJ_DIR); \
-	  rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-	  $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE))
-SHARED_FRAMEWORK_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(SONAME_FRAMEWORK_FILE) \
-	   -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
-	   $(SHARED_LD_POSTFLAGS);\
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE) $(SONAME_FRAMEWORK_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(SONAME_FRAMEWORK_FILE); \
-	  $(LN_S) $(SONAME_FRAMEWORK_FILE) $(FRAMEWORK_LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); \
+	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE))
 AFTER_INSTALL_SHARED_LIB_CMD = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	  rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-	  $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	  rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+	  $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CHOWN = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	chown $(CHOWN_TO) $(SONAME_LIBRARY_FILE); \
-	chown $(CHOWN_TO) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
+	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
@@ -708,17 +734,10 @@ HAVE_SHARED_LIBS        = no
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
         $(SHARED_LD) -x -Bshareable -Bforcearchive \
-           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o;\
-        (cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-SHARED_FRAMEWORK_LINK_CMD = \
-        $(SHARED_LD) -x -Bshareable -Bforcearchive \
-           -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ /usr/lib/c++rt0.o;\
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
+           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o;\
+        (cd $(LIB_LINK_OBJ_DIR); \
+          rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS   += -shared -fpic
 SHARED_LIBEXT   = .so
@@ -742,21 +761,13 @@ ifeq ($(findstring netbsdelf, $(GNUSTEP_TARGET_OS)), netbsdelf)
 HAVE_SHARED_LIBS    = yes
 SHARED_LD_POSTFLAGS = -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
-              -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
+	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
+              -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
                  $^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
                  $(SHARED_LD_POSTFLAGS); \
-	(cd $(GNUSTEP_OBJ_DIR); \
-	  rm -f $(LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-SHARED_FRAMEWORK_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-           -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-              $^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
-                 $(SHARED_LD_POSTFLAGS); \
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
+	(cd $(LIB_LINK_OBJ_DIR); \
+	  rm -f $(LIB_LINK_FILE); \
+	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
@@ -788,18 +799,11 @@ HAVE_SHARED_LIBS        = no
 SHARED_LD		= ld
 SHARED_LIB_LINK_CMD     = \
         $(SHARED_LD) $(SHARED_LD_PREFLAGS) -x -Bshareable -Bforcearchive \
-           -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ /usr/lib/c++rt0.o \
+           -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o \
 	   $(SHARED_LD_POSTFLAGS); \
-        (cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-SHARED_FRAMEWORK_LINK_CMD = \
-        $(SHARED_LD) $(SHARED_LD_PREFLAGS) -x -Bshareable -Bforcearchive \
-           -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ /usr/lib/c++rt0.o $(SHARED_LD_POSTFLAGS); \
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
+        (cd $(LIB_LINK_OBJ_DIR); \
+          rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS   += -shared -fpic
 SHARED_LIBEXT   = .so
@@ -822,18 +826,11 @@ endif
 ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ ;\
-	(cd $(GNUSTEP_OBJ_DIR); \
-	  rm -f $(LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-SHARED_FRAMEWORK_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	   -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ ;\
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
+	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
+	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ ;\
+	(cd $(LIB_LINK_OBJ_DIR); \
+	  rm -f $(LIB_LINK_FILE); \
+	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
@@ -860,15 +857,15 @@ endif
 ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
 HAVE_SHARED_LIBS        = yes
 STATIC_LIB_LINK_CMD = \
-        (cd $(GNUSTEP_OBJ_DIR); $(AR) $(ARFLAGS) \
-        $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o`);\
-        $(RANLIB) $(VERSION_LIBRARY_FILE)
+        (cd $(LIB_LINK_OBJ_DIR); $(AR) $(ARFLAGS) \
+        $(LIB_LINK_VERSION_FILE) `ls -1 *\.o */*\.o`);\
+        $(RANLIB) $(LIB_LINK_VERSION_FILE)
 SHARED_LIB_LINK_CMD     = \
-        (cd $(GNUSTEP_OBJ_DIR); $(CC) -v $(SHARED_LD_PREFLAGS) \
-	$(SHARED_CFLAGS) -shared -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o` \
+        (cd $(LIB_LINK_OBJ_DIR); $(CC) -v $(SHARED_LD_PREFLAGS) \
+	$(SHARED_CFLAGS) -shared -o $(LIB_LINK_VERSION_FILE) `ls -1 *\.o` \
 	$(INTERNAL_LIBRARIES_DEPEND_UPON) $(SHARED_LD_POSTFLAGS);\
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+          rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS     += -fPIC
 SHARED_LIBEXT   = .so
@@ -947,33 +944,25 @@ endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) -G -Wl,-h,$(SONAME_LIBRARY_FILE) \
-	   -o $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) $^ \
+	$(CC) $(SHARED_LD_PREFLAGS) -G -Wl,-h,$(LIB_LINK_SONAME_FILE) \
+	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS);\
-	(cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+	(cd $(LIB_LINK_OBJ_DIR); \
+          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
-SHARED_FRAMEWORK_LINK_CMD = \
-	$(CC) $(SHARED_LD_PREFLAGS) -G -Wl,-h,$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	   -o $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) \
-	$^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
-	   $(SHARED_LD_POSTFLAGS);\
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
 AFTER_INSTALL_SHARED_LIB_CMD = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-          rm -f $(LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(SONAME_LIBRARY_FILE); \
-          $(LN_S) $(SONAME_LIBRARY_FILE) $(LIBRARY_FILE); \
+	(cd $(LIB_LINK_INSTALL_DIR); \
+          rm -f $(LIB_LINK_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
+          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
 	)
 AFTER_INSTALL_SHARED_LIB_CHOWN = \
-	(cd $(FINAL_LIBRARY_INSTALL_DIR); \
-	chown $(CHOWN_TO) $(SONAME_LIBRARY_FILE); \
-	chown $(CHOWN_TO) $(LIBRARY_FILE))
+	(cd $(LIB_LINK_INSTALL_DIR); \
+	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
+	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
 	$(CC) -nostdlib -r -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
@@ -999,19 +988,12 @@ endif
 ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(VERSION_LIBRARY_FILE) $^ \
+        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(LIB_LINK_VERSION_FILE) $^ \
 	  $(SHARED_LD_POSTFLAGS);\
-        mv $(VERSION_LIBRARY_FILE) $(GNUSTEP_OBJ_DIR);\
-        (cd $(GNUSTEP_OBJ_DIR); \
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
-SHARED_FRAMEWORK_LINK_CMD = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(VERSION_FRAMEWORK_LIBRARY_FILE) $^ \
-	  $(SHARED_LD_POSTFLAGS);\
-        mv $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_DIR_NAME);\
-	(cd $(FRAMEWORK_LIBRARY_DIR_NAME); \
-	  rm -f $(FRAMEWORK_LIBRARY_FILE); \
-	  $(LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE))
+        mv $(LIB_LINK_VERSION_FILE) $(LIB_LINK_OBJ_DIR);\
+        (cd $(LIB_LINK_OBJ_DIR); \
+          rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
@@ -1034,13 +1016,13 @@ endif
 ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        (cd $(GNUSTEP_OBJ_DIR); \
+        (cd $(LIB_LINK_OBJ_DIR); \
 	  $(CC) $(SHARED_LD_PREFLAGS) \
 	    -v $(SHARED_CFLAGS) -shared \
-	    -o $(VERSION_LIBRARY_FILE) `ls -1 *\.o */*\.o` \
+	    -o $(LIB_LINK_VERSION_FILE) `ls -1 *\.o */*\.o` \
 	    $(SHARED_LD_POSTFLAGS) ;\
-          rm -f $(LIBRARY_FILE); \
-          $(LN_S) $(VERSION_LIBRARY_FILE) $(LIBRARY_FILE))
+          rm -f $(LIB_LINK_FILE); \
+          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 ifeq ($(CC), cc)
 SHARED_CFLAGS   += +z
