@@ -182,7 +182,7 @@ file:
 include $(GNUSTEP_MAKEFILES)/application.make
 @end example
 
-Each project type is independant of the others. If you want to create
+Each project type is independent of the others. If you want to create
 two different types of projects within the same directory (e.g. a tool
 and a java program), include both the desired makefiles in your main
 make file.
@@ -205,7 +205,7 @@ that the Aggregate project should build.
 
 An application is an Objective-C program that includes a GUI component,
 and by default links in all the GNUstep libraries required for GUI
-developement, such as the Base and Gui libraries.
+development, such as the Base and Gui libraries.
 
 @node bundle.make, ctool.make, application.make, Project Types
 @subsection Bundles (@file{bundle.make})
@@ -645,7 +645,7 @@ management system, like Project Center, so any changes made to
 The file, @file{GNUmakefile.preamble}, in the Makefile Package is a
 template that can be used the project's @file{GNUmakefile.preamble}.  It is
 not necessary to have a @file{GNUmakefile.preamble} with the project unless
-it is actually needed, the Makefile Pakcage will only include it if it
+it is actually needed, the Makefile Package will only include it if it
 is available, see @ref{Makefile Structure} for information on how the
 Makefile Package includes a @file{GNUmakefile.preamble}.
 
@@ -856,7 +856,7 @@ The @file{GNUmakefile.postamble} file is an optional file you may
 include in your package to define additional rules that should be
 executed when making and/or installing the project. There is a template
 @file{GNUmakefile.postamble} file in the Makefile package that you can
-use as an example. Most of the rules are self explainatory. The
+use as an example. Most of the rules are self explanatory. The
 @samp{before-} rules define things that should happen before a process
 is executed (e.g. @samp{before-all} for before compilation,
 @samp{before-install} for before installation). The @samp{after-} rules
@@ -949,7 +949,7 @@ directory.
 
 @defvar GNUSTEP_TARGET_LIBRARIES
 @code{GNUSTEP_TARGET_LIBRARIES} is the absolute path for the directory
-where libaries are installed taking the target platform into account.
+where libraries are installed taking the target platform into account.
 It is a subdirectory of @code{GNUSTEP_LIBRARIES_ROOT} and is where
 libraries that do not depend upon the library combination, GNUstep or
 others, should be placed.  This variable is dependent upon the
@@ -960,7 +960,7 @@ directory.
 
 @defvar GNUSTEP_LIBRARIES
 @code{GNUSTEP_LIBRARIES} is the absolute path for the directory where
-libaries are installed taking the target platform and library
+libraries are installed taking the target platform and library
 combination into account.  It is a subdirectory of
 @code{GNUSTEP_TARGET_LIBRARIES} and therefore a subdirectory of
 @code{GNUSTEP_LIBRARIES_ROOT}.  This directory is generally where
@@ -985,14 +985,14 @@ directory.
 @end defvar
 
 @defvar GNUSTEP_HOST_DIR
-@code{GNUSTEP_HOST_DIR} is the subdirectory path for the host platform cpu
+@code{GNUSTEP_HOST_DIR} is the subdirectory path for the host platform CPU
 and operating system.  It is a composed from the @code{GNUSTEP_HOST_CPU}
 and @code{GNUSTEP_HOST_OS} variables.
 @end defvar
 
 @defvar GNUSTEP_TARGET_DIR
 @code{GNUSTEP_TARGET_DIR} is the subdirectory path for the target platform
-cpu and operating system.  It is composed from the
+CPU and operating system.  It is composed from the
 @code{GNUSTEP_TARGET_CPU} and @code{GNUSTEP_TARGET_OS} variables.
 @code{GNUSTEP_TARGET_DIR} is generally used as part of the installation
 path when platform specific files are installed.
@@ -1044,7 +1044,7 @@ components.  Generally the user does not execute this script.
 
 @defvar CONFIG_CPU_SCRIPT
 @code{CONFIG_CPU_SCRIPT} is the absolute path to the @file{cpu.sh}
-script within the Makefile Package; this script extracts the cpu name
+script within the Makefile Package; this script extracts the CPU name
 from a canonicalized platform name.  Generally the user does not execute
 this script; it is used internally by the Makefile Package.
 @end defvar
@@ -1065,12 +1065,12 @@ execute this script; it is used internally by the Makefile Package.
 
 @defvar CLEAN_CPU_SCRIPT
 @code{CLEAN_CPU_SCRIPT} is the absolute path to the @file{clean_cpu.sh}
-script within the Makefile Package; this script takes a platform cpu
+script within the Makefile Package; this script takes a platform CPU
 name and @emph{cleans} it for use by the Makefile Package.  The process
 of cleaning refers to the situation where numerous equivalent
 processors, which have different names, are mapped to a single name.
 For example, the Intel line of processors: i386, i486, Pentium, all have
-different cpu names, but the Makefile Package considers them equivalent
+different CPU names, but the Makefile Package considers them equivalent
 and cleans those names so that the single name @file{ix86} is used.
 Generally the user does not execute this script; it is used internally
 by the Makefile Package.
@@ -1102,16 +1102,16 @@ used internally by the Makefile Package.
 @defvar GNUSTEP_HOST
 @code{GNUSTEP_HOST} is the canonical host platform name; i.e. the name
 of the platform which is performing compilation of programs.  For
-example, a Sparc machine by Sun Microsystems running the Solaris 2.5.1
+example, a SPARC machine by Sun Microsystems running the Solaris 2.5.1
 operating system has the name @code{sparc-sun-solaris2.5.1}.
 @end defvar
 
 @defvar GNUSTEP_HOST_CPU
-@code{GNUSTEP_HOST_CPU} is the cpu name for the canonical host platform
-name; i.e. the name of the cpu platform which is performing compilation
-of programs.  The Makefile Package cleans this cpu name with the
+@code{GNUSTEP_HOST_CPU} is the CPU name for the canonical host platform
+name; i.e. the name of the CPU platform which is performing compilation
+of programs.  The Makefile Package cleans this CPU name with the
 @code{CLEAN_CPU_SCRIPT} script before using it internally.  For example,
-the canonical host platform name of @code{i586-pc-linux-gnu} has a cpu
+the canonical host platform name of @code{i586-pc-linux-gnu} has a CPU
 name of @code{ix86}.
 @end defvar
 
@@ -1143,11 +1143,11 @@ Compiling.
 @end defvar
 
 @defvar GNUSTEP_TARGET_CPU
-@code{GNUSTEP_TARGET_CPU} is the cpu name for the canonical target
-platform; i.e. compilation of programs generate object code for this cpu
+@code{GNUSTEP_TARGET_CPU} is the CPU name for the canonical target
+platform; i.e. compilation of programs generate object code for this CPU
 platform.  The Makefile Package cleans this operating system name with
 the @code{CLEAN_CPU_SCRIPT} script before using it internally.  By
-default the target cpu platform is the same as the host cpu platform,
+default the target CPU platform is the same as the host CPU platform,
 @code{GNUSTEP_HOST_CPU}, unless the user specifies a different target
 platform when running make, see Cross Compiling.
 @end defvar
