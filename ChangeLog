@@ -1,3 +1,8 @@
+Thu Jul 27 18:03:34 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* common.make (JAVA_HOME): Set JAVA_HOME if not set, guessing if
+	appropriate; set JAVAC and JAVAH from JAVA_HOME if needed.
+
 Tue Jul 25 15:01:43 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Added support to build jni headers from java classes.
