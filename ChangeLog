@@ -1,3 +1,9 @@
+Wed Oct 15 17:02:30 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Master/tool.make (internal-distclean): Fixed typo causing it not
+	to work.
+	* Master/test-tool.make (internal-distclean): Same change.
+
 Wed Oct 15 10:55:58 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure: Regenerated using autoconf 2.57 instead of 2.53.
