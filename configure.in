@@ -108,8 +108,10 @@ AC_ARG_WITH(tar,
   TAR="$withval",)
 
 AC_CHECK_PROG(CHOWN, chown, chown, none)
-if test "$CHOWN" = "none"; then
-  AC_MSG_ERROR("Could not find chown.");
+if test "$MINGW32" = no; then
+  if test "$CHOWN" = "none"; then
+    AC_MSG_ERROR("Could not find chown.");
+  fi
 fi
 
 #-------------------------------------------------------------------
