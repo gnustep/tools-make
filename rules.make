@@ -170,11 +170,8 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	$(CC) -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@ $<
 
-Java/%.class : %.java
-	@(if [ ! -x Java ]; then \
-		$(MKDIRS) Java; \
-	  fi)
-	$(JAVAC) $(ALL_JAVAFLAGS) $< && (mv $(<:.java=.class) $@)
+$(JAVA_OBJ_PREFIX)%.class : $(JAVA_OBJ_PREFIX) %.java
+	$(JAVAC) $(ALL_JAVAFLAGS) $< -d $(JAVA_OBJ_PREFIX)
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<
@@ -243,6 +240,10 @@ Java/%.class : %.java
 #
 # The list of PSWRAP source files to be compiled
 # are in the PSWRAP_FILES variable.
+#
+# The list of JAVA source files to be compiled
+# are in the JAVA_FILES variable.
+#
 
 ifneq ($(SUBPROJECTS),)
   SUBPROJECT_OBJ_FILES = $(foreach d, $(SUBPROJECTS), \
@@ -253,7 +254,11 @@ OBJC_OBJS = $(OBJC_FILES:.m=${OEXT})
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
 
 JAVA_OBJS = $(JAVA_FILES:.java=.class)
-JAVA_OBJ_FILES = $(addprefix Java/,$(JAVA_OBJS))
+ifeq ($(JAVA_OBJ_PREFIX),)
+	JAVA_OBJ_FILES = $(JAVA_OBJS)
+else
+	JAVA_OBJ_FILES = $(addprefix $(JAVA_OBJ_PREFIX),$(JAVA_OBJS))
+endif
 
 PSWRAP_C_FILES = $(PSWRAP_FILES:.psw=.c)
 PSWRAP_H_FILES = $(PSWRAP_FILES:.psw=.h)
