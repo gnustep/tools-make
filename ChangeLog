@@ -1,9 +1,15 @@
-Thu Jul 27 18:03:34 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+Fri Jul 28 12:17:02 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* common.make: Set INTERNAL_JAVACFLAGS and INTERNAL_JAVAHFLAGS to
+	specify classpath adding ./ at the beginning.
+	* rules.make: Changed ALL_JAVAFLAGS to ALL_JAVACFLAGS.
+
+Thu Jul 27 18:03:34 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* common.make (JAVA_HOME): Set JAVA_HOME if not set, guessing if
 	appropriate; set JAVAC and JAVAH from JAVA_HOME if needed.
 
-Tue Jul 25 15:01:43 2000  Nicola Pero  <n.pero@mi.flashnet.it>
+Tue Jul 25 15:01:43 2000  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	Added support to build jni headers from java classes.
 	* rules.make: Added rules to build jni headers from java classes
