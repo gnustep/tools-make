@@ -1,3 +1,12 @@
+Mon Jul  9 16:05:06 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* documentation.make (.PHONY): Added.
+	(internal-textdoc-check, internal-doc-check): Removed.
+	(internal-install-dirs): Removed.
+	(internal-textdoc-install, internal-doc-install): Depend directly
+	on $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR) rather than
+	internal-install-dirs.
+
 Mon Jul  9 15:53:54 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* ctool.make (.PHONY): Added.
