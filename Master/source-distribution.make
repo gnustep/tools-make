@@ -39,6 +39,23 @@
 # RELEASE_DIR is either an absolute path, or a relative path to the 
 # current directory.
 #
+#
+# By default, .tar.gz archives will be created for distributions.
+# You can change the compression mechanism used by setting COMPRESSION
+# to any of the following variables - 
+#
+#  none (no compression used)
+#  gzip (gzip, it's the default)
+#  bzip2 (bzip2)
+#
+# For example, 'make dist COMPRESSION=bzip2' creates a .tar.bz2 for
+# distribution.
+#
+#
+# If you want to omit some files from the distribution archive, add a
+# .dist-ignore file in the top-level directory of your package, listing
+# all files (/directories) you want to exclude from distribution.
+#
 
 ifeq ($(CVS_MODULE_NAME),)
   CVS_MODULE_NAME = $(PACKAGE_NAME)
@@ -48,17 +65,57 @@ ifeq ($(CVS_FLAGS),)
   CVS_FLAGS = -z3
 endif
 
+#
+# You can set COMPRESSION_PROGRAM and COMPRESSION_EXT by hand if your 
+# COMPRESSION type is not listed here.
+#
+# Otherwise, set COMPRESSION to '' or 'gzip' (for gzip), to 'none'
+# (for no compression), to 'bzip2' (for bzip2), and
+# COMPRESSION_PROGRAM, COMPRESSION_EXT is set for you.
+#
+
+ifeq ($(COMPRESSION_PROGRAM),)
+
+ifeq ($(COMPRESSION), none)
+  COMPRESSION_PROGRAM = cat
+  COMPRESSION_EXT =
+else 
+ifeq ($(COMPRESSION), bzip2)
+  COMPRESSION_PROGRAM = bzip2
+  COMPRESSION_EXT = .bz2
+else 
+ifeq ($(COMPRESSION),)
+  COMPRESSION_PROGRAM = gzip
+  COMPRESSION_EXT = .gz
+else 
+ifeq ($(COMPRESSION), gzip)
+  COMPRESSION_PROGRAM = gzip
+  COMPRESSION_EXT = .gz
+else
+  $(warning "Unrecognized COMPRESSION - available are 'none', 'gzip', 'bzip2'")
+  $(warning "Unrecognized COMPRESSION - using gzip")
+  COMPRESSION_PROGRAM = gzip
+  COMPRESSION_EXT = .gz
+endif
+endif
+endif
+endif
+
+endif # COMPRESSION
+
 VERSION_NAME = $(PACKAGE_NAME)-$(VERSION)
 
-VERTAG = `echo $(VERSION) | tr '.' '_'`
+ARCHIVE_FILE = $(VERSION_NAME).tar$(COMPRESSION_EXT)
+
+VERTAG = $(subst .,_,$(VERSION))
 
 .PHONY: dist cvs-tag cvs-dist cvs-snapshot internal-cvs-export
 
 #
-# Build a .tgz with the whole directory tree
+# Build a .tar.gz with the whole directory tree
 #
 dist: distclean
-	@echo "Generating $(VERSION_NAME).tar.gz in the parent directory..."; \
+	@echo "Generating $(ARCHIVE_FILE) in the parent directory..."; \
 	SNAPSHOT_DIR=`basename $$(pwd)`; \
 	cd ..;                           \
 	if [ "$$SNAPSHOT_DIR" != "$(VERSION_NAME)" ]; then \
@@ -69,31 +126,37 @@ dist: distclean
 	  fi; \
 	  mv $$SNAPSHOT_DIR $(VERSION_NAME);\
         fi; \
-	if [ -f ${VERSION_NAME}.tar.gz ]; then             \
-	  echo "${VERSION_NAME}.tar.gz already exists:";    \
-	  echo "Saving old version in ${VERSION_NAME}.tar.gz~"; \
-	  mv ${VERSION_NAME}.tar.gz ${VERSION_NAME}.tar.gz~;    \
+	if [ -f $(ARCHIVE_FILE) ]; then             \
+	  echo "$(ARCHIVE_FILE) already exists:";    \
+	  echo "Saving old version in $(ARCHIVE_FILE)~"; \
+	  mv $(ARCHIVE_FILE) $(ARCHIVE_FILE)~;    \
 	fi; \
-	tar cfz $(VERSION_NAME).tar.gz $(VERSION_NAME);    \
+	if [ -f $(VERSION_NAME)/.dist-ignore ]; then \
+	  tar cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
+	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
+	else \
+	  tar cf - $(VERSION_NAME) \
+	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
+	fi; \
 	if [ "$$SNAPSHOT_DIR" != "$(VERSION_NAME)" ]; then \
 	  mv $(VERSION_NAME) $$SNAPSHOT_DIR;               \
         fi; \
-	if [ ! -f $(VERSION_NAME).tar.gz ]; then \
-	  echo "*Error* creating .tar.gz"; \
+	if [ ! -f $(ARCHIVE_FILE) ]; then \
+	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
 	  exit 1; \
 	fi;
 ifneq ($(RELEASE_DIR),)
-	@echo "Moving $(VERSION_NAME).tar.gz to $(RELEASE_DIR)..."; \
+	@echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
 	if [ ! -d $(RELEASE_DIR) ]; then \
 	  $(MKDIRS) $(RELEASE_DIR); \
 	fi; \
-	if [ -f $(RELEASE_DIR)/$(VERSION_NAME).tar.gz ]; then \
-	  echo "$(RELEASE_DIR)/${VERSION_NAME}.tar.gz already exists:";    \
-	  echo "Saving old version in $(RELEASE_DIR)/${VERSION_NAME}.tar.gz~";\
-	  mv $(RELEASE_DIR)/${VERSION_NAME}.tar.gz \
-	     $(RELEASE_DIR)/${VERSION_NAME}.tar.gz~;\
+	if [ -f $(RELEASE_DIR)/$(ARCHIVE_FILE) ]; then \
+	  echo "$(RELEASE_DIR)/$(ARCHIVE_FILE) already exists:";    \
+	  echo "Saving old version in $(RELEASE_DIR)/$(ARCHIVE_FILE)~";\
+	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
+	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
 	fi; \
-	mv ../$(VERSION_NAME).tar.gz $(RELEASE_DIR)
+	mv ../$(ARCHIVE_FILE) $(RELEASE_DIR)
 endif
 
 #
@@ -122,31 +185,37 @@ internal-cvs-export:
 	  exit 1; \
 	fi; \
 	cvs $(CVS_FLAGS) export $(EXPORT_CVS_FLAGS) $(CVS_MODULE_NAME); \
-	echo "Generating $(VERSION_NAME).tar.gz"; \
+	echo "Generating $(ARCHIVE_FILE)"; \
 	mv $(CVS_MODULE_NAME) $(VERSION_NAME); \
-	if [ -f ${VERSION_NAME}.tar.gz ]; then            \
-	  echo "${VERSION_NAME}.tar.gz already exists:";   \
-	  echo "Saving old version in ${VERSION_NAME}.tar.gz~"; \
-	  mv ${VERSION_NAME}.tar.gz ${VERSION_NAME}.tar.gz~;    \
+	if [ -f $(ARCHIVE_FILE) ]; then            \
+	  echo "$(ARCHIVE_FILE) already exists:";   \
+	  echo "Saving old version in $(ARCHIVE_FILE)~"; \
+	  mv $(ARCHIVE_FILE) $(ARCHIVE_FILE)~;    \
 	fi; \
-	tar cfz $(VERSION_NAME).tar.gz $(VERSION_NAME); \
+	if [ -f $(VERSION_NAME)/.dist-ignore ]; then \
+	  tar cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
+	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
+	else \
+	  tar cf - $(VERSION_NAME) \
+	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
+	fi; \
 	rm -rf $(VERSION_NAME);                  \
-	if [ ! -f $(VERSION_NAME).tar.gz ]; then \
-	  echo "*Error* creating .tar.gz"; \
+	if [ ! -f $(ARCHIVE_FILE) ]; then \
+	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
 	  exit 1; \
 	fi;
 ifneq ($(RELEASE_DIR),)
-	@echo "Moving $(VERSION_NAME).tar.gz to $(RELEASE_DIR)..."; \
+	@echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
 	if [ ! -d $(RELEASE_DIR) ]; then \
 	  $(MKDIRS) $(RELEASE_DIR); \
 	fi; \
-	if [ -f $(RELEASE_DIR)/$(VERSION_NAME).tar.gz ]; then \
-	  echo "$(RELEASE_DIR)/${VERSION_NAME}.tar.gz already exists:";    \
-	  echo "Saving old version in $(RELEASE_DIR)/${VERSION_NAME}.tar.gz~";\
-	  mv $(RELEASE_DIR)/${VERSION_NAME}.tar.gz \
-	     $(RELEASE_DIR)/${VERSION_NAME}.tar.gz~;\
+	if [ -f $(RELEASE_DIR)/$(ARCHIVE_FILE) ]; then \
+	  echo "$(RELEASE_DIR)/$(ARCHIVE_FILE) already exists:";    \
+	  echo "Saving old version in $(RELEASE_DIR)/$(ARCHIVE_FILE)~";\
+	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
+	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
 	fi; \
-	mv $(VERSION_NAME).tar.gz $(RELEASE_DIR)
+	mv $(ARCHIVE_FILE) $(RELEASE_DIR)
 endif
 
 ## Local variables:
