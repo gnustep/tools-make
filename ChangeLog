@@ -1191,7 +1191,7 @@ Mon Dec 25 01:20:25 2000  Nicola Pero  <n.pero@mi.flashnet.it>
 
 2000-12-04 Georg Fleischmann <georg@vhf.de>
 
-        * subproject.make: workaround for empty list in for loops added.
+	* subproject.make: workaround for empty list in for loops added.
 
 2000-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
@@ -1676,7 +1676,7 @@ Thu Feb 24 21:12:00 2000  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
 
-	*  gswapp.make and gswbundle.make: tar options changed 
+	* gswapp.make, gswbundle.make: tar options changed 
 	
 2000-01-22 Manuel Guesdon <mguesdon@sbuilders.com>
 
@@ -2062,11 +2062,10 @@ Wed Apr  7 21:35:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 Wed Mar 31 01:24:50 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
-	* application.make (ALL_GUI_LIBS): Put BACKEND_LIBS after GUI_LIBS.
-
-        This causes a problem when building a static library.
-
-        The patch is provided by Takaaki MORIYAMA <taka@airlab.cs.ritsumei.ac.jp>.
+	* application.make (ALL_GUI_LIBS): Put BACKEND_LIBS after
+	GUI_LIBS.  This causes a problem when building a static library.
+	The patch is provided by Takaaki MORIYAMA
+	<taka@airlab.cs.ritsumei.ac.jp>.
         
 1999-03-17  Adam Fedor  <fedor@gnu.org>
 
@@ -2091,8 +2090,8 @@ Wed Mar 10 15:23:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 Tue Mar  2 08:57:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
-        * make/target.make: Include GNUSTEP_SYSTEM_LIBRARIES in link list to
-          fix shared-lib linking error on linux elf.
+	* make/target.make: Include GNUSTEP_SYSTEM_LIBRARIES in link list
+	  to fix shared-lib linking error on linux elf.
 
 Tue Mar  2 08:04:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
@@ -2139,8 +2138,8 @@ Tue Mar  2 17:05:57 1999  Adam Fedor  <fedor@ultra.doc.com>
 
 1999-02-27  Matthias Klose  <doko@cs.tu-berlin.de>
 
-        * make/target.make: Link shared libs against other libs (Linux only,
-          should be possible for all ELF targets).
+	* make/target.make: Link shared libs against other libs (Linux
+	  only, should be possible for all ELF targets).
 
 1999-02-28  Adam Fedor  <fedor@gnu.org>
 
@@ -2202,9 +2201,9 @@ Sun Feb 21 13:49:55 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 1999-02-19  Adam Fedor  <fedor@gnu.org>
 
 	* subproject.make: New file.
-   	* common.make (SUBPROJECT_PRODUCT): New variable so all
+	* common.make (SUBPROJECT_PRODUCT): New variable so all
 	makefiles agree on the name of the object a subproject produces. 
- 	* rules.make:  Added recursive invokation of subproject makefiles
+	* rules.make:  Added recursive invokation of subproject makefiles
 	in the %.build target.
 	* application.make, library.make, ... (SUBPROJECT_OBJ_FILES): New
 	dependency. 
@@ -2258,8 +2257,8 @@ Mon Feb 15  8:48:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 Mon Feb  8 08:24:39 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
-        * ld_lib_path.csh: Rename additional_library_paths to
-	additional_lib_paths.  It was too long for solaris2. 
+	* ld_lib_path.csh: Rename additional_library_paths to
+	additional_lib_paths.  It was too long for solaris2.
 
 1999-02-01  Adam Fedor  <fedor@gnu.org>
 
@@ -2270,7 +2269,7 @@ Mon Feb  8 08:24:39 1999  Masatake Yamato  <masata-y@is.aist-nara.ac.jp>
 
 Thu Jan 28 10:20:00 1999  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
-        * target.make: use '-lm' for freebsd and osf
+	* target.make: use '-lm' for freebsd and osf
 
 Thu Jan  7 16:16:36 1999  Adam Fedor  <fedor@ultra.doc.com>
 
@@ -2292,32 +2291,32 @@ Wed Dec 30 15:08:14 1998  Adam Fedor  <fedor@doc.com>
 
 Mon Dec 21 11:04:45 1998  Matthias Klose  <doko@cs.tu-berlin.de>
 
-        * common.make: New macros MAJOR_VERSION (0), MINOR_VERSION (5),
-          SUBMINOR_VERSION (0) forming VERSION.
-        * library.make: internal-uninstall-lib: rm SONAME_LIBRARY_FILE.
+	* common.make: New macros MAJOR_VERSION (0), MINOR_VERSION (5),
+	  SUBMINOR_VERSION (0) forming VERSION.
+	* library.make: internal-uninstall-lib: rm SONAME_LIBRARY_FILE.
           Rename VERSION_MAJOR_LIBRARY_FILE to SONAME_LIBRARY_FILE.
           New macro SOVERSION.
-        * target.make: define -D_REENTRANT for linux-gnu objc_threaded.
+	* target.make: define -D_REENTRANT for linux-gnu objc_threaded.
           For Solaris define AFTER_INSTALL_SHARED_LIB_COMMAND and set
           shared object name for library.
 
 Mon Dec 21 11:04:45 1998  Matthias Klose  <doko@cs.tu-berlin.de>
 
-        * aggregate.make: Exit with original exit status from submakes.
+	* aggregate.make: Exit with original exit status from submakes.
 
 Sat Dec 19 01:26:06 1998  Matthias Klose  <doko@cs.tu-berlin.de>
 
-        * config.make.in: New macro MKDIRS defaults to
+	* config.make.in: New macro MKDIRS defaults to
           $(GNUSTEP_MAKEFILES)/mkinstalldirs.
-        * application.make: Use macro MKDIRS.
-        * bundle.make: likewise
-        * library.make: likewise
-        * documentation.make: likewise
-        * objc.make: likewise
-        * rules.make: likewise
-        * service.make: likewise
-        * tool.make: likewise
-        * test-library.make: likewise
+	* application.make: Use macro MKDIRS.
+	* bundle.make: likewise
+	* library.make: likewise
+	* documentation.make: likewise
+	* objc.make: likewise
+	* rules.make: likewise
+	* service.make: likewise
+	* tool.make: likewise
+	* test-library.make: likewise
 
 Sat Dec 19 10:57:22 1998  Adam Fedor  <fedor@ultra.doc.com>
 
@@ -2374,10 +2373,10 @@ Wed Nov 25 16:25:09 1998  Adam Fedor  <fedor@doc.com>
 
 Mon Nov 23 14:00:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
-	GNUmakefile.in: mod for services
-	services.make: new build target for services bundle.
-	application.make: Improved generation of Info-gnustep.plist
-	bundle.make: Improved generation of Info-gnustep.plist
+	* GNUmakefile.in: mod for services
+	* services.make: new build target for services bundle.
+	* application.make: Improved generation of Info-gnustep.plist
+	* bundle.make: Improved generation of Info-gnustep.plist
 
 1998-11-19 14:20  Lyndon Tremblay  <tremblay2@home.com>
 
@@ -2505,12 +2504,12 @@ Tues Aug 4 1998  Felipe A. Rodriguez  <far@ix.netcom.com>
 
 Sat Jul 31 21:20:00 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
-	*common.make: Modified to set LDFLAGS to use '-pg' when compiling
+	* common.make: Modified to set LDFLAGS to use '-pg' when compiling
 	with 'profile=yes' and LD == CC
 
 Fri Jul 31 15:08:25 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
 
-	*brain.make: Fixed to use the command-line specification of
+	* brain.make: Fixed to use the command-line specification of
 	'library_combo' (if given) rather than the default library combo.
 
 Mon Jul 20 10:38:25 1998  Adam Fedor  <fedor@ultra.doc.com>
