@@ -35,19 +35,17 @@ TGZ_MAKE_LOADED=yes
 # Build a .tgz with the whole directory tree
 #
 tgz: distclean
-	@echo "Generating the .tgz in the parent directory...";            \
-	SNAPSHOT_DIR=`basename $$(pwd)`;                                   \
-	cd ..;                                                             \
-	if [ "$$SNAPSHOT_DIR" != "$(PACKAGE_NAME)-$(VERSION)" ]; then      \
-	  mv $$SNAPSHOT_DIR $(PACKAGE_NAME)-$(VERSION);                    \
-        fi;                                                                \
-	tar cfz $(PACKAGE_NAME)-$(VERSION).tgz $(PACKAGE_NAME)-$(VERSION); \
-	if [ "$$SNAPSHOT_DIR" != "$(PACKAGE_NAME)-$(VERSION)" ]; then      \
-	  mv $(PACKAGE_NAME)-$(VERSION) $$SNAPSHOT_DIR;                    \
+	@echo "Generating $(PACKAGE_NAME)-$(VERSION).tar.gz";                 \
+	echo "in the parent directory...";                                    \
+	SNAPSHOT_DIR=`basename $$(pwd)`;                                      \
+	cd ..;                                                                \
+	if [ "$$SNAPSHOT_DIR" != "$(PACKAGE_NAME)-$(VERSION)" ]; then         \
+	  mv $$SNAPSHOT_DIR $(PACKAGE_NAME)-$(VERSION);                       \
+        fi;                                                                   \
+	tar cfz $(PACKAGE_NAME)-$(VERSION).tar.gz $(PACKAGE_NAME)-$(VERSION); \
+	if [ "$$SNAPSHOT_DIR" != "$(PACKAGE_NAME)-$(VERSION)" ]; then         \
+	  mv $(PACKAGE_NAME)-$(VERSION) $$SNAPSHOT_DIR;                       \
         fi;
-
-targz:
-	FIXME
 
 endif
 # source-distribution.make loaded
