@@ -1,5 +1,9 @@
 2001-04-21  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
 
+	* framework.make ($(DUMMY_FRAMEWORK_FILE)): fix for empty $classlist.
+
+2001-04-21  Mirko Viviani  <mirko.viviani@rccr.cremona.it>
+
 	* target.make (SHARED_LIB_LINK_CMD): fixed NeXT target.
 
 2001-04-14  Adam Fedor  <fedor@gnu.org>

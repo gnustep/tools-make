@@ -241,6 +241,9 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(S
 	      classlist="$$classlist, @\"$$f\""; \
 	    fi; \
 	  done; \
+	  classlist="$$classlist, NULL"; \
+	else \
+	  classlist="NULL"; \
 	fi; \
 	if [ "`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_USER_ROOT))//'`" != "$(FRAMEWORK_INSTALL_DIR)" ]; then \
 	  fw_env="@\"GNUSTEP_USER_ROOT\""; \
@@ -271,7 +274,7 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES) $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(S
 	echo "+ (NSString *)frameworkEnv { return $$fw_env; }" >> $@; \
 	echo "+ (NSString *)frameworkPath { return $$fw_path; }" >> $@; \
 	echo "+ (NSString *)frameworkVersion { return @\"$(CURRENT_VERSION_NAME)\"; }" >> $@; \
-	echo "static NSString *allClasses[] = {$$classlist, NULL};" >> $@; \
+	echo "static NSString *allClasses[] = {$$classlist};" >> $@; \
 	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@; \
 	echo "@end" >> $@;)
 
