@@ -24,6 +24,37 @@
 #   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
+# Warning - this shell script is delicate, because it is sourced by
+# using . rather than simply executed.  It is sourced because that is
+# the only way to change the shell variables in the calling
+# environment.
+#
+# Sourcing makes the shell script more delicate for the following reasons:
+#
+#  * temporary variables are automatically set in the calling
+#  environment!  WORKAROUND: we need to unset all them after using
+#  them to avoid polluting the calling environment;
+#
+#  * not only the exit value of the script, but the exit value of each
+#  command we execute, might be interpreted by the calling
+#  environment.  Typically, the calling environment might be using the
+#  shell errexit option ('set -e') in bash parlance, which causes the
+#  shell to exit if any command returns an error value.  If this were
+#  a normal script, this option would mean that the shell would exit
+#  if the return value of the whole script were an error value; but
+#  because we are sourced, it is as all the commands in this script
+#  were executed directly in the calling environment, so *all* values
+#  returned by *all* commands must be non-error.  [this all typically
+#  happens in rpm builds, where scripts are run with the errexit
+#  option so that errors in scripts abort the build, and now if a
+#  script sources GNUstep.sh, then we are exactly in this situation -
+#  if any command inside GNUstep.sh returns an error value (even if
+#  GNUstep.sh as a whole would be happy and return succes), the whole
+#  rpm build process aborts!]. WORKAROUND: we must make sure all
+#  commands return success - last resorts hacks like 'command || :'
+#  which always returns success whatever command returns.
+#
+
 #
 # Set the GNUstep system root and local root
 #
@@ -42,11 +73,6 @@ GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
 export GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT
 
-# test to see if GNUSTEP_ROOT is in Win32 standard form and flag it
-if [ -z "`echo $GNUSTEP_SYSTEM_ROOT | sed 's|^[a-zA-Z]:/.*$||'`" ]; then
-  convert_win_paths=yes
-fi
-
 #
 # Determine the host information
 #
@@ -56,9 +82,6 @@ if [ -z "$GNUSTEP_HOST" ]; then
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.guess`
   GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.sub $GNUSTEP_HOST`
   cd "$tmpdir"
-  # Because this file is sourced rather than executed, we need to unset
-  # every temporary variable when we are done with it, otherwise they
-  # pollute the calling environment!
   unset tmpdir
 fi
 
@@ -94,17 +117,22 @@ export GNUSTEP_USER_ROOT
 # Add the GNUstep tools directories to the path
 #
 if [ -z "$GNUSTEP_PATHPREFIX_LIST" ]; then
-  if [ "$convert_win_paths" = "yes" ]; then
 
+  # If we need to convert win32 paths, this is the time!
+  if [ -z "`echo $GNUSTEP_SYSTEM_ROOT | sed 's|^[a-zA-Z]:/.*$||'`" ]; then
     G_U_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_USER_ROOT"`
     G_L_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_LOCAL_ROOT"`
     G_N_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_NETWORK_ROOT"`
     G_S_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_SYSTEM_ROOT"`
     GNUSTEP_PATHPREFIX_LIST="$G_U_R:$G_L_R:$G_N_R:$G_S_R"
-
+    unset G_U_R
+    unset G_L_R
+    unset G_N_R
+    unset G_S_R
   else
     GNUSTEP_PATHPREFIX_LIST="$GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_NETWORK_ROOT:$GNUSTEP_SYSTEM_ROOT"
   fi
+
   export GNUSTEP_PATHPREFIX_LIST
 fi
 
@@ -133,17 +161,15 @@ export PATH
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
-if [ "$convert_win_paths" = "yes" ]; then
-  # FIXME - G_U_R might not have been defined
-  gnustep_class_path="$G_U_R/Libraries/Java:$G_L_R/Libraries/Java:$G_N_R/Libraries/Java:$G_S_R/Libraries/Java"
-else
-  gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_NETWORK_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"
-fi
-unset convert_win_paths
-unset G_U_R
-unset G_L_R
-unset G_N_R
-unset G_S_R
+tmp_IFS="$IFS"
+IFS=:
+gnustep_class_path=
+for dir in $GNUSTEP_PATHPREFIX_LIST; do
+  # FIXME - ugly to add the ':' at the end of the CLASSPATH
+  gnustep_class_path="$gnustep_class_path$dir/Libraries/Java:"
+done
+IFS="$tmp_IFS"
+unset tmp_IFS
 
 if [ -z "$CLASSPATH" ]; then
   CLASSPATH="$gnustep_class_path"
