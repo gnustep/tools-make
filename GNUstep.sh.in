@@ -114,17 +114,15 @@ fi
 
 fi # [ -z "$GNUSTEP_BUILD_ROOT" ]
 
-
-#
-# Set the Java CLASSPATH
-#
+gnustep_class_path="$GNUSTEP_USER_ROOT/Libraries/Java:$GNUSTEP_LOCAL_ROOT/Libraries/Java:$GNUSTEP_SYSTEM_ROOT/Libraries/Java"
 
 if [ -z "$CLASSPATH" ]; then
-  MY_CLASSPATH=.
+  CLASSPATH="$gnustep_class_path"
 else
-  MY_CLASSPATH=$CLASSPATH:.
+  if ( echo ${CLASSPATH}|fgrep -v "${gnustep_class_path}" >/dev/null ); then
+    CLASSPATH="$CLASSPATH:$gnustep_class_path"
+  fi
 fi
 
-CLASSPATH=$GNUSTEP_SYSTEM_ROOT/Java/:$GNUSTEP_USER_ROOT/Java/:$GNUSTEP_LOCAL_ROOT/Java/:$GNUSTEP_NETWORK_ROOT/Java/:$MY_CLASSPATH
 export CLASSPATH
 
