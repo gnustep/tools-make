@@ -1,3 +1,7 @@
+1999-02-22  Scott Christley  <scottc@golden.net-community.com>
+
+	* opentool: New file.
+
 1999-02-19  Scott Christley  <scottc@golden.net-community.com>
 
 	* MediaBook.sh (MB_GNUSTEP_SOURCE, MB_FINANCE_SOURCE): New variables.
