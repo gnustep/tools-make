@@ -236,9 +236,15 @@ int search_for_library_with_type (const char *library_name,
 	{
 	  fprintf (stderr, " Path: %s\n", library_paths[i]);
 	}
-
+      
       dir = opendir (library_paths[i]);
       
+      if (dir == NULL)
+	{
+	  /* For some reasons, we can't read that path.  */
+	  continue;
+	}
+
       while ((dirbuf = readdir (dir))) 
 	{
 	  /* Skip if it doesn't begin with 'lib'.  This implicitly
