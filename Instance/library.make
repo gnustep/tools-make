@@ -151,6 +151,8 @@ ifeq ($(BUILD_DLL),yes)
 
 DERIVED_SOURCES = derived_src
 
+DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
+
 ifneq ($(strip $(DLL_DEF)),)
 DLL_DEF_FLAG = --input-def $(DLL_DEF)
 endif
