@@ -1,7 +1,7 @@
-Mon Apr 14 12:00:01 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+Mon Apr 14 12:59:23 2003  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	Implemented support for preprocessed Info.plists in applications.
-	* config.make.in (CPP): Define.
+	* config.make.in (GENERAL_CPP): New variable.
 	* rules.make (ALL_CPLISTFLAGS): New flags.
 	(%.plist): Added rule to generate %.plist from %.cplist by running
 	the preprocessor.
