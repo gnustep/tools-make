@@ -1,3 +1,8 @@
+Tue Jun 20 19:59:19 2000  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* objc.make (internal-objc_program-install): Depend on building
+	the program first.
+
 2000-06-19  Adam Fedor  <fedor@gnu.org>
 
 	* bundle.make (bundle-resource-files): Remove dependancy on 
