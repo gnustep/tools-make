@@ -1,3 +1,8 @@
+Fri Jul 31 15:08:25 1998  Richard Frith-Macdonald <richard@brainstrom.co.uk>
+
+	*brain.make: Fixed to use the command-line specification of
+	'library_combo' (if given) rather than the default library combo.
+
 Mon Jul 20 10:38:25 1998  Adam Fedor  <fedor@ultra.doc.com>
 
 	* application.make (app-resource-files): Use For loop to copy files.
