@@ -176,8 +176,20 @@ AC_ARG_WITH(tiff_includes,
 
 AC_DEFUN(AC_CHECK_TIFFLIB,
 [tiff_check_lib_save_header=${CPPFLAGS}
+tiff_check_lib_save_libs=${LIBS}
 CPPFLAGS="-L$1 ${JPEG_LIB} -I$2 ${JPEG_INCLUDE} ${CPPFLAGS}"
 
+AC_MSG_CHECKING(for -ltiff without -ljpeg)
+LIBS="-ltiff -lm $LIBS"
+AC_TRY_LINK([char TIFFReadScanline();], [TIFFReadScanline()],
+    jpeg_notneeded=yes,
+    jpeg_notneeded=no)
+AC_MSG_RESULT($jpeg_notneeded)
+LIBS=${tiff_check_lib_save_libs}
+JPEG=
+if test "$jpeg_notneeded" = no; then
+  JPEG=-ljpeg
+fi
 AC_CHECK_LIB(tiff, TIFFReadScanline,
       tiff_ok=yes,
       tiff_ok=no
@@ -185,29 +197,13 @@ AC_CHECK_LIB(tiff, TIFFReadScanline,
       echo "* The GUI library reqiures the TIFF library"
       echo "* Use --with-tiff-library to specify the tiff library"
       echo "* directory if it is not in the usual place(s)"
+      echo "* You may also have to specify --with-jpeg-library if the jpeg"
+      echo "* Library is needed by tiff"
       if test "x$CONFIGURING_CORE_LIBRARIES" != x; then
         AC_MSG_ERROR(You must have proper libraries installed to compile core)
       fi,
-      -ljpeg -lm)
+      $JPEG -lm)
 if test "$tiff_ok" = yes; then
-  AC_MSG_CHECKING(whether -ltiff needs -ljpeg)
-  LIBS="-ltiff -lm $LIBS"
-  AC_TRY_LINK([char TIFFReadScanline();], [TIFFReadScanline()],
-      jpeg_needed=no,
-      jpeg_needed=yes)
-  AC_MSG_RESULT($jpeg_needed)
-  JPEG=
-  if test "$jpeg_needed" = yes; then
-    JPEG=-ljpeg
-    if test "x$JPEG_LIB" = x; then
-      AC_MSG_WARN(jpeg library needed by tiff library)
-      echo "* Use --with-jpeg-library to specify directory for"
-      echo "* jpeg library if it is not in the usual place(s)"
-      if test "x$CONFIGURING_CORE_LIBRARIES" != x; then
-        AC_MSG_ERROR(You must have proper libraries installed to compile core)
-      fi
-    fi
-  fi
   AC_CHECK_HEADER(tiffio.h,
                   tiff_ok=yes,
 	          tiff_ok=no)
@@ -226,7 +222,7 @@ if test "$tiff_ok" = yes; then
     fi
   fi
 fi
-CPPFLAGS="{tiff_check_lib_save_header}"])
+CPPFLAGS="${tiff_check_lib_save_header}"])
 
 if test "x$TIFF_LIB" = x; then
   AC_CHECK_TIFFLIB(${with_tiff_library}, ${with_tiff_include})
