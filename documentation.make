@@ -218,7 +218,7 @@ $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html: $(INTERNAL_doc_NAME).dvi
 	$(LATEX2HTML) $(INTERNAL_doc_NAME)
 
 $(INTERNAL_doc_NAME).tar.gz: $(INTERNAL_doc_NAME)/$(INTERNAL_doc_NAME).html
-	$(TAR) cf $(INTERNAL_doc_NAME).tar.gz $(INTERNAL_doc_NAME)
+	$(TAR) cfz $(INTERNAL_doc_NAME).tar.gz $(INTERNAL_doc_NAME)
 
 endif # LATEX2HTML
 
