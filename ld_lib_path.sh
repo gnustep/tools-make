@@ -38,11 +38,11 @@ IFS="
 if [ -z "$GNUSTEP_FLATTENED" ]; then
   last_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO
   tool_path_part=Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-  lib_paths="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/Library/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/Library/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/Library/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part"
+  lib_paths="$GNUSTEP_USER_ROOT/$last_path_part:$GNUSTEP_USER_ROOT/$tool_path_part:$GNUSTEP_LOCAL_ROOT/$last_path_part:$GNUSTEP_LOCAL_ROOT/$tool_path_part:$GNUSTEP_NETWORK_ROOT/$last_path_part:$GNUSTEP_NETWORK_ROOT/$tool_path_part:$GNUSTEP_SYSTEM_ROOT/$last_path_part:$GNUSTEP_SYSTEM_ROOT/$tool_path_part"
   unset last_path_part
   unset tool_path_part
 else
-  lib_paths="$GNUSTEP_USER_ROOT/Libraries:$GNUSTEP_USER_ROOT/Library/Libraries:$GNUSTEP_LOCAL_ROOT/Libraries:$GNUSTEP_LOCAL_ROOT/Library/Libraries:$GNUSTEP_SYSTEM_ROOT/Libraries:$GNUSTEP_SYSTEM_ROOT/Library/Libraries"
+  lib_paths="$GNUSTEP_USER_ROOT/Libraries:$GNUSTEP_LOCAL_ROOT/Libraries:$GNUSTEP_NETWORK_ROOT/Libraries:$GNUSTEP_SYSTEM_ROOT/Libraries"
 fi
 
 if [ -n "$GCC_SO_DIR" -a "$GCC_SO_DIR" != "NONE" ]; then
@@ -107,7 +107,7 @@ unset lib_paths
 #
 # Setup path for loading guile modules too.
 #
-guile_paths="$GNUSTEP_USER_ROOT/Libraries/Guile:$GNUSTEP_LOCAL_ROOT/Libraries/Guile:$GNUSTEP_SYSTEM_ROOT/Libraries/Guile"
+guile_paths="$GNUSTEP_USER_ROOT/Libraries/Guile:$GNUSTEP_LOCAL_ROOT/Libraries/Guile:$GNUSTEP_NETWORK_ROOT/Libraries/Guile:$GNUSTEP_SYSTEM_ROOT/Libraries/Guile"
 
 if [ -z "$GUILE_LOAD_PATH" ]; then
   GUILE_LOAD_PATH="$guile_paths"
