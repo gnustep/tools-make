@@ -257,10 +257,10 @@ dejagnu_vars = "FOUNDATION_LIBRARY=$(FOUNDATION_LIB)" \
 		"OBJC_RUNTIME=$(OBJC_RUNTIME)"
 
 internal-check-%:: $(SCRIPTS_DIRECTORY)/config/unix.exp
-	@(for f in $(CHECK_SCRIPT_DIRS); do \
-	  additional_library_paths="`echo $(ADDITIONAL_LIB_DIRS) | sed 's/-L//g'`"; \
-	  additional_library_paths="`$(GNUSTEP_SYSTEM_ROOT)/Makefiles/transform_paths.sh $$additional_library_paths`" \
+	@(additional_library_paths="`echo $(ADDITIONAL_LIB_DIRS) | sed 's/-L//g'`"; \
+	  additional_library_paths="`$(GNUSTEP_SYSTEM_ROOT)/Makefiles/transform_paths.sh $$additional_library_paths`"; \
 		. $(GNUSTEP_SYSTEM_ROOT)/Makefiles/ld_lib_path.sh; \
+	for f in $(CHECK_SCRIPT_DIRS); do \
 	  if [ "$(SCRIPTS_DIRECTORY)" != "" ]; then \
 	    echo "cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)"; \
 	    (cd $(SCRIPTS_DIRECTORY); runtest --tool $$f --srcdir . PROG=../$(GNUSTEP_OBJ_DIR)/$(TEST_$*_NAME) $(dejagnu_vars) $(ADDITIONAL_DEJAGNU_VARS)); \

@@ -1,3 +1,14 @@
+Sat Nov  1 13:17:07 1997  Scott Christley  <scottc@net-community.com>
+
+	* brain.make: Export LIBRARY_COMBO.
+	* common.make: Target and GUI header include flags should
+	contain user, local, and system roots.  Rename GNUSTEP_TARGET_HEADERS
+	to GNUSTEP_HEADERS_TARGET_FLAG.
+	* rules.make: Rename GNUSTEP_TARGET_HEADERS to
+	GNUSTEP_HEADERS_TARGET_FLAG.  Add AUXILIARY macros for auxiliary
+	libraries to add flags (e.g. gnustep-db).
+	* test.make: Put additional_library_paths outside of for loop.
+
 Thu Oct 31 11:30:00 1997  Richard Frith-Macdonald <richard@brainstorm.co.uk>
 
 	* which_lib.c: Modified for systems where realloc() doesn't handle
@@ -12,7 +23,7 @@ Thu Oct 30 17:22:13 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	* test.make: Likewise. Correctly process the additional library paths
 	so it contains only absolute paths.
 
-Thu Oct 30 15:49:53 1997  Scott Christley  <scottc@stetson.net-community.com>
+Thu Oct 30 15:49:53 1997  Scott Christley  <scottc@net-community.com>
 
 	* rules.make: Fix variables when building test applications.
 	* test.make: Fix rules for building test applications.
@@ -338,7 +349,7 @@ Fri Oct  3 13:43:18 1997  Ovidiu Predescu <ovidiu@net-community.com>
 	* rules.make: internal-distclean does not make first the clean target.
 	* target.make: Shared libraries under OS 4.x have the .so extension.
 
-Thu Oct  2 14:56:08 1997  Scott Christley  <scottc@stetson.net-community.com>
+Thu Oct  2 14:56:08 1997  Scott Christley  <scottc@net-community.com>
 
 	* ld_lib_path.sh: New file.
 	* common.make: Add variables which define explicit paths to the
