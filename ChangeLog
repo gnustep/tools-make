@@ -1,3 +1,33 @@
+Wed Oct 16 05:11:48 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* GNUmakefile.in: Renamed `tgz' target to `dist'.
+
+Wed Oct 16 04:47:13 2002  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	A further speedup for make clean/distclean.
+	* Master/application.make (APPS_WITH_SUBPROJECTS): New variable -
+	set it, by using a make trick, to be the list of all apps having
+	subprojects.
+	(internal-clean): Only invoke the .subproject clean rule for apps
+	with subprojects.
+	(internal-distclean): Idem.
+	* Master/bundle.make: Similar changes.
+	* Master/clibrary.make: Idem.
+	* Master/ctool.make: Idem.
+	* Master/gswapp.make: Idem.
+	* Master/gswbundle.make: Idem.
+	* Master/java-tool.make: Idem.
+	* Master/java.make: Idem.
+	* Master/library.make: Idem.
+	* Master/objc.make: Idem.
+	* Master/palette.make: Idem.
+	* Master/service.make: Idem.
+	* Master/subproject.make : Idem.
+	* Master/test-application.make : Idem.
+	* Master/test-library.make : Idem.
+	* Master/test-tool.make: Idem.
+	* Master/tool.make: Idem.
+	
 Mon Oct 14 13:09:09 2002  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Master/rpm.make (rpm): Look for rpmbuild, and use it instead of
