@@ -80,11 +80,10 @@ fi
 export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
 
 #
-# Ask the user_home tool for the root paths.
+# Ask the user_home tool for the root path.
 #
-GNUSTEP_DEFAULTS_ROOT=`$GNUSTEP_MAKEFILES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/user_home defaults`
 GNUSTEP_USER_ROOT=`$GNUSTEP_MAKEFILES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/user_home user`
-export GNUSTEP_DEFAULTS_ROOT GNUSTEP_USER_ROOT
+export GNUSTEP_USER_ROOT
 
 #
 # Add the GNUstep tools directories to the path

@@ -1,3 +1,10 @@
+2002-03-02 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.sh.in: Don't define GNUSTEP_DEFAULTS_ROOT
+	* GNUstep.csh.in: Don't define GNUSTEP_DEFAULTS_ROOT
+	* configure.in: Remove some unused stuff and improve log
+	messages for forcing defaults and user roots.
+
 2002-03-01 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* user_home.c: Parse .GNUsteprc in configured GNUSTEP_SYSTEM_ROOT
