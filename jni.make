@@ -35,7 +35,8 @@ JAVA_OS = linux
 # MacOS-X
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
   JAVA_OS = darwin
-  JNI_INCLUDE_HEADERS = -I/System/Library/Frameworks/JavaVM.framework/Versions/1.3.1/Headers
+#  JNI_INCLUDE_HEADERS = -I/System/Library/Frameworks/JavaVM.framework/Versions/1.3.1/Headers
+  JNI_INCLUDE_HEADERS = -I/System/Library/Frameworks/JavaVM.framework/Headers
 
 else
 
