@@ -32,7 +32,7 @@ if [ -z "$GNUSTEP_PATHLIST" ]; then
 fi
 
 if [ -z "$1" ]; then
-  echo usage: `basename $0` tool [--library-combo=...] [arguments...]
+  echo usage: `basename $0` [--library-combo=...] tool [arguments...]
   echo `basename $0` --help for help
   exit 1
 fi
@@ -42,18 +42,33 @@ if [ -z "$EXEEXT" ]; then
 fi
 
 # traps the parameters
-case $1 in
-  --help)
-    echo usage: `basename $0` tool [--library-combo=...] [arguments...]
-    echo tool is the complete or relative name of the tool executable
-    echo without any extension, like dread.
-    echo
-    echo [arguments...] are the arguments to the tool.
-    exit 0
-    ;;
-  *)
-    tool=$1; shift;;
-esac
+while true
+do 
+  case $1 in
+    --library-combo=*)
+        tmp_root="$GNUSTEP_SYSTEM_ROOT"
+        . "$tmp_root/Makefiles/GNUstep-reset.sh"
+        LIBRARY_COMBO=`echo $1 | sed 's/--library-combo=//'`
+        . "$tmp_root/Makefiles/GNUstep.sh"
+        echo "Switched to library combo $LIBRARY_COMBO"
+        shift
+        ;;
+    --help)
+      echo usage: `basename $0` [--library-combo=...] tool [arguments...]
+      echo
+      echo tool is the complete or relative name of the tool executable
+      echo without any extension, like defaults
+      echo
+      echo [arguments...] are the arguments to the tool.
+      exit 0
+      ;;
+    *)
+      break;;
+  esac
+done
+
+tool=$1;
+shift;
 
 if [ -n "$EXEEXT" ]; then
   tool=$tool$EXEEXT
@@ -113,22 +128,22 @@ case $tool in
 	      tmpdir=$dir/Tools
 	      if [ -z "$GNUSTEP_FLATTENED" ]; then
 	        tmpgnudir=$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS
-		tmplibdir=$tmpgnudir/$LIBRARY_COMBO
-		# echo "$tmplibdir/$tool";
+                tmplibdir=$tmpgnudir/$LIBRARY_COMBO
+                # echo "$tmplibdir/$tool";
 		if [ -x "$tmplibdir/$tool" ]; then
-		  # echo "Found: $tmplibdir/$tool";
+                  # echo "Found: $tmplibdir/$tool";
 		  full_toolname=$tmplibdir/$tool
 		  break;
 		fi
 		if [ -x "$tmpgnudir/$tool" ]; then
-		  # echo "Found: $tmpgnudir/$tool";
+                  # echo "Found: $tmpgnudir/$tool";
 		  full_toolname=$tmpgnudir/$tool
 		  break;
 		fi
 	      fi
-	      # echo "$tmpdir/$tool";
+              # echo "$tmpdir/$tool";
 	      if [ -x "$tmpdir/$tool" ]; then
-		# echo "Found: $tmpdir/$tool";
+                # echo "Found: $tmpdir/$tool";
 		full_toolname=$tmpdir/$tool
 		break;
 	      fi
