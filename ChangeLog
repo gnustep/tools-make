@@ -1,3 +1,17 @@
+Wed Jul 11 12:06:29 2001  Nicola Pero  <nicola@brainstorm.co.uk>
+
+	* framework.make (before-all): Run internal build-headers target
+	rather than internal before-all target.
+	(internal-framework-before-all): Renamed to
+	internal-framework-build-headers; do not echo a message.
+	* subproject.make (before-all): Renamed to build-headers.
+	(internal-subproj-before-all): Renamed to
+	internal-subproj-build-headers; do not echo a message.
+	* rules.make (%.build): Use build-headers rather than before-all
+	in the ifneq to avoid processing $*_TOOLS.
+	* subproject.make: Changed `subproj' in all targets to the more
+	readable `subproject'.
+	
 Wed Jul 11 11:34:48 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 
 	* rules.make (%.build): When passing xxx_SUBPROJECTS to a submake,
