@@ -26,6 +26,7 @@
 #
 CC      = @CC@
 OPTFLAG = @CFLAGS@
+CPPFLAGS = @CPPFLAGS@
 
 EXEEXT = @EXEEXT@
 OEXT   = .o

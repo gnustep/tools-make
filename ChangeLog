@@ -1,3 +1,7 @@
+2000-09-13  Adam Fedor  <fedor@gnu.org>
+
+	* config.make.in: Add CPPFLAGS
+
 2000-09-11  Adam Fedor  <fedor@gnu.org>
 
 	* library.make (DLL_INSTALLATION_DIR): New default location for
