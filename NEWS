@@ -1,7 +1,25 @@
 NEWS
 ****
 
-The currently released version is `0.9.1'.
+The currently released version is `1.0.0'.
+
+Changes in version `1.0.0'
+==========================
+
+   * Optimizations that in many cases more than double the speed.
+
+   * Added preliminary darwin support.
+
+   * rpm packeing improvements.
+
+   * Better checking for mingw and cygwin
+
+Changes in version `0.9.2'
+==========================
+
+   * HOWTO and faq files moved from core package to here
+
+   * Configurable GNUSTEP_LOCAL_ROOT and GNUSTEP_NETWORK_ROOT
 
 Changes in version `0.9.1'
 ==========================

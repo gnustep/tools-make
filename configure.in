@@ -284,7 +284,7 @@ esac
 saved_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -x objective-c"
 saved_LIBS="$LIBS"
-if test $host_os = linux-gnu; then
+if test "$host_os" = linux-gnu; then
   LIBS="-lobjc -lpthread"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
 	objc_threaded="", objc_threaded="-lpthread")
@@ -321,7 +321,7 @@ if test x"$objc_threaded" = x""; then
 else
   AC_MSG_RESULT(yes)
   if test x"$objc_threaded" = x"works"; then
-    objc_threaded="",
+    objc_threaded=""
   fi
 fi
 ac_cv_objc_threaded="$objc_threaded"

@@ -369,14 +369,32 @@ int search_for_library_with_type_in_directory(char type, char* path, char* ext)
 int search_for_library_in_directory (char* path)
 {
   struct stat statbuf;
+  char path_rep[PATH_MAX + 1];
   char full_filename[PATH_MAX + 1];
 
-  if (stat (path, &statbuf) < 0) /* An error occured or the dir doesn't exist */
+#ifdef __MINGW32__
+  if (path[0] == '/' && path[1] == '/')
+    {
+      /* Convert //server/ to a format Windows functions understand */
+      char *s;
+      strcpy(path_rep, &(path[2]));
+      s = strchr(path_rep, '/');
+      if (s)
+        {
+          *s = ':';
+	  strcpy((s+1), &(path[(int)(s-path_rep+2)]));
+        }
+     }
+  else
+#endif
+    strcpy(path_rep, path);
+
+  if (stat (path_rep, &statbuf) < 0) /* Error occured or dir doesn't exist */
     return 0;
   else if ((statbuf.st_mode & S_IFMT) != S_IFDIR) /* Not a directory */
     return 0;
 
-  strcpy (full_filename, path);
+  strcpy (full_filename, path_rep);
   strcat (full_filename, PATH_SEP);
   strcat (full_filename, "lib");
   strcat (full_filename, library_name);

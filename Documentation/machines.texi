@@ -1,8 +1,8 @@
 @c \input texinfo   @c -*-texinfo-*-
 @setfilename machines.info
 @ifclear HOWTO
-@c Machine Specific, Debian/DEC-Alpha, , (DIR)
-@node Machine Specific, Debian/DEC-Alpha, , (DIR)
+@c Machine Specific, Darwin 1.0/PowerPC, , (DIR)
+@node Machine Specific, Darwin 1.0/PowerPC, , (DIR)
 @chapter Machines
 @end ifclear
 
@@ -12,11 +12,11 @@ more popular operating systems. Some machines marked with
 @emph{Unstable} may have some trouble or may not work at all.
 
 @menu
+* Darwin 1.0/PowerPC::          
 * Debian/DEC-Alpha::            
 * FreeBSD 3.x::                 
 * FreeBSD 2.x::                 
 * GNU-Linux/Intel::             
-* GNU-Linux/PowerPC 4::         
 * GNU-Linux/PowerPC 5::         
 * Irix 6.4/MIPS::               
 * MkLinux/PowerPC::             
@@ -31,6 +31,7 @@ more popular operating systems. Some machines marked with
 * Suse 7.x/Intel::              
 * Unixware-2.1.3/Intel::        
 * Windows with CYGWIN::         
+* Windows with MinGW::          
 @end menu
 
 A recommended compiler is listed for each machine, if known. You should try
@@ -43,12 +44,38 @@ If you have compiled GNUstep on a specific machine, please send information
 about what you needed and any special instructions needed to the
 GNUstep maintainer @email{gnustep-maintainers@@gnu.org}.
 
-If your having mysterious trouble with a machine, try compiling GNUstep without optimization. Particularly in the newer GCC compilers, optimization can break
-some code. The easiest way to do this is when
-configuring: @samp{CFLAGS="" ./configure}. Or @samp{make OPTFLAG=""}.
+If your having mysterious trouble with a machine, try compiling GNUstep
+without optimization. Particularly in the newer GCC compilers,
+optimization can break some code. The easiest way to do this is when
+configuring, @samp{CFLAGS="" ./configure}. Or when building, 
+@samp{make OPTFLAG=""}.
 
 @c -----------------------------------------
-@node Debian/DEC-Alpha, FreeBSD 3.x, Machine Specific, Machine Specific
+@node Darwin 1.0/PowerPC, Debian/DEC-Alpha, Machine Specific, Machine Specific
+@section Darwin 1.0/PowerPC (@emph{Unstable!})
+
+@table @samp
+@item Recommended compiler
+Unknown
+
+@item Extra libs needed 
+Don't use gnustep-objc or ffcall.
+
+@item Special Instructions 
+@end table
+
+GNUstep has not been ported to Darwin. Expect some minor irritations and
+possibly one or two major ones if your trying to do this. Darwin doesn't
+have a GCC ObjC Compiler, so you need to use the ObjC runtime that comes with
+Darwin. To do this configure (gnustep-make) like this:
+
+@example
+./configure --with-library-combo=nx-gnu-gnu-xgps
+@end example
+
+
+@c -----------------------------------------
+@node Debian/DEC-Alpha, FreeBSD 3.x, Darwin 1.0/PowerPC, Machine Specific
 @section Debian/DEC-Alpha
 
 @table @samp
@@ -135,7 +162,7 @@ You need to use gmake not make to compile the GNUstep packages.
 @end table
 
 @c -----------------------------------------
-@node GNU-Linux/Intel, GNU-Linux/PowerPC 4, FreeBSD 2.x, Machine Specific
+@node GNU-Linux/Intel, GNU-Linux/PowerPC 5, FreeBSD 2.x, Machine Specific
 @section GNU-Linux/Intel (RedHat 5.x, 6.x, and 7.0)
 
 @table @samp
@@ -169,24 +196,7 @@ CC=egcs LDFLAGS="-u shmctl@@GLIBC_2.2 -L/lib -lc -u getpwuid_r@@GLIBC_2.1.2
 @end table
 
 @c -----------------------------------------
-@node GNU-Linux/PowerPC 4, GNU-Linux/PowerPC 5, GNU-Linux/Intel, Machine Specific
-@section GNU-Linux/PowerPC (LinuxPPC 4.x)
-
-@table @samp
-@item Recommended compiler
-egcs-2.90.25 980302 (egcs-1.0.2 prerelease).
-glibc-0.961212-1h.
-gdb: 4.16.97.
-
-@item Extra libs needed 
-None.
-
-@item Special Instructions 
-egcs-1.1.2 does NOT work.
-@end table
-
-@c -----------------------------------------
-@node GNU-Linux/PowerPC 5, Irix 6.4/MIPS, GNU-Linux/PowerPC 4, Machine Specific
+@node GNU-Linux/PowerPC 5, Irix 6.4/MIPS, GNU-Linux/Intel, Machine Specific
 @section GNU-Linux/PowerPC (LinuxPPC 5.x)
 
 @table @samp
@@ -198,18 +208,18 @@ gcc-2.95
 None.
 
 @item Special Instructions 
-You need to compile without optimization or the compiler will not
-be able to compile several files (CFLAGS="" ./configure). Compiling
-with CFLAGS="-O" also works. The gcc-2.95 compiler fixes this problem.
-There may be a problem with the X server that causes programs to crash with a X_QueryColors error. If so, get a newer X server
-at @url{ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm}. 
+You need to compile without optimization or the compiler will not be
+able to compile several files (CFLAGS="" ./configure). Compiling with
+CFLAGS="-O" also works. The gcc-2.95 compiler fixes this problem.  There
+may be a problem with the X server that causes programs to crash with a
+X_QueryColors error. If so, get a newer X server at
+@url{ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm}.
 
 @end table
 
 Invocations (and DO) do not work well. The major problem is sending data
 with data sizes less than 4 bytes (chars, shorts, etc).  To fix this, we
-recommend using the ffcall libraries via the @code{--enable-ffcall}
-option when configuring (Read the instructions on this in the
+recommend using the ffcall libraries (Read the instructions on this in the
 configuration section).
 
 @c -----------------------------------------
@@ -299,10 +309,6 @@ Unknown
 
 @item Special Instructions 
 Can only compile with static libraries. Gives a lot of warnings
-
-GNUstep 0.6.0 uses code to access the /proc filesystem, which may be broken 
-on BSD machines. To avoid this configure with the argument --enable-fake-main.
-Later versions of GNUstep should check for a broken /proc filesystem.
 @end table
 
 @c -----------------------------------------
@@ -346,19 +352,19 @@ See the Solaris 2.6 section for more instructions.
 
 @c -----------------------------------------
 @node Solaris 2.6/Sparc, Solaris 2.7/Intel, Solaris 2.5.1/Sparc, Machine Specific
-@section Solaris 2.6/Sparc
-@c Contact?: Benhur Stein <Benhur-de-Oliveira.Stein@imag.fr>
+@section Solaris 2.[67]/Sparc
 
 @table @samp
 @item Recommended compiler
-egcs-2.91.60 (1.1.2?), egcs-1.0.1, gcc 2.8.1, gcc 2.95.2
+gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
 
 @item Extra libs needed 
 tiff, Don't use the one in /usr/openwin
 
 @item Special Instructions 
-GCC 2.8.0 induced a problem on Solaris/Sparc
-systems; however, there is a patch to fix this in the contrib directory
+There is no need to patch the compiler for the builtin_apply problem unless
+you are not using the ffcall libraries.
+There is a patch to fix this in the contrib directory
 on the ftp sites (This is also true for all versions of gcc/egcs up
 through 2.95.2 (possibly fixed in later versions)).
 
@@ -369,15 +375,15 @@ LIBS=-L/usr/local/lib ./configure
 if, for instance, you have put a newer tiff library in /usr/local/lib
 @end table
 
-Even with the about patch, invocations (and DO) still don't
+Even with the above patch, invocations (and DO) still don't
 work well. The major problem is sending messages with more than four arguments.
-We recommend using the ffcall libraries via the @code{--enable-ffcall} option
+We recommend using the ffcall libraries
 when configuring (Read the instructions on this in the configuration section).
 
 If you are using threads, make sure the Objective-C runtime (libobjc that comes
 with gcc) is compiled with threads enabled (This is true by default) AND that
 it is compiled with the _REENTRANT flag defined (This does not seem to be
-true by default).
+true by default). Or use the gnustep-objc package.
 
 @c -----------------------------------------
 @node Solaris 2.7/Intel, Suse 6.x/Intel, Solaris 2.6/Sparc, Machine Specific
@@ -547,32 +553,37 @@ If you don't set gdomap up correctly, Distributed Objects will not
 work.
 
 @c -----------------------------------------
-@node Windows with CYGWIN,  , Unixware-2.1.3/Intel, Machine Specific
+@node Windows with CYGWIN, Windows with MinGW, Unixware-2.1.3/Intel, Machine Specific
 @section Windows with CYGWIN (@emph{Unstable!})
 
 @table @samp
 @item Recommended compiler
-gcc 2.95.2 (Cygwin release 1.1.2 or later)
+gcc 2.95.3 (Cygwin release 1.1.8)
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
-for shared libs.
+for shared libs. ffcall is not ported to cygwin so don't try to use it (some
+invocation and DO stuff will not work).
 
 @item Special Instructions 
-Static libs require no extra effort (just make shared=no), however, DLLs
-(shared=yes) are compiled by default, and for this you need a special
-version of the Objective-C library that also compiles as a DLL. Make sure
-files and compilation done in Unix mode (no ^M in files). For shared libs
-you have to type @samp{make BUILD_DLL=yes WITH_DLL=yes} for all packages,
-despite the fact that this should be set automatically.
-Gdomap services
-not set up correctly. Must add services lines to @file{C:\WINDOWS\services}
-(on Windows 98) or xxx (on Windows NT).
-Base library only. No native GUI backend.
 @end table
 
+For shared libs, make sure to specify @var{shared=yes} explicitly when 
+building:
+
+@example
+make shared=yes
+@end example
+
+For static libs, use @var{shared=no}, Make sure files and compilation
+done in Unix mode (no ^M in files, @var{export CYGWIN=binmode} usually
+works if cygwin is not buggy).  Gdomap services not set up
+correctly. Must add services lines to @file{C:\WINDOWS\services} (on
+Windows 98) or xxx (on Windows NT).  Base library only. No native GUI
+backend.
+
 @c -----------------------------------------
-@node Windows with MinGW,  , Unixware-2.1.3/Intel, Machine Specific
+@node Windows with MinGW,  , Windows with CYGWIN, Machine Specific
 @section Windows with MinGW (@emph{Unstable!})
 
 @table @samp
@@ -581,7 +592,7 @@ gcc 2.95.2 (MingW release 1999-11-07)
 
 @item Extra libs needed 
 Objective-C library DLL (@url{ftp://ftp.gnustep.org/pub/gnustep/libs})
-for shared libs.
+for shared libs. ffcall is not ported to Mingw32 so don't try to use it.
 
 @item Special Instructions 
 See the @file{README.MinGW} file located in the gnustep-make Documentation

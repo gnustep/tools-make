@@ -1,7 +1,53 @@
+2001-04-09  Adam Fedor  <fedor@gnu.org>
+
+	* Merge 1.0 branch back into main.
+
 2001-03-23  Jonathan Gapen  <jagapen@home.com>
 
 	* configure.in: Also look for 'gnutar' tar program.
 	* configure: Re-generate.
+
+2001-04-05  Adam Fedor  <fedor@gnu.org>
+
+	* Version: 1.0.0
+	* GNUstep-HOWTO, NEWS: Regenerated.
+	* Documentation/machines.texi: Update
+
+2001-04-04  Adam Fedor  <fedor@gnu.org>
+
+	* config.guess: Update to latest version
+	* config.sub: Likewise.
+	* configure.in: Quote $host_os
+	* Documentation/*texi: Update
+
+2001-03-31  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (TARGET_SYSTEM_LIBS): Set default libs.
+
+2001-03-30  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Define TARGET_SYSTEM_LIBS for cygwin.
+
+2001-03-29  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/GNUmakefile.in: Use standard rules for documentation.
+	* Documentation/*texi: Update
+	* GNUstep-HOWTO, INSTALL, README: Regen.
+
+2001-03-28  Adam Fedor  <fedor@gnu.org>
+
+	* configure.in: Remove spurious ','.
+
+	* which_lib.c (search_for_library_in_directory): Translate Windows
+	//c paths to c: so MingW functions can find them.
+
+2001-03-27  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Add darwin target.
+
+	* Documentation/machines.texi: Update.
+	* Documentation/faq.texi: Likewise.
+	* Documentation/gnustep-howto.texi: Likewise
 
 Mon Mar 19 14:30:01 2001  Nicola Pero  <nicola@brainstorm.co.uk>
 

@@ -36,7 +36,7 @@ any later version published by the Free Software Foundation.
    Last Update: @today{}
 
    This document explains how to build the different components of the
-   GNUstep core libraries.
+   GNUstep core libraries and GNUstep Launchpad.
 
    Copyright (C) 1996 - 2001 Free Software Foundation, Inc.
    
@@ -59,15 +59,16 @@ any later version published by the Free Software Foundation.
 * Tools and Applications::      
 * Machine Specific::            
 * Anonymous CVS::               
-* Other::                       
 @end menu
 
 @node Introduction, Summary, Top, Top
 @chapter Introduction
 
-This document explains how to build the GNUstep core libraries. The core
+This document explains how to build the GNUstep core libraries or
+GNUstep Launchpad. The core
 libraries, along with associated tools and other files provide
-everything necessary for a working GNUstep system.
+everything necessary for a working GNUstep system. GNUstep Launchpad
+consists of the non-graphical libraries of GNUstep.
 
 In order to easily compile and debug GNUstep projects, you will need the
 GNU Objective-C compiler @samp{GCC} as well as various other GNU packages.
@@ -96,6 +97,9 @@ After installing these packages, get the following individual packages:
 @item gnustep-xdps
 @item gnustep-xgps
 @end itemize
+
+For GNUstep Launchpad, substitue @file{gnustep-guile} and @file{jigs} for
+@file{gnustep-gui} and @file{gnustep-xgps/xdps}.
 
 See @url{http://www.gnustep.org} for information on where to get these
 packages.  Only one of gnustep-xgps or gnustep-xdps is required. We
@@ -155,13 +159,13 @@ and NSConnection. This library is highly recommended. The previous
 builtin method for stack frame handling is no longer supported and
 may be removed in the future.
 
-@item libobjc library snapshot (for gcc version <= 2.95.2)
+@item gnustep-objc package (for gcc version <= 3.0)
 This is a special version of the Objective-C runtime that include several
 bug fixes and features that have not been officially released yet.
 It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
 compiles using the GNUstep Makefile package (so you don't have to get the
 entire gcc dist). Make sure to set the THREADING variable in the GNUmakefile.
-It might also be best to compile the library static (make shared=no) and
+It's possible to compile the library static (make shared=no) and
 just copy to the place where the gcc libobjc library is (type gcc -v to
 get this location).
 @end table
@@ -171,15 +175,15 @@ get this location).
 
 Make sure you install all the previously mentioned libraries first
 before configuring and building GNUstep (Except you need to install
-libobjc after installing gnustep-make, unless your installing it as part
+gnustep-objc after installing gnustep-make, unless your installing it as part
 of gcc).
 
 Note: you will need to be able to install packages as root (at least
 the base library) for applications to work correctly.
 
-For installation on MinGW systems, read the README.MinGW file in the 
-Documentation directory. For other systems, see the machines documentation
-or appropriate README files in the Documentation directory.
+For installation on specific systems, read the machine specific
+instructions at the end of this document or appropriate README files in
+the gnustep-make Documentation directory (such as README.MingW for Windows).
 
 @menu
 * DPS System::                  
@@ -218,12 +222,12 @@ directory when you run configure with the prefix paramter; the
 following command makes /usr/local/GNUstep the root directory:
 
 @example
-./configure --prefix=/usr/local/GNUstep
+./configure --prefix=/usr/local/GNUstep/System
 @end example
 
 If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
 and you do not specify a root directory when running configure, then
-configure will use /usr/GNUstep as the default root directory.
+configure will use /usr/GNUstep/System as the default root directory.
 
 @menu
 * Alternate Library Setup::     
@@ -251,8 +255,8 @@ configuration options when configuring each GNUstep library.
 @node Individual Packages,  , Alternate Library Setup, Core Package
 @subsection Building the Package
 
-To build the individual packages, use the familiar set of commands for
-each pacakge:
+To build the individual packages, use this familiar set of commands for
+each pacakge (add any additional options you decide upon):
 
 @example
 ./configure
@@ -260,8 +264,7 @@ make
 make install
 @end example
 
-Start with the Makefile Pacakge (gnustep-make), then do gnustep-base,
-gnustep-gui and finally gnustep-xgps (or gnustep-xdps). After installing
+Start with the Makefile Pacakge (gnustep-make). After installing
 gnustep-make you need to execute GNUstep's shell configuration
 script, as follows:
 
@@ -269,7 +272,16 @@ script, as follows:
  . /usr/GNUstep/System/Makefiles/GNUstep.sh
 @end example
 
-before proceeding any further.
+before proceeding any further. Then do gnustep-objc. Before building
+gnustep-objc, edit @file{GNUmakefile} and set the @var{THREADING}
+variable to the thread library used on your system (usually its posix,
+but you can leave it at single if you don't need threads). At this point
+you should probably re-configure, make and install gnustep-make, so it
+can pick up on any threading information that gnustep-objc provides.
+
+Now do gnustep-base, gnustep-gui and finally gnustep-xgps (or
+gnustep-xdps). For GNUstep Launchpad, do gnustep-guile and jigs
+(although both of these are optional).
 
 NOTE: If you are trying to install the packages without root permission,
 you need to change one thing in the base library. Edit the file
@@ -278,6 +290,16 @@ gnustep-base/Tools/gdomap.h and uncomment the last line.
 @node Additional Installation, Tools and Applications, Compiling and Installing, Top
 @chapter Additional Installation
 
+@menu
+* Environment Setup::           
+* GNUstep Home::                
+* Time Zone::                   
+* DPS Information::             
+* GNUstep deamons::             
+@end menu
+
+@node Environment Setup, GNUstep Home, Additional Installation, Additional Installation
+@section Environment Setup
 Add the shell script @file{GNUstep.sh} located in the Makefile
 package to your shell startup file (such as @file{.profile}). For instance:
 
@@ -301,6 +323,9 @@ setenv GNUSTEP_SYSTEM_ROOT /usr/GNUstep
 source $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.csh
 @end example
 
+@node GNUstep Home, Time Zone, Environment Setup, Additional Installation
+@section GNUstep Home
+
 Set up your home GNUstep directory. This is where user defaults are
 kept, and in the future, other files may be kept there.
 
@@ -308,6 +333,9 @@ kept, and in the future, other files may be kept there.
 cd
 mkdir GNUstep
 @end example
+
+@node Time Zone, DPS Information, GNUstep Home, Additional Installation
+@section Time Zone
 
 Next, set your local time zone.  There are four ways to do this, pick
 one (see @file{$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/zones} for typical time zones):
@@ -325,8 +353,14 @@ something like ``defaults write NSGlobalDomain "Local Time Zone" GB''.
 software on your system though).
 @end enumerate
 
+@node DPS Information, GNUstep deamons, Time Zone, Additional Installation
+@section DPS Information
+
 If you are using a built-in DPS server, you may need to set the PSRESOURCEPATH
 environment variable (on Solaris, it's set to @file{/usr/openwin/lib/X11}).
+
+@node GNUstep deamons,  , DPS Information, Additional Installation
+@section GNUstep deamons
 
 Set up your system to execute some GNUstep deamons. If you don't do this, they will be started automatically when you run your  first GNUstep app:
 
@@ -357,7 +391,7 @@ fi
 Test programs for the base library are in @file{base/Testing}. Example
 applications are located in the gstep-examples package.  To make these,
 just uncompress and untar this package, cd to the appropriate
-directory, and type make. Generally you will need to install GNUstep
+directory, and type make. You will need to install the GNUstep core libraries
 first before doing this.
 
 To run the examples. Use the openapp utility that is part of the GNUstep
@@ -376,50 +410,28 @@ Good Luck!
 @include machines.texi
 
 
-@node Anonymous CVS, Other, Machine Specific, Top
+@node Anonymous CVS,  , Machine Specific, Top
 @chapter Getting Libraries via Anonymous CVS
 
-   If you didn't get one of the snapshots, or if you want to be sure
-to stay on the bleading edge, then you should get the core via CVS:
+If you didn't get one of the snapshots, or if you want to be sure to
+stay on the bleading edge, then you should get the libraries via CVS. Go
+to @url{http://savannah.gnu.org/cvs/?group_id=99} for information on how
+to get anonymous CVS access.
 
-The quick and painless CVS tutorial (by michael hanni (slightly modified) 
-
-    First, set the CVSROOT environment variable. If you are using
-bash/sh you can do something like this at the prompt:
+If you haven't already done so, change to the directory, where you
+want the source to reside. To get a list of potential modules to check out,
+type
 @example
-export CVSROOT=":pserver:anoncvs@@cvs.net-community.com:/gnustep" 
+cvs -z3 checkout -c
 @end example
 
-    Second, if this is the first time loging into the CVS server:
-@example
-cvs login <press enter> 
-@end example
-
-    You should get a password prompt soon after:
-@example
-(Logging in to anoncvs@@cvs.net-community.com) 
-CVS password:  
-@end example
-
-    Enter the password @samp{anoncvs}. This should return you to your
-prompt. From here you can checkout any module in the CVS server you
-like. To checkout a module you do this:
-@example
-cvs -z3 checkout modulename <press enter> 
-@end example
-
-    The -z3 merely tells the cvs server to compess everything to a
-certain compression level before it sends it to you. 
-
-    If you haven't already done so, change to the directory, where you
-want the source to reside.
-    
-    Next, you want to get the whole core, so you do:
+For instance, to check our @file{core}, which contains all the GNUstep
+code libraries:
 @example
 cvs -z3 checkout core
 @end example
 
-    After you have checked out the source you can compile it as
+After you have checked out the source you can compile it as
 usual. To update the source, go into the directory of the source tree
 you want to update, for example, go into 'xgps', and type:
 
@@ -427,35 +439,7 @@ you want to update, for example, go into 'xgps', and type:
 cvs -z3 update -Pd
 @end example
 
-    You don't have to re-checkout after you have the source, just update!
-Also try @samp{cvs checkout -c} to get a list of available modules.
-
-@node Other,  , Anonymous CVS, Top
-@chapter Other Instructions
-
-@menu
-* Better Debugging::            
-@end menu
-
-@node Better Debugging,  , Other, Other
-@section Better debugging with Objective-C runtime
-
-Normally, the Objective-C runtime is compiled with debugging information,
-which actually makes debugging of user apps frustrating because stepping
-into a method call will actually cause gdb to step into the internal
-Objective-C method call mechanism, which you don't want most of the time.
-
-The way to avoid this is to compile the Objective-C runtime library without
-debugging information. Here's how:
-
-@example
-cd egcs-build-directory/gcc
-rm -f objc/*.o
-make CFLAGS=-O2 libobjc.a
-cp libobjc.a your-egcs-installation-dir
-@end example
-
-
+You don't have to re-checkout after you have the source, just update!
 
 @chapter Acknowledgements
 

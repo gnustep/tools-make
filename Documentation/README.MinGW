@@ -20,15 +20,15 @@ Cygwin DLL 1.1.4 and MingW gcc 2.95.2-1. If you have more experience
 with MinGW than me, please help improve these instructions!
 
 I assume you have installed Cygwin and MinGW, and dowloaded and
-unpacked the GNUstep core package. You also need to download a version
-of the Objective-C runtime that compiles as a shared library
-(DLL). See the GNUstep-HOWTO file for more information on where to get
-various files.
+unpacked the GNUstep packages. You also need to download a version of
+the Objective-C runtime (e.g. gnustep-objc) that compiles as a shared
+library (DLL). See the GNUstep-HOWTO file for more information on
+where to get various files.
 
 1. First, start up a Cygwin BASH shell and make sure the MinGW tools
 are in your path:
 
-  export PATH=//c/gcc-2.95.2-1/bin:$PATH
+  export PATH=//c/mingw/bin:$PATH
 
 (Put in whatever path you have for the mingw tools).
 
@@ -37,22 +37,22 @@ there is no default for Windows machines, so you need to set that up
 first with the GNUSTEP_SYSTEM_ROOT environment variable. To put it in
 a similar location, you might try:
 
-  export GNUSTEP_SYSTEM_ROOT=//c/cygwin/usr/GNUstep/System
+  export GNUSTEP_SYSTEM_ROOT=//c/mingw/GNUstep/System
 
 But you can put it anywhere you like (as long as you specify the full
 path with the disk label so MinGW can find it). You can also specify this
-with configure, using the --prefix=//c/cygwin/usr/GNUstep/System option.
+with configure, using the --prefix=//c/mingw/GNUstep/System option.
 
-3. For various reasons, we need to configure and build each
-sub-package separately. So first, go to the 'make' subdirectory of the
-core package and configure:
+3. You need to build and install each sub-package separately. So
+first, go to the 'gnustep-make' package and configure:
 
-  cd make
+  cd gnustep-make
   ./configure --target=i386-mingw32
 
-4. Now build the Makefile package. For some reason, the make that comes
+4. Now build the gnustep-make package. Occationally, the make that comes
 with MinGW doesn't like the way GNUstep makefiles are setup (or perhaps
-it's that MingW make doesn't work with bash), so use Cygwin's make:
+it's that MingW make doesn't work with bash), so you can try
+using Cygwin's make instead:
 
   /usr/bin/make target=i386-mingw32
   /usr/bin/make target=i386-mingw32 install
@@ -63,21 +63,23 @@ compile correctly:
   . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
 
 6. Now you can compile the Objective-C runtime DLL (unless you already
-have one installed):
+have one installed). First edit the GNUmakefile and set the THREADING
+variable to 'win32'. Then:
 
-  cd location_of_the_libobjc_library
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes install
+  cd gnustep-objc
+  /usr/bin/make target=i386-mingw32 shared=yes
+  /usr/bin/make target=i386-mingw32 shared=yes install
 
-7. Now we can configure and make the base library.
+7. Now we can configure and build the gnustep-base library.
 
-  cd location_of_the_core_package/base 
+  cd gnustep-base 
   ./configure --target=i386-mingw32 
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes 
-  /usr/bin/make target=i386-mingw32 BUILD_DLL=yes WITH_DLL=yes install
+  /usr/bin/make target=i386-mingw32 shared=yes
+  /usr/bin/make target=i386-mingw32 shared=yes install
 
 Note that the base library is not completely ported to run on MinGW yet.
-In particular, the gstep-base DLL doesn't seem to be set up correctly.
+In particular, anything using sockets, RunLoops and FileHandles.
+Alos, the gnustep-base DLL doesn't seem to be set up correctly.
 To compile the gstep-base as a static library, use:
 
   /usr/bin/make shared=no target=i386-mingw32

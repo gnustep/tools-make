@@ -1,10 +1,10 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 26 February 2001
+   Last Update: 5 April 2001
 
    This document explains how to build the different components of the
-   GNUstep core libraries.
+   GNUstep core libraries and GNUstep Launchpad.
 
    Copyright (C) 1996 - 2001 Free Software Foundation, Inc.
 
@@ -15,9 +15,10 @@
 Introduction
 ************
 
-   This document explains how to build the GNUstep core libraries. The
-core libraries, along with associated tools and other files provide
-everything necessary for a working GNUstep system.
+   This document explains how to build the GNUstep core libraries or
+GNUstep Launchpad. The core libraries, along with associated tools and
+other files provide everything necessary for a working GNUstep system.
+GNUstep Launchpad consists of the non-graphical libraries of GNUstep.
 
    In order to easily compile and debug GNUstep projects, you will need
 the GNU Objective-C compiler `GCC' as well as various other GNU
@@ -50,6 +51,9 @@ packages:
    * gnustep-xdps
 
    * gnustep-xgps
+
+   For GNUstep Launchpad, substitue `gnustep-guile' and `jigs' for
+`gnustep-gui' and `gnustep-xgps/xdps'.
 
    See <http://www.gnustep.org> for information on where to get these
 packages.  Only one of gnustep-xgps or gnustep-xdps is required. We
@@ -111,30 +115,32 @@ depending on the type of system you are using, include:
      The previous builtin method for stack frame handling is no longer
      supported and may be removed in the future.
 
-`libobjc library snapshot (for gcc version <= 2.95.2)'
+`gnustep-objc package (for gcc version <= 3.0)'
      This is a special version of the Objective-C runtime that include
      several bug fixes and features that have not been officially
      released yet.  It is available at
      <ftp://ftp.gnustep.org/pub/gnustep/libs> which compiles using the
      GNUstep Makefile package (so you don't have to get the entire gcc
      dist). Make sure to set the THREADING variable in the GNUmakefile.
-     It might also be best to compile the library static (make
-     shared=no) and just copy to the place where the gcc libobjc
-     library is (type gcc -v to get this location).
+     It's possible to compile the library static (make shared=no) and
+     just copy to the place where the gcc libobjc library is (type gcc
+     -v to get this location).
 
 Compiling and Installing the packages
 *************************************
 
    Make sure you install all the previously mentioned libraries first
 before configuring and building GNUstep (Except you need to install
-libobjc after installing gnustep-make, unless your installing it as part
-of gcc).
+gnustep-objc after installing gnustep-make, unless your installing it
+as part of gcc).
 
    Note: you will need to be able to install packages as root (at least
 the base library) for applications to work correctly.
 
-   For installation on MinGW systems, read the README.MinGW file in the
-make package.
+   For installation on specific systems, read the machine specific
+instructions at the end of this document or appropriate README files in
+the gnustep-make Documentation directory (such as README.MingW for
+Windows).
 
 Using a Display Postscript System
 =================================
@@ -165,11 +171,11 @@ its value as the root directory.  You can also specify the root
 directory when you run configure with the prefix paramter; the
 following command makes /usr/local/GNUstep the root directory:
 
-     ./configure --prefix=/usr/local/GNUstep
+     ./configure --prefix=/usr/local/GNUstep/System
 
    If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
 and you do not specify a root directory when running configure, then
-configure will use /usr/GNUstep as the default root directory.
+configure will use /usr/GNUstep/System as the default root directory.
 
 Alternate Library Setup
 -----------------------
@@ -191,21 +197,29 @@ options when configuring each GNUstep library.
 Building the Package
 --------------------
 
-   To build the individual packages, use the familiar set of commands
-for each pacakge:
+   To build the individual packages, use this familiar set of commands
+for each pacakge (add any additional options you decide upon):
 
      ./configure
      make
      make install
 
-   Start with the Makefile Pacakge (gnustep-make), then do gnustep-base,
-gnustep-gui and finally gnustep-xgps (or gnustep-xdps). After installing
+   Start with the Makefile Pacakge (gnustep-make). After installing
 gnustep-make you need to execute GNUstep's shell configuration script,
 as follows:
 
       . /usr/GNUstep/System/Makefiles/GNUstep.sh
 
-   before proceeding any further.
+   before proceeding any further. Then do gnustep-objc. Before building
+gnustep-objc, edit `GNUmakefile' and set the THREADING variable to the
+thread library used on your system (usually its posix, but you can
+leave it at single if you don't need threads). At this point you should
+probably re-configure, make and install gnustep-make, so it can pick up
+on any threading information that gnustep-objc provides.
+
+   Now do gnustep-base, gnustep-gui and finally gnustep-xgps (or
+gnustep-xdps). For GNUstep Launchpad, do gnustep-guile and jigs
+(although both of these are optional).
 
    NOTE: If you are trying to install the packages without root
 permission, you need to change one thing in the base library. Edit the
@@ -213,6 +227,9 @@ file gnustep-base/Tools/gdomap.h and uncomment the last line.
 
 Additional Installation
 ***********************
+
+Environment Setup
+=================
 
    Add the shell script `GNUstep.sh' located in the Makefile package to
 your shell startup file (such as `.profile'). For instance:
@@ -233,11 +250,17 @@ for every user on your system, you can try copying/linking the
      setenv GNUSTEP_SYSTEM_ROOT /usr/GNUstep
      source $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.csh
 
+GNUstep Home
+============
+
    Set up your home GNUstep directory. This is where user defaults are
 kept, and in the future, other files may be kept there.
 
      cd
      mkdir GNUstep
+
+Time Zone
+=========
 
    Next, set your local time zone.  There are four ways to do this, pick
 one (see `$GNUSTEP_SYSTEM_ROOT/Libraries/Resources/NSTimeZones/zones'
@@ -257,9 +280,15 @@ for typical time zones):
   4. Set the TZ environment variable (this may conflict with other
      software on your system though).
 
+DPS Information
+===============
+
    If you are using a built-in DPS server, you may need to set the
 PSRESOURCEPATH environment variable (on Solaris, it's set to
 `/usr/openwin/lib/X11').
+
+GNUstep deamons
+===============
 
    Set up your system to execute some GNUstep deamons. If you don't do
 this, they will be started automatically when you run your  first
@@ -288,8 +317,8 @@ Test Tools and Applications
    Test programs for the base library are in `base/Testing'. Example
 applications are located in the gstep-examples package.  To make these,
 just uncompress and untar this package, cd to the appropriate
-directory, and type make. Generally you will need to install GNUstep
-first before doing this.
+directory, and type make. You will need to install the GNUstep core
+libraries first before doing this.
 
    To run the examples. Use the openapp utility that is part of the
 GNUstep makefile package (and stored in `$GNUSTEP_SYSTEM_ROOT/Tools').
@@ -321,7 +350,25 @@ to the GNUstep maintainer <gnustep-maintainers@gnu.org>.
    If your having mysterious trouble with a machine, try compiling
 GNUstep without optimization. Particularly in the newer GCC compilers,
 optimization can break some code. The easiest way to do this is when
-configuring: `CFLAGS="" ./configure'. Or `make OPTFLAG=""'.
+configuring, `CFLAGS="" ./configure'. Or when building, `make
+OPTFLAG=""'.
+
+Darwin 1.0/PowerPC (_Unstable!_)
+================================
+
+`Recommended compiler'
+     Unknown
+
+`Extra libs needed'
+     Don't use gnustep-objc or ffcall.
+
+`Special Instructions'
+   GNUstep has not been ported to Darwin. Expect some minor irritations
+and possibly one or two major ones if your trying to do this. Darwin
+doesn't have a GCC ObjC Compiler, so you need to use the ObjC runtime
+that comes with Darwin. To do this configure (gnustep-make) like this:
+
+     ./configure --with-library-combo=nx-gnu-gnu-xgps
 
 Debian/DEC-Alpha
 ================
@@ -424,19 +471,6 @@ GNU-Linux/Intel (RedHat 5.x, 6.x, and 7.0)
           CC=egcs LDFLAGS="-u shmctl@GLIBC_2.2 -L/lib -lc -u getpwuid_r@GLIBC_2.1.2
           -L/lib -lc -u getpwnam_r@GLIBC_2.1.2 -L/lib -lc" ./configure
 
-GNU-Linux/PowerPC (LinuxPPC 4.x)
-================================
-
-`Recommended compiler'
-     egcs-2.90.25 980302 (egcs-1.0.2 prerelease).  glibc-0.961212-1h.
-     gdb: 4.16.97.
-
-`Extra libs needed'
-     None.
-
-`Special Instructions'
-     egcs-1.1.2 does NOT work.
-
 GNU-Linux/PowerPC (LinuxPPC 5.x)
 ================================
 
@@ -448,18 +482,17 @@ GNU-Linux/PowerPC (LinuxPPC 5.x)
 
 `Special Instructions'
      You need to compile without optimization or the compiler will not
-     be able to compile several files (CFLAGS="" ./configure). Compiling
-     with CFLAGS="-O" also works. The gcc-2.95 compiler fixes this
-     problem.  There may be a problem with the X server that causes
-     programs to crash with a X_QueryColors error. If so, get a newer X
-     server at
+     be able to compile several files (CFLAGS="" ./configure).
+     Compiling with CFLAGS="-O" also works. The gcc-2.95 compiler fixes
+     this problem.  There may be a problem with the X server that
+     causes programs to crash with a X_QueryColors error. If so, get a
+     newer X server at
      <ftp://ftp.linuxppc.org/linuxppc/contrib/linuxppc-1999/software/XFree86-FBDev-3.3.3.1-49b.ppc.rpm>.
 
    Invocations (and DO) do not work well. The major problem is sending
 data with data sizes less than 4 bytes (chars, shorts, etc).  To fix
-this, we recommend using the ffcall libraries via the `--enable-ffcall'
-option when configuring (Read the instructions on this in the
-configuration section).
+this, we recommend using the ffcall libraries (Read the instructions on
+this in the configuration section).
 
 Irix 6.4/MIPS (_Unstable!_)
 ===========================
@@ -503,20 +536,10 @@ NetBSD
      Unknown
 
 `Extra libs needed'
-     Unknown
+     libiconv
 
 `Special Instructions'
-     Can compile with shared libraries on elf architectures, although
-     problems persist with the NXConstantString class. Currently, to
-     avoid this you can redefine NXConstantString to NXConstantString2
-     in the libobjc library. Or you could do the following (works on
-     NetBSD 1.4Z)
-
-          cd /usr/lib
-          ar -dv libobjc_p.a NXConstStr.po
-          ar -dv libobjc_pic.a NXConstStr.so
-          ar -dv libobjc.a NXConstStr.o
-          rm /usr/lib/libobjc.so.0.0
+     See the README.NetBSD file located in the gnustep-make package.
 
 Netwinder (_Unstable!_)
 =======================
@@ -541,11 +564,6 @@ OpenBSD 2.x  (_Unstable!_)
 
 `Special Instructions'
      Can only compile with static libraries. Gives a lot of warnings
-
-     GNUstep 0.6.0 uses code to access the /proc filesystem, which may
-     be broken on BSD machines. To avoid this configure with the
-     argument -enable-fake-main.  Later versions of GNUstep should
-     check for a broken /proc filesystem.
 
 OSF Alpha  (_Unstable!_)
 ========================
@@ -579,20 +597,21 @@ Solaris 2.5.1/Sparc
 `Special Instructions'
      See the Solaris 2.6 section for more instructions.
 
-Solaris 2.6/Sparc
-=================
+Solaris 2.[67]/Sparc
+====================
 
 `Recommended compiler'
-     egcs-2.91.60 (1.1.2?), egcs-1.0.1, gcc 2.8.1, gcc 2.95.2
+     gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
 
 `Extra libs needed'
      tiff, Don't use the one in /usr/openwin
 
 `Special Instructions'
-     GCC 2.8.0 induced a problem on Solaris/Sparc systems; however,
-     there is a patch to fix this in the contrib directory on the ftp
-     sites (This is also true for all versions of gcc/egcs up through
-     2.95.2 (possibly fixed in later versions)).
+     There is no need to patch the compiler for the builtin_apply
+     problem unless you are not using the ffcall libraries.  There is a
+     patch to fix this in the contrib directory on the ftp sites (This
+     is also true for all versions of gcc/egcs up through 2.95.2
+     (possibly fixed in later versions)).
 
      To avoid using the tiff library in /usr/openwin, configure like
      this:
@@ -600,16 +619,15 @@ Solaris 2.6/Sparc
      if, for instance, you have put a newer tiff library in
      /usr/local/lib
 
-   Even with the about patch, invocations (and DO) still don't work
+   Even with the above patch, invocations (and DO) still don't work
 well. The major problem is sending messages with more than four
-arguments.  We recommend using the ffcall libraries via the
-`--enable-ffcall' option when configuring (Read the instructions on
-this in the configuration section).
+arguments.  We recommend using the ffcall libraries when configuring
+(Read the instructions on this in the configuration section).
 
    If you are using threads, make sure the Objective-C runtime (libobjc
 that comes with gcc) is compiled with threads enabled (This is true by
 default) AND that it is compiled with the _REENTRANT flag defined (This
-does not seem to be true by default).
+does not seem to be true by default). Or use the gnustep-objc package.
 
 Solaris 2.7/Intel
 =================
@@ -752,55 +770,56 @@ Windows with CYGWIN (_Unstable!_)
 =================================
 
 `Recommended compiler'
-     gcc 2.95.2 (Cygwin release 1.1.2 or later)
+     gcc 2.95.3 (Cygwin release 1.1.8)
 
 `Extra libs needed'
-     Objective-C library DLL
-     (<ftp://ftp.gnustep.org/pub/gnustep/contrib>) for shared libs.
+     Objective-C library DLL (<ftp://ftp.gnustep.org/pub/gnustep/libs>)
+     for shared libs. ffcall is not ported to cygwin so don't try to
+     use it (some invocation and DO stuff will not work).
 
 `Special Instructions'
-     Static libs require no extra effort (just make shared=no),
-     however, DLLs (shared=yes) are compiled by default, and for this
-     you need a special version of the Objective-C library that also
-     compiles as a DLL. Make sure files and compilation done in Unix
-     mode (no ^M in files). Due to some interesting dependancies, it is
-     recommended that you compile and install each sub-package (make,
-     base, etc) independantly. Gdomap services not set up correctly.
-     Must add services lines to `C:\WINDOWS\services' (on Windows 98)
-     or xxx (on Windows NT).  Base library only. No native GUI backend.
+   For shared libs, make sure to specify SHARED=YES explicitly when
+building:
+
+     make shared=yes
+
+   For static libs, use SHARED=NO, Make sure files and compilation done
+in Unix mode (no ^M in files, EXPORT CYGWIN=BINMODE usually works if
+cygwin is not buggy).  Gdomap services not set up correctly. Must add
+services lines to `C:\WINDOWS\services' (on Windows 98) or xxx (on
+Windows NT).  Base library only. No native GUI backend.
+
+Windows with MinGW (_Unstable!_)
+================================
+
+`Recommended compiler'
+     gcc 2.95.2 (MingW release 1999-11-07)
+
+`Extra libs needed'
+     Objective-C library DLL (<ftp://ftp.gnustep.org/pub/gnustep/libs>)
+     for shared libs. ffcall is not ported to Mingw32 so don't try to
+     use it.
+
+`Special Instructions'
+     See the `README.MinGW' file located in the gnustep-make
+     Documentation directory for instructions.  Base library only. No
+     native GUI backend.
 
 Getting Libraries via Anonymous CVS
 ***********************************
 
    If you didn't get one of the snapshots, or if you want to be sure to
-stay on the bleading edge, then you should get the core via CVS:
-
-   The quick and painless CVS tutorial (by michael hanni (slightly
-modified)
-
-   First, set the CVSROOT environment variable. If you are using
-bash/sh you can do something like this at the prompt:
-     export CVSROOT=":pserver:anoncvs@cvs.net-community.com:/gnustep"
-
-   Second, if this is the first time loging into the CVS server:
-     cvs login <press enter>
-
-   You should get a password prompt soon after:
-     (Logging in to anoncvs@cvs.net-community.com)
-     CVS password:
-
-   Enter the password `anoncvs'. This should return you to your prompt.
-From here you can checkout any module in the CVS server you like. To
-checkout a module you do this:
-     cvs -z3 checkout modulename <press enter>
-
-   The -z3 merely tells the cvs server to compess everything to a
-certain compression level before it sends it to you.
+stay on the bleading edge, then you should get the libraries via CVS. Go
+to <http://savannah.gnu.org/cvs/?group_id=99> for information on how to
+get anonymous CVS access.
 
    If you haven't already done so, change to the directory, where you
-want the source to reside.
+want the source to reside. To get a list of potential modules to check
+out, type
+     cvs -z3 checkout -c
 
-   Next, you want to get the whole core, so you do:
+   For instance, to check our `core', which contains all the GNUstep
+code libraries:
      cvs -z3 checkout core
 
    After you have checked out the source you can compile it as usual.
@@ -810,27 +829,6 @@ to update, for example, go into 'xgps', and type:
      cvs -z3 update -Pd
 
    You don't have to re-checkout after you have the source, just update!
-Also try `cvs checkout -c' to get a list of available modules.
-
-Other Instructions
-******************
-
-Better debugging with Objective-C runtime
-=========================================
-
-   Normally, the Objective-C runtime is compiled with debugging
-information, which actually makes debugging of user apps frustrating
-because stepping into a method call will actually cause gdb to step
-into the internal Objective-C method call mechanism, which you don't
-want most of the time.
-
-   The way to avoid this is to compile the Objective-C runtime library
-without debugging information. Here's how:
-
-     cd egcs-build-directory/gcc
-     rm -f objc/*.o
-     make CFLAGS=-O2 libobjc.a
-     cp libobjc.a your-egcs-installation-dir
 
 Acknowledgements
 ****************

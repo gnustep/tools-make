@@ -15,8 +15,7 @@
 If you are installing this package as part of the GNUstep core
 libraries, read the file GNUstep-HOWTO for more complete instructions on
 how to install the entire GNUstep package (including this package).
-GNUstep-HOWTO comes with the core distribution and also is located at the
-same ftp sites as this library.
+GNUstep-HOWTO comes with this distribution.
 
 When you configure additional libraries, make sure you use the same
 configuration options as with gstep-make.
@@ -58,14 +57,13 @@ To see more options you can use with configure, type
 @end example
 
 Look particularly at the end of the list that configure gives, as these 
-options are specific to GNUstep. For instance, if you installed the tiff
-library in other than a normal directory, you can use the 
-@samp{--with-tiff-include} option to tell configure where it is.
+options are specific to GNUstep. Some of these are described below.
 
-With the various GNUstep libraries you can use the various
-switches, shared and debug. As in ``make shared=no debug=yes'' (Make sure
-you use the same switches for every package you compile, and also when
-you install).
+With the GNUstep packages you can use various switches, such as shared
+and debug, to control compilation. for example, ``make shared=no
+debug=yes'' compiles using static libraries with debugging
+information. (Make sure you use the same switches for every package you
+compile, and also when you install).
 
 @menu
 * Alternate Libraries::         
@@ -77,7 +75,7 @@ you install).
 @subsection Alternate Library Setup
 
 You can specify compilation of alternate libraries by using the
---with-library-combo option. You need to have these libraries unpacked in a
+with-library-combo option. You need to have these libraries unpacked in a
 subdirectory under the gstep directory, then you can say
 
 @example
@@ -173,8 +171,8 @@ contains all of the environment variable settings required, so you want
 to call that shell.  Some systems, like GNU/Linux have an
 @file{/etc/profile.d} directory where scripts can be executed
 automatically. Just copy GNUstep.sh to this directory for it to
-work. For other UNIX systems, the easiest way to do that is to modify
-the system rc.local file which is executed upon system startup; add
+work. For other UNIX systems, there might be a system wide script that
+everyone uses, such as @file{/etc/bashrc}, where you could add
 lines similar to these:
 
 @example
@@ -186,7 +184,7 @@ This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for all users. Before executing
 this script, you can setup a default path for searching for tools
 and apps by defining the variable GNUSTEP_PATHPREFIX_LIST (and exporting
-it). By defualt, it's set to
+it). By default, it's set to
 
 @example
 $GNUSTEP_USER_ROOT:$GNUSTEP_LOCAL_ROOT:$GNUSTEP_SYSTEM_ROOT
@@ -214,7 +212,9 @@ shell reads the .bash_profile file in the user's home directory.  So
 you can add the following lines to that file:
 
 # Setup for the GNUstep environment
-. /usr/GNUstep/Makefiles/GNUstep.sh
+if [ -f $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh ]; then
+  . $GNUSTEP_SYSTEM_ROOT/Makefiles/GNUstep.sh
+fi
 
 This will source in the GNUstep.sh file and set the environment
 variables; thus making them available for the user.

@@ -1878,7 +1878,7 @@ esac
 saved_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -x objective-c"
 saved_LIBS="$LIBS"
-if test $host_os = linux-gnu; then
+if test "$host_os" = linux-gnu; then
   LIBS="-lobjc -lpthread"
   if test "$cross_compiling" = yes; then
   objc_threaded="-lpthread"
@@ -2021,7 +2021,7 @@ if test x"$objc_threaded" = x""; then
 else
   echo "$ac_t""yes" 1>&6
   if test x"$objc_threaded" = x"works"; then
-    objc_threaded="",
+    objc_threaded=""
   fi
 fi
 ac_cv_objc_threaded="$objc_threaded"

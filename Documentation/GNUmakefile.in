@@ -22,8 +22,9 @@
 prefix = @prefix@
 GNUSTEP_INSTALLATION_DIR=$(prefix)
 GNUSTEP_PREFIX = @GNUSTEP_PREFIX@
-srcdir = @srcdir@
-datadir = @datadir@
+MAKEFILE_NAME = GNUmakefile
+
+include ../Version
 
 GNUSTEP_MAKEINFO        = makeinfo
 GNUSTEP_MAKEINFO_FLAGS  = -D NO-TEXI2HTML --no-header
@@ -36,67 +37,52 @@ GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
 GNUSTEP_DVIPS           = dvips
 GNUSTEP_DVIPS_FLAGS     =
 
-include ../Version
-
 # The documents to be generated
-DOCUMENT_NAME = make
+DOCUMENT_NAME = make gnustep-howto machines faq
 
 # The text documents to be generated
-DOCUMENT_TEXT_NAME = \
-INSTALL README 
+DOCUMENT_TEXT_NAME = INSTALL README NEWS GNUstep-HOWTO
 
-TOP_DOC_FILES = INSTALL README
+TOP_DOC_FILES = INSTALL README NEWS GNUstep-HOWTO
 
-INSTALL_TEXI_FILES = 
-INSTALL_TEXT_MAIN = install.texi
-INSTALL_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+GNUstep-HOWTO_TEXI_FILES = version.texi
+GNUstep-HOWTO_TEXT_MAIN = gnustep-howto.texi
 
-NEWS_TEXI_FILES = 
-NEWS_TEXT_MAIN = news.texi
-NEWS_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
-
-README_TEXI_FILES = 
-README_TEXT_MAIN = readme.texi
-README_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
-
-ANNOUNCE_TEXI_FILES = 
-ANNOUNCE_TEXT_MAIN = announce.texi
-ANNOUNCE_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
+FAQ_TEXI_FILES = version.texi
+FAQ_TEXT_MAIN = faq.texi
 
 make_TEXI_FILES = \
 make.texi
 
-all: $(DOCUMENT_TEXT_NAME)
-	for file in $(DOCUMENT_NAME); do \
-	  $(MAKE) INTERNAL_doc_NAME=$$file TEXI_FILES=$$file.texi internal-doc-all; \
-	done
+faq_TEXI_FILES = \
+faq.texi \
+version.texi
 
-INSTALL: install.texi
-	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
-		-o $@ $^
+machines_TEXI_FILES = \
+machines.texi 
 
-README: readme.texi
-	$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) \
-		-o $@ $^
+gnustep-howto_TEXI_FILES = \
+gnustep-howto.texi \
+version.texi
 
-internal-doc-all:: $(INTERNAL_doc_NAME).info \
-                   $(INTERNAL_doc_NAME).ps \
-                   $(INTERNAL_doc_NAME)_toc.html
+INSTALL_TEXI_FILES = version.texi
+INSTALL_TEXT_MAIN = install.texi
+INSTALL_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
 
-$(INTERNAL_doc_NAME).info: $(TEXI_FILES)
-	$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) \
-	  -o $@ $(INTERNAL_doc_NAME).texi
+NEWS_TEXI_FILES = version.texi
+NEWS_TEXT_MAIN = news.texi
+NEWS_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
 
-$(INTERNAL_doc_NAME).dvi: $(TEXI_FILES)
-	$(GNUSTEP_TEXI2DVI) $(GNUSTEP_TEXI2DVI_FLAGS) $(INTERNAL_doc_NAME).texi
+README_TEXI_FILES = version.texi
+README_TEXT_MAIN = readme.texi
+README_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
 
-$(INTERNAL_doc_NAME).ps: $(INTERNAL_doc_NAME).dvi
-	$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) \
-	  $(INTERNAL_doc_NAME).dvi -o $@
+ANNOUNCE_TEXI_FILES = version.texi
+ANNOUNCE_TEXT_MAIN = announce.texi
+ANNOUNCE_DOC_INSTALL_DIR = Developer/Makefiles/ReleaseNotes/$(VERSION)
 
-$(INTERNAL_doc_NAME)_toc.html: $(TEXI_FILES)
-	$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) \
-	  $(INTERNAL_doc_NAME).texi
+include makerules.make
+include makedoc.make
 
 regenerate: $(DOCUMENT_TEXT_NAME)
 	mv -f $(TOP_DOC_FILES) ..
