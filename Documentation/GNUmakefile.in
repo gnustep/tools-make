@@ -23,6 +23,7 @@ prefix = @prefix@
 GNUSTEP_INSTALLATION_DIR = $(prefix)
 GNUSTEP_DOCUMENTATION = $(GNUSTEP_INSTALLATION_DIR)/Library/Documentation
 GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOCUMENTATION)/info
+GNUSTEP_DOCUMENTATION_MAN = $(GNUSTEP_DOCUMENTATION)/man
 MAKEFILE_NAME = GNUmakefile
 
 include ../Version
@@ -105,6 +106,9 @@ ANNOUNCE_TEXI_FILES = version.texi
 ANNOUNCE_TEXT_MAIN = announce.texi
 ANNOUNCE_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
+# Manual pages to install
+MAN7_PAGES = GNUstep.7.gz
+
 include makerules.make
 include makedoc.make
 
@@ -118,6 +122,22 @@ version.texi: ../Version
 
 after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
 	$(INSTALL_DATA) DESIGN $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
+	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN) ]; then \
+	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN); \
+	fi; \
+	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN)/man7 ]; then \
+	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN)/man7; \
+	fi; \
+	for file in $(MAN7_PAGES) __done; do \
+	  if [ $$file != __done ]; then \
+	    $(INSTALL_DATA) $$file $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
+	  fi; \
+	done;
 
 after-uninstall::
 	rm -f $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual/DESIGN
+	for file in $(MAN7_PAGES) __done; do \
+	  if [ $$file != __done ]; then \
+	    rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
+	  fi; \
+	done;
