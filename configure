@@ -2520,7 +2520,7 @@ fi
 fi
 
 
-#if test "x$GRAPHIC_LIBS" = x; then
+if test "x$GRAPHIC_LIBS" = x; then
   GRAPHIC_CFLAGS="$X_CFLAGS"
   GRAPHIC_LFLAGS="$X_LIBS"
   GRAPHIC_LIBS="-lXext -lX11 $X_EXTRA_LIBS"
@@ -2571,7 +2571,7 @@ fi
   if test $have_xmu = 1; then
     GRAPHIC_LIBS="-lXmu ${GRAPHIC_LIBS}"
   fi
-#fi
+fi
 if test -r $x_includes/X11/DPS; then
   GRAPHIC_CFLAGS="-I$x_includes/X11 $GRAPHIC_CFLAGS"
 fi
