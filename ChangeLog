@@ -1,3 +1,20 @@
+2003-09-15  Adam Fedor  <fedor@gnu.org>
+
+        * Version: Add VERSION
+        * gnustep-make.spec.in: Update packager.
+
+Sun Sep  7 12:43:59 2003  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* config.site: Fixed Headers directory, it is now in Library/.
+
+Wed Sep  3 10:29:26 2003  Matt Rice <ratmice@yahoo.com>,
+                          Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/library.make: Removed ADDITIONAL_INSTALL_DIRS code.
+	* Instance/rules.make: Implemented support for
+	ADDITIONAL_INSTALL_DIRS.
+	* common.make (GNUSTEP_APPLICATION_SUPPORT): New variable.
+	
 2003-08-23  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.7.3

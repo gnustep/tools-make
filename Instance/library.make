@@ -230,8 +230,7 @@ internal-library-install_:: internal-install-dirs \
 
 # Depend on creating all the dirs
 internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
-                          $(DLL_INSTALLATION_DIR) \
-                          $(ADDITIONAL_INSTALL_DIRS)
+                          $(DLL_INSTALLATION_DIR)
 
 # Now the rule to create each dir.  NB: Nothing gets executed if the dir 
 # already exists
@@ -240,10 +239,6 @@ $(FINAL_LIBRARY_INSTALL_DIR):
 
 $(DLL_INSTALLATION_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
-
-$(ADDITIONAL_INSTALL_DIRS):
-	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
-
 
 ifeq ($(BUILD_DLL),yes)
 
