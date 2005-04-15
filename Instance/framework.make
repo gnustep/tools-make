@@ -385,7 +385,7 @@ $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(ECHO_COMPILING)$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@$(END_ECHO)
 endif
 
-ifeq ($(FOUNDATION_LIB), apple)
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 # When building native frameworks on Apple, we need to create a
 # top-level symlink xxx.framework/xxx ---> the framework shared
 # library

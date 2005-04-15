@@ -1,3 +1,11 @@
+2005-04-15  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/framework.make: Add top-level symlink for all darwin
+	* ld_lib_path.sh: Clarify framework comment.
+
+	* Documentation/machines.texi: Update
+	* Documentation/README.NetBSD: Remove, obsolete.
+
 2005-04-06  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* GNUstep.conf (USER_GNUSTEP_RC): Fixed typo, it was spelt

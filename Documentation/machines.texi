@@ -4,7 +4,7 @@
 
 @ifclear HOWTO
 @c Machine Specific, Compilers, , (DIR)
-@node Machine Specific, Compilers, , (DIR)
+@node Machine Specific
 @chapter Machines
 @end ifclear
 
@@ -36,7 +36,8 @@ GNUstep @email{bug-gnustep@@gnu.org}.
 * Irix 6.5/MIPS::               
 * MacOSX/PowerPC::              
 * MkLinux/PowerPC::             
-* NetBSD::                      
+* NetBSD/i386::                 
+* NetBSD/Sparc64::              
 * Netwinder::                   
 * OpenBSD 3.x::                 
 * OSF/Alpha::                   
@@ -182,7 +183,7 @@ See also the MacOSX/PowerPC section
 
 @table @var
 @item Recommended compiler
-Unknown
+Standard
 
 @item Extra libs needed 
 Unknown
@@ -198,7 +199,7 @@ None
 Tested on sid.
 @table @var
 @item Recommended compiler
-Unknown
+Standard
 
 @item Extra libs needed 
 Unknown
@@ -214,7 +215,7 @@ None
 Tested on sid.
 @table @var
 @item Recommended compiler
-Unknown
+Standard
 
 @item Extra libs needed 
 Unknown
@@ -230,10 +231,9 @@ None
 Tested on sid.
 @table @var
 @item Recommended compiler
-Unknown
+Standard
 
 @item Extra libs needed 
-Unknown
 
 @item Special Instructions 
 None
@@ -279,7 +279,7 @@ For libxml2 2.4.24, make WITHOUT_PYTHON=YES
 
 @c -----------------------------------------
 @node FreeBSD 3.x, FreeBSD 2.x, FreeBSD 4.x, Machine Specific
-@section FreeBSD 3.x
+@section FreeBSD 3.x  (@emph{Obsolete})
 
 Compiles "out of the box" on FreeBSD 3.4.
 
@@ -427,7 +427,7 @@ or configure base with --disable-xml.
 See also the Darwin/PowerPC section.
 
 @c -----------------------------------------
-@node MkLinux/PowerPC, NetBSD, MacOSX/PowerPC, Machine Specific
+@node MkLinux/PowerPC, NetBSD/i386, MacOSX/PowerPC, Machine Specific
 @section MkLinux/PowerPC 
 
 Tested with R2 RC2 (2004/03/04).
@@ -445,23 +445,49 @@ Unknown.
 @end table
 
 @c -----------------------------------------
-@node NetBSD, Netwinder, MkLinux/PowerPC, Machine Specific
-@section NetBSD 
+@node NetBSD/i386, NetBSD/Sparc64, MkLinux/PowerPC, Machine Specific
+@section NetBSD/i386 
+
+Tested on NetBSD 2.0.2 (2005/04/15)
 
 @table @var
 @item Recommended compiler
-Unknown
+Standard
 
 @item Extra libs needed 
-libiconv
+libiconv(?), libffi
 
 @item Special Instructions 
-See the @url{README.NetBSD} file located in the gnustep-make package.
+Use NetBSD packages to install needed libraries. libffi either comes
+automatically with gcc or can be installed separately and works fine
+(over ffcall).
 
 @end table
 
 @c -----------------------------------------
-@node Netwinder, OpenBSD 3.x, NetBSD, Machine Specific
+@node NetBSD/Sparc64, Netwinder, NetBSD/i386, Machine Specific
+@section NetBSD/Sparc64  (@emph{Unstable})
+
+Tested on NetBSD 2.0.2 (2005/04/15)
+
+@table @var
+@item Recommended compiler
+Standard
+
+@item Extra libs needed 
+libiconv(?), libffi
+
+@item Special Instructions 
+Use NetBSD packages to install needed libraries. libffi either comes
+automatically with gcc or can be installed separately and is prefered
+over ffcall which does not work on Sparc64 machines.
+
+@end table
+
+gdomap crashes. Perhaps other things do not work as well.
+
+@c -----------------------------------------
+@node Netwinder, OpenBSD 3.x, NetBSD/Sparc64, Machine Specific
 @section Netwinder (@emph{Unstable})
 
 @table @var
