@@ -388,7 +388,8 @@ endif
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 # When building native frameworks on Apple, we need to create a
 # top-level symlink xxx.framework/xxx ---> the framework shared
-# library
+# library. On Darwin (non-Apple) we do this as well since we can partially
+# emulate frameworks (see the ld_lib_path.sh comments on this).
 
 build-framework:: $(FRAMEWORK_FILE) \
                   shared-instance-bundle-all \

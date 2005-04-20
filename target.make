@@ -301,16 +301,16 @@ ifeq ($(CC_BUNDLE), no)
 
 INTERNAL_LDFLAGS += -flat_namespace -undefined warning
 
-SHARED_LD_PREFLAGS += -noall_load -read_only_relocs warning
+SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning
 # Useful flag: -Wl,-single_module.  This flag only
 # works starting with 10.3. libs w/ffcall don't link on darwin/ix86 without it.
 ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
   SHARED_LD_PREFLAGS += -single_module
 endif
 SHARED_LIB_LINK_CMD     = \
-	/usr/bin/libtool \
+	$(CC) \
 		$(SHARED_LD_PREFLAGS) \
-		$(ARCH_FLAGS) -dynamic	\
+		$(ARCH_FLAGS) -dynamic -dynamiclib	\
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
 		-install_name $(LIB_LINK_INSTALL_NAME)	\

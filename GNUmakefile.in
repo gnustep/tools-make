@@ -144,9 +144,6 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 		$(makedir)/Instance/Shared \
 		$(makedir)/Instance/Documentation)
 	-$(EC) rm -f $(GNUSTEP_SYSTEM_ROOT)/Makefiles
-ifeq ($(HAS_LN_S), yes)
-	$(EC) (cd $(GNUSTEP_SYSTEM_ROOT); $(LN_S) @MAKEFILES_SUFFIX@ Makefiles)
-endif
 	 $(EC)(echo "Installing gnustep-make support software"; \
 	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
 	     $(makedir)/$(GNUSTEP_TARGET_DIR); \
