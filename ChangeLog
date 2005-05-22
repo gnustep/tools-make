@@ -1,3 +1,8 @@
+2005-05-21  Adam Fedor  <fedor@gnu.org>
+
+	* Update FSF Address.
+	* Documentation/gnustep-howto.texi: Update required libs.
+
 2005-04-19  Adam Fedor  <fedor@gnu.org>
 
 	* GNUmakefile.in (install): Don't make Makefiles link

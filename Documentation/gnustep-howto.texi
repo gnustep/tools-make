@@ -107,7 +107,8 @@ Use this instead of ffcall. You don't need both.
 @item libxml2 (RECOMMENDED)
 The libxml library (Version 2) is used to translate some of the
 documentation for GNUstep and to provide suport for MacOS-X compatible
-XML-based property-lists. It is recommended but not currently required.
+XML-based property-lists. It is not required, but you have to explicitly
+disable use of XML when compiling GNUstep base if you do not have it.
 
 @item libxslt (OPTIONAL)
 Stylesheet support for use with XML.
@@ -137,7 +138,19 @@ The GUI library uses this to handle loading JPEG images.
 @item The PNG library (libpng) (RECOMMENDED)
 The GUI library uses this to handle loading PNG images.
 
-@item libaudiofile (RECOMMENDED)
+@item gif or ungif (OPTIONAL)
+The GUI library uses either one of these libraries to load GIF images.
+
+@item aspell (OPTIONAL)
+The GUI library uses this to handle spell checking.
+
+@item cups (OPTIONAL)
+The GUI library uses this to handle interface to the CUPS print servers.
+
+@item audiofile (OPTIONAL)
+The GUI library uses this for playing sound files.
+
+@item portaudio (OPTIONAL)
 The GUI library uses this for the sound server
 
 @item freetype2 (RECOMMENDED, REQUIRED for art backend)
@@ -152,9 +165,10 @@ Although it is not required, GNUstep will work much better if you use it
 with the WindowMaker window manager. 
 Get WindowMaker from @url{http://www.windowmaker.org}.
 
-@item gnustep-objc package (for gcc version < 3.0 ONLY) (RECOMMENDED)
+@item gnustep-objc package (for gcc version < 3.0 ONLY or MINGW/Cygwin) (RECOMMENDED)
 Note: Do not install this library unless you are sure you need it.
-You probably don't need it except on MinGW.
+You probably don't need it except on MinGW and Cygwin (regardless of the
+gcc version you have).
 This is a special version of the Objective-C runtime that include several
 bug fixes and features that were not in gcc versions previous to 3.0.
 It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
