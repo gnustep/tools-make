@@ -1,4 +1,8 @@
-2005-05-23  David Lazaro Saz <dlazaro@acm.org>
+2005-05-31  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Documentation/README.MinGW: Rewritten with updated instructions.
+
+2005-05-23  David Lazaro Saz  <dlazaro@acm.org>
 
 	* Documentation/userfaq.texi: Updated style, trademark usage and some
 	spelling mistakes.
