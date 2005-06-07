@@ -52,12 +52,16 @@ ifeq ($(FINAL_TOOL_INSTALL_DIR),)
   FINAL_TOOL_INSTALL_DIR = $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 endif
 
+# On windows, this is unfortunately required.
+ifeq ($(BUILD_DLL), yes)
+  DUP_OBJC_LIBS = $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) 
+endif
+
 ALL_TOOL_LIBS =								\
     $(shell $(WHICH_LIB_SCRIPT)						\
        $(ALL_LIB_DIRS)							\
        $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS)	\
-       $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
-       $(TARGET_SYSTEM_LIBS)						\
+	$(ADDITIONAL_OBJC_LIBS) $(DUP_OBJC_LIBS)			\
 	debug=$(debug) profile=$(profile) shared=$(shared)		\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 

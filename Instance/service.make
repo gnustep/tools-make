@@ -39,14 +39,19 @@ endif
         internal-service-copy_into_dir \
         service-resource-files
 
+# On windows, this is unfortunately required.
+ifeq ($(BUILD_DLL), yes)
+  DUP_OBJC_LIBS = $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) 
+endif
+
 # Libraries that go before the GUI libraries
 ALL_SERVICE_LIBS =							\
     $(shell $(WHICH_LIB_SCRIPT)						\
 	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS)			\
 	$(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	\
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
-	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)		\
+	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(DUP_OBJC_LIBS)            \
+	$(SYSTEM_LIBS) 	    	                                        \
 	debug=$(debug) profile=$(profile) shared=$(shared)		\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 

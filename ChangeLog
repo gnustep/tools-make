@@ -1,3 +1,13 @@
+2005-06-06  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/application.make (ALL_GUI_LIBS): Remove OBJC_LIBS,
+	AUXILIARY_OBJC_LIBS, and TARGET_SYSTEM_LIBS
+	* Instance/gswapp.make (ALL_GSW_LIBS): Idem.
+	* Instance/service.make (ALL_SERVICE_LIBS): Idem.
+	* Instance/test-library.make (ALL_TEST_LIBRARY_LIBS): Idem.
+	* Instance/tool.make (ALL_TOOL_LIBS): Idem.
+	Fixes bug #9920.
+
 2005-05-31  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* Documentation/README.MinGW: Rewritten with updated instructions.

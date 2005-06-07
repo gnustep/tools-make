@@ -398,7 +398,10 @@ Please report the error to bug-gnustep@@gnu.org.
 when compiling the gui library, there could be several things wrong. One
 is that you installed the gnustep-objc library, but the compiler
 found another Objecive-C library (like the one that came with gcc). If
-you are using gcc 3.x, DO NOT use the gnustep-objc library.
+you are using gcc 3.x, DO NOT use the gnustep-objc library. 
+
+There could also be a mismatch between the base and gui library versions.
+Make sure you have the latest release of each library installed.
 
 @node Problems with Alt key, Problems with gcc3, Problems compiling (GNUstep Internal Error), Troubleshooting
 @subsection Problems with Alt key
