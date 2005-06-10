@@ -131,15 +131,16 @@ VERTAG = $(subst .,_,$(PACKAGE_VERSION))
 dist: distclean
 	@echo "Generating $(ARCHIVE_FILE) in the parent directory..."; \
 	SNAPSHOT_DIR=`basename $$(pwd)`; \
-	cd ..;                           \
 	if [ "$$SNAPSHOT_DIR" != "$(VERSION_NAME)" ]; then \
-	  if [ -d "$(VERSION_NAME)" ]; then \
+	  if [ -d "../$(VERSION_NAME)" ]; then \
 	    echo "$(VERSION_NAME) already exists in parent directory (?):"; \
 	    echo "Saving old version in $(VERSION_NAME)~"; \
-	    mv $(VERSION_NAME) $(VERSION_NAME)~; \
+	    mv ../$(VERSION_NAME) ../$(VERSION_NAME)~; \
 	  fi; \
-	  mv $$SNAPSHOT_DIR $(VERSION_NAME);\
-        fi; \
+	  mkdir ../$(VERSION_NAME); \
+	  tar cf - . | (cd ../$(VERSION_NAME); tar xf -); \
+	fi; \
+	cd ..; \
 	if [ -f $(ARCHIVE_FILE) ]; then             \
 	  echo "$(ARCHIVE_FILE) already exists:";    \
 	  echo "Saving old version in $(ARCHIVE_FILE)~"; \
@@ -153,7 +154,7 @@ dist: distclean
 	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
 	fi; \
 	if [ "$$SNAPSHOT_DIR" != "$(VERSION_NAME)" ]; then \
-	  mv $(VERSION_NAME) $$SNAPSHOT_DIR;               \
+	  rm -rf $(VERSION_NAME);               \
         fi; \
 	if [ ! -f $(ARCHIVE_FILE) ]; then \
 	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \

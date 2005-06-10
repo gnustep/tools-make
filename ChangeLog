@@ -1,3 +1,10 @@
+2005-06-10  Adam Fedor  <fedor@gnu.org>
+
+	* Master/source-distribution.make (dist): Tar/copy the directory
+	instead of moving it to make the distribution. Fixes bug #13305
+
+	* Documentation/machines.texi: Update Suse.
+
 2005-06-06  Adam Fedor  <fedor@gnu.org>
 
 	* Instance/application.make (ALL_GUI_LIBS): Remove OBJC_LIBS,
