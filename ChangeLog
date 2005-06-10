@@ -1,5 +1,10 @@
 2005-06-10  Adam Fedor  <fedor@gnu.org>
 
+	* Instance/test-library.make: Remove dejagnu code and replace
+	with rules to inherit from library.make
+
+2005-06-10  Adam Fedor  <fedor@gnu.org>
+
 	* Master/source-distribution.make (dist): Tar/copy the directory
 	instead of moving it to make the distribution. Fixes bug #13305
 
