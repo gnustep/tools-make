@@ -4,7 +4,7 @@
 
 @ifclear HOWTO
 @c Machine Specific, Compilers, , (DIR)
-@node Machine Specific
+@node Machine Specific, Compilers, , (DIR)
 @chapter Machines
 @end ifclear
 
@@ -43,6 +43,7 @@ GNUstep @email{bug-gnustep@@gnu.org}.
 * OSF/Alpha::                   
 * RedHat/Intel::                
 * Slackware/Intel::             
+* Slackware/Sparc::             
 * Solaris 2.5.1/Sparc::         
 * Solaris/Sparc::               
 * Solaris 2.7/Intel::           
@@ -556,7 +557,7 @@ None
 @end table
 
 @c -----------------------------------------
-@node Slackware/Intel, Solaris 2.5.1/Sparc, RedHat/Intel, Machine Specific
+@node Slackware/Intel, Slackware/Sparc, RedHat/Intel, Machine Specific
 @section Slackware/Intel 
 
 @table @var
@@ -572,7 +573,25 @@ Unknown.
 @end table
 
 @c -----------------------------------------
-@node Solaris 2.5.1/Sparc, Solaris/Sparc, Slackware/Intel, Machine Specific
+@node Slackware/Sparc, Solaris 2.5.1/Sparc, Slackware/Intel, Machine Specific
+@section Slackware/Sparc (Splack) 
+
+Tested with Spalck 8.0
+
+@table @var
+@item Recommended compiler
+gcc 3.2, no extra options.
+
+@item Extra libs needed 
+Unknown.
+
+@item Special Instructions 
+Tested on an ultra sparc server, kernel 2.4.27, XF86-4.0.3
+
+@end table
+
+@c -----------------------------------------
+@node Solaris 2.5.1/Sparc, Solaris/Sparc, Slackware/Sparc, Machine Specific
 @section Solaris 2.5.1/Sparc (@emph{Obsolete})
 
 This configuration is no longer being tested, but it may still work.
