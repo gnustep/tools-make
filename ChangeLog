@@ -1,3 +1,13 @@
+2005-07-06  Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Instance/bundle.make: Removed usage of :: rules for all but the
+	internal- rules.  Can't see a reason why we were using :: rules in
+	the other cases, probably a tradition that was followed without
+	really understanding why.
+	* Instance/gswbundle.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/subproject.make: Same change.
+
 2005-06-17  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/GNUmakefile: Don't try to install README.NetBSD

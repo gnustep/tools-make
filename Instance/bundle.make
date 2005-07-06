@@ -147,15 +147,15 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 ifneq ($(OBJ_FILES_TO_LINK),)
 ifneq ($(FOUNDATION_LIB),apple)
-build-bundle:: $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-             $(BUNDLE_FILE) \
-             $(BUNDLE_INFO_PLIST_FILE) \
-             shared-instance-bundle-all
+build-bundle: $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
+              $(BUNDLE_FILE) \
+              $(BUNDLE_INFO_PLIST_FILE) \
+              shared-instance-bundle-all
 else
-build-bundle:: $(BUNDLE_DIR)/Contents/MacOS \
-             $(BUNDLE_FILE) \
-             $(BUNDLE_INFO_PLIST_FILE) \
-             shared-instance-bundle-all
+build-bundle: $(BUNDLE_DIR)/Contents/MacOS \
+              $(BUNDLE_FILE) \
+              $(BUNDLE_INFO_PLIST_FILE) \
+              shared-instance-bundle-all
 endif
 
 # The rule to build $(BUNDLE_DIR)/Resources is already provided
@@ -167,7 +167,7 @@ $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 # OLD_DLL_SUPPORT should really be deprecated and dropped.
 ifeq ($(OLD_DLL_SUPPORT),yes)
 
-$(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
+$(BUNDLE_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(OBJ_FILES_TO_LINK) \
@@ -176,7 +176,7 @@ $(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 
 else # Standard bundle build using the rules for this target
 
-$(BUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
+$(BUNDLE_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 		-o $(LDOUT)$(BUNDLE_FILE) \
 		$(OBJ_FILES_TO_LINK) \
@@ -193,7 +193,7 @@ endif
 else 
 # Following code for the case OBJ_FILES_TO_LINK is empty - bundle with
 # no shared object in it.
-build-bundle:: $(BUNDLE_INFO_PLIST_FILE) shared-instance-bundle-all
+build-bundle: $(BUNDLE_INFO_PLIST_FILE) shared-instance-bundle-all
 endif # OBJ_FILES_TO_LINK
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))

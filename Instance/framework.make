@@ -251,7 +251,7 @@ ifeq ($(MAKE_CURRENT_VERSION),yes)
 # A target to build/reset the Current symlink to point to the newly
 # compiled framework.  Only executed if MAKE_CURRENT_VERSION is yes.
 UPDATE_CURRENT_SYMLINK_RULE = update-current-symlink
-update-current-symlink:: $(FRAMEWORK_VERSION_DIR)
+update-current-symlink: $(FRAMEWORK_VERSION_DIR)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
 	$(RM_LN_S) Current; \
 	$(LN_S) $(CURRENT_VERSION_NAME) Current$(END_ECHO)
@@ -262,12 +262,12 @@ endif
 
 # Please note that test -h must be used instead of test -L because on old
 # Sun Solaris, test -h works but test -L does not.
-build-framework-dirs:: $(DERIVED_SOURCES_DIR) \
-                       $(FRAMEWORK_LIBRARY_DIR) \
-                       $(FRAMEWORK_VERSION_DIR)/Headers \
-                       $(FRAMEWORK_VERSION_DIR)/Resources \
-                       $(FRAMEWORK_RESOURCE_DIRS) \
-                       $(UPDATE_CURRENT_SYMLINK_RULE)
+build-framework-dirs: $(DERIVED_SOURCES_DIR) \
+                      $(FRAMEWORK_LIBRARY_DIR) \
+                      $(FRAMEWORK_VERSION_DIR)/Headers \
+                      $(FRAMEWORK_VERSION_DIR)/Resources \
+                      $(FRAMEWORK_RESOURCE_DIRS) \
+                      $(UPDATE_CURRENT_SYMLINK_RULE)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR); \
 	  if [ ! -h "Resources" ]; then \
 	    $(RM_LN_S) Resources; \
@@ -294,7 +294,7 @@ $(DERIVED_SOURCES_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
-$(FRAMEWORK_HEADER_FILES):: $(addprefix $(HEADER_FILES_DIR)/,$(HEADER_FILES))
+$(FRAMEWORK_HEADER_FILES): $(addprefix $(HEADER_FILES_DIR)/,$(HEADER_FILES))
 ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
@@ -391,10 +391,10 @@ ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 # library. On Darwin (non-Apple) we do this as well since we can partially
 # emulate frameworks (see the ld_lib_path.sh comments on this).
 
-build-framework:: $(FRAMEWORK_FILE) \
-                  shared-instance-bundle-all \
-                  $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
-                  $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
+build-framework: $(FRAMEWORK_FILE) \
+                 shared-instance-bundle-all \
+                 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
+                 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 
 # Please note that the following keeps the top-level symlink pointing
 # to the framework in Current.  This is always correct, even if what
@@ -411,9 +411,9 @@ endif
 
 else
 
-build-framework:: $(FRAMEWORK_FILE) \
-                  shared-instance-bundle-all \
-                  $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist
+build-framework: $(FRAMEWORK_FILE) \
+                 shared-instance-bundle-all \
+                 $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist
 
 endif
 
@@ -567,19 +567,19 @@ endif
 
 endif
 
-$(DLL_INSTALLATION_DIR)::
+$(DLL_INSTALLATION_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-$(FRAMEWORK_DIR)/Resources::
+$(FRAMEWORK_DIR)/Resources:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-$(FRAMEWORK_INSTALL_DIR)::
+$(FRAMEWORK_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-$(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) :
+$(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-$(GNUSTEP_HEADERS) :
+$(GNUSTEP_HEADERS):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 # NB: We use '$(RM_LN_S)' to remove the symlinks to insure

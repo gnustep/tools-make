@@ -83,7 +83,7 @@ internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_FILES)
 # We need to build the OWNING_PROJECT_HEADER_DIR directory here
 # because this rule could be executed before the top-level framework
 # has built his dirs
-$(OWNING_PROJECT_HEADER_FILES):: $(HEADER_FILES) $(OWNING_PROJECT_HEADER_DIR)
+$(OWNING_PROJECT_HEADER_FILES): $(HEADER_FILES) $(OWNING_PROJECT_HEADER_DIR)
 ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \

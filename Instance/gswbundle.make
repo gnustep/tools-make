@@ -110,9 +110,9 @@ ifeq ($(strip $(LANGUAGES)),)
 endif
 
 
-build-bundle-dir:: $(GSWBUNDLE_DIR)/Resources \
-                   $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-                   $(GSWBUNDLE_RESOURCE_DIRS)
+build-bundle-dir: $(GSWBUNDLE_DIR)/Resources \
+                  $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
+                  $(GSWBUNDLE_RESOURCE_DIRS)
 
 $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
@@ -120,12 +120,12 @@ $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 $(GSWBUNDLE_RESOURCE_DIRS):
 	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_RESOURCE_DIRS)$(END_ECHO)
 
-build-bundle:: $(GSWBUNDLE_FILE) \
-               gswbundle-components \
-               gswbundle-resource-files \
-               gswbundle-localized-resource-files \
-               gswbundle-localized-webresource-files \
-               gswbundle-webresource-files
+build-bundle: $(GSWBUNDLE_FILE) \
+              gswbundle-components \
+              gswbundle-resource-files \
+              gswbundle-localized-resource-files \
+              gswbundle-localized-webresource-files \
+              gswbundle-webresource-files
 
 
 $(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
@@ -134,7 +134,7 @@ $(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 			$(OBJ_FILES_TO_LINK) \
 	                $(ALL_GSWBUNDLE_LIBS)$(END_ECHO)
 
-gswbundle-components :: $(GSWBUNDLE_DIR)
+gswbundle-components: $(GSWBUNDLE_DIR)
 ifneq ($(strip $(COMPONENTS)),)
 	@(echo "Linking components into the bundle wrapper..."; \
         cd $(GSWBUNDLE_DIR)/Resources; \
@@ -158,8 +158,8 @@ ifneq ($(strip $(COMPONENTS)),)
 	done)
 endif
 
-gswbundle-resource-files:: $(GSWBUNDLE_DIR)/bundle-info.plist \
-                           $(GSWBUNDLE_DIR)/Resources/Info-gnustep.plist
+gswbundle-resource-files: $(GSWBUNDLE_DIR)/bundle-info.plist \
+                          $(GSWBUNDLE_DIR)/Resources/Info-gnustep.plist
 ifneq ($(strip $(RESOURCE_FILES)),)
 	@(echo "Linking resources into the bundle wrapper..."; \
 	cd $(GSWBUNDLE_DIR)/Resources/; \
@@ -168,7 +168,7 @@ ifneq ($(strip $(RESOURCE_FILES)),)
 	done)
 endif
 
-gswbundle-localized-resource-files:: $(GSWBUNDLE_DIR)/Resources/Info-gnustep.plist
+gswbundle-localized-resource-files: $(GSWBUNDLE_DIR)/Resources/Info-gnustep.plist
 ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	@(echo "Linking localized resources into the bundle wrapper..."; \
 	cd $(GSWBUNDLE_DIR)/Resources; \
@@ -188,10 +188,10 @@ ifneq ($(strip $(LOCALIZED_RESOURCE_FILES)),)
 	done)
 endif
 
-gswbundle-webresource-dir::
+gswbundle-webresource-dir:
 	$(ECHO_CREATING)$(MKDIRS) $(GSWBUNDLE_WEBSERVER_RESOURCE_DIRS)$(END_ECHO)
 
-gswbundle-webresource-files:: $(GSWBUNDLE_DIR)/Resources/WebServer \
+gswbundle-webresource-files: $(GSWBUNDLE_DIR)/Resources/WebServer \
                               gswbundle-webresource-dir
 ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking webserver resources into the application wrapper..."; \
@@ -201,7 +201,7 @@ ifneq ($(strip $(WEBSERVER_RESOURCE_FILES)),)
 	done)
 endif
 
-gswbundle-localized-webresource-files:: $(GSWBUNDLE_DIR)/Resources/WebServer \
+gswbundle-localized-webresource-files: $(GSWBUNDLE_DIR)/Resources/WebServer \
                                         gswbundle-webresource-dir
 ifneq ($(strip $(LOCALIZED_WEBSERVER_RESOURCE_FILES)),)
 	@(echo "Linking localized web resources into the application wrapper..."; \
@@ -260,7 +260,7 @@ ifeq ($(strip),yes)
 	$(ECHO_STRIPPING)$(STRIP) $(GSWBUNDLE_INSTALL_DIR)/$(GSWBUNDLE_FILE_NAME)$(END_ECHO)
 endif
 
-$(GSWBUNDLE_INSTALL_DIR)::
+$(GSWBUNDLE_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-gswbundle-uninstall_:: shared-instance-headers-uninstall
