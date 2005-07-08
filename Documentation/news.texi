@@ -9,6 +9,27 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.11.0}
+
+@itemize @bullet
+
+@item The libobjc library is now linked in with the base library and NOT with
+individual applications or tools (except on MingW). This should not
+cause a problem, particularly since the new base library has had an
+interface version change and all apps and tools would need to be
+recompiled anyway to use the new version.
+
+@item New rules for building and using DLLs were implemented. Now gcc
+and other tricks are used to properly export symbols, so no .def file
+should be needed. 
+
+@item The GNUsteprc file in $GNUSTEP_SYSTEM_ROOT is deprecated. See the
+new GNUstep.conf file (which is not installed by default).
+
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.10.0}
 
 @itemize @bullet
@@ -25,8 +46,6 @@ palette.table file.
 configure to enable use of built in objc exceptions with compilers that 
 support it.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.9.2}
 
