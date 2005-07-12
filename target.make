@@ -575,7 +575,6 @@ BUNDLE_LD	   =  $(CC)
 BUNDLE_LDFLAGS     += -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
-
 endif
 #
 # end Linux ELF
@@ -654,6 +653,15 @@ BUNDLE_LD	= $(CC)
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
+
+##
+## The -pthread flag must be passed to all compilation/link commands.
+##
+ifeq ($(objc_threaded), -pthread)
+  INTERNAL_CFLAGS += -pthread
+  INTERNAL_OBJCFLAGS += -pthread
+  INTERNAL_LDFLAGS += -pthread
+endif
 endif
 endif
 #

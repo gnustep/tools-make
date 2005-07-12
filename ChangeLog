@@ -1,5 +1,11 @@
 2005-07-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* target.make (FreeBSD ELF): if -pthread is being used for
+	threads, add -pthread to INTERNAL_CFLAGS, INTERNAL_OBJCFLAGS,
+	INTERNAL_LDFLAGS.
+	
+2005-07-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	* Instance/framework.make (DUMMY_FRAMEWORK): Mangle
 	framework names into valid ObjC class names.
 
