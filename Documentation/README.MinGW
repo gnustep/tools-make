@@ -45,14 +45,18 @@ STEP BY STEP INSTALLATION INSTRUCTIONS
 1. Install MinGW
 ================
 
-Download MinGW-3.2.0-rc-3 or later from
+Download MinGW-4.1.0 or later from
 http://sourceforge.net/projects/mingw Install it into
 
 C:/xxx/msys/1.0/mingw
 
 (where /xxx/ is the top-level path you want to use, I use Nicola/GNUstep so
 I install it into C:/Nicola/GNUstep/msys/1.0/mingw) (earlier versions of 
-MinGW won't work)
+MinGW might not work)
+
+PS: Download MinGW-4.1.0.exe, then start it up.  Select the
+installation path C:\xxx\msys\1.0\mingw; then install all the Current
+versions of everything (but not the sources).
 
 
 2. Install msys
@@ -72,8 +76,10 @@ Download msysDTK-1.0.1 or later from the same site.  Install it into
 C:/xxx/msys/1.0
 
 
-Now your MSYS/MinGW system should be setup!  Go around and make sure
-you know how to use the Unix-like shell.  Log into it and work in it.
+Now your MSYS/MinGW system should be setup!  There should be an icon
+on your desktop called 'MSYS'.  Double-clicking on it will launch a
+Unix-like shell.  Go around and make sure you know how to use it.  Log
+into it and work in it.
 
 
 4. Additional Windows steps
@@ -85,9 +91,10 @@ some versions of Windows have changed the layout of this structure.
 This modification may be needed to be able to correctly determine the
 network interface details for your machine.
 
-It's a good idea to remove the libobjc.a and include/objc header that come
-with gcc (gcc -v for location) so that they are not accidentally found
-instead of the libobjc DLL that you will compile below.
+It's a good idea to remove the libobjc.a and libobjc.la and
+include/objc headers that come with gcc (gcc -v for location) so that
+they are not accidentally found instead of the libobjc DLL that you
+will compile below.
 
 Now you can open a window containg a shell by choosing MSYS from the
 start menu.
@@ -102,6 +109,9 @@ The main GNUstep project pages tell you how to get hold of this. You can get
 the latest release of the following libraries. However, since MinGW support
 is currently evolving, we recommend that you get the latest snapshot
 or code from CVS.
+
+export CVS_RSH=ssh
+cvs -z3 -d:ext:anoncvs@savannah.gnu.org:/cvsroot/gnustep co core
 
 
 6. Installing gnustep-make
@@ -176,6 +186,7 @@ Download ffcall from the GNUstep website, and type:
 make
 make install
 
+(if you get a popup about contest.exe failing, just ignore it)
 
 11. Installing additional packages
 =======================
@@ -184,6 +195,7 @@ Download the following packages:
 
  libintl-0.11.5-2.bin.zip
  libintl-0.11.5-2.lib.zip
+ (important: libintl-0.14.4 is untested, use 0.11.5 to be safe)
 
  libiconv-1.8.1-bin.zip 
  libiconv-1.8.1-lib.zip 
@@ -198,7 +210,7 @@ install them, simply unzip them into /C/xxx/msys/1.0/mingw.
 12. XML support
 ===============
 
-This is not working yet, step omitted
+Not working yet.
 
 
 13. Installing gnustep-base
@@ -219,16 +231,15 @@ and library.  The next steps are only required for gui applications.
 
 For the gui, download and install the following packages:
 
-  jpeg-6b-3-bin.zip
-  jpeg-6b-3-dep.zip
-  jpeg-6b-3-lib.zip
+  jpeg-6b-4-bin.zip
+  jpeg-6b-4-dep.zip
+  jpeg-6b-4-lib.zip
 
-  tiff-3.7.1-bin.zip
-  tiff-3.7.1-dep.zip
-  tiff-3.7.1-lib.zip
+  tiff-3.7.2-bin.zip
+  tiff-3.7.2-dep.zip
+  tiff-3.7.2-lib.zip
 
   libpng-1.2.8-bin.zip
-  libpng-1.2.8-dep.zip
   libpng-1.2.8-lib.zip
 
 The process is always the same: download the zip file from the
@@ -275,3 +286,6 @@ Before attempting to update your GNUstep installation, be sure to stop/kill
 all running GNUstep programs or services (i.e. gdomap, gdnc, gpbs) since
 Windows cannot overwrite files that are currently in use.
 
+If you pass any include (-Ixxx) paths to GCC, make sure they do *not*
+end with a slash.  The current GCC/MinGW releases have a bug where
+such paths would be ignored.
