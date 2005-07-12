@@ -1,3 +1,8 @@
+2005-07-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make (DUMMY_FRAMEWORK): Mangle
+	framework names into valid ObjC class names.
+
 2005-07-12  Nicola Pero <n.pero@mi.flashnet.it>
 
 	* Documentation/README.MinGW: Updated.

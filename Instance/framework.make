@@ -137,9 +137,30 @@ INTERNAL_LIBRARIES_DEPEND_UPON =				\
    libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 
 ifeq ($(FOUNDATION_LIB),gnu)
+
   # On GNUstep, build our dummy class to store information which
-  # gnustep-base can find at run time
-  DUMMY_FRAMEWORK = NSFramework_$(GNUSTEP_INSTANCE)
+  # gnustep-base can find at run time.
+
+  # An ObjC class name can not contain '-', but some people '-' this
+  # in framework names.  So we need to encode the '-' in some way
+  # into an ObjC class name. (since we're there, we also encode '+'
+  # even if that's not really common).
+
+  # What we do is, we use '_' as an escape character, and encode (in the 
+  # order) as follows:
+  #
+  #  '_' is converted to '__'
+  #  '-' is converted to '_0'
+  #  '+' is converted to '_1'
+  #
+
+  # For example, 'Renaissance-Experimental' becomes 
+  # 'Renaissance_0Experimental'.
+
+  # GNUstep-base will convert the name back by applying the reverse rules 
+  # in the reverse order.
+
+  DUMMY_FRAMEWORK = NSFramework_$(subst +,_1,$(subst -,_0,$(subst _,__,$(GNUSTEP_INSTANCE))))
   DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES_DIR)/$(DUMMY_FRAMEWORK).m
   DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
 
