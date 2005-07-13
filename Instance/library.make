@@ -302,7 +302,7 @@ $(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
 	  $(INTERNAL_LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) \
 	  $(SHARED_LD_POSTFLAGS)$(END_ECHO)
 
-else # following code for anything but OLD_DLL_SUPPORt
+else # following code for anything but OLD_DLL_SUPPORT
 
 internal-library-all_:: $(GNUSTEP_OBJ_DIR) \
                         $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
