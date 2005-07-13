@@ -905,6 +905,11 @@ OBJ_MERGE_CMD = \
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
 BUNDLE_LDFLAGS     += -shared
+
+# On Mingw32, it looks like the class name symbols start with '___' rather 
+# than '__'
+EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z_.]*\) [^U].*/\1/p;}'
+
 endif
 
 # end Mingw32

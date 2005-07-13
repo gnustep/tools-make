@@ -1,3 +1,9 @@
+2005-07-13  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* target.make (EXTRACT_CLASS_NAMES_COMMAND): New define for
+	mingw32 where class name symbols start with '___' rather than
+	'__'.
+
 2005-07-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (FreeBSD ELF): if -pthread is being used for
