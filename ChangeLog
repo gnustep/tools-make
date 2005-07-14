@@ -1,3 +1,11 @@
+2005-07-14 Jeremy Bettis <jeremy@deadbeef.com>, 
+	   Nicola Pero <n.pero@mi.flashnet.it>
+
+	* Instance/framework.make: Implemented pseudo-framework support
+	for mingw32 (Windows): disable versioning on Windows, switch
+	to use the new DLL building system already used by libraries,
+	and clean up all the small details.
+	
 2005-07-13  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* target.make (EXTRACT_CLASS_NAMES_COMMAND): New define for

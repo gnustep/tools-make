@@ -91,6 +91,28 @@ ifeq ($(MAKE_CURRENT_VERSION),)
   MAKE_CURRENT_VERSION = yes
 endif
 
+# If there are no working symlinks, unconditionally turn versioning
+# off.  This means that we create no symlinks inside the xxx.framework
+# directory for the various versions; that everything is put top-level
+# as in the case of bundles.  So with FRAMEWORK_VERSION_SUPPORT = no,
+# the Directory structure is:
+#
+# xxx.framework/libframework.dll.a
+# xxx.framework/framework.dll
+# xxx.framework/Resources
+# xxx.framework/Headers
+#
+# The Headers, libframework.dll.a and framework.dll are then copied into
+# the standard header/library locations so that they can be found by
+# compiler/linker.  Given that there are no symlinks, there is no other
+# way of doing this.
+ifeq ($(HAS_LN_S),no)
+  FRAMEWORK_VERSION_SUPPORT = no
+  MAKE_CURRENT_VERSION = no
+else
+  FRAMEWORK_VERSION_SUPPORT = yes
+endif
+
 # Set VERSION from xxx_VERSION
 ifneq ($($(GNUSTEP_INSTANCE)_VERSION),)
   VERSION = $($(GNUSTEP_INSTANCE)_VERSION)
@@ -108,7 +130,13 @@ DYLIB_INSTALL_NAME_BASE = $($(GNUSTEP_INSTANCE)_DYLIB_INSTALL_NAME_BASE)
 
 FRAMEWORK_DIR_NAME = $(GNUSTEP_INSTANCE).framework
 FRAMEWORK_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_DIR_NAME)
-FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
+
+ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
+  FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/$(CURRENT_VERSION_NAME)
+else
+  FRAMEWORK_VERSION_DIR_NAME = $(FRAMEWORK_DIR_NAME)
+endif
+
 FRAMEWORK_VERSION_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
 
 # This is not doing much at the moment, it is only defining
@@ -119,15 +147,21 @@ FRAMEWORK_VERSION_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
 # HEADER_FILES is empty.
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
-# FIXME - do we really want to link the framework against all libs ?
-# That easily makes problems when the framework is loaded as a bundle,
-# doesn't it ?
-ALL_FRAMEWORK_LIBS =						\
-    $(shell $(WHICH_LIB_SCRIPT)					\
-	    $(ALL_LIB_DIRS)					\
-	$(FRAMEWORK_LIBS)					\
-	debug=$(debug) profile=$(profile) shared=$(shared)	\
-	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+# On windows, this is unfortunately required.
+ifeq ($(BUILD_DLL), yes)
+  LINK_AGAINST_ALL_LIBS = yes
+endif
+
+ifeq ($(LINK_AGAINST_ALL_LIBS), yes)
+# Link against all libs ... but not the one we're compiling! (not sure
+# when this could happen with frameworks, anyway it makes sense)
+LIBRARIES_DEPEND_UPON += $(filter-out -l$(GNUSTEP_INSTANCE), \
+   $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
+   $(BACKEND_LIBS) \
+   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
+   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
   $(shell $(WHICH_LIB_SCRIPT)					\
@@ -181,15 +215,19 @@ endif
 
 FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
 
-ifneq ($(BUILD_DLL),yes)
+ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
+  FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/Current
+else
+  FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)
+endif
 
-FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/Current
 FRAMEWORK_CURRENT_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_DIR_NAME)
 FRAMEWORK_LIBRARY_DIR_NAME := $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 FRAMEWORK_LIBRARY_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
 FRAMEWORK_CURRENT_LIBRARY_DIR_NAME := $(FRAMEWORK_CURRENT_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 FRAMEWORK_CURRENT_LIBRARY_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)
 
+ifneq ($(BUILD_DLL), yes)
 FRAMEWORK_LIBRARY_FILE = lib$(GNUSTEP_INSTANCE)$(SHARED_LIBEXT)
 VERSION_FRAMEWORK_LIBRARY_FILE = $(FRAMEWORK_LIBRARY_FILE).$(VERSION)
 
@@ -204,26 +242,40 @@ else
 endif
 SONAME_FRAMEWORK_FILE = $(FRAMEWORK_LIBRARY_FILE).$(INTERFACE_VERSION)
 
-FRAMEWORK_FILE_NAME := $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)
-FRAMEWORK_FILE := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_FILE_NAME)
-
 else # BUILD_DLL
 
-FRAMEWORK_FILE_NAME = $(GNUSTEP_INSTANCE)$(FRAMEWORK_NAME_SUFFIX)$(DLL_LIBEXT)
-FRAMEWORK_FILE      = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_FILE_NAME)
-DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
-DLL_EXP_LIB      = $(GNUSTEP_INSTANCE)$(FRAMEWORK_NAME_SUFFIX)$(SHARED_LIBEXT)
-DLL_EXP_DEF      = $(GNUSTEP_INSTANCE)$(FRAMEWORK_NAME_SUFFIX).def
-
+# When you build a DLL, you have to install it in a directory which is
+# in your PATH.
 ifeq ($(DLL_INSTALLATION_DIR),)
   DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 endif
 
+# When we build a DLL, we also pass -DBUILD_lib{library_name}_DLL=1 to
+# the preprocessor.  With the new DLL support, this is usually not
+# needed; but in some cases some symbols are difficult and have to be
+# exported/imported manually.  For these cases, the library header
+# files can use this preprocessor define to know that they are
+# included during compilation of the library itself, or are being
+# imported by external code.  Typically with the new DLL support if a
+# symbol can't be imported you have to mark it with
+# __declspec(dllimport) when the library is not being compiled.
+# __declspec(dllexport) is not particularly useful instead.
+
+CLEAN_framework_NAME = $(subst -,_,$(GNUSTEP_INSTANCE))
+SHARED_CFLAGS += -DBUILD_$(CLEAN_framework_NAME)_DLL=1
+
+# FRAMEWORK_LIBRARY_FILE is the import library, libRenaissance.dll.a
+FRAMEWORK_LIBRARY_FILE         = lib$(GNUSTEP_INSTANCE)$(DLL_LIBEXT)$(LIBEXT)
+VERSION_FRAMEWORK_LIBRARY_FILE = $(FRAMEWORK_LIBRARY_FILE)
+SONAME_FRAMEWORK_FILE  = $(FRAMEWORK_LIBRARY_FILE)
+
+# LIB_LINK_DLL_FILE is the DLL library, Renaissance.dll
+LIB_LINK_DLL_FILE    = $(GNUSTEP_INSTANCE)$(DLL_LIBEXT)
+
 endif # BUILD_DLL
 
-ifeq ($(BUILD_DLL),yes)
-  FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
-endif # BUILD_DLL
+FRAMEWORK_FILE_NAME := $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)
+FRAMEWORK_FILE := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_FILE_NAME)
 
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
@@ -264,8 +316,9 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
                           build-framework
 
-internal-framework-build-headers:: build-framework-dirs \
-                                   $(FRAMEWORK_HEADER_FILES)
+internal-framework-build-headers:: $(FRAMEWORK_HEADER_FILES) \
+                                   build-framework-dirs
+                                   
 
 
 ifeq ($(MAKE_CURRENT_VERSION),yes)
@@ -289,6 +342,7 @@ build-framework-dirs: $(DERIVED_SOURCES_DIR) \
                       $(FRAMEWORK_VERSION_DIR)/Resources \
                       $(FRAMEWORK_RESOURCE_DIRS) \
                       $(UPDATE_CURRENT_SYMLINK_RULE)
+ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR); \
 	  if [ ! -h "Resources" ]; then \
 	    $(RM_LN_S) Resources; \
@@ -298,6 +352,7 @@ build-framework-dirs: $(DERIVED_SOURCES_DIR) \
 	    $(RM_LN_S) Headers; \
 	    $(LN_S) Versions/Current/Headers Headers; \
 	  fi$(END_ECHO)
+endif
 	$(ECHO_NOTHING)cd $(DERIVED_SOURCES_DIR); \
 	  if [ ! -h "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    $(RM_LN_S) ./$(HEADER_FILES_INSTALL_DIR); \
@@ -315,7 +370,8 @@ $(DERIVED_SOURCES_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
-$(FRAMEWORK_HEADER_FILES): $(addprefix $(HEADER_FILES_DIR)/,$(HEADER_FILES))
+$(FRAMEWORK_HEADER_FILES): $(addprefix $(HEADER_FILES_DIR)/,$(HEADER_FILES)) \
+                           $(FRAMEWORK_VERSION_DIR)/Headers
 ifneq ($(HEADER_FILES),)
 	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
@@ -438,30 +494,30 @@ build-framework: $(FRAMEWORK_FILE) \
 
 endif
 
+# We create a top-level symlink (/copy)
+#
+# xxx.framework/xxx --> <the framework object file>
+#
+# Normally, the framework object file that we link to is LIB_LINK_FILE
+# (eg, libRenaissance.so); on Windows instead LIB_LINK_FILE is only
+# the wrapper library (eg, libRenaissance.dll.a) and we want the
+# top-level symlink to point to the real .dll: LIB_LINK_DLL_FILE
+# (which is something like Renaissance.dll).  This is what is loaded
+# at runtime if you load the framework as a bundle.
+#
+ifneq ($(BUILD_DLL), yes)
+  LIB_LINK_FRAMEWORK_FILE = $(LIB_LINK_FILE)
+else
+  LIB_LINK_FRAMEWORK_FILE = $(LIB_LINK_DLL_FILE)
+endif
 
-
-
-
-ifeq ($(BUILD_DLL),yes)
-
-$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
-	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
-		-o $(LDOUT)$(FRAMEWORK_FILE) \
-		$(OBJ_FILES_TO_LINK) \
-		$(ALL_LDFLAGS) \
-		$(ALL_FRAMEWORK_LIBS)$(END_ECHO)
-
-else # without DLL
-
-$(FRAMEWORK_FILE) : $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
+$(FRAMEWORK_FILE): $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING) \
 	$(LIB_LINK_CMD); \
 	(cd $(LIB_LINK_OBJ_DIR); \
 	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
-	  $(LN_S) $(LIB_LINK_FILE) $(GNUSTEP_INSTANCE)) \
+	  $(LN_S) $(LIB_LINK_FRAMEWORK_FILE) $(GNUSTEP_INSTANCE)) \
 	$(END_ECHO)
-
-endif # BUILD_DLL
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
@@ -474,7 +530,7 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 # MacOSX-S frameworks
 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
+	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@$(END_ECHO)
@@ -482,7 +538,7 @@ $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resource
 # GNUstep frameworks
 $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR)/Resources $(DUMMY_FRAMEWORK_FILE)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)${FRAMEWORK_OBJ_EXT}\";"; \
+	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "  Classes = "; \
@@ -557,8 +613,12 @@ internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_HEADERS) \
                       $(DLL_INSTALLATION_DIR)
-	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
-	(cd $(GNUSTEP_BUILD_DIR); $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	$(ECHO_INSTALLING)\
+	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
+	(cd $(GNUSTEP_BUILD_DIR);\
+	 $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list \
+	        $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); \
+	                                  $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
 endif
@@ -579,20 +639,23 @@ ifneq ($(CHOWN_TO),)
 	$(CHOWN) -R $(CHOWN_TO) $(HEADER_FILES_INSTALL_DIR); \
 	$(END_ECHO)
 endif
-	$(ECHO_NOTHING)cd $(DLL_INSTALLATION_DIR); \
-	if test -r "$(FRAMEWORK_FILE_NAME)"; then \
-	  rm -f $(FRAMEWORK_FILE_NAME); \
-	fi$(END_ECHO)
-	$(ECHO_NOTHING)$(INSTALL_PROGRAM) -m 0755 $(FRAMEWORK_FILE) \
-          $(DLL_INSTALLATION_DIR)/$(FRAMEWORK_FILE_NAME)$(END_ECHO)
+	$(ECHO_NOTHING)$(INSTALL_PROGRAM) $(FRAMEWORK_LIBRARY_DIR)/$(LIB_LINK_DLL_FILE) \
+          $(DLL_INSTALLATION_DIR)$(END_ECHO)
+	$(ECHO_NOTHING)$(INSTALL_PROGRAM) $(FRAMEWORK_FILE_NAME) \
+	  $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
 endif
 
 $(DLL_INSTALLATION_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
+# If Version support is disabled, then this directory is the same as
+# the Resources directory in Shared/bundle.make for which we already
+# have a rule.
+ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
 $(FRAMEWORK_DIR)/Resources:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+endif
 
 $(FRAMEWORK_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
@@ -603,6 +666,7 @@ $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR):
 $(GNUSTEP_HEADERS):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
+ifneq ($(BUILD_DLL), yes)
 # NB: We use '$(RM_LN_S)' to remove the symlinks to insure
 #     that we do not remove customized real directories.  
 internal-framework-uninstall_::
@@ -620,7 +684,23 @@ internal-framework-uninstall_::
 	$(RM_LN_S) $(SONAME_FRAMEWORK_FILE); \
 	$(RM_LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE); \
 	$(END_ECHO)
-
+else
+internal-framework-uninstall_::
+	$(ECHO_UNINSTALLING)if [ "$(HEADER_FILES)" != "" ]; then \
+	  for file in $(HEADER_FILES) __done; do \
+	    if [ $$file != __done ]; then \
+	      rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
+	    fi; \
+	  done; \
+	fi; \
+	$(RM_LN_S) $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) ; \
+	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME) ; \
+	cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
+	$(RM_LN_S) $(FRAMEWORK_LIBRARY_FILE); \
+	cd $(DLL_INSTALLATION_DIR); \
+	$(RM_LN_S) $(LIB_LINK_DLL_FILE); \
+	$(END_ECHO)
+endif
 #
 # Cleaning targets
 #
