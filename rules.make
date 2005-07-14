@@ -480,6 +480,20 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
 	$(YACC) $(YACC_FLAGS) $<
 	mv -f y.tab.c $@
 
+#
+# Special mingw32 specific rules to compile Windows resource files (.rc files)
+# into object files.
+#
+ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+# Add the .rc suffix on Windows.
+.SUFFIXES: .rc
+
+# A rule to generate a .o file from the .rc file.
+$(GNUSTEP_OBJ_DIR)/%${OEXT}: %.rc
+	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
+endif
+
+
 # The following dummy rules are needed for performance - we need to
 # prevent make from spending time trying to compute how/if to rebuild
 # the system makefiles!  the following rules tell him that these files

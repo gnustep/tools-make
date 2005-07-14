@@ -1,10 +1,22 @@
+2005-07-14  Jeremy Bettis <jeremy@deadbeef.com>, 
+	    Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Implemented support for xxx_WINDRES_FILES on mingw32.
+	* rules.make ($(GNUSTEP_OBJ_DIR)/%${OEXT}): New mingw32 rule to
+	compile a .rc (windres) file into an object file.
+	(.SUFFIXES): On mingw32, add .rc.
+	* Instance/rules.make (WINDRES_OBJS, WINDRES_OBJ_FILES): New
+	variables for mingw32; generate them from xxx_WINDRES_FILES.
+	(OBJ_FILES_TO_LINK): Add WINDRES_OBJ_FILES to the list of files to
+	link.
+
 2005-07-14 Jeremy Bettis <jeremy@deadbeef.com>, 
 	   Nicola Pero <n.pero@mi.flashnet.it>
 
-	* Instance/framework.make: Implemented pseudo-framework support
-	for mingw32 (Windows): disable versioning on Windows, switch
-	to use the new DLL building system already used by libraries,
-	and clean up all the small details.
+	Implemented pseudo-framework support for mingw32 (Windows).
+	* Instance/framework.make: disable versioning on Windows, switch
+	to use the new DLL building system already used by libraries, and
+	clean up all the small details of pseudo-frameworks on mingw32.
 	
 2005-07-13  Nicola Pero  <n.pero@mi.flashnet.it>
 

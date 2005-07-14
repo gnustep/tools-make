@@ -168,6 +168,9 @@ endif
 # The list of JAVA source files from which to generate jni headers
 # are in the JAVA_JNI_FILES variable.
 #
+# This list of WINDRES source files to be compiled
+# are in the WINDRES_FILES variable.
+# 
 
 #
 # Please note the subtle difference:
@@ -215,6 +218,13 @@ CC_OBJS = $(patsubst %.cc,%$(OEXT),\
               $(patsubst %.cxx,%$(OEXT),$($(GNUSTEP_INSTANCE)_CC_FILES))))))
 CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(CC_OBJS))
 
+ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+  WINDRES_OBJS = $(patsubst %.rc,%$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
+  WINDRES_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(WINDRES_OBJS))
+else
+  WINDRES_OBJ_FILES =
+endif
+
 OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 
 # OBJ_FILES_TO_LINK is the set of all .o files which will be linked
@@ -224,7 +234,7 @@ OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 # OBJ_FILES_TO_LINK to '' we know if there is a link stage to be
 # performed at all (useful for example in bundles which can contain an
 # object file, or not).
-OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
+OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(WINDRES_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
 
 ifeq ($(AUTO_DEPENDENCIES),yes)
   ifneq ($(strip $(OBJ_FILES_TO_LINK)),)
