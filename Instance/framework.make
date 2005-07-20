@@ -91,11 +91,12 @@ ifeq ($(MAKE_CURRENT_VERSION),)
   MAKE_CURRENT_VERSION = yes
 endif
 
-# If there are no working symlinks, unconditionally turn versioning
-# off.  This means that we create no symlinks inside the xxx.framework
-# directory for the various versions; that everything is put top-level
-# as in the case of bundles.  So with FRAMEWORK_VERSION_SUPPORT = no,
-# the Directory structure is:
+# If there are no working symlinks, common.make sets
+# FRAMEWORK_VERSION_SUPPORT to no, which unconditionally turn
+# versioning off.  This means that we create no symlinks inside the
+# xxx.framework directory for the various versions; that everything is
+# put top-level as in the case of bundles.  So with
+# FRAMEWORK_VERSION_SUPPORT = no, the Directory structure is:
 #
 # xxx.framework/libframework.dll.a
 # xxx.framework/framework.dll
@@ -106,11 +107,8 @@ endif
 # the standard header/library locations so that they can be found by
 # compiler/linker.  Given that there are no symlinks, there is no other
 # way of doing this.
-ifeq ($(HAS_LN_S),no)
-  FRAMEWORK_VERSION_SUPPORT = no
+ifeq ($(FRAMEWORK_VERSION_SUPPORT),no)
   MAKE_CURRENT_VERSION = no
-else
-  FRAMEWORK_VERSION_SUPPORT = yes
 endif
 
 # Set VERSION from xxx_VERSION
@@ -318,8 +316,6 @@ internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
 
 internal-framework-build-headers:: $(FRAMEWORK_HEADER_FILES) \
                                    build-framework-dirs
-                                   
-
 
 ifeq ($(MAKE_CURRENT_VERSION),yes)
 # A target to build/reset the Current symlink to point to the newly

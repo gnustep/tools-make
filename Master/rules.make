@@ -295,9 +295,13 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
       fi; \
       if [ "$(OWNING_PROJECT_HEADER_DIR_NAME)" = "" ]; then \
         if [ "$$type" = "framework" ]; then \
-          framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
-          if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
-          owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
+          if [ "$(FRAMEWORK_VERSION_SUPPORT)" = "yes" ]; then \
+            framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
+            if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
+            owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
+          else \
+            owning_project_header_dir="../$${instance}.framework/Headers"; \
+          fi; \
        else owning_project_header_dir=""; \
        fi; \
       else \
@@ -360,9 +364,13 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
       fi; \
       if [ "$(OWNING_PROJECT_HEADER_DIR_NAME)" = "" ]; then \
         if [ "$$type" = "framework" ]; then \
-          framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
-          if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
-          owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
+          if [ "$(FRAMEWORK_VERSION_SUPPORT)" = "yes" ]; then \
+            framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
+            if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
+            owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
+          else \
+            owning_project_header_dir="../$${instance}.framework/Headers"; \
+          fi; \
        else owning_project_header_dir=""; \
        fi; \
       else \

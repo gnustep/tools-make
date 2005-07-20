@@ -1,3 +1,14 @@
+2005-07-20  Jeremy Bettis <jeremy@deadbeef.com>,
+	    Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* config.make.in: Set FRAMEWORK_VERSION_SUPPORT here.
+	* Instance/framework.make: And do not set it here.
+	* Master/rules.make (%.variables, %.subprojects): if
+	FRAMEWORK_VERSION_SUPPORT is not set to yes, use
+	non-Versions directories for frameworks.
+	* config.make.in (HAS_LN_S): Make sure it's set to no
+	when it's not set to yes.
+	
 2005-07-14  Jeremy Bettis <jeremy@deadbeef.com>, 
 	    Nicola Pero  <n.pero@mi.flashnet.it>
 

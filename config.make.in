@@ -48,6 +48,8 @@ LN_S = @LN_S@
 # returns LN_S
 ifeq ($(LN_S), ln -s)
   HAS_LN_S = yes
+else
+  HAS_LN_S = no
 endif
 
 # Special case - on mingw32, autoconf sets LN_S to 'ln -s', but then
@@ -66,8 +68,10 @@ endif
 # platforms.
 ifeq ($(HAS_LN_S), yes)
   RM_LN_S = rm -f
+  FRAMEWORK_VERSION_SUPPORT = yes
 else
   RM_LN_S = rm -Rf
+  FRAMEWORK_VERSION_SUPPORT = no
 endif
 
 LD = $(CC)
