@@ -1,7 +1,30 @@
 NEWS
 ****
 
-The currently released version is `1.10.0'.
+The currently released version is `1.11.0'.
+
+Changes in version `1.11.0'
+===========================
+
+NOTE: The libobjc library is now linked in with the base library and
+NOT with individual applications or tools (except on MingW). This
+requires that you do a complete rebuild of all libraries, tools and
+apps when switching to this new version.
+
+   * New rules for building and using DLLs were implemented. Now gcc
+     and other tricks are used to properly export symbols, so no .def
+     file should be needed.
+
+   * The GNUsteprc file in $GNUSTEP_SYSTEM_ROOT is deprecated. See the
+     new GNUstep.conf file (which is not installed by default).
+
+   * Psuedo-framwork support was implemented on MingW. This essentially
+     involves copying the framework to several places so it can be used
+     without links, which Windows does not really support.  There's no
+     other clean way to do it.
+
+   * Support for xxx_WINDRES_FILES on MinGW was implemented.
+
 
 Changes in version `1.10.0'
 ===========================

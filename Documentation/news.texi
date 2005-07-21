@@ -11,13 +11,12 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
 @section Changes in version @samp{1.11.0}
 
-@itemize @bullet
+NOTE: The libobjc library is now linked in with the base library and NOT with
+individual applications or tools (except on MingW). This requires that
+you do a complete rebuild of all libraries, tools and apps when switching
+to this new version.
 
-@item The libobjc library is now linked in with the base library and NOT with
-individual applications or tools (except on MingW). This should not
-cause a problem, particularly since the new base library has had an
-interface version change and all apps and tools would need to be
-recompiled anyway to use the new version.
+@itemize @bullet
 
 @item New rules for building and using DLLs were implemented. Now gcc
 and other tricks are used to properly export symbols, so no .def file
@@ -25,6 +24,13 @@ should be needed.
 
 @item The GNUsteprc file in $GNUSTEP_SYSTEM_ROOT is deprecated. See the
 new GNUstep.conf file (which is not installed by default).
+
+@item Psuedo-framwork support was implemented on MingW. This essentially
+involves copying the framework to several places so it can be used without
+links, which Windows does not really support.  There's no other 
+clean way to do it.
+
+@item Support for xxx_WINDRES_FILES on MinGW was implemented.
 
 @end itemize
 

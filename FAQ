@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-Last updated 3 September 2004.  Please send corrections to
+Last updated 21 July 2005.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -25,8 +25,7 @@ constantly changing, much faster than GNUstep could hope to keep up.
 They have added extensions and new classes that aren't available in
 GNUstep yet. Plus there are some other issues. If you start with Cocoa:
 
-   * Be careful with Cocoa.h includes (Use #ifndef GNUSTEP, for
-     instance)
+   * Use #ifndef GNUSTEP for Apple only code.
 
    * Do not use CoreFoundation
 
@@ -37,7 +36,9 @@ GNUstep yet. Plus there are some other issues. If you start with Cocoa:
    * You need to convert .nib files (see next question  *note Tools for
      porting::)
 
-   * Some unfinished classes include  Drawers.
+   See also
+<http://mediawiki.gnustep.org/index.php/Writing_portable_code> for more
+information.
 
 Tools for porting
 -----------------
@@ -61,6 +62,11 @@ programs.
      interface.  It has a number of advantages over the proprietary nib
      format: portability, open standard, easy localization,
      themeability, and intelligent autolayout.
+
+`Gorm'
+     The equivalent of the Interface Builder in GNUstep. It might be
+     easier to just recreate the interface using Gorm rather than
+     dealing with translations.
 
 `OpenStep2GNUConverter and nfmake'
      Two programs that allow you to convert PB files to GNUstep
@@ -205,8 +211,7 @@ Ask questions in the discussion mailing list.
    Do remember that any changes beyond a few lines of code (or
 documentation) require a disclaimer or copyright assignment to the Free
 Software Foundation before they can be incorporated into the project.
-Get in touch with the maintainer of the library you are working on
-about this.
+Get in touch with the GNUstep maintainer about this.
 
    Don't start with large-scale reorganization of anything - instead,
 get a general idea in mind of what you want to do, and proceed as much
@@ -258,6 +263,17 @@ format into gsdoc.
 
    GNUstep documentation should have copyright assigned to the Free
 Software Foundation.
+
+How do I assign my contribution?
+--------------------------------
+
+Everyone who contributes more than 20 lines of code or so needs to sign
+a copyright assignment so that the FSF can have legal control of the
+copyright. This makes it easier to defend against any copyright
+infringement suits.  Contact the GNUstep maintainer for instructions on
+how to do this or download and fill out the form
+<http://www.gnustep.org/resources/request-assign.future> (instructions
+are included).
 
 How do I update the task list?
 ------------------------------

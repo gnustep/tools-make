@@ -39,18 +39,13 @@ GNU General Public License. The GNU GPL is a free software license,
 which requires that all the released improved versions be free software
 as well.  You should read the COPYING file for more information.
 
-   With GNUstep-Base, we strongly recommend the use of the ffcall
-libraries, which provides stack frame handling for NSInvocation and
-NSConnection.  "Ffcall is under GNU GPL. As a special exception, if used
-in GNUstep or in derivate works of GNUstep, the included parts of ffcall
-are under GNU LGPL" (Text in quotes provided by the author of ffcall).
+   The GNUstep make package is licensed under the GNU GPL.
 
 History
 =======
 
-The GNUstep makefile package was designed by Scott Christley
-<scottc@net-community.com> and Ovidiu Predescu
-<ovidiu@net-community.com>.
+The GNUstep makefile package was designed by Scott Christley and Ovidiu
+Predescu.
 
    Flags for building shared libraries and bundles on several systems
 were originally identified by Mircea Oancea <mircea@pathcom.com>.
