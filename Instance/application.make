@@ -58,17 +58,13 @@ ifeq ($(APP_INSTALL_DIR),)
   APP_INSTALL_DIR = $(GNUSTEP_APPS)
 endif
 
-# On windows, this is unfortunately required.
-ifeq ($(BUILD_DLL), yes)
-  DUP_OBJC_LIBS = $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) 
-endif
-
 ALL_GUI_LIBS =								     \
     $(shell $(WHICH_LIB_SCRIPT)						     \
      $(ALL_LIB_DIRS)							     \
      $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS)		     \
      $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	     \
-     $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(DUP_OBJC_LIBS) $(SYSTEM_LIBS)     \
+     $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
+     $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)				     \
         debug=$(debug) profile=$(profile) shared=$(shared)		     \
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 

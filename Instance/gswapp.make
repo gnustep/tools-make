@@ -73,18 +73,14 @@ ifeq ($(GSWAPP_INSTALL_DIR),)
   GSWAPP_INSTALL_DIR = $(GNUSTEP_GSWAPPS)
 endif
 
-# On windows, this is unfortunately required.
-ifeq ($(BUILD_DLL), yes)
-  DUP_OBJC_LIBS = $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) 
-endif
-
 # Libraries that go before the WO libraries
 ALL_GSW_LIBS =								\
     $(shell $(WHICH_LIB_SCRIPT)						\
 	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS)	\
 	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)			\
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(DUP_OBJC_LIBS) $(SYSTEM_LIBS) \
+	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
+        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)		\
 	debug=$(debug) profile=$(profile) shared=$(shared)		\
 	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
 

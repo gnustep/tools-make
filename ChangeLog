@@ -1,3 +1,9 @@
+2005-08-08  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/application.make, Instance/gswapp.make,
+	Instance/service.make, Instance/tool.make: Revert change from
+	2005-06-06.
+
 2005-07-21  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.11.0
