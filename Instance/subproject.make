@@ -34,31 +34,6 @@ endif
 internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
                            $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)
 
-ifeq ($(BUILD_DLL),yes)
-
-DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
-DLL_DEF_FILES = $(SUBPROJECT_DEF_FILES) $(DLL_DEF)
-
-ifneq ($(strip $(DLL_DEF_FILES)),)
-DLL_DEF_INP = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).inp
-
-$(DLL_DEF_INP): $(DLL_DEF_FILES)
-	$(ECHO_CREATING)cat $(DLL_DEF_FILES) > $@$(END_ECHO)
-
-DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
-endif
-
-internal-subproject-clean::
-	$(ECHO_NOTHING)rm -rf $(DLL_DEF_INP)$(END_ECHO)
-
-internal-subproject-all_:: $(GNUSTEP_BUILD_DIR)/subproject.def
-
-$(GNUSTEP_BUILD_DIR)/subproject.def: $(OBJ_FILES_TO_LINK) $(DLL_DEF) \
-                                     $(DLL_DEF_INP)
-	$(ECHO_NOTHING)$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)$(END_ECHO)
-
-endif
-
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(OBJ_MERGE_CMD)$(END_ECHO)

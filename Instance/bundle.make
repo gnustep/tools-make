@@ -164,25 +164,8 @@ endif
 $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-# OLD_DLL_SUPPORT should really be deprecated and dropped.
-ifeq ($(OLD_DLL_SUPPORT),yes)
-
 $(BUNDLE_FILE): $(OBJ_FILES_TO_LINK)
-	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
-		-o $(LDOUT)$(BUNDLE_FILE) \
-		$(OBJ_FILES_TO_LINK) \
-		$(ALL_LDFLAGS) \
-		$(ALL_BUNDLE_LIBS)$(END_ECHO)
-
-else # Standard bundle build using the rules for this target
-
-$(BUNDLE_FILE): $(OBJ_FILES_TO_LINK)
-	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
-		-o $(LDOUT)$(BUNDLE_FILE) \
-		$(OBJ_FILES_TO_LINK) \
-		$(ALL_BUNDLE_LIBS)$(END_ECHO)
-
-endif # OLD_DLL_SUPPORT
+	$(ECHO_LINKING)$(BUNDLE_LINK_CMD)$(END_ECHO)
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 

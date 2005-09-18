@@ -188,11 +188,6 @@ SUBPROJECT_OBJ_FILES = $(foreach d, $($(GNUSTEP_INSTANCE)_SUBPROJECTS), \
     $(addprefix $(GNUSTEP_BUILD_DIR)/$(d)/, $(GNUSTEP_OBJ_DIR_NAME)/$(SUBPROJECT_PRODUCT)))
 endif
 
-ifneq ($($(GNUSTEP_INSTANCE)_SUBPROJECTS),)
-SUBPROJECT_DEF_FILES = $(foreach d, $($(GNUSTEP_INSTANCE)_SUBPROJECTS), \
-    $(addprefix $(GNUSTEP_BUILD_DIR)/$(d)/, subproject.def))
-endif
-
 OBJC_OBJS = $(patsubst %.m,%$(OEXT),$($(GNUSTEP_INSTANCE)_OBJC_FILES))
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
 

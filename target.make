@@ -171,6 +171,9 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 HAVE_BUNDLES = no
+BUNDLE_LINK_CMD = $(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+                -o $(LDOUT)$(BUNDLE_FILE) $(OBJ_FILES_TO_LINK) \
+		$(ALL_BUNDLE_LIBS)
 
 ####################################################
 #
@@ -923,20 +926,45 @@ endif
 ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
 shared = yes
 HAVE_SHARED_LIBS = yes
+# This command links the library, generates automatically the list of
+# symbols to export, creates the DLL (eg, obj/gnustep-base.dll) and 
+# the import library
+SHARED_LIB_LINK_CMD     = \
+        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
+	-Wl,--out-implib=$(GNUSTEP_OBJ_DIR)/$(LIB_LINK_FILE) \
+	-Wl,--export-all-symbols \
+	-Wl,--enable-auto-import \
+	-Wl,--whole-archive $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \
+	-Wl,--no-whole-archive $(INTERNAL_LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS)\
+	$(SHARED_LD_POSTFLAGS)
+	
+AFTER_INSTALL_SHARED_LIB_CMD = 
+AFTER_INSTALL_SHARED_LIB_CHOWN =
+SHARED_LIBEXT	 = .dll.a
+
 BUILD_DLL	 = yes
-OLD_DLL_SUPPORT  = yes
-SHARED_LIBEXT	 = .a
+CYGWIN_DLL_SUPPORT  = yes
 DLL_LIBEXT	 = .dll
-DLLTOOL		 = dlltool
-DLLWRAP		 = dllwrap
+REBASE 		 = rebase 
+REBASE_FLAGS = -d -b 0x68000000 -o 0x10000
+CYGWIN_LD_FLAGS = -Wl,--export-all-symbols -Wl,--enable-auto-import
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) $(CYGWIN_LD_FLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
-BUNDLE_LDFLAGS += -nodefaultlibs -Xlinker -r
+BUNDLE_LDFLAGS += -shared -Wl,--export-all-symbols \
+	-Wl,--enable-auto-import \
+	-Wl,--whole-archive
+BUNDLE_LIBFLAGS += -Wl,--no-whole-archiv
+BUNDLE_LINK_CMD  = \
+        $(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+	-o $(LDOUT)$(BUNDLE_FILE) \
+	$(OBJ_FILES_TO_LINK) \
+	$(BUNDLE_LIBFLAGS) $(ALL_BUNDLE_LIBS); \
+	$(REBASE) $(REBASE_FLAGS) $(BUNDLE_FILE)
 endif
 
 # end Cygwin

@@ -210,16 +210,6 @@ endif
 CLEAN_library_NAME = $(subst -,_,$(LIBRARY_NAME_WITH_LIB))
 SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
-# OLD_DLL_SUPPORT should really be deprecated and dropped.
-ifeq ($(OLD_DLL_SUPPORT),yes)
-LIBRARY_FILE     = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
-DLL_NAME         = $(shell echo $(LIBRARY_FILE)|cut -b 4-)
-DLL_EXP_LIB      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(SHARED_LIBEXT)
-DLL_EXP_DEF      = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX).def
-
-else
-# BUILD_DLL, but new DLL support.
-
 # LIBRARY_FILE is the import library, libgnustep-base.dll.a
 LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)$(LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
@@ -227,8 +217,6 @@ SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 
 # LIB_LINK_DLL_FILE is the DLL library, gnustep-base.dll
 LIB_LINK_DLL_FILE    = $(LIBRARY_NAME_WITHOUT_LIB)$(LIBRARY_NAME_SUFFIX)$(DLL_LIBEXT)
-
-endif # OLD_DLL_SUPPORT
 endif # BUILD_DLL
 
 else # following code for static libs
@@ -257,60 +245,11 @@ LIB_LINK_INSTALL_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
 #
 # Compilation targets
 #
-
-ifeq ($(OLD_DLL_SUPPORT),yes)
-
-DLL_DEF = $($(GNUSTEP_INSTANCE)_DLL_DEF)
-DLL_DEF_FILES = $(SUBPROJECT_DEF_FILES) $(DLL_DEF)
-
-ifneq ($(strip $(DLL_DEF_FILES)),)
-DLL_DEF_INP = $(DERIVED_SOURCES_DIR)/$(LIBRARY_NAME_WITH_LIB).inp
-
-$(DLL_DEF_INP): $(DLL_DEF_FILES)
-	cat $(DLL_DEF_FILES) > $@
-
-DLL_DEF_FLAG = --input-def $(DLL_DEF_INP)
-endif
-
-internal-library-all_:: \
-	$(GNUSTEP_OBJ_DIR)			\
-	$(DERIVED_SOURCES_DIR)			\
-	$(DLL_DEF_INP)				\
-	$(DERIVED_SOURCES_DIR)/$(LIBRARY_NAME_WITH_LIB).def	\
-	$(GNUSTEP_OBJ_DIR)/$(DLL_NAME)		\
-	$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB)
-
-internal-library-clean::
-	$(ECHO_NOTHING)rm -rf $(DERIVED_SOURCES_DIR)$(END_ECHO)
-
-$(DERIVED_SOURCES_DIR):
-	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
-
-$(DERIVED_SOURCES_DIR)/$(LIBRARY_NAME_WITH_LIB).def: $(OBJ_FILES_TO_LINK) $(DLL_DEF_INP)
-	$(ECHO_NOTHING)$(DLLTOOL) $(DLL_DEF_FLAG) --output-def $@ $(OBJ_FILES_TO_LINK)$(END_ECHO)
-
-$(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB): $(DERIVED_SOURCES_DIR)/$(LIBRARY_NAME_WITH_LIB).def
-	$(ECHO_NOTHING)$(DLLTOOL) --dllname $(DLL_NAME) --def $< --output-lib $@$(END_ECHO)
-
-$(GNUSTEP_OBJ_DIR)/$(DLL_NAME): $(OBJ_FILES_TO_LINK) \
-                               $(DERIVED_SOURCES_DIR)/$(LIBRARY_NAME_WITH_LIB).def
-	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
-	  $(SHARED_LD_PREFLAGS) \
-	  --def $(DERIVED_SOURCES_DIR)/$(LIBRARY_NAME_WITH_LIB).def \
-	  -o $@ $(OBJ_FILES_TO_LINK) \
-	  $(ALL_LDFLAGS) \
-	  $(INTERNAL_LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS) \
-	  $(SHARED_LD_POSTFLAGS)$(END_ECHO)
-
-else # following code for anything but OLD_DLL_SUPPORT
-
 internal-library-all_:: $(GNUSTEP_OBJ_DIR) \
-                        $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+			$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
 
 $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LIB_LINK_CMD)$(END_ECHO)
-
-endif # BUILD_DLL
 
 #
 # Install and uninstall targets
@@ -331,20 +270,6 @@ $(FINAL_LIBRARY_INSTALL_DIR):
 $(DLL_INSTALLATION_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-ifeq ($(OLD_DLL_SUPPORT),yes)
-
-internal-install-lib::
-	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) ]; then \
-	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_NAME) \
-	                     $(DLL_INSTALLATION_DIR) ; \
-	fi; \
-	if [ -f $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) ]; then \
-	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(DLL_EXP_LIB) \
-	                     $(FINAL_LIBRARY_INSTALL_DIR) ; \
-	fi$(END_ECHO)
-
-else
-
 internal-install-lib::
 	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE) \
@@ -353,22 +278,13 @@ internal-install-lib::
 	fi$(END_ECHO)
 
 ifeq ($(BUILD_DLL),yes)
-# For new-style DLLs, also install the DLL file.
+# For DLLs, also install the DLL file.
 internal-install-lib::
 	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) ]; then \
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
 	                     $(DLL_INSTALLATION_DIR) ; \
 	fi$(END_ECHO)
 endif
-endif
-
-ifeq ($(OLD_DLL_SUPPORT),yes)
-
-internal-library-uninstall_:: shared-instance-headers-uninstall
-	$(ECHO_UNINSTALLING)rm -f $(DLL_INSTALLATION_DIR)/$(DLL_NAME) \
-	      $(FINAL_LIBRARY_INSTALL_DIR)/$(DLL_EXP_LIB)$(END_ECHO)
-
-else
 
 internal-library-uninstall_:: shared-instance-headers-uninstall
 	$(ECHO_UNINSTALLING)rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
@@ -376,10 +292,9 @@ internal-library-uninstall_:: shared-instance-headers-uninstall
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)$(END_ECHO)
 
 ifeq ($(BUILD_DLL),yes)
-# For new-style DLLs, also remove the DLL file.
+# For DLLs, also remove the DLL file.
 internal-library-uninstall_::
 	$(ECHO_UNINSTALLING)rm -f $(DLL_INSTALLATION_DIR)/$(LINK_LIBRARY_DLL_FILE)$(END_ECHO)
-endif
 endif
 
 #

@@ -113,25 +113,12 @@ internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
 $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
-# OLD_DLL_SUPPORT should really be deprecated and dropped.
-ifeq ($(OLD_DLL_SUPPORT),yes)
-
+# Standard bundle build using the rules for this target
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
-	$(ECHO_LINKING)$(DLLWRAP) --driver-name $(CC) \
-		-o $(LDOUT)$(PALETTE_FILE) \
-		$(OBJ_FILES_TO_LINK) \
-		$(ALL_LDFLAGS) \
-		$(ALL_PALETTE_LIBS)$(END_ECHO)
-
-else # Standard bundle build using the rules for this target
-
-$(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
-	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
-	  $(OBJ_FILES_TO_LINK) \
-	  $(ALL_PALETTE_LIBS)$(END_ECHO)
-
-endif # OLD_DLL_SUPPORT
+	  $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \
+	  $(BUNDLE_LIBFLAGS) $(ALL_PALETTE_LIBS)$(END_ECHO)
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
