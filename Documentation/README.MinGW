@@ -29,13 +29,12 @@ PRELIMINARIES
 -------------
 
 One way to vastly simplify installing GNUstep, is to use the Windows-based
-GNUstep installer. Currently, this installer only installs the non-gui
-portion of GNUstep. Get it from
+GNUstep installer.  Get it from
 
 http://www.gnustep.org/resources/sources.html#windows
 
-If you have already installed this, you can skip to the section
-'Additional gui libraries '. Although you may want to read the rest of
+If you have already installed this, you can skip to the end and just
+start compiling applications!  Although you may want to read the rest of
 the instructions for other helpful information.
 
 

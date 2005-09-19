@@ -151,10 +151,15 @@ The GUI library uses this to handle interface to the CUPS print servers.
 The GUI library uses this for playing sound files.
 
 @item portaudio (OPTIONAL)
-The GUI library uses this for the sound server
+The GUI library uses this for the sound server.  Use v19, which has
+several API changes since the previous version. v19 hasn't actually been
+formally released, but several distributions (SuSE, etc) use it anyway.
 
 @item freetype2 (RECOMMENDED, REQUIRED for art backend)
-This is used for font information
+This is used for font information. Freetype2 cache API is in flux.
+GNUstep tries to account for
+this, but if you get errors about undefined FTC_ symbols, you might be
+using an unsupported version of freetype.
 
 @item libart_lgpl2 (REQUIRED for art backend only)
 Drawing library for the art backend.

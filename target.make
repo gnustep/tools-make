@@ -304,7 +304,7 @@ ifeq ($(CC_BUNDLE), no)
 
 INTERNAL_LDFLAGS += -flat_namespace -undefined warning
 
-SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning
+SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning $(RUNTIME_FLAG)
 # Useful flag: -Wl,-single_module.  This flag only
 # works starting with 10.3. libs w/ffcall don't link on darwin/ix86 without it.
 ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)

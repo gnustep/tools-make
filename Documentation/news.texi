@@ -9,6 +9,18 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.11.1}
+
+Part of the previous change was reversed. Now libobjc is still linked
+with individual applications (as well as the base library), since some
+operating systems require this to resolve external symbols. However,
+there is no need to recompile all applications again.
+
+Compilation of GNUstep on cygwin was revampled and fixed due to a lot of
+work by Tom MacSween.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.11.0}
 
 NOTE: The libobjc library is now linked in with the base library and NOT with
@@ -33,8 +45,6 @@ clean way to do it.
 @item Support for xxx_WINDRES_FILES on MinGW was implemented.
 
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.10.0}
 

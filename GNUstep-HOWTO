@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 21 July 2005
+   Last Update: 18 September 2005
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -107,10 +107,16 @@ are required.
      The GUI library uses this for playing sound files.
 
 `portaudio (OPTIONAL)'
-     The GUI library uses this for the sound server
+     The GUI library uses this for the sound server.  Use v19, which has
+     several API changes since the previous version. v19 hasn't
+     actually been formally released, but several distributions (SuSE,
+     etc) use it anyway.
 
 `freetype2 (RECOMMENDED, REQUIRED for art backend)'
-     This is used for font information
+     This is used for font information. Freetype2 cache API is in flux.
+     GNUstep tries to account for this, but if you get errors about
+     undefined FTC_ symbols, you might be using an unsupported version
+     of freetype.
 
 `libart_lgpl2 (REQUIRED for art backend only)'
      Drawing library for the art backend.
@@ -393,6 +399,14 @@ GCC 3.4.X
      Recommended. The #import directive is no longer deprecated as of
      this version of the compiler.
 
+GCC 4.0
+     Probably OK. Did start triggering compiler errors on parts of
+     base, but there has been a workaround in base for that. Does not
+     work on MacOSX.
+
+GCC 4.0.1
+     Probably OK. This version should work on MacOSX.
+
    If your having mysterious trouble with a machine, try compiling
 GNUstep without optimization. Particularly in the newer GCC compilers,
 optimization can break some code. The easiest way to do this is when
@@ -405,8 +419,22 @@ compiling and installing gcc and make. If you had GNUstep previously
 installed, make sure you completely remove all of it, including
 installed init scripts.
 
-Darwin/ix86
-===========
+   Support Notes:
+SUPPORTED
+     Regularly used and tested by developers
+
+RELEASE
+     Tested before a release
+
+UNSUPPORTED
+     Not regularly used or tested
+
+UNSTABLE
+     Has problems either building or running GNUstep or requires special
+     setp procedures to run correctly.
+
+Darwin/ix86 (_Unsupported_)
+===========================
 
 Currently tested on Darwin 7.x
 
@@ -431,8 +459,8 @@ SPECIAL INSTRUCTIONS
      directory for complete instructions.
 
 
-Darwin/PowerPC
-==============
+Darwin/PowerPC (_Supported_)
+============================
 
 This section is for building the complete GNUstep system.  This system
 will not interact at all with Mac OS X/Cocoa. It uses different
@@ -469,65 +497,28 @@ SPECIAL INSTRUCTIONS
 
    See also the MacOSX/PowerPC section
 
-Debian/DEC-Alpha
-================
+Debian/Alpha (_Unsupported_)
+============================
 
-RECOMMENDED COMPILER
-     Standard
-
-EXTRA LIBS NEEDED
-     Unknown
-
-SPECIAL INSTRUCTIONS
-     None
-
-Debian/i386
-===========
+Debian/i386 (_Supported_)
+=========================
 
 Tested on sid.
-RECOMMENDED COMPILER
-     Standard
 
-EXTRA LIBS NEEDED
-     Unknown
-
-SPECIAL INSTRUCTIONS
-     None
-
-Debian/PowerPC
-==============
+Debian/PowerPC (_Supported_)
+============================
 
 Tested on sid.
-RECOMMENDED COMPILER
-     Standard
 
-EXTRA LIBS NEEDED
-     Unknown
-
-SPECIAL INSTRUCTIONS
-     None
-
-Debian/SPARC
-============
+Debian/SPARC (_Release_)
+========================
 
 Tested on sid.
-RECOMMENDED COMPILER
-     Standard
 
-EXTRA LIBS NEEDED
-
-SPECIAL INSTRUCTIONS
-     None
-
-FreeBSD 5.x
-===========
+FreeBSD 5.x (_Supported_)
+=========================
 
 Tested on 5.0, 5.1, 5.3
-RECOMMENDED COMPILER
-
-EXTRA LIBS NEEDED
-     None.
-
 SPECIAL INSTRUCTIONS
      Can install via /usr/ports/devel/gnustep, but not all required
      dependancies are installed. See the GNUstep-HOWTO for list of
@@ -536,14 +527,8 @@ SPECIAL INSTRUCTIONS
      For 5.3, there is a bug in libkvm that requires that /proc be
      mounted. Use 'mount_procfs proc /proc' or see the procfs man page.
 
-
-FreeBSD 4.x
-===========
-
-RECOMMENDED COMPILER
-
-EXTRA LIBS NEEDED
-     Unknown
+FreeBSD 4.x (_Unsupported_)
+===========================
 
 SPECIAL INSTRUCTIONS
      For gcc 3.0.4, make WANT_THREADS_SUPPORT=YES
@@ -555,12 +540,6 @@ FreeBSD 3.x  (_Obsolete_)
 =========================
 
 Compiles "out of the box" on FreeBSD 3.4.
-
-RECOMMENDED COMPILER
-     gcc 2.95.2
-
-EXTRA LIBS NEEDED
-     Unknown
 
 SPECIAL INSTRUCTIONS
      You need to use gmake not make to compile the GNUstep packages. A
@@ -596,12 +575,6 @@ SPECIAL INSTRUCTIONS
 FreeBSD 2.x (_Obsolete,Unstable_)
 =================================
 
-RECOMMENDED COMPILER
-     gcc 2.8.x
-
-EXTRA LIBS NEEDED
-     Unknown
-
 SPECIAL INSTRUCTIONS
      Only static libraries work on this system.  Use /stand/sysinstall
      to install these packages if you have not already done so:
@@ -615,8 +588,28 @@ SPECIAL INSTRUCTIONS
      GNUstep packages.
 
 
-Irix 6.5/MIPS (_Needs a maintainer_)
-====================================
+Gentoo/i686 (_Supported_)
+=========================
+
+SPECIAL INSTRUCTIONS
+     libffi sometimes causes odd problems. Try to use ffcall.
+
+Gentoo/PPC (_Supported_)
+========================
+
+Gentoo/amd64 (_Unsupported_)
+============================
+
+32-bit mode only?
+
+Gentoo/alpha (_Unsupported_)
+============================
+
+Gentoo/sparc (_Unsupported_)
+============================
+
+Irix 6.5/MIPS (_Unsupported_)
+=============================
 
 RECOMMENDED COMPILER
      gcc 3.2.1
@@ -636,8 +629,8 @@ SPECIAL INSTRUCTIONS
      link the library by hand.  No libffi-support: Use ffcall
 
 
-MacOSX/PowerPC
-==============
+MacOSX/PowerPC (_Release_)
+==========================
 
 This section is for building the GNUstep extensions only.  Use this if,
 for instance, if you want to build something based on GNUstep, such as
@@ -682,24 +675,13 @@ SPECIAL INSTRUCTIONS
 
    See also the Darwin/PowerPC section.
 
-MkLinux/PowerPC
-===============
+MkLinux/PowerPC (_Unsupported_)
+===============================
 
 Tested with R2 RC2 (2004/03/04).
 
-RECOMMENDED COMPILER
-     gcc 3.x allthough earlier ones should work if you also install
-     gnustep-objc
-
-EXTRA LIBS NEEDED
-     None.
-
-SPECIAL INSTRUCTIONS
-     Unknown.
-
-
-NetBSD/i386
-===========
+NetBSD/i386 (_Release_)
+=======================
 
 Tested on NetBSD 2.0.2 (2005/04/15)
 
@@ -746,20 +728,10 @@ EXTRA LIBS NEEDED
 SPECIAL INSTRUCTIONS
      See <http://www.netwinder.org/~patrix>
 
-OpenBSD 3.x  (_Needs Testing_)
-==============================
+OpenBSD 3.x  (_Unsupported,Obsolete_)
+=====================================
 
-RECOMMENDED COMPILER
-     Unknown
-
-EXTRA LIBS NEEDED
-     Unknown
-
-SPECIAL INSTRUCTIONS
-     Try reading the <README.NetBSD> which might work the same on
-     OpenBSD.
-
-OSF Alpha  (_Unstable_)
+OSF/Alpha  (_Unstable_)
 =======================
 
 Information is for Version 3.2C
@@ -780,35 +752,16 @@ SPECIAL INSTRUCTIONS
      GNUmakefile(.preamble).
 
 
-RedHat/Intel
-============
+RedHat/Intel (_Unsupported_)
+============================
 
-RECOMMENDED COMPILER
-     Standard
+Slackware/Intel (_Unsupported_)
+===============================
 
-EXTRA LIBS NEEDED
-     Standard (ffcall or libffi)
+Slackware/Sparc (Splack) (_Unsupported_)
+========================================
 
-SPECIAL INSTRUCTIONS
-     None
-
-Slackware/Intel
-===============
-
-RECOMMENDED COMPILER
-     Unknown.
-
-EXTRA LIBS NEEDED
-     Unknown.
-
-SPECIAL INSTRUCTIONS
-     Unknown.
-
-
-Slackware/Sparc (Splack)
-========================
-
-Tested with Spalck 8.0
+Tested with Spalck 8.0 (2005/03/01)
 
 RECOMMENDED COMPILER
      gcc 3.2, no extra options.
@@ -834,8 +787,8 @@ EXTRA LIBS NEEDED
 SPECIAL INSTRUCTIONS
      See the Solaris 2.6 section for more instructions.
 
-Solaris 2.[678]/Sparc
-=====================
+Solaris 2.[678]/Sparc (_Supported_)
+===================================
 
 Tested on Solaris version 6, 7, and 8
 
@@ -863,8 +816,8 @@ the _REENTRANT flag defined (This does not seem to be true by default).
 Or use the gnustep-objc package. Also make sure THREADS is set to
 'posix' not 'solaris'.
 
-Solaris 2.7/Intel
-=================
+Solaris 2.7/Intel (_Unsupported_)
+=================================
 
 RECOMMENDED COMPILER
      Unknown.
@@ -883,8 +836,8 @@ SPECIAL INSTRUCTIONS
      instructions above for more information.
 
 
-Suse 6.x/Intel
-==============
+Suse 6.x/Intel (_Obsolete_)
+===========================
 
 GNUstep has been tested on version 6.2-6.4 of Suse
 
@@ -901,8 +854,8 @@ SPECIAL INSTRUCTIONS
      working.
 
 
-Suse/Intel
-==========
+Suse/Intel (_Supported_)
+========================
 
 GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, 9.1, and
 9.3 of Suse
@@ -919,8 +872,8 @@ SPECIAL INSTRUCTIONS
      None.
 
 
-Suse 7.x/PPC
-============
+Suse 7.x/PPC (_Unsupported_)
+============================
 
 GNUstep has been tested on version 7.0 of Suse/PPC
 
@@ -933,8 +886,8 @@ EXTRA LIBS NEEDED
 
 SPECIAL INSTRUCTIONS
 
-Unixware-2.1.3/Intel
-====================
+Unixware-2.1.3/Intel (_Unsupported_)
+====================================
 
 RECOMMENDED COMPILER
      Unknown
@@ -1025,8 +978,8 @@ EXTRA LIBS NEEDED
    If you don't set gdomap up correctly, Distributed Objects will not
 work.
 
-Windows with CYGWIN (_Needs a maintainer_)
-==========================================
+Windows with CYGWIN (_Unsupported_)
+===================================
 
 RECOMMENDED COMPILER
      gcc 3.3.1 or later (with libobjc and libjava (if using libffi))
@@ -1047,8 +1000,8 @@ SPECIAL INSTRUCTIONS
      problems.  See <README.Cygwin> for information on compiling.
 
 
-Windows with MinGW
-==================
+Windows with MinGW (_Supported_)
+================================
 
 RECOMMENDED COMPILER
      See below.
@@ -1062,16 +1015,8 @@ SPECIAL INSTRUCTIONS
      Win98 machines and earlier are very buggy and are not supported.
      Native GUI backend is alpha version.
 
-Yellowdog/PowerPC
-=================
-
-RECOMMENDED COMPILER
-     Standard
-
-EXTRA LIBS NEEDED
-     Standard (ffcall or libffi)
-
-SPECIAL INSTRUCTIONS
+Yellowdog/PowerPC (_Unsupported_)
+=================================
 
 Getting Libraries via Anonymous CVS
 ***********************************

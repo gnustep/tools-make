@@ -1,7 +1,18 @@
 NEWS
 ****
 
-The currently released version is `1.11.0'.
+The currently released version is `1.11.1'.
+
+Changes in version `1.11.1'
+===========================
+
+Part of the previous change was reversed. Now libobjc is still linked
+with individual applications (as well as the base library), since some
+operating systems require this to resolve external symbols. However,
+there is no need to recompile all applications again.
+
+   Compilation of GNUstep on cygwin was revampled and fixed due to a
+lot of work by Tom MacSween.
 
 Changes in version `1.11.0'
 ===========================
