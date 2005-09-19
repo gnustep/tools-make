@@ -1,3 +1,11 @@
+2005-09-18  Adam Fedor  <fedor@gnu.org>
+
+	* Version 1.11.1
+
+	* target.make (darwin): Add RUNTIME_FLAGS to shared lib link with
+	GNU compiler (i.e. -fgnu-runtime).
+	* Documentation/README.MinGW: Update.
+
 2005-09-17  Adam Fedor  <fedor@gnu.org>
 
 	* Changes to fix compilation on cygwin.
