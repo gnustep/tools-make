@@ -1,3 +1,12 @@
+2005-09-22  Adam Fedor  <fedor@gnu.org>
+
+	* Add runtime flags everywhere for Mac OS/gcc dual runtimes
+	* rules.make (CC_LDFLAGS): New variable for extra ld flags
+	* target.make (darwin/SHARED_LD_PREFLAGS): Use it.
+	* Instance/application.make (APP_FILE),
+	Instance/gswapp.make (GSWAPP_FILE), Instance/objc.make,
+	Instance/service.make (SERVICE_FILE), Instance/tool.make: Idem.
+
 2005-09-18  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.11.1
