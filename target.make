@@ -931,7 +931,7 @@ HAVE_SHARED_LIBS = yes
 # the import library
 SHARED_LIB_LINK_CMD     = \
         $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
-	-Wl,--out-implib=$(GNUSTEP_OBJ_DIR)/$(LIB_LINK_FILE) \
+	-Wl,--out-implib=$(GNUSTEP_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
 	-Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
 	-Wl,--whole-archive $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \
@@ -944,6 +944,7 @@ SHARED_LIBEXT	 = .dll.a
 
 BUILD_DLL	 = yes
 CYGWIN_DLL_SUPPORT  = yes
+#SHARED_LIBEXT	 = .a
 DLL_LIBEXT	 = .dll
 REBASE 		 = rebase 
 REBASE_FLAGS = -d -b 0x68000000 -o 0x10000

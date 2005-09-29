@@ -270,6 +270,7 @@ SONAME_FRAMEWORK_FILE  = $(FRAMEWORK_LIBRARY_FILE)
 # LIB_LINK_DLL_FILE is the DLL library, Renaissance.dll
 LIB_LINK_DLL_FILE    = $(GNUSTEP_INSTANCE)$(DLL_LIBEXT)
 
+FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # BUILD_DLL
 
 FRAMEWORK_FILE_NAME := $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)
@@ -534,7 +535,7 @@ $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resource
 # GNUstep frameworks
 $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR)/Resources $(DUMMY_FRAMEWORK_FILE)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
-	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
+	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)$(FRAMEWORK_OBJ_EXT)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "  Classes = "; \

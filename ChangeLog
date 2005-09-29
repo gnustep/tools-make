@@ -1,3 +1,9 @@
+2005-09-28  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (cygwin/SHARED_LIB_LINK_CMD): Correct lib file name
+	(Fix from Tom MacSween).
+	* Instance/framework.make: Add extension to NSExecutable.
+
 2005-09-22  Adam Fedor  <fedor@gnu.org>
 
 	* Add runtime flags everywhere for Mac OS/gcc dual runtimes
