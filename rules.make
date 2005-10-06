@@ -249,6 +249,9 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
 # if you need, you can define ADDITIONAL_CCFLAGS to add C++ specific flags
 ALL_CCFLAGS = $(ADDITIONAL_CCFLAGS) $(AUXILIARY_CCFLAGS)
 
+# if you need, you can define ADDITIONAL_OBJCCFLAGS to add ObjC++ specific flags
+ALL_OBJCCFLAGS = $(ADDITIONAL_OBJCCFLAGS) $(AUXILIARY_OBJCCFLAGS)
+
 INTERNAL_CLASSPATHFLAGS = -classpath ./$(subst ::,:,:$(strip $(ADDITIONAL_CLASSPATH)):)$(CLASSPATH)
 
 ALL_JAVACFLAGS = $(INTERNAL_CLASSPATHFLAGS) $(INTERNAL_JAVACFLAGS) \
@@ -327,7 +330,7 @@ VPATH = .
 .SUFFIXES:
 
 # Then define our own.
-.SUFFIXES: .m .c .psw .java .h .cpp .cxx .C .cc .cp
+.SUFFIXES: .m .c .psw .java .h .cpp .cxx .C .cc .cp .mm
 
 .PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
 
@@ -430,6 +433,13 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
+
+$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
+	$(ECHO_COMPILING)$(CC) $< -c \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_OBJCFLAGS) \
+	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 %.class : %.java

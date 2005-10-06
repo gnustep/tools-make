@@ -159,6 +159,9 @@ endif
 # The list of C++ source files to be compiled
 # are in the CC_FILES variable.
 #
+# The list of Objective-C++ source files to be compiled
+# are in the OBJCC_FILES variable.
+#
 # The list of PSWRAP source files to be compiled
 # are in the PSWRAP_FILES variable.
 #
@@ -190,6 +193,9 @@ endif
 
 OBJC_OBJS = $(patsubst %.m,%$(OEXT),$($(GNUSTEP_INSTANCE)_OBJC_FILES))
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
+
+OBJCC_OBJS = $(patsubst %.mm,%$(OEXT),$($(GNUSTEP_INSTANCE)_OBJCC_FILES))
+OBJCC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJCC_OBJS))
 
 JAVA_OBJS = $(patsubst %.java,%.class,$($(GNUSTEP_INSTANCE)_JAVA_FILES))
 JAVA_OBJ_FILES = $(JAVA_OBJS)
@@ -229,7 +235,7 @@ OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 # OBJ_FILES_TO_LINK to '' we know if there is a link stage to be
 # performed at all (useful for example in bundles which can contain an
 # object file, or not).
-OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(WINDRES_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
+OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(OBJCC_OBJ_FILES) $(WINDRES_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
 
 ifeq ($(AUTO_DEPENDENCIES),yes)
   ifneq ($(strip $(OBJ_FILES_TO_LINK)),)
@@ -265,6 +271,8 @@ ADDITIONAL_CFLAGS += $($(GNUSTEP_INSTANCE)_CFLAGS)
 ADDITIONAL_OBJCFLAGS += $($(GNUSTEP_INSTANCE)_OBJCFLAGS)
 
 ADDITIONAL_CCFLAGS += $($(GNUSTEP_INSTANCE)_CCFLAGS)
+
+ADDITIONAL_OBJCCFLAGS += $($(GNUSTEP_INSTANCE)_OBJCCFLAGS)
 
 ADDITIONAL_LDFLAGS += $($(GNUSTEP_INSTANCE)_LDFLAGS)
 

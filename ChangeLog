@@ -1,3 +1,19 @@
+2005-10-06  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Added support for ObjC++.  You should list the ObjC++ .mm files in
+	the xxx_OBJCC_FILES variable, and put extra ObjC++ flags in
+	xxx_OBJCCFLAGS or ADDITIONAL_OBJCCFLAGS.
+	* rules.make (.SUFFIXES): Added .mm for ObjC++.
+	($(GNUSTEP_OBJ_DIR)/%${OEXT}): Added rule to compile .mm files
+	into .o files.
+	(ALL_OBJCCFLAGS): New variable, set from ADDITIONAL_OBJCCFLAGS and
+	AUXILIARY_OBJCCFLAGS.
+	* Instance/rules.make (OBJCC_OBJS, OBJCC_OBJ_FILES): New variables
+	set from xxx_OBJCC_FILES.
+	(OBJ_FILES_TO_LINK): Added the new OBJCC_OBJ_FILES to the list of things
+	to link.
+	(ADDITIONAL_OBJCCFLAGS): New variable set from xxx_ADDITIONAL_OBJCCFLAGS.
+	
 2005-09-28  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (cygwin/SHARED_LIB_LINK_CMD): Correct lib file name
