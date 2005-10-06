@@ -1,5 +1,12 @@
 2005-10-06  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* rules.make (ALL_OBJCCFLAGS, $(GNUSTEP_OBJ_DIR)/%${OEXT}): When
+	compiling ObjC++ files, don't use the additional ObjC flags but
+	only the internal/system ones, to make it easier/possible for end
+	users to add different flags to ObjC and ObjC++ compilations.
+	
+2005-10-06  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	Added support for ObjC++.  You should list the ObjC++ .mm files in
 	the xxx_OBJCC_FILES variable, and put extra ObjC++ flags in
 	xxx_OBJCCFLAGS or ADDITIONAL_OBJCCFLAGS.

@@ -249,8 +249,25 @@ ALL_CFLAGS = $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
 # if you need, you can define ADDITIONAL_CCFLAGS to add C++ specific flags
 ALL_CCFLAGS = $(ADDITIONAL_CCFLAGS) $(AUXILIARY_CCFLAGS)
 
-# if you need, you can define ADDITIONAL_OBJCCFLAGS to add ObjC++ specific flags
-ALL_OBJCCFLAGS = $(ADDITIONAL_OBJCCFLAGS) $(AUXILIARY_OBJCCFLAGS)
+# If you need, you can define ADDITIONAL_OBJCCFLAGS to add ObjC++
+# specific flags.  Please note that for maximum flexibility,
+# ADDITIONAL_OBJCFLAGS are *not* used to compile ObjC++.  You can add
+# different additional flags to ObjC and to ObjC++ by specifying
+# different ADDITIONAL_OBJCFLAGS and ADDITIONAL_OBJCCFLAGS.  The
+# internal ObjC flags instead are used in the same way for ObjC and
+# ObjC++.  We have to use AUXILIARY_OBJCFLAGS though as gnustep-base
+# puts its NXConstantString flags in there.  Presumably gnustep-base
+# could be changed to put them in AUXILIARY_OBJCCFLAGS too and then we
+# can remove AUXILIARY_OBJCCFLAGS from the following line, which would
+# be cleaner. :-)
+ALL_OBJCCFLAGS = $(INTERNAL_OBJCFLAGS) $(ADDITIONAL_OBJCCFLAGS) \
+   $(AUXILIARY_OBJCFLAGS) \
+   $(AUXILIARY_OBJCCFLAGS) $(ADDITIONAL_INCLUDE_DIRS) \
+   $(AUXILIARY_INCLUDE_DIRS) \
+   $(DERIVED_SOURCES_HEADERS_FLAG) \
+   -I. $(SYSTEM_INCLUDES) \
+   $(GNUSTEP_HEADERS_FLAGS) \
+   $(GNUSTEP_FRAMEWORKS_FLAGS)
 
 INTERNAL_CLASSPATHFLAGS = -classpath ./$(subst ::,:,:$(strip $(ADDITIONAL_CLASSPATH)):)$(CLASSPATH)
 
@@ -438,7 +455,6 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
 	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
-	                                                $(ALL_OBJCFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
