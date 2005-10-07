@@ -57,6 +57,13 @@ endif
 ifeq (@target_os@,mingw32)
   HAS_LN_S = no
 endif
+# Special case - on cygwin, autoconf sets LN_S to 'ln -s', but then
+# that does a recursive copy (ie, cp -r).
+ifeq (@target_os@,cygwin)
+  HAS_LN_S = no
+endif 
+
+
 
 # This is used to remove an existing symlink before creating a new
 # one.  We don't trust 'ln -s -f' as it's unportable so we remove

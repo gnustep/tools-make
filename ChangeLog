@@ -1,3 +1,11 @@
+2005-10-06 Tom MacSween <macsweent@sympatico.ca>
+
+	* Fixes for cygwin.
+	* Instance/rules.make: Add Windows resource files for cygwin
+	* config.make.in: Cygwin does not have ln-s
+	* rules.make: Add Windows resource rules for cygwin
+	* target.make (cygwin): Fix shared link cmd.
+
 2005-10-06  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* rules.make (ALL_OBJCCFLAGS, $(GNUSTEP_OBJ_DIR)/%${OEXT}): When

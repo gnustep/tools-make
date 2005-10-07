@@ -930,8 +930,8 @@ HAVE_SHARED_LIBS = yes
 # symbols to export, creates the DLL (eg, obj/gnustep-base.dll) and 
 # the import library
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
-	-Wl,--out-implib=$(GNUSTEP_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
+	-Wl,--out-implib=$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
 	-Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
 	-Wl,--whole-archive $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \
