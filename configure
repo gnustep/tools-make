@@ -318,7 +318,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES gnustep_config_file GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN gnustep_config_file GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -854,6 +854,7 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+--disable-importing-config-file		Disable importing the existing GNUstep configuration file
 --disable-flattened		Disable flattened directory structure
 --enable-multi-platform		Use run time multi-platform support
 
@@ -870,6 +871,7 @@ Optional Packages:
 --with-library-combo		Define the default library combination
 
 --with-tar                      Set the name of the tar program to use
+--with-config-file=PATH  path to GNUstep configuration file
 --with-system-root
     Set the GNUSTEP_SYSTEM_ROOT directory.  Use this option if you want
 to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.  Example:
@@ -893,7 +895,6 @@ to have the GNUSTEP_NETWORK_ROOT directory.  Example:
     Example: --with-user-root='~/gnustep'
 
 --with-thread-lib		Specify alternate thread library
---with-config-file=PATH  path to GNUstep configuration file
 
 Some influential environment variables:
   CC          C compiler command
@@ -3211,6 +3212,85 @@ fi
 # GNUstep specific options follow
 #-------------------------------------------------------------------
 
+#---------------------------------------------------------------------
+# Location of the GNUstep.conf config file (--with-config-file)
+#---------------------------------------------------------------------
+echo "$as_me:$LINENO: checking for the location of GNUstep configuration file" >&5
+echo $ECHO_N "checking for the location of GNUstep configuration file... $ECHO_C" >&6
+
+# Check whether --with-config-file or --without-config-file was given.
+if test "${with_config_file+set}" = set; then
+  withval="$with_config_file"
+  gnustep_config_file="$withval"
+else
+  gnustep_config_file="no"
+fi;
+if test "$gnustep_config_file" = no; then
+  if test ! "$GNUSTEP_CONFIG_FILE" = ""; then
+    gnustep_config_file="$GNUSTEP_CONFIG_FILE";
+  else
+    case "$target_os" in
+      freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
+      netbsd* )             gnustep_config_file=/usr/pkg/etc/GNUstep.conf ;;
+      *)	            gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
+    esac
+  fi
+fi
+echo "$as_me:$LINENO: result: $gnustep_config_file" >&5
+echo "${ECHO_T}$gnustep_config_file" >&6;
+
+
+#---------------------------------------------------------------------
+# Now read/import the existing configuration file, if any
+#---------------------------------------------------------------------
+
+# Reading/importing the existing configuration file is good as a
+# default because it means that you don't have to type in your
+# GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, etc. settings every time
+# you configure gnustep-make.
+
+# It can be annoying in certain cases though; this option lets you
+# turn it off
+echo "$as_me:$LINENO: checking if we should import an existing GNUstep configuration file" >&5
+echo $ECHO_N "checking if we should import an existing GNUstep configuration file... $ECHO_C" >&6
+# Check whether --enable-importing-config-file or --disable-importing-config-file was given.
+if test "${enable_importing_config_file+set}" = set; then
+  enableval="$enable_importing_config_file"
+  ac_cv_importing_config_file=$enableval
+else
+  ac_cv_importing_config_file="yes"
+fi;
+
+# If importing the file is disabled, don't import it.
+if test "$ac_cv_importing_config_file" = "no"; then
+  echo "$as_me:$LINENO: result: no: disabled from the command-line" >&5
+echo "${ECHO_T}no: disabled from the command-line" >&6
+else
+
+ # Check that the file exists
+ if test ! -f "$gnustep_config_file"; then
+  echo "$as_me:$LINENO: result: no: file \"$gnustep_config_file\" does not exist" >&5
+echo "${ECHO_T}no: file \"$gnustep_config_file\" does not exist" >&6
+ else
+  echo "$as_me:$LINENO: result: yes: trying to import \"$gnustep_config_file\"" >&5
+echo "${ECHO_T}yes: trying to import \"$gnustep_config_file\"" >&6
+  { echo "$as_me:$LINENO: If this fails, please run configure again with the --disable-importing-config-file option" >&5
+echo "$as_me: If this fails, please run configure again with the --disable-importing-config-file option" >&6;}
+  . "$gnustep_config_file"
+ fi
+fi
+
+#--------------------------------------------------------------------
+# Important - from now on, any variable that is set in the
+# configuration file (eg, GNUSTEP_SYSTEM_ROOT) could already have a
+# value that we have imported from the previous file.  ./configure
+# command line options should override those values, but otherwise we
+# should keep them!
+#
+# Those could also be env variables, which is really a backwards
+# compatibility hack that won't be kept in the future.
+#--------------------------------------------------------------------
+
 #--------------------------------------------------------------------
 # Process --prefix
 #--------------------------------------------------------------------
@@ -3268,7 +3348,9 @@ if test "${with_system_root+set}" = set; then
   withval="$with_system_root"
   GNUSTEP_SYSTEM_ROOT="$withval"
 else
-  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
+  if test "$GNUSTEP_SYSTEM_ROOT" = ""; then
+  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_SYSROOT/System"
+fi
 
 fi;
 echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_ROOT" >&5
@@ -3286,7 +3368,9 @@ if test "${with_local_root+set}" = set; then
   withval="$with_local_root"
   GNUSTEP_LOCAL_ROOT="$withval"
 else
+  if test "$GNUSTEP_LOCAL_ROOT" = ""; then
   GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
+fi
 
 fi;
 echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_ROOT" >&5
@@ -3311,7 +3395,9 @@ else
 # again, you can use the --with-network-root=xxx option; pass
 # something like --with-network-root=/usr/GNUstep/Network on the
 # configure command line.
-GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
+if test "$GNUSTEP_NETWORK_ROOT" = ""; then
+  GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
+fi
 
 fi;
 echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_ROOT" >&5
@@ -3330,7 +3416,9 @@ if test "${with_user_root+set}" = set; then
   GNUSTEP_USER_ROOT="$withval"
 else
   # The default is to have user roots in ~/GNUstep
-GNUSTEP_USER_ROOT="~/GNUstep"
+if test "$GNUSTEP_USER_ROOT" = ""; then
+  GNUSTEP_USER_ROOT="~/GNUstep"
+fi
 
 fi;
 echo "$as_me:$LINENO: result: $GNUSTEP_USER_ROOT" >&5
@@ -3342,7 +3430,9 @@ echo "${ECHO_T}$GNUSTEP_USER_ROOT" >&6
 #--------------------------------------------------------------------
 echo "$as_me:$LINENO: checking for GNUSTEP_MAKEFILES to use" >&5
 echo $ECHO_N "checking for GNUSTEP_MAKEFILES to use... $ECHO_C" >&6
-GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+if test "$GNUSTEP_MAKEFILES" = ""; then
+  GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
+fi
 
 echo "$as_me:$LINENO: result: $GNUSTEP_MAKEFILES" >&5
 echo "${ECHO_T}$GNUSTEP_MAKEFILES" >&6
@@ -4934,30 +5024,6 @@ echo "${ECHO_T}no" >&6;
 fi
 
 
-#---------------------------------------------------------------------
-# Location of the GNUstep.conf config file
-#---------------------------------------------------------------------
-echo "$as_me:$LINENO: checking for the location of GNUstep configuration file" >&5
-echo $ECHO_N "checking for the location of GNUstep configuration file... $ECHO_C" >&6
-
-# Check whether --with-config-file or --without-config-file was given.
-if test "${with_config_file+set}" = set; then
-  withval="$with_config_file"
-  gnustep_config_file="$withval"
-else
-  gnustep_config_file="no"
-fi;
-if test $gnustep_config_file = no; then
-  case "$target_os" in
-    freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
-    netbsd* )  		  gnustep_config_file=/usr/pkg/etc/GNUstep.conf ;;
-    *)	    		  gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
-  esac
-fi
-echo "$as_me:$LINENO: result: $gnustep_config_file" >&5
-echo "${ECHO_T}$gnustep_config_file" >&6;
-
-
 #--------------------------------------------------------------------
 # Disable updating the obsolete directory structure
 #--------------------------------------------------------------------
@@ -5684,6 +5750,7 @@ s,@INSTALL_DATA@,$INSTALL_DATA,;t t
 s,@LN_S@,$LN_S,;t t
 s,@TAR@,$TAR,;t t
 s,@CHOWN@,$CHOWN,;t t
+s,@gnustep_config_file@,$gnustep_config_file,;t t
 s,@GNUSTEP_SYSTEM_ROOT@,$GNUSTEP_SYSTEM_ROOT,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t
@@ -5702,7 +5769,6 @@ s,@INCLUDES@,$INCLUDES,;t t
 s,@LIB_DIR@,$LIB_DIR,;t t
 s,@OBJCFLAGS@,$OBJCFLAGS,;t t
 s,@GNUSTEP_STRIP_MAKEFILES@,$GNUSTEP_STRIP_MAKEFILES,;t t
-s,@gnustep_config_file@,$gnustep_config_file,;t t
 s,@GNUSTEP_MOVE_OBSOLETE@,$GNUSTEP_MOVE_OBSOLETE,;t t
 s,@GNUSTEP_MAKE_VERSION@,$GNUSTEP_MAKE_VERSION,;t t
 s,@GNUSTEP_MAKE_MAJOR_VERSION@,$GNUSTEP_MAKE_MAJOR_VERSION,;t t

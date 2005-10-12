@@ -1,4 +1,14 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+	
+	* configure.ac: Use the GNUSTEP_CONFIG_FILE environment variable
+	to choose the location of the config file, if no configure option
+	is given.  Automatically import the settings from an existing
+	GNUstep config file if one exists, and use them for anything not
+	specified.  Added --disable-importing-config-file option to
+	disable this behaviour.
+	* configure: Regenerated.	
+
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Added --with-system-root=xxx option.
 	* configure: Regenerated.

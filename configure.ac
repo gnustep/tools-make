@@ -162,6 +162,70 @@ fi
 # GNUstep specific options follow
 #-------------------------------------------------------------------
 
+#---------------------------------------------------------------------
+# Location of the GNUstep.conf config file (--with-config-file)
+#---------------------------------------------------------------------
+AC_MSG_CHECKING([for the location of GNUstep configuration file])
+AC_ARG_WITH(config-file,
+  [--with-config-file=PATH  path to GNUstep configuration file],
+  gnustep_config_file="$withval", gnustep_config_file="no")
+if test "$gnustep_config_file" = no; then
+  if test ! "$GNUSTEP_CONFIG_FILE" = ""; then
+    gnustep_config_file="$GNUSTEP_CONFIG_FILE";
+  else
+    case "$target_os" in
+      freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
+      netbsd* )             gnustep_config_file=/usr/pkg/etc/GNUstep.conf ;;
+      *)	            gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
+    esac
+  fi
+fi
+AC_MSG_RESULT($gnustep_config_file);
+AC_SUBST(gnustep_config_file)
+
+#---------------------------------------------------------------------
+# Now read/import the existing configuration file, if any
+#---------------------------------------------------------------------
+
+# Reading/importing the existing configuration file is good as a
+# default because it means that you don't have to type in your
+# GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, etc. settings every time
+# you configure gnustep-make.
+
+# It can be annoying in certain cases though; this option lets you
+# turn it off
+AC_MSG_CHECKING([if we should import an existing GNUstep configuration file])
+AC_ARG_ENABLE(importing-config-file, 
+[--disable-importing-config-file		Disable importing the existing GNUstep configuration file], 
+  ac_cv_importing_config_file=$enableval,
+  ac_cv_importing_config_file="yes")
+
+# If importing the file is disabled, don't import it.
+if test "$ac_cv_importing_config_file" = "no"; then
+  AC_MSG_RESULT([no: disabled from the command-line])
+else
+
+ # Check that the file exists
+ if test ! -f "$gnustep_config_file"; then
+  AC_MSG_RESULT([no: file "$gnustep_config_file" does not exist])
+ else
+  AC_MSG_RESULT([yes: trying to import "$gnustep_config_file"])
+  AC_MSG_NOTICE([If this fails, please run configure again with the --disable-importing-config-file option])
+  . "$gnustep_config_file"
+ fi
+fi
+
+#--------------------------------------------------------------------
+# Important - from now on, any variable that is set in the
+# configuration file (eg, GNUSTEP_SYSTEM_ROOT) could already have a
+# value that we have imported from the previous file.  ./configure
+# command line options should override those values, but otherwise we
+# should keep them!
+#
+# Those could also be env variables, which is really a backwards
+# compatibility hack that won't be kept in the future.
+#--------------------------------------------------------------------
+
 #--------------------------------------------------------------------
 # Process --prefix
 #--------------------------------------------------------------------
@@ -184,7 +248,7 @@ fi
 # defined, but if not then we have a global default.
 # Also test for the C: directory, which means we're on Windows
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for root of GNUstep installation to use (if any))
+AC_MSG_CHECKING([for root of GNUstep installation to use (if any)])
 AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
   if test -d C: ; then
     echo C:/GNUstep;
@@ -225,7 +289,9 @@ to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.  Example:
 --with-system-root=/usr/GNUstep/System
 ],
 GNUSTEP_SYSTEM_ROOT="$withval",
-GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
+if test "$GNUSTEP_SYSTEM_ROOT" = ""; then 
+  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_SYSROOT/System"
+fi
 )
 AC_MSG_RESULT($GNUSTEP_SYSTEM_ROOT)
 AC_SUBST(GNUSTEP_SYSTEM_ROOT)
@@ -241,7 +307,9 @@ to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
 --with-local-root=/usr/local/GNUstep/Local
 ],
 GNUSTEP_LOCAL_ROOT="$withval",
-GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
+if test "$GNUSTEP_LOCAL_ROOT" = ""; then 
+  GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
+fi
 )
 AC_MSG_RESULT($GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
@@ -264,7 +332,9 @@ GNUSTEP_NETWORK_ROOT="$withval",
 # again, you can use the --with-network-root=xxx option; pass
 # something like --with-network-root=/usr/GNUstep/Network on the
 # configure command line.
-GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
+if test "$GNUSTEP_NETWORK_ROOT" = ""; then 
+  GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
+fi
 )
 AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
@@ -283,7 +353,9 @@ AC_ARG_WITH(user-root,
 ],
 GNUSTEP_USER_ROOT="$withval",
 # The default is to have user roots in ~/GNUstep
-GNUSTEP_USER_ROOT="~/GNUstep"
+if test "$GNUSTEP_USER_ROOT" = ""; then 
+  GNUSTEP_USER_ROOT="~/GNUstep"
+fi
 )
 AC_MSG_RESULT($GNUSTEP_USER_ROOT)
 AC_SUBST(GNUSTEP_USER_ROOT)
@@ -292,7 +364,9 @@ AC_SUBST(GNUSTEP_USER_ROOT)
 # Setting up GNUSTEP_MAKEFILES
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_MAKEFILES to use)
-GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+if test "$GNUSTEP_MAKEFILES" = ""; then 
+  GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
+fi
 AC_SUBST(GNUSTEP_MAKEFILES)
 AC_MSG_RESULT($GNUSTEP_MAKEFILES)
 
@@ -655,23 +729,6 @@ else
   AC_MSG_RESULT(no);
 fi
 AC_SUBST(GNUSTEP_STRIP_MAKEFILES)
-
-#---------------------------------------------------------------------
-# Location of the GNUstep.conf config file
-#---------------------------------------------------------------------
-AC_MSG_CHECKING(for the location of GNUstep configuration file)
-AC_ARG_WITH(config-file,
-  [--with-config-file=PATH  path to GNUstep configuration file],
-  gnustep_config_file="$withval", gnustep_config_file="no")
-if test $gnustep_config_file = no; then
-  case "$target_os" in
-    freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
-    netbsd* )  		  gnustep_config_file=/usr/pkg/etc/GNUstep.conf ;;
-    *)	    		  gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
-  esac
-fi
-AC_MSG_RESULT($gnustep_config_file);
-AC_SUBST(gnustep_config_file)
 
 #--------------------------------------------------------------------
 # Disable updating the obsolete directory structure
