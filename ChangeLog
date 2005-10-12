@@ -1,5 +1,12 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* configure.ac: Use /usr/pkg/etc/GNUstep.conf instead of
+	/usr/pkg/etc as GNUstep config file on NetBSD (Suggestion by David
+	Ayers).
+	* configure: Regenerated.
+	
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	* configure.ac: Generate GNUstep.conf from GNUstep.conf.in
 	so that GNUstep.conf gets properly setup with the paths that
 	are configured into gnustep-make

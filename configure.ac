@@ -631,7 +631,7 @@ AC_ARG_WITH(config-file,
 if test $gnustep_config_file = no; then
   case "$target_os" in
     freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
-    netbsd* )  		  gnustep_config_file=/usr/pkg/etc ;;
+    netbsd* )  		  gnustep_config_file=/usr/pkg/etc/GNUstep.conf ;;
     *)	    		  gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
   esac
 fi
