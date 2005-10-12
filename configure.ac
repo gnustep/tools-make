@@ -197,6 +197,10 @@ fi`)
 if test "x$prefix" = "xNONE"; then
   prefix="$ac_default_prefix" ;
 fi
+#
+# GNUSTEP_ROOT is only used to build GNUSTEP_LOCAL_ROOT if no
+# --with-local-root= option is used.
+#
 GNUSTEP_ROOT="$prefix"
 if test "x`basename $prefix`" = xSystem; then
   GNUSTEP_ROOT=`dirname $prefix`
@@ -207,7 +211,6 @@ else
     prefix="$prefix/System"
   fi
 fi
-AC_SUBST(GNUSTEP_ROOT)
 
 #--------------------------------------------------------------------
 # Process --with-system-root (TODO)
