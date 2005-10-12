@@ -163,6 +163,22 @@ fi
 #-------------------------------------------------------------------
 
 #--------------------------------------------------------------------
+# Process --prefix
+#--------------------------------------------------------------------
+
+#
+# In practice,
+#
+# ./configure --prefix=/usr/GNUstep
+#
+# is equivalent to:
+#
+# ./configure --with-system-root=/usr/GNUstep/System
+#             --with-local-root=/usr/GNUstep/Local
+#
+# (TODO finish corner details)
+
+#--------------------------------------------------------------------
 # The GNUstep root directory.
 # The user should have the GNUSTEP_SYSTEM_ROOT environment variable
 # defined, but if not then we have a global default.
@@ -192,25 +208,16 @@ else
   fi
 fi
 AC_SUBST(GNUSTEP_ROOT)
-AC_MSG_RESULT($prefix)
-
-AC_MSG_CHECKING(for makefile location to use)
-GNUSTEP_MAKEFILES=$prefix/Library/Makefiles
-AC_SUBST(GNUSTEP_MAKEFILES)
-AC_MSG_RESULT($GNUSTEP_MAKEFILES)
-
-# HOST_INSTALL is the name of the install program in config.make so set it up
-# to point to the install-sh script in the GNUstep tree if no system install is
-# found.
-AC_SUBST(HOST_INSTALL)
-if test "$INSTALL" = "$ac_install_sh"; then
-  HOST_INSTALL="$GNUSTEP_MAKEFILES/$INSTALL"
-else
-  HOST_INSTALL="$INSTALL"
-fi
 
 #--------------------------------------------------------------------
-# Process --with-system-root (TODO), --with-local-root and --with-network-root
+# Process --with-system-root (TODO)
+#--------------------------------------------------------------------
+GNUSTEP_SYSTEM_ROOT=$prefix
+AC_SUBST(GNUSTEP_SYSTEM_ROOT)
+AC_MSG_RESULT($GNUSTEP_SYSTEM_ROOT)
+
+#--------------------------------------------------------------------
+# Process --with-local-root and --with-network-root
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_LOCAL_ROOT to use)
 AC_ARG_WITH(local-root,
@@ -264,6 +271,28 @@ GNUSTEP_USER_ROOT="~/GNUstep"
 )
 AC_MSG_RESULT($GNUSTEP_USER_ROOT)
 AC_SUBST(GNUSTEP_USER_ROOT)
+
+#--------------------------------------------------------------------
+# Setting up GNUSTEP_MAKEFILES
+#--------------------------------------------------------------------
+AC_MSG_CHECKING(for GNUSTEP_MAKEFILES to use)
+GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+AC_SUBST(GNUSTEP_MAKEFILES)
+AC_MSG_RESULT($GNUSTEP_MAKEFILES)
+
+#--------------------------------------------------------------------
+# Setting up the install-sh script
+#--------------------------------------------------------------------
+
+# HOST_INSTALL is the name of the install program in config.make so set it up
+# to point to the install-sh script in the GNUstep tree if no system install is
+# found.
+AC_SUBST(HOST_INSTALL)
+if test "$INSTALL" = "$ac_install_sh"; then
+  HOST_INSTALL="$GNUSTEP_MAKEFILES/$INSTALL"
+else
+  HOST_INSTALL="$INSTALL"
+fi
 
 #--------------------------------------------------------------------
 # Is the system flattened?
@@ -348,14 +377,14 @@ CFLAGS=`echo $CFLAGS | sed -e 's/-g //'`
 
 # Set location of GNUstep dirs for later use
 if test "$GNUSTEP_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$prefix/Library/Libraries"
-  GNUSTEP_HDIR="$prefix/Library/Headers"
+  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_ROOT/Library/Libraries"
+  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_ROOT/Library/Headers"
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir="$clean_target_cpu/$clean_target_os"
-  GNUSTEP_LDIR="$prefix/Library/Libraries/$obj_dir"
-  GNUSTEP_HDIR="$prefix/Library/Headers/${ac_cv_library_combo}"
+  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_ROOT/Library/Libraries/$obj_dir"
+  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_ROOT/Library/Headers/${ac_cv_library_combo}"
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
@@ -382,9 +411,9 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 # The following are needed to compile the test programs
 if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
   if test "$GNUSTEP_FLATTENED" = yes; then
-    OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$prefix/Library/Headers"
+    OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$GNUSTEP_SYSTEM_ROOT/Library/Headers"
   else
-    OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$prefix/Library/Headers/${ac_cv_library_combo}"
+    OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$GNUSTEP_SYSTEM_ROOT/Library/Headers/${ac_cv_library_combo}"
   fi
   OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
 fi

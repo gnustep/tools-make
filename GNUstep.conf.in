@@ -10,7 +10,7 @@
 ## include this file in shell scripts and makefiles, and sh syntax
 ## requires no spaces around the '=').
 
-GNUSTEP_SYSTEM_ROOT=@prefix@
+GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
 GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
 

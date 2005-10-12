@@ -1,5 +1,17 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 	
+	* configure.ac: Define GNUSTEP_SYSTEM_ROOT from prefix.  Export
+	and reference it instead of exporting and referencing 'prefix' to
+	clarify what is happening.  Reordered some configure stages to
+	prepare it for further changes.
+	* configure: Regenerated.
+	* GNUmakefile.in: Use GNUSTEP_SYSTEM_ROOT instead of prefix.
+	* GNUstep.csh.in: Same change.
+	* GNUstep.sh.in: Same change.
+	* GNUstep.conf.in: Same change.
+
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+	
 	* configure.ac (MAKEFILE_SUFFIX): Variable removed.
 	(GNUSTEP_MAKEFILES): New variable (that is more standard and more
 	suited to make it a configure option in the future).  Replace it
