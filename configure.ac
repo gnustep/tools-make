@@ -194,19 +194,17 @@ fi
 AC_SUBST(GNUSTEP_ROOT)
 AC_MSG_RESULT($prefix)
 
-# Makefiles directory location is in a bit of flux now. To keep the
-# Makefiles dir in the previous location, reset this variable to
-# 'Makefiles' and regenerate configure. Note this doesn't change all
-# occurances.
-MAKEFILES_SUFFIX=Library/Makefiles
-AC_SUBST(MAKEFILES_SUFFIX)
+AC_MSG_CHECKING(for makefile location to use)
+GNUSTEP_MAKEFILES=$prefix/Library/Makefiles
+AC_SUBST(GNUSTEP_MAKEFILES)
+AC_MSG_RESULT($GNUSTEP_MAKEFILES)
 
 # HOST_INSTALL is the name of the install program in config.make so set it up
 # to point to the install-sh script in the GNUstep tree if no system install is
 # found.
 AC_SUBST(HOST_INSTALL)
 if test "$INSTALL" = "$ac_install_sh"; then
-  HOST_INSTALL="$prefix/$MAKEFILES_SUFFIX/$INSTALL"
+  HOST_INSTALL="$GNUSTEP_MAKEFILES/$INSTALL"
 else
   HOST_INSTALL="$INSTALL"
 fi

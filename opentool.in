@@ -46,10 +46,13 @@ while true
 do 
   case "$1" in
     --library-combo=*)
-        tmp_root="$GNUSTEP_SYSTEM_ROOT"
-        . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep-reset.sh"
+        tmp_makefiles="$GNUSTEP_MAKEFILES"
+        if [ -z "$tmp_makefiles" ]; then
+          tmp_makefiles="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
+        fi
+        . "$tmp_makefiles/GNUstep-reset.sh"
         LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
-        . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep.sh"
+        . "$tmp_makefiles/GNUstep.sh"
         echo "Switched to library combo $LIBRARY_COMBO"
         shift
         ;;

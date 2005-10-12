@@ -1,4 +1,21 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+	
+	* configure.ac (MAKEFILE_SUFFIX): Variable removed.
+	(GNUSTEP_MAKEFILES): New variable (that is more standard and more
+	suited to make it a configure option in the future).  Replace it
+	in generated files.
+	* configure: Regenerated.
+	* debugapp.in: Use everywhere GNUSTEP_MAKEFILES, not
+	MAKEFILE_SUFFIX.
+	* opentool.in: Same change.
+	* GNUmakefile.in: Same change.
+	* executable.template.in: Same change.
+	* GNUstep.sh.in: Same change.
+	* GNUstep.csh.in: Same change.
+	* gnustep-make.spec.in: Removed MAKEFILE_SUFFIX, use Library/Makefiles
+	directly.
+	
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Removed obsolete --without-system-root option.
 	* configure: Regenerated.

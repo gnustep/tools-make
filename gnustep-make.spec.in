@@ -42,10 +42,10 @@ mkdir -p ${RPM_BUILD_ROOT}/etc/profile.d
 # Create profile files
 
 echo "#!/bin/sh" > mygnustep.sh
-echo ". %{gs_prefix}/System/@MAKEFILES_SUFFIX@/GNUstep.sh" >> mygnustep.sh
+echo ". %{gs_prefix}/System/Library/Makefiles/GNUstep.sh" >> mygnustep.sh
 
 #echo "#!/bin/csh" > mygnustep.csh
-#echo "source %{gs_prefix}/System/@MAKEFILES_SUFFIX@/GNUstep.csh" >> mygnustep.csh
+#echo "source %{gs_prefix}/System/Library/Makefiles/GNUstep.csh" >> mygnustep.csh
 
 chmod 755 mygnustep.*
 mv mygnustep.sh $RPM_BUILD_ROOT/etc/profile.d/GNUstep.sh
@@ -76,7 +76,7 @@ rm -rf $RPM_BUILD_ROOT
 #if [ $1 = 1]; then
 #%ifos Linux
 # if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
-#    . %{gs_root}/@MAKEFILES_SUFFIX@/GNUstep.sh 
+#    . %{gs_root}/Library/Makefiles/GNUstep.sh 
 # fi
 # grep -q '%{gs_prefix}/System/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}' /etc/ld.so.conf || echo "%{gs_prefix}/System/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}" >> /etc/ld.so.conf
 #%endif
@@ -86,7 +86,7 @@ rm -rf $RPM_BUILD_ROOT
 #if [ $1 = 0 ]; then
 #%ifos Linux
 # if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
-#    . %{gs_root}/@MAKEFILES_SUFFIX@/GNUstep.sh 
+#    . %{gs_root}/Library/Makefiles/GNUstep.sh 
 # fi
 # mv -f /etc/ld.so.conf /etc/ld.so.conf.orig
 # grep -v "^%{gs_prefix}/System/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}" /etc/ld.so.conf.orig > /etc/ld.so.conf

@@ -141,28 +141,32 @@ if [ -z "$full_appname" ]; then
   exit 1
 fi
 
+if [ -z "$GNUSTEP_MAKEFILES" ]; then
+  GNUSTEP_MAKEFILES = $GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+fi
+
 if [ -z "$GNUSTEP_FLATTENED" ]; then
 	#
 	# Determine the host information
 	#
 	if [ -z "$GNUSTEP_HOST" ]; then
-	    GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/config.guess`
-	    GNUSTEP_HOST=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/config.sub $GNUSTEP_HOST`
+	    GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.guess`
+	    GNUSTEP_HOST=`$GNUSTEP_MAKEFILES/config.sub $GNUSTEP_HOST`
 	    export GNUSTEP_HOST
 	fi
 	if [ -z "$GNUSTEP_HOST_CPU" ]; then
-	    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/cpu.sh $GNUSTEP_HOST`
-	    GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/clean_cpu.sh $GNUSTEP_HOST_CPU`
+	    GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/cpu.sh $GNUSTEP_HOST`
+	    GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/clean_cpu.sh $GNUSTEP_HOST_CPU`
 	    export GNUSTEP_HOST_CPU
 	fi
 	if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
-	    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/vendor.sh $GNUSTEP_HOST`
-	    GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
+	    GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/vendor.sh $GNUSTEP_HOST`
+	    GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
 	    export GNUSTEP_HOST_VENDOR
 	fi
 	if [ -z "$GNUSTEP_HOST_OS" ]; then
-	    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/os.sh $GNUSTEP_HOST`
-	    GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/clean_os.sh $GNUSTEP_HOST_OS`
+	    GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/os.sh $GNUSTEP_HOST`
+	    GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/clean_os.sh $GNUSTEP_HOST_OS`
 	   export GNUSTEP_HOST_OS
 	fi
 	
@@ -180,7 +184,7 @@ fi
 appname="`echo \"$app\" | sed 's/\.[a-z]*$//'`"
 appname="`basename \"$appname\"`"
 appname="$appname$EXEEXT"
-. "$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/ld_lib_path.sh"
+. "$GNUSTEP_MAKEFILES/ld_lib_path.sh"
 
 
 if [ "$LIBRARY_COMBO" = "apple-apple-apple" ]; then

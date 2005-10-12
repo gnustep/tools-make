@@ -59,10 +59,13 @@ do
 	exit 0
 	;;
     --library-combo=*)
-        tmp_root="$GNUSTEP_SYSTEM_ROOT"
-        . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep-reset.sh"
-	LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
-        . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep.sh"
+        tmp_makefiles="$GNUSTEP_MAKEFILES"
+        if [ -z "$tmp_makefiles" ]; then
+          tmp_makefiles="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
+        fi
+        . "$tmp_makefiles/GNUstep-reset.sh"
+        LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
+        . "$tmp_makefiles/GNUstep.sh"
 	shift
 	;;
     --available-platforms)
@@ -162,24 +165,28 @@ fi
 #
 # Determine the host information
 #
+if [ -z "$GNUSTEP_MAKEFILES" ]; then
+  GNUSTEP_MAKEFILES = $GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+fi
+
 if [ -z "$GNUSTEP_HOST" ]; then
-  GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/config.guess)`
-  GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/config.sub $GNUSTEP_HOST)`
+  GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_MAKEFILES/config.guess)`
+  GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_MAKEFILES/config.sub $GNUSTEP_HOST)`
   export GNUSTEP_HOST
 fi
 if [ -z "$GNUSTEP_HOST_CPU" ]; then
-  GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/cpu.sh $GNUSTEP_HOST`
-  GNUSTEP_HOST_CPU=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/clean_cpu.sh $GNUSTEP_HOST_CPU`
+  GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/cpu.sh $GNUSTEP_HOST`
+  GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/clean_cpu.sh $GNUSTEP_HOST_CPU`
   export GNUSTEP_HOST_CPU
 fi
 if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
-  GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/vendor.sh $GNUSTEP_HOST`
-  GNUSTEP_HOST_VENDOR=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
+  GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/vendor.sh $GNUSTEP_HOST`
+  GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
   export GNUSTEP_HOST_VENDOR
 fi
 if [ -z "$GNUSTEP_HOST_OS" ]; then
-  GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/os.sh $GNUSTEP_HOST`
-  GNUSTEP_HOST_OS=`$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/clean_os.sh $GNUSTEP_HOST_OS`
+  GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/os.sh $GNUSTEP_HOST`
+  GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/clean_os.sh $GNUSTEP_HOST_OS`
   export GNUSTEP_HOST_OS
 fi
 
@@ -204,10 +211,13 @@ else
       if [ "$lib_combo" != '*' ]; then
         if [ -x "$lib_combo/$appname" ]; then
           # Switch LIBRARY_COMBO on the fly
-          tmp_root="$GNUSTEP_SYSTEM_ROOT"
-          . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep-reset.sh"
+          tmp_makefiles="$GNUSTEP_MAKEFILES"
+          if [ -z "$tmp_makefiles" ]; then
+            tmp_makefiles="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
+          fi
+          . "$tmp_makefiles/GNUstep-reset.sh"
           LIBRARY_COMBO="$lib_combo"
-          . "$tmp_root/@MAKEFILES_SUFFIX@/GNUstep.sh"
+          . "$tmp_makefiles/GNUstep.sh"
           # Use the found executable
           relative_path="$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname"
           found=yes
@@ -243,7 +253,7 @@ else
 fi
 
 # Load up LD_LIBRARY_PATH
-. "$GNUSTEP_SYSTEM_ROOT/@MAKEFILES_SUFFIX@/ld_lib_path.sh"
+. "$GNUSTEP_MAKEFILES/ld_lib_path.sh"
 
 exec "$full_appname/$relative_path" "$@"
 
