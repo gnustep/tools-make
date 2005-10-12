@@ -1,4 +1,8 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* .cvsignore: Ignore GNUstep.conf
+
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 	
 	* configure.ac: Use the GNUSTEP_CONFIG_FILE environment variable
 	to choose the location of the config file, if no configure option

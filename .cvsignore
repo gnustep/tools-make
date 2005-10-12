@@ -15,3 +15,4 @@ opentool
 gnustep-make.spec
 fixpath.sh
 GNUsteprc
+GNUstep.conf
