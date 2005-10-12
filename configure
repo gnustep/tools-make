@@ -870,7 +870,6 @@ Optional Packages:
 --with-library-combo		Define the default library combination
 
 --with-tar                      Set the name of the tar program to use
---without-system-root		Don't use separate system root directory
 --with-local-root
     Set the GNUSTEP_LOCAL_ROOT directory.  Use this option if you want
 to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
@@ -3219,25 +3218,14 @@ echo $ECHO_N "checking for GNUSTEP_SYSTEM_ROOT to use... $ECHO_C" >&6
 if test "x$prefix" = "xNONE"; then
   prefix="$ac_default_prefix" ;
 fi
-
-# Check whether --with-system-root or --without-system-root was given.
-if test "${with_system_root+set}" = set; then
-  withval="$with_system_root"
-  ac_cv_system_root="$withval"
-else
-  ac_cv_system_root=yes
-fi;
-
 GNUSTEP_ROOT="$prefix"
-if test $ac_cv_system_root = yes; then
-  if test "x`basename $prefix`" = xSystem; then
-    GNUSTEP_ROOT=`dirname $prefix`
+if test "x`basename $prefix`" = xSystem; then
+  GNUSTEP_ROOT=`dirname $prefix`
+else
+  if test "x$prefix" = "x/"; then
+    prefix=/System
   else
-    if test "x$prefix" = "x/"; then
-      prefix=/System
-    else
-      prefix="$prefix/System"
-    fi
+    prefix="$prefix/System"
   fi
 fi
 
