@@ -1,5 +1,16 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* configure.ac: Generate GNUstep.conf from GNUstep.conf.in
+	so that GNUstep.conf gets properly setup with the paths that
+	are configured into gnustep-make
+	* GNUstep.conf.in: New file.
+	* GNUstep.conf: Removed.
+	* configure: Regenerated.
+	* GNUmakefile.in (install): Install the GNUstep.conf file
+	in the chosen location for the GNUstep config file.
+	
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	* configure.ac: Added --with-config-file=xxx (code partially taken
 	from gnustep-base) option.
 	* config.make.ac: Added GNUSTEP_CONFIG_FILE variable holding the

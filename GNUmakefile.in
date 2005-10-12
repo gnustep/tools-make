@@ -33,6 +33,8 @@ include config.make
 # install special_prefix=/var/tmp/gnustep-make'
 special_prefix = 
 
+GNUSTEP_CONFIG_FILE = $(special_prefix)@gnustep_config_file@
+GNUSTEP_CONFIG_FILE_DIR = $(dir $(GNUSTEP_CONFIG_FILE))
 GNUSTEP_SYSTEM_ROOT = $(special_prefix)@prefix@
 GNUSTEP_LOCAL_ROOT  = $(special_prefix)@GNUSTEP_LOCAL_ROOT@
 GNUSTEP_NETWORK_ROOT = $(special_prefix)@GNUSTEP_NETWORK_ROOT@
@@ -143,6 +145,9 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 		$(makedir)/Instance \
 		$(makedir)/Instance/Shared \
 		$(makedir)/Instance/Documentation)
+	$(EC)(echo "Installing GNUstep configuration file in $(GNUSTEP_CONFIG_FILE)"; \
+	 $(srcdir)/mkinstalldirs $(GNUSTEP_CONFIG_FILE_DIR); \
+	 $(INSTALL_DATA) $(srcdir)/GNUstep.conf $(GNUSTEP_CONFIG_FILE))
 	-$(EC) rm -f $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 	 $(EC)(echo "Installing gnustep-make support software"; \
 	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \

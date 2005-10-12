@@ -1,0 +1,21 @@
+##
+## This is the GNUstep configuration file.
+## 
+
+## Any line starting with a '#' is a comment.
+## Empty lines are ignored.
+## Every other line in this file must be of the form
+##   XXX=YYY
+## where there should be no spaces around the '=' (this is because we
+## include this file in shell scripts and makefiles, and sh syntax
+## requires no spaces around the '=').
+
+GNUSTEP_SYSTEM_ROOT=@prefix@
+GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
+GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
+
+# FIXME these needs doing still, special work to do on rationalizing
+# and standardizing user dirs and defaults
+#USER_GNUSTEP_DIR = GNUstep
+#USER_GNUSTEP_DEFAULTS = Defaults
+#USER_GNUSTEP_RC = .GNUsteprc
