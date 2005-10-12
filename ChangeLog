@@ -1,6 +1,11 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Added --with-system-root=xxx option.
+	* configure: Regenerated.
+
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 	
-	Removed obsolete variable GNUSTEP_ROOT.
+	Removed obsolete public variable GNUSTEP_ROOT.
 	* configure.ac: Do not replace GNUSTEP_ROOT in generate files.
 	* configure: Regenerated.
 	* GNUstep.csh.in: Do not define GNUSTEP_ROOT.

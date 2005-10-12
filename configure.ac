@@ -184,7 +184,7 @@ fi
 # defined, but if not then we have a global default.
 # Also test for the C: directory, which means we're on Windows
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for GNUSTEP_SYSTEM_ROOT to use)
+AC_MSG_CHECKING(for root of GNUstep installation to use (if any))
 AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
   if test -d C: ; then
     echo C:/GNUstep;
@@ -198,8 +198,9 @@ if test "x$prefix" = "xNONE"; then
   prefix="$ac_default_prefix" ;
 fi
 #
-# GNUSTEP_ROOT is only used to build GNUSTEP_LOCAL_ROOT if no
-# --with-local-root= option is used.
+# GNUSTEP_ROOT is only used to build GNUSTEP_SYSTEM_ROOT /
+# GNUSTEP_LOCAL_ROOT if no --with-system-root= / --with-local-root=
+# option is used.
 #
 GNUSTEP_ROOT="$prefix"
 if test "x`basename $prefix`" = xSystem; then
@@ -211,16 +212,26 @@ else
     prefix="$prefix/System"
   fi
 fi
+AC_MSG_RESULT($GNUSTEP_ROOT)
 
 #--------------------------------------------------------------------
-# Process --with-system-root (TODO)
+# Process --with-system-root
 #--------------------------------------------------------------------
-GNUSTEP_SYSTEM_ROOT=$prefix
-AC_SUBST(GNUSTEP_SYSTEM_ROOT)
+AC_MSG_CHECKING(for GNUSTEP_SYSTEM_ROOT to use)
+AC_ARG_WITH(system-root,
+[--with-system-root
+    Set the GNUSTEP_SYSTEM_ROOT directory.  Use this option if you want 
+to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.  Example:
+--with-system-root=/usr/GNUstep/System
+],
+GNUSTEP_SYSTEM_ROOT="$withval",
+GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
+)
 AC_MSG_RESULT($GNUSTEP_SYSTEM_ROOT)
+AC_SUBST(GNUSTEP_SYSTEM_ROOT)
 
 #--------------------------------------------------------------------
-# Process --with-local-root and --with-network-root
+# Process --with-local-root
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_LOCAL_ROOT to use)
 AC_ARG_WITH(local-root,
@@ -233,7 +244,11 @@ GNUSTEP_LOCAL_ROOT="$withval",
 GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
 )
 AC_MSG_RESULT($GNUSTEP_LOCAL_ROOT)
+AC_SUBST(GNUSTEP_LOCAL_ROOT)
 
+#--------------------------------------------------------------------
+# Process --with-network-root
+#--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_NETWORK_ROOT to use)
 AC_ARG_WITH(network-root,
 [--with-network-root
@@ -252,8 +267,6 @@ GNUSTEP_NETWORK_ROOT="$withval",
 GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
 )
 AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
-
-AC_SUBST(GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
 #--------------------------------------------------------------------
