@@ -621,6 +621,22 @@ else
 fi
 AC_SUBST(GNUSTEP_STRIP_MAKEFILES)
 
+#---------------------------------------------------------------------
+# Location of the GNUstep.conf config file
+#---------------------------------------------------------------------
+AC_MSG_CHECKING(for the location of GNUstep configuration file)
+AC_ARG_WITH(config-file,
+  [--with-config-file=PATH  path to GNUstep configuration file],
+  gnustep_config_file="$withval", gnustep_config_file="no")
+if test $gnustep_config_file = no; then
+  case "$target_os" in
+    freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
+    netbsd* )  		  gnustep_config_file=/usr/pkg/etc ;;
+    *)	    		  gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
+  esac
+fi
+AC_MSG_RESULT($gnustep_config_file);
+AC_SUBST(gnustep_config_file)
 
 #--------------------------------------------------------------------
 # Disable updating the obsolete directory structure

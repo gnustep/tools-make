@@ -1,3 +1,11 @@
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Added --with-config-file=xxx (code partially taken
+	from gnustep-base) option.
+	* config.make.ac: Added GNUSTEP_CONFIG_FILE variable holding the
+	configured location of the config file for this installation.
+	* configure: Regenerated.
+	
 2005-10-06 Tom MacSween <macsweent@sympatico.ca>
 
 	* Fixes for cygwin.

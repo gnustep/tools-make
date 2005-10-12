@@ -157,3 +157,13 @@ AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
 # @try/@catch/@finally/@throw.
 #
 USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
+
+#
+# Location of GNUstep's config file for this installation
+#
+# Warning - the base library's configure.in will extract the GNUstep
+# config file locationfrom the following line using grep/sed - so if
+# you change the following lines you *need* to update the base library
+# configure.in too.
+#
+GNUSTEP_CONFIG_FILE = @gnustep_config_file@

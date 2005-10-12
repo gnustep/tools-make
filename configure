@@ -318,7 +318,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_ROOT root_prefix MAKEFILES_SUFFIX HOST_INSTALL GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES gnustep_config_file GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -889,6 +889,7 @@ to have the GNUSTEP_NETWORK_ROOT directory.  Example:
     Example: --with-user-root='~/gnustep'
 
 --with-thread-lib		Specify alternate thread library
+--with-config-file=PATH  path to GNUstep configuration file
 
 Some influential environment variables:
   CC          C compiler command
@@ -4894,6 +4895,29 @@ echo "${ECHO_T}no" >&6;
 fi
 
 
+#---------------------------------------------------------------------
+# Location of the GNUstep.conf config file
+#---------------------------------------------------------------------
+echo "$as_me:$LINENO: checking for the location of GNUstep configuration file" >&5
+echo $ECHO_N "checking for the location of GNUstep configuration file... $ECHO_C" >&6
+
+# Check whether --with-config-file or --without-config-file was given.
+if test "${with_config_file+set}" = set; then
+  withval="$with_config_file"
+  gnustep_config_file="$withval"
+else
+  gnustep_config_file="no"
+fi;
+if test $gnustep_config_file = no; then
+  case "$target_os" in
+    freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
+    netbsd* )  		  gnustep_config_file=/usr/pkg/etc ;;
+    *)	    		  gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
+  esac
+fi
+echo "$as_me:$LINENO: result: $gnustep_config_file" >&5
+echo "${ECHO_T}$gnustep_config_file" >&6;
+
 
 #--------------------------------------------------------------------
 # Disable updating the obsolete directory structure
@@ -5639,6 +5663,7 @@ s,@INCLUDES@,$INCLUDES,;t t
 s,@LIB_DIR@,$LIB_DIR,;t t
 s,@OBJCFLAGS@,$OBJCFLAGS,;t t
 s,@GNUSTEP_STRIP_MAKEFILES@,$GNUSTEP_STRIP_MAKEFILES,;t t
+s,@gnustep_config_file@,$gnustep_config_file,;t t
 s,@GNUSTEP_MOVE_OBSOLETE@,$GNUSTEP_MOVE_OBSOLETE,;t t
 s,@GNUSTEP_MAKE_VERSION@,$GNUSTEP_MAKE_VERSION,;t t
 s,@GNUSTEP_MAKE_MAJOR_VERSION@,$GNUSTEP_MAKE_MAJOR_VERSION,;t t
