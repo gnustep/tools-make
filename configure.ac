@@ -212,8 +212,7 @@ else
 fi
 
 #--------------------------------------------------------------------
-# Process --with-defaults-root, --with-user-root,
-# --with-local-root and --with-network-root
+# Process --with-system-root (TODO), --with-local-root and --with-network-root
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_LOCAL_ROOT to use)
 AC_ARG_WITH(local-root,
@@ -249,6 +248,9 @@ AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
+#--------------------------------------------------------------------
+# Process --with-defaults-root and --with-user-root
+#--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_USER_ROOT to use)
 AC_ARG_WITH(user-root,
 [--with-user-root
