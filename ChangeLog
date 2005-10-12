@@ -1,5 +1,11 @@
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* configure.ac (root_prefix): Variable removed.  Wasn't used or
+	replaced anywhere.
+	* configure: Regenerated.
+	
+2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	* configure.ac: Use /usr/pkg/etc/GNUstep.conf instead of
 	/usr/pkg/etc as GNUstep config file on NetBSD (Suggestion by David
 	Ayers).

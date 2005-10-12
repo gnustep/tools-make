@@ -187,7 +187,6 @@ AC_ARG_WITH(system-root,
   ac_cv_system_root=yes)
 
 GNUSTEP_ROOT="$prefix"
-root_prefix='${prefix}'
 if test $ac_cv_system_root = yes; then
   if test "x`basename $prefix`" = xSystem; then
     GNUSTEP_ROOT=`dirname $prefix`
@@ -198,10 +197,8 @@ if test $ac_cv_system_root = yes; then
       prefix="$prefix/System"
     fi
   fi
-  root_prefix='${prefix}/..'
 fi
 AC_SUBST(GNUSTEP_ROOT)
-AC_SUBST(root_prefix)
 AC_MSG_RESULT($prefix)
 
 # Makefiles directory location is in a bit of flux now. To keep the
