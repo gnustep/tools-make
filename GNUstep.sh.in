@@ -71,6 +71,11 @@ fi
 #
 # Set the GNUstep system root and local root
 #
+
+#
+# FIXME - Paths should not be hardcoded in here.  We need to include GNUstep.conf
+# instead where the paths are configured!
+#
 GNUSTEP_ROOT=@GNUSTEP_ROOT@
 GNUSTEP_SYSTEM_ROOT=@prefix@
 GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@

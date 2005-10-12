@@ -27,6 +27,7 @@
 #
 # Set the GNUstep system root and local root
 #
+## FIXME - those should be taken from GNUstep.conf
 setenv GNUSTEP_ROOT "@GNUSTEP_ROOT@"
 setenv GNUSTEP_SYSTEM_ROOT "@prefix@"
 setenv GNUSTEP_FLATTENED "@GNUSTEP_FLATTENED@"
