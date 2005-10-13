@@ -165,23 +165,19 @@ fi
 #---------------------------------------------------------------------
 # Location of the GNUstep.conf config file (--with-config-file)
 #---------------------------------------------------------------------
-AC_MSG_CHECKING([for the location of GNUstep configuration file])
+AC_MSG_CHECKING([for GNUstep configuration file to use])
 AC_ARG_WITH(config-file,
   [--with-config-file=PATH  path to GNUstep configuration file],
-  gnustep_config_file="$withval", gnustep_config_file="no")
-if test "$gnustep_config_file" = no; then
-  if test ! "$GNUSTEP_CONFIG_FILE" = ""; then
-    gnustep_config_file="$GNUSTEP_CONFIG_FILE";
-  else
+  GNUSTEP_CONFIG_FILE="$withval", 
+  [if test "$GNUSTEP_CONFIG_FILE" = ""; then
     case "$target_os" in
-      freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
-      netbsd* )             gnustep_config_file=/usr/pkg/etc/GNUstep.conf ;;
-      *)	            gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
+      freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
+      netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
+      *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
     esac
-  fi
-fi
-AC_MSG_RESULT($gnustep_config_file);
-AC_SUBST(gnustep_config_file)
+  fi])
+AC_MSG_RESULT($GNUSTEP_CONFIG_FILE)
+AC_SUBST(GNUSTEP_CONFIG_FILE)
 
 #---------------------------------------------------------------------
 # Now read/import the existing configuration file, if any
@@ -194,7 +190,7 @@ AC_SUBST(gnustep_config_file)
 
 # It can be annoying in certain cases though; this option lets you
 # turn it off
-AC_MSG_CHECKING([if we should import an existing GNUstep configuration file])
+AC_MSG_CHECKING([if we should import an existing configuration file])
 AC_ARG_ENABLE(importing-config-file, 
 [--disable-importing-config-file		Disable importing the existing GNUstep configuration file], 
   ac_cv_importing_config_file=$enableval,
@@ -206,12 +202,12 @@ if test "$ac_cv_importing_config_file" = "no"; then
 else
 
  # Check that the file exists
- if test ! -f "$gnustep_config_file"; then
-  AC_MSG_RESULT([no: file "$gnustep_config_file" does not exist])
+ if test ! -f "$GNUSTEP_CONFIG_FILE"; then
+  AC_MSG_RESULT([no: file "$GNUSTEP_CONFIG_FILE" does not exist])
  else
-  AC_MSG_RESULT([yes: trying to import "$gnustep_config_file"])
+  AC_MSG_RESULT([yes: trying to import "$GNUSTEP_CONFIG_FILE"])
   AC_MSG_NOTICE([If this fails, please run configure again with the --disable-importing-config-file option])
-  . "$gnustep_config_file"
+  . "$GNUSTEP_CONFIG_FILE"
  fi
 fi
 
@@ -336,25 +332,69 @@ AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
 #--------------------------------------------------------------------
-# Process --with-defaults-root and --with-user-root
+# Process --with-user-config-file
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for GNUSTEP_USER_ROOT to use)
-AC_ARG_WITH(user-root,
-[--with-user-root
-    Set the GNUSTEP_USER_ROOT directory for all users.  '~' is allowed
-    at the beginning to mean the user's home directory.  Use this
-    option if you want to have the GNUSTEP_USER_ROOT directory in a non
-    default place for all users.
-    Example: --with-user-root='~/gnustep'
+AC_MSG_CHECKING(for user config file to use)
+AC_ARG_WITH(user-config-file,
+[--with-config-file
+    Set the name of the user config file to use.  This can be 
+    relative to the user's home directory if it is a relative path,
+    or an absolute directory (the same for all users) if it is an
+    absolute path.  Use '' if you want to disable user config files.
+    The default is .GNUstep.conf if not specified.
+    Example: --with-user-config-file=GNUstep/GNUstep.conf
 ],
-GNUSTEP_USER_ROOT="$withval",
-# The default is to have user roots in ~/GNUstep
-if test "$GNUSTEP_USER_ROOT" = ""; then 
-  GNUSTEP_USER_ROOT="~/GNUstep"
+GNUSTEP_USER_CONFIG_FILE="$withval",
+if test "$GNUSTEP_USER_CONFIG_FILE" = ""; then 
+  GNUSTEP_USER_CONFIG_FILE=".GNUstep.conf"
 fi
 )
-AC_MSG_RESULT($GNUSTEP_USER_ROOT)
-AC_SUBST(GNUSTEP_USER_ROOT)
+AC_MSG_RESULT($GNUSTEP_USER_CONFIG_FILE)
+AC_SUBST(GNUSTEP_USER_CONFIG_FILE)
+
+#--------------------------------------------------------------------
+# Process --with-user-dir
+#--------------------------------------------------------------------
+AC_MSG_CHECKING(for user dir to use)
+AC_ARG_WITH(user-dir,
+[--with-user-dir
+    Set the GNUSTEP_USER_DIR directory for all users.  This can be
+    relative to the user's home directory if it is a relative path,
+    or an absolute directory (the same for all users) if it is an
+    absolute path.  Use this option if you want to have the 
+    GNUSTEP_USER_DIR directory in a non default place for all users.
+    The default is 'GNUstep'.
+    Example: --with-user-dir='gnustep'
+],
+GNUSTEP_USER_DIR="$withval",
+if test "$GNUSTEP_USER_DIR" = ""; then 
+  GNUSTEP_USER_DIR="GNUstep"
+fi
+)
+AC_MSG_RESULT($GNUSTEP_USER_DIR)
+AC_SUBST(GNUSTEP_USER_DIR)
+
+#--------------------------------------------------------------------
+# Process --with-user-defaults-dir
+#--------------------------------------------------------------------
+AC_MSG_CHECKING(for user defaults dir to use)
+AC_ARG_WITH(user-defaults-dir,
+[--with-user-defaults-dir
+    Set the GNUstep user defaults directory for all users.  This can be
+    relative to the user's home directory if it is a relative path,
+    or an absolute directory (the same for all users) if it is an
+    absolute path.  Use this option if you want to have the 
+    GNUSTEP_USER_DEFAULTS_DIR directory in a non default place for
+    all users.  The default is 'GNUstep/Defaults'
+    Example: --with-user-root='GNUstep/Library/Defaults'
+],
+GNUSTEP_USER_DEFAULTS_DIR="$withval",
+if test "$GNUSTEP_USER_DEFAULTS_DIR" = ""; then 
+  GNUSTEP_USER_DEFAULTS_DIR="GNUstep/Defaults"
+fi
+)
+AC_MSG_RESULT($GNUSTEP_USER_DEFAULTS_DIR)
+AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
 
 #--------------------------------------------------------------------
 # Setting up GNUSTEP_MAKEFILES
@@ -776,7 +816,7 @@ AC_SUBST(target)
 #--------------------------------------------------------------------
 AC_CONFIG_FILES([config.make openapp debugapp opentool 
 executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh
-gnustep-make.spec GNUsteprc])
+gnustep-make.spec])
 AC_CONFIG_COMMANDS([default],
 	[[chmod a+x openapp debugapp opentool fixpath.sh executable.template]],
 	[[]])

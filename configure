@@ -314,7 +314,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN gnustep_config_file GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_ROOT GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_CONFIG_FILE GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DIR GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE EGREP objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MOVE_OBSOLETE GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -883,12 +883,31 @@ to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
 to have the GNUSTEP_NETWORK_ROOT directory.  Example:
 --with-network-root=/usr/local/GNUstep/Network
 
---with-user-root
-    Set the GNUSTEP_USER_ROOT directory for all users.  '~' is allowed
-    at the beginning to mean the user's home directory.  Use this
-    option if you want to have the GNUSTEP_USER_ROOT directory in a non
-    default place for all users.
-    Example: --with-user-root='~/gnustep'
+--with-config-file
+    Set the name of the user config file to use.  This can be
+    relative to the user's home directory if it is a relative path,
+    or an absolute directory (the same for all users) if it is an
+    absolute path.  Use '' if you want to disable user config files.
+    The default is .GNUstep.conf if not specified.
+    Example: --with-user-config-file=GNUstep/GNUstep.conf
+
+--with-user-dir
+    Set the GNUSTEP_USER_DIR directory for all users.  This can be
+    relative to the user's home directory if it is a relative path,
+    or an absolute directory (the same for all users) if it is an
+    absolute path.  Use this option if you want to have the
+    GNUSTEP_USER_DIR directory in a non default place for all users.
+    The default is 'GNUstep'.
+    Example: --with-user-dir='gnustep'
+
+--with-user-defaults-dir
+    Set the GNUstep user defaults directory for all users.  This can be
+    relative to the user's home directory if it is a relative path,
+    or an absolute directory (the same for all users) if it is an
+    absolute path.  Use this option if you want to have the
+    GNUSTEP_USER_DEFAULTS_DIR directory in a non default place for
+    all users.  The default is 'GNUstep/Defaults'
+    Example: --with-user-root='GNUstep/Library/Defaults'
 
 --with-thread-lib		Specify alternate thread library
 
@@ -3211,29 +3230,24 @@ fi
 #---------------------------------------------------------------------
 # Location of the GNUstep.conf config file (--with-config-file)
 #---------------------------------------------------------------------
-echo "$as_me:$LINENO: checking for the location of GNUstep configuration file" >&5
-echo $ECHO_N "checking for the location of GNUstep configuration file... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking for GNUstep configuration file to use" >&5
+echo $ECHO_N "checking for GNUstep configuration file to use... $ECHO_C" >&6
 
 # Check whether --with-config-file or --without-config-file was given.
 if test "${with_config_file+set}" = set; then
   withval="$with_config_file"
-  gnustep_config_file="$withval"
+  GNUSTEP_CONFIG_FILE="$withval"
 else
-  gnustep_config_file="no"
-fi;
-if test "$gnustep_config_file" = no; then
-  if test ! "$GNUSTEP_CONFIG_FILE" = ""; then
-    gnustep_config_file="$GNUSTEP_CONFIG_FILE";
-  else
+  if test "$GNUSTEP_CONFIG_FILE" = ""; then
     case "$target_os" in
-      freebsd* | openbsd* ) gnustep_config_file=/usr/etc/GNUstep.conf ;;
-      netbsd* )             gnustep_config_file=/usr/pkg/etc/GNUstep.conf ;;
-      *)	            gnustep_config_file=/etc/GNUstep/GNUstep.conf;;
+      freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
+      netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
+      *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
     esac
   fi
-fi
-echo "$as_me:$LINENO: result: $gnustep_config_file" >&5
-echo "${ECHO_T}$gnustep_config_file" >&6;
+fi;
+echo "$as_me:$LINENO: result: $GNUSTEP_CONFIG_FILE" >&5
+echo "${ECHO_T}$GNUSTEP_CONFIG_FILE" >&6
 
 
 #---------------------------------------------------------------------
@@ -3247,8 +3261,8 @@ echo "${ECHO_T}$gnustep_config_file" >&6;
 
 # It can be annoying in certain cases though; this option lets you
 # turn it off
-echo "$as_me:$LINENO: checking if we should import an existing GNUstep configuration file" >&5
-echo $ECHO_N "checking if we should import an existing GNUstep configuration file... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking if we should import an existing configuration file" >&5
+echo $ECHO_N "checking if we should import an existing configuration file... $ECHO_C" >&6
 # Check whether --enable-importing-config-file or --disable-importing-config-file was given.
 if test "${enable_importing_config_file+set}" = set; then
   enableval="$enable_importing_config_file"
@@ -3264,15 +3278,15 @@ echo "${ECHO_T}no: disabled from the command-line" >&6
 else
 
  # Check that the file exists
- if test ! -f "$gnustep_config_file"; then
-  echo "$as_me:$LINENO: result: no: file \"$gnustep_config_file\" does not exist" >&5
-echo "${ECHO_T}no: file \"$gnustep_config_file\" does not exist" >&6
+ if test ! -f "$GNUSTEP_CONFIG_FILE"; then
+  echo "$as_me:$LINENO: result: no: file \"$GNUSTEP_CONFIG_FILE\" does not exist" >&5
+echo "${ECHO_T}no: file \"$GNUSTEP_CONFIG_FILE\" does not exist" >&6
  else
-  echo "$as_me:$LINENO: result: yes: trying to import \"$gnustep_config_file\"" >&5
-echo "${ECHO_T}yes: trying to import \"$gnustep_config_file\"" >&6
+  echo "$as_me:$LINENO: result: yes: trying to import \"$GNUSTEP_CONFIG_FILE\"" >&5
+echo "${ECHO_T}yes: trying to import \"$GNUSTEP_CONFIG_FILE\"" >&6
   { echo "$as_me:$LINENO: If this fails, please run configure again with the --disable-importing-config-file option" >&5
 echo "$as_me: If this fails, please run configure again with the --disable-importing-config-file option" >&6;}
-  . "$gnustep_config_file"
+  . "$GNUSTEP_CONFIG_FILE"
  fi
 fi
 
@@ -3399,24 +3413,63 @@ echo "${ECHO_T}$GNUSTEP_NETWORK_ROOT" >&6
 
 
 #--------------------------------------------------------------------
-# Process --with-defaults-root and --with-user-root
+# Process --with-user-config-file
 #--------------------------------------------------------------------
-echo "$as_me:$LINENO: checking for GNUSTEP_USER_ROOT to use" >&5
-echo $ECHO_N "checking for GNUSTEP_USER_ROOT to use... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking for user config file to use" >&5
+echo $ECHO_N "checking for user config file to use... $ECHO_C" >&6
 
-# Check whether --with-user-root or --without-user-root was given.
-if test "${with_user_root+set}" = set; then
-  withval="$with_user_root"
-  GNUSTEP_USER_ROOT="$withval"
+# Check whether --with-user-config-file or --without-user-config-file was given.
+if test "${with_user_config_file+set}" = set; then
+  withval="$with_user_config_file"
+  GNUSTEP_USER_CONFIG_FILE="$withval"
 else
-  # The default is to have user roots in ~/GNUstep
-if test "$GNUSTEP_USER_ROOT" = ""; then
-  GNUSTEP_USER_ROOT="~/GNUstep"
+  if test "$GNUSTEP_USER_CONFIG_FILE" = ""; then
+  GNUSTEP_USER_CONFIG_FILE=".GNUstep.conf"
 fi
 
 fi;
-echo "$as_me:$LINENO: result: $GNUSTEP_USER_ROOT" >&5
-echo "${ECHO_T}$GNUSTEP_USER_ROOT" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_CONFIG_FILE" >&5
+echo "${ECHO_T}$GNUSTEP_USER_CONFIG_FILE" >&6
+
+
+#--------------------------------------------------------------------
+# Process --with-user-dir
+#--------------------------------------------------------------------
+echo "$as_me:$LINENO: checking for user dir to use" >&5
+echo $ECHO_N "checking for user dir to use... $ECHO_C" >&6
+
+# Check whether --with-user-dir or --without-user-dir was given.
+if test "${with_user_dir+set}" = set; then
+  withval="$with_user_dir"
+  GNUSTEP_USER_DIR="$withval"
+else
+  if test "$GNUSTEP_USER_DIR" = ""; then
+  GNUSTEP_USER_DIR="GNUstep"
+fi
+
+fi;
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR" >&6
+
+
+#--------------------------------------------------------------------
+# Process --with-user-defaults-dir
+#--------------------------------------------------------------------
+echo "$as_me:$LINENO: checking for user defaults dir to use" >&5
+echo $ECHO_N "checking for user defaults dir to use... $ECHO_C" >&6
+
+# Check whether --with-user-defaults-dir or --without-user-defaults-dir was given.
+if test "${with_user_defaults_dir+set}" = set; then
+  withval="$with_user_defaults_dir"
+  GNUSTEP_USER_DEFAULTS_DIR="$withval"
+else
+  if test "$GNUSTEP_USER_DEFAULTS_DIR" = ""; then
+  GNUSTEP_USER_DEFAULTS_DIR="GNUstep/Defaults"
+fi
+
+fi;
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DEFAULTS_DIR" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DEFAULTS_DIR" >&6
 
 
 #--------------------------------------------------------------------
@@ -5072,7 +5125,7 @@ clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-                                                                                                                        ac_config_files="$ac_config_files config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec GNUsteprc"
+                                                                                                              ac_config_files="$ac_config_files config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec"
 
           ac_config_commands="$ac_config_commands default"
 
@@ -5622,7 +5675,6 @@ do
   "GNUstep.csh" ) CONFIG_FILES="$CONFIG_FILES GNUstep.csh" ;;
   "fixpath.sh" ) CONFIG_FILES="$CONFIG_FILES fixpath.sh" ;;
   "gnustep-make.spec" ) CONFIG_FILES="$CONFIG_FILES gnustep-make.spec" ;;
-  "GNUsteprc" ) CONFIG_FILES="$CONFIG_FILES GNUsteprc" ;;
   "default" ) CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
   "config.h" ) CONFIG_HEADERS="$CONFIG_HEADERS config.h" ;;
   *) { { echo "$as_me:$LINENO: error: invalid argument: $ac_config_target" >&5
@@ -5744,11 +5796,13 @@ s,@INSTALL_DATA@,$INSTALL_DATA,;t t
 s,@LN_S@,$LN_S,;t t
 s,@TAR@,$TAR,;t t
 s,@CHOWN@,$CHOWN,;t t
-s,@gnustep_config_file@,$gnustep_config_file,;t t
+s,@GNUSTEP_CONFIG_FILE@,$GNUSTEP_CONFIG_FILE,;t t
 s,@GNUSTEP_SYSTEM_ROOT@,$GNUSTEP_SYSTEM_ROOT,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t
-s,@GNUSTEP_USER_ROOT@,$GNUSTEP_USER_ROOT,;t t
+s,@GNUSTEP_USER_CONFIG_FILE@,$GNUSTEP_USER_CONFIG_FILE,;t t
+s,@GNUSTEP_USER_DIR@,$GNUSTEP_USER_DIR,;t t
+s,@GNUSTEP_USER_DEFAULTS_DIR@,$GNUSTEP_USER_DEFAULTS_DIR,;t t
 s,@GNUSTEP_MAKEFILES@,$GNUSTEP_MAKEFILES,;t t
 s,@HOST_INSTALL@,$HOST_INSTALL,;t t
 s,@GNUSTEP_FLATTENED@,$GNUSTEP_FLATTENED,;t t

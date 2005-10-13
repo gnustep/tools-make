@@ -1,5 +1,17 @@
 2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* configure.ac: Added --with-user-config-file, --with-user-dir,
+	--with-user-defaults-dir options.  Remove --with-user-root option.
+	Simplified implementation of --with-config-file option.  Do not
+	generate GNUsteprc.
+	* configure: Regenerated.
+	* GNUstep.conf.in (GNUSTEP_USER_CONFIG_FILE): New variable.
+	(GNUSTEP_USER_DIR): New variable.
+	(GNUSTEP_USER_DEFAULTS_DIR): New variable.
+	* GNUsteprc.in: Removed.
+	
+2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	Warning: --prefix=/usr/GNUstep/System no longer works.  Please use
 	--prefix=/usr/GNUstep or --with-system-root=/usr/GNUstep/System.
 	* configure.ac: Simplified management of --prefix.  Do not try
