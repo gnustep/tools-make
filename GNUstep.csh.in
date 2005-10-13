@@ -4,7 +4,7 @@
 #
 #   Shell initialization for the GNUstep environment.
 #
-#   Copyright (C) 1998-2002 Free Software Foundation, Inc.
+#   Copyright (C) 1998-2005 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Adam Fedor <fedor@gnu.org>
@@ -27,17 +27,113 @@
 #
 # Set the GNUstep system root and local root
 #
-## FIXME - those should be taken from GNUstep.conf
-setenv GNUSTEP_SYSTEM_ROOT "@GNUSTEP_SYSTEM_ROOT@"
+
+#
+# Read our configuration files
+#
+
+# Determine the location of the system configuration file
+if ( ! ${?GNUSTEP_CONFIG_FILE} ) then
+  setenv GNUSTEP_CONFIG_FILE "@GNUSTEP_CONFIG_FILE@"
+endif
+
+# Determine the location of the user configuration file
+if ( ! ${?GNUSTEP_USER_CONFIG_FILE} ) then
+  setenv GNUSTEP_USER_CONFIG_FILE "@GNUSTEP_USER_CONFIG_FILE@"
+endif
+
+# Read the system configuration file
+if ( -e "${GNUSTEP_CONFIG_FILE}" ) then
+  #
+  # Convert the config file from sh syntax to csh syntax, and execute it.
+  #
+  # We want to convert every line of the type ^xxx=yyy$ into setenv xxx yyy;
+  # and ignore any other line.
+  #
+  # This sed expression will first delete all lines that don't match
+  # the pattern ^[^#=][^#=]*=.*$ -- which means "start of line (^),
+  # followed by a character that is not # and not = ([^#=]), followed
+  # by 0 or more characters that are not # and not = ([^#=]*),
+  # followed by a = (=), followed by some characters until end of the
+  # line (.*$).  It will then replace each occurrence of the same
+  # pattern (where the first and second relevant parts are now tagged
+  # -- that's what the additional \(...\) do) with 'setenv \1 \2'.
+  #
+  # The result of all this is ... something that we want to execute!
+  # We use eval to execute the results of `...`.
+  #
+  # Please note that ! must always be escaped in csh, which is why we
+  # write \\!
+  #
+  # Also note that we add a ';' at the end of each setenv command so
+  # that we can pipe all the commands through a single eval.
+  #
+  eval `sed -e '/^[^#=][^#=]*=.*$/\\!d' -e 's/^\([^#=][^#=]*\)=\(.*\)$/setenv \1 \2;/' "${GNUSTEP_CONFIG_FILE}"`
+endif
+
+# FIXME: determining GNUSTEP_HOME
+set GNUSTEP_HOME = ~
+
+# Read the user configuration file ... unless it is disabled (ie, set
+# to an empty string)
+if ( ${?GNUSTEP_USER_CONFIG_FILE} ) then
+  switch ("${GNUSTEP_USER_CONFIG_FILE}")
+   case /*: # An absolute path
+     if ( -e "${GNUSTEP_USER_CONFIG_FILE}" ) then
+      # See above for an explanation of the sed expression
+      eval `sed -e '/^[^#=][^#=]*=.*$/\\!d' -e 's/^\([^#=][^#=]*\)=\(.*\)$/setenv \1 \2;/' "${GNUSTEP_USER_CONFIG_FILE}"``
+     endif
+     breaksw
+   default: # Something else
+     if ( -e "${GNUSTEP_HOME}/${GNUSTEP_USER_CONFIG_FILE}" ) then
+       eval `sed -e '/^[^#=][^#=]*=.*$/\\!d' -e 's/^\([^#=][^#=]*\)=\(.*\)$/setenv \1 \2;/' "${GNUSTEP_HOME}/${GNUSTEP_USER_CONFIG_FILE}"`
+     endif
+     breaksw
+   endsw
+endif
+
+# Now, set any essential variable (that is not already set) to the
+# built-in values.
+if ( ! ${?GNUSTEP_SYSTEM_ROOT} ) then
+  setenv GNUSTEP_SYSTEM_ROOT "@GNUSTEP_SYSTEM_ROOT@"
+endif
+
+if ( ! ${?GNUSTEP_LOCAL_ROOT} ) then
+  setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_LOCAL_ROOT@"
+endif
+
+if ( ! ${?GNUSTEP_NETWORK_ROOT} ) then
+  setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_NETWORK_ROOT@"
+endif
+
+
 setenv GNUSTEP_FLATTENED "@GNUSTEP_FLATTENED@"
 if ( ! ${?LIBRARY_COMBO} ) then
   setenv LIBRARY_COMBO "@ac_cv_library_combo@"
 endif
 
-setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_LOCAL_ROOT@"
-setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_NETWORK_ROOT@"
+if ( ! ${?GNUSTEP_MAKEFILES} ) then
+  setenv GNUSTEP_MAKEFILES "${GNUSTEP_SYSTEM_ROOT}/Library/Makefiles"
+endif
 
-setenv GNUSTEP_MAKEFILES "@GNUSTEP_MAKEFILES@"
+if ( ! ${?GNUSTEP_USER_DIR} ) then
+  setenv GNUSTEP_USER_DIR "@GNUSTEP_USER_DIR@"
+endif
+
+#
+# Set GNUSTEP_USER_ROOT which is the variable used in practice
+#
+switch ("${GNUSTEP_USER_DIR}")
+ case /*: # An absolute path
+   setenv GNUSTEP_USER_ROOT "${GNUSTEP_USER_DIR}"
+   breaksw
+ default: # Something else
+   setenv GNUSTEP_USER_ROOT "${GNUSTEP_HOME}/${GNUSTEP_USER_DIR}"
+   breaksw
+endsw
+
+# No longer needed
+unset GNUSTEP_HOME
 
 if ( "@GNUSTEP_MULTI_PLATFORM@" == "" ) then
   setenv GNUSTEP_HOST "@target@"
@@ -69,12 +165,6 @@ endif
 if ( ! ${?GNUSTEP_HOST_OS} ) then
   setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/os.sh ${GNUSTEP_HOST}`
   setenv GNUSTEP_HOST_OS `${GNUSTEP_MAKEFILES}/clean_os.sh ${GNUSTEP_HOST_OS}`
-endif
-
-if ( "${GNUSTEP_FLATTENED}" == "" ) then
-  setenv GNUSTEP_USER_ROOT `${GNUSTEP_MAKEFILES}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/user_home user`
-else
-  setenv GNUSTEP_USER_ROOT `${GNUSTEP_MAKEFILES}/user_home user`
 endif
 
 #

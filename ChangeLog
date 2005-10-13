@@ -1,5 +1,18 @@
 2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>
 	
+	* GNUstep.sh.in: Read system, local, network, user paths from
+	configuration files and use the configuration files settings in
+	preference to the hardcoded ones.
+	* GNUstep.csh.in: Same changes, where we use sed to convert on the
+	fly the sh syntax of config files to csh syntax, then we eval the
+	result.
+	* GNUmakefile.in: Do not compile, install and clean user_home.
+	* user_home.c: Removed.
+	* GNUstep-reset.sh (GNUSTEP_USER_CONFIG_FILE, GNUSTEP_USER_DIR,
+	GNUSTEP_USER_DEFAULTS_DIR, GNUSTEP_CONFIG_FILE): Unset.
+	
+2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>
+	
 	* GNUmakefile.in (GNUSTEP_CONFIG_FILE): Fixed replacing this variable.
 
 2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>

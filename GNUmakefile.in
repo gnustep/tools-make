@@ -105,7 +105,7 @@ INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make \
 INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
                           javadoc.make latex.make texi.make
 
-all: generated-files which_lib$(EXEEXT) user_home$(EXEEXT)
+all: generated-files which_lib$(EXEEXT)
 
 # Please note that you should use a bit of care in the following rule,
 # because it must work in a directory which is not the source
@@ -114,10 +114,6 @@ all: generated-files which_lib$(EXEEXT) user_home$(EXEEXT)
 # make-build; ../make/configure --disable-import; make;' must work)
 which_lib$(EXEEXT): which_lib.c config.h
 	$(CC) @CFLAGS@ -Wall -I. -o $@ $<
-
-user_home$(EXEEXT): user_home.c config.h
-	$(CC) @CFLAGS@ -DGNUSTEP_SYSTEM_ROOT=$(GNUSTEP_SYSTEM_ROOT) \
-	      -Wall -I. -o $@ $<
 
 ifeq ($(messages),yes)
   EC = 
@@ -151,8 +147,6 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 	-$(EC) rm -f $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 	 $(EC)(echo "Installing gnustep-make support software"; \
 	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
-	     $(makedir)/$(GNUSTEP_TARGET_DIR); \
-	   $(INSTALL_PROGRAM) -m 755 user_home$(EXEEXT) \
 	     $(makedir)/$(GNUSTEP_TARGET_DIR))
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
@@ -161,7 +155,7 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 		ld_lib_path.csh relative_path.sh strip_makefiles.sh; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)
-	$(EC)($(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
+	 $(EC)($(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
@@ -209,7 +203,6 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 
 uninstall:
 	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib$(EXEEXT)
-	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/user_home$(EXEEXT)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
@@ -253,7 +246,7 @@ uninstall:
 # To really uninstall all of GNUstep, a 'rm -Rf ${GNUSTEP_ROOT}' should do.
 
 clean:
-	rm -f *~ which_lib$(EXEEXT) user_home$(EXEEXT) \
+	rm -f *~ which_lib$(EXEEXT) \
 	  Master/*~ Instance/*~ Instance/Shared/*~
 
 distclean: clean
