@@ -223,8 +223,9 @@ fi
 # should keep them!
 #
 # Those could also be env variables, which is really a backwards
-# compatibility hack that won't be kept in the future.
+# compatibility hack that won't necessarily be kept in the future!
 #--------------------------------------------------------------------
+
 
 #--------------------------------------------------------------------
 # Process --prefix
@@ -240,43 +241,38 @@ fi
 # ./configure --with-system-root=/usr/GNUstep/System
 #             --with-local-root=/usr/GNUstep/Local
 #
-# (TODO finish corner details)
+# plus it has the side-effect that a config.site will be loaded by
+# ./configure from $prefix/share/config.site, if it exists.  Our
+# config.site is in $prefix/System/share/config.site though, so it
+# won't be found.  It doesn't really matter though, as the config.site
+# is irrelevant for us in this context.
+#
 
-#--------------------------------------------------------------------
-# The GNUstep root directory.
-# The user should have the GNUSTEP_SYSTEM_ROOT environment variable
-# defined, but if not then we have a global default.
-# Also test for the C: directory, which means we're on Windows
-#--------------------------------------------------------------------
-AC_MSG_CHECKING([for root of GNUstep installation to use (if any)])
-AC_PREFIX_DEFAULT(`if test "x$GNUSTEP_SYSTEM_ROOT" = "x"; then 
-  if test -d C: ; then
+# Please note that AC_PREFIX_DEFAULT will not appear in this position
+# in the generated configure file; it will appear at the very
+# beginning.  So we can't check for GNUSTEP_SYSTEM_ROOT or anything
+# similar in the implementation of AC_PREFIX_DEFAULT because we will
+# not have read GNUstep.conf yet ...  
+
+# PS: This is the default GNUSTEP_ROOT that is used when installing
+# GNUstep with no other indication.  Test for the C: directory, which
+# means we're on Windows
+AC_PREFIX_DEFAULT(`if test -d C: ; then
     echo C:/GNUstep;
   else
     echo /usr/GNUstep ;
-  fi
-else
-  echo "$GNUSTEP_SYSTEM_ROOT" ;
-fi`)
+  fi`)
+
+#
+# GNUSTEP_ROOT is only used to set default values for
+# GNUSTEP_SYSTEM_ROOT and GNUSTEP_LOCAL_ROOT if they are not set in
+# config file or as a command-line argument.
+#
 if test "x$prefix" = "xNONE"; then
-  prefix="$ac_default_prefix" ;
-fi
-#
-# GNUSTEP_ROOT is only used to build GNUSTEP_SYSTEM_ROOT /
-# GNUSTEP_LOCAL_ROOT if no --with-system-root= / --with-local-root=
-# option is used.
-#
-GNUSTEP_ROOT="$prefix"
-if test "x`basename $prefix`" = xSystem; then
-  GNUSTEP_ROOT=`dirname $prefix`
+  GNUSTEP_ROOT="$ac_default_prefix" ;
 else
-  if test "x$prefix" = "x/"; then
-    prefix=/System
-  else
-    prefix="$prefix/System"
-  fi
+  GNUSTEP_ROOT="$prefix";
 fi
-AC_MSG_RESULT($GNUSTEP_ROOT)
 
 #--------------------------------------------------------------------
 # Process --with-system-root
@@ -290,7 +286,7 @@ to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.  Example:
 ],
 GNUSTEP_SYSTEM_ROOT="$withval",
 if test "$GNUSTEP_SYSTEM_ROOT" = ""; then 
-  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_SYSROOT/System"
+  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
 fi
 )
 AC_MSG_RESULT($GNUSTEP_SYSTEM_ROOT)

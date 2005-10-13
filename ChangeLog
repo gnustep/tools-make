@@ -1,3 +1,14 @@
+2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	Warning: --prefix=/usr/GNUstep/System no longer works.  Please use
+	--prefix=/usr/GNUstep or --with-system-root=/usr/GNUstep/System.
+	* configure.ac: Simplified management of --prefix.  Do not try
+	setting default prefix from an existing GNUSTEP_SYSTEM_ROOT as
+	that is read from the config file after the default prefix is set.
+	Do not set $prefix variable that it not used anywhere.  Fixed bug
+	in setting GNUSTEP_SYSTEM_ROOT introduced in previous changes.
+	* configure: Regenerated.
+	
 2005-10-12  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* .cvsignore: Ignore GNUstep.conf
