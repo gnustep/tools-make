@@ -1,4 +1,8 @@
 2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>
+	
+	* GNUmakefile.in (GNUSTEP_CONFIG_FILE): Fixed replacing this variable.
+
+2005-10-13  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Added --with-user-config-file, --with-user-dir,
 	--with-user-defaults-dir options.  Remove --with-user-root option.

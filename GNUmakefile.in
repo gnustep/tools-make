@@ -33,7 +33,7 @@ include config.make
 # install special_prefix=/var/tmp/gnustep-make'
 special_prefix = 
 
-GNUSTEP_CONFIG_FILE = $(special_prefix)@gnustep_config_file@
+GNUSTEP_CONFIG_FILE = $(special_prefix)@GNUSTEP_CONFIG_FILE@
 GNUSTEP_CONFIG_FILE_DIR = $(dir $(GNUSTEP_CONFIG_FILE))
 GNUSTEP_SYSTEM_ROOT = $(special_prefix)@GNUSTEP_SYSTEM_ROOT@
 GNUSTEP_LOCAL_ROOT  = $(special_prefix)@GNUSTEP_LOCAL_ROOT@
