@@ -186,7 +186,10 @@ AC_SUBST(GNUSTEP_CONFIG_FILE)
 # Reading/importing the existing configuration file is good as a
 # default because it means that you don't have to type in your
 # GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, etc. settings every time
-# you configure gnustep-make.
+# you configure gnustep-make. (please note we only read the
+# system-wide one, not the user one.  Reason being that the settings
+# we read will be used to generate the new system-wide one, while the
+# user one will be left untouched).
 
 # It can be annoying in certain cases though; this option lets you
 # turn it off
