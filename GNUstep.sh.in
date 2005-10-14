@@ -150,6 +150,8 @@ case "$GNUSTEP_USER_DIR" in
       GNUSTEP_USER_ROOT="$GNUSTEP_HOME/$GNUSTEP_USER_DIR";;
 esac
 
+export GNUSTEP_USER_ROOT
+
 # No longer needed
 unset GNUSTEP_HOME
 
