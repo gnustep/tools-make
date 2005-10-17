@@ -674,41 +674,9 @@ endif
 
 ####################################################
 #
-# NetBSD
+# NetBSD (ELF)
 #
 ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
-# This is disabled temporarily, because I don't know exactly how
-# to link shared libs. Everything seems to link correctly now but
-# constructor functions in the shared lib failed to get called
-# when the lib is loaded in. I don't know why. ASF.
-HAVE_SHARED_LIBS        = no
-SHARED_LD		= ld
-SHARED_LIB_LINK_CMD     = \
-        $(SHARED_LD) -x -Bshareable -Bforcearchive \
-           $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o;\
-        (cd $(LIB_LINK_OBJ_DIR); \
-          $(RM_LN_S) $(LIB_LINK_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
-
-SHARED_CFLAGS   += -shared -fpic
-SHARED_LIBEXT   = .so
-
-HAVE_BUNDLES    = yes
-BUNDLE_LD	= $(CC)
-BUNDLE_LDFLAGS  += -shared -fpic
-#ADDITIONAL_LDFLAGS += -rdynamic
-STATIC_LDFLAGS += -static
-endif
-#
-# end NetBSD
-#
-####################################################
-
-####################################################
-#
-# NetBSD ELF
-#
-ifeq ($(findstring netbsdelf, $(GNUSTEP_TARGET_OS)), netbsdelf)
 HAVE_SHARED_LIBS    = yes
 SHARED_LD_POSTFLAGS = -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
 SHARED_LIB_LINK_CMD = \

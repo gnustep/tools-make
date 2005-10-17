@@ -1,3 +1,9 @@
+2005-10-17  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (netbsd): Remove static libs version of netbsd
+	target and make (netbsdelf) work for all netbsd versions.
+	* clean_os.sh: Don't clean netbsd targets. Fixes Bug #14635.
+
 2005-10-14  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* GNUstep.sh.in: Export GNUSTEP_USER_ROOT after setting it (Bug
