@@ -271,6 +271,16 @@ if test "x$prefix" = "xNONE"; then
   GNUSTEP_ROOT="$ac_default_prefix" ;
 else
   GNUSTEP_ROOT="$prefix";
+
+  # Set the values for all those variables ovverriding anything read
+  # from the configuration file or inherited from the environment.
+  # The --prefix=xxx option should overwrite those.  Please notice
+  # that the --with-system-root=xxx (and similar) options are
+  # processed later as overwrite --prefix=xxx in their specific area.
+  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System";
+  GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local";
+  GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT";
+  GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
 fi
 
 #--------------------------------------------------------------------

@@ -1,3 +1,9 @@
+2005-10-18  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Make sure that --prefix=xxx takes precedence over
+	paths read from GNUstep.conf or inherited from the environment.
+	* configure: Regenerated.
+	
 2005-10-17  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (netbsd): Remove static libs version of netbsd
