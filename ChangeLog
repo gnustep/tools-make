@@ -1,3 +1,8 @@
+2005-10-19  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* config.guess: Updated to latest version.
+	* config.sub: Idem.
+
 2005-10-18  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Make sure that --prefix=xxx takes precedence over
