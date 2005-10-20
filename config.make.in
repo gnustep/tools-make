@@ -166,4 +166,4 @@ USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 # you change the following lines you *need* to update the base library
 # configure.in too.
 #
-GNUSTEP_CONFIG_FILE = @gnustep_config_file@
+GNUSTEP_CONFIG_FILE = @GNUSTEP_CONFIG_FILE@

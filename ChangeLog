@@ -1,3 +1,8 @@
+2005-10-20  Adam Fedor  <fedor@gnu.org>
+
+	* config.make.in (GNUSTEP_CONFIG_FILE): Correct capitaliztion
+	of substitution variable.
+
 2005-10-19  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* config.guess: Updated to latest version.
