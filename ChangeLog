@@ -1,4 +1,10 @@
-2005-10-24  Richard Frith-Macdonald <rfm@gnu.org>
+2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* which_lib.c (search_for_lib_with_suffix_and_ext): Enhanced
+	changes to make the code simpler and easier to understand and
+	avoid duplicate checks for static libs.  Needs testing.
+
+2005-10-23  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* which_lib.c: Tidied a little on lines suggested by David Ayers
 	* configure.ac: Check for ctype.h

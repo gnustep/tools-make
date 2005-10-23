@@ -284,22 +284,36 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
       char full_filename[PATH_MAX + 1];
       struct stat statbuf;
 
-      strcpy (full_filename, library_paths[i]);
 #ifdef __MINGW32__
-      /* Mingw can link against dlls directly, so we should look for
-       * library_name.dll then liblibrary_name.dll.a then liblibrary_name.a
-       */
-      strcat (full_filename, "/");
-#else
-      strcat (full_filename, "/lib");
+      if (strcmp (ext, ".dll.a") == 0)
+	{
+	  /* Mingw can link against dlls directly, so if we're
+	   * currently searching for libxxx.dll.a, make a try first at
+	   * xxx.dll.  The standard algorithm will search for
+	   * libxxx.dll.a (and failing that libxxx.a) later.
+	   */
+	  strcpy (full_filename, library_paths[i]);
+	  strcat (full_filename, "/");
+	  strcat (full_filename, library_name);
+	  strcat (full_filename, suffix);
+	  strcat (full_filename, ".dll");
+	  if (show_all)
+	    {
+	      fprintf (stderr, " %s\n", full_filename);
+	    }
+	  
+	  if (stat (full_filename, &statbuf) >= 0)
+	    {
+	      goto library_found;
+	    }
+	}
 #endif
+
+      strcpy (full_filename, library_paths[i]);
+      strcat (full_filename, "/lib");
       strcat (full_filename, library_name);
       strcat (full_filename, suffix);
-#ifdef __MINGW32__
-      strcat (full_filename, ".dll");
-#else
       strcat (full_filename, ext);
-#endif
 
       if (show_all)
 	{
@@ -309,45 +323,13 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
       if (stat (full_filename, &statbuf) < 0)
 	/* Error - likely that file doesn't exist.  */
 	{
-#ifdef __MINGW32__
-	  // On windows a shared library probably has a static "import" library
-	  // called liblibrary_name.dll.a
-	  strcpy (full_filename, library_paths[i]);
-	  strcat (full_filename, "/lib");
-	  strcat (full_filename, library_name);
-	  strcat (full_filename, suffix);
-	  strcat (full_filename, ext);
-
-	  if (show_all)
-	    {
-	      fprintf (stderr, " %s\n", full_filename);
-	    }
-	  if (stat (full_filename, &statbuf) < 0)
-	    {
-	      // then look for liblibrary_name.a
-	      strcpy (full_filename, library_paths[i]);
-	      strcat (full_filename, "/lib");
-	      strcat (full_filename, library_name);
-	      strcat (full_filename, suffix);
-	      strcat (full_filename, ".a");
-
-	      if (show_all)
-		{
-		  fprintf (stderr, " %s\n", full_filename);
-		}
-	      if (stat (full_filename, &statbuf) < 0)
-		{
-		  continue;
-		}
-	    }
-#else
-	  if (stat (full_filename, &statbuf) < 0)
-	    {
-	      continue;
-	    }
-#endif
+	  continue;
 	}
 
+#ifdef __MINGW32__
+    library_found:
+#endif
+      
       if ((statbuf.st_mode & S_IFMT) == S_IFREG)
 	/* Found it! */
 	{
