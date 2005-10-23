@@ -173,7 +173,7 @@ static void stripstr (unsigned char *s)
       return;
     }
   
-  len = strlen (s);
+  len = strlen ((const char*)s);
   
   while (len > 0) 
     {
@@ -246,7 +246,7 @@ static char *normalize_and_check_dir (char *path)
       return NULL;
     }
 
-  stripstr (normalized_path);
+  stripstr ((unsigned char*)normalized_path);
   return normalized_path;
 }
 
@@ -282,10 +282,21 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
       struct stat statbuf;
       
       strcpy (full_filename, library_paths[i]);
+#ifdef __MINGW32__
+      /* Mingw can link against dlls directly, so we should look for
+       * library_name.dll then liblibrary_name.dll.a then liblibrary_name.a
+       */
+      strcat (full_filename, "/");
+#else	        
       strcat (full_filename, "/lib");
+#endif      
       strcat (full_filename, library_name);
       strcat (full_filename, suffix);
+#ifdef __MINGW32__
+      strcat (full_filename, ".dll");
+#else
       strcat (full_filename, ext);
+#endif      
       
       if (show_all)
 	{
@@ -295,7 +306,43 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
       if (stat (full_filename, &statbuf) < 0)
 	/* Error - likely that file doesn't exist.  */
 	{
-	  continue;
+#ifdef __MINGW32__
+	  // On windows a shared library probably has a static "import" library
+	  // called liblibrary_name.dll.a
+	  strcpy (full_filename, library_paths[i]);
+	  strcat (full_filename, "/lib");
+	  strcat (full_filename, library_name);
+	  strcat (full_filename, suffix);
+	  strcat (full_filename, ext);
+	  		
+	  if (show_all)
+	    {
+	      fprintf (stderr, " %s\n", full_filename);
+	    }
+	  if (stat (full_filename, &statbuf) < 0)
+	    {
+	      // then look for liblibrary_name.a
+	      strcpy (full_filename, library_paths[i]);
+	      strcat (full_filename, "/lib");
+	      strcat (full_filename, library_name);
+	      strcat (full_filename, suffix);
+	      strcat (full_filename, ".a");
+		  		
+	      if (show_all)
+		{
+		  fprintf (stderr, " %s\n", full_filename);
+		}
+	      if (stat (full_filename, &statbuf) < 0)
+		{
+		  continue;
+		}
+	    }
+#else	  
+	  if (stat (full_filename, &statbuf) < 0)
+	    {
+	      continue;
+	    }
+#endif	  
 	}
       
       if ((statbuf.st_mode & S_IFMT) == S_IFREG) 
@@ -712,7 +759,7 @@ int main (int argc, char** argv)
 		  }
 		all_libraries[libraries_no] = malloc (strlen (argv[i]) - 1);
 		strcpy (all_libraries[libraries_no], argv[i] + 2);
-		stripstr (all_libraries[libraries_no]);
+		stripstr ((unsigned char*)all_libraries[libraries_no]);
 		libraries_no++;
 		continue;
 	      }

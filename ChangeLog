@@ -8,6 +8,8 @@
 	Don't create the obj dir (symlink) on mingw.
 	Add -Wl,--enable-auto-import to link commands to make the compiler be
 	quiet.
+	which_lib.c: Fixes to support other library types on mingw.
+	Patches applied and edited to conform to GNUstep coding standard.
 
 2005-10-20  Adam Fedor  <fedor@gnu.org>
 
