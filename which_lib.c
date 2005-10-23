@@ -22,10 +22,10 @@
    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
 /*
-  
+
   Command line arguments are:
 
-  * a list of library search paths in the GCC notation, as in 
+  * a list of library search paths in the GCC notation, as in
     -L/usr/lib/opt/hack/
     -L/usr/GNUstep/Local/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu
     -L/usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu
@@ -35,7 +35,7 @@
     -lgnustep-base -lgnustep-gui -lobjc
 
   * flags specifying whether a debug, profile, static/shared library is
-    to be preferred, as in 
+    to be preferred, as in
     debug=no profile=yes shared=yes
 
   The tool outputs the same list of library search paths and the list
@@ -164,21 +164,20 @@ int show_all = 0;
 
 /* Strips off carriage returns, newlines and spaces at the end of the
    string. (this removes some \r\n issues on Windows)  */
-static void stripstr (unsigned char *s)
+static void stripstr (char *s)
 {
   unsigned len;
-  
+
   if (s == NULL)
     {
       return;
     }
-  
-  len = strlen ((const char*)s);
-  
-  while (len > 0) 
+
+  len = strlen (s);
+  while (len > 0)
     {
       len--;
-      if (s[len] < 33) 
+      if (s[len] < 33)
 	{
 	  s[len] = '\0';
 	}
@@ -193,7 +192,7 @@ static char *normalize_and_check_dir (char *path)
   int length = strlen (path);
   char *normalized_path = NULL;
   struct stat statbuf;
-  
+
 #ifdef __MINGW32__
   if (path[0] == '/'  &&  path[1] == '/')
     {
@@ -203,7 +202,7 @@ static char *normalize_and_check_dir (char *path)
       /* Convert //server/path/to/ --> server/path/to/ */
       normalized_path = malloc (length * sizeof (char));
       strcpy (normalized_path, &(path[2]));
-      
+
       /* Convert server/path/to/ --> server:/path/to/ */
       s = strchr (normalized_path, '/');
       if (s)
@@ -221,9 +220,9 @@ static char *normalize_and_check_dir (char *path)
       normalized_path = malloc ((length + 1) * sizeof (char));
       strcpy (normalized_path, path);
     }
-    
+
   /* Now check that the path exists and is a directory.  */
-  if (stat (normalized_path, &statbuf) < 0) 
+  if (stat (normalized_path, &statbuf) < 0)
     /* Error occured or dir doesn't exist */
     {
       if (show_all)
@@ -234,7 +233,7 @@ static char *normalize_and_check_dir (char *path)
       free (normalized_path);
       return NULL;
     }
-  else if ((statbuf.st_mode & S_IFMT) != S_IFDIR) 
+  else if ((statbuf.st_mode & S_IFMT) != S_IFDIR)
     /* Not a directory */
     {
       if (show_all)
@@ -246,7 +245,7 @@ static char *normalize_and_check_dir (char *path)
       return NULL;
     }
 
-  stripstr ((unsigned char*)normalized_path);
+  stripstr (normalized_path);
   return normalized_path;
 }
 
@@ -254,7 +253,7 @@ static char *normalize_and_check_dir (char *path)
     extension ext.
 
     library_name must not contain the suffix, so library_name should
-    be something like 'gnustep-base'.  
+    be something like 'gnustep-base'.
 
     suffix is the wanted suffix (valid suffixes are "", _d, _p, _s,
     _ds, _dp, _ps, _dps).  Must not be NULL.
@@ -267,9 +266,9 @@ static char *normalize_and_check_dir (char *path)
     Return 1 if a library with the appropriate suffix/extension/type
     matches in 'path' and print to stdout the name of the library. */
 
-static int search_for_lib_with_suffix_and_ext (const char *library_name, 
-					       char **library_paths, 
-					       int paths_no, 
+static int search_for_lib_with_suffix_and_ext (const char *library_name,
+					       char **library_paths,
+					       int paths_no,
 					       char *suffix,
 					       char *ext)
 {
@@ -280,29 +279,29 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
     {
       char full_filename[PATH_MAX + 1];
       struct stat statbuf;
-      
+
       strcpy (full_filename, library_paths[i]);
 #ifdef __MINGW32__
       /* Mingw can link against dlls directly, so we should look for
        * library_name.dll then liblibrary_name.dll.a then liblibrary_name.a
        */
       strcat (full_filename, "/");
-#else	        
+#else
       strcat (full_filename, "/lib");
-#endif      
+#endif
       strcat (full_filename, library_name);
       strcat (full_filename, suffix);
 #ifdef __MINGW32__
       strcat (full_filename, ".dll");
 #else
       strcat (full_filename, ext);
-#endif      
-      
+#endif
+
       if (show_all)
 	{
 	  fprintf (stderr, " %s\n", full_filename);
 	}
-      
+
       if (stat (full_filename, &statbuf) < 0)
 	/* Error - likely that file doesn't exist.  */
 	{
@@ -314,7 +313,7 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
 	  strcat (full_filename, library_name);
 	  strcat (full_filename, suffix);
 	  strcat (full_filename, ext);
-	  		
+
 	  if (show_all)
 	    {
 	      fprintf (stderr, " %s\n", full_filename);
@@ -327,7 +326,7 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
 	      strcat (full_filename, library_name);
 	      strcat (full_filename, suffix);
 	      strcat (full_filename, ".a");
-		  		
+
 	      if (show_all)
 		{
 		  fprintf (stderr, " %s\n", full_filename);
@@ -337,17 +336,17 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
 		  continue;
 		}
 	    }
-#else	  
+#else
 	  if (stat (full_filename, &statbuf) < 0)
 	    {
 	      continue;
 	    }
-#endif	  
+#endif
 	}
-      
-      if ((statbuf.st_mode & S_IFMT) == S_IFREG) 
+
+      if ((statbuf.st_mode & S_IFMT) == S_IFREG)
 	/* Found it! */
-	{ 
+	{
 	  if (show_all)
 	    {
 	      fprintf (stderr, "  Found!\n");
@@ -372,37 +371,37 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
     _d, _p, _s, _ds, _dp, _ps, _dps).
 */
 
-static int search_for_lib_with_ext (const char *library_name, 
+static int search_for_lib_with_ext (const char *library_name,
 				    int library_name_len,
-				    char **library_paths, 
-				    int paths_no, 
+				    char **library_paths,
+				    int paths_no,
 				    char *ext)
 {
   /* Iterate over the library_paths, looking for the library.  */
   int i;
-  
+
   for (i = 0; i < paths_no; i++)
     {
       DIR* dir;
       struct dirent* dirbuf;
       int found = 0;
-      
+
       if (show_all)
 	{
 	  fprintf (stderr, " %s/lib%s??%s\n", library_paths[i],
 		   library_name, ext);
 	}
-      
+
       dir = opendir (library_paths[i]);
-      
+
       if (dir == NULL)
 	{
 	  /* For some reasons, we can't read that path.  Perhaps
 	     someone removed the directory while we were running :-) */
 	  continue;
 	}
-      
-      while ((dirbuf = readdir (dir))) 
+
+      while ((dirbuf = readdir (dir)))
 	{
 	  /* Skip if it doesn't begin with 'lib'.  This implicitly
 	     skips "." and ".." in case they are returned.  */
@@ -418,7 +417,7 @@ static int search_for_lib_with_ext (const char *library_name,
 	    {
 	      continue;
 	    }
-	  
+
 	  /* Skip if it does not match the library name. */
 	  if (strncmp (dirbuf->d_name + 3, library_name, library_name_len))
 	    {
@@ -427,28 +426,28 @@ static int search_for_lib_with_ext (const char *library_name,
 	  else
 	    {
 	      int filelen, extlen;
-	      
+
 	      filelen = strlen (dirbuf->d_name);
 	      extlen = strlen (ext);
-	      
+
 	      if (filelen - extlen <= 0)
 		{
 		  /* Quite worrying this case.  */
 		  continue;
 		}
-	      
+
 	      if (show_all)
 		{
 		  fprintf (stderr, "  Considering %s\n",  dirbuf->d_name);
 		}
-	      
+
 	      /* First check if the extension matches */
 	      if (strcmp (dirbuf->d_name + filelen - extlen, ext))
 		{
 		  /* No luck, skip this file */
 		  continue;
 		}
-	      
+
 	      /* The extension matches.  Check the last remaining bit
 		 - that the remaining string we have not checked is
 		 one of the allowed suffixes.  The allowed suffixes
@@ -457,12 +456,12 @@ static int search_for_lib_with_ext (const char *library_name,
 		char f_suffix[5];
 		int j;
 		int suffix_len = filelen - (3 /* 'lib' */
-					    
-					    + library_name_len 
+
+					    + library_name_len
 					    /* library_name */
-					    
+
 					    + extlen /* .so/.a */);
-		
+
 		switch (suffix_len)
 		  {
 		    /* In the following cases, 'break' means found,
@@ -480,12 +479,12 @@ static int search_for_lib_with_ext (const char *library_name,
 		    {
 		      /* Must be one of _d, _p, _s  */
 		      char c;
-		      
+
 		      if (dirbuf->d_name[3 + library_name_len] != '_')
 			{
 			  continue;
 			}
-		      
+
 		      c = dirbuf->d_name[3 + library_name_len + 1];
 		      if (c != 'd'  ||  c != 'p'  ||  c != 's')
 			{
@@ -497,12 +496,12 @@ static int search_for_lib_with_ext (const char *library_name,
 		    {
 		      /* Must be one of _dp, _ds, _ps  */
 		      char c, d;
-		      
+
 		      if (dirbuf->d_name[3 + library_name_len] != '_')
 			{
 			  continue;
 			}
-		      
+
 		      c = dirbuf->d_name[3 + library_name_len + 1];
 		      d = dirbuf->d_name[3 + library_name_len + 2];
 		      if ((c == 'd'  &&  (d == 'p'  ||  d == 's'))
@@ -537,13 +536,13 @@ static int search_for_lib_with_ext (const char *library_name,
 		      continue;
 		    }
 		  }
-		
+
 		/* If we're here, it's because it was found!  */
 		if (show_all)
 		  {
 		    fprintf (stderr, "   Found!\n");
 		  }
-		
+
 		for (j = 0; j < suffix_len; j++)
 		  {
 		    f_suffix[j] = dirbuf->d_name[library_name_len + 3 + j];
@@ -566,34 +565,34 @@ static int search_for_lib_with_ext (const char *library_name,
 }
 
 /* Search for the library everywhere, and returns the library name.  */
-static void output_library_name (const char *library_name, 
-				 char** library_paths, int paths_no, 
+static void output_library_name (const char *library_name,
+				 char** library_paths, int paths_no,
 				 int debug, int profile, int shared,
 				 char *libname_suffix)
 {
   char *extension = shared ? shared_libext : libext;
   int library_name_len = strlen (library_name);
-  
+
   if (show_all)
     {
       fprintf (stderr, "\n>>Library %s:\n", library_name);
     }
-  
+
   /* We first perform the search of a matching library in all dirs.  */
   if (show_all)
     {
       fprintf (stderr, "Scanning all paths for an exact match\n");
     }
-  
+
   if (search_for_lib_with_suffix_and_ext (library_name,
-					  library_paths, paths_no, 
+					  library_paths, paths_no,
 					  libname_suffix,
 					  extension))
     {
       return;
     }
-  
-  
+
+
   /* The library was not found.  Try various approximations first,
      slightly messing the original debug/profile requests, but still
      honouring the shared=yes|no requirement.  */
@@ -601,83 +600,83 @@ static void output_library_name (const char *library_name,
     {
       fprintf (stderr, "Scanning all paths for an approximate match\n");
     }
-    
+
   /* _dp case:  try _d, then _p  */
   if (debug  &&  profile)
     {
-      if (search_for_lib_with_suffix_and_ext (library_name, 
-					      library_paths, paths_no, 
-					      shared ? "_d" : "_ds", 
+      if (search_for_lib_with_suffix_and_ext (library_name,
+					      library_paths, paths_no,
+					      shared ? "_d" : "_ds",
 					      extension))
 	{
 	  return;
 	}
-      
-      if (search_for_lib_with_suffix_and_ext (library_name, 
-					      library_paths, paths_no, 
-					      shared ? "_p" : "_ps", 
+
+      if (search_for_lib_with_suffix_and_ext (library_name,
+					      library_paths, paths_no,
+					      shared ? "_p" : "_ps",
 					      extension))
 	{
 	  return;
 	}
     }
-  
+
   /* _d or _p: try nothing.  */
   if ((debug  &&  !profile)  ||  (!debug  &&  profile))
     {
-      if (search_for_lib_with_suffix_and_ext (library_name, 
-					      library_paths, paths_no, 
-					      shared ? "" : "_s", 
+      if (search_for_lib_with_suffix_and_ext (library_name,
+					      library_paths, paths_no,
+					      shared ? "" : "_s",
 					      extension))
 	{
 	  return;
-	}	
+	}
     }
-  
+
   /* nothing: try _d.  */
   if (!debug  &&  !profile)
     {
-      if (search_for_lib_with_suffix_and_ext (library_name, 
-					      library_paths, paths_no, 
-					      shared ? "_d" : "_ds", 
+      if (search_for_lib_with_suffix_and_ext (library_name,
+					      library_paths, paths_no,
+					      shared ? "_d" : "_ds",
 					      extension))
 	{
 	  return;
-	}	
+	}
     }
 
   /* The library was still not found.  Try to get whatever library we
      have there. */
-  
+
   /* If a shared library is needed try to find a shared one first.
      Any shared library is all right.  */
   if (shared)
     {
       if (show_all)
 	{
-	  fprintf (stderr, 
+	  fprintf (stderr,
 		   "Scanning all paths for any shared lib with that name\n");
 	}
-      if (search_for_lib_with_ext (library_name, library_name_len, 
+      if (search_for_lib_with_ext (library_name, library_name_len,
 				   library_paths, paths_no, shared_libext))
 	{
 	  return;
 	}
     }
-  
+
   /* Last hope - return a static library with name 'library_name'.
      Any static library is all right.  */
   if (show_all)
     {
-      fprintf (stderr, 
+      fprintf (stderr,
 	       "Scanning all paths for any static lib with that name\n");
     }
-  if (search_for_lib_with_ext (library_name, library_name_len, 
+  if (search_for_lib_with_ext (library_name, library_name_len,
 			       library_paths, paths_no, libext))
     {
       return;
     }
-  
+
   /* We couldn't locate the library.  Output the library name we were
      given, without any modification.  Possibly it's somewhere else on
      the linker path, otherwise (more likely) a linker error will
@@ -716,19 +715,19 @@ int main (int argc, char** argv)
   /* The list of libraries */
   int libraries_no = 0;
   char** all_libraries = NULL;
-  
+
   /* Other flags which are printed to the output as they are.  */
   int other_flags_no = 0;
   char** other_flags = NULL;
 
 
-  
+
 #ifdef __WIN32__
   setmode(1, O_BINARY);
   setmode(2, O_BINARY);
 #endif
 
-  if (argc == 1) 
+  if (argc == 1)
     {
       printf ("usage: %s [-Lpath ...] -llibrary shared=yes|no debug=yes|no "
 	      "profile=yes|no libext=string shared_libext=string "
@@ -736,7 +735,7 @@ int main (int argc, char** argv)
       exit (1);
     }
 
-  for (i = 1; i < argc; i++) 
+  for (i = 1; i < argc; i++)
     {
       /* First switch basing on the first letter of each argument,
          then compare.  */
@@ -749,17 +748,17 @@ int main (int argc, char** argv)
 		if (all_libraries)
 		  {
 		    all_libraries = realloc (all_libraries,
-					     (libraries_no + 1) 
+					     (libraries_no + 1)
 					     * sizeof (char*));
 		  }
 		else
 		  {
-		    all_libraries = malloc ((libraries_no + 1) 
+		    all_libraries = malloc ((libraries_no + 1)
 					    * sizeof (char*));
 		  }
 		all_libraries[libraries_no] = malloc (strlen (argv[i]) - 1);
 		strcpy (all_libraries[libraries_no], argv[i] + 2);
-		stripstr ((unsigned char*)all_libraries[libraries_no]);
+		stripstr (all_libraries[libraries_no]);
 		libraries_no++;
 		continue;
 	      }
@@ -770,18 +769,18 @@ int main (int argc, char** argv)
 		/* Always print out the library search path flag,
                    regardless.  */
 		printf (" %s", argv[i]);
-		
+
 		if (lib_path != NULL)
 		  {
 		    if (library_paths)
 		      {
-			library_paths = realloc (library_paths, 
-						 (paths_no + 1) 
+			library_paths = realloc (library_paths,
+						 (paths_no + 1)
 						 * sizeof (char*));
 		      }
 		    else
 		      {
-			library_paths = malloc ((paths_no + 1) 
+			library_paths = malloc ((paths_no + 1)
 						* sizeof(char*));
 		      }
 		    library_paths[paths_no] = lib_path;
@@ -793,7 +792,7 @@ int main (int argc, char** argv)
 	  }
 	case 'd':
 	  {
-	    if (!strncmp (argv[i], "debug=", 6)) 
+	    if (!strncmp (argv[i], "debug=", 6))
 	      {
 		debug = !strncmp (argv[i] + 6, "yes", 3);
 		continue;
@@ -802,7 +801,7 @@ int main (int argc, char** argv)
 	  }
 	case 'l':
 	  {
-	    if (!strncmp (argv[i], "libext=", 7)) 
+	    if (!strncmp (argv[i], "libext=", 7))
 	      {
 		libext = malloc (strlen (argv[i] + 7) + 1);
 		strcpy (libext, argv[i] + 7);
@@ -812,7 +811,7 @@ int main (int argc, char** argv)
 	  }
 	case 'p':
 	  {
-	    if (!strncmp (argv[i], "profile=", 8)) 
+	    if (!strncmp (argv[i], "profile=", 8))
 	      {
 		profile = !strncmp (argv[i] + 8, "yes", 3);
 		continue;
@@ -821,18 +820,18 @@ int main (int argc, char** argv)
 	  }
 	case 's':
 	  {
-	    if (!strncmp (argv[i], "shared=", 7)) 
+	    if (!strncmp (argv[i], "shared=", 7))
 	      {
 		shared = !strncmp (argv[i] + 7, "yes", 3);
 		continue;
 	      }
-	    else if (!strncmp (argv[i], "shared_libext=", 14)) 
+	    else if (!strncmp (argv[i], "shared_libext=", 14))
 	      {
 		shared_libext = malloc (strlen (argv[i] + 14) + 1);
 		strcpy (shared_libext, argv[i] + 14);
 		continue;
 	      }
-	    else if (!strncmp (argv[i], "show_all=", 9)) 
+	    else if (!strncmp (argv[i], "show_all=", 9))
 	      {
 		show_all = !strncmp (argv[i] + 9, "yes", 3);
 		continue;
@@ -842,7 +841,7 @@ int main (int argc, char** argv)
 	default:
 	  break;
 	}
-      
+
       /* The flag is something different; keep it in the `other_flags' */
       if (other_flags)
 	{
@@ -867,7 +866,7 @@ int main (int argc, char** argv)
   libname_suffix[4] = '\0';
 
   i = 1;
-  
+
   if (debug)
     {
       libname_suffix[i] = 'd';
@@ -891,7 +890,7 @@ int main (int argc, char** argv)
       libname_suffix[0] = '\0';
     }
 
-  
+
   if (show_all)
     {
       fprintf (stderr, ">>Input:\n");
@@ -907,13 +906,13 @@ int main (int argc, char** argv)
 	{
 	  fprintf (stderr, "    %s\n", all_libraries[i]);
 	}
-      
+
       fprintf (stderr, "library paths:\n");
       for (i = 0; i < paths_no; i++)
 	{
 	  fprintf (stderr, "    %s\n", library_paths[i]);
 	}
-      
+
       fprintf (stderr, "other flags:\n");
       for (i = 0; i < other_flags_no; i++)
 	{
@@ -922,14 +921,14 @@ int main (int argc, char** argv)
     }
 
   /* Now output the libraries.  */
-  for (i = 0; i < libraries_no; i++) 
+  for (i = 0; i < libraries_no; i++)
     {
       /* Search for the library, and print (using -l%s) the library
 	 name to standard output.  */
-      output_library_name (all_libraries[i], library_paths, 
+      output_library_name (all_libraries[i], library_paths,
 			   paths_no, debug, profile, shared, libname_suffix);
     }
-  
+
   /* Output the other flags */
   for (i = 0; i < other_flags_no; i++)
     {

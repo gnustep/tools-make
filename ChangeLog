@@ -1,3 +1,7 @@
+2005-10-24  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* which_lib.c: Tidied a little on lines suggested by David Ayers
+
 2005-10-23  Jeremy Bettis
 
 	* configure.ac: 
@@ -8,7 +12,7 @@
 	Don't create the obj dir (symlink) on mingw.
 	Add -Wl,--enable-auto-import to link commands to make the compiler be
 	quiet.
-	which_lib.c: Fixes to support other library types on mingw.
+	* which_lib.c: Fixes to support other library types on mingw.
 	Patches applied and edited to conform to GNUstep coding standard.
 
 2005-10-20  Adam Fedor  <fedor@gnu.org>
