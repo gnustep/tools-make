@@ -9,6 +9,10 @@
 ## where there should be no spaces around the '=' (this is because we
 ## include this file in shell scripts and makefiles, and sh syntax
 ## requires no spaces around the '=').
+##
+## Standard sh quotes can be used in YYY but only at runtime; they can 
+## not be used while building.
+##
 
 GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
 GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
