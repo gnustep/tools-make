@@ -104,6 +104,10 @@
 # include <string.h>
 #endif
 
+#if HAVE_CTYPE_H
+# include <ctype.h>
+#endif
+
 #if HAVE_SYS_STAT_H
 # include <sys/stat.h>
 #endif
@@ -177,7 +181,7 @@ static void stripstr (char *s)
   while (len > 0)
     {
       len--;
-      if (s[len] < 33)
+      if (isspace(s[len]))
 	{
 	  s[len] = '\0';
 	}

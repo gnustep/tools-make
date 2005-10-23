@@ -566,7 +566,7 @@ export LD_LIBRARY_PATH
 #--------------------------------------------------------------------
 AC_HEADER_DIRENT
 AC_CHECK_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
-		fcntl.h limits.h utime.h sys/stat.h pwd.h unistd.h)
+		fcntl.h limits.h utime.h sys/stat.h pwd.h unistd.h ctype.h)
 AC_CHECK_FUNCS(getpwnam getpwuid geteuid getlogin strchr)
 
 #--------------------------------------------------------------------
