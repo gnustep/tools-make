@@ -1,3 +1,14 @@
+2005-10-23  Jeremy Bettis
+
+	* configure.ac: 
+	* rules.make: 
+	* target.make: 
+	Use install -p so that doing a make install doesn't change the
+	timestamp on all the headers and cause everything to need rebuilt.
+	Don't create the obj dir (symlink) on mingw.
+	Add -Wl,--enable-auto-import to link commands to make the compiler be
+	quiet.
+
 2005-10-20  Adam Fedor  <fedor@gnu.org>
 
 	* config.make.in (GNUSTEP_CONFIG_FILE): Correct capitaliztion

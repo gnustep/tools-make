@@ -109,7 +109,7 @@ AC_EXEEXT
 AC_OBJEXT
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
-  export INSTALL=install
+  export INSTALL="install -p"
   export SHELL=sh
   export CC=${CC:-gcc}
   export AR=${AR:-ar}

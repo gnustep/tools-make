@@ -876,6 +876,7 @@ OBJ_MERGE_CMD = \
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
 BUNDLE_LDFLAGS     += -shared
+ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
 
 # On Mingw32, it looks like the class name symbols start with '___' rather 
 # than '__'
