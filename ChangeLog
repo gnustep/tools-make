@@ -1,5 +1,16 @@
 2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	This change is key to no longer having to source GNUstep.sh when
+	compiling stuff using gnustep-make.  Please understand this is all
+	very experimental so don't upgrade yet if you need stability.
+	* config.make.in (GNUSTEP_CONFIG_FILE): Read configuration files
+	directly and get all required information from there; only
+	GNUSTEP_MAKEFILES is assumed to be set.
+	* common.make: Include config.make first because until we include
+	that one, we can no longer assume anything.
+
+2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	* which_lib.c (search_for_lib_with_suffix_and_ext): Enhanced
 	changes to make the code simpler and easier to understand and
 	avoid duplicate checks for static libs.  Needs testing.

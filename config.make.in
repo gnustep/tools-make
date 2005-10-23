@@ -4,10 +4,11 @@
 #   All of the settings required by the makefile package
 #   that are determined by configure.
 #
-#   Copyright (C) 1997 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2005 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Author:  Nicola Pero <n.pero@mi.flashnet.it>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -166,4 +167,88 @@ USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 # you change the following lines you *need* to update the base library
 # configure.in too.
 #
+# PS: At run-time, this can be overridden on the command-line, or
+# via an environment variable.
 GNUSTEP_CONFIG_FILE = @GNUSTEP_CONFIG_FILE@
+
+#
+# Now we set up the environment and everything by reading the GNUstep
+# configuration file(s).
+#
+
+# These are the defaults value ... they will be used only if they are
+# not set in the config files (or on the command-line or in
+# environment).
+GNUSTEP_SYSTEM_ROOT = @GNUSTEP_SYSTEM_ROOT@
+GNUSTEP_LOCAL_ROOT = @GNUSTEP_LOCAL_ROOT@
+GNUSTEP_NETWORK_ROOT = @GNUSTEP_NETWORK_ROOT@
+GNUSTEP_USER_DIR = @GNUSTEP_USER_DIR@
+
+# This includes the GNUstep configuration file, but only if it exists
+-include $(GNUSTEP_CONFIG_FILE)
+
+# FIXME: determining GNUSTEP_HOME
+GNUSTEP_HOME = ~
+
+# Read the user configuration file ... unless it is disabled (ie, set
+# to an empty string)
+ifneq ($(GNUSTEP_USER_CONFIG_FILE),)
+
+ # FIXME - Checking for relative vs. absolute paths!
+ ifneq (filter (/%, $(GNUSTEP_USER_CONFIG_FILE)),)
+  # Path starts with '/', consider it absolute
+  -include $(GNUSTEP_USER_CONFIG_FILE)
+ else
+  # Path does no start with '/', try it as relative
+  -include $(GNUSTEP_HOME)/$(GNUSTEP_USER_CONFIG_FILE)
+ endif 
+
+endif
+
+GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
+
+#
+# Set GNUSTEP_USER_ROOT from GNUSTEP_USER_DIR; GNUSTEP_USER_ROOT is
+# the variable used in practice
+#
+ifneq (filter (/%, $(GNUSTEP_USER_DIR)),)
+ # Path starts with '/', consider it absolute
+ GNUSTEP_USER_ROOT = $(GNUSTEP_USER_DIR)
+else
+ # Path does no start with '/', try it as relative
+ GNUSTEP_USER_ROOT = $(GNUSTEP_HOME)/$(GNUSTEP_USER_DIR)
+endif 
+
+# If multi-platform support is disabled, just use the hardcoded cpu,
+# vendor and os determined when gnustep-make was configured.  The
+# reason using the hardcoded ones might be better is that config.guess
+# and similar scripts might even require compiling test files to
+# determine the platform - which is horribly slow.  To prevent this
+# problem, unless we were configured to determine the platform at run
+# time, by default we use the hardcoded values of GNUSTEP_HOST*.
+
+ifeq ("@GNUSTEP_MULTI_PLATFORM@","")
+  GNUSTEP_HOST = @target@
+  GNUSTEP_HOST_CPU = @clean_target_cpu@
+  GNUSTEP_HOST_VENDOR = @clean_target_vendor@
+  GNUSTEP_HOST_OS = @clean_target_os@
+else
+ #
+ # Determine the host information
+ #
+ ifeq ($(GNUSTEP_HOST),)
+  GNUSTEP_HOST := $(shell (cd /tmp; $(GNUSTEP_MAKEFILES)/config.sub `$(GNUSTEP_MAKEFILES)/config.guess`))
+ endif
+
+ ifeq ($(GNUSTEP_HOST_CPU),)
+  GNUSTEP_HOST_CPU := $(shell ($(GNUSTEP_MAKEFILES)/clean_cpu.sh `$(GNUSTEP_MAKEFILES)/cpu.sh $(GNUSTEP_HOST)`))
+ endif
+
+ ifeq ($(GNUSTEP_HOST_VENDOR),)
+  GNUSTEP_HOST_VENDOR := $(shell ($(GNUSTEP_MAKEFILES)/clean_vendor.sh `$(GNUSTEP_MAKEFILES)/vendor.sh $(GNUSTEP_HOST)`))
+ endif
+
+ ifeq ($(GNUSTEP_HOST_OS),)
+  GNUSTEP_HOST_OS := $(shell ($(GNUSTEP_MAKEFILES)/clean_os.sh `$(GNUSTEP_MAKEFILES)/os.sh $(GNUSTEP_HOST)`))
+ endif
+endif

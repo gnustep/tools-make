@@ -26,6 +26,11 @@ COMMON_MAKE_LOADED = yes
 
 SHELL = /bin/sh
 
+#
+# Get the config information first, this includes GNUSTEP_SYSTEM_ROOT etc.
+#
+include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
+
 # GNUSTEP_BASE_INSTALL by default is `' - this is correct
 
 # GNUSTEP_BUILD_DIR is the directory in which anything generated
@@ -78,11 +83,6 @@ else
   GNUSTEP_HOST_LDIR = .
   GNUSTEP_TARGET_LDIR = .
 endif
-
-#
-# Get the config information
-#
-include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
 
 #
 # Sanity checks - only performed at the first make invocation
