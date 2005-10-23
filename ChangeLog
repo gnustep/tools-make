@@ -1,5 +1,11 @@
 2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* config.make.in: Removed code to compute GNUSTEP_HOST,
+	GNUSTEP_HOST_CPU, etc, when in GNUSTEP_MULTI_PLATFORM mode -- this
+	is already done by names.make later.
+
+2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	This change is key to no longer having to source GNUstep.sh when
 	compiling stuff using gnustep-make.  Please understand this is all
 	very experimental so don't upgrade yet if you need stability.
