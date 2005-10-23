@@ -1,5 +1,11 @@
 2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* configure.ac: Fixed error in the documention of
+	--with-user-config-file option.
+	* configure: Regenerated.
+	
+2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	* config.make.in: Removed code to compute GNUSTEP_HOST,
 	GNUSTEP_HOST_CPU, etc, when in GNUSTEP_MULTI_PLATFORM mode -- this
 	is already done by names.make later.

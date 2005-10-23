@@ -349,7 +349,7 @@ AC_SUBST(GNUSTEP_NETWORK_ROOT)
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for user config file to use)
 AC_ARG_WITH(user-config-file,
-[--with-config-file
+[--with-user-config-file
     Set the name of the user config file to use.  This can be 
     relative to the user's home directory if it is a relative path,
     or an absolute directory (the same for all users) if it is an
