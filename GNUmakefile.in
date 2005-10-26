@@ -143,7 +143,7 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 		$(makedir)/Instance/Documentation)
 	$(EC)(echo "Installing GNUstep configuration file in $(GNUSTEP_CONFIG_FILE)"; \
 	 $(srcdir)/mkinstalldirs $(GNUSTEP_CONFIG_FILE_DIR); \
-	 $(INSTALL_DATA) $(srcdir)/GNUstep.conf $(GNUSTEP_CONFIG_FILE))
+	 $(INSTALL_DATA) GNUstep.conf $(GNUSTEP_CONFIG_FILE))
 	-$(EC) rm -f $(GNUSTEP_SYSTEM_ROOT)/Makefiles
 	 $(EC)(echo "Installing gnustep-make support software"; \
 	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
