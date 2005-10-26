@@ -20,34 +20,33 @@ ifeq ($(GNUSTEP_MAKEFILES),)
 # To help lazy cows who want to type 'make' and have all work
 # automatically without installating gnustep-make first, if we don't
 # have a gnustep-make installation to use, we create a temporary one
-# in the subdirectory ./tmp-installation, execute GNUstep.sh in that
-# directory, then run make again.
+# in the subdirectory ./tmp-installation, the run make again passing
+# GNUSTEP_MAKEFILES set to point to the new makefile installation
 
 # To execute all, or clean, or install, we first depend on a local
 # temporary installation of gnustep-make; when we have it, we source
 # GNUstep.sh, then we run the make command again.  Please note that
 # "make install" will install into our temporary gnustep-make
 # directory, which is usually not particularly useful, but anyway.
-all clean install: ./tmp-installation/System/Library/Makefiles/GNUstep.sh
+all clean install: ./tmp-installation/System/Library/Makefiles
 	@echo "** Running 'make $@' using the local/temporary gnustep-make installation **"
-	(. ./tmp-installation/System/Library/Makefiles/GNUstep.sh; \
-	$(MAKE) $@)
+	$(MAKE) $@ GNUSTEP_MAKEFILES="$(CURRENT_DIR)/tmp-installation/System/Library/Makefiles"
 
 CURRENT_DIR = $(shell pwd)
 
 # This creates a local temporary installation of GNUstep-make
-./tmp-installation/System/Library/Makefiles/GNUstep.sh:
+./tmp-installation/System/Library/Makefiles:
 	@echo "** No gnustep-make installation found, attempting to create a local/temporary one. **"
 	(mkdir tmp-build; \
 	cd tmp-build; \
-	../../configure --prefix="$(CURRENT_DIR)/tmp-installation"; \
+	../../configure --prefix="$(CURRENT_DIR)/tmp-installation" \
+	                --with-config-file="$(CURRENT_DIR)/tmp-installation/GNUstep.conf"; \
 	make; \
 	make install)
 
 distclean:
-	-(if [ -f ./tmp-installation/System/Library/Makefiles/GNUstep.sh ]; then \
-	  . ./tmp-installation/System/Library/Makefiles/GNUstep.sh; \
-	  $(MAKE) $@; \
+	-(if [ -f ./tmp-installation/System/Library/Makefiles/common.make ]; then \
+	  $(MAKE) $@ GNUSTEP_MAKEFILES="$(CURRENT_DIR)/tmp-installation/System/Library/Makefiles"; \
 	fi)
 	rm -Rf tmp-installation tmp-build
 
