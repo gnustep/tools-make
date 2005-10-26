@@ -87,28 +87,14 @@ endif
 #
 # Sanity checks - only performed at the first make invocation
 #
-ifeq ($(MAKELEVEL),0)
+# FIXME - these checks should probably be removed and/or rewritten.
+#
 
-# Sanity check on GNUSTEP_*_ROOT.  We want them all to be non-empty.
-GNUSTEP_ERROR = 
-
-ifeq ($(GNUSTEP_USER_ROOT),)
-  GNUSTEP_ERROR=GNUSTEP_USER_ROOT
-endif
-ifeq ($(GNUSTEP_LOCAL_ROOT),)
-  GNUSTEP_ERROR=GNUSTEP_LOCAL_ROOT
-endif
-ifeq ($(GNUSTEP_NETWORK_ROOT),)
-  GNUSTEP_ERROR=GNUSTEP_NETWORK_ROOT
-endif
-ifeq ($(GNUSTEP_SYSTEM_ROOT),)
-  GNUSTEP_ERROR=GNUSTEP_SYSTEM_ROOT
-endif
-
-ifneq ($(GNUSTEP_ERROR),)
-  $(warning ERROR: Your $(GNUSTEP_ERROR) environment variable is empty !)
-  $(error Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
-endif
+# Please note that _GNUSTEP_TOP_INVOCATION_DONE is set by the first
+# time Master/rules.make is read, and propagated to sub-makes.  So
+# this check will pass only the very first time we parse this file,
+# and if Master/rules.make have not yet been parsed.
+ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
 
 # Sanity check on $PATH - NB: if PATH is wrong, we can't do certain things
 # because we can't run the tools (not even using opentool as we can't even
