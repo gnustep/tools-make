@@ -1,7 +1,7 @@
 2005-10-26  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: Removed checks for GNUSTEP_*_ROOT variables
-	top-level, they are not automatically and always set by
+	top-level, they are now automatically and always set by
 	config.make, no need to check for them here in the new system.
 
 2005-10-26  Nicola Pero  <n.pero@mi.flashnet.it>
