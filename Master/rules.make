@@ -60,22 +60,36 @@ endif
 # internal-check-installation-permissions comes before everything so
 # that we run any command if we aren't allowed to install
 # install depends on all as per GNU/Unix habits, conventions and standards.
-ifeq ($(MAKELEVEL),0)
+
+# The very first top-most make invocation we want to have install
+# depend on internal-check-install-permissions and on all, and
+# distclean depend on clean.  We used to check MAKELEVEL=0 here to
+# determine if this is the top-most invocation of make, but that does
+# not work if the top-most invocation of make is done from within a
+# (non-gnustep-make) makefile itself!  So we use a marker variable.
+# _GNUSTEP_TOP_INVOCATION_DONE is not set the very first / top-most
+# make invocation , but we set it for all sub-invocations, so all
+# subinvocations will have it set and we can distinguish them.
+ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
+# Top-most invocation of make
 install:: internal-check-install-permissions all \
           before-install internal-install after-install internal-after-install
+
+distclean:: clean before-distclean internal-distclean after-distclean
+
+# Further make invocations will have this variable set
+export _GNUSTEP_TOP_INVOCATION_DONE = 1
 else
+#  Sub-invocation of make
 install:: before-install internal-install after-install internal-after-install
+
+distclean:: before-distclean internal-distclean after-distclean
 endif
+
 
 uninstall:: before-uninstall internal-uninstall after-uninstall
 
 clean:: before-clean internal-clean after-clean
-
-ifeq ($(MAKELEVEL),0)
-distclean:: clean before-distclean internal-distclean after-distclean
-else 
-distclean:: before-distclean internal-distclean after-distclean
-endif
 
 check:: before-check internal-check after-check
 
