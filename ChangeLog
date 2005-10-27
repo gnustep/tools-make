@@ -1,3 +1,9 @@
+2005-10-27  Nicola Pero  <n.pero@mi.flashnet.it>
+
+	* configure.ac: Standardized the format of option help, and also
+	written fairly complete help on each and every option.
+	* configure: Regenerated.
+	
 2005-10-26  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* common.make: Removed checks for GNUSTEP_*_ROOT variables

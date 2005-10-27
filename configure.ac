@@ -34,7 +34,24 @@ AC_CANONICAL_TARGET([])
 
 AC_MSG_CHECKING(for library combo)
 AC_ARG_WITH(library-combo,[
---with-library-combo		Define the default library combination
+--with-library-combo
+   Define the default "library combo".  The library combo is a string
+   of the form aaa-bbb-ccc where 'aaa' is the Objective-C runtime
+   library to use (examples are 'gnu' and 'apple'), 
+   'bbb' is the Foundation library to use (examples are 'gnu' for
+   gnustep-base, and 'apple' for Apple Cocoa FoundationKit),
+   and 'ccc' is the ApplicationKit to use (examples are 'gnu'
+   for gnustep-gui and 'apple' for Apple Cocoa AppKit).  Use this 
+   option if you want to force a different default library combo than 
+   the one that would be used by default.  For example, on Darwin GNUstep
+   will automatically use the Apple Objective-C frameworks by
+   default (library-combo=apple-apple-apple); if you are planning 
+   on installing and using gnustep-base on there, you would need 
+   to use --with-library-combo=gnu-gnu-gnu instead.  Please notice
+   that if --disable-flattened is used, gnustep-make can have fat
+   binaries that support multiple library combos.  In that case,
+   this flag will only configure the default one, but you can still
+   use other ones at run-time.
 ],
 ac_cv_library_combo=$withval,
 ac_cv_library_combo=$ac_cv_library_combo
@@ -147,8 +164,11 @@ AC_PROG_INSTALL
 AC_PROG_LN_S([])
 
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)
-AC_ARG_WITH(tar,
-[--with-tar                      Set the name of the tar program to use],
+AC_ARG_WITH(tar,[
+--with-tar
+   Set the name of the tar program to use.  Use this option if the
+   default choice does not work for you.
+],
   TAR="$withval",)
 
 AC_CHECK_PROG(CHOWN, chown, chown, none)
@@ -166,8 +186,12 @@ fi
 # Location of the GNUstep.conf config file (--with-config-file)
 #---------------------------------------------------------------------
 AC_MSG_CHECKING([for GNUstep configuration file to use])
-AC_ARG_WITH(config-file,
-  [--with-config-file=PATH  path to GNUstep configuration file],
+AC_ARG_WITH(config-file,[
+--with-config-file=PATH
+   Set the path of the system GNUstep config file.  Use this option 
+   if you want to have the GNUstep config file in a non-standard place.
+   Example: --with-config-file=/usr/GNUstep/GNUstep.conf
+],
   GNUSTEP_CONFIG_FILE="$withval", 
   [if test "$GNUSTEP_CONFIG_FILE" = ""; then
     case "$target_os" in
@@ -194,8 +218,12 @@ AC_SUBST(GNUSTEP_CONFIG_FILE)
 # It can be annoying in certain cases though; this option lets you
 # turn it off
 AC_MSG_CHECKING([if we should import an existing configuration file])
-AC_ARG_ENABLE(importing-config-file, 
-[--disable-importing-config-file		Disable importing the existing GNUstep configuration file], 
+AC_ARG_ENABLE(importing-config-file, [
+--disable-importing-config-file
+   Disable importing the existing system GNUstep configuration file.
+   Use this option to prevent an existing configuration file from being
+   parsed and used when configure is being run.
+], 
   ac_cv_importing_config_file=$enableval,
   ac_cv_importing_config_file="yes")
 
@@ -287,11 +315,11 @@ fi
 # Process --with-system-root
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_SYSTEM_ROOT to use)
-AC_ARG_WITH(system-root,
-[--with-system-root
-    Set the GNUSTEP_SYSTEM_ROOT directory.  Use this option if you want 
-to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.  Example:
---with-system-root=/usr/GNUstep/System
+AC_ARG_WITH(system-root,[
+--with-system-root
+   Set the GNUSTEP_SYSTEM_ROOT directory.  Use this option if you want 
+   to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.
+   Example: --with-system-root=/usr/GNUstep/System
 ],
 GNUSTEP_SYSTEM_ROOT="$withval",
 if test "$GNUSTEP_SYSTEM_ROOT" = ""; then 
@@ -305,11 +333,11 @@ AC_SUBST(GNUSTEP_SYSTEM_ROOT)
 # Process --with-local-root
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_LOCAL_ROOT to use)
-AC_ARG_WITH(local-root,
-[--with-local-root
-    Set the GNUSTEP_LOCAL_ROOT directory.  Use this option if you want 
-to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.  Example:
---with-local-root=/usr/local/GNUstep/Local
+AC_ARG_WITH(local-root,[
+--with-local-root
+   Set the GNUSTEP_LOCAL_ROOT directory.  Use this option if you want 
+   to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.
+   Example: --with-local-root=/usr/local/GNUstep/Local
 ],
 GNUSTEP_LOCAL_ROOT="$withval",
 if test "$GNUSTEP_LOCAL_ROOT" = ""; then 
@@ -323,11 +351,11 @@ AC_SUBST(GNUSTEP_LOCAL_ROOT)
 # Process --with-network-root
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for GNUSTEP_NETWORK_ROOT to use)
-AC_ARG_WITH(network-root,
-[--with-network-root
-    Set the GNUSTEP_NETWORK_ROOT directory.  Use this option if you want 
-to have the GNUSTEP_NETWORK_ROOT directory.  Example:
---with-network-root=/usr/local/GNUstep/Network
+AC_ARG_WITH(network-root,[
+--with-network-root
+   Set the GNUSTEP_NETWORK_ROOT directory.  Use this option if you 
+   want to have the GNUSTEP_NETWORK_ROOT directory.  
+   Example: --with-network-root=/usr/local/GNUstep/Network
 ],
 GNUSTEP_NETWORK_ROOT="$withval",
 # By default we disable network root, by setting GNUSTEP_NETWORK_ROOT
@@ -348,14 +376,14 @@ AC_SUBST(GNUSTEP_NETWORK_ROOT)
 # Process --with-user-config-file
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for user config file to use)
-AC_ARG_WITH(user-config-file,
-[--with-user-config-file
-    Set the name of the user config file to use.  This can be 
-    relative to the user's home directory if it is a relative path,
-    or an absolute directory (the same for all users) if it is an
-    absolute path.  Use '' if you want to disable user config files.
-    The default is .GNUstep.conf if not specified.
-    Example: --with-user-config-file=GNUstep/GNUstep.conf
+AC_ARG_WITH(user-config-file,[
+--with-user-config-file
+   Set the name of the user config file to use.  This can be 
+   relative to the user's home directory if it is a relative path,
+   or an absolute directory (the same for all users) if it is an
+   absolute path.  Use '' if you want to disable user config files.
+   The default is .GNUstep.conf if not specified.
+   Example: --with-user-config-file=GNUstep/GNUstep.conf
 ],
 GNUSTEP_USER_CONFIG_FILE="$withval",
 if test "$GNUSTEP_USER_CONFIG_FILE" = ""; then 
@@ -369,15 +397,15 @@ AC_SUBST(GNUSTEP_USER_CONFIG_FILE)
 # Process --with-user-dir
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for user dir to use)
-AC_ARG_WITH(user-dir,
-[--with-user-dir
-    Set the GNUSTEP_USER_DIR directory for all users.  This can be
-    relative to the user's home directory if it is a relative path,
-    or an absolute directory (the same for all users) if it is an
-    absolute path.  Use this option if you want to have the 
-    GNUSTEP_USER_DIR directory in a non default place for all users.
-    The default is 'GNUstep'.
-    Example: --with-user-dir='gnustep'
+AC_ARG_WITH(user-dir,[
+--with-user-dir
+   Set the GNUSTEP_USER_DIR directory for all users.  This can be
+   relative to the user's home directory if it is a relative path,
+   or an absolute directory (the same for all users) if it is an
+   absolute path.  Use this option if you want to have the 
+   GNUSTEP_USER_DIR directory in a non default place for all users.
+   The default is 'GNUstep'.
+   Example: --with-user-dir='gnustep'
 ],
 GNUSTEP_USER_DIR="$withval",
 if test "$GNUSTEP_USER_DIR" = ""; then 
@@ -391,15 +419,15 @@ AC_SUBST(GNUSTEP_USER_DIR)
 # Process --with-user-defaults-dir
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for user defaults dir to use)
-AC_ARG_WITH(user-defaults-dir,
-[--with-user-defaults-dir
-    Set the GNUstep user defaults directory for all users.  This can be
-    relative to the user's home directory if it is a relative path,
-    or an absolute directory (the same for all users) if it is an
-    absolute path.  Use this option if you want to have the 
-    GNUSTEP_USER_DEFAULTS_DIR directory in a non default place for
-    all users.  The default is 'GNUstep/Defaults'
-    Example: --with-user-root='GNUstep/Library/Defaults'
+AC_ARG_WITH(user-defaults-dir,[
+--with-user-defaults-dir
+   Set the GNUstep user defaults directory for all users.  This can be
+   relative to the user's home directory if it is a relative path,
+   or an absolute directory (the same for all users) if it is an
+   absolute path.  Use this option if you want to have the 
+   GNUSTEP_USER_DEFAULTS_DIR directory in a non default place for
+   all users.  The default is 'GNUstep/Defaults'
+   Example: --with-user-root='GNUstep/Library/Defaults'
 ],
 GNUSTEP_USER_DEFAULTS_DIR="$withval",
 if test "$GNUSTEP_USER_DEFAULTS_DIR" = ""; then 
@@ -437,8 +465,25 @@ fi
 # Is the system flattened?
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for flattened directory structure)
-AC_ARG_ENABLE(flattened, 
-[--disable-flattened		Disable flattened directory structure], 
+AC_ARG_ENABLE(flattened, [
+--disable-flattened
+   Disable flattened directory structure.  Use this option if you want
+   to have support for multiple library combos and fat binaries.  A
+   library combo specifies the Objective-C frameworks to use to compile
+   a program, so having multiple library combos is only useful if you 
+   have (or plan to have) multiple OpenStep-like Objective-C frameworks 
+   installed on your machine, for example both the Apple Cocoa Objective-C 
+   frameworks and the GNUstep frameworks.  Fat binaries allow you to
+   have multiple versions for different CPUs and Operating Systems.  
+   Please note that using the fat directory structure will not blend 
+   easily with native filesystems and so if you want the non-flattened
+   directory structure you probably want to install GNUstep using its 
+   own default filesystem layout.  To switch between different 
+   library-combos, you also need to source GNUstep.sh after
+   setting the LIBRARY_COMBO environment variable.  Please refer to
+   the documentation for more information on library-combos and fat
+   binaries.
+], 
   ac_cv_flattened=$enableval,
   ac_cv_flattened="undefined")
 
@@ -481,8 +526,15 @@ fi
 # Unless you know what you are doing, stick with the default, which is
 # also much faster when sourcing GNUstep.sh.
 #
-AC_ARG_ENABLE(multi-platform, 
-[--enable-multi-platform		Use run time multi-platform support], 
+AC_ARG_ENABLE(multi-platform, [
+--enable-multi-platform
+   Enable run-time multi-platform support.  If this option is enabled,
+   then every time GNUstep.sh is run it will determine/guess the type
+   of local host machine instead of using the hardcoded value.  Use
+   this together with --disable-flattened if you have a single GNUstep
+   installation with fat binaries that is being shared over the network
+   by a variety of machines with different hardware and o/s.
+], 
   ac_cv_multi_platform=$enableval,
   ac_cv_multi_platform="undefined")
 
@@ -497,7 +549,11 @@ AC_SUBST(GNUSTEP_MULTI_PLATFORM)
 # Build backend bundles (on by default)
 #--------------------------------------------------------------------
 AC_ARG_ENABLE(backend-bundle, [
---disable-backend-bundle	Compile gui backend as a library], 
+--disable-backend-bundle
+   Compile GUI backend as a library.  Use this option if the default
+   compilation of the GUI backend as a bundle (loadable module) is
+   not supported / does not work on your machine.
+], 
   ac_cv_backend=$enableval,  
   ac_cv_backend="yes")
 
@@ -573,8 +629,11 @@ AC_CHECK_FUNCS(getpwnam getpwuid geteuid getlogin strchr)
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
 OBJC_THREAD=
-AC_ARG_WITH(thread-lib,
-[--with-thread-lib		Specify alternate thread library],
+AC_ARG_WITH(thread-lib,[
+--with-thread-lib
+   Specify alternate thread library.  Use this flag if configure can
+   not properly determine the thread library used by your libobjc.
+],
 OBJC_THREAD=$withval,
 OBJC_THREAD=
 )
@@ -666,11 +725,14 @@ AC_SUBST(ac_cv_objc_threaded)
 # Check if GCC supports -fobjc-exceptions, and if so, turn it on!
 #--------------------------------------------------------------------
 
-AC_ARG_ENABLE(native-objc-exceptions,
-	AC_HELP_STRING([--enable-native-objc-exceptions],
-		       [use native objective-c exceptions]),
-	USE_OBJC_EXCEPTIONS=$enableval,
-	USE_OBJC_EXCEPTIONS=no)
+AC_ARG_ENABLE(native-objc-exceptions, [
+--enable-native-objc-exceptions
+   Use native Objective-C exceptions.  Use this option if you want
+   to use the native Objective-C exception support (@try/@catch/@finally)
+   provided by newer GCC compilers.
+], 
+USE_OBJC_EXCEPTIONS=$enableval,
+USE_OBJC_EXCEPTIONS=no)
 
 AC_MSG_CHECKING(whether we should use native ObjC exceptions)
 if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
@@ -765,8 +827,15 @@ AC_SUBST(OBJCFLAGS)
 # Too little for it to be worth for the common user who's more
 # interested in the comments :-) so it's disabled by default.
 AC_MSG_CHECKING(if we should strip makefiles after installation)
-AC_ARG_ENABLE(strip-makefiles, 
-[--enable-strip-makefiles	Enable stripping makefiles after installation], 
+AC_ARG_ENABLE(strip-makefiles, [
+--enable-strip-makefiles
+   Enable stripping system makefiles after installation.  This will 
+   speed up gnustep-make by about 5% (average), but will remove all 
+   comments from the installed makefiles.  Those comments are quite
+   useful if you are trying to find some information on how gnustep-make
+   works (eg, if you're trying to locate a bug), and the performance
+   gain is quite small, so you probably don't want to strip makefiles.
+],
   ac_cv_strip_makefiles=$enableval,
   ac_cv_strip_makefiles="undefined")
 
@@ -783,8 +852,11 @@ AC_SUBST(GNUSTEP_STRIP_MAKEFILES)
 # Disable updating the obsolete directory structure
 #--------------------------------------------------------------------
 gs_move_obsolete=yes
-AC_ARG_ENABLE(move-obsolete, 
-[--disable-move-obsolete		Disable moving obsolete dir structure], 
+AC_ARG_ENABLE(move-obsolete,[
+--disable-move-obsolete
+   Disable moving obsolete dir structure.  This option will be 
+   removed SOON as the dir structure was change more than 2 years ago! :-)
+],
   gs_move_obsolete=$enableval,
   gs_move_obsolete=yes)
 
