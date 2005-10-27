@@ -33,7 +33,7 @@
 
 2005-10-23  Nicola Pero  <n.pero@mi.flashnet.it>
 
-	* configure.ac: Fixed error in the documention of
+	* configure.ac: Fixed error in the documentation of
 	--with-user-config-file option.
 	* configure: Regenerated.
 	
