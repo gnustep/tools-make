@@ -1,3 +1,9 @@
+2005-10-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Set up a sensible default location for GNUstep.conf
+	on mingw32 systems (C:\GNUstep\GNUstep.conf).
+	* configure: ditto
+
 2005-10-27  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Standardized the format of option help, and also
