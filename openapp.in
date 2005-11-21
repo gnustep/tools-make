@@ -32,6 +32,9 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+. @GNUSTEP_CONFIG_FILE@
+. $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
+
 if [ -z "$GNUSTEP_FLATTENED" ]; then
   GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
 fi
@@ -82,8 +85,6 @@ case "$app" in
   *)         app_list="$app.app:$app.debug:$app.profile"; appname="$app";
 esac
 
-old_IFS="$IFS"
-IFS=:
 case "$app" in
   /*) # An absolute path.
       for appdir in $app_list; do
@@ -102,14 +103,7 @@ case "$app" in
 	 fi
       done;;
     *)  # A path that should be searched into the GNUstep paths
-      if [ -n "$GNUSTEP_PATHLIST" ]; then
-        SPATH="$GNUSTEP_PATHLIST"
-      else
-        SPATH="$PATH"
-      fi
-        SPATH=".:$SPATH"
-
-      for dir in $SPATH; do
+      for dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT"; do
         for appdir in $app_list; do
           # First, search in $dir/Applications/any_path_here/$appdir
           #echo "$dir/Applications/"'*'"/$appdir"
@@ -139,7 +133,6 @@ case "$app" in
 	done
       done;;
 esac
-IFS="$old_IFS"
 unset app_list
 unset appdir
 

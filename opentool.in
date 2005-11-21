@@ -25,17 +25,14 @@
 # is not specified. The arguments passed after the tool name are passed
 # unmodified to the tool.
 
-if [ -z "$GNUSTEP_PATHLIST" ]; then
-  echo "The GNUSTEP_PATHLIST environment variable is missing."
-  echo "Did you forget to set up your environment using GNUstep.sh ?"
-  exit 1
-fi
-
 if [ -z "$1" ]; then
   echo usage: `basename "$0"` [--library-combo=...] tool [arguments...]
   echo `basename "$0"` --help for help
   exit 1
 fi
+
+. @GNUSTEP_CONFIG_FILE@
+. $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
 
 if [ -z "$EXEEXT" ]; then
   EXEEXT=@EXEEXT@
@@ -112,8 +109,7 @@ case "$tool" in
 	if [ -z "$full_toolname" ]; then 
           
           # Local tool not found - Search for an installed one
-          # we search in GNUSTEP_PATHLIST, which means we
-          # search in the order in:
+          # we search in the order in:
           # GNUSTEP_USER_ROOT
           # GNUSTEP_LOCAL_ROOT
           # GNUSTEP_NETWORK_ROOT
@@ -124,39 +120,34 @@ case "$tool" in
 	  # subdirectory, then the top-level directory.
 	  # (For flattened systems we skip the first two options.
 	  #
-          if [ -n "$GNUSTEP_PATHLIST" ]; then
-            SPATH="$GNUSTEP_PATHLIST"
-	    IFS=:
-	    for dir in $SPATH; do
-	      tmpdir="$dir/Tools"
-	      if [ -z "$GNUSTEP_FLATTENED" ]; then
-	        tmpgnudir="$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
-                tmplibdir="$tmpgnudir/$LIBRARY_COMBO"
-                # echo "$tmplibdir/$tool";
-		if [ -x "$tmplibdir/$tool" ]; then
-                  # echo "Found: $tmplibdir/$tool";
-		  full_toolname="$tmplibdir/$tool"
-		  break;
-		fi
-		if [ -x "$tmpgnudir/$tool" ]; then
-                  # echo "Found: $tmpgnudir/$tool";
-		  full_toolname="$tmpgnudir/$tool"
-		  break;
-		fi
-	      fi
-              # echo "$tmpdir/$tool";
-	      if [ -x "$tmpdir/$tool" ]; then
-                # echo "Found: $tmpdir/$tool";
-		full_toolname="$tmpdir/$tool"
+	  for dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" ; do
+	    tmpdir="$dir/Tools"
+	    if [ -z "$GNUSTEP_FLATTENED" ]; then
+	      tmpgnudir="$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+	      tmplibdir="$tmpgnudir/$LIBRARY_COMBO"
+	      # echo "$tmplibdir/$tool";
+	      if [ -x "$tmplibdir/$tool" ]; then
+		# echo "Found: $tmplibdir/$tool";
+		full_toolname="$tmplibdir/$tool"
 		break;
 	      fi
+	      if [ -x "$tmpgnudir/$tool" ]; then
+		# echo "Found: $tmpgnudir/$tool";
+		full_toolname="$tmpgnudir/$tool"
+		break;
+	      fi
+	    fi
+	    # echo "$tmpdir/$tool";
+	    if [ -x "$tmpdir/$tool" ]; then
+	      # echo "Found: $tmpdir/$tool";
+	      full_toolname="$tmpdir/$tool"
+	      break;
+	    fi
 	    done
 	    unset tmpdir
 	    unset tmpgnudir
 	    unset tmplibdir
-	    IFS=" "
-          fi
-        fi
+	  fi
         ;;
 esac
 
@@ -165,5 +156,5 @@ if [ -z "$full_toolname" ]; then
   exit 1
 fi
 
-IFS=" "
-exec "$full_toolname" "$@"
+"$full_toolname" "$@"
+
