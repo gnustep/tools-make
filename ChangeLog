@@ -1,3 +1,14 @@
+2005-11-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.conf.in: Use new variables for handling backslashes in
+	paths.
+	* GNUstep.csh.in: ditto
+	* GNUstep.sh.in: ditto
+	* configure.ac: Always make GNUSTEP_MAKEFILES the Library/Makefiles
+	subdirectory of the sytem root.  Create new variables containing
+	escaped backslashes to handle being given a backslash in a path.
+	* configure: regenerate
+
 2005-11-21  Richard Frith-Macdonald <rfm@gnu.org>
 
 	opentool.in:

@@ -309,7 +309,6 @@ else
   GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System";
   GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local";
   GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT";
-  GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
 fi
 
 #--------------------------------------------------------------------
@@ -441,12 +440,8 @@ AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
 #--------------------------------------------------------------------
 # Setting up GNUSTEP_MAKEFILES
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for GNUSTEP_MAKEFILES to use)
-if test "$GNUSTEP_MAKEFILES" = ""; then 
-  GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
-fi
+GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
 AC_SUBST(GNUSTEP_MAKEFILES)
-AC_MSG_RESULT($GNUSTEP_MAKEFILES)
 
 #--------------------------------------------------------------------
 # Setting up the install-sh script
@@ -896,6 +891,25 @@ AC_SUBST(clean_target_os)
 AC_SUBST(clean_target_cpu)
 AC_SUBST(clean_target_vendor)
 AC_SUBST(target)
+
+#-------------------------------------------------------------------
+# Record paths for use in shell scripts ... with backslashes quoted.
+#-------------------------------------------------------------------
+GNUSTEP_SHELL_SYSTEM_ROOT=`echo $GNUSTEP_SYSTEM_ROOT|sed -e 's/\\\\/\\\\\\\\/g'`
+AC_SUBST(GNUSTEP_SHELL_SYSTEM_ROOT)
+GNUSTEP_SHELL_NETWORK_ROOT=`echo $GNUSTEP_NETWORK_ROOT|sed -e 's/\\\\/\\\\\\\\/g'`
+AC_SUBST(GNUSTEP_SHELL_NETWORK_ROOT)
+GNUSTEP_SHELL_LOCAL_ROOT=`echo $GNUSTEP_LOCAL_ROOT|sed -e 's/\\\\/\\\\\\\\/g'`
+AC_SUBST(GNUSTEP_SHELL_LOCAL_ROOT)
+GNUSTEP_SHELL_USER_DIR=`echo $GNUSTEP_USER_DIR|sed -e 's/\\\\/\\\\\\\\/g'`
+AC_SUBST(GNUSTEP_SHELL_USER_DIR)
+GNUSTEP_SHELL_USER_DEFAULTS_DIR=`echo $GNUSTEP_USER_DEFAULTS_DIR|sed -e 's/\\\\/\\\\\\\\/g'`
+AC_SUBST(GNUSTEP_SHELL_USER_DEFAULTS_DIR)
+GNUSTEP_SHELL_USER_CONFIG_FILE=`echo $GNUSTEP_USER_CONFIG_FILE|sed -e 's/\\\\/\\\\\\\\/g'`
+AC_SUBST(GNUSTEP_SHELL_USER_CONFIG_FILE)
+GNUSTEP_SHELL_CONFIG_FILE=`echo $GNUSTEP_CONFIG_FILE|sed -e 's/\\\\/\\\\\\\\/g'`
+AC_SUBST(GNUSTEP_SHELL_CONFIG_FILE)
+
 
 #--------------------------------------------------------------------
 # Produce the output files

@@ -34,12 +34,12 @@
 
 # Determine the location of the system configuration file
 if ( ! ${?GNUSTEP_CONFIG_FILE} ) then
-  setenv GNUSTEP_CONFIG_FILE "@GNUSTEP_CONFIG_FILE@"
+  setenv GNUSTEP_CONFIG_FILE "@GNUSTEP_SHELL_CONFIG_FILE@"
 endif
 
 # Determine the location of the user configuration file
 if ( ! ${?GNUSTEP_USER_CONFIG_FILE} ) then
-  setenv GNUSTEP_USER_CONFIG_FILE "@GNUSTEP_USER_CONFIG_FILE@"
+  setenv GNUSTEP_USER_CONFIG_FILE "@GNUSTEP_SHELL_USER_CONFIG_FILE@"
 endif
 
 # Read the system configuration file
@@ -95,15 +95,15 @@ endif
 # Now, set any essential variable (that is not already set) to the
 # built-in values.
 if ( ! ${?GNUSTEP_SYSTEM_ROOT} ) then
-  setenv GNUSTEP_SYSTEM_ROOT "@GNUSTEP_SYSTEM_ROOT@"
+  setenv GNUSTEP_SYSTEM_ROOT "@GNUSTEP_SHELL_SYSTEM_ROOT@"
 endif
 
 if ( ! ${?GNUSTEP_LOCAL_ROOT} ) then
-  setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_LOCAL_ROOT@"
+  setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_SHELL_LOCAL_ROOT@"
 endif
 
 if ( ! ${?GNUSTEP_NETWORK_ROOT} ) then
-  setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_NETWORK_ROOT@"
+  setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_SHELL_NETWORK_ROOT@"
 endif
 
 
@@ -117,7 +117,7 @@ if ( ! ${?GNUSTEP_MAKEFILES} ) then
 endif
 
 if ( ! ${?GNUSTEP_USER_DIR} ) then
-  setenv GNUSTEP_USER_DIR "@GNUSTEP_USER_DIR@"
+  setenv GNUSTEP_USER_DIR "@GNUSTEP_SHELL_USER_DIR@"
 endif
 
 #
