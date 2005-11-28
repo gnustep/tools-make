@@ -4,6 +4,8 @@
 	paths.
 	* GNUstep.csh.in: ditto
 	* GNUstep.sh.in: ditto
+	*GNUmakefile.in: Quote paths when we use them .. to avoid backslashes
+	being removed when they should be present in the path.
 	* configure.ac: Always make GNUSTEP_MAKEFILES the Library/Makefiles
 	subdirectory of the sytem root.  Create new variables containing
 	escaped backslashes to handle being given a backslash in a path.
