@@ -169,7 +169,9 @@ USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 #
 # PS: At run-time, this can be overridden on the command-line, or
 # via an environment variable.
+ifeq ($(GNUSTEP_CONFIG_FILE),)
 GNUSTEP_CONFIG_FILE = @GNUSTEP_CONFIG_FILE@
+endif
 
 #
 # Now we set up the environment and everything by reading the GNUstep

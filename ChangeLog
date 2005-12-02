@@ -2,6 +2,7 @@
 
 	opentool.in:
 	openapp.in:
+	config.make.in:
 	Honor the GNUSTEP_CONFIG_FILE environment variable.
 
 2005-11-28  Richard Frith-Macdonald <rfm@gnu.org>
