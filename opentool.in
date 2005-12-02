@@ -31,7 +31,11 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-. @GNUSTEP_CONFIG_FILE@
+if [ -z "$GNUSTEP_CONFIG_FILE" ]; then
+  GNUSTEP_CONFIG_FILE=@GNUSTEP_CONFIG_FILE@
+fi
+. $GNUSTEP_CONFIG_FILE
+
 . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
 
 if [ -z "$EXEEXT" ]; then
