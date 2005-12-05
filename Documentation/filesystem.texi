@@ -16,7 +16,8 @@ Last Update: @today{}
 
 @page
 @vskip 0pt plus 1filll
-Authors:  Tim Harrison, Martin Brecher, Adam Fedor, Nicola Pero
+Authors:  Tim Harrison, Martin Brecher, Adam Fedor, Nicola Pero,
+Richard Frith-Macdonald
 
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -34,6 +35,7 @@ any later version published by the Free Software Foundation.
 * The Users Domain::            
 * Hierarchy::                   
 * Description::                 
+* Configuration::                 
 @end menu
 
 On GNUstep, there are four separate places where files related to GNUstep
@@ -218,7 +220,7 @@ Network/
 
 @end multitable
 
-@node  Description,  , Hierarchy, Top
+@node  Description, Configuration, Hierarchy, Top
 @section Description
 
 @menu
@@ -475,6 +477,193 @@ that are installed on the system must an extension of ".service".
 @subsubsection Sounds
 
 This directory contains sound files.
+
+@node Configuration,  , Description, Top
+@section Configuration
+
+The locations of the various domains within the filesystem hierarchy on your
+machine are determined by the GNUstep configuration file (or if that is not
+present, by default values built into the GNUstep make and base packages
+when they were configured and built).
+
+The location of the GNUstep configuration file is built in to the make and
+base packages when they are configured using the --with-config-file option
+to the configure script.  The path specified must be an absolute one for
+the make package, but may also be a path relative to the location of the
+base library itsself (as dynamically linked into applications) for the
+base package.
+
+However, the location of the configuration file may also be specified
+using the GNUSTEP_CONFIG_FILE environment variable, overriding the value
+built in to the package, at any time when using the make package to build
+or install software.  Support for the environment variable may also
+be enabled for the make package when its configure script is run.
+
+Please do
+@example
+configure --help
+@end example
+to get all the options of how the package configuration scripts can be
+told to set up the default path to and values in the configuration file.
+
+@menu
+* File Format::              
+* Windows (MINGW)::
+* File Values::              
+@end menu
+
+@node File Format, Windows (MINGW), Configuration, Configuration
+@subsection File Format
+
+By default, the configuration file is called GNUstep.conf and exists in
+/etc/GNUstep on a Unix-like system or C:\GNUstep on an ms-windows system.
+In either case this file is in a format suitable for being 'sourced' by
+the standard unix (Bourne) shell, consisting of lines of the form key=value,
+comments (everything on a line from the first hash (#) onwards), or blank lines.
+
+This is very convenient on unix-like systems, but needs care for windows users.
+If a value contains whitespace or backslash characters (or the hash which
+would start a comment) it needs to be quoted by enclosing the whole value
+in single or double quotes.  An alternative for values containing backslashes
+(the norm for a windows path) is to double up each backslash in an unquoted
+value.
+
+@node Windows (MINGW), File Values, File Format, Configuration
+@subsection Windows (MINGW)
+
+On ms-windows, for software development, you are likely to want to have an
+extra configuration file.  This is because of the limitations of the
+make program (used to build and install software).
+
+Basically the issue is that the make package doesn't really like
+the colons and backslashes in windows paths (using them is error prone)
+and can't tolerate whitespace in file names ... so you need to set up
+a config file which uses unix-style paths as used by MSYS
+(ie of the form '/c/...' rather than 'C:\...') for
+building and installing software.
+
+On the other hand, the base library (and all applications since they are
+built using it) wants to work with native windows paths so that applications
+behave naturally as far as the end users are concerned, and therefore needs a
+configuration file containing windows-style paths rather than unix-like
+ones.
+
+The simplest way to achieve this is to use different values for the
+--with-config-file= option when configuring the make and base packages.
+
+For example, configure the make package like this -
+@example
+./configure --with-config-file=/c/GNUstep/GNUstep.conf-dev
+@end example
+and the base library like this -
+@example
+./configure --with-config-file=C:\\GNUstep\\GNUstep.conf
+@end example
+
+Then you need to edit the two config files to make sure they contain
+values of the correct format.
+
+@node File Values, , Windows (MINGW), Configuration
+@subsection File Values
+
+The key=value pairs permitted in the configuration file are limited
+to the keys described here.
+
+@menu
+* GNUSTEP_SYSTEM_ROOT::              
+* GNUSTEP_LOCAL_ROOT::              
+* GNUSTEP_NETWORK_ROOT::              
+* GNUSTEP_USER_CONFIG_FILE::              
+* GNUSTEP_USER_DIR::              
+* GNUSTEP_USER_DEFAULTS_DIR::              
+@end menu
+
+@node GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, File Values, File Values
+@subsubsection GNUSTEP_SYSTEM_ROOT
+
+The value for this key is the path for the System domain.
+
+It must be either an absolute path or a path beginning './' in which case the
+leading './' is replaced by the path to the directory in which the
+configuration file is located.
+
+This is normally -
+@example
+GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
+@end example
+
+@node GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT, GNUSTEP_SYSTEM_ROOT, File Values
+@subsubsection GNUSTEP_LOCAL_ROOT
+
+The value for this key is the path for the Local domain.
+
+It must be either an absolute path or a path beginning './' in which case the
+leading './' is replaced by the path to the directory in which the
+configuration file is located.
+
+This is normally -
+@example
+GNUSTEP_LOCAL_ROOT=/usr/GNUstep/Local
+@end example
+
+@node GNUSTEP_NETWORK_ROOT, GNUSTEP_USER_CONFIG_FILE, GNUSTEP_LOCAL_ROOT, File Values
+@subsubsection GNUSTEP_NETWORK_ROOT
+
+The value for this key is the path for the Network domain.
+
+It must be either an absolute path or a path beginning './' in which case the
+leading './' is replaced by the path to the directory in which the
+configuration file is located.
+
+This is normally the same as the value configured for GNUSTEP_LOCAL_ROOT -
+@example
+GNUSTEP_NETWORK_ROOT=/usr/GNUstep/Local
+@end example
+
+@node GNUSTEP_USER_CONFIG_FILE, GNUSTEP_USER_DIR, GNUSTEP_NETWORK_ROOT, File Values
+@subsubsection GNUSTEP_USER_CONFIG_FILE
+
+This is the name of the user specific configuration file (a path relative to
+the home directory of the user).  This configuration file is loaded after the
+main GNUstep configuration file, and the key=value pairs in this file will
+override those in the main file (all except the GNUSTEP_USER_CONFIG_FILE
+obviously).
+
+The default (unless otherwise configured) is 
+@example
+GNUSTEP_USER_CONFIG_FILE=.GNUstep.conf
+@end example
+
+If the value of this key is set to an empty styring, the system will not
+attempt to load a user specific configuration file, thus ensuring that the
+individual user cannot override the values specified by the system
+administrator.
+
+@node GNUSTEP_USER_DIR, GNUSTEP_USER_DEFAULTS_DIR, GNUSTEP_USER_DIR, File Values
+@subsubsection GNUSTEP_USER_DIR
+
+This is used to define the User domain ... it is a path relative to the home
+directory of the user in which the User domain and hence all resources in
+the User domain are to be found.
+
+The default (unless otherwise configured) is:
+@example
+GNUSTEP_USER_DIR=GNUstep
+@end example
+
+but setting an empty string for this value
+will cause the User domain to be the home directory of the user.
+
+@node GNUSTEP_USER_DEFAULTS_DIR, , GNUSTEP_USER_DIR, File Values
+@subsubsection GNUSTEP_USER_DEFAULTS_DIR
+
+This is used to define the location of the defaults database for the user ...
+it is a path relative to the home directory of the user.
+
+The default (unless otherwise configured) is:
+@example
+GNUSTEP_USER_DEFAULTS_DIR=GNUstep/Defaults
+@end example
 
 @bye
 \bye
