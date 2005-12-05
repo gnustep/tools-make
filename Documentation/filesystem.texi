@@ -639,7 +639,7 @@ attempt to load a user specific configuration file, thus ensuring that the
 individual user cannot override the values specified by the system
 administrator.
 
-@node GNUSTEP_USER_DIR, GNUSTEP_USER_DEFAULTS_DIR, GNUSTEP_USER_DIR, File Values
+@node GNUSTEP_USER_DIR, GNUSTEP_USER_DEFAULTS_DIR, GNUSTEP_USER_CONFIG_FILE, File Values
 @subsubsection GNUSTEP_USER_DIR
 
 This is used to define the User domain ... it is a path relative to the home
