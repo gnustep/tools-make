@@ -294,7 +294,7 @@ internal-library-uninstall_:: shared-instance-headers-uninstall
 ifeq ($(BUILD_DLL),yes)
 # For DLLs, also remove the DLL file.
 internal-library-uninstall_::
-	$(ECHO_UNINSTALLING)rm -f $(DLL_INSTALLATION_DIR)/$(LINK_LIBRARY_DLL_FILE)$(END_ECHO)
+	$(ECHO_UNINSTALLING)rm -f $(DLL_INSTALLATION_DIR)/$(LIB_LINK_DLL_FILE)$(END_ECHO)
 endif
 
 #
