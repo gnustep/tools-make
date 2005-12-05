@@ -1,8 +1,14 @@
-2005-12:02  Richard Frith-Macdonald <rfm@gnu.org>
+2005-12-05  Nicola Pero  <n.pero@mi.flashnet.it>
 
-	opentool.in:
-	openapp.in:
-	config.make.in:
+	* Instance/library.make (internal-library-uninstall_): Fixed
+	uninstallation of dll on windows.  (Suggested by Frode
+	<frode@bredband.net>).
+
+2005-12-02  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* opentool.in:
+	* openapp.in:
+	* config.make.in:
 	Honor the GNUSTEP_CONFIG_FILE environment variable.
 
 2005-11-28  Richard Frith-Macdonald <rfm@gnu.org>
@@ -11,17 +17,17 @@
 	paths.
 	* GNUstep.csh.in: ditto
 	* GNUstep.sh.in: ditto
-	*GNUmakefile.in: Quote paths when we use them .. to avoid backslashes
+	* GNUmakefile.in: Quote paths when we use them .. to avoid backslashes
 	being removed when they should be present in the path.
 	* configure.ac: Always make GNUSTEP_MAKEFILES the Library/Makefiles
-	subdirectory of the sytem root.  Create new variables containing
+	subdirectory of the system root.  Create new variables containing
 	escaped backslashes to handle being given a backslash in a path.
 	* configure: regenerate
 
 2005-11-21  Richard Frith-Macdonald <rfm@gnu.org>
 
-	opentool.in:
-	openapp.in:
+	* opentool.in:
+	* openapp.in:
 	Changed to use new GNUstep.conf configuration file to obtain the
 	directories to search.
 
