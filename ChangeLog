@@ -1,5 +1,12 @@
 2005-12-05  Nicola Pero  <n.pero@mi.flashnet.it>
 
+	* configure.ac: Display a message with the GNUSTEP_MAKEFILES that
+	is used.  In psychological preparation for when it will actually
+	be configurable. ;-)
+	* configure: Regenerated.
+
+2005-12-05  Nicola Pero  <n.pero@mi.flashnet.it>
+
 	* Instance/library.make (internal-library-uninstall_): Fixed
 	uninstallation of dll on windows.  (Suggested by Frode
 	<frode@bredband.net>).

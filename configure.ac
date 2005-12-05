@@ -440,8 +440,16 @@ AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
 #--------------------------------------------------------------------
 # Setting up GNUSTEP_MAKEFILES
 #--------------------------------------------------------------------
+#
+# Please note that we do an explicit check in preparation for the (not
+# so far) future when this directory (like any other GNUstep
+# directory, eg, Applications or Tools or Libraries) will be
+# relocatable to anywhere you like.
+#
+AC_MSG_CHECKING(for GNUSTEP_MAKEFILES to use)
 GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
 AC_SUBST(GNUSTEP_MAKEFILES)
+AC_MSG_RESULT($GNUSTEP_MAKEFILES)
 
 #--------------------------------------------------------------------
 # Setting up the install-sh script
