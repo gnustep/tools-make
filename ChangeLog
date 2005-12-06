@@ -1,3 +1,10 @@
+2005-12-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: On mingw32, if we don't get the config file location
+	from an earlier installatioin or a command line option, use
+	/c/GNUstep/GNUstep.conf-dev ... assuming a development version
+	rather than a version for distribution.
+
 2005-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/filesystem.texi: Initial attempt at adding

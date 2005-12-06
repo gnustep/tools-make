@@ -197,8 +197,8 @@ AC_ARG_WITH(config-file,[
     case "$target_os" in
       freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
       netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
-      mingw32* )	    GNUSTEP_CONFIG_FILE=C:/GNUstep/GNUstep.conf ;;
-      *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
+      mingw32* )	    GNUSTEP_CONFIG_FILE=/c/GNUstep/GNUstep.conf-dev ;;
+      *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
     esac
   fi])
 AC_MSG_RESULT($GNUSTEP_CONFIG_FILE)
