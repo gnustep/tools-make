@@ -261,7 +261,7 @@ endif
 
 ####################################################
 #
-# MacOSX 10.[12], darwin[567]
+# MacOSX, darwin
 #
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 ifeq ($(OBJC_RUNTIME_LIB), apple)
@@ -309,6 +309,10 @@ SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning $(CC_LDFLAGS)
 # works starting with 10.3. libs w/ffcall don't link on darwin/ix86 without it.
 ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
   SHARED_LD_PREFLAGS += -single_module
+endif
+ifeq ($(findstring darwin8, $(GNUSTEP_TARGET_OS)), darwin8)
+  SHARED_LD_PREFLAGS += -single_module
+  BUNDLE_LIBS += -lSystemStubs
 endif
 SHARED_LIB_LINK_CMD     = \
 	$(CC) \
@@ -392,7 +396,7 @@ SHARED_CFLAGS   += -fno-common
 
 endif
 #
-# end MacOSX 10.2, darwin6
+# end MacOSX, darwin
 #
 ####################################################
 

@@ -156,7 +156,7 @@ into errors.
 8. Installing gnustep-objc
 ==========================
 
-Download gnustep-objc, and compile it:
+Download gnustep-libobjc, (find it at http://www.gnustep.org/resources/downloads.php) and compile it:
 
 make
 make install

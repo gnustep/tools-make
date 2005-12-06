@@ -4,6 +4,8 @@
 	from an earlier installatioin or a command line option, use
 	/c/GNUstep/GNUstep.conf-dev ... assuming a development version
 	rather than a version for distribution.
+	* target.m: add -SystemStubs to bundle libraries on MacOS-X tiger ...
+	as linking of stdio functions seems to fail otherwise.
 
 2005-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
