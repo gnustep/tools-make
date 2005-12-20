@@ -1,5 +1,10 @@
 2005-12-20  Adam Fedor  <fedor@gnu.org>
 
+	* configure.ac: Check for objc-gnu in the GNUstep libraries dir.
+	* Instance/bundle.make: Always link againt all libs on darwin.
+
+2005-12-20  Adam Fedor  <fedor@gnu.org>
+
 	* configure.ac: Don't strip -g from CFLAGS. Someone might want it
 	without using debug=yes.
 

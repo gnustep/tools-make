@@ -592,7 +592,7 @@ AC_CACHE_VAL(gs_cv_objc_libdir,
 [dnl
 gs_cv_objc_libdir=NONE
 if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
-  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a"; then
+  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
   else
     gs_cv_objc_libdir=NONE

@@ -64,9 +64,9 @@ ifeq ($(BUILD_DLL), yes)
   LINK_BUNDLE_AGAINST_ALL_LIBS = yes
 endif
 
-# On Apple, two-level namespaces require all symbols in bundles
-# to be resolved at link time.
-ifeq ($(FOUNDATION_LIB), apple)
+# On Darwin, two-level namespaces require all symbols in bundles
+# to be resolved at link time. Do this even if we don't think we need it.
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
   LINK_BUNDLE_AGAINST_ALL_LIBS = yes
 endif
 
