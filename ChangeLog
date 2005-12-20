@@ -1,3 +1,8 @@
+2005-12-20  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Don't strip -g from CFLAGS. Someone might want it
+	without using debug=yes.
+
 2005-12-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: On mingw32, if we don't get the config file location

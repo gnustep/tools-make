@@ -571,8 +571,6 @@ AC_SUBST(BACKEND_BUNDLE)
 #--------------------------------------------------------------------
 # Miscellaneous flags and setup
 #--------------------------------------------------------------------
-# Strip '-g' off of CFLAGS, since debug=yes adds that anyway
-CFLAGS=`echo $CFLAGS | sed -e 's/-g //'`
 
 # Set location of GNUstep dirs for later use
 if test "$GNUSTEP_FLATTENED" = yes; then
