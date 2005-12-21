@@ -35,8 +35,9 @@ at the (developer) FAQ for more developer oriented questions.
 @subsection What is GNUstep?
 
 GNUstep is the Free Software Foundation's effort to implement NeXT
-Software, Inc.'s (now Apple Computer, Inc.) OpenStep Standard.  The project is
-not finished, so some parts are not as polished as they could be.
+Software, Inc.'s (now Apple Computer, Inc.) OpenStep Standard.  Also we
+are building developer and user applications based on this standard which
+may someday be used to form a complete desktop experience.
 
 @node What is the OpenStep standard?, What platforms does GNUstep run on?, What is GNUstep?, GNUstep General Information
 @subsection What is the OpenStep standard?
@@ -45,11 +46,12 @@ OpenStep is an Application Programming Interface (API) for creating
 applications using the Objective-C language.  It was published by NeXT
 Computer, Inc. in 1994.
 
-OpenStep consists of three parts: the @samp{Foundation Kit}, a library of
-non-graphical objects; the @samp{Application Kit}, a library of objects useful
-in creating graphical applications; and the @samp{Display PostScript System}, an
-interface for drawing to the screen using the PostScript graphics
-language.
+OpenStep consists of three parts: the @samp{Foundation Kit}, a library
+of non-graphical objects; the @samp{Application Kit}, a library of
+objects useful in creating graphical applications; and the @samp{Display
+PostScript System} (DPS), an interface for drawing to the screen using
+the PostScript graphics language. DPS support is not being persued at
+this time however.
 
 You can obtain a copy of the OpenStep standard from the GNUstep web site
 @url{http://www.gnustep.org} or it's mirror sites.
@@ -58,7 +60,7 @@ You can obtain a copy of the OpenStep standard from the GNUstep web site
 @subsection What platforms does GNUstep run on?
 
 See the list of supported platforms at
-@url{http://www.gnustep.org/information/machines_toc.html} for
+@url{machines_toc.html} for
 information on what machines GNUstep builds on and what the status of
 the ports is. Probably a few days porting to any other UNIX system where
 current gcc compilers and gdb debugger work.
@@ -72,18 +74,12 @@ as GNU/Linux and FreeBSD.
 That being said, the base library should run on Windows NT, 98, 2000, and XP
 with the Cygwin UNIX system-emulation environment from Cygnus
 (@url{http://www.cygwin.com/}), or the MinGW environment
-(@url{http://www.mingw.org}).  At present there are a few problems with
-networking (distributed objects) support, but the library is believed to work.
+(@url{http://www.mingw.org}).  
 
 The GUI library uses the win32 backend library to work under
 Windows.  The backend library is a thin layer that converts the
 GNUstep methods to handle drawing of GUI elements to calls to the
 Windows API.  This project is currently in beta.
-
-The application-wrapper used for GNUstep already allows for multiple
-binaries to be stored for different systems, so you should be able
-to write once, deploy anywhere.
-
 
 @node What is GNUstep's position towards KDE and the GNOME project?, How can I get GNUstep?, Does GNUstep run on Windows?, GNUstep General Information
 @subsection  What is GNUstep's position towards KDE and the GNOME project?
@@ -102,14 +98,10 @@ strings to distributed objects.
 @node How can I get GNUstep?, How do you run GNUstep?, What is GNUstep's position towards KDE and the GNOME project?, GNUstep General Information
 @subsection  How can I get GNUstep?
 
-Get the HOWTO from 
-@url{http://www.gnustep.org/resources/documentation/GNUstep-HOWTO}
-Get the latest release from @url{ftp://ftp.gnustep.org}. If you're
-really adventurous, get the latest snapshot by anonymous ftp from
-@url{ftp://ftp.gnustep.org/pub/daily-snapshots}
-
-Use anonymous CVS to keep up to date - instructions are in the
-HOWTO.
+Many distributions include packaged versions of GNUstep (Debian,
+etc). To compile from sratch, download the GNUstep Startup package or
+get the HOWTO from @url{gnustep-howto_toc.html}. Get the latest releases
+from @url{ftp://ftp.gnustep.org/pub/gnustep/core}.
 
 @node How do you run GNUstep?, Is there a web site?, How can I get GNUstep?, GNUstep General Information
 @subsection  How do you run GNUstep?
@@ -155,12 +147,10 @@ snapshots.
 @node What is usable?,  , When is GNUstep intended to be available?, GNUstep General Information
 @subsection  What is usable?
 
-@itemize @bullet
-@item gnustep-make does pretty much what the makefiles in NEXTSTEP do.
-@item gnustep-base (Foundation) works well and is used in production evironments.
-@item gnustep-gdl2 works well and is used in production evironments.
-@item gnustep-gui (Application Kit) has a lot working but there is still stuff missing.
-@end itemize
+Most of GNUstep is quite usable and there are many complex applications
+that work well. However, GNUstep does not completely track the latest
+changes that Apple makes to their interface and there are still some
+parts that need some work).
 
 What does this mean for users? Many applications will run quite well.
 Applications that require very complex text handling and some unusual
@@ -259,7 +249,7 @@ Although we don't want to force anyone into this, a lot of the power and
 ease of use comes from this feel. The look of GNUstep is something
 different --- buttons and other widgets can look different but still act
 the same way. We hope to implement themes which will allow
-this. Actually we're hoping someone will volunteer to do it.
+this.
 
 @node What's up with the directory structure?, Why not use framework bundles?, Do we have to have the NEXTSTEP look and feel?, Compatibility and Layout
 @subsection What's up with the directory structure?

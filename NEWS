@@ -1,7 +1,37 @@
 NEWS
 ****
 
-The currently released version is `1.11.1'.
+The currently released version is `1.11.2'.
+
+Changes in version `1.11.2'
+===========================
+
+The `GNUstep.conf' file is now viewed as the essential determination of
+the install location for GNUstep libraries, tools and other files.
+During configuration, this file is read, if it exists, to determine
+this information. This can still be overriden with environment and
+command line options, however. See the filesystem documentation in the
+GNUstep Make Documentation directory for more information.
+
+   You no longer need to source GNUstep.sh in order to compile GNUstep
+programs. All that is needed is the definition of GNUSTEP_MAKEFILES.
+You should also have the GNUstep system tools directory in your path.
+
+   All netbsd systems are assumed to use ELF libraries. Support for the
+old static libs version of netbsd was removed.
+
+   Serveral new options were added to configure to change the location
+of basic dir locations and basic configuration files. Also, the help was
+greatly improved. Note that -prefix=/usr/GNUstep/System no longer
+works.  Please use -prefix=/usr/GNUstep or
+-with-system-root=/usr/GNUstep/System.
+
+   A few more fixes for cygwin are included as well as Windows resource
+rules.
+
+   Support for ObjC++ has been added. You should list the ObjC++ .mm
+files in the xxx_OBJCC_FILES variable, and put extra ObjC++ flags in
+xxx_OBJCCFLAGS or ADDITIONAL_OBJCCFLAGS.
 
 Changes in version `1.11.1'
 ===========================

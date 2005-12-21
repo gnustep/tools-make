@@ -1,3 +1,7 @@
+2005-12-21  Adam Fedor  <fedor@gnu.org>
+
+	* Version 1.11.2
+
 2005-12-20  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac: Check for objc-gnu in the GNUstep libraries dir.

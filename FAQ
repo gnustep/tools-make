@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-Last updated 18 September 2005.  Please send corrections to
+Last updated 20 December 2005.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -29,7 +29,7 @@ GNUstep yet. Plus there are some other issues. If you start with Cocoa:
 
    * Do not use CoreFoundation
 
-   * Do not use Objective-C++
+   * Do not use Objective-C++ (except with gcc 4.1 or later)
 
    * Do not use Quicktime or other proprietary extension
 
@@ -92,12 +92,9 @@ archiving format, as far as we know, would not be compatible between
 different machines because of endiness issues, although GNUstep doesn't
 have this problem.
 
-   Your best bet is to implement your own archiving format that would
-work both with GNUstep and Cocoa. Fortunately, you don't have to start
-from scratch, since this has been essentially done for you in the
-nib2gmodel tool, which has an archiver that works both on GNUstep and
-Cocoa. It might be nice to split this off into a separate project to
-make it easier for other people to do the same thing.
+   The new keyed archiving using XML file formats is much more portable,
+and GNUstep is trying to maintain compatibility with Apple with this
+type of archiving.
 
 Does distributed objects work between GNUstep and Cocoa?
 --------------------------------------------------------
@@ -123,12 +120,16 @@ archive format (which can be edited by Gorm).  There IS a conversion
 tool called nib2gmodel that can be compiled under OPENSTEP to convert
 nib files to GNUstep gmodel files.
 
+   Newer nib files use XML format keyed archiving and may possibly be
+transportable, although differences in class and ivar layout may still
+make this difficult.
+
 Can one use the hybrid "Objective-C++"
 --------------------------------------
 
 No. at present the GNU compiler (gcc) does not support "Objective-C++".
-Apple is interested in adding back their implementation to gcc and is
-slowly adding parts of it to the mainline gcc implementation.
+Soon to br released gcc 4.1 will have this support, but it is still
+unclear how robust it will be.
 
 Is there a plan to support the Java/YellowBox Bindings?
 -------------------------------------------------------
@@ -151,8 +152,8 @@ to that is not the same as the interface to the OPENSTEP/MacOS-X
 windows server.  While someone could write a backend library to provide
 the interface, nobody has bothered to date.
 
-   You should, however, be able to use a GNUstep program with an X11
-server running on MacOSX.
+   You can, however, use a GNUstep program with an X11 server running
+on MacOSX.
 
 Is the Objective C API for GTK related?
 ---------------------------------------
@@ -317,12 +318,8 @@ You can write testcases - where the libraries fail tests, you could
 either fix the problem, or add it to the task list.
 
    To write testcases, you need to use anonymous CVS to install the
-latest GNUstep snapshots you can find. Then checkout the 'tests' module
-from CVS.  In the 'tests' directory, you will find a regression testing
-framework.  In order to use this you will also need a recent (v 1.3.2
-or later) copy of Guile (you can get this from a GNU ftp site) and will
-need to check-out, built, and installed the 'guile' package from the
-GNUstep CVS repository.
+latest GNUstep snapshots you can find. Then checkout the
+'gnustep/dev-apps/test/Testsuite' module from CVS.
 
 How do I start writing applications?
 ------------------------------------
@@ -389,17 +386,10 @@ initialization of static instances (such as @""-style string objects).
      instead of the basic runtime functions so that you code can run
      with either system.
 
+     Apple has recently added new functionality to their runtime,
+     including built-in exception handling, etc. Hopefully these will
+     be ported to the GNU runtime in the future.
 
-Does it allow a mixture of Objective C and C++?
------------------------------------------------
-
-No.  See *note Can one use the hybrid "Objective-C++"::
-
-Where can I find more information?
-----------------------------------
-
-The FAQ associated with the newsgroup `comp.lang.objective-c' contains
-more information about GNU Objective C.
 
 GNUstep Base Library
 ====================
@@ -435,14 +425,14 @@ ported to platforms for which other distributed objects implementations
 are not available.
 
    [ NOTE: The GNU distributed object facilities have the same
-ease-of-use as NeXT's; be warned, however, that they are not compatible
-with each other.  They have different class hierarchies, different
-instance variables, different method names, different implementation
-strategies and different network message formats.  You cannot
-communicate with a NeXT NSConnection using a GNU NSConnection.
+ease-of-use as Apple's; be warned, however, that they are not
+compatible with each other.  They have different class hierarchies,
+different instance variables, different method names, different
+implementation strategies and different network message formats.  You
+cannot communicate with a Apple NSConnection using a GNU NSConnection.
 
-   Here are some differences between GNU distributed objects and NeXT's
-distributed objects: NeXT NSDistantObject asks it's remote target for
+   Here are some differences between GNU distributed objects and Apple's
+distributed objects: Apple NSDistantObject asks it's remote target for
 the method encoding types and caches the results; GNU NSDistantObject
 gets the types directly from the local GNU "typed selector" mechanism
 if the information is known locally and only queries the remote target
@@ -499,17 +489,22 @@ What is the current state of development of the back-ends?
 There are several backends currently available:
 
 `xlib'
-     This is the standard backend that runs on X11 and uses standard
-     xlib calls for implementing drawing. It works well, but is limited
-     in many areas due to the limitations of xlib drawing.
+     This backend runs on X11 and uses standard xlib calls for
+     implementing drawing. It works well, but is limited in many areas
+     due to the limitations of xlib drawing.
 
 `art'
      This is a very good backend that draws using the libart package and
-     freetype with near PostScript quality and functionality. At some
-     point it will become the standard.
+     freetype with near PostScript quality and functionality. It is
+     currently the standard backend (as long as the required libraries
+     are installed).
 
 `w32'
-     This backend works on Windows and is currently beta quality.
+     This backend works on Windows and uses basic Windows drawing
+
+`cairo'
+     An up-and-coming backend. It still relies on unpublished functions
+     in the cairo library so using it is not for the beginner.
 
 GNUstep DisplayGhostScript Server
 =================================
@@ -536,7 +531,7 @@ were contracted for.  (Because the work took longer than specified and
 was not completed, Aladdin agreed to waive approximately $10,000 in
 promised fees for the work that was actually done and delivered.)  DGS
 works fairly well with a single context.  Alpha channel and compositing
-currently doesn't work.
+doesn't work.
 
 What is the relationship between the Display Ghostscript Server and X Windows?
 ------------------------------------------------------------------------------
