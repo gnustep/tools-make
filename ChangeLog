@@ -1,3 +1,8 @@
+2005-12-30  Adam Fedor  <fedor@gnu.org>
+
+	* openapp.in: Re-add IFS setting and search in current dir
+	(Fixes Bug #15289).
+
 2005-12-21  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.11.2
