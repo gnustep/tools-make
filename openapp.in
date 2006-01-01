@@ -75,7 +75,7 @@ esac
 # Remove leading slashes at the end of the application name
 app="`echo \"$app\" | sed 's%/*$%%'`"
 
-# Now build the list of directory names we look for.  If the user has
+# Now form the set of directory names we look for.  If the user has
 # given us a full application directory name (for example, Gorm.app)
 # then we only search for the given directory name; if instead the
 # user has given us the application name without the suffix (for
@@ -83,63 +83,56 @@ app="`echo \"$app\" | sed 's%/*$%%'`"
 # Gorm.debug, then for Gorm.profile (in that order).
 # If the appname is known, save it to avoid running a grep later to get it.
 case "$app" in
-  *.app)     app_list="$app"; appname="";;
-  *.debug)   app_list="$app"; appname="";;
-  *.profile) app_list="$app"; appname="";;
-  *)         app_list="$app.app:$app.debug:$app.profile"; appname="$app";
+  *.app)     a1="$app"; a2=""; a3=""; appname="";;
+  *.debug)   a1="$app"; a2=""; a3=""; appname="";;
+  *.profile) a1="$app"; a2=""; a3=""; appname="";;
+  *)         a1="$app.app"; a2="$app.debug" a3="$app.profile"; appname="$app";
 esac
 
-old_IFS="$IFS"
-IFS=:
 case "$app" in
-  /*) # An absolute path.
-      for appdir in $app_list; do
-	#echo "$appdir"
-        if [ -d "$appdir" ]; then
+    /*) # An absolute path.
+      for appdir in "$a1" "$a2" "$a3"; do
+        if [ \( "" != "$appdir" \) -a \( -d "$appdir" \) ]; then
 	   full_appname="$appdir"
 	   break
         fi
-      done;;
+      done
+      ;;
     */*) # A relative path
-      for appdir in $app_list; do
-	#echo "$appdir"
-         if [ -d "$appdir" ]; then
-	   full_appname="`(cd \"$appdir\"; pwd)`"
-	   break
-	 fi
-      done;;
-    *)  # A path that should be searched into the GNUstep paths
-      for dir in "." "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT"; do
-        for appdir in $app_list; do
-          # First, search in $dir/Applications/any_path_here/$appdir
-          #echo "$dir/Applications/"'*'"/$appdir"
- 	  for d in $dir/Applications/*/$appdir ; do
-	    # If nothing is found, * expands to '*'.  Check that it's
-	    # not the case, and that we have a real match.
-	    if [ "$d" != "$dir/Applications/"'*'"/$appdir" ]; then
-	      #echo "  $d"
-	      if [ -d "$d" ]; then
-	        full_appname="`(cd \"$d\"; pwd)`"
-	        break 3
-	      fi
-	    fi
-	  done
-	  # Now, in $dir/Applications/$appdir
-	  #echo "$dir/Applications/$appdir"
-	  if [ -d "$dir/Applications/$appdir" ]; then
+      for appdir in "$a1" "$a2" "$a3"; do
+        if [ \( "" != "$appdir" \) -a \( -d "$appdir" \) ]; then
+	  full_appname="`(cd \"$appdir\"; pwd)`"
+	  break
+	fi
+      done
+      ;;
+    *)
+      # We should first search the standard GNUstep locations.
+      for dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT"; do
+	for appdir in "$a1" "$a2" "$a3"; do
+	  # Standard locations ... in $dir/Applications/$appdir
+	  if [ \( "" != "$appdir" \) -a \( -d "$dir/Applications/$appdir" \) ]; then
 	    full_appname="`(cd \"$dir/Applications/$appdir\"; pwd)`"
 	    break 2
 	  fi
-	  # Finally, in $dir/$appdir
-	  #echo "$dir/$appdir"
-	  if [ -d "$dir/$appdir" ]; then
-	    full_appname="`(cd \"$dir/$appdir\"; pwd)`"
-	    break 2
-	  fi
 	done
-      done;;
+      done
+      if [ -z "$full_appname" ]; then
+	# And now search the standard PATH (may include '.')
+	old_IFS="$IFS"
+	IFS=:
+	for dir in $PATH; do
+	  for appdir in "$a1" "$a2" "$a3"; do
+	    if [ \( "" != "$appdir" \) -a \( -d "$dir/$appdir" \) ]; then
+	      full_appname="`(cd \"$dir/$appdir\"; pwd)`"
+	      break 2
+	    fi
+	  done
+	done
+	IFS="$old_IFS"
+      fi
+    ;;
 esac
-IFS="$old_IFS"
 unset app_list
 unset appdir
 
