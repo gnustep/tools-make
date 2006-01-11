@@ -1,4 +1,4 @@
-Date:	31-May-2005 (tested under Windows XP)
+Date:	11-Jan-2006 (tested under Windows XP)
 Author: Nicola Pero <n.pero@mi.flashnet.it>, 
         after Richard Frith-Macdonald <rfm@gnu.org> and others
 
@@ -209,15 +209,33 @@ install them, simply unzip them into /C/xxx/msys/1.0/mingw.
 12. XML support
 ===============
 
-Not working yet.
+You need to get the source code for libxml2 and  build it yourself ...
+but first you justfix the symbol information in libiconv so you can link to it.
 
+cd /mingw/lib
+mkdir backup-libiconv
+mv libiconv.la backup-libiconv
+mv libiconv.lib backup-libiconv
+dlltool -D libiconv-2.dll -C -l libiconvlib --export-all-symbols -A ../bin/libiconv-2.dll
+
+Then you can remove the backup-libiconv directory and its
+contents if all has worked.
+
+Now download the libxml2 source from http://www.xmlsoft.org
+I used libxml2-2.6.33.tar.gz
+
+Unpack the source, change into the directory and run the configure script
+Then do 'make'
+Then do 'make install'
+
+You should now have libxml2 installed on your system.
 
 13. Installing gnustep-base
 ===========================
 
 Go in gnustep-base, and type 
 
-./configure --disable-xml
+./configure
 make
 make install
 

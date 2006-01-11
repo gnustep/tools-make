@@ -1,3 +1,7 @@
+2006-01-11  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Update with information on libxml2
+
 2006-01-05  Adam Fedor  <fedor@gnu.org>
 
 	* Instance/bundle.make: Always link agains all libs when using
