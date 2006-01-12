@@ -196,8 +196,8 @@ Download the following packages:
  libintl-0.11.5-2.lib.zip
  (important: libintl-0.14.4 is untested, use 0.11.5 to be safe)
 
- libiconv-1.8.1-bin.zip 
- libiconv-1.8.1-lib.zip 
+ libiconv-1.8-1-bin.zip 
+ libiconv-1.8-1-lib.zip 
 
  zlib-1.2.2-bin.zip
  zlib-1.2.2-lib.zip
@@ -222,7 +222,7 @@ Then you can remove the backup-libiconv directory and its
 contents if all has worked.
 
 Now download the libxml2 source from http://www.xmlsoft.org
-I used libxml2-2.6.33.tar.gz
+I used libxml2-2.6.23.tar.gz
 
 Unpack the source, change into the directory and run the configure script
 Then do 'make'
