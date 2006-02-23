@@ -222,7 +222,7 @@ you are using an early compiler, you can supress these warnings by adding
 * Is GNUstep following changes to OpenStep and Mac OS X?::  
 * Do we have to have the NEXTSTEP look and feel?::  
 * What's up with the directory structure?::  
-* Why not use framework bundles?::     
+* Why not use framework bundles?::  
 @end menu
 
 @node Can I run NeXT OPENSTEP or Mac OS X programs on GNUstep?, Is GNUstep following changes to OpenStep and Mac OS X?, Compatibility and Layout, Compatibility and Layout
@@ -336,6 +336,7 @@ as Windows).
 * Problems with Alt key::       
 * Problems with gcc3::          
 * Problems with fonts::         
+* No characters displayed::     
 * No Makefile::                 
 @end menu
 
@@ -414,7 +415,7 @@ Mouse Preferences. Then use another value for the "Mouse grab modifier"
 
 Don't forget you need to update binutils and libc also.
 
-@node Problems with fonts, No Makefile, Problems with gcc3, Troubleshooting
+@node Problems with fonts, No characters displayed, Problems with gcc3, Troubleshooting
 @subsection Problems with fonts
 
 Why do the characters get changed to asterisks ('*')?
@@ -446,7 +447,23 @@ better. When compiling gnustep-back, start with
 ./configure --enable-graphics=art
 @end example
 
-@node No Makefile,  , Problems with fonts, Troubleshooting
+@node No characters displayed, No Makefile, Problems with fonts, Troubleshooting
+@subsection No characters displayed.
+
+When using the xlib backend, no characters are displayed in any GNUstep
+applications.
+
+The xlib backend has font anti-aliasing turned on by default. It's possible
+that GNUstep can't find any fonts on your system that can be properly anti-
+aliased. Try
+
+@example
+defaults write NSGlobalDomain GSFontAntiAlias NO
+@end example
+
+to turn off font anti-aliasing.
+
+@node No Makefile,  , No characters displayed, Troubleshooting
 @subsection No Makefile
 
 I tried to compile something and I get:

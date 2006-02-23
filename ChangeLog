@@ -1,3 +1,9 @@
+2006-02-23  Adam Fedor  <fedor@gnu.org>
+
+	* Master/source-distribution.make: Add svn tag/dist rules
+
+	* Documentation/userfaq.texi: updates.
+
 2006-01-11  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Update with information on libxml2

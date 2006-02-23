@@ -26,6 +26,14 @@
 # PACKAGE_NAME = gnustep-base
 # PACKAGE_VERSION = 1.0.0
 #
+# For SVN exports, you may want to define something like:
+#
+# SVN_MODULE_NAME = base
+# SVN_BASE_URL = http://svn.gna.org/svn/gnustep/libs
+#
+# SVN_TAG_NAME is the same as SVN_MODULE_NAME if not set and is used to
+# tag and retreive a module version
+#
 # For CVS exports, you may want to define something like:
 #
 # CVS_MODULE_NAME = base
@@ -71,12 +79,23 @@ ifeq ($(CVS_FLAGS),)
   CVS_FLAGS = -z3
 endif
 
+ifeq ($(SVN_MODULE_NAME),)
+  SVN_MODULE_NAME = $(PACKAGE_NAME)
+endif
+ifeq ($(SVN_TAG_NAME),)
+  SVN_TAG_NAME = $(SVN_MODULE_NAME)
+endif
+
+
 # Set the cvs command we use.  Most of the times, this is 'cvs' and
 # you need to do nothing.  But you can override 'cvs' with something
 # else.  Useful for example when you need cvs to go through runsocks
 # you can do make cvs-snapshot CVS='runsocks cvs'
 ifeq ($(CVS),)
   CVS = cvs
+endif
+ifeq ($(SVN),)
+  SVN = svn
 endif
 
 #
@@ -123,7 +142,7 @@ ARCHIVE_FILE = $(VERSION_NAME).tar$(COMPRESSION_EXT)
 
 VERTAG = $(subst .,_,$(PACKAGE_VERSION))
 
-.PHONY: dist cvs-tag cvs-dist cvs-snapshot internal-cvs-export
+.PHONY: dist cvs-tag cvs-dist cvs-snapshot internal-cvs-export svn-tag svn-dist internal-svn-export svn-snapshot
 
 #
 # Build a .tar.gz with the whole directory tree
@@ -172,6 +191,65 @@ ifneq ($(RELEASE_DIR),)
 	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
 	fi; \
 	mv ../$(ARCHIVE_FILE) $(RELEASE_DIR)
+endif
+
+#
+# Tag the SVN source with the $(SVN_TAG_NAME)-$(VERTAG) tag
+#
+svn-tag:
+	$(SVN) copy $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/trunk $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/tags/$(SVN_TAG_NAME)-$(VERTAG)
+
+#
+# Build a .tar.gz from the SVN sources using revision/tag 
+# $(SVN_TAG_NAME)-$(VERTAG)
+#
+svn-dist: EXPORT_SVN_NAME = tags/$(SVN_TAG_NAME)-$(VERTAG) 
+svn-dist: internal-svn-export
+
+#
+# Build a .tar.gz from the SVN source as they are now
+#
+svn-snapshot: EXPORT_SVN_NAME = trunk
+svn-snapshot: internal-svn-export
+
+internal-svn-export:
+	@echo "Exporting from module $(SVN_MODULE_NAME) on SVN..."; \
+	if [ -e $(SVN_MODULE_NAME) ]; then \
+	  echo "*Error* cannot export: $(SVN_MODULE_NAME) already exists"; \
+	  exit 1; \
+	fi; \
+	$(SVN) export $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/$(EXPORT_SVN_NAME) $(SVN_MODULE_NAME); \
+	echo "Generating $(ARCHIVE_FILE)"; \
+	mv $(SVN_MODULE_NAME) $(VERSION_NAME); \
+	if [ -f $(ARCHIVE_FILE) ]; then            \
+	  echo "$(ARCHIVE_FILE) already exists:";   \
+	  echo "Saving old version in $(ARCHIVE_FILE)~"; \
+	  mv $(ARCHIVE_FILE) $(ARCHIVE_FILE)~;    \
+	fi; \
+	if [ -f $(VERSION_NAME)/.dist-ignore ]; then \
+	  tar cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
+	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
+	else \
+	  tar cf - $(VERSION_NAME) \
+	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
+	fi; \
+	rm -rf $(VERSION_NAME);                  \
+	if [ ! -f $(ARCHIVE_FILE) ]; then \
+	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
+	  exit 1; \
+	fi;
+ifneq ($(RELEASE_DIR),)
+	@echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
+	if [ ! -d $(RELEASE_DIR) ]; then \
+	  $(MKDIRS) $(RELEASE_DIR); \
+	fi; \
+	if [ -f $(RELEASE_DIR)/$(ARCHIVE_FILE) ]; then \
+	  echo "$(RELEASE_DIR)/$(ARCHIVE_FILE) already exists:";    \
+	  echo "Saving old version in $(RELEASE_DIR)/$(ARCHIVE_FILE)~";\
+	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
+	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
+	fi; \
+	mv $(ARCHIVE_FILE) $(RELEASE_DIR)
 endif
 
 #
@@ -232,3 +310,5 @@ ifneq ($(RELEASE_DIR),)
 	fi; \
 	mv $(ARCHIVE_FILE) $(RELEASE_DIR)
 endif
+
+
