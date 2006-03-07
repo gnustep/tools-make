@@ -1,3 +1,17 @@
+2006-03-07  Jeremy Bettis  <jeremy@deadbeef.com>
+
+	* Instance/framework.make: Only copy headers if they changed
+			Delete framework.dll if the compile fails.
+	
+	* Instance/subproject.make: Only copy headers if they changed
+	
+	* Master/framework.make: make $(FRAMEWORK_NAME:=.all.framework.variables) depend
+	on $(FRAMEWORK_NAME:=.build-headers.framework.variables), sometimes the copying
+	of header files would happen too late.
+	
+	* target.make: Added -Wl,--enable-auto-image-base to link command for shared
+	libs & bundles on mingw32.
+
 2006-02-23  Adam Fedor  <fedor@gnu.org>
 
 	* Master/source-distribution.make: Add svn tag/dist rules
