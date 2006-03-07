@@ -58,14 +58,9 @@ internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_FILES)
 # We need to build the OWNING_PROJECT_HEADER_DIR directory here
 # because this rule could be executed before the top-level framework
 # has built his dirs
-$(OWNING_PROJECT_HEADER_FILES): $(HEADER_FILES) $(OWNING_PROJECT_HEADER_DIR)
-ifneq ($(HEADER_FILES),)
-	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) ./$$file $(OWNING_PROJECT_HEADER_DIR)/$$file ; \
-	  fi; \
-	done$(END_ECHO)
-endif # we got HEADER_FILES
+$(OWNING_PROJECT_HEADER_DIR)/%.h: %.h $(OWNING_PROJECT_HEADER_DIR)
+	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
+	
 
 $(OWNING_PROJECT_HEADER_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)

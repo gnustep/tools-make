@@ -853,7 +853,9 @@ HAVE_SHARED_LIBS = yes
 # symbols to export, creates the DLL (eg, obj/gnustep-base.dll) and 
 # the import library (eg, obj/libgnustep-base.dll.a).
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+        $(CC) $(SHARED_LD_PREFLAGS) -shared \
+        -Wl,--enable-auto-image-base \
+        -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
            $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS)
@@ -879,7 +881,7 @@ OBJ_MERGE_CMD = \
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
-BUNDLE_LDFLAGS     += -shared
+BUNDLE_LDFLAGS     += -shared -Wl,--enable-auto-image-base
 ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
 
 # On Mingw32, it looks like the class name symbols start with '___' rather 

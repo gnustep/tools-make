@@ -31,6 +31,7 @@ FRAMEWORK_NAME := $(strip $(FRAMEWORK_NAME))
 before-all:: $(FRAMEWORK_NAME:=.build-headers.framework.variables)
 
 internal-all:: $(FRAMEWORK_NAME:=.all.framework.variables)
+$(FRAMEWORK_NAME:=.all.framework.variables): $(FRAMEWORK_NAME:=.build-headers.framework.variables)
 
 internal-install:: $(FRAMEWORK_NAME:=.install.framework.variables)
 

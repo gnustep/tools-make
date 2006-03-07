@@ -363,20 +363,15 @@ $(FRAMEWORK_LIBRARY_DIR):
 $(FRAMEWORK_VERSION_DIR)/Headers:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-$(DERIVED_SOURCES_DIR):
-	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+$(DERIVED_SOURCES_DIR): $(DERIVED_SOURCES_DIR)/.stamp
+$(DERIVED_SOURCES_DIR)/.stamp:
+	$(ECHO_CREATING)$(MKDIRS) $(DERIVED_SOURCES_DIR); \
+	touch $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
-$(FRAMEWORK_HEADER_FILES): $(addprefix $(HEADER_FILES_DIR)/,$(HEADER_FILES)) \
-                           $(FRAMEWORK_VERSION_DIR)/Headers
-ifneq ($(HEADER_FILES),)
-	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
-	                    $(FRAMEWORK_VERSION_DIR)/Headers/$$file ; \
-	  fi; \
-	done$(END_ECHO)
-endif
+$(FRAMEWORK_VERSION_DIR)/Headers/%.h: $(HEADER_FILES_DIR)/%.h $(FRAMEWORK_VERSION_DIR)/Headers
+	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
+
 
 OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 
@@ -393,7 +388,7 @@ OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 # The following rule will also build the DUMMY_FRAMEWORK_CLASS_LIST
 # file.  This file is always created/deleted at the same time as the
 # DUMMY_FRAMEWORK_FILE.
-$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR) $(OBJ_FILES_TO_LINK) GNUmakefile
+$(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR)/.stamp $(OBJ_FILES_TO_LINK) GNUmakefile
 	$(ECHO_CREATING) classes=""; \
 	for object_file in $(OBJC_OBJ_FILES_TO_INSPECT) __dummy__; do \
 	  if [ "$$object_file" != "__dummy__" ]; then \
@@ -510,7 +505,7 @@ endif
 
 $(FRAMEWORK_FILE): $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING) \
-	$(LIB_LINK_CMD); \
+	$(LIB_LINK_CMD) || $(RM) $(FRAMEWORK_FILE) ; \
 	(cd $(LIB_LINK_OBJ_DIR); \
 	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
 	  $(LN_S) $(LIB_LINK_FRAMEWORK_FILE) $(GNUSTEP_INSTANCE)) \
