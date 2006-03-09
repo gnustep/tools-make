@@ -714,10 +714,6 @@ endif
 # OpenBSD 3.x (though set for 3.3)
 #
 ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
-# This is disabled temporarily, because I don't know exactly how
-# to link shared libs. Everything seems to link correctly now but
-# constructor functions in the shared lib failed to get called
-# when the lib is loaded in. I don't know why. ASF.
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD = \
 	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
@@ -752,6 +748,9 @@ BUNDLE_LD	= $(CC)
 BUNDLE_LDFLAGS  += -shared -fPIC
 #ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
+
+# nm on OpenBSD is rather like on Darwin
+EXTRACT_CLASS_NAMES_COMMAND = nm  -g $$object_file | sed -n -e '/[^U] __objc_class_name_/ {s/[0-9a-f]* [^U] __objc_class_name_//p;}'
 endif
 #
 # end OpenBSD 3.x

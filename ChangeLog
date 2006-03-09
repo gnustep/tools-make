@@ -1,3 +1,8 @@
+2006-03-09  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (openbsd): Add specific EXTACT_CLASS_NAMES_COMMAND.
+	Patch #4957 from Andrew Sveikauskas.
+
 2006-03-07  Jeremy Bettis  <jeremy@deadbeef.com>
 
 	* Instance/framework.make: Only copy headers if they changed
