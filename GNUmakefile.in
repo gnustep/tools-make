@@ -71,6 +71,8 @@ INSTALL_DATA	= @INSTALL_DATA@
 
 VERTAG = $(subst .,_,$(GNUSTEP_MAKE_VERSION))
 
+SVNPREFIX=svn+ssh://svn.gna.org/svn/gnustep/tools/make
+
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	common.make library-combo.make java.make jni.make library.make \
 	messages.make rules.make target.make names.make resource-set.make \
@@ -261,6 +263,16 @@ distclean: clean
 	rm -f fixpath.sh
 	rm -f gnustep-make.spec
 	rm -f GNUsteprc
+
+svn-tag:
+	svn copy $(SVNPREFIX)/trunk $(SVNPREFIX)/tags/make-$(VERTAG) \
+          -m "Tag version $(VERTAG)"
+
+svn-dist:
+	svn export $(SVNPREFIX)/tags/make-$(VERTAG) \
+	  gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
+ 	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
 
 cvs-tag:
 	cvs -z3 rtag make-$(VERTAG) make
