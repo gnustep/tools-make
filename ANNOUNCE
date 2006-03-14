@@ -1,7 +1,7 @@
 Announcement
 ************
 
-The GNUstep Makefile Package version 1.11.2 is now available.
+The GNUstep Makefile Package version 1.12.0 is now available.
 
 What is the GNUstep makefile package?
 =====================================
@@ -12,40 +12,15 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-Changes in version `1.11.2'
+Changes in version `1.12.0'
 ===========================
 
-The `GNUstep.conf' file is now viewed as the essential determination of
-the install location for GNUstep libraries, tools and other files.
-During configuration, this file is read, if it exists, to determine
-this information. This can still be overriden with environment and
-command line options, however. See the filesystem documentation in the
-GNUstep Make Documentation directory for more information.
-
-   You no longer need to source GNUstep.sh in order to compile GNUstep
-programs. All that is needed is the definition of GNUSTEP_MAKEFILES.
-You should also have the GNUstep system tools directory in your path.
-
-   All netbsd systems are assumed to use ELF libraries. Support for the
-old static libs version of netbsd was removed.
-
-   Serveral new options were added to configure to change the location
-of basic dir locations and basic configuration files. Also, the help was
-greatly improved. Note that -prefix=/usr/GNUstep/System no longer
-works.  Please use -prefix=/usr/GNUstep or
--with-system-root=/usr/GNUstep/System.
-
-   A few more fixes for cygwin are included as well as Windows resource
-rules.
-
-   Support for ObjC++ has been added. You should list the ObjC++ .mm
-files in the xxx_OBJCC_FILES variable, and put extra ObjC++ flags in
-xxx_OBJCCFLAGS or ADDITIONAL_OBJCCFLAGS.
+Minor fixes.
 
 Obtaining gnustep-make
 ======================
 
-You can get the gstep-make-1.11.2.tar.gz distribution file at
+You can get the gstep-make-1.12.0.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please log bug reports on the GNUstep project page

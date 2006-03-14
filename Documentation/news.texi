@@ -9,6 +9,12 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.12.0}
+
+Minor fixes.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.11.2}
 
 The @file{GNUstep.conf} file is now viewed as the essential
@@ -38,8 +44,6 @@ A few more fixes for cygwin are included as well as Windows resource rules.
 Support for ObjC++ has been added. You should list the ObjC++ .mm
 files in the xxx_OBJCC_FILES variable, and put extra ObjC++ flags in
 xxx_OBJCCFLAGS or ADDITIONAL_OBJCCFLAGS.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.11.1}
 
