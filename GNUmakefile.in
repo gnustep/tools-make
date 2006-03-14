@@ -266,13 +266,13 @@ distclean: clean
 
 svn-tag:
 	svn copy $(SVNPREFIX)/trunk $(SVNPREFIX)/tags/make-$(VERTAG) \
-          -m "Tag version $(VERTAG)"
+	  -m "Tag version $(VERTAG)"
 
 svn-dist:
 	svn export $(SVNPREFIX)/tags/make-$(VERTAG) \
 	  gnustep-make-$(GNUSTEP_MAKE_VERSION)
 	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
- 	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
 
 cvs-tag:
 	cvs -z3 rtag make-$(VERTAG) make
