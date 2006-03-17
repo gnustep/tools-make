@@ -1,3 +1,7 @@
+2006-03-17  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Attempt to clarify versions to be used.
+
 2006-03-13  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.12.0
