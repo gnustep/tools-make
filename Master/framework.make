@@ -26,9 +26,15 @@ endif
 
 FRAMEWORK_NAME := $(strip $(FRAMEWORK_NAME))
 
-# A framework has a special task to do before-all, which is to build 
+before-build-headers::
+
+after-build-headers::
+
+# A framework has a special task to do before all, which is to build 
 # the public framework headers.
-before-all:: $(FRAMEWORK_NAME:=.build-headers.framework.variables)
+build-headers:: before-build-headers $(FRAMEWORK_NAME:=.build-headers.framework.variables) after-build-headers
+
+before-all:: build-headers
 
 internal-all:: $(FRAMEWORK_NAME:=.all.framework.variables)
 $(FRAMEWORK_NAME:=.all.framework.variables): $(FRAMEWORK_NAME:=.build-headers.framework.variables)

@@ -1,3 +1,10 @@
+2006-03-27  Adam Fedor  <fedor@gnu.org>
+
+	* Master/source-distribution.make (svn-tag): Add comment line
+	(svn-dist): Simplify checkout.
+	* Master/framework.make: Add build-headers rules
+	* GNUmakefile: Add special_prefix to GNUSTEP_MAKEFILES
+
 2006-03-17  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MinGW: Attempt to clarify versions to be used.

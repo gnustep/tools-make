@@ -197,7 +197,7 @@ endif
 # Tag the SVN source with the $(SVN_TAG_NAME)-$(VERTAG) tag
 #
 svn-tag:
-	$(SVN) copy $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/trunk $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/tags/$(SVN_TAG_NAME)-$(VERTAG)
+	$(SVN) copy $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/trunk $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/tags/$(SVN_TAG_NAME)-$(VERTAG) -m "Tag version $(VERTAG)"
 
 #
 # Build a .tar.gz from the SVN sources using revision/tag 
@@ -218,9 +218,8 @@ internal-svn-export:
 	  echo "*Error* cannot export: $(SVN_MODULE_NAME) already exists"; \
 	  exit 1; \
 	fi; \
-	$(SVN) export $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/$(EXPORT_SVN_NAME) $(SVN_MODULE_NAME); \
+	$(SVN) export $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/$(EXPORT_SVN_NAME) $(VERSION_NAME); \
 	echo "Generating $(ARCHIVE_FILE)"; \
-	mv $(SVN_MODULE_NAME) $(VERSION_NAME); \
 	if [ -f $(ARCHIVE_FILE) ]; then            \
 	  echo "$(ARCHIVE_FILE) already exists:";   \
 	  echo "Saving old version in $(ARCHIVE_FILE)~"; \

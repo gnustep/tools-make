@@ -58,7 +58,7 @@ any later version published by the Free Software Foundation.
 * Additional Installation::     
 * Tools and Applications::      
 * Machine Specific::            
-* Anonymous CVS::               
+* Source via SVN::               
 @end menu
 
 @node Introduction, Preliminaries, Top, Top
@@ -417,13 +417,13 @@ Good Luck!
 @include machines.texi
 
 
-@node Anonymous CVS,  , Machine Specific, Top
-@chapter Getting Libraries via Anonymous CVS
+@node Source via SVN,  , Machine Specific, Top
+@chapter Getting Libraries via SVN
 
 If you didn't get one of the snapshots, or if you want to be sure to
-stay on the bleading edge, then you should get the libraries via CVS. Go
-to @url{http://savannah.gnu.org/cvs/?group_id=99} for information on how
-to get anonymous CVS access.
+stay on the bleading edge, then you should get the libraries via SVN. Go
+to @url{http://www.gnustep.org/resources/sources.html} for information on how
+to get the sourcecode.
 
 If you haven't already done so, change to the directory, where you
 want the source to reside. To get a list of potential modules to check out,

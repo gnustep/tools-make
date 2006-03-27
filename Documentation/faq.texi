@@ -363,9 +363,9 @@ good idea to get in touch with Adam or Richard to coordinate efforts.
  You can write testcases - where the libraries fail tests, you
 could either fix the problem, or add it to the task list.
 
-To write testcases, you need to use anonymous CVS to install the latest
-GNUstep snapshots you can find. Then checkout the
-'gnustep/dev-apps/test/Testsuite' module from CVS.
+To write testcases, you need to use svn to install the latest
+GNUstep sourcecode you can find. Then checkout the
+'gnustep/tools/testsuite' module from svn.
 
 @node How do I start writing applications?, How can I help with the GNUstep website?, How do I start writing tests?, Compiling and Developing
 @subsection  How do I start writing applications?
@@ -385,7 +385,7 @@ generated from files in the individual GNUstep packages.
 
 If you want to update the FAQ or documentation  - grab
 the latest snapshot of the GNUstep core you can find, update it
-from the CVS repository, and work with the contents of the appropriate
+from the svn repository, and work with the contents of the appropriate
 documentation directory.
 
 If you want to work on other parts of the website, you can grab a copy

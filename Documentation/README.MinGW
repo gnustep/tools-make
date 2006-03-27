@@ -107,11 +107,9 @@ From this window we can now start building things.
 The main GNUstep project pages tell you how to get hold of this. You can get
 the latest release of the following libraries. However, since MinGW support
 is currently evolving, we recommend that you get the latest snapshot
-or code from CVS.
+or code from SVN.
 
-export CVS_RSH=ssh
-cvs -z3 -d:ext:anoncvs@savannah.gnu.org:/cvsroot/gnustep co core
-
+svn co http://svn.gna.org/svn/gnustep/modules/core
 
 6. Installing gnustep-make
 ==========================
