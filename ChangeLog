@@ -1,5 +1,10 @@
 2006-03-27  Adam Fedor  <fedor@gnu.org>
 
+	* target.make (openbsd): Add additional link flags for bundle
+	loading. Patch #4989 from Andrew Sveikauskas.
+
+2006-03-27  Adam Fedor  <fedor@gnu.org>
+
 	* Master/source-distribution.make (svn-tag): Add comment line
 	(svn-dist): Simplify checkout.
 	* Master/framework.make: Add build-headers rules
