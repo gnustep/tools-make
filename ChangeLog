@@ -1,3 +1,7 @@
+2006-04-07  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.MinGW: Correct typo in xml instructions.
+
 2006-04-06  Adam Fedor  <fedor@gnu.org>
 
 	* config.make.in: Set GNUSTEP_HOME to $(HOME). Fix if statements

@@ -214,7 +214,7 @@ cd /mingw/lib
 mkdir backup-libiconv
 mv libiconv.la backup-libiconv
 mv libiconv.lib backup-libiconv
-dlltool -D libiconv-2.dll -C -l libiconvlib --export-all-symbols -A ../bin/libiconv-2.dll
+dlltool -D libiconv-2.dll -C -l libiconv.lib --export-all-symbols -A ../bin/libiconv-2.dll
 
 Then you can remove the backup-libiconv directory and its
 contents if all has worked.
