@@ -190,14 +190,16 @@ GNUSTEP_USER_DIR = @GNUSTEP_USER_DIR@
 -include $(GNUSTEP_CONFIG_FILE)
 
 # FIXME: determining GNUSTEP_HOME
-GNUSTEP_HOME = ~
+GNUSTEP_HOME = $(HOME)
 
 # Read the user configuration file ... unless it is disabled (ie, set
 # to an empty string)
 ifneq ($(GNUSTEP_USER_CONFIG_FILE),)
 
  # FIXME - Checking for relative vs. absolute paths!
- ifneq (filter (/%, $(GNUSTEP_USER_CONFIG_FILE)),)
+ # Note: filter does not work in expresssions
+ GNUSTEP_TEMP_FILTER=$(filter /%, $(GNUSTEP_USER_CONFIG_FILE) )
+ ifneq ($(GNUSTEP_TEMP_FILTER),)
   # Path starts with '/', consider it absolute
   -include $(GNUSTEP_USER_CONFIG_FILE)
  else
@@ -213,7 +215,9 @@ GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
 # Set GNUSTEP_USER_ROOT from GNUSTEP_USER_DIR; GNUSTEP_USER_ROOT is
 # the variable used in practice
 #
-ifneq (filter (/%, $(GNUSTEP_USER_DIR)),)
+# Note: filter does not work in expresssions
+GNUSTEP_TEMP_FILTER=$(filter /%, $(GNUSTEP_USER_DIR) )
+ifneq ($(GNUSTEP_TEMP_FILTER),)
  # Path starts with '/', consider it absolute
  GNUSTEP_USER_ROOT = $(GNUSTEP_USER_DIR)
 else

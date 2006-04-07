@@ -1,3 +1,8 @@
+2006-04-06  Adam Fedor  <fedor@gnu.org>
+
+	* config.make.in: Set GNUSTEP_HOME to $(HOME). Fix if statements
+	with filter in them. Fixes bug #16010.
+
 2006-03-27  Adam Fedor  <fedor@gnu.org>
 
 	* target.make (openbsd): Add additional link flags for bundle
