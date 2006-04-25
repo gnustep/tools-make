@@ -168,7 +168,7 @@ Drawing library for the art backend.
 GNUstep and WindowMaker work together to provide a consistant interface.
 Although it is not required, GNUstep will work much better if you use it
 with the WindowMaker window manager. 
-Get WindowMaker from @url{http://www.windowmaker.org}.
+Get WindowMaker from @url{http://www.windowmaker.info}.
 
 @item gnustep-objc package (for gcc version < 3.0 ONLY or MINGW/Cygwin) (RECOMMENDED)
 Note: Do not install this library unless you are sure you need it.

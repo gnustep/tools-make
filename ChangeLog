@@ -1,3 +1,7 @@
+2006-04-25  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/gnustep-howto.texi: Update windowmaker address
+
 2006-04-07  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/README.MinGW: Correct typo in xml instructions.
