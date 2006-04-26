@@ -1,3 +1,7 @@
+2006-04-26  Saso Kiselkov
+
+	* common.make: Add option to turn on native exceptions.
+
 2006-04-25  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/gnustep-howto.texi: Update windowmaker address
