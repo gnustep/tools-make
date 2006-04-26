@@ -58,7 +58,7 @@ any later version published by the Free Software Foundation.
 * Additional Installation::     
 * Tools and Applications::      
 * Machine Specific::            
-* Source via SVN::               
+* Source via SVN::              
 @end menu
 
 @node Introduction, Preliminaries, Top, Top
@@ -411,7 +411,7 @@ openapp application [additional arguments to app]
 
 Good Luck!
 
-@node Machine Specific, Anonymous CVS, Tools and Applications, Top
+@node Machine Specific, Source via SVN, Tools and Applications, Top
 @chapter Machine Specific Instructions
 
 @include machines.texi
