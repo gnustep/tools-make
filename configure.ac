@@ -192,15 +192,15 @@ AC_ARG_WITH(config-file,[
    if you want to have the GNUstep config file in a non-standard place.
    Example: --with-config-file=/usr/GNUstep/GNUstep.conf
 ],
-  GNUSTEP_CONFIG_FILE="$withval", 
-  [if test "$GNUSTEP_CONFIG_FILE" = ""; then
-    case "$target_os" in
-      freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
-      netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
-      mingw32* )	    GNUSTEP_CONFIG_FILE=/c/GNUstep/GNUstep.conf-dev ;;
-      *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
-    esac
-  fi])
+  GNUSTEP_CONFIG_FILE="$withval",)
+if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
+  case "$target_os" in
+    freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
+    netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
+    mingw32* )	    GNUSTEP_CONFIG_FILE=/c/GNUstep/GNUstep.conf-dev ;;
+    *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
+  esac
+fi
 AC_MSG_RESULT($GNUSTEP_CONFIG_FILE)
 AC_SUBST(GNUSTEP_CONFIG_FILE)
 
@@ -321,11 +321,10 @@ AC_ARG_WITH(system-root,[
    to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.
    Example: --with-system-root=/usr/GNUstep/System
 ],
-GNUSTEP_SYSTEM_ROOT="$withval",
-if test "$GNUSTEP_SYSTEM_ROOT" = ""; then 
+GNUSTEP_SYSTEM_ROOT="$withval",)
+if test "$GNUSTEP_SYSTEM_ROOT" = "" -o "$GNUSTEP_SYSTEM_ROOT" = "no"; then 
   GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
 fi
-)
 AC_MSG_RESULT($GNUSTEP_SYSTEM_ROOT)
 AC_SUBST(GNUSTEP_SYSTEM_ROOT)
 
@@ -339,11 +338,10 @@ AC_ARG_WITH(local-root,[
    to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.
    Example: --with-local-root=/usr/local/GNUstep/Local
 ],
-GNUSTEP_LOCAL_ROOT="$withval",
-if test "$GNUSTEP_LOCAL_ROOT" = ""; then 
+GNUSTEP_LOCAL_ROOT="$withval",)
+if test "$GNUSTEP_LOCAL_ROOT" = "" -o "$GNUSTEP_LOCAL_ROOT" = "no"; then 
   GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
 fi
-)
 AC_MSG_RESULT($GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
 
@@ -357,7 +355,7 @@ AC_ARG_WITH(network-root,[
    want to have the GNUSTEP_NETWORK_ROOT directory.  
    Example: --with-network-root=/usr/local/GNUstep/Network
 ],
-GNUSTEP_NETWORK_ROOT="$withval",
+GNUSTEP_NETWORK_ROOT="$withval",)
 # By default we disable network root, by setting GNUSTEP_NETWORK_ROOT
 # to be the same as GNUSTEP_LOCAL_ROOT.  GNUSTEP_NETWORK_ROOT is very
 # rarely used, and most users prefer simpler systems with shorter
@@ -365,10 +363,9 @@ GNUSTEP_NETWORK_ROOT="$withval",
 # again, you can use the --with-network-root=xxx option; pass
 # something like --with-network-root=/usr/GNUstep/Network on the
 # configure command line.
-if test "$GNUSTEP_NETWORK_ROOT" = ""; then 
+if test "$GNUSTEP_NETWORK_ROOT" = "" -o "$GNUSTEP_NETWORK_ROOT" = "no"; then 
   GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
 fi
-)
 AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
@@ -385,11 +382,10 @@ AC_ARG_WITH(user-config-file,[
    The default is .GNUstep.conf if not specified.
    Example: --with-user-config-file=GNUstep/GNUstep.conf
 ],
-GNUSTEP_USER_CONFIG_FILE="$withval",
-if test "$GNUSTEP_USER_CONFIG_FILE" = ""; then 
+GNUSTEP_USER_CONFIG_FILE="$withval",)
+if test "$GNUSTEP_USER_CONFIG_FILE" = "" -o "$GNUSTEP_USER_CONFIG_FILE" = "no"; then 
   GNUSTEP_USER_CONFIG_FILE=".GNUstep.conf"
 fi
-)
 AC_MSG_RESULT($GNUSTEP_USER_CONFIG_FILE)
 AC_SUBST(GNUSTEP_USER_CONFIG_FILE)
 
@@ -407,11 +403,10 @@ AC_ARG_WITH(user-dir,[
    The default is 'GNUstep'.
    Example: --with-user-dir='gnustep'
 ],
-GNUSTEP_USER_DIR="$withval",
-if test "$GNUSTEP_USER_DIR" = ""; then 
+GNUSTEP_USER_DIR="$withval",)
+if test "$GNUSTEP_USER_DIR" = "" -o "$GNUSTEP_USER_DIR" = "no"; then 
   GNUSTEP_USER_DIR="GNUstep"
 fi
-)
 AC_MSG_RESULT($GNUSTEP_USER_DIR)
 AC_SUBST(GNUSTEP_USER_DIR)
 
@@ -429,11 +424,10 @@ AC_ARG_WITH(user-defaults-dir,[
    all users.  The default is 'GNUstep/Defaults'
    Example: --with-user-root='GNUstep/Library/Defaults'
 ],
-GNUSTEP_USER_DEFAULTS_DIR="$withval",
-if test "$GNUSTEP_USER_DEFAULTS_DIR" = ""; then 
+GNUSTEP_USER_DEFAULTS_DIR="$withval",)
+if test "$GNUSTEP_USER_DEFAULTS_DIR" = "" -o "$GNUSTEP_USER_DEFAULTS_DIR" = "no"; then 
   GNUSTEP_USER_DEFAULTS_DIR="GNUstep/Defaults"
 fi
-)
 AC_MSG_RESULT($GNUSTEP_USER_DEFAULTS_DIR)
 AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
 
@@ -639,6 +633,9 @@ AC_ARG_WITH(thread-lib,[
 OBJC_THREAD=$withval,
 OBJC_THREAD=
 )
+if test "$OBJC_THREAD" = no; then
+OBJC_THREAD=
+fi
 
 
 AC_MSG_CHECKING(whether objc has thread support)

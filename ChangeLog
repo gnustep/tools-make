@@ -1,3 +1,9 @@
+2006-05-01  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Change --with... options specifying paths so that if
+	someone oddly uses --without... we treat it as if they had specified
+	nothing.
+
 2006-04-26  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/gnustep-howto.texi: Fix node link
