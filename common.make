@@ -27,7 +27,25 @@ COMMON_MAKE_LOADED = yes
 SHELL = /bin/sh
 
 #
-# Get the config information first, this includes GNUSTEP_SYSTEM_ROOT etc.
+# Determine the compilation host and target
+#
+include $(GNUSTEP_MAKEFILES)/names.make
+
+ifeq ($(GNUSTEP_FLATTENED),)
+  GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
+  GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
+  GNUSTEP_HOST_LDIR = $(GNUSTEP_HOST_DIR)/$(LIBRARY_COMBO)
+  GNUSTEP_TARGET_LDIR = $(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
+else
+  GNUSTEP_HOST_DIR = .
+  GNUSTEP_TARGET_DIR = .
+  GNUSTEP_HOST_LDIR = .
+  GNUSTEP_TARGET_LDIR = .
+endif
+
+#
+# Get the config information (host/target specific),
+# this includes GNUSTEP_SYSTEM_ROOT etc.
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
 
@@ -65,23 +83,6 @@ REL_PATH_SCRIPT        = $(GNUSTEP_MAKEFILES)/relative_path.sh
 # Take the makefiles from the system root
 ifeq ($(GNUSTEP_MAKEFILES),)
   GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Library/Makefiles
-endif
-
-#
-# Determine the compilation host and target
-#
-include $(GNUSTEP_MAKEFILES)/names.make
-
-ifeq ($(GNUSTEP_FLATTENED),)
-  GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
-  GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
-  GNUSTEP_HOST_LDIR = $(GNUSTEP_HOST_DIR)/$(LIBRARY_COMBO)
-  GNUSTEP_TARGET_LDIR = $(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
-else
-  GNUSTEP_HOST_DIR = .
-  GNUSTEP_TARGET_DIR = .
-  GNUSTEP_HOST_LDIR = .
-  GNUSTEP_TARGET_LDIR = .
 endif
 
 #
