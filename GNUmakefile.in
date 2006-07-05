@@ -25,8 +25,8 @@
 # but there is nothing to made, and the files get installed
 # in a special directory, so it was simpler this way.
 #
-
 include config.make
+
 
 # To install everything inside a temporary directory (say as part of
 # building a binary package - deb or rpm), use something like `make
@@ -182,7 +182,7 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 	                     $(makedir)/Instance/Documentation; \
 	   done; \
 	   $(INSTALL_DATA) executable.template $(makedir); \
-	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_DIR))
+	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_LDIR))
 	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
 	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
@@ -234,7 +234,7 @@ uninstall:
 	done
 	rm -f $(makedir)/executable.template
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
-	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/config.make
+	rm -f $(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make
 	-for f in $(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
 		$(makedir)/Additional \

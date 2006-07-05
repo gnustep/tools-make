@@ -1,3 +1,11 @@
+2006-07-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUmakefile.in: install config.make in library combo specific
+	directory so that non-flattened builds can pick up the correct
+	config info for the library combo being used.
+	* common.make: pick up config.make from new location
+	* rules.make: know about new location for config.make
+
 2006-06-14  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: determine host/target info before trying to load

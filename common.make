@@ -47,7 +47,7 @@ endif
 # Get the config information (host/target specific),
 # this includes GNUSTEP_SYSTEM_ROOT etc.
 #
-include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make
+include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
 
 # GNUSTEP_BASE_INSTALL by default is `' - this is correct
 

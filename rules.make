@@ -542,7 +542,11 @@ endif
 
 $(GNUSTEP_MAKEFILES)/*.make: ;
 
-$(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/config.make: ;
+ifeq ($(GNUSTEP_FLATTENED)), )
+$(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/config.make: ;
+else
+$(GNUSTEP_MAKEFILES)/config.make: ;
+endif
 
 $(GNUSTEP_MAKEFILES)/Additional/*.make: ;
 
