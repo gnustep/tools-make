@@ -137,6 +137,7 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 		$(makedir) \
 		$(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
+		$(makedir)/$(GNUSTEP_TARGET_LDIR) \
 		$(makedir)/Additional \
 		$(makedir)/Auxiliary \
 		$(makedir)/Master \
