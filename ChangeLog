@@ -1,3 +1,14 @@
+2006-07-06  Richard Frith-Macdonald <rfm@gnu.org>
+	* configure.ac: Prevent bad characters in paths
+	* configure: regenerate
+	* GNUstep.csh.in: remove use of obsolete substitutions
+	* GNUstep.sh.in: ditto
+	* GNUstep.conf.in: ditto
+	The use of backslash or space characters in a path/filename can
+	confuse make and shell scripts, so we check for them and prevent
+	them from being specified at configure time and/or built in to
+	scripts.  Hopefully this will prevent much confusion on windows.
+
 2006-07-05  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUmakefile.in: install config.make in library combo specific

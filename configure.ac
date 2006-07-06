@@ -115,10 +115,18 @@ esac
 # Determine the host, build, and target systems
 #--------------------------------------------------------------------
 case $host_os in
-  *cygwin*  ) CYGWIN=yes;;
-  *mingw32* ) MINGW32=yes;;
-          * ) MINGW32=no
-              CYGWIN=no;;
+  *cygwin*  )
+	MINGW32=no
+	CYGWIN=yes
+	MSWIND=yes;;
+  *mingw32* )
+	MINGW32=yes
+	CYGWIN=yes
+	MSWIND=yes;;
+          * )
+	MINGW32=no
+	CYGWIN=no
+	MSWIND=no;;
 esac
 AC_SUBST(CYGWIN)
 
@@ -200,6 +208,18 @@ if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
     mingw32* )	    GNUSTEP_CONFIG_FILE=/c/GNUstep/GNUstep.conf-dev ;;
     *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
   esac
+fi
+if echo "$GNUSTEP_CONFIG_FILE" | grep -q '[ \t\\]'
+then
+  echo "found a backslash or space (illegal) in '$GNUSTEP_CONFIG_FILE'"
+  echo "Please try again using --with-config-file= to specify a valid path."
+  if test "$MSWIND" = "yes"
+  then
+    echo "Please note that on windows you must use unix-style paths within"
+    echo "the make package even though gnustep programs built in the mingw32"
+    echo "environment use native paths throughout."
+  fi
+  exit 1
 fi
 AC_MSG_RESULT($GNUSTEP_CONFIG_FILE)
 AC_SUBST(GNUSTEP_CONFIG_FILE)
@@ -325,6 +345,18 @@ GNUSTEP_SYSTEM_ROOT="$withval",)
 if test "$GNUSTEP_SYSTEM_ROOT" = "" -o "$GNUSTEP_SYSTEM_ROOT" = "no"; then 
   GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
 fi
+if echo "$GNUSTEP_SYSTEM_ROOT" | grep -q '[ \t\\]'
+then
+  echo "found a backslash or space (illegal) in '$GNUSTEP_SYSTEM_ROOT'"
+  echo "Please try again using --with-system-root= to specify a valid path."
+  if test "$MSWIND" = "yes"
+  then
+    echo "Please note that on windows you must use unix-style paths within"
+    echo "the make package even though gnustep programs built in the mingw32"
+    echo "environment use native paths throughout."
+  fi
+  exit 1
+fi
 AC_MSG_RESULT($GNUSTEP_SYSTEM_ROOT)
 AC_SUBST(GNUSTEP_SYSTEM_ROOT)
 
@@ -341,6 +373,18 @@ AC_ARG_WITH(local-root,[
 GNUSTEP_LOCAL_ROOT="$withval",)
 if test "$GNUSTEP_LOCAL_ROOT" = "" -o "$GNUSTEP_LOCAL_ROOT" = "no"; then 
   GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
+fi
+if echo "$GNUSTEP_LOCAL_ROOT" | grep -q '[ \t\\]'
+then
+  echo "found a backslash or space (illegal) in '$GNUSTEP_LOCAL_ROOT'"
+  echo "Please try again using --with-local-root= to specify a valid path."
+  if test "$MSWIND" = "yes"
+  then
+    echo "Please note that on windows you must use unix-style paths within"
+    echo "the make package even though gnustep programs built in the mingw32"
+    echo "environment use native paths throughout."
+  fi
+  exit 1
 fi
 AC_MSG_RESULT($GNUSTEP_LOCAL_ROOT)
 AC_SUBST(GNUSTEP_LOCAL_ROOT)
@@ -366,6 +410,18 @@ GNUSTEP_NETWORK_ROOT="$withval",)
 if test "$GNUSTEP_NETWORK_ROOT" = "" -o "$GNUSTEP_NETWORK_ROOT" = "no"; then 
   GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
 fi
+if echo "$GNUSTEP_NETWORK_ROOT" | grep -q '[ \t\\]'
+then
+  echo "found a backslash or space (illegal) in '$GNUSTEP_NETWORK_ROOT'"
+  echo "Please try again using --with-network-root= to specify a valid path."
+  if test "$MSWIND" = "yes"
+  then
+    echo "Please note that on windows you must use unix-style paths within"
+    echo "the make package even though gnustep programs built in the mingw32"
+    echo "environment use native paths throughout."
+  fi
+  exit 1
+fi
 AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
@@ -386,6 +442,19 @@ GNUSTEP_USER_CONFIG_FILE="$withval",)
 if test "$GNUSTEP_USER_CONFIG_FILE" = "" -o "$GNUSTEP_USER_CONFIG_FILE" = "no"; then 
   GNUSTEP_USER_CONFIG_FILE=".GNUstep.conf"
 fi
+if echo "$GNUSTEP_USER_CONFIG_FILE" | grep -q '[ \t\\]'
+then
+  echo "found a backslash or space (illegal) in '$GNUSTEP_USER_CONFIG_FILE'"
+  echo "Please try again using --with-user-config-file= to specify a value."
+  if test "$MSWIND" = "yes"
+  then
+    echo "Please note that on windows you must use unix-style paths within"
+    echo "the make package even though gnustep programs built in the mingw32"
+    echo "environment use native paths throughout."
+  fi
+  exit 1
+fi
+AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_MSG_RESULT($GNUSTEP_USER_CONFIG_FILE)
 AC_SUBST(GNUSTEP_USER_CONFIG_FILE)
 
@@ -407,6 +476,18 @@ GNUSTEP_USER_DIR="$withval",)
 if test "$GNUSTEP_USER_DIR" = "" -o "$GNUSTEP_USER_DIR" = "no"; then 
   GNUSTEP_USER_DIR="GNUstep"
 fi
+if echo "$GNUSTEP_USER_DIR" | grep -q '[ \t\\]'
+then
+  echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DIR'"
+  echo "Please try again using --with-user-dir= to specify a value."
+  if test "$MSWIND" = "yes"
+  then
+    echo "Please note that on windows you must use unix-style paths within"
+    echo "the make package even though gnustep programs built in the mingw32"
+    echo "environment use native paths throughout."
+  fi
+  exit 1
+fi
 AC_MSG_RESULT($GNUSTEP_USER_DIR)
 AC_SUBST(GNUSTEP_USER_DIR)
 
@@ -422,11 +503,23 @@ AC_ARG_WITH(user-defaults-dir,[
    absolute path.  Use this option if you want to have the 
    GNUSTEP_USER_DEFAULTS_DIR directory in a non default place for
    all users.  The default is 'GNUstep/Defaults'
-   Example: --with-user-root='GNUstep/Library/Defaults'
+   Example: --with-user-defaults-dir='GNUstep/Library/Defaults'
 ],
 GNUSTEP_USER_DEFAULTS_DIR="$withval",)
 if test "$GNUSTEP_USER_DEFAULTS_DIR" = "" -o "$GNUSTEP_USER_DEFAULTS_DIR" = "no"; then 
   GNUSTEP_USER_DEFAULTS_DIR="GNUstep/Defaults"
+fi
+if echo "$GNUSTEP_USER_DEFAULTS_DIR" | grep -q '[ \t\\]'
+then
+  echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DEFAULTS_DIR'"
+  echo "Please try again using --with-user-defaults-dir= to specify a value."
+  if test "$MSWIND" = "yes"
+  then
+    echo "Please note that on windows you must use unix-style paths within"
+    echo "the make package even though gnustep programs built in the mingw32"
+    echo "environment use native paths throughout."
+  fi
+  exit 1
 fi
 AC_MSG_RESULT($GNUSTEP_USER_DEFAULTS_DIR)
 AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
@@ -894,25 +987,6 @@ AC_SUBST(clean_target_os)
 AC_SUBST(clean_target_cpu)
 AC_SUBST(clean_target_vendor)
 AC_SUBST(target)
-
-#-------------------------------------------------------------------
-# Record paths for use in shell scripts ... with backslashes quoted.
-#-------------------------------------------------------------------
-GNUSTEP_SHELL_SYSTEM_ROOT=`echo $GNUSTEP_SYSTEM_ROOT|sed -e 's/\\\\/\\\\\\\\/g'`
-AC_SUBST(GNUSTEP_SHELL_SYSTEM_ROOT)
-GNUSTEP_SHELL_NETWORK_ROOT=`echo $GNUSTEP_NETWORK_ROOT|sed -e 's/\\\\/\\\\\\\\/g'`
-AC_SUBST(GNUSTEP_SHELL_NETWORK_ROOT)
-GNUSTEP_SHELL_LOCAL_ROOT=`echo $GNUSTEP_LOCAL_ROOT|sed -e 's/\\\\/\\\\\\\\/g'`
-AC_SUBST(GNUSTEP_SHELL_LOCAL_ROOT)
-GNUSTEP_SHELL_USER_DIR=`echo $GNUSTEP_USER_DIR|sed -e 's/\\\\/\\\\\\\\/g'`
-AC_SUBST(GNUSTEP_SHELL_USER_DIR)
-GNUSTEP_SHELL_USER_DEFAULTS_DIR=`echo $GNUSTEP_USER_DEFAULTS_DIR|sed -e 's/\\\\/\\\\\\\\/g'`
-AC_SUBST(GNUSTEP_SHELL_USER_DEFAULTS_DIR)
-GNUSTEP_SHELL_USER_CONFIG_FILE=`echo $GNUSTEP_USER_CONFIG_FILE|sed -e 's/\\\\/\\\\\\\\/g'`
-AC_SUBST(GNUSTEP_SHELL_USER_CONFIG_FILE)
-GNUSTEP_SHELL_CONFIG_FILE=`echo $GNUSTEP_CONFIG_FILE|sed -e 's/\\\\/\\\\\\\\/g'`
-AC_SUBST(GNUSTEP_SHELL_CONFIG_FILE)
-
 
 #--------------------------------------------------------------------
 # Produce the output files
