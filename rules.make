@@ -543,11 +543,8 @@ endif
 $(GNUSTEP_MAKEFILES)/*.make: ;
 
 ifeq ($(GNUSTEP_FLATTENED)), )
-config_dir=$(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
-else
-config_dir=$(GNUSTEP_MAKEFILES)
+$(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/config.make: ;
 endif
-$(config_dir)/config.make: ;
 
 $(GNUSTEP_MAKEFILES)/Additional/*.make: ;
 
