@@ -209,7 +209,7 @@ if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
     *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
   esac
 fi
-if echo "$GNUSTEP_CONFIG_FILE" | grep -q '[[ \t\\]]'
+if echo "$GNUSTEP_CONFIG_FILE" | grep -q '[[ 	\\]]'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_CONFIG_FILE'"
   echo "Please try again using --with-config-file= to specify a valid path."
@@ -345,7 +345,7 @@ GNUSTEP_SYSTEM_ROOT="$withval",)
 if test "$GNUSTEP_SYSTEM_ROOT" = "" -o "$GNUSTEP_SYSTEM_ROOT" = "no"; then 
   GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
 fi
-if echo "$GNUSTEP_SYSTEM_ROOT" | grep -q '[[ \t\\]]'
+if echo "$GNUSTEP_SYSTEM_ROOT" | grep -q '[[ 	\\]]'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_SYSTEM_ROOT'"
   echo "Please try again using --with-system-root= to specify a valid path."
@@ -374,7 +374,7 @@ GNUSTEP_LOCAL_ROOT="$withval",)
 if test "$GNUSTEP_LOCAL_ROOT" = "" -o "$GNUSTEP_LOCAL_ROOT" = "no"; then 
   GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
 fi
-if echo "$GNUSTEP_LOCAL_ROOT" | grep -q '[[ \t\\]]'
+if echo "$GNUSTEP_LOCAL_ROOT" | grep -q '[[ 	\\]]'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_LOCAL_ROOT'"
   echo "Please try again using --with-local-root= to specify a valid path."
@@ -410,7 +410,7 @@ GNUSTEP_NETWORK_ROOT="$withval",)
 if test "$GNUSTEP_NETWORK_ROOT" = "" -o "$GNUSTEP_NETWORK_ROOT" = "no"; then 
   GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
 fi
-if echo "$GNUSTEP_NETWORK_ROOT" | grep -q '[[ \t\\]]'
+if echo "$GNUSTEP_NETWORK_ROOT" | grep -q '[[ 	\\]]'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_NETWORK_ROOT'"
   echo "Please try again using --with-network-root= to specify a valid path."
@@ -442,7 +442,7 @@ GNUSTEP_USER_CONFIG_FILE="$withval",)
 if test "$GNUSTEP_USER_CONFIG_FILE" = "" -o "$GNUSTEP_USER_CONFIG_FILE" = "no"; then 
   GNUSTEP_USER_CONFIG_FILE=".GNUstep.conf"
 fi
-if echo "$GNUSTEP_USER_CONFIG_FILE" | grep -q '[[ \t\\]]'
+if echo "$GNUSTEP_USER_CONFIG_FILE" | grep -q '[[ 	\\]]'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_CONFIG_FILE'"
   echo "Please try again using --with-user-config-file= to specify a value."
@@ -476,7 +476,7 @@ GNUSTEP_USER_DIR="$withval",)
 if test "$GNUSTEP_USER_DIR" = "" -o "$GNUSTEP_USER_DIR" = "no"; then 
   GNUSTEP_USER_DIR="GNUstep"
 fi
-if echo "$GNUSTEP_USER_DIR" | grep -q '[[ \t\\]]'
+if echo "$GNUSTEP_USER_DIR" | grep -q '[[ 	\\]]'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DIR'"
   echo "Please try again using --with-user-dir= to specify a value."
@@ -509,7 +509,7 @@ GNUSTEP_USER_DEFAULTS_DIR="$withval",)
 if test "$GNUSTEP_USER_DEFAULTS_DIR" = "" -o "$GNUSTEP_USER_DEFAULTS_DIR" = "no"; then 
   GNUSTEP_USER_DEFAULTS_DIR="GNUstep/Defaults"
 fi
-if echo "$GNUSTEP_USER_DEFAULTS_DIR" | grep -q '[[ \t\\]]'
+if echo "$GNUSTEP_USER_DEFAULTS_DIR" | grep -q '[[ 	\\]]'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DEFAULTS_DIR'"
   echo "Please try again using --with-user-defaults-dir= to specify a value."
