@@ -57,7 +57,7 @@ ac_cv_library_combo=$withval,
 ac_cv_library_combo=$ac_cv_library_combo
 )
 
-if test "$ac_cv_library_combo" = ""; then
+if test "$ac_cv_library_combo" = "" -o "$ac_cv_library_combo" = "no"; then
   case "$host_os" in
     darwin*)   ac_cv_library_combo=apple-apple-apple ;;
     nextstep4) ac_cv_library_combo=nx-nx-nx          ;;
@@ -371,7 +371,12 @@ AC_ARG_WITH(local-root,[
    Example: --with-local-root=/usr/local/GNUstep/Local
 ],
 GNUSTEP_LOCAL_ROOT="$withval",)
-if test "$GNUSTEP_LOCAL_ROOT" = "" -o "$GNUSTEP_LOCAL_ROOT" = "no"; then 
+# If GNUSTEP_LOCAL_ROOT is explicitly set to 'no', we effectively disable it
+# by setting it to be the same as GNUSTEP_SYSTEM_ROOT
+if test "$GNUSTEP_LOCAL_ROOT" = "no"; then 
+  GNUSTEP_LOCAL_ROOT="$GNUSTEP_SYSTEM_ROOT"
+fi
+if test "$GNUSTEP_LOCAL_ROOT" = ""; then 
   GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
 fi
 if echo "$GNUSTEP_LOCAL_ROOT" | grep -q '[[ 	\\]]'
