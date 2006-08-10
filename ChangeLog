@@ -4,6 +4,7 @@
 	when the file being linked is a directory.
 
 2006-07-06  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* configure.ac: Prevent bad characters in paths
 	* configure: regenerate
 	* GNUstep.csh.in: remove use of obsolete substitutions
