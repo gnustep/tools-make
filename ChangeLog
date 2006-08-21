@@ -1,3 +1,8 @@
+2006-08-21  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Add dragonfly OS.
+	* Documentation/machine.texi: Updates.
+
 2006-07-29 10:51-EDT Gregory John Casamento <greg_casamento@yahoo.com>
 
 	* configure: Changed "cp -p" to "cp -rp" to correct breakage

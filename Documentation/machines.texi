@@ -75,13 +75,15 @@ Compiler notes: If a recommended compiler is not listed, take note of the
 following information before choosing the compiler you use.
 @table @var
 @item egcs or gcc < 2.95
-Might work, but few people use these now.
+Most likely will not work and is not supported.
 @item gcc 2.95.x
-Probably the oldest compiler that GNUstep is regularly tested with.
+Support for this compiler is deprecated as of Aug 2006. Mostly likely
+it will work in the near future and bug fixes will be accepted, but any
+bugs are considered non-critical.
 @item gcc 2.96
 Not an official gcc release. Some versions (Redhat, Mandrake) have problems
 that prevent GNUstep from being compiled correctly and cause
-mysterious errors.
+mysterious errors. Not supported.
 @item gcc 3.0.x
 A fairly good compiler. Recommended.
 @item gcc 3.1
@@ -477,18 +479,23 @@ See @url{http://www.netwinder.org/~patrix}
 
 @c -----------------------------------------
 @node OpenBSD 3.x, OSF/Alpha, Netwinder, Machine Specific
-@section OpenBSD 3.x  (@emph{Unsupported,Obsolete})
+@section OpenBSD 3.9  (@emph{Unsupported})
+
+Information for version 3.9 (2006/08/13)
+
+Ports at
+@url{http://mail.rochester.edu/~asveikau/gnustep-openbsd/}
 
 @c -----------------------------------------
 @node OSF/Alpha, RedHat/Intel, OpenBSD 3.x, Machine Specific
-@section OSF/Alpha  (@emph{Unstable})
+@section OSF/Alpha  (@emph{Needs Testing, Unstable})
 @c Contact: suzukis@file.phys.tohoku.ac.jp
 
 Information is for Version 3.2C
 
 @table @var
 @item Recommended compiler
-egcs-1.1.1/1.1.2, gcc-2.95
+Unknown
 
 @item Extra libs needed 
 Unknown
@@ -555,7 +562,6 @@ Tested on Solaris version 6, 7, and 8
 @table @var
 @item Recommended compiler
 gcc 3.2.1 or greater
-gcc 2.95.3. Version 2.95.2 has several bugs that GNUstep tickles.
 gcc 3.04. Not 3.1 - does not compile parts of GNUstep.
 
 @item Extra libs needed 
