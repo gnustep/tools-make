@@ -452,7 +452,6 @@ ifeq ($(debug), yes)
   ADDITIONAL_FLAGS += -g -Wall -DDEBUG -fno-omit-frame-pointer
   INTERNAL_JAVACFLAGS += -g -deprecation
   OBJ_DIR_PREFIX += debug_
-  LIBRARY_NAME_SUFFIX := d$(LIBRARY_NAME_SUFFIX)
 else
   INTERNAL_JAVACFLAGS += -O
 endif

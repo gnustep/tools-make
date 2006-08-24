@@ -1,3 +1,11 @@
+2006-08-24  Adam Fedor  <fedor@gnu.org>
+
+	* common.make: Remove 'd' suffix for debug libraries.
+	* which_lib.c: Don't search for debug libraries in case there are
+	old ones still around.
+
+	* Documentation/news.texi: Update for new release.
+
 2006-08-21  Adam Fedor  <fedor@gnu.org>
 
 	* target.make: Add dragonfly OS.

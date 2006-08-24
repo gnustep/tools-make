@@ -9,11 +9,22 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{1.13.0}
+
+Debug libraries now have the same name as normal libraries (i.e. no "_d"
+suffix). This reduces the possiblity of multiple libraries being loaded
+into the same executable.
+
+Added dragonfly OS to make targets.
+
+Spaces and backslashes are no longer allowed in paths used by the make
+package (e.g. with Windows OS). The libraries can still use native paths.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{1.12.0}
 
 Minor fixes.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{1.11.2}
 

@@ -34,21 +34,19 @@
   * a list of libraries in the GCC notation, as in
     -lgnustep-base -lgnustep-gui -lobjc
 
-  * flags specifying whether a debug, profile, static/shared library is
-    to be preferred, as in
-    debug=no profile=yes shared=yes
+  * flags specifying whether a profile, static/shared library is
+    to be preferred, as in profile=yes shared=yes
 
   The tool outputs the same list of library search paths and the list
   of libraries it received in input, with an important modification:
   each library name is modified to match the available version of the
-  library (by appending nothing for a normal library, _d for a debug
-  version of the library, _p for a profile one, _s for a static one,
-  and the various combinations, _dp, _ds, _ps, _dps) -- giving
-  preference to libraries matching the specified debug, profile,
-  shared library flags.  For example, if a debug=yes profile=no
-  shared=yes is specified, and libgnustep-base_d.so is in the library
+  library (by appending nothing for a normal or debug library,
+  _p for a profile one, _s for a static one, and _ps for both ) -- giving
+  preference to libraries matching the specified profile,
+  shared library flags.  For example, if a profile=yes
+  shared=yes is specified, and libgnustep-base_p.so is in the library
   search path, which_lib will replace -lgnustep-base with
-  -lgnustep-base_d in the output.
+  -lgnustep-base_p in the output.
 
   Here is exactly how the search is performed:
 
@@ -61,24 +59,12 @@
   is performed on the list of directories, and uses the shared flags
   as specified.
 
-  If (debug=yes and profile=yes), the tool looks for a debug=yes
-  profile=no, then a debug=no profile=yes.
-
-  If (debug=yes and profile=no), the tool looks for a debug=no
-  profile=no.
-
-  If (debug=no and profile=yes), the tool looks for a debug=no
-  profile=no.
-
-  If (debug=no and profile=no), the tool looks for a debug=yes
-  profile=no.
-
   If none is still found and shared=yes, the tool looks for any
   available shared library with that name (regardless of wheter it's
-  debug/profile/nothing).
+  profile/nothing).
 
   If none is still found, the tool looks for any available static
-  library with that name (regardless of any debug/profile/shared
+  library with that name (regardless of any profile/shared
   flag).
 
   If still not found, the tool outputs the unmodified library name (as
@@ -553,7 +539,7 @@ static int search_for_lib_with_ext (const char *library_name,
 /* Search for the library everywhere, and returns the library name.  */
 static void output_library_name (const char *library_name,
 				 char** library_paths, int paths_no,
-				 int debug, int profile, int shared,
+				 int profile, int shared,
 				 char *libname_suffix)
 {
   char *extension = shared ? shared_libext : libext;
@@ -580,51 +566,19 @@ static void output_library_name (const char *library_name,
 
 
   /* The library was not found.  Try various approximations first,
-     slightly messing the original debug/profile requests, but still
+     slightly messing the original profile requests, but still
      honouring the shared=yes|no requirement.  */
   if (show_all)
     {
       fprintf (stderr, "Scanning all paths for an approximate match\n");
     }
 
-  /* _dp case:  try _d, then _p  */
-  if (debug  &&  profile)
-    {
-      if (search_for_lib_with_suffix_and_ext (library_name,
-					      library_paths, paths_no,
-					      shared ? "_d" : "_ds",
-					      extension))
-	{
-	  return;
-	}
-
-      if (search_for_lib_with_suffix_and_ext (library_name,
-					      library_paths, paths_no,
-					      shared ? "_p" : "_ps",
-					      extension))
-	{
-	  return;
-	}
-    }
-
-  /* _d or _p: try nothing.  */
-  if ((debug  &&  !profile)  ||  (!debug  &&  profile))
+  /* _p: try nothing.  */
+  if (profile)
     {
       if (search_for_lib_with_suffix_and_ext (library_name,
 					      library_paths, paths_no,
 					      shared ? "" : "_s",
-					      extension))
-	{
-	  return;
-	}
-    }
-
-  /* nothing: try _d.  */
-  if (!debug  &&  !profile)
-    {
-      if (search_for_lib_with_suffix_and_ext (library_name,
-					      library_paths, paths_no,
-					      shared ? "_d" : "_ds",
 					      extension))
 	{
 	  return;
@@ -680,12 +634,11 @@ int main (int argc, char** argv)
   int i;
 
   /* Type of libraries we prefer.  */
-  int debug = 0;
   int profile = 0;
   int shared = 1;
 
-  /* Suffix of the libraries we prefer - something like "" or "_d" or
-     "_dp" or "_ps" */
+  /* Suffix of the libraries we prefer - something like "" or 
+     "_p" or "_ps" */
   char libname_suffix[5];
 
   /* Array of strings that are the library paths passed on the command
@@ -715,7 +668,7 @@ int main (int argc, char** argv)
 
   if (argc == 1)
     {
-      printf ("usage: %s [-Lpath ...] -llibrary shared=yes|no debug=yes|no "
+      printf ("usage: %s [-Lpath ...] -llibrary shared=yes|no "
 	      "profile=yes|no libext=string shared_libext=string "
 	      "[show_all=yes]\n", argv[0]);
       exit (1);
@@ -780,7 +733,6 @@ int main (int argc, char** argv)
 	  {
 	    if (!strncmp (argv[i], "debug=", 6))
 	      {
-		debug = !strncmp (argv[i] + 6, "yes", 3);
 		continue;
 	      }
 	    break;
@@ -853,12 +805,6 @@ int main (int argc, char** argv)
 
   i = 1;
 
-  if (debug)
-    {
-      libname_suffix[i] = 'd';
-      i++;
-    }
-
   if (profile)
     {
       libname_suffix[i] = 'p';
@@ -881,7 +827,6 @@ int main (int argc, char** argv)
     {
       fprintf (stderr, ">>Input:\n");
       fprintf (stderr, "shared = %d\n", shared);
-      fprintf (stderr, "debug = %d\n", debug);
       fprintf (stderr, "profile = %d\n", profile);
       fprintf (stderr, "libname_suffix = %s\n", libname_suffix);
       fprintf (stderr, "libext = %s\n", libext);
@@ -912,7 +857,7 @@ int main (int argc, char** argv)
       /* Search for the library, and print (using -l%s) the library
 	 name to standard output.  */
       output_library_name (all_libraries[i], library_paths,
-			   paths_no, debug, profile, shared, libname_suffix);
+			   paths_no, profile, shared, libname_suffix);
     }
 
   /* Output the other flags */
