@@ -1,7 +1,7 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 13 March 2006
+   Last Update: 28 August 2006
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
@@ -125,7 +125,7 @@ are required.
      GNUstep and WindowMaker work together to provide a consistant
      interface.  Although it is not required, GNUstep will work much
      better if you use it with the WindowMaker window manager.  Get
-     WindowMaker from <http://www.windowmaker.org>.
+     WindowMaker from <http://www.windowmaker.info>.
 
 `gnustep-objc package (for gcc version < 3.0 ONLY or MINGW/Cygwin) (RECOMMENDED)'
      Note: Do not install this library unless you are sure you need it.
@@ -371,15 +371,17 @@ than previous versions.
    Compiler notes: If a recommended compiler is not listed, take note
 of the following information before choosing the compiler you use.
 EGCS OR GCC < 2.95
-     Might work, but few people use these now.
+     Most likely will not work and is not supported.
 
 GCC 2.95.X
-     Probably the oldest compiler that GNUstep is regularly tested with.
+     Support for this compiler is deprecated as of Aug 2006. Mostly
+     likely it will work in the near future and bug fixes will be
+     accepted, but any bugs are considered non-critical.
 
 GCC 2.96
      Not an official gcc release. Some versions (Redhat, Mandrake) have
      problems that prevent GNUstep from being compiled correctly and
-     cause mysterious errors.
+     cause mysterious errors. Not supported.
 
 GCC 3.0.X
      A fairly good compiler. Recommended.
@@ -728,16 +730,20 @@ EXTRA LIBS NEEDED
 SPECIAL INSTRUCTIONS
      See <http://www.netwinder.org/~patrix>
 
-OpenBSD 3.x  (_Unsupported,Obsolete_)
-=====================================
+OpenBSD 3.9  (_Unsupported_)
+============================
 
-OSF/Alpha  (_Unstable_)
-=======================
+Information for version 3.9 (2006/08/13)
+
+   Ports at <http://mail.rochester.edu/~asveikau/gnustep-openbsd/>
+
+OSF/Alpha  (_Needs Testing, Unstable_)
+======================================
 
 Information is for Version 3.2C
 
 RECOMMENDED COMPILER
-     egcs-1.1.1/1.1.2, gcc-2.95
+     Unknown
 
 EXTRA LIBS NEEDED
      Unknown
@@ -793,9 +799,8 @@ Solaris 2.[678]/Sparc (_Supported_)
 Tested on Solaris version 6, 7, and 8
 
 RECOMMENDED COMPILER
-     gcc 3.2.1 or greater gcc 2.95.3. Version 2.95.2 has several bugs
-     that GNUstep tickles.  gcc 3.04. Not 3.1 - does not compile parts
-     of GNUstep.
+     gcc 3.2.1 or greater gcc 3.04. Not 3.1 - does not compile parts of
+     GNUstep.
 
 EXTRA LIBS NEEDED
      tiff, Don't use the one in /usr/openwin
@@ -857,8 +862,8 @@ SPECIAL INSTRUCTIONS
 Suse/Intel (_Supported_)
 ========================
 
-GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, 9.1, and
-9.3 of Suse
+GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, 9.1, 9.3,
+and 10.1 of Suse
 
 RECOMMENDED COMPILER
      The default compiler that comes with Susu is fine. Also gcc2.95.x,
@@ -869,7 +874,7 @@ EXTRA LIBS NEEDED
      None
 
 SPECIAL INSTRUCTIONS
-     None.
+     Suse 10.1 does not work with the x11 backend.
 
 
 Suse 7.x/PPC (_Unsupported_)
@@ -1018,13 +1023,13 @@ SPECIAL INSTRUCTIONS
 Yellowdog/PowerPC (_Unsupported_)
 =================================
 
-Getting Libraries via Anonymous CVS
-***********************************
+Getting Libraries via SVN
+*************************
 
 If you didn't get one of the snapshots, or if you want to be sure to
-stay on the bleading edge, then you should get the libraries via CVS. Go
-to <http://savannah.gnu.org/cvs/?group_id=99> for information on how to
-get anonymous CVS access.
+stay on the bleading edge, then you should get the libraries via SVN. Go
+to <http://www.gnustep.org/resources/sources.html> for information on
+how to get the sourcecode.
 
    If you haven't already done so, change to the directory, where you
 want the source to reside. To get a list of potential modules to check

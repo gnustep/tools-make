@@ -1,7 +1,7 @@
 GNUstep Frequently Asked Questions with Answers
 ***********************************************
 
-Last updated 13 March 2006.  Please send corrections to
+Last updated 28 August 2006.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -317,9 +317,9 @@ How do I start writing tests?
 You can write testcases - where the libraries fail tests, you could
 either fix the problem, or add it to the task list.
 
-   To write testcases, you need to use anonymous CVS to install the
-latest GNUstep snapshots you can find. Then checkout the
-'gnustep/dev-apps/test/Testsuite' module from CVS.
+   To write testcases, you need to use svn to install the latest
+GNUstep sourcecode you can find. Then checkout the
+'gnustep/tools/testsuite' module from svn.
 
 How do I start writing applications?
 ------------------------------------
@@ -338,7 +338,7 @@ of it (the FAQ and the Documentation) are actually generated from files
 in the individual GNUstep packages.
 
    If you want to update the FAQ or documentation  - grab the latest
-snapshot of the GNUstep core you can find, update it from the CVS
+snapshot of the GNUstep core you can find, update it from the svn
 repository, and work with the contents of the appropriate documentation
 directory.
 

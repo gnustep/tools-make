@@ -1,3 +1,7 @@
+2006-08-28  Adam Fedor  <fedor@gnu.org>
+
+	* Version 1.13.0
+
 2006-08-24  Adam Fedor  <fedor@gnu.org>
 
 	* common.make: Remove 'd' suffix for debug libraries.
