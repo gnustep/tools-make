@@ -34,19 +34,18 @@
   * a list of libraries in the GCC notation, as in
     -lgnustep-base -lgnustep-gui -lobjc
 
-  * flags specifying whether a profile, static/shared library is
-    to be preferred, as in profile=yes shared=yes
+  * flags specifying whether a static/shared library is
+    to be preferred, as in shared=yes
 
   The tool outputs the same list of library search paths and the list
   of libraries it received in input, with an important modification:
   each library name is modified to match the available version of the
-  library (by appending nothing for a normal or debug library,
-  _p for a profile one, _s for a static one, and _ps for both ) -- giving
-  preference to libraries matching the specified profile,
-  shared library flags.  For example, if a profile=yes
-  shared=yes is specified, and libgnustep-base_p.so is in the library
-  search path, which_lib will replace -lgnustep-base with
-  -lgnustep-base_p in the output.
+  library (by appending nothing for a normal or debug library, _s for
+  a static one) -- giving preference to libraries matching the
+  specified shared library flags.  For example, if shared=yes is
+  specified, and libgnustep-base.so is in the library search path,
+  which_lib will replace -lgnustep-base with -lgnustep-base in the
+  output.
 
   Here is exactly how the search is performed:
 
@@ -60,12 +59,10 @@
   as specified.
 
   If none is still found and shared=yes, the tool looks for any
-  available shared library with that name (regardless of wheter it's
-  profile/nothing).
+  available shared library with that name.
 
   If none is still found, the tool looks for any available static
-  library with that name (regardless of any profile/shared
-  flag).
+  library with that name (regardless of any shared flag).
 
   If still not found, the tool outputs the unmodified library name (as
   in -lgnustep-base) ... perhaps the library is somewhere else in the
@@ -245,8 +242,8 @@ static char *normalize_and_check_dir (char *path)
     library_name must not contain the suffix, so library_name should
     be something like 'gnustep-base'.
 
-    suffix is the wanted suffix (valid suffixes are "", _d, _p, _s,
-    _ds, _dp, _ps, _dps).  Must not be NULL.
+    suffix is the wanted suffix (valid suffixes are "", _s).  
+    Must not be NULL.
 
     ext is the wanted extension (normally, either .so or .a).  Must
     not be NULL.
@@ -340,7 +337,7 @@ static int search_for_lib_with_suffix_and_ext (const char *library_name,
 
     The same comments as for 'search_for_lib_with_suffix_and_ext' apply,
     except that any valid suffix is accepted (valid suffixes are: "",
-    _d, _p, _s, _ds, _dp, _ps, _dps).
+    _s).
 */
 
 static int search_for_lib_with_ext (const char *library_name,
@@ -423,7 +420,7 @@ static int search_for_lib_with_ext (const char *library_name,
 	      /* The extension matches.  Check the last remaining bit
 		 - that the remaining string we have not checked is
 		 one of the allowed suffixes.  The allowed suffixes
-		 are: "", _d, _p, _s, _dp, _ds, _ps, _dps.  */
+		 are: "", _s.  */
 	      {
 		char f_suffix[5];
 		int j;
@@ -449,7 +446,7 @@ static int search_for_lib_with_ext (const char *library_name,
 		    }
 		  case 2:
 		    {
-		      /* Must be one of _d, _p, _s  */
+		      /* Must be one of _s  */
 		      char c;
 
 		      if (dirbuf->d_name[3 + library_name_len] != '_')
@@ -458,46 +455,7 @@ static int search_for_lib_with_ext (const char *library_name,
 			}
 
 		      c = dirbuf->d_name[3 + library_name_len + 1];
-		      if (c != 'd'  ||  c != 'p'  ||  c != 's')
-			{
-			  continue;
-			}
-		      break;
-		    }
-		  case 3:
-		    {
-		      /* Must be one of _dp, _ds, _ps  */
-		      char c, d;
-
-		      if (dirbuf->d_name[3 + library_name_len] != '_')
-			{
-			  continue;
-			}
-
-		      c = dirbuf->d_name[3 + library_name_len + 1];
-		      d = dirbuf->d_name[3 + library_name_len + 2];
-		      if ((c == 'd'  &&  (d == 'p'  ||  d == 's'))
-			  || (c == 'p'  &&  d == 's'))
-			{
-			  break;
-			}
-		      continue;
-		    }
-		  case 4:
-		    {
-		      if (dirbuf->d_name[3 + library_name_len] != '_')
-			{
-			  continue;
-			}
-		      if (dirbuf->d_name[3 + library_name_len] != 'd')
-			{
-			  continue;
-			}
-		      if (dirbuf->d_name[3 + library_name_len] != 'p')
-			{
-			  continue;
-			}
-		      if (dirbuf->d_name[3 + library_name_len] != 's')
+		      if (c != 's')
 			{
 			  continue;
 			}
@@ -539,7 +497,7 @@ static int search_for_lib_with_ext (const char *library_name,
 /* Search for the library everywhere, and returns the library name.  */
 static void output_library_name (const char *library_name,
 				 char** library_paths, int paths_no,
-				 int profile, int shared,
+				 int shared,
 				 char *libname_suffix)
 {
   char *extension = shared ? shared_libext : libext;
@@ -571,18 +529,6 @@ static void output_library_name (const char *library_name,
   if (show_all)
     {
       fprintf (stderr, "Scanning all paths for an approximate match\n");
-    }
-
-  /* _p: try nothing.  */
-  if (profile)
-    {
-      if (search_for_lib_with_suffix_and_ext (library_name,
-					      library_paths, paths_no,
-					      shared ? "" : "_s",
-					      extension))
-	{
-	  return;
-	}
     }
 
   /* The library was still not found.  Try to get whatever library we
@@ -634,11 +580,10 @@ int main (int argc, char** argv)
   int i;
 
   /* Type of libraries we prefer.  */
-  int profile = 0;
   int shared = 1;
 
   /* Suffix of the libraries we prefer - something like "" or 
-     "_p" or "_ps" */
+     "_s" */
   char libname_suffix[5];
 
   /* Array of strings that are the library paths passed on the command
@@ -669,7 +614,7 @@ int main (int argc, char** argv)
   if (argc == 1)
     {
       printf ("usage: %s [-Lpath ...] -llibrary shared=yes|no "
-	      "profile=yes|no libext=string shared_libext=string "
+	      "libext=string shared_libext=string "
 	      "[show_all=yes]\n", argv[0]);
       exit (1);
     }
@@ -729,29 +674,12 @@ int main (int argc, char** argv)
 	      }
 	    break;
 	  }
-	case 'd':
-	  {
-	    if (!strncmp (argv[i], "debug=", 6))
-	      {
-		continue;
-	      }
-	    break;
-	  }
 	case 'l':
 	  {
 	    if (!strncmp (argv[i], "libext=", 7))
 	      {
 		libext = malloc (strlen (argv[i] + 7) + 1);
 		strcpy (libext, argv[i] + 7);
-		continue;
-	      }
-	    break;
-	  }
-	case 'p':
-	  {
-	    if (!strncmp (argv[i], "profile=", 8))
-	      {
-		profile = !strncmp (argv[i] + 8, "yes", 3);
 		continue;
 	      }
 	    break;
@@ -805,12 +733,6 @@ int main (int argc, char** argv)
 
   i = 1;
 
-  if (profile)
-    {
-      libname_suffix[i] = 'p';
-      i++;
-    }
-
   if (!shared)
     {
       libname_suffix[i] = 's';
@@ -827,7 +749,6 @@ int main (int argc, char** argv)
     {
       fprintf (stderr, ">>Input:\n");
       fprintf (stderr, "shared = %d\n", shared);
-      fprintf (stderr, "profile = %d\n", profile);
       fprintf (stderr, "libname_suffix = %s\n", libname_suffix);
       fprintf (stderr, "libext = %s\n", libext);
       fprintf (stderr, "shared_libext = %s\n", shared_libext);
@@ -857,7 +778,7 @@ int main (int argc, char** argv)
       /* Search for the library, and print (using -l%s) the library
 	 name to standard output.  */
       output_library_name (all_libraries[i], library_paths,
-			   paths_no, profile, shared, libname_suffix);
+			   paths_no, shared, libname_suffix);
     }
 
   /* Output the other flags */

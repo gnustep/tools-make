@@ -435,7 +435,7 @@ else
   LIB_LINK_CMD              =  $(STATIC_LIB_LINK_CMD)
   OBJ_DIR_PREFIX            += static_
   AFTER_INSTALL_LIBRARY_CMD =  $(AFTER_INSTALL_STATIC_LIB_CMD)
-  LIBRARY_NAME_SUFFIX       := s$(LIBRARY_NAME_SUFFIX)
+  LIBRARY_NAME_SUFFIX       := _s
 endif
 
 ifeq ($(profile), yes)
@@ -444,7 +444,6 @@ ifeq ($(profile), yes)
     INTERNAL_LDFLAGS += -pg
   endif
   OBJ_DIR_PREFIX += profile_
-  LIBRARY_NAME_SUFFIX := p$(LIBRARY_NAME_SUFFIX)
 endif
 
 ifeq ($(debug), yes)
@@ -468,10 +467,6 @@ ifeq ($(diagnose), no)
   ADDITIONAL_FLAGS += -UGSDIAGNOSE
 else
   ADDITIONAL_FLAGS += -DGSDIAGNOSE
-endif
-
-ifneq ($(LIBRARY_NAME_SUFFIX),)
-  LIBRARY_NAME_SUFFIX := _$(LIBRARY_NAME_SUFFIX)
 endif
 
 AUXILIARY_CPPFLAGS += $(GNUSTEP_DEFINE) \

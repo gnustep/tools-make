@@ -1,3 +1,11 @@
+2006-09-07  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* common.make: Removed 'p' library name suffix for profile
+	libraries.  The only remaining library name suffix is '_s' for
+	static libraries.
+	* which_lib.c: Don't search for profile libraries, also removed
+	some other old code searching for debug ones.
+	
 2006-08-28  Adam Fedor  <fedor@gnu.org>
 
 	* Version 1.13.0
