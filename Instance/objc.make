@@ -46,12 +46,9 @@ OBJC_PROGRAM_INSTALL_DIR = $(GNUSTEP_TOOLS)
 endif
 
 ALL_OBJC_LIBS =								\
-    $(shell $(WHICH_LIB_SCRIPT)						\
 	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
-        $(TARGET_SYSTEM_LIBS)						\
-        debug=$(debug) profile=$(profile) shared=$(shared)		\
-        libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+        $(TARGET_SYSTEM_LIBS)
 
 internal-objc_program-all_:: \
                   $(GNUSTEP_OBJ_DIR) \

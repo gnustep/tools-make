@@ -78,11 +78,8 @@ BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
 endif
 
 ALL_BUNDLE_LIBS =						\
-    $(shell $(WHICH_LIB_SCRIPT)					\
-	$(ALL_LIB_DIRS)						\
-	$(BUNDLE_LIBS)						\
-	debug=$(debug) profile=$(profile) shared=$(shared)	\
-	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+	$(ALL_LIB_DIRS)	 					\
+	$(BUNDLE_LIBS)
 
 ifeq ($(BUILD_DLL),yes)
 BUNDLE_OBJ_EXT = $(DLL_LIBEXT)

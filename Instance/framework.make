@@ -162,11 +162,8 @@ LIBRARIES_DEPEND_UPON += $(filter-out -l$(GNUSTEP_INSTANCE), \
 endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
-  $(shell $(WHICH_LIB_SCRIPT)					\
    $(ALL_LIB_DIRS)						\
-   $(LIBRARIES_DEPEND_UPON)					\
-   debug=$(debug) profile=$(profile) shared=$(shared)		\
-   libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+   $(LIBRARIES_DEPEND_UPON)
 
 ifeq ($(FOUNDATION_LIB),gnu)
 

@@ -43,19 +43,7 @@ endif
         internal-palette-uninstall_ \
         internal-palette-copy_into_dir
 
-# On Solaris we don't need to specifies the libraries the palette needs.
-# How about the rest of the systems? ALL_PALETTE_LIBS is temporary empty.
-#ALL_PALETTE_LIBS = $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
-#   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-#   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-#   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-
-#ALL_PALETTE_LIBS := \
-#    $(shell $(WHICH_LIB_SCRIPT) $(ALL_LIB_DIRS) $(ALL_PALETTE_LIBS) \
-#	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-#	shared_libext=$(SHARED_LIBEXT))
 # On windows, this is unfortunately required.
-
 ifeq ($(BUILD_DLL), yes)
   LINK_PALETTE_AGAINST_ALL_LIBS = yes
 endif
@@ -74,11 +62,8 @@ PALETTE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
 endif
 
 ALL_PALETTE_LIBS =						\
-    $(shell $(WHICH_LIB_SCRIPT)					\
 	$(ALL_LIB_DIRS)						\
-	$(PALETTE_LIBS)						\
-	debug=$(debug) profile=$(profile) shared=$(shared)	\
-	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+	$(PALETTE_LIBS)
 
 ifeq ($(BUILD_DLL),yes)
 PALETTE_OBJ_EXT = $(DLL_LIBEXT)

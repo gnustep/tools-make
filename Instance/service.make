@@ -41,14 +41,11 @@ endif
 
 # Libraries that go before the GUI libraries
 ALL_SERVICE_LIBS =							\
-    $(shell $(WHICH_LIB_SCRIPT)						\
 	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS)			\
 	$(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	\
 	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
-	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)		\
-	debug=$(debug) profile=$(profile) shared=$(shared)		\
-	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
 # Don't include these definitions the first time make is invoked. This part is
 # included when make is invoked the second time from the %.build rule (see

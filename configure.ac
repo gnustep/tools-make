@@ -22,7 +22,6 @@
 AC_INIT
 AC_PREREQ(2.57)
 AC_CONFIG_SRCDIR([application.make])
-AC_CONFIG_HEADER(config.h)
 
 #--------------------------------------------------------------------
 # Setup the library combination
@@ -710,14 +709,6 @@ fi
 # And the following to execute them
 LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
 export LD_LIBRARY_PATH
-
-#--------------------------------------------------------------------
-# Miscellaneous headers (only used for compiling which_lib.c and user_home.c)
-#--------------------------------------------------------------------
-AC_HEADER_DIRENT
-AC_CHECK_HEADERS(sys/param.h sys/file.h dir.h string.h stdlib.h sys/types.h dnl
-		fcntl.h limits.h utime.h sys/stat.h pwd.h unistd.h ctype.h)
-AC_CHECK_FUNCS(getpwnam getpwuid geteuid getlogin strchr)
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

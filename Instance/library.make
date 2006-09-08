@@ -120,11 +120,8 @@ LIBRARIES_DEPEND_UPON += $(filter-out -l$(LIBRARY_NAME_WITHOUT_LIB), \
 endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
-  $(shell $(WHICH_LIB_SCRIPT)					\
    $(ALL_LIB_DIRS)						\
-   $(LIBRARIES_DEPEND_UPON)					\
-   debug=$(debug) profile=$(profile) shared=$(shared)		\
-   libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+   $(LIBRARIES_DEPEND_UPON)
 
 ifeq ($(shared), yes)
 

@@ -88,10 +88,7 @@ endif
 	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) \
 	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 #ALL_GSWBUNDLE_LIBS = 
-#ALL_GSWBUNDLE_LIBS = \
-    $(shell $(WHICH_LIB_SCRIPT) $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS) \
-	debug=$(debug) profile=$(profile) shared=$(shared) libext=$(LIBEXT) \
-	shared_libext=$(SHARED_LIBEXT))
+#ALL_GSWBUNDLE_LIBS = $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)
 
 internal-gswbundle-all_:: $(GNUSTEP_OBJ_DIR) \
                           build-bundle-dir \

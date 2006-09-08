@@ -70,12 +70,6 @@ CONFIG_OS_SCRIPT       = $(GNUSTEP_MAKEFILES)/os.sh
 CLEAN_CPU_SCRIPT       = $(GNUSTEP_MAKEFILES)/clean_cpu.sh
 CLEAN_VENDOR_SCRIPT    = $(GNUSTEP_MAKEFILES)/clean_vendor.sh
 CLEAN_OS_SCRIPT        = $(GNUSTEP_MAKEFILES)/clean_os.sh
-ifeq ($(GNUSTEP_FLATTENED),)
-  WHICH_LIB_SCRIPT \
-	= $(GNUSTEP_MAKEFILES)/$(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)/which_lib
-else
-  WHICH_LIB_SCRIPT = $(GNUSTEP_MAKEFILES)/which_lib
-endif
 LD_LIB_PATH_SCRIPT     = $(GNUSTEP_MAKEFILES)/ld_lib_path.sh
 TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_MAKEFILES)/transform_paths.sh
 REL_PATH_SCRIPT        = $(GNUSTEP_MAKEFILES)/relative_path.sh
@@ -435,7 +429,6 @@ else
   LIB_LINK_CMD              =  $(STATIC_LIB_LINK_CMD)
   OBJ_DIR_PREFIX            += static_
   AFTER_INSTALL_LIBRARY_CMD =  $(AFTER_INSTALL_STATIC_LIB_CMD)
-  LIBRARY_NAME_SUFFIX       := _s
 endif
 
 ifeq ($(profile), yes)

@@ -1,3 +1,45 @@
+2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* common.make: Removed '_s' library name suffix for static
+	libraries.  All libraries have the same name now!
+	(WHICH_LIB_SCRIPT): Variable removed.
+
+	* Instance/application.make (ALL_GUI_LIBS): Do not filter the
+	libraries using which_lib.
+	* Instance/bundle.make (ALL_BUNDLE_LIBS): Same change.
+	* Instance/ctool.make (ALL_TOOL_LIBS): Same change.	
+	* Instance/framework.make (INTERNAL_LIBRARIES_DEPEND_UPON): Same change.
+	* Instance/gswapp.make (ALL_GSW_LIBS): Same change.
+	* Instance/gswbundle.make (GSWBUNDLE_INSTALL_DIR): Same change.
+	* Instance/library.make (INTERNAL_LIBRARIES_DEPEND_UPON): Same change.
+	* Instance/objc.make (ALL_OBJC_LIBS): Same change.
+	* Instance/palette.make (ALL_PALETTE_LIBS): Same change.
+	* Instance/service.make (ALL_SERVICE_LIBS): Same change.
+	* Instance/tool.make (ALL_TOOL_LIBS): Same change.
+
+	* Instance/palette.make: Removed duplicated (and commented out)
+	code for using all libs on some systems.
+
+	* GNUmakefile.in (all): Do not build which_lib.
+	(which_lib$(EXEEXT)): Rule removed.
+	(install): Do not install which_lib.
+	(uninstall): Do not uninstall which_lib.
+	(clean): Do not clean which_lib.
+	
+	* configure.ac: Removed all the 'Miscellaneous headers' config, which
+	was only used when building which_lib.c
+	(AC_CONFIG_HEADER): Removed.
+	* configure: Regenerated.
+	
+	* config.h.in: Removed.
+
+	* GNUmakefile.in (generated-files): Removed config.h
+	(config.h): Removed rule.
+	(all): Print a message so people are not confused when 'all' does
+	nothing.
+
+	* which_lib.c: File removed.
+	
 2006-09-07  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	* common.make: Removed 'p' library name suffix for profile

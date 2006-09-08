@@ -75,14 +75,11 @@ endif
 
 # Libraries that go before the WO libraries
 ALL_GSW_LIBS =								\
-    $(shell $(WHICH_LIB_SCRIPT)						\
 	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS)	\
 	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)			\
 	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
-        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)		\
-	debug=$(debug) profile=$(profile) shared=$(shared)		\
-	libext=$(LIBEXT) shared_libext=$(SHARED_LIBEXT))
+        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
 GSWAPP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(GSWAPP_EXTENSION))
 GSWAPP_DIR = $(GNUSTEP_BUILD_DIR)/$(GSWAPP_DIR_NAME)

@@ -107,21 +107,14 @@ INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make \
 INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
                           javadoc.make latex.make texi.make
 
-all: generated-files which_lib$(EXEEXT)
-
-# Please note that you should use a bit of care in the following rule,
-# because it must work in a directory which is not the source
-# directory - so for example $<, rather than which_lib.c, must be
-# used. (I mean: 'cd core/make; cd ..; mkdir make-build; cd
-# make-build; ../make/configure --disable-import; make;' must work)
-which_lib$(EXEEXT): which_lib.c config.h
-	$(CC) @CFLAGS@ -Wall -I. -o $@ $<
-
 ifeq ($(messages),yes)
   EC = 
 else
   EC = @
 endif
+
+all: generated-files
+	$(EC)(echo "Thanks.  You can install now.")
 
 move_obsolete:
 	$(EC)(echo "Moving paths from old heirarchy: "; \
@@ -148,9 +141,7 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 	 $(srcdir)/mkinstalldirs "$(GNUSTEP_CONFIG_FILE_DIR)"; \
 	 $(INSTALL_DATA) GNUstep.conf "$(GNUSTEP_CONFIG_FILE)")
 	-$(EC) rm -f "$(GNUSTEP_SYSTEM_ROOT)/Makefiles"
-	 $(EC)(echo "Installing gnustep-make support software"; \
-	   $(INSTALL_PROGRAM) -m 755 which_lib$(EXEEXT) \
-	     $(makedir)/$(GNUSTEP_TARGET_DIR))
+	 $(EC)(echo "Installing gnustep-make support software")
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh GNUstep-reset.sh \
@@ -205,7 +196,6 @@ install: all @GNUSTEP_MOVE_OBSOLETE@
 #	@echo ""
 
 uninstall:
-	rm -f $(makedir)/$(GNUSTEP_TARGET_DIR)/which_lib$(EXEEXT)
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
@@ -249,8 +239,7 @@ uninstall:
 # To really uninstall all of GNUstep, a 'rm -Rf ${GNUSTEP_ROOT}' should do.
 
 clean:
-	rm -f *~ which_lib$(EXEEXT) \
-	  Master/*~ Instance/*~ Instance/Shared/*~
+	rm -f *~ Master/*~ Instance/*~ Instance/Shared/*~
 
 distclean: clean
 	rm -f GNUmakefile config.make config.h
@@ -317,7 +306,7 @@ rpm: test-RPM_TOPDIR dist
 	fi; \
 	$${rpmbuild} -ba gnustep-make.spec
 
-generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config.h config.make debugapp openapp opentool gnustep-make.spec executable.template
+generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config.make debugapp openapp opentool gnustep-make.spec executable.template
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -329,9 +318,6 @@ GNUstep.csh: GNUstep.csh.in
 	$(SHELL) config.status
 
 fixpath.sh: fixpath.sh.in
-	$(SHELL) config.status
-
-config.h: config.h.in
 	$(SHELL) config.status
 
 config.make: config.make.in Version
