@@ -1,5 +1,10 @@
 2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Instance/library.make: Removed all usages of LIBRARY_NAME_SUFFIX,
+	no longer defined.
+
+2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* common.make: Removed '_s' library name suffix for static
 	libraries.  All libraries have the same name now!
 	(WHICH_LIB_SCRIPT): Variable removed.
