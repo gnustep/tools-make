@@ -2,7 +2,6 @@
 
 	Removed the code to automatically move from the very very old
 	obsolete filesystem structure to the new one.
-	
 	* configure.ac (--disable-move-obsolete): Removed option.
 	* configure: Regenerated.
 	* GNUmakefile.in (move_obsolete): Target removed.
