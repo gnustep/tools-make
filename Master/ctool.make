@@ -36,10 +36,7 @@ internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR)
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 CTOOLS_WITH_SUBPROJECTS = $(strip $(foreach ctool,$(CTOOL_NAME),$(patsubst %,$(ctool),$($(ctool)_SUBPROJECTS))))
 ifneq ($(CTOOLS_WITH_SUBPROJECTS),)

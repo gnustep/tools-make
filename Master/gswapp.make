@@ -56,10 +56,7 @@ else
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.gswa *.debug *.profile)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.gswa *.debug *.profile)
 
 GSWAPPS_WITH_SUBPROJECTS = $(strip $(foreach gswapp,$(GSWAPP_NAME),$(patsubst %,$(gswapp),$($(gswapp)_SUBPROJECTS))))
 ifneq ($(GSWAPPS_WITH_SUBPROJECTS),)

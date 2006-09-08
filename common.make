@@ -380,7 +380,6 @@ endif
 # what can be done about it.
 OBJCFLAGS = -fno-strict-aliasing
 CFLAGS =
-OBJ_DIR_PREFIX =
 
 # If the compiler supports native ObjC exceptions and the user wants us to
 # use them, turn them on!
@@ -421,13 +420,11 @@ endif
 
 ifeq ($(shared), yes)
   LIB_LINK_CMD              =  $(SHARED_LIB_LINK_CMD)
-  OBJ_DIR_PREFIX            += shared_
   INTERNAL_OBJCFLAGS        += $(SHARED_CFLAGS)
   INTERNAL_CFLAGS           += $(SHARED_CFLAGS)
   AFTER_INSTALL_LIBRARY_CMD =  $(AFTER_INSTALL_SHARED_LIB_CMD)
 else
   LIB_LINK_CMD              =  $(STATIC_LIB_LINK_CMD)
-  OBJ_DIR_PREFIX            += static_
   AFTER_INSTALL_LIBRARY_CMD =  $(AFTER_INSTALL_STATIC_LIB_CMD)
 endif
 
@@ -436,19 +433,15 @@ ifeq ($(profile), yes)
   ifeq ($(LD), $(CC))
     INTERNAL_LDFLAGS += -pg
   endif
-  OBJ_DIR_PREFIX += profile_
 endif
 
 ifeq ($(debug), yes)
   OPTFLAG := $(filter-out -O%, $(OPTFLAG))
   ADDITIONAL_FLAGS += -g -Wall -DDEBUG -fno-omit-frame-pointer
   INTERNAL_JAVACFLAGS += -g -deprecation
-  OBJ_DIR_PREFIX += debug_
 else
   INTERNAL_JAVACFLAGS += -O
 endif
-
-OBJ_DIR_PREFIX += obj
 
 ifeq ($(warn), no)
   ADDITIONAL_FLAGS += -UGSWARN
@@ -470,14 +463,9 @@ INTERNAL_OBJCFLAGS += $(ADDITIONAL_FLAGS) $(OPTFLAG) $(OBJCFLAGS) \
 			$(RUNTIME_FLAG)
 INTERNAL_CFLAGS += $(ADDITIONAL_FLAGS) $(OPTFLAG)
 
-# trick needed to replace a space with nothing
-empty:=
-space:= $(empty) $(empty)
-GNUSTEP_OBJ_PREFIX = $(subst $(space),,$(OBJ_DIR_PREFIX))
-
 #
 # Support building of Multiple Architecture Binaries (MAB). The object files
-# directory will be something like shared_obj/ix86_m68k_sun/
+# directory will be something like obj/ix86_m68k_sun/
 #
 ifeq ($(arch),)
   ARCH_OBJ_DIR = $(GNUSTEP_TARGET_DIR)
@@ -487,9 +475,9 @@ else
 endif
 
 ifeq ($(GNUSTEP_FLATTENED),)
-  GNUSTEP_OBJ_DIR_NAME = $(GNUSTEP_OBJ_PREFIX)/$(ARCH_OBJ_DIR)/$(LIBRARY_COMBO)
+  GNUSTEP_OBJ_DIR_NAME = obj/$(ARCH_OBJ_DIR)/$(LIBRARY_COMBO)
 else
-  GNUSTEP_OBJ_DIR_NAME = $(GNUSTEP_OBJ_PREFIX)
+  GNUSTEP_OBJ_DIR_NAME = obj
 endif
 
 GNUSTEP_OBJ_DIR = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_OBJ_DIR_NAME)

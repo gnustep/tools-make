@@ -1,5 +1,36 @@
 2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	Object files are now all placed into ./obj rather than in separate
+	directories (./shared_obj, ./shared_debug_obj,
+	./static_profile_obj, etc.).
+	* common.make (OBJ_DIR_PREFIX): Variable removed.
+	(GNUSTEP_OBJ_PREFIX): Variable removed.
+	(GNUSTEP_OBJ_DIR_NAME): Hardcode 'obj' as the prefix of the 
+	directory name.
+	* rules.make ($(GNUSTEP_OBJ_DIR)): Do not create the symlink from
+	./shared_obj to ./obj.  Just create GNUSTEP_OBJ_DIR.
+
+	* Master/application.make (internal-distclean): Only remove
+	'./obj', not the various './shared_obj', etc.
+	* Master/bundle.make (internal-distclean): Same change.
+	* Master/clibrary.make (internal-distclean): Same change.
+	* Master/ctool.make (internal-distclean): Same change.
+	* Master/gswapp.make (internal-distclean): Same change.
+	* Master/gswbundle.make (internal-distclean): Same change.
+	* Master/library.make (internal-distclean): Same change.
+	* Master/objc.make (internal-distclean): Same change.
+	* Master/palette.make (internal-distclean): Same change.
+	* Master/service.make (internal-distclean): Same change.
+	* Master/subproject.make (internal-distclean): Same change.
+	* Master/test-application.make (internal-distclean): Same change.
+	* Master/test-library.make (internal-distclean): Same change.
+	* Master/test-tool.make (internal-distclean): Same change.
+	* Master/tool.make (internal-distclean): Same change.
+	
+	* Instance/framework.make (internal-framework-distclean): Same change.
+	
+2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* Instance/library.make: Removed all usages of LIBRARY_NAME_SUFFIX,
 	no longer defined.
 

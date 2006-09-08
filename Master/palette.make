@@ -49,10 +49,7 @@ else
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj *.palette)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.palette)
 
 PALETTES_WITH_SUBPROJECTS = $(strip $(foreach palette,$(PALETTE_NAME),$(patsubst %,$(palette),$($(palette)_SUBPROJECTS))))
 ifneq ($(PALETTES_WITH_SUBPROJECTS),)

@@ -42,10 +42,7 @@ internal-clean::
 	       $(addsuffix $(BUNDLE_EXTENSION),$(BUNDLE_NAME)))
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 BUNDLES_WITH_SUBPROJECTS = $(strip $(foreach bundle,$(BUNDLE_NAME),$(patsubst %,$(bundle),$($(bundle)_SUBPROJECTS))))
 

@@ -43,10 +43,7 @@ internal-clean::
 	       $(addsuffix $(GSWBUNDLE_EXTENSION),$(GSWBUNDLE_NAME)))
 
 internal-distclean::
-	(CD $(GNUSTEP_BUILD_DIR); \
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj)
+	(CD $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 GSWBUNDLES_WITH_SUBPROJECTS = $(strip $(foreach gswbundle,$(GSWBUNDLE_NAME),$(patsubst %,$(gswbundle),$($(gswbundle)_SUBPROJECTS))))
 ifneq ($(GSWBUNDLES_WITH_SUBPROJECTS),)

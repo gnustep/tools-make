@@ -41,10 +41,7 @@ internal-clean::
 	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES))
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf shared_obj static_obj shared_debug_obj shared_profile_obj \
-	  static_debug_obj static_profile_obj shared_profile_debug_obj \
-	  static_profile_debug_obj)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 LIBRARIES_WITH_SUBPROJECTS = $(strip $(foreach library,$(LIBRARY_NAME),$(patsubst %,$(library),$($(library)_SUBPROJECTS))))
 ifneq ($(LIBRARIES_WITH_SUBPROJECTS),)
