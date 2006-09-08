@@ -937,26 +937,6 @@ fi
 AC_SUBST(GNUSTEP_STRIP_MAKEFILES)
 
 #--------------------------------------------------------------------
-# Disable updating the obsolete directory structure
-#--------------------------------------------------------------------
-gs_move_obsolete=yes
-AC_ARG_ENABLE(move-obsolete,[
---disable-move-obsolete
-   Disable moving obsolete dir structure.  This option will be 
-   removed SOON as the dir structure was change more than 2 years ago! :-)
-],
-  gs_move_obsolete=$enableval,
-  gs_move_obsolete=yes)
-
-if test "$gs_move_obsolete" = "yes"; then
-  GNUSTEP_MOVE_OBSOLETE=move_obsolete;
-else
-  GNUSTEP_MOVE_OBSOLETE=
-  AC_MSG_NOTICE(Old GNUstep directories will not be moved)
-fi
-AC_SUBST(GNUSTEP_MOVE_OBSOLETE)
-
-#--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for the version of gnustep-make we are compiling)

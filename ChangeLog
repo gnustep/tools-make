@@ -1,5 +1,19 @@
 2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	Removed the code to automatically move from the very very old
+	obsolete filesystem structure to the new one.
+	
+	* configure.ac (--disable-move-obsolete): Removed option.
+	* configure: Regenerated.
+	* GNUmakefile.in (move_obsolete): Target removed.
+	(install): Do not depend on @GNUSTEP_MOVE_OBSOLETE@.
+	* move_obsolete_paths.sh: File removed.
+
+	* GNUmakefile.in (install): Depend directly on generated-files so
+	we don't print the placeholder message used by 'all'.
+	
+2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	Object files are now all placed into ./obj rather than in separate
 	directories (./shared_obj, ./shared_debug_obj,
 	./static_profile_obj, etc.).
