@@ -26,6 +26,28 @@ COMMON_MAKE_LOADED = yes
 
 SHELL = /bin/sh
 
+###
+### FIXME - this is broken, just a reminder for me (Nicola)
+###
+### We want everything to work when you have just set
+### GNUSTEP_CONFIG_FILE and GNUSTEP_MAKEFILES ... or even
+### better, just GNUSTEP_MAKEFILES :-)
+###
+### So we need to read the GNUSTEP_CONFIG_FILE first to
+### get all the other information.
+### Before reading GNUSTEP_CONFIG_FILE, we can't know
+### if this needs to be flattened or not, or what
+### the target/host is!
+###
+### Unfortunately, if GNUSTEP_CONFIG_FILE is read by
+### config.make, we are in trouble, because config.make
+### is itself in a directory keyed by GNUSTEP_TARGET_LDIR,
+### and we don't know the value of GNUSTEP_TARGET_LDIR
+### until we read GNUSTEP_CONFIG_FILE!
+###
+### Hmmm.
+###
+
 #
 # Determine the compilation host and target
 #
