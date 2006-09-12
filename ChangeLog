@@ -1,3 +1,27 @@
+2006-09-12  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	All applications now use the '.app' extension no matter how they
+	are compiled.  So, no more Gorm.debug and Gorm.profile; it will
+	always be Gorm.app.
+	* common.make (APP_EXTENSION): Always use 'app' as the app extension.
+
+	* Instance/gswapp.make (GSWAPP_EXTENSION): Always use 'gswa' as
+	the app extension.
+	* Master/gswapp.make (GSWAPP_EXTENSION): Same change.
+	
+	* Master/application.make (internal-distclean): Do not delete *.profile
+	and *.debug.
+	* Master/gswapp.make (internal-distclean): Same change.
+	* Master/test-application.make (internal-distclean): Same change.
+
+	* openapp.in: Do not search for xxx.debug and xxx.profile; only
+	search for xxx.app.
+
+	* openapp.in: If we find the application in '.', but we don't run
+	it because '.' is not in the PATH, print an explanation/warning
+	and suggest the user uses 'openapp ./xxx' if they really want to
+	run it.
+
 2006-09-08  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	Removed the code to automatically move from the very very old

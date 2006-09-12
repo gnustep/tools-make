@@ -27,15 +27,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
 # Determine the application directory extension
-ifeq ($(profile), yes)
-  GSWAPP_EXTENSION=profile
-else
-  ifeq ($(debug), yes)
-    GSWAPP_EXTENSION=debug
-  else
-    GSWAPP_EXTENSION=gswa
-  endif
-endif
+GSWAPP_EXTENSION=gswa
 
 GSWAPP_NAME := $(strip $(GSWAPP_NAME))
 
@@ -56,7 +48,7 @@ else
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.gswa *.debug *.profile)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.gswa)
 
 GSWAPPS_WITH_SUBPROJECTS = $(strip $(foreach gswapp,$(GSWAPP_NAME),$(patsubst %,$(gswapp),$($(gswapp)_SUBPROJECTS))))
 ifneq ($(GSWAPPS_WITH_SUBPROJECTS),)

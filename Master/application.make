@@ -53,7 +53,7 @@ else
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.app *.debug *.profile)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.app)
 
 # The following make trick extracts all tools in APP_NAME for which
 # the xxx_SUBPROJECTS variable is set to something non-empty.

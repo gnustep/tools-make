@@ -547,15 +547,7 @@ endif
 # GNUmakefile, the user can override these variables by setting them
 # in the GNUmakefile.
 BUNDLE_EXTENSION = .bundle
-ifeq ($(profile), yes)
-  APP_EXTENSION = profile
-else
-  ifeq ($(debug), yes)
-    APP_EXTENSION = debug
-  else
-    APP_EXTENSION = app
-  endif
-endif
+APP_EXTENSION = app
 
 
 

@@ -45,15 +45,7 @@ endif
 # where xxx is the application name <==
 
 # Determine the application directory extension
-ifeq ($(profile), yes)
-  GSWAPP_EXTENSION = profile
-else
-  ifeq ($(debug), yes)
-    GSWAPP_EXTENSION = debug
-  else
-    GSWAPP_EXTENSION = gswa
-  endif
-endif
+GSWAPP_EXTENSION = gswa
 
 GNUSTEP_GSWAPPS = $(GNUSTEP_INSTALLATION_DIR)/GSWApps
 

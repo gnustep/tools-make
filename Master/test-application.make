@@ -44,7 +44,7 @@ else
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.app *.debug *.profile)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.app)
 
 TEST_APPS_WITH_SUBPROJECTS = $(strip $(foreach test-app,$(TEST_APP_NAME),$(patsubst %,$(test-app),$($(test-app)_SUBPROJECTS))))
 ifneq ($(TEST_APPS_WITH_SUBPROJECTS),)
