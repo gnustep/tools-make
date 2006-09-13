@@ -33,10 +33,8 @@ internal-install:: $(CTOOL_NAME:=.install.ctool.variables)
 internal-uninstall:: $(CTOOL_NAME:=.uninstall.ctool.variables)
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 CTOOLS_WITH_SUBPROJECTS = $(strip $(foreach ctool,$(CTOOL_NAME),$(patsubst %,$(ctool),$($(ctool)_SUBPROJECTS))))
 ifneq ($(CTOOLS_WITH_SUBPROJECTS),)

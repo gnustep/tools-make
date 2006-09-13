@@ -37,11 +37,12 @@ _PSWRAP_C_FILES = $(foreach lib,$(LIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach lib,$(LIBRARY_NAME),$($(lib)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
+ifneq ($(_PSWRAP_C_FILES)$(_PSWRAP_H_FILES),)
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES))
+endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 LIBRARIES_WITH_SUBPROJECTS = $(strip $(foreach library,$(LIBRARY_NAME),$(patsubst %,$(library),$($(library)_SUBPROJECTS))))
 ifneq ($(LIBRARIES_WITH_SUBPROJECTS),)

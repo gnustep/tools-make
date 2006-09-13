@@ -33,10 +33,8 @@ internal-install:: $(TOOL_NAME:=.install.tool.variables)
 internal-uninstall:: $(TOOL_NAME:=.uninstall.tool.variables)
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 TOOLS_WITH_SUBPROJECTS = $(strip $(foreach tool,$(TOOL_NAME),$(patsubst %,$(tool),$($(tool)_SUBPROJECTS))))
 ifneq ($(TOOLS_WITH_SUBPROJECTS),)

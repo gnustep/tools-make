@@ -40,15 +40,17 @@ internal-uninstall:: $(GSWAPP_NAME:=.uninstall.gswapp.variables)
 internal-clean::
 ifeq ($(GNUSTEP_FLATTENED),)
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) \
-	  *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
+	rm -rf *.$(GSWAPP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
 else
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) *.$(GSWAPP_EXTENSION))
+	rm -rf *.$(GSWAPP_EXTENSION))
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.gswa)
+ifeq ($(GNUSTEP_FLATTENED),)
+	(cd $(GNUSTEP_BUILD_DIR); \
+	rm -rf *.$(GSWAPP_EXTENSION))
+endif
 
 GSWAPPS_WITH_SUBPROJECTS = $(strip $(foreach gswapp,$(GSWAPP_NAME),$(patsubst %,$(gswapp),$($(gswapp)_SUBPROJECTS))))
 ifneq ($(GSWAPPS_WITH_SUBPROJECTS),)

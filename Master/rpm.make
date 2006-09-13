@@ -189,17 +189,17 @@
 # we are being called inside the rpm installation stage, and we need
 # to produce the file list from the installed files.
 
+GNUSTEP_FILE_LIST = $(GNUSTEP_OBJ_DIR)/file-list
+
 ifeq ($(filelist),yes)
 
   # Build the file-list only at top level
 #  ifeq ($(MAKELEVEL),0)
 
-  FILE_LIST = $(shell pwd)/file-list
-
   # Remove the old file list before installing, and initialize the new one.
   before-install::
-	$(ECHO_NOTHING)rm -f $(FILE_LIST)$(END_ECHO)
-	$(ECHO_NOTHING)echo "%attr (-, root, root)" >> $(FILE_LIST)$(END_ECHO)
+	$(ECHO_NOTHING)rm -f $(GNUSTEP_FILE_LIST)$(END_ECHO)
+	$(ECHO_NOTHING)echo "%attr (-, root, root)" >> $(GNUSTEP_FILE_LIST)$(END_ECHO)
 
   # install - done by other GNUmakefiles - NB: must install everything inside
   # GNUSTEP_INSTALLATION_DIR, or prefix all installation dirs with 
@@ -213,28 +213,31 @@ ifeq ($(filelist),yes)
 	  if [ -d "$$file" ]; then                                \
 	    echo "%dir $$file" > /dev/null;                       \
 	  else                                                    \
-	    echo "$$file" >> $(FILE_LIST);                        \
+	    echo "$$file" >> $(GNUSTEP_FILE_LIST);                \
 	  fi;                                                     \
 	done$(END_ECHO)                                                    
-	$(ECHO_NOTHING)sed -e "s|$(INSTALL_ROOT_DIR)||" $(FILE_LIST) > file-list.tmp$(END_ECHO)
-	$(ECHO_NOTHING)mv file-list.tmp $(FILE_LIST)$(END_ECHO)
+	$(ECHO_NOTHING)sed -e "s|$(INSTALL_ROOT_DIR)||" $(GNUSTEP_FILE_LIST) > file-list.tmp$(END_ECHO)
+	$(ECHO_NOTHING)mv file-list.tmp $(GNUSTEP_FILE_LIST)$(END_ECHO)
 
 #  endif # MAKELEVEL
 
 endif # filelist == yes
 
+# NB: The filelist is automatically deleted when GNUSTEP_OBJ_DIR is
+# deleted (that is, by make clean)
 
 #
 # Manage debug vs non-debug
 #
+SPEC_FILE_NAME=$(PACKAGE_NAME).spec
+SPEC_FILE=$(GNUSTEP_OBJ_DIR)/$(SPEC_FILE_NAME)
+
 ifneq ($(debug), yes)
-  SPEC_FILE=$(PACKAGE_NAME).spec
   SPEC_RULES_TEMPLATE=$(GNUSTEP_MAKEFILES)/spec-rules.template
   SPEC_IN=$(PACKAGE_NAME).spec.in
   SPEC_SCRIPT_IN=$(PACKAGE_NAME).script.spec.in
   PACKAGE_EXTENSION=""
 else
-  SPEC_FILE=$(PACKAGE_NAME)-debug.spec
   SPEC_RULES_TEMPLATE=$(GNUSTEP_MAKEFILES)/spec-debug-rules.template
   SPEC_IN=$(PACKAGE_NAME)-debug.spec.in
   SPEC_SCRIPT_IN=$(PACKAGE_NAME)-debug.script.spec.in
@@ -260,7 +263,7 @@ $(PACKAGE_NAME)-debug.spec.in:
 #
 # This is the real target - depends on having a correct .spec.in file
 #
-$(SPEC_FILE): $(SPEC_IN)
+$(SPEC_FILE): $(SPEC_IN) $(GNUSTEP_OBJ_DIR)
 	$(ECHO_NOTHING)echo "Generating the spec file..."$(END_ECHO)
 	$(ECHO_NOTHING)rm -f $@$(END_ECHO)
 	$(ECHO_NOTHING)echo "##" >> $@$(END_ECHO)
@@ -273,6 +276,7 @@ $(SPEC_FILE): $(SPEC_IN)
 	$(ECHO_NOTHING)echo "%define gs_install_dir  $(GNUSTEP_INSTALLATION_DIR)" >> $@$(END_ECHO)
 	$(ECHO_NOTHING)echo "%define gs_name         $(PACKAGE_NAME)" >> $@$(END_ECHO)
 	$(ECHO_NOTHING)echo "%define gs_version      $(PACKAGE_VERSION)" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "%define gs_file_list    $(GNUSTEP_FILE_LIST)" >> $@$(END_ECHO)
 ifeq ($(PACKAGE_NEEDS_CONFIGURE),YES)
 	$(ECHO_NOTHING)echo "%define gs_configure    YES" >> $@$(END_ECHO)
 else
@@ -334,9 +338,4 @@ endif
 	    rpmbuild="rpmbuild"; \
 	  fi; \
 	fi; \
-	$${rpmbuild} -ba $(SPEC_FILE)$(END_ECHO)
-
-ifneq ($(PACKAGE_NAME),)
-internal-distclean::
-	$(ECHO_NOTHING)rm -rf $(PACKAGE_NAME).spec $(PACKAGE_NAME)-debug.spec$(END_ECHO)
-endif
+	$${rpmbuild} -ba $(SPEC_FILE_NAME)$(END_ECHO)

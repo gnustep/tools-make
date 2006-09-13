@@ -35,16 +35,16 @@ _PSWRAP_H_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
 internal-clean::
 ifeq ($(GNUSTEP_FLATTENED),)
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
 else
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  *.$(APP_EXTENSION))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) *.$(APP_EXTENSION))
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.app)
+ifeq ($(GNUSTEP_FLATTENED),)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf *.$(APP_EXTENSION))
+endif
 
 TEST_APPS_WITH_SUBPROJECTS = $(strip $(foreach test-app,$(TEST_APP_NAME),$(patsubst %,$(test-app),$($(test-app)_SUBPROJECTS))))
 ifneq ($(TEST_APPS_WITH_SUBPROJECTS),)

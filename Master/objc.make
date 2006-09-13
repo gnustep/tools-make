@@ -33,10 +33,8 @@ internal-install:: $(OBJC_PROGRAM_NAME:=.install.objc-program.variables)
 internal-uninstall:: $(OBJC_PROGRAM_NAME:=.uninstall.objc-program.variables)
 
 internal-clean::
-	rm -rf $(GNUSTEP_OBJ_DIR)
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 OBJC_PROGRAMS_WITH_SUBPROJECTS = $(strip $(foreach objc_program,$(OBJC_PROGRAM_NAME),$(patsubst %,$(objc_program),$($(objc_program)_SUBPROJECTS))))
 ifneq ($(OBJC_PROGRAMS_WITH_SUBPROJECTS),)

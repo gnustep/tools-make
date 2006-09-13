@@ -148,7 +148,7 @@ VERTAG = $(subst .,_,$(PACKAGE_VERSION))
 # Build a .tar.gz with the whole directory tree
 #
 dist: distclean
-	@echo "Generating $(ARCHIVE_FILE) in the parent directory..."; \
+	$(ECHO_NOTHING)echo "Generating $(ARCHIVE_FILE) in the parent directory..."; \
 	SNAPSHOT_DIR=`basename $$(pwd)`; \
 	if [ "$$SNAPSHOT_DIR" != "$(VERSION_NAME)" ]; then \
 	  if [ -d "../$(VERSION_NAME)" ]; then \
@@ -178,9 +178,9 @@ dist: distclean
 	if [ ! -f $(ARCHIVE_FILE) ]; then \
 	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
 	  exit 1; \
-	fi;
+	fi;$(END_ECHO)
 ifneq ($(RELEASE_DIR),)
-	@echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
+	$(ECHO_NOTHING)echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
 	if [ ! -d $(RELEASE_DIR) ]; then \
 	  $(MKDIRS) $(RELEASE_DIR); \
 	fi; \
@@ -190,7 +190,7 @@ ifneq ($(RELEASE_DIR),)
 	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
 	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
 	fi; \
-	mv ../$(ARCHIVE_FILE) $(RELEASE_DIR)
+	mv ../$(ARCHIVE_FILE) $(RELEASE_DIR)$(END_ECHO)
 endif
 
 #
@@ -213,7 +213,7 @@ svn-snapshot: EXPORT_SVN_NAME = trunk
 svn-snapshot: internal-svn-export
 
 internal-svn-export:
-	@echo "Exporting from module $(SVN_MODULE_NAME) on SVN..."; \
+	$(ECHO_NOTHING)echo "Exporting from module $(SVN_MODULE_NAME) on SVN..."; \
 	if [ -e $(SVN_MODULE_NAME) ]; then \
 	  echo "*Error* cannot export: $(SVN_MODULE_NAME) already exists"; \
 	  exit 1; \
@@ -236,9 +236,9 @@ internal-svn-export:
 	if [ ! -f $(ARCHIVE_FILE) ]; then \
 	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
 	  exit 1; \
-	fi;
+	fi;$(END_ECHO)
 ifneq ($(RELEASE_DIR),)
-	@echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
+	$(ECHO_NOTHING)echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
 	if [ ! -d $(RELEASE_DIR) ]; then \
 	  $(MKDIRS) $(RELEASE_DIR); \
 	fi; \
@@ -248,7 +248,7 @@ ifneq ($(RELEASE_DIR),)
 	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
 	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
 	fi; \
-	mv $(ARCHIVE_FILE) $(RELEASE_DIR)
+	mv $(ARCHIVE_FILE) $(RELEASE_DIR)$(END_ECHO)
 endif
 
 #
@@ -271,7 +271,7 @@ cvs-snapshot: EXPORT_CVS_FLAGS = -D now
 cvs-snapshot: internal-cvs-export
 
 internal-cvs-export:
-	@echo "Exporting from module $(CVS_MODULE_NAME) on CVS..."; \
+	$(ECHO_NOTHING)echo "Exporting from module $(CVS_MODULE_NAME) on CVS..."; \
 	if [ -e $(CVS_MODULE_NAME) ]; then \
 	  echo "*Error* cannot export: $(CVS_MODULE_NAME) already exists"; \
 	  exit 1; \
@@ -295,9 +295,9 @@ internal-cvs-export:
 	if [ ! -f $(ARCHIVE_FILE) ]; then \
 	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
 	  exit 1; \
-	fi;
+	fi;$(END_ECHO)
 ifneq ($(RELEASE_DIR),)
-	@echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
+	$(ECHO_NOTHING)echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
 	if [ ! -d $(RELEASE_DIR) ]; then \
 	  $(MKDIRS) $(RELEASE_DIR); \
 	fi; \
@@ -307,7 +307,7 @@ ifneq ($(RELEASE_DIR),)
 	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
 	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
 	fi; \
-	mv $(ARCHIVE_FILE) $(RELEASE_DIR)
+	mv $(ARCHIVE_FILE) $(RELEASE_DIR)$(END_ECHO)
 endif
 
 

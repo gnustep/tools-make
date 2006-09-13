@@ -39,11 +39,9 @@ internal-uninstall:: $(GSWBUNDLE_NAME:=.uninstall.gswbundle.variables)
 
 internal-clean::
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) \
-	       $(addsuffix $(GSWBUNDLE_EXTENSION),$(GSWBUNDLE_NAME)))
+	rm -rf $(addsuffix $(GSWBUNDLE_EXTENSION),$(GSWBUNDLE_NAME)))
 
 internal-distclean::
-	(CD $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 GSWBUNDLES_WITH_SUBPROJECTS = $(strip $(foreach gswbundle,$(GSWBUNDLE_NAME),$(patsubst %,$(gswbundle),$($(gswbundle)_SUBPROJECTS))))
 ifneq ($(GSWBUNDLES_WITH_SUBPROJECTS),)

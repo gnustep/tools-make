@@ -44,16 +44,16 @@ _PLIST_INFO_FILES = $(addsuffix Info.plist,$(foreach app,$(APP_NAME),$(patsubst 
 internal-clean::
 ifeq ($(GNUSTEP_FLATTENED),)
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) $(_PLIST_INFO_FILES) *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
 else
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	  $(_PLIST_INFO_FILES) *.$(APP_EXTENSION))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) $(_PLIST_INFO_FILES) *.$(APP_EXTENSION))
 endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj *.app)
+ifeq ($(GNUSTEP_FLATTENED),)
+	(cd $(GNUSTEP_BUILD_DIR); rm -rf *.$(APP_EXTENSION))
+endif
 
 # The following make trick extracts all tools in APP_NAME for which
 # the xxx_SUBPROJECTS variable is set to something non-empty.

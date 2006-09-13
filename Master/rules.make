@@ -166,7 +166,6 @@ after-clean::
 before-distclean::
 
 internal-distclean::
-	rm -f $(GNUSTEP_BUILD_DIR)/core
 
 after-distclean::
 
@@ -410,7 +409,7 @@ PACKAGE_NAME := $(strip $(PACKAGE_NAME))
 
 ifeq ($(PACKAGE_NAME),)
   # Use a default of unnamed-package if nothing better is provided.
-  PACKAGE_NAME := unnamed-package
+  PACKAGE_NAME = unnamed-package
 endif
 
 # For backwards compatibility, take value of PACKAGE_VERSION from

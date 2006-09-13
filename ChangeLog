@@ -1,5 +1,92 @@
 2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Master/rpm.make: Put the generated files (file-list, spec files)
+	into GNUSTEP_OBJ_DIR.  Use the same name for both debug and
+	non-debug spec files.  Depend on GNUSTEP_OBJ_DIR being created
+	before the files.
+	(internal-distclean): Rule removed.  The generated files are now
+	in GNUSTEP_OBJ_DIR and so are automatically deleted on make clean.
+
+	* Master/rpm.make (specfile): Set gs_file_list variable in the
+	spec file.  Renamed FILE_LIST to GNUSTEP_FILE_LIST to protect it
+	from collisions with user makefiles.
+	* spec-rules.template: Replaced hardcoded file-list name with
+	gs_file_list variable.
+	* spec-debug-rules.template: Same change.
+	
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Master/clibrary.make (internal-clean): Do nothing if there are
+	no PSWRAP_C_FILES or PSWRAP_H_FILES to remove.
+	* Master/library.make (internal-clean): Same change.
+	* Master/subproject.make (internal-clean): Same change.
+	* Master/test-library.make (internal-clean): Same change.
+
+	* Master/rules.make (internal-distclean): Do not remove 'core'.
+	(PACKAGE_NAME): Use normal assignement.
+	
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* setlocaltz.sh: Obsolete file removed.
+
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+	
+	* Master/application.make (internal-clean): Do not remove obj
+	(already done in Master/rules.make).
+	* Master/bundle.make (internal-clean): Same change.	
+	* Master/clibrary.make (internal-clean): Same change.	
+	* Master/ctool.make (internal-clean): Same change.
+	* Master/gswapp.make (internal-clean): Same change.
+	* Master/gswbundle.make (internal-clean): Same change.
+	* Master/library.make (internal-clean): Same change.
+	* Master/objc.make (internal-clean): Same change.
+	* Master/palette.make (internal-clean): Same change.
+	* Master/service.make (internal-clean): Same change.
+	* Master/subproject.make (internal-clean): Same change.
+	* Master/test-application.make (internal-clean): Same change.
+	* Master/test-library.make (internal-clean): Same change.
+	* Master/test-tool.make (internal-clean): Same change.
+	* Master/tool.make (internal-clean): Same change.
+	* Instance/framework.make (internal-framework-clean): Same change.
+	
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Master/application.make (internal-distclean): Do not remove obj
+	(already done by clean).  Remove *.app only if not flattened, else
+	do nothing because if we're flattened this is already done by
+	clean.
+	* Master/gswapp.make (internal-distclean): Do not remove obj and
+	remove *.gswa only if non flattened, else do nothing.
+	* Master/palette.make (internal-distclean): Do not remove obj
+	and remove *.palette only if non flattened, else do nothing.
+	* Master/service.make (internal-distclean): Do not remove obj and
+	remove *.service only if non flattened, else do nothing.
+	* Master/test-application.make (internal-distclean): Do not remove
+	obj and remove *.app only if non flattened, else do nothing.
+	
+	* Master/bundle.make (internal-distclean): Do nothing.
+	* Master/clibrary.make (internal-distclean): Do nothing.
+	* Master/ctool.make (internal-distclean): Do nothing.
+	* Master/gswbundle.make (internal-distclean): Do nothing.
+	* Master/library.make (internal-distclean): Do nothing.
+	* Master/objc.make (internal-distclean): Do nothing.
+	* Master/palette.make (internal-distclean): Do nothing.	
+	* Master/subproject.make (internal-distclean): Do nothing.
+	* Master/test-library.make (internal-distclean): Do nothing.
+	* Master/test-tool.make (internal-distclean): Do nothing.
+	* Master/tool.make (internal-distclean): Do nothing (still remove
+	Resources if we have them though).
+	* Instance/framework.make (internal-framework-distclean): Do
+	nothing.
+
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Master/source-distribution.make: Use ECHO_NOTHING and
+	END_ECHO macros so that 'make messages=yes dist' and
+	similar commands work properly.
+
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* Master/rpm.make: Always build a file list called 'file-list'
 	 Removed separate 'standalone=yes' case when building debug
 	 packages.  Now they are always standalone.

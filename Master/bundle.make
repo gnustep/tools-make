@@ -38,11 +38,9 @@ _PSWRAP_H_FILES = $(foreach bundle,$(BUNDLE_NAME),$($(bundle)_PSWRAP_FILES:.psw=
 
 internal-clean::
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) \
-	       $(addsuffix $(BUNDLE_EXTENSION),$(BUNDLE_NAME)))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) $(addsuffix $(BUNDLE_EXTENSION),$(BUNDLE_NAME)))
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 BUNDLES_WITH_SUBPROJECTS = $(strip $(foreach bundle,$(BUNDLE_NAME),$(patsubst %,$(bundle),$($(bundle)_SUBPROJECTS))))
 

@@ -694,12 +694,10 @@ endif
 # Cleaning targets
 #
 internal-framework-clean::
-	$(ECHO_NOTHING)rm -rf $(GNUSTEP_OBJ_DIR) \
+	$(ECHO_NOTHING)rm -rf \
 	       $(PSWRAP_C_FILES) $(PSWRAP_H_FILES) \
 	       $(FRAMEWORK_DIR) $(DERIVED_SOURCES_DIR)$(END_ECHO)
 
 internal-framework-distclean::
-	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	  rm -rf obj$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

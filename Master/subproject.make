@@ -52,11 +52,12 @@ _PSWRAP_C_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.c)
 _PSWRAP_H_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.h)
 
 internal-clean::
+ifneq ($(_PSWRAP_C_FILES)$(_PSWRAP_H_FILES),)
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(GNUSTEP_OBJ_DIR_NAME) $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES))
+endif
 
 internal-distclean::
-	(cd $(GNUSTEP_BUILD_DIR); rm -rf obj)
 
 
 SUBPROJECTS_WITH_SUBPROJECTS = $(strip $(patsubst %,$(SUBPROJECT_NAME),$($(SUBPROJECT_NAME)_SUBPROJECTS)))
