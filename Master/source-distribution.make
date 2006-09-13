@@ -66,6 +66,7 @@
 # If you want to omit some files from the distribution archive, add a
 # .dist-ignore file in the top-level directory of your package, listing
 # all files (/directories) you want to exclude from distribution.
+# CVS and .svn files are automatically excluded.
 #
 
 ifeq ($(CVS_MODULE_NAME),)
@@ -157,7 +158,7 @@ dist: distclean
 	    mv ../$(VERSION_NAME) ../$(VERSION_NAME)~; \
 	  fi; \
 	  mkdir ../$(VERSION_NAME); \
-	  tar cf - . | (cd ../$(VERSION_NAME); tar xf -); \
+	  tar cfX -  $(GNUSTEP_MAKEFILES)/tar-exclude-list . | (cd ../$(VERSION_NAME); tar xf -); \
 	fi; \
 	cd ..; \
 	if [ -f $(ARCHIVE_FILE) ]; then             \
@@ -309,5 +310,3 @@ ifneq ($(RELEASE_DIR),)
 	fi; \
 	mv $(ARCHIVE_FILE) $(RELEASE_DIR)$(END_ECHO)
 endif
-
-

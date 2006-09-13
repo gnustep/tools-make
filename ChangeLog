@@ -1,5 +1,14 @@
 2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Master/rpm.make (before-install) If filelist=yes, depend on
+	GNUSTEP_OBJ_DIR.
+
+	* Master/source-distribution.make (dist): Always use our 
+	tar-exclude-list to avoid including CVS and .svn files in .tar.gz
+	packages.
+
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* Master/rpm.make: Put the generated files (file-list, spec files)
 	into GNUSTEP_OBJ_DIR.  Use the same name for both debug and
 	non-debug spec files.  Depend on GNUSTEP_OBJ_DIR being created

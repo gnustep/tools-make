@@ -197,7 +197,7 @@ ifeq ($(filelist),yes)
 #  ifeq ($(MAKELEVEL),0)
 
   # Remove the old file list before installing, and initialize the new one.
-  before-install::
+  before-install:: $(GNUSTEP_OBJ_DIR)
 	$(ECHO_NOTHING)rm -f $(GNUSTEP_FILE_LIST)$(END_ECHO)
 	$(ECHO_NOTHING)echo "%attr (-, root, root)" >> $(GNUSTEP_FILE_LIST)$(END_ECHO)
 
