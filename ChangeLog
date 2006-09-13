@@ -1,3 +1,20 @@
+2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Master/rpm.make: Always build a file list called 'file-list'
+	 Removed separate 'standalone=yes' case when building debug
+	 packages.  Now they are always standalone.
+	* spec-debug-rules.template: Removed code that built both debug
+	and non-debug versions and computed differences in installed
+	files.  Simply build with debug=yes.
+	* spec-debug-alone-rules.template: File removed.
+	* GNUmakefile.in (MAKE_FILES): Removed spec-debug-alone-rules-template.
+	
+	* Master/rpm.make (internal-distclean): Added ECHO_NOTHING and END_ECHO
+	macros so that 'make messages=yes rpm' works properly.
+
+	* Master/rpm.make (specfile): If the xxx-debug.spec.in file is not
+	found, try to use xxx.spec.in.
+	
 2006-09-12  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	All applications now use the '.app' extension no matter how they

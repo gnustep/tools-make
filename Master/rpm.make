@@ -164,17 +164,6 @@
 # It will manage the package having a different name (eg
 # Gomoku-debug-1.1.1) than the .tgz (eg Gomoku-1.1.1.tgz).
 #
-# Unless `standalone=yes' (ie, unless you create the specfile using 
-# `make debug=yes standalone=yes specfile') it will perform the following 
-# additional tasks:
-#
-#  * build and install the non-debugging software before the debugging one;
-#  * remove from the debugging package all files already included in the 
-#    non-debugging one (this is why it needs to build the non-debugging 
-#    software first);
-#  * add a dependency of the debugging package from the non-debugging one.
-#
-# <FIXME: Add comments about when is appropriate one and when the other one>
 
 #
 # As said before, if you are very lazy, typing something like
@@ -205,17 +194,12 @@ ifeq ($(filelist),yes)
   # Build the file-list only at top level
 #  ifeq ($(MAKELEVEL),0)
 
-  # Determine which file list to build
-  ifeq ($(debug),yes)
-    FILE_LIST = $(shell pwd)/file-list-debug
-   else
-    FILE_LIST = $(shell pwd)/file-list
-  endif
+  FILE_LIST = $(shell pwd)/file-list
 
   # Remove the old file list before installing, and initialize the new one.
   before-install::
-	-rm -f $(FILE_LIST)
-	echo "%attr (-, root, root)" >> $(FILE_LIST)
+	$(ECHO_NOTHING)rm -f $(FILE_LIST)$(END_ECHO)
+	$(ECHO_NOTHING)echo "%attr (-, root, root)" >> $(FILE_LIST)$(END_ECHO)
 
   # install - done by other GNUmakefiles - NB: must install everything inside
   # GNUSTEP_INSTALLATION_DIR, or prefix all installation dirs with 
@@ -225,15 +209,15 @@ ifeq ($(filelist),yes)
 
   # Get the list of files inside GNUSTEP_INSTALL_BASE
   internal-after-install::
-	for file in `$(TAR) Pcf - $(INSTALL_ROOT_DIR) | $(TAR) t`; do \
+	$(ECHO_NOTHING)for file in `$(TAR) Pcf - $(INSTALL_ROOT_DIR) | $(TAR) t`; do \
 	  if [ -d "$$file" ]; then                                \
 	    echo "%dir $$file" > /dev/null;                       \
 	  else                                                    \
 	    echo "$$file" >> $(FILE_LIST);                        \
 	  fi;                                                     \
-	done                                                    
-	sed -e "s|$(INSTALL_ROOT_DIR)||" $(FILE_LIST) > file-list.tmp
-	mv file-list.tmp $(FILE_LIST)                             
+	done$(END_ECHO)                                                    
+	$(ECHO_NOTHING)sed -e "s|$(INSTALL_ROOT_DIR)||" $(FILE_LIST) > file-list.tmp$(END_ECHO)
+	$(ECHO_NOTHING)mv file-list.tmp $(FILE_LIST)$(END_ECHO)
 
 #  endif # MAKELEVEL
 
@@ -251,11 +235,7 @@ ifneq ($(debug), yes)
   PACKAGE_EXTENSION=""
 else
   SPEC_FILE=$(PACKAGE_NAME)-debug.spec
-  ifeq ($(standalone),yes)
-    SPEC_RULES_TEMPLATE=$(GNUSTEP_MAKEFILES)/spec-debug-alone-rules.template
-  else 
-    SPEC_RULES_TEMPLATE=$(GNUSTEP_MAKEFILES)/spec-debug-rules.template
-  endif
+  SPEC_RULES_TEMPLATE=$(GNUSTEP_MAKEFILES)/spec-debug-rules.template
   SPEC_IN=$(PACKAGE_NAME)-debug.spec.in
   SPEC_SCRIPT_IN=$(PACKAGE_NAME)-debug.script.spec.in
   PACKAGE_EXTENSION="-debug"
@@ -272,64 +252,60 @@ specfile: $(SPEC_FILE)
 # Issue a warning if the $(PACKAGE_NAME)-debug.spec.in file is not found
 #
 $(PACKAGE_NAME)-debug.spec.in: 
-	@echo "WARNING - $(PACKAGE_NAME)-debug.spec.in not found!"
-	@echo "You need to create it to build the debugging package." 
-	@echo "If you already have a $(PACKAGE_NAME).spec.in, just take it as"
-	@echo "a start for the $(PACKAGE_NAME)-debug.spec.in - and make"
-	@echo "the little necessary changes in summary and description."
-	@echo ""
+	$(ECHO_NOTHING)echo "WARNING - $(PACKAGE_NAME)-debug.spec.in not found!"$(END_ECHO)
+	$(ECHO_NOTHING)echo "Using $(PACKAGE_NAME).spec.in instead ..."$(END_ECHO)
+	$(ECHO_NOTHING)cp $(PACKAGE_NAME).spec.in $(PACKAGE_NAME)-debug.spec.in$(END_ECHO)
+	$(ECHO_NOTHING)echo ""$(END_ECHO)
 
 #
 # This is the real target - depends on having a correct .spec.in file
 #
 $(SPEC_FILE): $(SPEC_IN)
-	@echo "Generating the spec file..."
-	@-rm -f $@
-	@echo "##" >> $@
-	@echo "## Generated automatically by GNUstep make - do not edit!" >> $@
-	@echo "## Edit the $(SPEC_IN) file instead" >> $@
-	@echo "##" >> $@
-	@echo " " >> $@
-	@echo "## Code dynamically generated" >> $@
-	@echo "%define gs_root         $(GNUSTEP_SYSTEM_ROOT)" >> $@
-	@echo "%define gs_install_dir  $(GNUSTEP_INSTALLATION_DIR)" >> $@
-	@echo "%define gs_name         $(PACKAGE_NAME)" >> $@
-	@echo "%define gs_version      $(PACKAGE_VERSION)" >> $@
+	$(ECHO_NOTHING)echo "Generating the spec file..."$(END_ECHO)
+	$(ECHO_NOTHING)rm -f $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "##" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "## Generated automatically by GNUstep make - do not edit!" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "## Edit the $(SPEC_IN) file instead" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "##" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo " " >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "## Code dynamically generated" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "%define gs_root         $(GNUSTEP_SYSTEM_ROOT)" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "%define gs_install_dir  $(GNUSTEP_INSTALLATION_DIR)" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "%define gs_name         $(PACKAGE_NAME)" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "%define gs_version      $(PACKAGE_VERSION)" >> $@$(END_ECHO)
 ifeq ($(PACKAGE_NEEDS_CONFIGURE),YES)
-	@echo "%define gs_configure    YES" >> $@
+	$(ECHO_NOTHING)echo "%define gs_configure    YES" >> $@$(END_ECHO)
 else
-	@echo "%define gs_configure    NO" >> $@
+	$(ECHO_NOTHING)echo "%define gs_configure    NO" >> $@$(END_ECHO)
 endif
-	@echo " " >> $@
-	@echo "Name: %{gs_name}$(PACKAGE_EXTENSION)" >> $@
-	@echo "Version: %{gs_version}" >> $@
-	@echo "BuildRoot: /var/tmp/%{gs_name}-buildroot" >> $@
+	$(ECHO_NOTHING)echo " " >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "Name: %{gs_name}$(PACKAGE_EXTENSION)" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "Version: %{gs_version}" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "BuildRoot: /var/tmp/%{gs_name}-buildroot" >> $@$(END_ECHO)
 ifeq ($(RPM_DISABLE_RELOCATABLE),YES)
-	@echo "Prefix: %{gs_install_dir}" >> $@
+	$(ECHO_NOTHING)echo "Prefix: %{gs_install_dir}" >> $@$(END_ECHO)
 endif
 ifeq ($(debug),yes)
-ifneq ($(standalone),yes)
-	@echo "requires: %{gs_name} = %{gs_version}" >> $@
+	$(ECHO_NOTHING)echo "requires: %{gs_name} = %{gs_version}" >> $@$(END_ECHO)
 endif
-endif
-	@echo "" >> $@
-	@echo "## Code from $(SPEC_IN)" >> $@
-	@cat $(SPEC_IN) >> $@
-	@echo "" >> $@
-	@echo "## Fixed rules from $(SPEC_RULES_TEMPLATE)" >> $@ 
-	@cat $(SPEC_RULES_TEMPLATE) >> $@
-	@ if [ -f $(SPEC_SCRIPT_IN) ]; then                         \
+	$(ECHO_NOTHING)echo "" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "## Code from $(SPEC_IN)" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)cat $(SPEC_IN) >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)echo "## Fixed rules from $(SPEC_RULES_TEMPLATE)" >> $@$(END_ECHO)
+	$(ECHO_NOTHING)cat $(SPEC_RULES_TEMPLATE) >> $@$(END_ECHO)
+	$(ECHO_NOTHING)if [ -f $(SPEC_SCRIPT_IN) ]; then                         \
 	    echo "" >> $@;                                          \
 	    echo "## Script rules from $(SPEC_SCRIPT_IN)" >> $@;    \
 	    cat $(SPEC_SCRIPT_IN) >> $@;                            \
-          fi
+          fi$(END_ECHO)
 
 check-RPM_TOPDIR:
-	@if [ "$(RPM_TOPDIR)" = "" ]; then                                 \
+	$(ECHO_NOTHING)if [ "$(RPM_TOPDIR)" = "" ]; then                                 \
 	  echo "I can't build the RPM if you do not set your RPM_TOPDIR"; \
 	  echo "shell variable";                                          \
 	  exit 1; \
-	fi;
+	fi;$(END_ECHO)
 
 # In old RPM versions, building was done using 'rpm -ba'; in newer RPM
 # versions, it can only be done using 'rpmbuild -ba'.  Try to support
@@ -339,14 +315,14 @@ check-RPM_TOPDIR:
 # setup (it might take a while).
 
 rpm: check-RPM_TOPDIR dist specfile
-	@echo "Generating the rpm...";
+	$(ECHO_NOTHING)echo "Generating the rpm..."$(END_ECHO)
 ifneq ($(RELEASE_DIR),)
-	@cp $(RELEASE_DIR)/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz \
-	    $(RPM_TOPDIR)/SOURCES/;
+	$(ECHO_NOTHING)cp $(RELEASE_DIR)/$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz \
+	    $(RPM_TOPDIR)/SOURCES/$(END_ECHO)
 else
-	@cp ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/;
+	$(ECHO_NOTHING)cp ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/$(END_ECHO)
 endif	
-	@cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/; \
+	$(ECHO_NOTHING)cp $(SPEC_FILE) $(RPM_TOPDIR)/SPECS/; \
 	cd $(RPM_TOPDIR)/SPECS/; \
 	if which rpmbuild > /dev/null 2>/dev/null; then \
 	  rpmbuild="rpmbuild"; \
@@ -358,9 +334,9 @@ endif
 	    rpmbuild="rpmbuild"; \
 	  fi; \
 	fi; \
-	$${rpmbuild} -ba $(SPEC_FILE)
+	$${rpmbuild} -ba $(SPEC_FILE)$(END_ECHO)
 
 ifneq ($(PACKAGE_NAME),)
 internal-distclean::
-	rm -rf $(PACKAGE_NAME).spec $(PACKAGE_NAME)-debug.spec
+	$(ECHO_NOTHING)rm -rf $(PACKAGE_NAME).spec $(PACKAGE_NAME)-debug.spec$(END_ECHO)
 endif
