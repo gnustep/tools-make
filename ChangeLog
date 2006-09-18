@@ -1,7 +1,7 @@
 2006-09-18  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	Separated out global config from platform-specific config.
-	* GNUmakefile.in: Include config-noarch-make before config.make.
+	* GNUmakefile.in: Include config-noarch.make before config.make.
 	(install): Install config-noarch.make.
 	(uninstall): Uninstall config-noarch.make.
 	(distclean): Remove config-noarch.make.
