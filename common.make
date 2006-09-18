@@ -26,27 +26,28 @@ COMMON_MAKE_LOADED = yes
 
 SHELL = /bin/sh
 
-###
-### FIXME - this is broken, just a reminder for me (Nicola)
-###
-### We want everything to work when you have just set
-### GNUSTEP_CONFIG_FILE and GNUSTEP_MAKEFILES ... or even
-### better, just GNUSTEP_MAKEFILES :-)
-###
-### So we need to read the GNUSTEP_CONFIG_FILE first to
-### get all the other information.
-### Before reading GNUSTEP_CONFIG_FILE, we can't know
-### if this needs to be flattened or not, or what
-### the target/host is!
-###
-### Unfortunately, if GNUSTEP_CONFIG_FILE is read by
-### config.make, we are in trouble, because config.make
-### is itself in a directory keyed by GNUSTEP_TARGET_LDIR,
-### and we don't know the value of GNUSTEP_TARGET_LDIR
-### until we read GNUSTEP_CONFIG_FILE!
-###
-### Hmmm.
-###
+#
+# Get the global config information.  This includes
+# GNUSTEP_SYSTEM_ROOT, GNUSTEP_MAKE_VERSION, GNUSTEP_FLATTENED,
+# default_library_combo, and, if multi-platform support is disabled,
+# it will also load GNUSTEP_HOST, GNUSTEP_HOST_CPU, etc.
+#
+include $(GNUSTEP_MAKEFILES)/config-noarch.make
+
+#
+# Scripts to run for parsing canonical names
+#
+CONFIG_GUESS_SCRIPT    = $(GNUSTEP_MAKEFILES)/config.guess
+CONFIG_SUB_SCRIPT      = $(GNUSTEP_MAKEFILES)/config.sub
+CONFIG_CPU_SCRIPT      = $(GNUSTEP_MAKEFILES)/cpu.sh
+CONFIG_VENDOR_SCRIPT   = $(GNUSTEP_MAKEFILES)/vendor.sh
+CONFIG_OS_SCRIPT       = $(GNUSTEP_MAKEFILES)/os.sh
+CLEAN_CPU_SCRIPT       = $(GNUSTEP_MAKEFILES)/clean_cpu.sh
+CLEAN_VENDOR_SCRIPT    = $(GNUSTEP_MAKEFILES)/clean_vendor.sh
+CLEAN_OS_SCRIPT        = $(GNUSTEP_MAKEFILES)/clean_os.sh
+LD_LIB_PATH_SCRIPT     = $(GNUSTEP_MAKEFILES)/ld_lib_path.sh
+TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_MAKEFILES)/transform_paths.sh
+REL_PATH_SCRIPT        = $(GNUSTEP_MAKEFILES)/relative_path.sh
 
 #
 # Determine the compilation host and target
@@ -65,8 +66,11 @@ else
   GNUSTEP_TARGET_LDIR = .
 endif
 
+# Then, work out precisely library combos etc
+include $(GNUSTEP_MAKEFILES)/library-combo.make
+
 #
-# Get the config information (host/target specific),
+# Get the config information (host/target/library-combo specific),
 # this includes GNUSTEP_SYSTEM_ROOT etc.
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
@@ -79,26 +83,6 @@ include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
 # for it whenever possible.
 ifeq ($(GNUSTEP_BUILD_DIR),)
   GNUSTEP_BUILD_DIR = .
-endif
-
-#
-# Scripts to run for parsing canonical names
-#
-CONFIG_GUESS_SCRIPT    = $(GNUSTEP_MAKEFILES)/config.guess
-CONFIG_SUB_SCRIPT      = $(GNUSTEP_MAKEFILES)/config.sub
-CONFIG_CPU_SCRIPT      = $(GNUSTEP_MAKEFILES)/cpu.sh
-CONFIG_VENDOR_SCRIPT   = $(GNUSTEP_MAKEFILES)/vendor.sh
-CONFIG_OS_SCRIPT       = $(GNUSTEP_MAKEFILES)/os.sh
-CLEAN_CPU_SCRIPT       = $(GNUSTEP_MAKEFILES)/clean_cpu.sh
-CLEAN_VENDOR_SCRIPT    = $(GNUSTEP_MAKEFILES)/clean_vendor.sh
-CLEAN_OS_SCRIPT        = $(GNUSTEP_MAKEFILES)/clean_os.sh
-LD_LIB_PATH_SCRIPT     = $(GNUSTEP_MAKEFILES)/ld_lib_path.sh
-TRANSFORM_PATHS_SCRIPT = $(GNUSTEP_MAKEFILES)/transform_paths.sh
-REL_PATH_SCRIPT        = $(GNUSTEP_MAKEFILES)/relative_path.sh
-
-# Take the makefiles from the system root
-ifeq ($(GNUSTEP_MAKEFILES),)
-  GNUSTEP_MAKEFILES = $(GNUSTEP_SYSTEM_ROOT)/Library/Makefiles
 endif
 
 #
@@ -157,8 +141,6 @@ include $(GNUSTEP_MAKEFILES)/messages.make
 # Get flags/config options for core libraries
 #
 
-# First, work out precisely library combos etc
-include $(GNUSTEP_MAKEFILES)/library-combo.make
 # Then include custom makefiles with flags/config options
 # This is meant to be used by the core libraries to override loading
 # of the system makefiles from $(GNUSTEP_MAKEFILES)/Additional/*.make

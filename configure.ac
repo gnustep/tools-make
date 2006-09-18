@@ -967,7 +967,7 @@ AC_SUBST(target)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_CONFIG_FILES([config.make openapp debugapp opentool 
+AC_CONFIG_FILES([config-noarch.make config.make openapp debugapp opentool 
 executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh
 gnustep-make.spec])
 AC_CONFIG_COMMANDS([default],

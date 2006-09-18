@@ -1,3 +1,31 @@
+2006-09-18  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	Separated out global config from platform-specific config.
+	* GNUmakefile.in: Include config-noarch-make before config.make.
+	(install): Install config-noarch.make.
+	(uninstall): Uninstall config-noarch.make.
+	(distclean): Remove config-noarch.make.
+	(generated-files): Added config-noarch.make.
+	(config.make): Do not depend on Version.
+	(config-noarch.make): New rule to build config-noarch.make
+	from config-noarch.make.in.
+	* config-noarch.make.in: New file created from the bits of
+	config.make.in that are global and don't depend on the platform.
+	* config.make.in: Removed global bits.
+	* configure.ac (AC_CONFIG_FILES): Added config-noarch.make.
+	* configure: Regenerated.
+	* common.make: Include config-noarch.make before names.make.
+
+	* common.make: Fixed inclusion of names.make that should
+	follow the definition of CONFIG_GUESS_SCRIPT etc.
+
+	* common.make: Include library-combo.make before config.make
+	else the library-combo directory can't be found.
+	
+	* common.make (GNUSTEP_MAKEFILES): Do not waste time trying to set
+	if not set.  GNUSTEP_MAKEFILES must be set, else nothing would
+	work.
+	
 2006-09-13  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	* Master/rpm.make (before-install) If filelist=yes, depend on

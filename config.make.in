@@ -1,10 +1,13 @@
 #
 #   config.make.in
 #
-#   All of the settings required by the makefile package
-#   that are determined by configure.
+#   The settings required by the makefile package that are determined
+#   by configure and that depend on the platform.  There might be
+#   multiple of those files installed in different platform-specific
+#   directories.  Global settings that are common to all platforms
+#   should go in config-noarch.make.in instead.
 #
-#   Copyright (C) 1997-2005 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2006 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
@@ -21,14 +24,6 @@
 #   License along with this library; see the file COPYING.LIB.
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
-
-#
-# The GNUstep Make Package Version
-#
-GNUSTEP_MAKE_MAJOR_VERSION=@GNUSTEP_MAKE_MAJOR_VERSION@
-GNUSTEP_MAKE_MINOR_VERSION=@GNUSTEP_MAKE_MINOR_VERSION@
-GNUSTEP_MAKE_SUBMINOR_VERSION=@GNUSTEP_MAKE_SUBMINOR_VERSION@
-GNUSTEP_MAKE_VERSION=@GNUSTEP_MAKE_VERSION@
 
 #
 # Binary and compile tools
@@ -123,9 +118,6 @@ MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
 CC_CPPPRECOMP  = @cc_cppprecomp@
 CC_BUNDLE      = @cc_bundle@
 
-# The default library combination
-default_library_combo = @ac_cv_library_combo@
-
 # Backend bundle
 BACKEND_BUNDLE=@BACKEND_BUNDLE@
 
@@ -158,82 +150,3 @@ AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
 # @try/@catch/@finally/@throw.
 #
 USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
-
-#
-# Location of GNUstep's config file for this installation
-#
-# Warning - the base library's configure.in will extract the GNUstep
-# config file location from the following line using grep/sed - so if
-# you change the following lines you *need* to update the base library
-# configure.in too.
-#
-# PS: At run-time, this can be overridden on the command-line, or
-# via an environment variable.
-ifeq ($(GNUSTEP_CONFIG_FILE),)
-GNUSTEP_CONFIG_FILE = @GNUSTEP_CONFIG_FILE@
-endif
-
-#
-# Now we set up the environment and everything by reading the GNUstep
-# configuration file(s).
-#
-
-# These are the defaults value ... they will be used only if they are
-# not set in the config files (or on the command-line or in
-# environment).
-GNUSTEP_SYSTEM_ROOT = @GNUSTEP_SYSTEM_ROOT@
-GNUSTEP_LOCAL_ROOT = @GNUSTEP_LOCAL_ROOT@
-GNUSTEP_NETWORK_ROOT = @GNUSTEP_NETWORK_ROOT@
-GNUSTEP_USER_DIR = @GNUSTEP_USER_DIR@
-
-# This includes the GNUstep configuration file, but only if it exists
--include $(GNUSTEP_CONFIG_FILE)
-
-# FIXME: determining GNUSTEP_HOME
-GNUSTEP_HOME = $(HOME)
-
-# Read the user configuration file ... unless it is disabled (ie, set
-# to an empty string)
-ifneq ($(GNUSTEP_USER_CONFIG_FILE),)
-
- # FIXME - Checking for relative vs. absolute paths!
- ifneq ($(filter /%, $(GNUSTEP_USER_CONFIG_FILE)),)
-  # Path starts with '/', consider it absolute
-  -include $(GNUSTEP_USER_CONFIG_FILE)
- else
-  # Path does no start with '/', try it as relative
-  -include $(GNUSTEP_HOME)/$(GNUSTEP_USER_CONFIG_FILE)
- endif 
-
-endif
-
-GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
-
-#
-# Set GNUSTEP_USER_ROOT from GNUSTEP_USER_DIR; GNUSTEP_USER_ROOT is
-# the variable used in practice
-#
-ifneq ($(filter /%, $(GNUSTEP_USER_DIR)),)
- # Path starts with '/', consider it absolute
- GNUSTEP_USER_ROOT = $(GNUSTEP_USER_DIR)
-else
- # Path does no start with '/', try it as relative
- GNUSTEP_USER_ROOT = $(GNUSTEP_HOME)/$(GNUSTEP_USER_DIR)
-endif 
-
-# If multi-platform support is disabled, just use the hardcoded cpu,
-# vendor and os determined when gnustep-make was configured.  The
-# reason using the hardcoded ones might be better is that config.guess
-# and similar scripts might even require compiling test files to
-# determine the platform - which is horribly slow (that is done in
-# names.make if GNUSTEP_HOST is not yet set at that stage).  To
-# prevent this problem, unless we were configured to determine the
-# platform at run time, by default we use the hardcoded values of
-# GNUSTEP_HOST*.
-
-ifeq ("@GNUSTEP_MULTI_PLATFORM@","")
-  GNUSTEP_HOST = @target@
-  GNUSTEP_HOST_CPU = @clean_target_cpu@
-  GNUSTEP_HOST_VENDOR = @clean_target_vendor@
-  GNUSTEP_HOST_OS = @clean_target_os@
-endif

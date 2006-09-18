@@ -2,7 +2,7 @@
 #
 #   Main GNUmakefile for the GNUstep GNUmakefile Package.
 #
-#   Copyright (C) 1997-2002 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2006 Free Software Foundation, Inc.
 #
 #   Author: Scott Christley <scottc@net-community.com>
 #   Author: Nicola Pero <n.pero@mi.flashnet.it>
@@ -25,6 +25,7 @@
 # but there is nothing to made, and the files get installed
 # in a special directory, so it was simpler this way.
 #
+include config-noarch.make
 include config.make
 
 
@@ -169,6 +170,7 @@ install: generated-files
 	                     $(makedir)/Instance/Documentation; \
 	   done; \
 	   $(INSTALL_DATA) executable.template $(makedir); \
+	   $(INSTALL_DATA) config-noarch.make $(makedir); \
 	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_LDIR))
 	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
 	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
@@ -220,6 +222,7 @@ uninstall:
 	done
 	rm -f $(makedir)/executable.template
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
+	rm -f $(makedir)/config-noarch.make
 	rm -f $(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make
 	-for f in $(makedir)/$(GNUSTEP_TARGET_CPU) \
 		$(makedir)/$(GNUSTEP_TARGET_DIR) \
@@ -237,7 +240,7 @@ clean:
 	rm -f *~ Master/*~ Instance/*~ Instance/Shared/*~
 
 distclean: clean
-	rm -f GNUmakefile config.make config.h
+	rm -f GNUmakefile config-noarch.make config.make config.h
 	rm -f config.cache config.log config.status
 	rm -f openapp
 	rm -f debugapp
@@ -301,7 +304,7 @@ rpm: test-RPM_TOPDIR dist
 	fi; \
 	$${rpmbuild} -ba gnustep-make.spec
 
-generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config.make debugapp openapp opentool gnustep-make.spec executable.template
+generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make debugapp openapp opentool gnustep-make.spec executable.template
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -315,7 +318,10 @@ GNUstep.csh: GNUstep.csh.in
 fixpath.sh: fixpath.sh.in
 	$(SHELL) config.status
 
-config.make: config.make.in Version
+config-noarch.make: config-noarch.make.in Version
+	$(SHELL) config.status --recheck
+
+config.make: config.make.in
 	$(SHELL) config.status --recheck
 
 debugapp: debugapp.in
