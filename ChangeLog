@@ -1,5 +1,10 @@
 2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Instance/framework.make: Removed warnings for
+	CURRENT_VERSION_NAME and xxx_TOOLS that were removed 4 years ago.
+
+2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* Master/rules.make (INTERNAL_$${type}_NAME, TARGET): Variables
 	removed; they were deprecated on Jan 2002.
 

@@ -75,11 +75,6 @@ endif
 # might be installed at the same time :-).
 #
 
-# Warn about obsolete syntax
-ifneq ($(CURRENT_VERSION_NAME),)
-  $(warning CURRENT_VERSION_NAME is deprecated because it doesnt allow multiple frameworks with different versions to be built from warning the same GNUmakefile!  Please replace it with XXX_CURRENT_VERSION_NAME)
-endif
-
 # Warning - the following variable is also used in Master/rules.make
 # to build the OWNING_PROJECT_HEADER_DIR for the framework's
 # subprojects.  Make sure you keep them in sync if you change them.
@@ -287,13 +282,6 @@ endif
 
 ifeq ($(FRAMEWORK_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR = $(GNUSTEP_FRAMEWORKS)
-endif
-
-#
-# Emit a warning for old deprecated functionality
-#
-ifneq ($($(GNUSTEP_INSTANCE)_TOOLS),)
-  $(warning "Support for xxx_TOOLS has been removed from gnustep-make! Please rewrite your makefile code by compiling the tools separately, then add a xxx_COPY_INTO_DIR command for each of them to copy them into the framework.  Ask for help on gnustep mailing lists if you're confused.")
 endif
 
 #
