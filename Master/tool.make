@@ -48,8 +48,8 @@ endif
 TOOLS_WITH_RESOURCE_BUNDLES = $(strip $(foreach tool,$(TOOL_NAME),$($(tool)_HAS_RESOURCE_BUNDLE:yes=$(tool))))
 
 ifneq ($(TOOLS_WITH_RESOURCE_BUNDLES),)
-internal-distclean::
-	rm -rf Resources
+internal-clean::
+	rm -rf $(GNUSTEP_BUILD_DIR)/Resources
 endif
 
 internal-strings:: $(TOOL_NAME:=.strings.tool.variables)

@@ -39,7 +39,6 @@ $(warning Ignoring all subprojects and building only $(SUBPROJECT_NAME))
 
 endif
 
-.PHONY: build-headers
 build-headers:: $(SUBPROJECT_NAME:=.build-headers.subproject.variables)
 
 internal-all:: $(SUBPROJECT_NAME:=.all.subproject.variables)
@@ -52,24 +51,17 @@ _PSWRAP_C_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.c)
 _PSWRAP_H_FILES = $($(SUBPROJECT_NAME)_PSWRAP_FILES:.psw=.h)
 
 internal-clean::
-ifneq ($(_PSWRAP_C_FILES)$(_PSWRAP_H_FILES),)
+ifneq ($(_PSWRAP_C_FILES)$(_PSWRAP_H_FILES)$($(SUBPROJECT_NAME)_HAS_RESOURCE_BUNDLE),)
 	(cd $(GNUSTEP_BUILD_DIR); \
-	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES))
+	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) Resources)
 endif
 
 internal-distclean::
-
 
 SUBPROJECTS_WITH_SUBPROJECTS = $(strip $(patsubst %,$(SUBPROJECT_NAME),$($(SUBPROJECT_NAME)_SUBPROJECTS)))
 ifneq ($(SUBPROJECTS_WITH_SUBPROJECTS),)
 internal-clean:: $(SUBPROJECTS_WITH_SUBPROJECTS:=.clean.subproject.subprojects)
 internal-distclean:: $(SUBPROJECTS_WITH_SUBPROJECTS:=.distclean.subproject.subprojects)
-endif
-
-# If the subproject has a resource bundle, destroy it on distclean
-ifeq ($($(SUBPROJECT_NAME)_HAS_RESOURCE_BUNDLE), yes)
-internal-distclean::
-	rm -rf Resources
 endif
 
 internal-strings:: $(SUBPROJECT_NAME:=.strings.subproject.variables)

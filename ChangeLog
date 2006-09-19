@@ -1,5 +1,19 @@
 2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Master/subproject.make (internal-distclean): Do nothing.
+	(internal-clean): Remove 'Resources' directory on 'clean' too.
+	* Master/tool.make (internal-distclean): Do nothing.
+	(internal-clean): Removed 'Resources' directory on 'clean'.	
+
+	* Instance/subproject.make (GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH):
+	Added GNUSTEP_BUILD_DIR.
+	* Instance/tool.make (GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH): Added
+	GNUSTEP_BUILD_DIR.
+
+	* Master/subproject.make (.PHONY): Removed build-headers.
+	
+2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* Instance/framework.make (UPDATE_CURRENT_SYMLINK_RULE): Removed
 	phone update-symlink-rule target that was being executed at every
 	make, and replaced with a rule to build the symlink which is not

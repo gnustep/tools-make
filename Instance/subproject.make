@@ -60,7 +60,6 @@ internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_FILES)
 # has built his dirs
 $(OWNING_PROJECT_HEADER_DIR)/%.h: %.h $(OWNING_PROJECT_HEADER_DIR)
 	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
-	
 
 $(OWNING_PROJECT_HEADER_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -95,7 +94,7 @@ endif # no FRAMEWORK
 #
 ifeq ($($(GNUSTEP_INSTANCE)_HAS_RESOURCE_BUNDLE), yes)
 
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = Resources/Subproject
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(GNUSTEP_BUILD_DIR)/Resources/Subproject
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 # Only build, not install
