@@ -71,7 +71,7 @@ include $(GNUSTEP_MAKEFILES)/library-combo.make
 
 #
 # Get the config information (host/target/library-combo specific),
-# this includes GNUSTEP_SYSTEM_ROOT etc.
+# this includes CC, OPTFLAGS etc.
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
 
@@ -497,14 +497,16 @@ SUBPROJECT_PRODUCT = subproject$(OEXT)
 ifeq ($(JAVA_HOME),)
   # Else, try JDK_HOME
   ifeq ($(JDK_HOME),)
-    # Else, try by finding the path of javac and removing 'bin/javac' from it
+    # Else, try by finding the path of javac and removing 'bin/javac' from it.
+    # Please note that this is really inefficient, you should rather
+    # set JAVA_HOME!
     ifeq ($(JAVAC),)
       JAVA_HOME = $(shell which javac | sed "s/bin\/javac//g")
-    else # $(JAVAC) != "" 
+    else # $(JAVAC) != ""
       JAVA_HOME = $(shell which $(JAVAC) | sed "s/bin\/javac//g")
-    endif  
+    endif
   else # $(JDK_HOME) != ""
-    JAVA_HOME = $(JDK_HOME) 
+    JAVA_HOME = $(JDK_HOME)
   endif
 endif
 
