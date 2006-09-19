@@ -564,6 +564,23 @@ $(GNUSTEP_MAKEFILES)/Instance/Shared/*.make: ;
 
 $(GNUSTEP_MAKEFILES)/Instance/Documentation/*.make: ;
 
+# Rules to stop 'make' from wasting time trying to rebuild the config
+# files from implicit rules.
+$(GNUSTEP_CONFIG_FILE): ;
+
+ifneq ($(GNUSTEP_USER_CONFIG_FILE),)
+ # FIXME - Checking for relative vs. absolute paths!
+ ifneq ($(filter /%, $(GNUSTEP_USER_CONFIG_FILE)),)
+  # Path starts with '/', consider it absolute
+$(GNUSTEP_USER_CONFIG_FILE): ;
+
+ else
+  # Path does no start with '/', try it as relative
+$(GNUSTEP_HOME)/$(GNUSTEP_USER_CONFIG_FILE): ;
+
+ endif 
+endif
+
 # The rule to create the GNUSTEP_BUILD_DIR if any.
 ifneq ($(GNUSTEP_BUILD_DIR),.)
 $(GNUSTEP_BUILD_DIR):

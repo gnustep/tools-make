@@ -183,14 +183,16 @@ after-strings::
 
 # declare targets as PHONY
 
-.PHONY: all before-all internal-all after-all \
-	 install before-install internal-install after-install \
-	         internal-after-install \
-	 uninstall before-uninstall internal-uninstall after-uninstall \
-	 clean before-clean internal-clean after-clean \
-	 distclean before-distclean internal-distclean after-distclean \
-	 check before-check internal-check after-check \
-	 strings before-strings internal-strings after-strings
+.PHONY: \
+ all before-all internal-all after-all \
+ install before-install internal-install after-install \
+ internal-after-install \
+ uninstall before-uninstall internal-uninstall after-uninstall \
+ clean before-clean internal-clean after-clean \
+ distclean before-distclean internal-distclean after-distclean \
+ check before-check internal-check after-check \
+ strings before-strings internal-strings after-strings \
+ build-headers before-build-headers after-build-headers
 
 # Prevent make from trying to remove stuff like
 # libcool.library.all.subprojects thinking that it is a temporary file

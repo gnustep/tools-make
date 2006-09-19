@@ -24,7 +24,15 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-# FIXME - missing .PHONY declaration
+.PHONY: internal-framework-all_ \
+        build-framework \
+        internal-framework-build-headers \
+        build-framework-dirs \
+        update-current-symlink \
+        internal-framework-install_ \
+        internal-framework-distclean \
+        internal-framework-clean \
+        internal-framework-uninstall_
 
 # The name of the framework is in the FRAMEWORK_NAME variable.
 # The list of framework resource files are in xxx_RESOURCE_FILES
