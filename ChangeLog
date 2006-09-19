@@ -1,3 +1,10 @@
+2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* rules.make (config.make): Fixed syntax error in conditional that
+	was causing the rule for config.make to be never read.
+	Implemented an actual rule for it that prints an error and exits
+	if the file can't be find.
+
 2006-09-18  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	Separated out global config from platform-specific config.

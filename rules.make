@@ -542,8 +542,16 @@ endif
 
 $(GNUSTEP_MAKEFILES)/*.make: ;
 
-ifeq ($(GNUSTEP_FLATTENED)), )
-$(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/config.make: ;
+ifeq ($(GNUSTEP_FLATTENED),)
+# If this file can't be found, we can't load the config for that
+# library combo / target, so we can't do anything.  We print an
+# error and exit.
+$(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/config.make:
+	$(ECHO_NOTHING)\
+	echo "Error - can not find configuration for '$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)'"; \
+	echo "Please configure, make and make install gnustep-make again using"; \
+	echo "./configure --with-library-combo=$(LIBRARY_COMBO)"; \
+	exit 1$(END_ECHO)
 endif
 
 $(GNUSTEP_MAKEFILES)/Additional/*.make: ;
