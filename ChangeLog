@@ -1,5 +1,10 @@
 2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Master/rules.make (INTERNAL_$${type}_NAME, TARGET): Variables
+	removed; they were deprecated on Jan 2002.
+
+2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* rules.make (GNUSTEP_CONFIG_FILE, GNUSTEP_USER_CONFIG_FILE):
 	Added empty rules to prevent make wasting time trying to rebuild
 	config files using implicit rules.

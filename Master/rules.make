@@ -33,7 +33,7 @@
 # %.variables rule below is used.  this rule gets an appropriate make
 # subprocess going, with the task of building that specific
 # instance-type-operation prerequisite.  The make subprocess will be run
-# as in `make internal-tool-all INTERNAL_tool_NAME=gsdoc ...<and other
+# as in `make internal-tool-all GNUSTEP_INSTANCE=gsdoc ...<and other
 # variables>' and this make subprocess wil find the internal-tool-all
 # rule in tool.make, and execute that, building the tool.
 #
@@ -196,6 +196,9 @@ after-strings::
 
 # Prevent make from trying to remove stuff like
 # libcool.library.all.subprojects thinking that it is a temporary file
+# FIXME - we really want to declare these as .PHONY, not .PRECIOUS,
+# we only declare them .PRECIOUS because .PHONY doesn't seem to support
+# wildcards (FIXME)!
 .PRECIOUS: %.variables %.subprojects
 
 #
@@ -233,9 +236,6 @@ after-strings::
 #
 # It's very important to notice that $(basename $(basename $*)) in
 # these rules is simply the instance (such as libgmodel).
-
-# NB: INTERNAL_$${type}_NAME and TARGET are deprecated - use
-# GNUSTEP_INSTANCE instead.
 
 # Before building the real thing, we must build the subprojects
 
@@ -339,8 +339,6 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
     GNUSTEP_TYPE=$$type \
     GNUSTEP_INSTANCE=$$instance \
     GNUSTEP_OPERATION=$$operation \
-    INTERNAL_$${type}_NAME=$$instance \
-    TARGET=$$instance \
     GNUSTEP_BUILD_DIR="$${abs_build_dir}"
 
 #
