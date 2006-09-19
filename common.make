@@ -531,8 +531,6 @@ endif
 BUNDLE_EXTENSION = .bundle
 APP_EXTENSION = app
 
-
-
 # We want total control over GNUSTEP_INSTANCE.
 # GNUSTEP_INSTANCE determines wheter it's a Master or an Instance
 # invocation.  Whenever we run a submake, we want it to be a Master
