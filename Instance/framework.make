@@ -28,7 +28,6 @@ endif
         build-framework \
         internal-framework-build-headers \
         build-framework-dirs \
-        update-current-symlink \
         internal-framework-install_ \
         internal-framework-distclean \
         internal-framework-clean \
@@ -213,6 +212,7 @@ endif
 
 FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
 
+# FIXME - do we really those variables too ?
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
   FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/Current
 else
@@ -312,10 +312,14 @@ internal-framework-build-headers:: $(FRAMEWORK_HEADER_FILES) \
                                    build-framework-dirs
 
 ifeq ($(MAKE_CURRENT_VERSION),yes)
+
 # A target to build/reset the Current symlink to point to the newly
-# compiled framework.  Only executed if MAKE_CURRENT_VERSION is yes.
-UPDATE_CURRENT_SYMLINK_RULE = update-current-symlink
-update-current-symlink: $(FRAMEWORK_VERSION_DIR)
+# compiled framework.  Only executed if MAKE_CURRENT_VERSION is yes,
+# and only executed if the symlink doesn't exist yet, or if
+# FRAMEWORK_VERSION_DIR is newer than the symlink.  This is to avoid
+# rebuilding the symlink every single time, which is a waste of time.
+UPDATE_CURRENT_SYMLINK_RULE = $(FRAMEWORK_DIR)/Versions/Current
+$(FRAMEWORK_DIR)/Versions/Current: $(FRAMEWORK_VERSION_DIR)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
 	$(RM_LN_S) Current; \
 	$(LN_S) $(CURRENT_VERSION_NAME) Current$(END_ECHO)
@@ -324,8 +328,12 @@ else
 UPDATE_CURRENT_SYMLINK_RULE = 
 endif
 
-# Please note that test -h must be used instead of test -L because on old
-# Sun Solaris, test -h works but test -L does not.
+# FIXME/TODO - the following rule is always executed.  This is stupid.
+# We should have some decent dependencies so that it's not executed if
+# there is nothing to build. :-)
+
+# Please note that test -h must be used instead of test -L because on
+# old Sun Solaris, test -h works but test -L does not.
 build-framework-dirs: $(DERIVED_SOURCES_DIR) \
                       $(FRAMEWORK_LIBRARY_DIR) \
                       $(FRAMEWORK_VERSION_DIR)/Headers \

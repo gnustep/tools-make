@@ -1,5 +1,13 @@
 2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Instance/framework.make (UPDATE_CURRENT_SYMLINK_RULE): Removed
+	phone update-symlink-rule target that was being executed at every
+	make, and replaced with a rule to build the symlink which is not
+	executed if the symlink is there already.
+	(.PHONY): Removed update-symlink-rule.
+
+2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* Instance/framework.make: Removed warnings for
 	CURRENT_VERSION_NAME and xxx_TOOLS that were removed 4 years ago.
 
