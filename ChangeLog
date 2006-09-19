@@ -20,7 +20,7 @@
 	* rules.make (config.make): Fixed syntax error in conditional that
 	was causing the rule for config.make to be never read.
 	Implemented an actual rule for it that prints an error and exits
-	if the file can't be find.
+	if the file can't be found.
 
 2006-09-18  Nicola Pero <nicola.pero@meta-innovation.com>
 
