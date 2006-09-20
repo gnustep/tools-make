@@ -446,14 +446,8 @@ ifneq ($(debug), no)
 endif
 
 ifeq ($(debug), yes)
-
-  # We used to filter away -O flags when compiling with debugging
-  # enabled, but it seems that GCC has no special problem in compiling
-  # with -g -O2, indeed it seems that that is the recommended set of
-  # flags!  So we keep the following line commented out. :-)
-
-  # OPTFLAG := $(filter-out -O%, $(OPTFLAG))
-
+  # This is filtered out as it compromised debugging
+  OPTFLAG := $(filter-out -O%, $(OPTFLAG))
   ADDITIONAL_FLAGS += -g -Wall -DDEBUG -fno-omit-frame-pointer
   INTERNAL_JAVACFLAGS += -g -deprecation
 else
