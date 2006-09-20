@@ -1,3 +1,10 @@
+2006-09-20  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	By default compile everything with debug=yes, which should now
+	result in -g -O2.  To disable the -g, please use 'make debug=no'.
+	* common.make (debug): Turn on debug by default.
+	(OPTFLAG): Do not filter out -O% flags.
+	
 2006-09-19  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	* Master/subproject.make (internal-distclean): Do nothing.
