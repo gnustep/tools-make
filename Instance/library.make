@@ -1,4 +1,4 @@
- #  -*-makefile-*-
+#  -*-makefile-*-
 #   Instance/library.make
 #
 #   Instance Makefile rules to build GNUstep-based libraries.
