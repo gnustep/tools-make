@@ -158,7 +158,7 @@ dist: distclean
 	    mv ../$(VERSION_NAME) ../$(VERSION_NAME)~; \
 	  fi; \
 	  mkdir ../$(VERSION_NAME); \
-	  tar cfX -  $(GNUSTEP_MAKEFILES)/tar-exclude-list . | (cd ../$(VERSION_NAME); tar xf -); \
+	  $(TAR) cfX -  $(GNUSTEP_MAKEFILES)/tar-exclude-list . | (cd ../$(VERSION_NAME); $(TAR) xf -); \
 	fi; \
 	cd ..; \
 	if [ -f $(ARCHIVE_FILE) ]; then             \
@@ -167,10 +167,10 @@ dist: distclean
 	  mv $(ARCHIVE_FILE) $(ARCHIVE_FILE)~;    \
 	fi; \
 	if [ -f $(VERSION_NAME)/.dist-ignore ]; then \
-	  tar cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
+	  $(TAR) cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
 	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
 	else \
-	  tar cf - $(VERSION_NAME) \
+	  $(TAR) cf - $(VERSION_NAME) \
 	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
 	fi; \
 	if [ "$$SNAPSHOT_DIR" != "$(VERSION_NAME)" ]; then \
@@ -227,10 +227,10 @@ internal-svn-export:
 	  mv $(ARCHIVE_FILE) $(ARCHIVE_FILE)~;    \
 	fi; \
 	if [ -f $(VERSION_NAME)/.dist-ignore ]; then \
-	  tar cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
+	  $(TAR) cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
 	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
 	else \
-	  tar cf - $(VERSION_NAME) \
+	  $(TAR) cf - $(VERSION_NAME) \
 	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
 	fi; \
 	rm -rf $(VERSION_NAME);                  \
@@ -286,10 +286,10 @@ internal-cvs-export:
 	  mv $(ARCHIVE_FILE) $(ARCHIVE_FILE)~;    \
 	fi; \
 	if [ -f $(VERSION_NAME)/.dist-ignore ]; then \
-	  tar cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
+	  $(TAR) cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
 	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
 	else \
-	  tar cf - $(VERSION_NAME) \
+	  $(TAR) cf - $(VERSION_NAME) \
 	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
 	fi; \
 	rm -rf $(VERSION_NAME);                  \

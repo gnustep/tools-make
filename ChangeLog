@@ -1,3 +1,8 @@
+2006-09-25  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Master/source-distribution.make: Use TAR everywhere instead of
+	hardcoded tar (Patch by BALATON Zoltan <balaton@eik.bme.hu>).
+
 2006-09-20  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	By default compile everything with debug=yes.  To get the
