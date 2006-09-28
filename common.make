@@ -75,8 +75,6 @@ include $(GNUSTEP_MAKEFILES)/library-combo.make
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
 
-# GNUSTEP_BASE_INSTALL by default is `' - this is correct
-
 # GNUSTEP_BUILD_DIR is the directory in which anything generated
 # during the build will be placed.  '.' means it's the same as the
 # source directory; this case is the default/common and we optimize
