@@ -1,3 +1,14 @@
+2006-09-28  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	'make install special_prefix=xxx' should be replaced by 'make
+	install DESTDIR=xxx'.
+	* GNUmakefile.in (DESTDIR): New variable that replaces
+	special_prefix and complies with the GNU Coding Standards.
+	(special_prefix): If a special_prefix is specified, use it
+	but emit a warning that it is now deprecated.
+	* gnustep-make.spec.in: Updated to use DESTDIR instead of
+	special_prefix.
+	
 2006-09-25  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	* Master/source-distribution.make: Use TAR everywhere instead of

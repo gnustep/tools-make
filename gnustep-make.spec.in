@@ -34,7 +34,7 @@ CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%
 make
 
 %install
-make install special_prefix=${RPM_BUILD_ROOT}
+make install DESTDIR=${RPM_BUILD_ROOT}
 
 %ifos Linux
 mkdir -p ${RPM_BUILD_ROOT}/etc/profile.d

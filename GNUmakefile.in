@@ -31,15 +31,21 @@ include config.make
 
 # To install everything inside a temporary directory (say as part of
 # building a binary package - deb or rpm), use something like `make
-# install special_prefix=/var/tmp/gnustep-make'
-special_prefix = 
+# install DESTDIR=/var/tmp/gnustep-make'
+DESTDIR = 
 
-GNUSTEP_CONFIG_FILE = $(special_prefix)@GNUSTEP_CONFIG_FILE@
+# 'special_prefix' is an old alias for DESTDIR.
+ifneq ($(special_prefix),)
+  $(warning "WARNING: special_prefix is deprecated.  Please use DESTDIR instead")
+  DESTDIR = $(special_prefix)
+endif
+
+GNUSTEP_CONFIG_FILE = $(DESTDIR)@GNUSTEP_CONFIG_FILE@
 GNUSTEP_CONFIG_FILE_DIR = $(dir $(GNUSTEP_CONFIG_FILE))
-GNUSTEP_SYSTEM_ROOT = $(special_prefix)@GNUSTEP_SYSTEM_ROOT@
-GNUSTEP_LOCAL_ROOT  = $(special_prefix)@GNUSTEP_LOCAL_ROOT@
-GNUSTEP_NETWORK_ROOT = $(special_prefix)@GNUSTEP_NETWORK_ROOT@
-makedir = $(special_prefix)@GNUSTEP_MAKEFILES@
+GNUSTEP_SYSTEM_ROOT = $(DESTDIR)@GNUSTEP_SYSTEM_ROOT@
+GNUSTEP_LOCAL_ROOT  = $(DESTDIR)@GNUSTEP_LOCAL_ROOT@
+GNUSTEP_NETWORK_ROOT = $(DESTDIR)@GNUSTEP_NETWORK_ROOT@
+makedir = $(DESTDIR)@GNUSTEP_MAKEFILES@
 srcdir = @srcdir@
 VPATH = @srcdir@
 
