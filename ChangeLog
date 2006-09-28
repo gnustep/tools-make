@@ -1,5 +1,9 @@
 2006-09-28  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* move_obsolete_paths.sh: File removed (this time for real!).
+
+2006-09-28  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	'make install special_prefix=xxx' should be replaced by 'make
 	install DESTDIR=xxx'.
 	* GNUmakefile.in (DESTDIR): New variable that replaces
