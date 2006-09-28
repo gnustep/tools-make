@@ -206,8 +206,14 @@ ifeq ($(filelist),yes)
   # $INSTALL_ROOT_DIR such as 
   # $(INSTALL_DATA) page.html $(INSTALL_ROOT_DIR)/usr/local/MySoftware/
   # instead of $(INSTALL_DATA) page.html /usr/local/MySoftware/
+  #
+  # Please note that INSTALL_ROOT_DIR is similar to DESTDIR, but does not
+  # affect GNUSTEP_INSTALLATION_DIR, which is supposed to already include
+  # INSTALL_ROOT_DIR.  Ie, make INSTALL_ROOT_DIR=/tmp won't affect
+  # GNUSTEP_INSTALLATION_DIR and so wouldn't install everything in /tmp.
+  # You'd rather need make INSTALL_ROOT_DIR=/tmp GNUSTEP_INSTALLATION_DIR=/tmp/usr/GNUstep/Local
 
-  # Get the list of files inside GNUSTEP_INSTALL_BASE
+  # Get the list of files inside INSTALL_ROOT_DIR
   internal-after-install::
 	$(ECHO_NOTHING)for file in `$(TAR) Pcf - $(INSTALL_ROOT_DIR) | $(TAR) t`; do \
 	  if [ -d "$$file" ]; then                                \
