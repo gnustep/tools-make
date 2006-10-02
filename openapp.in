@@ -39,8 +39,8 @@ fi
 
 . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
 
-if [ -z "$GNUSTEP_FLATTENED" ]; then
-  GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
+if [ -z "$GNUSTEP_IS_FLATTENED" ]; then
+  GNUSTEP_IS_FLATTENED=@GNUSTEP_IS_FLATTENED@
 fi
 
 only_find=
@@ -134,7 +134,7 @@ if [ -z "$appname" ]; then
 fi
 appname="`basename \"$appname\"`"
 
-if [ -n "$GNUSTEP_FLATTENED" ]; then
+if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
 
   if [ -z "$EXEEXT" ]; then
     EXEEXT=@EXEEXT@

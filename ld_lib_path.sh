@@ -44,7 +44,7 @@ fw_paths=
 for dir in $GNUSTEP_PATHLIST; do
 
   # prepare the path_fragment for libraries and this dir
-  if [ -z "$GNUSTEP_FLATTENED" ]; then
+  if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
     path_fragment="$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
   else
     path_fragment="$dir/Library/Libraries"

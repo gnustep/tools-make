@@ -277,7 +277,7 @@ ac_default_prefix=`if test -d C: ; then
   else
     echo /usr/GNUstep ;
   fi`
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_CONFIG_FILE GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DIR GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_CONFIG_FILE GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DIR GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3658,13 +3658,22 @@ else
 fi;
 
 if test "$ac_cv_flattened" = "no"; then
+
+  # GNUSTEP_FLATTENED is here for backwards compatibility only and
+  # should be removed at some point.  It has the problem that it
+  # defaults to 'no' while we want the default to be 'yes'!
+  # The new GNUSTEP_IS_FLATTENED variable defaults to 'yes'. :-)
+
   GNUSTEP_FLATTENED=;
+  GNUSTEP_IS_FLATTENED=no;
 else
   GNUSTEP_FLATTENED=yes;
+  GNUSTEP_IS_FLATTENED=yes;
 fi
 
 
-if test "$GNUSTEP_FLATTENED" = "yes"; then
+
+if test "$GNUSTEP_IS_FLATTENED" = "yes"; then
   echo "$as_me:$LINENO: result: yes" >&5
 echo "${ECHO_T}yes" >&6;
 else
@@ -5102,6 +5111,7 @@ s,@GNUSTEP_USER_DEFAULTS_DIR@,$GNUSTEP_USER_DEFAULTS_DIR,;t t
 s,@GNUSTEP_MAKEFILES@,$GNUSTEP_MAKEFILES,;t t
 s,@HOST_INSTALL@,$HOST_INSTALL,;t t
 s,@GNUSTEP_FLATTENED@,$GNUSTEP_FLATTENED,;t t
+s,@GNUSTEP_IS_FLATTENED@,$GNUSTEP_IS_FLATTENED,;t t
 s,@GNUSTEP_MULTI_PLATFORM@,$GNUSTEP_MULTI_PLATFORM,;t t
 s,@BACKEND_BUNDLE@,$BACKEND_BUNDLE,;t t
 s,@objc_threaded@,$objc_threaded,;t t

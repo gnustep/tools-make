@@ -7,7 +7,7 @@
 #   being used at the same time!).
 #
 #   In practice, this file should containg global gnustep-make options
-#   (like GNUSTEP_FLATTENED or GNUSTEP_SYSTEM_ROOT), as opposed to
+#   (like GNUSTEP_IS_FLATTENED or GNUSTEP_SYSTEM_ROOT), as opposed to
 #   config info needed to build or compile or do things on a certain
 #   platform (like CC or OPTFLAG), which should go into config.make
 #
@@ -88,7 +88,10 @@ ifneq ($(GNUSTEP_USER_CONFIG_FILE),)
 
 endif
 
+# GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
+# instead
 GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
+GNUSTEP_IS_FLATTENED = @GNUSTEP_IS_FLATTENED@
 
 #
 # Set GNUSTEP_USER_ROOT from GNUSTEP_USER_DIR; GNUSTEP_USER_ROOT is

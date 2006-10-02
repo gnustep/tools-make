@@ -33,7 +33,7 @@ _PSWRAP_C_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
 	(cd $(GNUSTEP_BUILD_DIR); \
 	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) *.$(APP_EXTENSION)/$(GNUSTEP_TARGET_LDIR))
 else
@@ -42,7 +42,7 @@ else
 endif
 
 internal-distclean::
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
 	(cd $(GNUSTEP_BUILD_DIR); rm -rf *.$(APP_EXTENSION))
 endif
 

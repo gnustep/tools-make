@@ -125,11 +125,14 @@ fi
 
 export GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT
 
+# GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
+# instead
 GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
+GNUSTEP_IS_FLATTENED=@GNUSTEP_IS_FLATTENED@
 if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
-export GNUSTEP_FLATTENED LIBRARY_COMBO
+export GNUSTEP_IS_FLATTENED GNUSTEP_FLATTENED LIBRARY_COMBO
 
 if [ -z "$GNUSTEP_MAKEFILES" ]; then
   GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Library/Makefiles
@@ -265,7 +268,7 @@ temp_path=
 for dir in $GNUSTEP_PATHLIST; do
 
   # Prepare the path_fragment
-  if [ -z "$GNUSTEP_FLATTENED" ]; then
+  if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
     path_fragment="$dir/Tools:$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
   else
     path_fragment="$dir/Tools"

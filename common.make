@@ -28,7 +28,7 @@ SHELL = /bin/sh
 
 #
 # Get the global config information.  This includes
-# GNUSTEP_SYSTEM_ROOT, GNUSTEP_MAKE_VERSION, GNUSTEP_FLATTENED,
+# GNUSTEP_SYSTEM_ROOT, GNUSTEP_MAKE_VERSION, GNUSTEP_IS_FLATTENED,
 # default_library_combo, and, if multi-platform support is disabled,
 # it will also load GNUSTEP_HOST, GNUSTEP_HOST_CPU, etc.
 #
@@ -54,7 +54,7 @@ REL_PATH_SCRIPT        = $(GNUSTEP_MAKEFILES)/relative_path.sh
 #
 include $(GNUSTEP_MAKEFILES)/names.make
 
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
   GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
   GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
   GNUSTEP_HOST_LDIR = $(GNUSTEP_HOST_DIR)/$(LIBRARY_COMBO)
@@ -173,7 +173,7 @@ GNUSTEP_APPS                 = $(GNUSTEP_INSTALLATION_DIR)/Applications
 GNUSTEP_TOOLS                = $(GNUSTEP_INSTALLATION_DIR)/Tools
 GNUSTEP_LIBRARY              = $(GNUSTEP_INSTALLATION_DIR)/Library
 GNUSTEP_SERVICES             = $(GNUSTEP_LIBRARY)/Services
-ifeq ($(GNUSTEP_FLATTENED),yes)
+ifeq ($(GNUSTEP_IS_FLATTENED),yes)
   GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers
 else
   GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers/$(LIBRARY_COMBO)
@@ -197,7 +197,7 @@ endif
 # Now prepare the library and header flags - we first prepare the list
 # of directories (trying to avoid duplicates in the list), then
 # optionally remove the empty ones, then prepend -I / -L to them.
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
 
 # The following variables have to be evaluated after setting dir to
 # something, such as GNUSTEP_USER_ROOT.  When you evaluate them in
@@ -335,7 +335,7 @@ endif
 # GNUSTEP_TARGET_DIR, maybe we should key all of our headers in a
 # GNUSTEP_TARGET_LDIR directory (rather than just a LIBRARY_COMBO
 # directory).  But does it really matter in practice anyway ?
-ifeq ($(GNUSTEP_FLATTENED),yes)
+ifeq ($(GNUSTEP_IS_FLATTENED),yes)
 GNUSTEP_HEADERS_FND_DIRS = \
   $(GNUSTEP_USER_ROOT)/Library/Headers/libFoundation \
   $(GNUSTEP_LOCAL_ROOT)/Library/Headers/libFoundation \
@@ -483,7 +483,7 @@ else
       $(shell echo $(CLEANED_ARCH) | sed -e 's/ /_/g')/$(GNUSTEP_TARGET_OS)
 endif
 
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
   GNUSTEP_OBJ_DIR_NAME = obj/$(ARCH_OBJ_DIR)/$(LIBRARY_COMBO)
 else
   GNUSTEP_OBJ_DIR_NAME = obj

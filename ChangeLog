@@ -1,3 +1,39 @@
+2006-10-02  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	All checks for GNUSTEP_FLATTENED should be updated to check the
+	new variable GNUSTEP_IS_FLATTENED instead, and to compare it
+	explicitly to 'yes' and 'no', and assume that '' means 'yes'.
+
+	* configure.ac: New variable GNUSTEP_IS_FLATTENED that is 'yes'
+	when flattened, and 'no' when not.
+	* configure: Regenerated.
+
+	* config-noarch.make.in: Added GNUSTEP_IS_FLATTENED.
+	* GNUmakefile.in: Same change.
+	* GNUstep-reset.sh: Same change.
+	* GNUstep.csh.in: Same change.
+	* GNUstep.sh.in: Same change.
+
+	* config.site: Updated checks for GNUSTEP_FLATTENED to
+	check GNUSTEP_IS_FLATTENED instead.
+	* common.make: Same change.
+	* debugapp.in: Same change.
+	* GNUmakefile.in: Same change.
+	* GNUstep.csh.in: Same change.
+	* GNUstep.sh.in: Same change.
+	* ld_lib_path.csh: Same change.
+	* ld_lib_path.sh: Same change.
+	* openapp.in: Same change.
+	* opentool.in: Same change.
+	* rules.make: Same change.
+	
+	* Master/application.make: Same change.
+	* Master/gswapp.make: Same change.
+	* Master/palette.make: Same change.
+	* Master/service.make: Same change.
+	* Master/test-application.make: Same change.
+	* Instance/application.make: Same change.
+	
 2006-10-01  Adam Fedor  <fedor@gnu.org>
 
 	* config.guess, config.sub: Update to latest version.

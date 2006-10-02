@@ -542,7 +542,7 @@ endif
 
 $(GNUSTEP_MAKEFILES)/*.make: ;
 
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
 # If this file can't be found, we can't load the config for that
 # library combo / target, so we can't do anything.  We print an
 # error and exit.

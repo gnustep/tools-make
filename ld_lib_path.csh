@@ -25,7 +25,7 @@
 # The first (and only) parameter to this script is the canonical
 # operating system name.
 
-if ( "$GNUSTEP_FLATTENED" == "" ) then
+if ( "$GNUSTEP_IS_FLATTENED" == "no" ) then
   set last_path_part="Library/Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}"
   set tool_path_part="Library/Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
 else

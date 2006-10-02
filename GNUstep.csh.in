@@ -107,7 +107,10 @@ if ( ! ${?GNUSTEP_NETWORK_ROOT} ) then
 endif
 
 
+# GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
+# instead
 setenv GNUSTEP_FLATTENED "@GNUSTEP_FLATTENED@"
+setenv GNUSTEP_IS_FLATTENED "@GNUSTEP_IS_FLATTENED@"
 if ( ! ${?LIBRARY_COMBO} ) then
   setenv LIBRARY_COMBO "@ac_cv_library_combo@"
 endif
@@ -178,7 +181,7 @@ endif
 set temp_path = ""
 foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHLIST}; do echo $i; done'` )
   set temp_path="${temp_path}${dir}/Tools:"
-  if ( "${GNUSTEP_FLATTENED}" == "" ) then
+  if ( "${GNUSTEP_IS_FLATTENED}" == "no" ) then
     set temp_path="${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:"
     set temp_path="${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:"
   endif

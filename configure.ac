@@ -583,13 +583,22 @@ AC_ARG_ENABLE(flattened, [
   ac_cv_flattened="undefined")
 
 if test "$ac_cv_flattened" = "no"; then
+
+  # GNUSTEP_FLATTENED is here for backwards compatibility only and
+  # should be removed at some point.  It has the problem that it
+  # defaults to 'no' while we want the default to be 'yes'!
+  # The new GNUSTEP_IS_FLATTENED variable defaults to 'yes'. :-)
+
   GNUSTEP_FLATTENED=;
+  GNUSTEP_IS_FLATTENED=no;
 else
   GNUSTEP_FLATTENED=yes;
+  GNUSTEP_IS_FLATTENED=yes;
 fi
 AC_SUBST(GNUSTEP_FLATTENED)
+AC_SUBST(GNUSTEP_IS_FLATTENED)
 
-if test "$GNUSTEP_FLATTENED" = "yes"; then
+if test "$GNUSTEP_IS_FLATTENED" = "yes"; then
   AC_MSG_RESULT(yes);
 else
   AC_MSG_RESULT(no);

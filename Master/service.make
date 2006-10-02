@@ -37,7 +37,7 @@ _PSWRAP_C_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.p
 _PSWRAP_H_FILES = $(foreach service,$(SERVICE_NAME),$($(service)_PSWRAP_FILES:.psw=.h))
 
 internal-clean::
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
 	(cd $(GNUSTEP_BUILD_DIR); \
 	rm -rf $(_PSWRAP_C_FILES) $(_PSWRAP_H_FILES) *.service/$(GNUSTEP_TARGET_LDIR))
 else
@@ -46,7 +46,7 @@ else
 endif
 
 internal-distclean::
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
 	(cd $(GNUSTEP_BUILD_DIR); rm -rf *.service)
 endif
 

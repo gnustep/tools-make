@@ -147,7 +147,7 @@ internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
 $(APP_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-ifeq ($(GNUSTEP_FLATTENED),)
+ifeq ($(GNUSTEP_IS_FLATTENED), no)
 internal-application-build-template: $(APP_DIR)/$(GNUSTEP_INSTANCE)
 
 $(APP_DIR)/$(GNUSTEP_INSTANCE):

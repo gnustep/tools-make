@@ -145,7 +145,7 @@ if [ -z "$GNUSTEP_MAKEFILES" ]; then
   GNUSTEP_MAKEFILES = $GNUSTEP_SYSTEM_ROOT/Library/Makefiles
 fi
 
-if [ -z "$GNUSTEP_FLATTENED" ]; then
+if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
 	#
 	# Determine the host information
 	#
@@ -201,17 +201,17 @@ if [ "$LIBRARY_COMBO" = "apple-apple-apple" ]; then
 
 else
   # Determine if the application has a binary for this operating system
-  if [ -z "$GNUSTEP_FLATTENED" -a ! -d "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" ]; then
+  if [ "$GNUSTEP_IS_FLATTENED" = "no" -a ! -d "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" ]; then
     echo "$full_appname application does not have a binary for this kind of machine and operating system."
     exit 1
   fi
 
-  if [ -z "$GNUSTEP_FLATTENED" -a ! -d "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO" ]; then
+  if [ "$GNUSTEP_IS_FLATTENED" = "no" -a ! -d "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO" ]; then
     echo "$full_appname application does not have a binary for this combination of libraries: $LIBRARY_COMBO."
     exit 1
   fi
 
-  if [ -z "$GNUSTEP_FLATTENED" ]; then
+  if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
     file_appname="$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$appname"
   else
     file_appname="$full_appname/$appname"

@@ -20,6 +20,9 @@
 # If not, write to the Free Software Foundation,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# 'opentool' is obsolete.  You can invoke your tools directly, just
+# put them in your PATH :-)
+
 # Try to execute the GNUstep tool passed as argument. The tool is
 # searched through the GNUstep directories if a complete or relative path name
 # is not specified. The arguments passed after the tool name are passed
@@ -126,7 +129,7 @@ case "$tool" in
 	  #
 	  for dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" ; do
 	    tmpdir="$dir/Tools"
-	    if [ -z "$GNUSTEP_FLATTENED" ]; then
+	    if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
 	      tmpgnudir="$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
 	      tmplibdir="$tmpgnudir/$LIBRARY_COMBO"
 	      # echo "$tmplibdir/$tool";
