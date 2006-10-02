@@ -1,5 +1,12 @@
 2006-10-02  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* target.make (SHARED_LIB_LINK_CMD, all targets): Use an '&&'
+	between the link command and the commands to create the symlinks
+	so that an error during link will abort compilation rather than
+	fail silently.
+
+2006-10-02  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	All checks for GNUSTEP_FLATTENED should be updated to check the
 	new variable GNUSTEP_IS_FLATTENED instead, and to compare it
 	explicitly to 'yes' and 'no', and assume that '' means 'yes'.
