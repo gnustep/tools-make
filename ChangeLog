@@ -1,4 +1,23 @@
 2006-10-03  Nicola Pero <nicola.pero@meta-innovation.com>
+	
+	Removed support for library_paths.openapp.  It was not available
+	in any common setups, so almost nobody could use it anyway.
+
+	* Instance/application.make ($(APP_FILE)): Do not create
+	library_paths.openapp.
+	* Instance/gswapp.make (GSWAPP_FILE): Same change.
+
+	* executable.template.in: Removed library_paths.openapp code.
+
+	* ld_lib_path.sh: Removed additional_library_paths and
+	additional_framework_paths code.
+	* ld_lib_path.csh: Same changes.
+
+	* transform_paths.sh: File removed.
+	* GNUmakefile.in (install): Do not install transform_paths.sh
+	(uninstall): Do not uninstall it.
+	
+2006-10-03  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	Merged debugapp and openapp.  Now there is a single script,
 	openapp, with a --debug option to use gdb.

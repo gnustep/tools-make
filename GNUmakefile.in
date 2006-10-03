@@ -150,7 +150,7 @@ install: generated-files
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh GNUstep-reset.sh \
-		ld_lib_path.sh os.sh transform_paths.sh vendor.sh \
+		ld_lib_path.sh os.sh vendor.sh \
 		ld_lib_path.csh relative_path.sh strip_makefiles.sh; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)
@@ -205,7 +205,7 @@ uninstall:
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
-		transform_paths.sh vendor.sh \
+		vendor.sh \
 		ld_lib_path.csh fixpath.sh \
 	        GNUstep.sh GNUstep.csh GNUstep-reset.sh \
 		relative_path.sh strip_makefiles.sh; do \

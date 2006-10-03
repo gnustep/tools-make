@@ -53,17 +53,6 @@ switch ( "${host_os}" )
     else if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
 	setenv DYLD_LIBRARY_PATH "${lib_paths}:${DYLD_LIBRARY_PATH}"
     endif
-    if ( $?additional_lib_paths == 1) then
-      foreach dir (${additional_lib_paths})
-	set additional="${additional}${dir}:"
-      end
-    endif
-
-    if ( "${?additional}" == "1" ) then
-      if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
-       setenv DYLD_LIBRARY_PATH="${additional}${DYLD_LIBRARY_PATH}"
-      endif
-    endif
     breaksw
 
   case *darwin* :
@@ -71,17 +60,6 @@ switch ( "${host_os}" )
 	setenv DYLD_LIBRARY_PATH "${lib_paths}"
     else if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
 	setenv DYLD_LIBRARY_PATH "${lib_paths}:${DYLD_LIBRARY_PATH}"
-    endif
-    if ( $?additional_lib_paths == 1) then
-      foreach dir (${additional_lib_paths})
-	set additional="${additional}${dir}:"
-      end
-    endif
-
-    if ( "${?additional}" == "1" ) then
-      if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
-       setenv DYLD_LIBRARY_PATH="${additional}${DYLD_LIBRARY_PATH}"
-      endif
     endif
     
 # The code below has been temporarily removed, because...
@@ -105,24 +83,12 @@ switch ( "${host_os}" )
 #    if [ "$LIBRARY_COMBO" = "apple-apple-apple" -o \
 #         "$LIBRARY_COMBO" = "apple" ]; then
 
-    unset additional
-
     if ( $?DYLD_FRAMEWORK_PATH == 0 ) then
       setenv DYLD_FRAMEWORK_PATH "${fw_paths}"
     else if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${fw_paths}" >/dev/null) } ) then
       setenv DYLD_FRAMEWORK_PATH "${fw_paths}:${DYLD_FRAMEWORK_PATH}"
     endif
-    if ( $?additional_framework_paths == 1) then
-      foreach dir (${additional_framework_paths})
-        set additional="${additional}${dir}:"
-      end
-    endif
 
-    if ( "${?additional}" == "1" ) then
-      if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
-        setenv DYLD_FRAMEWORK_PATH="${additional}${DYLD_FRAMEWORK_PATH}"
-      endif
-    endif
     breaksw
 
   case *hpux* :
@@ -131,17 +97,6 @@ switch ( "${host_os}" )
     else if ( { (echo "${SHLIB_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
 	setenv SHLIB_PATH "${lib_paths}:${SHLIB_PATH}"
     endif
-    if ( $?additional_lib_paths == 1) then
-      foreach dir (${additional_lib_paths})
-	set additional="${additional}${dir}:"
-      end
-    endif
-
-    if ( "${?additional}" == "1" ) then
-      if ( { (echo "${SHLIB_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
-       setenv SHLIB_PATH="${additional}${SHLIB_PATH}"
-      endif
-    endif
 
     if ( $?LD_LIBRARY_PATH == 0 ) then
 	setenv LD_LIBRARY_PATH "${lib_paths}"
@@ -149,17 +104,6 @@ switch ( "${host_os}" )
 	setenv LD_LIBRARY_PATH "${lib_paths}:${LD_LIBRARY_PATH}"
     endif
 
-    if ( $?additional_lib_paths == 1) then
-      foreach dir (${additional_lib_paths})
-	set additional="${additional}${dir}:"
-      end
-    endif
-
-    if ( "${?additional}" == "1" ) then
-      if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
-       setenv LD_LIBRARY_PATH="${additional}${LD_LIBRARY_PATH}"
-      endif
-    endif
     breaksw
 
   case * :
@@ -168,20 +112,10 @@ switch ( "${host_os}" )
     else if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${lib_paths}" >/dev/null) } ) then
 	setenv LD_LIBRARY_PATH "${lib_paths}:${LD_LIBRARY_PATH}"
     endif
-    if ( $?additional_lib_paths == 1) then
-      foreach dir (${additional_lib_paths})
-	set additional="${additional}${dir}:"
-      end
-    endif
 
-    if ( "${?additional}" == "1" ) then
-      if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${additional}" >/dev/null) } ) then
-       setenv LD_LIBRARY_PATH="${additional}${LD_LIBRARY_PATH}"
-      endif
-    endif
     breaksw
 
 endsw
 
-unset tool_path_part last_path_part host_os additional dir lib_paths fw_paths
+unset tool_path_part last_path_part host_os dir lib_paths fw_paths
 

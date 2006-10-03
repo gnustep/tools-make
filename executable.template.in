@@ -25,6 +25,10 @@
 # This is a shell script which attempts to find the GNUstep executable
 # of the same name based on the current host and library_combo.
 
+# This is installed inside the application directory in the
+# non-flattened case.  In the flattened case, we install the binary
+# directly and no wrappers are used.
+
 #--------------------------------------------------------------------------
 # Main body
 #--------------------------------------------------------------------------
@@ -242,17 +246,7 @@ if [ $show_full_path = 1 ]; then
   exit 0
 fi
 
-if [ "$LIBRARY_COMBO" = nx-nx-nx -a "$GNUSTEP_HOST_OS" = nextstep4 ]; then
-  if [ -f "$full_appname/library_paths.openapp" ]; then
-    additional_library_paths="`cat $full_appname/library_paths.openapp`"
-  fi
-else
-  if [ -f "$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp" ]; then
-    additional_library_paths="`cat \"$full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/library_paths.openapp\"`"
-  fi
-fi
-
-# Load up LD_LIBRARY_PATH
+# Load up LD_LIBRARY_PATH ... FIXME, what about just sourcing GNUstep.sh instead ?
 . "$GNUSTEP_MAKEFILES/ld_lib_path.sh"
 
 exec "$full_appname/$relative_path" "$@"

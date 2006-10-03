@@ -234,19 +234,6 @@ if [ -n "$openapp_only_find" ]; then
   exit 0
 fi
 
-# FIXME - If we want to support library_paths.openapp, we would need
-# to do this.  Pity as we already source GNUstep.sh (which in turn
-# sources ld_lib_path.sh) at the beginning, so it would be great not
-# to have to source it again here.  I mean it's getting very clumsy.
-# I vote for dropping the library_paths.openapp functionality
-# altogether.  Nobody must be using it anyway, since this code has
-# been missing for a very long time, and nobody ever noticed! :-)
-
-#if [ -f "$openapp_full_appname/library_paths.openapp" ]; then
-# additional_library_paths="`cat \"$openapp_full_appname/library_paths.openapp\"`"
-# . "$GNUSTEP_MAKEFILES/ld_lib_path.sh"
-#fi
-
 if [ -n "$openapp_debug_mode" ]; then
 
   # Search for a core file in the current directory.

@@ -114,10 +114,6 @@ endif
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
 	$(OBJ_FILES_TO_LINK) $(ALL_GUI_LIBS)$(END_ECHO)
-ifneq ($(FOUNDATION_LIB), apple)
-	$(ECHO_NOTHING)$(TRANSFORM_PATHS_SCRIPT) $(subst -L,,$(ALL_LIB_DIRS)) \
-	        >$(APP_DIR)/$(GNUSTEP_TARGET_LDIR)/library_paths.openapp$(END_ECHO)
-endif
 
 #
 # Compilation targets
