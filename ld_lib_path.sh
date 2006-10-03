@@ -75,6 +75,16 @@ unset old_IFS
 unset dir
 
 
+# This is only used to support the library_paths.openapp
+# functionality.  That file will contain a list of library paths that
+# 'openapp' is supposed to automatically add to your LD_LIBRARY_PATH
+# when you run the application.  Only good use I can think of is if
+# you link your application to some local libs in some local
+# directories, and then want to be able to try the application out
+# before installing the libs.  FIXME - we should probably remove this
+# functionality/hack which has a limited use, hardcodes fixed paths in
+# the application (which is never good), and forces you to run
+# ld_lib_path.sh etc. in order to start an application.
 if [ -n "$additional_library_paths" ]; then
   old_IFS="$IFS"
   IFS=" 
@@ -92,6 +102,8 @@ if [ -n "$additional_library_paths" ]; then
   unset old_IFS
 fi
 
+# This is unused at the moment.  Presumably if we added a
+# framework_paths.openapp file, this would be used to support it.
 if [ -n "$additional_framework_paths" ]; then
   old_IFS="$IFS"
   IFS="
