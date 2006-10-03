@@ -1,6 +1,5 @@
 #!/bin/sh
-#
-# @configure_input@
+# debugapp
 #
 # Copyright (C) 2006 Free Software Foundation, Inc.
 #
