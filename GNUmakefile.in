@@ -252,7 +252,6 @@ distclean: clean
 	rm -f GNUmakefile config-noarch.make config.make config.h
 	rm -f config.cache config.log config.status
 	rm -f openapp
-	rm -f debugapp
 	rm -f opentool
 	rm -f executable.template
 	rm -f GNUstep.sh
@@ -313,7 +312,7 @@ rpm: test-RPM_TOPDIR dist
 	fi; \
 	$${rpmbuild} -ba gnustep-make.spec
 
-generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make debugapp openapp opentool gnustep-make.spec executable.template
+generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make openapp opentool gnustep-make.spec executable.template
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -332,9 +331,6 @@ config-noarch.make: config-noarch.make.in Version
 
 config.make: config.make.in
 	$(SHELL) config.status --recheck
-
-debugapp: debugapp.in
-	$(SHELL) config.status
 
 openapp: openapp.in
 	$(SHELL) config.status

@@ -976,10 +976,10 @@ AC_SUBST(target)
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-AC_CONFIG_FILES([config-noarch.make config.make openapp debugapp opentool 
+AC_CONFIG_FILES([config-noarch.make config.make openapp opentool 
 executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh
 gnustep-make.spec])
 AC_CONFIG_COMMANDS([default],
-	[[chmod a+x openapp debugapp opentool fixpath.sh executable.template]],
+	[[chmod a+x openapp opentool fixpath.sh executable.template]],
 	[[]])
 AC_OUTPUT

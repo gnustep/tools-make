@@ -1,3 +1,22 @@
+2006-10-03  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	Merged debugapp and openapp.  Now there is a single script,
+	openapp, with a --debug option to use gdb.
+
+	* openapp.in: Merged all the code from debugapp.in into it.  Added
+	--debug, --library-combo=..., --gdb=... options.  Extended --find
+	option.  Rewritten large parts of it.
+	* debugapp.in: File removed.
+	* debugapp: New backwards-compatibility file so you can still run
+	'debugapp Gorm'; it wraps openapp, so 'debugapp Gorm' simply does
+	'openapp --debug Gorm'.
+
+	* configure.ac: Do not create debugapp.
+	* configure: Regenerated.
+	* GNUmakefile.in (distclean): Do not remove debugapp on distclean.
+	(generated-files): Removed debugapp.
+	(debugapp): Rule removed.
+	
 2006-10-02  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	* target.make (SHARED_LIB_LINK_CMD, all targets): Use an '&&'

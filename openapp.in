@@ -2,12 +2,12 @@
 #
 # @configure_input@
 #
-# Copyright (C) 1997 Free Software Foundation, Inc.
+# Copyright (C) 1997 - 2006 Free Software Foundation, Inc.
 #
 # Author: Ovidiu Predescu <ovidiu@net-community.com>
 # Date: October 1997
 # Author: Nicola Pero <n.pero@mi.flashnet.it>
-# Date: 2002
+# Date: 2002 - 2006
 #
 # This file is part of the GNUstep Makefile Package.
 #
@@ -21,144 +21,275 @@
 # If not, write to the Free Software Foundation,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# Try to execute the application passed as argument. The application is
-# searched through the GNUstep directories if a complete or relative path name
-# is not specified. The arguments passed after the application name are passed
-# unmodified to the application.
+# Please note that all local variables are prefixed with 'openapp_' to
+# avoid conflicts.
+
+# Try to execute the application passed as argument. The application
+# is searched through the GNUstep directories if a complete or
+# relative path name is not specified. The arguments passed after the
+# application name are passed unmodified to the application. The
+# option --debug case the application to be launched inside a debugger
+# (originally we had a separate script, called debugapp, for that).
 
 if [ -z "$1" ]; then
-  echo usage: openapp [--find] application [arguments...]
-  echo openapp --help for more help
+  echo "usage: openapp [--find] [--debug] application [arguments...]"
+  echo "openapp --help for more help"
   exit 1
 fi
+
+openapp_only_find=
+openapp_debug_mode=
+
+# Here read all the --find/--debug/--help/etc arguments, up to the
+# first non-argument.  That one is the name of the application we want
+# to launch.  We leave any parameters after the app name unchanged so
+# that we have them available in $@ to give to the application.
+
+while [ x"$1" != x ]; do
+  case "$1" in
+  --help)
+    echo "usage: openapp [--find] [--debug] application [arguments...]"
+    echo
+    echo "application is the complete or relative name of the application"
+    echo "program with or without the .app extension, like Ink.app."
+    echo
+    echo "[arguments...] are the arguments to the application." 
+    echo 
+    echo "If --find is used, openapp prints out the full path of the application "
+    echo "executable which would be executed, without actually executing it.  It"
+    echo "will also list all paths that are attempted."
+    echo 
+    echo "If --debug is used, openapp starts the application in the debugger "
+    echo "(by default gdb, but can be changed using the GDB shell variable, "
+    echo "or the --gdb=... argument)."
+    echo
+    echo "A rarely used option is --library-combo=... which can be used"
+    echo "in non-flattened (advanced/non standard) setups to start up"
+    echo "the application using a specified library-combo."
+    echo
+    exit 0
+    ;;
+  --find)
+    openapp_only_find=yes;
+    if [ -z "$2" ]; then
+      echo "Missing application name.  Please try openapp --help for more help."
+      exit 1
+    fi
+    shift;;
+  --debug)
+    openapp_debug_mode=yes;
+    if [ -z "$2" ]; then
+      echo "Missing application name.  Please try openapp --help for more help."
+      exit 1
+    fi
+    shift;;
+  --gdb=*)
+    GDB=`echo "$1" | sed 's/--gdb=//'`
+    if [ -z "$2" ]; then
+      echo "Missing application name.  Please try openapp --help for more help."
+      exit 1
+    fi
+    shift;;
+  --library-combo=*)
+    # FIXME - Reset the existing library combo environment ?  We haven't read
+    # the config file yet, so GNUSTEP_SYSTEM_ROOT might not be set yet! :-/
+    # . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep-reset.sh
+    LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
+    if [ -z "$2" ]; then
+      echo "Missing application name.  Please try openapp --help for more help."
+      exit 1
+    fi
+    shift;;
+  *)
+    openapp_app="$1"; 
+    shift;
+    # Exit from the loop so the remaining arguments are in $@ and we
+    # can pass them unchanged to the application.
+    break;;
+  esac
+done
 
 if [ -z "$GNUSTEP_CONFIG_FILE" ]; then
   GNUSTEP_CONFIG_FILE=@GNUSTEP_CONFIG_FILE@
 fi
 . $GNUSTEP_CONFIG_FILE
 
+# Ahm ... TODO: we shouldn't need to do this if we are running flattened. :-)
+# Anyway it won't harm (just slow things down a lot).  This must be
+# after parsing the --library-combo parameter.
 . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
 
 if [ -z "$GNUSTEP_IS_FLATTENED" ]; then
   GNUSTEP_IS_FLATTENED=@GNUSTEP_IS_FLATTENED@
 fi
 
-only_find=
-
-# TODO: implement a --library-combo parameter
-case "$1" in
-  --help)
-    echo usage: openapp [--find] application [arguments...]
-    echo
-    echo application is the complete or relative name of the application
-    echo program with or without the .app extension, like Ink.app.
-    echo
-    echo [arguments...] are the arguments to the application.     
-    echo 
-    echo If --find is used as first argument, openapp prints out
-    echo the full path of the application executable which would be 
-    echo executed, without actually executing it as it would normally do.
-    echo 
-    exit 0
-    ;;
-  --find)
-    only_find=yes;
-    if [ -z "$2" ]; then
-      echo Missing application name.  Please try openapp --help for more help.
-      exit 1
-    fi
-    app="$2"; shift; shift;;
-  *)
-    app="$1"; shift;;
-esac
+if [ -z "$GDB" ]; then
+  GDB=gdb
+fi
 
 # Remove leading slashes at the end of the application name
-app="`echo \"$app\" | sed 's%/*$%%'`"
+openapp_app="`echo \"$openapp_app\" | sed 's%/*$%%'`"
 
 # Check if the user has provided the .app suffix; if not, add it.
 # Save the appname (without the .app suffix) if we have it, so
 # we save a sed (to remove the .app suffix) later on.
-case "$app" in
-  *.app) appname="";;
-  *)     appname="$app"; app="$app.app";;
+case "$openapp_app" in
+  *.app) openapp_appname="";;
+  *)     openapp_appname="$openapp_app"; openapp_app="$openapp_app.app";;
 esac
 
-case "$app" in
+case "$openapp_app" in
     /*) # An absolute path.
-      if [ -d "$app" ]; then
-	full_appname="$app"
+      if [ -n "$openapp_only_find" ]; then
+        echo "Trying $openapp_app..."
+      fi
+      if [ -d "$openapp_app" ]; then
+	openapp_full_appname="$openapp_app"
       fi
       ;;
     */*) # A relative path
-      if [ -d "$app" ]; then
-	full_appname="`(cd \"$app\"; pwd)`"
+      if [ -n "$openapp_only_find" ]; then
+        echo "Trying $openapp_app..."
+      fi
+      if [ -d "$openapp_app" ]; then
+	openapp_full_appname="`(cd \"$openapp_app\"; pwd)`"
       fi
       ;;
     *)
       # We should first search the standard GNUstep locations.
-      for dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT"; do
-	  # Standard locations ... in $dir/Applications/$app
-	  if [ -d "$dir/Applications/$app" ]; then
-	    full_appname="`(cd \"$dir/Applications/$app\"; pwd)`"
+      for openapp_dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT"; do
+	  # Standard locations ... in $dir/Applications/$openapp_app
+          if [ -n "$openapp_only_find" ]; then
+            echo "Trying $openapp_dir/Applications/$openapp_app..."
+          fi
+	  if [ -d "$openapp_dir/Applications/$openapp_app" ]; then
+	    openapp_full_appname="`(cd \"$openapp_dir/Applications/$openapp_app\"; pwd)`"
 	    break
 	  fi
       done
-      if [ -z "$full_appname" ]; then
+      if [ -z "$openapp_full_appname" ]; then
 	# And now search the standard PATH (may include '.')
 	old_IFS="$IFS"
 	IFS=:
-	for dir in $PATH; do
-	    if [ -d "$dir/$app" ]; then
-	      full_appname="`(cd \"$dir/$app\"; pwd)`"
-              break
-	    fi
+	for openapp_dir in $PATH; do
+          if [ -n "$openapp_only_find" ]; then
+            echo "Trying $openapp_dir/$openapp_app..."
+          fi
+	  if [ -d "$openapp_dir/$openapp_app" ]; then
+	    openapp_full_appname="`(cd \"$openapp_dir/$openapp_app\"; pwd)`"
+            break
+	  fi
 	done
 	IFS="$old_IFS"
       fi
     ;;
 esac
 
-if [ -z "$full_appname" ]; then
-  echo "Can't find the required application: $app!"
-  if [ -d "./$app" ]; then
-    echo "There is a $app in this directory; please use 'openapp ./$app' if you want to open it!"
+if [ -z "$openapp_full_appname" ]; then
+  echo "Can't find the required application: $openapp_app!"
+  if [ -d "./$openapp_app" ]; then
+    echo "There is a $openapp_app in this directory; please use 'openapp ./$openapp_app' if you want to open it!"
   fi
   exit 1
 fi
 
-#echo "found: $full_appname"
-
 # get base app name
-if [ -z "$appname" ]; then
-  appname="`echo \"$app\" | sed 's/\.app$//'`"
+if [ -z "$openapp_appname" ]; then
+  openapp_appname="`echo \"$openapp_app\" | sed 's/\.app$//'`"
 fi
-appname="`basename \"$appname\"`"
+openapp_appname="`basename \"$openapp_appname\"`"
+
+if [ -z "$EXEEXT" ]; then
+  EXEEXT=@EXEEXT@
+fi
+
+if [ -n "$EXEEXT" ]; then
+  openapp_appname="$openapp_appname$EXEEXT"
+fi
 
 if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
 
-  if [ -z "$EXEEXT" ]; then
-    EXEEXT=@EXEEXT@
-  fi
+  case "$LIBRARY_COMBO" in
+    apple-*) openapp_app_executable="$openapp_full_appname/Contents/MacOS/$openapp_appname";;
+    *)       openapp_app_executable="$openapp_full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$openapp_appname";;
+  esac
 
-  if [ -n "$EXEEXT" ]; then
-    appname="$appname$EXEEXT"
-  fi
+else
+
+  case "$LIBRARY_COMBO" in
+    apple-*) openapp_app_executable="$openapp_full_appname/Contents/MacOS/$openapp_appname";;
+    *)       openapp_app_executable="$openapp_full_appname/$openapp_appname";;
+  esac
 
 fi
 
-case "$LIBRARY_COMBO" in
-  apple-*) app_executable="$full_appname/Contents/MacOS/$appname";;
-  *)       app_executable="$full_appname/$appname";;
-esac
-
-if [ ! -f "$app_executable" ]; then
-  echo "Could not find $app_executable executable/script"
+  
+if [ ! -f "$openapp_app_executable" ]; then
+  echo "Could not find $openapp_app_executable executable/script"
   exit 1
 fi
 
-if [ -n "$only_find" ]; then
-  echo "$app_executable"
+if [ -n "$openapp_only_find" ]; then
+  echo " => Using $openapp_app_executable"
   exit 0
 fi
 
-exec "$app_executable" "$@"
+# FIXME - If we want to support library_paths.openapp, we would need
+# to do this.  Pity as we already source GNUstep.sh (which in turn
+# sources ld_lib_path.sh) at the beginning, so it would be great not
+# to have to source it again here.  I mean it's getting very clumsy.
+# I vote for dropping the library_paths.openapp functionality
+# altogether.  Nobody must be using it anyway, since this code has
+# been missing for a very long time, and nobody ever noticed! :-)
+
+#if [ -f "$openapp_full_appname/library_paths.openapp" ]; then
+# additional_library_paths="`cat \"$openapp_full_appname/library_paths.openapp\"`"
+# . "$GNUSTEP_MAKEFILES/ld_lib_path.sh"
+#fi
+
+if [ -n "$openapp_debug_mode" ]; then
+
+  # Search for a core file in the current directory.
+  openapp_corearg=
+  openapp_corefiles="core*"
+  for openapp_corefile in $openapp_corefiles; do
+    if [ -f "$openapp_corefile" ]; then
+      echo -e "Core image ($openapp_corefile) has been found in working directory. Use it (y/n)? ";
+      # Need an argument here for Solaris
+      read REPLY;
+      if [ $REPLY = y ]; then
+        echo -e "Using it.";
+        corearg="--core=$openapp_corefile";
+        break;
+      else
+        echo -e "Ignoring it.";
+      fi
+    fi
+  done
+  unset openapp_corefile
+  unset openapp_corefiles
+
+  if [ -z "$openapp_corearg" ]; then
+
+    # Old versions of gdb don't support --args, so we only use it if
+    # 'gdb --help' lists it.
+    openapp_args=
+    if ("$GDB" --help | grep -e '\-\-args' > /dev/null); then
+      openapp_args="--args"
+    fi
+    # Arguments passed to debugapp are passed over to the
+    # application, in the same way as it happens for openapp.
+
+    "$GDB" $openapp_args "$openapp_app_executable" "$@"
+
+  else
+
+    "$GDB" "$openapp_app_executable" "$openapp_corearg"
+
+  fi
+
+else # non-debug follows
+
+  exec "$openapp_app_executable" "$@"
+
+fi

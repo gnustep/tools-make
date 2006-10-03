@@ -4405,7 +4405,7 @@ clean_target_vendor=`$srcdir/clean_cpu.sh $target_vendor`
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-                                                                                                                        ac_config_files="$ac_config_files config-noarch.make config.make openapp debugapp opentool executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec"
+                                                                                                              ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec"
 
           ac_config_commands="$ac_config_commands default"
 
@@ -4973,7 +4973,6 @@ do
   "config-noarch.make" ) CONFIG_FILES="$CONFIG_FILES config-noarch.make" ;;
   "config.make" ) CONFIG_FILES="$CONFIG_FILES config.make" ;;
   "openapp" ) CONFIG_FILES="$CONFIG_FILES openapp" ;;
-  "debugapp" ) CONFIG_FILES="$CONFIG_FILES debugapp" ;;
   "opentool" ) CONFIG_FILES="$CONFIG_FILES opentool" ;;
   "executable.template" ) CONFIG_FILES="$CONFIG_FILES executable.template" ;;
   "GNUmakefile" ) CONFIG_FILES="$CONFIG_FILES GNUmakefile" ;;
@@ -5483,7 +5482,7 @@ esac
   { echo "$as_me:$LINENO: executing $ac_dest commands" >&5
 echo "$as_me: executing $ac_dest commands" >&6;}
   case $ac_dest in
-    default ) chmod a+x openapp debugapp opentool fixpath.sh executable.template ;;
+    default ) chmod a+x openapp opentool fixpath.sh executable.template ;;
   esac
 done
 _ACEOF
