@@ -167,8 +167,14 @@ endif
 # DESTDIR allows you to relocate the entire installation somewhere else
 # (as per GNU Coding Standards).
 #
-ifneq ($(DESTDIR),)
-  override GNUSTEP_INSTALLATION_DIR := $(DESTDIR)/$(GNUSTEP_INSTALLATION_DIR)
+# Add DESTDIR as a prefix to GNUSTEP_INSTALLATION_DIR, but only if we're
+# at the first top-level invocation.  Else we risk adding it multiple
+# times ;-)
+#
+ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
+  ifneq ($(DESTDIR),)
+    override GNUSTEP_INSTALLATION_DIR := $(DESTDIR)/$(GNUSTEP_INSTALLATION_DIR)
+  endif
 endif
 
 # Make it public and available to all submakes invocations

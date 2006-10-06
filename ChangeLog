@@ -1,3 +1,7 @@
+2006-10-07  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* common.make: Add DESTDIR only on the very topmost invocation.
+
 2006-10-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/machines.texi: Mention that Debian/em64t works and
