@@ -1,3 +1,8 @@
+2006-10-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/machines.texi: Mention that Debian/em64t works and
+	is supported, and that Solaris 9 also works.
+
 2006-10-06  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	Implemented DESTDIR as per GNU Coding Standards.

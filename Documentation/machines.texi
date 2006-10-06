@@ -27,6 +27,7 @@ GNUstep @email{bug-gnustep@@gnu.org}.
 * Darwin/PowerPC::              
 * Debian/Alpha::                
 * Debian/i386::                 
+* Debian/em64t::                 
 * Debian/PowerPC::              
 * Debian/SPARC::                
 * FreeBSD 5.x::                 
@@ -208,10 +209,16 @@ See also the MacOSX/PowerPC section
 @section Debian/Alpha (@emph{Unsupported})
 
 @c -----------------------------------------
-@node Debian/i386, Debian/PowerPC, Debian/Alpha, Machine Specific
+@node Debian/i386, Debian/em64t, Debian/Alpha, Machine Specific
 @section Debian/i386 (@emph{Supported})
 
 Tested on sid.
+
+@c -----------------------------------------
+@node Debian/em64t, Debian/PowerPC, Debian/i386, Machine Specific
+@section Debian/em64t (@emph{Supported})
+
+Tested on 'unstable'.
 
 @c -----------------------------------------
 @node Debian/PowerPC, Debian/SPARC, Debian/i386, Machine Specific
@@ -557,7 +564,7 @@ See the Solaris 2.6 section for more instructions.
 @node Solaris/Sparc, Solaris 2.7/Intel, Solaris 2.5.1/Sparc, Machine Specific
 @section Solaris 2.[678]/Sparc (@emph{Supported})
 
-Tested on Solaris version 6, 7, and 8
+Tested on Solaris version 6, 7, 8 and 9
 
 @table @var
 @item Recommended compiler
