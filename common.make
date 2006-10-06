@@ -163,6 +163,14 @@ ifeq ($(GNUSTEP_INSTALLATION_DIR),)
   GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 endif
 
+#
+# DESTDIR allows you to relocate the entire installation somewhere else
+# (as per GNU Coding Standards).
+#
+ifneq ($(DESTDIR),)
+  override GNUSTEP_INSTALLATION_DIR := $(DESTDIR)/$(GNUSTEP_INSTALLATION_DIR)
+endif
+
 # Make it public and available to all submakes invocations
 export GNUSTEP_INSTALLATION_DIR
 
