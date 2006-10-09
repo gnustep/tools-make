@@ -212,6 +212,9 @@ ifeq ($(filelist),yes)
   # INSTALL_ROOT_DIR.  Ie, make INSTALL_ROOT_DIR=/tmp won't affect
   # GNUSTEP_INSTALLATION_DIR and so wouldn't install everything in /tmp.
   # You'd rather need make INSTALL_ROOT_DIR=/tmp GNUSTEP_INSTALLATION_DIR=/tmp/usr/GNUstep/Local
+  #
+  # FIXME - we now support DESTDIR, if DESTDIR is set,
+  # INSTALL_ROOT_DIR should automatically be set in some related way!
 
   # Get the list of files inside INSTALL_ROOT_DIR
   internal-after-install::
