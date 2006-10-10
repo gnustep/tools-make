@@ -105,16 +105,6 @@ internal-all::
 
 after-all::
 
-# In case of problems, we print a message trying to educate the user
-# about how to install elsewhere, except if the installation dir is
-# GNUSTEP_SYSTEM_ROOT, in that case we don't want to suggest to
-# install the software elsewhere, because it is likely to be system
-# software like the gnustep-base library.  NB: the check of
-# GNUSTEP_INSTALLATION_DIR against GNUSTEP_SYSTEM_ROOT is not perfect
-# as /usr/GNUstep/System/ might not match /usr/GNUstep/System (note
-# the missing '/' at the end) but what we really want to catch is the
-# GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT) command in the
-# makefiles, and the check of course works with it.
 internal-check-install-permissions:
 	@if [ -d "$(GNUSTEP_INSTALLATION_DIR)" \
 	      -a ! -w "$(GNUSTEP_INSTALLATION_DIR)" ]; then \
@@ -122,22 +112,6 @@ internal-check-install-permissions:
 	  echo "but you do not have permissions to write in that directory:";\
 	  echo "Aborting installation."; \
 	  echo ""; \
-	  if [ "$(GNUSTEP_INSTALLATION_DIR)" != "$(GNUSTEP_SYSTEM_ROOT)" ]; then \
-	    echo "Suggestion: if you can't get permissions to install there, you can try";\
-	    echo "to install the software in a different directory by setting";\
-	    echo "GNUSTEP_INSTALLATION_DIR.  For example, to install into";\
-	    echo "$(GNUSTEP_USER_ROOT), which is your own GNUstep directory, just type"; \
-	    echo ""; \
-	    echo "make install GNUSTEP_INSTALLATION_DIR=\"$(GNUSTEP_USER_ROOT)\""; \
-	    echo ""; \
-	    echo "You should always be able to install into $(GNUSTEP_USER_ROOT),";\
-	    echo "so this might be a good option.  The other meaningful values for";\
-	    echo "GNUSTEP_INSTALLATION_DIR on your system are:";\
-	    echo "$(GNUSTEP_SYSTEM_ROOT) (the System directory)";\
-	    echo "$(GNUSTEP_LOCAL_ROOT) (the Local directory)";\
-	    echo "$(GNUSTEP_NETWORK_ROOT) (the Network directory)";\
-	    echo "but you might need special permissions to install in those directories.";\
-	  fi; \
 	  exit 1; \
 	fi
 

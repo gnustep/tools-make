@@ -156,11 +156,69 @@ endif
 include $(GNUSTEP_MAKEFILES)/target.make
 
 #
-# GNUSTEP_INSTALLATION_DIR is the directory where all the things go. If you
-# don't specify it defaults to GNUSTEP_LOCAL_ROOT.
+# GNUSTEP_INSTALLATION_DOMAIN is the domain where all things go.  This
+# is the variable you should use to specify where you want things to
+# be installed.  Valid values are SYSTEM, LOCAL, NETWORK and USER,
+# corresponding to the various domains.  If you don't specify it, it
+# defaults to LOCAL.
 #
+ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), )
+  GNUSTEP_INSTALLATION_DOMAIN = LOCAL
+endif  
+
+# Safety check.  Very annoying when you mistype and you end up
+# installing into /. ;-)
+ifneq ($(GNUSTEP_INSTALLATION_DOMAIN), SYSTEM)
+ifneq ($(GNUSTEP_INSTALLATION_DOMAIN), LOCAL)
+ifneq ($(GNUSTEP_INSTALLATION_DOMAIN), NETWORK)
+ifneq ($(GNUSTEP_INSTALLATION_DOMAIN), USER)
+  $(error "Invalid value '$(GNUSTEP_INSTALLATION_DOMAIN)' for GNUSTEP_INSTALLATION_DOMAIN.  Valid values are SYSTEM, LOCAL, NETWORK and USER")
+endif
+endif
+endif
+endif
+
+#
+# GNUSTEP_INSTALLATION_DIR is an older mechanism for specifying
+# where things should be installed.  It is expected to be a 
+# fixed absolute path rather than a logical domain.  You shouldn't
+# normally use it, but might be handy if you need to force things.
+#
+# If GNUSTEP_INSTALLATION_DIR is set, we automatically install
+# everything in the GNUstep filesystem domain structure in the
+# specified directory.  If the GNUstep filesystem structure is used,
+# then GNUSTEP_INSTALLATION_DOMAIN = SYSTEM is the same as
+# GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT).
+#
+# Please note that GNUSTEP_INSTALLATION_DIR overrides
+# GNUSTEP_INSTALLATION_DOMAIN.
+#
+
+#
+# This is a temporary implementation that only supports the GNUstep
+# filesystem structure.  So we just convert
+# GNUSTEP_INSTALLATION_DOMAIN into a GNUSTEP_INSTALLATION_DIR, and
+# then use GNUSTEP_INSTALLATION_DIR later on to define all the install
+# locations.
+#
+
+# GNUSTEP_INSTALLATION_DIR overrides GNUSTEP_INSTALLATION_DOMAIN
 ifeq ($(GNUSTEP_INSTALLATION_DIR),)
-  GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), SYSTEM)
+    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT)
+  endif
+
+  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), LOCAL)
+    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+  endif
+
+  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), NETWORK)
+    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_NETWORK_ROOT)
+  endif
+
+  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), USER)
+    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_USER_ROOT)
+  endif
 endif
 
 #
@@ -181,7 +239,15 @@ endif
 export GNUSTEP_INSTALLATION_DIR
 
 #
-# Variables specifying the installation directory paths
+# Variables specifying the installation directory paths.
+#
+# TODO: To support the 'native' filesystem structure, a list of such
+# memorable directory locations will be stored in GNUstep.conf.  This
+# list might (FIXME) presumably follow the GNU Coding Standards for
+# install locations (eg, bindir, etc) if it makes sense.  Then we set
+# the following variables by using the install locations from
+# GNUstep.conf that are relevant to the domain where we are installing
+# to.
 #
 GNUSTEP_APPS                 = $(GNUSTEP_INSTALLATION_DIR)/Applications
 GNUSTEP_TOOLS                = $(GNUSTEP_INSTALLATION_DIR)/Tools

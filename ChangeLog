@@ -1,3 +1,13 @@
+2006-10-10  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	To install software in a certain GNUstep domain, the recommended
+	way is now as in 'GNUSTEP_INSTALLATION_DOMAIN = SYSTEM'.
+
+	* common.make: Implemented new GNUSTEP_INSTALLATION_DOMAIN
+	variable.
+	* Master/rules.make (internal-check-install-permissions): Removed
+	help message that was suggesting to use GNUSTEP_INSTALLATION_DIR.
+	
 2006-10-07  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	* common.make: Add DESTDIR only on the very topmost invocation.
