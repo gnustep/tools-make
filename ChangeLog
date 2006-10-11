@@ -1,3 +1,18 @@
+2006-10-11  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Documentation/machines.texi (Debian/PowerPC): Fixed prev node
+	link.
+
+2006-10-11  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Fixed installation of debugapp when
+	building in a different directory.
+
+2006-10-11  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Documentation/GNUmakefile (GNUSTEP_INSTALLATION_DOMAIN): Use 
+	GNUSTEP_INSTALLATION_DOMAIN, not GNUSTEP_INSTALLATION_DIR.
+
 2006-10-10  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	To install software in a certain GNUstep domain, the recommended
