@@ -221,7 +221,7 @@ Tested on sid.
 Tested on 'unstable'.
 
 @c -----------------------------------------
-@node Debian/PowerPC, Debian/SPARC, Debian/i386, Machine Specific
+@node Debian/PowerPC, Debian/SPARC, Debian/em64t, Machine Specific
 @section Debian/PowerPC (@emph{Supported})
 
 Tested on sid.
