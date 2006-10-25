@@ -987,7 +987,7 @@ endif
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) -G -Wl,-h,$(LIB_LINK_SONAME_FILE) \
+	$(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-h,$(LIB_LINK_SONAME_FILE) \
 	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS) \
