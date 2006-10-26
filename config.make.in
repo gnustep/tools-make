@@ -139,6 +139,12 @@ CONFIG_SYSTEM_LIBS = @LIBS@
 CONFIG_SYSTEM_LIB_DIR = @LIB_DIR@
 
 #
+# Whether the GCC compiler on solaris supports the -shared flag for
+# linking libraries.
+#
+SOLARIS_SHARED = @SOLARIS_SHARED@
+
+#
 # Whether the C/ObjC/C++ compiler supports auto-dependencies
 # (generating dependencies of the object files from the include files
 # used to compile them) via -MMD -MP flags

@@ -885,9 +885,11 @@ CFLAGS="$saved_CFLAGS"
 AC_MSG_CHECKING(if the compiler supports autodependencies)
 
 # What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x
+# set SOLARIS_SHARED to yes if gcc => 4.x
 
+AUTO_DEPENDENCIES=""
+SOLARIS_SHARED=""
 if test ! ${GCC} = "yes" ; then
-  AUTO_DEPENDENCIES=""
   AC_MSG_RESULT(no: it's not gcc)
 else
   # Running gcc -dumpversion we get something like 2.95.4 or
@@ -904,13 +906,16 @@ else
   if test "${gs_cv_gcc_major_version}" -ge "3" ; then
     AUTO_DEPENDENCIES=yes
     AC_MSG_RESULT(yes: gcc major version is ${gs_cv_gcc_major_version})
+    if test "${gs_cv_gcc_major_version}" -ge "4" ; then
+      SOLARIS_SHARED=yes
+    fi
   else
-    AUTO_DEPENDENCIES=""
     AC_MSG_RESULT(no: gcc major version is ${gs_cv_gcc_major_version})
   fi
 fi
 
 AC_SUBST(AUTO_DEPENDENCIES)
+AC_SUBST(SOLARIS_SHARED)
 AC_SUBST(INCLUDES)
 AC_SUBST(LIB_DIR)
 AC_SUBST(OBJCFLAGS)
