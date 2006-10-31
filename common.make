@@ -544,6 +544,11 @@ else
   ADDITIONAL_FLAGS += -DGSDIAGNOSE
 endif
 
+# The use of #import is no longer deprecated in gcc, and is supposed
+# to be recommended from now on ... so we disable the warnings for
+# older compilers.
+ADDITIONAL_FLAGS += -Wno-import
+
 AUXILIARY_CPPFLAGS += $(GNUSTEP_DEFINE) \
 		$(FND_DEFINE) $(GUI_DEFINE) $(BACKEND_DEFINE) \
 		$(RUNTIME_DEFINE) $(FOUNDATION_LIBRARY_DEFINE)

@@ -1,3 +1,9 @@
+2006-10-29  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: Disable warnings about #import as it is now recommended
+	rather then deprecated!
+	* INSTALL: Remove obsolete commments about #import
+
 2006-10-25  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* target.make: For Solaris replace -G with -shared in

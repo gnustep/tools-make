@@ -112,16 +112,6 @@ variable when calling configure:
 
      CPPFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
 
-Warnings for #import
---------------------
-
-Up until gcc 3.4, the #import directive was not implemented correctly.
-As a result, the GCC compiler automatically emitted a warning whenever
-#import was used.  As of gcc 3.4, this problem has been fixed, so
-presumable, this warning is no longer emitted when code is compiled. If
-you are using an early compiler, you can supress these warnings by
-adding `-Wno-import' to `CPPFLAGS' in the config.make file.
-
 Configuring for a non-flattened structure
 -----------------------------------------
 
