@@ -239,6 +239,26 @@ endif
 export GNUSTEP_INSTALLATION_DIR
 
 #
+# INSTALL_ROOT_DIR is the obsolete way of relocating stuff.  It used
+# to only affect stuff that is not installed using
+# GNUSTEP_INSTALLATION_DIR (DESTDIR instead also affects stuff
+# installed using GNUSTEP_INSTALLATION_DIR).  We prefer DESTDIR
+# because it is a widely accepted GNU standard, and makes packaging
+# easier.
+#
+# So all instances of INSTALL_ROOT_DIR in user's makefiles should be
+# replaced with DESTDIR.
+#
+# Anyway, until all makefiles have been updated, we set INSTALL_ROOT_DIR for backwards 
+# compatibility.
+#
+ifneq ($(DESTDIR),)
+  ifeq ($(INSTALL_ROOT_DIR),)
+    INSTALL_ROOT_DIR = $(DESTDIR)
+  endif
+endif
+
+#
 # Variables specifying the installation directory paths.
 #
 # TODO: To support the 'native' filesystem structure, a list of such

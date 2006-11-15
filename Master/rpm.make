@@ -182,12 +182,20 @@
 
 # If we have been called with something like
 #
+# make DESTDIR=/var/tmp/package-build filelist=yes install
+#
+# we are being called inside the rpm installation stage, and we need
+# to produce the file list from the installed files.
+#
+# PS: The old way of doing that used to be --
+#
 # make INSTALL_ROOT_DIR=/var/tmp/package-build/ \
 #      GNUSTEP_INSTALLATION_DIR=/var/tmp/package-build/usr/GNUstep/Local \
 #      filelist=yes install
 #
-# we are being called inside the rpm installation stage, and we need
-# to produce the file list from the installed files.
+# We still support that as well, but using DESTDIR is recommended
+# (since it's a widely accepted GNU standard); INSTALL_ROOT_DIR is
+# deprecated.
 
 GNUSTEP_FILE_LIST = $(GNUSTEP_OBJ_DIR)/file-list
 
@@ -203,18 +211,21 @@ ifeq ($(filelist),yes)
 
   # install - done by other GNUmakefiles - NB: must install everything inside
   # GNUSTEP_INSTALLATION_DIR, or prefix all installation dirs with 
-  # $INSTALL_ROOT_DIR such as 
-  # $(INSTALL_DATA) page.html $(INSTALL_ROOT_DIR)/usr/local/MySoftware/
+  # $DESTDIR such as 
+  # $(INSTALL_DATA) page.html $(DESTDIR)/usr/local/MySoftware/
   # instead of $(INSTALL_DATA) page.html /usr/local/MySoftware/
   #
-  # Please note that INSTALL_ROOT_DIR is similar to DESTDIR, but does not
-  # affect GNUSTEP_INSTALLATION_DIR, which is supposed to already include
-  # INSTALL_ROOT_DIR.  Ie, make INSTALL_ROOT_DIR=/tmp won't affect
-  # GNUSTEP_INSTALLATION_DIR and so wouldn't install everything in /tmp.
-  # You'd rather need make INSTALL_ROOT_DIR=/tmp GNUSTEP_INSTALLATION_DIR=/tmp/usr/GNUstep/Local
+
+  # Please note that (the now deprecated) INSTALL_ROOT_DIR is similar to DESTDIR, but does not
+  # affect GNUSTEP_INSTALLATION_DIR, which is supposed to already
+  # include INSTALL_ROOT_DIR.  Ie, make INSTALL_ROOT_DIR=/tmp won't
+  # affect GNUSTEP_INSTALLATION_DIR and so wouldn't install everything
+  # in /tmp, while make DESTDIR=/tmp would.
   #
-  # FIXME - we now support DESTDIR, if DESTDIR is set,
-  # INSTALL_ROOT_DIR should automatically be set in some related way!
+  # We now support DESTDIR, so if DESTDIR is set,
+  # INSTALL_ROOT_DIR is automatically set to be the same as DESTDIR 
+  # in common.make.  To remove support for INSTALL_ROOT_DIR, just replace
+  # INSTALL_ROOT_DIR with DESTDIR everywhere in this file.
 
   # Get the list of files inside INSTALL_ROOT_DIR
   internal-after-install::

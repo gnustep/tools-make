@@ -1,3 +1,10 @@
+2006-11-15  Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* common.make (INSTALL_ROOT_DIR): If DESTDIR is set, then
+	set INSTALL_ROOT_DIR from it.
+	* spec-rules.template: Use DESTDIR instead of INSTALL_ROOT_DIR.
+	* spec-debug-rules.template: Same change.
+	
 2006-10-29  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: Disable warnings about #import as it is now recommended
