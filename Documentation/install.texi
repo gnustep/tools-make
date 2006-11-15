@@ -90,7 +90,6 @@ compile, and also when you install).
 * Backend Bundles::             
 * Alternate Libraries::         
 * Alternate Thread Library::    
-* Warnings for #import::        
 * Flat Structure::              
 * Cross-Compiling::             
 @end menu
@@ -122,7 +121,7 @@ with-library-combo option.
 to compile with Apple's runtime on Darwin, for example. See the DESIGN
 document for more examples of the variety of library combos.
 
-@node Alternate Thread Library, Warnings for #import, Alternate Libraries, Configuration
+@node Alternate Thread Library, Flat Structure, Alternate Libraries, Configuration
 @subsection Alternate Thread Library
 
 You can specify compilation of an alternate thread library from the one that
@@ -143,18 +142,7 @@ to set compiler flags, use the CPPFLAGS variable when calling configure:
 CPPFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
 @end example
 
-@node Warnings for #import, Flat Structure, Alternate Thread Library, Configuration
-@subsection Warnings for #import
-
-Up until gcc 3.4, the #import directive was not implemented correctly.
-As a result, the GCC compiler automatically
-emitted a warning whenever #import was used.  
-As of gcc 3.4, this problem has been fixed, so presumable, this warning
-is no longer emitted when code is compiled. If
-you are using an early compiler, you can supress these warnings by adding
-@code{-Wno-import} to @code{CPPFLAGS} in the config.make file.
-
-@node Flat Structure, Cross-Compiling, Warnings for #import, Configuration
+@node Flat Structure, Cross-Compiling, Alternate Thread Library, Configuration
 @subsection Configuring for a non-flattened structure
 
 GNUstep is normally configured to support a single target/combo. If you are
