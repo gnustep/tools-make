@@ -1,5 +1,11 @@
 2006-11-15  Nicola Pero <nicola.pero@meta-innovation.com>
 
+	* Documentation/install.texi: Updated removing section about
+	-Wno-import.
+	* INSTALL: Regenerated.
+	
+2006-11-15  Nicola Pero <nicola.pero@meta-innovation.com>
+
 	* common.make (INSTALL_ROOT_DIR): If DESTDIR is set, then
 	set INSTALL_ROOT_DIR from it.
 	* spec-rules.template: Use DESTDIR instead of INSTALL_ROOT_DIR.
