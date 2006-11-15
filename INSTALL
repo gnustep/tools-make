@@ -1,8 +1,8 @@
-GNUstep makefile package installation
-*************************************
+1 GNUstep makefile package installation
+***************************************
 
-Introduction
-============
+1.1 Introduction
+================
 
 If you are installing this package as part of the GNUstep core
 libraries, read the file GNUstep-HOWTO for more complete instructions on
@@ -21,7 +21,7 @@ configuration options as with gstep-make.
    Also make sure you've read the machine-specific instructions for your
 particular operating system and CPU. These instructions come with the
 GNUstep-HOWTO and are also located at the GNUstep web site at
-<http://www.gnustep.org>.
+`http://www.gnustep.org'.
 
    Quick installation instructions:
 
@@ -35,8 +35,8 @@ GNUstep-HOWTO and are also located at the GNUstep web site at
      make
      make install
 
-Configuration
-=============
+1.2 Configuration
+=================
 
 The GNUstep packages uses the Autoconf mechanism for configuration; it
 checks some host capabilties which are used by all GNUstep software.
@@ -70,8 +70,8 @@ debug=yes" compiles using static libraries with debugging information.
 (Make sure you use the same switches for every package you compile, and
 also when you install).
 
-Backend Bundles
----------------
+1.2.1 Backend Bundles
+---------------------
 
 By default, the gnustep-make package specifies that GUI backends are
 built as a bundle and loaded in at runtime. This allows one to switch
@@ -83,8 +83,8 @@ can be disabled using
 
    in the arguments to configure.
 
-Alternate Library Setup
------------------------
+1.2.2 Alternate Library Setup
+-----------------------------
 
 You can specify compilation of alternate libraries by using the
 with-library-combo option.
@@ -94,8 +94,8 @@ with-library-combo option.
    to compile with Apple's runtime on Darwin, for example. See the
 DESIGN document for more examples of the variety of library combos.
 
-Alternate Thread Library
-------------------------
+1.2.3 Alternate Thread Library
+------------------------------
 
 You can specify compilation of an alternate thread library from the one
 that is normally used (or if GNUstep does not know what your normal
@@ -112,8 +112,8 @@ variable when calling configure:
 
      CPPFLAGS="-I/usr/local/include" ./configure --with-thread-lib="-L/usr/local/lib -lgthread -lglib"
 
-Configuring for a non-flattened structure
------------------------------------------
+1.2.4 Configuring for a non-flattened structure
+-----------------------------------------------
 
 GNUstep is normally configured to support a single target/combo. If you
 are interested in supporting more than one target and/or combo, it's
@@ -125,8 +125,8 @@ to configure.  You might also want to supply the
    In a flattened structure, files are stored at the top-level rather
 than in a `$(GNUSTEP_CPU)/$(GNUSTEP_OS)/$(LIBRARY_COMBO)' subdirectory.
 
-Configuring for a cross-compile target
---------------------------------------
+1.2.5 Configuring for a cross-compile target
+--------------------------------------------
 
 By default when you run configure, it assumes that you want to create
 executables for the same host that you are compiling on; however, the
@@ -155,8 +155,8 @@ the make package several times.
      ./configure --disable-flattened --enable-multi-platform --target=alpha-linux-gnu
      make install
 
-Installation
-============
+1.3 Installation
+================
 
 After you configure the GNUstep makefile package, then you need to
 compile the programs that come with the package.  Currently there is
@@ -171,11 +171,11 @@ some minor administration to be performed.  Based upon whether you are
 setting up the GNUstep environment for a single user or all users on
 your system, perform the appropriate step below.
 
-Setting up the GNUstep environment
-==================================
+1.4 Setting up the GNUstep environment
+======================================
 
-Setting up the GNUstep environment for all users
-------------------------------------------------
+1.4.1 Setting up the GNUstep environment for all users
+------------------------------------------------------
 
 The GNUstep environment and thus usage of the makefile package is based
 almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.  So
@@ -209,8 +209,8 @@ variable GNUSTEP_PATHLIST (and exporting it). By default, it's set to
 themselves ... they use a standard function
 NSSearchPathForDirectoriesInDomains() to locate files instead.
 
-Setting up the GNUstep environment for a single user
-----------------------------------------------------
+1.4.2 Setting up the GNUstep environment for a single user
+----------------------------------------------------------
 
 The GNUstep environment and thus usage of the makefile package is based
 almost solely upon the GNUSTEP_SYSTEM_ROOT environment variable.  So
