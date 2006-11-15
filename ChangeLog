@@ -1,6 +1,6 @@
 2006-11-15  Nicola Pero <nicola.pero@meta-innovation.com>
 
-	* Documentation/install.texi: Updated removing section about
+	* Documentation/install.texi: Updated by removing section about
 	-Wno-import.
 	* INSTALL: Regenerated.
 	
