@@ -985,10 +985,10 @@ endif
 # Solaris
 #
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
-ifeq ($(SOLARIS_SHARED)), yes)
-GCC_LINK_FLAG=-shared
+ifeq ($(SOLARIS_SHARED), yes)
+  GCC_LINK_FLAG=-shared
 else
-GCC_LINK_FLAG=-G
+  GCC_LINK_FLAG=-G
 endif
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \

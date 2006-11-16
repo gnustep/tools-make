@@ -1,3 +1,7 @@
+2006-11-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* target.make: fix typo (extra bracket in conditional).
+
 2006-11-15  Nicola Pero <nicola.pero@meta-innovation.com>
 
 	* Documentation/install.texi: Updated by removing section about
