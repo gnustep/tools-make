@@ -270,6 +270,12 @@ svn-dist:
 	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
 	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
 
+svn-snapshot:
+	svn export $(SVNPREFIX)/trunk \
+	  gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
+
 cvs-tag:
 	cvs -z3 rtag make-$(VERTAG) make
 

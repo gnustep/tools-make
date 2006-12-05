@@ -1,3 +1,7 @@
+2006-12-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUmakefile.in: Add target for snapshot.
+
 2006-11-16  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* target.make: fix typo (extra bracket in conditional).
