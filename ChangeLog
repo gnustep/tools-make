@@ -1,3 +1,8 @@
+2006-12-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Master/source-distribution.make: add 'svn-bugfix' target to make
+	a bugfix release.
+
 2006-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUmakefile.in: Add target for snapshot.

@@ -202,10 +202,17 @@ svn-tag:
 
 #
 # Build a .tar.gz from the SVN sources using revision/tag 
-# $(SVN_TAG_NAME)-$(VERTAG)
+# $(SVN_TAG_NAME)-$(VERTAG) as for a new release of the package.
 #
 svn-dist: EXPORT_SVN_NAME = tags/$(SVN_TAG_NAME)-$(VERTAG) 
 svn-dist: internal-svn-export
+
+#
+# Build a .tar.gz from the SVN source from the stable branch
+# as a bugfix release.
+#
+svn-bugfix: EXPORT_SVN_NAME = branches/stable
+svn-bugfix: internal-svn-export
 
 #
 # Build a .tar.gz from the SVN source as they are now
