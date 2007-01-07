@@ -25,6 +25,13 @@
 #
 # xxx We need to prefix the target name when cross-compiling
 #
+# This is the same as a tool, but it is not linked against libobjc and
+# it is not linked against the foundation library.  This is good if
+# you are not using any Objective-C stuff in here.
+#
+# PS: this means you must leave the variable xxx_OBJC_FILES (and
+# xxx_OBJCC_FILES) empty (if you don't, it won't work).  If you need
+# to compile Objective-C stuff, please use tool.make.
 
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
@@ -56,10 +63,9 @@ ALL_TOOL_LIBS =							\
 internal-ctool-all_:: $(GNUSTEP_OBJ_DIR) \
 	              $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 
-$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(C_OBJ_FILES) \
-                                                 $(SUBPROJECT_OBJ_FILES)
+$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
-	      $(C_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) \
+	      $(OBJ_FILES_TO_LINK) \
 	      $(ALL_TOOL_LIBS)$(END_ECHO)
 
 internal-ctool-install_:: $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)

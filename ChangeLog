@@ -1,3 +1,11 @@
+2007-01-07  Matt Rice <ratmice@gmail.com>, 
+            Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* Instance/ctool.make (internal-ctool-all_): Depend on
+	OBJ_FILES_TO_LINK, and link OBJ_FILES_TO_LINK.  This makes sure
+	that C++ files, Windres files, and any other object files normally
+	supported can be used with ctools.
+
 2006-12-28  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Master/source-distribution.make: add 'svn-bugfix' target to make
