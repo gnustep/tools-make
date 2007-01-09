@@ -369,7 +369,7 @@ for dir in $GNUSTEP_PATHLIST; do
   if [ -z "$gnustep_info_path" ]; then
     gnustep_info_path="$dir/Library/Documentation/info"
   else
-    gnustep_info_path="$gnustep_class_path:$dir/Library/Documentation/info"
+    gnustep_info_path="$gnustep_info_path:$dir/Library/Documentation/info"
   fi
 
 done
