@@ -1,3 +1,20 @@
+2007-01-09 Nicola Pero <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in: Update some internal names to make equivalent
+	code in different sections more similar.  Added a ':' at the end
+	of INFOPATH.
+	* GNUstep.csh.in: Similar changes.
+	* GNUstep-reset.sh: Swapped order of resets of some variables to
+	conform to comments.
+	
+2007-01-09 Matt Rice <ratmice@gmail.com>
+
+	* GNUstep.sh.in: Set INFOPATH so that info files created and
+	installed by gnustep-make in xxx/Library/info can be found by info
+	documentation readers.
+	* GNUstep.csh.in: Same change.	
+	* GNUstep-reset.sh: Reset INFOPATH.
+
 2007-01-07  Matt Rice <ratmice@gmail.com>, 
             Nicola Pero <nicola.pero@meta-innovation.com>
 

@@ -209,13 +209,23 @@ unset gnustep_class_path
 
 set gnustep_guile_path="${GNUSTEP_USER_ROOT}/Libraries/Guile:${GNUSTEP_LOCAL_ROOT}/Libraries/Guile:${GNUSTEP_NETWORK_ROOT}/Libraries/Guile:${GNUSTEP_SYSTEM_ROOT}/Libraries/Guile"
 
-if ( $?GUILE_LOAD_PATH == 0 ) then
+if ( ${?GUILE_LOAD_PATH} ) then
     setenv GUILE_LOAD_PATH "${gnustep_guile_path}"
 else if ( { (echo "${GUILE_LOAD_PATH}" | fgrep -v "${gnustep_guile_path}" >/dev/null) } ) then
     setenv GUILE_LOAD_PATH "${gnustep_guile_path}:${GUILE_LOAD_PATH}"
 endif
 
 unset gnustep_guile_path
+
+set gnustep_info_path="${GNUSTEP_USER_ROOT}/Library/Documentation/info:${GNUSTEP_LOCAL_ROOT}/Library/Documentation/info:${GNUSTEP_NETWORK_ROOT}/Library/Documentation/info:${GNUSTEP_SYSTEM_ROOT}/Library/Documentation/info"
+
+if ( ! ${?INFOPATH} ) then
+  setenv INFOPATH "${gnustep_info_path}:"
+else if ( { (echo "${INFOPATH}" | fgrep -v "${gnustep_info_path}" >/dev/null) } ) then
+  setenv INFOPATH "${INFOPATH}:${gnustep_info_path}:"
+endif
+
+unset gnustep_info_path
 
 #
 # Perform any user initialization

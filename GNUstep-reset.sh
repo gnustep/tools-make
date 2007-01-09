@@ -81,8 +81,9 @@ function reset_path
   fi
 }
 
-reset_path CLASSPATH /Library/Libraries/Java
+reset_path INFOPATH Library/Documentation/info
 reset_path GUILE_LOAD_PATH /Library/Libraries/Guile
+reset_path CLASSPATH /Library/Libraries/Java
 reset_path LD_LIBRARY_PATH /Library/Libraries
 reset_path DYLD_LIBRARY_PATH /Library/Libraries
 reset_path DYLD_FRAMEWORK_PATH /Library/Frameworks

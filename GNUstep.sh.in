@@ -262,7 +262,7 @@ fi
 #
 # Add path to Tools to PATH
 #
-tmp_IFS="$IFS"
+old_IFS="$IFS"
 IFS=:
 temp_path=
 for dir in $GNUSTEP_PATHLIST; do
@@ -284,8 +284,8 @@ for dir in $GNUSTEP_PATHLIST; do
   unset path_fragment
 
 done
-IFS="$tmp_IFS"
-unset tmp_IFS
+IFS="$old_IFS"
+unset old_IFS
 unset dir
 if [ -z "$PATH" ]; then
   PATH="$temp_path"
@@ -299,7 +299,7 @@ export PATH
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
-tmp_IFS="$IFS"
+old_IFS="$IFS"
 IFS=:
 gnustep_class_path=
 for dir in $GNUSTEP_PATHLIST; do
@@ -311,8 +311,8 @@ for dir in $GNUSTEP_PATHLIST; do
   fi
 
 done
-IFS="$tmp_IFS"
-unset tmp_IFS
+IFS="$old_IFS"
+unset old_IFS
 unset dir
 
 if [ -z "$CLASSPATH" ]; then
@@ -355,6 +355,40 @@ fi
 export GUILE_LOAD_PATH
 unset guile_paths
 
+
+#
+# Make sure info files, that we install by default into
+# xxx/Library/Documentation/info, are found by the info browsing
+# programs.  To get this effect, we add those paths to INFOPATH.
+#
+old_IFS="$IFS"
+IFS=:
+gnustep_info_path=
+for dir in $GNUSTEP_PATHLIST; do
+
+  if [ -z "$gnustep_info_path" ]; then
+    gnustep_info_path="$dir/Library/Documentation/info"
+  else
+    gnustep_info_path="$gnustep_class_path:$dir/Library/Documentation/info"
+  fi
+
+done
+IFS="$old_IFS"
+unset old_IFS
+unset dir
+
+if [ -z "$INFOPATH" ]; then
+  # The ':' at the end means to use the built-in paths after searching
+  # the INFOPATH we provide.
+  INFOPATH="${gnustep_info_path}:"
+else
+  if ( echo ${INFOPATH}| grep -v "${gnustep_info_path}" >/dev/null ); then
+    INFOPATH="$INFOPATH:${gnustep_info_path}:"
+  fi
+fi
+
+unset gnustep_info_path
+export INFOPATH
 
 #
 # Perform any user initialization
