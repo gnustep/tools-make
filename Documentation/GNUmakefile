@@ -61,6 +61,17 @@ GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
 include $(GNUSTEP_MAKEFILES)/common.make
 
 # The documents to be generated
+
+# FIXME: We should prefix everything with 'gnustep' because we
+# generate info files that we then put into the standard info
+# directories, and we don't want those to conflict with info files
+# from other packages!  For example, 'info make' should return GNU
+# make documentation, while 'info gnustep-make' should return
+# GNUstep-make documentation.  At the moment they would have the same
+# name instead, giving rise to unpleasant consequences!  For example
+# in a default installation, 'info make' would return gnustep-make
+# documentation (instead of GNU make one) because the INFOPATH is used
+# before built-in paths!
 DOCUMENT_NAME = gnustep-howto faq filesystem internals machines make userfaq
 
 # The text documents to be generated
