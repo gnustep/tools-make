@@ -207,7 +207,7 @@ endif
 
 unset gnustep_class_path
 
-set gnustep_guile_path="${GNUSTEP_USER_ROOT}/Libraries/Guile:${GNUSTEP_LOCAL_ROOT}/Libraries/Guile:${GNUSTEP_NETWORK_ROOT}/Libraries/Guile:${GNUSTEP_SYSTEM_ROOT}/Libraries/Guile"
+set gnustep_guile_path="${GNUSTEP_USER_ROOT}/Library/Libraries/Guile:${GNUSTEP_LOCAL_ROOT}/Library/Libraries/Guile:${GNUSTEP_NETWORK_ROOT}/Library/Libraries/Guile:${GNUSTEP_SYSTEM_ROOT}/Library/Libraries/Guile"
 
 if ( ${?GUILE_LOAD_PATH} ) then
     setenv GUILE_LOAD_PATH "${gnustep_guile_path}"

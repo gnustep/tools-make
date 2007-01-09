@@ -1,4 +1,8 @@
 2007-01-09 Matt Rice <ratmice@gmail.com>
+
+	* GNUstep.csh.in: Fixed typo in GUILE_LOAD_PATH.
+
+2007-01-09 Matt Rice <ratmice@gmail.com>
 	
 	* GNUstep.sh.in: Rename variable/fix paste error.
 
