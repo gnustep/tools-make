@@ -1,3 +1,8 @@
+2007-01-14  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Master/source-distribution.make: Add svn-tag-stable to make tag
+	for stable release in standard format.
+
 2007-01-09 Matt Rice <ratmice@gmail.com>
 
 	* GNUstep.csh.in: Fixed typo in GUILE_LOAD_PATH.
