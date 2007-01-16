@@ -458,6 +458,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
+# FIXME - using a different build dir with java
 %.class : %.java
 	$(ECHO_COMPILING)$(JAVAC) \
 	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
