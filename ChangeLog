@@ -70,6 +70,9 @@
 
 2006-10-25  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* configure.ac: Added test for Solaris -shared flag.
+	* configure: Regenerated
+	* config.make.in: Added SOLARIS_SHARED variable.
 	* target.make: For Solaris replace -G with -shared in
 	SHARED_LIB_LINK_CMD to fix bug on 64bit systems where library
 	would contain 32bit dynamic library stubs for 'main' and other
