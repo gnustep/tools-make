@@ -959,6 +959,8 @@ else
   fi
 fi
 
+# Important - if you think there is a problem with precompiled headers,
+# try adding -Winvalid-pch to check that they are used.
 AC_SUBST(GCC_WITH_PRECOMPILED_HEADERS)
 
 #--------------------------------------------------------------------
