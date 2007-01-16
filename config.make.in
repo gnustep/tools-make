@@ -156,3 +156,8 @@ AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
 # @try/@catch/@finally/@throw.
 #
 USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
+
+#
+# Whether the compiler is GCC with precompiled header support
+#
+GCC_WITH_PRECOMPILED_HEADERS = @GCC_WITH_PRECOMPILED_HEADERS@

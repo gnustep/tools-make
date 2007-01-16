@@ -879,16 +879,10 @@ LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
 
 #--------------------------------------------------------------------
-# Check if compiler supports -MMD -MP to generate %.d files ...
+# Check for the GCC version - this is used in the following tests
 #--------------------------------------------------------------------
 
-AC_MSG_CHECKING(if the compiler supports autodependencies)
-
-# What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x
-# set SOLARIS_SHARED to yes if gcc => 4.x
-
-AUTO_DEPENDENCIES=""
-SOLARIS_SHARED=""
+AC_MSG_CHECKING(for the GCC version)
 if test ! ${GCC} = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
@@ -896,26 +890,99 @@ else
   #  egcs-2.91.66 or 3.0.2 or 3.1 20011211
   # We want to discard anything but the major number.
   # Explanation of the regexp -
-  # \(^[^0-9]*\) matches beginning of line and following non numeric chars
+  # \([^0-9]*\) matches non numeric chars at the beginning
   # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 2^nd
+  #  subpattern)
+  # \([^0-9]*\) matches one or more non numeric chars
+  # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 4^nd
   #  subpattern)
   # \([^0-9].*\) matches a non numeric char followed by anything
   # /\2/ replace the whole lot with the 2^nd subpattern
-  gs_cv_gcc_major_version=`${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/"`;
+  # /\4/ replace the whole lot with the 4^nd subpattern
+  # All square brackets are doubled because this file is processed by m4 first.
+  gs_cv_gcc_major_version=`${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/"`;
+  gs_cv_gcc_minor_version=`${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\4/"`;
 
+  gs_cv_gcc_parsed_version=${gs_cv_gcc_major_version}.${gs_cv_gcc_minor_version}
+
+  AC_MSG_RESULT(version: ${gs_cv_gcc_parsed_version})
+fi
+
+#--------------------------------------------------------------------
+# Check if compiler supports -MMD -MP to generate %.d files ...
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING(if the compiler supports autodependencies)
+
+# What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x
+
+AUTO_DEPENDENCIES=""
+if test ! ${GCC} = "yes" ; then
+  AC_MSG_RESULT(no: it's not gcc)
+else
   if test "${gs_cv_gcc_major_version}" -ge "3" ; then
     AUTO_DEPENDENCIES=yes
-    AC_MSG_RESULT(yes: gcc major version is ${gs_cv_gcc_major_version})
-    if test "${gs_cv_gcc_major_version}" -ge "4" ; then
-      SOLARIS_SHARED=yes
-    fi
+    AC_MSG_RESULT(yes: gcc version is ${gs_cv_gcc_parsed_version} >= 3.0)
   else
-    AC_MSG_RESULT(no: gcc major version is ${gs_cv_gcc_major_version})
+    AC_MSG_RESULT(no: gcc version is ${gs_cv_gcc_parsed_version} < 3.0)
   fi
 fi
 
 AC_SUBST(AUTO_DEPENDENCIES)
+
+#--------------------------------------------------------------------
+# Check if compiler supports precompiled headers
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING(if the compiler supports precompiled headers)
+
+# What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc => 3.4
+
+GCC_WITH_PRECOMPILED_HEADERS=""
+if test ! ${GCC} = "yes" ; then
+  AC_MSG_RESULT(no: it's not gcc)
+else
+  if test "${gs_cv_gcc_major_version}" -ge "4"; then
+    GCC_WITH_PRECOMPILED_HEADERS=yes
+  else
+    if test "${gs_cv_gcc_major_version}" = "3" ; then
+      if test "${gs_cv_gcc_minor_version}" -ge "4" ; then
+        GCC_WITH_PRECOMPILED_HEADERS=yes
+      fi
+    fi
+  fi
+
+  if test "${GCC_WITH_PRECOMPILED_HEADERS}" = "yes" ; then
+    AC_MSG_RESULT(yes: gcc version is ${gs_cv_gcc_parsed_version} >= 3.4)
+  else
+    AC_MSG_RESULT(no: gcc version is ${gs_cv_gcc_parsed_version} < 3.4)
+  fi
+fi
+
+AC_SUBST(GCC_WITH_PRECOMPILED_HEADERS)
+
+#--------------------------------------------------------------------
+# Check if compiler requires -shared flag on Solaris ...
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING(if the compiler requires -shared flag to build for Solaris)
+
+# set SOLARIS_SHARED to yes if gcc => 4.x
+
+SOLARIS_SHARED=""
+if test ! ${GCC} = "yes" ; then
+  AC_MSG_RESULT(no: it's not gcc)
+else
+  if test "${gs_cv_gcc_major_version}" -ge "4" ; then
+    SOLARIS_SHARED=yes
+    AC_MSG_RESULT(yes: gcc version is ${gs_cv_gcc_parsed_version} >= 4.0)
+  else
+    AC_MSG_RESULT(no: gcc version is ${gs_cv_gcc_parsed_version} < 4.0)
+  fi
+fi
+
 AC_SUBST(SOLARIS_SHARED)
+
 AC_SUBST(INCLUDES)
 AC_SUBST(LIB_DIR)
 AC_SUBST(OBJCFLAGS)
