@@ -1,5 +1,9 @@
 2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/rules.make (.PHONY): Added internal-precompile-headers.
+
+2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Implemented precompiled headers support.  To use them to speed up
 	the compilation of your project, create a main header that you
 	include at the top of each file in your project, then add it to

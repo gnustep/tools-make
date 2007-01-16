@@ -35,6 +35,7 @@
 # here we would only declare one of them .PHONY, so it should be done
 # by the project specific makefile fragments).
 .PHONY: \
+ internal-precompile-headers \
  before-$(GNUSTEP_INSTANCE)-all after-$(GNUSTEP_INSTANCE)-all \
  internal-$(GNUSTEP_TYPE)-all \
  before-$(GNUSTEP_INSTANCE)-install after-$(GNUSTEP_INSTANCE)-install \
