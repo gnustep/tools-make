@@ -873,10 +873,8 @@ fi
 
 AC_SUBST(USE_OBJC_EXCEPTIONS)
 
-# Restore LIBS and CFLAGS - we are going to compile C code in the next
-# test.
-LIBS="$saved_LIBS"
-CFLAGS="$saved_CFLAGS"
+# Keep LIBS and CFLAGS as they are for a while - we need them in 
+# the following Objective-C tests!
 
 #--------------------------------------------------------------------
 # Check for the GCC version - this is used in the following tests
@@ -936,26 +934,30 @@ AC_SUBST(AUTO_DEPENDENCIES)
 
 AC_MSG_CHECKING(if the compiler supports precompiled headers)
 
-# What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc => 3.4
+# We used to check the compiler version here; this is not that
+# reliable because precompiled headers were added in 3.4, then they
+# were broken in 4.1, then fixed again.
+
+# So we prefer to actually try them out! ;-)
+
+# What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc
+# can compile and use a precompiled header.
 
 GCC_WITH_PRECOMPILED_HEADERS=""
-if test ! ${GCC} = "yes" ; then
+
+# First, a preliminary test.  If this is not gcc, precompiled headers
+# are not supported.
+if test ! "${GCC}" = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
-  if test "${gs_cv_gcc_major_version}" -ge "4"; then
-    GCC_WITH_PRECOMPILED_HEADERS=yes
+  gs_precomp_test_log_file="`pwd`/config-precomp-test.log"
+  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_log_file"; echo $?)`
+  if test "$gs_precomp_test_results" = "0"; then
+    GCC_WITH_PRECOMPILED_HEADERS="yes"
+    AC_MSG_RESULT(yes)
   else
-    if test "${gs_cv_gcc_major_version}" = "3" ; then
-      if test "${gs_cv_gcc_minor_version}" -ge "4" ; then
-        GCC_WITH_PRECOMPILED_HEADERS=yes
-      fi
-    fi
-  fi
-
-  if test "${GCC_WITH_PRECOMPILED_HEADERS}" = "yes" ; then
-    AC_MSG_RESULT(yes: gcc version is ${gs_cv_gcc_parsed_version} >= 3.4)
-  else
-    AC_MSG_RESULT(no: gcc version is ${gs_cv_gcc_parsed_version} < 3.4)
+    # Please check the config-precomp-test.log log file for more info
+    AC_MSG_RESULT(no: old or buggy gcc)
   fi
 fi
 
@@ -963,6 +965,11 @@ fi
 # headers, try adding ADDITIONAL_OBJC_FLAGS = -Winvalid-pch to your
 # GNUmakefile to check that they are used.
 AC_SUBST(GCC_WITH_PRECOMPILED_HEADERS)
+
+# Restore LIBS and CFLAGS - we used to compile C code after this
+# point.  Useful to keep this in case we need to compile C code again.
+LIBS="$saved_LIBS"
+CFLAGS="$saved_CFLAGS"
 
 #--------------------------------------------------------------------
 # Check if compiler requires -shared flag on Solaris ...

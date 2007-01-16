@@ -1,5 +1,18 @@
 2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* config-precomp-test: New directory
+	* config-precomp-test/gs_precomp_test.h,
+	config-precomp-test/gs_precomp_test.m,
+	config-precomp-test/run-test.sh: New test for ObjC precompiled
+	headers to properly detect if they work or not.
+	* configure.ac: Run the new test to determine if ObjC precompiled
+	headers work or not.
+	* configure: Regenerated.
+	* GNUmakefile.in (distclean): Remove config-precomp-test.log; also
+	remove multiple files in a go for speed.
+
+2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* rules.make ($(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/): do not
 	depend on GNUSTEP_OBJ_DIR; build that dir automatically if needed.
 	Similar for the other similar rules.

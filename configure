@@ -4297,10 +4297,8 @@ fi
 
 
 
-# Restore LIBS and CFLAGS - we are going to compile C code in the next
-# test.
-LIBS="$saved_LIBS"
-CFLAGS="$saved_CFLAGS"
+# Keep LIBS and CFLAGS as they are for a while - we need them in
+# the following Objective-C tests!
 
 #--------------------------------------------------------------------
 # Check for the GCC version - this is used in the following tests
@@ -4368,33 +4366,45 @@ fi
 echo "$as_me:$LINENO: checking if the compiler supports precompiled headers" >&5
 echo $ECHO_N "checking if the compiler supports precompiled headers... $ECHO_C" >&6
 
-# What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc => 3.4
+# We used to check the compiler version here; this is not that
+# reliable because precompiled headers were added in 3.4, then they
+# were broken in 4.1, then fixed again.
+
+# So we prefer to actually try them out! ;-)
+
+# What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc
+# can compile and use a precompiled header.
 
 GCC_WITH_PRECOMPILED_HEADERS=""
-if test ! ${GCC} = "yes" ; then
+
+# First, a preliminary test.  If this is not gcc, precompiled headers
+# are not supported.
+if test ! "${GCC}" = "yes" ; then
   echo "$as_me:$LINENO: result: no: it's not gcc" >&5
 echo "${ECHO_T}no: it's not gcc" >&6
 else
-  if test "${gs_cv_gcc_major_version}" -ge "4"; then
-    GCC_WITH_PRECOMPILED_HEADERS=yes
+  gs_precomp_test_log_file="`pwd`/config-precomp-test.log"
+  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_log_file"; echo $?)`
+  if test "$gs_precomp_test_results" = "0"; then
+    GCC_WITH_PRECOMPILED_HEADERS="yes"
+    echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
   else
-    if test "${gs_cv_gcc_major_version}" = "3" ; then
-      if test "${gs_cv_gcc_minor_version}" -ge "4" ; then
-        GCC_WITH_PRECOMPILED_HEADERS=yes
-      fi
-    fi
-  fi
-
-  if test "${GCC_WITH_PRECOMPILED_HEADERS}" = "yes" ; then
-    echo "$as_me:$LINENO: result: yes: gcc version is ${gs_cv_gcc_parsed_version} >= 3.4" >&5
-echo "${ECHO_T}yes: gcc version is ${gs_cv_gcc_parsed_version} >= 3.4" >&6
-  else
-    echo "$as_me:$LINENO: result: no: gcc version is ${gs_cv_gcc_parsed_version} < 3.4" >&5
-echo "${ECHO_T}no: gcc version is ${gs_cv_gcc_parsed_version} < 3.4" >&6
+    # Please check the config-precomp-test.log log file for more info
+    echo "$as_me:$LINENO: result: no: old or buggy gcc" >&5
+echo "${ECHO_T}no: old or buggy gcc" >&6
   fi
 fi
 
+# Important - if you think there is a problem with precompiled
+# headers, try adding ADDITIONAL_OBJC_FLAGS = -Winvalid-pch to your
+# GNUmakefile to check that they are used.
 
+
+# Restore LIBS and CFLAGS - we used to compile C code after this
+# point.  Useful to keep this in case we need to compile C code again.
+LIBS="$saved_LIBS"
+CFLAGS="$saved_CFLAGS"
 
 #--------------------------------------------------------------------
 # Check if compiler requires -shared flag on Solaris ...

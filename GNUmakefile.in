@@ -251,14 +251,10 @@ clean:
 distclean: clean
 	rm -f GNUmakefile config-noarch.make config.make config.h
 	rm -f config.cache config.log config.status
-	rm -f openapp
-	rm -f opentool
-	rm -f executable.template
-	rm -f GNUstep.sh
-	rm -f GNUstep.csh
-	rm -f fixpath.sh
-	rm -f gnustep-make.spec
-	rm -f GNUsteprc
+	rm -f openapp opentool executable.template
+	rm -f GNUstep.sh GNUstep.csh fixpath.sh
+	rm -f gnustep-make.spec GNUsteprc
+	rm -f config-precomp-test.log
 
 svn-tag:
 	svn copy $(SVNPREFIX)/trunk $(SVNPREFIX)/tags/make-$(VERTAG) \
