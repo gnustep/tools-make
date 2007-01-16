@@ -32,6 +32,7 @@ ifneq ($(messages),yes)
 
   # General messages
   ECHO_PREPROCESSING = @(echo " Preprocessing file $< ...";
+  ECHO_PRECOMPILING = @(echo " Precompiling header file $< ...";
   ECHO_COMPILING = @(echo " Compiling file $< ...";
   ECHO_LINKING   = @(echo " Linking $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) ...";
   ECHO_JAVAHING  = @(echo " Running javah on $< ...";
@@ -89,6 +90,7 @@ ifneq ($(messages),yes)
 else
 
   ECHO_PREPROCESSING =
+  ECHO_PRECOMPILING = 
   ECHO_COMPILING = 
   ECHO_LINKING = 
   ECHO_JAVAHING = 

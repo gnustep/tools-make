@@ -458,6 +458,55 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
+ifneq ($(GCC_WITH_PRECOMPILED_HEADERS),)
+# We put the precompiled headers in different directories (depending
+# on the language) so that we can easily have different rules (that
+# use the appropriate compilers/flags) for the different languages.
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/
+	$(ECHO_PRECOMPILING)$(CC) $< -c \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)) \
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
+
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/
+	$(ECHO_PRECOMPILING)$(CC) -x objective-c-header $< -c \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_OBJCFLAGS)) \
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
+
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/
+	$(ECHO_PRECOMPILING)$(CC) -x c++-header $< -c \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_CFLAGS)   \
+	                                                $(ALL_CCFLAGS)) \
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
+
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/
+	$(ECHO_COMPILING)$(CC) -x objective-c++-header $< -c \
+	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
+	                                                $(ALL_OBJCCFLAGS)) \
+	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
+
+# These rules create these directories as needed.  The directories
+# (and the precompiled files in them) will automatically be removed
+# when the GNUSTEP_OBJ_DIR is deleted as part of a clean.
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
+	$(MKDIRS) ./PrecompiledHeaders/C/$(END_ECHO)
+
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
+	$(MKDIRS) ./PrecompiledHeaders/ObjC/$(END_ECHO)
+
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
+	$(MKDIRS) ./PrecompiledHeaders/CC/$(END_ECHO)
+
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
+	$(MKDIRS) ./PrecompiledHeaders/ObjCC/$(END_ECHO)
+endif
+
 # FIXME - using a different build dir with java
 %.class : %.java
 	$(ECHO_COMPILING)$(JAVAC) \

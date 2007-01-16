@@ -1,5 +1,25 @@
 2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Implemented precompiled headers support.  To use them to speed up
+	the compilation of your project, create a main header that you
+	include at the top of each file in your project, then add it to
+	xxx_OBJC_PRECOMPILED_HEADERS and it will automatically be
+	precompiled on platforms that support it.
+	* messages.make (ECHO_PRECOMPILING): New message.
+	* rules.make: New rules to build precompiled headers directory and
+	files.
+	* Instance/rules.make (internal-$(GNUSTEP_TYPE)-all): depend on
+	internal-precompile-headers
+	(xxx_C_PRECOMPILED_HEADERS, xxx_OBJC_PRECOMPILED_HEADERS,
+	xxx_CC_PRECOMPILED_HEADERS, xxx_OBJCC_PRECOMPILED_HEADERS): New
+	variables.
+	(internal-precompile-headers): New rule set to depend on
+	precompiling the precompiled headers, if any.  Also, add the
+	precompiled headers directory to ADDITIONAL_INCLUDE_DIRS if the
+	compiler supports precompiled headers and they are being used.
+	
+2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Separate out checking gcc version and the test for
 	the Solaris -shared link flag; print out separate messages for the
 	results of these tests to help debugging.  Determine the minor

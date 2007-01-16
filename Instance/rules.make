@@ -75,11 +75,13 @@ after-$(GNUSTEP_INSTANCE)-all::
 # the internal-$(GNUSTEP_TYPE)-all_ rule.
 
 ifeq ($(COPY_INTO_DIR),)
-internal-$(GNUSTEP_TYPE)-all:: before-$(GNUSTEP_INSTANCE)-all \
+internal-$(GNUSTEP_TYPE)-all:: internal-precompile-headers \
+                               before-$(GNUSTEP_INSTANCE)-all \
                                internal-$(GNUSTEP_TYPE)-all_  \
                                after-$(GNUSTEP_INSTANCE)-all
 else
-internal-$(GNUSTEP_TYPE)-all:: before-$(GNUSTEP_INSTANCE)-all \
+internal-$(GNUSTEP_TYPE)-all:: internal-precompile-headers \
+                               before-$(GNUSTEP_INSTANCE)-all \
                                internal-$(GNUSTEP_TYPE)-all_  \
                                after-$(GNUSTEP_INSTANCE)-all \
                                internal-$(GNUSTEP_TYPE)-copy_into_dir
@@ -171,7 +173,7 @@ endif
 # The list of JAVA source files from which to generate jni headers
 # are in the JAVA_JNI_FILES variable.
 #
-# This list of WINDRES source files to be compiled
+# The list of WINDRES source files to be compiled
 # are in the WINDRES_FILES variable.
 # 
 
@@ -248,6 +250,78 @@ ifeq ($(AUTO_DEPENDENCIES),yes)
   endif
 endif
 
+# The following is for precompiled headers, only executed if GCC
+# supports them.
+ifneq ($(GCC_WITH_PRECOMPILED_HEADERS),)
+#
+# The following are useful to speed up compilation by using
+# precompiled headers.  If GCC_WITH_PRECOMPILED_HEADERS is '', then
+# these variables do nothing.  If GCC_WITH_PRECOMPILED_HEADERS is yes,
+# then these variables cause all the listed headers to be precompiled
+# with the specified compiler before the compilation of the main files
+# starts; the precompiled files will be put in the
+# GNUSTEP_OBJ_DIR/PrecompiledHeaders/{language} directory, and
+# -I$GNUSTEP_OBJ_DIR/PrecompiledHeaders/{language} -Winvalid-pch will
+# automatically be added to the command line to make sure they are
+# used.
+#
+# The list of C header files to be precompiled is in the 
+# C_PRECOMPILED_HEADERS variable 
+#
+# The list of Objective-C header files to be precompiled is in the 
+# OBJC_PRECOMPILED_HEADERS variable 
+#
+# The list of C++ header files to be precompiled is in the 
+# CC_PRECOMPILED_HEADERS variable 
+#
+# The list of Objective-C++ header files to be precompiled is in the 
+# OBJCC_PRECOMPILED_HEADERS variable 
+#
+
+C_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_C_PRECOMPILED_HEADERS))
+C_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/,$(C_PRECOMPILED_OBJS))
+
+OBJC_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_OBJC_PRECOMPILED_HEADERS))
+OBJC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/,$(OBJC_PRECOMPILED_OBJS))
+
+CC_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_CC_PRECOMPILED_HEADERS))
+CC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/,$(CC_PRECOMPILED_OBJS))
+
+OBJCC_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_OBJCC_PRECOMPILED_HEADERS))
+OBJCC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/,$(OBJCC_PRECOMPILED_OBJS))
+
+# If any of those variables is not empty
+ifneq ($(C_PRECOMPILED_OBJ_FILES)$(OBJC_PRECOMPILED_OBJ_FILES)$(CC_PRECOMPILED_OBJ_FILES)$(OBJCC_PRECOMPILED_OBJ_FILES),)
+  # Then we need to build the files before everything else!
+  internal-precompile-headers: $(C_PRECOMPILED_OBJ_FILES)\
+                               $(OBJC_PRECOMPILED_OBJ_FILES)\
+                               $(CC_PRECOMPILED_OBJ_FILES)\
+                               $(OBJCC_PRECOMPILED_OBJ_FILES)
+
+  # We put all the PrecompiledHeaders/xx/ dirs in ADDITIONAL_INCLUDE_DIRS;
+  # gcc can determine which language each file was compiled with, and
+  # will ignore files for different languages.
+  ifneq ($(C_PRECOMPILED_OBJ_FILES),)
+    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C
+  endif
+  ifneq ($(OBJC_PRECOMPILED_OBJ_FILES),)
+    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC
+  endif
+  ifneq ($(CC_PRECOMPILED_OBJ_FILES),)
+    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC
+  endif
+  ifneq ($(OBJCC_PRECOMPILED_OBJ_FILES),)
+    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC
+  endif
+
+else
+  internal-precompile-headers:
+endif
+
+# End of precompiled headers code
+else
+internal-precompile-headers:
+endif
 
 ##
 ## Library and related special flags.
