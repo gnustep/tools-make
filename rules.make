@@ -458,7 +458,7 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-ifneq ($(GCC_WITH_PRECOMPILED_HEADERS),)
+ifeq ($(GCC_WITH_PRECOMPILED_HEADERS),yes)
 # We put the precompiled headers in different directories (depending
 # on the language) so that we can easily have different rules (that
 # use the appropriate compilers/flags) for the different languages.

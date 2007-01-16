@@ -943,7 +943,7 @@ AC_MSG_CHECKING(if the compiler supports precompiled headers)
 # What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc
 # can compile and use a precompiled header.
 
-GCC_WITH_PRECOMPILED_HEADERS=""
+GCC_WITH_PRECOMPILED_HEADERS="no"
 
 # First, a preliminary test.  If this is not gcc, precompiled headers
 # are not supported.

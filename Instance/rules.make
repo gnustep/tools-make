@@ -253,7 +253,7 @@ endif
 
 # The following is for precompiled headers, only executed if GCC
 # supports them.
-ifneq ($(GCC_WITH_PRECOMPILED_HEADERS),)
+ifeq ($(GCC_WITH_PRECOMPILED_HEADERS),yes)
 #
 # The following are useful to speed up compilation by using
 # precompiled headers.  If GCC_WITH_PRECOMPILED_HEADERS is '', then

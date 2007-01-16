@@ -1,5 +1,14 @@
 2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac (GS_WITH_PRECOMPILED_HEADERS): Set to 'no'
+	when precompiled headers are not available.
+	* rules.make: Compare GS_WITH_PRECOMPILED_HEADERS explicitly to
+	'yes'.
+	* Instance/rules.make: Same change.
+	* configure: Regenerated.
+	
+2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* config-precomp-test: New directory
 	* config-precomp-test/gs_precomp_test.h,
 	config-precomp-test/gs_precomp_test.m,
