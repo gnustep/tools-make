@@ -490,21 +490,22 @@ $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_DIR)/Prec
 # These rules create these directories as needed.  The directories
 # (and the precompiled files in them) will automatically be removed
 # when the GNUSTEP_OBJ_DIR is deleted as part of a clean.
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/: $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
-	$(MKDIRS) ./PrecompiledHeaders/C/$(END_ECHO)
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/:
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/C/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/: $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
-	$(MKDIRS) ./PrecompiledHeaders/ObjC/$(END_ECHO)
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/:
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjC/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/: $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
-	$(MKDIRS) ./PrecompiledHeaders/CC/$(END_ECHO)
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/:
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/CC/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/: $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)cd $(GNUSTEP_OBJ_DIR); \
-	$(MKDIRS) ./PrecompiledHeaders/ObjCC/$(END_ECHO)
+$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/:
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjCC/$(END_ECHO)
+
 endif
 
 # FIXME - using a different build dir with java
