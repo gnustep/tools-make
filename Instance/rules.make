@@ -299,20 +299,22 @@ ifneq ($(C_PRECOMPILED_OBJ_FILES)$(OBJC_PRECOMPILED_OBJ_FILES)$(CC_PRECOMPILED_O
                                $(CC_PRECOMPILED_OBJ_FILES)\
                                $(OBJCC_PRECOMPILED_OBJ_FILES)
 
-  # We put all the PrecompiledHeaders/xx/ dirs in ADDITIONAL_INCLUDE_DIRS;
-  # gcc can determine which language each file was compiled with, and
-  # will ignore files for different languages.
+  # We put all the PrecompiledHeaders/xx/ dirs in xx_PRECOMPILED_HEADERS_INCLUDE_FLAGS,
+  # which will be put before any other header include (this is what we want, as we
+  # want a precompiled header, if available, to be used in preference
+  # to the non-precompiled header, no matter where the non-precompiled
+  # header is).
   ifneq ($(C_PRECOMPILED_OBJ_FILES),)
-    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C
+    C_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C
   endif
   ifneq ($(OBJC_PRECOMPILED_OBJ_FILES),)
-    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC
+    OBJC_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC
   endif
   ifneq ($(CC_PRECOMPILED_OBJ_FILES),)
-    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC
+    CC_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC
   endif
   ifneq ($(OBJCC_PRECOMPILED_OBJ_FILES),)
-    ADDITIONAL_INCLUDE_DIRS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC
+    OBJCC_PRECOMPILED_HEADERS_INCLUDE_FLAGS  += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC
   endif
 
 else

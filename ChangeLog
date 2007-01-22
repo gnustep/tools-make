@@ -1,3 +1,17 @@
+2007-01-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed precompiled headers when -I. is early in the compile command
+	line.
+	* rules.make (ALL_OBJCFLAGS): Added
+	OBJC_PRECOMPILED_HEADERS_INCLUDE_FLAGS at the beginning.
+	(ALL_CFLAGS, ALLCCFLAGS, ALL_OBJCCFLAGS): Similar changes.
+	* Instance/rules.make: Add the -I commands to find the precompiled
+	header to the new C_PRECOMPILED_HEADERS_INCLUDE_FLAGS,
+	OBJC_PRECOMPILED_HEADERS_INCLUDE_FLAGS,
+	CC_PRECOMPILED_HEADERS_INCLUDE_FLAGS,
+	OBJCC_PRECOMPILED_HEADERS_INCLUDE_FLAGS variables instead of
+	ADDITIONAL_INCLUDE_DIRS.
+
 2007-01-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac (GS_WITH_PRECOMPILED_HEADERS): Set to 'no'
