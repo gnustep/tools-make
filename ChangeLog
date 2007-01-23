@@ -1587,7 +1587,7 @@ Fri Aug 20 02:19:54 2004  Nicola Pero  <n.pero@mi.flashnet.it>
 
 	* configure.ac: Improve compiler type test.
 	* Documentation/gnustep.init: Fix template parsing rules.
-º
+
 2004-07-04  Adrian Robert  <arobert@cogsci.ucsd.edu>
 
 	* Instance/Documentation/texi.make:
