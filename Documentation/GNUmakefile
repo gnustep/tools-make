@@ -28,7 +28,7 @@ ifeq ($(GNUSTEP_MAKEFILES),)
 # GNUstep.sh, then we run the make command again.  Please note that
 # "make install" will install into our temporary gnustep-make
 # directory, which is usually not particularly useful, but anyway.
-all clean install: ./tmp-installation/System/Library/Makefiles
+all clean install regenerate: ./tmp-installation/System/Library/Makefiles
 	@echo "** Running 'make $@' using the local/temporary gnustep-make installation **"
 	$(MAKE) $@ GNUSTEP_MAKEFILES="$(CURRENT_DIR)/tmp-installation/System/Library/Makefiles"
 

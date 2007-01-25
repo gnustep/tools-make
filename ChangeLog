@@ -1,3 +1,8 @@
+2007-01-25  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/GNUmakefile: Fixed 'regenerate' target when you
+	invoke it without gnustep-make being installed.
+
 2007-01-23  Matt Rice  <ratmice@gmail.com>
 	
 	* rules.make (ALL_CCFLAGS): Fix typo.
