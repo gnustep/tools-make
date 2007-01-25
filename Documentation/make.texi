@@ -602,15 +602,14 @@ Set @code{PACKAGE_VERSION} to the release version number of your package. If not
 set, it defaults to 0.0.1
 @end defvr
 
-@defvr {RPM} GNUSTEP_INSTALLATION_DIR
-Set @code{GNUSTEP_INSTALLATION_DIR} to the installation
-directory. Typically this is either @code{$(GNUSTEP_SYSTEM_ROOT)}),
-@code{$(GNUSTEP_LOCAL_ROOT)}, or @code{$(GNUSTEP_USER_ROOT)}. If not set
-it defaults to @code{$(GNUSTEP_LOCAL_ROOT)}.
+@defvr {RPM} GNUSTEP_INSTALLATION_DOMAIN
+Set @code{GNUSTEP_INSTALLATION_DOMAIN} to the domain where you want to install
+the software. This should be either @code{SYSTEM}), @code{LOCAL}, or @code{USER}.
+If not set it defaults to @code{LOCAL}.
 @end defvr
 
 @defvr {RPM} RPM_DISABLE_RELOCATABLE
-Set this to @code{YES} if the package must be in @code{$(GNUSTEP_SYSTEM_ROOT)}
+Set this to @code{YES} if the package must be in @code{SYSTEM}
 and is not relocatable.
 @end defvr
 
@@ -862,7 +861,7 @@ that should be created when the Makefile Package installs the file for
 the project.  These directories are only one that the project needs to
 be created but that the Makefile Package does not automatically create.
 The directories should be absolute paths but use the
-@code{GNUSTEP_INSTALLATION_DIR} variable and other Makefile Package
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable and other Makefile Package
 define variables, see @ref{Directory Paths}, so that the directories get
 created in the appropriate place relative to the other file installed
 for the project.  The following example illustrates how two additional
@@ -870,8 +869,7 @@ directories can be created during installation.
 @end defvar
 
 @smallexample
-ADDITIONAL_INSTALL_DIRS = $(GNUSTEP_INSTALLATION_DIR)/MyProject \
-                          $(GNUSTEP_RESOURCES)/MyProject
+ADDITIONAL_INSTALL_DIRS = $(GNUSTEP_RESOURCES)/MyProject
 @end smallexample
 
 @node GNUmakefile.postamble, Project Types, GNUmakefile.preamble, Top
@@ -926,9 +924,8 @@ programs.
 @defvar GNUSTEP_APPS
 @code{GNUSTEP_APPS} is the absolute path to the directory where GUI
 applications are installed.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DIR} variable, so the path will change
-accordingly if the user specifies a different installation root
-directory.
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
 @end defvar
 
 @defvar GNUSTEP_TOOLS
@@ -939,9 +936,8 @@ target platform dependent command line tools should be placed in the
 appropriate subdirectory of @code{GNUSTEP_TOOLS}, see @ref{Directory
 Paths,,GNUSTEP_TARGET_DIR}, and @ref{Directory
 Paths,,TOOL_INSTALLATION_DIR}.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DIR} variable, so the path will change
-accordingly if the user specifies a different installation root
-directory.
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
 @end defvar
 
 @defvar GNUSTEP_HEADERS
@@ -953,9 +949,9 @@ information.  @code{GNUSTEP_HEADERS} should contain platform independent
 header files because the files are shared by all platforms.  Any target
 platform dependent header files should be placed in the appropriate
 subdirectory as specified by @code{GNUSTEP_TARGET_DIR}.  This variable
-is dependent upon the @code{GNUSTEP_INSTALLATION_DIR} variable, so the
+is dependent upon the @code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the
 path will change accordingly if the user specifies a different
-installation root directory.
+installation domain.
 @end defvar
 
 @defvar GNUSTEP_LIBRARIES_ROOT
@@ -967,9 +963,8 @@ placed in the appropriate subdirectory taking the target and possibly
 the library combo into account, see @ref{Directory
 Paths,,GNUSTEP_TARGET_LIBRARIES}, and @ref{Directory
 Paths,,GNUSTEP_LIBRARIES}.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DIR} variable, so the path will change
-accordingly if the user specified a different installation root
-directory.
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specified a different installation domain.
 @end defvar
 
 @defvar GNUSTEP_TARGET_LIBRARIES
@@ -978,9 +973,8 @@ where libraries are installed taking the target platform into account.
 It is a subdirectory of @code{GNUSTEP_LIBRARIES_ROOT} and is where
 libraries that do not depend upon the library combination, GNUstep or
 others, should be placed.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DIR} variable, so the path will change
-accordingly if the user specifies a different installation root
-directory.
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
 @end defvar
 
 @defvar GNUSTEP_LIBRARIES
@@ -991,9 +985,8 @@ combination into account.  It is a subdirectory of
 @code{GNUSTEP_LIBRARIES_ROOT}.  This directory is generally where
 library project types, see @ref{library.make}, will install the library
 file.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DIR} variable, so the path will change
-accordingly if the user specifies a different installation root
-directory.
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
 @end defvar
 
 @defvar GNUSTEP_RESOURCES
@@ -1004,9 +997,8 @@ resource files are generally associated with libraries, because
 resources for applications or bundles are included within the
 application or bundle directory wrapper.  @code{GNUSTEP_RESOURCES} is a
 subdirectory of @code{GNUSTEP_LIBRARIES_ROOT}; it is dependent upon the
-@code{GNUSTEP_INSTALLATION_DIR} variable, so the path will change
-accordingly if the user specifies a different installation root
-directory.
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
 @end defvar
 
 @defvar GNUSTEP_HOST_DIR
@@ -1353,31 +1345,27 @@ make OPTFLAG=
 This command sets the optimization flag to be empty so that no
 optimization will be performed by the compiler.
 
-@defvar GNUSTEP_INSTALLATION_DIR
-@code{GNUSTEP_INSTALLATION_DIR} is the root directory where the package
+@defvar GNUSTEP_INSTALLATION_DOMAIN
+@code{GNUSTEP_INSTALLATION_DOMAIN} is the domain where the package
 will install its files; overriding this variable when running make will
 change all of the variables within the Makefile Package that depend upon
 it; the following command illustrates the use of this variable:
 @end defvar
 
 @smallexample
-make GNUSTEP_INSTALLATION_DIR="/GNUstep"
+make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
 @end smallexample
 
-This command states that the @file{/GNUstep} directory should be used as
-the installation root directory; applications in the package will be
-installed under @file{/GNUstep/Apps} directory, libraries in the package
-will be installed under the @file{/GNUstep/Library/Libraries} directory,
-command line tools will be installed under the @file{/GNUstep/Tools}
+This command states that the @code{SYSTEM} domain should be used as
+the installation root directory; if that is a standard GNUstep
+domain with the standard GNUstep filesystem hierarchy, then applications 
+in the package will be installed in the @file{$GNUSTEP_SYSTEM_ROOT/Apps} directory, libraries in the package
+will be installed under the @file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries} directory,
+command line tools will be installed under the @file{$GNUSTEP_SYSTEM_ROOT/Tools}
 directory, and etc.  By default the Makefile Package sets
-@code{GNUSTEP_INSTALLATION_DIR} to @code{GNUSTEP_LOCAL_ROOT} unless
-@code{GNUSTEP_LOCAL_ROOT} is empty in which case
-@code{GNUSTEP_INSTALLATION_DIR} will be set to
-@code{GNUSTEP_SYSTEM_ROOT}.  Some packages will also override
-@code{GNUSTEP_INSTALLATION_DIR} within their makefile to force the
-package to install in (say) @code{GNUSTEP_SYSTEM_ROOT} instead of the
-default @code{GNUSTEP_LOCAL_ROOT} directory, but if the user sets the
-value of @code{GNUSTEP_INSTALLATION_DIR} when running make then that
-setting takes precedence over all others.
+@code{GNUSTEP_INSTALLATION_DOMAIN} to @code{LOCAL} unless
+the is no @code{LOCAL} domain in which case
+@code{GNUSTEP_INSTALLATION_DOMAIN} will be set to
+@code{SYSTEM}.
 
 @bye

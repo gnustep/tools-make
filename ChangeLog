@@ -2,7 +2,9 @@
 
 	* Documentation/GNUmakefile: Fixed 'regenerate' target when you
 	invoke it without gnustep-make being installed.
-
+	* Documentation/make.texi: Updated to talk about
+	GNUSTEP_INSTALLATION_DOMAIN, not GNUSTEP_INSTALLATION_DIR.
+	
 2007-01-23  Matt Rice  <ratmice@gmail.com>
 	
 	* rules.make (ALL_CCFLAGS): Fix typo.
