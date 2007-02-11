@@ -1060,7 +1060,7 @@ AC_SUBST(target)
 #--------------------------------------------------------------------
 AC_CONFIG_FILES([config-noarch.make config.make openapp opentool 
 executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh
-gnustep-make.spec])
+gnustep-make.spec gnustep-config.sh])
 AC_CONFIG_COMMANDS([default],
 	[[chmod a+x openapp opentool fixpath.sh executable.template]],
 	[[]])

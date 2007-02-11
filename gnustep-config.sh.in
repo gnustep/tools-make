@@ -1,0 +1,112 @@
+#! /bin/sh
+#
+#   @configure_input@
+#
+#   Script that outputs GNUstep filesystem configuration; can
+#   be used by non-gnustep-make building/config systems to know
+#   how GNUstep is configured on this machine
+#
+#   Copyright (C) 2007 Free Software Foundation, Inc.
+#
+#   Author: Nicola Pero <nicola.pero@meta-innovation.com>
+#
+#   This file is part of the GNUstep Makefile Package.
+#
+#   This library is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License
+#   as published by the Free Software Foundation; either version 2
+#   of the License, or (at your option) any later version.
+#   
+#   You should have received a copy of the GNU General Public
+#   License along with this library; see the file COPYING.LIB.
+#   If not, write to the Free Software Foundation,
+#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+#
+
+if [ -z "$1" ]; then
+  echo "usage: gnustep-config.sh argument"
+  echo "gnustep-config.sh --help for more help"
+  exit 1
+fi
+
+if [ "$1" == "--help" ]; then
+    echo "usage: gnustep-config.sh argument"
+    echo
+    echo "Will print out the value of the specified argument, which can be "
+    echo "any GNUstep filesystem setting from the following list -- "
+    echo
+    echo "GNUSTEP_MAKEFILES"
+    echo "GNUSTEP_SYSTEM_ROOT (might be obsolete soon)"
+    echo "GNUSTEP_LOCAL_ROOT (might be obsolete soon)"
+    echo "GNUSTEP_NETWORK_ROOT (might be obsolete soon)"
+    echo "GNUSTEP_USER_ROOT (might be obsolete soon)"
+    echo "GNUSTEP_USER_DIR"
+    echo "GNUSTEP_USER_DEFAULTS_DIR"
+    echo "GNUSTEP_HOST"
+    echo "GNUSTEP_HOST_CPU"
+    echo "GNUSTEP_HOST_VENDOR"
+    echo "GNUSTEP_HOST_OS"
+    echo "GNUSTEP_IS_FLATTENED"
+    echo
+fi
+
+#
+# Important - keep the following in sync with GNUstep.sh.in
+#
+
+#
+# Read our configuration files.  We only do that to locate
+# GNUSTEP_MAKEFILES, so that we can execute GNUstep.sh and
+# access any variable that we might ever need.
+#
+
+# Determine the location of the system configuration file
+if [ -z "$GNUSTEP_CONFIG_FILE" ]; then
+  GNUSTEP_CONFIG_FILE=@GNUSTEP_CONFIG_FILE@
+fi
+
+# Determine the location of the user configuration file
+if [ -z "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  GNUSTEP_USER_CONFIG_FILE=@GNUSTEP_USER_CONFIG_FILE@
+fi
+
+# Read the system configuration file
+if [ -f "$GNUSTEP_CONFIG_FILE" ]; then
+  . "$GNUSTEP_CONFIG_FILE"
+fi
+
+# FIXME: determining GNUSTEP_HOME
+GNUSTEP_HOME=~
+
+# Read the user configuration file ... unless it is disabled (ie, set
+# to an empty string)
+if [ -n "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  case "$GNUSTEP_USER_CONFIG_FILE" in 
+    /*) # An absolute path
+        if [ -f "$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+     *) # Something else
+        if [ -f "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+  esac
+fi
+
+if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
+  GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
+fi
+
+if [ -z "$GNUSTEP_MAKEFILES" ]; then
+  GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+fi
+
+#
+# Now read all the standard GNUstep config
+#
+. $GNUSTEP_MAKEFILES/GNUstep.sh
+
+#
+# Now print whatever variable they asked for
+#
+echo $(eval echo \$$1)

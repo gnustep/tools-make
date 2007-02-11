@@ -159,7 +159,8 @@ install: generated-files
 	  $(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir))
+	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
+	  $(INSTALL_PROGRAM) -m 755 gnustep-config.sh $(tooldir))
 	 $(EC)(echo "Installing makefiles"; \
 	   for f in $(MAKE_FILES); do \
 	     $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
