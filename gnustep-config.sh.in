@@ -103,7 +103,15 @@ if [ -z "$GNUSTEP_MAKEFILES" ]; then
 fi
 
 #
-# Now read all the standard GNUstep config
+# If all they want to know if GNUSTEP_MAKEFILES, we can print it out
+#
+if [ "$1" == "GNUSTEP_MAKEFILES" ]; then
+ echo "$GNUSTEP_MAKEFILES"
+ exit 0
+fi
+
+#
+# Else, now read all the standard GNUstep config
 #
 . $GNUSTEP_MAKEFILES/GNUstep.sh
 
