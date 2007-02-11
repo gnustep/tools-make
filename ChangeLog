@@ -1,3 +1,7 @@
+2007-02-10  Matt Rice <ratmice@gmail.com>
+
+	* gnustep-config.sh.in: exit early for --help.
+
 2007-02-11  Nicola Pero  <nicola.pero@meta-innovation.com>,
             Matt Rice  <ratmice@gmail.com>
 

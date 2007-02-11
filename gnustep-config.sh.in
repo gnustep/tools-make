@@ -48,6 +48,7 @@ if [ "$1" == "--help" ]; then
     echo "GNUSTEP_HOST_OS"
     echo "GNUSTEP_IS_FLATTENED"
     echo
+    exit 0
 fi
 
 #
