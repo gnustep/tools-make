@@ -24,8 +24,8 @@
 #
 
 if [ -z "$1" ]; then
-  echo "usage: gnustep-config.sh argument"
-  echo "gnustep-config.sh --help for more help"
+  echo "usage: gnustep-config argument"
+  echo "gnustep-config --help for more help"
   exit 1
 fi
 
