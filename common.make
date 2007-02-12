@@ -26,6 +26,12 @@ COMMON_MAKE_LOADED = yes
 
 SHELL = /bin/sh
 
+# We have been located by using GNUSTEP_MAKEFILES.  This variable
+# might actually have been computed using an external shell script (to
+# make it more portable), so we want to export it to avoid
+# sub-GNUmakefiles from having to recompute it!
+export GNUSTEP_MAKEFILES
+
 #
 # Get the global config information.  This includes
 # GNUSTEP_SYSTEM_ROOT, GNUSTEP_MAKE_VERSION, GNUSTEP_IS_FLATTENED,
