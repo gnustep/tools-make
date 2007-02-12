@@ -253,7 +253,7 @@ distclean: clean
 	rm -f GNUmakefile config-noarch.make config.make config.h
 	rm -f config.cache config.log config.status
 	rm -f openapp opentool executable.template
-	rm -f GNUstep.sh GNUstep.csh fixpath.sh
+	rm -f GNUstep.sh GNUstep.csh fixpath.sh gnustep-config
 	rm -f gnustep-make.spec GNUsteprc
 	rm -f config-precomp-test.log
 
@@ -315,7 +315,7 @@ rpm: test-RPM_TOPDIR dist
 	fi; \
 	$${rpmbuild} -ba gnustep-make.spec
 
-generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make openapp opentool gnustep-make.spec executable.template
+generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make openapp opentool gnustep-make.spec executable.template gnustep-config
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -345,4 +345,7 @@ gnustep-make.spec: gnustep-make.spec.in Version
 	$(SHELL) config.status --recheck
 
 executable.template: executable.template.in
+	$(SHELL) config.status
+
+gnustep-config: gnustep-config.in
 	$(SHELL) config.status
