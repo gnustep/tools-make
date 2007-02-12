@@ -27,9 +27,9 @@ COMMON_MAKE_LOADED = yes
 SHELL = /bin/sh
 
 # We have been located by using GNUSTEP_MAKEFILES.  This variable
-# might actually have been computed using an external shell script (to
-# make it more portable), so we want to export it to avoid
-# sub-GNUmakefiles from having to recompute it!
+# might actually have been determined in the user makefile by using
+# gnustep-config, so we want to export it to avoid sub-GNUmakefiles
+# from having to recompute it!
 export GNUSTEP_MAKEFILES
 
 #
