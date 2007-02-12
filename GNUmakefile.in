@@ -92,7 +92,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	documentation.make \
 	java-executable.template java-tool.make framework.make \
 	native-library.make spec-rules.template spec-debug-rules.template \
-        tar-exclude-list
+        tar-exclude-list gnustep-make-help
 
 MASTER_MAKE_FILES = \
         aggregate.make source-distribution.make rpm.make rules.make \

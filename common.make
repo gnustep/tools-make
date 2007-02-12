@@ -104,9 +104,7 @@ ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
 # Print out a message with our version number and how to get help on
 # targets and options.
 ifeq ($(MAKE_WITH_INFO_FUNCTION),yes)
-  $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). )
-# Uncomment the following line once we have the help target
-#  $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Please type 'make print-gnustep-make-help' for help on targets and options.)
+  $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type 'make print-gnustep-make-help' for help.)
 endif
 
 # Sanity check on $PATH - NB: if PATH is wrong, we can't do certain things

@@ -651,5 +651,15 @@ $(GNUSTEP_OBJ_DIR):
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)$(END_ECHO)
 
+# Now the print targets.
+
+# Print GNUstep make help.  The sed command is used to strip all lines
+# beginning with '#' from the file.  It will find all lines that match
+# the pattern ^#.* (which means that they have a '#' at the beginning
+# of the line, followed by any number of chars), and applies to them
+# the operation d, which means delete.
+print-gnustep-make-help:
+	@(cat $(GNUSTEP_MAKEFILES)/gnustep-make-help | sed -e '/^#.*/d')
+
 endif
 # rules.make loaded
