@@ -49,9 +49,6 @@ makedir = $(DESTDIR)@GNUSTEP_MAKEFILES@
 srcdir = @srcdir@
 VPATH = @srcdir@
 
-# GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
-# instead
-GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
 GNUSTEP_IS_FLATTENED = @GNUSTEP_IS_FLATTENED@
 GNUSTEP_TARGET_CPU = @clean_target_cpu@
 GNUSTEP_TARGET_VENDOR = @clean_target_vendor@
