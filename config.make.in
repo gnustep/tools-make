@@ -25,6 +25,8 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+MAKE_WITH_INFO_FUNCTION = @MAKE_WITH_INFO_FUNCTION@
+
 #
 # Binary and compile tools
 #

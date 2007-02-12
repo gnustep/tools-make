@@ -998,6 +998,41 @@ AC_SUBST(LIB_DIR)
 AC_SUBST(OBJCFLAGS)
 
 #--------------------------------------------------------------------
+# Check for $(info ...) function in GNU make
+#--------------------------------------------------------------------
+
+# If GNU make supports $(info ...), gnustep-make can use it to print
+# out a help message at the beginning of each compilation.  This
+# feature was introduced in GNU make 3.81, so we check GNU make's
+# version number (alternatively, we could try executing a makefile
+# that contains an info command).
+AC_MSG_CHECKING(for the GNU Make version)
+
+# To get the make version, take the output of 'make --version', read
+# only the first line (that we expect to be something like "GNU Make
+# 3.81"), and ignore everything up to the first numeric character.
+gs_cv_make_version=`make --version | head -1 | sed -e 's/^[[^0-9]]*//'`
+
+# Now check for the major/minor version numbers.
+gs_cv_make_major_version=`echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\1/'`
+gs_cv_make_minor_version=`echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\2/'`
+AC_MSG_RESULT(version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version})
+
+AC_MSG_CHECKING(if GNU Make has the info function)
+MAKE_WITH_INFO_FUNCTION=no
+if test "${gs_cv_make_major_version}" -ge "4"; then
+  MAKE_WITH_INFO_FUNCTION=yes
+fi
+
+if test "${gs_cv_make_major_version}" -ge "3"; then
+  if test "${gs_cv_make_minor_version}" -ge "81"; then
+    MAKE_WITH_INFO_FUNCTION=yes
+  fi
+fi
+AC_MSG_RESULT(${MAKE_WITH_INFO_FUNCTION})
+AC_SUBST(MAKE_WITH_INFO_FUNCTION)
+
+#--------------------------------------------------------------------
 # Shall we strip makefiles upon installation ?
 #--------------------------------------------------------------------
 

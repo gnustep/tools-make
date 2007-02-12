@@ -277,7 +277,7 @@ ac_default_prefix=`if test -d C: ; then
   else
     echo /usr/GNUstep ;
   fi`
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_CONFIG_FILE GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DIR GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_CONFIG_FILE GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DIR GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS MAKE_WITH_INFO_FUNCTION GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -4437,6 +4437,45 @@ fi
 
 
 #--------------------------------------------------------------------
+# Check for $(info ...) function in GNU make
+#--------------------------------------------------------------------
+
+# If GNU make supports $(info ...), gnustep-make can use it to print
+# out a help message at the beginning of each compilation.  This
+# feature was introduced in GNU make 3.81, so we check GNU make's
+# version number (alternatively, we could try executing a makefile
+# that contains an info command).
+echo "$as_me:$LINENO: checking for the GNU Make version" >&5
+echo $ECHO_N "checking for the GNU Make version... $ECHO_C" >&6
+
+# To get the make version, take the output of 'make --version', read
+# only the first line (that we expect to be something like "GNU Make
+# 3.81"), and ignore everything up to the first numeric character.
+gs_cv_make_version=`make --version | head -1 | sed -e 's/^[^0-9]*//'`
+
+# Now check for the major/minor version numbers.
+gs_cv_make_major_version=`echo ${gs_cv_make_version} | sed -e 's/\([0-9][0-9]*\)[^0-9]\([0-9][0-9]*\).*/\1/'`
+gs_cv_make_minor_version=`echo ${gs_cv_make_version} | sed -e 's/\([0-9][0-9]*\)[^0-9]\([0-9][0-9]*\).*/\2/'`
+echo "$as_me:$LINENO: result: version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version}" >&5
+echo "${ECHO_T}version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version}" >&6
+
+echo "$as_me:$LINENO: checking if GNU Make has the info function" >&5
+echo $ECHO_N "checking if GNU Make has the info function... $ECHO_C" >&6
+MAKE_WITH_INFO_FUNCTION=no
+if test "${gs_cv_make_major_version}" -ge "4"; then
+  MAKE_WITH_INFO_FUNCTION=yes
+fi
+
+if test "${gs_cv_make_major_version}" -ge "3"; then
+  if test "${gs_cv_make_minor_version}" -ge "81"; then
+    MAKE_WITH_INFO_FUNCTION=yes
+  fi
+fi
+echo "$as_me:$LINENO: result: ${MAKE_WITH_INFO_FUNCTION}" >&5
+echo "${ECHO_T}${MAKE_WITH_INFO_FUNCTION}" >&6
+
+
+#--------------------------------------------------------------------
 # Shall we strip makefiles upon installation ?
 #--------------------------------------------------------------------
 
@@ -5216,6 +5255,7 @@ s,@SOLARIS_SHARED@,$SOLARIS_SHARED,;t t
 s,@INCLUDES@,$INCLUDES,;t t
 s,@LIB_DIR@,$LIB_DIR,;t t
 s,@OBJCFLAGS@,$OBJCFLAGS,;t t
+s,@MAKE_WITH_INFO_FUNCTION@,$MAKE_WITH_INFO_FUNCTION,;t t
 s,@GNUSTEP_STRIP_MAKEFILES@,$GNUSTEP_STRIP_MAKEFILES,;t t
 s,@GNUSTEP_MAKE_VERSION@,$GNUSTEP_MAKE_VERSION,;t t
 s,@GNUSTEP_MAKE_MAJOR_VERSION@,$GNUSTEP_MAKE_MAJOR_VERSION,;t t
