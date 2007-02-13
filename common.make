@@ -325,73 +325,100 @@ endif
 # optionally remove the empty ones, then prepend -I / -L to them.
 ifeq ($(GNUSTEP_IS_FLATTENED), no)
 
-# The following variables have to be evaluated after setting dir to
-# something, such as GNUSTEP_USER_ROOT.  When you evaluate them in
-# that situation, they will generate paths according to the following
-# definition.  Later, we'll systematically replace dir with
-# GNUSTEP_USER_ROOT, the GNUSTEP_LOCAL_ROOT, then
-# GNUSTEP_NETWORK_ROOT, then GNUSTEP_SYSTEM_ROOT.
+# The following variables have to be evaluated after setting domain to
+# something, such as USER.  When you evaluate them in that situation,
+# they will generate paths according to the following definition.
+# Later, we'll systematically replace domain with USER, the LOCAL,
+# then NETWORK, then SYSTEM.
 GS_HEADER_PATH = \
- $(dir)/Library/Headers/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR) \
- $(dir)/Library/Headers/$(LIBRARY_COMBO)
+ $(GNUSTEP_$(domain)_HEADERS)/$(GNUSTEP_TARGET_DIR) \
+ $(GNUSTEP_$(domain)_HEADERS)
 
 GS_LIBRARY_PATH = \
- $(dir)/Library/Libraries/$(GNUSTEP_TARGET_LDIR) \
- $(dir)/Library/Libraries/$(GNUSTEP_TARGET_DIR)
+ $(GNUSTEP_$(domain)_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
+ $(GNUSTEP_$(domain)_LIBRARIES)/$(GNUSTEP_TARGET_DIR)
 
 else
 
 # In the flattened case, the paths to generate are considerably simpler.
 
-GS_HEADER_PATH = $(dir)/Library/Headers
-GS_LIBRARY_PATH = $(dir)/Library/Libraries
+GS_HEADER_PATH = $(GNUSTEP_$(domain)_HEADERS)
+GS_LIBRARY_PATH = $(GNUSTEP_$(domain)_LIBRARIES)
 
 endif
 
 ifeq ($(FOUNDATION_LIB), apple)
-GS_FRAMEWORK_PATH = $(dir)/Library/Frameworks
+GS_FRAMEWORK_PATH = $(GNUSTEP_$(domain)_FRAMEWORKS)
 else
 GS_FRAMEWORK_PATH =
 endif
 
-# First, we add paths based on GNUSTEP_USER_ROOT.
+# First, we add paths based in the USER domain.
 
 # Please note that the following causes GS_HEADER_PATH to be evaluated
-# with the variable dir equal $(GNUSTEP_USER_ROOT), which gives the
-# effect we wanted.
-GNUSTEP_HEADERS_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_HEADER_PATH))
-GNUSTEP_LIBRARIES_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_LIBRARY_PATH))
-GNUSTEP_FRAMEWORKS_DIRS = $(foreach dir,$(GNUSTEP_USER_ROOT),$(GS_FRAMEWORK_PATH))
+# with the variable domain equal to USER, which gives the effect we
+# wanted.
+GNUSTEP_HEADERS_DIRS = $(foreach domain,USER,$(GS_HEADER_PATH))
+GNUSTEP_LIBRARIES_DIRS = $(foreach domain,USER,$(GS_LIBRARY_PATH))
+GNUSTEP_FRAMEWORKS_DIRS = $(foreach domain,USER,$(GS_FRAMEWORK_PATH))
 
-# Second, if GNUSTEP_LOCAL_ROOT is different from GNUSTEP_USER_ROOT
-# (which has already been added), we add the paths based on
-# GNUSTEP_LOCAL_ROOT too.
-ifneq ($(GNUSTEP_LOCAL_ROOT), $(GNUSTEP_USER_ROOT))
-GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_HEADER_PATH))
-GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_LIBRARY_PATH))
-GNUSTEP_FRAMEWORKS_DIRS += $(foreach dir,$(GNUSTEP_LOCAL_ROOT),$(GS_FRAMEWORK_PATH))
+# Second, if LOCAL flags are different from USER flags (which have
+# already been added), we add the LOCAL flags too.
+ifneq ($(GNUSTEP_LOCAL_HEADERS), $(GNUSTEP_USER_HEADERS))
+GNUSTEP_HEADERS_DIRS += $(foreach domain,LOCAL,$(GS_HEADER_PATH))
 endif
 
-# Third, if GNUSTEP_NETWORK_ROOT is different from GNUSTEP_USER_ROOT and
-# GNUSTEP_LOCAL_ROOT (which have already been added), we add the paths
-# based on GNUSTEP_NETWORK_ROOT too.
-ifneq ($(GNUSTEP_NETWORK_ROOT), $(GNUSTEP_USER_ROOT))
-ifneq ($(GNUSTEP_NETWORK_ROOT), $(GNUSTEP_LOCAL_ROOT))
-GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_HEADER_PATH))
-GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_LIBRARY_PATH))
-GNUSTEP_FRAMEWORKS_DIRS += $(foreach dir,$(GNUSTEP_NETWORK_ROOT),$(GS_FRAMEWORK_PATH))
+ifneq ($(GNUSTEP_LOCAL_LIBRARIES), $(GNUSTEP_USER_LIBRARIES))
+GNUSTEP_LIBRARIES_DIRS += $(foreach domain,LOCAL,$(GS_LIBRARY_PATH))
+endif
+
+ifneq ($(GNUSTEP_LOCAL_FRAMEWORKS), $(GNUSTEP_USER_FRAMEWORKS))
+GNUSTEP_FRAMEWORKS_DIRS += $(foreach domain,LOCAL,$(GS_FRAMEWORK_PATH))
+endif
+
+# Third, if NETWORK flags are different from USER and LOCAL flags (which
+# have already been added), we add those too.
+ifneq ($(GNUSTEP_NETWORK_HEADERS), $(GNUSTEP_USER_HEADERS))
+ifneq ($(GNUSTEP_NETWORK_HEADERS), $(GNUSTEP_LOCAL_HEADERS))
+GNUSTEP_HEADERS_DIRS += $(foreach domain,NETWORK,$(GS_HEADER_PATH))
 endif
 endif
 
-# Last, if GNUSTEP_SYSTEM_ROOT is different from GNUSTEP_USER_ROOT,
-# GNUSTEP_LOCAL_ROOT and GNUSTEP_NETWORK_ROOT (which have already been
-# added), we add the pathe paths based on GNUSTEP_SYSTEM_ROOT too.
-ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_USER_ROOT))
-ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_LOCAL_ROOT))
-ifneq ($(GNUSTEP_SYSTEM_ROOT), $(GNUSTEP_NETWORK_ROOT))
-GNUSTEP_HEADERS_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_HEADER_PATH))
-GNUSTEP_LIBRARIES_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_LIBRARY_PATH))
-GNUSTEP_FRAMEWORKS_DIRS += $(foreach dir,$(GNUSTEP_SYSTEM_ROOT),$(GS_FRAMEWORK_PATH))
+ifneq ($(GNUSTEP_NETWORK_LIBRARIES), $(GNUSTEP_USER_LIBRARIES))
+ifneq ($(GNUSTEP_NETWORK_LIBRARIES), $(GNUSTEP_LOCAL_LIBRARIES))
+GNUSTEP_LIBRARIES_DIRS += $(foreach domain,NETWORK,$(GS_LIBRARY_PATH))
+endif
+endif
+
+ifneq ($(GNUSTEP_NETWORK_FRAMEWORKS), $(GNUSTEP_USER_FRAMEWORKS))
+ifneq ($(GNUSTEP_NETWORK_FRAMEWORKS), $(GNUSTEP_LOCAL_FRAMEWORKS))
+GNUSTEP_FRAMEWORKS_DIRS += $(foreach domain,NETWORK,$(GS_FRAMEWORK_PATH))
+endif
+endif
+
+# Last, if SYSTEM flags are different from USER, LOCAL and NETWORK
+# flags (which have already been added), we add the ones based on
+# SYSTEM too.
+ifneq ($(GNUSTEP_SYSTEM_HEADERS), $(GNUSTEP_USER_HEADERS))
+ifneq ($(GNUSTEP_SYSTEM_HEADERS), $(GNUSTEP_LOCAL_HEADERS))
+ifneq ($(GNUSTEP_SYSTEM_HEADERS), $(GNUSTEP_NETWORK_HEADERS))
+GNUSTEP_HEADERS_DIRS += $(foreach domain,SYSTEM,$(GS_HEADER_PATH))
+endif
+endif
+endif
+
+ifneq ($(GNUSTEP_SYSTEM_LIBRARIES), $(GNUSTEP_USER_LIBRARIES))
+ifneq ($(GNUSTEP_SYSTEM_LIBRARIES), $(GNUSTEP_LOCAL_LIBRARIES))
+ifneq ($(GNUSTEP_SYSTEM_LIBRARIES), $(GNUSTEP_NETWORK_LIBRARIES))
+GNUSTEP_LIBRARIES_DIRS += $(foreach domain,SYSTEM,$(GS_LIBRARY_PATH))
+endif
+endif
+endif
+
+ifneq ($(GNUSTEP_SYSTEM_FRAMEWORKS), $(GNUSTEP_USER_FRAMEWORKS))
+ifneq ($(GNUSTEP_SYSTEM_FRAMEWORKS), $(GNUSTEP_LOCAL_FRAMEWORKS))
+ifneq ($(GNUSTEP_SYSTEM_FRAMEWORKS), $(GNUSTEP_NETWORK_FRAMEWORKS))
+GNUSTEP_FRAMEWORKS_DIRS += $(foreach domain,SYSTEM,$(GS_FRAMEWORK_PATH))
 endif
 endif
 endif
@@ -463,24 +490,24 @@ endif
 # directory).  But does it really matter in practice anyway ?
 ifeq ($(GNUSTEP_IS_FLATTENED),yes)
 GNUSTEP_HEADERS_FND_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/libFoundation \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/libFoundation \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/libFoundation \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/libFoundation \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
+  $(GNUSTEP_USER_HEADERS)/libFoundation \
+  $(GNUSTEP_LOCAL_HEADERS)/libFoundation \
+  $(GNUSTEP_NETWORK_HEADERS)/libFoundation \
+  $(GNUSTEP_SYSTEM_HEADERS)/libFoundation \
+  $(GNUSTEP_USER_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_LOCAL_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_NETWORK_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_SYSTEM_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
 else
 GNUSTEP_HEADERS_FND_DIRS = \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_USER_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_LOCAL_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_NETWORK_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_SYSTEM_ROOT)/Library/Headers/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
+  $(GNUSTEP_USER_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_LOCAL_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_NETWORK_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_SYSTEM_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
+  $(GNUSTEP_USER_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_LOCAL_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_NETWORK_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
+  $(GNUSTEP_SYSTEM_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
 endif
 
 ifeq ($(REMOVE_EMPTY_DIRS), yes)
