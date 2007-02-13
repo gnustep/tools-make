@@ -1,5 +1,11 @@
 2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* filesystem.make: Fixed standard subdirectories of Library to
+	reduce the amount of config options to only the ones that will
+	actually be used.
+
+2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* common.make: Rewritten code that builds the -I, -L and -F flags
 	to use the new filesystem variables.
 
