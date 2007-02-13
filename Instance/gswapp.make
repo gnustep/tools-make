@@ -47,7 +47,12 @@ endif
 # Determine the application directory extension
 GSWAPP_EXTENSION = gswa
 
+# FIXME: This is how it is ...
 GNUSTEP_GSWAPPS = $(GNUSTEP_INSTALLATION_DIR)/GSWApps
+
+# ... and this is how it should be.  It looks like changing this might
+# require changing gsweb though ?  So I'm not doing it.
+# GNUSTEP_GSWAPPS = $(GNUSTEP_LIBRARY)/GSWApps
 
 .PHONY: internal-gswapp-all_ \
         internal-gswapp-install_ \
