@@ -27,6 +27,10 @@
 # FIXME/TODO: Update for GNUSTEP_BUILD_DIR
 #
 
+#
+# FIXME/TODO: Replace GNUSTEP_INSTALLATION_DIR with GNUSTEP_INSTALLATION_DOMAIN
+#
+
 # rpm puts all tools, bundles, applications, subprojects, libraries,
 # etc specified in the GNUmakefile into a single rpm. There aren't any
 # provisions for putting separate apps/tools/etc in separate rpms
