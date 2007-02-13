@@ -1,3 +1,12 @@
+2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>,
+            Matt Rice  <ratmice@gmail.com>,
+
+	* GNUmakefile.in (MAKE_FILES): Added filesystem.make.
+	* filesystem.make: New file.
+	* common.make: Include the new file.  Rewritten code that
+	determines the installation directories.  Use the information from
+	filesystem.make when required.
+
 2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 	
 	* Master/rules.make (internal-check-install-permissions): Only use
@@ -34,7 +43,7 @@
 	version number on the top-level invocation.
 
 2007-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>, 
-            Matt Rice  <ratmice@gmail.com>,
+            Matt Rice  <ratmice@gmail.com>
 
 	This change in the API is needed for resource-set.make to work
 	with the new filesystem layouts.

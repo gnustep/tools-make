@@ -92,7 +92,7 @@ endif
 #
 # Sanity checks - only performed at the first make invocation
 #
-# FIXME - these checks should probably be removed and/or rewritten.
+# FIXME - the sanity checks should probably be removed and/or rewritten.
 #
 
 # Please note that _GNUSTEP_TOP_INVOCATION_DONE is set by the first
@@ -168,6 +168,11 @@ endif
 include $(GNUSTEP_MAKEFILES)/target.make
 
 #
+# Now load the filesystem locations.
+#
+include $(GNUSTEP_MAKEFILES)/filesystem.make
+
+#
 # GNUSTEP_INSTALLATION_DOMAIN is the domain where all things go.  This
 # is the variable you should use to specify where you want things to
 # be installed.  Valid values are SYSTEM, LOCAL, NETWORK and USER,
@@ -191,10 +196,11 @@ endif
 endif
 
 #
-# GNUSTEP_INSTALLATION_DIR is an older mechanism for specifying
-# where things should be installed.  It is expected to be a 
+# GNUSTEP_INSTALLATION_DIR is an older/different mechanism for
+# specifying where things should be installed.  It is expected to be a
 # fixed absolute path rather than a logical domain.  You shouldn't
-# normally use it, but might be handy if you need to force things.
+# normally use it, but might be handy if you need to force things
+# and you're using the GNUstep filesystem structure.
 #
 # If GNUSTEP_INSTALLATION_DIR is set, we automatically install
 # everything in the GNUstep filesystem domain structure in the
@@ -203,52 +209,91 @@ endif
 # GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT).
 #
 # Please note that GNUSTEP_INSTALLATION_DIR overrides
-# GNUSTEP_INSTALLATION_DOMAIN.
-#
-
-#
-# This is a temporary implementation that only supports the GNUstep
-# filesystem structure.  So we just convert
-# GNUSTEP_INSTALLATION_DOMAIN into a GNUSTEP_INSTALLATION_DIR, and
-# then use GNUSTEP_INSTALLATION_DIR later on to define all the install
-# locations.
+# GNUSTEP_INSTALLATION_DOMAIN, so if you want to use
+# GNUSTEP_INSTALLATION_DOMAIN, make sure you're not setting
+# GNUSTEP_INSTALLATION_DIR.
 #
 
 # GNUSTEP_INSTALLATION_DIR overrides GNUSTEP_INSTALLATION_DOMAIN
-ifeq ($(GNUSTEP_INSTALLATION_DIR),)
-  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), SYSTEM)
-    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_SYSTEM_ROOT)
+ifneq ($(GNUSTEP_INSTALLATION_DIR),)
+
+  # This is the case where we install things using a standard
+  # GNUstep filesystem rooted in GNUSTEP_INSTALLATION_DIR.
+  # This is not recommended since it does not work with custom
+  # filesystem configurations.
+
+  #
+  # DESTDIR allows you to relocate the entire installation somewhere else
+  # (as per GNU Coding Standards).
+  #
+  # Add DESTDIR as a prefix to GNUSTEP_INSTALLATION_DIR, but only if we're
+  # at the first top-level invocation.  Else we risk adding it multiple
+  # times ;-)
+  #
+  ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
+    ifneq ($(DESTDIR),)
+      override GNUSTEP_INSTALLATION_DIR := $(DESTDIR)/$(GNUSTEP_INSTALLATION_DIR)
+    endif
   endif
 
-  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), LOCAL)
-    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
+  # Make it public and available to all submakes invocations
+  export GNUSTEP_INSTALLATION_DIR
+
+  # Use GNUSTEP_INSTALLATION_DIR to set the installation dirs
+  GNUSTEP_APPS                 = $(GNUSTEP_INSTALLATION_DIR)/Applications
+  GNUSTEP_TOOLS                = $(GNUSTEP_INSTALLATION_DIR)/Tools
+  GNUSTEP_LIBRARY              = $(GNUSTEP_INSTALLATION_DIR)/Library
+  GNUSTEP_SERVICES             = $(GNUSTEP_LIBRARY)/Services
+  ifeq ($(GNUSTEP_IS_FLATTENED),yes)
+    GNUSTEP_HEADERS            = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers
+  else
+    GNUSTEP_HEADERS            = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers/$(LIBRARY_COMBO)
+  endif
+  GNUSTEP_APPLICATION_SUPPORT  = $(GNUSTEP_LIBRARY)/ApplicationSupport
+  GNUSTEP_BUNDLES              = $(GNUSTEP_LIBRARY)/Bundles
+  GNUSTEP_FRAMEWORKS           = $(GNUSTEP_LIBRARY)/Frameworks
+  GNUSTEP_PALETTES             = $(GNUSTEP_LIBRARY)/ApplicationSupport/Palettes
+  GNUSTEP_LIBRARIES            = $(GNUSTEP_INSTALLATION_DIR)/Library/Libraries
+  GNUSTEP_RESOURCES            = $(GNUSTEP_LIBRARY)/Libraries/Resources
+  GNUSTEP_JAVA                 = $(GNUSTEP_LIBRARY)/Libraries/Java
+  GNUSTEP_DOCUMENTATION        = $(GNUSTEP_LIBRARY)/Documentation
+  GNUSTEP_DOCUMENTATION_MAN    = $(GNUSTEP_DOCUMENTATION)/man
+  GNUSTEP_DOCUMENTATION_INFO   = $(GNUSTEP_DOCUMENTATION)/info
+
+else 
+
+  # This is the case where we install things in GNUSTEP_INSTALLATION_DOMAIN
+  # according to the (potentially custom) filesystem configuration of
+  # that domain.  This is the recommended way.
+
+  # Make it public and available to all submakes invocations
+  export GNUSTEP_INSTALLATION_DOMAIN
+
+  # Use DESTDIR + GNUSTEP_INSTALLATION_DOMAIN to set the installation dirs
+  ifeq ($(DESTDIR),)
+    MAYBE_DESTDIR=
+  else
+    MAYBE_DESTDIR=$(DESTDIR)/
   endif
 
-  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), NETWORK)
-    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_NETWORK_ROOT)
-  endif
+  GNUSTEP_APPS                 = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_APPS)
+  GNUSTEP_TOOLS                = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_TOOLS)
+  GNUSTEP_LIBRARY              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_LIBRARY)
+  GNUSTEP_SERVICES             = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_SERVICES)
+  GNUSTEP_HEADERS              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_HEADERS)
+  GNUSTEP_APPLICATION_SUPPORT  = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_APPLICATION_SUPPORT)
+  GNUSTEP_BUNDLES              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_BUNDLES)
+  GNUSTEP_FRAMEWORKS           = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_FRAMEWORKS)
+  GNUSTEP_PALETTES             = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_PALETTES)
+  GNUSTEP_LIBRARIES            = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_LIBRARIES)
+  GNUSTEP_RESOURCES            = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_RESOURCES)
+  GNUSTEP_JAVA                 = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_JAVA)
+  GNUSTEP_DOCUMENTATION        = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOCUMENTATION)
+  GNUSTEP_DOCUMENTATION_MAN    = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOCUMENTATION_MAN)
+  GNUSTEP_DOCUMENTATION_INFO   = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOCUMENTATION_INFO)
 
-  ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), USER)
-    GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_USER_ROOT)
-  endif
 endif
 
-#
-# DESTDIR allows you to relocate the entire installation somewhere else
-# (as per GNU Coding Standards).
-#
-# Add DESTDIR as a prefix to GNUSTEP_INSTALLATION_DIR, but only if we're
-# at the first top-level invocation.  Else we risk adding it multiple
-# times ;-)
-#
-ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
-  ifneq ($(DESTDIR),)
-    override GNUSTEP_INSTALLATION_DIR := $(DESTDIR)/$(GNUSTEP_INSTALLATION_DIR)
-  endif
-endif
-
-# Make it public and available to all submakes invocations
-export GNUSTEP_INSTALLATION_DIR
 
 #
 # INSTALL_ROOT_DIR is the obsolete way of relocating stuff.  It used
@@ -269,37 +314,6 @@ ifneq ($(DESTDIR),)
     INSTALL_ROOT_DIR = $(DESTDIR)
   endif
 endif
-
-#
-# Variables specifying the installation directory paths.
-#
-# TODO: To support the 'native' filesystem structure, a list of such
-# memorable directory locations will be stored in GNUstep.conf.  This
-# list might (FIXME) presumably follow the GNU Coding Standards for
-# install locations (eg, bindir, etc) if it makes sense.  Then we set
-# the following variables by using the install locations from
-# GNUstep.conf that are relevant to the domain where we are installing
-# to.
-#
-GNUSTEP_APPS                 = $(GNUSTEP_INSTALLATION_DIR)/Applications
-GNUSTEP_TOOLS                = $(GNUSTEP_INSTALLATION_DIR)/Tools
-GNUSTEP_LIBRARY              = $(GNUSTEP_INSTALLATION_DIR)/Library
-GNUSTEP_SERVICES             = $(GNUSTEP_LIBRARY)/Services
-ifeq ($(GNUSTEP_IS_FLATTENED),yes)
-  GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers
-else
-  GNUSTEP_HEADERS              = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers/$(LIBRARY_COMBO)
-endif
-GNUSTEP_APPLICATION_SUPPORT  = $(GNUSTEP_LIBRARY)/ApplicationSupport
-GNUSTEP_BUNDLES 	     = $(GNUSTEP_LIBRARY)/Bundles
-GNUSTEP_FRAMEWORKS	     = $(GNUSTEP_LIBRARY)/Frameworks
-GNUSTEP_PALETTES 	     = $(GNUSTEP_LIBRARY)/ApplicationSupport/Palettes
-GNUSTEP_LIBRARIES            = $(GNUSTEP_INSTALLATION_DIR)/Library/Libraries
-GNUSTEP_RESOURCES            = $(GNUSTEP_LIBRARY)/Libraries/Resources
-GNUSTEP_JAVA                 = $(GNUSTEP_LIBRARY)/Libraries/Java
-GNUSTEP_DOCUMENTATION        = $(GNUSTEP_LIBRARY)/Documentation
-GNUSTEP_DOCUMENTATION_MAN    = $(GNUSTEP_DOCUMENTATION)/man
-GNUSTEP_DOCUMENTATION_INFO   = $(GNUSTEP_DOCUMENTATION)/info
 
 # The default name of the makefile to be used in recursive invocations of make
 ifeq ($(MAKEFILE_NAME),)
