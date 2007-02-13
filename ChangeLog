@@ -1,5 +1,15 @@
 2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* filesystem.sh: New file.
+	* GNUmakefile.in: Install the new file.
+	* GNUstep.sh.in: Source the new file.  At the end, export all of
+	the new filesystem variables if GNUSTEP_SH_EXPORT_ALL_VARIABLES is
+	set, or unset them all in the normal situation.
+	* gnustep-config.in: Use GNUSTEP_SH_EXPORT_ALL_VARIABLES to access
+	the filesystem variables too.
+	
+2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* filesystem.make: Fixed standard subdirectories of Library to
 	reduce the amount of config options to only the ones that will
 	actually be used.

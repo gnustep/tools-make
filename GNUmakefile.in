@@ -155,6 +155,7 @@ install: generated-files
 	 $(EC)($(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
+	  $(INSTALL_PROGRAM) -m 755 filesystem.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 gnustep-config $(tooldir))

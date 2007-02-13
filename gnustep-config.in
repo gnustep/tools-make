@@ -113,7 +113,9 @@ fi
 #
 # Else, now read all the standard GNUstep config
 #
+GNUSTEP_SH_EXPORT_ALL_VARIABLES=yes
 . $GNUSTEP_MAKEFILES/GNUstep.sh
+unset GNUSTEP_SH_EXPORT_ALL_VARIABLES
 
 #
 # Now print whatever variable they asked for
