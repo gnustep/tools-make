@@ -1005,6 +1005,9 @@ AC_SUBST(OBJCFLAGS)
 # Check for $(info ...) function in GNU make
 #--------------------------------------------------------------------
 
+# Use 'gmake' in preference to 'make' if it is found
+AC_CHECK_PROG(GNUMAKE, gmake, gmake, make)
+
 # If GNU make supports $(info ...), gnustep-make can use it to print
 # out a help message at the beginning of each compilation.  This
 # feature was introduced in GNU make 3.81, so we check GNU make's
@@ -1015,7 +1018,7 @@ AC_MSG_CHECKING(for the GNU Make version)
 # To get the make version, take the output of 'make --version', read
 # only the first line (that we expect to be something like "GNU Make
 # 3.81"), and ignore everything up to the first numeric character.
-gs_cv_make_version=`make --version | head -1 | sed -e 's/^[[^0-9]]*//'`
+gs_cv_make_version=`$GNUMAKE --version | head -1 | sed -e 's/^[[^0-9]]*//'`
 
 # Now check for the major/minor version numbers.
 gs_cv_make_major_version=`echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\1/'`
