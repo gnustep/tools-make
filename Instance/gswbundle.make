@@ -51,7 +51,7 @@ ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
 endif
 
 ifeq ($(GSWBUNDLE_INSTALL_DIR),)
-GSWBUNDLE_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/Library/Libraries
+  GSWBUNDLE_INSTALL_DIR = $(GNUSTEP_LIBRARIES)
 endif
 # The name of the bundle is in the BUNDLE_NAME variable.
 # The list of languages the bundle is localized in are in xxx_LANGUAGES

@@ -105,6 +105,7 @@ internal-all::
 
 after-all::
 
+ifneq ($(GNUSTEP_INSTALLATION_DIR),)
 internal-check-install-permissions:
 	@if [ -d "$(GNUSTEP_INSTALLATION_DIR)" \
 	      -a ! -w "$(GNUSTEP_INSTALLATION_DIR)" ]; then \
@@ -114,6 +115,9 @@ internal-check-install-permissions:
 	  echo ""; \
 	  exit 1; \
 	fi
+else
+internal-check-install-permissions:
+endif
 
 before-install::
 

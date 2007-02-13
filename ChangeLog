@@ -1,3 +1,12 @@
+2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* Master/rules.make (internal-check-install-permissions): Only use
+	this rule if GNUSTEP_INSTALLATION_DIR is set.
+	* Instance/gswbundle.make (GSWBUNDLE_INSTALL_DIR): Set it by
+	default to GNUSTEP_LIBRARIES, which is the same as
+	GNUSTEP_INSTALLATION_DIR/Library/Libraries in the traditional
+	filesystem but will work with the new filesystem too.
+	
 2007-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUmakefile.in (GNUSTEP_FLATTENED): Obsolete variable
