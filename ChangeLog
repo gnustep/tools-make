@@ -1,3 +1,11 @@
+2007-02-13  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Disable SHARED_SOLARIS on solaris2.[67]. Use
+	redirect to /dev/null rather than grep -q (due to non-Posix grep
+	on many OSs).
+	* Documentation/machines.texi: Update
+	* Documentation/README.Darwin: Update.
+
 2007-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* filesystem.sh: New file.

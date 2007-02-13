@@ -1,6 +1,5 @@
 Date : 15-Jan-2004
-Last update: 20041227 (tested under Mac OS X 10.3 / Darwin 7)
- --> must be verified on x86-darwin-7, powerpc-apple-darwin-6   
+Last update: 20061231 (tested under Mac OS X 10.4 / Darwin 8)
 Authors: Adam Fedor <fedor@gnu.org>
          Quentin Mathé <qmathe@club-internet.fr>
          Lars S.-Helldorf <lars.sonchocky-helldorf@hamburg.de>
@@ -10,10 +9,6 @@ PURPOSE
 
 This document is intended to provide a step by step instruction on how to get 
 the GNUstep installed on Mac OS X and Darwin.
-
-Note: GNUstep seems to install on Mac OS X 10.2 / Darwin 6, but the bundles
-support seems to be broken, then applications based on GNUstep-gui will not
-work. (Must be verified)
 
 COMMONLY USED SYMBOLS
 ---------------------
@@ -55,19 +50,19 @@ see an instruction like 'make install', you usually need to use sudo
 ('sudo make install') or be logged in as root (not recommended).
 
      libxml2  (Optional, highly recommended, already in 
-               Mac OS X 10.3 / Darwin 7)
+               Mac OS X 10.3 / Darwin 7 and later)
      libxslt  (Optional)
      libtiff  (Required)
-     libjpeg  (Optional, highly recommended)
+     libjpeg  (Optional, highly recommended - don't get from fink!)
      libpng   (Optional, highly recommended)
      
      libffi   (Required, only contained in the GCC distributions and pyobjc)
      ffcall   (On Darwin x86 - use instead of libffi)
 
-     Xfree86  (Required, already in Mac OS X 10.3/Darwin 7)
+     Xfree86  (Required, already in Mac OS X 10.3/Darwin 7 and later)
 
-     libart2   (Optional, but required for art backend)
-     freetype2 (Optional, but required for art backend)
+     libart2   (Required for art backend)
+     freetype2 (Required for art backend)
 
      dlcompat (Required, already in Mac OS X 10.3 or later)
 
@@ -131,13 +126,6 @@ instead.
 GNUstep on Darwin PowerPC
 -------------------------
 
-Haven't been able to get Apple GCC on Mac OS X 10.2 / Darwin 6 to compile 
-GNUstep-base. The compiler crashes with various errors. You need the FSF GCC
-compiler here. You need at least version 3.3.2.
-Version 3.3.5 seems to cause the fewest headaches, but later versions 3.4.x
-don't work on Mac OS X / Darwin (because libobjc cannot be compiled, the 
-related GCC bug report is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
-
 Building FSF-GCC
 ----------------
 
@@ -188,6 +176,7 @@ Configure and build as follows (tested using gcc-3.3.2 on Mac OS X 10.2 and
      make install
      cd <gcc install dir>/lib
      ln -s libobjc.a libobjc.dylib                     # So the linker sees us
+     # Note when using gcc 4 or greater, make sure this is libobjc-gnu.dylib
 
 Setting up the GNUstep make environment
 ---------------------------------------
@@ -284,8 +273,6 @@ Building and installing GNUstep-base
 
 Go to GNUstep-base (or from CVS into the core/base directory).
 
-Note: If you are using .
-
 If you are using the FSF GCC (with the Apple GCC which only works currently 
 with the apple-apple-apple library combo, you don't need to run the configure 
 yourself unless you need special options), type:
@@ -339,7 +326,7 @@ Go to GNUstep-gui (or from CVS into the core/gui directory).
 
 If you are using the Apple GCC (doesn't work currently) or the FSF GCC type: 
 
-     ./configure --disable-gsnd  [CC=<gcc install dir>/bin/gcc]
+     ./configure [CC=<gcc install dir>/bin/gcc]
   
 followed by:
 
@@ -352,10 +339,10 @@ In the case configure didn't found libjpeg, use
 --with-jpeg-library=<jpeg libdir> --with-jpeg-include=<jpeg include dir> to have
 the libjpeg detected.
 
-Example with Fink:
+Example:
 
-     ./configure --disable-gsnd --with-jpeg-library=/sw/lib
-     --with-jpeg-include=/sw/include
+     ./configure --with-jpeg-library=/usr/local/lib
+     --with-jpeg-include=/usr/local/include
 
 
 Building and installing GNUstep-back
@@ -386,7 +373,7 @@ it is missing a crucial include file and also has some undefined symbols. I
 had to install the freetype2-dev package from fink and add this to my path
 so that it could be found:
 PATH=/sw/lib/freetype/bin:$PATH
-make sure in config.make that -L/sw/lib/freetype2/lib is included before -L/usr/X11R6/lib (Adam Fedor <fedor@gnu.org>)
+make sure in config.make that -L/sw/lib/freetype2/lib is included before -L/usr/X11R6/lib (Adam Fedor <fedor@gnu.org>) Mac OS X 10.4 doesn't have this problem.
 
 Then you should be able to configure back and install it:
 

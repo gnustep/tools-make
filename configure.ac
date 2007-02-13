@@ -208,7 +208,7 @@ if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
     *)	            GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
   esac
 fi
-if echo "$GNUSTEP_CONFIG_FILE" | grep -q '[[ 	\\]]'
+if echo "$GNUSTEP_CONFIG_FILE" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_CONFIG_FILE'"
   echo "Please try again using --with-config-file= to specify a valid path."
@@ -344,7 +344,7 @@ GNUSTEP_SYSTEM_ROOT="$withval",)
 if test "$GNUSTEP_SYSTEM_ROOT" = "" -o "$GNUSTEP_SYSTEM_ROOT" = "no"; then 
   GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
 fi
-if echo "$GNUSTEP_SYSTEM_ROOT" | grep -q '[[ 	\\]]'
+if echo "$GNUSTEP_SYSTEM_ROOT" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_SYSTEM_ROOT'"
   echo "Please try again using --with-system-root= to specify a valid path."
@@ -378,7 +378,7 @@ fi
 if test "$GNUSTEP_LOCAL_ROOT" = ""; then 
   GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
 fi
-if echo "$GNUSTEP_LOCAL_ROOT" | grep -q '[[ 	\\]]'
+if echo "$GNUSTEP_LOCAL_ROOT" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_LOCAL_ROOT'"
   echo "Please try again using --with-local-root= to specify a valid path."
@@ -414,7 +414,7 @@ GNUSTEP_NETWORK_ROOT="$withval",)
 if test "$GNUSTEP_NETWORK_ROOT" = "" -o "$GNUSTEP_NETWORK_ROOT" = "no"; then 
   GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
 fi
-if echo "$GNUSTEP_NETWORK_ROOT" | grep -q '[[ 	\\]]'
+if echo "$GNUSTEP_NETWORK_ROOT" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_NETWORK_ROOT'"
   echo "Please try again using --with-network-root= to specify a valid path."
@@ -446,7 +446,7 @@ GNUSTEP_USER_CONFIG_FILE="$withval",)
 if test "$GNUSTEP_USER_CONFIG_FILE" = "" -o "$GNUSTEP_USER_CONFIG_FILE" = "no"; then 
   GNUSTEP_USER_CONFIG_FILE=".GNUstep.conf"
 fi
-if echo "$GNUSTEP_USER_CONFIG_FILE" | grep -q '[[ 	\\]]'
+if echo "$GNUSTEP_USER_CONFIG_FILE" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_CONFIG_FILE'"
   echo "Please try again using --with-user-config-file= to specify a value."
@@ -480,7 +480,7 @@ GNUSTEP_USER_DIR="$withval",)
 if test "$GNUSTEP_USER_DIR" = "" -o "$GNUSTEP_USER_DIR" = "no"; then 
   GNUSTEP_USER_DIR="GNUstep"
 fi
-if echo "$GNUSTEP_USER_DIR" | grep -q '[[ 	\\]]'
+if echo "$GNUSTEP_USER_DIR" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DIR'"
   echo "Please try again using --with-user-dir= to specify a value."
@@ -513,7 +513,7 @@ GNUSTEP_USER_DEFAULTS_DIR="$withval",)
 if test "$GNUSTEP_USER_DEFAULTS_DIR" = "" -o "$GNUSTEP_USER_DEFAULTS_DIR" = "no"; then 
   GNUSTEP_USER_DEFAULTS_DIR="GNUstep/Defaults"
 fi
-if echo "$GNUSTEP_USER_DEFAULTS_DIR" | grep -q '[[ 	\\]]'
+if echo "$GNUSTEP_USER_DEFAULTS_DIR" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DEFAULTS_DIR'"
   echo "Please try again using --with-user-defaults-dir= to specify a value."
@@ -984,8 +984,12 @@ if test ! ${GCC} = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
   if test "${gs_cv_gcc_major_version}" -ge "4" ; then
-    SOLARIS_SHARED=yes
-    AC_MSG_RESULT(yes: gcc version is ${gs_cv_gcc_parsed_version} >= 4.0)
+    if test "$host_os" = "solaris2.7" -o $"host_os" = "solaris2.6"; then
+      AC_MSG_RESULT(no: solaris 2.6 or 2.7)
+    else
+      SOLARIS_SHARED=yes
+      AC_MSG_RESULT(yes: gcc version is ${gs_cv_gcc_parsed_version} >= 4.0)
+    fi
   else
     AC_MSG_RESULT(no: gcc version is ${gs_cv_gcc_parsed_version} < 4.0)
   fi

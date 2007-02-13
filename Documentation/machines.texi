@@ -86,12 +86,12 @@ Not an official gcc release. Some versions (Redhat, Mandrake) have problems
 that prevent GNUstep from being compiled correctly and cause
 mysterious errors. Not supported.
 @item gcc 3.0.x
-A fairly good compiler. Recommended.
+A fairly good compiler. 
 @item gcc 3.1
 Several bugs where introduced in the version. It's probably better to
 avoid this one, although it might work fine.
 @item gcc 3.2.x
-Pretty good. Recommended.
+Pretty good. 
 @item gcc 3.3.x
 Recommended. Fixes some bugs relating to protocols as well as other
 improvements.
@@ -103,6 +103,8 @@ Probably OK. Did start triggering compiler errors on parts of base, but
 there has been a workaround in base for that. Does not work on MacOSX.
 @item gcc 4.0.1
 Probably OK. This version should work on MacOSX.
+@item gcc 4.1.x
+4.1.0 and 4.1.1 don't work if you use precompiled headers.
 @end table
 
 If your having mysterious trouble with a machine, try compiling GNUstep
@@ -172,33 +174,38 @@ complilers, different display systems, etc. For building GNUstep extensions
 to be used with Mac OS X (for instance, if you want to build something based
 on GNUstep, such as GSWeb or GNUMail), see the MacOSX/PowerPC section.
 
-Currently tested on Darwin 6.x, 7.x
+Currently tested on Darwin 6.x, 7.x, 8.x
 
 @table @var
 @item Recommended compiler
-gcc 3.3.2 or greater 3.3.* versions. 
+gcc 4.x, gcc 3.3.2 or greater 3.3.* versions. 
 Older versions will not compile on Darwin and 3.4.* versions don't 
 support GNU runtime compilation on Darwin currently (The GCC bug report 
 is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-Default compiler (Apple GCC) has unknown problems.
-Download the FSF GCC compiler and configure it with
+Default compiler (Apple GCC) has problems, mostly because it tries
+to link in Apple libraries that conflict with GNUstep.
+Get the FSF gcc-4 compiler using fink or
+download the FSF GCC compiler and configure it with
 -enable-threads=posix. You don't need binutils or anything else.
 Use the GNU runtime. Make sure to add 
 @example
-export CC=/usr/local/bin/gcc (use the correct path to FSF gcc)
+export CC=gcc-4 (or use the correct path to FSF gcc)
 @end example
 so that the correct compiler is found
 
 @item Extra libs needed 
 Use libffi (not ffcall). This should be enabled by default in gnustep-base
 so you don't have to type --enable-libffi. For 6.x, you need the dlcompat 
-library (from @url{www.opendarwin.org}) to load bundles (not needed for 7.x).
+library (from @url{www.opendarwin.org}) to load bundles (not needed for 7.x
+or later). libjpeg that comes with fink conflicts with the Apple libraries
+and screw up other apps on Mac OSX (like X11).
 
 @item Special Instructions 
 
 Read the @url{README.Darwin} file in the gnustep-make/Documentation
-directory for complete instructions.
+directory for complete instructions. If you compiled FSF gcc by hand,
+make sure to rename to GNU libobjc library to libobjc-gnu.dylib
 
 @end table
 
