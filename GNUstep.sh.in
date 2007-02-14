@@ -377,7 +377,7 @@ fi
 
 #
 # Clean up the environment by removing the filesystem variables.  Do
-# it unless we were explicitly requirested not to clean it up!  Mostly
+# it unless we were explicitly requested not to clean it up!  Mostly
 # gnustep-config will request that the environment is not cleaned up,
 # so it can print out all of the GNUstep variables.
 #
