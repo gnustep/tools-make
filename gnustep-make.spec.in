@@ -1,5 +1,7 @@
 #
-# This file is to be manually edited
+# This file is to be manually edited.  The current version is very
+# old.  You probably want to install into the Linux FHS, which
+# this doesn't do.
 #
 # This package is not relocatable
 #
@@ -22,9 +24,10 @@ BuildRoot: 	/var/tmp/build-%{gs_name}
 #
 
 %description
-This package contains the basic scripts, makefiles and directory layout
-needed to run and compile any GNUstep software.  This package was configured
-for library combo %{gs_libcombo}.
+This package contains the basic scripts, makefiles and directory
+layout needed to run and compile any GNUstep software.  This package
+was configured for library combo %{gs_libcombo} using the standard
+GNUstep filesystem layout based on %{gs_prefix}.
 
 %prep
 %setup -n %{gs_name}-%{gs_version}
@@ -67,33 +70,6 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/profile.d/GNUstep.sh
 #%config /etc/profile.d/GNUstep.csh
 %endif # Linux
-
-#
-# FIXME - do we want to add dirs to the library path or not
-#
-
-#%post
-#if [ $1 = 1]; then
-#%ifos Linux
-# if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
-#    . %{gs_root}/Library/Makefiles/GNUstep.sh 
-# fi
-# grep -q '%{gs_prefix}/System/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}' /etc/ld.so.conf || echo "%{gs_prefix}/System/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}" >> /etc/ld.so.conf
-#%endif
-#fi
-
-#%postun
-#if [ $1 = 0 ]; then
-#%ifos Linux
-# if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
-#    . %{gs_root}/Library/Makefiles/GNUstep.sh 
-# fi
-# mv -f /etc/ld.so.conf /etc/ld.so.conf.orig
-# grep -v "^%{gs_prefix}/System/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/%{gs_libcombo}" /etc/ld.so.conf.orig > /etc/ld.so.conf
-# rm -f /etc/ld.so.conf.orig
-#%endif
-#fi
-
 
 %changelog
 * Thu Jul 19 2001 Adam Fedor <fedor@gnu.org>
