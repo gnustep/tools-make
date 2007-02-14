@@ -418,23 +418,6 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR)/.stamp $(OBJ_FILES_TO_LINK) GNUm
 	  classarray="$$classarray)"; \
 	fi; \
 	echo "$$classarray" > $(DUMMY_FRAMEWORK_CLASS_LIST); \
-	if [ "$(findstring $(GNUSTEP_SYSTEM_ROOT), $(FRAMEWORK_INSTALL_DIR))" = $(GNUSTEP_SYSTEM_ROOT) ]; then \
-	  fw_env="@\"GNUSTEP_SYSTEM_ROOT\""; \
-	elif [ "$(findstring $(GNUSTEP_LOCAL_ROOT), $(FRAMEWORK_INSTALL_DIR))" = $(GNUSTEP_LOCAL_ROOT) ]; then \
-	  fw_env="@\"GNUSTEP_LOCAL_ROOT\""; \
-	elif [ "$(findstring $(GNUSTEP_USER_ROOT), $(FRAMEWORK_INSTALL_DIR))" = $(GNUSTEP_USER_ROOT) ]; then \
-	  fw_env="@\"GNUSTEP_USER_ROOT\""; \
-	else \
-	  fw_env="nil"; \
-	fi; \
-	fw_path=`echo $(FRAMEWORK_INSTALL_DIR) | sed 's/^$(subst /,\/,$(GNUSTEP_FRAMEWORKS))//'`; \
-	if [ "$$fw_path" = "$(FRAMEWORK_INSTALL_DIR)" ]; then \
-	  fw_path="nil"; \
-	elif [ "$$fw_path" = "" ]; then \
-	  fw_path="nil"; \
-	else \
-	  fw_path="@\"$$fw_path\""; \
-	fi; \
 	echo "#include <Foundation/NSString.h>" > $@; \
 	echo "@interface $(DUMMY_FRAMEWORK)" >> $@; \
 	echo "+ (NSString *)frameworkEnv;" >> $@; \
@@ -443,8 +426,8 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR)/.stamp $(OBJ_FILES_TO_LINK) GNUm
 	echo "+ (NSString **)frameworkClasses;" >> $@; \
 	echo "@end" >> $@; \
 	echo "@implementation $(DUMMY_FRAMEWORK)" >> $@; \
-	echo "+ (NSString *)frameworkEnv { return $$fw_env; }" >> $@; \
-	echo "+ (NSString *)frameworkPath { return $$fw_path; }" >> $@; \
+	echo "+ (NSString *)frameworkEnv { return nil; }" >> $@; \
+	echo "+ (NSString *)frameworkPath { return @\"$(FRAMEWORK_INSTALL_DIR)\"; }" >> $@; \
 	echo "+ (NSString *)frameworkVersion { return @\"$(CURRENT_VERSION_NAME)\"; }" >> $@; \
 	echo "static NSString *allClasses[] = {$$classlist};" >> $@; \
 	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@;\
