@@ -28,6 +28,11 @@
 # This file resets variables in reverse order as they are set in the
 # GNUstep.sh file.
 
+# This file only makes sense if you are using the standard GNUstep
+# filesystem structure.  If you're not, then your System Tools
+# directory could be /usr/bin, but you don't really want to remove
+# that from your PATH. :-)
+
 # This function resets a path.
 # It takes two arguments: the name of the path variable to reset,
 # and a path fragment which is used to make our guess at what should
