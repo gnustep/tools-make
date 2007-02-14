@@ -1058,8 +1058,10 @@ else
   # /\2/ replace the whole lot with the 2^nd subpattern
   # /\4/ replace the whole lot with the 4^nd subpattern
   # All square brackets are doubled because this file is processed by m4 first.
-  gs_cv_gcc_major_version=`${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/"`;
-  gs_cv_gcc_minor_version=`${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\4/"`;
+  # Finally, any error messages are redirected to &5, so that they are logged
+  # into config.log but don't clutter the normal user output.
+  gs_cv_gcc_major_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/") 2>&5`;
+  gs_cv_gcc_minor_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\4/") 2>&5`;
 
   gs_cv_gcc_parsed_version=${gs_cv_gcc_major_version}.${gs_cv_gcc_minor_version}
 
@@ -1078,7 +1080,7 @@ AUTO_DEPENDENCIES=""
 if test ! ${GCC} = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
-  if test "${gs_cv_gcc_major_version}" -ge "3" ; then
+  if test "${gs_cv_gcc_major_version}" -ge "3" >&5 2>&5; then
     AUTO_DEPENDENCIES=yes
     AC_MSG_RESULT(yes: gcc version is ${gs_cv_gcc_parsed_version} >= 3.0)
   else
@@ -1111,7 +1113,7 @@ if test ! "${GCC}" = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
   gs_precomp_test_log_file="`pwd`/config-precomp-test.log"
-  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_log_file"; echo $?)`
+  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_log_file"; echo $?) 2>&5`
   if test "$gs_precomp_test_results" = "0"; then
     GCC_WITH_PRECOMPILED_HEADERS="yes"
     AC_MSG_RESULT(yes)
@@ -1143,7 +1145,7 @@ SOLARIS_SHARED=""
 if test ! ${GCC} = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
-  if test "${gs_cv_gcc_major_version}" -ge "4" ; then
+  if test "${gs_cv_gcc_major_version}" -ge "4" >&5 2>&5; then
     if test "$host_os" = "solaris2.7" -o $"host_os" = "solaris2.6"; then
       AC_MSG_RESULT(no: solaris 2.6 or 2.7)
     else
@@ -1180,11 +1182,11 @@ AC_MSG_CHECKING(for the GNU Make version)
 # To get the make version, take the output of 'make --version', read
 # only the first line (that we expect to be something like "GNU Make
 # 3.81"), and ignore everything up to the first numeric character.
-gs_cv_make_version=`$GNUMAKE --version | head -1 | sed -e 's/^[[^0-9]]*//'`
+gs_cv_make_version=`($GNUMAKE --version | head -1 | sed -e 's/^[[^0-9]]*//') 2>&5`
 
 # Now check for the major/minor version numbers.
-gs_cv_make_major_version=`echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\1/'`
-gs_cv_make_minor_version=`echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\2/'`
+gs_cv_make_major_version=`(echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\1/') 2>&5`
+gs_cv_make_minor_version=`(echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\2/') 2>&5`
 AC_MSG_RESULT(version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version})
 
 AC_MSG_CHECKING(if GNU Make has the info function)
@@ -1193,12 +1195,12 @@ AC_MSG_CHECKING(if GNU Make has the info function)
 # assume 'no' here.  If things go wrong, you'll lost some
 # non-essential features.
 MAKE_WITH_INFO_FUNCTION=no
-if test "${gs_cv_make_major_version}" -ge "4"; then
+if test "${gs_cv_make_major_version}" -ge "4" >&5 2>&5; then
   MAKE_WITH_INFO_FUNCTION=yes
 fi
 
-if test "${gs_cv_make_major_version}" -ge "3"; then
-  if test "${gs_cv_make_minor_version}" -ge "81"; then
+if test "${gs_cv_make_major_version}" -ge "3" >&5 2>&5; then
+  if test "${gs_cv_make_minor_version}" -ge "81" >&5 2>&5; then
     MAKE_WITH_INFO_FUNCTION=yes
   fi
 fi
