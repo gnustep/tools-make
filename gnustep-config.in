@@ -36,10 +36,6 @@ if [ "$1" == "--help" ]; then
     echo "any GNUstep filesystem setting from the following list -- "
     echo
     echo "GNUSTEP_MAKEFILES"
-    echo "GNUSTEP_SYSTEM_ROOT (might be obsolete soon)"
-    echo "GNUSTEP_LOCAL_ROOT (might be obsolete soon)"
-    echo "GNUSTEP_NETWORK_ROOT (might be obsolete soon)"
-    echo "GNUSTEP_USER_ROOT (might be obsolete soon)"
     echo "GNUSTEP_USER_DIR"
     echo "GNUSTEP_USER_DEFAULTS_DIR"
     echo "GNUSTEP_HOST"
@@ -47,6 +43,19 @@ if [ "$1" == "--help" ]; then
     echo "GNUSTEP_HOST_VENDOR"
     echo "GNUSTEP_HOST_OS"
     echo "GNUSTEP_IS_FLATTENED"
+    echo "GNUSTEP_xxx_ROOT (might be obsolete soon)"
+    echo "GNUSTEP_xxx_APPS"
+    echo "GNUSTEP_xxx_TOOLS"
+    echo "GNUSTEP_xxx_LIBRARY"
+    echo "GNUSTEP_xxx_HEADERS"
+    echo "GNUSTEP_xxx_LIBRARIES"
+    echo "GNUSTEP_xxx_DOCUMENTATION"
+    echo "GNUSTEP_xxx_DOCUMENTATION_MAN"
+    echo "GNUSTEP_xxx_DOCUMENTATION_INFO"
+    echo "where 'xxx' could be any of 'SYSTEM', 'NETWORK', 'LOCAL' and 'USER'."
+    echo
+    echo "For example, you could get the value of GNUSTEP_SYSTEM_TOOLS to find"
+    echo "where command-line system programs are located on this system."
     echo
     exit 0
 fi
