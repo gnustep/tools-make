@@ -254,7 +254,7 @@ distclean: clean
 	rm -f openapp opentool executable.template
 	rm -f GNUstep.sh GNUstep.csh fixpath.sh gnustep-config
 	rm -f filesystem.make filesystem.sh filesystem.csh
-	rm -f gnustep-make.spec GNUsteprc
+	rm -f gnustep-make.spec GNUstep.conf
 	rm -f config-precomp-test.log
 
 svn-tag:
@@ -317,7 +317,7 @@ rpm: test-RPM_TOPDIR dist
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make \
                  openapp opentool gnustep-make.spec executable.template gnustep-config \
-                 filesystem.make filesystem.sh filesystem.csh
+                 filesystem.make filesystem.sh filesystem.csh GNUstep.conf
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -326,6 +326,9 @@ GNUstep.sh: GNUstep.sh.in
 	$(SHELL) config.status
 
 GNUstep.csh: GNUstep.csh.in
+	$(SHELL) config.status
+
+GNUstep.conf: GNUstep.conf.in
 	$(SHELL) config.status
 
 fixpath.sh: fixpath.sh.in
