@@ -173,20 +173,27 @@ source "${GNUSTEP_MAKEFILES}/filesystem.csh"
 # No longer needed
 unset GNUSTEP_HOME
 
+# Determine if the paths look like Windows paths that need fixing
+set fixup_paths=no
+if ( `echo $GNUSTEP_MAKEFILES | sed 's|^[a-zA-Z]:/.*$||'` == "" ) then
+  set fixup_paths=yes
+endif
+
 #
 # Add the GNUstep tools directories to the path
 #
 if ( ! ${?GNUSTEP_PATHLIST} ) then
-  setenv GNUSTEP_PATHLIST \
-         "${GNUSTEP_USER_ROOT}:${GNUSTEP_LOCAL_ROOT}:${GNUSTEP_NETWORK_ROOT}:${GNUSTEP_SYSTEM_ROOT}"
+ setenv GNUSTEP_PATHLIST `$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" $fixup_paths`
 endif
 
+set GNUSTEP_TOOLS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_TOOLS" "$GNUSTEP_LOCAL_TOOLS" "$GNUSTEP_NETWORK_TOOLS" "$GNUSTEP_SYSTEM_TOOLS" $fixup_paths`
+
 set temp_path = ""
-foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_PATHLIST}; do echo $i; done'` )
-  set temp_path="${temp_path}${dir}/Tools:"
+foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_TOOLS_PATHLIST}; do echo $i; done'` )
+  set temp_path="${temp_path}${dir}:"
   if ( "${GNUSTEP_IS_FLATTENED}" == "no" ) then
-    set temp_path="${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:"
-    set temp_path="${temp_path}${dir}/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:"
+    set temp_path="${temp_path}${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:"
+    set temp_path="${temp_path}${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:"
   endif
 end
 
@@ -196,11 +203,11 @@ else if ( { (echo "$PATH" | fgrep -v "$temp_path" >/dev/null) } ) then
   setenv PATH "${temp_path}${PATH}"
 endif
 unset temp_path dir
+unset GNUSTEP_TOOLS_PATHLIST
 
 source "${GNUSTEP_MAKEFILES}/ld_lib_path.csh"
 
-# FIXME/TODO - use GNUSTEP_PATHLIST here
-set gnustep_class_path="${GNUSTEP_USER_ROOT}/Library/Libraries/Java:${GNUSTEP_LOCAL_ROOT}/Library/Libraries/Java:${GNUSTEP_NETWORK_ROOT}/Library/Libraries/Java:${GNUSTEP_SYSTEM_ROOT}/Library/Libraries/Java"
+set gnustep_class_path=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Libraries/Java" "$GNUSTEP_LOCAL_LIBRARY/Libraries/Java" "$GNUSTEP_NETWORK_LIBRARY/Libraries/Java" "$GNUSTEP_SYSTEM_LIBRARY/Libraries/Java" $fixup_paths`
 
 if ( ! ${?CLASSPATH} ) then
   setenv CLASSPATH "${gnustep_class_path}"
@@ -210,7 +217,7 @@ endif
 
 unset gnustep_class_path
 
-set gnustep_guile_path="${GNUSTEP_USER_ROOT}/Library/Libraries/Guile:${GNUSTEP_LOCAL_ROOT}/Library/Libraries/Guile:${GNUSTEP_NETWORK_ROOT}/Library/Libraries/Guile:${GNUSTEP_SYSTEM_ROOT}/Library/Libraries/Guile"
+set gnustep_guile_path=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Libraries/Guile" "$GNUSTEP_LOCAL_LIBRARY/Libraries/Guile" "$GNUSTEP_NETWORK_LIBRARY/Libraries/Guile" "$GNUSTEP_SYSTEM_LIBRARY/Libraries/Guile" $fixup_paths`
 
 if ( ! ${?GUILE_LOAD_PATH} ) then
     setenv GUILE_LOAD_PATH "${gnustep_guile_path}"
@@ -220,7 +227,7 @@ endif
 
 unset gnustep_guile_path
 
-set gnustep_info_path="${GNUSTEP_USER_ROOT}/Library/Documentation/info:${GNUSTEP_LOCAL_ROOT}/Library/Documentation/info:${GNUSTEP_NETWORK_ROOT}/Library/Documentation/info:${GNUSTEP_SYSTEM_ROOT}/Library/Documentation/info"
+set gnustep_info_path=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_DOCUMENTATION_INFO" "$GNUSTEP_LOCAL_DOCUMENTATION_INFO" "$GNUSTEP_NETWORK_DOCUMENTATION_INFO" "$GNUSTEP_SYSTEM_DOCUMENTATION_INFO" $fixup_paths`
 
 if ( ! ${?INFOPATH} ) then
   setenv INFOPATH "${gnustep_info_path}:"
@@ -237,38 +244,38 @@ if ( -e "$GNUSTEP_USER_ROOT/GNUstep.csh" ) then
   source "$GNUSTEP_USER_ROOT/GNUstep.csh"
 endif
 
-unset GNUSTEP_SYSTEM_APPS 
-unset GNUSTEP_SYSTEM_TOOLS 
-unset GNUSTEP_SYSTEM_LIBRARY
-unset GNUSTEP_SYSTEM_HEADERS 
-unset GNUSTEP_SYSTEM_LIBRARIES 
-unset GNUSTEP_SYSTEM_DOCUMENTATION 
-unset GNUSTEP_SYSTEM_DOCUMENTATION_MAN
-unset GNUSTEP_SYSTEM_DOCUMENTATION_INFO
+unsetenv GNUSTEP_SYSTEM_APPS 
+unsetenv GNUSTEP_SYSTEM_TOOLS 
+unsetenv GNUSTEP_SYSTEM_LIBRARY
+unsetenv GNUSTEP_SYSTEM_HEADERS 
+unsetenv GNUSTEP_SYSTEM_LIBRARIES 
+unsetenv GNUSTEP_SYSTEM_DOCUMENTATION 
+unsetenv GNUSTEP_SYSTEM_DOCUMENTATION_MAN
+unsetenv GNUSTEP_SYSTEM_DOCUMENTATION_INFO
 
-unset GNUSTEP_LOCAL_APPS 
-unset GNUSTEP_LOCAL_TOOLS 
-unset GNUSTEP_LOCAL_LIBRARY
-unset GNUSTEP_LOCAL_HEADERS 
-unset GNUSTEP_LOCAL_LIBRARIES 
-unset GNUSTEP_LOCAL_DOCUMENTATION 
-unset GNUSTEP_LOCAL_DOCUMENTATION_MAN
-unset GNUSTEP_LOCAL_DOCUMENTATION_INFO
+unsetenv GNUSTEP_LOCAL_APPS 
+unsetenv GNUSTEP_LOCAL_TOOLS 
+unsetenv GNUSTEP_LOCAL_LIBRARY
+unsetenv GNUSTEP_LOCAL_HEADERS 
+unsetenv GNUSTEP_LOCAL_LIBRARIES 
+unsetenv GNUSTEP_LOCAL_DOCUMENTATION 
+unsetenv GNUSTEP_LOCAL_DOCUMENTATION_MAN
+unsetenv GNUSTEP_LOCAL_DOCUMENTATION_INFO
 
-unset GNUSTEP_NETWORK_APPS 
-unset GNUSTEP_NETWORK_TOOLS 
-unset GNUSTEP_NETWORK_LIBRARY
-unset GNUSTEP_NETWORK_HEADERS 
-unset GNUSTEP_NETWORK_LIBRARIES 
-unset GNUSTEP_NETWORK_DOCUMENTATION 
-unset GNUSTEP_NETWORK_DOCUMENTATION_MAN
-unset GNUSTEP_NETWORK_DOCUMENTATION_INFO
+unsetenv GNUSTEP_NETWORK_APPS 
+unsetenv GNUSTEP_NETWORK_TOOLS 
+unsetenv GNUSTEP_NETWORK_LIBRARY
+unsetenv GNUSTEP_NETWORK_HEADERS 
+unsetenv GNUSTEP_NETWORK_LIBRARIES 
+unsetenv GNUSTEP_NETWORK_DOCUMENTATION 
+unsetenv GNUSTEP_NETWORK_DOCUMENTATION_MAN
+unsetenv GNUSTEP_NETWORK_DOCUMENTATION_INFO
 
-unset GNUSTEP_USER_APPS 
-unset GNUSTEP_USER_TOOLS 
-unset GNUSTEP_USER_LIBRARY
-unset GNUSTEP_USER_HEADERS 
-unset GNUSTEP_USER_LIBRARIES 
-unset GNUSTEP_USER_DOCUMENTATION 
-unset GNUSTEP_USER_DOCUMENTATION_MAN
-unset GNUSTEP_USER_DOCUMENTATION_INFO
+unsetenv GNUSTEP_USER_APPS 
+unsetenv GNUSTEP_USER_TOOLS 
+unsetenv GNUSTEP_USER_LIBRARY
+unsetenv GNUSTEP_USER_HEADERS 
+unsetenv GNUSTEP_USER_LIBRARIES 
+unsetenv GNUSTEP_USER_DOCUMENTATION 
+unsetenv GNUSTEP_USER_DOCUMENTATION_MAN
+unsetenv GNUSTEP_USER_DOCUMENTATION_INFO

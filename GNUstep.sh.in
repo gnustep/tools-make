@@ -212,82 +212,39 @@ export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
 # No longer needed
 unset GNUSTEP_HOME
 
-#
-# TODO: From here on, we need to update all code to use the new filesystem
-# variables rather than using hardcoded library/java/info/etc locations
-#
+# Determine if the paths look like Windows paths that need fixing
+fixup_paths=no
+if [ -z "`echo $GNUSTEP_MAKEFILES | sed 's|^[a-zA-Z]:/.*$||'`" ]; then
+  fixup_paths=yes
+fi
 
+# GNUSTEP_PATHLIST is deprecated and will be removed.
 #
-# GNUSTEP_PATHLIST is like an abstract path-like shell
-# variable, which can be used to search the gnustep directories - and
-# in these scripts, it is also used to set up other shell variables
+# GNUSTEP_PATHLIST is like an abstract path-like shell variable, which
+# can be used to search the gnustep directories - and in these
+# scripts, it is also used to set up other shell variables
 #
-# TODO: GNUSTEP_PATHLIST will be deprecated - maybe we ought have
-# separate pathlists for Library/Headers/Tools/Libraries/xxx directories
-# though so that people can use them.
 if [ -z "$GNUSTEP_PATHLIST" ]; then
 
-  # If we need to convert win32 paths, this is the time!
-  if [ -z "`echo $GNUSTEP_SYSTEM_ROOT | sed 's|^[a-zA-Z]:/.*$||'`" ]; then
-    G_U_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_USER_ROOT"`
-    G_L_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_LOCAL_ROOT"`
-    G_N_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_NETWORK_ROOT"`
-    G_S_R=`$GNUSTEP_MAKEFILES/fixpath.sh -u "$GNUSTEP_SYSTEM_ROOT"`
-  else
-    G_U_R="$GNUSTEP_USER_ROOT"
-    G_L_R="$GNUSTEP_LOCAL_ROOT"
-    G_N_R="$GNUSTEP_NETWORK_ROOT"
-    G_S_R="$GNUSTEP_SYSTEM_ROOT"
-  fi
-
-  # Now we basically want to build
-  # GNUSTEP_PATHLIST="$G_U_R:$G_L_R:$G_N_R:$G_S_R"
-  # but we want to remove duplicates.
-
-  # Start with $G_U_R:$G_L_R - or $G_U_R if they are the same
-  if [ "$G_L_R" != "$G_U_R" ]; then
-    GNUSTEP_PATHLIST="$G_U_R:$G_L_R"
-  else
-    GNUSTEP_PATHLIST="$G_U_R"
-  fi
-
-  # Now append $G_N_R but only if different from what already there
-  if [ "$G_N_R" != "$G_U_R" ]; then
-    if [ "$G_N_R" != "$G_L_R" ]; then
-      GNUSTEP_PATHLIST="$GNUSTEP_PATHLIST:$G_N_R"
-    fi
-  fi
-
-  # Now append $G_S_R but only if different from what already there
-  if [ "$G_S_R" != "$G_U_R" ]; then
-    if [ "$G_S_R" != "$G_L_R" ]; then
-      if [ "$G_S_R" != "$G_N_R" ]; then
-        GNUSTEP_PATHLIST="$GNUSTEP_PATHLIST:$G_S_R"
-      fi
-    fi
-  fi
-
-  unset G_U_R
-  unset G_L_R
-  unset G_N_R
-  unset G_S_R
-
-  export GNUSTEP_PATHLIST
+ GNUSTEP_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" $fixup_paths`
+ export GNUSTEP_PATHLIST
 fi
 
 #
 # Add path to Tools to PATH
 #
+GNUSTEP_TOOLS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_TOOLS" "$GNUSTEP_LOCAL_TOOLS" "$GNUSTEP_NETWORK_TOOLS" "$GNUSTEP_SYSTEM_TOOLS" $fixup_paths`
+
 old_IFS="$IFS"
 IFS=:
 temp_path=
-for dir in $GNUSTEP_PATHLIST; do
+for dir in $GNUSTEP_TOOLS_PATHLIST; do
 
   # Prepare the path_fragment
   if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
-    path_fragment="$dir/Tools:$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:$dir/Tools/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+    path_fragment="$dir:$dir/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:$dir/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
   else
-    path_fragment="$dir/Tools"
+    path_fragment="$dir"
   fi
 
   # Add it to temp_path
@@ -311,19 +268,22 @@ else
   fi
 fi
 unset temp_path
+unset GNUSTEP_TOOLS_PATHLIST
 export PATH
 
 . $GNUSTEP_MAKEFILES/ld_lib_path.sh
 
+GNUSTEP_LIBRARY_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY" "$GNUSTEP_LOCAL_LIBRARY" "$GNUSTEP_NETWORK_LIBRARY" "$GNUSTEP_SYSTEM_LIBRARY" $fixup_paths`
+
 old_IFS="$IFS"
 IFS=:
 gnustep_class_path=
-for dir in $GNUSTEP_PATHLIST; do
+for dir in $GNUSTEP_LIBRARY_PATHLIST; do
 
   if [ -z "$gnustep_class_path" ]; then
-    gnustep_class_path="$dir/Library/Libraries/Java"
+    gnustep_class_path="$dir/Libraries/Java"
   else
-    gnustep_class_path="$gnustep_class_path:$dir/Library/Libraries/Java"
+    gnustep_class_path="$gnustep_class_path:$dir/Libraries/Java"
   fi
 
 done
@@ -348,12 +308,12 @@ export CLASSPATH
 old_IFS="$IFS"
 IFS=:
 guile_paths=
-for dir in $GNUSTEP_PATHLIST; do
+for dir in $GNUSTEP_LIBRARY_PATHLIST; do
 
   if [ -z "$guile_paths" ]; then
-    guile_paths="$dir/Library/Libraries/Guile"
+    guile_paths="$dir/Libraries/Guile"
   else
-    guile_paths="$guile_paths:$dir/Library/Libraries/Guile"
+    guile_paths="$guile_paths:$dir/Libraries/Guile"
   fi
 
 done
@@ -370,22 +330,23 @@ else
 fi
 export GUILE_LOAD_PATH
 unset guile_paths
-
+unset GNUSTEP_LIBRARY_PATHLIST
 
 #
 # Make sure info files, that we install by default into
 # xxx/Library/Documentation/info, are found by the info browsing
 # programs.  To get this effect, we add those paths to INFOPATH.
 #
+GNUSTEP_INFO_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_DOCUMENTATION_INFO" "$GNUSTEP_LOCAL_DOCUMENTATION_INFO" "$GNUSTEP_NETWORK_DOCUMENTATION_INFO" "$GNUSTEP_SYSTEM_DOCUMENTATION_INFO" $fixup_paths`
 old_IFS="$IFS"
 IFS=:
 gnustep_info_path=
-for dir in $GNUSTEP_PATHLIST; do
+for dir in $GNUSTEP_INFO_PATHLIST; do
 
   if [ -z "$gnustep_info_path" ]; then
-    gnustep_info_path="$dir/Library/Documentation/info"
+    gnustep_info_path="$dir"
   else
-    gnustep_info_path="$gnustep_info_path:$dir/Library/Documentation/info"
+    gnustep_info_path="$gnustep_info_path:$dir"
   fi
 
 done
@@ -405,6 +366,7 @@ fi
 
 unset gnustep_info_path
 export INFOPATH
+unset GNUSTEP_INFO_PATHLIST
 
 #
 # Perform any user initialization

@@ -146,7 +146,7 @@ install: generated-files
 	 $(EC)(echo "Installing gnustep-make support software")
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
-		clean_vendor.sh cpu.sh os.sh vendor.sh \
+		clean_vendor.sh cpu.sh os.sh vendor.sh print_unique_pathlist.sh \
 		relative_path.sh strip_makefiles.sh debugapp; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)

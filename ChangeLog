@@ -1,5 +1,17 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* filesystem.sh.in: Unset all GNUSTEP_USER_DIR_* variables
+	after using them.
+	* GNUmakefile.in: Install print_unique_pathlist.sh.
+	* print_unique_pathlist.sh: New file.
+	* GNUstep.sh.in: Updated for new filesystem support.
+	* GNUstep.csh.in: Updated for new filesystem support.  Use
+	unsetenv consistently for all the filesystem variables.
+	* filesystem.csh.in: Use setenv/unsetenv for all variables for
+	consistency with the config files.
+	
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* common.make: Moved top-level PATH sanity check at the end of the
 	file.  In the check, use GNUSTEP_SYSTEM_TOOLS instead of
 	GNUSTEP_SYSTEM_ROOT/Tools.  Avoid the check on Cygwin where paths
