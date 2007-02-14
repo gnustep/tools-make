@@ -116,7 +116,7 @@ if ( ! ${?LIBRARY_COMBO} ) then
 endif
 
 if ( ! ${?GNUSTEP_MAKEFILES} ) then
-  setenv GNUSTEP_MAKEFILES "${GNUSTEP_SYSTEM_ROOT}/Library/Makefiles"
+  setenv GNUSTEP_MAKEFILES "@GNUSTEP_MAKEFILES@"
 endif
 
 if ( ! ${?GNUSTEP_USER_DIR} ) then

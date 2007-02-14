@@ -44,6 +44,12 @@ GNUSTEP_USER_DIR=@GNUSTEP_USER_DIR@
 ## relative to the user home directory.
 GNUSTEP_USER_DEFAULTS_DIR=@GNUSTEP_USER_DEFAULTS_DIR@
 
+
+## This is where the gnustep-make Makefiles are installed.
+## Traditionally, this is /usr/GNUstep/System/Library/Makefiles
+GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
+
+
 ## This is where System GUI Applications get installed.
 ## Traditionally it is /usr/GNUstep/System/Apps.
 GNUSTEP_SYSTEM_APPS=@GNUSTEP_SYSTEM_APPS@

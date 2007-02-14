@@ -1,5 +1,18 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUstep.conf.in (GNUSTEP_MAKEFILES): New variable.
+	* GNUstep.csh.in: By default, set GNUSTEP_MAKEFILES to the
+	configure default if not set.
+	* GNUstep.sh.in: Same change.
+	* gnustep-config.in: Same change.
+	
+	* openapp.in: Updated to use new filesystem config.
+	* opentool.in: Updated to use new filesystem config; also,
+	remove unused check for empty GNUSTEP_MAKEFILES after
+	GNUstep.sh has been sourced.
+	
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUmakefile.in (distclean): Remove GNUstep.conf.
 	Do not remove GNUsteprc.
 	(generated-files): Added GNUstep.conf.

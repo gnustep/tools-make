@@ -111,14 +111,18 @@ fi
 
 # Now, set any essential variable (that is not already set) to the
 # built-in values.
+
+# This is deprecated and will be removed
 if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
   GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
 fi
 
+# This is deprecated and will be removed
 if [ -z "$GNUSTEP_LOCAL_ROOT" ]; then
   GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
 fi
 
+# This is deprecated and will be removed
 if [ -z "$GNUSTEP_NETWORK_ROOT" ]; then
   GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
 fi
@@ -135,7 +139,7 @@ fi
 export GNUSTEP_IS_FLATTENED GNUSTEP_FLATTENED LIBRARY_COMBO
 
 if [ -z "$GNUSTEP_MAKEFILES" ]; then
-  GNUSTEP_MAKEFILES=$GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+  GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
 fi
 export GNUSTEP_MAKEFILES
 
@@ -153,6 +157,7 @@ case "$GNUSTEP_USER_DIR" in
       GNUSTEP_USER_ROOT="$GNUSTEP_HOME/$GNUSTEP_USER_DIR";;
 esac
 
+# This is deprecated and will be removed
 export GNUSTEP_USER_ROOT
 
 # If multi-platform support is disabled, just use the hardcoded cpu,

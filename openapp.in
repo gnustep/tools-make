@@ -92,8 +92,8 @@ while [ x"$1" != x ]; do
     shift;;
   --library-combo=*)
     # FIXME - Reset the existing library combo environment ?  We haven't read
-    # the config file yet, so GNUSTEP_SYSTEM_ROOT might not be set yet! :-/
-    # . $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep-reset.sh
+    # the config file yet, so GNUSTEP_MAKEFILES might not be set yet! :-/
+    # . $GNUSTEP_MAKEFILES/GNUstep-reset.sh
     LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
     if [ -z "$2" ]; then
       echo "Missing application name.  Please try openapp --help for more help."
@@ -109,15 +109,48 @@ while [ x"$1" != x ]; do
   esac
 done
 
+# Try to determine GNUSTEP_MAKEFILES to source GNUstep.sh
 if [ -z "$GNUSTEP_CONFIG_FILE" ]; then
   GNUSTEP_CONFIG_FILE=@GNUSTEP_CONFIG_FILE@
 fi
-. $GNUSTEP_CONFIG_FILE
 
-# Ahm ... TODO: we shouldn't need to do this if we are running flattened. :-)
-# Anyway it won't harm (just slow things down a lot).  This must be
-# after parsing the --library-combo parameter.
-. $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
+if [ -z "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  GNUSTEP_USER_CONFIG_FILE=@GNUSTEP_USER_CONFIG_FILE@
+fi
+
+if [ -f "$GNUSTEP_CONFIG_FILE" ]; then
+  . "$GNUSTEP_CONFIG_FILE"
+fi
+
+GNUSTEP_HOME=~
+
+if [ -n "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  case "$GNUSTEP_USER_CONFIG_FILE" in 
+    /*) # An absolute path
+        if [ -f "$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+     *) # Something else
+        if [ -f "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+  esac
+fi
+
+if [ -z "$GNUSTEP_MAKEFILES" ]; then
+  GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
+fi
+# OK, we now have GNUSTEP_MAKEFILES, source GNUstep.sh
+
+# Ahm ... TODO: we shouldn't need to source GNUstep.sh if we are
+# running flattened. :-) Anyway it won't harm (just slow things down a
+# lot).  This must be after parsing the --library-combo parameter.
+
+# Also, we'd like to get the GNUSTEP_*_APPS directories so we can
+# search them, so tell GNUstep.sh to export all variabes.
+GNUSTEP_SH_EXPORT_ALL_VARIABLES=yes
+. $GNUSTEP_MAKEFILES/GNUstep.sh
+unset GNUSTEP_SH_EXPORT_ALL_VARIABLES
 
 if [ -z "$GNUSTEP_IS_FLATTENED" ]; then
   GNUSTEP_IS_FLATTENED=@GNUSTEP_IS_FLATTENED@
@@ -157,13 +190,13 @@ case "$openapp_app" in
       ;;
     *)
       # We should first search the standard GNUstep locations.
-      for openapp_dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT"; do
-	  # Standard locations ... in $dir/Applications/$openapp_app
+      for openapp_dir in "$GNUSTEP_USER_APPS" "$GNUSTEP_LOCAL_APPS" "$GNUSTEP_NETWORK_APPS" "$GNUSTEP_SYSTEM_APPS"; do
+	  # Standard locations ... in $domain_apps/$openapp_app
           if [ -n "$openapp_only_find" ]; then
-            echo "Trying $openapp_dir/Applications/$openapp_app..."
+            echo "Trying $openapp_dir/$openapp_app..."
           fi
-	  if [ -d "$openapp_dir/Applications/$openapp_app" ]; then
-	    openapp_full_appname="`(cd \"$openapp_dir/Applications/$openapp_app\"; pwd)`"
+	  if [ -d "$openapp_dir/$openapp_app" ]; then
+	    openapp_full_appname="`(cd \"$openapp_dir/$openapp_app\"; pwd)`"
 	    break
 	  fi
       done

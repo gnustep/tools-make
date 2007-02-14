@@ -2,11 +2,12 @@
 #
 # @configure_input@
 #
-# Copyright (C) 1997, 1999 Free Software Foundation, Inc.
+# Copyright (C) 1997 - 2007 Free Software Foundation, Inc.
 #
 # Author: Scott Predescu <ovidiu@net-community.com>
 # Author: Ovidiu Predescu <ovidiu@net-community.com>
-# Date: February 1999
+# Author: Nicola Pero <nicola.pero@meta-innovation.com>
+# Date: 1997 - 2007
 # 
 # This file is part of the GNUstep Makefile Package.
 #
@@ -34,12 +35,45 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
+# Try to determine GNUSTEP_MAKEFILES to source GNUstep.sh
 if [ -z "$GNUSTEP_CONFIG_FILE" ]; then
   GNUSTEP_CONFIG_FILE=@GNUSTEP_CONFIG_FILE@
 fi
-. $GNUSTEP_CONFIG_FILE
 
-. $GNUSTEP_SYSTEM_ROOT/Library/Makefiles/GNUstep.sh
+if [ -z "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  GNUSTEP_USER_CONFIG_FILE=@GNUSTEP_USER_CONFIG_FILE@
+fi
+
+if [ -f "$GNUSTEP_CONFIG_FILE" ]; then
+  . "$GNUSTEP_CONFIG_FILE"
+fi
+
+GNUSTEP_HOME=~
+
+if [ -n "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  case "$GNUSTEP_USER_CONFIG_FILE" in 
+    /*) # An absolute path
+        if [ -f "$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+     *) # Something else
+        if [ -f "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+  esac
+fi
+
+if [ -z "$GNUSTEP_MAKEFILES" ]; then
+  GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
+fi
+# OK, we now have GNUSTEP_MAKEFILES, source GNUstep.sh.
+
+# Also, we'd like to get the GNUSTEP_*_TOOLS directories so we can
+# search them, so tell GNUstep.sh to export all variabes.
+GNUSTEP_SH_EXPORT_ALL_VARIABLES=yes
+. $GNUSTEP_MAKEFILES/GNUstep.sh
+unset GNUSTEP_SH_EXPORT_ALL_VARIABLES
+
 
 if [ -z "$EXEEXT" ]; then
   EXEEXT=@EXEEXT@
@@ -51,9 +85,6 @@ do
   case "$1" in
     --library-combo=*)
         tmp_makefiles="$GNUSTEP_MAKEFILES"
-        if [ -z "$tmp_makefiles" ]; then
-          tmp_makefiles="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
-        fi
         . "$tmp_makefiles/GNUstep-reset.sh"
         LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
         . "$tmp_makefiles/GNUstep.sh"
@@ -117,21 +148,20 @@ case "$tool" in
           
           # Local tool not found - Search for an installed one
           # we search in the order in:
-          # GNUSTEP_USER_ROOT
-          # GNUSTEP_LOCAL_ROOT
-          # GNUSTEP_NETWORK_ROOT
-          # GNUSTEP_SYSTEM_ROOT
+          # GNUSTEP_USER_TOOLS
+          # GNUSTEP_LOCAL_TOOLS
+          # GNUSTEP_NETWORK_TOOLS
+          # GNUSTEP_SYSTEM_TOOLS
 	  #
 	  # We look in the GNUSTEP_HOST_CPU/GNUSTEP_HOST_OS/LIBRARY_COMBO
 	  # subdirectory first, then the GNUSTEP_HOST_CPU/GNUSTEP_HOST_OS
 	  # subdirectory, then the top-level directory.
 	  # (For flattened systems we skip the first two options.
 	  #
-	  for dir in "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" ; do
-	    tmpdir="$dir/Tools"
+	  for dir in "$GNUSTEP_USER_TOOLS" "$GNUSTEP_LOCAL_TOOLS" "$GNUSTEP_NETWORK_TOOLS" "$GNUSTEP_SYSTEM_TOOLS" ; do
 	    if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
-	      tmpgnudir="$dir/Tools/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
-	      tmplibdir="$tmpgnudir/$LIBRARY_COMBO"
+	      tmpgnudir="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+	      tmplibdir="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO"
 	      # echo "$tmplibdir/$tool";
 	      if [ -x "$tmplibdir/$tool" ]; then
 		# echo "Found: $tmplibdir/$tool";
@@ -144,14 +174,13 @@ case "$tool" in
 		break;
 	      fi
 	    fi
-	    # echo "$tmpdir/$tool";
-	    if [ -x "$tmpdir/$tool" ]; then
-	      # echo "Found: $tmpdir/$tool";
-	      full_toolname="$tmpdir/$tool"
+	    # echo "$dir/$tool";
+	    if [ -x "$dir/$tool" ]; then
+	      # echo "Found: $dir/$tool";
+	      full_toolname="$dir/$tool"
 	      break;
 	    fi
 	    done
-	    unset tmpdir
 	    unset tmpgnudir
 	    unset tmplibdir
 	  fi
