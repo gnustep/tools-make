@@ -90,59 +90,6 @@ ifeq ($(GNUSTEP_BUILD_DIR),)
 endif
 
 #
-# Sanity checks - only performed at the first make invocation
-#
-# FIXME - the sanity checks should probably be removed and/or rewritten.
-#
-
-# Please note that _GNUSTEP_TOP_INVOCATION_DONE is set by the first
-# time Master/rules.make is read, and propagated to sub-makes.  So
-# this check will pass only the very first time we parse this file,
-# and if Master/rules.make have not yet been parsed.
-ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
-
-# Print out a message with our version number and how to get help on
-# targets and options.
-ifeq ($(MAKE_WITH_INFO_FUNCTION),yes)
-  $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type 'make print-gnustep-make-help' for help.)
-endif
-
-# Sanity check on $PATH - NB: if PATH is wrong, we can't do certain things
-# because we can't run the tools (not even using opentool as we can't even
-# run opentool if PATH is wrong) - this is particularly bad for gui stuff
-
-# Skip the check if we are on an Apple system.  I was told that you can't
-# source GNUstep.sh before running Apple's PB and that the only
-# friendly solution is to disable the check.
-ifneq ($(FOUNDATION_LIB), apple)
-
-# NB - we can't trust PATH here because it's what we are trying to
-# check ... but hopefully if we (common.make) have been found, we
-# can trust that at least $(GNUSTEP_MAKEFILES) is set up correctly :-)
-
-# We want to check that this path is in the PATH
-SYS_TOOLS_PATH = $(GNUSTEP_SYSTEM_ROOT)/Tools
-
-# But on cygwin we might need to first fix it up ...
-ifeq ($(findstring cygwin, $(GNUSTEP_HOST_OS)), cygwin)
-  ifeq ($(shell echo "$(SYS_TOOLS_PATH)" | sed 's/^\([a-zA-Z]:.*\)//'),)
-    SYS_TOOLS_PATH := $(shell $(GNUSTEP_MAKEFILES)/fixpath.sh -u $(SYS_TOOLS_PATH))
-  endif
-endif
-
-# Under mingw paths are so confused this warning is not worthwhile
-ifneq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
-  ifeq ($(findstring $(SYS_TOOLS_PATH),$(PATH)),)
-    $(warning WARNING: Your PATH may not be set up correctly !)
-    $(warning Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
-  endif
-endif
-
-endif # code used when FOUNDATION_LIB != apple
-
-endif # End of sanity checks run only at makelevel 0
-
-#
 # Get standard messages
 #
 include $(GNUSTEP_MAKEFILES)/messages.make
@@ -704,5 +651,47 @@ APP_EXTENSION = app
 # to mess with our games by passing this variable to submakes himself
 unexport GNUSTEP_INSTANCE
 unexport GNUSTEP_TYPE
+
+#
+# Sanity checks - only performed at the first make invocation
+#
+# FIXME - the sanity checks should probably be removed and/or rewritten.
+#
+
+# Please note that _GNUSTEP_TOP_INVOCATION_DONE is set by the first
+# time Master/rules.make is read, and propagated to sub-makes.  So
+# this check will pass only the very first time we parse this file,
+# and if Master/rules.make have not yet been parsed.
+ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
+
+# Print out a message with our version number and how to get help on
+# targets and options.
+ifeq ($(MAKE_WITH_INFO_FUNCTION),yes)
+  $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type 'make print-gnustep-make-help' for help.)
+endif
+
+# Sanity check on $PATH - NB: if PATH is wrong, we can't do certain
+# things because we can't run the tools (and we can't locate tools
+# using opentool because we can't even run opentool if PATH is wrong)
+# - this is particularly bad for gui stuff
+
+# Skip the check if we are on an Apple system.  I was told that you can't
+# source GNUstep.sh before running Apple's PB and that the only
+# friendly solution is to disable the check.
+ifneq ($(FOUNDATION_LIB), apple)
+# Under Win32 paths are so confused this warning is not worthwhile
+ifneq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
+ifneq ($(findstring cygwin, $(GNUSTEP_HOST_OS)), cygwin)
+
+  ifeq ($(findstring $(GNUSTEP_SYSTEM_TOOLS),$(PATH)),)
+    $(warning WARNING: Your PATH may not be set up correctly !)
+    $(warning Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+  endif
+
+endif
+endif
+endif # code used when FOUNDATION_LIB != apple
+
+endif # End of sanity checks run only at makelevel 0
 
 endif # COMMON_MAKE_LOADED

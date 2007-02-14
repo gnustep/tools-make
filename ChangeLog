@@ -1,5 +1,12 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* common.make: Moved top-level PATH sanity check at the end of the
+	file.  In the check, use GNUSTEP_SYSTEM_TOOLS instead of
+	GNUSTEP_SYSTEM_ROOT/Tools.  Avoid the check on Cygwin where paths
+	need conversion.
+
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/framework.make ($(DUMMY_FRAMEWORK_FILE)): Return the
 	real complete installation path into +frameworkPath; return nil
 	into +frameworkEnv.  These methods are currently unused, but
