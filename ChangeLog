@@ -1,5 +1,10 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUstep-reset.sh: Unset GNUSTEP_USER_DIR_* variables as well
+	just for extra security.
+
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* gnustep-make.spec.in: Updated description and comments.
 
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
