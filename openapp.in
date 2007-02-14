@@ -21,6 +21,9 @@
 # If not, write to the Free Software Foundation,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# FIXME - fix the help message to mention 'debugapp' and not 'openapp'
+# if we were called as 'debugapp'.
+
 # Please note that all local variables are prefixed with 'openapp_' to
 # avoid conflicts.
 
