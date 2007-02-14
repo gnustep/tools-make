@@ -24,6 +24,10 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 
+#
+# FIXME/TODO: Update this for the new filesystem support
+#
+
 # This file is sourced.  This means extra care is needed when changing
 # it.  Please read the comments on GNUstep.sh.in before touching it.
 
