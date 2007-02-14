@@ -147,7 +147,7 @@ install: generated-files
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh os.sh vendor.sh print_unique_pathlist.sh \
-		relative_path.sh strip_makefiles.sh debugapp; do \
+		relative_path.sh strip_makefiles.sh; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)
 	 $(EC)($(INSTALL_DATA) GNUstep.sh $(makedir); \
@@ -159,6 +159,7 @@ install: generated-files
 	  $(INSTALL_DATA) $(srcdir)/GNUstep-reset.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
+	  $(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 gnustep-config $(tooldir))
 	 $(EC)(echo "Installing makefiles"; \
