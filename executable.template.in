@@ -8,7 +8,7 @@
 # Date: May 1999
 #
 # Author: Nicola Pero <n.pero@mi.flashnet.it>
-# Date: 2001, 2002
+# Date: 2001, 2002,2007
 # 
 # This file is part of the GNUstep Makefile Package.
 #
@@ -27,11 +27,8 @@
 
 # This is installed inside the application directory in the
 # non-flattened case.  In the flattened case, we install the binary
-# directly and no wrappers are used.
+# directly in the application directory and no wrappers are used.
 
-#--------------------------------------------------------------------------
-# Main body
-#--------------------------------------------------------------------------
 if [ -z "$EXEEXT" ]; then
   EXEEXT=@EXEEXT@
 fi
@@ -39,8 +36,42 @@ if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
 
+
+# Try to determine GNUSTEP_MAKEFILES to source GNUstep.sh
+if [ -z "$GNUSTEP_CONFIG_FILE" ]; then
+  GNUSTEP_CONFIG_FILE=@GNUSTEP_CONFIG_FILE@
+fi
+
+if [ -z "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  GNUSTEP_USER_CONFIG_FILE=@GNUSTEP_USER_CONFIG_FILE@
+fi
+
+if [ -f "$GNUSTEP_CONFIG_FILE" ]; then
+  . "$GNUSTEP_CONFIG_FILE"
+fi
+
+GNUSTEP_HOME=~
+
+if [ -n "$GNUSTEP_USER_CONFIG_FILE" ]; then
+  case "$GNUSTEP_USER_CONFIG_FILE" in 
+    /*) # An absolute path
+        if [ -f "$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+     *) # Something else
+        if [ -f "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE" ]; then
+          . "$GNUSTEP_HOME/$GNUSTEP_USER_CONFIG_FILE"
+        fi;;
+  esac
+fi
+
+if [ -z "$GNUSTEP_MAKEFILES" ]; then
+  GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
+fi
+# OK, we now have GNUSTEP_MAKEFILES, we later can source GNUstep.sh.
+
 # Process arguments
-app="$0"
+this_script="$0"
 show_available_platforms=0
 show_relative_path=0
 show_full_path=0
@@ -64,12 +95,9 @@ do
 	;;
     --library-combo=*)
         tmp_makefiles="$GNUSTEP_MAKEFILES"
-        if [ -z "$tmp_makefiles" ]; then
-          tmp_makefiles="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
-        fi
         . "$tmp_makefiles/GNUstep-reset.sh"
         LIBRARY_COMBO=`echo "$1" | sed 's/--library-combo=//'`
-        . "$tmp_makefiles/GNUstep.sh"
+        GNUSTEP_MAKEFILES="$tmp_makefiles"
 	shift
 	;;
     --available-platforms)
@@ -100,42 +128,29 @@ elif [ "$LIBRARY_COMBO" = apple ]; then
 fi
 export LIBRARY_COMBO
 
-# Find path to ourself
-dir="`dirname \"$app\"`"
+# We now have determined both GNUSTEP_MAKEFILES and LIBRARY_COMBO.
+# Source GNUstep.sh to make sure all the environment is setup
+# to work in this LIBRARY_COMBO.
+. "$GNUSTEP_MAKEFILES/GNUstep.sh"
 
-case "$app" in
-  /*)	# An absolute path.
-	full_appname="$dir";;
-  */*)	# A relative path
-	full_appname="`(cd \"$dir\"; pwd)`";;
-  *)	# A path that needs to be searched
-	if [ -n "$GNUSTEP_PATHLIST" ]; then
-	    SPATH="$GNUSTEP_PATHLIST"
-	else
-	    SPATH="$PATH"
-	fi
-	SPATH=".:$SPATH"
-	IFS=:
-	for path_dir in $SPATH; do
-	  if [ -d "$path_dir/$dir" ]; then
-	    full_appname="`(cd \"$path_dir/$dir\"; pwd)`"
-	    break;
-	  fi
-	  if [ -d "$path_dir/Applications/$dir" ]; then
-	    full_appname="`(cd \"$path_dir/Applications/$dir\"; pwd)`"
-	    break;
-	  fi
-	done;;
-esac
+# Find path to directory containing ourselves.  This directory is
+# the .app directory.
+dir="`dirname \"$this_script\"`"
+
+# Find the absolute path of the directory.  This will be something like
+# /home/nicola/testing/Applications/Gorm.app
+full_appname="`(cd \"$dir\"; pwd)`";;
 
 if [ -z "$full_appname" ]; then
-  echo "Can't find absolute path for $app! Please specify full path when"
+  echo "Can't find absolute path for $this_script! Please specify full path when"
   echo "invoking executable"
   exit 1
 fi
 
 #
-# get base app name
+# Get base app name (eg, Gorm in the case of Gorm.app, but crazy people might
+# configure it differently by using a different NSExecutable setting in
+# Info-gnustep.plist).
 #
 appname=
 if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
@@ -155,43 +170,15 @@ if [ -f "$full_appname/Resources/Info-gnustep.plist" ]; then
                 "$full_appname/Resources/Info-gnustep.plist"`
 fi
 if [ -z "$appname" ]; then
-  appname="`basename \"$app\"`"
+  appname="`basename \"$this_script\"`"
 fi
 
 appname="$appname$EXEEXT"
 
 if [ $show_available_platforms = 1 ]; then
   cd "$full_appname"
-  #available_platforms
+  #TODO: show available_platforms
   exit 0
-fi
-
-#
-# Determine the host information
-#
-if [ -z "$GNUSTEP_MAKEFILES" ]; then
-  GNUSTEP_MAKEFILES = $GNUSTEP_SYSTEM_ROOT/Library/Makefiles
-fi
-
-if [ -z "$GNUSTEP_HOST" ]; then
-  GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_MAKEFILES/config.guess)`
-  GNUSTEP_HOST=`(cd /tmp; $GNUSTEP_MAKEFILES/config.sub $GNUSTEP_HOST)`
-  export GNUSTEP_HOST
-fi
-if [ -z "$GNUSTEP_HOST_CPU" ]; then
-  GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/cpu.sh $GNUSTEP_HOST`
-  GNUSTEP_HOST_CPU=`$GNUSTEP_MAKEFILES/clean_cpu.sh $GNUSTEP_HOST_CPU`
-  export GNUSTEP_HOST_CPU
-fi
-if [ -z "$GNUSTEP_HOST_VENDOR" ]; then
-  GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/vendor.sh $GNUSTEP_HOST`
-  GNUSTEP_HOST_VENDOR=`$GNUSTEP_MAKEFILES/clean_vendor.sh $GNUSTEP_HOST_VENDOR`
-  export GNUSTEP_HOST_VENDOR
-fi
-if [ -z "$GNUSTEP_HOST_OS" ]; then
-  GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/os.sh $GNUSTEP_HOST`
-  GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/clean_os.sh $GNUSTEP_HOST_OS`
-  export GNUSTEP_HOST_OS
 fi
 
 #
@@ -216,9 +203,6 @@ else
         if [ -x "$lib_combo/$appname" ]; then
           # Switch LIBRARY_COMBO on the fly
           tmp_makefiles="$GNUSTEP_MAKEFILES"
-          if [ -z "$tmp_makefiles" ]; then
-            tmp_makefiles="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
-          fi
           . "$tmp_makefiles/GNUstep-reset.sh"
           LIBRARY_COMBO="$lib_combo"
           . "$tmp_makefiles/GNUstep.sh"
@@ -245,9 +229,6 @@ if [ $show_full_path = 1 ]; then
   echo "$full_appname/$relative_path"
   exit 0
 fi
-
-# Load up LD_LIBRARY_PATH ... FIXME, what about just sourcing GNUstep.sh instead ?
-. "$GNUSTEP_MAKEFILES/ld_lib_path.sh"
 
 exec "$full_appname/$relative_path" "$@"
 

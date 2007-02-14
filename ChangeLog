@@ -1,5 +1,13 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* executable.template.in: Updated for new filesystem structure.
+	Always source GNUstep.sh.  Removed code to iterate over
+	Applications directories or PATH; removed code to do a separate
+	computation of GNUSTEP_HOST_*.  Enhanced switching of library
+	combos on the fly.  Other minor fixes.
+
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep-reset.sh: Unset GNUSTEP_USER_DIR_* variables as well
 	just for extra security.
 
