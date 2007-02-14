@@ -1,3 +1,33 @@
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Warning: the software will be instable for some time.  Don't
+	upgrade from trunk if you need stability.
+	* configure.ac: Set default values for GNUSTEP_SYSTEM_TOOLS,
+	GNUSTEP_SYSTEM_APPS, GNUSTEP_SYSTEM_LIBRARY, etc. variables and
+	export them.  Create filesystem.make, filesystem.sh and
+	filesystem.csh.
+	* configure: Regenerated.
+	* filesystem.make: Moved into filesystem.make.in.
+	* filesystem.make.in: All variables: get them from configure
+	defaults if not set so that GNUSTEP_*_ROOT are never needed or
+	referenced.  Made GNUSTEP_*_RESOURCES and GNUSTEP_*_JAVA fixed
+	subdirs of GNUSTEP_*_LIBRARY.  For all directories in the user
+	domain, prefix them with GNUSTEP_HOME if they seem relative.
+	* filesystem.sh: Moved into filesystem.sh.in.
+	* filesystem.sh.in: Same changes as filesystem.make.in.
+	* filesystem.csh.in: New file
+	* GNUmakefile.in (install): Install filesystem.csh
+	(filesystem.make): Added rule to rebuild it.
+	(filesystem.sh): Added rule to rebuild it.
+	(filesystem.csh): Added rule to rebuild it.
+	(distclean): Remove the filesystem.* files.
+	(generated-files): Add filesystem.make, filesystem.sh,
+	filesystem.csh.
+	* GNUstep.sh.in: Do not unset or export GNUSTEP_*_RESOURCES and
+	GNUSTEP_*_JAVA.
+	* GNUstep.csh.in: Source filesystem.csh.in; at the end unset all
+	variables set there.
+
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>,
 	
 	* GNUstep.csh.in: Fixed bug in setting GUILE_LOAD_PATH.

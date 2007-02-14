@@ -1,0 +1,223 @@
+#! /bin/echo This file must be sourced inside csh using: source
+#
+#   @configure_input@
+#
+#   Sets up the GNUstep filesystem paths for shell scripts
+#
+#   Copyright (C) 2007 Free Software Foundation, Inc.
+#
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>,
+#            
+#   Date:  February 2007
+#
+#   This file is part of the GNUstep Makefile Package.
+#
+#   This library is free software; you can redistribute it and/or
+#   modify it under the terms of the GNU General Public License
+#   as published by the Free Software Foundation; either version 2
+#   of the License, or (at your option) any later version.
+#   
+#   You should have received a copy of the GNU General Public
+#   License along with this library; see the file COPYING.LIB.
+#   If not, write to the Free Software Foundation,
+#   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+#
+# This does the same as filesystem.sh, but for csh.
+#
+
+# We use 'set' (and not 'setenv') because we consider these temporary
+# variables that we 'unset' at the end.
+
+#
+# SYSTEM domain
+#
+if ( ! ${?GNUSTEP_SYSTEM_ROOT} ) then
+  set GNUSTEP_SYSTEM_APPS="@GNUSTEP_SYSTEM_APPS@"
+endif
+if ( ! ${?GNUSTEP_SYSTEM_TOOLS} ) then
+  set GNUSTEP_SYSTEM_TOOLS="@GNUSTEP_SYSTEM_TOOLS@"
+endif
+if ( ! ${?GNUSTEP_SYSTEM_LIBRARY} ) then
+  set GNUSTEP_SYSTEM_LIBRARY="@GNUSTEP_SYSTEM_LIBRARY@"
+endif
+if ( ! ${?GNUSTEP_SYSTEM_HEADERS} ) then
+  set GNUSTEP_SYSTEM_HEADERS="@GNUSTEP_SYSTEM_HEADERS@"
+endif
+if ( ! ${?GNUSTEP_SYSTEM_LIBRARIES} ) then
+  set GNUSTEP_SYSTEM_LIBRARIES="@GNUSTEP_SYSTEM_LIBRARIES@"
+endif
+if ( ! ${?GNUSTEP_SYSTEM_DOCUMENTATION} ) then
+  set GNUSTEP_SYSTEM_DOCUMENTATION="@GNUSTEP_SYSTEM_DOCUMENTATION@"
+endif
+if ( ! ${?GNUSTEP_SYSTEM_DOCUMENTATION_MAN} ) then
+  set GNUSTEP_SYSTEM_DOCUMENTATION_MAN="@GNUSTEP_SYSTEM_DOCUMENTATION_MAN@"
+endif
+if ( ! ${?GNUSTEP_SYSTEM_DOCUMENTATION_INFO} ) then
+  set GNUSTEP_SYSTEM_DOCUMENTATION_INFO="@GNUSTEP_SYSTEM_DOCUMENTATION_INFO@"
+endif
+
+#
+# LOCAL domain
+#
+if ( ! ${?GNUSTEP_LOCAL_APPS} ) then
+  set GNUSTEP_LOCAL_APPS="@GNUSTEP_LOCAL_APPS@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_TOOLS} ) then
+  set GNUSTEP_LOCAL_TOOLS="@GNUSTEP_LOCAL_TOOLS@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_LIBRARY} ) then
+  set GNUSTEP_LOCAL_LIBRARY="@GNUSTEP_LOCAL_LIBRARY@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_HEADERS} ) then
+  set GNUSTEP_LOCAL_HEADERS="@GNUSTEP_LOCAL_HEADERS@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_LIBRARIES} ) then
+  set GNUSTEP_LOCAL_LIBRARIES="@GNUSTEP_LOCAL_LIBRARIES@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_DOCUMENTATION} ) then
+  set GNUSTEP_LOCAL_DOCUMENTATION="@GNUSTEP_LOCAL_DOCUMENTATION@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_DOCUMENTATION_MAN} ) then
+  set GNUSTEP_LOCAL_DOCUMENTATION_MAN="@GNUSTEP_LOCAL_DOCUMENTATION_MAN@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_DOCUMENTATION_INFO} ) then
+  set GNUSTEP_LOCAL_DOCUMENTATION_INFO="@GNUSTEP_LOCAL_DOCUMENTATION_INFO@"
+endif
+
+#
+# NETWORK domain
+#
+if ( ! ${?GNUSTEP_NETWORK_APPS} ) then
+  set GNUSTEP_NETWORK_APPS="@GNUSTEP_NETWORK_APPS@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_TOOLS} ) then
+  set GNUSTEP_NETWORK_TOOLS="@GNUSTEP_NETWORK_TOOLS@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_LIBRARY} ) then
+  set GNUSTEP_NETWORK_LIBRARY="@GNUSTEP_NETWORK_LIBRARY@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_HEADERS} ) then
+  set GNUSTEP_NETWORK_HEADERS="@GNUSTEP_NETWORK_HEADERS@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_LIBRARIES} ) then
+  set GNUSTEP_NETWORK_LIBRARIES="@GNUSTEP_NETWORK_LIBRARIES@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_DOCUMENTATION} ) then
+  set GNUSTEP_NETWORK_DOCUMENTATION="@GNUSTEP_NETWORK_DOCUMENTATION@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_DOCUMENTATION_MAN} ) then
+  set GNUSTEP_NETWORK_DOCUMENTATION_MAN="@GNUSTEP_NETWORK_DOCUMENTATION_MAN@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_DOCUMENTATION_INFO} ) then
+  set GNUSTEP_NETWORK_DOCUMENTATION_INFO="@GNUSTEP_NETWORK_DOCUMENTATION_INFO@"
+endif
+
+#
+# USER domain
+#
+if ( ! ${?GNUSTEP_USER_DIR_APPS} ) then
+  set GNUSTEP_USER_DIR_APPS="@GNUSTEP_USER_DIR_APPS@"
+endif
+if ( ! ${?GNUSTEP_USER_DIR_TOOLS} ) then
+  set GNUSTEP_USER_DIR_TOOLS="@GNUSTEP_USER_DIR_TOOLS@"
+endif
+if ( ! ${?GNUSTEP_USER_DIR_LIBRARY} ) then
+  set GNUSTEP_USER_DIR_LIBRARY="@GNUSTEP_USER_DIR_LIBRARY@"
+endif
+if ( ! ${?GNUSTEP_USER_DIR_HEADERS} ) then
+  set GNUSTEP_USER_DIR_HEADERS="@GNUSTEP_USER_DIR_HEADERS@"
+endif
+if ( ! ${?GNUSTEP_USER_DIR_LIBRARIES} ) then
+  set GNUSTEP_USER_DIR_LIBRARIES="@GNUSTEP_USER_DIR_LIBRARIES@"
+endif
+if ( ! ${?GNUSTEP_USER_DIR_DOCUMENTATION} ) then
+  set GNUSTEP_USER_DIR_DOCUMENTATION="@GNUSTEP_USER_DIR_DOCUMENTATION@"
+endif
+if ( ! ${?GNUSTEP_USER_DIR_DOCUMENTATION_MAN} ) then
+  set GNUSTEP_USER_DIR_DOCUMENTATION_MAN="@GNUSTEP_USER_DIR_DOCUMENTATION_MAN@"
+endif
+if ( ! ${?GNUSTEP_USER_DIR_DOCUMENTATION_INFO} ) then
+  set GNUSTEP_USER_DIR_DOCUMENTATION_INFO="@GNUSTEP_USER_DIR_DOCUMENTATION_INFO@"
+endif
+
+switch ("${GNUSTEP_USER_DIR_APPS}")
+ case /*: # An absolute path
+   set GNUSTEP_USER_APPS="${GNUSTEP_USER_DIR_APPS}"
+   breaksw
+ default: # Something else
+   set GNUSTEP_USER_APPS="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_APPS}"
+   breaksw
+endsw
+
+switch ("${GNUSTEP_USER_DIR_TOOLS}")
+ case /*:
+   set GNUSTEP_USER_TOOLS="${GNUSTEP_USER_DIR_TOOLS}"
+   breaksw
+ default:
+   set GNUSTEP_USER_TOOLS="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_TOOLS}"
+   breaksw
+endsw
+
+switch ("${GNUSTEP_USER_DIR_LIBRARY}")
+ case /*:
+   set GNUSTEP_USER_LIBRARY="${GNUSTEP_USER_DIR_LIBRARY}"
+   breaksw
+ default:
+   set GNUSTEP_USER_LIBRARY="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_LIBRARY}"
+   breaksw
+endsw
+
+switch ("${GNUSTEP_USER_DIR_HEADERS}")
+ case /*:
+   set GNUSTEP_USER_HEADERS="${GNUSTEP_USER_DIR_HEADERS}"
+   breaksw
+ default:
+   set GNUSTEP_USER_HEADERS="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_HEADERS}"
+   breaksw
+endsw
+
+switch ("${GNUSTEP_USER_DIR_LIBRARIES}")
+ case /*:
+   set GNUSTEP_USER_LIBRARIES="${GNUSTEP_USER_DIR_LIBRARIES}"
+   breaksw
+ default:
+   set GNUSTEP_USER_LIBRARIES="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_LIBRARIES}"
+   breaksw
+endsw
+
+switch ("${GNUSTEP_USER_DIR_DOCUMENTATION}")
+ case /*:
+   set GNUSTEP_USER_DOCUMENTATION="${GNUSTEP_USER_DIR_DOCUMENTATION}"
+   breaksw
+ default:
+   set GNUSTEP_USER_DOCUMENTATION="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_DOCUMENTATION}"
+   breaksw
+endsw
+
+switch ("${GNUSTEP_USER_DIR_DOCUMENTATION_MAN}")
+ case /*:
+   set GNUSTEP_USER_DOCUMENTATION_MAN="${GNUSTEP_USER_DIR_DOCUMENTATION_MAN}"
+   breaksw
+ default:
+   set GNUSTEP_USER_DOCUMENTATION_MAN="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_DOCUMENTATION_MAN}"
+   breaksw
+endsw
+
+switch ("${GNUSTEP_USER_DIR_DOCUMENTATION_INFO}")
+ case /*:
+   set GNUSTEP_USER_DOCUMENTATION_INFO="${GNUSTEP_USER_DIR_DOCUMENTATION_INFO}"
+   breaksw
+ default:
+   set GNUSTEP_USER_DOCUMENTATION_INFO="${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_DOCUMENTATION_INFO}"
+   breaksw
+endsw
+
+unset GNUSTEP_USER_DIR_APPS 
+unset GNUSTEP_USER_DIR_TOOLS 
+unset GNUSTEP_USER_DIR_LIBRARY
+unset GNUSTEP_USER_DIR_HEADERS 
+unset GNUSTEP_USER_DIR_LIBRARIES 
+unset GNUSTEP_USER_DIR_DOCUMENTATION 
+unset GNUSTEP_USER_DIR_DOCUMENTATION_MAN
+unset GNUSTEP_USER_DIR_DOCUMENTATION_INFO
