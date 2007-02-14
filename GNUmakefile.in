@@ -146,17 +146,18 @@ install: generated-files
 	 $(EC)(echo "Installing gnustep-make support software")
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
-		clean_vendor.sh cpu.sh GNUstep-reset.sh \
-		ld_lib_path.sh os.sh vendor.sh \
-		ld_lib_path.csh relative_path.sh strip_makefiles.sh \
-		debugapp; do \
+		clean_vendor.sh cpu.sh os.sh vendor.sh \
+		relative_path.sh strip_makefiles.sh debugapp; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)
-	 $(EC)($(INSTALL_PROGRAM) -m 755 GNUstep.sh $(makedir); \
-	  $(INSTALL_PROGRAM) -m 755 GNUstep.csh $(makedir); \
+	 $(EC)($(INSTALL_DATA) GNUstep.sh $(makedir); \
+	  $(INSTALL_DATA) GNUstep.csh $(makedir); \
+	  $(INSTALL_DATA) filesystem.sh $(makedir); \
+	  $(INSTALL_DATA) filesystem.csh $(makedir); \
+	  $(INSTALL_DATA) $(srcdir)/ld_lib_path.sh $(makedir); \
+	  $(INSTALL_DATA) $(srcdir)/ld_lib_path.csh $(makedir); \
+	  $(INSTALL_DATA) $(srcdir)/GNUstep-reset.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
-	  $(INSTALL_PROGRAM) -m 755 filesystem.sh $(makedir); \
-	  $(INSTALL_PROGRAM) -m 755 filesystem.csh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 gnustep-config $(tooldir))
@@ -187,19 +188,6 @@ install: generated-files
 	   echo "Stripping makefiles and shell scripts..."; \
 	   cd $(makedir); ./strip_makefiles.sh; \
 	   fi)
-
-#
-# NICOLA - Need to clean the following message and print it at the end
-# of the install rule
-#
-#	@echo ""
-#	@echo "IMPORTANT: you need to execute a shell initialization script"
-#	@echo "before you can use gnustep-make.  The command to run the shell"
-#	@echo "initialization script is:"
-#	@echo ". $(makedir)/GNUstep.sh"
-#	@echo "(be careful to put the space after the dot)"
-#	@echo "Please run it now."
-#	@echo ""
 
 uninstall:
 	for f in config.guess config.sub install-sh mkinstalldirs \

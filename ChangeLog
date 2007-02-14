@@ -1,5 +1,12 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUmakefile.in (install): Install GNUstep.sh, GNUstep.csh,
+	filesystem.sh, filesystem.csh, ld_lib_path.sh, ld_lib_path.csh as
+	non-executables as they are to be sourced, not executed
+	(Suggestion from Richard).
+
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.conf.in (GNUSTEP_MAKEFILES): New variable.
 	* GNUstep.csh.in: By default, set GNUSTEP_MAKEFILES to the
 	configure default if not set.
