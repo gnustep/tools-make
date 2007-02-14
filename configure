@@ -4445,8 +4445,13 @@ fi
 # Check for $(info ...) function in GNU make
 #--------------------------------------------------------------------
 
-# Extract the first word of "gmake", so it can be a program name with args.
-set dummy gmake; ac_word=$2
+# Search for GNU make.  We try 'gmake' then 'gnumake' then 'make'.  If
+# we can't find it, we set it to 'make', even if that will fail later
+# on.
+for ac_prog in gmake gnumake make
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
 if test "${ac_cv_prog_GNUMAKE+set}" = set; then
@@ -4462,7 +4467,7 @@ do
   test -z "$as_dir" && as_dir=.
   for ac_exec_ext in '' $ac_executable_extensions; do
   if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_GNUMAKE="make"
+    ac_cv_prog_GNUMAKE="$ac_prog"
     echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
     break 2
   fi
@@ -4479,6 +4484,10 @@ else
   echo "$as_me:$LINENO: result: no" >&5
 echo "${ECHO_T}no" >&6
 fi
+
+  test -n "$GNUMAKE" && break
+done
+test -n "$GNUMAKE" || GNUMAKE="make"
 
 
 # If GNU make supports $(info ...), gnustep-make can use it to print
@@ -4502,6 +4511,10 @@ echo "${ECHO_T}version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version}"
 
 echo "$as_me:$LINENO: checking if GNU Make has the info function" >&5
 echo $ECHO_N "checking if GNU Make has the info function... $ECHO_C" >&6
+
+# Things may go wrong (eg, make couldn't be found), so by default we
+# assume 'no' here.  If things go wrong, you'll lost some
+# non-essential features.
 MAKE_WITH_INFO_FUNCTION=no
 if test "${gs_cv_make_major_version}" -ge "4"; then
   MAKE_WITH_INFO_FUNCTION=yes

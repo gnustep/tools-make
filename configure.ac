@@ -1005,8 +1005,10 @@ AC_SUBST(OBJCFLAGS)
 # Check for $(info ...) function in GNU make
 #--------------------------------------------------------------------
 
-# Use 'gmake' in preference to 'make' if it is found
-AC_CHECK_PROG(GNUMAKE, gmake, gmake, make)
+# Search for GNU make.  We try 'gmake' then 'gnumake' then 'make'.  If
+# we can't find it, we set it to 'make', even if that will fail later
+# on.
+AC_CHECK_PROGS(GNUMAKE, [gmake gnumake make], make)
 
 # If GNU make supports $(info ...), gnustep-make can use it to print
 # out a help message at the beginning of each compilation.  This
@@ -1026,6 +1028,10 @@ gs_cv_make_minor_version=`echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]
 AC_MSG_RESULT(version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version})
 
 AC_MSG_CHECKING(if GNU Make has the info function)
+
+# Things may go wrong (eg, make couldn't be found), so by default we
+# assume 'no' here.  If things go wrong, you'll lost some
+# non-essential features.
 MAKE_WITH_INFO_FUNCTION=no
 if test "${gs_cv_make_major_version}" -ge "4"; then
   MAKE_WITH_INFO_FUNCTION=yes
