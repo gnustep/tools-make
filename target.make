@@ -205,15 +205,12 @@ ifeq ($(FOUNDATION_LIB), apple)
   endif
 endif
 
-TARGET_LIB_DIR = \
-    Library/Libraries/$(GNUSTEP_TARGET_LDIR)
-
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
 	$(CC) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
+		-install_name $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIB_LINK_FILE) \
 		$(ALL_LDFLAGS) -o $@ \
 		-framework Foundation \
 		-framework System \
@@ -227,7 +224,7 @@ SHARED_LIB_LINK_CMD     = \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
 		-read_only_relocs warning -undefined warning \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
+		-install_name $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIB_LINK_FILE) \
 		$(ALL_LDFLAGS) -o $@ \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
 		-framework Foundation \
@@ -423,14 +420,11 @@ ifeq ($(FOUNDATION_LIB), nx)
   endif
 endif
 
-TARGET_LIB_DIR = \
-    Library/Libraries/$(GNUSTEP_TARGET_LDIR)
-
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
 	/bin/libtool $(SHARED_LD_PREFLAGS) \
 		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
+		-install_name $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIB_LINK_FILE) \
 		$(ALL_LDFLAGS) -o $@ \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
@@ -441,7 +435,7 @@ else
 SHARED_LIB_LINK_CMD     = \
         /bin/libtool $(SHARED_LD_PREFLAGS) \
 		-dynamic -read_only_relocs suppress $(ARCH_FLAGS) \
-		-install_name $(GNUSTEP_SYSTEM_ROOT)/$(TARGET_LIB_DIR)/$(LIB_LINK_FILE) \
+		-install_name $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIB_LINK_FILE) \
 		$(ALL_LDFLAGS) $@ \
 		-framework System \
 		$(INTERNAL_LIBRARIES_DEPEND_UPON) \
@@ -493,9 +487,6 @@ ifeq ($(FOUNDATION_LIB), nx)
     INTERNAL_LDFLAGS += $(ARCH_FLAGS)
   endif
 endif
-
-TARGET_LIB_DIR = \
-    Library/Libraries/$(GNUSTEP_TARGET_LDIR)
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
