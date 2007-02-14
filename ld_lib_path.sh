@@ -24,62 +24,54 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 
-#
-# FIXME/TODO: Update this for the new filesystem support
-#
+# The modern version of this file basically expects you to execute it
+# inside GNUstep.sh.  If not, you need to have at least the
+# GNUSTEP_MAKEFILES, GNUSTEP_HOST_*, GNUSTEP_SYSTEM_LIBRARIES,
+# GNUSTEP_LOCAL_LIBRARIES, etc.  GNUSTEP_SYSTEM_LIBRARY,
+# GNUSTEP_LOCAL_LIBRARY, etc. variables defined.
+
+# FIXME/TODO: Update all callers to source GNUstep.sh and not this file.
 
 # This file is sourced.  This means extra care is needed when changing
 # it.  Please read the comments on GNUstep.sh.in before touching it.
 
-# The first (and only) parameter to this script is the canonical
-# operating system name.
-
-host_os=$GNUSTEP_HOST_OS
-
-if [ -z "$host_os" ]; then
-  host_os=$1
-fi
-
-
-old_IFS="$IFS"
-IFS=:
 lib_paths=
 fw_paths=
-for dir in $GNUSTEP_PATHLIST; do
 
-  # prepare the path_fragment for libraries and this dir
-  if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
-    path_fragment="$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/Library/Libraries/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
-  else
-    path_fragment="$dir/Library/Libraries"
-  fi
+# Determine the library paths
+GNUSTEP_LIBRARIES_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARIES" "$GNUSTEP_LOCAL_LIBRARIES" "$GNUSTEP_NETWORK_LIBRARIES" "$GNUSTEP_SYSTEM_LIBRARIES" $fixup_paths`
 
-  # Append the path_fragment to lib_paths
-  if [ -z "$lib_paths" ]; then
-    lib_paths="$path_fragment"
-  else
-    lib_paths="$lib_paths:$path_fragment"
-  fi
+if [ "$GNUSTEP_IS_FLATTENED" = "yes" ]; then
+  lib_paths="$GNUSTEP_LIBRARIES_PATHLIST"
+else
+  old_IFS="$IFS"
+  IFS=:
+    for dir in $GNUSTEP_LIBRARIES_PATHLIST; do
 
-  # prepare the path_fragment for frameworks and this dir
-  path_fragment="$dir/Library/Frameworks"
+      # prepare the path_fragment for libraries and this dir
+      path_fragment="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
 
-  # Append the path_fragment to fw_paths
-  if [ -z "$fw_paths" ]; then
-    fw_paths="$path_fragment"
-  else
-    fw_paths="$fw_paths:$path_fragment"
-  fi
+      # Append the path_fragment to lib_paths
+      if [ -z "$lib_paths" ]; then
+        lib_paths="$path_fragment"
+      else
+        lib_paths="$lib_paths:$path_fragment"
+      fi
 
-  unset path_fragment
+      unset path_fragment
+    done
+  IFS="$old_IFS"
+  unset old_IFS
+  unset dir
+fi
 
-done
-IFS="$old_IFS"
-unset old_IFS
-unset dir
+unset GNUSTEP_LIBRARIES_PATHLIST
+
+# Determine the framework paths
+fw_paths=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Frameworks" "$GNUSTEP_LOCAL_LIBRARY/Frameworks" "$GNUSTEP_NETWORK_LIBRARY/Frameworks" "$GNUSTEP_SYSTEM_LIBRARY/Frameworks" $fixup_paths`
 
 
-case "$host_os" in
+case "$GNUSTEP_HOST_OS" in
 
   *nextstep4*)
     if [ -z "$DYLD_LIBRARY_PATH" ]; then
@@ -163,7 +155,6 @@ case "$host_os" in
 
 esac
 
-unset host_os
 unset lib_paths
 unset fw_paths
 

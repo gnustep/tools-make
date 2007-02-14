@@ -1,5 +1,17 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac (GNUSTEP_USER_DIR_LIBRARIES): Fixed definition.
+	Use GNUSTEP_SYSTEM_HEADERS and GNUSTEP_SYSTEM_LIBRARIES rather
+	than GNUSTEP_SYSTEM_ROOT/Library/Headers and
+	GNUSTEP_SYSTEM_ROOT/Library/Libraries.
+	* configure: Regenerated.
+
+	* ld_lib_path.sh: Removed the optional argument.
+	Updated to new filesystem support.
+	* ld_lib_path.csh: Same changes.
+	
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* common.make (LD_LIB_PATH_SCRIPT): Unused variable removed.
 
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>

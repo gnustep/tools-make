@@ -4,10 +4,11 @@
 #
 #   Set up the LD_LIBRARY_PATH (or similar env variable for your system)
 #
-#   Copyright (C) 1998 Free Software Foundation, Inc.
+#   Copyright (C) 1998-2007 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -22,30 +23,17 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 
-# The first (and only) parameter to this script is the canonical
-# operating system name.
-
-if ( "$GNUSTEP_IS_FLATTENED" == "no" ) then
-  set last_path_part="Library/Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}"
-  set tool_path_part="Library/Libraries/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+if ( "$GNUSTEP_IS_FLATTENED" == "yes" ) then
+  set lib_paths=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARIES" "$GNUSTEP_LOCAL_LIBRARIES" "$GNUSTEP_NETWORK_LIBRARIES" "$GNUSTEP_SYSTEM_LIBRARIES" $fixup_paths`
 else
-  set last_path_part="Library/Libraries"
-  set tool_path_part="Library/Libraries"
+  set lib_paths=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO" "$GNUSTEP_USER_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" "$GNUSTEP_LOCAL_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO" "$GNUSTEP_LOCAL_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" $fixup_paths`
+
+ set lib_paths="$lib_paths":`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_NETWORK_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO" "$GNUSTEP_NETWORK_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" "$GNUSTEP_SYSTEM_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO" "$GNUSTEP_SYSTEM_LIBRARIES/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS" $fixup_paths`:
 endif
 
-set host_os=${GNUSTEP_HOST_OS}
+set fw_paths=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Frameworks" "$GNUSTEP_LOCAL_LIBRARY/Frameworks" "$GNUSTEP_NETWORK_LIBRARY/Frameworks" "$GNUSTEP_SYSTEM_LIBRARY/Frameworks" $fixup_paths`
 
-if ( "${host_os}" == "" ) then
-  set host_os=${1}
-endif
-
-set lib_paths="${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_USER_ROOT}/${tool_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${tool_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${tool_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${tool_path_part}"
-
-set last_path_part="Library/Frameworks"
-
-set fw_paths="${GNUSTEP_USER_ROOT}/${last_path_part}:${GNUSTEP_LOCAL_ROOT}/${last_path_part}:${GNUSTEP_NETWORK_ROOT}/${last_path_part}:${GNUSTEP_SYSTEM_ROOT}/${last_path_part}"
-
-switch ( "${host_os}" )
+switch ( "${GNUSTEP_HOST_OS}" )
 
   case *nextstep4* :
     if ( $?DYLD_LIBRARY_PATH == 0 ) then
