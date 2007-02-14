@@ -66,7 +66,7 @@ GNUSTEP_SYSTEM_LIBRARY=@GNUSTEP_SYSTEM_LIBRARY@
 
 # This is where System headers get installed.  They are the
 # library .h headers.
-# Traditionally it is /usr/GNUstep/System/Library/Libraries/Headers.
+# Traditionally it is /usr/GNUstep/System/Library/Headers.
 GNUSTEP_SYSTEM_HEADERS=@GNUSTEP_SYSTEM_HEADERS@
 
 # This is where System libraries get installed.  By libraries we mean
