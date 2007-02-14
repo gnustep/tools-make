@@ -1,5 +1,12 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/java-tool.make: Store Java code in the standard
+	GNUSTEP_JAVA location instead of a subdirectory of GNUSTEP_TOOLS.
+	* java-executable.template: Corresponding update.  Simplify
+	and update by sourcing GNUstep.sh.
+	
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* gnustep-config.in: Extended help to list all the new 
 	filesystem variables.
 

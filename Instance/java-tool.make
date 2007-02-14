@@ -39,13 +39,20 @@ endif
         internal-java_tool-uninstall_ \
         _FORCE
 
-# This is the directory where the tools get installed. If you don't specify a
-# directory they will get installed in $(GNUSTEP_LOCAL_ROOT)/Tools/.
+# This is the directory where the shell wrapper gets installed.  You
+# want this on your path! If you don't specify a directory they will
+# get installed in $(GNUSTEP_LOCAL_ROOT)/Tools/.
 ifeq ($(JAVA_TOOL_INSTALLATION_DIR),)
-JAVA_TOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)
+  JAVA_TOOL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)
 endif
 
-GNUSTEP_SHARED_JAVA_INSTALLATION_DIR = $(JAVA_TOOL_INSTALLATION_DIR)/Java
+# This is the directory where the java classes get installed.
+# Normally this is /usr/GNUstep/Local/Library/Libraries/Java/
+ifeq ($(JAVA_INSTALLATION_DIR),)
+  JAVA_INSTALLATION_DIR = $(GNUSTEP_JAVA)
+endif
+
+GNUSTEP_SHARED_JAVA_INSTALLATION_DIR = $(JAVA_INSTALLATION_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/java.make
 
 internal-java_tool-all_:: shared-instance-java-all
@@ -56,8 +63,9 @@ internal-java_tool-install_:: shared-instance-java-install \
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
 ifeq ($(PRINCIPAL_CLASS),)
-  $(warning You must specify PRINCIPAL_CLASS)
-  # But then, we are good, and try guessing
+  $(warning You must specify PRINCIPAL_CLASS, which should be set to the full classname)
+  # But then, we are good, and try guessing.  This will only work if the class
+  # is not in a package though, which sounds unlikely.
   PRINCIPAL_CLASS = $(word 1 $(JAVA_OBJ_FILES))
 endif
 
