@@ -5,7 +5,8 @@
 	into +frameworkEnv.  These methods are currently unused, but
 	future versions of gnustep-base might read +frameworkPath to have
 	a better chance of finding the framework on disk.
-
+	* GNUstep.conf.in: Use a single '#' for comments, not two ('##').
+	
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* target.make (TARGET_LIB_DIR): (MacOS-Server 1.0, OpenStep 4.x):
