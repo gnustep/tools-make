@@ -168,6 +168,7 @@ ifneq ($(GNUSTEP_INSTALLATION_DIR),)
   # GNUstep filesystem rooted in GNUSTEP_INSTALLATION_DIR.
   # This is not recommended since it does not work with custom
   # filesystem configurations.
+  $(warning GNUSTEP_INSTALLATION_DIR is deprecated.  Please use GNUSTEP_INSTALLATION_DOMAIN instead)
 
   #
   # DESTDIR allows you to relocate the entire installation somewhere else

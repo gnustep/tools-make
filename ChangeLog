@@ -1,5 +1,15 @@
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/resource-set.make (RESOURCE_FILES_INSTALL_DIR): Only use
+	xxx_RESOURCE_FILES_INSTALL_DIR if xxx_INSTALL_DIR is not set.  In
+	this way, GNUmakefiles that need to be backwards compatible can set
+	both the old and the new variable, and work both with old and
+	new gnustep-makes.
+	* common.make: Emit a deprecation warning is
+	GNUSTEP_INSTALLATION_DIR is used.
+
+2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* filesystem.sh.in: Unset all GNUSTEP_USER_DIR_* variables
 	after using them.
 	* GNUmakefile.in: Install print_unique_pathlist.sh.

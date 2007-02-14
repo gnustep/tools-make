@@ -47,11 +47,16 @@ ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
   RESOURCE_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
 endif
 
-ifneq ($($(GNUSTEP_INSTANCE)_RESOURCE_FILES_INSTALL_DIR),)
-  # This is deprecated because we need to prepend GNUSTEP_INSTALLATION_DIR to it, which
-  # is deprecated.  This was deprecated on 12 Feb 2007.
-  $(warning xxx_RESOURCE_FILES_INSTALL_DIR is deprecated, please use xxx_INSTALL_DIR instead)
-  RESOURCE_FILES_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/$($(GNUSTEP_INSTANCE)_RESOURCE_FILES_INSTALL_DIR)
+# Use the old xxx_RESOURCE_FILES_INSTALL_DIR setting only if the new
+# one is not available.  If you need your makefile to be compatible
+# with both old and new versions of make, you can use both settings.
+ifeq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
+  ifneq ($($(GNUSTEP_INSTANCE)_RESOURCE_FILES_INSTALL_DIR),)
+    # This is deprecated because we need to prepend GNUSTEP_INSTALLATION_DIR to it, which
+    # is deprecated.  This was deprecated on 12 Feb 2007.
+    $(warning xxx_RESOURCE_FILES_INSTALL_DIR is deprecated, please use xxx_INSTALL_DIR instead)
+    RESOURCE_FILES_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/$($(GNUSTEP_INSTANCE)_RESOURCE_FILES_INSTALL_DIR)
+  endif
 endif
 
 ifeq ($(RESOURCE_FILES_INSTALL_DIR),)
