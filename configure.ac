@@ -235,6 +235,9 @@ AC_SUBST(GNUSTEP_CONFIG_FILE)
 # we read will be used to generate the new system-wide one, while the
 # user one will be left untouched).
 
+# FIXME: what about flattened vs non-flattened ?  It would be nice to
+# import that option as well ?
+
 # It can be annoying in certain cases though; this option lets you
 # turn it off
 AC_MSG_CHECKING([if we should import an existing configuration file])
