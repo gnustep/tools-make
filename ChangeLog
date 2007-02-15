@@ -1,3 +1,7 @@
+2007-02-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* executable.template.in (full_appname): Fixed typo.
+
 2007-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* executable.template.in: Updated for new filesystem structure.

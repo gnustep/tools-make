@@ -139,7 +139,7 @@ dir="`dirname \"$this_script\"`"
 
 # Find the absolute path of the directory.  This will be something like
 # /home/nicola/testing/Applications/Gorm.app
-full_appname="`(cd \"$dir\"; pwd)`";;
+full_appname="`(cd \"$dir\"; pwd)`"
 
 if [ -z "$full_appname" ]; then
   echo "Can't find absolute path for $this_script! Please specify full path when"
