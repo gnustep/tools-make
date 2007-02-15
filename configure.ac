@@ -627,11 +627,7 @@ if test x"$GNUSTEP_SYSTEM_LIBRARY" = x""; then
   GNUSTEP_SYSTEM_LIBRARY="$GNUSTEP_SYSTEM_ROOT/Library"
 fi
 if test x"$GNUSTEP_SYSTEM_HEADERS" = x""; then 
-  if test "$GNUSTEP_IS_FLATTENED" = "yes"; then
-    GNUSTEP_SYSTEM_HEADERS="$GNUSTEP_SYSTEM_ROOT/Library/Headers"
-  else
-    GNUSTEP_SYSTEM_HEADERS="$GNUSTEP_SYSTEM_ROOT/Library/Headers/$LIBRARY_COMBO"
-  fi
+  GNUSTEP_SYSTEM_HEADERS="$GNUSTEP_SYSTEM_ROOT/Library/Headers"
 fi
 if test x"$GNUSTEP_SYSTEM_LIBRARIES" = x""; then 
   GNUSTEP_SYSTEM_LIBRARIES="$GNUSTEP_SYSTEM_LIBRARY/Libraries/"
@@ -665,11 +661,7 @@ if test x"$GNUSTEP_LOCAL_LIBRARY" = x""; then
   GNUSTEP_LOCAL_LIBRARY="$GNUSTEP_LOCAL_ROOT/Library"
 fi
 if test x"$GNUSTEP_LOCAL_HEADERS" = x""; then 
-  if test "$GNUSTEP_IS_FLATTENED" = "yes"; then
-    GNUSTEP_LOCAL_HEADERS="$GNUSTEP_LOCAL_ROOT/Library/Headers"
-  else
-    GNUSTEP_LOCAL_HEADERS="$GNUSTEP_LOCAL_ROOT/Library/Headers/$LIBRARY_COMBO"
-  fi
+  GNUSTEP_LOCAL_HEADERS="$GNUSTEP_LOCAL_ROOT/Library/Headers"
 fi
 if test x"$GNUSTEP_LOCAL_LIBRARIES" = x""; then 
   GNUSTEP_LOCAL_LIBRARIES="$GNUSTEP_LOCAL_LIBRARY/Libraries/"
@@ -703,11 +695,7 @@ if test x"$GNUSTEP_NETWORK_LIBRARY" = x""; then
   GNUSTEP_NETWORK_LIBRARY="$GNUSTEP_NETWORK_ROOT/Library"
 fi
 if test x"$GNUSTEP_NETWORK_HEADERS" = x""; then 
-  if test "$GNUSTEP_IS_FLATTENED" = "yes"; then
-    GNUSTEP_NETWORK_HEADERS="$GNUSTEP_NETWORK_ROOT/Library/Headers"
-  else
-    GNUSTEP_NETWORK_HEADERS="$GNUSTEP_NETWORK_ROOT/Library/Headers/$LIBRARY_COMBO"
-  fi
+  GNUSTEP_NETWORK_HEADERS="$GNUSTEP_NETWORK_ROOT/Library/Headers"
 fi
 if test x"$GNUSTEP_NETWORK_LIBRARIES" = x""; then 
   GNUSTEP_NETWORK_LIBRARIES="$GNUSTEP_NETWORK_LIBRARY/Libraries/"
@@ -741,11 +729,7 @@ if test x"$GNUSTEP_USER_DIR_LIBRARY" = x""; then
   GNUSTEP_USER_DIR_LIBRARY="$GNUSTEP_USER_DIR/Library"
 fi
 if test x"$GNUSTEP_USER_DIR_HEADERS" = x""; then 
-  if test "$GNUSTEP_IS_FLATTENED" = "yes"; then
-    GNUSTEP_USER_DIR_HEADERS="$GNUSTEP_USER_DIR/Library/Headers"
-  else
-    GNUSTEP_USER_DIR_HEADERS="$GNUSTEP_USER_DIR/Library/Headers/$LIBRARY_COMBO"
-  fi
+  GNUSTEP_USER_DIR_HEADERS="$GNUSTEP_USER_DIR/Library/Headers"
 fi
 if test x"$GNUSTEP_USER_DIR_LIBRARIES" = x""; then 
   GNUSTEP_USER_DIR_LIBRARIES="$GNUSTEP_USER_DIR_LIBRARY/Libraries/"
@@ -837,18 +821,20 @@ AC_SUBST(BACKEND_BUNDLE)
 #--------------------------------------------------------------------
 
 # Set location of System GNUstep dirs for later use
-GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
+
 
 if test "$GNUSTEP_FLATTENED" = yes; then
   GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
+  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
 else
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir="$clean_target_cpu/$clean_target_os"
   GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES/$obj_dir"
+  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS/$LIBRARY_COMBO"
 fi
 
-# Check to see if the libobjc library is in our GNUSTEP_SYSTEM_ROOT.
+# Check to see if the libobjc library is in our GNUSTEP_SYSTEM_LIBRARIES.
 # If so, there are probably other libraries that we want there also, so
 # leave the proper includes in CPPFLAGS and LDFLAGS
 AC_MSG_CHECKING(for custom shared objc library)
@@ -871,7 +857,7 @@ AC_MSG_RESULT($gs_cv_objc_libdir)
 
 # The following are needed to compile the test programs
 if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
-  OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$GNUSTEP_SYSTEM_HEADERS"
+  OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$GNUSTEP_HDIR"
   OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
 fi
 
