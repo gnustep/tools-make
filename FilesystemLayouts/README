@@ -1,0 +1,51 @@
+This directory contains filesystem layouts that you can use when you
+configure your gnustep-make.
+
+A filesystem layout describes how the GNUstep installation domains
+(System, Network, Local, User) map to directories on disk.
+
+Every file in this directory is a filesystem layout that you can use
+in gnustep-make's ./configure.
+
+Eg,
+
+./configure --with-layout=linux
+
+./configure --with-layout=linux-system
+
+By default, the GNUstep layout is used.  The files are shell files
+that are directly include by ./configure and that should set the
+specified variables.
+
+If you want to use your own custom layout, just start with one of the
+existing layouts, copy it into a new file, and edit it.
+
+Here is a list of the filesystem layout with comments --
+
+ * GNUstep: default GNUstep filesystem layout; it installs everything
+into /usr/GNUstep/System, /usr/GNUstep/Local.  It's a very friendly
+layout, similar to the ones found on NeXTstep, OpenStep and Apple Mac
+OS X.  It's the only layout that can support fat binaries.  It may not
+blend very well with the native environment because everything is
+installed in special, GNUstep-only, directories, so you may need to
+source a special script (GNUstep.sh) before being able to use the
+layout.  Recommended for the advanced GNUstep users and the
+NeXTstep/Apple fans.
+
+ * linux: standard Linux FHS layout for locally compiled software; it
+installs everything into /usr/local.  Blends very well with native
+GNU/Linux systems (and other Unix systems with similar directory
+structure).  Recommended if you're compiling from sources on Unix and
+want good integration with your native system.
+
+ * linux-system: standard Linux FHS layout for software to be shipped
+as part of distributions/systems; it installs system stuff into /usr,
+and is ready to support local stuff to be installed into /usr/local.
+Blends wonderfully with native GNU/Linux systems (and other Unix
+systems with similar directory structure) as you're installing
+everything straight into the standard system locations.  Recommended
+if you're building packages for a Unix system.
+
+ * windows: a GNUstep filesystem layout that installs by default into
+C:/GNUstep.  Recommend if you're compiling on Windows.
+

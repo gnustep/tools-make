@@ -1,7 +1,7 @@
 #
 #   configure.ac
 #
-#   Copyright (C) 1997-2004 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2007 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #	     Ovidiu Predescu <ovidiu@net-community.com>
@@ -189,6 +189,149 @@ fi
 # GNUstep specific options follow
 #-------------------------------------------------------------------
 
+#-------------------------------------------------------------------
+# Determine filesystem layout to use
+#-------------------------------------------------------------------
+
+# Hmmm - currently we only allow them to specify a file containing the
+# filesystem layout.  We could have a separate flag for each of the
+# layout variables; that would be a lot of flags though!  But maybe
+# for completeness we could go through all of them and add a flag for
+# each.
+AC_MSG_CHECKING([for GNUstep filesystem layout to use])
+AC_ARG_WITH(layout,[
+--with-layout=FILE
+   Set the type of filesystem layout that you want your GNUstep
+   installation to use.  The layout described by FILE will be
+   read from the FilesystemLayouts directory.  Check the 
+   FilesystemLayouts subdirectory for a list of layouts and how 
+   to choose which one you want (or create your own).  If a layout 
+   is specified, we automatically avoid importing an existing config 
+   file.  The default layout is 'gnustep'.
+   Example: --with-layout=linux
+],
+  GNUSTEP_FILESYSTEM_LAYOUT="$withval",)
+
+# The variable GNUSTEP_FILESYSTEM_LAYOUT is empty if no layout was
+# specified on the command line.  In that case, we read the config
+# file (which might contain more up-to-date information on what layout
+# the user wants).  If the variable is non-empty, then we avoid
+# reading the config file (the user already explicitly specified what
+# layout they want, so we omit to read existing config that might mess
+# that up).
+
+if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
+  AC_MSG_RESULT($GNUSTEP_FILESYSTEM_LAYOUT)
+  GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
+else
+  # This is the default layout that is used when installing
+  # GNUstep with no other indication.  We normally use 'gnustep',
+  # but we first test for the C: directory, which means we're on
+  # Windows; in that case we use 'windows'.
+  if test -d C: >&5 2>&5; then
+    AC_MSG_RESULT(none specified: we will use 'windows')
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=windows
+  else
+    AC_MSG_RESULT(none specified: we will use 'gnustep')
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
+  fi
+fi
+
+if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&5; then
+  echo "Can not find $srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE"
+  echo "Please check your --with-layout=xxx argument and try again."
+  exit 1
+fi
+
+#-------------------------------------------------------------------
+# Read filesystem layout from file
+#-------------------------------------------------------------------
+AC_MSG_CHECKING([if we manage to import the filesystem layout configuration])
+
+. "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE"
+
+if test ! x"$GNUSTEP_DEFAULT_PREFIX" = x""; then
+  AC_MSG_RESULT(ok)
+else
+  AC_MSG_RESULT(failed)
+  echo "Please check your $srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE"
+  echo "layout file, as it can not be loaded (GNUSTEP_DEFAULT_PREFIX missing)"
+  exit 1
+fi
+
+# Now, all MAKEFILES/SYSTEM/LOCAL/NETWORK paths in the filesystem
+# layout file will be relative to prefix.  So we need to immediately
+# determine prefix, and use it.
+
+#--------------------------------------------------------------------
+# Process --prefix
+#--------------------------------------------------------------------
+
+# We use this to make sure we know if the user has passed a
+# --prefix=xxx option or not.  We use it if it was passed.
+#
+# If it wasn't passed, then we want to know because in that case we
+# want to use the specified default prefix for that filesystem.  For
+# example, the 'gnustep' filesystem will install by default in
+# /usr/GNUstep, while the 'linux' filesystem will install by default
+# in /usr/local, and the 'windows' one in C:/GNUstep.  Please note
+# that AC_PREFIX_DEFAULT will actually be done at the very beginning
+# of ./configure, not here.  So we wouldn't have access to all the
+# filesystem layout information yet, which is why we only use the
+# macro to know if a --prefix=xxx was passed or not.
+AC_PREFIX_DEFAULT(NONE)
+
+AC_MSG_CHECKING([for prefix])
+if test "x$prefix" = "xNONE"; then
+  # Use the default prefix for this filesystem layout
+  GNUSTEP_PREFIX="$GNUSTEP_DEFAULT_PREFIX";
+else
+  # Use the prefix that the user specified
+  GNUSTEP_PREFIX="$prefix";
+fi
+
+# Remove any '/' at the end of prefix.  All system/network/local paths
+# from layout files must start with a '/'.  We don't want a '/' at the
+# end of the prefix to generate a '//' mostly because common.make will
+# try to double-check that GNUSTEP_SYSTEM_TOOLS is in your PATH.  Any
+# '//' in GNUSTEP_SYSTEM_TOOLS will have been normalized to '/' in
+# PATH (on some systems at least) and so comparing them won't find a
+# match and the check will fail even if GNUSTEP_SYSTEM_TOOLS is in
+# PATH and a spurious warning will be produced.
+GNUSTEP_PREFIX="`echo \"$GNUSTEP_PREFIX\" | sed 's%/*$%%'`"
+
+AC_MSG_RESULT($GNUSTEP_PREFIX)
+
+# Now we apply the prefix
+GNUSTEP_MAKEFILES="$GNUSTEP_PREFIX$GNUSTEP_MAKEFILES"
+
+GNUSTEP_SYSTEM_APPS="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_APPS"
+GNUSTEP_SYSTEM_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_TOOLS"
+GNUSTEP_SYSTEM_LIBRARY="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_LIBRARY"
+GNUSTEP_SYSTEM_HEADERS="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_HEADERS"
+GNUSTEP_SYSTEM_LIBRARIES="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_LIBRARIES"
+GNUSTEP_SYSTEM_DOCUMENTATION="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_DOCUMENTATION"
+GNUSTEP_SYSTEM_DOCUMENTATION_MAN="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_DOCUMENTATION_MAN"
+GNUSTEP_SYSTEM_DOCUMENTATION_INFO="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_DOCUMENTATION_INFO"
+
+GNUSTEP_NETWORK_APPS="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_APPS"
+GNUSTEP_NETWORK_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_TOOLS"
+GNUSTEP_NETWORK_LIBRARY="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_LIBRARY"
+GNUSTEP_NETWORK_HEADERS="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_HEADERS"
+GNUSTEP_NETWORK_LIBRARIES="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_LIBRARIES"
+GNUSTEP_NETWORK_DOCUMENTATION="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_DOCUMENTATION"
+GNUSTEP_NETWORK_DOCUMENTATION_MAN="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_DOCUMENTATION_MAN"
+GNUSTEP_NETWORK_DOCUMENTATION_INFO="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_DOCUMENTATION_INFO"
+
+GNUSTEP_LOCAL_APPS="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_APPS"
+GNUSTEP_LOCAL_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_TOOLS"
+GNUSTEP_LOCAL_LIBRARY="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_LIBRARY"
+GNUSTEP_LOCAL_HEADERS="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_HEADERS"
+GNUSTEP_LOCAL_LIBRARIES="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_LIBRARIES"
+GNUSTEP_LOCAL_DOCUMENTATION="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOCUMENTATION"
+GNUSTEP_LOCAL_DOCUMENTATION_MAN="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOCUMENTATION_MAN"
+GNUSTEP_LOCAL_DOCUMENTATION_INFO="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOCUMENTATION_INFO"
+
 #---------------------------------------------------------------------
 # Location of the GNUstep.conf config file (--with-config-file)
 #---------------------------------------------------------------------
@@ -235,11 +378,16 @@ AC_SUBST(GNUSTEP_CONFIG_FILE)
 # we read will be used to generate the new system-wide one, while the
 # user one will be left untouched).
 
-# FIXME: what about flattened vs non-flattened ?  It would be nice to
-# import that option as well ?
+# Please note that if the user explicitly specified a
+# --with-layout=xxx option, we do not read the config file.  They
+# already made clear what they want.
+
+# TODO: what about flattened vs non-flattened ?  It would be nice to
+# import that option as well.
 
 # It can be annoying in certain cases though; this option lets you
-# turn it off
+# turn it off (or turn it back on if disabled because of the
+# --with-layout=xxx option!)
 AC_MSG_CHECKING([if we should import an existing configuration file])
 AC_ARG_ENABLE(importing-config-file, [
 --disable-importing-config-file
@@ -248,189 +396,95 @@ AC_ARG_ENABLE(importing-config-file, [
    parsed and used when configure is being run.
 ], 
   ac_cv_importing_config_file=$enableval,
-  ac_cv_importing_config_file="yes")
+  ac_cv_importing_config_file="maybe")
 
-# If importing the file is disabled, don't import it.
 if test "$ac_cv_importing_config_file" = "no"; then
   AC_MSG_RESULT([no: disabled from the command-line])
 else
 
- # Check that the file exists
- if test ! -f "$GNUSTEP_CONFIG_FILE"; then
-  AC_MSG_RESULT([no: file "$GNUSTEP_CONFIG_FILE" does not exist])
+ if test "$ac_cv_importing_config_file" = "maybe" &&  test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
+      AC_MSG_RESULT([no: already imported a layout file])
  else
-  AC_MSG_RESULT([yes: trying to import "$GNUSTEP_CONFIG_FILE"])
-  AC_MSG_NOTICE([If this fails, please run configure again with the --disable-importing-config-file option])
-  . "$GNUSTEP_CONFIG_FILE"
- fi
+   if test ! -f "$GNUSTEP_CONFIG_FILE"; then
+     AC_MSG_RESULT([no: file "$GNUSTEP_CONFIG_FILE" does not exist])
+   else
+     AC_MSG_RESULT([yes: trying to import "$GNUSTEP_CONFIG_FILE"])
+     AC_MSG_NOTICE([If this fails, run configure again with --disable-importing-config-file])
+     . "$GNUSTEP_CONFIG_FILE"
+   fi
+  fi
 fi
 
 #--------------------------------------------------------------------
-# Important - from now on, any variable that is set in the
-# configuration file (eg, GNUSTEP_SYSTEM_ROOT) could already have a
-# value that we have imported from the previous file.  ./configure
-# command line options should override those values, but otherwise we
-# should keep them!
-#
-# Those could also be env variables, which is really a backwards
-# compatibility hack that won't necessarily be kept in the future!
+# Important - from now on, any variable that is set in the filesystem
+# layout and/or configuration file (eg, GNUSTEP_SYSTEM_ROOT) could
+# already have a value that we have imported from the files.
+# ./configure command line options should override those values, but
+# otherwise we should keep them!
 #--------------------------------------------------------------------
-
-
-#--------------------------------------------------------------------
-# Process --prefix
-#--------------------------------------------------------------------
-
-#
-# In practice,
-#
-# ./configure --prefix=/usr/GNUstep
-#
-# is equivalent to:
-#
-# ./configure --with-system-root=/usr/GNUstep/System
-#             --with-local-root=/usr/GNUstep/Local
-#
-# plus it has the side-effect that a config.site will be loaded by
-# ./configure from $prefix/share/config.site, if it exists.  Our
-# config.site is in $prefix/System/share/config.site though, so it
-# won't be found.  It doesn't really matter though, as the config.site
-# is irrelevant for us in this context.
-#
-
-# Please note that AC_PREFIX_DEFAULT will not appear in this position
-# in the generated configure file; it will appear at the very
-# beginning.  So we can't check for GNUSTEP_SYSTEM_ROOT or anything
-# similar in the implementation of AC_PREFIX_DEFAULT because we will
-# not have read GNUstep.conf yet ...  
-
-# PS: This is the default GNUSTEP_ROOT that is used when installing
-# GNUstep with no other indication.  Test for the C: directory, which
-# means we're on Windows
-AC_PREFIX_DEFAULT(`if test -d C: ; then
-    echo C:/GNUstep;
-  else
-    echo /usr/GNUstep ;
-  fi`)
-
-#
-# GNUSTEP_ROOT is only used to set default values for
-# GNUSTEP_SYSTEM_ROOT and GNUSTEP_LOCAL_ROOT if they are not set in
-# config file or as a command-line argument.
-#
-if test "x$prefix" = "xNONE"; then
-  GNUSTEP_ROOT="$ac_default_prefix" ;
-else
-  GNUSTEP_ROOT="$prefix";
-
-  # Set the values for all those variables ovverriding anything read
-  # from the configuration file or inherited from the environment.
-  # The --prefix=xxx option should overwrite those.  Please notice
-  # that the --with-system-root=xxx (and similar) options are
-  # processed later as overwrite --prefix=xxx in their specific area.
-  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System";
-  GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local";
-  GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT";
-fi
 
 #--------------------------------------------------------------------
 # Process --with-system-root
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for GNUSTEP_SYSTEM_ROOT to use)
+AC_MSG_CHECKING(if the obsolete --with-system-root option was used)
 AC_ARG_WITH(system-root,[
 --with-system-root
-   Set the GNUSTEP_SYSTEM_ROOT directory.  Use this option if you want 
-   to have the GNUSTEP_SYSTEM_ROOT directory in a non-standard place.
-   Example: --with-system-root=/usr/GNUstep/System
+   This is an obsolete option.  It used to determine the location of
+   the SYSTEM domain directory under the 'gnustep' layout.  We ignore
+   this option so that you can write ./configure commands that work
+   with both old and new gnustep-makes.  To get the effect of this
+   option with this version of gnustep-make, please create your own layout
+   file and use --with-layout=xxx to use it.
 ],
-GNUSTEP_SYSTEM_ROOT="$withval",)
-if test "$GNUSTEP_SYSTEM_ROOT" = "" -o "$GNUSTEP_SYSTEM_ROOT" = "no"; then 
-  GNUSTEP_SYSTEM_ROOT="$GNUSTEP_ROOT/System"
+OBSOLETE_GNUSTEP_SYSTEM_ROOT="$withval",)
+if test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"no"; then 
+  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_SYSTEM_ROOT: ignored])
+  AC_MSG_WARN([ignoring --with-system-root=$OBSOLETE_GNUSTEP_SYSTEM_ROOT option])
+else
+  AC_MSG_RESULT(no: good)
 fi
-if echo "$GNUSTEP_SYSTEM_ROOT" | grep '[[ 	\\]] > /dev/null'
-then
-  echo "found a backslash or space (illegal) in '$GNUSTEP_SYSTEM_ROOT'"
-  echo "Please try again using --with-system-root= to specify a valid path."
-  if test "$MSWIND" = "yes"
-  then
-    echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
-    echo "environment use native paths throughout."
-  fi
-  exit 1
-fi
-AC_MSG_RESULT($GNUSTEP_SYSTEM_ROOT)
-AC_SUBST(GNUSTEP_SYSTEM_ROOT)
 
 #--------------------------------------------------------------------
 # Process --with-local-root
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for GNUSTEP_LOCAL_ROOT to use)
+AC_MSG_CHECKING(if the obsolete --with-local-root option was used)
 AC_ARG_WITH(local-root,[
 --with-local-root
-   Set the GNUSTEP_LOCAL_ROOT directory.  Use this option if you want 
-   to have the GNUSTEP_LOCAL_ROOT directory in a non-standard place.
-   Example: --with-local-root=/usr/local/GNUstep/Local
+   This is an obsolete option.  It used to determine the location of
+   the LOCAL domain directory under the 'gnustep' layout.  We ignore
+   this option so that you can write ./configure commands that work
+   with both old and new gnustep-makes.  To get the effect of this
+   option with this version of gnustep-make, please create your own layout
+   file and use --with-layout=xxx to use it.
 ],
-GNUSTEP_LOCAL_ROOT="$withval",)
-# If GNUSTEP_LOCAL_ROOT is explicitly set to 'no', we effectively disable it
-# by setting it to be the same as GNUSTEP_SYSTEM_ROOT
-if test "$GNUSTEP_LOCAL_ROOT" = "no"; then 
-  GNUSTEP_LOCAL_ROOT="$GNUSTEP_SYSTEM_ROOT"
+OBSOLETE_GNUSTEP_LOCAL_ROOT="$withval",)
+if test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"no"; then 
+  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_LOCAL_ROOT: ignored])
+  AC_MSG_WARN([ignoring --with-local-root=$OBSOLETE_GNUSTEP_LOCAL_ROOT option])
+else
+  AC_MSG_RESULT(no: good)
 fi
-if test "$GNUSTEP_LOCAL_ROOT" = ""; then 
-  GNUSTEP_LOCAL_ROOT="$GNUSTEP_ROOT/Local"
-fi
-if echo "$GNUSTEP_LOCAL_ROOT" | grep '[[ 	\\]] > /dev/null'
-then
-  echo "found a backslash or space (illegal) in '$GNUSTEP_LOCAL_ROOT'"
-  echo "Please try again using --with-local-root= to specify a valid path."
-  if test "$MSWIND" = "yes"
-  then
-    echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
-    echo "environment use native paths throughout."
-  fi
-  exit 1
-fi
-AC_MSG_RESULT($GNUSTEP_LOCAL_ROOT)
-AC_SUBST(GNUSTEP_LOCAL_ROOT)
 
 #--------------------------------------------------------------------
 # Process --with-network-root
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for GNUSTEP_NETWORK_ROOT to use)
+AC_MSG_CHECKING(if the obsolete --with-network-root option was used)
 AC_ARG_WITH(network-root,[
 --with-network-root
-   Set the GNUSTEP_NETWORK_ROOT directory.  Use this option if you 
-   want to have the GNUSTEP_NETWORK_ROOT directory.  
-   Example: --with-network-root=/usr/local/GNUstep/Network
+   This is an obsolete option.  It used to determine the location of
+   the NETWORK domain directory under the 'gnustep' layout.  We ignore
+   this option so that you can write ./configure commands that work
+   with both old and new gnustep-makes.  To get the effect of this
+   option with this version of gnustep-make, please create your own layout
+   file and use --with-layout=xxx to use it.
 ],
-GNUSTEP_NETWORK_ROOT="$withval",)
-# By default we disable network root, by setting GNUSTEP_NETWORK_ROOT
-# to be the same as GNUSTEP_LOCAL_ROOT.  GNUSTEP_NETWORK_ROOT is very
-# rarely used, and most users prefer simpler systems with shorter
-# paths and shorter command lines.  To turn on GNUSTEP_NETWORK_ROOT
-# again, you can use the --with-network-root=xxx option; pass
-# something like --with-network-root=/usr/GNUstep/Network on the
-# configure command line.
-if test "$GNUSTEP_NETWORK_ROOT" = "" -o "$GNUSTEP_NETWORK_ROOT" = "no"; then 
-  GNUSTEP_NETWORK_ROOT="$GNUSTEP_LOCAL_ROOT"
+OBSOLETE_GNUSTEP_NETWORK_ROOT="$withval",)
+if test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"no"; then 
+  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_NETWORK_ROOT: ignored])
+  AC_MSG_WARN([ignoring --with-network-root=$OBSOLETE_GNUSTEP_NETWORK_ROOT option])
+else
+  AC_MSG_RESULT(no: good)
 fi
-if echo "$GNUSTEP_NETWORK_ROOT" | grep '[[ 	\\]] > /dev/null'
-then
-  echo "found a backslash or space (illegal) in '$GNUSTEP_NETWORK_ROOT'"
-  echo "Please try again using --with-network-root= to specify a valid path."
-  if test "$MSWIND" = "yes"
-  then
-    echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
-    echo "environment use native paths throughout."
-  fi
-  exit 1
-fi
-AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
-AC_SUBST(GNUSTEP_NETWORK_ROOT)
 
 #--------------------------------------------------------------------
 # Process --with-user-config-file
@@ -446,9 +500,8 @@ AC_ARG_WITH(user-config-file,[
    Example: --with-user-config-file=GNUstep/GNUstep.conf
 ],
 GNUSTEP_USER_CONFIG_FILE="$withval",)
-if test "$GNUSTEP_USER_CONFIG_FILE" = "" -o "$GNUSTEP_USER_CONFIG_FILE" = "no"; then 
-  GNUSTEP_USER_CONFIG_FILE=".GNUstep.conf"
-fi
+# Keep in mind we already have a default value set by the filesystem
+# layout, so it should never be empty.
 if echo "$GNUSTEP_USER_CONFIG_FILE" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_CONFIG_FILE'"
@@ -461,7 +514,6 @@ then
   fi
   exit 1
 fi
-AC_MSG_RESULT($GNUSTEP_NETWORK_ROOT)
 AC_MSG_RESULT($GNUSTEP_USER_CONFIG_FILE)
 AC_SUBST(GNUSTEP_USER_CONFIG_FILE)
 
@@ -480,9 +532,8 @@ AC_ARG_WITH(user-dir,[
    Example: --with-user-dir='gnustep'
 ],
 GNUSTEP_USER_DIR="$withval",)
-if test "$GNUSTEP_USER_DIR" = "" -o "$GNUSTEP_USER_DIR" = "no"; then 
-  GNUSTEP_USER_DIR="GNUstep"
-fi
+# Keep in mind we already have a default value set by the filesystem
+# layout, so it should never be empty.
 if echo "$GNUSTEP_USER_DIR" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DIR'"
@@ -513,9 +564,8 @@ AC_ARG_WITH(user-defaults-dir,[
    Example: --with-user-defaults-dir='GNUstep/Library/Defaults'
 ],
 GNUSTEP_USER_DEFAULTS_DIR="$withval",)
-if test "$GNUSTEP_USER_DEFAULTS_DIR" = "" -o "$GNUSTEP_USER_DEFAULTS_DIR" = "no"; then 
-  GNUSTEP_USER_DEFAULTS_DIR="GNUstep/Defaults"
-fi
+# Keep in mind we already have a default value set by the filesystem
+# layout, so it should never be empty.
 if echo "$GNUSTEP_USER_DEFAULTS_DIR" | grep '[[ 	\\]] > /dev/null'
 then
   echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DEFAULTS_DIR'"
@@ -535,13 +585,9 @@ AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
 # Setting up GNUSTEP_MAKEFILES
 #--------------------------------------------------------------------
 #
-# Please note that we do an explicit check in preparation for the (not
-# so far) future when this directory (like any other GNUstep
-# directory, eg, Applications or Tools or Libraries) will be
-# relocatable to anywhere you like.
+# This is where you install gnustep-make.  We just print it out.
 #
 AC_MSG_CHECKING(for GNUSTEP_MAKEFILES to use)
-GNUSTEP_MAKEFILES="$GNUSTEP_SYSTEM_ROOT/Library/Makefiles"
 AC_SUBST(GNUSTEP_MAKEFILES)
 AC_MSG_RESULT($GNUSTEP_MAKEFILES)
 
@@ -594,6 +640,9 @@ if test "$ac_cv_flattened" = "no"; then
 
   GNUSTEP_FLATTENED=;
   GNUSTEP_IS_FLATTENED=no;
+
+  # FIXME - maybe we should have a warning here if you try to 
+  # use 'linux' or 'linux-system' layout with non-flattened!
 else
   GNUSTEP_FLATTENED=yes;
   GNUSTEP_IS_FLATTENED=yes;
@@ -608,42 +657,8 @@ else
 fi
 
 #--------------------------------------------------------------------
-# Determine the full filesystem layout
+# Output the full filesystem layout
 #--------------------------------------------------------------------
-
-#
-# TODO: Add configure flags to set these.  This just sets up the
-# default GNUstep filesystem config.
-#
-
-#
-# SYSTEM domain
-#
-if test x"$GNUSTEP_SYSTEM_APPS" = x""; then 
-  GNUSTEP_SYSTEM_APPS="$GNUSTEP_SYSTEM_ROOT/Applications"
-fi
-
-if test x"$GNUSTEP_SYSTEM_TOOLS" = x""; then 
-  GNUSTEP_SYSTEM_TOOLS="$GNUSTEP_SYSTEM_ROOT/Tools"
-fi
-if test x"$GNUSTEP_SYSTEM_LIBRARY" = x""; then 
-  GNUSTEP_SYSTEM_LIBRARY="$GNUSTEP_SYSTEM_ROOT/Library"
-fi
-if test x"$GNUSTEP_SYSTEM_HEADERS" = x""; then 
-  GNUSTEP_SYSTEM_HEADERS="$GNUSTEP_SYSTEM_ROOT/Library/Headers"
-fi
-if test x"$GNUSTEP_SYSTEM_LIBRARIES" = x""; then 
-  GNUSTEP_SYSTEM_LIBRARIES="$GNUSTEP_SYSTEM_LIBRARY/Libraries/"
-fi
-if test x"$GNUSTEP_SYSTEM_DOCUMENTATION" = x""; then 
-  GNUSTEP_SYSTEM_DOCUMENTATION="$GNUSTEP_SYSTEM_LIBRARY/Documentation"
-fi
-if test x"$GNUSTEP_SYSTEM_DOCUMENTATION_MAN" = x""; then 
-  GNUSTEP_SYSTEM_DOCUMENTATION_MAN="$GNUSTEP_SYSTEM_DOCUMENTATION/man"
-fi
-if test x"$GNUSTEP_SYSTEM_DOCUMENTATION_INFO" = x""; then 
-  GNUSTEP_SYSTEM_DOCUMENTATION_INFO="$GNUSTEP_SYSTEM_DOCUMENTATION/info"
-fi
 
 AC_SUBST(GNUSTEP_SYSTEM_TOOLS)
 AC_SUBST(GNUSTEP_SYSTEM_APPS)
@@ -654,31 +669,6 @@ AC_SUBST(GNUSTEP_SYSTEM_DOCUMENTATION)
 AC_SUBST(GNUSTEP_SYSTEM_DOCUMENTATION_MAN)
 AC_SUBST(GNUSTEP_SYSTEM_DOCUMENTATION_INFO)
 
-if test x"$GNUSTEP_LOCAL_APPS" = x""; then
-  GNUSTEP_LOCAL_APPS="$GNUSTEP_LOCAL_ROOT/Applications"
-fi
-if test x"$GNUSTEP_LOCAL_TOOLS" = x""; then
-  GNUSTEP_LOCAL_TOOLS="$GNUSTEP_LOCAL_ROOT/Tools"
-fi
-if test x"$GNUSTEP_LOCAL_LIBRARY" = x""; then
-  GNUSTEP_LOCAL_LIBRARY="$GNUSTEP_LOCAL_ROOT/Library"
-fi
-if test x"$GNUSTEP_LOCAL_HEADERS" = x""; then 
-  GNUSTEP_LOCAL_HEADERS="$GNUSTEP_LOCAL_ROOT/Library/Headers"
-fi
-if test x"$GNUSTEP_LOCAL_LIBRARIES" = x""; then 
-  GNUSTEP_LOCAL_LIBRARIES="$GNUSTEP_LOCAL_LIBRARY/Libraries/"
-fi
-if test x"$GNUSTEP_LOCAL_DOCUMENTATION" = x""; then 
-  GNUSTEP_LOCAL_DOCUMENTATION="$GNUSTEP_LOCAL_LIBRARY/Documentation"
-fi
-if test x"$GNUSTEP_LOCAL_DOCUMENTATION_MAN" = x""; then 
-  GNUSTEP_LOCAL_DOCUMENTATION_MAN="$GNUSTEP_LOCAL_DOCUMENTATION/man"
-fi
-if test x"$GNUSTEP_LOCAL_DOCUMENTATION_INFO" = x""; then 
-  GNUSTEP_LOCAL_DOCUMENTATION_INFO="$GNUSTEP_LOCAL_DOCUMENTATION/info"
-fi
-
 AC_SUBST(GNUSTEP_LOCAL_TOOLS)
 AC_SUBST(GNUSTEP_LOCAL_APPS)
 AC_SUBST(GNUSTEP_LOCAL_LIBRARY)
@@ -687,31 +677,6 @@ AC_SUBST(GNUSTEP_LOCAL_LIBRARIES)
 AC_SUBST(GNUSTEP_LOCAL_DOCUMENTATION)
 AC_SUBST(GNUSTEP_LOCAL_DOCUMENTATION_MAN)
 AC_SUBST(GNUSTEP_LOCAL_DOCUMENTATION_INFO)
-
-if test x"$GNUSTEP_NETWORK_APPS" = x""; then 
-  GNUSTEP_NETWORK_APPS="$GNUSTEP_NETWORK_ROOT/Applications"
-fi
-if test x"$GNUSTEP_NETWORK_TOOLS" = x""; then 
-  GNUSTEP_NETWORK_TOOLS="$GNUSTEP_NETWORK_ROOT/Tools"
-fi
-if test x"$GNUSTEP_NETWORK_LIBRARY" = x""; then 
-  GNUSTEP_NETWORK_LIBRARY="$GNUSTEP_NETWORK_ROOT/Library"
-fi
-if test x"$GNUSTEP_NETWORK_HEADERS" = x""; then 
-  GNUSTEP_NETWORK_HEADERS="$GNUSTEP_NETWORK_ROOT/Library/Headers"
-fi
-if test x"$GNUSTEP_NETWORK_LIBRARIES" = x""; then 
-  GNUSTEP_NETWORK_LIBRARIES="$GNUSTEP_NETWORK_LIBRARY/Libraries/"
-fi
-if test x"$GNUSTEP_NETWORK_DOCUMENTATION" = x""; then 
-  GNUSTEP_NETWORK_DOCUMENTATION="$GNUSTEP_NETWORK_LIBRARY/Documentation"
-fi
-if test x"$GNUSTEP_NETWORK_DOCUMENTATION_MAN" = x""; then 
-  GNUSTEP_NETWORK_DOCUMENTATION_MAN="$GNUSTEP_NETWORK_DOCUMENTATION/man"
-fi
-if test x"$GNUSTEP_NETWORK_DOCUMENTATION_INFO" = x""; then 
-  GNUSTEP_NETWORK_DOCUMENTATION_INFO="$GNUSTEP_NETWORK_DOCUMENTATION/info"
-fi
 
 AC_SUBST(GNUSTEP_NETWORK_TOOLS)
 AC_SUBST(GNUSTEP_NETWORK_APPS)
@@ -722,31 +687,6 @@ AC_SUBST(GNUSTEP_NETWORK_DOCUMENTATION)
 AC_SUBST(GNUSTEP_NETWORK_DOCUMENTATION_MAN)
 AC_SUBST(GNUSTEP_NETWORK_DOCUMENTATION_INFO)
 
-if test x"$GNUSTEP_USER_DIR_APPS" = x""; then 
-  GNUSTEP_USER_DIR_APPS="$GNUSTEP_USER_DIR/Applications"
-fi
-if test x"$GNUSTEP_USER_DIR_TOOLS" = x""; then 
-  GNUSTEP_USER_DIR_TOOLS="$GNUSTEP_USER_DIR/Tools"
-fi
-if test x"$GNUSTEP_USER_DIR_LIBRARY" = x""; then 
-  GNUSTEP_USER_DIR_LIBRARY="$GNUSTEP_USER_DIR/Library"
-fi
-if test x"$GNUSTEP_USER_DIR_HEADERS" = x""; then 
-  GNUSTEP_USER_DIR_HEADERS="$GNUSTEP_USER_DIR/Library/Headers"
-fi
-if test x"$GNUSTEP_USER_DIR_LIBRARIES" = x""; then 
-  GNUSTEP_USER_DIR_LIBRARIES="$GNUSTEP_USER_DIR_LIBRARY/Libraries/"
-fi
-if test x"$GNUSTEP_USER_DIR_DOCUMENTATION" = x""; then 
-  GNUSTEP_USER_DIR_DOCUMENTATION="$GNUSTEP_USER_DIR/Documentation"
-fi
-if test x"$GNUSTEP_USER_DIR_DOCUMENTATION_MAN" = x""; then 
-  GNUSTEP_USER_DIR_DOCUMENTATION_MAN="$GNUSTEP_USER_DIR_DOCUMENTATION/man"
-fi
-if test x"$GNUSTEP_USER_DIR_DOCUMENTATION_INFO" = x""; then 
-  GNUSTEP_USER_DIR_DOCUMENTATION_INFO="$GNUSTEP_USER_DIR_DOCUMENTATION/info"
-fi
-
 AC_SUBST(GNUSTEP_USER_DIR_TOOLS)
 AC_SUBST(GNUSTEP_USER_DIR_APPS)
 AC_SUBST(GNUSTEP_USER_DIR_LIBRARY)
@@ -755,6 +695,22 @@ AC_SUBST(GNUSTEP_USER_DIR_LIBRARIES)
 AC_SUBST(GNUSTEP_USER_DIR_DOCUMENTATION)
 AC_SUBST(GNUSTEP_USER_DIR_DOCUMENTATION_MAN)
 AC_SUBST(GNUSTEP_USER_DIR_DOCUMENTATION_INFO)
+
+#--------------------------------------------------------------------
+# These variables no longer exist!  We try to set some compatibility
+# values for them that should work with the old 'gnustep' layout.
+# So things using the old 'gnustep' layout should keep working.
+# These variables won't have any meaning with the new layouts.
+# They are deprecated and they *will* be removed.
+#--------------------------------------------------------------------
+GNUSTEP_SYSTEM_ROOT="$GNUSTEP_PREFIX/System"
+GNUSTEP_NETWORK_ROOT="$GNUSTEP_PREFIX/Network"
+GNUSTEP_LOCAL_ROOT="$GNUSTEP_PREFIX/Local"
+GNUSTEP_USER_DIR="GNUstep"
+AC_SUBST(GNUSTEP_SYSTEM_ROOT)
+AC_SUBST(GNUSTEP_NETWORK_ROOT)
+AC_SUBST(GNUSTEP_LOCAL_ROOT)
+AC_SUBST(GNUSTEP_USER_DIR)
 
 #--------------------------------------------------------------------
 # Is the system multi-platform?
@@ -824,9 +780,7 @@ AC_SUBST(BACKEND_BUNDLE)
 #--------------------------------------------------------------------
 
 # Set location of System GNUstep dirs for later use
-
-
-if test "$GNUSTEP_FLATTENED" = yes; then
+if test "$GNUSTEP_IS_FLATTENED" = yes; then
   GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
   GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
 else

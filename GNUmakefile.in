@@ -40,37 +40,33 @@ ifneq ($(special_prefix),)
   DESTDIR = $(special_prefix)
 endif
 
-GNUSTEP_CONFIG_FILE = $(DESTDIR)@GNUSTEP_CONFIG_FILE@
-GNUSTEP_CONFIG_FILE_DIR = $(dir $(GNUSTEP_CONFIG_FILE))
-GNUSTEP_SYSTEM_ROOT = $(DESTDIR)@GNUSTEP_SYSTEM_ROOT@
-GNUSTEP_LOCAL_ROOT  = $(DESTDIR)@GNUSTEP_LOCAL_ROOT@
-GNUSTEP_NETWORK_ROOT = $(DESTDIR)@GNUSTEP_NETWORK_ROOT@
+override GNUSTEP_CONFIG_FILE = $(DESTDIR)@GNUSTEP_CONFIG_FILE@
+override GNUSTEP_CONFIG_FILE_DIR = $(dir $(GNUSTEP_CONFIG_FILE))
+tooldir = $(DESTDIR)@GNUSTEP_SYSTEM_TOOLS@
 makedir = $(DESTDIR)@GNUSTEP_MAKEFILES@
 srcdir = @srcdir@
 VPATH = @srcdir@
 
-GNUSTEP_IS_FLATTENED = @GNUSTEP_IS_FLATTENED@
-GNUSTEP_TARGET_CPU = @clean_target_cpu@
-GNUSTEP_TARGET_VENDOR = @clean_target_vendor@
-GNUSTEP_TARGET_OS = @clean_target_os@
+override GNUSTEP_IS_FLATTENED = @GNUSTEP_IS_FLATTENED@
+override GNUSTEP_TARGET_CPU = @clean_target_cpu@
+override GNUSTEP_TARGET_VENDOR = @clean_target_vendor@
+override GNUSTEP_TARGET_OS = @clean_target_os@
 
-GNUSTEP_LIB_COMBO = @ac_cv_library_combo@
+override GNUSTEP_LIB_COMBO = @ac_cv_library_combo@
 
 ifeq ($(GNUSTEP_IS_FLATTENED), no)
-  GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
-  GNUSTEP_TARGET_LDIR = $(GNUSTEP_TARGET_DIR)/$(GNUSTEP_LIB_COMBO)
-  MAYBE_LIBRARY_COMBO = $(GNUSTEP_LIB_COMBO)
+  override GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
+  override GNUSTEP_TARGET_LDIR = $(GNUSTEP_TARGET_DIR)/$(GNUSTEP_LIB_COMBO)
+  override MAYBE_LIBRARY_COMBO = $(GNUSTEP_LIB_COMBO)
 else
-  GNUSTEP_TARGET_DIR = .
-  GNUSTEP_TARGET_LDIR = .
-  MAYBE_LIBRARY_COMBO = .
+  override GNUSTEP_TARGET_DIR = .
+  override GNUSTEP_TARGET_LDIR = .
+  override MAYBE_LIBRARY_COMBO = .
 endif
 
 export GNUSTEP_TARGET_DIR
 export GNUSTEP_TARGET_LDIR
 export MAYBE_LIBRARY_COMBO
-
-tooldir = $(GNUSTEP_SYSTEM_ROOT)/Tools
 
 INSTALL		= @INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
@@ -123,10 +119,8 @@ all: generated-files
 	$(EC)(echo "Thanks.  All is ready to install.")
 
 install: generated-files
-	$(EC)(echo "Creating system domain: $(GNUSTEP_SYSTEM_ROOT)"; \
-	 $(srcdir)/create_domain_dir_tree.sh "$(GNUSTEP_SYSTEM_ROOT)"; \
-	 echo "Creating local and network dirs: $(GNUSTEP_LOCAL_ROOT), $(GNUSTEP_NETWORK_ROOT)"; \
-	$(srcdir)/mkinstalldirs "$(GNUSTEP_LOCAL_ROOT)" "$(GNUSTEP_NETWORK_ROOT)";\
+	$(EC)(echo "Creating system tools directory: $(tooldir)"; \
+	 $(srcdir)/mkinstalldirs $(tooldir); \
 	 echo "Creating makefile directories in: $(makedir)"; \
 	 $(srcdir)/mkinstalldirs \
 		$(makedir) \
@@ -142,7 +136,6 @@ install: generated-files
 	$(EC)(echo "Installing GNUstep configuration file in $(GNUSTEP_CONFIG_FILE)"; \
 	 $(srcdir)/mkinstalldirs "$(GNUSTEP_CONFIG_FILE_DIR)"; \
 	 $(INSTALL_DATA) GNUstep.conf "$(GNUSTEP_CONFIG_FILE)")
-	-$(EC) rm -f "$(GNUSTEP_SYSTEM_ROOT)/Makefiles"
 	 $(EC)(echo "Installing gnustep-make support software")
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
@@ -183,12 +176,14 @@ install: generated-files
 	   $(INSTALL_DATA) executable.template $(makedir); \
 	   $(INSTALL_DATA) config-noarch.make $(makedir); \
 	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_LDIR))
-	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
-	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
 	   echo "Stripping makefiles and shell scripts..."; \
 	   cd $(makedir); ./strip_makefiles.sh; \
 	   fi)
+
+# FIXME - review the issue of this config.site.  What is it used for ?
+#	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
+#	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
 
 uninstall:
 	for f in config.guess config.sub install-sh mkinstalldirs \

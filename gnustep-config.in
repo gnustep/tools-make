@@ -30,7 +30,7 @@ if [ -z "$1" ]; then
 fi
 
 if [ "$1" == "--help" ]; then
-    echo "usage: gnustep-config.sh argument"
+    echo "usage: gnustep-config argument"
     echo
     echo "Will print out the value of the specified argument, which can be "
     echo "any GNUstep filesystem setting from the following list -- "

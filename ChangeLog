@@ -1,8 +1,43 @@
-2007-02-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+2007-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Completed implementation of customizable filesystem layouts
+	(including Linux FHS).  ./configure --with-layout=linux will give
+	you the Linux FHS layout (experimental).  Check the
+	FilesystemLayouts directory to create your own layout or to check
+	for more options.  This is experimental, use it at your risk and
+	make sure you do not mess up your system directories while
+	testing. ;-)
+	* configure.ac: Added --with-layout=xxx option.  Import
+	appropriate layout configuration.  Rewritten management of prefix.
+	Disable importing config file if an explicit layout is specified.
+	Ignore --with-system-root, --with-local-root and
+	--with-network-root but print a warning if they are used.  Updated
+	user domain settings code.  Updated makefiles settings code.
+	Removed hardcoded filesystem layout.  Added backwards
+	compatibility output of GNUSTEP_*_ROOT.  Updated flattened checks
+	to use the GNUSTEP_IS_FLATTENED variable.
+	* configure: Regenerated.
+	* FilesystemLayouts: New directory.
+	* FilesystemLayouts/README: New file.
+	* FilesystemLayouts/gnustep: New file.
+	* FilesystemLayouts/linux: New file.
+	* FilesystemLayouts/linux-system: New file.
+	* FilesystemLayouts/windows: New file.
+	* GNUmakefile.in: Do not define GNUSTEP_*_ROOT.  Updated tooldir
+	definition.  Do not create system domain hierarchy; create the
+	system tools directory instead.  Do not delete the makefiles
+	directory after creating it.  Commented out installation of
+	config.site file that needs reviewing.  Use override when defining
+	GNUSTEP_* variables.
+	* common.make: Updated warning when GNUSTEP_SYSTEM_TOOLS is not
+	found in PATH.
+	* gnustep-config.in: Fixed help message.
+	* relative_path.sh: Fixed situation when the second
+	argument is a subdirectory of the first one.
 	* GNUstep.conf.in: Updated comments.  Moved NETWORK domain before
 	LOCAL domain.
-
+	* Version: bumped to 1.98.0.
+	
 2007-02-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac (GNUSTEP_SYSTEM_HEADERS, GNUSTEP_NETWORK_HEADERS,

@@ -137,9 +137,16 @@ if [ "$partial_match" != "" ]; then
 fi
 
 # Ok - now ready to build the result
-result=""
+result="."
 
-# First add as many ../ as there are components in a
+# Special case - if a is now empty, the second directory was a
+# subdirectory of the first.  Start the result with '.', so
+# that we will get something like ./GNUstep/Frameworks/
+if [ -z "$a" ]; then
+  result="."
+fi
+
+# Now add as many ../ as there are components in a
 tmp_IFS="$IFS"
 IFS=/
 for component in $a; do

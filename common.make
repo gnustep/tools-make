@@ -689,7 +689,7 @@ ifneq ($(findstring cygwin, $(GNUSTEP_HOST_OS)), cygwin)
 
   ifeq ($(findstring $(GNUSTEP_SYSTEM_TOOLS),$(PATH)),)
     $(warning WARNING: Your PATH may not be set up correctly !)
-    $(warning Please try again after running ". $(GNUSTEP_MAKEFILES)/GNUstep.sh")
+    $(warning Please try again after adding "$(GNUSTEP_SYSTEM_TOOLS)" to your path)
   endif
 
 endif
