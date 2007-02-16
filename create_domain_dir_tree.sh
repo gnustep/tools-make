@@ -19,14 +19,8 @@
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Take a single argument - a directory name -, and create the GNUstep
-# domain directory structure inside the directory.
-
-# It is automatically called with argument ${GNUSTEP_SYSTEM_ROOT} when
-# gnustep-make is installed; you can call it with argument
-# ${GNUSTEP_LOCAL_ROOT} or ${GNUSTEP_NETWORK_ROOT} (or your own
-# GNUstep user dir) if you need to create manually a GNUstep domain
-# directory tree in there.
-
+# domain directory structure inside the directory.  This is kind
+# of obsolete now.
 if [ -z "$*" ]; then
   echo "No arguments specified" >&2
   exit 0
