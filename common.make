@@ -659,8 +659,6 @@ unexport GNUSTEP_TYPE
 #
 # Sanity checks - only performed at the first make invocation
 #
-# FIXME - the sanity checks should probably be removed and/or rewritten.
-#
 
 # Please note that _GNUSTEP_TOP_INVOCATION_DONE is set by the first
 # time Master/rules.make is read, and propagated to sub-makes.  So
