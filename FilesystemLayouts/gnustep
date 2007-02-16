@@ -4,7 +4,7 @@
 # This is the standard GNUstep filesystem layout.  It's a layout very
 # similar to the ones found on NeXTstep, OpenStep and Apple Mac OS X.
 #
-# This is also the only layout that supports fat binaries: binaries
+# This is also a layout well suited to use fat binaries: binaries
 # for multiple cpu/os/*step libraries in the same installation.  The
 # 'fat binary' support is called 'non-flattened' in GNUstep parlance,
 # and is disabled by default.  You can activate it by with ./configure

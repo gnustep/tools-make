@@ -25,8 +25,8 @@ Here is a list of the filesystem layout with comments --
  * GNUstep: default GNUstep filesystem layout; it installs everything
 into /usr/GNUstep/System, /usr/GNUstep/Local.  It's a very friendly
 layout, similar to the ones found on NeXTstep, OpenStep and Apple Mac
-OS X.  It's the only layout that can support fat binaries.  It may not
-blend very well with the native environment because everything is
+OS X.  It's a layout that can work nicely with fat binaries, but may
+not blend very well with the native environment because everything is
 installed in special, GNUstep-only, directories, so you may need to
 source a special script (GNUstep.sh) before being able to use the
 layout.  Recommended for the advanced GNUstep users and the
