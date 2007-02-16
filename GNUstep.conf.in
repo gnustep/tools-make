@@ -18,11 +18,13 @@
 
 # IMPORTANT: Don't delete lines from this file unless you want
 # the values hardcoded in the packages to be used.  If you want
-# to suppress the local domain, set all its paths to be the same
-# as the system domain.  If you want to suppress the network domain,
-# set all its paths to be the same as the local domain.  If you
+# to suppress the network domain, set all its paths to be the same
+# as the system domain.  If you want to suppress the local domain,
+# set all its paths to be the same as the network domain.  If you
 # want to suppress the user domain, set its paths to be the same
-# as the network domain.  You can not suppress the system domain.
+# as the local domain.  You can not suppress the system domain.
+
+# The paths should not include a '/' at the end.
 
 # These GNUSTEP_*_ROOT variables are obsolete, and will be removed.
 GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
@@ -71,31 +73,22 @@ GNUSTEP_SYSTEM_HEADERS=@GNUSTEP_SYSTEM_HEADERS@
 
 # This is where System libraries get installed.  By libraries we mean
 # the shared/static object files that you can link into programs.
-# Traditionally it is /usr/GNUstep/System/Library/Libraries/
+# Traditionally it is /usr/GNUstep/System/Library/Libraries.
 GNUSTEP_SYSTEM_LIBRARIES=@GNUSTEP_SYSTEM_LIBRARIES@
 
 # This is where System documentation get installed.  This is known
 # not to contain any executable, so we keep it separate.
-# Traditionally it is /usr/GNUstep/System/Library/Documentation/
+# Traditionally it is /usr/GNUstep/System/Library/Documentation.
 GNUSTEP_SYSTEM_DOCUMENTATION=@GNUSTEP_SYSTEM_DOCUMENTATION@
 
 # This is where System man pages get installed.
-# Traditionally it is /usr/GNUstep/System/Library/Documentation/man/
+# Traditionally it is /usr/GNUstep/System/Library/Documentation/man.
 GNUSTEP_SYSTEM_DOCUMENTATION_MAN=@GNUSTEP_SYSTEM_DOCUMENTATION_MAN@
 
 # This is where System info pages get installed.
-# Traditionally it is /usr/GNUstep/System/Library/Documentation/info/
+# Traditionally it is /usr/GNUstep/System/Library/Documentation/info.
 GNUSTEP_SYSTEM_DOCUMENTATION_INFO=@GNUSTEP_SYSTEM_DOCUMENTATION_INFO@
 
-
-GNUSTEP_LOCAL_APPS=@GNUSTEP_LOCAL_APPS@
-GNUSTEP_LOCAL_TOOLS=@GNUSTEP_LOCAL_TOOLS@
-GNUSTEP_LOCAL_LIBRARY=@GNUSTEP_LOCAL_LIBRARY@
-GNUSTEP_LOCAL_HEADERS=@GNUSTEP_LOCAL_HEADERS@
-GNUSTEP_LOCAL_LIBRARIES=@GNUSTEP_LOCAL_LIBRARIES@
-GNUSTEP_LOCAL_DOCUMENTATION=@GNUSTEP_LOCAL_DOCUMENTATION@
-GNUSTEP_LOCAL_DOCUMENTATION_MAN=@GNUSTEP_LOCAL_DOCUMENTATION_MAN@
-GNUSTEP_LOCAL_DOCUMENTATION_INFO=@GNUSTEP_LOCAL_DOCUMENTATION_INFO@
 
 GNUSTEP_NETWORK_APPS=@GNUSTEP_NETWORK_APPS@
 GNUSTEP_NETWORK_TOOLS=@GNUSTEP_NETWORK_TOOLS@
@@ -105,6 +98,15 @@ GNUSTEP_NETWORK_LIBRARIES=@GNUSTEP_NETWORK_LIBRARIES@
 GNUSTEP_NETWORK_DOCUMENTATION=@GNUSTEP_NETWORK_DOCUMENTATION@
 GNUSTEP_NETWORK_DOCUMENTATION_MAN=@GNUSTEP_NETWORK_DOCUMENTATION_MAN@
 GNUSTEP_NETWORK_DOCUMENTATION_INFO=@GNUSTEP_NETWORK_DOCUMENTATION_INFO@
+
+GNUSTEP_LOCAL_APPS=@GNUSTEP_LOCAL_APPS@
+GNUSTEP_LOCAL_TOOLS=@GNUSTEP_LOCAL_TOOLS@
+GNUSTEP_LOCAL_LIBRARY=@GNUSTEP_LOCAL_LIBRARY@
+GNUSTEP_LOCAL_HEADERS=@GNUSTEP_LOCAL_HEADERS@
+GNUSTEP_LOCAL_LIBRARIES=@GNUSTEP_LOCAL_LIBRARIES@
+GNUSTEP_LOCAL_DOCUMENTATION=@GNUSTEP_LOCAL_DOCUMENTATION@
+GNUSTEP_LOCAL_DOCUMENTATION_MAN=@GNUSTEP_LOCAL_DOCUMENTATION_MAN@
+GNUSTEP_LOCAL_DOCUMENTATION_INFO=@GNUSTEP_LOCAL_DOCUMENTATION_INFO@
 
 # Important: settings in the User should normally be relative paths,
 # and will be interpreted as relative to the user's directory.  This
