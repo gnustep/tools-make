@@ -11,9 +11,10 @@
 # into the same /usr/local directory.
 
 # Make sure you have /usr/local/bin in your PATH, and /usr/local/lib
-# in your /etc/ld.so.conf, and don't forget to run ldconfig after
-# installing a library!  To use gnustep-make in this environment, use
-# 'export GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles'
+# in your /etc/ld.so.conf (or equivalent for your Unix), and don't
+# forget to run ldconfig after installing a library!  To use
+# gnustep-make in this environment, use 'export
+# GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles'
 
 # By default, we install into /usr/local, but this can be overridden
 # by using ./configure --prefix=xxx when configuring.

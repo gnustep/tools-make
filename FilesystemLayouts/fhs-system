@@ -15,12 +15,14 @@
 # 'make install GNUSTEP_INSTALLATION_DOMAIN=SYSTEM'
 #
 # To get system packages to work in this layout, you need /usr/bin in
-# your PATH, and /usr/lib in your /etc/ld.so.conf.  Don't forget to
-# run ldconfig after installing a library!
+# your PATH, and /usr/lib in your /etc/ld.so.conf (or equivalent for
+# your Unix).  Don't forget to run ldconfig after installing a
+# library!
 #
 # Your users will need to also add /usr/local/bin to PATH and
-# /usr/local/lib to /etc/ld.so.conf if they want to use the LOCAL
-# domain.  To use gnustep-make in this environment, use 'export
+# /usr/local/lib to /etc/ld.so.conf (or equivalent for your Unix) if
+# they want to use the LOCAL domain.  To use gnustep-make in this
+# environment, use 'export
 # GNUSTEP_MAKEFILES=/usr/share/GNUstep/Makefiles'
 
 # By default, we install into /usr, but this can be overridden
