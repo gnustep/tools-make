@@ -1,11 +1,11 @@
 #
-# linux filesystem layout for system installations
+# FHS (Filesystem Hierarchy Standard) filesystem layout for system installations
 #
-# This is the standard Linux filesystem layout when installing into
-# /usr.  Use this if you want GNUstep to blend into your GNU/Linux
-# filesystem (or any other Unix with a similar filesystem) and you are
-# compiling gnustep-make so that it can be shipped as part of a
-# distribution/basic system installation.
+# This is the standard FHS Unix filesystem layout to use when
+# installing into /usr.  Use this if you want GNUstep to blend into
+# your GNU/Linux filesystem (or any other Unix with a similar
+# filesystem) and you are compiling gnustep-make so that it can be
+# shipped as part of a distribution/basic system installation.
 #
 # We put SYSTEM into /usr, and LOCAL into /usr/local.  This allows you
 # to make a distinction between stuff that you ship as part of your

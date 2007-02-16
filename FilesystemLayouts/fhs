@@ -1,13 +1,13 @@
 #
-# linux filesystem layout
+# FHS (Filesystem Hierarchy Standard) filesystem layout
 #
-# This is the standard Linux filesystem layout to use when installing
-# everything into /usr/local.  Use this on GNU/Linux (or any Unix with
-# a similar filesystem layout) if you want GNUstep to blend in your
-# GNU/Linux environment and you are compiling all of your GNUstep
-# system from source.
+# This is the standard FHS Unix filesystem layout to use when
+# installing everything into /usr/local.  Use this on GNU/Linux (or
+# any Unix with a similar filesystem layout) if you want GNUstep to
+# blend in your GNU/Linux environment and you are compiling all of
+# your GNUstep system from source.
 #
-# Basically, it's a standard Linux filesystem with all domains mapped
+# Basically, it's a standard FHS Unix filesystem with all domains mapped
 # into the same /usr/local directory.
 
 # Make sure you have /usr/local/bin in your PATH, and /usr/local/lib
