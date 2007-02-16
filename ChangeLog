@@ -1,3 +1,8 @@
+2007-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* filesystem.csh.in: Fixed typo (GNUSTEP_SYSTEM_ROOT instead of
+	GNUSTEP_SYSTEM_APPS).
+
 2007-02-16  Adam Fedor  <fedor@gnu.org>
 
 	* Instance/Documentation/latex.make: Add correct extension to target.

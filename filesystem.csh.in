@@ -29,7 +29,7 @@
 #
 # SYSTEM domain
 #
-if ( ! ${?GNUSTEP_SYSTEM_ROOT} ) then
+if ( ! ${?GNUSTEP_SYSTEM_APPS} ) then
   setenv GNUSTEP_SYSTEM_APPS "@GNUSTEP_SYSTEM_APPS@"
 endif
 if ( ! ${?GNUSTEP_SYSTEM_TOOLS} ) then
