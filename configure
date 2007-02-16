@@ -902,7 +902,7 @@ Optional Packages:
    to choose which one you want (or create your own).  If a layout
    is specified, we automatically avoid importing an existing config
    file.  The default layout is 'gnustep'.
-   Example: --with-layout=linux
+   Example: --with-layout=fhs
 
 
 --with-config-file=PATH
@@ -3379,7 +3379,7 @@ fi
 # If it wasn't passed, then we want to know because in that case we
 # want to use the specified default prefix for that filesystem.  For
 # example, the 'gnustep' filesystem will install by default in
-# /usr/GNUstep, while the 'linux' filesystem will install by default
+# /usr/GNUstep, while the 'fhs' filesystem will install by default
 # in /usr/local, and the 'windows' one in C:/GNUstep.  Please note
 # that AC_PREFIX_DEFAULT will actually be done at the very beginning
 # of ./configure, not here.  So we wouldn't have access to all the
@@ -3737,7 +3737,7 @@ if test "$ac_cv_flattened" = "no"; then
   GNUSTEP_IS_FLATTENED=no;
 
   # FIXME - maybe we should have a warning here if you try to
-  # use 'linux' or 'linux-system' layout with non-flattened!
+  # use 'fhs' or 'fhs-system' layout with non-flattened!
 else
   GNUSTEP_FLATTENED=yes;
   GNUSTEP_IS_FLATTENED=yes;
