@@ -1,3 +1,33 @@
+2007-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Added GNUSTEP_ADMIN_APPS and GNUSTEP_ADMIN_TOOLS.
+	* common.make: Added GNUSTEP_ADMIN_APPS and GNUSTEP_ADMIN_TOOLS.
+	* filesystem.sh.in: Added GNUSTEP_*_ADMIN_APPS and
+	GNUSTEP_*_ADMIN_TOOLS.
+	* filesystem.csh.in: Same changes.
+	* filesystem.make.in: Same changes.
+	* GNUstep.config.in: Same changes.
+	* configure.ac: Same changes.
+	* configure: Regenerated.
+
+	* create_domain_dir_tree.sh: Create the Applications/Admin and
+	Tools/Admin/GNUSTEP_TARGET_LDIR directories.
+	
+	* GNUstep.sh.in: Add each GNUSTEP_*_ADMIN_TOOLS path to PATH, but
+	only if we are administrators.  Unset/export GNUSTEP_*_ADMIN_APPS
+	and GNUSTEP_*_ADMIN_TOOLS dirs at the end.
+	* GNUstep.csh.in: Same changes.
+	* GNUstep-reset.sh: Unset GNUSTEP_*_ADMIN_APPS and
+	GNUSTEP_*_ADMIN_TOOLS variables.
+	* openapp.in: Search for the application in the Admin Apps
+	directories as well, but only if we are an Administrator.
+
+	* FilesystemLayouts/gnustep: Added GNUSTEP_*_ADMIN_APPS and
+	GNUSTEP_*_ADMIN_TOOLS.
+	* FilesystemLayouts/fhs: Same changes.
+	* FilesystemLayouts/fhs-system: Same changes.
+	* FilesystemLayouts/windows: Same changes.
+	
 2007-02-16  Adam Fedor  <fedor@gnu.org>
 
 	* Instance/Documentation/latex.make: Revert adding extension.

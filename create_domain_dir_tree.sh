@@ -40,7 +40,9 @@ basepath="$1"
 
 ${mydir}/mkinstalldirs  "$basepath" \
 		"$basepath"/Applications \
+		"$basepath"/Applications/Admin \
 		"$basepath"/Tools/${GNUSTEP_TARGET_LDIR} \
+		"$basepath"/Tools/Admin/${GNUSTEP_TARGET_LDIR} \
 		"$basepath"/Tools/Resources \
 		"$basepath"/Tools/Java \
 		"$basepath"/Library/ApplicationSupport \

@@ -158,6 +158,7 @@ case "$tool" in
 	  # subdirectory, then the top-level directory.
 	  # (For flattened systems we skip the first two options.
 	  #
+          # TODO: Also search Admin Tools directories if appropriate
 	  for dir in "$GNUSTEP_USER_TOOLS" "$GNUSTEP_LOCAL_TOOLS" "$GNUSTEP_NETWORK_TOOLS" "$GNUSTEP_SYSTEM_TOOLS" ; do
 	    if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
 	      tmpgnudir="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"

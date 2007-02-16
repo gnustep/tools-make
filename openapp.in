@@ -204,6 +204,30 @@ case "$openapp_app" in
 	  fi
       done
       if [ -z "$openapp_full_appname" ]; then
+
+        # Now search the Admin Apps locations ... but only if they are
+        # Administrators.  But how do we know if we are an Admin ?  We
+        # need a portable way.  Our first attempt here is to check if
+        # we can write to an ADMIN directory, we are an Administrator.
+        # So, if any GNUSTEP_*_ADMIN_APPS directory exists and we can
+        # write to it, then we consider us enough powerful to execute
+        # applications from it and search in it.
+        #
+        # FIXME: Unfortunately, this doesn't work if the Admin directory
+        # is mounted read-only, so a better test is required!
+        #
+        for openapp_dir in "$GNUSTEP_USER_ADMIN_APPS" "$GNUSTEP_LOCAL_ADMIN_APPS" "$GNUSTEP_NETWORK_ADMIN_APPS" "$GNUSTEP_SYSTEM_ADMIN_APPS"; do
+	  if [ -d "$openapp_dir"  -a  -w "$openapp_dir" ]; then 
+            if [ -n "$openapp_only_find" ]; then
+              echo "Trying $openapp_dir/$openapp_app..."
+            fi
+	    if [ -d "$openapp_dir/$openapp_app" ]; then 
+	      openapp_full_appname="`(cd \"$openapp_dir/$openapp_app\"; pwd)`"
+	      break
+	    fi
+          fi
+        done
+
 	# And now search the standard PATH (may include '.')
 	old_IFS="$IFS"
 	IFS=:

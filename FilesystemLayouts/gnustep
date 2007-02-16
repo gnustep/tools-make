@@ -34,7 +34,9 @@ GNUSTEP_DEFAULT_PREFIX=/usr/GNUstep
 GNUSTEP_MAKEFILES=/System/Library/Makefiles
 
 GNUSTEP_SYSTEM_APPS=/System/Applications
+GNUSTEP_SYSTEM_ADMIN_APPS=/System/Applications/Admin
 GNUSTEP_SYSTEM_TOOLS=/System/Tools
+GNUSTEP_SYSTEM_ADMIN_TOOLS=/System/Tools/Admin
 GNUSTEP_SYSTEM_LIBRARY=/System/Library
 GNUSTEP_SYSTEM_HEADERS=/System/Library/Headers
 GNUSTEP_SYSTEM_LIBRARIES=/System/Library/Libraries
@@ -43,7 +45,9 @@ GNUSTEP_SYSTEM_DOCUMENTATION_MAN=/System/Library/Documentation/man
 GNUSTEP_SYSTEM_DOCUMENTATION_INFO=/System/Library/Documentation/info
 
 GNUSTEP_LOCAL_APPS=/Local/Applications
+GNUSTEP_LOCAL_ADMIN_APPS=/Local/Applications/Admin
 GNUSTEP_LOCAL_TOOLS=/Local/Tools
+GNUSTEP_LOCAL_ADMIN_TOOLS=/Local/Tools/Admin
 GNUSTEP_LOCAL_LIBRARY=/Local/Library
 GNUSTEP_LOCAL_HEADERS=/Local/Library/Headers
 GNUSTEP_LOCAL_LIBRARIES=/Local/Library/Libraries
@@ -52,7 +56,9 @@ GNUSTEP_LOCAL_DOCUMENTATION_MAN=/Local/Library/Documentation/man
 GNUSTEP_LOCAL_DOCUMENTATION_INFO=/Local/Library/Documentation/info
 
 GNUSTEP_NETWORK_APPS=/Local/Applications
+GNUSTEP_NETWORK_ADMIN_APPS=/Local/Applications/Admin
 GNUSTEP_NETWORK_TOOLS=/Local/Tools
+GNUSTEP_NETWORK_ADMIN_TOOLS=/Local/Tools/Admin
 GNUSTEP_NETWORK_LIBRARY=/Local/Library
 GNUSTEP_NETWORK_HEADERS=/Local/Library/Headers
 GNUSTEP_NETWORK_LIBRARIES=/Local/Library/Libraries
@@ -61,7 +67,9 @@ GNUSTEP_NETWORK_DOCUMENTATION_MAN=/Local/Library/Documentation/man
 GNUSTEP_NETWORK_DOCUMENTATION_INFO=/Local/Library/Documentation/info
 
 GNUSTEP_USER_DIR_APPS=GNUstep/Applications
+GNUSTEP_USER_DIR_ADMIN_APPS=GNUstep/Applications/Admin
 GNUSTEP_USER_DIR_TOOLS=GNUstep/Tools
+GNUSTEP_USER_DIR_ADMIN_TOOLS=GNUstep/Tools/Admin
 GNUSTEP_USER_DIR_LIBRARY=GNUstep/Library
 GNUSTEP_USER_DIR_HEADERS=GNUstep/Library/Headers
 GNUSTEP_USER_DIR_LIBRARIES=GNUstep/Library/Libraries
