@@ -372,11 +372,11 @@ AC_SUBST(GNUSTEP_CONFIG_FILE)
 
 # Reading/importing the existing configuration file is good as a
 # default because it means that you don't have to type in your
-# GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, etc. settings every time
-# you configure gnustep-make. (please note we only read the
-# system-wide one, not the user one.  Reason being that the settings
-# we read will be used to generate the new system-wide one, while the
-# user one will be left untouched).
+# layout/prefix settings every time you configure
+# gnustep-make. (please note we only read the system-wide one, not the
+# user one.  Reason being that the settings we read will be used to
+# generate the new system-wide one, while the user one will be left
+# untouched).
 
 # Please note that if the user explicitly specified a
 # --with-layout=xxx option, we do not read the config file.  They
@@ -417,7 +417,7 @@ fi
 
 #--------------------------------------------------------------------
 # Important - from now on, any variable that is set in the filesystem
-# layout and/or configuration file (eg, GNUSTEP_SYSTEM_ROOT) could
+# layout and/or configuration file (eg, GNUSTEP_SYSTEM_TOOLS) could
 # already have a value that we have imported from the files.
 # ./configure command line options should override those values, but
 # otherwise we should keep them!

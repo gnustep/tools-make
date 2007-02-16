@@ -2,6 +2,9 @@
 
 	* filesystem.csh.in: Fixed typo (GNUSTEP_SYSTEM_ROOT instead of
 	GNUSTEP_SYSTEM_APPS).
+	* configure.ac: Updated comments avoiding references to
+	GNUSTEP_SYSTEM_ROOT.
+	* configure: Regenerated.
 
 2007-02-16  Adam Fedor  <fedor@gnu.org>
 
