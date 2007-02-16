@@ -1,3 +1,6 @@
+
+ *** What is the FilesystemLayouts directory ***
+
 This directory contains filesystem layouts that you can use when you
 configure your gnustep-make.
 
@@ -5,22 +8,24 @@ A filesystem layout describes how the GNUstep installation domains
 (System, Network, Local, User) map to directories on disk.
 
 Every file in this directory is a filesystem layout that you can use
-in gnustep-make's ./configure.
-
-Eg,
+in gnustep-make's ./configure (technical note: the files are shell
+files that are directly included by ./configure and that should set the
+specified variables).  For example:
 
 ./configure --with-layout=fhs
 
 ./configure --with-layout=fhs-system
 
-By default, the GNUstep layout is used.  The files are shell files
-that are directly include by ./configure and that should set the
-specified variables.
+By default, the GNUstep layout is used.  
 
 If you want to use your own custom layout, just start with one of the
-existing layouts, copy it into a new file, and edit it.
+existing layouts, copy it into a new file, and edit it. :-)
 
-Here is a list of the filesystem layout with comments --
+
+
+ *** Popular Fileystem Layouts ***
+
+Here is a list of popular filesystem layout --
 
  * GNUstep: default GNUstep filesystem layout; it installs everything
 into /usr/GNUstep/System, /usr/GNUstep/Local.  It's a very friendly
