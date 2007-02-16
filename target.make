@@ -296,7 +296,7 @@ ifeq ($(FOUNDATION_LIB), apple)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
-ifeq ($(CC_BUNDLE), no)
+ifeq ($(OBJC_RUNTIME_LIB), gnu)
 # GNU compiler
 
 INTERNAL_LDFLAGS += -flat_namespace -undefined warning
@@ -330,8 +330,8 @@ SHARED_LIB_LINK_CMD     = \
           fi; \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
-BUNDLE_LD       =  /usr/bin/ld
-BUNDLE_LDFLAGS  += -bundle /usr/lib/bundle1.o
+BUNDLE_LD       =  $(CC)
+BUNDLE_LDFLAGS  += -fgnu-runtime -bundle
 
 else 
 # Apple Compiler

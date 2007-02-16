@@ -65,7 +65,7 @@ internal-doc-clean::
 # Targets built only if we can find `latex2html'
 #
 # NB: you may set LATEX2HTML on the command line if the following doesn't work
-LATEX2HTML = $(shell which latex2html | awk '{print $$1}' |  sed -e 's/which://')
+LATEX2HTML = $(shell which latex2html | awk '{print $$1}' |  sed -e 's/no//')
 
 ifneq ($(LATEX2HTML),)
   HAS_LATEX2HTML = yes
@@ -75,7 +75,7 @@ ifeq ($(HAS_LATEX2HTML),yes)
 internal-doc-all_:: $(GNUSTEP_INSTANCE).tar.gz 
 
 $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html: $(GNUSTEP_INSTANCE).dvi 
-	$(LATEX2HTML) $(GNUSTEP_INSTANCE)
+	$(LATEX2HTML) $(GNUSTEP_INSTANCE).dvi
 
 $(GNUSTEP_INSTANCE).tar.gz: $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html
 	$(TAR) cfzX $(GNUSTEP_INSTANCE).tar.gz $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_INSTANCE)

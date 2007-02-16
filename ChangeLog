@@ -1,3 +1,11 @@
+2007-02-16  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/Documentation/latex.make: Add correct extension to target.
+	Filter out 'no' when getting LATEX2HMTL exec.
+	* Instance/pallette.make: Link with all libs even on darwin.
+	* target.make (darwin): Use gnu runtime as test for gnu compilation.
+	(Based on suggestions from Yves de Champlain).
+
 2007-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Renamed --with-layout=linux option to --with-layout=fhs.
