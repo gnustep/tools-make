@@ -1130,6 +1130,10 @@ AC_SUBST(OBJCFLAGS)
 # on.
 AC_CHECK_PROGS(GNUMAKE, [gmake gnumake make], make)
 
+# Used by gnustep-config to launch gnustep-make to compute
+# compilation/link flags
+AC_SUBST(GNUMAKE)
+
 # If GNU make supports $(info ...), gnustep-make can use it to print
 # out a help message at the beginning of each compilation.  This
 # feature was introduced in GNU make 3.81, so we check GNU make's

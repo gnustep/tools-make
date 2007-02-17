@@ -1,3 +1,20 @@
+2007-02-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* common.make: Added new flag quiet=yes that disables the
+	gnustep-make version message.
+
+	* configure.ac: Output GNUMAKE value.
+	* configure: Regenerated.
+	* empty.make: New file.
+	* GNUmakefile.in: Install it.
+	* rules.make (print-gnustep-make-objc-flags,
+	print-gnustep-make-objc-libs,
+	print-gnustep-make-base-libs,
+	print-gnustep-make-gui-libs): New targets.
+	* gnustep-config.in: New options --objc-flags, --objc-libs,
+	--base-libs, --gui-libs that output the flags used for basic ObjC
+	compilation and linking on the current platform.
+
 2007-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Added GNUSTEP_ADMIN_APPS and GNUSTEP_ADMIN_TOOLS.

@@ -661,5 +661,24 @@ $(GNUSTEP_OBJ_DIR):
 print-gnustep-make-help:
 	@(cat $(GNUSTEP_MAKEFILES)/gnustep-make-help | sed -e '/^#.*/d')
 
+# These targets are used by gnustep-config to allow people to get
+# basic compilation/link flags for GNUstep ObjC code.
+
+# Flags used when compiling ObjC
+print-gnustep-make-objc-flags:
+	@(echo $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS))
+
+# Flags used when linking against libobjc only
+print-gnustep-make-objc-libs:
+	@(echo $(ALL_LDFLAGS) $(CC_LDFLAGS) $(ALL_LIB_DIRS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS))
+
+# Flags used when linking against Foundation
+print-gnustep-make-base-libs:
+	@(echo $(ALL_LDFLAGS) $(CC_LDFLAGS) $(ALL_LIB_DIRS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) $(TARGET_SYSTEM_LIBS))
+
+# Flags used when linking against Foundation and GUI
+print-gnustep-make-gui-libs:
+	@(echo $(ALL_LDFLAGS) $(CC_LDFLAGS) $(ALL_LIB_DIRS) $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS) $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+
 endif
 # rules.make loaded

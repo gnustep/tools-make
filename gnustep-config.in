@@ -107,13 +107,24 @@ if [ -z "$GNUSTEP_MAKEFILES" ]; then
   GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
 fi
 
+export GNUSTEP_MAKEFILES
+
 #
-# If all they want to know if GNUSTEP_MAKEFILES, we can print it out
+# If all they want to know if GNUSTEP_MAKEFILES or anything that
+# we can compute only using GNUSTEP_MAKEFILES, we can print it ou
 #
-if [ "$1" == "GNUSTEP_MAKEFILES" ]; then
- echo "$GNUSTEP_MAKEFILES"
- exit 0
-fi
+case "$1" in
+  GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
+                     exit 0;;
+  --objc-flags) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes
+                     exit 0;;
+  --objc-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes
+                     exit 0;;
+  --base-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes
+                     exit 0;;
+  --gui-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes
+                     exit 0;;
+esac
 
 #
 # Else, now read all the standard GNUstep config
