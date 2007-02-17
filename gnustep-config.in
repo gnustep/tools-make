@@ -111,7 +111,7 @@ export GNUSTEP_MAKEFILES
 
 #
 # If all they want to know if GNUSTEP_MAKEFILES or anything that
-# we can compute only using GNUSTEP_MAKEFILES, we can print it ou
+# we can compute only using GNUSTEP_MAKEFILES, we can print it out
 #
 case "$1" in
   GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
