@@ -40,14 +40,13 @@
 #  directory to install, relative to GNUSTEP_BUILD_DIR during build
 #  (and installation dir when installed).  For example, for a normal
 #  bundle it would be $(BUNDLE_DIR_NAME); for an application it would
-#  be $(APP_DIR_NAME); for a library or a tool,
-#  Resources/$(GNUSTEP_INSTANCE).
+#  be $(APP_DIR_NAME); for a library or a tool, $(GNUSTEP_INSTANCE).
 #
 #  GNUSTEP_SHARED_BUNDLE_INSTALL_DIR : the path to the dir
 #  in which the bundle is to be installed.  For example, for a normal
 #  bundle it would be $(BUNDLE_INSTALL_DIR); for an application it would
-#  be $(APP_INSTALL_DIR); for a library or tool, $(LIBRARY_INSTALL_DIR),
-#  or $(TOOL_INSTALL_DIR).
+#  be $(APP_INSTALL_DIR); for a library or tool, $(GNUSTEP_RESOURCES),
+#  or $(GNUSTEP_TOOL_RESOURCES).
 #
 #  $(GNUSTEP_INSTANCE)_RESOURCE_FILES : a list of resource files to install.
 #  They are recursively copied (/symlinked), so it might also include dirs.

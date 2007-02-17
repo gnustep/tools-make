@@ -105,7 +105,10 @@ ifeq ($($(GNUSTEP_INSTANCE)_HAS_RESOURCE_BUNDLE),yes)
 # Include the rules to build resource bundles
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(GNUSTEP_BUILD_DIR)/Resources/$(GNUSTEP_INSTANCE)
 GNUSTEP_SHARED_BUNDLE_MAIN_PATH     = Resources/$(GNUSTEP_INSTANCE)
-GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(TOOL_INSTALL_DIR)
+# TODO: Think if we shouldn't add a new GNUSTEP_TOOL_RESOURCES
+# variable that is set to GNUSTEP_LIBRARY/Tools, and use it here.  But
+# we'd need to update Instance/Shared/bundle.make if we do.
+GNUSTEP_SHARED_BUNDLE_INSTALL_DIR = $(GNUSTEP_LIBRARY)/Tools
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-tool-all_:: shared-instance-bundle-all
@@ -114,10 +117,10 @@ internal-tool-copy_into_dir:: shared-instance-bundle-copy_into_dir
 $(TOOL_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-$(TOOL_INSTALL_DIR)/Resources:
+$(GNUSTEP_LIBRARY)/Tools:
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-internal-tool-install_:: $(TOOL_INSTALL_DIR)/Resources \
+internal-tool-install_:: $(GNUSTEP_LIBRARY)/Tools \
                     shared-instance-bundle-install 
 
 internal-tool-uninstall:: shared-instance-bundle-uninstall
