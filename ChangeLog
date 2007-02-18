@@ -1,3 +1,9 @@
+2007-02-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config-noarch.make.in: Print a deprecation warning if any of the
+	GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT,
+	GNUSTEP_USER_ROOT variables is used.
+
 2007-02-18  Graham J Lee <leeg@thaesofereode.info>
 
 	* FilesystemLayouts/next: New file.
