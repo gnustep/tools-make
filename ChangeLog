@@ -1,5 +1,11 @@
 2007-02-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* config-noarch.make.in: Removed the deprecation warnings added
+	earlier today, because in some situations they seem to be
+	triggered spuriously (Reported by Fred Kiefer).
+
+2007-02-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* rules.make (.PHONY): Added declaration of new
 	print-gnustep-make-* targets as PHONY.
 
