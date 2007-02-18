@@ -1,5 +1,25 @@
 2007-02-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Updated rpm building code, and removed separate debug packages.
+	* GNUmakefile.in (MAKE_FILES): Removed spec-debug-rules.template.
+	* spec-debug-rules.template: File removed.
+	* Master/rpm.make (internal-after-install): Use DESTDIR instead of
+	INSTALL_ROOT_DIR.  Enhanced sed expression to only remove DESTDIR
+	from the beginning of paths.
+	($(PACKAGE_NAME)-debug.spec.in): Rule removed.
+	($(SPEC_FILE)): Do not set %gs_root.  Set %gs_install_domain
+	instead of %gs_install_dir.  Set %gs_makefiles.  Do not append
+	'-debug' to name for no longer existing debug packages.  Do not
+	set Prefix: or requires:.
+	Removed special variable settings for debug packages.
+	* spec-rules.template: Check GNUSTEP_MAKEFILES, not
+	GNUSTEP_SYSTEM_ROOT.  Use %{gs_makefiles} to locate GNUstep.sh.
+	When running configure, do not use --prefix.  Use
+	GNUSTEP_INSTALLATION_DOMAIN and not GNUSTEP_INSTALLATION_DIR when
+	installing.
+
+2007-02-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* config-noarch.make.in: Print a deprecation warning if any of the
 	GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT,
 	GNUSTEP_USER_ROOT variables is used.
