@@ -1,5 +1,9 @@
 2007-02-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* empty.make: Added file that was missing in past commit.
+
+2007-02-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Updated rpm building code, and removed separate debug packages.
 	* GNUmakefile.in (MAKE_FILES): Removed spec-debug-rules.template.
 	* spec-debug-rules.template: File removed.
