@@ -1,0 +1,60 @@
+#
+# next filesystem layout
+#
+# Inspired by the filesystem layout on NeXTSTEP 3.x / OPENSTEP 4.x and
+# Rhapsody.  This is mostly a historical layout, but potentially
+# interesting for NeXTSTEP / OPENSTEP fans.
+#
+# override this prefix by using ./configure --prefix=xxx when
+# configuring.
+GNUSTEP_DEFAULT_PREFIX=/
+
+# NB: $prefix will be added to all the MAKEFILES/SYSTEM/NETWORK/LOCAL
+# paths.
+GNUSTEP_MAKEFILES=/GNUDeveloper/Makefiles
+
+GNUSTEP_SYSTEM_APPS=/GNUApps
+GNUSTEP_SYSTEM_ADMIN_APPS=/GNUAdmin
+GNUSTEP_SYSTEM_TOOLS=/bin
+GNUSTEP_SYSTEM_ADMIN_TOOLS=/sbin
+GNUSTEP_SYSTEM_LIBRARY=/GNULibrary
+GNUSTEP_SYSTEM_HEADERS=/GNUDeveloper/Headers
+GNUSTEP_SYSTEM_LIBRARIES=/GNUDeveloper/Libraries
+GNUSTEP_SYSTEM_DOCUMENTATION=/GNULibrary/Documentation
+GNUSTEP_SYSTEM_DOCUMENTATION_MAN=/GNULibrary/Documentation/man
+GNUSTEP_SYSTEM_DOCUMENTATION_INFO=/GNULibrary/Documentation/info
+
+GNUSTEP_NETWORK_APPS=/Network/Apps
+GNUSTEP_NETWORK_ADMIN_APPS=/Network/Admin
+GNUSTEP_NETWORK_TOOLS=/Network/bin
+GNUSTEP_NETWORK_ADMIN_TOOLS=/Network/sbin
+GNUSTEP_NETWORK_LIBRARY=/Network/Library
+GNUSTEP_NETWORK_HEADERS=/Network/Developer/Headers
+GNUSTEP_NETWORK_LIBRARIES=/Network/Developer/Libraries
+GNUSTEP_NETWORK_DOCUMENTATION=/Network/Library/Documentation
+GNUSTEP_NETWORK_DOCUMENTATION_MAN=/Network/Library/Documentation/man
+GNUSTEP_NETWORK_DOCUMENTATION_INFO=/Network/Library/Documentation/info
+
+GNUSTEP_LOCAL_APPS=/LocalApps
+GNUSTEP_LOCAL_ADMIN_APPS=/LocalAdmin
+GNUSTEP_LOCAL_TOOLS=/bin
+GNUSTEP_LOCAL_ADMIN_TOOLS=/sbin
+GNUSTEP_LOCAL_LIBRARY=/LocalLibrary
+GNUSTEP_LOCAL_HEADERS=/LocalDeveloper/Headers
+GNUSTEP_LOCAL_LIBRARIES=/LocalDeveloper/Libraries
+GNUSTEP_LOCAL_DOCUMENTATION=/LocalLibrary/Documentation
+GNUSTEP_LOCAL_DOCUMENTATION_MAN=/LocalLibrary/Documentation/man
+GNUSTEP_LOCAL_DOCUMENTATION_INFO=/LocalLibrary/Documentation/info
+
+GNUSTEP_USER_DIR_APPS=Apps
+GNUSTEP_USER_DIR_ADMIN_APPS=Admin
+GNUSTEP_USER_DIR_TOOLS=bin
+GNUSTEP_USER_DIR_ADMIN_TOOLS=sbin
+GNUSTEP_USER_DIR_LIBRARY=Library
+GNUSTEP_USER_DIR_HEADERS=Developer/Headers
+GNUSTEP_USER_DIR_LIBRARIES=Developer/Libraries
+GNUSTEP_USER_DIR_DOCUMENTATION=Library/Documentation
+GNUSTEP_USER_DIR_DOCUMENTATION_MAN=Library/Documentation/man
+GNUSTEP_USER_DIR_DOCUMENTATION_INFO=Library/Documentation/info
+GNUSTEP_USER_CONFIG_FILE=.GNUstep.conf
+GNUSTEP_USER_DEFAULTS_DIR=Library/Preferences
