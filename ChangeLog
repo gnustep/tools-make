@@ -3,7 +3,11 @@
 	* config-noarch.make.in: Print a deprecation warning if any of the
 	GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT,
 	GNUSTEP_USER_ROOT variables is used.
-
+	* config-noarch.make.in (GNUSTEP_FLATTENED): Print a deprecation
+	warning if the variable GNUSTEP_FLATTENED is used.
+	* common.make (INSTALL_ROOT_DIR): Print a deprecation warning if
+	the variable INSTALL_ROOT_DIR is used.
+	
 2007-02-18  Graham J Lee <leeg@thaesofereode.info>
 
 	* FilesystemLayouts/next: New file.

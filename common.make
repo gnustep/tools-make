@@ -270,6 +270,8 @@ ifneq ($(DESTDIR),)
   endif
 endif
 
+INSTALL_ROOT_DIR += $(warning INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+
 # The default name of the makefile to be used in recursive invocations of make
 ifeq ($(MAKEFILE_NAME),)
 MAKEFILE_NAME = GNUmakefile
