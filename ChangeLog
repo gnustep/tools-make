@@ -123,12 +123,11 @@
 2007-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Completed implementation of customizable filesystem layouts
-	(including Linux FHS).  ./configure --with-layout=linux will give
-	you the Linux FHS layout (experimental).  Check the
-	FilesystemLayouts directory to create your own layout or to check
-	for more options.  This is experimental, use it at your risk and
-	make sure you do not mess up your system directories while
-	testing. ;-)
+	(including FHS).  ./configure --with-layout=linux will give you
+	the FHS layout (experimental).  Check the FilesystemLayouts
+	directory to create your own layout or to check for more options.
+	This is experimental, use it at your risk and make sure you do not
+	mess up your system directories while testing. ;-)
 	* configure.ac: Added --with-layout=xxx option.  Import
 	appropriate layout configuration.  Rewritten management of prefix.
 	Disable importing config file if an explicit layout is specified.
