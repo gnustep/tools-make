@@ -652,6 +652,11 @@ $(GNUSTEP_OBJ_DIR):
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)$(END_ECHO)
 
 # Now the print targets.
+.PHONY: print-gnustep-make-help \
+        print-gnustep-make-objc-flags \
+        print-gnustep-make-objc-libs \
+        print-gnustep-make-base-libs \
+        print-gnustep-make-gui-libs
 
 # Print GNUstep make help.  The sed command is used to strip all lines
 # beginning with '#' from the file.  It will find all lines that match
