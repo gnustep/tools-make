@@ -273,7 +273,7 @@ domains), you can do so at runtime by creating a file called
 ~/.GNUstep.conf (this might have a different name if your filesystem
 layout specifies otherwise).
 
-   In that file, you can set all the GNUSTEP_USER_* varibles set in
+   In that file, you can set all the GNUSTEP_USER_* variables set in
 GNUstep.conf.  Check your GNUstep.conf for a full description.  Here is
 an example in which all the GNUstep domain is moved into ~/Test/GNUstep
 instead of ~/GNUstep:
@@ -317,5 +317,5 @@ GNUSTEP_CONFIG_FILE -
      unset GNUSTEP_CONFIG_FILE
 
    After this, you are ready to start using a new one (by setting a new
-GNSTEP_CONFIG_FILE and then sourcing the GNUstep.sh of the new one).
+GNUSTEP_CONFIG_FILE and then sourcing the GNUstep.sh of the new one).
 
