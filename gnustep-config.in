@@ -23,42 +23,74 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 
+# Check that we are given a valid option.
 if [ -z "$1" ]; then
   echo "usage: gnustep-config argument"
   echo "gnustep-config --help for more help"
   exit 1
 fi
 
-if [ "$1" == "--help" ]; then
+case "$1" in
+  --variable=*)  ;;
+  --help)       ;;
+  --objc-flags) ;;
+  --objc-libs)  ;;
+  --base-libs)  ;;
+  --gui-libs)   ;;
+  *)
+    # An unrecognized option
+    echo "Unrecognized option: $1"
     echo "usage: gnustep-config argument"
+    echo "gnustep-config --help for more help"
+    exit 1;;
+esac
+
+
+# Process --help
+if [ "$1" == "--help" ]; then
+    echo "usage: gnustep-config [option]"
     echo
-    echo "Will print out the value of the specified argument, which can be "
-    echo "any GNUstep filesystem setting from the following list -- "
+    echo "This program prints information on the current gnustep"
+    echo "installation.  [option] determines what is printed.  Here"
+    echo "is the list of options:"
     echo
-    echo "GNUSTEP_MAKEFILES"
-    echo "GNUSTEP_USER_DIR"
-    echo "GNUSTEP_USER_DEFAULTS_DIR"
-    echo "GNUSTEP_HOST"
-    echo "GNUSTEP_HOST_CPU"
-    echo "GNUSTEP_HOST_VENDOR"
-    echo "GNUSTEP_HOST_OS"
-    echo "GNUSTEP_IS_FLATTENED"
-    echo "GNUSTEP_xxx_ROOT (might be obsolete soon)"
-    echo "GNUSTEP_xxx_APPS"
-    echo "GNUSTEP_xxx_TOOLS"
-    echo "GNUSTEP_xxx_LIBRARY"
-    echo "GNUSTEP_xxx_HEADERS"
-    echo "GNUSTEP_xxx_LIBRARIES"
-    echo "GNUSTEP_xxx_DOCUMENTATION"
-    echo "GNUSTEP_xxx_DOCUMENTATION_MAN"
-    echo "GNUSTEP_xxx_DOCUMENTATION_INFO"
-    echo "where 'xxx' could be any of 'SYSTEM', 'NETWORK', 'LOCAL' and 'USER'."
+    echo "--variable=xxx: prints the value of the specified"
+    echo "                variable.  Here is a list of possible"
+    echo "                variables:"
     echo
-    echo "For example, you could get the value of GNUSTEP_SYSTEM_TOOLS to find"
-    echo "where command-line system programs are located on this system."
+    echo "    --variable=GNUSTEP_MAKEFILES"
+    echo "    --variable=GNUSTEP_USER_DIR"
+    echo "    --variable=GNUSTEP_USER_DEFAULTS_DIR"
+    echo "    --variable=GNUSTEP_HOST"
+    echo "    --variable=GNUSTEP_HOST_CPU"
+    echo "    --variable=GNUSTEP_HOST_VENDOR"
+    echo "    --variable=GNUSTEP_HOST_OS"
+    echo "    --variable=GNUSTEP_IS_FLATTENED"
+    echo "    --variable=GNUSTEP_xxx_APPS"
+    echo "    --variable=GNUSTEP_xxx_TOOLS"
+    echo "    --variable=GNUSTEP_xxx_LIBRARY"
+    echo "    --variable=GNUSTEP_xxx_HEADERS"
+    echo "    --variable=GNUSTEP_xxx_LIBRARIES"
+    echo "    --variable=GNUSTEP_xxx_DOCUMENTATION"
+    echo "    --variable=GNUSTEP_xxx_DOCUMENTATION_MAN"
+    echo "    --variable=GNUSTEP_xxx_DOCUMENTATION_INFO"
+    echo "    where 'xxx' could be any of 'SYSTEM', 'NETWORK', 'LOCAL' and 'USER'."
     echo
+    echo "    For example, you could get the value of GNUSTEP_SYSTEM_TOOLS to find"
+    echo "    where command-line system programs are located on this system."
+    echo
+    echo "--objc-flags: prints all the flags required to compile an ObjC file"
+    echo
+    echo "--objc-libs: prints all the flags required to link a pure ObjC program (no foundation/gui)"
+    echo
+    echo "--base-libs: prints all the flags required to link a command-line ObjC program (no gui)"
+    echo
+    echo "--gui-libs: prints all the flags required to link a GUI ObjC program"
+    echo 
     exit 0
 fi
+
+# Any other option requires determining the config first.
 
 #
 # Important - keep the following in sync with GNUstep.sh.in
@@ -114,15 +146,15 @@ export GNUSTEP_MAKEFILES
 # we can compute only using GNUSTEP_MAKEFILES, we can print it out
 #
 case "$1" in
-  GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
+  --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
                      exit 0;;
-  --objc-flags) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes
+  --objc-flags) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
                      exit 0;;
-  --objc-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes
+  --objc-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes 2>/dev/null
                      exit 0;;
-  --base-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes
+  --base-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
                      exit 0;;
-  --gui-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes
+  --gui-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
                      exit 0;;
 esac
 
@@ -136,4 +168,9 @@ unset GNUSTEP_SH_EXPORT_ALL_VARIABLES
 #
 # Now print whatever variable they asked for
 #
-echo $(eval echo \$$1)
+gs_variable_name=`echo "$1" | sed -e 's/--variable=//'`
+gs_variable_value=$(eval echo "\$$gs_variable_name")
+
+if [ "$gs_variable_value" != "" ]; then
+  echo "$gs_variable_value"
+fi

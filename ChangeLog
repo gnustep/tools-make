@@ -1,5 +1,13 @@
 2007-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* gnustep-config.in: Check that we are given a valid option and
+	print an error message if not.  Extended --help.  Use
+	--variable=xxx syntax to print variables to make the syntax more
+	similar to pkg-config's one.  Redirect stderr to /dev/null when
+	running make.  Only print the variable value if not empty.
+
+2007-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: By default, do not import an existing
 	configuration file.  In most cases, this is now an annoyance
 	rather than a convenience as it overrides the --prefix=xxx and
