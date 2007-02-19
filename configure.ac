@@ -376,7 +376,7 @@ AC_SUBST(GNUSTEP_CONFIG_FILE)
 # Now read/import the existing configuration file, if any
 #---------------------------------------------------------------------
 
-# Reading/importing the existing configuration file is good as a
+# Reading/importing the existing configuration file might be good as a
 # default because it means that you don't have to type in your
 # layout/prefix settings every time you configure
 # gnustep-make. (please note we only read the system-wide one, not the
@@ -384,42 +384,35 @@ AC_SUBST(GNUSTEP_CONFIG_FILE)
 # generate the new system-wide one, while the user one will be left
 # untouched).
 
-# Please note that if the user explicitly specified a
-# --with-layout=xxx option, we do not read the config file.  They
-# already made clear what they want.
+# Please note that this option will override any --with-layout=xxx and
+# --prefix=yyy options.
 
-# TODO: what about flattened vs non-flattened ?  It would be nice to
-# import that option as well.
-
-# It can be annoying in certain cases though; this option lets you
-# turn it off (or turn it back on if disabled because of the
-# --with-layout=xxx option!)
 AC_MSG_CHECKING([if we should import an existing configuration file])
 AC_ARG_ENABLE(importing-config-file, [
---disable-importing-config-file
-   Disable importing the existing system GNUstep configuration file.
-   Use this option to prevent an existing configuration file from being
-   parsed and used when configure is being run.
+--enable-importing-config-file
+   Enable importing the existing system GNUstep configuration file.
+   Use this option to use an existing configuration file for
+   setting up the filesystem layout and prefix.  If you specify this
+   option, all the configuration will be read from the existing
+   system GNUstep configuration file and any --with-layout=xxx 
+   and --prefix=yyy options will be ignored.
 ], 
   ac_cv_importing_config_file=$enableval,
-  ac_cv_importing_config_file="maybe")
+  ac_cv_importing_config_file="no")
 
-if test "$ac_cv_importing_config_file" = "no"; then
-  AC_MSG_RESULT([no: disabled from the command-line])
-else
-
- if test "$ac_cv_importing_config_file" = "maybe" &&  test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
-      AC_MSG_RESULT([no: already imported a layout file])
+if test "$ac_cv_importing_config_file" = "yes"; then
+ if test ! -f "$GNUSTEP_CONFIG_FILE"; then
+   AC_MSG_RESULT([no: file "$GNUSTEP_CONFIG_FILE" does not exist])
+   AC_MSG_ERROR([asked to import non-existing configuration file.  To fix this problem, make sure you have a config file to import, or remove the --enable-importing-config-file option.])
  else
-   if test ! -f "$GNUSTEP_CONFIG_FILE"; then
-     AC_MSG_RESULT([no: file "$GNUSTEP_CONFIG_FILE" does not exist])
-   else
-     AC_MSG_RESULT([yes: trying to import "$GNUSTEP_CONFIG_FILE"])
-     AC_MSG_NOTICE([If this fails, run configure again with --disable-importing-config-file])
-     . "$GNUSTEP_CONFIG_FILE"
-   fi
-  fi
+   AC_MSG_RESULT([yes: trying to import "$GNUSTEP_CONFIG_FILE"])
+   AC_MSG_NOTICE([If this fails, run configure again with --disable-importing-config-file])
+   . "$GNUSTEP_CONFIG_FILE"
+ fi
+else
+  AC_MSG_RESULT([no])
 fi
+
 
 #--------------------------------------------------------------------
 # Important - from now on, any variable that is set in the filesystem

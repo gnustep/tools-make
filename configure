@@ -810,10 +810,13 @@ Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
 
---disable-importing-config-file
-   Disable importing the existing system GNUstep configuration file.
-   Use this option to prevent an existing configuration file from being
-   parsed and used when configure is being run.
+--enable-importing-config-file
+   Enable importing the existing system GNUstep configuration file.
+   Use this option to use an existing configuration file for
+   setting up the filesystem layout and prefix.  If you specify this
+   option, all the configuration will be read from the existing
+   system GNUstep configuration file and any --with-layout=xxx
+   and --prefix=yyy options will be ignored.
 
 
 --disable-flattened
@@ -3485,7 +3488,7 @@ echo "${ECHO_T}$GNUSTEP_CONFIG_FILE" >&6
 # Now read/import the existing configuration file, if any
 #---------------------------------------------------------------------
 
-# Reading/importing the existing configuration file is good as a
+# Reading/importing the existing configuration file might be good as a
 # default because it means that you don't have to type in your
 # layout/prefix settings every time you configure
 # gnustep-make. (please note we only read the system-wide one, not the
@@ -3493,16 +3496,9 @@ echo "${ECHO_T}$GNUSTEP_CONFIG_FILE" >&6
 # generate the new system-wide one, while the user one will be left
 # untouched).
 
-# Please note that if the user explicitly specified a
-# --with-layout=xxx option, we do not read the config file.  They
-# already made clear what they want.
+# Please note that this option will override any --with-layout=xxx and
+# --prefix=yyy options.
 
-# TODO: what about flattened vs non-flattened ?  It would be nice to
-# import that option as well.
-
-# It can be annoying in certain cases though; this option lets you
-# turn it off (or turn it back on if disabled because of the
-# --with-layout=xxx option!)
 echo "$as_me:$LINENO: checking if we should import an existing configuration file" >&5
 echo $ECHO_N "checking if we should import an existing configuration file... $ECHO_C" >&6
 # Check whether --enable-importing-config-file or --disable-importing-config-file was given.
@@ -3510,30 +3506,28 @@ if test "${enable_importing_config_file+set}" = set; then
   enableval="$enable_importing_config_file"
   ac_cv_importing_config_file=$enableval
 else
-  ac_cv_importing_config_file="maybe"
+  ac_cv_importing_config_file="no"
 fi;
 
-if test "$ac_cv_importing_config_file" = "no"; then
-  echo "$as_me:$LINENO: result: no: disabled from the command-line" >&5
-echo "${ECHO_T}no: disabled from the command-line" >&6
-else
-
- if test "$ac_cv_importing_config_file" = "maybe" &&  test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
-      echo "$as_me:$LINENO: result: no: already imported a layout file" >&5
-echo "${ECHO_T}no: already imported a layout file" >&6
- else
-   if test ! -f "$GNUSTEP_CONFIG_FILE"; then
-     echo "$as_me:$LINENO: result: no: file \"$GNUSTEP_CONFIG_FILE\" does not exist" >&5
+if test "$ac_cv_importing_config_file" = "yes"; then
+ if test ! -f "$GNUSTEP_CONFIG_FILE"; then
+   echo "$as_me:$LINENO: result: no: file \"$GNUSTEP_CONFIG_FILE\" does not exist" >&5
 echo "${ECHO_T}no: file \"$GNUSTEP_CONFIG_FILE\" does not exist" >&6
-   else
-     echo "$as_me:$LINENO: result: yes: trying to import \"$GNUSTEP_CONFIG_FILE\"" >&5
+   { { echo "$as_me:$LINENO: error: asked to import non-existing configuration file.  To fix this problem, make sure you have a config file to import, or remove the --enable-importing-config-file option." >&5
+echo "$as_me: error: asked to import non-existing configuration file.  To fix this problem, make sure you have a config file to import, or remove the --enable-importing-config-file option." >&2;}
+   { (exit 1); exit 1; }; }
+ else
+   echo "$as_me:$LINENO: result: yes: trying to import \"$GNUSTEP_CONFIG_FILE\"" >&5
 echo "${ECHO_T}yes: trying to import \"$GNUSTEP_CONFIG_FILE\"" >&6
-     { echo "$as_me:$LINENO: If this fails, run configure again with --disable-importing-config-file" >&5
+   { echo "$as_me:$LINENO: If this fails, run configure again with --disable-importing-config-file" >&5
 echo "$as_me: If this fails, run configure again with --disable-importing-config-file" >&6;}
-     . "$GNUSTEP_CONFIG_FILE"
-   fi
-  fi
+   . "$GNUSTEP_CONFIG_FILE"
+ fi
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
 fi
+
 
 #--------------------------------------------------------------------
 # Important - from now on, any variable that is set in the filesystem

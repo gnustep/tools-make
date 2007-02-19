@@ -1,3 +1,11 @@
+2007-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: By default, do not import an existing
+	configuration file.  In most cases, this is now an annoyance
+	rather than a convenience as it overrides the --prefix=xxx and
+	--with-layout=yyy options.
+	* configure: Regenerated.
+
 2007-02-19  David Ayers  <ayers@fsfe.org>
 
 	* GNUmakefile.in (uninstall:): Remove print_unique_pathlist.sh,
