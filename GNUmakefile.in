@@ -139,7 +139,8 @@ install: generated-files
 	 $(EC)(echo "Installing gnustep-make support software")
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
-		clean_vendor.sh cpu.sh os.sh vendor.sh print_unique_pathlist.sh \
+		clean_vendor.sh cpu.sh os.sh vendor.sh \
+		print_unique_pathlist.sh \
 		relative_path.sh strip_makefiles.sh; do \
 	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
 	   done)
@@ -190,7 +191,9 @@ uninstall:
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
 		vendor.sh \
+		print_unique_pathlist.sh \
 		ld_lib_path.csh fixpath.sh \
+		filesystem.sh filesystem.csh \
 	        GNUstep.sh GNUstep.csh GNUstep-reset.sh \
 		relative_path.sh strip_makefiles.sh; do \
 	  rm -f $(makedir)/$$f; \
@@ -198,6 +201,7 @@ uninstall:
 	rm -f $(tooldir)/openapp; \
 	rm -f $(tooldir)/debugapp; \
 	rm -f $(tooldir)/opentool; \
+	rm -f $(tooldir)/gnustep-config; \
 	for f in $(MAKE_FILES); do \
 	  rm -f $(makedir)/$$f; \
 	done
@@ -217,17 +221,18 @@ uninstall:
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/config-noarch.make
 	rm -f $(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make
-	-for f in $(makedir)/$(GNUSTEP_TARGET_CPU) \
-		$(makedir)/$(GNUSTEP_TARGET_DIR) \
-		$(makedir)/Additional \
-		$(makedir)/Auxiliary \
-		$(makedir)/Master \
+	-for f in $(makedir)/Instance/Documentation \
 		$(makedir)/Instance/Shared \
-		$(makedir)/Instance/Documentation \
-		$(makedir)/Instance; do \
-	  rmdir $$f; \
+		$(makedir)/Instance \
+		$(makedir)/Master \
+		$(makedir)/Auxiliary \
+		$(makedir)/Additional \
+		$(makedir)/$(GNUSTEP_TARGET_LDIR) \
+		$(makedir)/$(GNUSTEP_TARGET_DIR) \
+		$(makedir)/$(GNUSTEP_TARGET_CPU) \
+		$(makedir); do \
+	  test -d $$f && rmdir $$f; \
 	done
-# To really uninstall all of GNUstep, a 'rm -Rf ${GNUSTEP_ROOT}' should do.
 
 clean:
 	rm -f *~ Master/*~ Instance/*~ Instance/Shared/*~
