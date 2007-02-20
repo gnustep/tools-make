@@ -1,3 +1,7 @@
+2007-02-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* create_domain_dir_tree.sh: File removed.
+
 2007-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* gnustep-config.in: Check that we are given a valid option and
