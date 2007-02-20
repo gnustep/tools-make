@@ -105,21 +105,15 @@ interaction.
 @node Debug Information, Profile Information, Running Make, Running Make
 @subsection Debug Information
 
-By default the Makefile Package does not tell the compiler to generate
+By default the Makefile Package tells the compiler to generate
 debugging information when compiling Objective-C and C files.  The
 following command illustrates how to tell the Makefile Package to pass
 the appropriate flags to the compiler so that debugging information is
-put into the binary files.
+not put into the binary files.
 
 @smallexample
-make debug=yes
+make debug=no
 @end smallexample
-
-When debugging is turned on, the Makefile Package turns off optimization
-so the user must override the optimization flag when running make if
-both debugging information and optimization is to be performed by the
-compiler. Use the variable @var{OPTFLAG} to override the
-optimization flag.
 
 @node Profile Information, Library Types, Debug Information, Running Make
 @subsection Profile Information
@@ -608,11 +602,6 @@ the software. This should be either @code{SYSTEM}), @code{LOCAL}, or @code{USER}
 If not set it defaults to @code{LOCAL}.
 @end defvr
 
-@defvr {RPM} RPM_DISABLE_RELOCATABLE
-Set this to @code{YES} if the package must be in @code{SYSTEM}
-and is not relocatable.
-@end defvr
-
 @defvr {RPM} PACKAGE_NEEDS_CONFIGURE
 Set this to @code{YES} if a configure script needs to be run before
 compilation
@@ -859,10 +848,10 @@ LIBRARIES_DEPEND_UPON = -lsimple $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS)
 @code{ADDITIONAL_INSTALL_DIRS} is the list of additional directories
 that should be created when the Makefile Package installs the file for
 the project.  These directories are only one that the project needs to
-be created but that the Makefile Package does not automatically create.
-The directories should be absolute paths but use the
-@code{GNUSTEP_INSTALLATION_DOMAIN} variable and other Makefile Package
-define variables, see @ref{Directory Paths}, so that the directories get
+be created but that the Makefile Package does not automatically
+create.  The directories should be absolute paths but use the
+@code{GNUSTEP_LIBRARY} variable and other Makefile Package define
+variables, see @ref{Directory Paths}, so that the directories get
 created in the appropriate place relative to the other file installed
 for the project.  The following example illustrates how two additional
 directories can be created during installation.
@@ -954,65 +943,41 @@ path will change accordingly if the user specifies a different
 installation domain.
 @end defvar
 
-@defvar GNUSTEP_LIBRARIES_ROOT
-@code{GNUSTEP_LIBRARIES_ROOT} is the absolute path for the root
-directory where libraries are installed.  Because libraries are binary
-objects and thus inherently target platform dependent, no libraries
-should actually reside in @code{GNUSTEP_LIBRARIES_ROOT}; libraries are
-placed in the appropriate subdirectory taking the target and possibly
-the library combo into account, see @ref{Directory
-Paths,,GNUSTEP_TARGET_LIBRARIES}, and @ref{Directory
-Paths,,GNUSTEP_LIBRARIES}.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
-accordingly if the user specified a different installation domain.
-@end defvar
-
-@defvar GNUSTEP_TARGET_LIBRARIES
-@code{GNUSTEP_TARGET_LIBRARIES} is the absolute path for the directory
-where libraries are installed taking the target platform into account.
-It is a subdirectory of @code{GNUSTEP_LIBRARIES_ROOT} and is where
-libraries that do not depend upon the library combination, GNUstep or
-others, should be placed.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
-accordingly if the user specifies a different installation domain.
-@end defvar
-
 @defvar GNUSTEP_LIBRARIES
 @code{GNUSTEP_LIBRARIES} is the absolute path for the directory where
 libraries are installed taking the target platform and library
-combination into account.  It is a subdirectory of
-@code{GNUSTEP_TARGET_LIBRARIES} and therefore a subdirectory of
-@code{GNUSTEP_LIBRARIES_ROOT}.  This directory is generally where
-library project types, see @ref{library.make}, will install the library
-file.  This variable is dependent upon the
-@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
-accordingly if the user specifies a different installation domain.
+combination into account.  This directory is generally where library
+project types, see @ref{library.make}, will install the library file.
+This variable is dependent upon the @code{GNUSTEP_INSTALLATION_DOMAIN}
+variable, so the path will change accordingly if the user specifies a
+different installation domain.
 @end defvar
 
 @defvar GNUSTEP_RESOURCES
 @code{GNUSTEP_RESOURCES} is the absolute path for the directory where
-resource files are installed; example resources are fonts, printer type
-information, model files for system panels, and system images.  The
-resource files are generally associated with libraries, because
-resources for applications or bundles are included within the
-application or bundle directory wrapper.  @code{GNUSTEP_RESOURCES} is a
-subdirectory of @code{GNUSTEP_LIBRARIES_ROOT}; it is dependent upon the
-@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
-accordingly if the user specifies a different installation domain.
+resource files for libraries are installed; example resources are
+fonts, printer type information, model files for system panels, and
+system images.  The resource files are generally associated with
+libraries, because resources for applications or bundles are included
+within the application or bundle directory wrapper.
+@code{GNUSTEP_RESOURCES} is a subdirectory of @code{GNUSTEP_LIBRARY};
+it is dependent upon the @code{GNUSTEP_INSTALLATION_DOMAIN} variable,
+so the path will change accordingly if the user specifies a different
+installation domain.
 @end defvar
 
 @defvar GNUSTEP_HOST_DIR
-@code{GNUSTEP_HOST_DIR} is the subdirectory path for the host platform CPU
-and operating system.  It is a composed from the @code{GNUSTEP_HOST_CPU}
-and @code{GNUSTEP_HOST_OS} variables.
+@code{GNUSTEP_HOST_DIR} is the subdirectory path for the host platform
+CPU and operating system.  It is a composed from the
+@code{GNUSTEP_HOST_CPU} and @code{GNUSTEP_HOST_OS} variables.
 @end defvar
 
 @defvar GNUSTEP_TARGET_DIR
-@code{GNUSTEP_TARGET_DIR} is the subdirectory path for the target platform
-CPU and operating system.  It is composed from the
+@code{GNUSTEP_TARGET_DIR} is the subdirectory path for the target
+platform CPU and operating system.  It is composed from the
 @code{GNUSTEP_TARGET_CPU} and @code{GNUSTEP_TARGET_OS} variables.
-@code{GNUSTEP_TARGET_DIR} is generally used as part of the installation
-path when platform specific files are installed.
+@code{GNUSTEP_TARGET_DIR} is generally used as part of the
+installation path when platform specific files are installed.
 @end defvar
 
 @defvar GNUSTEP_OBJ_DIR
@@ -1028,9 +993,9 @@ different compile options @emph{in place}; i.e. the binary files are
 separated from each other so a compile pass from one set of options do
 not overwrite or erase binary files from a previous compile pass with
 different options.  Generally the user does not use this variable;
-however, if the package needs to manually install some binary files than
-the makefile fragment uses this variable to reference the path where the
-binary file is located.
+however, if the package needs to manually install some binary files
+than the makefile fragment uses this variable to reference the path
+where the binary file is located.
 @end defvar
 
 @node Scripts, Platform Information, Directory Paths, Common Variables
@@ -1055,62 +1020,65 @@ script within the Makefile Package; this script takes a platform name
 and canonicalizes it, i.e. it puts the name in a standard form.  The
 Makefile Package uses this script when the user specifies a target
 platform for compilation; the target platform name is canonicalized so
-that the Makefile Package can properly parse the name into its different
-components.  Generally the user does not execute this script.
+that the Makefile Package can properly parse the name into its
+different components.  Generally the user does not execute this
+script.
 @end defvar
 
 @defvar CONFIG_CPU_SCRIPT
 @code{CONFIG_CPU_SCRIPT} is the absolute path to the @file{cpu.sh}
 script within the Makefile Package; this script extracts the CPU name
-from a canonicalized platform name.  Generally the user does not execute
-this script; it is used internally by the Makefile Package.
-@end defvar
-
-@defvar CONFIG_VENDOR_SCRIPT
-@code{CONFIG_VENDOR_SCRIPT} is the absolute path to the @file{vendor.sh}
-script within the Makefile Package; this script extracts the vendor name
-from a canonicalized platform name.  Generally the user does not execute
-this script; it is used internally by the Makefile Package.
-@end defvar
-
-@defvar CONFIG_OS_SCRIPT
-@code{CONFIG_OS_SCRIPT} is the absolute path to the @file{os.sh} script
-within the Makefile Package; this script extracts the operating system
-name from a canonicalized platform name.  Generally the user does not
+from a canonicalized platform name.  Generally the user does not
 execute this script; it is used internally by the Makefile Package.
 @end defvar
 
-@defvar CLEAN_CPU_SCRIPT
-@code{CLEAN_CPU_SCRIPT} is the absolute path to the @file{clean_cpu.sh}
-script within the Makefile Package; this script takes a platform CPU
-name and @emph{cleans} it for use by the Makefile Package.  The process
-of cleaning refers to the situation where numerous equivalent
-processors, which have different names, are mapped to a single name.
-For example, the Intel line of processors: i386, i486, Pentium, all have
-different CPU names, but the Makefile Package considers them equivalent
-and cleans those names so that the single name @file{ix86} is used.
+@defvar CONFIG_VENDOR_SCRIPT
+@code{CONFIG_VENDOR_SCRIPT} is the absolute path to the
+@file{vendor.sh} script within the Makefile Package; this script
+extracts the vendor name from a canonicalized platform name.
 Generally the user does not execute this script; it is used internally
 by the Makefile Package.
+@end defvar
+
+@defvar CONFIG_OS_SCRIPT
+@code{CONFIG_OS_SCRIPT} is the absolute path to the @file{os.sh}
+script within the Makefile Package; this script extracts the operating
+system name from a canonicalized platform name.  Generally the user
+does not execute this script; it is used internally by the Makefile
+Package.
+@end defvar
+
+@defvar CLEAN_CPU_SCRIPT
+@code{CLEAN_CPU_SCRIPT} is the absolute path to the
+@file{clean_cpu.sh} script within the Makefile Package; this script
+takes a platform CPU name and @emph{cleans} it for use by the Makefile
+Package.  The process of cleaning refers to the situation where
+numerous equivalent processors, which have different names, are mapped
+to a single name.  For example, the Intel line of processors: i386,
+i486, Pentium, all have different CPU names, but the Makefile Package
+considers them equivalent and cleans those names so that the single
+name @file{ix86} is used.  Generally the user does not execute this
+script; it is used internally by the Makefile Package.
 @end defvar
 
 @defvar CLEAN_VENDOR_SCRIPT
 @code{CLEAN_VENDOR_SCRIPT} is the absolute path to the
 @file{clean_vendor.sh} script within the Makefile Package; this script
 takes a platform vendor name and @emph{cleans} it for use by the
-Makefile Package.  The process of cleaning refers to the situation where
-numerous equivalent vendors, which have different names, are mapped to a
-single name.  Generally the user does not execute this script; it is
-used internally by the Makefile Package.
+Makefile Package.  The process of cleaning refers to the situation
+where numerous equivalent vendors, which have different names, are
+mapped to a single name.  Generally the user does not execute this
+script; it is used internally by the Makefile Package.
 @end defvar
 
 @defvar CLEAN_OS_SCRIPT
 @code{CLEAN_OS_SCRIPT} is the absolute path to the @file{clean_os.sh}
 script within the Makefile Package; this script takes a platform
 operating system name and @emph{cleans} it for use by the Makefile
-Package.  The process of cleaning refers to the situation where numerous
-equivalent operating systems, which have different names, are mapped to
-a single name.  Generally the user does not execute this script; it is
-used internally by the Makefile Package.
+Package.  The process of cleaning refers to the situation where
+numerous equivalent operating systems, which have different names, are
+mapped to a single name.  Generally the user does not execute this
+script; it is used internally by the Makefile Package.
 @end defvar
 
 @node Platform Information, Library Combination, Scripts, Common Variables
@@ -1124,12 +1092,12 @@ operating system has the name @code{sparc-sun-solaris2.5.1}.
 @end defvar
 
 @defvar GNUSTEP_HOST_CPU
-@code{GNUSTEP_HOST_CPU} is the CPU name for the canonical host platform
-name; i.e. the name of the CPU platform which is performing compilation
-of programs.  The Makefile Package cleans this CPU name with the
-@code{CLEAN_CPU_SCRIPT} script before using it internally.  For example,
-the canonical host platform name of @code{i586-pc-linux-gnu} has a CPU
-name of @code{ix86}.
+@code{GNUSTEP_HOST_CPU} is the CPU name for the canonical host
+platform name; i.e. the name of the CPU platform which is performing
+compilation of programs.  The Makefile Package cleans this CPU name
+with the @code{CLEAN_CPU_SCRIPT} script before using it internally.
+For example, the canonical host platform name of
+@code{i586-pc-linux-gnu} has a CPU name of @code{ix86}.
 @end defvar
 
 @defvar GNUSTEP_HOST_VENDOR
@@ -1153,41 +1121,41 @@ using it internally.  For example, the canonical host platform name of
 
 @defvar GNUSTEP_TARGET
 @code{GNUSTEP_TARGET} is the canonical target platform name;
-i.e. compilation of programs generate object code for this platform.  By
-default the target platform is the same as the host platform unless the
-user specifies a different target when running make, see Cross
+i.e. compilation of programs generate object code for this platform.
+By default the target platform is the same as the host platform unless
+the user specifies a different target when running make, see Cross
 Compiling.
 @end defvar
 
 @defvar GNUSTEP_TARGET_CPU
 @code{GNUSTEP_TARGET_CPU} is the CPU name for the canonical target
-platform; i.e. compilation of programs generate object code for this CPU
-platform.  The Makefile Package cleans this operating system name with
-the @code{CLEAN_CPU_SCRIPT} script before using it internally.  By
-default the target CPU platform is the same as the host CPU platform,
-@code{GNUSTEP_HOST_CPU}, unless the user specifies a different target
-platform when running make, see Cross Compiling.
+platform; i.e. compilation of programs generate object code for this
+CPU platform.  The Makefile Package cleans this operating system name
+with the @code{CLEAN_CPU_SCRIPT} script before using it internally.
+By default the target CPU platform is the same as the host CPU
+platform, @code{GNUSTEP_HOST_CPU}, unless the user specifies a
+different target platform when running make, see Cross Compiling.
 @end defvar
 
 @defvar GNUSTEP_TARGET_VENDOR
-@code{GNUSTEP_TARGET_VENDOR} is the vendor name for the canonical target
-platform; i.e. compilation of programs generate object code for this
-vendor platform.  The Makefile Package cleans this vendor name with the
-@code{CLEAN_VENDOR_SCRIPT} script before using it internally.  By
-default the target vendor platform is the same as the host vendor
+@code{GNUSTEP_TARGET_VENDOR} is the vendor name for the canonical
+target platform; i.e. compilation of programs generate object code for
+this vendor platform.  The Makefile Package cleans this vendor name
+with the @code{CLEAN_VENDOR_SCRIPT} script before using it internally.
+By default the target vendor platform is the same as the host vendor
 platform, @code{GNUSTEP_HOST_VENDOR}, unless the user specifies a
 different target platform when running make, see Cross Compiling.
 @end defvar
 
 @defvar GNUSTEP_TARGET_OS
-@code{GNUSTEP_TARGET_OS} is the operating system name for the canonical
-target platform; i.e. compilation of programs generate object code for
-this operating system platform.  The Makefile Package cleans this
-operating system name with the @code{CLEAN_OS_SCRIPT} script before
-using it internally.  By default the target operating system platform is
-the same as the host operating system platform, @code{GNUSTEP_HOST_OS},
-unless the user specifies a different target platform, see Cross
-Compiling.
+@code{GNUSTEP_TARGET_OS} is the operating system name for the
+canonical target platform; i.e. compilation of programs generate
+object code for this operating system platform.  The Makefile Package
+cleans this operating system name with the @code{CLEAN_OS_SCRIPT}
+script before using it internally.  By default the target operating
+system platform is the same as the host operating system platform,
+@code{GNUSTEP_HOST_OS}, unless the user specifies a different target
+platform, see Cross Compiling.
 @end defvar
 
 @node Library Combination, Overridable Flags, Platform Information, Common Variables
@@ -1197,56 +1165,58 @@ Compiling.
 @code{OBJC_RUNTIME_LIB} is assigned the code that indicates the
 Objective-C Runtime library which compiled Objective-C programs will
 use; the three possible values are: @samp{gnu} for the GNU Runtime,
-@samp{nx} for the NeXT Runtime, and @samp{sun} for the Sun Microsystems
-Runtime.  The Objective-C Runtime library can be changed to use a
-library other than the default with the @samp{library_combo} make
-parameter, see @ref{Running Make} for more details.  Read @ref{Library
-Combination} for more information on how the Makefile Package handles
-different library combinations.  If a makefile must perform specific
-operations dependent upon the Objective-C Runtime library then this
-variable is the one to check.
+@samp{nx} for the NeXT Runtime, and @samp{sun} for the Sun
+Microsystems Runtime.  The Objective-C Runtime library can be changed
+to use a library other than the default with the @samp{library_combo}
+make parameter, see @ref{Running Make} for more details.  Read
+@ref{Library Combination} for more information on how the Makefile
+Package handles different library combinations.  If a makefile must
+perform specific operations dependent upon the Objective-C Runtime
+library then this variable is the one to check.
 @end defvar
 
 @defvar RUNTIME_DEFINE
-@code{RUNTIME_DEFINE} is assigned a preprocessor flag that can be passed
-to the compiler which defines a macro based upon the Objective-C Runtime
-library that compiled Objective-C programs will use.  This macro is
-useful if the compiled program must execute different code based upon
-the Objective-C Runtime being used.  See @ref{GNUmakefile.preamble} for an
-example on how to pass this preprocessor flag when compiling.  The three
-possible values are: @samp{-DGNU_RUNTIME=1} for the GNU Runtime,
-@samp{-DNeXT_RUNTIME=1} for the NeXT Runtime, and @samp{-DSun_RUNTIME=1}
-for the Sun Microsystems Runtime.
+@code{RUNTIME_DEFINE} is assigned a preprocessor flag that can be
+passed to the compiler which defines a macro based upon the
+Objective-C Runtime library that compiled Objective-C programs will
+use.  This macro is useful if the compiled program must execute
+different code based upon the Objective-C Runtime being used.  See
+@ref{GNUmakefile.preamble} for an example on how to pass this
+preprocessor flag when compiling.  The three possible values are:
+@samp{-DGNU_RUNTIME=1} for the GNU Runtime, @samp{-DNeXT_RUNTIME=1}
+for the NeXT Runtime, and @samp{-DSun_RUNTIME=1} for the Sun
+Microsystems Runtime.
 @end defvar
 
 @defvar FOUNDATION_LIB
-@code{FOUNDATION_LIB} is assigned the code that indicates the Foundation
-Kit library, as specified by the OpenStep specification, which compiled
-Objective-C programs will use; the four possible values are: @samp{gnu}
-for the GNUstep Base Library, @samp{nx} for the NeXT Foundation Kit
-Library, @samp{sun} for the Sun Microsystems Foundation Kit Library, and
-@samp{fd} for the libFoundation Library.  The Foundation Kit library can
-be changed to use a library other than the default with the
-@samp{library_combo} make parameter, see @ref{Running Make} for more details.
-Read @ref{Library Combination} for more information on how the Makefile
-Package handles different library combinations.  If a makefile must
-perform specific operations dependent upon the Foundation Kit library
-then this variable is the one to check.
+@code{FOUNDATION_LIB} is assigned the code that indicates the
+Foundation Kit library, as specified by the OpenStep specification,
+which compiled Objective-C programs will use; the four possible values
+are: @samp{gnu} for the GNUstep Base Library, @samp{nx} for the NeXT
+Foundation Kit Library, @samp{sun} for the Sun Microsystems Foundation
+Kit Library, and @samp{fd} for the libFoundation Library.  The
+Foundation Kit library can be changed to use a library other than the
+default with the @samp{library_combo} make parameter, see @ref{Running
+Make} for more details.  Read @ref{Library Combination} for more
+information on how the Makefile Package handles different library
+combinations.  If a makefile must perform specific operations
+dependent upon the Foundation Kit library then this variable is the
+one to check.
 @end defvar
 
 @defvar FND_DEFINE
-@code{FND_DEFINE} is assigned a preprocessor flag that can be passed to
-the compiler which defines a macro based upon the Foundation Kit
+@code{FND_DEFINE} is assigned a preprocessor flag that can be passed
+to the compiler which defines a macro based upon the Foundation Kit
 library, as specified by the OpenStep specification, which compiled
 Objective-C programs will use.  This macro is useful if the compiled
 program must execute different code based upon the Foundation Kit
-library being used.  See @ref{GNUmakefile.preamble} for an example on how to pass
-this preprocessor flag when compiling.  The four possible values are:
-@samp{-DGNUSTEP_BASE_LIBRARY=1} for the GNUstep Base Library,
-@samp{-DNeXT_Foundation_LIBRARY=1} for the NeXT Foundation Kit Library,
-@samp{-DSun_Foundation_LIBRARY=1} for the Sun Microsystems Foundation
-Kit Library, and @samp{-DLIB_FOUNDATION_LIBRARY=1} for the libFoundation
-Library.
+library being used.  See @ref{GNUmakefile.preamble} for an example on
+how to pass this preprocessor flag when compiling.  The four possible
+values are: @samp{-DGNUSTEP_BASE_LIBRARY=1} for the GNUstep Base
+Library, @samp{-DNeXT_Foundation_LIBRARY=1} for the NeXT Foundation
+Kit Library, @samp{-DSun_Foundation_LIBRARY=1} for the Sun
+Microsystems Foundation Kit Library, and
+@samp{-DLIB_FOUNDATION_LIBRARY=1} for the libFoundation Library.
 @end defvar
 
 @defvar GUI_LIB
@@ -1255,56 +1225,59 @@ library, as specified by the OpenStep specification, which compiled
 Objective-C programs will use; the two possible values are: @samp{gnu}
 for the GNUstep GUI Library and @samp{nx} for the NeXT Application Kit
 Library.  The Application Kit library can be changed to use a library
-other than the default with the @samp{library_combo} make parameter, see
-@ref{Running Make} for more details.  Read @ref{Library Combination} for more
-information on how the Makefile Package handles different library
-combinations.  If a makefile must perform specific operations dependent
-upon the Application Kit library then this variable is the one to check.
+other than the default with the @samp{library_combo} make parameter,
+see @ref{Running Make} for more details.  Read @ref{Library
+Combination} for more information on how the Makefile Package handles
+different library combinations.  If a makefile must perform specific
+operations dependent upon the Application Kit library then this
+variable is the one to check.
 @end defvar
 
 @defvar GUI_DEFINE
-@code{GUI_DEFINE} is assigned a preprocessor flag that can be passed to
-the compiler which defines a macro based upon the Application Kit
+@code{GUI_DEFINE} is assigned a preprocessor flag that can be passed
+to the compiler which defines a macro based upon the Application Kit
 library, as specified by the OpenStep specification, which compiled
 Objective-C programs will use.  This macro is useful if the compiled
 program must execute different code based upon the Application Kit
-library being used.  See @ref{GNUmakefile.preamble} for an example on how
-to pass this preprocessor flag when compiling.  The two possible values
-are: @samp{-DGNUSTEP_GUI_LIBRARY=1} for the GNUstep GUI Library and
-@samp{-DNeXT_Application_LIBRARY=1} for the NeXT Application Kit
+library being used.  See @ref{GNUmakefile.preamble} for an example on
+how to pass this preprocessor flag when compiling.  The two possible
+values are: @samp{-DGNUSTEP_GUI_LIBRARY=1} for the GNUstep GUI Library
+and @samp{-DNeXT_Application_LIBRARY=1} for the NeXT Application Kit
 Library.
 @end defvar
 
 @defvar GUI_BACKEND_LIB
 @code{GUI_BACKEND_LIB} is assigned the code that indicates the backend
-library which compiled Objective-C programs will use in conjunction with
-the GNUstep GUI Library.  The three possible values are: @samp{xdps} for
-the GNUstep X/DPS GUI Backend Library, @samp{nsx} for the NSKit GUI
-Backend Library, and @samp{w32} for the MediaBook WIN32 GUI Backend
-Library.  @code{GUI_BACKEND_LIB} is only relevant when @code{GUI_LIB} is
-set to @samp{gnu}; otherwise, @code{GUI_BACKEND_LIB} will be set to
-@samp{nil} to indicate that there is no backend library.
-@code{GUI_BACKEND_LIB} can be changed to use a library other than the
-default with the @samp{library_combo} make parameter, see @ref{Running
-Make} for more details.  Read @ref{Library Combination} for more
-information on how the Makefile Package handles different library
-combinations.  If a makefile must perform specific operations dependent
-upon the backend library then this variable is the one to check.
+library which compiled Objective-C programs will use in conjunction
+with the GNUstep GUI Library.  The three possible values are:
+@samp{xdps} for the GNUstep X/DPS GUI Backend Library, @samp{nsx} for
+the NSKit GUI Backend Library, and @samp{w32} for the MediaBook WIN32
+GUI Backend Library.  @code{GUI_BACKEND_LIB} is only relevant when
+@code{GUI_LIB} is set to @samp{gnu}; otherwise, @code{GUI_BACKEND_LIB}
+will be set to @samp{nil} to indicate that there is no backend
+library.  @code{GUI_BACKEND_LIB} can be changed to use a library other
+than the default with the @samp{library_combo} make parameter, see
+@ref{Running Make} for more details.  Read @ref{Library Combination}
+for more information on how the Makefile Package handles different
+library combinations.  If a makefile must perform specific operations
+dependent upon the backend library then this variable is the one to
+check.
 @end defvar
 
 @defvar GUI_BACKEND_DEFINE
 @code{GUI_BACKEND_DEFINE} is assigned a preprocessor flag that can be
 passed to the compiler which defines a macro based upon the backend
-library which compiled Objective-C programs will use in conjunction with
-the GNUstep GUI Library.  This macro is useful if the compiled program
-must execute different code based upon the backend library being used.
-See @ref{GNUmakefile.preamble} for an example on how to pass this
-preprocessor flag when compiling.  The three possible values are:
-@samp{-DXDPS_BACKEND_LIBRARY=1} for the GNUstep X/DPS GUI Backend
+library which compiled Objective-C programs will use in conjunction
+with the GNUstep GUI Library.  This macro is useful if the compiled
+program must execute different code based upon the backend library
+being used.  See @ref{GNUmakefile.preamble} for an example on how to
+pass this preprocessor flag when compiling.  The three possible values
+are: @samp{-DXDPS_BACKEND_LIBRARY=1} for the GNUstep X/DPS GUI Backend
 Library, @samp{-DNSX_BACKEND_LIBRARY=1} for the NSKit GUI Backend
-Library, and @samp{-DW32_BACKEND_LIBRARY=1} for the MediaBook WIN32 GUI
-Backend Library.  @code{GUI_BACKEND_DEFINE} is not defined if there is
-not backend library; i.e. @code{GUI_BACKEND_LIB} is @samp{nil}.
+Library, and @samp{-DW32_BACKEND_LIBRARY=1} for the MediaBook WIN32
+GUI Backend Library.  @code{GUI_BACKEND_DEFINE} is not defined if
+there is not backend library; i.e. @code{GUI_BACKEND_LIB} is
+@samp{nil}.
 @end defvar
 
 @node Overridable Flags,  , Library Combination, Common Variables
@@ -1322,8 +1295,8 @@ make OBJCFLAGS="-Wno-implicit -Wno-protocol"
 @end smallexample
 
 @defvar CFLAGS
-@code{CFLAGS} are flags that are passed to the compiler when compiling C
-files.  The user can override this variable when running make and
+@code{CFLAGS} are flags that are passed to the compiler when compiling
+C files.  The user can override this variable when running make and
 specify different flags as the following command illustrates:
 @end defvar
 
@@ -1332,10 +1305,11 @@ make CFLAGS="-Wall"
 @end smallexample
 
 @defvar OPTFLAG
-@code{OPTFLAG} is the flag used to indicate the optimization level that
-the compiler should perform when compiling Objective-C and C files; this
-flag is set to @samp{-O2} by default, but the user can override this
-setting when running make as the following command illustrates:
+@code{OPTFLAG} is the flag used to indicate the optimization level
+that the compiler should perform when compiling Objective-C and C
+files; this flag is set to @samp{-O2} by default, but the user can
+override this setting when running make as the following command
+illustrates:
 @end defvar
 
 @smallexample
@@ -1347,9 +1321,10 @@ optimization will be performed by the compiler.
 
 @defvar GNUSTEP_INSTALLATION_DOMAIN
 @code{GNUSTEP_INSTALLATION_DOMAIN} is the domain where the package
-will install its files; overriding this variable when running make will
-change all of the variables within the Makefile Package that depend upon
-it; the following command illustrates the use of this variable:
+will install its files; overriding this variable when running make
+will change all of the variables within the Makefile Package that
+depend upon it; the following command illustrates the use of this
+variable:
 @end defvar
 
 @smallexample
@@ -1357,15 +1332,20 @@ make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
 @end smallexample
 
 This command states that the @code{SYSTEM} domain should be used as
-the installation root directory; if that is a standard GNUstep
-domain with the standard GNUstep filesystem hierarchy, then applications 
-in the package will be installed in the @file{$GNUSTEP_SYSTEM_ROOT/Apps} directory, libraries in the package
-will be installed under the @file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries} directory,
-command line tools will be installed under the @file{$GNUSTEP_SYSTEM_ROOT/Tools}
-directory, and etc.  By default the Makefile Package sets
-@code{GNUSTEP_INSTALLATION_DOMAIN} to @code{LOCAL} unless
-the is no @code{LOCAL} domain in which case
-@code{GNUSTEP_INSTALLATION_DOMAIN} will be set to
-@code{SYSTEM}.
+the installation root directory; if that is a standard GNUstep domain
+with the standard GNUstep filesystem hierarchy, then applications in
+the package will be installed in the @file{$GNUSTEP_SYSTEM_ROOT/Apps}
+directory, libraries in the package will be installed under the
+@file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries} directory, command line
+tools will be installed under the @file{$GNUSTEP_SYSTEM_ROOT/Tools}
+directory, and etc.  If the filesystem layout is a different one, the
+various directories might be located anywhere, which is why it's
+important to also refer to them by using variables such as
+@code{GNUSTEP_APPS}, @code{GNUSTEP_LIBRARIES} and
+@code{GNUSTEP_TOOLS}, which automatically point to the right directory
+on disk for this filesystem layout and installation domain.
+
+By default the Makefile Package sets
+@code{GNUSTEP_INSTALLATION_DOMAIN} to @code{LOCAL}.
 
 @bye
