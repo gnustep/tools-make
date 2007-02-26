@@ -71,9 +71,9 @@ if [ "$1" = "--help" ]; then
     echo "    --variable=GNUSTEP_xxx_LIBRARY"
     echo "    --variable=GNUSTEP_xxx_HEADERS"
     echo "    --variable=GNUSTEP_xxx_LIBRARIES"
-    echo "    --variable=GNUSTEP_xxx_DOCUMENTATION"
-    echo "    --variable=GNUSTEP_xxx_DOCUMENTATION_MAN"
-    echo "    --variable=GNUSTEP_xxx_DOCUMENTATION_INFO"
+    echo "    --variable=GNUSTEP_xxx_DOC"
+    echo "    --variable=GNUSTEP_xxx_DOC_MAN"
+    echo "    --variable=GNUSTEP_xxx_DOC_INFO"
     echo "    where 'xxx' could be any of 'SYSTEM', 'NETWORK', 'LOCAL' and 'USER'."
     echo
     echo "    For example, you could get the value of GNUSTEP_SYSTEM_TOOLS to find"

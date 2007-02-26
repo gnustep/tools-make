@@ -1,3 +1,8 @@
+2007-02-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-config.in: Updated help for the change of variable names
+	from GNUSTEP_SYSTEM_DOCUMENTATION to GNUSTEP_SYSTEM_DOC.
+
 2007-02-26  Graham Lee   <leeg@thaesofereode.info>
 
 	* gnustep-config.in: Bugfix to a test which stopped '--help' from
