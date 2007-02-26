@@ -47,7 +47,7 @@ esac
 
 
 # Process --help
-if [ "$1" == "--help" ]; then
+if [ "$1" = "--help" ]; then
     echo "usage: gnustep-config [option]"
     echo
     echo "This program prints information on the current gnustep"
