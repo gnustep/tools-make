@@ -38,61 +38,93 @@ any later version published by the Free Software Foundation.
 * Configuration::                 
 @end menu
 
-On GNUstep, there are four separate places where files related to GNUstep
-are installed: these places are called "domains".  These four 
+@b{FIXME/TODO: Everything from 'Hierarchy' onwards still needs
+updating for gnustep-make version 2.0}
+
+On GNUstep, there are four separate places where files related to
+GNUstep are installed: these places are called "domains".  These four
 domains are the System domain, the Local domain, the Network domain,
-and the User domain.  Each of these domains serve a special purpose.  
+and the User domain.  Each of these domains serve a special purpose.
 
-The following is a general overview of the GNUstep domains.  A detailed
-explanation of the directory structure contained within each domain is
-found later in this document.
+You can install various things in each domain; for example
+applications, tools or libraries.  Each domain should allow you to
+install the different types of resources or compiled software.
 
+Starting with gnustep-make version 2.0, each GNUstep installation can
+specify how these domains should be organized and mapped to
+directories on the filesystem.  A way to map GNUstep domains to
+filesystem directories is called a ``filesystem layout''.  A
+filesystem layout will specify in which directory System Tools are to
+be installed, for example.  Please check the gnustep-make
+FilesystemLayouts directory for information on how to create your own
+filesystem layout.
+
+Applications, libraries, bundles and other resources are normally
+looked up in domains following a fixed order: User first, then Local,
+then Network, then System.
+
+In this document we give a general overview of the GNUstep domains and
+of the default GNUstep filesystem layout.  The default GNUstep
+filesystem layout is a good way to discuss domains, because it is very
+simple: in the default GNUstep filesystem layout, every domain is
+mapped to a single directory on disk.  For example, the System domain
+could be mapped to the @file{/usr/GNUstep/System} directory, and
+everything that is installed into the System domain is then installed
+into some subdirectory of @file{/usr/GNUstep/System}.  Before
+gnustep-make version 2.0, this was the only filesystem layout
+available.
+
+Please keep in mind that (starting from gnustep-make version 2.0) this
+is not the case for a general filesystem layout; for example a typical
+FHS (Unix) layout might be installing System Tools in @file{/usr/bin}
+and System Admin Tools in @file{/sbin}.
 
 @node The System Domain, The Local Domain, Top, Top
 @section The System Domain
 
-The System domain is found in the @file{System} folder of the GNUstep
-installation.  This directory contains all files which were included
-in the default GNUstep installation or distribution.  Normally these
-include the basic GNUstep libraries (Foundation and AppKit), and might
-include essential system applications (the Workspace Manager, the
-Editor, applications related to system administrative tasks), the
-developer applications (Project Center and Gorm, as well as header
-files), essential extensions (bundles for XML, SSL, RTF, etc), as well
-as all software installed by the manufacturer of your distribution.
-These files are usually essential for having a fully functional
-system.  Thus, making modifications to these files is highly
+The System domain contains all files which were included in the
+default GNUstep installation or distribution.  These files are
+normally managed by the distribution/packaging system used to install
+GNUstep; thus, making modifications to these files is highly
 discouraged.  In addition, only the system administrator ('root' on
 most UNIX systems) should have permissions to write to that domain.
 
+Normally you can expect to find gnustep-make and the basic GNUstep
+libraries (Foundation and AppKit) in this domain, and also essential
+system applications (the Workspace Manager, the Editor, applications
+related to system administrative tasks), developer applications
+(Project Center and Gorm, as well as header files), essential
+extensions (bundles for XML, SSL, RTF, etc), as well as all software
+installed by the manufacturer of your distribution.
 
+In the default GNUstep filesystem layout, the entire System domain is
+found in the @file{System} folder of the GNUstep installation.
 
 @node The Local Domain, The Network Domain, The System Domain, Top
 @section The Local Domain
 
-While at first glance, the Local domain seems very similar to the
-System domain, there are several differences between them.  The most
-important thing is the differing purpose of the Local domain, as it is
-meant as the location for installing software which was not included
-with your GNUstep distribution and which you or your local sysadmin
-compile and/or install manually.  These may include third party
-applications, custom extension libraries and their related header
-files, etc.  The Local domain is - as the name suggests - usually
-installed as @file{Local} on your GNUstep system.  Every software
-(except for gnustep-make, gnustep-base, gnustep-gui and gnustep-back
-which by default install into the System domain) should install by
-default into the Local domain, so that if you download a source
-tarball of the software and you install it, it installs by default in
-the right place for this operation (the Local domain).  Distributions
-should override this default manually when they package the software
-they want to distribute as part of their distribution, so that in that
-case the software is installed in the System domain.
+The Local domain is similar to the System domain but has a different
+purpose.  It is meant as the location for installing software which
+was not included with your GNUstep distribution and which you or your
+local sysadmin compile and/or install manually.  These may include
+third party applications, custom extension libraries and their related
+header files, etc.  Every software (except for gnustep-make,
+gnustep-base, gnustep-gui and gnustep-back which by default install
+into the System domain) should install by default into the Local
+domain, so that if you download a source tarball of the software and
+you install it, it installs by default in the right place for this
+operation (the Local domain).  Distributions should override this
+default manually when they package the software they want to
+distribute as part of their distribution, so that in that case the
+software is installed in the System domain.
 
+In the default GNUstep filesystem layout the entire Local domain is
+installed as the @file{Local} folder of your GNUstep installation.
 
 @node The Network Domain, The Users Domain, The Local Domain, Top
 @section The Network Domain
 
-The @file{Network} domain is optional and is currently coalesced with
+The @file{Network} domain is optional and is usually coalesced with
 the @file{Local} domain by default; this is particularly appropriate
 for use on stand alone systems such as your home workstation.
 However, the Network domain can be of great use in networked,
@@ -105,32 +137,34 @@ possibility of providing application or resources to a vast number of
 workstations while only having to manage the software in one place.
 This is especially useful when workstations are used by several users
 with different tasks and requirements.  If you want to take advantage
-of the @file{Network} domain, you need to enable it when you configure
-gnustep-make.
+of the Network domain, you need to use a filesystem layout with
+a separate Network domain.
 
+In the default GNUstep filesystem layout the Network domain is the
+same as the Local domain; there is a separate GNUstep filesystem
+layout variant with a separate Network domain, in which case the
+entire Network domain is installed as the @file{Network} folder of
+your GNUstep installation.
 
 
 @node The Users Domain, Hierarchy, The Network Domain, Top
 @section The Users Domain
 
-On systems where GNUstep is installed optionally, the Users domain can
-usually be found in a subdirectory of the user's home directory called
-'GNUstep'.  This location is configurable, and some installations may
-put this directly in the user's directory (and typical user's home
-directories would be located in a @file{Users} folder).  As the name
-suggests, the main purpose of the Users domain is to hold GNUstep
-related files which shall not be available to other users on the
-system but only to the user owning them.  This includes the GNUstep
-defaults database, which holds system settings, application
-preferences and customized resources, as well as temporary data
-related to services and file type associations for programs. It also
-holds user installed applications and tools (each user has the ability
-to install their own version of an application or tool).  In
-addition to these special files, the User domain features the same
-structure as the other domains.
+The main purpose of the Users domain is to hold GNUstep related files
+which shall not be available to other users on the system but only to
+the user owning them.  This includes the GNUstep defaults database
+(which holds system settings, application preferences and customized
+resources) as well as temporary data related to services and file type
+associations for programs. It also holds user installed applications
+and tools (each user has the ability to install their own version of
+an application or tool).
 
+In the default GNUstep filesystem layout (and in most other layouts
+too) the User domain is completely contained in a subdirectory of the
+user's home directory called @file{GNUstep}.
 
-
+@b{FIXME/TODO: Everything from here on still needs updating for
+gnustep-make v2.}
 
 @node Hierarchy, Description, The Users Domain, Top
 @section Hierarchy

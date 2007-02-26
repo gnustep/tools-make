@@ -27,7 +27,7 @@ existing layouts, copy it into a new file, and edit it. :-)
 
 Here is a list of popular filesystem layout --
 
- * GNUstep: default GNUstep filesystem layout; it installs everything
+ * gnustep: default GNUstep filesystem layout; it installs everything
 into /usr/GNUstep/System, /usr/GNUstep/Local.  It's a very friendly
 layout, similar to the ones found on NeXTstep, OpenStep and Apple Mac
 OS X.  It's a layout that can work nicely with fat binaries, but may
