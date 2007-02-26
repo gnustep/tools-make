@@ -24,13 +24,13 @@ internal-doc-install_::
 	$(ECHO_INSTALLING)for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $$file \
-	               $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
+	               $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done$(END_ECHO)
 
 internal-doc-uninstall_::
 	$(ECHO_UNINSTALLING)for file in $($(GNUSTEP_INSTANCE)_INSTALL_FILES) __done; do \
 	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$$file ; \
+	    rm -f $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done$(END_ECHO)

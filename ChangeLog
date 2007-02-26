@@ -1,3 +1,43 @@
+2007-02-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	tcsh 6.12 has a 30 char limit on variable names, so
+	GNUSTEP_SYSTEM_DOCUMENTATION_MAN has been renamed to
+	GNUSTEP_SYSTEM_DOC_MAN (and similar consistent changes to all
+	variables everywhere).
+	* filesystem.csh.in: Use GNUSTEP_SYSTEM_DOC instead of
+	GNUSTEP_SYSTEM_DOCUMENTATION, GNUSTEP_SYSTEM_DOC_MAN instead of
+	GNUSTEP_SYSTEM_DOCUMENTATION_MAN, GNUSTEP_SYSTEM_DOC_INFO instead
+	of GNUSTEP_SYSTEM_DOCUMENTATION_INFO (and similar changes to all
+	other DOCUMENTATION variables).
+	* filesystem.sh.in: Same change.
+	* configure.ac: Same change.
+	* FilesystemLayouts/fhs: Same change.
+	* FilesystemLayouts/fhs-system: Same change.
+	* FilesystemLayouts/gnustep: Same change.
+	* FilesystemLayouts/windows: Same change.
+	* FilesystemLayouts/next: Same change.
+	* GNUstep.csh.in: Same change.
+	* Instance/documentation.make: Same change.
+	* Instance/Documentation/javadoc.make: Same change.
+	* Instance/Documentation/autogsdoc.make: Same change.
+	* Instance/Documentation/install_files.make: Same change.
+	* Instance/Documentation/texi.make: Same change.
+	* Instance/Documentation/latex.make: Same change.
+	* Instance/Documentation/gsdoc.make: Same change.
+	* GNUstep-reset.sh: Same change.
+	* GNUstep.sh.in: Same change.
+	* filesystem.make.in: Same change.
+	* Documentation/GNUmakefile: Same change.
+	* GNUstep.conf.in: Same change.
+	* common.make: Same change.
+	
+	* common.make: For backwards compatibility in user GNUmakefiles
+	define GNUSTEP_DOCUMENTATION, GNUSTEP_DOCUMENTATION_MAN and
+	GNUSTEP_DOCUMENTATION_INFO to be the same as GNUSTEP_DOC,
+	GNUSTEP_DOC_MAN and GNUSTEP_DOC_INFO.
+	
+	* configure: Regenerated.
+
 2007-02-20  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* create_domain_dir_tree.sh: File removed.

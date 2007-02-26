@@ -100,16 +100,16 @@ endif
 
 # Installation directory - always created.  This rule should be before
 # the makefile fragments' internal-doc-install_, so that
-# GNUSTEP_DOCUMENTATION/DOC_INSTALL_DIR is built before their targets
+# GNUSTEP_DOC/DOC_INSTALL_DIR is built before their targets
 # are.  FIXME: Maybe this dependency should be in the submakefiles
 # themselves.
-internal-doc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+internal-doc-install_:: $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
 
-$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR):
-	$(ECHO_CREATING)$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)$(END_ECHO)
+$(GNUSTEP_DOC)/$(DOC_INSTALL_DIR):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)$(END_ECHO)
 
-$(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE):
-	$(ECHO_CREATING)$(MKINSTALLDIRS) $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+$(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 
 ifneq ($(TEXI_FILES),)
   include $(GNUSTEP_MAKEFILES)/Instance/Documentation/texi.make
@@ -139,13 +139,13 @@ endif
 # textdoc targets - these are meant to be used with texi.make ... maybe
 # they should be moved in there
 #
-internal-textdoc-install_:: $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+internal-textdoc-install_:: $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
 	$(ECHO_NOTHING)$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)$(END_ECHO)
+	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)$(END_ECHO)
 
 internal-textdoc-uninstall_::
 	$(ECHO_UNINSTALLING)rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 
 internal-textdoc-clean::
 	$(ECHO_NOTHING) rm -f $(GNUSTEP_INSTANCE) $(END_ECHO)

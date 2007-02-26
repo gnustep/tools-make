@@ -159,46 +159,46 @@ version.texi: ../Version
 	 > version.texi
 
 # Install manually man pages
-after-install:: $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual $(GNUSTEP_DOCUMENTATION)/User/GNUstep
-	$(INSTALL_DATA) DESIGN $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual
+after-install:: $(GNUSTEP_DOC)/Developer/Make/Manual $(GNUSTEP_DOC)/User/GNUstep
+	$(INSTALL_DATA) DESIGN $(GNUSTEP_DOC)/Developer/Make/Manual
 	for file in $(README_FILES); do \
-	  $(INSTALL_DATA) $$file $(GNUSTEP_DOCUMENTATION)/User/GNUstep/$$file; \
+	  $(INSTALL_DATA) $$file $(GNUSTEP_DOC)/User/GNUstep/$$file; \
 	done;
-	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN) ]; then \
-	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN); \
+	if [ ! -f $(GNUSTEP_DOC_MAN) ]; then \
+	  $(MKDIRS) $(GNUSTEP_DOC_MAN); \
 	fi; \
-	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN)/man1 ]; then \
-	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN)/man1; \
+	if [ ! -f $(GNUSTEP_DOC_MAN)/man1 ]; then \
+	  $(MKDIRS) $(GNUSTEP_DOC_MAN)/man1; \
 	fi; \
 	for file in $(MAN1_PAGES) __done; do \
 	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file; \
-	    which gzip && rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file.gz \
-		&& gzip -9 $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file; \
+	    $(INSTALL_DATA) $$file $(GNUSTEP_DOC_MAN)/man1/$$file; \
+	    which gzip && rm -f $(GNUSTEP_DOC_MAN)/man1/$$file.gz \
+		&& gzip -9 $(GNUSTEP_DOC_MAN)/man1/$$file; \
 	  fi; \
 	done;
-	if [ ! -f $(GNUSTEP_DOCUMENTATION_MAN)/man7 ]; then \
-	  $(MKDIRS) $(GNUSTEP_DOCUMENTATION_MAN)/man7; \
+	if [ ! -f $(GNUSTEP_DOC_MAN)/man7 ]; then \
+	  $(MKDIRS) $(GNUSTEP_DOC_MAN)/man7; \
 	fi; \
 	for file in $(MAN7_PAGES) __done; do \
 	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
-	    which gzip && rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file.gz \
-		&& gzip -9 $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
+	    $(INSTALL_DATA) $$file $(GNUSTEP_DOC_MAN)/man7/$$file; \
+	    which gzip && rm -f $(GNUSTEP_DOC_MAN)/man7/$$file.gz \
+		&& gzip -9 $(GNUSTEP_DOC_MAN)/man7/$$file; \
 	  fi; \
 	done;
 
 #  Uninstall manually man pages
 after-uninstall::
-	rm -f $(GNUSTEP_DOCUMENTATION)/Developer/Make/Manual/DESIGN
+	rm -f $(GNUSTEP_DOC)/Developer/Make/Manual/DESIGN
 	for file in $(MAN1_PAGES) __done; do \
 	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man1/$$file; \
+	    rm -f $(GNUSTEP_DOC_MAN)/man1/$$file; \
 	  fi; \
 	done;
 	for file in $(MAN7_PAGES) __done; do \
 	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_DOCUMENTATION_MAN)/man7/$$file; \
+	    rm -f $(GNUSTEP_DOC_MAN)/man7/$$file; \
 	  fi; \
 	done;
 

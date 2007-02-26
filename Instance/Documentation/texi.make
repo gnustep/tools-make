@@ -121,36 +121,36 @@ internal-doc-clean::
 # NB: Only install doc files if they have been generated
 
 # We install all info files in the same directory, which is
-# GNUSTEP_DOCUMENTATION_INFO.  TODO: I think we should run
+# GNUSTEP_DOC_INFO.  TODO: I think we should run
 # install-info too - to keep up-to-date the dir index in that
 # directory.  
-internal-doc-install_:: $(GNUSTEP_DOCUMENTATION_INFO)
+internal-doc-install_:: $(GNUSTEP_DOC_INFO)
 	if [ -f $(GNUSTEP_INSTANCE).pdf ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).pdf \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
+	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
 	if [ -f $(GNUSTEP_INSTANCE).info ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOCUMENTATION_INFO); \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOC_INFO); \
 	fi
 	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
-	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
+	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
 	if [ -f $(GNUSTEP_INSTANCE).html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).html \
-	                  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR); \
+	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
 
-$(GNUSTEP_DOCUMENTATION_INFO):
+$(GNUSTEP_DOC_INFO):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 internal-doc-uninstall_::
 	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).pdf
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).pdf
 	rm -f \
-          $(GNUSTEP_DOCUMENTATION_INFO)/$(GNUSTEP_INSTANCE).info*
+          $(GNUSTEP_DOC_INFO)/$(GNUSTEP_INSTANCE).info*
 	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
 	rm -f \
-          $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).html
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).html
 

@@ -35,10 +35,10 @@ internal-doc-all_:: $(GNUSTEP_INSTANCE).ps.gz
 
 internal-doc-install_:: 
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE).ps \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
 internal-doc-uninstall_:: 
 	$(ECHO_UNINSTALLING)rm -f \
-	  $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps$(END_ECHO)
+	  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).ps$(END_ECHO)
 
 internal-doc-clean::
 	-$(ECHO_NOTHING)rm -f $(GNUSTEP_INSTANCE).aux  \
@@ -82,14 +82,14 @@ $(GNUSTEP_INSTANCE).tar.gz: $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html
 
 internal-doc-install_:: 
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.html \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
 	$(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.css \
-	                $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)
+	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
 # Yeah - I know - the following is dangerous if you have misused the 
 # DOC_INSTALL_DIR - but it's the only way to do it
 internal-doc-uninstall_:: 
-	-$(ECHO_UNINSTALLING)rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.html; \
-	rm -f $(GNUSTEP_DOCUMENTATION)/$(DOC_INSTALL_DIR)/*.css$(END_ECHO)
+	-$(ECHO_UNINSTALLING)rm -f $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/*.html; \
+	rm -f $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/*.css$(END_ECHO)
 
 internal-doc-distclean::
 	$(ECHO_NOTHING) if [ -d "$(GNUSTEP_INSTANCE)" ]; then \

@@ -204,9 +204,9 @@ ifneq ($(GNUSTEP_INSTALLATION_DIR),)
   GNUSTEP_LIBRARIES            = $(GNUSTEP_INSTALLATION_DIR)/Library/Libraries
   GNUSTEP_RESOURCES            = $(GNUSTEP_LIBRARY)/Libraries/Resources
   GNUSTEP_JAVA                 = $(GNUSTEP_LIBRARY)/Libraries/Java
-  GNUSTEP_DOCUMENTATION        = $(GNUSTEP_LIBRARY)/Documentation
-  GNUSTEP_DOCUMENTATION_MAN    = $(GNUSTEP_DOCUMENTATION)/man
-  GNUSTEP_DOCUMENTATION_INFO   = $(GNUSTEP_DOCUMENTATION)/info
+  GNUSTEP_DOC                  = $(GNUSTEP_LIBRARY)/Documentation
+  GNUSTEP_DOC_MAN              = $(GNUSTEP_DOC)/man
+  GNUSTEP_DOC_INFO             = $(GNUSTEP_DOC)/info
 
 else 
 
@@ -242,11 +242,30 @@ else
   GNUSTEP_LIBRARIES            = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_LIBRARIES)
   GNUSTEP_RESOURCES            = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_RESOURCES)
   GNUSTEP_JAVA                 = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_JAVA)
-  GNUSTEP_DOCUMENTATION        = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOCUMENTATION)
-  GNUSTEP_DOCUMENTATION_MAN    = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOCUMENTATION_MAN)
-  GNUSTEP_DOCUMENTATION_INFO   = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOCUMENTATION_INFO)
+  GNUSTEP_DOC                  = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOC)
+  GNUSTEP_DOC_MAN              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOC_MAN)
+  GNUSTEP_DOC_INFO             = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_DOC_INFO)
 
 endif
+
+
+#
+# Backwards-compatible long name variant of GNUSTEP_DOC*.
+#
+# The long variables names were too long for shells (eg, tcsh 6.12 has
+# a 30-char variable name limit, and GNUSTEP_SYSTEM_DOCUMENTATION_MAN
+# is 32 chars), so we replaced them with the shorter variant.  For
+# consistency, we'd like the shorter variant to be used everywhere,
+# both in shell and make code.
+#
+# But for backwards compatibility, you can still use the long name
+# variants in makefiles though ... we'll keep this backwards
+# compatibility hack in place for about 4 years from now, so until
+# Feb 2011.
+#
+GNUSTEP_DOCUMENTATION      = $(GNUSTEP_DOC)
+GNUSTEP_DOCUMENTATION_MAN  = $(GNUSTEP_DOC_MAN)
+GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOC_INFO)
 
 
 #
