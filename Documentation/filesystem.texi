@@ -103,12 +103,11 @@ found in the @file{System} folder of the GNUstep installation.
 @node The Local Domain, The Network Domain, The System Domain, Top
 @section The Local Domain
 
-The Local domain is similar to the System domain but has a different
-purpose.  It is meant as the location for installing software which
-was not included with your GNUstep distribution and which you or your
-local sysadmin compile and/or install manually.  These may include
-third party applications, custom extension libraries and their related
-header files, etc.  Every software (except for gnustep-make,
+The Local domain is meant as the location for installing software
+which was not included with your GNUstep distribution and which you or
+your local sysadmin compile and/or install manually.  These may
+include third party applications, custom extension libraries and their
+related header files, etc.  Every software (except for gnustep-make,
 gnustep-base, gnustep-gui and gnustep-back which by default install
 into the System domain) should install by default into the Local
 domain, so that if you download a source tarball of the software and
