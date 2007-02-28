@@ -4,7 +4,9 @@
 	/etc/GNUstep/GNUstep.conf.
 	* configure: Regenerated.
 	* FilesystemLayouts/mingw: New layout.
-	* Documentation/README.MinGW: Updated (experimental).
+	* Documentation/README.MinGW: Updated, including instructions to
+	prepare standalone binary applications that can be shipped to
+	end-users (experimental).
 	
 2007-02-26  Nicola Pero  <nicola.pero@meta-innovation.com>
 

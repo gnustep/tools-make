@@ -282,8 +282,6 @@ Additionally, you might want to compile and run Gorm or other GNUstep
 applications.  Gorm (and hopefully other GNUstep applications too)
 should compile and run out of the box.
 
-
-
 Troubleshooting
 ---------------
 
@@ -296,3 +294,136 @@ Where we specify specific versions of packages to be used, we have tested
 with those versions ... later or earlier versions may work, but may well not.
 Generally earlier versions should be assumed not to work.
 
+
+
+HOW TO PACKAGE YOUR MINGW APPLICATION
+-------------------------------------
+
+You probably want to ship your Windows application as a standalone
+.zip file that Windows users can easily download and use.
+
+We will explain what to do with an example: that of packaging
+Gorm.app.
+
+1. Copy Gorm.app somewhere
+==========================
+
+cp -R /usr/local/lib/GNUstep/Apps/Gorm.app /home/Nico/
+
+
+2. Copy DLLs into Gorm.app
+==========================
+
+Now search for DLL files in /bin and /local/bin, and copy them into
+Gorm.app too:
+
+cp $(find /bin -name *.dll) /home/Nico/Gorm.app/
+cp $(find /local/bin -name *.dll) /home/Nico/Gorm.app/
+
+
+3. Copy your GNUstep Library folder
+===================================
+
+cp -R /usr/local/lib/GNUstep/* /home/Nico/Gorm.app/GNUstep/
+
+4. Copy key GNUstep binary programs
+===================================
+
+mkdir -p /home/Nicola/Gorm.app/GNUstep/Tools/
+cp /local/bin/gpbs.exe /home/Nicola/Gorm.app/GNUstep/Tools
+cp /local/bin/gdnc.exe /home/Nicola/Gorm.app/GNUstep/Tools
+cp /local/bin/gdomap.exe /home/Nicola/Gorm.app/GNUstep/Tools
+cp /local/bin/make_services.exe /home/Nicola/Gorm.app/GNUstep/Tools
+
+5. Add a GNUstep.conf
+=====================
+
+Add a Gorm.app/GNUstep.conf file to tell gnustep-base where to find
+things inside Gorm.app -- here is the one I use:
+
+GNUSTEP_USER_CONFIG_FILE=.GNUstep.conf
+GNUSTEP_USER_DIR=GNUstep
+GNUSTEP_USER_DEFAULTS_DIR=GNUstep/Defaults
+
+GNUSTEP_SYSTEM_APPS=./GNUstep/Apps
+GNUSTEP_SYSTEM_ADMIN_APPS=./GNUstep/Apps
+GNUSTEP_SYSTEM_TOOLS=./GNUstep/Tools
+GNUSTEP_SYSTEM_ADMIN_TOOLS=./GNUstep/Tools
+GNUSTEP_SYSTEM_LIBRARY=./GNUstep
+GNUSTEP_SYSTEM_HEADERS=./GNUstep/Headers
+GNUSTEP_SYSTEM_LIBRARIES=./GNUstep/Libraries
+GNUSTEP_SYSTEM_DOC=./GNUstep/Documentation
+GNUSTEP_SYSTEM_DOC_MAN=./GNUstep/Documentation/man
+GNUSTEP_SYSTEM_DOC_INFO=./GNUstep/Documentation/info
+
+GNUSTEP_NETWORK_APPS=./GNUstep/Apps
+GNUSTEP_NETWORK_ADMIN_APPS=./GNUstep/Apps
+GNUSTEP_NETWORK_TOOLS=./GNUstep/Tools
+GNUSTEP_NETWORK_ADMIN_TOOLS=./GNUstep/Tools
+GNUSTEP_NETWORK_LIBRARY=./GNUstep
+GNUSTEP_NETWORK_HEADERS=./GNUstep/Headers
+GNUSTEP_NETWORK_LIBRARIES=./GNUstep/Libraries
+GNUSTEP_NETWORK_DOC=./GNUstep/Documentation
+GNUSTEP_NETWORK_DOC_MAN=./GNUstep/Documentation/man
+GNUSTEP_NETWORK_DOC_INFO=./GNUstep/Documentation/info
+
+GNUSTEP_LOCAL_APPS=./GNUstep/Apps
+GNUSTEP_LOCAL_ADMIN_APPS=./GNUstep/Apps
+GNUSTEP_LOCAL_TOOLS=./GNUstep/Tools
+GNUSTEP_LOCAL_ADMIN_TOOLS=./GNUstep/Tools
+GNUSTEP_LOCAL_LIBRARY=./GNUstep
+GNUSTEP_LOCAL_HEADERS=./GNUstep/Headers
+GNUSTEP_LOCAL_LIBRARIES=./GNUstep/Libraries
+GNUSTEP_LOCAL_DOC=./GNUstep/Documentation
+GNUSTEP_LOCAL_DOC_MAN=./GNUstep/Documentation/man
+GNUSTEP_LOCAL_DOC_INFO=./GNUstep/Documentation/info
+
+So, just copy and paste this code into a GNUstep.conf file that you
+put into /home/Nico/Gorm.app/GNUstep.conf.
+
+6. Now the application should be working
+========================================
+
+Now if you give your Gorm.app to a Windows user, they should be able
+to run it by just double-clicking on the Gorm executable inside of the
+Gorm.app directory! :-)
+
+7. Cleanup
+==========
+
+Finally check your Gorm.app/ and remove anything that you don't
+strictly need.
+
+For example, I removed (at least):
+
+rm Gorm.app/Renaissance.dll
+rm Gorm.app/ProjectCenter.dll
+rm -Rf Gorm.app/GNUstep/Apps/GSMarkupBrowser.app
+rm -Rf Gorm.app/GNUstep/Apps/GSMarkupLocalizableStrings.app
+rm -Rf Gorm.app/GNUstep/Apps/ProjectCenter.app
+rm -Rf Gorm.app/GNUstep/Frameworks/ProjectCenter.framework
+
+Generally, you probably want to build the whole stuff making sure you
+only include what you strictly need.
+
+8. Checking Licenses
+====================
+
+Before deployment, you need to realize that you are shipping a lot of
+GNUstep (and non-GNUstep) software with your application.  This is
+fine, just make sure you are aware of the licenses, and that you
+comply with them (by allowing people to easily get the source code of
+the GNUstep libraries, for example).
+
+
+FINAL COMMENTS ON PACKAGING
+---------------------------
+
+Gorm.app is 66 MB.  Makes you wonder if it could be reduced somehow!
+;-)
+
+Also, it's not clear what happens if you have two or three such
+GNUstep apps downloaded from the web and you try to run them at the
+same time.  What about gdomap etc ?
+
+Thanks
