@@ -146,6 +146,9 @@ make install
 =================================
 
 Nothing to do here since we're using the mingw native layout.
+But if at some point something doesn't work for you, try using
+
+export GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles
 
 
 9. Installing gnustep-objc
@@ -160,8 +163,8 @@ make
 make install
 
 
-9. Reinstalling gnustep-make
-============================
+10. Reinstalling gnustep-make
+=============================
 
 Go in core/make and reconfigure/recompile again so that gnustep-objc
 is detected:
@@ -174,7 +177,7 @@ make install
 gnustep-make should have detected your custom libobjc.
 
 
-10. Installing ffcall
+11. Installing ffcall
 =====================
 
 Download ffcall from the GNUstep website, and type:
@@ -185,7 +188,7 @@ make install
 
 (if you get a popup about contest.exe failing, just ignore it)
 
-11. Installing additional packages
+12. Installing additional packages
 ==================================
 
 Download the following packages:
@@ -202,7 +205,7 @@ Download the following packages:
 from http://gnuwin32.sourceforge.net, and install them.  To
 install them, simply unzip them into /C/xxx/msys/1.0/mingw.
 
-12. XML support
+13. XML support
 ===============
 
 You need to get the source code for libxml2 and  build it yourself ...
@@ -216,7 +219,7 @@ Then do 'make install'
 
 You should now have libxml2 installed on your system.
 
-13. Installing gnustep-base
+14. Installing gnustep-base
 ===========================
 
 Go in gnustep-base, and type 
@@ -229,7 +232,7 @@ At this point, you should be able to compile and run any non-gui tool
 and library.  The next steps are only required for gui applications.
 
 
-14. Installing gui additional packages
+15. Installing gui additional packages
 ======================================
 
 For the gui, download and install the following packages:
@@ -249,7 +252,7 @@ The process is always the same: download the zip file from the
 gnuwin32 website, then unzip them into /C/xxx/msys/1.0/mingw.
 
 
-15. Installing gnustep-gui
+16. Installing gnustep-gui
 ==========================
 
 Go in the gui, and type:
@@ -259,7 +262,7 @@ Go in the gui, and type:
   make install
 
 
-16. Installing gnustep-back
+17. Installing gnustep-back
 ===========================
 
 Go in back, and type:
@@ -269,7 +272,7 @@ Go in back, and type:
   make install
 
 
-17. Testing your gui installation
+18. Testing your gui installation
 =================================
 
 Go in a simple gui application (examples/gui a very good starting
