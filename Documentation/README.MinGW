@@ -2,6 +2,8 @@ Date:	11-Jan-2006 (tested under Windows XP)
 Author: Nicola Pero <n.pero@mi.flashnet.it>, 
         after Richard Frith-Macdonald <rfm@gnu.org> and others
 
+Currently (28-Feb-2007) being updated.
+
 PURPOSE
 -------
 
@@ -44,7 +46,7 @@ STEP BY STEP INSTALLATION INSTRUCTIONS
 1. Install MinGW
 ================
 
-Download MinGW-4.1.0 from
+Download MinGW-5.1.3 from
 http://sourceforge.net/projects/mingw Install it into
 
 C:/xxx/msys/1.0/mingw
@@ -53,16 +55,17 @@ C:/xxx/msys/1.0/mingw
 I install it into C:/Nicola/GNUstep/msys/1.0/mingw) (earlier versions of 
 MinGW might not work)
 
-PS: Download MinGW-4.1.0.exe, then start it up.  Select the
-installation path C:\xxx\msys\1.0\mingw; then install all the Current
-versions of everything (but not the sources).
+PS: Download MinGW-5.1.3.exe, then start it up.  Select 'Current' as
+the package version ot install.  Then select 'MinGW Base Tools',
+'Objective-C Compiler' and 'MinGW Make' as packages to install.  Set
+the installation path to C:\xxx\msys\1.0\mingw.
 
 
 2. Install msys
 ===============
 
-Download MSYS-1.0.10 from the same site.  Install it into
-C:/xxx/msys/1.0
+Download MSYS-1.0.10 following the links in
+http://www.mingw.org/download.shtml.  Install it into C:/xxx/msys/1.0
 
 The postinstall script should ask you for the mingw location, then
 detect it and be happy that it's there and all is setup properly.
@@ -101,7 +104,22 @@ start menu.
 From this window we can now start building things.
 
 
-5. Obtaining GNUstep
+5. Additional Useful Tools [Optional]
+=====================================
+
+If you want to install GNUstep from Subversion, you need a Subversion
+client.  You can get
+http://subversion.tigris.org/files/documents/15/35379/svn-1.4.2-setup.exe
+and install subversion in any directory you want.  Then you can run
+svn.exe from the MS-DOS console (or the MSYS one).
+
+If you need Emacs, get a Windows version from
+ftp://ftp.gnu.org/gnu/emacs/windows/emacs-21.3-bin-i386.tar.gz.  To
+install it, simply unpack it in your home directory, you can now
+execute the binary in 'bin'.
+
+
+6. Obtaining GNUstep
 ====================
 
 The main GNUstep project pages tell you how to get hold of this. You can get
@@ -111,50 +129,32 @@ or code from SVN.
 
 svn co http://svn.gna.org/svn/gnustep/modules/core
 
-6. Installing gnustep-make
+
+7. Installing gnustep-make
 ==========================
 
 go in core/make and do
+(FIXME/TODO: Once this has been tested properly, we should automatically
+select mingw layout on mingw)
 
-./configure --prefix=/C/xxx/GNUstep
+./configure --with-layout=mingw
 make
 make install
 
 
-7. setup your GNUstep environment
+8. setup your GNUstep environment
 =================================
 
-NB: you will need to do the same every time you start up your MSYS
-shell to do development
-
-. /C/xxx/GNUstep/System/Library/Makefiles/GNUstep.sh
-
-Also, set HOMEPATH, HOMEDRIVE and HOME ... add the following lines to
-your ~/.profile:
-
-export HOMEDRIVE=C:
-export HOMEPATH=/home/Nicola
-export HOME=/C/xxx/msys/1.0/home/Nicola
-. /C/xxx/GNUstep/System/Library/Makefiles/GNUstep.sh
-
-(obviously replacing 'Nicola' with your Login name) (not sure if this 
-setting of HOMEDRIVE etc is really required, will investigate)
-
-NOTE: Sometimes the HOME variable may already be set by Windows to be
-%USERPROFILE% (which is the Windows variable that contains the path of
-your home folder). MSYS has problems with that as it doesn't recognise
-that %USERPROFILE% is a variable name. Be sure to check that if you run
-into errors.
-     
-     MinGW comes with a buggy 'ln -s' and Makefiles are no longer
-     installed into $GNUSTEP_SYSTEM_ROOT/Makefiles so there is 
-     no compatibility symlink to $GNUSTEP_SYSTEM_ROOT/Library/Makefiles
+Nothing to do here since we're using the mingw native layout.
 
 
-8. Installing gnustep-objc
+9. Installing gnustep-objc
 ==========================
 
-Download gnustep-libobjc, (find it at http://www.gnustep.org/resources/downloads.php) and compile it:
+Download gnustep-libobjc, (find it at
+http://www.gnustep.org/resources/downloads.php, or use subversion, svn
+co http://svn.gna.org/svn/gnustep/modules/dev-libs/libobjc) and
+compile it:
 
 make
 make install
@@ -167,7 +167,7 @@ Go in core/make and reconfigure/recompile again so that gnustep-objc
 is detected:
 
 make distclean
-./configure
+./configure --with-layout=mingw
 make 
 make install
 
@@ -179,48 +179,36 @@ gnustep-make should have detected your custom libobjc.
 
 Download ffcall from the GNUstep website, and type:
 
-./configure --prefix=$GNUSTEP_SYSTEM_ROOT
+./configure
 make
 make install
 
 (if you get a popup about contest.exe failing, just ignore it)
 
 11. Installing additional packages
-=======================
+==================================
 
 Download the following packages:
 
- libintl-0.11.5-2.bin.zip
- libintl-0.11.5-2.lib.zip
- (important: libintl-0.14.4 is untested, use 0.11.5 to be safe)
+ libintl-0.14.4.bin.zip
+ libintl-0.14.4.lib.zip
 
- libiconv-1.8-1-bin.zip 
- libiconv-1.8-1-lib.zip 
+ libiconv-1.9.2-bin.zip 
+ libiconv-1.9.2-lib.zip 
 
- zlib-1.2.2-bin.zip
- zlib-1.2.2-lib.zip
+ zlib-1.2.3-bin.zip
+ zlib-1.2.3-lib.zip
 
 from http://gnuwin32.sourceforge.net, and install them.  To
 install them, simply unzip them into /C/xxx/msys/1.0/mingw.
-
 
 12. XML support
 ===============
 
 You need to get the source code for libxml2 and  build it yourself ...
-but first you must fix the symbol information in libiconv so you can link to it.
 
-cd /mingw/lib
-mkdir backup-libiconv
-mv libiconv.la backup-libiconv
-mv libiconv.lib backup-libiconv
-dlltool -D libiconv-2.dll -C -l libiconv.lib --export-all-symbols -A ../bin/libiconv-2.dll
-
-Then you can remove the backup-libiconv directory and its
-contents if all has worked.
-
-Now download the libxml2 source from http://www.xmlsoft.org
-I used libxml2-2.6.23.tar.gz
+Now download the libxml2 source from http://www.xmlsoft.org I used
+libxml2-2.6.27.tar.gz
 
 Unpack the source, change into the directory and run the configure script
 Then do 'make'
@@ -250,9 +238,9 @@ For the gui, download and install the following packages:
   jpeg-6b-4-dep.zip
   jpeg-6b-4-lib.zip
 
-  tiff-3.7.2-bin.zip
-  tiff-3.7.2-dep.zip
-  tiff-3.7.2-lib.zip
+  tiff-3.8.2-1-bin.zip
+  tiff-3.8.2-1-dep.zip
+  tiff-3.8.2-1-lib.zip
 
   libpng-1.2.8-bin.zip
   libpng-1.2.8-lib.zip
@@ -300,10 +288,6 @@ Issues with updating:
 Before attempting to update your GNUstep installation, be sure to stop/kill
 all running GNUstep programs or services (i.e. gdomap, gdnc, gpbs) since
 Windows cannot overwrite files that are currently in use.
-
-If you pass any include (-Ixxx) paths to GCC, make sure they do *not*
-end with a slash.  The current GCC/MinGW releases have a bug where
-such paths would be ignored.
 
 Where we specify specific versions of packages to be used, we have tested
 with those versions ... later or earlier versions may work, but may well not.
