@@ -1,31 +1,38 @@
-Date:	11-Jan-2006 (tested under Windows XP)
-Author: Nicola Pero <n.pero@mi.flashnet.it>, 
+Date:	28-Feb-2007 (tested under Windows XP)
+Author: Nicola Pero <nicola.pero@meta-innovation.com>
         after Richard Frith-Macdonald <rfm@gnu.org> and others
 
-Currently (28-Feb-2007) being updated.
 
 PURPOSE
 -------
 
 This document is intended to provide a step by step instruction on how
-to get the GNUstep base library into a usable state on a recent Windows
-operating system (XP, 2000, and probably NT).
+to get the GNUstep development environment in a usable state on a
+recent Windows operating system (XP, 2000, and probably NT).
+
+It will get as far as explaining how to build a GNUstep application
+and create a standalone version that can be shipped standalone to end
+users.
+
+The recommended way to get GNUstep working on Windows is via MinGW
+(this is what is described in this file).
 
 MinGW is a collection of header files and import libraries that allow
 one to use GCC and produce native Windows32 programs that do not rely
-on any 3rd-party DLLs. GNUstep has only partially been ported to MinGW
-so expect some problems when trying to compile. Also, there are still
-subtle problems with running GNU tools on Windows, so any problems you
-may encounter may just as easly have to do with the compilation tools
-you are using as with GNUstep.
+on any 3rd-party DLLs.  GNUstep has only partially been ported to
+MinGW so expect some problems when trying to compile.  Also, there are
+still subtle problems with running GNU tools on Windows, so any
+problems you may encounter may just as easly have to do with the
+compilation tools you are using as with GNUstep.
 
 MSYS is a very much cut down version of the Cygwin environment ...
-providing a minimal set of tools needed to build programs using MingGW.
-If you wish to build for MinGW by cross-compiling from a Cygwin
-environment, please read README.Cygwin instead.
+providing a minimal set of tools needed to build programs using
+MingGW.  If you wish to build for MinGW by cross-compiling from a
+Cygwin environment, please read README.Cygwin instead.
 
 The gui library is only partially ported to run under MinGW. The look
-and behavior may not be consistant.
+and behavior may not be consistent.  Contributions are welcome.
+
 
 PRELIMINARIES
 -------------
@@ -40,7 +47,7 @@ start compiling applications!  Although you may want to read the rest of
 the instructions for other helpful information.
 
 
-STEP BY STEP INSTALLATION INSTRUCTIONS
+A. STEP BY STEP INSTALLATION INSTRUCTIONS
 --------------------------------------
 
 1. Install MinGW
@@ -108,9 +115,9 @@ From this window we can now start building things.
 =====================================
 
 If you want to install GNUstep from Subversion, you need a Subversion
-client.  You can get
+client.  I used
 http://subversion.tigris.org/files/documents/15/35379/svn-1.4.2-setup.exe
-and install subversion in any directory you want.  Then you can run
+and then installed subversion in a random directory.  Then you can run
 svn.exe from the MS-DOS console (or the MSYS one).
 
 If you need Emacs, get a Windows version from
@@ -122,10 +129,10 @@ execute the binary in 'bin'.
 6. Obtaining GNUstep
 ====================
 
-The main GNUstep project pages tell you how to get hold of this. You can get
-the latest release of the following libraries. However, since MinGW support
-is currently evolving, we recommend that you get the latest snapshot
-or code from SVN.
+The main GNUstep project pages tell you how to get hold of this. You
+can get the latest release of the libraries. However, since MinGW
+support is currently evolving, we recommend that you get the latest
+snapshot or code from SVN.
 
 svn co http://svn.gna.org/svn/gnustep/modules/core
 
@@ -133,13 +140,14 @@ svn co http://svn.gna.org/svn/gnustep/modules/core
 7. Installing gnustep-make
 ==========================
 
-go in core/make and do
-(FIXME/TODO: Once this has been tested properly, we should automatically
-select mingw layout on mingw)
+go in core/make and do 
 
 ./configure --with-layout=mingw
 make
 make install
+
+(TODO: Once this has been tested more extensively, we should
+automatically select mingw layout on mingw)
 
 
 8. setup your GNUstep environment
@@ -188,6 +196,7 @@ make install
 
 (if you get a popup about contest.exe failing, just ignore it)
 
+
 12. Installing additional packages
 ==================================
 
@@ -205,6 +214,7 @@ Download the following packages:
 from http://gnuwin32.sourceforge.net, and install them.  To
 install them, simply unzip them into /C/xxx/msys/1.0/mingw.
 
+
 13. XML support
 ===============
 
@@ -219,6 +229,7 @@ Then do 'make install'
 
 You should now have libxml2 installed on your system.
 
+
 14. Installing gnustep-base
 ===========================
 
@@ -229,7 +240,8 @@ make
 make install
 
 At this point, you should be able to compile and run any non-gui tool
-and library.  The next steps are only required for gui applications.
+and library (to check this try, for example, 'defaults read').  The
+next steps are only required for gui applications.
 
 
 15. Installing gui additional packages
@@ -296,51 +308,90 @@ Generally earlier versions should be assumed not to work.
 
 
 
-HOW TO PACKAGE YOUR MINGW APPLICATION
--------------------------------------
+B. HOW TO SHIP YOUR GNUSTEP APPLICATION TO WINDOWS USERS
+--------------------------------------------------------
 
 You probably want to ship your Windows application as a standalone
 .zip file that Windows users can easily download and use.
 
 We will explain what to do with an example: that of packaging
-Gorm.app.
+Gomoku.app.  We will first build the application (creating
+Gomoku.app), then we'll add to to it all the GNUstep DLLs and
+resources that are needed to run the application, and we'll end up
+with a single directory, Gomoku.app, that contains a program
+(Gomoku.exe) and a bunch of DLLs and various other resources required
+to run the program.
 
-1. Copy Gorm.app somewhere
-==========================
-
-cp -R /usr/local/lib/GNUstep/Apps/Gorm.app /home/Nico/
-
-
-2. Copy DLLs into Gorm.app
-==========================
-
-Now search for DLL files in /bin and /local/bin, and copy them into
-Gorm.app too:
-
-cp $(find /bin -name *.dll) /home/Nico/Gorm.app/
-cp $(find /local/bin -name *.dll) /home/Nico/Gorm.app/
+The end user just needs to get this directory (from a .zip or .tgz
+file, for example) and can double-click on Gomoku.exe to start the
+program (no GNUstep installation required).
 
 
-3. Copy your GNUstep Library folder
+1. Build the application
+========================
+
+Build your application (Gomoku.app in this example) in your
+MinGW/GNUstep environment.  Generally, this means getting the source
+code and typing 'make' in it.  If you're trying to follow the
+Gomoku.app example, the source code is here:
+
+http://www.gnustep.it/nicola/Applications/Gomoku/index.html
+
+Once you have built it, make sure you can run your application from
+within mingw by using 'openapp', as in 'openapp ./Gomoku.app'.
+
+2. Copy your application somewhere
+==================================
+
+Now take your built application and copy it somewhere -- we'll be
+working on it!  Eg, I just copy it in my home directory.
+
+cp -R /home/Nico/Gomoku-1.2.8/Gomoku.app /home/Nico/
+
+
+3. Copy DLLs into your application
+==================================
+
+Now search for MinGW/GNUstep DLL files in /bin and /local/bin, and
+copy them all into Gomoku.app:
+
+cp $(find /bin -name *.dll) /home/Nico/Gomoku.app/
+cp $(find /local/bin -name *.dll) /home/Nico/Gomoku.app/
+
+
+4. Copy your GNUstep Library folder
 ===================================
 
-mkdir -p /home/Nicola/Gorm.app/GNUstep/
-cp -R /usr/local/lib/GNUstep/* /home/Nico/Gorm.app/GNUstep/
+Now copy all of the GNUstep resources into the application --
 
-4. Copy key GNUstep binary programs
+mkdir -p /home/Nicola/Gomoku.app/GNUstep/
+cp -R /usr/local/lib/GNUstep/* /home/Nico/Gomoku.app/GNUstep/
+
+I put them all into Gomoku.app/GNUstep/, which means that later on
+I'll set up the GNUstep.conf file to map GNUSTEP_*_LIBRARY to that
+directory.
+
+
+5. Copy key GNUstep binary programs
 ===================================
 
-mkdir -p /home/Nicola/Gorm.app/GNUstep/Tools/
-cp /local/bin/gpbs.exe /home/Nicola/Gorm.app/GNUstep/Tools
-cp /local/bin/gdnc.exe /home/Nicola/Gorm.app/GNUstep/Tools
-cp /local/bin/gdomap.exe /home/Nicola/Gorm.app/GNUstep/Tools
-cp /local/bin/make_services.exe /home/Nicola/Gorm.app/GNUstep/Tools
+mkdir -p /home/Nicola/Gomoku.app/GNUstep/Tools/
+cp /local/bin/gpbs.exe /home/Nicola/Gomoku.app/GNUstep/Tools
+cp /local/bin/gdnc.exe /home/Nicola/Gomoku.app/GNUstep/Tools
+cp /local/bin/gdomap.exe /home/Nicola/Gomoku.app/GNUstep/Tools
+cp /local/bin/make_services.exe /home/Nicola/Gomoku.app/GNUstep/Tools
 
-5. Add a GNUstep.conf
+I put them all into Gomoku.app/GNUStep/Tools, which means that later
+on I'll set up the GNUstep.conf file to map GNUSTEP_*_TOOLS to that
+directory.
+
+
+6. Add a GNUstep.conf
 =====================
 
-Add a Gorm.app/GNUstep.conf file to tell gnustep-base where to find
-things inside Gorm.app -- here is the one I use:
+You need to add a Gomoku.app/GNUstep.conf file to tell gnustep-base
+where to find things inside Gomoku.app -- here is the one I use (which
+matches the locations where I copied things in the previous steps) --
 
 GNUSTEP_USER_CONFIG_FILE=.GNUstep.conf
 GNUSTEP_USER_DIR=GNUstep
@@ -380,51 +431,84 @@ GNUSTEP_LOCAL_DOC_MAN=./GNUstep/Documentation/man
 GNUSTEP_LOCAL_DOC_INFO=./GNUstep/Documentation/info
 
 So, just copy and paste this code into a GNUstep.conf file that you
-put into /home/Nico/Gorm.app/GNUstep.conf.
+put into /home/Nico/Gomoku.app/GNUstep.conf.
 
-6. Now the application should be working
+
+7. Now the application should be working
 ========================================
 
-Now if you give your Gorm.app to a Windows user, they should be able
-to run it by just double-clicking on the Gorm executable inside of the
-Gorm.app directory! :-)
+At this stage, everything should be working "standalone".
 
-7. Cleanup
+By that we mean that if you give your Gomoku.app/ to a Windows user
+(with no GNUstep installed on their machine), they should be able to
+run it by just double-clicking on the Gomoku executable inside of the
+Gomoku.app/ directory! :-)
+
+Try it out and make sure that it works.
+
+
+8. Cleanup
 ==========
 
-Finally check your Gorm.app/ and remove anything that you don't
-strictly need.
+If you look at your Gomoku.app/ directory, you will see that it is
+really big.  We mass-copied stuff from the GNUstep/MinGW directories;
+but generally, you want to make sure you remove anything that you
+don't strictly need.  So go in there and remove anything that you
+don't need.
 
 For example, I removed (at least):
 
-rm Gorm.app/Renaissance.dll
-rm Gorm.app/ProjectCenter.dll
-rm -Rf Gorm.app/GNUstep/Apps/GSMarkupBrowser.app
-rm -Rf Gorm.app/GNUstep/Apps/GSMarkupLocalizableStrings.app
-rm -Rf Gorm.app/GNUstep/Apps/ProjectCenter.app
-rm -Rf Gorm.app/GNUstep/Frameworks/ProjectCenter.framework
+rm Gomoku.app/Renaissance.dll
+rm Gomoku.app/ProjectCenter.dll
+rm -Rf Gomoku.app/GNUstep/Apps
+rm -Rf Gomoku.app/GNUstep/Frameworks/ProjectCenter.framework
 
-Generally, you probably want to build the whole stuff making sure you
-only include what you strictly need.
+Generally, you may want to build the whole stuff making sure you only
+include what you strictly need.
 
-8. Checking Licenses
+
+9. Stripping
+============
+
+The resulting directory might still be pretty big.  If you are trying
+to distribute it over the internet, your users will probably
+appreciate if you stripped it, removing symbols.  Just run 'strip'
+on all the .exe and .dll files in your application.
+
+strip $(find /home/Nico/Gomoku.app/ -name '*.exe')
+strip $(find /home/Nico/Gomoku.app/ -name '*.dll')
+
+That will reduce the size a lot.  If you're not distributing it over
+the internet, you might be happy leaving the symbols in though.
+
+
+10. Checking Licenses
 ====================
 
-Before deployment, you need to realize that you are shipping a lot of
-GNUstep (and non-GNUstep) software with your application.  This is
-fine, just make sure you are aware of the licenses, and that you
-comply with them (by allowing people to easily get the source code of
-the GNUstep libraries, for example).
+Finally, before deployment, you need to realize that you are shipping
+a lot of GNUstep (and non-GNUstep) software with your application.
+
+This is fine, just make sure you are aware of the licenses, and that
+you comply with them (by explaining to people where to easily get the
+source code of the GNUstep software, for example [this comment is not
+legal advice -- please check the licenses yourself to make sure you
+are compliant]). (FIXME: Maybe someone should provide the appropriate
+ready-to-use notices that ought to be included ?)
 
 
-FINAL COMMENTS ON PACKAGING
----------------------------
+PACKAGING/WINDOWS TODOS
+-----------------------
 
-Gorm.app is 66 MB.  Makes you wonder if it could be reduced somehow!
-;-)
+The gdnc, gpbs processes are somehow a bit of a pain.  They are
+automatically started when you start your application, but they are
+not automatically stopped when you quit it.  This might have bad
+consequences, eg, if you are using your application from a USB flash
+disk, Windows doesn't let you unplug the USB disk while gdnc/gpbs are
+running, because they are running from the disk!
+
+Gorm.app is 18 MB.  Makes you wonder if it could be still reduced
+somehow! Maybe we don't need to include all the DLLs ? ;-)
 
 Also, it's not clear what happens if you have two or three such
 GNUstep apps downloaded from the web and you try to run them at the
 same time.  What about gdomap etc ?
-
-Thanks
