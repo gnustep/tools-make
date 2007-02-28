@@ -324,6 +324,7 @@ cp $(find /local/bin -name *.dll) /home/Nico/Gorm.app/
 3. Copy your GNUstep Library folder
 ===================================
 
+mkdir -p /home/Nicola/Gorm.app/GNUstep/
 cp -R /usr/local/lib/GNUstep/* /home/Nico/Gorm.app/GNUstep/
 
 4. Copy key GNUstep binary programs
