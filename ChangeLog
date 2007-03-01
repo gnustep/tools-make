@@ -1,3 +1,9 @@
+2007-02-29  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: Fixup -I (when in non-flattened mode) to use the
+	generic library combo subdirectory as well as the full machine/os
+	specific version.
+
 2007-02-28  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: On MinGW, install the config file in
