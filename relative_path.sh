@@ -167,4 +167,11 @@ else
   result="$b"
 fi
 
+# If there is no difference, there is no relative path to append,
+# so we output './' to tell NSPathUtilities.m in gnustep-base to
+# replace this with the path to the directory containing the library.
+if [ "$result" = "." ]; then
+  result="./"
+fi
+
 echo "$result"
