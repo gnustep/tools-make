@@ -900,7 +900,7 @@ DLL_LIBEXT	 = .dll
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+  $(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(CC)
