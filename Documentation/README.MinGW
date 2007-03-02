@@ -172,9 +172,9 @@ make
 make install
 
 The reason we recommend using the 'fhs' layout is that if do this, you
-don't need to do anything to set up your environment.  You can also
-use the standard 'gnustep' layout, in which case you need to source
-GNUstep.sh to run stuff.
+don't need to do anything to set up your environment.  You could use
+the standard 'gnustep' layout instead, in which case you need to
+source GNUstep.sh to run stuff.
 
 
 8. setup your GNUstep environment
@@ -189,10 +189,10 @@ export GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles
 9. Installing gnustep-objc
 ==========================
 
-Download gnustep-libobjc, (find it at
-http://www.gnustep.org/resources/downloads.php, or use subversion, svn
-co http://svn.gna.org/svn/gnustep/modules/dev-libs/libobjc) and
-compile it:
+Download gnustep-libobjc (you can find it at
+http://www.gnustep.org/resources/downloads.php, or use subversion:
+svn co http://svn.gna.org/svn/gnustep/modules/dev-libs/libobjc),
+and compile it:
 
 make
 make install
