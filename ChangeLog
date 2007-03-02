@@ -1,6 +1,21 @@
+2007-03-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* FilesystemLayouts/mingw: File removed.
+	* FilesystemLayouts/windows: File removed.
+	* FilesystemLayouts/README: Do not mention the removed layouts.
+	* configure.ac: Do not use 'windows' filesystem layout on mingw32;
+	the default filesystem layout is fine.
+	* configure: Regenerated.
+	* Documentation/README.MinGW: Updated.
+	* Instance/application.make (ALL_LDFLAGS): Add -mwindows when
+	building applications on MinGW, to get rid of the ugly terminal
+	window when you start the apps directly by double-clicking on the
+	.exe file in the Windows file manager.
+	* Documentation/filesystem.texi: Updated the section on Windows.
+	
 2007-02-29  Richard Frith-Macdonald <rfm@gnu.org>
 
-	* relative_path.sh: Fix for the case where the tweo arguments are
+	* relative_path.sh: Fix for the case where the two arguments are
 	identical paths.
 
 2007-02-29  Richard Frith-Macdonald <rfm@gnu.org>

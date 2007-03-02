@@ -51,6 +51,4 @@ similar directory structure) as you're installing everything straight
 into the standard system locations.  Recommended if you're building
 packages for a Unix system.
 
- * windows: a GNUstep filesystem layout that installs by default into
-C:/GNUstep.  Recommend if you're compiling on Windows.
 

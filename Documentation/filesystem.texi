@@ -548,11 +548,11 @@ told to set up the default path to and values in the configuration file.
 @node File Format, Windows (MINGW), Configuration, Configuration
 @subsection File Format
 
-By default, the configuration file is called GNUstep.conf and exists in
-/etc/GNUstep on a Unix-like system or C:\GNUstep on an ms-windows system.
-In either case this file is in a format suitable for being 'sourced' by
-the standard unix (Bourne) shell, consisting of lines of the form key=value,
-comments (everything on a line from the first hash (#) onwards), or blank lines.
+By default, the configuration file is called GNUstep.conf and exists
+in /etc/GNUstep on a Unix-like system.  This file is in a format
+suitable for being 'sourced' by the standard unix (Bourne) shell,
+consisting of lines of the form key=value, comments (everything on a
+line from the first hash (#) onwards), or blank lines.
 
 This is very convenient on unix-like systems, but needs care for windows users.
 If a value contains whitespace or backslash characters (or the hash which
@@ -568,12 +568,15 @@ On ms-windows, for software development, you are likely to want to have an
 extra configuration file.  This is because of the limitations of the
 make program (used to build and install software).
 
-Basically the issue is that the make package doesn't really like
-the colons and backslashes in windows paths (using them is error prone)
-and can't tolerate whitespace in file names ... so you need to set up
-a config file which uses unix-style paths as used by MSYS
-(ie of the form '/c/...' rather than 'C:\...') for
-building and installing software.
+Basically the issue is that the make package doesn't really like the
+colons and backslashes in windows paths (using them is error prone)
+and can't tolerate whitespace in file names.  So you want to do all
+the building in a unix-style environment using only unix-style paths.
+
+On MSYS/MinGW this is done naturally by using the standard unix-style
+/etc/GNUstep/GNUstep.conf config file, where the location is inside
+the MSYS unix-style emulation system.  This is what is normally done
+by gnustep-make, so there is nothing special you need to do here.
 
 On the other hand, the base library (and all applications since they are
 built using it) wants to work with native windows paths so that applications
@@ -581,20 +584,25 @@ behave naturally as far as the end users are concerned, and therefore needs a
 configuration file containing windows-style paths rather than unix-like
 ones.
 
-The simplest way to achieve this is to use different values for the
---with-config-file= option when configuring the make and base packages.
+So, you need a different config file to be used by gnustep-base at
+runtime.  And this is enabled by default -- in fact gnustep-base will
+use ./GNUstep.conf as config file on MinGW, where the location is
+relative to the location of the gnustep-base.dll.
 
-For example, configure the make package like this -
-@example
-./configure --with-config-file=/c/GNUstep/GNUstep.conf-dev
-@end example
-and the base library like this -
-@example
-./configure --with-config-file=C:\\GNUstep\\GNUstep.conf
-@end example
+In other words, gnustep-make will use C:/xxx/etc/GNUstep/GNUstep.conf
+(where 'xxx' is the MSYS installation path), while gnustep-base will
+use a GNUstep.conf file in the same directory as the gnustep-base.dll.
 
-Then you need to edit the two config files to make sure they contain
-values of the correct format.
+This ./GNUstep.conf file normally does not even exist; gnustep-base's
+./configure will hardcode into gnustep-base.dll relative paths to all
+resources (relative from the installation location of
+gnustep-base.dll).  If you modify the filesystem layout or relocate
+gnustep-base.dll, you should add a GNUstep.conf file with
+gnustep-base.dll that contains the relative locations of the
+directories (relative to the location of gnustep-base.dll).
+
+It is recommended that this ./GNUstep.conf always contains relative
+paths to make relocation easier.
 
 @node File Values, , Windows (MINGW), Configuration
 @subsection File Values

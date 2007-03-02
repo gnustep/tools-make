@@ -111,6 +111,16 @@ ifeq ($(BUILD_DLL), yes)
   ALL_LDFLAGS += -Wl,--export-all-symbols -Wl,--out-implib,$(GNUSTEP_BUILD_DIR)/$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE).exe$(LIBEXT)
 endif
 
+# If building on MinGW, also mark the application as a 'GUI'
+# application.  This prevents an ugly terminal window from being
+# automatically opened when you start your application directly by
+# double-clicking on the .exe icon in the Windows file manager.  TODO:
+# Move this into target.make, but somehow make sure it is only used
+# when linking applications.
+ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+  ALL_LDFLAGS += -mwindows
+endif
+
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
 	$(OBJ_FILES_TO_LINK) $(ALL_GUI_LIBS)$(END_ECHO)

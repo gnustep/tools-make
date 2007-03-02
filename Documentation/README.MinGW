@@ -7,15 +7,35 @@ PURPOSE
 -------
 
 This document is intended to provide a step by step instruction on how
-to get the GNUstep development environment in a usable state on a
-recent Windows operating system (XP, 2000, and probably NT).
+to use GNUstep on recent Windows operating systems (XP, 2000, and
+probably NT).
 
 It will get as far as explaining how to build a GNUstep application
-and create a standalone version that can be shipped standalone to end
-users.
+and create a standalone version that can be shipped standalone to
+Windows end users.
 
-The recommended way to get GNUstep working on Windows is via MinGW
-(this is what is described in this file).
+The recommended way to get GNUstep working on Windows is to use MinGW
+and MSYS to get a Unix-like environment where you can easily build
+your GNUstep software (this is what is described in this file).
+
+Software built in the MinGW/MSYS environment is native Windows
+software that you can then run without having to rely on the environment
+you used to build.
+
+So, this document is divided in two parts.
+
+In the first part ("STEP BY STEP INSTALLATION INSTRUCTIONS"), we will
+describe how to get MSYS/MinGW up and running, and how to build
+GNUstep software in this environment.
+
+In the second part ("HOW TO SHIP YOUR GNUSTEP APPLICATION TO WINDOWS
+USERS"), we'll show an example of how to package (and use) the .exes,
+.dlls and resources (that you can build using the environment
+described in the first part) as Windows standalone binaries.
+
+
+INTRODUCTION TO MINGW
+---------------------
 
 MinGW is a collection of header files and import libraries that allow
 one to use GCC and produce native Windows32 programs that do not rely
@@ -43,12 +63,13 @@ GNUstep installer.  Get it from
 http://www.gnustep.org/resources/sources.html#windows
 
 If you have already installed this, you can skip to the end and just
-start compiling applications!  Although you may want to read the rest of
-the instructions for other helpful information.
+start compiling and packaging applications!  Although you may want to
+read the rest of the instructions for other helpful information.
+
 
 
 A. STEP BY STEP INSTALLATION INSTRUCTIONS
---------------------------------------
+-----------------------------------------
 
 1. Install MinGW
 ================
@@ -103,7 +124,11 @@ network interface details for your machine.
 It's a good idea to remove the libobjc.a and libobjc.la and
 include/objc headers that come with gcc (gcc -v for location) so that
 they are not accidentally found instead of the libobjc DLL that you
-will compile below.
+will compile below.  This is what I did to remove them:
+
+rm -Rf /mingw/lib/gcc/mingw32/3.4.2/include/objc
+rm -Rf /mingw/lib/libobjc.a
+rm -Rf /mingw/lib/libobjc.la
 
 Now you can open a window containg a shell by choosing MSYS from the
 start menu.
@@ -142,18 +167,20 @@ svn co http://svn.gna.org/svn/gnustep/modules/core
 
 go in core/make and do 
 
-./configure --with-layout=mingw
+./configure --with-layout=fhs
 make
 make install
 
-(TODO: Once this has been tested more extensively, we should
-automatically select mingw layout on mingw)
+The reason we recommend using the 'fhs' layout is that if do this, you
+don't need to do anything to set up your environment.  You can also
+use the standard 'gnustep' layout, in which case you need to source
+GNUstep.sh to run stuff.
 
 
 8. setup your GNUstep environment
 =================================
 
-Nothing to do here since we're using the mingw native layout.
+Nothing to do here since we're using the fhs native layout.
 But if at some point something doesn't work for you, try using
 
 export GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles
@@ -178,7 +205,7 @@ Go in core/make and reconfigure/recompile again so that gnustep-objc
 is detected:
 
 make distclean
-./configure --with-layout=mingw
+./configure --with-layout=fhs
 make 
 make install
 
@@ -223,9 +250,11 @@ You need to get the source code for libxml2 and  build it yourself ...
 Now download the libxml2 source from http://www.xmlsoft.org I used
 libxml2-2.6.27.tar.gz
 
-Unpack the source, change into the directory and run the configure script
-Then do 'make'
-Then do 'make install'
+Unpack the source, change into the directory and do the usual routine --
+
+./configure
+make
+make install
 
 You should now have libxml2 installed on your system.
 
@@ -456,10 +485,23 @@ but generally, you want to make sure you remove anything that you
 don't strictly need.  So go in there and remove anything that you
 don't need.
 
-For example, I removed (at least):
+First thing, you should remove the MSYS libraries, which we never use --
+
+rm Gomoku.app/msys-1.0.dll
+rm Gomoku.app/msysltdl-3.dll
+rm Gomoku.app/libW11.dll
+rm Gomoku.app/libperl.dll
+rm Gomoku.app/librle3.dll
+
+Then, remove any additional library that your application doesn't use;
+for example, I removed --
 
 rm Gomoku.app/Renaissance.dll
 rm Gomoku.app/ProjectCenter.dll
+
+Finally, remove Apps and other stuff that you might have copied from
+the general GNUstep installation --
+
 rm -Rf Gomoku.app/GNUstep/Apps
 rm -Rf Gomoku.app/GNUstep/Frameworks/ProjectCenter.framework
 
@@ -505,9 +547,6 @@ not automatically stopped when you quit it.  This might have bad
 consequences, eg, if you are using your application from a USB flash
 disk, Windows doesn't let you unplug the USB disk while gdnc/gpbs are
 running, because they are running from the disk!
-
-Gorm.app is 18 MB.  Makes you wonder if it could be still reduced
-somehow! Maybe we don't need to include all the DLLs ? ;-)
 
 Also, it's not clear what happens if you have two or three such
 GNUstep apps downloaded from the web and you try to run them at the

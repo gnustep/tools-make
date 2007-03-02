@@ -225,16 +225,9 @@ if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
   GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
 else
   # This is the default layout that is used when installing
-  # GNUstep with no other indication.  We normally use 'gnustep',
-  # but we first test for the C: directory, which means we're on
-  # Windows; in that case we use 'windows'.
-  if test -d C: >&5 2>&5; then
-    AC_MSG_RESULT(none specified: we will use 'windows')
-    GNUSTEP_FILESYSTEM_LAYOUT_FILE=windows
-  else
-    AC_MSG_RESULT(none specified: we will use 'gnustep')
-    GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
-  fi
+  # GNUstep with no other indication.  We normally use 'gnustep'.
+  AC_MSG_RESULT(none specified: we will use 'gnustep')
+  GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
 fi
 
 if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&5; then
@@ -273,12 +266,12 @@ fi
 # If it wasn't passed, then we want to know because in that case we
 # want to use the specified default prefix for that filesystem.  For
 # example, the 'gnustep' filesystem will install by default in
-# /usr/GNUstep, while the 'fhs' filesystem will install by default
-# in /usr/local, and the 'windows' one in C:/GNUstep.  Please note
-# that AC_PREFIX_DEFAULT will actually be done at the very beginning
-# of ./configure, not here.  So we wouldn't have access to all the
-# filesystem layout information yet, which is why we only use the
-# macro to know if a --prefix=xxx was passed or not.
+# /usr/GNUstep, while the 'fhs' filesystem will install by default in
+# /usr/local.  Please note that AC_PREFIX_DEFAULT will actually be
+# done at the very beginning of ./configure, not here.  So we wouldn't
+# have access to all the filesystem layout information yet, which is
+# why we only use the macro to know if a --prefix=xxx was passed or
+# not.
 AC_PREFIX_DEFAULT(NONE)
 
 AC_MSG_CHECKING([for prefix])
