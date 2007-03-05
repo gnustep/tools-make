@@ -1,3 +1,49 @@
+2007-03-05  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Added GNUSTEP_WEB_APPS variable that can be used by GSWeb and SOPE
+	to decide where to install their web applications.
+	* common.make (GNUSTEP_WEB_APPS): New variable.
+	* Instance/gswapp.make: Install into GNUSTEP_WEB_APPS by default.
+	Define GNUSTEP_GSWAPPS in terms of GNUSTEP_WEB_APPS for backwards
+	compatibility.
+	
+	* configure.ac (GNUSTEP_SYSTEM_WEB_APPS, GNUSTEP_LOCAL_WEB_APPS,
+	GNUSTEP_NETWORK_WEB_APPS, GNUSTEP_USER_DIR_WEB_APPS): New
+	variables; read them from filesystem layout files, output them.
+	* configure: Regenerated.
+	
+	* FilesystemLayouts/gnustep (GNUSTEP_SYSTEM_WEB_APPS,
+	GNUSTEP_LOCAL_WEB_APPS, GNUSTEP_NETWORK_WEB_APPS,
+	GNUSTEP_USER_DIR_WEB_APPS): New variables.
+	* FilesystemLayouts/gnustep-with-network: Same change.
+	* FilesystemLayouts/fhs: Same change.
+	* FilesystemLayouts/next: Same change.	
+	* filesystem.make.in: Same change.
+	* filesystem.sh.in: Same change.
+	* filesystem.csh.in: Same change.
+	* GNUstep.conf.in: Same change.
+	* GNUstep-reset.sh: Same change.
+	* GNUstep.sh.in: Same change.
+
+2007-03-05  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* FilesystemLayouts/fhs (GNUSTEP_SYSTEM_APPS, GNUSTEP_LOCAL_APPS,
+	GNUSTEP_NETWORK_APPS, GNUSTEP_USER_DIR_APPS): Use 'Applications',
+	not 'Apps', for the filesystem location.
+
+	* FilesystemLayouts/gnustep-with-network: Moved Network variables
+	before Local ones.
+	* filesystem.make.in: Same change.
+	* filesystem.sh.in: Same change.
+	* filesystem.csh.in: Same change.
+	* GNUstep-reset.sh: Same change.
+	
+	* filesystem.make.in (GNUSTEP_USER_ADMIN_APPS,
+	GNUSTEP_USER_ADMIN_TOOLS): Set these variables.
+
+	* filesystem.make.in: Fixed typo in definition of
+	GNUSTEP_SYSTEM_ADMIN_APPS.
+	
 2007-03-05  Adam Fedor  <fedor@gnu.org>
 
 	* configure.ac, config.make.in: Add check for latex2html

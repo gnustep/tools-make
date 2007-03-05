@@ -47,27 +47,24 @@ endif
 # Determine the application directory extension
 GSWAPP_EXTENSION = gswa
 
-# FIXME: This is how it is ...
-GNUSTEP_GSWAPPS = $(GNUSTEP_INSTALLATION_DIR)/GSWApps
-
-# ... and this is how it should be.  It looks like changing this might
-# require changing gsweb though ?  So I'm not doing it.
-# GNUSTEP_GSWAPPS = $(GNUSTEP_LIBRARY)/GSWApps
-
 .PHONY: internal-gswapp-all_ \
         internal-gswapp-install_ \
         internal-gswapp-uninstall_ \
         internal-gswapp-copy_into_dir
 
+# Defined (5 March 2007) for backwards compatibility in case your
+# GNUmakefiles used it -- will be removed any time from 5 March 2011.
+GNUSTEP_GSWAPPS = $(GNUSTEP_WEB_APPS)
+
 #
-# Determine where to install.  By default, install into GNUSTEP_GSWAPPS.
+# Determine where to install.  By default, install into GNUSTEP_WEB_APPS.
 #
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
   GSWAPP_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
 endif
 
 ifeq ($(GSWAPP_INSTALL_DIR),)
-  GSWAPP_INSTALL_DIR = $(GNUSTEP_GSWAPPS)
+  GSWAPP_INSTALL_DIR = $(GNUSTEP_WEB_APPS)
 endif
 
 # Libraries that go before the WO libraries
