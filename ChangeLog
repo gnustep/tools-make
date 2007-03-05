@@ -1,5 +1,12 @@
 2007-03-05  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac: Print the complete filesystem layout
+	configuration.  This helps in spotting bugs and incorrect
+	configurations.
+	* configure: Regenerated.
+	
+2007-03-05  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Added GNUSTEP_WEB_APPS variable that can be used by GSWeb and SOPE
 	to decide where to install their web applications.
 	* common.make (GNUSTEP_WEB_APPS): New variable.

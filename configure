@@ -273,7 +273,7 @@ PACKAGE_BUGREPORT=
 
 ac_unique_file="application.make"
 ac_default_prefix=NONE
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_CONFIG_FILE GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DIR GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_SYSTEM_APPS GNUSTEP_SYSTEM_ADMIN_APPS GNUSTEP_SYSTEM_WEB_APPS GNUSTEP_SYSTEM_TOOLS GNUSTEP_SYSTEM_ADMIN_TOOLS GNUSTEP_SYSTEM_LIBRARY GNUSTEP_SYSTEM_HEADERS GNUSTEP_SYSTEM_LIBRARIES GNUSTEP_SYSTEM_DOC GNUSTEP_SYSTEM_DOC_MAN GNUSTEP_SYSTEM_DOC_INFO GNUSTEP_NETWORK_APPS GNUSTEP_NETWORK_ADMIN_APPS GNUSTEP_NETWORK_WEB_APPS GNUSTEP_NETWORK_TOOLS GNUSTEP_NETWORK_ADMIN_TOOLS GNUSTEP_NETWORK_LIBRARY GNUSTEP_NETWORK_HEADERS GNUSTEP_NETWORK_LIBRARIES GNUSTEP_NETWORK_DOC GNUSTEP_NETWORK_DOC_MAN GNUSTEP_NETWORK_DOC_INFO GNUSTEP_LOCAL_APPS GNUSTEP_LOCAL_ADMIN_APPS GNUSTEP_LOCAL_WEB_APPS GNUSTEP_LOCAL_TOOLS GNUSTEP_LOCAL_ADMIN_TOOLS GNUSTEP_LOCAL_LIBRARY GNUSTEP_LOCAL_HEADERS GNUSTEP_LOCAL_LIBRARIES GNUSTEP_LOCAL_DOC GNUSTEP_LOCAL_DOC_MAN GNUSTEP_LOCAL_DOC_INFO GNUSTEP_USER_DIR_APPS GNUSTEP_USER_DIR_ADMIN_APPS GNUSTEP_USER_DIR_WEB_APPS GNUSTEP_USER_DIR_TOOLS GNUSTEP_USER_DIR_ADMIN_TOOLS GNUSTEP_USER_DIR_LIBRARY GNUSTEP_USER_DIR_HEADERS GNUSTEP_USER_DIR_LIBRARIES GNUSTEP_USER_DIR_DOC GNUSTEP_USER_DIR_DOC_MAN GNUSTEP_USER_DIR_DOC_INFO GNUSTEP_SYSTEM_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS GNUMAKE MAKE_WITH_INFO_FUNCTION GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LATEX2HTML LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_CONFIG_FILE GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DIR GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_SYSTEM_APPS GNUSTEP_SYSTEM_ADMIN_APPS GNUSTEP_SYSTEM_WEB_APPS GNUSTEP_SYSTEM_TOOLS GNUSTEP_SYSTEM_ADMIN_TOOLS GNUSTEP_SYSTEM_LIBRARY GNUSTEP_SYSTEM_HEADERS GNUSTEP_SYSTEM_LIBRARIES GNUSTEP_SYSTEM_DOC GNUSTEP_SYSTEM_DOC_INFO GNUSTEP_SYSTEM_DOC_MAN GNUSTEP_NETWORK_APPS GNUSTEP_NETWORK_ADMIN_APPS GNUSTEP_NETWORK_WEB_APPS GNUSTEP_NETWORK_TOOLS GNUSTEP_NETWORK_ADMIN_TOOLS GNUSTEP_NETWORK_LIBRARY GNUSTEP_NETWORK_HEADERS GNUSTEP_NETWORK_LIBRARIES GNUSTEP_NETWORK_DOC GNUSTEP_NETWORK_DOC_INFO GNUSTEP_NETWORK_DOC_MAN GNUSTEP_LOCAL_APPS GNUSTEP_LOCAL_ADMIN_APPS GNUSTEP_LOCAL_WEB_APPS GNUSTEP_LOCAL_TOOLS GNUSTEP_LOCAL_ADMIN_TOOLS GNUSTEP_LOCAL_LIBRARY GNUSTEP_LOCAL_HEADERS GNUSTEP_LOCAL_LIBRARIES GNUSTEP_LOCAL_DOC GNUSTEP_LOCAL_DOC_INFO GNUSTEP_LOCAL_DOC_MAN GNUSTEP_USER_DIR_APPS GNUSTEP_USER_DIR_ADMIN_APPS GNUSTEP_USER_DIR_WEB_APPS GNUSTEP_USER_DIR_TOOLS GNUSTEP_USER_DIR_ADMIN_TOOLS GNUSTEP_USER_DIR_LIBRARY GNUSTEP_USER_DIR_HEADERS GNUSTEP_USER_DIR_LIBRARIES GNUSTEP_USER_DIR_DOC GNUSTEP_USER_DIR_DOC_INFO GNUSTEP_USER_DIR_DOC_MAN GNUSTEP_SYSTEM_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS GNUMAKE MAKE_WITH_INFO_FUNCTION GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LATEX2HTML LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -3751,53 +3751,234 @@ fi
 # Output the full filesystem layout
 #--------------------------------------------------------------------
 
+# Note: We print out the entire filesystem layout so that people can
+# see with their eyes the result of the configuration options that
+# they used.  This is good to immediately spot mistakes.
+{ echo "$as_me:$LINENO: Now printing the filesystem layout configuration." >&5
+echo "$as_me: Now printing the filesystem layout configuration." >&6;}
+
+echo "$as_me:$LINENO: checking for System Applications directory" >&5
+echo $ECHO_N "checking for System Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_APPS" >&6
+
+echo "$as_me:$LINENO: checking for System Admin Applications directory" >&5
+echo $ECHO_N "checking for System Admin Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_ADMIN_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_ADMIN_APPS" >&6
+
+echo "$as_me:$LINENO: checking for System Web Applications directory" >&5
+echo $ECHO_N "checking for System Web Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_WEB_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_WEB_APPS" >&6
+
+echo "$as_me:$LINENO: checking for System Tools directory" >&5
+echo $ECHO_N "checking for System Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_TOOLS" >&6
+
+echo "$as_me:$LINENO: checking for System Admin Tools directory" >&5
+echo $ECHO_N "checking for System Admin Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_ADMIN_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_ADMIN_TOOLS" >&6
+
+echo "$as_me:$LINENO: checking for System Library directory" >&5
+echo $ECHO_N "checking for System Library directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_LIBRARY" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_LIBRARY" >&6
+
+echo "$as_me:$LINENO: checking for System Headers directory" >&5
+echo $ECHO_N "checking for System Headers directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_HEADERS" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_HEADERS" >&6
+
+echo "$as_me:$LINENO: checking for System Libraries directory" >&5
+echo $ECHO_N "checking for System Libraries directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_LIBRARIES" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_LIBRARIES" >&6
+
+echo "$as_me:$LINENO: checking for System Documentation directory" >&5
+echo $ECHO_N "checking for System Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_DOC" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_DOC" >&6
+
+echo "$as_me:$LINENO: checking for System Info Documentation directory" >&5
+echo $ECHO_N "checking for System Info Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_DOC_INFO" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_DOC_INFO" >&6
+
+echo "$as_me:$LINENO: checking for System Man Documentation directory" >&5
+echo $ECHO_N "checking for System Man Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_SYSTEM_DOC_MAN" >&5
+echo "${ECHO_T}$GNUSTEP_SYSTEM_DOC_MAN" >&6
 
 
+echo "$as_me:$LINENO: checking for Network Applications directory" >&5
+echo $ECHO_N "checking for Network Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_APPS" >&6
+
+echo "$as_me:$LINENO: checking for Network Admin Applications directory" >&5
+echo $ECHO_N "checking for Network Admin Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_ADMIN_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_ADMIN_APPS" >&6
+
+echo "$as_me:$LINENO: checking for Network Web Applications directory" >&5
+echo $ECHO_N "checking for Network Web Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_WEB_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_WEB_APPS" >&6
+
+echo "$as_me:$LINENO: checking for Network Tools directory" >&5
+echo $ECHO_N "checking for Network Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_TOOLS" >&6
+
+echo "$as_me:$LINENO: checking for Network Admin Tools directory" >&5
+echo $ECHO_N "checking for Network Admin Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_ADMIN_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_ADMIN_TOOLS" >&6
+
+echo "$as_me:$LINENO: checking for Network Library directory" >&5
+echo $ECHO_N "checking for Network Library directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_LIBRARY" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_LIBRARY" >&6
+
+echo "$as_me:$LINENO: checking for Network Headers directory" >&5
+echo $ECHO_N "checking for Network Headers directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_HEADERS" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_HEADERS" >&6
+
+echo "$as_me:$LINENO: checking for Network Libraries directory" >&5
+echo $ECHO_N "checking for Network Libraries directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_LIBRARIES" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_LIBRARIES" >&6
+
+echo "$as_me:$LINENO: checking for Network Documentation directory" >&5
+echo $ECHO_N "checking for Network Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_DOC" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_DOC" >&6
+
+echo "$as_me:$LINENO: checking for Network Info Documentation directory" >&5
+echo $ECHO_N "checking for Network Info Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_DOC_INFO" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_DOC_INFO" >&6
+
+echo "$as_me:$LINENO: checking for Network Man Documentation directory" >&5
+echo $ECHO_N "checking for Network Man Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_NETWORK_DOC_MAN" >&5
+echo "${ECHO_T}$GNUSTEP_NETWORK_DOC_MAN" >&6
 
 
+echo "$as_me:$LINENO: checking for Local Applications directory" >&5
+echo $ECHO_N "checking for Local Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_APPS" >&6
+
+echo "$as_me:$LINENO: checking for Local Admin Applications directory" >&5
+echo $ECHO_N "checking for Local Admin Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_ADMIN_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_ADMIN_APPS" >&6
+
+echo "$as_me:$LINENO: checking for Local Web Applications directory" >&5
+echo $ECHO_N "checking for Local Web Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_WEB_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_WEB_APPS" >&6
+
+echo "$as_me:$LINENO: checking for Local Tools directory" >&5
+echo $ECHO_N "checking for Local Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_TOOLS" >&6
+
+echo "$as_me:$LINENO: checking for Local Admin Tools directory" >&5
+echo $ECHO_N "checking for Local Admin Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_ADMIN_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_ADMIN_TOOLS" >&6
+
+echo "$as_me:$LINENO: checking for Local Library directory" >&5
+echo $ECHO_N "checking for Local Library directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_LIBRARY" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_LIBRARY" >&6
+
+echo "$as_me:$LINENO: checking for Local Headers directory" >&5
+echo $ECHO_N "checking for Local Headers directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_HEADERS" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_HEADERS" >&6
+
+echo "$as_me:$LINENO: checking for Local Libraries directory" >&5
+echo $ECHO_N "checking for Local Libraries directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_LIBRARIES" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_LIBRARIES" >&6
+
+echo "$as_me:$LINENO: checking for Local Documentation directory" >&5
+echo $ECHO_N "checking for Local Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_DOC" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_DOC" >&6
+
+echo "$as_me:$LINENO: checking for Local Info Documentation directory" >&5
+echo $ECHO_N "checking for Local Info Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_DOC_INFO" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_DOC_INFO" >&6
+
+echo "$as_me:$LINENO: checking for Local Man Documentation directory" >&5
+echo $ECHO_N "checking for Local Man Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_LOCAL_DOC_MAN" >&5
+echo "${ECHO_T}$GNUSTEP_LOCAL_DOC_MAN" >&6
 
 
+echo "$as_me:$LINENO: checking for User Applications directory" >&5
+echo $ECHO_N "checking for User Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_APPS" >&6
 
+echo "$as_me:$LINENO: checking for User Admin Applications directory" >&5
+echo $ECHO_N "checking for User Admin Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_ADMIN_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_ADMIN_APPS" >&6
 
+echo "$as_me:$LINENO: checking for User Web Applications directory" >&5
+echo $ECHO_N "checking for User Web Applications directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_WEB_APPS" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_WEB_APPS" >&6
 
+echo "$as_me:$LINENO: checking for User Tools directory" >&5
+echo $ECHO_N "checking for User Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_TOOLS" >&6
 
+echo "$as_me:$LINENO: checking for User Admin Tools directory" >&5
+echo $ECHO_N "checking for User Admin Tools directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_ADMIN_TOOLS" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_ADMIN_TOOLS" >&6
 
+echo "$as_me:$LINENO: checking for User Library directory" >&5
+echo $ECHO_N "checking for User Library directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_LIBRARY" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_LIBRARY" >&6
 
+echo "$as_me:$LINENO: checking for User Headers directory" >&5
+echo $ECHO_N "checking for User Headers directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_HEADERS" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_HEADERS" >&6
 
+echo "$as_me:$LINENO: checking for User Libraries directory" >&5
+echo $ECHO_N "checking for User Libraries directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_LIBRARIES" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_LIBRARIES" >&6
 
+echo "$as_me:$LINENO: checking for User Documentation directory" >&5
+echo $ECHO_N "checking for User Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_DOC" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_DOC" >&6
 
+echo "$as_me:$LINENO: checking for User Info Documentation directory" >&5
+echo $ECHO_N "checking for User Info Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_DOC_INFO" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_DOC_INFO" >&6
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+echo "$as_me:$LINENO: checking for User Man Documentation directory" >&5
+echo $ECHO_N "checking for User Man Documentation directory... $ECHO_C" >&6
+echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR_DOC_MAN" >&5
+echo "${ECHO_T}$GNUSTEP_USER_DIR_DOC_MAN" >&6
 
 
 #--------------------------------------------------------------------
@@ -5487,8 +5668,8 @@ s,@GNUSTEP_SYSTEM_LIBRARY@,$GNUSTEP_SYSTEM_LIBRARY,;t t
 s,@GNUSTEP_SYSTEM_HEADERS@,$GNUSTEP_SYSTEM_HEADERS,;t t
 s,@GNUSTEP_SYSTEM_LIBRARIES@,$GNUSTEP_SYSTEM_LIBRARIES,;t t
 s,@GNUSTEP_SYSTEM_DOC@,$GNUSTEP_SYSTEM_DOC,;t t
-s,@GNUSTEP_SYSTEM_DOC_MAN@,$GNUSTEP_SYSTEM_DOC_MAN,;t t
 s,@GNUSTEP_SYSTEM_DOC_INFO@,$GNUSTEP_SYSTEM_DOC_INFO,;t t
+s,@GNUSTEP_SYSTEM_DOC_MAN@,$GNUSTEP_SYSTEM_DOC_MAN,;t t
 s,@GNUSTEP_NETWORK_APPS@,$GNUSTEP_NETWORK_APPS,;t t
 s,@GNUSTEP_NETWORK_ADMIN_APPS@,$GNUSTEP_NETWORK_ADMIN_APPS,;t t
 s,@GNUSTEP_NETWORK_WEB_APPS@,$GNUSTEP_NETWORK_WEB_APPS,;t t
@@ -5498,8 +5679,8 @@ s,@GNUSTEP_NETWORK_LIBRARY@,$GNUSTEP_NETWORK_LIBRARY,;t t
 s,@GNUSTEP_NETWORK_HEADERS@,$GNUSTEP_NETWORK_HEADERS,;t t
 s,@GNUSTEP_NETWORK_LIBRARIES@,$GNUSTEP_NETWORK_LIBRARIES,;t t
 s,@GNUSTEP_NETWORK_DOC@,$GNUSTEP_NETWORK_DOC,;t t
-s,@GNUSTEP_NETWORK_DOC_MAN@,$GNUSTEP_NETWORK_DOC_MAN,;t t
 s,@GNUSTEP_NETWORK_DOC_INFO@,$GNUSTEP_NETWORK_DOC_INFO,;t t
+s,@GNUSTEP_NETWORK_DOC_MAN@,$GNUSTEP_NETWORK_DOC_MAN,;t t
 s,@GNUSTEP_LOCAL_APPS@,$GNUSTEP_LOCAL_APPS,;t t
 s,@GNUSTEP_LOCAL_ADMIN_APPS@,$GNUSTEP_LOCAL_ADMIN_APPS,;t t
 s,@GNUSTEP_LOCAL_WEB_APPS@,$GNUSTEP_LOCAL_WEB_APPS,;t t
@@ -5509,8 +5690,8 @@ s,@GNUSTEP_LOCAL_LIBRARY@,$GNUSTEP_LOCAL_LIBRARY,;t t
 s,@GNUSTEP_LOCAL_HEADERS@,$GNUSTEP_LOCAL_HEADERS,;t t
 s,@GNUSTEP_LOCAL_LIBRARIES@,$GNUSTEP_LOCAL_LIBRARIES,;t t
 s,@GNUSTEP_LOCAL_DOC@,$GNUSTEP_LOCAL_DOC,;t t
-s,@GNUSTEP_LOCAL_DOC_MAN@,$GNUSTEP_LOCAL_DOC_MAN,;t t
 s,@GNUSTEP_LOCAL_DOC_INFO@,$GNUSTEP_LOCAL_DOC_INFO,;t t
+s,@GNUSTEP_LOCAL_DOC_MAN@,$GNUSTEP_LOCAL_DOC_MAN,;t t
 s,@GNUSTEP_USER_DIR_APPS@,$GNUSTEP_USER_DIR_APPS,;t t
 s,@GNUSTEP_USER_DIR_ADMIN_APPS@,$GNUSTEP_USER_DIR_ADMIN_APPS,;t t
 s,@GNUSTEP_USER_DIR_WEB_APPS@,$GNUSTEP_USER_DIR_WEB_APPS,;t t
@@ -5520,8 +5701,8 @@ s,@GNUSTEP_USER_DIR_LIBRARY@,$GNUSTEP_USER_DIR_LIBRARY,;t t
 s,@GNUSTEP_USER_DIR_HEADERS@,$GNUSTEP_USER_DIR_HEADERS,;t t
 s,@GNUSTEP_USER_DIR_LIBRARIES@,$GNUSTEP_USER_DIR_LIBRARIES,;t t
 s,@GNUSTEP_USER_DIR_DOC@,$GNUSTEP_USER_DIR_DOC,;t t
-s,@GNUSTEP_USER_DIR_DOC_MAN@,$GNUSTEP_USER_DIR_DOC_MAN,;t t
 s,@GNUSTEP_USER_DIR_DOC_INFO@,$GNUSTEP_USER_DIR_DOC_INFO,;t t
+s,@GNUSTEP_USER_DIR_DOC_MAN@,$GNUSTEP_USER_DIR_DOC_MAN,;t t
 s,@GNUSTEP_SYSTEM_ROOT@,$GNUSTEP_SYSTEM_ROOT,;t t
 s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
