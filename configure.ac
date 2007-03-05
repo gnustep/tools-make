@@ -1213,6 +1213,11 @@ AC_SUBST(clean_target_vendor)
 AC_SUBST(target)
 
 #--------------------------------------------------------------------
+# For documentation
+#--------------------------------------------------------------------
+AC_CHECK_PROGS(LATEX2HTML, latex2html)
+
+#--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
 AC_CONFIG_FILES([config-noarch.make config.make openapp opentool 

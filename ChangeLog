@@ -1,3 +1,8 @@
+2007-03-05  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac, config.make.in: Add check for latex2html
+	* Instance/documentation/latex.html: Use it.
+
 2007-03-02  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* FilesystemLayouts/mingw: File removed.

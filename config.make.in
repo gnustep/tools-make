@@ -116,6 +116,8 @@ INSTALL_DATA	= @INSTALL_DATA@
 TAR		= @TAR@
 MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
 
+LATEX2HTML      = @LATEX2HTML@
+
 # Darwin specific flags
 CC_CPPPRECOMP  = @cc_cppprecomp@
 CC_BUNDLE      = @cc_bundle@

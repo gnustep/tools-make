@@ -64,8 +64,6 @@ internal-doc-clean::
 #
 # Targets built only if we can find `latex2html'
 #
-# NB: you may set LATEX2HTML on the command line if the following doesn't work
-LATEX2HTML = $(shell which latex2html | awk '{print $$1}' |  sed -e 's/no//')
 
 ifneq ($(LATEX2HTML),)
   HAS_LATEX2HTML = yes
