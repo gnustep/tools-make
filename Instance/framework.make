@@ -210,20 +210,20 @@ ifeq ($(FOUNDATION_LIB),gnu)
   DUMMY_FRAMEWORK_CLASS_LIST = $(DERIVED_SOURCES_DIR)/$(GNUSTEP_INSTANCE)-class-list
 endif
 
-FRAMEWORK_HEADER_FILES := $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
+FRAMEWORK_HEADER_FILES = $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
 
 # FIXME - do we really those variables too ?
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
-  FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)/Versions/Current
+  FRAMEWORK_CURRENT_DIR_NAME = $(FRAMEWORK_DIR_NAME)/Versions/Current
 else
-  FRAMEWORK_CURRENT_DIR_NAME := $(FRAMEWORK_DIR_NAME)
+  FRAMEWORK_CURRENT_DIR_NAME = $(FRAMEWORK_DIR_NAME)
 endif
 
-FRAMEWORK_CURRENT_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_DIR_NAME)
-FRAMEWORK_LIBRARY_DIR_NAME := $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
-FRAMEWORK_LIBRARY_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
-FRAMEWORK_CURRENT_LIBRARY_DIR_NAME := $(FRAMEWORK_CURRENT_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
-FRAMEWORK_CURRENT_LIBRARY_DIR := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)
+FRAMEWORK_CURRENT_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_DIR_NAME)
+FRAMEWORK_LIBRARY_DIR_NAME = $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+FRAMEWORK_LIBRARY_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
+FRAMEWORK_CURRENT_LIBRARY_DIR_NAME = $(FRAMEWORK_CURRENT_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
+FRAMEWORK_CURRENT_LIBRARY_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)
 
 ifneq ($(BUILD_DLL), yes)
 FRAMEWORK_LIBRARY_FILE = lib$(GNUSTEP_INSTANCE)$(SHARED_LIBEXT)
@@ -273,8 +273,8 @@ LIB_LINK_DLL_FILE    = $(GNUSTEP_INSTANCE)$(DLL_LIBEXT)
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # BUILD_DLL
 
-FRAMEWORK_FILE_NAME := $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)
-FRAMEWORK_FILE := $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_FILE_NAME)
+FRAMEWORK_FILE_NAME = $(FRAMEWORK_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)
+FRAMEWORK_FILE = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_FILE_NAME)
 
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
   FRAMEWORK_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
@@ -438,16 +438,22 @@ $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(ECHO_COMPILING)$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@$(END_ECHO)
 endif
 
+ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
+build-framework: $(FRAMEWORK_FILE) \
+                 shared-instance-bundle-all \
+                 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
+                 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
+else
+build-framework: $(FRAMEWORK_FILE) \
+                 shared-instance-bundle-all \
+                 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist
+endif
+
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 # When building native frameworks on Apple, we need to create a
 # top-level symlink xxx.framework/xxx ---> the framework shared
 # library. On Darwin (non-Apple) we do this as well since we can partially
 # emulate frameworks (see the ld_lib_path.sh comments on this).
-
-build-framework: $(FRAMEWORK_FILE) \
-                 shared-instance-bundle-all \
-                 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
-                 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
 
 # Please note that the following keeps the top-level symlink pointing
 # to the framework in Current.  This is always correct, even if what
@@ -455,7 +461,7 @@ build-framework: $(FRAMEWORK_FILE) \
 # what we are compiling is not made the Current framework version, I
 # think it's not our business to touch the Current stuff, so let's
 # ignore it.  It's faster to ignore it anyway. ;-)
-$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE):
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE):
 ifeq ($(MAKE_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework; \
 	$(RM_LN_S) $(GNUSTEP_INSTANCE); \
@@ -464,23 +470,30 @@ endif
 
 else
 
-build-framework: $(FRAMEWORK_FILE) \
-                 shared-instance-bundle-all \
-                 $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist
-
-endif
-
 # We create a top-level symlink (/copy)
 #
-# xxx.framework/xxx --> <the framework object file>
+# xxx.framework/{TARGET_LDIR}/xxx --> <the Current framework {TARGET_LDIR}/object file>
 #
-# Normally, the framework object file that we link to is LIB_LINK_FILE
-# (eg, libRenaissance.so); on Windows instead LIB_LINK_FILE is only
-# the wrapper library (eg, libRenaissance.dll.a) and we want the
-# top-level symlink to point to the real .dll: LIB_LINK_DLL_FILE
-# (which is something like Renaissance.dll).  This is what is loaded
-# at runtime if you load the framework as a bundle.
+# And also
 #
+# xxx.framework/{TARGET_LDIR}/libxxx.so --> <the Current framework {TARGET_LDIR}/libxxx.so file>
+#
+# On Windows, we don't do any of this since there are no versions anyway.
+#
+# The reason for doing this is that you can link against the uninstalled framework
+# by just using -Lpath_to_the_framework/xxx.framework/$TARGET_LDIR
+#
+ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE):
+ifeq ($(MAKE_CURRENT_VERSION),yes)
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR); \
+	$(RM_LN_S) $(GNUSTEP_INSTANCE) $(FRAMEWORK_LIBRARY_FILES); \
+	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE); \
+	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE)$(END_ECHO)
+endif
+endif
+endif
+
 ifneq ($(BUILD_DLL), yes)
   LIB_LINK_FRAMEWORK_FILE = $(LIB_LINK_FILE)
 else

@@ -1,3 +1,15 @@
+2007-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/framework.make: When version support is enabled, build
+	symlinks from top-level xxx.framework/TARGET_LDIR/xxx and
+	xxx.framework/TARGET_LDIR/libxxx.so to the Current object files so
+	that uninstalled frameworks can be linked by using
+	-Lpath_to_framework/xxx.framework/$TARGET_LDIR.
+	* Instance/framework.make: Use standard '=' assignment for
+	variables.
+	* Instance/framework.make: On Apple, if non-flattened, put the
+	top-level symlinks into TARGET_LDIR.
+	
 2007-03-05  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Print the complete filesystem layout
