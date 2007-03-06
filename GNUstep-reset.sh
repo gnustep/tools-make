@@ -98,6 +98,10 @@ reset_path PATH /Tools
 # want to pollute the environment with it.
 unset -f reset_path
 
+unset GNUSTEP_SYSTEM_USERS_DIR
+unset GNUSTEP_NETWORK_USERS_DIR
+unset GNUSTEP_LOCAL_USERS_DIR
+
 unset GNUSTEP_SYSTEM_APPS 
 unset GNUSTEP_SYSTEM_ADMIN_APPS 
 unset GNUSTEP_SYSTEM_WEB_APPS 

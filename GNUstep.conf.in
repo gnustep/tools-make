@@ -52,6 +52,13 @@ GNUSTEP_USER_DEFAULTS_DIR=@GNUSTEP_USER_DEFAULTS_DIR@
 GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
 
 
+# This is where the user home directories are.  Only used to provide
+# NSUserDirectory in gnustep-base.  Never used anywhere else.
+GNUSTEP_SYSTEM_USERS_DIR=@GNUSTEP_SYSTEM_USERS_DIR@
+GNUSTEP_NETWORK_USERS_DIR=@GNUSTEP_NETWORK_USERS_DIR@
+GNUSTEP_LOCAL_USERS_DIR=@GNUSTEP_LOCAL_USERS_DIR@
+
+
 # This is where System GUI Applications get installed.
 # Traditionally it is /usr/GNUstep/System/Applications.
 GNUSTEP_SYSTEM_APPS=@GNUSTEP_SYSTEM_APPS@

@@ -1,5 +1,25 @@
 2007-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* FilesystemLayouts/gnustep (GNUSTEP_SYSTEM_USERS_DIR,
+	GNUSTEP_NETWORK_USERS_DIR, GNUSTEP_LOCAL_USER_DIRS): New
+	variables.
+	* FilesystemLayouts/gnustep-with-network: Same changes.
+	* FilesystemLayouts/fhs: Same changes.
+	* FilesystemLayouts/fhs-system: Same changes.
+	* FilesystemLayouts/next: Same changes.
+	* GNUstep.conf.in: Same changes.
+	* filesystem.make.in: Same changes.	
+	* filesystem.sh.in: Same changes.
+	* filesystem.csh.in: Same changes.
+	* GNUstep-reset.sh: Same changes.
+	* configure.ac: Same changes.
+	* configure: Regenerated.
+
+	* FilesystemLayouts/gnustep: Moved network domain before local
+	domain.
+	
+2007-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/framework.make: When version support is enabled, build
 	symlinks from top-level xxx.framework/TARGET_LDIR/xxx and
 	xxx.framework/TARGET_LDIR/libxxx.so to the Current object files so

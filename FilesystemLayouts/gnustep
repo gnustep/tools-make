@@ -29,6 +29,13 @@
 # by using ./configure --prefix=xxx when configuring.
 GNUSTEP_DEFAULT_PREFIX=/usr/GNUstep
 
+# These are only used by gnustep-base to implement the NSUserDirectory
+# API.  We never install anything in them.  They will be used as they
+# are without $prefix.
+GNUSTEP_SYSTEM_USERS_DIR=/home
+GNUSTEP_NETWORK_USERS_DIR=/home
+GNUSTEP_LOCAL_USERS_DIR=/home
+
 # NB: $prefix will be added to all the MAKEFILES/SYSTEM/NETWORK/LOCAL
 # paths.
 GNUSTEP_MAKEFILES=/System/Library/Makefiles
@@ -45,18 +52,6 @@ GNUSTEP_SYSTEM_DOC=/System/Library/Documentation
 GNUSTEP_SYSTEM_DOC_MAN=/System/Library/Documentation/man
 GNUSTEP_SYSTEM_DOC_INFO=/System/Library/Documentation/info
 
-GNUSTEP_LOCAL_APPS=/Local/Applications
-GNUSTEP_LOCAL_ADMIN_APPS=/Local/Applications/Admin
-GNUSTEP_LOCAL_WEB_APPS=/Local/Library/WebApplications
-GNUSTEP_LOCAL_TOOLS=/Local/Tools
-GNUSTEP_LOCAL_ADMIN_TOOLS=/Local/Tools/Admin
-GNUSTEP_LOCAL_LIBRARY=/Local/Library
-GNUSTEP_LOCAL_HEADERS=/Local/Library/Headers
-GNUSTEP_LOCAL_LIBRARIES=/Local/Library/Libraries
-GNUSTEP_LOCAL_DOC=/Local/Library/Documentation
-GNUSTEP_LOCAL_DOC_MAN=/Local/Library/Documentation/man
-GNUSTEP_LOCAL_DOC_INFO=/Local/Library/Documentation/info
-
 GNUSTEP_NETWORK_APPS=/Local/Applications
 GNUSTEP_NETWORK_ADMIN_APPS=/Local/Applications/Admin
 GNUSTEP_NETWORK_WEB_APPS=/Local/Library/WebApplications
@@ -68,6 +63,18 @@ GNUSTEP_NETWORK_LIBRARIES=/Local/Library/Libraries
 GNUSTEP_NETWORK_DOC=/Local/Library/Documentation
 GNUSTEP_NETWORK_DOC_MAN=/Local/Library/Documentation/man
 GNUSTEP_NETWORK_DOC_INFO=/Local/Library/Documentation/info
+
+GNUSTEP_LOCAL_APPS=/Local/Applications
+GNUSTEP_LOCAL_ADMIN_APPS=/Local/Applications/Admin
+GNUSTEP_LOCAL_WEB_APPS=/Local/Library/WebApplications
+GNUSTEP_LOCAL_TOOLS=/Local/Tools
+GNUSTEP_LOCAL_ADMIN_TOOLS=/Local/Tools/Admin
+GNUSTEP_LOCAL_LIBRARY=/Local/Library
+GNUSTEP_LOCAL_HEADERS=/Local/Library/Headers
+GNUSTEP_LOCAL_LIBRARIES=/Local/Library/Libraries
+GNUSTEP_LOCAL_DOC=/Local/Library/Documentation
+GNUSTEP_LOCAL_DOC_MAN=/Local/Library/Documentation/man
+GNUSTEP_LOCAL_DOC_INFO=/Local/Library/Documentation/info
 
 GNUSTEP_USER_DIR_APPS=GNUstep/Applications
 GNUSTEP_USER_DIR_ADMIN_APPS=GNUstep/Applications/Admin

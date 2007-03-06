@@ -32,6 +32,20 @@
 # GNUSTEP_INSTALLATION_DIR is set.
 #
 
+#
+# Location of Users directories ... never used by gnustep-make.
+#
+if [ -z "$GNUSTEP_SYSTEM_USERS_DIR" ]; 
+ then GNUSTEP_SYSTEM_USERS_DIR="@GNUSTEP_SYSTEM_USERS_DIR@"
+fi
+if [ -z "$GNUSTEP_NETWORK_USERS_DIR" ]; 
+ then GNUSTEP_NETWORK_USERS_DIR="@GNUSTEP_NETWORK_USERS_DIR@"
+fi
+if [ -z "$GNUSTEP_LOCAL_USERS_DIR" ]; 
+ then GNUSTEP_LOCAL_USERS_DIR="@GNUSTEP_LOCAL_USERS_DIR@"
+fi
+
+
 # PS: We don't want to define these variables to avoid extreme
 # environment pollution. :-) They are fixed subdirs of LIBRARY if you
 # need them.

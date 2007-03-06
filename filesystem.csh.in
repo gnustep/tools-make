@@ -30,6 +30,19 @@
 # So all variables should have names that are below that size.
 
 #
+# Location of Users directories ... never used by gnustep-make.
+#
+if ( ! ${?GNUSTEP_SYSTEM_USERS_DIR} ) then
+  setenv GNUSTEP_SYSTEM_USERS_DIR "@GNUSTEP_SYSTEM_USERS_DIR@"
+endif
+if ( ! ${?GNUSTEP_NETWORK_USERS_DIR} ) then
+  setenv GNUSTEP_NETWORK_USERS_DIR "@GNUSTEP_NETWORK_USERS_DIR@"
+endif
+if ( ! ${?GNUSTEP_LOCAL_USERS_DIR} ) then
+  setenv GNUSTEP_LOCAL_USERS_DIR "@GNUSTEP_LOCAL_USERS_DIR@"
+endif
+
+#
 # SYSTEM domain
 #
 if ( ! ${?GNUSTEP_SYSTEM_APPS} ) then

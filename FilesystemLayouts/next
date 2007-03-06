@@ -9,6 +9,13 @@
 # configuring.
 GNUSTEP_DEFAULT_PREFIX=/
 
+# These are only used by gnustep-base to implement the NSUserDirectory
+# API.  We never install anything in them.  They will be used as they
+# are without $prefix.
+GNUSTEP_SYSTEM_USERS_DIR=/Users
+GNUSTEP_NETWORK_USERS_DIR=/Network/Users
+GNUSTEP_LOCAL_USERS_DIR=/Users
+
 # NB: $prefix will be added to all the MAKEFILES/SYSTEM/NETWORK/LOCAL
 # paths.
 GNUSTEP_MAKEFILES=/GNUDeveloper/Makefiles

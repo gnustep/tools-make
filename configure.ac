@@ -295,7 +295,9 @@ GNUSTEP_PREFIX="`echo \"$GNUSTEP_PREFIX\" | sed 's%/*$%%'`"
 
 AC_MSG_RESULT($GNUSTEP_PREFIX)
 
-# Now we apply the prefix
+# Now we apply the prefix (we don't need to apply it to
+# GNUSTEP_SYSTEM_USERS_DIR and similar, which are something like
+# '/home' - we never install anything in there).
 GNUSTEP_MAKEFILES="$GNUSTEP_PREFIX$GNUSTEP_MAKEFILES"
 
 GNUSTEP_SYSTEM_APPS="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_APPS"
@@ -794,6 +796,16 @@ AC_SUBST(GNUSTEP_USER_DIR_DOC_INFO)
 AC_MSG_CHECKING([for User Man Documentation directory])
 AC_MSG_RESULT($GNUSTEP_USER_DIR_DOC_MAN)
 AC_SUBST(GNUSTEP_USER_DIR_DOC_MAN)
+
+AC_MSG_CHECKING([for System User directory])
+AC_MSG_RESULT($GNUSTEP_SYSTEM_USERS_DIR)
+AC_SUBST(GNUSTEP_SYSTEM_USERS_DIR)
+AC_MSG_CHECKING([for Network User directory])
+AC_MSG_RESULT($GNUSTEP_NETWORK_USERS_DIR)
+AC_SUBST(GNUSTEP_NETWORK_USERS_DIR)
+AC_MSG_CHECKING([for Local User directory])
+AC_MSG_RESULT($GNUSTEP_LOCAL_USERS_DIR)
+AC_SUBST(GNUSTEP_LOCAL_USERS_DIR)
 
 #--------------------------------------------------------------------
 # These variables no longer exist!  We try to set some compatibility
