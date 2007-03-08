@@ -39,7 +39,7 @@ any later version published by the Free Software Foundation.
 
 On GNUstep, there are four separate places where files related to
 GNUstep are installed: these places are called "domains".  These four
-domains are the System domain, the Local domain, the Network domain,
+domains are the System domain, the Network domain, the Local domain,
 and the User domain.  Each of these domains serve a special purpose.
 
 You can install various things in each domain; for example
