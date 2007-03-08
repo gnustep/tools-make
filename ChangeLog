@@ -1,8 +1,13 @@
-2007-03-09  Sergii Stoian <stoyan255@gmail.com>
+2007-03-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
-	* FilesystemLayouts/next: Change GNUSTEP_*_LIBARARIES to
-	/GNULibrary instead of /GNUDeveloper. Change GNUSTEP_USER_CONFIG_FILE
-	to Library/Preferences/GNUstep.conf.
+	* GNUstep.csh.in: Fixed typo when setting up PATH (Reported by
+	Wolfgang Lux <wolfgang.lux@gmail.com>).
+
+2007-03-08  Sergii Stoian <stoyan255@gmail.com>
+
+	* FilesystemLayouts/next: Change GNUSTEP_*_LIBRARIES to
+	/GNULibrary instead of /GNUDeveloper.  Change
+	GNUSTEP_USER_CONFIG_FILE to Library/Preferences/GNUstep.conf.
 
 2007-03-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 

@@ -197,7 +197,7 @@ foreach dir ( "${GNUSTEP_SYSTEM_ADMIN_TOOLS}" "${GNUSTEP_NETWORK_ADMIN_TOOLS}" "
 end
 
 set temp_path = ""
-foreach dir ( `/bin/sh -c 'IFS=:; for i in ${GNUSTEP_TOOLS_PATHLIST}; do echo $i; done'` )
+foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_TOOLS_PATHLIST}"'; do echo $i; done'` )
   set temp_path="${temp_path}${dir}:"
   if ( "${GNUSTEP_IS_FLATTENED}" == "no" ) then
     set temp_path="${temp_path}${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:"
