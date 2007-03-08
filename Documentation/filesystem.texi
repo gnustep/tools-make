@@ -514,8 +514,8 @@ currently available.
 @node Documentation (Man Pages), Folders inside Library, Documentation (Info), Structure of a Domain
 @subsection Documentation (Man Pages)
 
-The @code{Documentation (Man Pages)} location contains documentation in
-info format.
+
+The @code{Documentation (Man Pages)} location contains Unix man pages.
 
 In GNUmakefiles, the @file{Documentation (Man Pages)} location is
 available via the @code{GNUSTEP_DOC_MAN} variable, which is the
