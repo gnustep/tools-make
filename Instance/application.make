@@ -160,6 +160,9 @@ $(APP_DIR)/$(GNUSTEP_INSTANCE):
 	$(ECHO_NOTHING)cp $(GNUSTEP_MAKEFILES)/executable.template \
 	   $(APP_DIR)/$(GNUSTEP_INSTANCE); \
 	chmod a+x $(APP_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+ifneq ($(CHOWN_TO),)
+	$(ECHO_CHOWNING)$(CHOWN) $(CHOWN_TO) $(APP_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+endif
 else
 internal-application-build-template:
 
@@ -287,16 +290,72 @@ $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop: \
 
 internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
+#
 # install/uninstall targets
-
+#
 $(APP_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-internal-app-install_:: shared-instance-bundle-install
+internal-app-install_:: shared-instance-bundle-install internal-install-app-wrapper
 ifeq ($(strip),yes)
 	$(ECHO_STRIPPING)$(STRIP) $(APP_INSTALL_DIR)/$(APP_FILE_NAME)$(END_ECHO)
 endif
 
-internal-app-uninstall_:: shared-instance-bundle-uninstall
+internal-app-uninstall_:: shared-instance-bundle-uninstall internal-uninstall-app-wrapper
+
+#
+# Normally, to start up an application from the command-line you would
+# need to use something like 'openapp Gorm.app'.  To make this easier
+# for end-users, we create a 'Gorm' executable inside GNUSTEP_TOOLS
+# that does just that.  Your environment needs to be setup (PATH and
+# library path properly setup) to use this executable.  But that's OK;
+# if your environment is not setup, then GNUSTEP_TOOLS wouldn't be
+# in your PATH and so typing 'openapp' or 'Gorm' at the command-line
+# would do nothing anyway because they wouldn't be found! ;-)
+#
+# If your environment is difficult (and you can't fix it), then you
+# should stick with 'openapp', and you may need to specify the whole
+# PATH to openapp so that it is found.  Eg,
+# /usr/GNUstep/System/Tools/openapp Gorm.app.  That will do a full
+# GNUstep environment setup and should work no matter what.
+#
+# If we have symlinks, we simply create a symlink from
+# GNUSTEP_TOOLS/GNUSTEP_TARGET_LDIR to APP_INSTALL_DIR/APP_FILE_NAME.
+# This is the fastest way to start up your application; it just jumps
+# to the executable file.  In fact, it is much faster than openapp.
+#
+# If we don't have symlinks, we install an app-wrapper consisting of a
+# one-liner shell script that will start openapp.  This will be
+# slower.
+#
+# These are the rules to create/delete this 'wrapper'.
+#
+$(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
+
+ifeq ($(HAS_LN_S), yes)
+# We generate a relative symlink.  This makes it easier to use DESTDIR
+# and other packaging relocation tricks.
+internal-install-app-wrapper: $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
+	$(ECHO_NOTHING)\
+	  cd $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR); \
+	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
+	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR) $(APP_INSTALL_DIR)/$(APP_FILE_NAME)` \
+	          $(GNUSTEP_INSTANCE)$(END_ECHO)
+else
+# Not sure that we can use relative paths with 'exec' in a portable
+# way.  We want the stuff to work with DESTDIR, so in this case we use
+# openapp in the app wrapper.  Much slower, but should work fine.
+internal-install-app-wrapper: $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
+	$(ECHO_NOTHING)cat $(GNUSTEP_MAKEFILES)/app-wrapper.template \
+	                 | sed -e "s@GNUSTEP_INSTANCE@$(GNUSTEP_INSTANCE)@" > $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE); \
+	               chmod a+x $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+ifneq ($(CHOWN_TO),)
+	$(ECHO_CHOWNING)$(CHOWN) $(CHOWN_TO) $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+endif
+endif
+
+internal-uninstall-app-wrapper:
+	$(ECHO_NOTHING)$(RM) -f $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make

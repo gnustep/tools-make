@@ -1,5 +1,27 @@
 2007-03-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	You can now start up applications on the command line by just
+	using their name.  Eg, 'Gorm'.  To support this, we install a
+	wrapper in the tools directory (which is in your PATH).
+	* app-wrapper.template: New file.
+	* GNUmakefile.in (install): Install app-wrapper.template.
+	(uninstall): Uninstall it.
+	* Instance/application.make ($(GNUSTEP_TOOLS),
+	internal-install-app-wrapper, internal-uninstall-app-wrapper): New
+	rules that install/uninstall app-wrapper.template into
+	GNUSTEP_TOOLS with the name of the application.  If symlinks are
+	available, don't install a wrapper script but symlink directly the
+	binary for maximum speed ('Gorm' will be much faster than 'openapp
+	Gorm' in this situation).
+	(internal-app-install_): Depend on internal-install-app-wrapper.
+	(internal-app-uninstall_): Depend on
+	internal-uninstall-app-wrapper.
+
+	* Instance/application.make ($(APP_DIR)/$(GNUSTEP_INSTANCE)):
+	Added missing CHOWN command.
+	
+2007-03-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.csh.in: Fixed typo when setting up PATH (Reported by
 	Wolfgang Lux <wolfgang.lux@gmail.com>).
 
