@@ -16,7 +16,7 @@ Last Update: @today{}
 
 @page
 @vskip 0pt plus 1filll
-Authors:  Tim Harrison, Martin Brecher, Adam Fedor, Nicola Pero,
+Authors:  Nicola Pero, Tim Harrison, Martin Brecher, Adam Fedor,
 Richard Frith-Macdonald
 
 Permission is granted to copy, distribute and/or modify this document
@@ -33,13 +33,9 @@ any later version published by the Free Software Foundation.
 * The Local Domain::            
 * The Network Domain::          
 * The Users Domain::            
-* Hierarchy::                   
-* Description::                 
+* Structure of a Domain::
 * Configuration::                 
 @end menu
-
-@b{FIXME/TODO: Everything from 'Hierarchy' onwards still needs
-updating for gnustep-make version 2.0}
 
 On GNUstep, there are four separate places where files related to
 GNUstep are installed: these places are called "domains".  These four
@@ -55,24 +51,26 @@ specify how these domains should be organized and mapped to
 directories on the filesystem.  A way to map GNUstep domains to
 filesystem directories is called a ``filesystem layout''.  A
 filesystem layout will specify in which directory System Tools are to
-be installed, for example.  Please check the gnustep-make
-FilesystemLayouts directory for information on how to create your own
-filesystem layout.
+be installed, for example.  The description of various filesystem
+layouts (and instructions on how to create your own) can be found in
+the @file{FilesystemLayouts} directory inside gnustep-make.
 
 Applications, libraries, bundles and other resources are normally
 looked up in domains following a fixed order: User first, then Local,
 then Network, then System.
 
 In this document we give a general overview of the GNUstep domains and
-of the default GNUstep filesystem layout.  The default GNUstep
-filesystem layout is a good way to discuss domains, because it is very
-simple: in the default GNUstep filesystem layout, every domain is
-mapped to a single directory on disk.  For example, the System domain
-could be mapped to the @file{/usr/GNUstep/System} directory, and
-everything that is installed into the System domain is then installed
-into some subdirectory of @file{/usr/GNUstep/System}.  Before
-gnustep-make version 2.0, this was the only filesystem layout
-available.
+of the interesting locations in a domain.  We also describe the
+default GNUstep filesystem layout.
+
+The default GNUstep filesystem layout is a good way to discuss
+domains, because it is very simple: in the default GNUstep filesystem
+layout, every domain is mapped to a single directory on disk.  For
+example, the System domain could be mapped to the
+@file{/usr/GNUstep/System} directory, and everything that is installed
+into the System domain is then installed into some subdirectory of
+@file{/usr/GNUstep/System}.  Before gnustep-make version 2.0, this was
+the only filesystem layout available.
 
 Please keep in mind that (starting from gnustep-make version 2.0) this
 is not the case for a general filesystem layout; for example a typical
@@ -100,6 +98,7 @@ installed by the manufacturer of your distribution.
 In the default GNUstep filesystem layout, the entire System domain is
 found in the @file{System} folder of the GNUstep installation.
 
+
 @node The Local Domain, The Network Domain, The System Domain, Top
 @section The Local Domain
 
@@ -108,14 +107,14 @@ which was not included with your GNUstep distribution and which you or
 your local sysadmin compile and/or install manually.  These may
 include third party applications, custom extension libraries and their
 related header files, etc.  Every software (except for gnustep-make,
-gnustep-base, gnustep-gui and gnustep-back which by default install
-into the System domain) should install by default into the Local
-domain, so that if you download a source tarball of the software and
-you install it, it installs by default in the right place for this
-operation (the Local domain).  Distributions should override this
-default manually when they package the software they want to
-distribute as part of their distribution, so that in that case the
-software is installed in the System domain.
+gnustep-base, gnustep-gui and gnustep-back which for historical
+reasons by default install into the System domain) should install by
+default into the Local domain, so that if you download a source
+tarball of the software and you install it, it installs by default in
+the right place for this operation (the Local domain).  Distributions
+should override this default manually when they package the software
+they want to distribute as part of their distribution, so that in that
+case the software is installed in the System domain.
 
 In the default GNUstep filesystem layout the entire Local domain is
 installed as the @file{Local} folder of your GNUstep installation.
@@ -140,13 +139,13 @@ of the Network domain, you need to use a filesystem layout with
 a separate Network domain.
 
 In the default GNUstep filesystem layout the Network domain is the
-same as the Local domain; there is a separate GNUstep filesystem
-layout variant with a separate Network domain, in which case the
-entire Network domain is installed as the @file{Network} folder of
-your GNUstep installation.
+same as the Local domain; if you want to use the Network domain there
+is a separate GNUstep filesystem layout variant with a separate
+Network domain, in which case the entire Network domain is installed
+as the @file{Network} folder of your GNUstep installation.
 
 
-@node The Users Domain, Hierarchy, The Network Domain, Top
+@node The Users Domain, Structure of a Domain, The Network Domain, Top
 @section The Users Domain
 
 The main purpose of the Users domain is to hold GNUstep related files
@@ -162,234 +161,435 @@ In the default GNUstep filesystem layout (and in most other layouts
 too) the User domain is completely contained in a subdirectory of the
 user's home directory called @file{GNUstep}.
 
-@b{FIXME/TODO: Everything from here on still needs updating for
-gnustep-make v2.}
+@node Structure of a Domain, Configuration, The Users Domain, Top
+@section Structure of a Domain
 
-@node Hierarchy, Description, The Users Domain, Top
-@section Hierarchy
-
-@menu
-* System Hierarchy::            
-* Local Hierarchy::             
-* Network Hierarchy::           
-* User Hierarchy::              
-* Library Folder::              
-@end menu
-
-@node System Hierarchy, Local Hierarchy, Hierarchy, Hierarchy
-@subsection System
-
-@example
-System/
-        Applications/
-        Library/
-        Tools/
-        share/
-@end example
-
-@node Local Hierarchy, Network Hierarchy, System Hierarchy, Hierarchy
-@subsection Local
-
-@example
-Local/
-        Applications/
-        Library/
-        Tools/
-@end example
-
-@node Network Hierarchy, User Hierarchy, Local Hierarchy, Hierarchy
-@subsection Network
-
-@example
-Network/
-        Applications/
-        Library/
-        Tools/
-@end example
-
-@node User Hierarchy, Library Folder, Network Hierarchy, Hierarchy
-@subsection User
-
-@example
-@emph{User's GNUstep root dir}/
-        Applications/
-        Library/
-        Tools/
-@end example
-
-@node Library Folder,  , User Hierarchy, Hierarchy
-@subsection Library Folder
-
-@multitable @columnfractions 0.2 0.2 0.2 0.2 0.2
-@item ApplicationSupport
-@item Bundles						
-@item ColorPickers						
-@item Colors						
-@item Defaults @tab @tab @tab                           @tab @emph{user only}
-@item DTDs						
-@item DocTemplates						
-@item Documentation
-@item Fonts						
-@item Frameworks						
-@item Headers						
-@item Images						
-@item KeyBindings						
-@item Libraries
-@item   @tab Resources					
-@item   @tab	@tab gnustep-base @tab			@tab @emph{system only}
-@item   @tab	@tab	@tab .lproj folders			
-@item   @tab	@tab	@tab CharacterSets			
-@item   @tab	@tab	@tab TimeZones			
-@item   @tab	@tab	@tab Languages
-@item   @tab	@tab gnustep-gui @tab			@tab @emph{system only}
-@item   @tab	@tab	@tab .lproj folders			
-@item   @tab	@tab	@tab TextConverters			
-@item Makefiles @tab @tab @tab				@tab @emph{system only}
-@item 	@tab Additional					
-@item PostScript						
-@item	@tab PPD					
-@item Services						
-@item Sounds						
-
-@end multitable
-
-@node  Description, Configuration, Hierarchy, Top
-@section Description
+In this section we examine the interesting locations in a domain.  We
+will enumerate the locations, and discuss what should be installed in
+each location, and how they are mapped to directories on disk in the
+GNUstep filesystem layout and in a general filesystem layout.
 
 @menu
-* System Description::          
-* Local Description::           
-* Network Description::         
-* Applications::                
-* Tools::                       
-* share::                       
-* Library::                     
+* The GNUstep Filesystem Layout::
+* Accessing Domain Locations::
+* Applications::
+* Admin Applications::
+* Web Applications::
+* Tools::
+* Admin Tools::
+* Library::
+* Headers::
+* Libraries::
+* Documentation::
+* Documentation (Info)::
+* Documentation (Man Pages)::
+* Folders inside Library::
 @end menu
 
-@node System Description, Local Description, Description, Description
-@subsection System
+@node The GNUstep Filesystem Layout, Accessing Domain Locations, Structure of a Domain, Structure of a Domain
+@subsection The GNUstep Filesystem Layout
 
-The System directory is the location of the GNUstep makefile package,
-base, gui and backend libraries, and any accompanying software that is
-distributed as part of whatever distribution of GNUstep you are using.
-This directory MUST exist for a proper installation of GNUstep.
+We quickly present the GNUstep filesystem layout for a domain first
+because it is an essential reference for all discussions on the
+structure of a domain.
 
-Using the --prefix option to the configure script in gnustep-make, an
-installation of GNUstep may be placed wherever the installer wishes;
-the System, Local (and optionally Network) domain by default will be
-subdirectory of this root location.
+The GNUstep filesystem layout is the simplest layout, in which every
+domain is a directory on disk, and all locations in the domain are
+subdirectories of the domain.
 
-Common options are:
-
+In that case, a domain has the following structure on disk:
 @example
-/usr/GNUstep
-/usr/local/GNUstep
-/opt/GNUstep
-/
+ Domain/
+        Applications/
+        Applications/Admin/
+        Defaults/   (User domain only)
+        Library/
+        Library/ApplicationSupport/
+        Library/ApplicationSupport/Palettes
+        Library/Bundles/
+        Library/Documentation/
+        Library/Documentation/info/
+        Library/Documentation/man/
+        Library/Frameworks/
+        Library/Headers/
+        Library/Libraries/
+        Library/Libraries/Java/
+        Library/Libraries/Resources/
+        Library/Makefiles/   (System domain only)
+        Library/Services/
+        Library/Tools/Resources/
+        Library/WebApplications/
+        Tools/
+        Tools/Admin/
 @end example
 
-All directories referenced in this document are relative to this root location.
+The terminology for locations is derived from this filesystem layout,
+and it can be useful to use this directory structure as a reference
+point for all discussions.  For example, every domain must have a
+'Library' location.
 
-@node Local Description, Network Description, System Description, Description
-@subsection Local
+@node Accessing Domain Locations, Applications, The GNUstep Filesystem Layout, Structure of a Domain
+@subsection Accessing Domain Locations
 
-The Local domain is the location of libraries, frameworks, bundles,
-and supporting files for locally installed applications or tools that
-are not distributed as part of the distribution that you are using,
-but that are compiled and/or installed manually by you or your
-sysadmin.  This directory MUST exist for a proper installation of
-GNUstep.
+In order to install and run software that uses some resources, you
+need to be able to install the resources in the appropriate location,
+and your software needs to be able to locate these resources when it's
+running.
 
-@node Network Description, Applications, Local Description, Description
-@subsection Network
+Since domain locations can be mapped to arbitrary locations on disk,
+you must use the appropriate gnustep-make and gnustep-base facilities
+to install things in the right place and to find things at runtime.
 
-The Network Domain is the location for all exported applications, remotely
-mounted filesystems, and remote home directories for users made available via
-directory services.  It is optional, and disabled by default.
+GNUstep-make creates makefile variables for all the domain locations.
+If you need to perform some custom installation for your software, you
+must use these variables to make sure your installation will work with
+all filesystem layouts.  For example, the @file{Applications} location
+for the domain where the software will be installed is available as
+the @code{GNUSTEP_APPS} variable.  You can also access the locations
+for specific domains by using the variables
+@code{GNUSTEP_SYSTEM_APPS}, @code{GNUSTEP_NETWORK_APPS},
+@code{GNUSTEP_LOCAL_APPS} and @code{GNUSTEP_USER_APPS}.
 
-@node Applications, Tools, Network Description, Description
+GNUstep-base provides you with the
+@code{NSSearchPathForDirectoriesInDomains()} function that allows you
+to retrieve the domain locations at runtime.  You must lookup
+resources only via this function.  For example, the
+@file{Applications} location can be found by using the
+@code{NSApplicationDirectory} directory key, so you can use it in your
+software to iterate over all the @file{Applications} directories in
+the various domains searching for an application.
+
+In general, all interesting domain locations have a set of variables
+defined in gnustep-make (such as @code{GNUSTEP_APPS},
+@code{GNUSTEP_SYSTEM_APPS}, @code{GNUSTEP_NETWORK_APPS},
+@code{GNUSTEP_LOCAL_APPS} and @code{GNUSTEP_USER_APPS}) and a
+corresponding directory key in gnustep-base (such as
+@code{NSApplicationDirectory}).
+
+When examining the various domain locations, we will explicitly
+mention the gnustep-make variables and the gnustep-base directory keys
+that can be used to access them.
+
+
+@node Applications, Admin Applications , Accessing Domain Locations, Structure of a Domain
 @subsection Applications
 
-The @file{Applications} directory contains applications. Applications
-are programs that typically have a GUI interface and contain associated
-resource files, such as images, localization files and other program
-elements.
+The @file{Applications} location contains applications. Applications
+are programs that typically have a GUI interface and contain
+associated resource files, such as images, localization files and
+other program elements.
 
 Important applications which are part of GNUstep and which are often
-distributed as part of a core GNUstep distribution (and so installed
-in the @file{System/Applications} folder) include:
+distributed as part of a core GNUstep distribution include:
 @example
 Gorm.app
 ProjectCenter.app
-GSDefaults.app
 GWorkspace.app
 Preferences.app
 @end example
 
-@node Tools, share, Applications, Description
+In GNUmakefiles, the @file{Applications} location is available via the
+@code{GNUSTEP_APPS} variable, which is the Applications location for
+the domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_APPS}, @code{GNUSTEP_NETWORK_APPS},
+@code{GNUSTEP_LOCAL_APPS} and @code{GNUSTEP_USER_APPS}.
+
+In gnustep-base, the @file{Applications} locations are available by
+using the @code{NSApplicationDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+
+@node Admin Applications, Web Applications, Applications, Structure of a Domain
+@subsection Admin Applications
+
+The @file{Admin Applications} location contains applications that are
+only useful to the system administrator.  A normal user wouldn't have
+enough privileges to use these applications in a useful way.
+
+In GNUmakefiles, the @file{Admin Applications} location is available
+via the @code{GNUSTEP_ADMIN_APPS} variable, which is the Admin
+Applications location for the domain in which the software will be
+installed.  You can also reference the locations in the various
+domains directly by using the variables
+@code{GNUSTEP_SYSTEM_ADMIN_APPS}, @code{GNUSTEP_NETWORK_ADMIN_APPS},
+@code{GNUSTEP_LOCAL_ADMIN_APPS} and @code{GNUSTEP_USER_ADMIN_APPS}.
+
+In gnustep-base, the @file{Admin Applications} locations are available
+by using the @code{NSAdminApplicationDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+
+@node Web Applications, Tools, Admin Applications, Structure of a Domain
+@subsection Web Applications
+
+The @file{Web Applications} location contains web applications that
+were created using GSWeb or SOPE.  These are programs contained with
+their resources in small wrappers very similar to standard
+applications.
+
+In GNUmakefiles, the @file{Web Applications} location is available via
+the @code{GNUSTEP_WEB_APPS} variable, which is the Web Applications
+location for the domain in which the software will be installed.  You
+can also reference the locations in the various domains directly by
+using the variables @code{GNUSTEP_SYSTEM_WEB_APPS},
+@code{GNUSTEP_NETWORK_WEB_APPS}, @code{GNUSTEP_LOCAL_WEB_APPS} and
+@code{GNUSTEP_USER_WEB_APPS}.
+
+In gnustep-base, the @file{Web Applications} locations are available
+by using the @code{GSWebApplicationDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+
+@node Tools, Admin Tools, Web Applications, Structure of a Domain
 @subsection Tools
 
-The @file{Tools} directory contains tools and executable
-scripts. Tools are programs which generally have a command-line
-interface. Most are not meant to be used by the average user.
+The @file{Tools} location contains tools and executable scripts. Tools
+are programs which generally have a command-line interface. Most are
+not meant to be used by the average user.
 
-Tools that are written in languages other than Objective-C, or are developed
-to work with other runtime environments may have their own directory within
-the Tools directory (for example: @file{Tools/Java}).
+Important tools which are part of GNUstep and which are often
+distributed as part of a core GNUstep distribution include:
+@example
+openapp
+defaults
+gdomap
+gdnc
+gpbs
+@end example
 
-@node share, Library, Tools, Description
-@subsection share
+In GNUmakefiles, the @file{Tools} location is available via the
+@code{GNUSTEP_TOOLS} variable, which is the location for the domain in
+which the software will be installed.  You can also reference the
+locations in the various domains directly by using the variables
+@code{GNUSTEP_SYSTEM_TOOLS}, @code{GNUSTEP_NETWORK_TOOLS},
+@code{GNUSTEP_LOCAL_TOOLS} and @code{GNUSTEP_USER_TOOLS}.
 
-The share directory is used for configuration and installation
-of the core GNUstep libraries and any additional libraries that
-need configuration information. It is used by the configure (autoconf)
-program.
+In gnustep-base, the @file{Tools} locations are available by using the
+@code{GSToolsDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
 
 
-@node Library,  , share, Description
+@node Admin Tools, Library, Tools, Structure of a Domain
+@subsection Admin Tools
+
+The @file{Admin Tools} location contains tools and executable scripts
+that are only useful to the system administrator.  A normal user
+wouldn't have enough privileges to use these applications in a useful
+way.
+
+In GNUmakefiles, the @file{Admin Tools} location is available via the
+@code{GNUSTEP_ADMIN_TOOLS} variable, which is the location for the
+domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_ADMIN_TOOLS},
+@code{GNUSTEP_NETWORK_ADMIN_TOOLS}, @code{GNUSTEP_LOCAL_ADMIN_TOOLS}
+and @code{GNUSTEP_USER_ADMIN_TOOLS}.
+
+In gnustep-base, the @file{Admin Tools} locations are available by
+using the @code{GSAdminToolsDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+
+@node Library, Headers, Admin Tools, Structure of a Domain
 @subsection Library
 
-The @file{Library} directory contains most of the functional
-code of the GNUstep Development Environment.
+The @file{Library} location contains most of the resources that are
+located and loaded at runtime.  These resources are organized in
+folders (directories) inside @file{Library}; the most important
+@file{Library} folders will be described later on.
 
-The primary reason for the structure of folders within Library is to
-keep a complimentary structure throughout all domains. This allows
-easier development, by keeping a standard directory layout, providing
-developers with a relatively common hierarchy to work within.
+Like all systems inspired by OpenStep, resources are mostly organized
+in bundles and small wrappers that contain both machine-dependent
+files (such as executables or loadable object files) and general
+machine-independent resources (such as images or text files).  For
+this reason, the @file{Library} location will contain both
+machine-dependent and machine-independent files.
+
+The structure of the folders within Library is the same in all
+filesystem layouts, with a few exceptions: in the GNUstep filesystem
+layout, the @code{Libraries}, @code{Headers}, @code{Documentation} and
+@code{WebApplications} folders are all inside @code{Library}, but this
+is not necessarily true for other filesystem layouts.
+
+Vice versa, it's common on other filesystem layouts (eg, FHS) to put
+@code{Applications} and @code{Admin Applications} as folders inside
+@code{Library}.
+
+In GNUmakefiles, the @file{Library} location is available via the
+@code{GNUSTEP_LIBRARY} variable, which is the location for the
+domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_LIBRARY},
+@code{GNUSTEP_NETWORK_LIBRARY}, @code{GNUSTEP_LOCAL_LIBRARY} and
+@code{GNUSTEP_USER_LIBRARY}.
+
+In gnustep-base, the @file{Library} locations are available by
+using the @code{NSLibraryDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+
+@node Headers, Libraries, Library, Structure of a Domain
+@subsection Headers
+
+The @code{Headers} location contains header files associated with a
+library located in @code{Libraries}.
+
+In GNUmakefiles, the @file{Headers} location is available via the
+@code{GNUSTEP_HEADERS} variable, which is the location for the
+domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_HEADERS},
+@code{GNUSTEP_NETWORK_HEADERS}, @code{GNUSTEP_LOCAL_HEADERS} and
+@code{GNUSTEP_USER_HEADERS}.
+
+In gnustep-base, the @file{Headers} location is not currently
+available.
+
+
+@node Libraries, Documentation, Headers, Structure of a Domain
+@subsection Libraries
+
+The @code{Libraries} location contains libraries (shared/static object
+files that are linked into programs).  (NOTE: In the GNUstep
+filesystem layout, the Libraries directory being in Library may sound
+somewhat redundant, however, it could be read as "a Library of shared
+libraries").
+
+In the GNUstep filesystem layout, the @code{Library/Libraries} folder
+contains two other folders: @code{Resources} and @code{Java}.  It's
+important to notice that when the @code{Libraries} location is moved
+elsewhere, these folders are not moved; they will still be in
+@code{Library/Libraries/Resources} and @code{Library/Libraries/Java}.
+
+In GNUmakefiles, the @file{Libraries} location is available via the
+@code{GNUSTEP_LIBRARIES} variable, which is the location for the
+domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_LIBRARIES},
+@code{GNUSTEP_NETWORK_LIBRARIES}, @code{GNUSTEP_LOCAL_LIBRARIES} and
+@code{GNUSTEP_USER_LIBRARIES}.
+
+In gnustep-base, the @file{Libraries} locations are available by using
+the @code{GSLibrariesDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+
+@node Documentation, Documentation (Info), Libraries, Structure of a Domain
+@subsection Documentation
+
+The @code{Documentation} location contains documentation for
+libraries, applications, etc.
+
+In GNUmakefiles, the @file{Documentation} location is available via
+the @code{GNUSTEP_DOC} variable, which is the location for the
+domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_DOC}, @code{GNUSTEP_NETWORK_DOC},
+@code{GNUSTEP_LOCAL_DOC} and @code{GNUSTEP_USER_DOC}.
+
+In gnustep-base, the @file{Documentation} locations are available by
+using the @code{NSDocumentationDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+
+@node Documentation (Info), Documentation (Man Pages), Documentation, Structure of a Domain
+@subsection Documentation (Info)
+
+The @code{Documentation (Info)} location contains documentation in
+info format.
+
+In GNUmakefiles, the @file{Documentation (Info)} location is available
+via the @code{GNUSTEP_DOC_INFO} variable, which is the location for
+the domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_DOC_INFO},
+@code{GNUSTEP_NETWORK_DOC_INFO}, @code{GNUSTEP_LOCAL_DOC_INFO} and
+@code{GNUSTEP_USER_DOC_INFO}.
+
+In gnustep-base, the @file{Documentation (Info)} locations are not
+currently available.
+
+
+@node Documentation (Man Pages), Folders inside Library, Documentation (Info), Structure of a Domain
+@subsection Documentation (Man Pages)
+
+The @code{Documentation (Man Pages)} location contains documentation in
+info format.
+
+In GNUmakefiles, the @file{Documentation (Man Pages)} location is
+available via the @code{GNUSTEP_DOC_MAN} variable, which is the
+location for the domain in which the software will be installed.  You
+can also reference the locations in the various domains directly by
+using the variables @code{GNUSTEP_SYSTEM_DOC_MAN},
+@code{GNUSTEP_NETWORK_DOC_MAN}, @code{GNUSTEP_LOCAL_DOC_MAN} and
+@code{GNUSTEP_USER_DOC_MAN}.
+
+In gnustep-base, the @file{Documentation (Man)} locations are not
+currently available.
+
+
+@node Folders inside Library, , Documentation (Man Pages), Structure of a Domain
+@subsection Folders inside Library
+
+In this section we discuss the standard folders that are available
+inside the @code{Library} location.  To find any of these folders,
+just find the location of @code{Library} and then append the folder
+name (for example, in a GNUmakefile you can access the 'ColorPickers'
+folder of the installation domain as
+@code{$GNUSTEP_LIBRARY/ColorPickers}).
+
+Some of the folders can also be accessed using direct variables, such
+as @code{GNUSTEP_BUNDLES}.  You should prefer using these direct
+variables if you can because they are more future-proof (in case some
+of the folders become independent from @code{Library} in the future).
+All such cases should be documented here.
 
 @menu
-* ApplicationSupport::          
-* Bundles::                     
-* ColorPickers::                
-* Colors::                      
-* Defaults::                    
-* DTDs::                        
-* DocTemplates::                
-* Documenation::                
-* Fonts::                       
-* Frameworks::                  
-* Headers::                     
-* Images::                      
-* KeyBindings::                 
-* Libraries::                   
-* Makefiles::                   
-* PostScript::                  
-* Services::                    
-* Sounds::                      
+* ApplicationSupport::
+* Bundles::                
+* ColorPickers::
+* Colors::
+* DTDs::                
+* DocTemplates::
+* Fonts::                  
+* Frameworks::
+* Images::     
+* Libraries/Java::    
+* Libraries/Resources::
+* KeyBindings::
+* PostScript::
+* Services::             
+* Sounds::
+* Tools/Resources::
 @end menu
 
-@node ApplicationSupport, Bundles, Library, Library
+@node ApplicationSupport, Bundles, Folders inside Library, Folders inside Library
 @subsubsection ApplicationSupport
 
 This directory contains bundles and other resources that are provided
-for an application, but that are not specifically distributed with that
-application. For instance, these may be third-party resources for
+for an application, but that are not specifically distributed with
+that application. For instance, these may be third-party resources for
 an application.
 
-For example, modules for the Preferences application may be stored here,
-in a @file{Preferences} subdirectory.
+For example, modules for the Preferences application may be stored
+here, in a @file{Preferences} subdirectory.  In particular, Palettes
+for Gorm are stored in @file{ApplicationSupport/Palettes}.
 
-@node Bundles, ColorPickers, ApplicationSupport, Library
+In GNUmakefiles, this location is available via the
+@code{GNUSTEP_APPLICATION_SUPPORT} variable, which is the location for
+the domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_APPLICATION_SUPPORT},
+@code{GNUSTEP_NETWORK_APPLICATION_SUPPORT},
+@code{GNUSTEP_LOCAL_APPLICATION_SUPPORT} and
+@code{GNUSTEP_USER_APPLICATION_SUPPORT}.
+
+In gnustep-base, the @code{ApplicationSupport} locations are available
+by using the @code{NSApplicationSupportDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
+
+@node Bundles, ColorPickers, ApplicationSupport, Folders inside Library
 @subsubsection Bundles
 
 This directory contains bundles. Bundles are collections of executable
@@ -398,33 +598,46 @@ application or tool.  Note: this directory is depreciated. Use
 ApplicationSupport to install bundles that can be used by an
 application.
 
-@node ColorPickers, Colors, Bundles, Library
+In GNUmakefiles, this location is available via the
+@code{GNUSTEP_BUNDLES} variable, which is the location for the domain
+in which the software will be installed.  You can also reference the
+locations in the various domains directly by using the variables
+@code{GNUSTEP_SYSTEM_BUNDLES}, @code{GNUSTEP_NETWORK_BUNDLES},
+@code{GNUSTEP_LOCAL_BUNDLES} and @code{GNUSTEP_USER_BUNDLES}.
+
+In gnustep-base, you can access the @code{Bundles} location as a
+folder inside the @code{Library} location.
+
+
+@node ColorPickers, Colors, Bundles, Folders inside Library
 @subsubsection ColorPickers
 
 This directory contains bundles that are used by the color picking
-system. They may include code that implements picking colors from a color
-wheel, a custom defined list of colors, etc.
+system. They may include code that implements picking colors from a
+color wheel, a custom defined list of colors, etc.
 
-@node Colors, Defaults, ColorPickers, Library
+This folder is accessed as the @code{ColorPickers} folder inside
+@code{Library}.
+
+@node Colors, DTDs, ColorPickers, Folders inside Library
 @subsubsection Colors
 
-This directory contains files that define
-specific color mappings for use within libraries or applications
-that require color definitions.
+This directory contains files that define specific color mappings for
+use within libraries or applications that require color definitions.
 
-@node Defaults, DTDs, Colors, Library
-@subsubsection Defaults
+This folder is accessed as the @code{Colors} folder inside
+@code{Library}.
 
-This directory contains files that store defaults for applications, e.g.
-user preferences. This directory only exists in the User domain.
-
-@node DTDs, DocTemplates, Defaults, Library
+@node DTDs, DocTemplates, Colors, Folders inside Library
 @subsubsection DTDs
 
 This directory contains any Document Type Definitions
 required for document parsing. 
 
-@node DocTemplates, Documenation, DTDs, Library
+This folder is accessed as the @code{DTDs} folder inside
+@code{Library}.
+
+@node DocTemplates, Fonts, DTDs, Folders inside Library
 @subsubsection DocTemplates
 
 This directory contains text templates for automatic documentation, as
@@ -435,17 +648,18 @@ directory must have an extension indicating what type of documentation
 system it is referenced by (ie. .gsdoc for the GNUstep implementation
 of autodoc).
 
-@node Documenation, Fonts, DocTemplates, Library
-@subsubsection Documentation
+This folder is accessed as the @code{DocTemplates} folder inside
+@code{Library}.
 
-This directory contains documentation for libraries, applications, etc.
-
-@node Fonts, Frameworks, Documenation, Library
+@node Fonts, Frameworks, DocTemplates, Folders inside Library
 @subsubsection Fonts
 
 This directory contains fonts and files for organizing font information.
 
-@node Frameworks, Headers, Fonts, Library
+This folder is accessed as the @code{Fonts} folder inside
+@code{Library}.
+
+@node Frameworks, Images, Fonts, Folders inside Library
 @subsubsection Frameworks
 
 This directory contains frameworks.  Frameworks are a type of bundle,
@@ -460,64 +674,144 @@ Use of frameworks is generally discouraged, as it is difficult to
 support them in a clean way on multiple platforms. Bundles are a
 better method of organizing shared collections of resources and code.
 
-@node Headers, Images, Frameworks, Library
-@subsubsection Headers
+In GNUmakefiles, this location is available via the
+@code{GNUSTEP_FRAMEWORKS} variable, which is the location for the
+domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_FRAMEWORKS},
+@code{GNUSTEP_NETWORK_FRAMEWORKS}, @code{GNUSTEP_LOCAL_FRAMEWORKS} and
+@code{GNUSTEP_USER_FRAMEWORKS}.
 
-This directory contains header files associated with a library located 
-in the Libraries directory.
+In gnustep-base, the @code{Frameworks} locations are available by
+using the @code{GSFrameworksDirectory} directory key for
+@code{NSSearchPathForDirectoriesInDomains()}.
 
-@node Images, KeyBindings, Headers, Library
+@node Images, Libraries/Java, Frameworks, Folders inside Library
 @subsubsection Images
 
-@node KeyBindings, Libraries, Images, Library
+@node Libraries/Java, Libraries/Resources, Images, Folders inside Library
+@subsubsection Libraries/Java
+
+This directory contains Java classes.  If you are using Java with
+GNUstep, you probably want to make sure these directories are in your
+CLASSPATH.
+
+In GNUmakefiles, this location is available via the
+@code{GNUSTEP_JAVA} variable, which is the location for the domain in
+which the software will be installed.  You can also reference the
+locations in the various domains directly by using the variables
+@code{GNUSTEP_SYSTEM_JAVA}, @code{GNUSTEP_NETWORK_JAVA},
+@code{GNUSTEP_LOCAL_JAVA} and @code{GNUSTEP_USER_JAVA}.
+
+In gnustep-base, you can access the @code{Libraries/Java} location as
+the @code{Libraries/Java} folder inside the @code{Library} location.
+
+@node Libraries/Resources, KeyBindings, Libraries/Java, Folders inside Library
+@subsubsection Libraries/Resources
+
+This directory contains resources used by shared libraries.  In
+GNUstep a shared library can have an associated resource bundle (a
+bundle only composed of resources, with no object file), which is then
+installed into this directory.
+
+For example, @code{gnustep-base} will get its resource bundle
+installed into
+@code{GNUSTEP_SYSTEM_LIBRARY/Libraries/Resources/gnustep-base}.
+
+In GNUmakefiles, this location is available via the
+@code{GNUSTEP_RESOURCES} variable, which is the location for the
+domain in which the software will be installed.  You can also
+reference the locations in the various domains directly by using the
+variables @code{GNUSTEP_SYSTEM_RESOURCES},
+@code{GNUSTEP_NETWORK_RESOURCES}, @code{GNUSTEP_LOCAL_RESOURCES} and
+@code{GNUSTEP_USER_RESOURCES}.
+
+In gnustep-base, you can access the resource bundle associated with a
+library by using the @code{[NSBundle +bundleForLibrary:]} method (it
+is a GNUstep extension).
+
+@node KeyBindings, PostScript, Libraries/Resources, Folders inside Library
 @subsubsection KeyBindings
 
-@node Libraries, Makefiles, KeyBindings, Library
-@subsubsection Libraries
-
-This directory contains libraries.  (NOTE: The Libraries directory
-being in Library may sound somewhat redundant, however, it could be
-read as "a Library of shared libraries".)
-
-@node Makefiles, PostScript, Libraries, Library
-@subsubsection Makefiles
-
-This directory contains the different types of makefiles used by the
-GNUstep development environment to build applications, libraries,
-bundles, etc.  These makefiles are usually included in a project
-specific GNUmakefile, which is used to build a project under the
-GNUstep development environment.
-
-This directory only exists in the System domain.
-
-@node PostScript, Services, Makefiles, Library
+@node PostScript, Services, KeyBindings, Folders inside Library
 @subsubsection PostScript
 
-This directory contains directories for specific 
-PostScript document types and definitions, allowing applications written using 
-the GNUstep development environment to display PostScript documents, or 
+This directory contains directories for specific PostScript document
+types and definitions, allowing applications written using the GNUstep
+development environment to display PostScript documents, or
 communicate with printers using PostScript.
 
-@node Services, Sounds, PostScript, Library
+This folder is accessed as the @code{PostScript} folder inside
+@code{Library}.
+
+@node Services, Sounds, PostScript, Folders inside Library
 @subsubsection Services
 
-This directory contains bundles that are specifically
-built to provide functionality between different programs (for example, spell
-checking, creation of a note from text within an email application).  Services 
+This directory contains bundles that are specifically built to provide
+functionality between different programs (for example, spell checking,
+creation of a note from text within an email application).  Services
 that are installed on the system must an extension of ".service".
 
-@node Sounds,  , Services, Library
+In GNUmakefiles, this location is available via the
+@code{GNUSTEP_SERVICES} variable, which is the location for the domain
+in which the software will be installed.  You can also reference the
+locations in the various domains directly by using the variables
+@code{GNUSTEP_SYSTEM_SERVICES}, @code{GNUSTEP_NETWORK_SERVICES},
+@code{GNUSTEP_LOCAL_SERVICES} and @code{GNUSTEP_USER_SERVICES}.
+
+In gnustep-base, you can access the @code{Services} location as a
+folder inside the @code{Library} location.
+
+@node Sounds, Tools/Resources, Services, Folders inside Library
 @subsubsection Sounds
 
 This directory contains sound files.
 
-@node Configuration,  , Description, Top
+@node Tools/Resources,  , Sounds, Folders inside Library
+@subsubsection Tools/Resources
+
+This directory contains resources used by tools.  In GNUstep a tool
+can have an associated resource bundle (a bundle only composed of
+resources, with no object file), which is then installed into this
+directory.
+
+For example, a tool called @code{myTool} will get its resource bundle
+installed into
+@code{GNUSTEP_SYSTEM_LIBRARY/Tools/Resources/myTool}.
+
+In GNUmakefiles, this location is available as the
+@file{Tools/Resources} folder inside the @code{Library} location.
+
+In gnustep-base, you can access the resource bundle associated with
+your tool by using the @code{[NSBundle +mainBundle]} method (this
+semantic is a GNUstep extension).
+
+@c TODO: Mention special directories, for example location of user defaults
+@c TODO: Mention special directories, for example location of makefiles
+
+
+@node Configuration,  , Structure of a Domain, Top
 @section Configuration
 
-The locations of the various domains within the filesystem hierarchy on your
-machine are determined by the GNUstep configuration file (or if that is not
-present, by default values built into the GNUstep make and base packages
-when they were configured and built).
+GNUstep supports arbitrary filesystem layouts to map the locations in
+the various domains to directories on the filesystem.
+
+When you run gnustep-make's ./configure program you can use the
+--with-layout=xxx flag to select the filesystem layout that you prefer
+(choosing between the ones in the FilesystemLayouts directory, or
+creating your own in there!).
+
+For most users, this is all they need to know.
+
+In this section we'll go more into the details of how the filesystem
+layout system internally works; this is only useful if you need to do
+something advanced with it, typically because you have multiple
+GNUstep installations or you are trying to do some custom packaging of
+GNUstep.
+
+The filesystem layout is determined by the GNUstep configuration file
+(or if that is not present, by default values built into the GNUstep
+make and base packages when they were configured and built).
 
 The location of the GNUstep configuration file is built in to the make and
 base packages when they are configured using the --with-config-file option
@@ -532,17 +826,13 @@ built in to the package, at any time when using the make package to build
 or install software.  Support for the environment variable may also
 be enabled for the make package when its configure script is run.
 
-Please do
-@example
-configure --help
-@end example
-to get all the options of how the package configuration scripts can be
-told to set up the default path to and values in the configuration file.
+The GNUSTEP_CONFIG_FILE environment variable is particularly useful if
+you have multiple installations and need to easily switch between
+them.
 
 @menu
 * File Format::              
 * Windows (MINGW)::
-* File Values::              
 @end menu
 
 @node File Format, Windows (MINGW), Configuration, Configuration
@@ -561,7 +851,13 @@ in single or double quotes.  An alternative for values containing backslashes
 (the norm for a windows path) is to double up each backslash in an unquoted
 value.
 
-@node Windows (MINGW), File Values, File Format, Configuration
+The valid values for the keys in the GNUstep configuration file are
+documented in the GNUstep.conf file itself.  Please check the
+GNUstep.conf.in file in your gnustep-make distribution for an
+up-to-date list of all the variables that you can change with
+explanations of what they do.
+
+@node Windows (MINGW), , File Format, Configuration
 @subsection Windows (MINGW)
 
 On ms-windows, for software development, you are likely to want to have an
@@ -603,108 +899,6 @@ directories (relative to the location of gnustep-base.dll).
 
 It is recommended that this ./GNUstep.conf always contains relative
 paths to make relocation easier.
-
-@node File Values, , Windows (MINGW), Configuration
-@subsection File Values
-
-The key=value pairs permitted in the configuration file are limited
-to the keys described here.
-
-@menu
-* GNUSTEP_SYSTEM_ROOT::              
-* GNUSTEP_LOCAL_ROOT::              
-* GNUSTEP_NETWORK_ROOT::              
-* GNUSTEP_USER_CONFIG_FILE::              
-* GNUSTEP_USER_DIR::              
-* GNUSTEP_USER_DEFAULTS_DIR::              
-@end menu
-
-@node GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT, File Values, File Values
-@subsubsection GNUSTEP_SYSTEM_ROOT
-
-The value for this key is the path for the System domain.
-
-It must be either an absolute path or a path beginning './' in which case the
-leading './' is replaced by the path to the directory in which the
-configuration file is located.
-
-This is normally -
-@example
-GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
-@end example
-
-@node GNUSTEP_LOCAL_ROOT, GNUSTEP_NETWORK_ROOT, GNUSTEP_SYSTEM_ROOT, File Values
-@subsubsection GNUSTEP_LOCAL_ROOT
-
-The value for this key is the path for the Local domain.
-
-It must be either an absolute path or a path beginning './' in which case the
-leading './' is replaced by the path to the directory in which the
-configuration file is located.
-
-This is normally -
-@example
-GNUSTEP_LOCAL_ROOT=/usr/GNUstep/Local
-@end example
-
-@node GNUSTEP_NETWORK_ROOT, GNUSTEP_USER_CONFIG_FILE, GNUSTEP_LOCAL_ROOT, File Values
-@subsubsection GNUSTEP_NETWORK_ROOT
-
-The value for this key is the path for the Network domain.
-
-It must be either an absolute path or a path beginning './' in which case the
-leading './' is replaced by the path to the directory in which the
-configuration file is located.
-
-This is normally the same as the value configured for GNUSTEP_LOCAL_ROOT -
-@example
-GNUSTEP_NETWORK_ROOT=/usr/GNUstep/Local
-@end example
-
-@node GNUSTEP_USER_CONFIG_FILE, GNUSTEP_USER_DIR, GNUSTEP_NETWORK_ROOT, File Values
-@subsubsection GNUSTEP_USER_CONFIG_FILE
-
-This is the name of the user specific configuration file (a path relative to
-the home directory of the user).  This configuration file is loaded after the
-main GNUstep configuration file, and the key=value pairs in this file will
-override those in the main file (all except the GNUSTEP_USER_CONFIG_FILE
-obviously).
-
-The default (unless otherwise configured) is 
-@example
-GNUSTEP_USER_CONFIG_FILE=.GNUstep.conf
-@end example
-
-If the value of this key is set to an empty styring, the system will not
-attempt to load a user specific configuration file, thus ensuring that the
-individual user cannot override the values specified by the system
-administrator.
-
-@node GNUSTEP_USER_DIR, GNUSTEP_USER_DEFAULTS_DIR, GNUSTEP_USER_CONFIG_FILE, File Values
-@subsubsection GNUSTEP_USER_DIR
-
-This is used to define the User domain ... it is a path relative to the home
-directory of the user in which the User domain and hence all resources in
-the User domain are to be found.
-
-The default (unless otherwise configured) is:
-@example
-GNUSTEP_USER_DIR=GNUstep
-@end example
-
-but setting an empty string for this value
-will cause the User domain to be the home directory of the user.
-
-@node GNUSTEP_USER_DEFAULTS_DIR, , GNUSTEP_USER_DIR, File Values
-@subsubsection GNUSTEP_USER_DEFAULTS_DIR
-
-This is used to define the location of the defaults database for the user ...
-it is a path relative to the home directory of the user.
-
-The default (unless otherwise configured) is:
-@example
-GNUSTEP_USER_DEFAULTS_DIR=GNUstep/Defaults
-@end example
 
 @bye
 \bye
