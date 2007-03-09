@@ -15,6 +15,9 @@
 	* Instance/application.make: Updated GNUSTEP_SHARED_BUNDLE_xxx
 	variables to work with the new stuff.
 	* Instance/bundle.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/service.make: Same change.
 	* Instance/tool.make: Same change.
 	* Instance/library.make: Implemented xxx_HAS_RESOURCE_BUNDLE for
 	libraries -- including versioned resources.
