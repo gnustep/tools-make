@@ -1,5 +1,11 @@
 2007-03-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/library.make: Changed resource installation directory
+	structure to be very similar to the one used for frameworks.
+	Might be helpful in the future.
+
+2007-03-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/Shared/bundle.make: Internal shared bundle install
 	variables have been reorganized to support library resources with
 	versioning.
