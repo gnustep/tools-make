@@ -873,7 +873,7 @@ ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
 shared = yes
 HAVE_SHARED_LIBS = yes
 # This command links the library, generates automatically the list of
-# symbols to export, creates the DLL (eg, obj/gnustep-base.dll) and 
+# symbols to export, creates the DLL (eg, obj/gnustep-base-1_13.dll) and 
 # the import library (eg, obj/libgnustep-base.dll.a).
 SHARED_LIB_LINK_CMD     = \
         $(CC) $(SHARED_LD_PREFLAGS) -shared \

@@ -1,3 +1,13 @@
+2007-03-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented versioning of Microsoft Windows DLLs.  Every DLL now
+	has got the interface version in their name, and applications are
+	linked to a DLL including the interface version.
+	* Instance/library.make (INTERFACE_VERSION): Compute even if
+	building DLLs, using the same rules used on other platforms.
+	(LIB_LINK_DLL_FILE): Include the INTERFACE_VERSION in the name.
+	* Instance/framework.make (LIB_LINK_DLL_FILE): Same change.	
+
 2007-03-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	You can now start up applications on the command line by just

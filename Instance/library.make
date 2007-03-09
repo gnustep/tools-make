@@ -125,11 +125,6 @@ INTERNAL_LIBRARIES_DEPEND_UPON =				\
 
 ifeq ($(shared), yes)
 
-ifneq ($(BUILD_DLL),yes)
-
-LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB)$(SHARED_LIBEXT)
-VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
-
 # Allow the user GNUmakefile to define xxx_INTERFACE_VERSION to
 # replace the default INTERFACE_VERSION for this library.
 
@@ -183,6 +178,11 @@ ifeq ($($(GNUSTEP_INSTANCE)_INTERFACE_VERSION),)
 else
   INTERFACE_VERSION = $($(GNUSTEP_INSTANCE)_INTERFACE_VERSION)
 endif
+
+ifneq ($(BUILD_DLL),yes)
+
+LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB)$(SHARED_LIBEXT)
+VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(INTERFACE_VERSION)
 
 else # BUILD_DLL
@@ -212,8 +212,11 @@ LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(DLL_LIBEXT)$(LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 
-# LIB_LINK_DLL_FILE is the DLL library, gnustep-base.dll
-LIB_LINK_DLL_FILE    = $(LIBRARY_NAME_WITHOUT_LIB)$(DLL_LIBEXT)
+# LIB_LINK_DLL_FILE is the DLL library, gnustep-base-1.dll.  Include
+# the INTERFACE_VERSION in the DLL library name.  Applications are
+# linked explicitly to this INTERFACE_VERSION of the library; this
+# works exactly in the same way as under Unix.
+LIB_LINK_DLL_FILE    = $(LIBRARY_NAME_WITHOUT_LIB)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
 endif # BUILD_DLL
 
 else # following code for static libs
