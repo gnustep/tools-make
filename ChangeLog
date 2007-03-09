@@ -1,5 +1,20 @@
 2007-03-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/Shared/bundle.make: Internal shared bundle install
+	variables have been reorganized to support library resources with
+	versioning.
+	(shared-instance-bundle-install): Rewritten for changes.
+	(shared-instance-bundle-copy_into_dir): Same change.
+	(shared-instance-bundle-uninstall): Same change.
+	* Instance/application.make: Updated GNUSTEP_SHARED_BUNDLE_xxx
+	variables to work with the new stuff.
+	* Instance/bundle.make: Same change.
+	* Instance/tool.make: Same change.
+	* Instance/library.make: Implemented xxx_HAS_RESOURCE_BUNDLE for
+	libraries -- including versioned resources.
+	
+2007-03-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Implemented versioning of Microsoft Windows DLLs.  Every DLL now
 	has got the interface version in their name, and applications are
 	linked to a DLL including the interface version.

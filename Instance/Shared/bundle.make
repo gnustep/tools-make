@@ -25,28 +25,53 @@
 #
 
 #
-#  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH : the path to the local
-#  resource bundle (this might be a subdirectory of the actual bundle
-#  directory).  This path must include GNUSTEP_BUILD_DIR.  Resource
-#  files will be copied into this path.  For example, for a normal
-#  bundle it would be $(BUNDLE_DIR)/Resources; for an application it
-#  would be $(APP_DIR)/Resources; for a library or a tool,
-#  $(GNUSTEP_BUILD_DIR)/Resources/$(GNUSTEP_INSTANCE).  This variable
-#  is used during build, to copy the resources in place.
+#  GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH : this is used when copying
+# resource files into the bundle.  It's the path to the local resource
+# bundle where all resources will be put (this might be a subdirectory
+# of the actual bundle directory).  This path must include
+# GNUSTEP_BUILD_DIR.  Resource files will be copied into this path.
+# For example, for a normal bundle it would be
+# $(BUNDLE_DIR)/Resources; for an application it would be
+# $(APP_DIR)/Resources; for a library or a tool,
+# $(GNUSTEP_BUILD_DIR)/Resources/$(GNUSTEP_INSTANCE).  This variable
+# is used during build, to copy the resources in place.
 #
 #  GNUSTEP_BUILD_DIR : Implicitly used to find the bundle.
 #
-#  GNUSTEP_SHARED_BUNDLE_MAIN_PATH : the path to the top level bundle
-#  directory to install, relative to GNUSTEP_BUILD_DIR during build
-#  (and installation dir when installed).  For example, for a normal
-#  bundle it would be $(BUNDLE_DIR_NAME); for an application it would
-#  be $(APP_DIR_NAME); for a library or a tool, $(GNUSTEP_INSTANCE).
+#  GNUSTEP_SHARED_BUNDLE_INSTALL_NAME : this is used when installing.
+# It's the name of the directory that is installed.  For example, for
+# a normal bundle it would be $(BUNDLE_DIR_NAME); for an application
+# it would be $(APP_DIR_NAME); for a tool $(GNUSTEP_INSTANCE); for a
+# library, $(INTERFACE_VERSION).
 #
-#  GNUSTEP_SHARED_BUNDLE_INSTALL_DIR : the path to the dir
-#  in which the bundle is to be installed.  For example, for a normal
-#  bundle it would be $(BUNDLE_INSTALL_DIR); for an application it would
-#  be $(APP_INSTALL_DIR); for a library or tool, $(GNUSTEP_RESOURCES),
-#  or $(GNUSTEP_TOOL_RESOURCES).
+#  GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH : this is used when
+# installing.  It's the path to the directory that contains
+# GNUSTEP_SHARED_BUNDLE_INSTALL_NAME, but relative to
+# GNUSTEP_BUILD_DIR.  For example, for a normal bundle or an
+# application this is simply ./; for a tool this is ./Resources; for a
+# library this is ./Resources/$(GNUSTEP_INSTANCE).  This is relative
+# to GNUSTEP_BUILD_DIR so that it can be used by COPY_INTO_DIR as
+# well.  When we are asked to COPY_INTO_DIR (instead of the standard
+# installation) then we copy the stuff from
+# GNUSTEP_BUILD_DIR/GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH into
+# COPY_INTO_DIR/GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH.  This works
+# well for tool resources, for example, so that when you copy a tool
+# with resources into a framework, the tool resources and the tool
+# executable remain in the same relative relationship and tool
+# resources can be found.
+#
+#  GNUSTEP_SHARED_BUNDLE_INSTALL_PATH : this is used when installing.
+# It's the path where we install the bundle; that is, we will take
+# GNUSTEP_SHARED_BUNDLE_INSTALL_NAME from
+# GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH and install it into
+# GNUSTEP_SHARED_BUNDLE_INSTALL_PATH.  For example, for a normal
+# bundle it would be $(BUNDLE_INSTALL_DIR); for an application it
+# would be $(APP_INSTALL_DIR); for a tool, $(GNUSTEP_TOOL_RESOURCES);
+# for a library $(GNUSTEP_RESOURCES)/$(GNUSTEP_INSTANCE).
+#
+# Please note that the main constraint when installing is that your
+# local bundle should have the same name that it has when installed.
+# Paths can be changed arbitrarily though.
 #
 #  $(GNUSTEP_INSTANCE)_RESOURCE_FILES : a list of resource files to install.
 #  They are recursively copied (/symlinked), so it might also include dirs.
@@ -115,7 +140,7 @@
 
 #
 # Warning - the bundle install rules depend on the rule to create
-# $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR) - the rule to build it has to be
+# $(GNUSTEP_SHARED_BUNDLE_INSTALL_PATH) - the rule to build it has to be
 # provided by the caller {we can't provide two rules to build the same
 # target; the caller might need to provide the rule for cases when we
 # are not included, so we let the caller always provide it}
@@ -378,19 +403,21 @@ endif
 # files to exclude.  We use a standard exclude file list which we store
 # in GNUSTEP_MAKEFILES.
 #
-shared-instance-bundle-install:: $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)
-	$(ECHO_INSTALLING_BUNDLE)rm -rf $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
-	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
-	  | (cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+shared-instance-bundle-install:: $(GNUSTEP_SHARED_BUNDLE_INSTALL_PATH)
+	$(ECHO_INSTALLING_BUNDLE)rm -rf $(GNUSTEP_SHARED_BUNDLE_INSTALL_PATH)/$(GNUSTEP_SHARED_BUNDLE_INSTALL_NAME); \
+	(cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH); \
+	    $(TAR) chfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_SHARED_BUNDLE_INSTALL_NAME)) \
+	 | (cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_PATH); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
-	  $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)$(END_ECHO)
+	  $(GNUSTEP_SHARED_BUNDLE_INSTALL_PATH)/$(GNUSTEP_SHARED_BUNDLE_INSTALL_NAME)$(END_ECHO)
 endif
 
 shared-instance-bundle-copy_into_dir::
-	$(ECHO_COPYING_BUNDLE_INTO_DIR)rm -rf $(COPY_INTO_DIR)/$(GNUSTEP_SHARED_BUNDLE_MAIN_PATH); \
-	(cd $(GNUSTEP_BUILD_DIR); $(TAR) chfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)) \
-	  | (cd $(COPY_INTO_DIR); $(TAR) xf -)$(END_ECHO)
+	$(ECHO_COPYING_BUNDLE_INTO_DIR)rm -rf $(COPY_INTO_DIR)/$(GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH)/$(GNUSTEP_SHARED_BUNDLE_INSTALL_NAME); \
+	(cd $(GNUSTEP_BUILD_DIR); \
+	    $(TAR) chfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH)/$(GNUSTEP_SHARED_BUNDLE_INSTALL_NAME)) \
+	 | (cd $(COPY_INTO_DIR); $(TAR) xf -)$(END_ECHO)
 
 shared-instance-bundle-uninstall::
-	$(ECHO_NOTHING)cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_DIR); rm -rf $(GNUSTEP_SHARED_BUNDLE_MAIN_PATH)$(END_ECHO)
+	$(ECHO_NOTHING)cd $(GNUSTEP_SHARED_BUNDLE_INSTALL_PATH); rm -rf $(GNUSTEP_SHARED_BUNDLE_INSTALL_NAME)$(END_ECHO)

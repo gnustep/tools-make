@@ -302,4 +302,39 @@ endif
 #
 internal-library-check::
 
+#
+# If the user makefile contains the command
+# xxx_HAS_RESOURCE_BUNDLE = yes
+# then we need to build a resource bundle for the library, and install it.
+# You can then add resources to the library, any sort of, with the usual
+# xxx_RESOURCE_FILES, xxx_LOCALIZED_RESOURCE_FILES, xxx_LANGUAGES, etc.
+# The library resource bundle (and all resources inside it) can be
+# accessed at runtime very comfortably, by using gnustep-base's
+# [NSBundle +bundleForLibrary:version:].
+#
+ifeq ($($(GNUSTEP_INSTANCE)_HAS_RESOURCE_BUNDLE),yes)
+
+# Include the rules to build resource bundles
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(GNUSTEP_BUILD_DIR)/Resources/$(GNUSTEP_INSTANCE)/$(INTERFACE_VERSION)
+
+# We want to install gnustep-base resources into
+# GNUSTEP_RESOURCES/gnustep-base/1.14/.
+GNUSTEP_SHARED_BUNDLE_INSTALL_NAME = $(INTERFACE_VERSION)
+GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = Resources/$(GNUSTEP_INSTANCE)
+GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(GNUSTEP_RESOURCES)/$(GNUSTEP_INSTANCE)
+
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
+
+internal-library-all_:: shared-instance-bundle-all
+internal-library-copy_into_dir:: shared-instance-bundle-copy_into_dir
+
+$(GNUSTEP_RESOURCES)/$(GNUSTEP_INSTANCE):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
+
+internal-library-install_:: $(GNUSTEP_RESOURCES)/$(GNUSTEP_INSTANCE) shared-instance-bundle-install 
+
+internal-library-uninstall:: shared-instance-bundle-uninstall
+
+endif
+
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/strings.make
