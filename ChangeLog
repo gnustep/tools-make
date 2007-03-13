@@ -1,3 +1,25 @@
+2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/framework.make
+	($(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)):
+	New rule to create the directory when non-flattened.
+	($(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)):
+	Depend on the new rule; use REL_PATH_SCRIPT to compute correct
+	symlink when non-flattened.
+
+2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/resource-set.make (RESOURCE_FILES_DIR): New variable.
+	($(RESOURCE_FILES_INSTALL_DIR)): Added missing CHOWN.
+	(LOCALIZED_RESOURCE_DIRS): New variable; implemented rules to
+	support it.
+	(internal-resource_set-install_): Create the
+	LOCALIZED_RESOURCE_DIRS if needed.  Use 'cp -rf' instead of
+	INSTALL_DATA to install RESOURCE_FILES and
+	LOCALIZED_RESOURCE_FILES so that directories can be used as well.
+	Do a final CHOWN to fixup ownership of all the installed stuff.
+	($(RESOURCE_FILES_INSTALL_DIR)/%): Do a CHOWN.
+
 2007-03-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/library.make: Changed resource installation directory

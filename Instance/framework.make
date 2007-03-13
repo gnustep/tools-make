@@ -465,7 +465,10 @@ ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 # what we are compiling is not made the Current framework version, I
 # think it's not our business to touch the Current stuff, so let's
 # ignore it.  It's faster to ignore it anyway. ;-)
-$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE):
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR):
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE): $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/
 ifeq ($(MAKE_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework; \
 	$(RM_LN_S) $(GNUSTEP_INSTANCE); \
@@ -488,12 +491,19 @@ else
 # by just using -Lpath_to_the_framework/xxx.framework/$TARGET_LDIR
 #
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
-$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE):
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR):
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE): $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/
 ifeq ($(MAKE_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR); \
 	$(RM_LN_S) $(GNUSTEP_INSTANCE) $(FRAMEWORK_LIBRARY_FILES); \
-	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) $(GNUSTEP_INSTANCE); \
-	$(LN_S) Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(FRAMEWORK_LIBRARY_FILE) $(FRAMEWORK_LIBRARY_FILE)$(END_ECHO)
+	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_TARGET_LDIR) \
+	                            Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)` \
+	        $(GNUSTEP_INSTANCE); \
+	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_TARGET_LDIR) \
+	                            Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(FRAMEWORK_LIBRARY_FILE)` \
+	        $(FRAMEWORK_LIBRARY_FILE)$(END_ECHO)
 endif
 endif
 endif
