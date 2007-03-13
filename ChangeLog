@@ -1,9 +1,9 @@
 2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/framework.make
-	($(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)):
+	(GNUSTEP_BUILD_DIR/GNUSTEP_INSTANCE.framework/GNUSTEP_TARGET_LDIR):
 	New rule to create the directory when non-flattened.
-	($(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)):
+	(GNUSTEP_BUILD_DIR/GNUSTEP_INSTANCE.framework/GNUSTEP_TARGET_LDIR/GNUSTEP_INSTANCE):
 	Depend on the new rule; use REL_PATH_SCRIPT to compute correct
 	symlink when non-flattened.
 
