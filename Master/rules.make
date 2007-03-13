@@ -290,7 +290,15 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
         if [ "$$type" = "framework" ]; then \
           if [ "$(FRAMEWORK_VERSION_SUPPORT)" = "yes" ]; then \
             framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
-            if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
+            if [ "$$framework_version" = "" ]; then \
+              framework_version="$($(basename $(basename $*))_INTERFACE_VERSION)"; \
+              if [ "$$framework_version" = "" ]; then \
+                framework_version="$(word 1,$(subst ., ,$($(basename $(basename $*))_VERSION)))"; \
+                if [ "$$framework_version" = "" ]; then \
+                  framework_version="0.0"; \
+                fi; \
+              fi; \
+            fi; \
             owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
           else \
             owning_project_header_dir="../$${instance}.framework/Headers"; \
@@ -357,7 +365,15 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
         if [ "$$type" = "framework" ]; then \
           if [ "$(FRAMEWORK_VERSION_SUPPORT)" = "yes" ]; then \
             framework_version="$($(basename $(basename $*))_CURRENT_VERSION_NAME)"; \
-            if [ "$$framework_version" = "" ]; then framework_version="A"; fi; \
+            if [ "$$framework_version" = "" ]; then \
+              framework_version="$($(basename $(basename $*))_INTERFACE_VERSION)"; \
+              if [ "$$framework_version" = "" ]; then \
+                framework_version="$(word 1,$(subst ., ,$($(basename $(basename $*))_VERSION)))"; \
+                if [ "$$framework_version" = "" ]; then \
+                  framework_version="0.0"; \
+                fi; \
+              fi; \
+            fi; \
             owning_project_header_dir="../$${instance}.framework/Versions/$${framework_version}/Headers"; \
           else \
             owning_project_header_dir="../$${instance}.framework/Headers"; \

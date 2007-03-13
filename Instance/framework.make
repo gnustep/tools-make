@@ -74,12 +74,36 @@ endif
 # might be installed at the same time :-).
 #
 
+# Set VERSION from xxx_VERSION
+ifneq ($($(GNUSTEP_INSTANCE)_VERSION),)
+  VERSION = $($(GNUSTEP_INSTANCE)_VERSION)
+endif
+
+ifeq ($(VERSION),)
+  VERSION = 0.0.1
+endif
+
+# By setting xxx_INTERFACE_VERSION you can change the soversion used
+# when linking the library.  See comments in library.make for the
+# variables with the same name for libraries.
+ifeq ($($(GNUSTEP_INSTANCE)_INTERFACE_VERSION),)
+  # By default, if VERSION is 1.0.0, INTERFACE_VERSION is 1
+  INTERFACE_VERSION = $(word 1,$(subst ., ,$(VERSION)))
+else
+  INTERFACE_VERSION = $($(GNUSTEP_INSTANCE)_INTERFACE_VERSION)
+endif
+
+# CURRENT_VERSION_NAME is the name of the version as used when
+# building the library structure.  We recommend just using
+# INTERFACE_VERSION for that, so your resources and your shared
+# library have the same versioning.
+
 # Warning - the following variable is also used in Master/rules.make
 # to build the OWNING_PROJECT_HEADER_DIR for the framework's
 # subprojects.  Make sure you keep them in sync if you change them.
 CURRENT_VERSION_NAME = $($(GNUSTEP_INSTANCE)_CURRENT_VERSION_NAME)
 ifeq ($(CURRENT_VERSION_NAME),)
-  CURRENT_VERSION_NAME = A
+  CURRENT_VERSION_NAME = $(INTERFACE_VERSION)
 endif
 
 # xxx_MAKE_CURRENT_VERSION can be set to 'no' if you do not want the
@@ -111,15 +135,6 @@ endif
 # way of doing this.
 ifeq ($(FRAMEWORK_VERSION_SUPPORT),no)
   MAKE_CURRENT_VERSION = no
-endif
-
-# Set VERSION from xxx_VERSION
-ifneq ($($(GNUSTEP_INSTANCE)_VERSION),)
-  VERSION = $($(GNUSTEP_INSTANCE)_VERSION)
-endif
-
-ifeq ($(VERSION),)
-  VERSION = 0.0.1
 endif
 
 # This is used on Apple to build frameworks which can be embedded into
@@ -224,16 +239,6 @@ FRAMEWORK_LIBRARY_DIR_NAME = $(FRAMEWORK_VERSION_DIR_NAME)/$(GNUSTEP_TARGET_LDIR
 FRAMEWORK_LIBRARY_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_LIBRARY_DIR_NAME)
 FRAMEWORK_CURRENT_LIBRARY_DIR_NAME = $(FRAMEWORK_CURRENT_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)
 FRAMEWORK_CURRENT_LIBRARY_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)
-
-# By setting xxx_INTERFACE_VERSION you can change the soversion used
-# when linking the library.  See comments in library.make for the
-# variables with the same name for libraries.
-ifeq ($($(GNUSTEP_INSTANCE)_INTERFACE_VERSION),)
-  # By default, if VERSION is 1.0.0, INTERFACE_VERSION is 1
-  INTERFACE_VERSION = $(word 1,$(subst ., ,$(VERSION)))
-else
-  INTERFACE_VERSION = $($(GNUSTEP_INSTANCE)_INTERFACE_VERSION)
-endif
 
 ifneq ($(BUILD_DLL), yes)
 

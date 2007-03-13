@@ -1,5 +1,15 @@
 2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/framework.make (CURRENT_VERSION_NAME): If no
+	CURRENT_VERSION_NAME is set, use INTERFACE_VERSION for it (instead
+	of 'A'), so that by default the shared object and the resources
+	follow a similar versioning (can still be configured, as before,
+	to have separated versioning).
+	* Master/rules.make (%.variables, %.subprojects): Corresponding
+	update.
+
+2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/framework.make
 	(GNUSTEP_BUILD_DIR/GNUSTEP_INSTANCE.framework/GNUSTEP_TARGET_LDIR):
 	New rule to create the directory when non-flattened.
