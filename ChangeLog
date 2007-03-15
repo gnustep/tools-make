@@ -1,3 +1,8 @@
+2007-03-15  Chris Vetter <chris.vetter@gmail.com>
+
+	* mac: New filesystem layout (comments at the top of the file
+	edited by Nicola).
+	
 2007-03-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Added -fexceptions as well when trying the
