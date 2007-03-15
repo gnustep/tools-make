@@ -517,7 +517,8 @@ CFLAGS =
 # If the compiler supports native ObjC exceptions and the user wants us to
 # use them, turn them on!
 ifeq ($(USE_OBJC_EXCEPTIONS), yes)
-  OBJCFLAGS += -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
+  OBJCFLAGS += -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
+  INTERNAL_LDFLAGS += -fexceptions
 endif
 
 #

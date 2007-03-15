@@ -1,3 +1,12 @@
+2007-03-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Added -fexceptions as well when trying the
+	ObjC exception test program.  Restore CFLAGS and LIBS after
+	the ObjC exception test.
+	* configure: Regenerated.
+	* common.make (OBJCFLAGS, INTERNAL_LDFLAGS): Add -fexceptions when
+	ObjC exceptions are enabled.
+
 2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/framework.make (CURRENT_VERSION_NAME): If no

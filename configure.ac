@@ -1053,7 +1053,10 @@ if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
     USE_OBJC_EXCEPTIONS=no
     AC_MSG_RESULT(no: compiler isn't gcc)
   else
-    CFLAGS="$CFLAGS -fobjc-exceptions"
+    CFLAGS_no_exceptions="$CFLAGS"
+    LIBS_no_exceptions="$LIBS"
+    CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
+    LIBS="$LIBS -fexceptions"
     AC_RUN_IFELSE([[
 #include <stdlib.h>
 #include <objc/Object.h>
@@ -1075,6 +1078,8 @@ int main(int argc, char **argv)
 }
   ]], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
     AC_MSG_RESULT($USE_OBJC_EXCEPTIONS)
+    CFLAGS="$CFLAGS_no_exceptions"
+    LIBS="$LIBS_no_exceptions"
   fi
   if test x$USE_OBJC_EXCEPTIONS = xno; then
     AC_MSG_NOTICE([Native objective-c exceptions were requested, but the compiler])

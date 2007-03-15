@@ -4555,7 +4555,10 @@ if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
     echo "$as_me:$LINENO: result: no: compiler isn't gcc" >&5
 echo "${ECHO_T}no: compiler isn't gcc" >&6
   else
-    CFLAGS="$CFLAGS -fobjc-exceptions"
+    CFLAGS_no_exceptions="$CFLAGS"
+    LIBS_no_exceptions="$LIBS"
+    CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
+    LIBS="$LIBS -fexceptions"
     if test "$cross_compiling" = yes; then
   { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
 See \`config.log' for more details." >&5
@@ -4609,6 +4612,8 @@ rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftes
 fi
     echo "$as_me:$LINENO: result: $USE_OBJC_EXCEPTIONS" >&5
 echo "${ECHO_T}$USE_OBJC_EXCEPTIONS" >&6
+    CFLAGS="$CFLAGS_no_exceptions"
+    LIBS="$LIBS_no_exceptions"
   fi
   if test x$USE_OBJC_EXCEPTIONS = xno; then
     { echo "$as_me:$LINENO: Native objective-c exceptions were requested, but the compiler" >&5
