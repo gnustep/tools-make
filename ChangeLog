@@ -1,3 +1,8 @@
+2007-03-16  Xavier Glattard <xavier.glattard@online.fr>
+
+	* configure.ac (CYGWIN): Set to no on MinGW.
+	* configure: Regenerated.
+
 2007-03-15  Chris Vetter <chris.vetter@gmail.com>
 
 	* mac: New filesystem layout (comments at the top of the file

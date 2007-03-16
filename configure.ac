@@ -120,7 +120,7 @@ case $host_os in
 	MSWIND=yes;;
   *mingw32* )
 	MINGW32=yes
-	CYGWIN=yes
+	CYGWIN=no
 	MSWIND=yes;;
           * )
 	MINGW32=no
