@@ -149,7 +149,10 @@ HAS_GSWCOMPONENTS = $($(GNUSTEP_INSTANCE)_HAS_GSWCOMPONENTS)
 GSWAPP_INFO_PLIST = $($(GNUSTEP_INSTANCE)_GSWAPP_INFO_PLIST)
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
-$(GSWAPP_INFO_PLIST_FILE):
+# Depend on xxxInfo.plist but only if it exists.
+GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+
+$(GSWAPP_INFO_PLIST_FILE): $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \

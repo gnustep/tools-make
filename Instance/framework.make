@@ -447,15 +447,21 @@ $(DUMMY_FRAMEWORK_OBJ_FILE): $(DUMMY_FRAMEWORK_FILE)
 	$(ECHO_COMPILING)$(CC) $< -c $(ALL_CPPFLAGS) $(ALL_OBJCFLAGS) -o $@$(END_ECHO)
 endif
 
+ifeq ($(FOUNDATION_LIB),gnu)
+  FRAMEWORK_INFO_PLIST_FILE = Info-gnustep.plist
+else
+  FRAMEWORK_INFO_PLIST_FILE = Info.plist
+endif
+
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
 build-framework: $(FRAMEWORK_FILE) \
                  shared-instance-bundle-all \
-                 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist \
+                 $(FRAMEWORK_VERSION_DIR)/Resources/$(FRAMEWORK_INFO_PLIST_FILE) \
                  $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
 else
 build-framework: $(FRAMEWORK_FILE) \
                  shared-instance-bundle-all \
-                 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist
+                 $(FRAMEWORK_VERSION_DIR)/Resources/$(FRAMEWORK_INFO_PLIST_FILE)
 endif
 
 ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
@@ -535,6 +541,9 @@ endif
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
+# FIXME: Use stamp.make to depend on the value of MAIN_MODEL_FILE and PRINCIPAL_CLASS
+
+# FIXME: MacOSX frameworks should also merge xxxInfo.plist into them
 # MacOSX-S frameworks
 $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resources
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -543,8 +552,14 @@ $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resource
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@$(END_ECHO)
 
+# Depend on xxxInfo.plist but only if it exists.
+GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+
 # GNUstep frameworks
-$(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: $(FRAMEWORK_VERSION_DIR)/Resources $(DUMMY_FRAMEWORK_FILE)
+$(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: \
+                        $(FRAMEWORK_VERSION_DIR)/Resources \
+                        $(DUMMY_FRAMEWORK_FILE) \
+                        $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)$(FRAMEWORK_OBJ_EXT)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \

@@ -255,10 +255,14 @@ endif
 
 else # following executed if FOUNDATION_LIB != apple
 
+# Depend on xxxInfo.plist but only if it exists.
+GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+
 ifneq ($(OBJ_FILES_TO_LINK),)
 # GNUstep bundles
 $(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
-                                                 $(GNUSTEP_STAMP_DEPEND)
+                                            $(GNUSTEP_STAMP_DEPEND) \
+                                            $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -270,7 +274,8 @@ $(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
 else # following code for when no object file is built
 # GNUstep bundles
 $(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
-                                                 $(GNUSTEP_STAMP_DEPEND)
+                                            $(GNUSTEP_STAMP_DEPEND) \
+                                            $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
 	  echo "}") >$@$(END_ECHO)

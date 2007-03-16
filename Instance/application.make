@@ -186,8 +186,9 @@ MAIN_MARKUP_FILE = $(strip $(subst .gsmarkup,,$($(GNUSTEP_INSTANCE)_MAIN_MARKUP_
 # APPLICATION_ICON and/or MAIN_MODEL_FILE and/or MAIN_MARKUP_FILE has
 # changed since last time we built Info.plist.  We use
 # stamp-string.make, which will store the variables in a stamp file
-# inside GNUSTEP_STAMP_DIR, and rebuild Info.plist iff
-# GNUSTEP_STAMP_STRING changes.
+# inside GNUSTEP_STAMP_DIR, and rebuild Info.plist if
+# GNUSTEP_STAMP_STRING changes.  We will also depend on xxxInfo.plist
+# if any.
 GNUSTEP_STAMP_STRING = $(PRINCIPAL_CLASS)-$(APPLICATION_ICON)-$(MAIN_MODEL_FILE)-$(MAIN_MARKUP_FILE)
 
 ifneq ($(FOUNDATION_LIB),apple)
@@ -202,14 +203,11 @@ endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 
-# FIXME: Missing dependency on $(GNUSTEP_INSTANCE)Info.plist files
-
 # You can have a single xxxInfo.plist for both GNUstep and Apple.
 
 # Often enough, you can just put in it all fields required by both
-# GNUstep and Apple; if there is a conflict, you can add
-# xxx_PREPROCESS_INFO_PLIST = yes to your GNUmakefile, and provide a
-# xxxInfo.cplist (please note the suffix!) - that file is
+# GNUstep and Apple; if there is a conflict, you can provide
+# axxxInfo.cplist (please note the suffix!) - that file is
 # automatically run through the C preprocessor to generate a
 # xxxInfo.plist file from it.  The preprocessor will define GNUSTEP
 # when using gnustep-base, APPLE when using Apple FoundationKit, NEXT
@@ -223,17 +221,17 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/stamp-string.make
 # to have your .cplist use different code for each.
 #
 
-# The following is really a hack, but very elegant.  Our problem is
-# that we'd like to always depend on xxxInfo.plist if it's there, and
-# not depend on it if it's not there - but we don't have a solution to
-# this problem at the moment, so we don't depend on it.  Adding
-# xxx_PREPROCESS_INFO_PLIST = yes at the moment just turns on the
-# dependency on xxxInfo.plist, which is then built from xxxInfo.cplist
-# using the %.plist: %.cplist rules.
-ifeq ($($(GNUSTEP_INSTANCE)_PREPROCESS_INFO_PLIST), yes)
-  GNUSTEP_PLIST_DEPEND = $(GNUSTEP_INSTANCE)Info.plist
-else
-  GNUSTEP_PLIST_DEPEND =
+# Our problem is that we'd like to always depend on xxxInfo.plist if
+# it's there, and not depend on it if it's not there - which we solve
+# by expanding $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+
+# As a special case, if xxxInfo.cplist is there, in this case as well
+# we'd like to depend on xxxInfo.plist.
+ifeq ($(GNUSTEP_PLIST_DEPEND),)
+   # xxxInfo.plist is not there.  Check if xxxInfo.cplist is there, and
+   # if so, convert it to xxxInfo.plist and add it to the dependencies.
+   GNUSTEP_PLIST_DEPEND = $(patsubst %.cplist,%.plist,$(wildcard $(GNUSTEP_INSTANCE)Info.cplist))
 endif
 
 # On Apple we assume that xxxInfo.plist has a '{' (and nothing else)

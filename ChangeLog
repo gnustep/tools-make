@@ -1,3 +1,29 @@
+2007-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented rebuilding Info-gnustep.plist when xxxInfo.plist is
+	changed (and palette.table from xxxpalette.table for palettes).
+	For applications, automated detecting xxxInfo.cplist and
+	preprocessing it, so that xxx_PREPROCESS_INFO_PLIST in
+	GNUmakefiles is now obsolete and can be removed.
+	* Instance/application.make (GNUSTEP_PLIST_DEPEND): Automatically
+	add xxxInfo.plist if the file is there; if not, automatically add
+	xxxInfo.cplist if there.  Removed xxx_PREPROCESS_INFO_PLIST.
+	* Instance/bundle.make: Have Info-gnustep.plist automatically
+	depend on xxxInfo.plist if it exists.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/service.make: Same change.
+	* Instance/palette.make Have Info-gnustep.plist automatically
+	depend on xxxInfo.plist if it exists, and palette.table
+	automatically depend on xxxpalette.table if it exists.
+
+	* Instance/framework.make (FRAMEWORK_INFO_PLIST_FILE): New
+	variable fixing the fact that frameworks on gnu-gnu-gnu were
+	creating Info.plist instead of Info-gnustep.plist.
+	* Instance/service.make: Fixed rules to only cat xxxInfo.plist if
+	it exists.  Print a warning if it doesn't, as services need to
+	have one to be useful.
+	
 2007-03-16  Xavier Glattard <xavier.glattard@online.fr>
 
 	* configure.ac (CYGWIN): Set to no on MinGW.
