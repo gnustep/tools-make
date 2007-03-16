@@ -23,6 +23,8 @@
 	* Instance/service.make: Fixed rules to only cat xxxInfo.plist if
 	it exists.  Print a warning if it doesn't, as services need to
 	have one to be useful.
+
+	* Version: bumped to 1.98.2.
 	
 2007-03-16  Xavier Glattard <xavier.glattard@online.fr>
 
