@@ -500,7 +500,7 @@
 
 	* Instance/Documentation/latex.make: Add correct extension to target.
 	Filter out 'no' when getting LATEX2HMTL exec.
-	* Instance/pallette.make: Link with all libs even on darwin.
+	* Instance/palette.make: Link with all libs even on darwin.
 	* target.make (darwin): Use gnu runtime as test for gnu compilation.
 	(Based on suggestions from Yves de Champlain).
 
