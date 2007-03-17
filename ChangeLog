@@ -1,5 +1,17 @@
 2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Documentation/gnustep-howto.texi: Updated.  In particular:
+	removed all references to obsolete GNUSTEP_SYSTEM_ROOT, mention
+	the existence of various filesystem layouts and of the new setup
+	options, and updated explanations of how to checkout the source
+	code.
+	* Documentation/machines.texi (RedHat/Intel): Renamed to
+	'RedHat/i386'; marked as 'Supported' and added some doc.
+	(CentOS/i386): New section.
+	(FedoraCore/i386): New section.
+
+2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Documentation/make.texi: Changed the basic example to use
 	tool.make instead of objc.make.  Updated some comments.
 	(Directory Paths): Updated documentation; in particular,

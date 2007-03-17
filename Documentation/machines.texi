@@ -23,6 +23,7 @@ GNUstep @email{bug-gnustep@@gnu.org}.
 
 @menu
 * Compilers::                   
+* CentOS/i386::
 * Darwin/ix86::                 
 * Darwin/PowerPC::              
 * Debian/Alpha::                
@@ -30,6 +31,7 @@ GNUstep @email{bug-gnustep@@gnu.org}.
 * Debian/em64t::                 
 * Debian/PowerPC::              
 * Debian/SPARC::                
+* FedoraCore/i386::
 * FreeBSD 5.x::                 
 * FreeBSD 4.x::                 
 * FreeBSD 3.x::                 
@@ -47,7 +49,7 @@ GNUstep @email{bug-gnustep@@gnu.org}.
 * Netwinder::                   
 * OpenBSD 3.x::                 
 * OSF/Alpha::                   
-* RedHat/Intel::                
+* RedHat/i386::
 * Slackware/Intel::             
 * Slackware/Sparc::             
 * Solaris 2.5.1/Sparc::         
@@ -63,7 +65,7 @@ GNUstep @email{bug-gnustep@@gnu.org}.
 @end menu
 
 @c -----------------------------------------
-@node Compilers, Darwin/ix86, Machine Specific, Machine Specific
+@node Compilers, CentOS/i386, Machine Specific, Machine Specific
 @section Compilers
 
 A recommended compiler is listed for each machine, if known. You should try
@@ -132,7 +134,15 @@ setp procedures to run correctly.
 @end table
 
 @c -----------------------------------------
-@node Darwin/ix86, Darwin/PowerPC, Compilers, Machine Specific
+@node CentOS/i386, Darwin/ix86, Compilers, Machine Specific
+@section CentOS/ix86 (@emph{Supported})
+
+This RedHat variant is well-tested and well-supported (tested at least
+up to CentOS release 4.4).  For more information, please check the
+section on RedHat/i386 below.
+
+@c -----------------------------------------
+@node Darwin/ix86, Darwin/PowerPC, CentOS/i386, Machine Specific
 @section Darwin/ix86 (@emph{Unsupported})
 
 Currently tested on Darwin 7.x
@@ -234,13 +244,21 @@ Tested on 'unstable'.
 Tested on sid.
 
 @c -----------------------------------------
-@node Debian/SPARC, FreeBSD 5.x, Debian/PowerPC, Machine Specific
+@node Debian/SPARC, FedoraCore/i386, Debian/PowerPC, Machine Specific
 @section Debian/SPARC (@emph{Release})
 
 Tested on sid.
 
 @c -----------------------------------------
-@node FreeBSD 5.x, FreeBSD 4.x, Debian/SPARC, Machine Specific
+@node FedoraCore/i386, FreeBSD 5.x, Debian/SPARC, Machine Specific
+@section FedoraCore/ix86 (@emph{Supported})
+
+This RedHat variant is well-tested and well-supported (tested at least
+up to Fedora Core release 6).  For more information, please check the
+section on RedHat/i386 below.
+
+@c -----------------------------------------
+@node FreeBSD 5.x, FreeBSD 4.x, FedoraCore/i386, Machine Specific
 @section FreeBSD 5.x (@emph{Supported})
 
 Tested on 5.0, 5.1, 5.3
@@ -501,7 +519,7 @@ Ports at
 @url{http://mail.rochester.edu/~asveikau/gnustep-openbsd/}
 
 @c -----------------------------------------
-@node OSF/Alpha, RedHat/Intel, OpenBSD 3.x, Machine Specific
+@node OSF/Alpha, RedHat/i386, OpenBSD 3.x, Machine Specific
 @section OSF/Alpha  (@emph{Needs Testing, Unstable})
 @c Contact: suzukis@file.phys.tohoku.ac.jp
 
@@ -525,11 +543,29 @@ ADDTIONAL_TOOL_LIBS in the GNUmakefile(.preamble).
 @end table
 
 @c -----------------------------------------
-@node RedHat/Intel, Slackware/Intel, OSF/Alpha, Machine Specific
-@section RedHat/Intel (@emph{Unsupported})
+@node RedHat/i386, Slackware/Intel, OSF/Alpha, Machine Specific
+@section RedHat/i386 (@emph{Supported})
+
+RedHat and variants/clones such as Fedora Core and CentOS are all very
+well supported and are regularly tested with all GNUstep releases.
+
+@table @var
+@item Recommended compiler
+The default compiler works very well.
+
+@item Extra libs needed 
+All extra libs needed are easily available from standard packages; the
+only tricky one is ffcall.  If you don't find an RPM for that one,
+download it directly from the GNUstep web site
+(http://www.gnustep.org).
+
+@item Special Instructions 
+None.
+
+@end table
 
 @c -----------------------------------------
-@node Slackware/Intel, Slackware/Sparc, RedHat/Intel, Machine Specific
+@node Slackware/Intel, Slackware/Sparc, RedHat/i386, Machine Specific
 @section Slackware/Intel (@emph{Unsupported})
 
 @c -----------------------------------------
