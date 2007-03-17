@@ -1,5 +1,14 @@
 2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Documentation/make.texi: Changed the basic example to use
+	tool.make instead of objc.make.  Updated some comments.
+	(Directory Paths): Updated documentation; in particular,
+	documented GNUSTEP_ADMIN_APPS, GNUSTEP_WEB_APPS,
+	GNUSTEP_ADMIN_TOOLS, GNUSTEP_LIBRARY, GNUSTEP_DOC,
+	GNUSTEP_DOC_MAN, GNUSTEP_DOC_INFO.
+
+2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Added -shared-libgcc when linking with ObjC
 	exceptions (Suggestion from Andrew Pinski).
 	* common.make (INTERNAL_LDFLAGS): Same change.
