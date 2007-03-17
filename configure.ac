@@ -1056,7 +1056,7 @@ if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
     CFLAGS_no_exceptions="$CFLAGS"
     LIBS_no_exceptions="$LIBS"
     CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
-    LIBS="$LIBS -fexceptions"
+    LIBS="$LIBS -shared-libgcc -fexceptions"
     AC_RUN_IFELSE([[
 #include <stdlib.h>
 #include <objc/Object.h>

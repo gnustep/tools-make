@@ -1,3 +1,10 @@
+2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Added -shared-libgcc when linking with ObjC
+	exceptions (Suggestion from Andrew Pinski).
+	* common.make (INTERNAL_LDFLAGS): Same change.
+	* configure: Regenerated.
+	
 2007-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Implemented rebuilding Info-gnustep.plist when xxxInfo.plist is

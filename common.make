@@ -518,7 +518,7 @@ CFLAGS =
 # use them, turn them on!
 ifeq ($(USE_OBJC_EXCEPTIONS), yes)
   OBJCFLAGS += -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
-  INTERNAL_LDFLAGS += -fexceptions
+  INTERNAL_LDFLAGS += -shared-libgcc -fexceptions
 endif
 
 #

@@ -4558,7 +4558,7 @@ echo "${ECHO_T}no: compiler isn't gcc" >&6
     CFLAGS_no_exceptions="$CFLAGS"
     LIBS_no_exceptions="$LIBS"
     CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
-    LIBS="$LIBS -fexceptions"
+    LIBS="$LIBS -shared-libgcc -fexceptions"
     if test "$cross_compiling" = yes; then
   { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
 See \`config.log' for more details." >&5
