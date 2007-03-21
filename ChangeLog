@@ -1,3 +1,9 @@
+2007-03-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Warn people not to install libxslt
+	(Reported by Xavier Glattard <xavier.glattard@online.fr> and
+	Christopher Armstrong <carmstrong@fastmail.com.au>).
+
 2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/gnustep-howto.texi: Updated.  In particular:
