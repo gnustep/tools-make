@@ -119,7 +119,12 @@ ifeq ($(PALETTE_ICON),)
   PALETTE_ICON = $(GNUSTEP_INSTANCE)
 endif
 
-$(PALETTE_DIR)/Resources/Info-gnustep.plist: $(PALETTE_DIR)/Resources
+# Depend on xxxInfo.plist but only if it exists.
+GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+
+# FIXME - xxxInfo.plist in this case is not really a plist!
+
+$(PALETTE_DIR)/Resources/Info-gnustep.plist: $(PALETTE_DIR)/Resources $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(PALETTE_NAME)$(PALETTE_OBJ_EXT)\";"; \
 	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
@@ -129,7 +134,12 @@ $(PALETTE_DIR)/Resources/Info-gnustep.plist: $(PALETTE_DIR)/Resources
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
-$(PALETTE_DIR)/Resources/palette.table: $(PALETTE_DIR)/Resources
+# Depend on xxxpalette.table but only if it exists.
+PALETTE_TABLE_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)palette.table)
+
+# FIXME - use stamp.make to depend on the value of the variables
+# MAIN_MODEL_FILE, PRINCIPAL_CLASS and PALETTE_ICON
+$(PALETTE_DIR)/Resources/palette.table: $(PALETTE_DIR)/Resources $(PALETTE_TABLE_DEPEND)
 	$(ECHO_CREATING)(echo "{";\
 	  echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NibFile = \"$(MAIN_MODEL_FILE)\";"; \

@@ -73,15 +73,15 @@ Here is an example makefile (named GNUmakefile to emphasis the fact that it reli
 include $(GNUSTEP_MAKEFILES)/common.make
 
 # Build a simple Objective-C program
-OBJC_PROGRAM_NAME = simple
+TOOL_NAME = simple
 
 # The Objective-C files to compile
 simple_OBJC_FILES = simple.m
 
 -include GNUmakefile.preamble
 
-# Include in the rules for making Objective-C programs
-include $(GNUSTEP_MAKEFILES)/objc.make
+# Include in the rules for making GNUstep command-line programs
+include $(GNUSTEP_MAKEFILES)/tool.make
 
 -include GNUmakefile.postamble
 @end smallexample
@@ -393,9 +393,8 @@ This example makefile illustrates two libraries, @file{libone} and
 @file{libtwo}, that are to be generated.
 
 @smallexample
-
 #
-# An example makefile
+# An example GNUmakefile
 #
 
 # Include the common variables defined by the Makefile Package
@@ -523,7 +522,7 @@ This makefile illustrates two Objective-C programs, @file{simple} and
 
 @smallexample
 #
-# An example makefile
+# An example GNUmakefile
 #
 
 # Include the common variables defined by the Makefile Package
@@ -887,7 +886,6 @@ your specific package or that are to be used by developers only.
 * Overridable Flags::           
 @end menu
 
-
 Any of these variables that are defined by @file{common.make} can and
 should be used by the user's makefile fragments to reference directories
 and/or perform any tasks which are not done automatically by the
@@ -917,12 +915,41 @@ applications are installed.  This variable is dependent upon the
 accordingly if the user specifies a different installation domain.
 @end defvar
 
+@defvar GNUSTEP_ADMIN_APPS
+@code{GNUSTEP_ADMIN_APPS} is the absolute path to the directory where
+GUI applications for the system Administrator are installed.  This
+variable is dependent upon the @code{GNUSTEP_INSTALLATION_DOMAIN}
+variable, so the path will change accordingly if the user specifies a
+different installation domain.
+@end defvar
+
+@defvar GNUSTEP_WEB_APPS
+@code{GNUSTEP_WEB_APPS} is the absolute path to the directory where
+web applications (for web development frameworks such as GSWeb or
+SOPE) are installed.  This variable is dependent upon the
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
+@end defvar
+
 @defvar GNUSTEP_TOOLS
 @code{GNUSTEP_TOOLS} is the absolute path for the root directory where
 command line tools are installed.  Only command line tools which are
 target platform independent should be installed in @code{GNUSTEP_TOOLS};
 target platform dependent command line tools should be placed in the
 appropriate subdirectory of @code{GNUSTEP_TOOLS}, see @ref{Directory
+Paths,,GNUSTEP_TARGET_DIR}, and @ref{Directory
+Paths,,TOOL_INSTALLATION_DIR}.  This variable is dependent upon the
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
+@end defvar
+
+@defvar GNUSTEP_ADMIN_TOOLS
+@code{GNUSTEP_ADMIN_TOOLS} is the absolute path for the root directory
+where command line tools for the system administrator are installed.
+Only command line tools which are target platform independent should
+be installed in @code{GNUSTEP_ADMIN_TOOLS}; target platform dependent
+command line tools should be placed in the appropriate subdirectory of
+@code{GNUSTEP_ADMIN)TOOLS}, see @ref{Directory
 Paths,,GNUSTEP_TARGET_DIR}, and @ref{Directory
 Paths,,TOOL_INSTALLATION_DIR}.  This variable is dependent upon the
 @code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
@@ -943,6 +970,21 @@ path will change accordingly if the user specifies a different
 installation domain.
 @end defvar
 
+@defvar GNUSTEP_LIBRARY
+@code{GNUSTEP_LIBRARY} is the absolute path for the 'Library'
+directory where all sorts of resources are installed.  This directory
+can be expected to have (at least) some standard subdirectories with
+fixed names, which are @code{ApplicationSupport}, @code{Bundles},
+@code{Frameworks}, @code{ApplicationSupport/Palettes},
+@code{Services}, @code{Libraries/Resources} and @code{Libraries/Java}.
+You can access them in your GNUmakefile as
+@code{GNUSTEP_LIBRARY/ApplicationSupport},
+@code{GNUSTEP_LIBRARY/Bundles}, etc.  This variable is dependent upon
+the @code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will
+change accordingly if the user specifies a different installation
+domain.
+@end defvar
+
 @defvar GNUSTEP_LIBRARIES
 @code{GNUSTEP_LIBRARIES} is the absolute path for the directory where
 libraries are installed taking the target platform and library
@@ -960,10 +1002,33 @@ fonts, printer type information, model files for system panels, and
 system images.  The resource files are generally associated with
 libraries, because resources for applications or bundles are included
 within the application or bundle directory wrapper.
-@code{GNUSTEP_RESOURCES} is a subdirectory of @code{GNUSTEP_LIBRARY};
-it is dependent upon the @code{GNUSTEP_INSTALLATION_DOMAIN} variable,
-so the path will change accordingly if the user specifies a different
-installation domain.
+@code{GNUSTEP_RESOURCES} is the @code{Libraries/Resources}
+subdirectory of @code{GNUSTEP_LIBRARY}; it is dependent upon the
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
+@end defvar
+
+@defvar GNUSTEP_DOC
+@code{GNUSTEP_DOC} is the absolute path for the directory where
+documentation is installed (with the exception of man pages and info
+documentation, which need to be installed into @code{GNUSTEP_DOC_MAN}
+and @code{GNUSTEP_DOC_INFO}).  This variable is dependent upon the
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
+@end defvar
+
+@defvar GNUSTEP_DOC_MAN
+@code{GNUSTEP_DOC_MAN} is the absolute path for the directory where
+man pages are to be installed.  This variable is dependent upon the
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
+@end defvar
+
+@defvar GNUSTEP_DOC_INFO
+@code{GNUSTEP_DOC_INFO} is the absolute path for the directory where
+info documentation is installed.  This variable is dependent upon the
+@code{GNUSTEP_INSTALLATION_DOMAIN} variable, so the path will change
+accordingly if the user specifies a different installation domain.
 @end defvar
 
 @defvar GNUSTEP_HOST_DIR

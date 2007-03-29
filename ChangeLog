@@ -1,3 +1,116 @@
+2007-03-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Warn people not to install libxslt
+	(Reported by Xavier Glattard <xavier.glattard@online.fr> and
+	Christopher Armstrong <carmstrong@fastmail.com.au>).
+
+2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/gnustep-howto.texi: Updated.  In particular:
+	removed all references to obsolete GNUSTEP_SYSTEM_ROOT, mention
+	the existence of various filesystem layouts and of the new setup
+	options, and updated explanations of how to checkout the source
+	code.
+	* Documentation/machines.texi (RedHat/Intel): Renamed to
+	'RedHat/i386'; marked as 'Supported' and added some doc.
+	(CentOS/i386): New section.
+	(FedoraCore/i386): New section.
+
+2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/make.texi: Changed the basic example to use
+	tool.make instead of objc.make.  Updated some comments.
+	(Directory Paths): Updated documentation; in particular,
+	documented GNUSTEP_ADMIN_APPS, GNUSTEP_WEB_APPS,
+	GNUSTEP_ADMIN_TOOLS, GNUSTEP_LIBRARY, GNUSTEP_DOC,
+	GNUSTEP_DOC_MAN, GNUSTEP_DOC_INFO.
+
+2007-03-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Added -shared-libgcc when linking with ObjC
+	exceptions (Suggestion from Andrew Pinski).
+	* common.make (INTERNAL_LDFLAGS): Same change.
+	* configure: Regenerated.
+	
+2007-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented rebuilding Info-gnustep.plist when xxxInfo.plist is
+	changed (and palette.table from xxxpalette.table for palettes).
+	For applications, automated detecting xxxInfo.cplist and
+	preprocessing it, so that xxx_PREPROCESS_INFO_PLIST in
+	GNUmakefiles is now obsolete and can be removed.
+	* Instance/application.make (GNUSTEP_PLIST_DEPEND): Automatically
+	add xxxInfo.plist if the file is there; if not, automatically add
+	xxxInfo.cplist if there.  Removed xxx_PREPROCESS_INFO_PLIST.
+	* Instance/bundle.make: Have Info-gnustep.plist automatically
+	depend on xxxInfo.plist if it exists.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/service.make: Same change.
+	* Instance/palette.make Have Info-gnustep.plist automatically
+	depend on xxxInfo.plist if it exists, and palette.table
+	automatically depend on xxxpalette.table if it exists.
+
+	* Instance/framework.make (FRAMEWORK_INFO_PLIST_FILE): New
+	variable fixing the fact that frameworks on gnu-gnu-gnu were
+	creating Info.plist instead of Info-gnustep.plist.
+	* Instance/service.make: Fixed rules to only cat xxxInfo.plist if
+	it exists.  Print a warning if it doesn't, as services need to
+	have one to be useful.
+
+	* Version: bumped to 1.98.2.
+	
+2007-03-16  Xavier Glattard <xavier.glattard@online.fr>
+
+	* configure.ac (CYGWIN): Set to no on MinGW.
+	* configure: Regenerated.
+
+2007-03-15  Chris Vetter <chris.vetter@gmail.com>
+
+	* mac: New filesystem layout (comments at the top of the file
+	edited by Nicola).
+	
+2007-03-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Added -fexceptions as well when trying the
+	ObjC exception test program.  Restore CFLAGS and LIBS after
+	the ObjC exception test.
+	* configure: Regenerated.
+	* common.make (OBJCFLAGS, INTERNAL_LDFLAGS): Add -fexceptions when
+	ObjC exceptions are enabled.
+
+2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/framework.make (CURRENT_VERSION_NAME): If no
+	CURRENT_VERSION_NAME is set, use INTERFACE_VERSION for it (instead
+	of 'A'), so that by default the shared object and the resources
+	follow a similar versioning (can still be configured, as before,
+	to have separated versioning).
+	* Master/rules.make (%.variables, %.subprojects): Corresponding
+	update.
+
+2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/framework.make
+	(GNUSTEP_BUILD_DIR/GNUSTEP_INSTANCE.framework/GNUSTEP_TARGET_LDIR):
+	New rule to create the directory when non-flattened.
+	(GNUSTEP_BUILD_DIR/GNUSTEP_INSTANCE.framework/GNUSTEP_TARGET_LDIR/GNUSTEP_INSTANCE):
+	Depend on the new rule; use REL_PATH_SCRIPT to compute correct
+	symlink when non-flattened.
+
+2007-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/resource-set.make (RESOURCE_FILES_DIR): New variable.
+	($(RESOURCE_FILES_INSTALL_DIR)): Added missing CHOWN.
+	(LOCALIZED_RESOURCE_DIRS): New variable; implemented rules to
+	support it.
+	(internal-resource_set-install_): Create the
+	LOCALIZED_RESOURCE_DIRS if needed.  Use 'cp -rf' instead of
+	INSTALL_DATA to install RESOURCE_FILES and
+	LOCALIZED_RESOURCE_FILES so that directories can be used as well.
+	Do a final CHOWN to fixup ownership of all the installed stuff.
+	($(RESOURCE_FILES_INSTALL_DIR)/%): Do a CHOWN.
+
 2007-03-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/library.make: Changed resource installation directory
@@ -414,7 +527,7 @@
 
 	* Instance/Documentation/latex.make: Add correct extension to target.
 	Filter out 'no' when getting LATEX2HMTL exec.
-	* Instance/pallette.make: Link with all libs even on darwin.
+	* Instance/palette.make: Link with all libs even on darwin.
 	* target.make (darwin): Use gnu runtime as test for gnu compilation.
 	(Based on suggestions from Yves de Champlain).
 

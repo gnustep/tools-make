@@ -20,7 +20,7 @@ Last Update: @today{}
 
 @page
 @vskip 0pt plus 1filll
-Copyright @copyright{}  1996 - 2002 Free Software Foundation, Inc.
+Copyright @copyright{}  1996 - 2007 Free Software Foundation, Inc.
    
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.1 or
@@ -38,7 +38,7 @@ any later version published by the Free Software Foundation.
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
 
-   Copyright (C) 1996 - 2002 Free Software Foundation, Inc.
+   Copyright (C) 1996 - 2007 Free Software Foundation, Inc.
    
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Public License, Version 1.0 or
@@ -170,12 +170,12 @@ Although it is not required, GNUstep will work much better if you use it
 with the WindowMaker window manager. 
 Get WindowMaker from @url{http://www.windowmaker.info}.
 
-@item gnustep-objc package (for gcc version < 3.0 ONLY or MINGW/Cygwin) (RECOMMENDED)
+@item gnustep-objc package (REQUIRED BUT ONLY for gcc version < 3.0 or MINGW/Cygwin)
 Note: Do not install this library unless you are sure you need it.
 You probably don't need it except on MinGW and Cygwin (regardless of the
 gcc version you have).
-This is a special version of the Objective-C runtime that include several
-bug fixes and features that were not in gcc versions previous to 3.0.
+This is a special version of the Objective-C runtime that is compiled
+as a shared library.
 It is available at @url{ftp://ftp.gnustep.org/pub/gnustep/libs} which
 compiles using the GNUstep Makefile package (so you don't have to get the
 entire gcc dist). Make sure to set the THREADING variable in the GNUmakefile.
@@ -225,28 +225,41 @@ the gnustep-make Documentation directory (such as README.MingW for Windows).
 @node Core Package,  , Compiling and Installing, Compiling and Installing
 @section Installing the Core Libraries
 
-The GNUstep packages uses the Autoconf mechanism for
-configuration; it checks some host capabilties which are used by
-all GNUstep software.  To configure just type:
+The GNUstep packages uses the Autoconf mechanism for configuration; it
+checks some host capabilities which are used by all GNUstep software.
+The first package you will compile is gnustep-make.  To configure
+gnustep-make just type:
 
 @example
 ./configure
 @end example
 
-The GNUstep makefile package needs a root directory.  If the
-GNUSTEP_SYSTEM_ROOT environment variable is set then configure will
-determine the root directory from its value (by removing the final
-/System path component from it).  You can also specify the root 
-directory when you run configure with the prefix paramater; the 
-following command makes /usr/local/GNUstep the root directory:
+The GNUstep makefile package can be configured to use different types
+of filesystem layouts.  By default, GNUstep is installed with a
+GNUstep filesystem layout into /usr/GNUstep.  That is a good,
+recommended default if you don't have an opinion on which filesystem
+layout to use.
+
+But you can also install it somewhere else by using the prefix
+parameter; the following command makes /usr/local/GNUstep the root
+directory:
 
 @example
 ./configure --prefix=/usr/local/GNUstep
 @end example
 
-If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
-and you do not specify a root directory when running configure, then
-configure will use /usr/GNUstep as the default root directory.
+You can also install GNUstep using an FHS layout (or some other filesystem layout
+of your choice) by using the with-layout parameter; the following command
+configures GNUstep to use the standard FHS (unix) filesystem layout:
+
+@example
+./configure --with-layout=fhs
+@end example
+
+In this document we will always present examples that assume that you
+are using the default GNUstep filesystem layout in /usr/GNUstep.  If
+you are using a different layout, you will need to make the obvious
+changes.
 
 @menu
 * Alternate Library Setup::     
@@ -272,15 +285,15 @@ make
 make install
 @end example
 
-Start with the Makefile Pacakge (gnustep-make). After installing
-gnustep-make you need to execute GNUstep's shell configuration
-script, as follows:
+Start with the Makefile Package (gnustep-make). After installing
+gnustep-make you need to execute GNUstep's shell configuration script,
+as follows:
 
 @example
  . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 @end example
 
-before proceeding any further. 
+before proceeding any further.
 
 NOTE for gcc 2.X or MinGW users: Now install gnustep-objc. Before building
 gnustep-objc, edit the @file{GNUmakefile} and set the @var{THREADING}
@@ -314,40 +327,71 @@ administrator to start the gdomap server using it.
 
 @node Environment Setup, GNUstep Home, Additional Installation, Additional Installation
 @section Environment Setup
-Add the shell script @file{GNUstep.sh} located in the Makefile
-package to your shell startup file (such as @file{.profile}). For instance,
-if your GNUSTEP_SYSTEM_ROOT is @file{/usr/GNUstep/System},
+
+You need to make sure your environment is properly setup in order to
+compile and run GNUstep software.  The steps to setup your environment
+differ slightly depending on your filesystem layout.
+
+There is a way of setting up your environment that always works:
+sourcing the @file{GNUstep.sh} shell script before using GNUstep.  The
+shell script @file{GNUstep.sh} is located in the Makefile package; you
+may want to add it to your shell startup file (such as
+@file{.profile}). For instance, if you installed GNUstep with the
+default GNUstep filesystem layout in @file{/usr/GNUstep}, then adding
 
 @example
 . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 @end example
 
-in your @file{.profile} file will work (Note the period at the beginning
-of the line, and the space between the period and the following path; 
-if your GNUSTEP_SYSTEM_ROOT is different, you need to replace 
-@file{/usr/GNUstep/System} with your GNUSTEP_SYSTEM_ROOT).
-It defines environment variables that are needed to find
-GNUstep files and executables.  Users of csh need to use the
-@file{GNUstep.csh} script. Read the make package @file{README} for more
-info. Some systems, like GNU/Linux have an @file{/etc/profile.d}
-directory where scripts can be executed automatically. If you want to
-set up GNUstep for every user on your system, you can try
-copying/linking the @file{GNUstep.sh} there. For csh or tcsh, try
+in your @file{.profile} file will work (Note the period at the
+beginning of the line, and the space between the period and the
+following path; if you installed GNUstep somewhere else, you need to
+replace @file{/usr/GNUstep/System/Library/Makefiles} with the path to
+your @file{GNUstep.sh} script).  The script defines environment
+variables that are needed to find GNUstep files and executables.
+
+Users of csh need to use the @file{GNUstep.csh} script. Read the make
+package @file{README} for more info. Some systems, like GNU/Linux have
+an @file{/etc/profile.d} directory where scripts can be executed
+automatically. If you want to set up GNUstep for every user on your
+system, you can try copying/linking the @file{GNUstep.sh} there. For
+csh or tcsh, try
 
 @example
 source /usr/GNUstep/System/Library/Makefiles/GNUstep.csh
+@end example
+
+Finally, in most filesystem configuration it's also possible to
+manually set up your environment by setting PATH, the linker library
+paths and the @code{GNUSTEP_MAKEFILES} variable (instead of using
+@file{GNUstep.sh}).  For example, on GNU/Linux (with a default GNUstep
+installation), instead of sourcing @file{GNUstep.sh} you could manually
+add the Tools directories to your PATH:
+
+@example
+PATH="/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:$PATH"
+@end example
+
+manually add @file{/usr/GNUstep/System/Library/Libraries} and
+@file{/usr/GNUstep/Local/Library/Libraries} to your
+@file{/etc/ld.so.conf} file (don't forget to run @code{ldconfig} every
+time you install a library), and set the environment variable
+@code{GNUSTEP_MAKEFILES} when you want to compile something:
+
+@example
+GNUSTEP_MAKEFILES=/usr/GNUstep/System/Library/Makefiles
 @end example
 
 @node GNUstep Home, Time Zone, Environment Setup, Additional Installation
 @section GNUstep Home
 
 Your home GNUstep directory should be created automatically the first
-time you use a GNUstep tool or application.
-This is where user defaults are kept as well as
-other user configuration files. User installed apps, libraries, etc
-are also here (if the default user directory is used). By default this
-is the directory @file{GNUstep} under your home directory, but you can change
-this (see the gnustep-make installation documentation).
+time you use a GNUstep tool or application.  This is where user
+defaults are kept as well as other user configuration files. User
+installed apps, libraries, etc are also here (if the default user
+directory is used).  By default this is the directory @file{GNUstep}
+under your home directory, but you can change this (see the
+gnustep-make installation documentation).
 
 @node Time Zone, GNUstep deamons, GNUstep Home, Additional Installation
 @section Time Zone
@@ -360,21 +404,23 @@ GNUstep defaults utility to set @kbd{Local Time Zone} to your local time
 zone. Type something like @kbd{defaults write NSGlobalDomain "Local
 Time Zone" GB}.  Where @kbd{GB} is a time zone abbreviation.
 
-See @file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-bsae/NSTimeZones/zones} for typical time zones):
+See
+@file{/usr/GNUstep/System/Library/Libraries/gnustep-base/Versions/1.14/Resources/NSTimeZones/zones/}
+(or equivalent on your system depending on your filesystem layout) for
+typical time zones.
 
 @node GNUstep deamons,  , Time Zone, Additional Installation
 @section GNUstep deamons
 
-Set up your system to execute some GNUstep deamons. If you don't do
-this, they will be started automatically when you run your first GNUstep
-app:
+Set up your system to execute some GNUstep deamons.  This is optional
+because if you don't do this, they will be started automatically when
+you run your first GNUstep app:
 
 @itemize @bullet
 @item gdomap - Put this in a system startup file, like @file{/etc/rc.local} or @file{/etc/rc.d/rc.local} (customize for your system)
 @example
-GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
-if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/gdomap ]; then
-  $GNUSTEP_SYSTEM_ROOT/Tools/gdomap
+if [ -f /usr/GNUstep/System/Tools/gdomap ]; then
+  /usr/GNUstep/System/Tools/gdomap
 fi
 @end example
 @item gdnc - Start after sourcing @file{GNUstep.sh} (e.g. in .profile)
@@ -396,17 +442,17 @@ make_services
 @node Tools and Applications, Machine Specific, Additional Installation, Top
 @chapter Test Tools and Applications
 
-Example applications are located in the gstep-examples package.  To make these,
-just uncompress and untar this package, cd to the appropriate
-directory, and type make. You will need to install the GNUstep core libraries
-first before doing this.
+Example applications are located in the gstep-examples package.  To
+build these, just uncompress and untar this package, cd to the
+appropriate directory, and type make. You will need to install the
+GNUstep core libraries first before doing this.
 
-To run the examples. Use the openapp utility that is part of the GNUstep
-makefile package (and stored in
-@file{$GNUSTEP_SYSTEM_ROOT/Tools}). Usage is:
+To run the examples. Use the openapp utility that is part of the
+GNUstep makefile package (and stored in
+@file{/usr/GNUstep/System/Tools}). Usage is:
 
 @example
-openapp application [additional arguments to app]
+openapp application_name [additional arguments to app]
 @end example
 
 Good Luck!
@@ -426,16 +472,16 @@ to @url{http://www.gnustep.org/resources/sources.html} for information on how
 to get the sourcecode.
 
 If you haven't already done so, change to the directory, where you
-want the source to reside. To get a list of potential modules to check out,
+want the source to reside. To checkout all of the GNUstep repository,
 type
 @example
-cvs -z3 checkout -c
+svn co http://svn.gna.org/svn/gnustep/modules
 @end example
 
-For instance, to check our @file{core}, which contains all the GNUstep
-code libraries:
+To check out only the @file{core}, which contains all the GNUstep core
+libraries:
 @example
-cvs -z3 checkout core
+svn co http://svn.gna.org/svn/gnustep/modules/core
 @end example
 
 After you have checked out the source you can compile it as
@@ -443,7 +489,7 @@ usual. To update the source, go into the directory of the source tree
 you want to update, for example, go into 'base', and type:
 
 @example
-cvs -z3 update -Pd
+svn update
 @end example
 
 You don't have to re-checkout after you have the source, just update!

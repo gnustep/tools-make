@@ -258,6 +258,10 @@ make install
 
 You should now have libxml2 installed on your system.
 
+IMPORTANT: Do *not* install libxslt.  It has been reported that
+libxslt is currently built in the wrong way and will prevent anything
+from linking correctly if you try to use it.
+
 
 14. Installing gnustep-base
 ===========================
