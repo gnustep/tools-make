@@ -1,3 +1,9 @@
+2007-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* FilesystemLayouts/mac: Updated (Suggestions by Tim McIntosh
+	<tmcintos@avalon.net>, plus moved the Network domain before the
+	Local one).
+
 2007-03-21  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/README.MinGW: Warn people not to install libxslt
