@@ -21,9 +21,6 @@
 # If not, write to the Free Software Foundation,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-# FIXME - fix the help message to mention 'debugapp' and not 'openapp'
-# if we were called as 'debugapp'.
-
 # Please note that all local variables are prefixed with 'openapp_' to
 # avoid conflicts.
 
@@ -35,13 +32,10 @@
 # (originally we had a separate script, called debugapp, for that).
 
 if [ -z "$1" ]; then
-  echo "usage: openapp [--find] [--debug] application [arguments...]"
-  echo "openapp --help for more help"
+  echo "usage: `basename "$0"` [--find] [--debug] application [arguments...]"
+  echo "`basename "$0"` --help for more help"
   exit 1
 fi
-
-openapp_only_find=
-openapp_debug_mode=
 
 # Here read all the --find/--debug/--help/etc arguments, up to the
 # first non-argument.  That one is the name of the application we want
@@ -51,7 +45,7 @@ openapp_debug_mode=
 while [ x"$1" != x ]; do
   case "$1" in
   --help)
-    echo "usage: openapp [--find] [--debug] application [arguments...]"
+    echo "usage: `basename "$0"` [--find] [--debug] application [arguments...]"
     echo
     echo "application is the complete or relative name of the application"
     echo "program with or without the .app extension, like Ink.app."
@@ -70,6 +64,8 @@ while [ x"$1" != x ]; do
     echo "in non-flattened (advanced/non standard) setups to start up"
     echo "the application using a specified library-combo."
     echo
+    echo "Invoking this program as 'debugapp' is equivalent to using the --debug"
+    echo "option."
     exit 0
     ;;
   --find)
@@ -80,6 +76,8 @@ while [ x"$1" != x ]; do
     fi
     shift;;
   --debug)
+    # debugapp manually sets this variable before invoking openapp.
+    # So if you change this, make sure to update debugapp too.
     openapp_debug_mode=yes;
     if [ -z "$2" ]; then
       echo "Missing application name.  Please try openapp --help for more help."

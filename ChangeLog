@@ -1,5 +1,19 @@
 2007-04-10  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Fixed help messages for debugapp to display 'debugapp' instead of
+	'openapp' as program name.
+	* openapp.in: Use $0 instead of openapp as program name in help
+	messages.  In the help message mention that debugapp is equivalent
+	to openapp --debug.
+	* debugapp: Use source, not exec, to pass control to openapp while
+	still preserving $0.  (openapp_debug_mode): Set this variable to
+	turn on debug mode inside openapp.
+
+	* Documentation/DESIGN: Mention that this is mostly a historical
+	document now.
+	
+2007-04-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/framework.make (xxx.framework/GNUSTEP_TARGET_LDIR/xxx):
 	Fixed typo removing symlinks before symlinking - it was causing
 	compilation to fail in certain conditions (Problem reported by

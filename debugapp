@@ -20,4 +20,13 @@
 
 # debugapp is now a wrapper over 'openapp'.
 
-exec openapp --debug "$@"
+# To pass control to openapp we use 'source' here, instead of 'exec',
+# because we want the help messages to display 'debugapp' as the
+# application name instead of 'openapp'.
+
+# Set debug mode
+openapp_debug_mode=yes;
+
+# Source openapp
+. openapp
+

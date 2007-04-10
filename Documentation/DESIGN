@@ -1,5 +1,7 @@
+[Important: this is mostly a historical document.]
+
 A makefile package for the GNUstep environment
-================================================================
+==============================================
 
 This document presents a makefile package for the GNUstep
 environment. It describes what are the goals the GNUstep environment
