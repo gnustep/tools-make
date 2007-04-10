@@ -1,3 +1,10 @@
+2007-04-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/framework.make (xxx.framework/GNUSTEP_TARGET_LDIR/xxx):
+	Fixed typo removing symlinks before symlinking - it was causing
+	compilation to fail in certain conditions (Problem reported by
+	David Ayers <ayers@fsfe.org>).
+
 2007-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* FilesystemLayouts/mac: Updated (Suggestions by Tim McIntosh
