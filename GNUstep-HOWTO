@@ -1,19 +1,19 @@
    GNUstep HOWTO
    *************
 
-   Last Update: 28 August 2006
+   Last Update: 11 April 2007
 
    This document explains how to build the different components of the
    GNUstep core libraries and GNUstep Launchpad.
 
-   Copyright (C) 1996 - 2002 Free Software Foundation, Inc.
+   Copyright (C) 1996 - 2007 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
    under the terms of the GNU Public License, Version 1.0 or
    any later version published by the Free Software Foundation.
 
-Introduction
-************
+1 Introduction
+**************
 
 This document explains how to build the GNUstep core libraries.  The
 core libraries, along with associated tools and other files provide
@@ -26,8 +26,8 @@ packages.
    You will need at least 80Mb of hard disk space (150Mb prefered) in
 order to compile the GNUstep core libraries.
 
-Summary
-*******
+2 Summary
+*********
 
 In order to compile the libraries, you need to compile and install the
 following packages first (if you don't already have them):
@@ -80,7 +80,7 @@ are required.
      support functions (iconv) come with glibc version 2.1 or greater.
      If you don't have glibc (try iconv -version), you can get the
      separate libiconv library from
-     <http://clisp.cons.org/~haible/packages-libiconv.html>. However,
+     `http://clisp.cons.org/~haible/packages-libiconv.html'. However,
      neither one is required to use GNUstep.
 
 `The TIFF library (libtiff) (Version 3.4beta36 or greater) (REQUIRED)'
@@ -125,32 +125,31 @@ are required.
      GNUstep and WindowMaker work together to provide a consistant
      interface.  Although it is not required, GNUstep will work much
      better if you use it with the WindowMaker window manager.  Get
-     WindowMaker from <http://www.windowmaker.info>.
+     WindowMaker from `http://www.windowmaker.info'.
 
-`gnustep-objc package (for gcc version < 3.0 ONLY or MINGW/Cygwin) (RECOMMENDED)'
+`gnustep-objc package (REQUIRED BUT ONLY for gcc version < 3.0 or MINGW/Cygwin)'
      Note: Do not install this library unless you are sure you need it.
      You probably don't need it except on MinGW and Cygwin (regardless
      of the gcc version you have).  This is a special version of the
-     Objective-C runtime that include several bug fixes and features
-     that were not in gcc versions previous to 3.0.  It is available at
-     <ftp://ftp.gnustep.org/pub/gnustep/libs> which compiles using the
-     GNUstep Makefile package (so you don't have to get the entire gcc
-     dist). Make sure to set the THREADING variable in the GNUmakefile.
-     It's possible to compile the library static (make shared=no) and
-     just copy to the place where the gcc libobjc library is (type gcc
-     -v to get this location). Note you have to install gnustep-make
-     (below) before installing this library.
+     Objective-C runtime that is compiled as a shared library.  It is
+     available at `ftp://ftp.gnustep.org/pub/gnustep/libs' which
+     compiles using the GNUstep Makefile package (so you don't have to
+     get the entire gcc dist). Make sure to set the THREADING variable
+     in the GNUmakefile.  It's possible to compile the library static
+     (make shared=no) and just copy to the place where the gcc libobjc
+     library is (type gcc -v to get this location). Note you have to
+     install gnustep-make (below) before installing this library.
 
 `GDB (OPTIONAL)'
-     GDB can be obtained from <ftp://ftp.gnu.org/gnu/gdb>. As of release
+     GDB can be obtained from `ftp://ftp.gnu.org/gnu/gdb'. As of release
      6.0, gdb has special support for debugging Objective-C programs.
 
 `TeX (OPTIONAL)'
      You need a TeX implementation, like tetex, to compile some of the
      documentation (although most of that is available on the web).
 
-Compiling and Installing the packages
-*************************************
+3 Compiling and Installing the packages
+***************************************
 
 Get the following individual packages:
 
@@ -162,7 +161,7 @@ Get the following individual packages:
 
    * gnustep-back
 
-   See <http://www.gnustep.org> for information on where to get these
+   See `http://www.gnustep.org' for information on where to get these
 packages.
 
    Make sure you install (if necessary) all the previously mentioned
@@ -176,37 +175,48 @@ instructions at the end of this document or appropriate README files in
 the gnustep-make Documentation directory (such as README.MingW for
 Windows).
 
-Installing the Core Libraries
-=============================
+3.1 Installing the Core Libraries
+=================================
 
 The GNUstep packages uses the Autoconf mechanism for configuration; it
-checks some host capabilties which are used by all GNUstep software.
-To configure just type:
+checks some host capabilities which are used by all GNUstep software.
+The first package you will compile is gnustep-make.  To configure
+gnustep-make just type:
 
      ./configure
 
-   The GNUstep makefile package needs a root directory.  If the
-GNUSTEP_SYSTEM_ROOT environment variable is set then configure will
-determine the root directory from its value (by removing the final
-/System path component from it).  You can also specify the root
-directory when you run configure with the prefix paramater; the
-following command makes /usr/local/GNUstep the root directory:
+   The GNUstep makefile package can be configured to use different types
+of filesystem layouts.  By default, GNUstep is installed with a GNUstep
+filesystem layout into /usr/GNUstep.  That is a good, recommended
+default if you don't have an opinion on which filesystem layout to use.
+
+   But you can also install it somewhere else by using the prefix
+parameter; the following command makes /usr/local/GNUstep the root
+directory:
 
      ./configure --prefix=/usr/local/GNUstep
 
-   If you do not have the GNUSTEP_SYSTEM_ROOT environment variable set
-and you do not specify a root directory when running configure, then
-configure will use /usr/GNUstep as the default root directory.
+   You can also install GNUstep using an FHS layout (or some other
+filesystem layout of your choice) by using the with-layout parameter;
+the following command configures GNUstep to use the standard FHS (unix)
+filesystem layout:
 
-Alternate Library Setup
------------------------
+     ./configure --with-layout=fhs
+
+   In this document we will always present examples that assume that you
+are using the default GNUstep filesystem layout in /usr/GNUstep.  If
+you are using a different layout, you will need to make the obvious
+changes.
+
+3.1.1 Alternate Library Setup
+-----------------------------
 
 Read the installation instructions in the Makefile package (make) for
 more installation options. Make sure you use the same configuration
 options when configuring each GNUstep library.
 
-Building the Package
---------------------
+3.1.2 Building the Package
+--------------------------
 
 To build the individual packages, use this familiar set of commands for
 each pacakge (add any additional options you decide upon):
@@ -215,7 +225,7 @@ each pacakge (add any additional options you decide upon):
      make
      make install
 
-   Start with the Makefile Pacakge (gnustep-make). After installing
+   Start with the Makefile Package (gnustep-make). After installing
 gnustep-make you need to execute GNUstep's shell configuration script,
 as follows:
 
@@ -243,45 +253,70 @@ port is the one officially registered with IANA and is reserved for use
 by gdomap - it should only be changed if you can't get your system
 administrator to start the gdomap server using it.
 
-Additional Installation
-***********************
+4 Additional Installation
+*************************
 
-Environment Setup
-=================
+4.1 Environment Setup
+=====================
 
-Add the shell script `GNUstep.sh' located in the Makefile package to
-your shell startup file (such as `.profile'). For instance, if your
-GNUSTEP_SYSTEM_ROOT is `/usr/GNUstep/System',
+You need to make sure your environment is properly setup in order to
+compile and run GNUstep software.  The steps to setup your environment
+differ slightly depending on your filesystem layout.
+
+   There is a way of setting up your environment that always works:
+sourcing the `GNUstep.sh' shell script before using GNUstep.  The shell
+script `GNUstep.sh' is located in the Makefile package; you may want to
+add it to your shell startup file (such as `.profile'). For instance,
+if you installed GNUstep with the default GNUstep filesystem layout in
+`/usr/GNUstep', then adding
 
      . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 
    in your `.profile' file will work (Note the period at the beginning
 of the line, and the space between the period and the following path;
-if your GNUSTEP_SYSTEM_ROOT is different, you need to replace
-`/usr/GNUstep/System' with your GNUSTEP_SYSTEM_ROOT).  It defines
-environment variables that are needed to find GNUstep files and
-executables.  Users of csh need to use the `GNUstep.csh' script. Read
-the make package `README' for more info. Some systems, like GNU/Linux
-have an `/etc/profile.d' directory where scripts can be executed
-automatically. If you want to set up GNUstep for every user on your
-system, you can try copying/linking the `GNUstep.sh' there. For csh or
-tcsh, try
+if you installed GNUstep somewhere else, you need to replace
+`/usr/GNUstep/System/Library/Makefiles' with the path to your
+`GNUstep.sh' script).  The script defines environment variables that
+are needed to find GNUstep files and executables.
+
+   Users of csh need to use the `GNUstep.csh' script. Read the make
+package `README' for more info. Some systems, like GNU/Linux have an
+`/etc/profile.d' directory where scripts can be executed automatically.
+If you want to set up GNUstep for every user on your system, you can
+try copying/linking the `GNUstep.sh' there. For csh or tcsh, try
 
      source /usr/GNUstep/System/Library/Makefiles/GNUstep.csh
 
-GNUstep Home
-============
+   Finally, in most filesystem configuration it's also possible to
+manually set up your environment by setting PATH, the linker library
+paths and the `GNUSTEP_MAKEFILES' variable (instead of using
+`GNUstep.sh').  For example, on GNU/Linux (with a default GNUstep
+installation), instead of sourcing `GNUstep.sh' you could manually add
+the Tools directories to your PATH:
+
+     PATH="/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:$PATH"
+
+   manually add `/usr/GNUstep/System/Library/Libraries' and
+`/usr/GNUstep/Local/Library/Libraries' to your `/etc/ld.so.conf' file
+(don't forget to run `ldconfig' every time you install a library), and
+set the environment variable `GNUSTEP_MAKEFILES' when you want to
+compile something:
+
+     GNUSTEP_MAKEFILES=/usr/GNUstep/System/Library/Makefiles
+
+4.2 GNUstep Home
+================
 
 Your home GNUstep directory should be created automatically the first
 time you use a GNUstep tool or application.  This is where user
 defaults are kept as well as other user configuration files. User
 installed apps, libraries, etc are also here (if the default user
-directory is used). By default this is the directory `GNUstep' under
+directory is used).  By default this is the directory `GNUstep' under
 your home directory, but you can change this (see the gnustep-make
 installation documentation).
 
-Time Zone
-=========
+4.3 Time Zone
+=============
 
 In most cases, GNUstep should be able to determine your time zone, if
 you have already set it up correctly when setting up your computer.
@@ -292,21 +327,21 @@ something like `defaults write NSGlobalDomain "Local Time Zone" GB'.
 Where `GB' is a time zone abbreviation.
 
    See
-`$GNUSTEP_SYSTEM_ROOT/Library/Libraries/Resources/gnustep-bsae/NSTimeZones/zones'
-for typical time zones):
+`/usr/GNUstep/System/Library/Libraries/gnustep-base/Versions/1.14/Resources/NSTimeZones/zones/'
+(or equivalent on your system depending on your filesystem layout) for
+typical time zones.
 
-GNUstep deamons
-===============
+4.4 GNUstep deamons
+===================
 
-Set up your system to execute some GNUstep deamons. If you don't do
-this, they will be started automatically when you run your first GNUstep
-app:
+Set up your system to execute some GNUstep deamons.  This is optional
+because if you don't do this, they will be started automatically when
+you run your first GNUstep app:
 
    * gdomap - Put this in a system startup file, like `/etc/rc.local'
      or `/etc/rc.d/rc.local' (customize for your system)
-          GNUSTEP_SYSTEM_ROOT=/usr/GNUstep/System
-          if [ -f $GNUSTEP_SYSTEM_ROOT/Tools/gdomap ]; then
-            $GNUSTEP_SYSTEM_ROOT/Tools/gdomap
+          if [ -f /usr/GNUstep/System/Tools/gdomap ]; then
+            /usr/GNUstep/System/Tools/gdomap
           fi
 
    * gdnc - Start after sourcing `GNUstep.sh' (e.g. in .profile)
@@ -324,24 +359,24 @@ app:
      fi
      make_services
 
-Test Tools and Applications
-***************************
+5 Test Tools and Applications
+*****************************
 
 Example applications are located in the gstep-examples package.  To
-make these, just uncompress and untar this package, cd to the
+build these, just uncompress and untar this package, cd to the
 appropriate directory, and type make. You will need to install the
 GNUstep core libraries first before doing this.
 
    To run the examples. Use the openapp utility that is part of the
-GNUstep makefile package (and stored in `$GNUSTEP_SYSTEM_ROOT/Tools').
+GNUstep makefile package (and stored in `/usr/GNUstep/System/Tools').
 Usage is:
 
-     openapp application [additional arguments to app]
+     openapp application_name [additional arguments to app]
 
    Good Luck!
 
-Machine Specific Instructions
-*****************************
+6 Machine Specific Instructions
+*******************************
 
 \input texinfo
 
@@ -358,8 +393,8 @@ although they may.
 information about what you needed and any special instructions needed to
 GNUstep <bug-gnustep@gnu.org>.
 
-Compilers
-=========
+6.1 Compilers
+=============
 
 A recommended compiler is listed for each machine, if known. You should
 try to use the recommended compiler for compiling GNUstep, as GNUstep
@@ -384,14 +419,14 @@ GCC 2.96
      cause mysterious errors. Not supported.
 
 GCC 3.0.X
-     A fairly good compiler. Recommended.
+     A fairly good compiler.
 
 GCC 3.1
      Several bugs where introduced in the version. It's probably better
      to avoid this one, although it might work fine.
 
 GCC 3.2.X
-     Pretty good. Recommended.
+     Pretty good.
 
 GCC 3.3.X
      Recommended. Fixes some bugs relating to protocols as well as other
@@ -409,6 +444,9 @@ GCC 4.0
 GCC 4.0.1
      Probably OK. This version should work on MacOSX.
 
+GCC 4.1.X
+     4.1.0 and 4.1.1 don't work if you use precompiled headers.
+
    If your having mysterious trouble with a machine, try compiling
 GNUstep without optimization. Particularly in the newer GCC compilers,
 optimization can break some code. The easiest way to do this is when
@@ -416,7 +454,7 @@ configuring, `CFLAGS="" ./configure'. Or when building, `make
 OPTFLAG=""'.
 
    Also if you manually upgraded gcc and/or make, we recommend reading
-the documentation at <http://www.LinuxFromScratch.org> for tips on
+the documentation at `http://www.LinuxFromScratch.org' for tips on
 compiling and installing gcc and make. If you had GNUstep previously
 installed, make sure you completely remove all of it, including
 installed init scripts.
@@ -435,8 +473,15 @@ UNSTABLE
      Has problems either building or running GNUstep or requires special
      setp procedures to run correctly.
 
-Darwin/ix86 (_Unsupported_)
-===========================
+6.2 CentOS/ix86 (_Supported_)
+=============================
+
+This RedHat variant is well-tested and well-supported (tested at least
+up to CentOS release 4.4).  For more information, please check the
+section on RedHat/i386 below.
+
+6.3 Darwin/ix86 (_Unsupported_)
+===============================
 
 Currently tested on Darwin 7.x
 
@@ -457,12 +502,12 @@ EXTRA LIBS NEEDED
      Use ffcall because libffi hasn't been ported to Darwin x86.
 
 SPECIAL INSTRUCTIONS
-     Read the <README.Darwin> file in the gnustep-make/Documentation
+     Read the `README.Darwin' file in the gnustep-make/Documentation
      directory for complete instructions.
 
 
-Darwin/PowerPC (_Supported_)
-============================
+6.4 Darwin/PowerPC (_Supported_)
+================================
 
 This section is for building the complete GNUstep system.  This system
 will not interact at all with Mac OS X/Cocoa. It uses different
@@ -471,54 +516,71 @@ extensions to be used with Mac OS X (for instance, if you want to build
 something based on GNUstep, such as GSWeb or GNUMail), see the
 MacOSX/PowerPC section.
 
-   Currently tested on Darwin 6.x, 7.x
+   Currently tested on Darwin 6.x, 7.x, 8.x
 
 RECOMMENDED COMPILER
-     gcc 3.3.2 or greater 3.3.* versions.  Older versions will not
-     compile on Darwin and 3.4.* versions don't support GNU runtime
+     gcc 4.x, gcc 3.3.2 or greater 3.3.* versions.  Older versions will
+     not compile on Darwin and 3.4.* versions don't support GNU runtime
      compilation on Darwin currently (The GCC bug report is
      http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-     Default compiler (Apple GCC) has unknown problems.  Download the
-     FSF GCC compiler and configure it with -enable-threads=posix. You
-     don't need binutils or anything else.  Use the GNU runtime. Make
-     sure to add
-          export CC=/usr/local/bin/gcc (use the correct path to FSF gcc)
+     Default compiler (Apple GCC) has problems, mostly because it tries
+     to link in Apple libraries that conflict with GNUstep.  Get the
+     FSF gcc-4 compiler using fink or download the FSF GCC compiler and
+     configure it with -enable-threads=posix. You don't need binutils
+     or anything else.  Use the GNU runtime. Make sure to add
+          export CC=gcc-4 (or use the correct path to FSF gcc)
      so that the correct compiler is found
 
 EXTRA LIBS NEEDED
      Use libffi (not ffcall). This should be enabled by default in
      gnustep-base so you don't have to type -enable-libffi. For 6.x,
-     you need the dlcompat library (from <www.opendarwin.org>) to load
-     bundles (not needed for 7.x).
+     you need the dlcompat library (from `www.opendarwin.org') to load
+     bundles (not needed for 7.x or later). libjpeg that comes with
+     fink conflicts with the Apple libraries and screw up other apps on
+     Mac OSX (like X11).
 
 SPECIAL INSTRUCTIONS
-     Read the <README.Darwin> file in the gnustep-make/Documentation
-     directory for complete instructions.
+     Read the `README.Darwin' file in the gnustep-make/Documentation
+     directory for complete instructions. If you compiled FSF gcc by
+     hand, make sure to rename to GNU libobjc library to
+     libobjc-gnu.dylib
 
 
    See also the MacOSX/PowerPC section
 
-Debian/Alpha (_Unsupported_)
+6.5 Debian/Alpha (_Unsupported_)
+================================
+
+6.6 Debian/i386 (_Supported_)
+=============================
+
+Tested on sid.
+
+6.7 Debian/em64t (_Supported_)
+==============================
+
+Tested on 'unstable'.
+
+6.8 Debian/PowerPC (_Supported_)
+================================
+
+Tested on sid.
+
+6.9 Debian/SPARC (_Release_)
 ============================
 
-Debian/i386 (_Supported_)
-=========================
-
 Tested on sid.
 
-Debian/PowerPC (_Supported_)
-============================
+6.10 FedoraCore/ix86 (_Supported_)
+==================================
 
-Tested on sid.
+This RedHat variant is well-tested and well-supported (tested at least
+up to Fedora Core release 6).  For more information, please check the
+section on RedHat/i386 below.
 
-Debian/SPARC (_Release_)
-========================
-
-Tested on sid.
-
-FreeBSD 5.x (_Supported_)
-=========================
+6.11 FreeBSD 5.x (_Supported_)
+==============================
 
 Tested on 5.0, 5.1, 5.3
 SPECIAL INSTRUCTIONS
@@ -529,8 +591,8 @@ SPECIAL INSTRUCTIONS
      For 5.3, there is a bug in libkvm that requires that /proc be
      mounted. Use 'mount_procfs proc /proc' or see the procfs man page.
 
-FreeBSD 4.x (_Unsupported_)
-===========================
+6.12 FreeBSD 4.x (_Unsupported_)
+================================
 
 SPECIAL INSTRUCTIONS
      For gcc 3.0.4, make WANT_THREADS_SUPPORT=YES
@@ -538,19 +600,19 @@ SPECIAL INSTRUCTIONS
      For libxml2 2.4.24, make WITHOUT_PYTHON=YES
 
 
-FreeBSD 3.x  (_Obsolete_)
-=========================
+6.13 FreeBSD 3.x  (_Obsolete_)
+==============================
 
 Compiles "out of the box" on FreeBSD 3.4.
 
 SPECIAL INSTRUCTIONS
      You need to use gmake not make to compile the GNUstep packages. A
      special port of gdb can be used with the Objective-C patches from
-     <ftp://ftp.pcnet.com/users/eischen/FreeBSD/gdb-4.17-port.tar.gz>
+     `ftp://ftp.pcnet.com/users/eischen/FreeBSD/gdb-4.17-port.tar.gz'
 
      The best compiler for GNUstep is the latest release of the GNU
      Compiler Collection (GCC).  You can find it at
-     <http://egcs.cygnus.com/>.
+     `http://egcs.cygnus.com/'.
 
      If you want to use the native POSIX threads support from `libc_r'
      pass `--enable-threads=posix' to configure.  This is the
@@ -574,8 +636,8 @@ SPECIAL INSTRUCTIONS
      `CFLAGS="-I/usr/local/include"' and `LDFLAGS="-L/usr/local/lib"'.
 
 
-FreeBSD 2.x (_Obsolete,Unstable_)
-=================================
+6.14 FreeBSD 2.x (_Obsolete,Unstable_)
+======================================
 
 SPECIAL INSTRUCTIONS
      Only static libraries work on this system.  Use /stand/sysinstall
@@ -590,28 +652,28 @@ SPECIAL INSTRUCTIONS
      GNUstep packages.
 
 
-Gentoo/i686 (_Supported_)
-=========================
+6.15 Gentoo/i686 (_Supported_)
+==============================
 
 SPECIAL INSTRUCTIONS
      libffi sometimes causes odd problems. Try to use ffcall.
 
-Gentoo/PPC (_Supported_)
-========================
+6.16 Gentoo/PPC (_Supported_)
+=============================
 
-Gentoo/amd64 (_Unsupported_)
-============================
+6.17 Gentoo/amd64 (_Unsupported_)
+=================================
 
 32-bit mode only?
 
-Gentoo/alpha (_Unsupported_)
-============================
+6.18 Gentoo/alpha (_Unsupported_)
+=================================
 
-Gentoo/sparc (_Unsupported_)
-============================
+6.19 Gentoo/sparc (_Unsupported_)
+=================================
 
-Irix 6.5/MIPS (_Unsupported_)
-=============================
+6.20 Irix 6.5/MIPS (_Unsupported_)
+==================================
 
 RECOMMENDED COMPILER
      gcc 3.2.1
@@ -631,8 +693,8 @@ SPECIAL INSTRUCTIONS
      link the library by hand.  No libffi-support: Use ffcall
 
 
-MacOSX/PowerPC (_Release_)
-==========================
+6.21 MacOSX/PowerPC (_Release_)
+===============================
 
 This section is for building the GNUstep extensions only.  Use this if,
 for instance, if you want to build something based on GNUstep, such as
@@ -651,7 +713,7 @@ EXTRA LIBS NEEDED
 SPECIAL INSTRUCTIONS
      Warning ! To know how to install a complete GNUstep system on Mac
      OS X, read the Darwin/PowerPC section.  By default, on Mac OS X,
-     only the GNUstep extensions are built. Read the <README.Darwin>
+     only the GNUstep extensions are built. Read the `README.Darwin'
      file in the gnustep-make/Documentation directory for complete
      instructions.
 
@@ -677,13 +739,13 @@ SPECIAL INSTRUCTIONS
 
    See also the Darwin/PowerPC section.
 
-MkLinux/PowerPC (_Unsupported_)
-===============================
+6.22 MkLinux/PowerPC (_Unsupported_)
+====================================
 
 Tested with R2 RC2 (2004/03/04).
 
-NetBSD/i386 (_Release_)
-=======================
+6.23 NetBSD/i386 (_Release_)
+============================
 
 Tested on NetBSD 2.0.2 (2005/04/15)
 
@@ -699,8 +761,8 @@ SPECIAL INSTRUCTIONS
      works fine (over ffcall).
 
 
-NetBSD/Sparc64  (_Unstable_)
-============================
+6.24 NetBSD/Sparc64  (_Unstable_)
+=================================
 
 Tested on NetBSD 2.0.2 (2005/04/15)
 
@@ -718,8 +780,8 @@ SPECIAL INSTRUCTIONS
 
    gdomap crashes. Perhaps other things do not work as well.
 
-Netwinder (_Unstable_)
-======================
+6.25 Netwinder (_Unstable_)
+===========================
 
 RECOMMENDED COMPILER
      Build #12 of the system.
@@ -728,17 +790,17 @@ EXTRA LIBS NEEDED
      Unknown
 
 SPECIAL INSTRUCTIONS
-     See <http://www.netwinder.org/~patrix>
+     See `http://www.netwinder.org/~patrix'
 
-OpenBSD 3.9  (_Unsupported_)
-============================
+6.26 OpenBSD 3.9  (_Unsupported_)
+=================================
 
 Information for version 3.9 (2006/08/13)
 
-   Ports at <http://mail.rochester.edu/~asveikau/gnustep-openbsd/>
+   Ports at `http://mail.rochester.edu/~asveikau/gnustep-openbsd/'
 
-OSF/Alpha  (_Needs Testing, Unstable_)
-======================================
+6.27 OSF/Alpha  (_Needs Testing, Unstable_)
+===========================================
 
 Information is for Version 3.2C
 
@@ -758,14 +820,30 @@ SPECIAL INSTRUCTIONS
      GNUmakefile(.preamble).
 
 
-RedHat/Intel (_Unsupported_)
-============================
+6.28 RedHat/i386 (_Supported_)
+==============================
 
-Slackware/Intel (_Unsupported_)
-===============================
+RedHat and variants/clones such as Fedora Core and CentOS are all very
+well supported and are regularly tested with all GNUstep releases.
 
-Slackware/Sparc (Splack) (_Unsupported_)
-========================================
+RECOMMENDED COMPILER
+     The default compiler works very well.
+
+EXTRA LIBS NEEDED
+     All extra libs needed are easily available from standard packages;
+     the only tricky one is ffcall.  If you don't find an RPM for that
+     one, download it directly from the GNUstep web site
+     (http://www.gnustep.org).
+
+SPECIAL INSTRUCTIONS
+     None.
+
+
+6.29 Slackware/Intel (_Unsupported_)
+====================================
+
+6.30 Slackware/Sparc (Splack) (_Unsupported_)
+=============================================
 
 Tested with Spalck 8.0 (2005/03/01)
 
@@ -779,8 +857,8 @@ SPECIAL INSTRUCTIONS
      Tested on an ultra sparc server, kernel 2.4.27, XF86-4.0.3
 
 
-Solaris 2.5.1/Sparc (_Obsolete_)
-================================
+6.31 Solaris 2.5.1/Sparc (_Obsolete_)
+=====================================
 
 This configuration is no longer being tested, but it may still work.
 
@@ -793,10 +871,10 @@ EXTRA LIBS NEEDED
 SPECIAL INSTRUCTIONS
      See the Solaris 2.6 section for more instructions.
 
-Solaris 2.[678]/Sparc (_Supported_)
-===================================
+6.32 Solaris 2.[678]/Sparc (_Supported_)
+========================================
 
-Tested on Solaris version 6, 7, and 8
+Tested on Solaris version 6, 7, 8 and 9
 
 RECOMMENDED COMPILER
      gcc 3.2.1 or greater gcc 3.04. Not 3.1 - does not compile parts of
@@ -821,8 +899,8 @@ the _REENTRANT flag defined (This does not seem to be true by default).
 Or use the gnustep-objc package. Also make sure THREADS is set to
 'posix' not 'solaris'.
 
-Solaris 2.7/Intel (_Unsupported_)
-=================================
+6.33 Solaris 2.7/Intel (_Unsupported_)
+======================================
 
 RECOMMENDED COMPILER
      Unknown.
@@ -841,8 +919,8 @@ SPECIAL INSTRUCTIONS
      instructions above for more information.
 
 
-Suse 6.x/Intel (_Obsolete_)
-===========================
+6.34 Suse 6.x/Intel (_Obsolete_)
+================================
 
 GNUstep has been tested on version 6.2-6.4 of Suse
 
@@ -859,8 +937,8 @@ SPECIAL INSTRUCTIONS
      working.
 
 
-Suse/Intel (_Supported_)
-========================
+6.35 Suse/Intel (_Supported_)
+=============================
 
 GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, 9.1, 9.3,
 and 10.1 of Suse
@@ -877,8 +955,8 @@ SPECIAL INSTRUCTIONS
      Suse 10.1 does not work with the x11 backend.
 
 
-Suse 7.x/PPC (_Unsupported_)
-============================
+6.36 Suse 7.x/PPC (_Unsupported_)
+=================================
 
 GNUstep has been tested on version 7.0 of Suse/PPC
 
@@ -891,8 +969,8 @@ EXTRA LIBS NEEDED
 
 SPECIAL INSTRUCTIONS
 
-Unixware-2.1.3/Intel (_Unsupported_)
-====================================
+6.37 Unixware-2.1.3/Intel (_Unsupported_)
+=========================================
 
 RECOMMENDED COMPILER
      Unknown
@@ -919,7 +997,7 @@ EXTRA LIBS NEEDED
      flex
      binutils        (required by gcc if you want to debug)
      gcc-2.8.1
-                     (configure --with-gnu-as --with-gnu-ld --with-stabs)
+                     (configure -with-gnu-as -with-gnu-ld -with-stabs)
                      NB. gcc-2.8.1 needs a fix to __do_global_dtors_aux()
                      in crtstuff.c on Unixware 2.1.3
                      (and possibly other unixware versions)
@@ -931,16 +1009,16 @@ EXTRA LIBS NEEDED
           {
             static func_ptr *p = __DTOR_LIST__ + 1;
             static int completed = 0;
-          
+
             if (completed)
               return;
-          
+
             while (*p)
               {
                 p++;
                 (*(p-1)) ();
               }
-          
+
           #ifdef EH_FRAME_SECTION_ASM_OP
             __deregister_frame_info (__EH_FRAME_BEGIN__);
           #endif
@@ -983,15 +1061,15 @@ EXTRA LIBS NEEDED
    If you don't set gdomap up correctly, Distributed Objects will not
 work.
 
-Windows with CYGWIN (_Unsupported_)
-===================================
+6.38 Windows with CYGWIN (_Unsupported_)
+========================================
 
 RECOMMENDED COMPILER
      gcc 3.3.1 or later (with libobjc and libjava (if using libffi))
 
 EXTRA LIBS NEEDED
      Objective-C library DLL
-     (<ftp://ftp.gnustep.org/pub/gnustep/windows/cygwin>) for shared
+     (`ftp://ftp.gnustep.org/pub/gnustep/windows/cygwin') for shared
      libs. It's a good idea to remove the libobjc.a that comes with gcc
      (gcc -v for location) so that it isn't accidentally found.  For
      ffcall, you should get version 1.8b or above (the earlier ones
@@ -1002,11 +1080,11 @@ EXTRA LIBS NEEDED
 SPECIAL INSTRUCTIONS
      Make sure you have good shared libraries for everthing. Sometimes
      a bad shared library (like libtiff) will cause odd and untraceable
-     problems.  See <README.Cygwin> for information on compiling.
+     problems.  See `README.Cygwin' for information on compiling.
 
 
-Windows with MinGW (_Supported_)
-================================
+6.39 Windows with MinGW (_Supported_)
+=====================================
 
 RECOMMENDED COMPILER
      See below.
@@ -1015,36 +1093,36 @@ EXTRA LIBS NEEDED
      See below.
 
 SPECIAL INSTRUCTIONS
-     See the <README.MinGW> file located in the gnustep-make
+     See the `README.MinGW' file located in the gnustep-make
      Documentation directory for instructions. Windows NT/2000/XP only.
      Win98 machines and earlier are very buggy and are not supported.
      Native GUI backend is alpha version.
 
-Yellowdog/PowerPC (_Unsupported_)
-=================================
+6.40 Yellowdog/PowerPC (_Unsupported_)
+======================================
 
-Getting Libraries via SVN
-*************************
+7 Getting Libraries via SVN
+***************************
 
 If you didn't get one of the snapshots, or if you want to be sure to
 stay on the bleading edge, then you should get the libraries via SVN. Go
-to <http://www.gnustep.org/resources/sources.html> for information on
+to `http://www.gnustep.org/resources/sources.html' for information on
 how to get the sourcecode.
 
    If you haven't already done so, change to the directory, where you
-want the source to reside. To get a list of potential modules to check
-out, type
-     cvs -z3 checkout -c
+want the source to reside. To checkout all of the GNUstep repository,
+type
+     svn co http://svn.gna.org/svn/gnustep/modules
 
-   For instance, to check our `core', which contains all the GNUstep
-code libraries:
-     cvs -z3 checkout core
+   To check out only the `core', which contains all the GNUstep core
+libraries:
+     svn co http://svn.gna.org/svn/gnustep/modules/core
 
    After you have checked out the source you can compile it as usual.
 To update the source, go into the directory of the source tree you want
 to update, for example, go into 'base', and type:
 
-     cvs -z3 update -Pd
+     svn update
 
    You don't have to re-checkout after you have the source, just update!
 

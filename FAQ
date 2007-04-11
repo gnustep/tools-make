@@ -1,24 +1,24 @@
-GNUstep Frequently Asked Questions with Answers
-***********************************************
+1 GNUstep Frequently Asked Questions with Answers
+*************************************************
 
-Last updated 28 August 2006.  Please send corrections to
+Last updated 11 April 2007.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
-Compatibility
-=============
+1.1 Compatibility
+=================
 
-Is it easy to port OPENSTEP programs to GNUstep?
-------------------------------------------------
+1.1.1 Is it easy to port OPENSTEP programs to GNUstep?
+------------------------------------------------------
 
 It is probably easy for simple programs. There are some portability
 tools to make this easier, or rewrite the Makefiles yourself.  You will
 also have to translate the NIB files (if there are any) to GNUstep
 model files using the nib2gmodel program (from
-<ftp://ftp.gnustep.org/pub/gnustep/dev-apps>).
+`ftp://ftp.gnustep.org/pub/gnustep/dev-apps').
 
-How about porting between Cocoa and GNUstep?
---------------------------------------------
+1.1.2 How about porting between Cocoa and GNUstep?
+--------------------------------------------------
 
 It's easier from GNUstep to Cocoa than Cocoa to GNUstep. Cocoa is
 constantly changing, much faster than GNUstep could hope to keep up.
@@ -33,15 +33,16 @@ GNUstep yet. Plus there are some other issues. If you start with Cocoa:
 
    * Do not use Quicktime or other proprietary extension
 
-   * You need to convert .nib files (see next question  *note Tools for
-     porting::)
+   * GNUstep should be able to read Cocoa nib files automatically, so
+     there is no need to port these, although you might want to have
+     GNUstep specific versions of them anyway.
 
    See also
-<http://mediawiki.gnustep.org/index.php/Writing_portable_code> for more
+`http://mediawiki.gnustep.org/index.php/Writing_portable_code' for more
 information.
 
-Tools for porting
------------------
+1.1.3 Tools for porting
+-----------------------
 
 While the programming interface should be almost transparent between
 systems (expect for the unimplemented parts, of course), there are a
@@ -49,10 +50,11 @@ variety of other files and tools that are necessary for porting
 programs.
 
 `ni2gmodel'
-     This program coverts nib files from any system, such as Cocoa or
-     OPENSTEP to a gmodel format file. Gmodel can be read directly by
-     GNUstep or you can convert this to a more GNUstep-native gorm
-     format (using the Gorm interface modeller).
+     This program coverts nib files from any system, such as OPENSTEP to
+     a gmodel format file. Gmodel can be read directly by GNUstep or
+     you can convert this to a more GNUstep-native gorm format (using
+     the Gorm interface modeller). Note this is not necessary for Cocoa
+     nibs - GNUstep can read these directly.
 
 `Renaissance'
      GNUstep Renaissance allows you to describe your user interfaces
@@ -79,39 +81,36 @@ programs.
      almost any language you like.
 
 
-Can I transfer archived data from GNUstep to Cocoa?
----------------------------------------------------
+1.1.4 Can I transfer archived data from GNUstep to Cocoa?
+---------------------------------------------------------
 
 Apple's archiving format is proprietary and not documented, so this
 poses a problem for anyone wanting to implement compatibility with it.
 However, even if we reverse engineered the format, there are enough
 differences between the class and ivar layouts to make this sort of
 compatibility difficult. Not to mention the fact that we would
-constantly have to keep up with the changes Apple made. Also Apple's
-archiving format, as far as we know, would not be compatible between
-different machines because of endiness issues, although GNUstep doesn't
-have this problem.
+constantly have to keep up with the changes Apple made.
 
    The new keyed archiving using XML file formats is much more portable,
 and GNUstep is trying to maintain compatibility with Apple with this
 type of archiving.
 
-Does distributed objects work between GNUstep and Cocoa?
---------------------------------------------------------
+1.1.5 Does distributed objects work between GNUstep and Cocoa?
+--------------------------------------------------------------
 
 See the answer to the previous question (on archive compatibility) for
 why this won't work either.
 
-Is there an Interface Builder for GNUstep?
-------------------------------------------
+1.1.6 Is there an Interface Builder for GNUstep?
+------------------------------------------------
 
 There is an Interface Builder for GNUstep called Gorm. A lot of work
 has been put into it and it works very well.  You can download it from
 the ftp site or via http.  The Project Manager ProjectCenter is also
 available.
 
-Can I use my original NIB files?
---------------------------------
+1.1.7 Can I use my original NIB files?
+--------------------------------------
 
 No - NeXT/Apple never documented their nib format, so GNUstep supports
 both the 'gmodel' format (which stores information as text
@@ -124,15 +123,15 @@ nib files to GNUstep gmodel files.
 transportable, although differences in class and ivar layout may still
 make this difficult.
 
-Can one use the hybrid "Objective-C++"
---------------------------------------
+1.1.8 Can one use the hybrid "Objective-C++"
+--------------------------------------------
 
 No. at present the GNU compiler (gcc) does not support "Objective-C++".
 Soon to br released gcc 4.1 will have this support, but it is still
 unclear how robust it will be.
 
-Is there a plan to support the Java/YellowBox Bindings?
--------------------------------------------------------
+1.1.9 Is there a plan to support the Java/YellowBox Bindings?
+-------------------------------------------------------------
 
 Yes. The GNustep Java library/bridge called JIGS is available now.  JIGS
 is a free (LGPL) Java Interface for GNUstep; it can automatically wrap
@@ -144,8 +143,8 @@ virtual machines inside GNUstep Objective-C code and access java objects
 in the java virtual machine transparently, as if they were objective-C
 objects.
 
-What if I compile GNUstep under OPENSTEP/MacOS X?
--------------------------------------------------
+1.1.10 What if I compile GNUstep under OPENSTEP/MacOS X?
+--------------------------------------------------------
 
 GNUstep uses the X-windows display postscript extension.  The interface
 to that is not the same as the interface to the OPENSTEP/MacOS-X
@@ -155,8 +154,8 @@ the interface, nobody has bothered to date.
    You can, however, use a GNUstep program with an X11 server running
 on MacOSX.
 
-Is the Objective C API for GTK related?
----------------------------------------
+1.1.11 Is the Objective C API for GTK related?
+----------------------------------------------
 
 No.  GNUstep applications provide their GUI via the OpenStep API, which
 provides fully object-oriented access to GUI manipulation.
@@ -165,8 +164,8 @@ provides fully object-oriented access to GUI manipulation.
 much easier for new users to create their own subclasses rather than
 simply using the supplied widgets as in other frameworks.
 
-How about implementing parts of the Application Kit with GTK?
--------------------------------------------------------------
+1.1.12 How about implementing parts of the Application Kit with GTK?
+--------------------------------------------------------------------
 
 Yes and No - The GNUstep architecture provides a single,
 platform-independent, API for handling all aspects of GUI interaction
@@ -184,18 +183,18 @@ win32 calls is likely to be minimal.  If/when GTK is ported to more
 systems, a backend written using it could be a valuable asset -
 volunteers are, as always, welcome.
 
-Compiling and Developing
-========================
+1.2 Compiling and Developing
+============================
 
-How can I get started programming?
-----------------------------------
+1.2.1 How can I get started programming?
+----------------------------------------
 
 Good question.  Read the tutorials at the GNUstep web site. Also look at
 Apple's documentation (pointers in the Resources section on the GNUstep
 web site.)
 
-How can I help with GNUstep?
-----------------------------
+1.2.2 How can I help with GNUstep?
+----------------------------------
 
   1. Write/debug library code
 
@@ -229,8 +228,8 @@ anyone.
 that begin with a slash and two asterices). But PLEASE, do not copy from
 the Apple documentation or any other copyrighted documentation.
 
-Helping develop GNUstep
------------------------
+1.2.3 Helping develop GNUstep
+-----------------------------
 
 There is plenty of unimplemented stuff in the gui library and backend
 libraries that volunteers can work on - just browse through the code
@@ -242,8 +241,8 @@ website.
    Once you have coded something, you could always write a testcase and
 documentation for it :-)
 
-Helping document GNUstep
-------------------------
+1.2.4 Helping document GNUstep
+------------------------------
 
 All class documentation is written directly in the source code itself
 and translated using the autogsdoc program. See the source code and
@@ -265,21 +264,21 @@ format into gsdoc.
    GNUstep documentation should have copyright assigned to the Free
 Software Foundation.
 
-How do I assign my contribution?
---------------------------------
+1.2.5 How do I assign my contribution?
+--------------------------------------
 
 Everyone who contributes more than 20 lines of code or so needs to sign
 a copyright assignment so that the FSF can have legal control of the
 copyright. This makes it easier to defend against any copyright
 infringement suits.  Contact the GNUstep maintainer for instructions on
 how to do this or download and fill out the form
-<http://www.gnustep.org/resources/request-assign.future> (instructions
+`http://www.gnustep.org/resources/request-assign.future' (instructions
 are included).
 
-How do I update the task list?
-------------------------------
+1.2.6 How do I update the task list?
+------------------------------------
 
-The task list (<http://savannah.gnu.org/pm/?group_id=99>) is supposed
+The task list (`http://savannah.gnu.org/pm/?group_id=99') is supposed
 to tell people what jobs are waiting to be done. Feel free to add to it
 or update the tasks that are there (you need to create a login for
 yourself first).
@@ -311,8 +310,8 @@ bracketed in `#ifndef STRICT_MACOS_X'
    There are a couple of people working on this already, so it's a good
 idea to get in touch with Adam or Richard to coordinate efforts.
 
-How do I start writing tests?
------------------------------
+1.2.7 How do I start writing tests?
+-----------------------------------
 
 You can write testcases - where the libraries fail tests, you could
 either fix the problem, or add it to the task list.
@@ -321,21 +320,23 @@ either fix the problem, or add it to the task list.
 GNUstep sourcecode you can find. Then checkout the
 'gnustep/tools/testsuite' module from svn.
 
-How do I start writing applications?
-------------------------------------
+1.2.8 How do I start writing applications?
+------------------------------------------
 
 You can either look at the links on the GNUstep website for
 applications that have been started, and email their owners to
 volunteer to help, or you can start your own project.
 
-How can I help with the GNUstep website?
-----------------------------------------
+1.2.9 How can I help with the GNUstep website?
+----------------------------------------------
 
 Talk to Adam Fedor <fedor@gnu.org>, the maintainer.
 
    The GNUstep website is kept as a CVS module, but the largest portions
 of it (the FAQ and the Documentation) are actually generated from files
-in the individual GNUstep packages.
+in the individual GNUstep packages.  Many highly changeable portions
+are kept on the Wiki, so anyone can change these (first you need to get
+write access, though).
 
    If you want to update the FAQ or documentation  - grab the latest
 snapshot of the GNUstep core you can find, update it from the svn
@@ -344,22 +345,22 @@ directory.
 
    If you want to work on other parts of the website, you can grab a
 copy of the website via anonymous CVS. See
-<http://savannah.gnu.org/cvs/?group_id=99> for instructions on how to
+`http://savannah.gnu.org/cvs/?group_id=99' for instructions on how to
 do that.
 
    The main task with the website is to figure out which bits are
 out-of-date (or wrong) and update/mark-as-outdated as required.
 
-Why doesn't GDB support Objective-C?
-------------------------------------
+1.2.10 Why doesn't GDB support Objective-C?
+-------------------------------------------
 
 Um, it does. As of GDB 6.0, gdb supports debugging of Objective-C code.
 
-GNU Objective C Compiler and Runtime
-====================================
+1.3 GNU Objective C Compiler and Runtime
+========================================
 
-What is the Objective C Runtime?
---------------------------------
+1.3.1 What is the Objective C Runtime?
+--------------------------------------
 
 The Objective C Runtime Library provides C functions and data structures
 required to execute an Objective C program.
@@ -391,11 +392,11 @@ initialization of static instances (such as @""-style string objects).
      be ported to the GNU runtime in the future.
 
 
-GNUstep Base Library
-====================
+1.4 GNUstep Base Library
+========================
 
-What is the GNUstep Base Library?
----------------------------------
+1.4.1 What is the GNUstep Base Library?
+---------------------------------------
 
 The GNUstep Base Library is a library of general-purpose, non-graphical
 Objective C objects.  For example, it includes classes for strings,
@@ -407,8 +408,8 @@ random number generators.
    It provides functionality that aims to implement the non-graphical
 portion of the OpenStep standard (the Foundation library).
 
-What is its current state of development?
------------------------------------------
+1.4.2 What is its current state of development?
+-----------------------------------------------
 
 GNUstep base is currently stable and, to the best of our knowledge,
 implements all of the OpenStep functionality (except for a few classes
@@ -416,8 +417,8 @@ that we feel are not useful). It also implements most all of the new
 Cocoa classes. However we do some things, like scripting, differently,
 so we don't implement all the Cocoa classes.
 
-What are the features of GNU Distributed Objects?
--------------------------------------------------
+1.4.3 What are the features of GNU Distributed Objects?
+-------------------------------------------------------
 
 GNU Distributed Objects has many of the features of other distributed
 objects implementations, but, since it is free software, it can be
@@ -443,11 +444,11 @@ GNU Proxy for the remote root object has a target address value just
 like all other Proxy's, and you can change the root object as many
 times as you like. ].
 
-GNUstep GUI Library
-===================
+1.5 GNUstep GUI Library
+=======================
 
-What is the GUI Library?
-------------------------
+1.5.1 What is the GUI Library?
+------------------------------
 
 The GNUstep GUI Library is a library of objects useful for writing
 graphical applications.  For example, it includes classes for drawing
@@ -462,8 +463,8 @@ context-dependent help, spell checking.
 portion of the OpenStep standard.  However the implementation has been
 written to take advantage of GNUstep enhancements wherever possible.
 
-Explain the organization of the front- and back-ends
-----------------------------------------------------
+1.5.2 Explain the organization of the front- and back-ends
+----------------------------------------------------------
 
 The GNUstep GUI Library is divided into a front- and back-end.  The
 front-end contains the majority of implementation, but leaves out the
@@ -476,15 +477,15 @@ graphics/event platforms.  Much work will be saved by this clean
 separation between front- and back-end, because it allows different
 platforms to share the large amount of front-end code.
 
-What is the current state of development of the front-end?
-----------------------------------------------------------
+1.5.3 What is the current state of development of the front-end?
+----------------------------------------------------------------
 
 Many of the classes are well implemented, if not thoroughly tested.
 See the GNUstep web sites and read status information contained in the
 distribution for the most up-to-date information.
 
-What is the current state of development of the back-ends?
-----------------------------------------------------------
+1.5.4 What is the current state of development of the back-ends?
+----------------------------------------------------------------
 
 There are several backends currently available:
 
@@ -506,11 +507,11 @@ There are several backends currently available:
      An up-and-coming backend. It still relies on unpublished functions
      in the cairo library so using it is not for the beginner.
 
-GNUstep DisplayGhostScript Server
-=================================
+1.6 GNUstep DisplayGhostScript Server
+=====================================
 
-What is the Display Ghostscript Server?
----------------------------------------
+1.6.1 What is the Display Ghostscript Server?
+---------------------------------------------
 
 It is a free implementation of a Display PostScript server based on the
 GNU Ghostscript program developed by Aladdin Enterprises and now owned
@@ -521,8 +522,8 @@ the development of DGS has stopped as it is too difficult to maintain
 and no one wanted to work on it. Now we are using other means of
 drawing.
 
-What is its current state of development?
------------------------------------------
+1.6.2 What is its current state of development?
+-----------------------------------------------
 
 GNU contracted with Aladdin Enterprises to add some key features to GNU
 Ghostscript so it could be used as a DPS server. This work has mostly
@@ -533,8 +534,8 @@ promised fees for the work that was actually done and delivered.)  DGS
 works fairly well with a single context.  Alpha channel and compositing
 doesn't work.
 
-What is the relationship between the Display Ghostscript Server and X Windows?
-------------------------------------------------------------------------------
+1.6.3 What is the relationship between the Display Ghostscript Server and X Windows?
+------------------------------------------------------------------------------------
 
 Display Ghostscript runs on top of X Windows.
 

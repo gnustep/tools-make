@@ -60,7 +60,9 @@ Cocoa:
 @item Do not use CoreFoundation
 @item Do not use Objective-C++ (except with gcc 4.1 or later)
 @item Do not use Quicktime or other proprietary extension
-@item You need to convert .nib files (see next question  @pxref{Tools for porting})
+@item GNUstep should be able to read Cocoa nib files automatically, so there
+is no need to port these, although you might want to have GNUstep specific
+versions of them anyway.
 @end itemize
 
 See also @url{http://mediawiki.gnustep.org/index.php/Writing_portable_code}
@@ -76,10 +78,11 @@ programs.
 
 @table @samp
 @item ni2gmodel
-This program coverts nib files from any system, such as Cocoa or OPENSTEP to
+This program coverts nib files from any system, such as OPENSTEP to
 a gmodel format file. Gmodel can be read directly by GNUstep or you can
 convert this to a more GNUstep-native gorm format (using the Gorm interface
-modeller).
+modeller). Note this is not necessary for Cocoa nibs - GNUstep can read these
+directly.
 
 @item Renaissance
 GNUstep Renaissance allows you to describe your user
@@ -114,10 +117,7 @@ poses a problem for anyone wanting to implement compatibility with it.
 However, even if we reverse engineered the format, there are enough
 differences between the class and ivar layouts to make this sort of
 compatibility difficult. Not to mention the fact that we would
-constantly have to keep up with the changes Apple made. Also Apple's
-archiving format, as far as we know, would not be compatible between
-different machines because of endiness issues, although GNUstep doesn't
-have this problem.
+constantly have to keep up with the changes Apple made. 
 
 The new keyed archiving using XML file formats is much more portable,
 and GNUstep is trying to maintain compatibility with Apple with this
@@ -382,6 +382,8 @@ Talk to Adam Fedor @email{fedor@@gnu.org}, the maintainer.
 The GNUstep website is kept as a CVS module, but the largest portions
 of it (the FAQ and the Documentation) are actually
 generated from files in the individual GNUstep packages.
+Many highly changeable portions are kept on the Wiki, so anyone can change
+these (first you need to get write access, though).
 
 If you want to update the FAQ or documentation  - grab
 the latest snapshot of the GNUstep core you can find, update it

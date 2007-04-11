@@ -75,7 +75,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 DOCUMENT_NAME = gnustep-howto faq filesystem internals machines make userfaq
 
 # The text documents to be generated
-DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE
+DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS RELEASENOTES GNUstep-HOWTO ANNOUNCE
 
 TOP_DOC_FILES = FAQ INSTALL README NEWS GNUstep-HOWTO ANNOUNCE
 README_FILES = README.Darwin README.MinGWOnCygwin README.Cygwin \
@@ -128,6 +128,10 @@ INSTALL_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 NEWS_TEXI_FILES = version.texi
 NEWS_TEXT_MAIN = news.texi
 NEWS_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
+
+RELEASENOTES_TEXI_FILES = version.texi
+RELEASENOTES_TEXT_MAIN = releasenotes.texi
+RELEASENOTES_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
 README_TEXI_FILES = version.texi
 README_TEXT_MAIN = readme.texi
