@@ -44,6 +44,8 @@ debugging or profiling.
 @item Precompiled header support added using xxx_OBJC_PRECOMPILED_HEADERS.
 @item gnustep-config is a program which prints out information on the
 GNUstep filesystem and variables (Similar to programs like pkg-config).
+@item Better inline messages/help, including printing the version
+of gnustep-make that is being used
 @item Applications can be started now just using their name (by
 installing a wrapper in the tools directory).
 @item Versioning of Microsoft Windows DLLs implemented.
@@ -53,6 +55,13 @@ deprecated. Use instead @samp{GNUSTEP_INSTALLATION_DOMAIN} and
 @item Implement use of GNU standard @samp{DESTDIR} variable.
 @item Object files are now placed in the @file{obj} directory.
 @item Static and profile libraries have the same name as normal libraries.
+@item Support for Admin Tools and Admin Apps directories
+@item RPM support rewritten
+@item Microsoft Windows support updated and extended
+@item Easy consistent way to link non-installed frameworks by using
+-Lpath_to_framework/xxx.framework/$GNUSTEP_TARGET_LDIR
+@item Versioning of library resources
+@item Fixed rebuilding .plist and .palette files
 @end itemize
 
 @ifclear ANNOUNCE-ONLY
