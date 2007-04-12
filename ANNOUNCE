@@ -34,7 +34,9 @@ the `GNUstep-HOWTO' and `INSTALL' documents to find out new information
 about configuring and installing make.
 
    If you are a developer, read the files `filesystem' and `make' for
-information on new and changed variables.
+information on new and changed variables. Read the `releasenotes' file
+for specific changes in this release and updates you will need to make
+to work with this version of make.
 
    Various changes include:
    * New configure option `--with-layout' to choose different
