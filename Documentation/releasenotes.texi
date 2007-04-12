@@ -6,10 +6,126 @@ migrate to using a newer version of the make system.
 
 @section Version 2.0.0
 
+Version 2.0.0 is a new major release of gnustep-make which includes a
+number of major changes compared to previous 1.x releases.  Most of
+the changes are backwards compatible in the sense that old
+GNUmakefiles will work with gnustep-make version 1 or 2 when used in
+the same conditions (traditional GNUstep filesystem layout).  But
+GNUmakefiles might need updating to work with the new filesystem
+layout configurations that are allowed by gnustep-make version 2.
 
+@table @samp
 
+@item GNUSTEP_INSTALLATION_DIR
+This variable is deprecated in gnustep-make version 2; you should
+never use it.  gnustep-make version 2 supports installation domains
+that are mapped to filesystem locations in arbitrary ways; for this
+reason, specifying a GNUSTEP_INSTALLATION_DIR no longer makes sense.
+If you need to relocate the whole installation (for example,
+installing into /tmp to prepare a binary package) you should use
+DESTDIR, as in 'make install DESTDIR=/tmp'.  To choose an installation
+domain, you should use GNUSTEP_INSTALLATION_DOMAIN, as in 'make
+install GNUSTEP_INSTALLATION_DOMAIN=LOCAL'.  It's particularly
+important that you remove any reference to GNUSTEP_INSTALLATION_DIR
+inside your own GNUmakefiles.
 
+If your GNUmakefiles contains references to GNUSTEP_INSTALLATION_DIR
+(or similar), you should remove them by replacing them with references
+to the actual logical directory into which you want to install.  For
+example, if your GNUmakefile is trying to install something into
+GNUSTEP_INSTALLATION_DIR/Library/Libraries, you need to replace it
+with GNUSTEP_LIBRARIES.  This is important for non-GNUstep filesystem
+layouts (where, eg, GNUSTEP_LIBRARIES should be set to /usr/lib or
+/usr/local/lib or /home/nicola/GNUstep/Library/Libraries depending on
+the installation domain); in that case, gnustep-make will manage
+GNUSTEP_LIBRARIES for you.  Please check the file @file{filesystem}
+for more information on the available variables.
 
+@item GNUSTEP_xxx_ROOT
+The variables GNUSTEP_SYSTEM_ROOT, GNUSTEP_LOCAL_ROOT,
+GNUSTEP_NETWORK_ROOT, GNUSTEP_USER_ROOT and GNUSTEP_ROOT are
+deprecated in gnustep-make version 2 and you should never use them.
+gnustep-make version 2 supports installation domains that are mapped
+to filesystem locations in arbitrary ways; for this reason, a variable
+like GNUSTEP_SYSTEM_ROOT has no longer any use.
+
+If your GNUmakefiles contains references to GNUSTEP_SYSTEM_ROOT (or
+similar), you should remove them by replacing them with references to
+the actual logical directory into which you want to install.  For
+example, if your GNUmakefile is trying to install something into
+GNUSTEP_SYSTEM_ROOT/Library/Libraries, you need to replace it with
+GNUSTEP_SYSTEM_LIBRARIES.  Please check the file @file{filesystem} for
+more information on the available variables.
+
+@item gnustep-make ./configure and install options
+The options to configure (and make install), particularly the ones to
+determine the filesystem layout, have been radically changed in
+gnustep-make version 2.  If you have a building or packaging script
+for gnustep-make, you need to make sure you replace your old
+./configure options with the new ones.  In particular, the
+--with-system-root, --with-local-root and --with-network-root
+configure options have been replaced by the more powerful
+--with-layout configure option.  Also, configure no longer imports an
+existing configuration file so you need to make sure that you pass all
+the options every time.  'make install special_prefix=xxx' has been
+replaced by 'make install DESTDIR=xxx'.
+
+@item make debug=yes is now the default
+The default used to be 'make debug=no'; this has now been changed to
+be 'make debug=yes'.  To get the traditional behaviour, please use
+'make debug=no'.
+
+@item RPM support rewritten
+The RPM support has been rewritten so if you're using gnustep-make
+to automatically generate RPM packages for your software, you may
+want to review the process.  In particular, there is no longer
+a distinction between debug and non-debug packages.
+
+@item xxx_PREPROCESS_INFO_PLIST
+This variable is now obsolete and can be removed; gnustep-make version 2
+can automatically detect plists that need preprocessing.
+
+@item Framework default version
+The default framework resource version changed from 'A' to
+INTERFACE_VERSION (which is set, by default, to '0.0').
+
+@item Microsoft Windows updates
+If you are using Microsoft Windows, you probably want to check
+the new installation instructions and reinstall everything.
+
+@item Java tools location changed
+Java tools are now installed into GNUSTEP_JAVA rather than
+in a subdirectory of GNUSTEP_TOOLS.
+
+@item resource-set.make install directory
+The variable xxx_RESOURCE_FILES_INSTALL_DIR for resource-set.make has
+been deprecated in favour of xxx_INSTALL_DIR.  For backwards
+compatibility, you may want to set them both:
+
+xxx_INSTALL_DIR = $(GNUSTEP_LIBRARY)/Libraries/Resources/xxx
+
+xxx_RESOURCE_FILES_INSTALL_DIR = /Library/Libraries/Resources/xxx
+
+@item INSTALL_ROOT_DIR
+All instances of INSTALL_ROOT_DIR in user's makefiles should be
+replaced with DESTDIR.
+
+@item GNUSTEP_FLATTENED
+All checks for GNUSTEP_FLATTENED should be updated to check the new
+variable GNUSTEP_IS_FLATTENED instead, and to compare it explicitly to
+'yes' and 'no', and assume that '' means 'yes'.
+
+@item ./shared_obj
+The ./shared_obj, ./shared_debug_obj directories and similar are no longer
+created.  You can use ./obj instead.
+
+@item library names
+All libraries now have the same name.
+
+@item application names
+All applications now have the same name.
+
+@end table
 
 @ifinfo
 Copyright @copyright{} 2007 Free Software Foundation

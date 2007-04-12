@@ -1,6 +1,8 @@
 2007-04-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/news.texi: More updates.
+	* Documentation/releasenotes.texi: Added release notes
+	for gnustep-make version 2.
 	
 2007-04-12  David Ayers  <ayers@fsfe.org>
 
