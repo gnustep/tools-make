@@ -295,7 +295,7 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
               if [ "$$framework_version" = "" ]; then \
                 framework_version="$(word 1,$(subst ., ,$($(basename $(basename $*))_VERSION)))"; \
                 if [ "$$framework_version" = "" ]; then \
-                  framework_version="0.0"; \
+                  framework_version="0"; \
                 fi; \
               fi; \
             fi; \
@@ -370,7 +370,7 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
               if [ "$$framework_version" = "" ]; then \
                 framework_version="$(word 1,$(subst ., ,$($(basename $(basename $*))_VERSION)))"; \
                 if [ "$$framework_version" = "" ]; then \
-                  framework_version="0.0"; \
+                  framework_version="0"; \
                 fi; \
               fi; \
             fi; \

@@ -1,3 +1,12 @@
+2007-04-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed installing headers of a framework's subproject when the
+	framework has the default version (Problem reported by David
+	Wetzel <dave@turbocat.de>).
+	* Master/rules.make (%.variables): Fixed default framework version used
+	to copy headers from subprojects to frameworks.
+	(%.subprojects): Same change.
+
 2007-04-13  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.0 (Updated)
