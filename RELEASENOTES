@@ -91,7 +91,7 @@ configurations that are allowed by gnustep-make version 2.
 
 `Framework default version'
      The default framework resource version changed from 'A' to
-     INTERFACE_VERSION (which is set, by default, to '0.0').
+     INTERFACE_VERSION (which is set, by default, to '0').
 
 `Microsoft Windows updates'
      If you are using Microsoft Windows, you probably want to check the

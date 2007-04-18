@@ -7,6 +7,10 @@
 	to copy headers from subprojects to frameworks.
 	(%.subprojects): Same change.
 
+	* Documentation/releasenotes.texi: Fixed documentation on the new
+	default framework resource version.
+	* RELEASENOTES: Same change.
+	
 2007-04-13  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.0 (Updated)
