@@ -1,3 +1,9 @@
+2007-05-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* FilesystemLayouts/fhs-system: Added missing xxx_WEB_APPS
+	variables (Reported by Stefan Bidigaray <stefanbidi@gmail.com>).
+	Fixed xxx_APPS variables to use 'Applications' and not 'Apps'.
+	
 2007-05-01  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* FilesystemLayouts/gnustep (GNUSTEP_USER_DIR_DOC,
