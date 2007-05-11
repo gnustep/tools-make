@@ -1,3 +1,9 @@
+2007-05-11  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: correct the os/architecture specific header
+	directory for non-flattened compilation.  Needs to be a subdirectory
+	of the library-combo directory and wasn't.
+
 2007-05-02  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* FilesystemLayouts/fhs-system: Added missing xxx_WEB_APPS

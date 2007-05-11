@@ -308,7 +308,7 @@ ifeq ($(GNUSTEP_IS_FLATTENED), no)
 # Later, we'll systematically replace domain with USER, the LOCAL,
 # then NETWORK, then SYSTEM.
 GS_HEADER_PATH = \
- $(GNUSTEP_$(domain)_HEADERS)/$(GNUSTEP_TARGET_DIR) \
+ $(GNUSTEP_$(domain)_HEADERS)/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR) \
  $(GNUSTEP_$(domain)_HEADERS)/$(LIBRARY_COMBO) \
  $(GNUSTEP_$(domain)_HEADERS)
 
