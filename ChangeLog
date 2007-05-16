@@ -1,3 +1,9 @@
+2007-05-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: When checking for the custom ObjC runtime library,
+	check in Network and Local as well as System.
+	* configure: Regenerated.
+	
 2007-05-11  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: correct the os/architecture specific header
