@@ -890,16 +890,10 @@ AC_SUBST(BACKEND_BUNDLE)
 # Miscellaneous flags and setup
 #--------------------------------------------------------------------
 
-# Set location of System GNUstep dirs for later use
-if test "$GNUSTEP_IS_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
-  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
-else
+if test "$GNUSTEP_IS_FLATTENED" != yes; then
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir="$clean_target_cpu/$clean_target_os"
-  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES/$obj_dir"
-  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS/$LIBRARY_COMBO"
 fi
 
 # Check to see if the libobjc library is in our GNUSTEP_SYSTEM_LIBRARIES.
@@ -909,11 +903,54 @@ AC_MSG_CHECKING(for custom shared objc library)
 AC_CACHE_VAL(gs_cv_objc_libdir,
 [dnl
 gs_cv_objc_libdir=NONE
+gs_cv_objc_incdir=NONE
+# Try GNUSTEP_SYSTEM_LIBRARIES first
+if test "$GNUSTEP_IS_FLATTENED" = yes; then
+  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
+  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
+else
+  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES/$obj_dir"
+  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS/$LIBRARY_COMBO"
+fi
+
 if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
   if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
-  else
-    gs_cv_objc_libdir=NONE
+    gs_cv_objc_incdir="$GNUSTEP_HDIR"
+  fi
+fi
+
+# Try GNUSTEP_NETWORK_LIBRARIES second (override GNUSTEP_SYSTEM if
+# found)
+if test "$GNUSTEP_IS_FLATTENED" = yes; then
+  GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES"
+  GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS"
+else
+  GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES/$obj_dir"
+  GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS/$LIBRARY_COMBO"
+fi
+
+if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
+  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
+    gs_cv_objc_libdir="$GNUSTEP_LDIR"
+    gs_cv_objc_incdir="$GNUSTEP_HDIR"
+  fi
+fi
+
+# Try GNUSTEP_LOCAL_LIBRARIES third (override GNUSTEP_SYSTEM and
+# GNUSTEP_NETWORK if found)
+if test "$GNUSTEP_IS_FLATTENED" = yes; then
+  GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES"
+  GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS"
+else
+  GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES/$obj_dir"
+  GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS/$LIBRARY_COMBO"
+fi
+
+if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
+  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
+    gs_cv_objc_libdir="$GNUSTEP_LDIR"
+    gs_cv_objc_incdir="$GNUSTEP_HDIR"
   fi
 fi
 #gcc_shared_libobjc=`gcc -print-file-name=libobjc.so`
@@ -923,15 +960,15 @@ fi
 ])
 AC_MSG_RESULT($gs_cv_objc_libdir)
 
-# The following are needed to compile the test programs
-if test "$gs_cv_objc_libdir" = "$GNUSTEP_LDIR"; then
-  OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$GNUSTEP_HDIR"
+if test "$gs_cv_objc_libdir" != "NONE"; then
+  # The following are needed to compile the test programs
+  OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
   OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
-fi
 
-# And the following to execute them
-LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
-export LD_LIBRARY_PATH
+  # And the following to execute them
+  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
+  export LD_LIBRARY_PATH
+fi
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
