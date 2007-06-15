@@ -333,8 +333,9 @@ as Windows).
 @menu
 * Problems compiling (loading shared libs)::  
 * Problems compiling (GNUstep Internal Error)::  
-* Problems with Alt key::       
+* Problems running tools and compiling::  
 * Problems with gcc3::          
+* Problems with Alt key::       
 * Problems with fonts::         
 * No characters displayed::     
 * No Makefile::                 
@@ -374,7 +375,7 @@ make LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 You could also be having problems with gcc. gcc 2.96 does not work
 (Mandrake 8.1, perhaps others). Use a different compiler, like gcc 3.x.
 
-@node Problems compiling (GNUstep Internal Error), Problems with Alt key, Problems compiling (loading shared libs), Troubleshooting
+@node Problems compiling (GNUstep Internal Error), Problems running tools and compiling, Problems compiling (loading shared libs), Troubleshooting
 @subsection Problems compiling (GNUstep Internal Error)
 
 If you get
@@ -394,7 +395,42 @@ you are using gcc 3.x, DO NOT use the gnustep-objc library.
 There could also be a mismatch between the base and gui library versions.
 Make sure you have the latest release of each library installed.
 
-@node Problems with Alt key, Problems with gcc3, Problems compiling (GNUstep Internal Error), Troubleshooting
+
+@node Problems running tools and compiling, Problems with gcc3, Problems compiling (GNUstep Internal Error), Troubleshooting
+@subsection Problems running tools and compiling
+
+If you have a system that has SELinux enabled (Fedora Core for example),
+you may have trouble running and/or compiling (some tools are run during
+the compilation process) GNUstep. This is due to the use of ffcall
+and/or libffi and other techniques used to access memory in a way that
+SELinux does not like. You might get errors like
+
+@example
+trampoline: cannot make memory executable
+/bin/sh: line 5:  8427 Aborted                 ././shared_obj/ 
+make_services --test GSspell.service/Resources/Info-gnustep.plist
+gmake[2]: *** [GSspell.service/Resources/Info-gnustep.plist] Error 1
+@end example
+or
+@example
+libgnustep-base.so.1.13: cannot restore segment prot after reloc: Permission denied
+@end example
+
+If you are using ffcall, you might need to switch to libffi. But in
+either case, it might help to do this:
+
+@example
+chcon -t texrel_shlib_t /usr/GNUstep/System/Library/Libraries/*.so
+@end example
+
+after installing the base libraries.
+
+@node Problems with gcc3, Problems with Alt key, Problems running tools and compiling, Troubleshooting
+@subsection Problems with gcc3
+
+Don't forget you need to update binutils and libc also.
+
+@node Problems with Alt key, Problems with fonts, Problems with gcc3, Troubleshooting
 @subsection Problems with Alt key
 
 It's possible the Alt key is not where you think it is or is defined
@@ -410,12 +446,7 @@ using it for itself. To check, open Window Maker's WPrefs and go to the
 Mouse Preferences. Then use another value for the "Mouse grab modifier"
 (bottom right). That will allow you to alt-drag things.
 
-@node Problems with gcc3, Problems with fonts, Problems with Alt key, Troubleshooting
-@subsection Problems with gcc3
-
-Don't forget you need to update binutils and libc also.
-
-@node Problems with fonts, No characters displayed, Problems with gcc3, Troubleshooting
+@node Problems with fonts, No characters displayed, Problems with Alt key, Troubleshooting
 @subsection Problems with fonts
 
 Why do the characters get changed to asterisks ('*')?
