@@ -1,3 +1,10 @@
+2007-07-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* {Everything}: Fixed copyright notices to tell the user they can
+	read the full text of the GNU GPL in the COPYING file.  The old
+	notices were telling users to read the COPYING.LIB file which does
+	not exist.
+
 2007-06-15  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/userfaq.texi: Update.
