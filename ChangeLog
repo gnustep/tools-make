@@ -1,3 +1,7 @@
+2007-09-13 Fred Kiefer <FredKiefer@gmx.de>
+
+	* openapp.in: Add linebreak at end of file.
+
 2007-07-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* {Everything}: Fixed copyright notices to tell the user they can
