@@ -1,3 +1,8 @@
+2007-10-30  Adam Fedor  <fedor@gnu.org>
+
+	* Update licesnse to GPL 3
+	* gnustep-make.spec.in: Change Copyright to License.
+
 2007-09-13 Fred Kiefer <FredKiefer@gmx.de>
 
 	* openapp.in: Add linebreak at end of file.

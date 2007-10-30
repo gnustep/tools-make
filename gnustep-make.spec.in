@@ -14,7 +14,7 @@ Name: 		%{gs_name}
 Version: 	%{gs_version}
 Release: 	1
 Source: 	ftp://ftp.gnustep.org/pub/gnustep/core/%{gs_name}-%{gs_version}.tar.gz
-Copyright: 	GPL
+License: 	GPL
 Group: 		System Environment/Base
 Summary: 	GNUstep Makefile package
 Packager:	GNUstep Development <bug-gnustep@gnu.org>
