@@ -1,3 +1,8 @@
+2007-10-31  David Ayers  <ayers@fsfe.org>
+
+	* rules.make: Implement ADDITIONAL_NATIVE_LIB_DIRS.
+	* Documentation/make.texi: Document ADDITIONAL_NATIVE_LIB_DIRS.
+	
 2007-10-30  Adam Fedor  <fedor@gnu.org>
 
 	* Update licesnse to GPL 3

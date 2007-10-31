@@ -160,7 +160,7 @@ include $(GNUSTEP_MAKEFILES)/Instance/rules.make
 endif
 
 #
-# Implement ADDITIONAL_NATIVE_LIBS
+# Implement ADDITIONAL_NATIVE_LIBS/ADDITIONAL_NATIVE_LIB_DIRS
 #
 # A native lib is a framework on apple, and a shared library
 # everywhere else.  Here we provide the appropriate link flags
@@ -168,8 +168,10 @@ endif
 #
 ifeq ($(FOUNDATION_LIB),apple)
   ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-framework $(lib))
+  ADDITIONAL_FRAMEWORK_DIRS += $(foreach libdir,$(ADDITIONAL_NATIVE_LIB_DIRS),-F$(libdir))
 else
   ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-l$(lib))
+  ADDITIONAL_LIB_DIRS += $(foreach libdir,$(ADDITIONAL_NATIVE_LIB_DIRS),-L$(libdir)/$(GNUSTEP_OBJ_DIR))
 endif
 
 #
