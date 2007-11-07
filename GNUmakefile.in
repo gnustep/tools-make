@@ -252,6 +252,10 @@ svn-tag:
 	svn copy $(SVNPREFIX)/trunk $(SVNPREFIX)/tags/make-$(VERTAG) \
 	  -m "Tag version $(VERTAG)"
 
+svn-tag-stable:
+	svn copy $(SVNPREFIX)/branches/stable $(SVNPREFIX)/tags/make-$(VERTAG) \
+	  -m "Tag version $(VERTAG)"
+
 svn-dist:
 	svn export $(SVNPREFIX)/tags/make-$(VERTAG) \
 	  gnustep-make-$(GNUSTEP_MAKE_VERSION)

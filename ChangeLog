@@ -1,3 +1,7 @@
+2007-11-08  Adam Fedor  <fedor@gnu.org>
+
+	* Mark for Version 2.0.2 (on stable branch)
+
 2007-10-31  David Ayers  <ayers@fsfe.org>
 
 	* rules.make: Implement ADDITIONAL_NATIVE_LIB_DIRS.
