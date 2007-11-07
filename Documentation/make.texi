@@ -476,6 +476,11 @@ This will be converted into -lMyLibrary link flag on for most
 targets and into -framework MyLibrary link flag for
 apple-apple-apple.
 
+To add the corresponding flags, you can use
+@code{ADDITIONAL_NATIVE_LIB_DIRS += ../MyPath}
+This will be converted into -L../MyPath/$(GNUSTEP_OBJ_DIR) flag 
+on for most targets and into -F../MyPath flag for apple-apple-apple.
+
 @node objc.make, palette.make, native-library.make, Project Types
 @subsection Objective-C Programs (@file{objc.make})
 @menu

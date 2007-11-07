@@ -9,11 +9,15 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.0.2}
+
+Update license to GPLv3. Bug fixes.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.0.1}
 
 Bug fixes in filesystem layout and framework installation.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.0}
 

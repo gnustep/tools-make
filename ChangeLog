@@ -1,3 +1,32 @@
+2007-10-31  David Ayers  <ayers@fsfe.org>
+
+	* rules.make: Implement ADDITIONAL_NATIVE_LIB_DIRS.
+	* Documentation/make.texi: Document ADDITIONAL_NATIVE_LIB_DIRS.
+        
+2007-10-30  Adam Fedor  <fedor@gnu.org>
+
+	* Update licesnse to GPL 3
+	* gnustep-make.spec.in: Change Copyright to License.
+
+2007-09-13 Fred Kiefer <FredKiefer@gmx.de>
+
+	* openapp.in: Add linebreak at end of file.
+
+2007-07-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* {Everything}: Fixed copyright notices to tell the user they can
+	read the full text of the GNU GPL in the COPYING file.  The old
+	notices were telling users to read the COPYING.LIB file which does
+	not exist.
+
+2007-06-15  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/userfaq.texi: Update.
+
+2007-06-13  Chris Farber <chris@chrisfarber.net>
+
+	* Documentation/README.Darwin: Minor updates and corrections.
+
 2007-05-25  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.1

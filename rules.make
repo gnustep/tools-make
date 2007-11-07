@@ -13,11 +13,11 @@
 #
 #   This library is free software; you can redistribute it and/or
 #   modify it under the terms of the GNU General Public License
-#   as published by the Free Software Foundation; either version 2
+#   as published by the Free Software Foundation; either version 3
 #   of the License, or (at your option) any later version.
 #   
 #   You should have received a copy of the GNU General Public
-#   License along with this library; see the file COPYING.LIB.
+#   License along with this library; see the file COPYING.
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
@@ -160,7 +160,7 @@ include $(GNUSTEP_MAKEFILES)/Instance/rules.make
 endif
 
 #
-# Implement ADDITIONAL_NATIVE_LIBS
+# Implement ADDITIONAL_NATIVE_LIBS/ADDITIONAL_NATIVE_LIB_DIRS
 #
 # A native lib is a framework on apple, and a shared library
 # everywhere else.  Here we provide the appropriate link flags
@@ -168,8 +168,10 @@ endif
 #
 ifeq ($(FOUNDATION_LIB),apple)
   ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-framework $(lib))
+  ADDITIONAL_FRAMEWORK_DIRS += $(foreach libdir,$(ADDITIONAL_NATIVE_LIB_DIRS),-F$(libdir))
 else
   ADDITIONAL_OBJC_LIBS += $(foreach lib,$(ADDITIONAL_NATIVE_LIBS),-l$(lib))
+  ADDITIONAL_LIB_DIRS += $(foreach libdir,$(ADDITIONAL_NATIVE_LIB_DIRS),-L$(libdir)/$(GNUSTEP_OBJ_DIR))
 endif
 
 #

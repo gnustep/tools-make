@@ -1,5 +1,5 @@
 Date : 15-Jan-2004
-Last update: 20061231 (tested under Mac OS X 10.4 / Darwin 8)
+Last update: 20070507
 Authors: Adam Fedor <fedor@gnu.org>
          Quentin Mathé <qmathe@club-internet.fr>
          Lars S.-Helldorf <lars.sonchocky-helldorf@hamburg.de>
@@ -38,12 +38,9 @@ PRELIMINAIRES
 -------------
 
 For all targets, get the following software. I'd recommend installing Fink (and 
-FinkCommander on Mac OS X) to get all this software. If you use Fink, you 
-probably need to add the two lines below to your .bashrc or .profile (or similar 
-startup) file:
-
-     test -r /sw/bin/init.sh && . /sw/bin/init.sh
-     export DYLD_LIBRARY_PATH=/sw/lib:$DYLD_LIBRARY_PATH
+FinkCommander on Mac OS X) or MacPorts to get all this software. Make sure that
+Fink or MacPorts is in your path; newer versions do a good job of doing this for
+you.
 
 Remember you usually need root access to install software. That means when you 
 see an instruction like 'make install', you usually need to use sudo 
@@ -128,6 +125,9 @@ GNUstep on Darwin PowerPC
 
 Building FSF-GCC
 ----------------
+
+The easiest way to get FSF GCC is through Fink or MacPorts. If you would like to
+compile by hand, follow these directions:
 
 Darwin x86:
 
@@ -262,11 +262,11 @@ Source GNUstep.sh
 
 If you are using bourne shell like bash, type:
 
-     . <GNUstep install dir>/System/Makefiles/GNUstep.sh
+     . <GNUstep install dir>/System/Library/Makefiles/GNUstep.sh
 
 If you are using c shell like tcsh, type:
 
-     source <GNUstep install dir>/System/Makefiles/GNUstep.csh
+     source <GNUstep install dir>/System/Library/Makefiles/GNUstep.csh
 
 Building and installing GNUstep-base
 ------------------------------------
@@ -293,7 +293,8 @@ To know which options you need to use with your environment:
      libxml2 first, then the configuration fails because configure looks for 
      the libxml2 headers).
      
-     --disable-do is needed when you decide to not build libffi or ffcall.
+     --disable-do is needed when you decide to not build libffi or ffcall. You
+     probably do not want to do this.
      
      LDFLAGS=-L/sw/lib is needed when you installed libxslt with Fink and you
      want to compile the base library with libxslt support.
@@ -432,7 +433,7 @@ Window Maker
 
 Window Maker is the traditional window manager for GNUstep.
 
-In the case, you choose to use it, don't forget to execute wmaker.inst else
+In the case you choose to use it, don't forget to execute wmaker.inst else
 Window Maker will crash with signal 10.
 
 Example with Fink, do:
