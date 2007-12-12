@@ -77,7 +77,7 @@ VERTAG = $(subst .,_,$(GNUSTEP_MAKE_VERSION))
 SVNPREFIX=svn+ssh://svn.gna.org/svn/gnustep/tools/make
 
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
-	common.make empty.make filesystem.make library-combo.make java.make jni.make library.make \
+	common.make empty.make library-combo.make java.make jni.make library.make \
 	messages.make rules.make target.make names.make resource-set.make \
 	tool.make ctool.make test-library.make \
 	objc.make test-application.make test-tool.make subproject.make \
@@ -153,7 +153,7 @@ install: generated-files
 	  $(INSTALL_DATA) $(srcdir)/GNUstep-reset.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
 	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 debugapp $(tooldir); \
+	  $(INSTALL_PROGRAM) -m 755 $(srcdir)/debugapp $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
 	  $(INSTALL_PROGRAM) -m 755 gnustep-config $(tooldir))
 	 $(EC)(echo "Installing makefiles"; \
@@ -174,9 +174,10 @@ install: generated-files
 	     $(INSTALL_DATA) $(srcdir)/Instance/Documentation/$$f \
 	                     $(makedir)/Instance/Documentation; \
 	   done; \
-	   $(INSTALL_DATA) app-wrapper.template $(makedir); \
+	   $(INSTALL_DATA) $(srcdir)/app-wrapper.template $(makedir); \
 	   $(INSTALL_DATA) executable.template $(makedir); \
 	   $(INSTALL_DATA) config-noarch.make $(makedir); \
+	   $(INSTALL_DATA) filesystem.make $(makedir); \
 	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_LDIR))
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
 	   echo "Stripping makefiles and shell scripts..."; \

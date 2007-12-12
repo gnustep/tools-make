@@ -1,3 +1,14 @@
+2007-12-12  Hubert Chathi  <uhoreg@debian.org>
+
+	* relative_path.sh: Fixed check for start of string so that we
+	output '../xxx' instead of the clumsy './../xxx'.
+
+2007-12-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Fixed installation when a separate
+	source dir is used. (Patch by Hubert Chathi <uhoreg@debian.org>
+	with modifications).
+	
 2007-11-08  Adam Fedor  <fedor@gnu.org>
 
 	* Mark for Version 2.0.2 (on stable branch)

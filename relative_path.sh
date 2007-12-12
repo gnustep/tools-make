@@ -151,7 +151,7 @@ tmp_IFS="$IFS"
 IFS=/
 for component in $a; do
   if [ -n "$component" -a "$component" != "." ]; then
-    if [ -z "$result" ]; then
+    if [ "$result" = "." ]; then
       result=".."
     else
       result="$result/.."
