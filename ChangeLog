@@ -1,3 +1,9 @@
+2007-12-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (distclean): Remove
+	config-precomp-test/gs_precomp_test.h.gch and
+	config-precomp-test/a.out.
+
 2007-12-12  Hubert Chathi  <uhoreg@debian.org>
 
 	* relative_path.sh: Fixed check for start of string so that we
