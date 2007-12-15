@@ -1,4 +1,4 @@
-#include "gs_precomp_test.h"
+#include "config-precomp-test.h"
 
 @implementation TestClass
 + (int) test

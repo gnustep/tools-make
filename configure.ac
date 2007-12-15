@@ -1208,8 +1208,8 @@ GCC_WITH_PRECOMPILED_HEADERS="no"
 if test ! "${GCC}" = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
-  gs_precomp_test_log_file="`pwd`/config-precomp-test.log"
-  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_log_file"; echo $?) 2>&5`
+  gs_precomp_test_builddir="`pwd`"
+  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_builddir"; echo $?) 2>&5`
   if test "$gs_precomp_test_results" = "0"; then
     GCC_WITH_PRECOMPILED_HEADERS="yes"
     AC_MSG_RESULT(yes)

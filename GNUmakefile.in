@@ -247,8 +247,7 @@ distclean: clean
 	rm -f GNUstep.sh GNUstep.csh fixpath.sh gnustep-config
 	rm -f filesystem.make filesystem.sh filesystem.csh
 	rm -f gnustep-make.spec GNUstep.conf
-	rm -f config-precomp-test.log
-	rm -f config-precomp-test/gs_precomp_test.h.gch config-precomp-test/a.out
+	rm -f config-precomp-test.out config-precomp-test.h.gch config-precomp-test.log
 
 svn-tag:
 	svn copy $(SVNPREFIX)/trunk $(SVNPREFIX)/tags/make-$(VERTAG) \

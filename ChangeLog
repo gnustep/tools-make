@@ -1,5 +1,21 @@
 2007-12-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Rewritten config-precomp-test to work when the build directory is
+	separate from the source directory.
+	* config-precomp-test/run-test.sh: Updated to allow a separate
+	build directory; more pervasive quoting of paths and filenames.
+	* config-precomp-test/config-precomp-test.h: Renamed from
+	gs_precomp_test.h.
+	* config-precomp-test/config-precomp-test.m: Renamed from
+	gs_precomp_test.m.  Updated include for header filename change.
+	* GNUmakefile.in (distclean): Updated deleting config-precomp-test
+	files.
+	* configure.ac: Updated the way config-precomp-test/run-test.sh is
+	executed.
+	* configure: Regenerated.
+	
+2007-12-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
 	* GNUmakefile.in (distclean): Remove
 	config-precomp-test/gs_precomp_test.h.gch and
 	config-precomp-test/a.out.
