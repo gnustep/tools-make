@@ -1,3 +1,17 @@
+2007-12-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (uninstall): Remove filesystem.make 
+	and GNUstep.conf.
+
+2007-12-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Always install the manpages included
+	in the Documentation directory; they don't need building.	
+	(uninstall): Uninstall them.
+	* Documentation/GNUmakefile (after-install): Do not install
+	the manpages.
+	(after-uninstall): Do not uninstall them.
+	
 2007-12-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Rewritten config-precomp-test to work when the build directory is
