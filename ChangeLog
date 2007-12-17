@@ -1,3 +1,8 @@
+2007-12-17  Adam Fedor  <fedor@gnu.org>
+
+	* nsi-app.template, Master/nsis.make, Documenation/make.texi, 
+	GNUmakefile.in:	Add automatic NSIS Windows installer script generator.
+
 2007-12-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUmakefile.in (uninstall): Remove filesystem.make 

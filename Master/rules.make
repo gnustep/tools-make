@@ -434,3 +434,9 @@ include $(GNUSTEP_MAKEFILES)/Master/rpm.make
 # Rules for building debian/* scripts for DEBs, and DEBs
 # 
 #include $(GNUSTEP_MAKEFILES)/Master/deb.make <TODO>
+
+# 
+# Rules for building NSIS installers
+#
+include $(GNUSTEP_MAKEFILES)/Master/nsis.make
+

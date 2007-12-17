@@ -43,9 +43,9 @@ any later version published by the Free Software Foundation.
 * Makefile Introduction::       
 * Makefile Structure::          
 * Running Make::                
+* Project Types::               
 * GNUmakefile.preamble::        
 * GNUmakefile.postamble::       
-* Project Types::               
 * Common Variables::            
 @end menu
 
@@ -89,7 +89,7 @@ include $(GNUSTEP_MAKEFILES)/tool.make
 This is all that is necessary to define the project.
 
 
-@node Running Make, GNUmakefile.preamble, Makefile Structure, Top
+@node Running Make, Project Types, Makefile Structure, Top
 @section Running Make
 @menu
 * Debug Information::           
@@ -148,7 +148,7 @@ libraries (DLL) which are a form of shared libraries; on these systems,
 DLLs will be built by default unless the Makefile Package is told to
 build using static libraries instead, as in the above command.
 
-@node Project Types, Common Variables, GNUmakefile.postamble, Top
+@node Project Types, GNUmakefile.preamble, Running Make, Top
 @section Project Types
 @menu
 * aggregate.make::              
@@ -159,7 +159,8 @@ build using static libraries instead, as in the above command.
 * framework.make::              
 * java.make::                   
 * library.make::                
-* native-library.make::                
+* native-library.make::         
+* nsis.make::                   
 * objc.make::                   
 * palette.make::                
 * rpm.make::                    
@@ -454,7 +455,7 @@ library reside in the @file{two} subdirectory from where the sources are
 located, and the header files will be installed into the @file{two}
 subdirectory within @code{GNUSTEP_HEADERS}.
 
-@node native-library.make, objc.make, library.make, Project Types
+@node native-library.make, nsis.make, library.make, Project Types
 @subsection Native Library (@file{native-library.make})
 
 A "native library" is a project which is to be built as a shared
@@ -481,7 +482,52 @@ To add the corresponding flags, you can use
 This will be converted into -L../MyPath/$(GNUSTEP_OBJ_DIR) flag 
 on for most targets and into -F../MyPath flag for apple-apple-apple.
 
-@node objc.make, palette.make, native-library.make, Project Types
+@node nsis.make, objc.make, native-library.make, Project Types
+@subsection NSIS Installer (@file{nsis.make})
+
+The NSIS make project provides rules for automatically generating NSIS
+installers for Windows operating systems. You don't need to do anything
+to take advantage of this - it is included automatically by the make system.
+
+To create an installer file by itself, run @code{make nsifile}. To
+create the full installer executable, run @code{make nsis}. Note that in
+order to do this, you must be either running on a Windows computer with
+a release of the NSIS compiler (from @url{nsis.sourceforge.net}) or you
+need to be using a cross-compiler and cross-compiled NSIS script compiler.
+(NOTE: This does not currently work - you need to use the GUI NSIS compiler
+to compile the installer scripts).
+
+Currently the nsis make package only makes installers for
+Applications. It will use the @file{nsi-app.template} file in the
+GNUstep Makefiles directory. If you want, you can provide your own
+template with customized script instructions by creating a file called
+@file{PACKAGE_NAME.nsi.in}, where @code{PACKAGE_NAME} is the same as the
+name of your package (see below).
+
+Except for @code{PACKAGE_NAME}, which is required, all the following
+variables are optional.
+
+@defvr {NSIS} PACKAGE_NAME
+@code{PACKAGE_NAME} defines the name of the NSIS installer. In most
+cases this will be the same as the name of your project type. For
+instance, if you are creating a application, and have set
+@code{APP_NAME} to @samp{MyApplication}, Then set @code{PACKAGE_NAME} to
+the same thing, or just use @code{PACKAGE_NAME=$(APP_NAME)}.  if 
+@code{PACKAGE_NAME} is not set, it defaults to @code{unnamed-package}
+@end defvr
+
+@defvr {NSIS} PACKAGE_VERSION
+Set @code{PACKAGE_VERSION} to the release version number of your package. If not
+set, it defaults to 0.0.1
+@end defvr
+
+@defvr {NSIS} GNUSTEP_INSTALLATION_DOMAIN
+Set @code{GNUSTEP_INSTALLATION_DOMAIN} to the domain where you want to install
+the software. This should be either @code{SYSTEM}), @code{LOCAL}, or @code{USER}.
+If not set it defaults to @code{LOCAL}.
+@end defvr
+
+@node objc.make, palette.make, nsis.make, Project Types
 @subsection Objective-C Programs (@file{objc.make})
 @menu
 * objc.make variables::         
@@ -647,7 +693,7 @@ or application.
 A tool is an ObjC project that by default links in the GNUstep base
 library. Otherwise it is similar to the ObjC project type.
 
-@node GNUmakefile.preamble, GNUmakefile.postamble, Running Make, Top
+@node GNUmakefile.preamble, GNUmakefile.postamble, Project Types, Top
 @section Global Variables (@file{GNUmakefile.preamble})
 
 @file{GNUmakefile.preamble} is an optional file that may be put within the
@@ -865,7 +911,7 @@ directories can be created during installation.
 ADDITIONAL_INSTALL_DIRS = $(GNUSTEP_RESOURCES)/MyProject
 @end smallexample
 
-@node GNUmakefile.postamble, Project Types, GNUmakefile.preamble, Top
+@node GNUmakefile.postamble, Common Variables, GNUmakefile.preamble, Top
 @section Global Rules (@file{GNUmakefile.postamble})
 
 The @file{GNUmakefile.postamble} file is an optional file you may
@@ -881,7 +927,7 @@ define things that should happen after a process is complete.
 You can even define additional rules such as ones that a particular to
 your specific package or that are to be used by developers only.
 
-@node Common Variables,  , Project Types, Top
+@node Common Variables,  , GNUmakefile.postamble, Top
 @section Common Variables (@file{common.make})
 @menu
 * Directory Paths::             

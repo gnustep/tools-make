@@ -92,7 +92,7 @@ MASTER_MAKE_FILES = \
         aggregate.make source-distribution.make rpm.make rules.make \
         application.make bundle.make clibrary.make ctool.make \
         documentation.make framework.make gswapp.make gswbundle.make \
-        library.make objc.make java.make java-tool.make palette.make \
+        library.make nsis.make objc.make java.make java-tool.make palette.make \
         resource-set.make service.make subproject.make test-application.make \
         test-library.make test-tool.make tool.make
 
@@ -176,6 +176,7 @@ install: generated-files
 	                     $(makedir)/Instance/Documentation; \
 	   done; \
 	   $(INSTALL_DATA) $(srcdir)/app-wrapper.template $(makedir); \
+	   $(INSTALL_DATA) $(srcdir)/nsi-app.template $(makedir); \
 	   $(INSTALL_DATA) executable.template $(makedir); \
 	   $(INSTALL_DATA) config-noarch.make $(makedir); \
 	   $(INSTALL_DATA) filesystem.make $(makedir); \
@@ -231,6 +232,7 @@ uninstall:
 	done
 	rm -f $(makedir)/executable.template
 	rm -f $(makedir)/app-wrapper.template
+	rm -f $(makedir)/nsi-app.template
 	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
 	rm -f $(makedir)/config-noarch.make
 	rm -f $(makedir)/filesystem.make
