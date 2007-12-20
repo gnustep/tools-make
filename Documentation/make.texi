@@ -171,7 +171,7 @@ build using static libraries instead, as in the above command.
 
 Projects are divided into different types described below. To create a
 project of a specific type, just include the particular makefile. For
-example, to create an application, include this line in your make make
+example, to create an application, include this line in your main make
 file:
 
 @example
@@ -486,13 +486,18 @@ on for most targets and into -F../MyPath flag for apple-apple-apple.
 @subsection NSIS Installer (@file{nsis.make})
 
 The NSIS make project provides rules for automatically generating NSIS
-installers for Windows operating systems. You don't need to do anything
-to take advantage of this - it is included automatically by the make system.
+installers for Windows operating systems. In order to get this functionality,
+include @file{Master/nsis.make} from the Makefiles directory in your
+GNUmakefile.
+
+@example
+include $(GNUSTEP_MAKEFILES)/Master/nsis.make
+@end example
 
 To create an installer file by itself, run @code{make nsifile}. To
 create the full installer executable, run @code{make nsis}. Note that in
 order to do this, you must be either running on a Windows computer with
-a release of the NSIS compiler (from @url{nsis.sourceforge.net}) or you
+a release of the NSIS compiler (from @url{http://nsis.sourceforge.net}) or you
 need to be using a cross-compiler and cross-compiled NSIS script compiler.
 (NOTE: This does not currently work - you need to use the GUI NSIS compiler
 to compile the installer scripts).
@@ -504,6 +509,7 @@ template with customized script instructions by creating a file called
 @file{PACKAGE_NAME.nsi.in}, where @code{PACKAGE_NAME} is the same as the
 name of your package (see below).
 
+You also need to define several variables in your main make file.
 Except for @code{PACKAGE_NAME}, which is required, all the following
 variables are optional.
 

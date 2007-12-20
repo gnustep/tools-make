@@ -435,10 +435,3 @@ include $(GNUSTEP_MAKEFILES)/Master/rpm.make
 # 
 #include $(GNUSTEP_MAKEFILES)/Master/deb.make <TODO>
 
-# 
-# Rules for building NSIS installers
-#
-# TODO: Is it worth including this only on MS Windows ?
-#
-include $(GNUSTEP_MAKEFILES)/Master/nsis.make
-

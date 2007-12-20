@@ -32,6 +32,8 @@ var ICONS_GROUP
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
 ; Finish page
+!define MUI_FINISHPAGE_RUN_NOTCHECKED
+!define MUI_FINISHPAGE_RUN "$INSTDIR\GNUstep\@gs_domain@\Applications\${PRODUCT_NAME}.app\${PRODUCT_NAME}.exe"
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
@@ -51,21 +53,23 @@ InstallDir "C:\GNUstep"
 InstallDirRegKey HKLM "${PRODUCT_DIR_REGKEY}" ""
 ShowInstDetails show
 ShowUnInstDetails show
-Var APPSDIR
+Var DOMDIR
  
 Section "Main" SEC01
   SetOverwrite try
-  StrCpy $APPSDIR "$INSTDIR@gs_domain@\Applications"
+  StrCpy $DOMDIR "$INSTDIR\GNUstep\@gs_domain@"
   ;@file_list@
 SectionEnd
 
 Section Uninstall
-  StrCpy $APPSDIR "$INSTDIR@gs_domain@\Applications"
+  StrCpy $DOMDIR "$INSTDIR\GNUstep\@gs_domain@"
   ;@delete_list@
   ;@rmdir_list@
 
   Delete "$INSTDIR\Uninstall${PRODUCT_NAME}.exe"
+  !insertmacro MUI_STARTMENU_GETFOLDER Application $ICONS_GROUP
   Delete "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk"
+  Delete "$SMPROGRAMS\$ICONS_GROUP\Uninstall\Uninstall${PRODUCT_NAME}.lnk"
   RMDir "$SMPROGRAMS\$ICONS_GROUP\Uninstall"
   RMDir "$SMPROGRAMS\$ICONS_GROUP"
 
@@ -77,7 +81,7 @@ Section -AdditionalIcons
   !insertmacro MUI_STARTMENU_WRITE_BEGIN Application
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP"
   CreateDirectory "$SMPROGRAMS\$ICONS_GROUP\Uninstall"
-  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk" "$APPSDIR\${PRODUCT_NAME}.app\${PRODUCT_NAME}.exe"
+  CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\${PRODUCT_NAME}.lnk" "$DOMDIR\Applications\${PRODUCT_NAME}.app\${PRODUCT_NAME}.exe"
   CreateShortCut "$SMPROGRAMS\$ICONS_GROUP\Uninstall\Uninstall${PRODUCT_NAME}.lnk" "$INSTDIR\Uninstall${PRODUCT_NAME}.exe"
   !insertmacro MUI_STARTMENU_WRITE_END
 SectionEnd

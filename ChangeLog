@@ -1,3 +1,9 @@
+2007-12-20  Adam Fedor  <fedor@gnu.org>
+
+	* Master/nsis.make: Generalize to install in other than Applications.
+	* Master/rules.make: Remove nsis include for now
+	* nsi-app.template, Documentation/make.texi: updates.
+
 2007-12-20  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Emit a warning if GNUSTEP_MAKEFILES contains a

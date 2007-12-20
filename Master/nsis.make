@@ -52,97 +52,76 @@
 # in your makefile.
 MAKENSIS=makensis
 
-# These are the GNUstep Installer locations, so we need to match these
-# regardless of the local directories
-NSI_SYSTEM_ROOT=\\\\GNUstep\\\\System
-NSI_LOCAL_ROOT=\\\\GNUstep\\\\Local
-#FIXME: What should this be?
-NSI_USER_ROOT=\\\\GNUstep\\\\Local
-NSI_DOMAIN=$(NSI_SYSTEM_ROOT)
+# the GNUstep Windows Installer always puts things in, e.g. /GNUstep/System, 
+# so we need to match these regardless of the local filesystem layout
+# Hackish way to get the installation dir/domain
+NSI_DOMAIN=System
 ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), LOCAL)
-  NSI_DOMAIN=$(NSI_LOCAL_ROOT)
+  NSI_DOMAIN=Local
 endif
+# FIXME: What should this be on Windows?
 ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), USER)
-  NSI_DOMAIN=$(NSI_USER_ROOT)
+  NSI_DOMAIN=Local
 endif
+NSI_BASE=$(dir $(GNUSTEP_APPS))
 
-
-#
-# Internal targets
-#
-
-# If we have been called with something like
-#
-# make DESTDIR=/var/tmp/package-build nsilist=yes install
-#
-# we are being called inside the nsis installation stage, and we need
-# to produce the file list from the installed files.
-#
-GNUSTEP_FILE_LIST = $(GNUSTEP_OBJ_DIR)/file-list
-GNUSTEP_DELETE_LIST = $(GNUSTEP_OBJ_DIR)/delete-list
-GNUSTEP_RMDIR_LIST = $(GNUSTEP_OBJ_DIR)/rmdir-list
+ABS_OBJ_DIR=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
+GNUSTEP_FILE_LIST = $(ABS_OBJ_DIR)/package/file-list
+GNUSTEP_DELETE_LIST = $(ABS_OBJ_DIR)/package/delete-list
+GNUSTEP_RMDIR_LIST = $(ABS_OBJ_DIR)/package/rmdir-list
+REL_INSTALL_DIR=$(GNUSTEP_OBJ_DIR)/package/$(NSI_BASE)
 
 NSI_FILE_NAME=$(PACKAGE_NAME).nsi
-;NSI_FILE=$(GNUSTEP_OBJ_DIR)/$(NSI_FILE_NAME)
 NSI_FILE=$(NSI_FILE_NAME)
 ifneq ($(APP_NAME),)
   NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-app.template
-  NSI_INSTALL_DIR=$(GNUSTEP_APPS)
 else
   NSI_TEMPLATE=
 endif
 NSI_IN=$(PACKAGE_NAME).nsi.in
 
-ifeq ($(nsilist),yes)
-  # Remove the old file list before installing, and initialize the new one.
-before-install:: $(GNUSTEP_OBJ_DIR)
+.PHONY: nsifile nsis nsis_package_install nsis_build_filelist
+
+nsis_package_install:
+	$(ECHO_NOTHING)if [ -d $(ABS_OBJ_DIR)/package ]; then \
+	  rm -rf $(ABS_OBJ_DIR)/package; fi;$(END_ECHO)
+	$(ECHO_NOTHING)$(MAKE) DESTDIR=$(ABS_OBJ_DIR)/package nsilist=yes install$(END_ECHO)
+
+#
+# Target to build up the file lists
+#
+nsis_build_filelist::
 	$(ECHO_NOTHING)rm -f $(GNUSTEP_FILE_LIST)$(END_ECHO)
 	$(ECHO_NOTHING)rm -f $(GNUSTEP_DELETE_LIST)$(END_ECHO)
 	$(ECHO_NOTHING)rm -f $(GNUSTEP_RMDIR_LIST)$(END_ECHO)
-
-  # Get the list of files inside DESTDIR
-internal-after-install::
 	$(ECHO_NOTHING)cdir="nosuchdirectory";					\
-	for file in `$(TAR) Pcf - $(NSI_INSTALL_DIR) | $(TAR) t`; do		\
-	  wfile=`echo $$file | sed "s,$(NSI_INSTALL_DIR),," | tr '/' '\'`;	\
-	  wodir=`echo $(NSI_INSTALL_DIR) | tr '/' '\'`;				\
+	for file in `$(TAR) Pcf - $(REL_INSTALL_DIR) | $(TAR) t`; do		\
+	  wfile=`echo $$file | sed "s,$(REL_INSTALL_DIR),," | tr '/' '\'`;	\
+	  wodir=`echo $(REL_INSTALL_DIR) | tr '/' '\'`;				\
 	  slashsuffix=`basename $${file}yes`;					\
 	  if [ "$$slashsuffix" = yes ]; then					\
   	    newdir=`dirname $$file`/`basename $$file`;				\
 	  else									\
   	    newdir=`dirname $$file`;						\
 	  fi;									\
-	  if [ "$$file" = "$(NSI_INSTALL_DIR)/" ]; then				\
+	  if [ "$$file" = "$(REL_INSTALL_DIR)/" ]; then				\
 	    :;									\
 	  elif [ -d "$$file" ]; then						\
 	    cdir=$$newdir;							\
-	    echo "  RMDir \"\$$APPSDIR$$wfile\"" >>  $(GNUSTEP_RMDIR_LIST);	\
-	    echo "  SetOutPath \"\$$APPSDIR$$wfile\"" >> $(GNUSTEP_FILE_LIST);	\
+	    echo "  RMDir \"\$$DOMDIR\\$$wfile\"" >>  $(GNUSTEP_RMDIR_LIST);	\
+	    echo "  SetOutPath \"\$$DOMDIR\\$$wfile\"" >> $(GNUSTEP_FILE_LIST);	\
 	  elif [ $$cdir != $$newdir ]; then					\
 	    cdir=$$newdir;							\
 	    wdir=`dirname $$file`;						\
-	    wdir=`echo $$wdir | sed "s,$(NSI_INSTALL_DIR),," | tr '/' '\'`;	\
-	    echo "  SetOutPath \"\$$APPSDIR$$wdir\"" >> $(GNUSTEP_FILE_LIST);	\
+	    wdir=`echo $$wdir | sed "s,$(REL_INSTALL_DIR),," | tr '/' '\'`;		\
+	    echo "  SetOutPath \"\$$DOMDIR\\$$wdir\"" >> $(GNUSTEP_FILE_LIST);	\
 	    echo "  File \"$$wodir$$wfile\"" >> $(GNUSTEP_FILE_LIST);		\
-	    echo "  Delete \"\$$APPSDIR$$wfile\"" >> $(GNUSTEP_DELETE_LIST);	\
+	    echo "  Delete \"\$$DOMDIR\\$$wfile\"" >> $(GNUSTEP_DELETE_LIST);	\
 	  else									\
-	    echo "  Delete \"\$$APPSDIR$$wfile\"" >> $(GNUSTEP_DELETE_LIST);	\
+	    echo "  Delete \"\$$DOMDIR\\$$wfile\"" >> $(GNUSTEP_DELETE_LIST);	\
 	    echo "  File \"$$wodir$$wfile\"" >> $(GNUSTEP_FILE_LIST);		\
 	  fi;									\
 	done$(END_ECHO)                                                    
-
-endif # nsilist == yes
-
-# NB: The nsilist is automatically deleted when GNUSTEP_OBJ_DIR is
-# deleted (that is, by make clean)
-
-.PHONY: nsifile nsis nsis_package_install
-
-nsis_package_install:
-	$(ECHO_NOTHING)if [ -d $(GNUSTEP_OBJ_DIR)/package ]; then \
-	  rm -rf $(GNUSTEP_OBJ_DIR)/package; fi$(END_ECHO)
-	$(ECHO_NOTHING)$(MKDIRS) $(GNUSTEP_OBJ_DIR)/package$(END_ECHO)
-	$(ECHO_NOTHING)$(MAKE) DESTDIR=$(GNUSTEP_OBJ_DIR)/package nsilist=yes install$(END_ECHO)
 
 #
 # The user will type `make nsifile' to generate the nsifile
@@ -152,7 +131,7 @@ nsifile: $(NSI_FILE)
 #
 # This is the real target
 #
-$(NSI_FILE): $(GNUSTEP_OBJ_DIR) nsis_package_install
+$(NSI_FILE): nsis_package_install nsis_build_filelist
 	$(ECHO_NOTHING)echo "Generating the nsi script..."$(END_ECHO)
 	$(ECHO_NOTHING)rm -f $@$(END_ECHO)
 	$(ECHO_NOTHING)rm -f ${GNUSTEP_RMDIR_LIST}.reverse$(END_ECHO)
@@ -175,5 +154,5 @@ $(NSI_FILE): $(GNUSTEP_OBJ_DIR) nsis_package_install
 	$(END_ECHO)
 
 nsis: nsifile
-	;$(ECHO_NOTHING)echo "Generating the nsis installer..."$(END_ECHO)
-	;${MAKENSIS} $(NSI_FILE_NAME)
+#	$(ECHO_NOTHING)echo "Generating the nsis installer..."$(END_ECHO)
+#	${MAKENSIS} $(NSI_FILE_NAME)
