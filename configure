@@ -4251,6 +4251,12 @@ echo $ECHO_N "checking for GNUSTEP_MAKEFILES to use... $ECHO_C" >&6; }
 
 { echo "$as_me:$LINENO: result: $GNUSTEP_MAKEFILES" >&5
 echo "${ECHO_T}$GNUSTEP_MAKEFILES" >&6; }
+# If GNUSTEP_MAKEFILES contains a space, we may have problems later
+# because make does not really support having spaces in filenames
+if echo "$GNUSTEP_MAKEFILES" | grep " " >/dev/null 2>&1; then
+  { echo "$as_me:$LINENO: WARNING: GNUSTEP_MAKEFILES ($GNUSTEP_MAKEFILES) contains spaces: this may not work" >&5
+echo "$as_me: WARNING: GNUSTEP_MAKEFILES ($GNUSTEP_MAKEFILES) contains spaces: this may not work" >&2;}
+fi
 
 #--------------------------------------------------------------------
 # Setting up the install-sh script

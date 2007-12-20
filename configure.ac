@@ -586,6 +586,11 @@ AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
 AC_MSG_CHECKING(for GNUSTEP_MAKEFILES to use)
 AC_SUBST(GNUSTEP_MAKEFILES)
 AC_MSG_RESULT($GNUSTEP_MAKEFILES)
+# If GNUSTEP_MAKEFILES contains a space, we may have problems later
+# because make does not really support having spaces in filenames
+if echo "$GNUSTEP_MAKEFILES" | grep " " >/dev/null 2>&1; then
+  AC_MSG_WARN([GNUSTEP_MAKEFILES ($GNUSTEP_MAKEFILES) contains spaces: this may not work])
+fi
 
 #--------------------------------------------------------------------
 # Setting up the install-sh script
