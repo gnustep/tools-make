@@ -1,7 +1,7 @@
 2007-12-20  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac (GNUSTEP_PREFIX): Removed double-quoting around
-	`...` expression on the right-hand of assignment.  It is
+	`...` expression on the right-hand side of assignment.  It is
 	unnecessary and seems to be adding additional unwanted quotes on
 	netbsd.
 	* openapp.in: Similar changes.
