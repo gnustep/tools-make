@@ -1,3 +1,17 @@
+2007-12-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac (GNUSTEP_PREFIX): Removed double-quoting around
+	`...` expression on the right-hand of assignment.  It is
+	unnecessary and seems to be adding additional unwanted quotes on
+	netbsd.
+	* openapp.in: Similar changes.
+	* opentool.in: Similar changes.
+	* GNUstep.sh.in: Similar changes.
+	* configure: Regenerated.
+
+	* GNUmakefile.in: Quote most paths in shell expressions.
+	* openapp.in: Similar changes.
+
 2007-12-17  Adam Fedor  <fedor@gnu.org>
 
 	* nsi-app.template, Master/nsis.make, Documenation/make.texi, 

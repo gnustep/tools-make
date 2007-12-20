@@ -32,8 +32,8 @@
 # (originally we had a separate script, called debugapp, for that).
 
 if [ -z "$1" ]; then
-  echo "usage: `basename "$0"` [--find] [--debug] application [arguments...]"
-  echo "`basename "$0"` --help for more help"
+  echo usage: `basename "$0"` [--find] [--debug] application [arguments...]
+  echo `basename "$0"` --help for more help
   exit 1
 fi
 
@@ -45,12 +45,12 @@ fi
 while [ x"$1" != x ]; do
   case "$1" in
   --help)
-    echo "usage: `basename "$0"` [--find] [--debug] application [arguments...]"
+    echo usage: `basename "$0"` [--find] [--debug] application [arguments...]
     echo
     echo "application is the complete or relative name of the application"
     echo "program with or without the .app extension, like Ink.app."
     echo
-    echo "[arguments...] are the arguments to the application." 
+    echo "[arguments...] are the arguments to the application."
     echo 
     echo "If --find is used, openapp prints out the full path of the application "
     echo "executable which would be executed, without actually executing it.  It"
@@ -139,7 +139,7 @@ if [ -n "$GNUSTEP_USER_CONFIG_FILE" ]; then
 fi
 
 if [ -z "$GNUSTEP_MAKEFILES" ]; then
-  GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
+  GNUSTEP_MAKEFILES="@GNUSTEP_MAKEFILES@"
 fi
 # OK, we now have GNUSTEP_MAKEFILES, source GNUstep.sh
 
@@ -150,7 +150,7 @@ fi
 # Also, we'd like to get the GNUSTEP_*_APPS directories so we can
 # search them, so tell GNUstep.sh to export all variabes.
 GNUSTEP_SH_EXPORT_ALL_VARIABLES=yes
-. $GNUSTEP_MAKEFILES/GNUstep.sh
+. "$GNUSTEP_MAKEFILES/GNUstep.sh"
 unset GNUSTEP_SH_EXPORT_ALL_VARIABLES
 
 if [ -z "$GNUSTEP_IS_FLATTENED" ]; then
@@ -162,7 +162,7 @@ if [ -z "$GDB" ]; then
 fi
 
 # Remove leading slashes at the end of the application name
-openapp_app="`echo \"$openapp_app\" | sed 's%/*$%%'`"
+openapp_app=`echo "$openapp_app" | sed 's%/*$%%'`
 
 # Check if the user has provided the .app suffix; if not, add it.
 # Save the appname (without the .app suffix) if we have it, so
@@ -186,7 +186,7 @@ case "$openapp_app" in
         echo "Trying $openapp_app..."
       fi
       if [ -d "$openapp_app" ]; then
-	openapp_full_appname="`(cd \"$openapp_app\"; pwd)`"
+	openapp_full_appname=`(cd "$openapp_app"; pwd)`
       fi
       ;;
     *)
@@ -197,7 +197,7 @@ case "$openapp_app" in
             echo "Trying $openapp_dir/$openapp_app..."
           fi
 	  if [ -d "$openapp_dir/$openapp_app" ]; then
-	    openapp_full_appname="`(cd \"$openapp_dir/$openapp_app\"; pwd)`"
+	    openapp_full_appname=`(cd "$openapp_dir/$openapp_app"; pwd)`
 	    break
 	  fi
       done
@@ -220,7 +220,7 @@ case "$openapp_app" in
               echo "Trying $openapp_dir/$openapp_app..."
             fi
 	    if [ -d "$openapp_dir/$openapp_app" ]; then 
-	      openapp_full_appname="`(cd \"$openapp_dir/$openapp_app\"; pwd)`"
+	      openapp_full_appname=`(cd "$openapp_dir/$openapp_app"; pwd)`
 	      break
 	    fi
           fi
@@ -234,7 +234,7 @@ case "$openapp_app" in
             echo "Trying $openapp_dir/$openapp_app..."
           fi
 	  if [ -d "$openapp_dir/$openapp_app" ]; then
-	    openapp_full_appname="`(cd \"$openapp_dir/$openapp_app\"; pwd)`"
+	    openapp_full_appname=`(cd "$openapp_dir/$openapp_app"; pwd)`
             break
 	  fi
 	done
@@ -253,9 +253,9 @@ fi
 
 # get base app name
 if [ -z "$openapp_appname" ]; then
-  openapp_appname="`echo \"$openapp_app\" | sed 's/\.app$//'`"
+  openapp_appname=`echo "$openapp_app" | sed 's/\.app$//'`
 fi
-openapp_appname="`basename \"$openapp_appname\"`"
+openapp_appname=`basename "$openapp_appname"`
 
 if [ -z "$EXEEXT" ]; then
   EXEEXT=@EXEEXT@

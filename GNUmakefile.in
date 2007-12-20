@@ -121,21 +121,21 @@ all: generated-files
 
 install: generated-files
 	$(EC)(echo "Creating system tools directory: $(tooldir)"; \
-	 $(srcdir)/mkinstalldirs $(tooldir); \
+	 "$(srcdir)/mkinstalldirs" "$(tooldir)"; \
 	 echo "Creating makefile directories in: $(makedir)"; \
-	 $(srcdir)/mkinstalldirs \
-		$(makedir) \
-		$(makedir)/$(GNUSTEP_TARGET_CPU) \
-		$(makedir)/$(GNUSTEP_TARGET_DIR) \
-		$(makedir)/$(GNUSTEP_TARGET_LDIR) \
-		$(makedir)/Additional \
-		$(makedir)/Auxiliary \
-		$(makedir)/Master \
-		$(makedir)/Instance \
-		$(makedir)/Instance/Shared \
-		$(makedir)/Instance/Documentation)
+	 "$(srcdir)/mkinstalldirs" \
+		"$(makedir)" \
+		"$(makedir)/$(GNUSTEP_TARGET_CPU)" \
+		"$(makedir)/$(GNUSTEP_TARGET_DIR)" \
+		"$(makedir)/$(GNUSTEP_TARGET_LDIR)" \
+		"$(makedir)/Additional" \
+		"$(makedir)/Auxiliary" \
+		"$(makedir)/Master" \
+		"$(makedir)/Instance" \
+		"$(makedir)/Instance/Shared" \
+		"$(makedir)/Instance/Documentation")
 	$(EC)(echo "Installing GNUstep configuration file in $(GNUSTEP_CONFIG_FILE)"; \
-	 $(srcdir)/mkinstalldirs "$(GNUSTEP_CONFIG_FILE_DIR)"; \
+	 "$(srcdir)/mkinstalldirs" "$(GNUSTEP_CONFIG_FILE_DIR)"; \
 	 $(INSTALL_DATA) GNUstep.conf "$(GNUSTEP_CONFIG_FILE)")
 	 $(EC)(echo "Installing gnustep-make support software")
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
@@ -143,54 +143,54 @@ install: generated-files
 		clean_vendor.sh cpu.sh os.sh vendor.sh \
 		print_unique_pathlist.sh \
 		relative_path.sh strip_makefiles.sh; do \
-	     $(INSTALL_PROGRAM) -m 755 $(srcdir)/$$f $(makedir); \
+	     $(INSTALL_PROGRAM) -m 755 "$(srcdir)/$$f" "$(makedir)"; \
 	   done)
-	 $(EC)($(INSTALL_DATA) GNUstep.sh $(makedir); \
-	  $(INSTALL_DATA) GNUstep.csh $(makedir); \
-	  $(INSTALL_DATA) filesystem.sh $(makedir); \
-	  $(INSTALL_DATA) filesystem.csh $(makedir); \
-	  $(INSTALL_DATA) $(srcdir)/ld_lib_path.sh $(makedir); \
-	  $(INSTALL_DATA) $(srcdir)/ld_lib_path.csh $(makedir); \
-	  $(INSTALL_DATA) $(srcdir)/GNUstep-reset.sh $(makedir); \
-	  $(INSTALL_PROGRAM) -m 755 fixpath.sh $(makedir); \
-	  $(INSTALL_PROGRAM) -m 755 openapp $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 $(srcdir)/debugapp $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 opentool $(tooldir); \
-	  $(INSTALL_PROGRAM) -m 755 gnustep-config $(tooldir))
+	 $(EC)($(INSTALL_DATA) GNUstep.sh "$(makedir)"; \
+	  $(INSTALL_DATA) GNUstep.csh "$(makedir)"; \
+	  $(INSTALL_DATA) filesystem.sh "$(makedir)"; \
+	  $(INSTALL_DATA) filesystem.csh "$(makedir)"; \
+	  $(INSTALL_DATA) "$(srcdir)/ld_lib_path.sh" "$(makedir)"; \
+	  $(INSTALL_DATA) "$(srcdir)/ld_lib_path.csh" "$(makedir)"; \
+	  $(INSTALL_DATA) "$(srcdir)/GNUstep-reset.sh" "$(makedir)"; \
+	  $(INSTALL_PROGRAM) -m 755 fixpath.sh "$(makedir)"; \
+	  $(INSTALL_PROGRAM) -m 755 openapp "$(tooldir)"; \
+	  $(INSTALL_PROGRAM) -m 755 "$(srcdir)/debugapp" "$(tooldir)"; \
+	  $(INSTALL_PROGRAM) -m 755 opentool "$(tooldir)"; \
+	  $(INSTALL_PROGRAM) -m 755 gnustep-config "$(tooldir)")
 	 $(EC)(echo "Installing makefiles"; \
 	   for f in $(MAKE_FILES); do \
-	     $(INSTALL_DATA) $(srcdir)/$$f $(makedir); \
+	     $(INSTALL_DATA) "$(srcdir)/$$f" "$(makedir)"; \
 	   done; \
 	   for f in $(MASTER_MAKE_FILES); do \
-	     $(INSTALL_DATA) $(srcdir)/Master/$$f $(makedir)/Master; \
+	     $(INSTALL_DATA) "$(srcdir)/Master/$$f" "$(makedir)/Master"; \
 	   done; \
 	   for f in $(INSTANCE_MAKE_FILES); do \
-	     $(INSTALL_DATA) $(srcdir)/Instance/$$f $(makedir)/Instance; \
+	     $(INSTALL_DATA) "$(srcdir)/Instance/$$f" "$(makedir)/Instance"; \
 	   done; \
 	   for f in $(INSTANCE_SHARED_MAKE_FILES); do \
-	     $(INSTALL_DATA) $(srcdir)/Instance/Shared/$$f \
-	                     $(makedir)/Instance/Shared; \
+	     $(INSTALL_DATA) "$(srcdir)/Instance/Shared/$$f" \
+	                     "$(makedir)/Instance/Shared"; \
 	   done; \
 	   for f in $(INSTANCE_DOC_MAKE_FILES); do \
-	     $(INSTALL_DATA) $(srcdir)/Instance/Documentation/$$f \
-	                     $(makedir)/Instance/Documentation; \
+	     $(INSTALL_DATA) "$(srcdir)/Instance/Documentation/$$f" \
+	                     "$(makedir)/Instance/Documentation"; \
 	   done; \
-	   $(INSTALL_DATA) $(srcdir)/app-wrapper.template $(makedir); \
-	   $(INSTALL_DATA) $(srcdir)/nsi-app.template $(makedir); \
-	   $(INSTALL_DATA) executable.template $(makedir); \
-	   $(INSTALL_DATA) config-noarch.make $(makedir); \
-	   $(INSTALL_DATA) filesystem.make $(makedir); \
-	   $(INSTALL_DATA) config.make $(makedir)/$(GNUSTEP_TARGET_LDIR))
+	   $(INSTALL_DATA) "$(srcdir)/app-wrapper.template" "$(makedir)"; \
+	   $(INSTALL_DATA) "$(srcdir)/nsi-app.template" "$(makedir)"; \
+	   $(INSTALL_DATA) executable.template "$(makedir)"; \
+	   $(INSTALL_DATA) config-noarch.make "$(makedir)"; \
+	   $(INSTALL_DATA) filesystem.make "$(makedir)"; \
+	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
 	$(EC)(echo "Installing manpages"; \
-	  $(srcdir)/mkinstalldirs $(mandir)/man1 \
-	                          $(mandir)/man7; \
-	  $(INSTALL_DATA) $(srcdir)/Documentation/openapp.1 $(mandir)/man1; \
-	  which gzip > /dev/null 2>&1 && rm -f $(mandir)/man1/openapp.1.gz && gzip -9 $(mandir)/man1/openapp.1; \
-	  $(INSTALL_DATA) $(srcdir)/Documentation/GNUstep.7 $(mandir)/man7; \
-	  which gzip > /dev/null 2>&1 && rm -f $(mandir)/man7/GNUstep.7.gz && gzip -9 $(mandir)/man7/GNUstep.7)
+	  "$(srcdir)/mkinstalldirs" "$(mandir)/man1" \
+	                          "$(mandir)/man7"; \
+	  $(INSTALL_DATA) "$(srcdir)/Documentation/openapp.1" "$(mandir)/man1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/openapp.1.gz" && gzip -9 "$(mandir)/man1/openapp.1"; \
+	  $(INSTALL_DATA) "$(srcdir)/Documentation/GNUstep.7" "$(mandir)/man7"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/GNUstep.7.gz" && gzip -9 "$(mandir)/man7/GNUstep.7")
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
 	   echo "Stripping makefiles and shell scripts..."; \
-	   cd $(makedir); ./strip_makefiles.sh; \
+	   cd "$(makedir)"; ./strip_makefiles.sh; \
 	   fi)
 
 # FIXME - review the issue of this config.site.  What is it used for ?
@@ -198,8 +198,8 @@ install: generated-files
 #	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
 
 uninstall:
-	rm -f $(mandir)/man1/openapp.1 $(mandir)/man1/openapp.1.gz; \
-	rm -f $(mandir)/man7/GNUstep.7 $(mandir)/man7/GNUstep.7.gz; \
+	rm -f "$(mandir)/man1/openapp.1" "$(mandir)/man1/openapp.1.gz"; \
+	rm -f "$(mandir)/man7/GNUstep.7" "$(mandir)/man7/GNUstep.7.gz"; \
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
@@ -209,46 +209,46 @@ uninstall:
 		filesystem.sh filesystem.csh \
 	        GNUstep.sh GNUstep.csh GNUstep-reset.sh \
 		relative_path.sh strip_makefiles.sh; do \
-	  rm -f $(makedir)/$$f; \
+	  rm -f "$(makedir)/$$f"; \
 	done
-	rm -f $(tooldir)/openapp; \
-	rm -f $(tooldir)/debugapp; \
-	rm -f $(tooldir)/opentool; \
-	rm -f $(tooldir)/gnustep-config; \
+	rm -f "$(tooldir)/openapp"; \
+	rm -f "$(tooldir)/debugapp"; \
+	rm -f "$(tooldir)/opentool"; \
+	rm -f "$(tooldir)/gnustep-config"; \
 	for f in $(MAKE_FILES); do \
-	  rm -f $(makedir)/$$f; \
+	  rm -f "$(makedir)/$$f"; \
 	done
 	for f in $(MASTER_MAKE_FILES); do \
-	  rm -f $(makedir)/Master/$$f; \
+	  rm -f "$(makedir)/Master/$$f"; \
 	done
 	for f in $(INSTANCE_MAKE_FILES); do \
-	  rm -f $(makedir)/Instance/$$f; \
+	  rm -f "$(makedir)/Instance/$$f"; \
 	done
 	for f in $(INSTANCE_SHARED_MAKE_FILES); do \
-	  rm -f $(makedir)/Instance/Shared/$$f; \
+	  rm -f "$(makedir)/Instance/Shared/$$f"; \
 	done
 	for f in $(INSTANCE_DOC_MAKE_FILES); do \
-	  rm -f $(makedir)/Instance/Documentation/$$f; \
+	  rm -f "$(makedir)/Instance/Documentation/$$f"; \
 	done
-	rm -f $(makedir)/executable.template
-	rm -f $(makedir)/app-wrapper.template
-	rm -f $(makedir)/nsi-app.template
-	rm -f $(GNUSTEP_SYSTEM_ROOT)/share/config.site
-	rm -f $(makedir)/config-noarch.make
-	rm -f $(makedir)/filesystem.make
-	rm -f $(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make
+	rm -f "$(makedir)/executable.template"
+	rm -f "$(makedir)/app-wrapper.template"
+	rm -f "$(makedir)/nsi-app.template"
+	rm -f "$(GNUSTEP_SYSTEM_ROOT)/share/config.site"
+	rm -f "$(makedir)/config-noarch.make"
+	rm -f "$(makedir)/filesystem.make"
+	rm -f "$(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make"
 	rm -f "$(GNUSTEP_CONFIG_FILE)"
-	-for f in $(makedir)/Instance/Documentation \
-		$(makedir)/Instance/Shared \
-		$(makedir)/Instance \
-		$(makedir)/Master \
-		$(makedir)/Auxiliary \
-		$(makedir)/Additional \
-		$(makedir)/$(GNUSTEP_TARGET_LDIR) \
-		$(makedir)/$(GNUSTEP_TARGET_DIR) \
-		$(makedir)/$(GNUSTEP_TARGET_CPU) \
-		$(makedir); do \
-	  test -d $$f && rmdir $$f; \
+	-for f in "$(makedir)/Instance/Documentation" \
+		"$(makedir)/Instance/Shared" \
+		"$(makedir)/Instance" \
+		"$(makedir)/Master" \
+		"$(makedir)/Auxiliary" \
+		"$(makedir)/Additional" \
+		"$(makedir)/$(GNUSTEP_TARGET_LDIR)" \
+		"$(makedir)/$(GNUSTEP_TARGET_DIR)" \
+		"$(makedir)/$(GNUSTEP_TARGET_CPU)" \
+		"$(makedir)"; do \
+	  test -d "$$f" && rmdir "$$f"; \
 	done
 
 clean:

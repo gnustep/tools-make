@@ -3957,7 +3957,7 @@ fi
 # PATH (on some systems at least) and so comparing them won't find a
 # match and the check will fail even if GNUSTEP_SYSTEM_TOOLS is in
 # PATH and a spurious warning will be produced.
-GNUSTEP_PREFIX="`echo \"$GNUSTEP_PREFIX\" | sed 's%/*$%%'`"
+GNUSTEP_PREFIX=`echo "$GNUSTEP_PREFIX" | sed 's%/*$%%'`
 
 { echo "$as_me:$LINENO: result: $GNUSTEP_PREFIX" >&5
 echo "${ECHO_T}$GNUSTEP_PREFIX" >&6; }
