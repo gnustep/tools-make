@@ -3,7 +3,7 @@
 .\" 
 .TH library-combo 7 "20/12/2007" gnustep-make "GNUstep System Manual"
 .SH DESCRIPTION
-This manual page is about cross-compilation and fat binaries. Fat binaries are packeges that you can supply which contains more the one binary of your e.g. application. So you can support multiple platforms with a single package.
+This manual page is about cross-compilation and fat binaries. Fat binaries are packages that you can supply which contain more the one binary of your program (e.g. your application). So you can support multiple platforms with a single package.
 .PP
 To support this your system has to be built in a non-flattened way. Meaning that during the installation of
 .I gnustep-make
@@ -73,7 +73,7 @@ under Unix will be denoted by gnu\-gnu\-gnu. Here is a list of some of the possi
 .RS 0
    Runtime	Foundation	GUI
 .RS 0
-     nx		    nx		nx	
+     nx		    nx		nx
 .RS 0
      nx		    fd		gnu
 .RS 0
@@ -81,13 +81,9 @@ under Unix will be denoted by gnu\-gnu\-gnu. Here is a list of some of the possi
 .RS 0
      gnu		    fd		gnu
 .RS 0
-     gnu		   apple		apple
-.RS 0
     gnugc		    gnu		gnu
 .RS 0
     gnugc		    fd		gnu
-.RS 0
-    gnugc		   apple		apple
 .RS 0
     apple		   apple		apple
 .RS 0

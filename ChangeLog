@@ -1,5 +1,13 @@
 2007-12-26  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Documentation/debugapp.1: Minor updates.
+	* Documentation/gnustep-config.1: Same.
+	* Documentation/openapp.1: Same.
+	* Documentation/opentool.1: Same.
+	* Documentation/library-combo.7: Same.
+	
+2007-12-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUmakefile.in (install): Install the new debugapp.1,
 	gnustep-config.1, opentool.1 and library-combo.7 manpages.
 	(uninstall): Uninstall them.
