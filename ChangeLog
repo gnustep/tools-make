@@ -1,3 +1,20 @@
+2007-12-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Install the new debugapp.1,
+	gnustep-config.1, opentool.1 and library-combo.7 manpages.
+	(uninstall): Uninstall them.
+	(uninstall): Remove mandir, mandir/man1, mandir/man7, tooldir and
+	GNUSTEP_CONFIG_FILE_DIR if empty.
+	
+2007-12-26  Dennis Leeuw  <dleeuw@made-it.com>
+
+	* Documentation/debugapp.1: New file.
+	* Documentation/gnustep-config.1: New file.
+	* Documentation/opentool.1: New file.
+	* Documentation/library-combo.7: New file.
+	* Documentation/openapp.1: Rewritten.
+	* Documentation/GNUstep.7: Rewritten.
+
 2007-12-20  Adam Fedor  <fedor@gnu.org>
 
 	* Master/nsis.make: Generalize to install in other than Applications.

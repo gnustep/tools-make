@@ -184,10 +184,18 @@ install: generated-files
 	$(EC)(echo "Installing manpages"; \
 	  "$(srcdir)/mkinstalldirs" "$(mandir)/man1" \
 	                          "$(mandir)/man7"; \
+	  $(INSTALL_DATA) "$(srcdir)/Documentation/debugapp.1" "$(mandir)/man1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/debugapp.1.gz" && gzip -9 "$(mandir)/man1/debugapp.1"; \
+	  $(INSTALL_DATA) "$(srcdir)/Documentation/gnustep-config.1" "$(mandir)/man1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/gnustep-config.1.gz" && gzip -9 "$(mandir)/man1/gnustep-config.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/openapp.1" "$(mandir)/man1"; \
 	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/openapp.1.gz" && gzip -9 "$(mandir)/man1/openapp.1"; \
+	  $(INSTALL_DATA) "$(srcdir)/Documentation/opentool.1" "$(mandir)/man1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/opentool.1.gz" && gzip -9 "$(mandir)/man1/opentool.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/GNUstep.7" "$(mandir)/man7"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/GNUstep.7.gz" && gzip -9 "$(mandir)/man7/GNUstep.7")
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/GNUstep.7.gz" && gzip -9 "$(mandir)/man7/GNUstep.7"; \
+	  $(INSTALL_DATA) "$(srcdir)/Documentation/library-combo.7" "$(mandir)/man7"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/library-combo.7.gz" && gzip -9 "$(mandir)/man7/library-combo.7")
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
 	   echo "Stripping makefiles and shell scripts..."; \
 	   cd "$(makedir)"; ./strip_makefiles.sh; \
@@ -198,8 +206,15 @@ install: generated-files
 #	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
 
 uninstall:
+	rm -f "$(mandir)/man1/debugapp.1" "$(mandir)/man1/debugapp.1.gz"; \
+	rm -f "$(mandir)/man1/gnustep-config.1" "$(mandir)/man1/gnustep-config.1.gz"; \
 	rm -f "$(mandir)/man1/openapp.1" "$(mandir)/man1/openapp.1.gz"; \
+	rm -f "$(mandir)/man1/opentool.1" "$(mandir)/man1/opentool.1.gz"; \
 	rm -f "$(mandir)/man7/GNUstep.7" "$(mandir)/man7/GNUstep.7.gz"; \
+	rm -f "$(mandir)/man7/library-combo.7" "$(mandir)/man7/library-combo.7.gz"
+	-rmdir "$(mandir)/man1"
+	-rmdir "$(mandir)/man7"
+	-rmdir "$(mandir)"
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
 		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
@@ -238,6 +253,7 @@ uninstall:
 	rm -f "$(makedir)/filesystem.make"
 	rm -f "$(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make"
 	rm -f "$(GNUSTEP_CONFIG_FILE)"
+	-rmdir "$(GNUSTEP_CONFIG_FILE_DIR)"
 	-for f in "$(makedir)/Instance/Documentation" \
 		"$(makedir)/Instance/Shared" \
 		"$(makedir)/Instance" \
@@ -247,7 +263,8 @@ uninstall:
 		"$(makedir)/$(GNUSTEP_TARGET_LDIR)" \
 		"$(makedir)/$(GNUSTEP_TARGET_DIR)" \
 		"$(makedir)/$(GNUSTEP_TARGET_CPU)" \
-		"$(makedir)"; do \
+		"$(makedir)" \
+		"$(tooldir)"; do \
 	  test -d "$$f" && rmdir "$$f"; \
 	done
 
