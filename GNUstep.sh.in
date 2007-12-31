@@ -214,9 +214,15 @@ unset GNUSTEP_HOME
 
 # Determine if the paths look like Windows paths that need fixing
 fixup_paths=no
-if [ -z "`echo $GNUSTEP_MAKEFILES | sed 's|^[a-zA-Z]:/.*$||'`" ]; then
+# Here we want to use `...` but the only portable way to use it when
+# there are "..." inside the expression (ie, it's actually
+# `..."..."...`) seems to be to use it in variable assignments.  So we
+# use a temporary variable and assign the result of `...` to it
+path_check=`echo "$GNUSTEP_MAKEFILES" | sed 's|^[a-zA-Z]:/.*$||'`
+if [ -z "$path_check" ]; then
   fixup_paths=yes
 fi
+unset path_check
 
 # GNUSTEP_PATHLIST is deprecated and will be removed.
 #

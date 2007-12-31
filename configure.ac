@@ -291,7 +291,7 @@ fi
 # PATH (on some systems at least) and so comparing them won't find a
 # match and the check will fail even if GNUSTEP_SYSTEM_TOOLS is in
 # PATH and a spurious warning will be produced.
-GNUSTEP_PREFIX="`echo \"$GNUSTEP_PREFIX\" | sed 's%/*$%%'`"
+GNUSTEP_PREFIX=`echo "$GNUSTEP_PREFIX" | sed 's%/*$%%'`
 
 AC_MSG_RESULT($GNUSTEP_PREFIX)
 
@@ -586,6 +586,11 @@ AC_SUBST(GNUSTEP_USER_DEFAULTS_DIR)
 AC_MSG_CHECKING(for GNUSTEP_MAKEFILES to use)
 AC_SUBST(GNUSTEP_MAKEFILES)
 AC_MSG_RESULT($GNUSTEP_MAKEFILES)
+# If GNUSTEP_MAKEFILES contains a space, we may have problems later
+# because make does not really support having spaces in filenames
+if echo "$GNUSTEP_MAKEFILES" | grep " " >/dev/null 2>&1; then
+  AC_MSG_WARN([GNUSTEP_MAKEFILES ($GNUSTEP_MAKEFILES) contains spaces: this may not work])
+fi
 
 #--------------------------------------------------------------------
 # Setting up the install-sh script
@@ -1208,8 +1213,8 @@ GCC_WITH_PRECOMPILED_HEADERS="no"
 if test ! "${GCC}" = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
-  gs_precomp_test_log_file="`pwd`/config-precomp-test.log"
-  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_log_file"; echo $?) 2>&5`
+  gs_precomp_test_builddir="`pwd`"
+  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_builddir"; echo $?) 2>&5`
   if test "$gs_precomp_test_results" = "0"; then
     GCC_WITH_PRECOMPILED_HEADERS="yes"
     AC_MSG_RESULT(yes)

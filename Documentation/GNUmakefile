@@ -141,9 +141,7 @@ ANNOUNCE_TEXI_FILES = version.texi
 ANNOUNCE_TEXT_MAIN = announce.texi
 ANNOUNCE_DOC_INSTALL_DIR = Developer/Make/ReleaseNotes/$(GNUSTEP_MAKE_VERSION)
 
-# Manual pages to install
-MAN1_PAGES = openapp.1
-MAN7_PAGES = GNUstep.7
+# The manpages are now installed when gnustep-make itself is installed.
 
 include $(GNUSTEP_MAKEFILES)/documentation.make
 
@@ -162,49 +160,15 @@ version.texi: ../Version
 	echo '@set GNUSTEP-MAKE-VERSION' $(GNUSTEP_MAKE_VERSION) \
 	 > version.texi
 
-# Install manually man pages
 after-install:: $(GNUSTEP_DOC)/Developer/Make/Manual $(GNUSTEP_DOC)/User/GNUstep
 	$(INSTALL_DATA) DESIGN $(GNUSTEP_DOC)/Developer/Make/Manual
 	for file in $(README_FILES); do \
 	  $(INSTALL_DATA) $$file $(GNUSTEP_DOC)/User/GNUstep/$$file; \
-	done;
-	if [ ! -f $(GNUSTEP_DOC_MAN) ]; then \
-	  $(MKDIRS) $(GNUSTEP_DOC_MAN); \
-	fi; \
-	if [ ! -f $(GNUSTEP_DOC_MAN)/man1 ]; then \
-	  $(MKDIRS) $(GNUSTEP_DOC_MAN)/man1; \
-	fi; \
-	for file in $(MAN1_PAGES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file $(GNUSTEP_DOC_MAN)/man1/$$file; \
-	    which gzip && rm -f $(GNUSTEP_DOC_MAN)/man1/$$file.gz \
-		&& gzip -9 $(GNUSTEP_DOC_MAN)/man1/$$file; \
-	  fi; \
-	done;
-	if [ ! -f $(GNUSTEP_DOC_MAN)/man7 ]; then \
-	  $(MKDIRS) $(GNUSTEP_DOC_MAN)/man7; \
-	fi; \
-	for file in $(MAN7_PAGES) __done; do \
-	  if [ $$file != __done ]; then \
-	    $(INSTALL_DATA) $$file $(GNUSTEP_DOC_MAN)/man7/$$file; \
-	    which gzip && rm -f $(GNUSTEP_DOC_MAN)/man7/$$file.gz \
-		&& gzip -9 $(GNUSTEP_DOC_MAN)/man7/$$file; \
-	  fi; \
-	done;
+	done
 
 #  Uninstall manually man pages
 after-uninstall::
 	rm -f $(GNUSTEP_DOC)/Developer/Make/Manual/DESIGN
-	for file in $(MAN1_PAGES) __done; do \
-	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_DOC_MAN)/man1/$$file; \
-	  fi; \
-	done;
-	for file in $(MAN7_PAGES) __done; do \
-	  if [ $$file != __done ]; then \
-	    rm -f $(GNUSTEP_DOC_MAN)/man7/$$file; \
-	  fi; \
-	done;
 
 after-distclean::
 	rm -f version.texi

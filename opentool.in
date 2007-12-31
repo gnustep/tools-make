@@ -116,9 +116,9 @@ case "$tool" in
   /*)	# An absolute path.
   	full_toolname="$tool";;
   */*)	# A relative path
-	tool_dir="`dirname \"$tool\"`"; 
-	tool_dir="`(cd \"$tool_dir\"; pwd)`"; 
-	tool_name="`basename \"$tool\"`";
+	tool_dir=`dirname "$tool"`; 
+	tool_dir=`(cd "$tool_dir"; pwd)`; 
+	tool_name=`basename "$tool"`;
 	full_toolname="${tool_dir}/${tool_name}";;
   *)	# A path that should be searched into GNUstep tool paths
 

@@ -1,3 +1,111 @@
+2007-12-30  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/README.Darwin: Update for compiling with
+	Apple gcc.
+
+2007-12-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/debugapp.1: Minor updates.
+	* Documentation/gnustep-config.1: Same.
+	* Documentation/openapp.1: Same.
+	* Documentation/opentool.1: Same.
+	* Documentation/library-combo.7: Same.
+	
+2007-12-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Install the new debugapp.1,
+	gnustep-config.1, opentool.1 and library-combo.7 manpages.
+	(uninstall): Uninstall them.
+	(uninstall): Remove mandir, mandir/man1, mandir/man7, tooldir and
+	GNUSTEP_CONFIG_FILE_DIR if empty.
+	
+2007-12-26  Dennis Leeuw  <dleeuw@made-it.com>
+
+	* Documentation/debugapp.1: New file.
+	* Documentation/gnustep-config.1: New file.
+	* Documentation/opentool.1: New file.
+	* Documentation/library-combo.7: New file.
+	* Documentation/openapp.1: Rewritten.
+	* Documentation/GNUstep.7: Rewritten.
+
+2007-12-20  Adam Fedor  <fedor@gnu.org>
+
+	* Master/nsis.make: Generalize to install in other than Applications.
+	* Master/rules.make: Remove nsis include for now
+	* nsi-app.template, Documentation/make.texi: updates.
+
+2007-12-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Emit a warning if GNUSTEP_MAKEFILES contains a
+	space.
+	* configure: Regenerated.
+	
+2007-12-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac (GNUSTEP_PREFIX): Removed double-quoting around
+	`...` expression on the right-hand side of assignment.  It is
+	unnecessary and seems to be adding additional unwanted quotes on
+	netbsd.
+	* openapp.in: Similar changes.
+	* opentool.in: Similar changes.
+	* GNUstep.sh.in: Similar changes.
+	* configure: Regenerated.
+
+	* GNUmakefile.in: Quote most paths in shell expressions.
+	* openapp.in: Similar changes.
+
+2007-12-17  Adam Fedor  <fedor@gnu.org>
+
+	* nsi-app.template, Master/nsis.make, Documenation/make.texi, 
+	GNUmakefile.in:	Add automatic NSIS Windows installer script generator.
+
+2007-12-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (uninstall): Remove filesystem.make 
+	and GNUstep.conf.
+
+2007-12-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Always install the manpages included
+	in the Documentation directory; they don't need building.	
+	(uninstall): Uninstall them.
+	* Documentation/GNUmakefile (after-install): Do not install
+	the manpages.
+	(after-uninstall): Do not uninstall them.
+	
+2007-12-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Rewritten config-precomp-test to work when the build directory is
+	separate from the source directory.
+	* config-precomp-test/run-test.sh: Updated to allow a separate
+	build directory; more pervasive quoting of paths and filenames.
+	* config-precomp-test/config-precomp-test.h: Renamed from
+	gs_precomp_test.h.
+	* config-precomp-test/config-precomp-test.m: Renamed from
+	gs_precomp_test.m.  Updated include for header filename change.
+	* GNUmakefile.in (distclean): Updated deleting config-precomp-test
+	files.
+	* configure.ac: Updated the way config-precomp-test/run-test.sh is
+	executed.
+	* configure: Regenerated.
+	
+2007-12-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* GNUmakefile.in (distclean): Remove
+	config-precomp-test/gs_precomp_test.h.gch and
+	config-precomp-test/a.out.
+
+2007-12-12  Hubert Chathi  <uhoreg@debian.org>
+
+	* relative_path.sh: Fixed check for start of string so that we
+	output '../xxx' instead of the clumsy './../xxx'.
+
+2007-12-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Fixed installation when a separate
+	source dir is used. (Patch by Hubert Chathi <uhoreg@debian.org>
+	with modifications).
+	
 2007-10-30  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.2
@@ -9,7 +117,7 @@
         
 2007-10-30  Adam Fedor  <fedor@gnu.org>
 
-	* Update licesnse to GPL 3
+	* Update license to GPL 3
 	* gnustep-make.spec.in: Change Copyright to License.
 
 2007-09-13 Fred Kiefer <FredKiefer@gmx.de>

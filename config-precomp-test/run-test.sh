@@ -33,80 +33,82 @@
 #   return 0 if gcc supports ObjC precompiled headers
 #   return 1 if gcc does not
 
-# It will also log everything it does to a log file that can be
-# specified as the first argument to the script.  If there is
-# no log file specified, ./log will be used.
+# The script takes a single argument, which is the directory where
+# the temporary files and the log file will be written.  If there
+# is no argument specified, ./ will be used.
 
 # This is the file where everything will be logged
-gs_logfile="$1"
+gs_builddir="$1"
 
-if test "$gs_logfile" = ""; then
-  gs_logfile="./log"
+if test "$gs_builddir" = ""; then
+  gs_builddir="."
 fi
 
+gs_logfile="$gs_builddir/config-precomp-test.log"
+
 # Clear logs
-rm -f $gs_logfile
+rm -f "$gs_logfile"
 
 # Clear compilation results
-rm -f gs_precomp_test.h.gch a.out *~
+rm -f "$gs_builddir/config-precomp-test.h.gch" "$gs_builddir/config-precomp-test.out"
 
-echo "** Environment" >>$gs_logfile 2>&1
-echo " CC: $CC" >>$gs_logfile 2>&1
-echo " CFLAGS: $CFLAGS" >>$gs_logfile 2>&1
-echo " CPPFLAGS: $CPPFLAGS" >>$gs_logfile 2>&1
-echo " LDFLAGS: $LDFLAGS" >>$gs_logfile 2>&1
-echo " LIBS: $LIBS" >>$gs_logfile 2>&1
-echo "" >>$gs_logfile 2>&1
-echo " current directory: `pwd`" >>$gs_logfile 2>&1
-echo " log file: $gs_logfile" >>$gs_logfile 2>&1
-echo "" >>$gs_logfile 2>&1
+echo "** Environment" >>"$gs_logfile" 2>&1
+echo " CC: $CC" >>"$gs_logfile" 2>&1
+echo " CFLAGS: $CFLAGS" >>"$gs_logfile" 2>&1
+echo " CPPFLAGS: $CPPFLAGS" >>"$gs_logfile" 2>&1
+echo " LDFLAGS: $LDFLAGS" >>"$gs_logfile" 2>&1
+echo " LIBS: $LIBS" >>"$gs_logfile" 2>&1
+echo "" >>"$gs_logfile" 2>&1
+echo " current directory: `pwd`" >>"$gs_logfile" 2>&1
+echo " log file: $gs_logfile" >>"$gs_logfile" 2>&1
+echo "" >>"$gs_logfile" 2>&1
 
 # Get rid of '-x objective-c' in CFLAGS that we don't need and would
 # prevent our '-x objective-c-headers' flag from working.
 CFLAGS=`echo $CFLAGS | sed -e 's/-x objective-c//'`
-echo " CFLAGS without -x objective-c: $CFLAGS" >>$gs_logfile 2>&1
+echo " CFLAGS without -x objective-c: $CFLAGS" >>"$gs_logfile" 2>&1
 
-echo "" >>$gs_logfile 2>&1
+echo "" >>"$gs_logfile" 2>&1
 
 if test "$CC" = ""; then
-  echo "CC is not set: failure" >>$gs_logfile 2>&1
+  echo "CC is not set: failure" >>"$gs_logfile" 2>&1
   exit 1
 fi
 
-# Try to compile the file first
-echo "** Compile the file without precompiled headers" >>$gs_logfile 2>&1
-echo "$CC -o a.out $CFLAGS $CPPFLAGS $LDFLAGS $LIBS gs_precomp_test.m" >>$gs_logfile 2>&1
-$CC -o a.out $CFLAGS $CPPFLAGS $LDFLAGS $LIBS gs_precomp_test.m >>$gs_logfile 2>&1
+# Try to compile the file first.
+echo "** Compile the file without precompiled headers" >>"$gs_logfile" 2>&1
+echo "$CC -o \"$gs_builddir/config-precomp-test.out\" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS config-precomp-test.m" >>"$gs_logfile" 2>&1
+$CC -o "$gs_builddir/config-precomp-test.out" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS config-precomp-test.m >>"$gs_logfile" 2>&1
 if test ! "$?" = "0"; then
-  echo "Failure" >>$gs_logfile 2>&1
-  rm -f a.out
+  echo "Failure" >>"$gs_logfile" 2>&1
+  rm -f "$gs_builddir/config-precomp-test.out"
   exit 1
 fi
-echo "Success" >>$gs_logfile 2>&1
-echo "" >>$gs_logfile 2>&1
+echo "Success" >>"$gs_logfile" 2>&1
+echo "" >>"$gs_logfile" 2>&1
 
 # Now try to preprocess the header
-echo "** Preprocess the header" >>$gs_logfile 2>&1
-echo "$CC -c -x objective-c-header $CFLAGS $CPPFLAGS $LDFLAGS gs_precomp_test.h" >>$gs_logfile 2>&1
-$CC -x objective-c-header $CFLAGS $CPPFLAGS $LDFLAGS gs_precomp_test.h >>$gs_logfile 2>&1
+echo "** Preprocess the header" >>"$gs_logfile" 2>&1
+echo "$CC -o \"$gs_builddir/config-precomp-test.h.gch\" -c -x objective-c-header $CFLAGS $CPPFLAGS $LDFLAGS config-precomp-test.h" >>"$gs_logfile" 2>&1
+$CC -o "$gs_builddir/config-precomp-test.h.gch" -c -x objective-c-header $CFLAGS $CPPFLAGS $LDFLAGS config-precomp-test.h >>"$gs_logfile" 2>&1
 if test ! "$?" = "0"; then
-  echo "Failure" >>$gs_logfile 2>&1
-  rm -f a.out gs_precomp_test.h.gch
+  echo "Failure" >>"$gs_logfile" 2>&1
+  rm -f "$gs_builddir/config-precomp-test.out" "$gs_builddir/config-precomp-test.h.gch"
   exit 1
 fi
-echo "Success" >>$gs_logfile 2>&1
-echo "" >>$gs_logfile 2>&1
+echo "Success" >>"$gs_logfile" 2>&1
+echo "" >>"$gs_logfile" 2>&1
 
-# Now try to compile again with the preprocessed header
-echo "** Compile the file with precompiled headers" >>$gs_logfile 2>&1
-echo "$CC -o a.out $CFLAGS $CPPFLAGS $LDFLAGS $LIBS gs_precomp_test.m" >>$gs_logfile 2>&1
-$CC -o a.out $CFLAGS $CPPFLAGS $LDFLAGS $LIBS gs_precomp_test.m >>$gs_logfile 2>&1
+# Now try to compile again with the preprocessed header.  It might get ignored - which is fine.
+echo "** Compile the file with precompiled headers" >>"$gs_logfile" 2>&1
+echo "$CC -o \"$gs_builddir/config-precomp-test.out\" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS -I\"$gs_builddir\" config-precomp-test.m" >>"$gs_logfile" 2>&1
+$CC -o "$gs_builddir/config-precomp-test.out" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS -I"$gs_builddir" config-precomp-test.m >>"$gs_logfile" 2>&1
 if test ! "$?" = "0"; then
-  echo "Failure" >>$gs_logfile 2>&1
-  rm -f a.out gs_precomp_test.h.gch
+  echo "Failure" >>"$gs_logfile" 2>&1
+  rm -f "$gs_builddir/config-precomp-test.out" "$gs_builddir/config-precomp-test.h.gch"
   exit 1
 fi
-echo "Success" >>$gs_logfile 2>&1
+echo "Success" >>"$gs_logfile" 2>&1
 
 # Everything looks OK.
 exit 0
