@@ -188,21 +188,12 @@ Currently tested on Darwin 6.x, 7.x, 8.x
 
 @table @var
 @item Recommended compiler
-gcc 4.x, gcc 3.3.2 or greater 3.3.* versions. 
+FSF gcc 4.x, gcc 3.3.2 or greater 3.3.* versions. 
 Older versions will not compile on Darwin and 3.4.* versions don't 
 support GNU runtime compilation on Darwin currently (The GCC bug report 
 is http://gcc.gnu.org/bugzilla/show_bug.cgi?id=11572).
 
-Default compiler (Apple GCC) has problems, mostly because it tries
-to link in Apple libraries that conflict with GNUstep.
-Get the FSF gcc-4 compiler using fink or
-download the FSF GCC compiler and configure it with
--enable-threads=posix. You don't need binutils or anything else.
-Use the GNU runtime. Make sure to add 
-@example
-export CC=gcc-4 (or use the correct path to FSF gcc)
-@end example
-so that the correct compiler is found
+Apple gcc with Mac OS X 10.4 or later and XCode 2.5 or later
 
 @item Extra libs needed 
 Use libffi (not ffcall). This should be enabled by default in gnustep-base
