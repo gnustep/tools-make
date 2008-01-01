@@ -1,7 +1,7 @@
 1 Announcement
 **************
 
-The GNUstep Makefile Package version 2.0.0 is now available.
+The GNUstep Makefile Package version 2.0.3 is now available.
 
 1.1 What is the GNUstep makefile package?
 =========================================
@@ -12,65 +12,16 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-1.2 Changes in version `2.0.0'
+1.2 Changes in version `2.0.3'
 ==============================
 
-The Makefile package has had a major makover which befits a major
-version update.  The most user-visible change of this is customized
-filesystem support.  GNUstep can now be configured and installed using
-any of many typical filesystem layouts, including FHS, Mac, and the
-traditional GNUstep layout.
-
-   Due to this change a number of variable names have been changed or
-deprecated. If you are a developer maintaining makefiles, you should
-check your makefiles for these variables. Most notibly, variabels such
-as `GNUSTEP_SYSTEM_ROOT' no longer make any sense, as various
-directories that were previously in a traditional GNUstep system root
-directory exist accross multiple directories in disparate places in
-other filesystem layouts.
-
-   If you are a user or developer that is just installing GNUstep, read
-the `GNUstep-HOWTO' and `INSTALL' documents to find out new information
-about configuring and installing make.
-
-   If you are a developer, read the files `filesystem' and `make' for
-information on new and changed variables. Read the `releasenotes' file
-for specific changes in this release and updates you will need to make
-to work with this version of make.
-
-   Various changes include:
-   * New configure option `--with-layout' to choose different
-     filesystem layouts.
-
-   * All applications use the `.app' extension even when compiled with
-     debugging or profiling.
-
-   * Precompiled header support added using
-     xxx_OBJC_PRECOMPILED_HEADERS.
-
-   * gnustep-config is a program which prints out information on the
-     GNUstep filesystem and variables (Similar to programs like
-     pkg-config).
-
-   * Applications can be started now just using their name (by
-     installing a wrapper in the tools directory).
-
-   * Versioning of Microsoft Windows DLLs implemented.
-
-   * Use of `GNUSTEP_SYSTEM_ROOT' and similar variables deprecated. Use
-     instead `GNUSTEP_INSTALLATION_DOMAIN' and `SYSTEM' or `LOCAL'
-
-   * Implement use of GNU standard `DESTDIR' variable.
-
-   * Object files are now placed in the `obj' directory.
-
-   * Static and profile libraries have the same name as normal
-     libraries.
+New man pages for tools. Better uninstallation of files Add Windows
+installer makefile for Applications.
 
 1.3 Obtaining gnustep-make
 ==========================
 
-You can get the gstep-make-2.0.0.tar.gz distribution file at
+You can get the gstep-make-2.0.3.tar.gz distribution file at
 `ftp://ftp.gnustep.org/pub/gnustep/core'
 
    Please log bug reports on the GNUstep project page
