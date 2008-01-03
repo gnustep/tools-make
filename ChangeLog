@@ -1,3 +1,9 @@
+2008-01-03  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* relative_path.sh: Revert previous change as it broke the use of
+	relative paths within the configuration system ... critical for
+	ms-windows systems where relative paths are used by default!
+
 2008-01-01  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.3 (on stable branch).
