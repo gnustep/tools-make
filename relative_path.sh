@@ -147,11 +147,16 @@ if [ -z "$a" ]; then
 fi
 
 # Now add as many ../ as there are components in a
+# NB. If result was a single dot (current directory) then we need to
+# retain it so we have a path of the form './xxx' since the leading
+# './' is required to tell our software to prepend the location of
+# the config file to the relative path in order to obtain an absolute
+# path.
 tmp_IFS="$IFS"
 IFS=/
 for component in $a; do
   if [ -n "$component" -a "$component" != "." ]; then
-    if [ "$result" = "." ]; then
+    if [ -z "$result" ]; then
       result=".."
     else
       result="$result/.."
