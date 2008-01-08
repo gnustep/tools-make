@@ -9,12 +9,16 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.0.4}
+
+Fixed a bug finding relative paths on Windows (during configuration).
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.0.3}
 
 New man pages for tools. Better uninstallation of files
 Add Windows installer makefile for Applications.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.2}
 
