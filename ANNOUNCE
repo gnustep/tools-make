@@ -1,7 +1,7 @@
 1 Announcement
 **************
 
-The GNUstep Makefile Package version 2.0.3 is now available.
+The GNUstep Makefile Package version 2.0.4 is now available.
 
 1.1 What is the GNUstep makefile package?
 =========================================
@@ -12,16 +12,15 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-1.2 Changes in version `2.0.3'
+1.2 Changes in version `2.0.4'
 ==============================
 
-New man pages for tools. Better uninstallation of files Add Windows
-installer makefile for Applications.
+Fixed a bug finding relative paths on Windows (during configuration).
 
 1.3 Obtaining gnustep-make
 ==========================
 
-You can get the gstep-make-2.0.3.tar.gz distribution file at
+You can get the gstep-make-2.0.4.tar.gz distribution file at
 `ftp://ftp.gnustep.org/pub/gnustep/core'
 
    Please log bug reports on the GNUstep project page
