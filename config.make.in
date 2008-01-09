@@ -61,8 +61,6 @@ ifeq (@target_os@,cygwin)
   HAS_LN_S = no
 endif 
 
-
-
 # This is used to remove an existing symlink before creating a new
 # one.  We don't trust 'ln -s -f' as it's unportable so we remove
 # manually the existing symlink (if any) before creating a new one.
@@ -70,12 +68,18 @@ endif
 # if they are not, we assume they are copies (like cp -r) and we go
 # heavy-handed with 'rm -Rf'.  Note - this code might need rechecking
 # for the case where LN_S = 'ln', if that ever happens on some
-# platforms.
+# platforms (it shouldn't cause any problems, but checking is good).
 ifeq ($(HAS_LN_S), yes)
   RM_LN_S = rm -f
+  LN_S_RECURSIVE = $(LN_S)
   FRAMEWORK_VERSION_SUPPORT = yes
 else
   RM_LN_S = rm -Rf
+  # When symlinks are not available, using LN_S (which is set to 'cp -p')
+  # doesn't work on directories.  So every time you want to do the
+  # equivalent of 'ln -s' on directories, you need to use 
+  # LN_S_RECURSIVE instead of LN_S.  
+  LN_S_RECURSIVE = cp -pR
   FRAMEWORK_VERSION_SUPPORT = no
 endif
 

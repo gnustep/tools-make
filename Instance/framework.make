@@ -353,17 +353,17 @@ ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR); \
 	  if [ ! -h "Resources" ]; then \
 	    $(RM_LN_S) Resources; \
-	    $(LN_S) Versions/Current/Resources Resources; \
+	    $(LN_S_RECURSIVE) Versions/Current/Resources Resources; \
 	  fi; \
 	  if [ ! -h "Headers" ]; then \
 	    $(RM_LN_S) Headers; \
-	    $(LN_S) Versions/Current/Headers Headers; \
+	    $(LN_S_RECURSIVE) Versions/Current/Headers Headers; \
 	  fi$(END_ECHO)
 endif
 	$(ECHO_NOTHING)cd $(DERIVED_SOURCES_DIR); \
 	  if [ ! -h "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    $(RM_LN_S) ./$(HEADER_FILES_INSTALL_DIR); \
-	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
+	    $(LN_S_RECURSIVE) ../$(FRAMEWORK_DIR_NAME)/Headers \
                     ./$(HEADER_FILES_INSTALL_DIR); \
 	  fi$(END_ECHO)
 
@@ -589,7 +589,7 @@ ifeq ($(strip),yes)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	$(RM_LN_S) $(HEADER_FILES_INSTALL_DIR); \
-	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(HEADER_FILES_INSTALL_DIR); \
+	$(LN_S_RECURSIVE) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(HEADER_FILES_INSTALL_DIR); \
 	$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)cd $(GNUSTEP_HEADERS); \

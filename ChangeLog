@@ -1,3 +1,9 @@
+2008-01-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (LN_S_RECURSIVE): New variable.
+	* Instance/application.make: Use it when symlinking a directory.
+	* Instance/framework.make: Same changes.
+	
 2008-01-08  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.4 (on stable branch).

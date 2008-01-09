@@ -339,7 +339,7 @@ internal-install-app-wrapper: $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 	$(ECHO_NOTHING)\
 	  cd $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR); \
 	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
-	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR) $(APP_INSTALL_DIR)/$(APP_FILE_NAME)` \
+	  $(LN_S_RECURSIVE) `$(REL_PATH_SCRIPT) $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR) $(APP_INSTALL_DIR)/$(APP_FILE_NAME)` \
 	          $(GNUSTEP_INSTANCE)$(END_ECHO)
 else
 # Not sure that we can use relative paths with 'exec' in a portable
