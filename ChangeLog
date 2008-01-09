@@ -1,5 +1,14 @@
 2008-01-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* relative_path.sh: Added optional third parameter to specify
+	whether 'strict' or 'short' output is required.  Default to
+	'strict' so that the configuration system works.
+	* Instance/application.make: Use 'short' option to
+	relative_path.sh to get more compact paths.
+	* Instance/framework.make: Same change.
+	
+2008-01-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* config.make.in (LN_S_RECURSIVE): New variable.
 	* Instance/application.make: Use it when symlinking a directory.
 	* Instance/framework.make: Same changes.

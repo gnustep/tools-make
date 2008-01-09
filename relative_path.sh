@@ -1,10 +1,10 @@
 #!/bin/sh
 # relative_path.sh
 #
-# Copyright (C) 2002 Free Software Foundation, Inc.
+# Copyright (C) 2001 - 2007 Free Software Foundation, Inc.
 #
 # Author: Nicola Pero <n.pero@mi.flashnet.it>
-# Date: April 2001
+# Date: April 2001, January 2007
 #
 # This file is part of the GNUstep Makefile Package.
 #
@@ -22,13 +22,45 @@
 # which, when appended to the first one, gives the second one ... more
 # precisely, the path of minimum length with this property.
 #
+# A third optional parameter controls the type of output; if it's set
+# to 'strict' it outputs "strict" relative paths that always start
+# with the exact sequence of characters './'.  If set to 'short' it
+# outputs "short" relative paths that might start with './' or with
+# '../'.  Here are examples:
+#
+# strict: ./
+# short: ./
+#
+# strict: ./../System
+# short: ../System
+#
+# strict: ./System
+# short: ./System
+#
+# Inside shell scripts (eg, in framework.make) we use the 'short' mode
+# because it prevents ugly unnecessary path fragments to get into all
+# paths.  Inside the configuration system we traditionally use the
+# 'strict' mode because NSPathUtilities detects relative paths by
+# checking that they start with './'.  The 'short' mode might
+# become the one used for the configuration system in the future if
+# NSPathUtilities learns to detect that '../' also starts a relative
+# path.
+#
+# If no this parameter is provided, 'strict' is assumed for backwards
+# compatibility (even if gnustep-make v1 used to default to 'short').
+# This might change in the future, so if you are depending on a
+# specific behaviour, it's important that you specify the type of
+# output you want.
+
+
+#
 # <NB: the paths must be absolute.>
 #
 # for example,
 #
-# $GNUSTEP_MAKEFILES/relative_path.sh /usr/GNUstep/Local /usr/GNUstep/System
+# $GNUSTEP_MAKEFILES/print_relative_path.sh /usr/GNUstep/Local /usr/GNUstep/System short
 #
-# returns ./../System (and not ./../../GNUstep/System which is not the minimum).
+# returns ../System (and not ../../GNUstep/System which is not the minimum).
 #
 # This is needed by `ln -s' to properly create symlinks between
 # directories which are related ... but we don't know how.  We only
@@ -44,7 +76,7 @@
 # you only have the absolute paths) we do -
 #
 # cd /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/
-# $(LN_S) `$(RELATIVE_PATH_SCRIPT) /usr/GNUstep/System/Frameworks/nicola.framework/Versions/Current/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/` libnicola.so
+# $(LN_S) `$(RELATIVE_PATH_SCRIPT) /usr/GNUstep/System/Frameworks/nicola.framework/Versions/Current/ix86/linux-gnu/gnu-gnu-gnu/libnicola.so /usr/GNUstep/System/Library/Libraries/ix86/linux-gnu/gnu-gnu-gnu/ short` libnicola.so
 #
 # which creates the link.  We need to use the minimum path because
 # that is the most relocatable possible path.  I consider all this a
@@ -58,14 +90,18 @@
 # Unfortunately in that case because of limitations in gnustep-base's
 # NSPathUtilities, we have to always output a './' at the beginning of
 # the result so that gnustep-base recognizes the result as a relative
-# path.  This means for example that we can't output '../System', we
-# have to output './../System'.  As soon as a fixed version of
-# NSPathUtilities that recognizes '../' as starting a relative path is
-# out, we can improve this script by removing the leading './' in that
-# case.
+# path.  This means we use the 'strict' output in that case.
+
+# mode=strict means we always need to start our output with './'.
+# mode=short means we always start our output with '../' or './'.
+mode=strict
 
 if [ "$#" != 2 ]; then
-  exit 1
+  if [ "$#" != 3 ]; then
+    exit 1
+  else
+    mode="$3"
+  fi
 fi
 
 a="$1";
@@ -149,22 +185,24 @@ fi
 # Ok - now ready to build the result
 result="."
 
-# Special case - if a is now empty, the second directory was a
-# subdirectory of the first.  Start the result with '.', so
-# that we will get something like ./GNUstep/Frameworks/
-if [ -z "$a" ]; then
-  result="."
-fi
+# Special note - if a is now empty, the second directory was a
+# subdirectory of the first; we will end up outputting ./$b
 
 # Now add as many ../ as there are components in a
 tmp_IFS="$IFS"
 IFS=/
 for component in $a; do
   if [ -n "$component" -a "$component" != "." ]; then
-    if [ -z "$result" ]; then
-      result=".."
-    else
+    if [ "$mode" = "strict" ]; then
+      # In strict mode, ./../../xxx is required
       result="$result/.."
+    else
+      # In short mode, it's not, we prefer ../../xxx
+      if [ "$result" = "." ]; then
+        result=".."
+      else
+        result="$result/.."
+      fi
     fi
   fi
 done
@@ -177,11 +215,11 @@ else
   result="$b"
 fi
 
-# If there is no difference, there is no relative path to append,
-# so we output './' to tell NSPathUtilities.m in gnustep-base to
-# replace this with the path to the directory containing the library.
-if [ "$result" = "." ]; then
-  result="./"
+if [ "$mode" = "strict" ]; then
+  # Make sure the result always starts with './' in strict mode
+  if [ "$result" = "." ]; then
+    result="./"
+  fi
 fi
 
 echo "$result"
