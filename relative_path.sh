@@ -28,7 +28,7 @@
 #
 # $GNUSTEP_MAKEFILES/relative_path.sh /usr/GNUstep/Local /usr/GNUstep/System
 #
-# returns ../System (and not ../../GNUstep/System which is not the minimum).
+# returns ./../System (and not ./../../GNUstep/System which is not the minimum).
 #
 # This is needed by `ln -s' to properly create symlinks between
 # directories which are related ... but we don't know how.  We only
@@ -52,7 +52,17 @@
 # of frameworks, since libraries and bundles are much more portable
 # and stable, anyway here we are.
 #
-
+# This script is also used to create relative paths in the
+# configuration system for cases where the location of things is
+# relative to the location of something (eg, base library).
+# Unfortunately in that case because of limitations in gnustep-base's
+# NSPathUtilities, we have to always output a './' at the beginning of
+# the result so that gnustep-base recognizes the result as a relative
+# path.  This means for example that we can't output '../System', we
+# have to output './../System'.  As soon as a fixed version of
+# NSPathUtilities that recognizes '../' as starting a relative path is
+# out, we can improve this script by removing the leading './' in that
+# case.
 
 if [ "$#" != 2 ]; then
   exit 1
@@ -147,11 +157,6 @@ if [ -z "$a" ]; then
 fi
 
 # Now add as many ../ as there are components in a
-# NB. If result was a single dot (current directory) then we need to
-# retain it so we have a path of the form './xxx' since the leading
-# './' is required to tell our software to prepend the location of
-# the config file to the relative path in order to obtain an absolute
-# path.
 tmp_IFS="$IFS"
 IFS=/
 for component in $a; do
