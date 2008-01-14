@@ -1,5 +1,23 @@
 2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUstep.csh.in: At the end of the script unset
+	GNUSTEP_SYSTEM_WEB_APPS, GNUSTEP_LOCAL_WEB_APPS,
+	GNUSTEP_NETWORK_WEB_APPS, GNUSTEP_USER_WEB_APPS.
+
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in (GNUSTEP_KEEP_CONFIG_FILE,
+	GNUSTEP_KEEP_USER_CONFIG_FILE): New variables used to remember if
+	GNUSTEP_CONFIG_FILE and GNUSTEP_USER_CONFIG_FILE were already set
+	in the environment by the user or if we set them in the script;
+	use them to decide if we need to keep them at the end of the
+	script, or unset them.
+	(GNUSTEP_USER_DEFAULTS_DIR): Unset or export this variable as
+	required.
+	* GNUstep.csh.in: Similar changes.
+	
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Clearly explain in the help that --with-user-dir
 	is an obsolete option in gnustep-make v2.  Print a warning if it
 	used, and otherwise ignore it.
