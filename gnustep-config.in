@@ -59,7 +59,6 @@ if [ "$1" = "--help" ]; then
     echo "                variables:"
     echo
     echo "    --variable=GNUSTEP_MAKEFILES"
-    echo "    --variable=GNUSTEP_USER_DIR"
     echo "    --variable=GNUSTEP_USER_DEFAULTS_DIR"
     echo "    --variable=GNUSTEP_HOST"
     echo "    --variable=GNUSTEP_HOST_CPU"

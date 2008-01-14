@@ -4,7 +4,9 @@
 	is an obsolete option in gnustep-make v2.  Print a warning if it
 	used, and otherwise ignore it.
 	* configure: Regenerated.
-
+	* gnustep-config.in: Updated help removing mention of
+	GNUSTEP_USER_DIR.
+	
 2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUstep.sh.in: Unset GNUSTEP_SYSTEM_USERS_DIR,
