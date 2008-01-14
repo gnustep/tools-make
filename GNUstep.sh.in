@@ -407,13 +407,6 @@ export INFOPATH
 unset GNUSTEP_INFO_PATHLIST
 
 #
-# Perform any user initialization
-#
-if [ -f "$GNUSTEP_USER_ROOT/GNUstep.sh" ]; then
-  . "$GNUSTEP_USER_ROOT/GNUstep.sh"
-fi
-
-#
 # Clean up the environment by removing the filesystem variables.  Do
 # it unless we were explicitly requested not to clean it up!  Mostly
 # gnustep-config will request that the environment is not cleaned up,

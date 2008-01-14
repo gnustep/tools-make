@@ -1,5 +1,23 @@
 2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUstep.sh.in: Dropped sourcing user
+	GNUSTEP_USER_ROOT/GNUstep.sh at the end of the script.  The
+	location of the file is no longer meaningfully defined in
+	gnustep-make v2 so we'd need a new mechanism to define a new
+	location, but the feature looks generally obsolete/pointless in
+	gnustep-make v2 so we'd rather drop it.
+	If you have a custom shell script you want to source at start up,
+	you can simply add it in your shell init script before or after
+	sourcing GNUstep.sh.  If you are trying to customize the
+	filesystem or environment, you need to customize your layout or
+	config files so that your changes are detected by gnustep-base as
+	well as gnustep-make.
+	* GNUstep.csh.in: Same change.
+	* Documentation/releasenotes.texi: Document the change.
+	* RELEASENOTES: Regenerated.
+	
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.csh.in: At the end of the script unset
 	GNUSTEP_SYSTEM_WEB_APPS, GNUSTEP_LOCAL_WEB_APPS,
 	GNUSTEP_NETWORK_WEB_APPS, GNUSTEP_USER_WEB_APPS.

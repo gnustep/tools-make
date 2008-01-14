@@ -247,13 +247,6 @@ endif
 
 unset gnustep_info_path
 
-#
-# Perform any user initialization
-#
-if ( -e "$GNUSTEP_USER_ROOT/GNUstep.csh" ) then
-  source "$GNUSTEP_USER_ROOT/GNUstep.csh"
-endif
-
 if ( ! {$?GNUSTEP_KEEP_CONFIG_FILE} ) then
   unsetenv GNUSTEP_CONFIG_FILE
 endif
