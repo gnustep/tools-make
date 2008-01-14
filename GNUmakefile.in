@@ -201,10 +201,6 @@ install: generated-files
 	   cd "$(makedir)"; ./strip_makefiles.sh; \
 	   fi)
 
-# FIXME - review the issue of this config.site.  What is it used for ?
-#	 $(EC)($(srcdir)/mkinstalldirs $(GNUSTEP_SYSTEM_ROOT)/share; \
-#	   $(INSTALL_DATA) $(srcdir)/config.site $(GNUSTEP_SYSTEM_ROOT)/share)
-
 uninstall:
 	rm -f "$(mandir)/man1/debugapp.1" "$(mandir)/man1/debugapp.1.gz"; \
 	rm -f "$(mandir)/man1/gnustep-config.1" "$(mandir)/man1/gnustep-config.1.gz"; \
