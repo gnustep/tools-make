@@ -6,6 +6,8 @@
 	* configure: Regenerated.
 	* gnustep-config.in: Updated help removing mention of
 	GNUSTEP_USER_DIR.
+	* GNUstep.sh.in: Unset GNUSTEP_USER_DIR after using it.
+	* GNUstep.csh.in: Same change.
 	
 2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 

@@ -135,6 +135,8 @@ switch ("${GNUSTEP_USER_DIR}")
    breaksw
 endsw
 
+unsetenv GNUSTEP_USER_DIR
+
 if ( "@GNUSTEP_MULTI_PLATFORM@" == "" ) then
   setenv GNUSTEP_HOST "@target@"
   setenv GNUSTEP_HOST_CPU "@clean_target_cpu@"

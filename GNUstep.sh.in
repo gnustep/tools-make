@@ -143,12 +143,14 @@ if [ -z "$GNUSTEP_MAKEFILES" ]; then
 fi
 export GNUSTEP_MAKEFILES
 
+# GNUSTEP_USER_DIR is deprecated and will be removed
 if [ -z "$GNUSTEP_USER_DIR" ]; then
   GNUSTEP_USER_DIR=@GNUSTEP_USER_DIR@
 fi
 
 #
 # Set GNUSTEP_USER_ROOT which is the variable used in practice
+# GNUSTEP_USER_ROOT is deprecated and will be removed
 #
 case "$GNUSTEP_USER_DIR" in 
   /*) # An absolute path
@@ -156,6 +158,10 @@ case "$GNUSTEP_USER_DIR" in
    *) # Something else
       GNUSTEP_USER_ROOT="$GNUSTEP_HOME/$GNUSTEP_USER_DIR";;
 esac
+
+# This variable was used to set up GNUSTEP_USER_ROOT which is the one
+# that is actually exported; we can now drop it from the environment.
+unset GNUSTEP_USER_DIR
 
 # This is deprecated and will be removed
 export GNUSTEP_USER_ROOT
