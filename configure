@@ -648,6 +648,7 @@ INSTALL_DATA
 LN_S
 TAR
 CHOWN
+GNUSTEP_MAKE_STRICT_V2_MODE
 GNUSTEP_CONFIG_FILE
 GNUSTEP_USER_CONFIG_FILE
 GNUSTEP_USER_DEFAULTS_DIR
@@ -1313,6 +1314,24 @@ if test -n "$ac_init_help"; then
 Optional Features:
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+
+--enable-strict-v2-mode
+  Enable strict gnustep-make version 2 mode by default.  Use this
+  option to have gnustep-make be aggressively backwards-incompatible
+  with gnustep-make version 1.  You can use it when you are debugging /
+  upgrading your makefiles and software to gnustep-make version 2 and
+  want to test test that they do not depend on obsolete or deprecated
+  version 1 features and variables.  Important: you must never ship
+  gnustep-make to end-users with --enable-strict-v2-mode as it would
+  cause extremely confusing and dangerous problems with software that
+  has not been updated to gnustep-make v2 yet.  Use it only on test
+  builds or development machines to test that makefiles and software
+  have been updated.  Make sure to use it extremely carefully with old
+  makefiles because it can produce unpredictable and dangerous results
+  (for examples, since GNUSTEP_SYSTEM_ROOT is undefined when using
+  --enable-strict-v2-mode, installing into GNUSTEP_SYSTEM_ROOT/Headers
+  would actually install into /Headers).
+
 
 --enable-importing-config-file
    Enable importing the existing system GNUstep configuration file.
@@ -3853,6 +3872,34 @@ fi
 #-------------------------------------------------------------------
 # GNUstep specific options follow
 #-------------------------------------------------------------------
+
+#-------------------------------------------------------------------
+# Determine if we should enable strict gnustep-make v2 mode by default
+#-------------------------------------------------------------------
+
+{ echo "$as_me:$LINENO: checking if we should enable strict gnustep-make version 2 mode by default" >&5
+echo $ECHO_N "checking if we should enable strict gnustep-make version 2 mode by default... $ECHO_C" >&6; }
+# Check whether --enable-strict-v2-mode was given.
+if test "${enable_strict_v2_mode+set}" = set; then
+  enableval=$enable_strict_v2_mode; ac_cv_strict_v2_mode=$enableval
+else
+  ac_cv_strict_v2_mode="no"
+fi
+
+
+if test "$ac_cv_strict_v2_mode" = "yes"; then
+  { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; };
+  GNUSTEP_MAKE_STRICT_V2_MODE="yes"
+  { echo "$as_me:$LINENO: WARNING: Use strict version 2 mode at your own risk; it must only be used on development/test systems" >&5
+echo "$as_me: WARNING: Use strict version 2 mode at your own risk; it must only be used on development/test systems" >&2;}
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; };
+  GNUSTEP_MAKE_STRICT_V2_MODE="no"
+fi
+
+
 
 #-------------------------------------------------------------------
 # Determine filesystem layout to use
@@ -6420,6 +6467,7 @@ INSTALL_DATA!$INSTALL_DATA$ac_delim
 LN_S!$LN_S$ac_delim
 TAR!$TAR$ac_delim
 CHOWN!$CHOWN$ac_delim
+GNUSTEP_MAKE_STRICT_V2_MODE!$GNUSTEP_MAKE_STRICT_V2_MODE$ac_delim
 GNUSTEP_CONFIG_FILE!$GNUSTEP_CONFIG_FILE$ac_delim
 GNUSTEP_USER_CONFIG_FILE!$GNUSTEP_USER_CONFIG_FILE$ac_delim
 GNUSTEP_USER_DEFAULTS_DIR!$GNUSTEP_USER_DEFAULTS_DIR$ac_delim
@@ -6446,7 +6494,6 @@ GNUSTEP_NETWORK_ADMIN_TOOLS!$GNUSTEP_NETWORK_ADMIN_TOOLS$ac_delim
 GNUSTEP_NETWORK_LIBRARY!$GNUSTEP_NETWORK_LIBRARY$ac_delim
 GNUSTEP_NETWORK_HEADERS!$GNUSTEP_NETWORK_HEADERS$ac_delim
 GNUSTEP_NETWORK_LIBRARIES!$GNUSTEP_NETWORK_LIBRARIES$ac_delim
-GNUSTEP_NETWORK_DOC!$GNUSTEP_NETWORK_DOC$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -6488,6 +6535,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+GNUSTEP_NETWORK_DOC!$GNUSTEP_NETWORK_DOC$ac_delim
 GNUSTEP_NETWORK_DOC_INFO!$GNUSTEP_NETWORK_DOC_INFO$ac_delim
 GNUSTEP_NETWORK_DOC_MAN!$GNUSTEP_NETWORK_DOC_MAN$ac_delim
 GNUSTEP_LOCAL_APPS!$GNUSTEP_LOCAL_APPS$ac_delim
@@ -6545,7 +6593,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 55; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 56; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

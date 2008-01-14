@@ -68,6 +68,10 @@ if [ -n "$ZSH_VERSION" ]; then
 
 fi
 
+# When this is set to 'yes', strict gnustep-make v2 compatibility mode
+# is turned on.
+GNUSTEP_MAKE_STRICT_V2_MODE=@GNUSTEP_MAKE_STRICT_V2_MODE@
+
 #
 # Read our configuration files
 #
@@ -115,59 +119,90 @@ fi
 # Now, set any essential variable (that is not already set) to the
 # built-in values.
 
-# This is deprecated and will be removed
-if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
-  GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
-fi
+if [ "$GNUSTEP_MAKE_STRICT_V2_MODE" = "yes" ]; then
+  # In strict v2 mode, clean these obsolete variables in case the
+  # config file contains them.  They shouldn't exist so unsetting
+  # them can't harm.
+  unset GNUSTEP_SYSTEM_ROOT
+  unset GNUSTEP_LOCAL_ROOT
+  unset GNUSTEP_NETWORK_ROOT
+else
+  # This is deprecated and will be removed
+  if [ -z "$GNUSTEP_SYSTEM_ROOT" ]; then
+    GNUSTEP_SYSTEM_ROOT=@GNUSTEP_SYSTEM_ROOT@
+  fi
 
-# This is deprecated and will be removed
-if [ -z "$GNUSTEP_LOCAL_ROOT" ]; then
-  GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
-fi
+  # This is deprecated and will be removed
+  if [ -z "$GNUSTEP_LOCAL_ROOT" ]; then
+    GNUSTEP_LOCAL_ROOT=@GNUSTEP_LOCAL_ROOT@
+  fi
 
-# This is deprecated and will be removed
-if [ -z "$GNUSTEP_NETWORK_ROOT" ]; then
-  GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
-fi
+  # This is deprecated and will be removed
+  if [ -z "$GNUSTEP_NETWORK_ROOT" ]; then
+    GNUSTEP_NETWORK_ROOT=@GNUSTEP_NETWORK_ROOT@
+  fi
 
-export GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT
+  export GNUSTEP_SYSTEM_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_NETWORK_ROOT
+fi
 
 # GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
 # instead
-GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
+if [ "$GNUSTEP_MAKE_STRICT_V2_MODE" = "yes" ]; then
+  unset GNUSTEP_FLATTENED
+else
+  GNUSTEP_FLATTENED=@GNUSTEP_FLATTENED@
+  export GNUSTEP_FLATTENED
+fi
 GNUSTEP_IS_FLATTENED=@GNUSTEP_IS_FLATTENED@
 if [ -z "$LIBRARY_COMBO" ]; then
   LIBRARY_COMBO=@ac_cv_library_combo@
 fi
-export GNUSTEP_IS_FLATTENED GNUSTEP_FLATTENED LIBRARY_COMBO
+if [ ! "$GNUSTEP_MAKE_STRICT_V2_MODE" = "yes" ]; then
+  # Having these variables in the environment is deprecated and will
+  # be removed.  But for now, if we are not in strict gnustep-make v2
+  # mode, then we always export these variables for
+  # backwards-compatibility.
+  export GNUSTEP_IS_FLATTENED LIBRARY_COMBO
+
+  # Else they are only exported if GNUSTEP_SH_EXPORT_ALL_VARIABLES
+  # is defined - at the end of the script.
+fi
 
 if [ -z "$GNUSTEP_MAKEFILES" ]; then
   GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
 fi
 export GNUSTEP_MAKEFILES
 
-# GNUSTEP_USER_DIR is deprecated and will be removed
-if [ -z "$GNUSTEP_USER_DIR" ]; then
-  GNUSTEP_USER_DIR=@GNUSTEP_USER_DIR@
+
+if [ "$GNUSTEP_MAKE_STRICT_V2_MODE" = "yes" ]; then
+  # Make sure this is never set in gnustep-make v2 strict mode; it
+  # might have been set in the config file.
+  unset GNUSTEP_USER_DIR
+  unset GNUSTEP_USER_ROOT
+else
+  # GNUSTEP_USER_DIR is deprecated and will be removed
+  if [ -z "$GNUSTEP_USER_DIR" ]; then
+    GNUSTEP_USER_DIR=@GNUSTEP_USER_DIR@
+  fi
+
+  #
+  # Set GNUSTEP_USER_ROOT which is the variable used in practice.
+  # GNUSTEP_USER_ROOT is deprecated and will be removed
+  #
+  case "$GNUSTEP_USER_DIR" in 
+    /*) # An absolute path
+        GNUSTEP_USER_ROOT="$GNUSTEP_USER_DIR";;
+     *) # Something else
+        GNUSTEP_USER_ROOT="$GNUSTEP_HOME/$GNUSTEP_USER_DIR";;
+  esac
+
+  # This variable was used to set up GNUSTEP_USER_ROOT which is the one
+  # that is actually exported; we can now drop it from the environment.
+  unset GNUSTEP_USER_DIR
+
+  # This is deprecated and will be removed
+  export GNUSTEP_USER_ROOT
 fi
-
-#
-# Set GNUSTEP_USER_ROOT which is the variable used in practice
-# GNUSTEP_USER_ROOT is deprecated and will be removed
-#
-case "$GNUSTEP_USER_DIR" in 
-  /*) # An absolute path
-      GNUSTEP_USER_ROOT="$GNUSTEP_USER_DIR";;
-   *) # Something else
-      GNUSTEP_USER_ROOT="$GNUSTEP_HOME/$GNUSTEP_USER_DIR";;
-esac
-
-# This variable was used to set up GNUSTEP_USER_ROOT which is the one
-# that is actually exported; we can now drop it from the environment.
-unset GNUSTEP_USER_DIR
-
-# This is deprecated and will be removed
-export GNUSTEP_USER_ROOT
 
 # If multi-platform support is disabled, just use the hardcoded cpu,
 # vendor and os determined when gnustep-make was configured.  The
@@ -213,7 +248,14 @@ if [ -z "$GNUSTEP_HOST_OS" ]; then
   GNUSTEP_HOST_OS=`$GNUSTEP_MAKEFILES/clean_os.sh $GNUSTEP_HOST_OS`
 fi
 
-export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
+if [ ! "$GNUSTEP_MAKE_STRICT_V2_MODE" = "yes" ]; then
+  # These variables are deprecated for usage in shell scripts; you
+  # need to use gnustep-config to get them in a shell script.
+  export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
+
+  # Even in strict gnustep-make v2 mode, we export them at the end
+  # if explicitly requested to export all variables.
+fi
 
 # Now load in all the remaining paths
 . $GNUSTEP_MAKEFILES/filesystem.sh
@@ -233,16 +275,20 @@ if [ -z "$path_check" ]; then
 fi
 unset path_check
 
-# GNUSTEP_PATHLIST is deprecated and will be removed.
-#
-# GNUSTEP_PATHLIST is like an abstract path-like shell variable, which
-# can be used to search the gnustep directories - and in these
-# scripts, it is also used to set up other shell variables
-#
-if [ -z "$GNUSTEP_PATHLIST" ]; then
+if [ "$GNUSTEP_MAKE_STRICT_V2_MODE" = "yes" ]; then
+  unset GNUSTEP_PATHLIST
+else
+  # GNUSTEP_PATHLIST is deprecated and will be removed.
+  #
+  # GNUSTEP_PATHLIST is like an abstract path-like shell variable, which
+  # can be used to search the gnustep directories - and in these
+  # scripts, it is also used to set up other shell variables
+  #
+  if [ -z "$GNUSTEP_PATHLIST" ]; then
 
- GNUSTEP_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" $fixup_paths`
- export GNUSTEP_PATHLIST
+   GNUSTEP_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" $fixup_paths`
+   export GNUSTEP_PATHLIST
+  fi
 fi
 
 #
@@ -413,11 +459,18 @@ unset GNUSTEP_INFO_PATHLIST
 # so it can print out all of the GNUstep variables.
 #
 if [ -n "$GNUSTEP_SH_EXPORT_ALL_VARIABLES" ]; then
+  export GNUSTEP_MAKE_STRICT_V2_MODE
+
   unset GNUSTEP_KEEP_CONFIG_FILE GNUSTEP_KEEP_USER_CONFIG_FILE
 
   export GNUSTEP_CONFIG_FILE GNUSTEP_USER_CONFIG_FILE
 
   export GNUSTEP_USER_DEFAULTS_DIR
+
+  # Always export these variables even if in strict gnustep-make v2
+  # mode, so that for example gnustep-config can determine them.
+  export GNUSTEP_IS_FLATTENED LIBRARY_COMBO
+  export GNUSTEP_HOST GNUSTEP_HOST_CPU GNUSTEP_HOST_VENDOR GNUSTEP_HOST_OS
 
   export GNUSTEP_SYSTEM_APPS GNUSTEP_SYSTEM_ADMIN_APPS GNUSTEP_SYSTEM_WEB_APPS GNUSTEP_SYSTEM_TOOLS GNUSTEP_SYSTEM_ADMIN_TOOLS 
   export GNUSTEP_SYSTEM_LIBRARY GNUSTEP_SYSTEM_HEADERS GNUSTEP_SYSTEM_LIBRARIES
@@ -437,6 +490,16 @@ if [ -n "$GNUSTEP_SH_EXPORT_ALL_VARIABLES" ]; then
 
   export GNUSTEP_SYSTEM_USERS_DIR GNUSTEP_LOCAL_USERS_DIR GNUSTEP_NETWORK_USERS_DIR
 else
+  if [ "$GNUSTEP_MAKE_STRICT_V2_MODE" = "yes" ]; then
+    unset GNUSTEP_IS_FLATTENED
+    unset LIBRARY_COMBO
+    unset GNUSTEP_HOST
+    unset GNUSTEP_HOST_CPU
+    unset GNUSTEP_HOST_VENDOR
+    unset GNUSTEP_HOST_OS
+  fi
+
+  unset GNUSTEP_MAKE_STRICT_V2_MODE
 
   # Unset these variables but only if we set them internally; keep
   # them if they were already in the environment.

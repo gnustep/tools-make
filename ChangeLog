@@ -1,5 +1,43 @@
 2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUmakefile.in: Disable built-in suffixes and vague % rules for
+	performance.
+	* GNUstep.csh.in: Fixed typo in line that sources
+	GNUSTEP_USER_CONFIG_FILE.
+	
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: New option --enable-strict-v2-mode that can be
+	used when debugging/upgrading makefiles and software to test that
+	they do not rely on obsolete/deprecated gnustep-make v1 variables.
+	Define GNUSTEP_MAKE_STRICT_V2_MODE when the option is set.
+	* configure: Regenerated.
+	* config-noarch.make.in, GNUstep.sh.in,
+	GNUstep.csh.in (GNUSTEP_MAKE_STRICT_V2_MODE): New variable, set
+	from the --enable-strict-v2-mode config option.
+	* GNUmakefile.in: If special_prefix is used and we are in strict
+	v2 mode, abort with an error.
+	* GNUstep.sh.in: When in strict v2 mode, never export
+	GNUSTEP_*_ROOT, GNUSTEP_FLATTENED and GNUSTEP_PATHLIST; instead
+	actively unset them if they are set in the environment.  Export
+	GNUSTEP_IS_FLATTENED, LIBRARY_COMBO and GNUSTEP_HOST_* only if
+	GNUSTEP_SH_EXPORT_ALL_VARIABLES is set.
+	* GNUstep.csh.in: When in strict v2 mode, never setenv any of the
+	GNUSTEP_*_ROOT, GNUSTEP_FLATTENED, GNUSTEP_PATHLIST,
+	GNUSTEP_IS_FLATTENED, LIBRARY_COMBO and GNUSTEP_HOST_* variables;
+	unset them if they are set in the environment.
+
+	* config-noarch.make.in: When in strict v2 mode, do not define
+	GNUSTEP_*_ROOT, GNUSTEP_USER_DIR and GNUSTEP_FLATTENED.	
+	* GNUstep-reset.sh: Unset GNUSTEP_MAKE_STRICT_V2_MODE for safety.
+	* common.make: In strict v2 mode do not define
+	GNUSTEP_DOCUMENTATION, GNUSTEP_DOCUMENTATION_MAN and
+	GNUSTEP_DOCUMENTATION_INFO.  In strict v2 mode, abort with an
+	error if INSTALL_ROOT_DIR or GNUSTEP_INSTALLATION_DIR is set.
+	Print an info line if strict v2 mode is turned on.
+
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.sh.in: Dropped sourcing user
 	GNUSTEP_USER_ROOT/GNUstep.sh at the end of the script.  The
 	location of the file is no longer meaningfully defined in

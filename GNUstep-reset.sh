@@ -160,6 +160,7 @@ unset GNUSTEP_USER_DOC_INFO
 
 # These should not defined, but might be if something goes wrong
 # somewhere.
+unset GNUSTEP_MAKE_STRICT_V2_MODE
 unset GNUSTEP_USER_DIR_APPS 
 unset GNUSTEP_USER_DIR_ADMIN_APPS
 unset GNUSTEP_USER_DIR_WEB_APPS

@@ -24,6 +24,10 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 #
 
+# When this is set to 'yes', strict gnustep-make v2 compatibility mode
+# is turned on.
+set GNUSTEP_MAKE_STRICT_V2_MODE=@GNUSTEP_MAKE_STRICT_V2_MODE@
+
 #
 # Read our configuration files
 #
@@ -81,7 +85,7 @@ if ( ${?GNUSTEP_USER_CONFIG_FILE} ) then
    case /*: # An absolute path
      if ( -e "${GNUSTEP_USER_CONFIG_FILE}" ) then
       # See above for an explanation of the sed expression
-      eval `sed -e '/^[^#=][^#=]*=.*$/\\!d' -e 's/^\([^#=][^#=]*\)=\(.*\)$/setenv \1 \2;/' "${GNUSTEP_USER_CONFIG_FILE}"``
+      eval `sed -e '/^[^#=][^#=]*=.*$/\\!d' -e 's/^\([^#=][^#=]*\)=\(.*\)$/setenv \1 \2;/' "${GNUSTEP_USER_CONFIG_FILE}"`
      endif
      breaksw
    default: # Something else
@@ -94,22 +98,29 @@ endif
 
 # Now, set any essential variable (that is not already set) to the
 # built-in values.
-if ( ! ${?GNUSTEP_SYSTEM_ROOT} ) then
-  setenv GNUSTEP_SYSTEM_ROOT "@GNUSTEP_SYSTEM_ROOT@"
+if ( "${GNUSTEP_MAKE_STRICT_V2_MODE}" == "yes" ) then
+  unsetenv GNUSTEP_SYSTEM_ROOT
+  unsetenv GNUSTEP_LOCAL_ROOT
+  unsetenv GNUSTEP_NETWORK_ROOT
+  unsetenv GNUSTEP_FLATTENED
+else
+  if ( ! ${?GNUSTEP_SYSTEM_ROOT} ) then
+    setenv GNUSTEP_SYSTEM_ROOT "@GNUSTEP_SYSTEM_ROOT@"
+  endif
+
+  if ( ! ${?GNUSTEP_LOCAL_ROOT} ) then
+    setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_LOCAL_ROOT@"
+  endif
+
+  if ( ! ${?GNUSTEP_NETWORK_ROOT} ) then
+    setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_NETWORK_ROOT@"
+  endif
+
+  # GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
+  # instead
+  setenv GNUSTEP_FLATTENED "@GNUSTEP_FLATTENED@"
 endif
 
-if ( ! ${?GNUSTEP_LOCAL_ROOT} ) then
-  setenv GNUSTEP_LOCAL_ROOT "@GNUSTEP_LOCAL_ROOT@"
-endif
-
-if ( ! ${?GNUSTEP_NETWORK_ROOT} ) then
-  setenv GNUSTEP_NETWORK_ROOT "@GNUSTEP_NETWORK_ROOT@"
-endif
-
-
-# GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
-# instead
-setenv GNUSTEP_FLATTENED "@GNUSTEP_FLATTENED@"
 setenv GNUSTEP_IS_FLATTENED "@GNUSTEP_IS_FLATTENED@"
 if ( ! ${?LIBRARY_COMBO} ) then
   setenv LIBRARY_COMBO "@ac_cv_library_combo@"
@@ -119,23 +130,28 @@ if ( ! ${?GNUSTEP_MAKEFILES} ) then
   setenv GNUSTEP_MAKEFILES "@GNUSTEP_MAKEFILES@"
 endif
 
-if ( ! ${?GNUSTEP_USER_DIR} ) then
-  setenv GNUSTEP_USER_DIR "@GNUSTEP_USER_DIR@"
+if ( "${GNUSTEP_MAKE_STRICT_V2_MODE}" == "yes" ) then
+  unsetenv GNUSTEP_USER_DIR
+  unsetenv GNUSTEP_USER_ROOT
+else
+  if ( ! ${?GNUSTEP_USER_DIR} ) then
+    setenv GNUSTEP_USER_DIR "@GNUSTEP_USER_DIR@"
+  endif
+
+  #
+  # Set GNUSTEP_USER_ROOT which is the variable used in practice
+  #
+  switch ("${GNUSTEP_USER_DIR}")
+   case /*: # An absolute path
+     setenv GNUSTEP_USER_ROOT "${GNUSTEP_USER_DIR}"
+     breaksw
+   default: # Something else
+     setenv GNUSTEP_USER_ROOT "${GNUSTEP_HOME}/${GNUSTEP_USER_DIR}"
+     breaksw
+  endsw
+
+  unsetenv GNUSTEP_USER_DIR
 endif
-
-#
-# Set GNUSTEP_USER_ROOT which is the variable used in practice
-#
-switch ("${GNUSTEP_USER_DIR}")
- case /*: # An absolute path
-   setenv GNUSTEP_USER_ROOT "${GNUSTEP_USER_DIR}"
-   breaksw
- default: # Something else
-   setenv GNUSTEP_USER_ROOT "${GNUSTEP_HOME}/${GNUSTEP_USER_DIR}"
-   breaksw
-endsw
-
-unsetenv GNUSTEP_USER_DIR
 
 if ( "@GNUSTEP_MULTI_PLATFORM@" == "" ) then
   setenv GNUSTEP_HOST "@target@"
@@ -184,8 +200,10 @@ endif
 #
 # Add the GNUstep tools directories to the path
 #
-if ( ! ${?GNUSTEP_PATHLIST} ) then
- setenv GNUSTEP_PATHLIST `$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" $fixup_paths`
+if ( "${GNUSTEP_MAKE_STRICT_V2_MODE}" == "no" ) then
+  if ( ! ${?GNUSTEP_PATHLIST} ) then
+   setenv GNUSTEP_PATHLIST `$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_ROOT" "$GNUSTEP_LOCAL_ROOT" "$GNUSTEP_NETWORK_ROOT" "$GNUSTEP_SYSTEM_ROOT" $fixup_paths`
+  endif
 endif
 
 set GNUSTEP_TOOLS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_TOOLS" "$GNUSTEP_LOCAL_TOOLS" "$GNUSTEP_NETWORK_TOOLS" "$GNUSTEP_SYSTEM_TOOLS" $fixup_paths`
@@ -246,6 +264,17 @@ else if ( { (echo "${INFOPATH}" | fgrep -v "${gnustep_info_path}" >/dev/null) } 
 endif
 
 unset gnustep_info_path
+
+if ( "${GNUSTEP_MAKE_STRICT_V2_MODE}" == "yes" ) then
+  unsetenv GNUSTEP_IS_FLATTENED
+  unsetenv LIBRARY_COMBO
+  unsetenv GNUSTEP_HOST
+  unsetenv GNUSTEP_HOST_CPU
+  unsetenv GNUSTEP_HOST_VENDOR
+  unsetenv GNUSTEP_HOST_OS
+endif
+
+unset GNUSTEP_MAKE_STRICT_V2_MODE
 
 if ( ! {$?GNUSTEP_KEEP_CONFIG_FILE} ) then
   unsetenv GNUSTEP_CONFIG_FILE
@@ -310,3 +339,4 @@ unsetenv GNUSTEP_USER_DOC_INFO
 unsetenv GNUSTEP_SYSTEM_USERS_DIR
 unsetenv GNUSTEP_LOCAL_USERS_DIR
 unsetenv GNUSTEP_NETWORK_USERS_DIR
+

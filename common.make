@@ -166,7 +166,11 @@ ifneq ($(GNUSTEP_INSTALLATION_DIR),)
   # GNUstep filesystem rooted in GNUSTEP_INSTALLATION_DIR.
   # This is not recommended since it does not work with custom
   # filesystem configurations.
-  $(warning GNUSTEP_INSTALLATION_DIR is deprecated.  Please use GNUSTEP_INSTALLATION_DOMAIN instead)
+  ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+    $(error GNUSTEP_INSTALLATION_DIR is deprecated.  Please use GNUSTEP_INSTALLATION_DOMAIN instead)
+  else
+    $(warning GNUSTEP_INSTALLATION_DIR is deprecated.  Please use GNUSTEP_INSTALLATION_DOMAIN instead)
+  endif
 
   #
   # DESTDIR allows you to relocate the entire installation somewhere else
@@ -265,10 +269,16 @@ endif
 # compatibility hack in place for about 4 years from now, so until
 # Feb 2011.
 #
-GNUSTEP_DOCUMENTATION      = $(GNUSTEP_DOC)
-GNUSTEP_DOCUMENTATION_MAN  = $(GNUSTEP_DOC_MAN)
-GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOC_INFO)
-
+ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+# FIXME - these would be nice but needs careful testing
+#  GNUSTEP_DOCUMENTATION      = $(error GNUSTEP_DOCUMENTATION is deprecated)
+#  GNUSTEP_DOCUMENTATION_MAN  = $(error GNUSTEP_DOCUMENTATION_MAN is deprecated)
+#  GNUSTEP_DOCUMENTATION_INFO = $(error GNUSTEP_DOCUMENTATION_INF is deprecated)
+else
+  GNUSTEP_DOCUMENTATION      = $(GNUSTEP_DOC)
+  GNUSTEP_DOCUMENTATION_MAN  = $(GNUSTEP_DOC_MAN)
+  GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOC_INFO)
+endif
 
 #
 # INSTALL_ROOT_DIR is the obsolete way of relocating stuff.  It used
@@ -284,13 +294,25 @@ GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOC_INFO)
 # Anyway, until all makefiles have been updated, we set INSTALL_ROOT_DIR for backwards 
 # compatibility.
 #
+ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+  ifneq ($(INSTALL_ROOT_DIR),)
+    $(error INSTALL_ROOT_DIR is deprecated in gnustep-make v2, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+  endif
+endif
+
 ifneq ($(DESTDIR),)
   ifeq ($(INSTALL_ROOT_DIR),)
     INSTALL_ROOT_DIR = $(DESTDIR)
   endif
 endif
 
-INSTALL_ROOT_DIR += $(warning INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+# FIXME: Test that using 'error' here works reliably.
+#  INSTALL_ROOT_DIR += $(error INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+  INSTALL_ROOT_DIR += $(warning INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+else
+  INSTALL_ROOT_DIR += $(warning INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+endif
 
 # The default name of the makefile to be used in recursive invocations of make
 ifeq ($(MAKEFILE_NAME),)
@@ -700,6 +722,9 @@ ifeq ($(MAKE_WITH_INFO_FUNCTION),yes)
   # Use 'make quiet=yes' to disable the message
   ifneq ($(quiet),yes)
     $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type 'make print-gnustep-make-help' for help.)
+    ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+      $(info Running in gnustep-make version 2 strict mode.)
+    endif
   endif
 endif
 

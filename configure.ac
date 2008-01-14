@@ -190,6 +190,43 @@ fi
 #-------------------------------------------------------------------
 
 #-------------------------------------------------------------------
+# Determine if we should enable strict gnustep-make v2 mode by default
+#-------------------------------------------------------------------
+
+AC_MSG_CHECKING([if we should enable strict gnustep-make version 2 mode by default])
+AC_ARG_ENABLE(strict-v2-mode, [
+--enable-strict-v2-mode
+  Enable strict gnustep-make version 2 mode by default.  Use this
+  option to have gnustep-make be aggressively backwards-incompatible
+  with gnustep-make version 1.  You can use it when you are debugging /
+  upgrading your makefiles and software to gnustep-make version 2 and
+  want to test test that they do not depend on obsolete or deprecated
+  version 1 features and variables.  Important: you must never ship
+  gnustep-make to end-users with --enable-strict-v2-mode as it would
+  cause extremely confusing and dangerous problems with software that
+  has not been updated to gnustep-make v2 yet.  Use it only on test
+  builds or development machines to test that makefiles and software
+  have been updated.  Make sure to use it extremely carefully with old
+  makefiles because it can produce unpredictable and dangerous results
+  (for examples, since GNUSTEP_SYSTEM_ROOT is undefined when using
+  --enable-strict-v2-mode, installing into GNUSTEP_SYSTEM_ROOT/Headers
+  would actually install into /Headers).
+], 
+  ac_cv_strict_v2_mode=$enableval,
+  ac_cv_strict_v2_mode="no")
+
+if test "$ac_cv_strict_v2_mode" = "yes"; then
+  AC_MSG_RESULT(yes);
+  GNUSTEP_MAKE_STRICT_V2_MODE="yes"
+  AC_MSG_WARN(Use strict version 2 mode at your own risk; it must only be used on development/test systems)
+else
+  AC_MSG_RESULT(no);
+  GNUSTEP_MAKE_STRICT_V2_MODE="no"
+fi
+
+AC_SUBST(GNUSTEP_MAKE_STRICT_V2_MODE)
+
+#-------------------------------------------------------------------
 # Determine filesystem layout to use
 #-------------------------------------------------------------------
 
