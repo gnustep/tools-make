@@ -650,7 +650,6 @@ TAR
 CHOWN
 GNUSTEP_CONFIG_FILE
 GNUSTEP_USER_CONFIG_FILE
-GNUSTEP_USER_DIR
 GNUSTEP_USER_DEFAULTS_DIR
 GNUSTEP_MAKEFILES
 HOST_INSTALL
@@ -706,6 +705,7 @@ GNUSTEP_LOCAL_USERS_DIR
 GNUSTEP_SYSTEM_ROOT
 GNUSTEP_NETWORK_ROOT
 GNUSTEP_LOCAL_ROOT
+GNUSTEP_USER_DIR
 GNUSTEP_MULTI_PLATFORM
 BACKEND_BUNDLE
 objc_threaded
@@ -1455,13 +1455,13 @@ Optional Packages:
 
 
 --with-user-dir
-   Set the GNUSTEP_USER_DIR directory for all users.  This can be
-   relative to the user's home directory if it is a relative path,
-   or an absolute directory (the same for all users) if it is an
-   absolute path.  Use this option if you want to have the
-   GNUSTEP_USER_DIR directory in a non default place for all users.
-   The default is 'GNUstep'.
-   Example: --with-user-dir='gnustep'
+   This is an obsolete option.  It used to determine the location of
+   the USER domain directory (inside of each user's home directory)
+   under the 'gnustep' layout.  We ignore this option so that you can
+   write ./configure commands that work with both old and new
+   gnustep-makes.  To get the effect of this option with this version
+   of gnustep-make, please create your own layout file and use
+   --with-layout=xxx to use it.
 
 
 --with-user-defaults-dir
@@ -4185,31 +4185,23 @@ echo "${ECHO_T}$GNUSTEP_USER_CONFIG_FILE" >&6; }
 #--------------------------------------------------------------------
 # Process --with-user-dir
 #--------------------------------------------------------------------
-{ echo "$as_me:$LINENO: checking for user dir to use" >&5
-echo $ECHO_N "checking for user dir to use... $ECHO_C" >&6; }
+{ echo "$as_me:$LINENO: checking if the obsolete --with-user-dir option was used" >&5
+echo $ECHO_N "checking if the obsolete --with-user-dir option was used... $ECHO_C" >&6; }
 
 # Check whether --with-user-dir was given.
 if test "${with_user_dir+set}" = set; then
-  withval=$with_user_dir; GNUSTEP_USER_DIR="$withval"
+  withval=$with_user_dir; OBSOLETE_GNUSTEP_USER_DIR="$withval"
 fi
 
-# Keep in mind we already have a default value set by the filesystem
-# layout, so it should never be empty.
-if echo "$GNUSTEP_USER_DIR" | grep '[ 	\\] > /dev/null'
-then
-  echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DIR'"
-  echo "Please try again using --with-user-dir= to specify a value."
-  if test "$MSWIND" = "yes"
-  then
-    echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
-    echo "environment use native paths throughout."
-  fi
-  exit 1
+if test ! x"$OBSOLETE_GNUSTEP_USER_DIR" = x"" && test ! x"$OBSOLETE_GNUSTEP_USER_DIR" = x"no"; then
+  { echo "$as_me:$LINENO: result: $OBSOLETE_GNUSTEP_USER_DIR: ignored" >&5
+echo "${ECHO_T}$OBSOLETE_GNUSTEP_USER_DIR: ignored" >&6; }
+  { echo "$as_me:$LINENO: WARNING: ignoring --with-user-dir=$OBSOLETE_GNUSTEP_USER_DIR option" >&5
+echo "$as_me: WARNING: ignoring --with-user-dir=$OBSOLETE_GNUSTEP_USER_DIR option" >&2;}
+else
+  { echo "$as_me:$LINENO: result: no: good" >&5
+echo "${ECHO_T}no: good" >&6; }
 fi
-{ echo "$as_me:$LINENO: result: $GNUSTEP_USER_DIR" >&5
-echo "${ECHO_T}$GNUSTEP_USER_DIR" >&6; }
-
 
 #--------------------------------------------------------------------
 # Process --with-user-defaults-dir
@@ -6430,7 +6422,6 @@ TAR!$TAR$ac_delim
 CHOWN!$CHOWN$ac_delim
 GNUSTEP_CONFIG_FILE!$GNUSTEP_CONFIG_FILE$ac_delim
 GNUSTEP_USER_CONFIG_FILE!$GNUSTEP_USER_CONFIG_FILE$ac_delim
-GNUSTEP_USER_DIR!$GNUSTEP_USER_DIR$ac_delim
 GNUSTEP_USER_DEFAULTS_DIR!$GNUSTEP_USER_DEFAULTS_DIR$ac_delim
 GNUSTEP_MAKEFILES!$GNUSTEP_MAKEFILES$ac_delim
 HOST_INSTALL!$HOST_INSTALL$ac_delim
@@ -6455,6 +6446,7 @@ GNUSTEP_NETWORK_ADMIN_TOOLS!$GNUSTEP_NETWORK_ADMIN_TOOLS$ac_delim
 GNUSTEP_NETWORK_LIBRARY!$GNUSTEP_NETWORK_LIBRARY$ac_delim
 GNUSTEP_NETWORK_HEADERS!$GNUSTEP_NETWORK_HEADERS$ac_delim
 GNUSTEP_NETWORK_LIBRARIES!$GNUSTEP_NETWORK_LIBRARIES$ac_delim
+GNUSTEP_NETWORK_DOC!$GNUSTEP_NETWORK_DOC$ac_delim
 _ACEOF
 
   if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 97; then
@@ -6496,7 +6488,6 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
-GNUSTEP_NETWORK_DOC!$GNUSTEP_NETWORK_DOC$ac_delim
 GNUSTEP_NETWORK_DOC_INFO!$GNUSTEP_NETWORK_DOC_INFO$ac_delim
 GNUSTEP_NETWORK_DOC_MAN!$GNUSTEP_NETWORK_DOC_MAN$ac_delim
 GNUSTEP_LOCAL_APPS!$GNUSTEP_LOCAL_APPS$ac_delim
@@ -6527,6 +6518,7 @@ GNUSTEP_LOCAL_USERS_DIR!$GNUSTEP_LOCAL_USERS_DIR$ac_delim
 GNUSTEP_SYSTEM_ROOT!$GNUSTEP_SYSTEM_ROOT$ac_delim
 GNUSTEP_NETWORK_ROOT!$GNUSTEP_NETWORK_ROOT$ac_delim
 GNUSTEP_LOCAL_ROOT!$GNUSTEP_LOCAL_ROOT$ac_delim
+GNUSTEP_USER_DIR!$GNUSTEP_USER_DIR$ac_delim
 GNUSTEP_MULTI_PLATFORM!$GNUSTEP_MULTI_PLATFORM$ac_delim
 BACKEND_BUNDLE!$BACKEND_BUNDLE$ac_delim
 objc_threaded!$objc_threaded$ac_delim

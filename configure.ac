@@ -516,34 +516,24 @@ AC_SUBST(GNUSTEP_USER_CONFIG_FILE)
 #--------------------------------------------------------------------
 # Process --with-user-dir
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for user dir to use)
+AC_MSG_CHECKING(if the obsolete --with-user-dir option was used)
 AC_ARG_WITH(user-dir,[
 --with-user-dir
-   Set the GNUSTEP_USER_DIR directory for all users.  This can be
-   relative to the user's home directory if it is a relative path,
-   or an absolute directory (the same for all users) if it is an
-   absolute path.  Use this option if you want to have the 
-   GNUSTEP_USER_DIR directory in a non default place for all users.
-   The default is 'GNUstep'.
-   Example: --with-user-dir='gnustep'
+   This is an obsolete option.  It used to determine the location of
+   the USER domain directory (inside of each user's home directory)
+   under the 'gnustep' layout.  We ignore this option so that you can
+   write ./configure commands that work with both old and new
+   gnustep-makes.  To get the effect of this option with this version
+   of gnustep-make, please create your own layout file and use
+   --with-layout=xxx to use it.
 ],
-GNUSTEP_USER_DIR="$withval",)
-# Keep in mind we already have a default value set by the filesystem
-# layout, so it should never be empty.
-if echo "$GNUSTEP_USER_DIR" | grep '[[ 	\\]] > /dev/null'
-then
-  echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DIR'"
-  echo "Please try again using --with-user-dir= to specify a value."
-  if test "$MSWIND" = "yes"
-  then
-    echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
-    echo "environment use native paths throughout."
-  fi
-  exit 1
+OBSOLETE_GNUSTEP_USER_DIR="$withval",)
+if test ! x"$OBSOLETE_GNUSTEP_USER_DIR" = x"" && test ! x"$OBSOLETE_GNUSTEP_USER_DIR" = x"no"; then 
+  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_USER_DIR: ignored])
+  AC_MSG_WARN([ignoring --with-user-dir=$OBSOLETE_GNUSTEP_USER_DIR option])
+else
+  AC_MSG_RESULT(no: good)
 fi
-AC_MSG_RESULT($GNUSTEP_USER_DIR)
-AC_SUBST(GNUSTEP_USER_DIR)
 
 #--------------------------------------------------------------------
 # Process --with-user-defaults-dir

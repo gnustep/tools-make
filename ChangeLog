@@ -1,5 +1,12 @@
 2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac: Clearly explain in the help that --with-user-dir
+	is an obsolete option in gnustep-make v2.  Print a warning if it
+	used, and otherwise ignore it.
+	* configure: Regenerated.
+
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.sh.in: Unset GNUSTEP_SYSTEM_USERS_DIR,
 	GNUSTEP_LOCAL_USERS_DIR, GNUSTEP_NETWORK_USERS_DIR at the end, or
 	export them if GNUSTEP_SH_EXPORT_ALL_VARIABLES if set.
