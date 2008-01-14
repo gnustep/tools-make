@@ -1,3 +1,8 @@
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* filesystem.sh.in: Fixed typo which was causing
+	GNUSTEP_USER_DIR_WEB_APPS not to be removed from the environment.
+
 2008-01-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* relative_path.sh: Added optional third parameter to specify
