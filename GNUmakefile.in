@@ -138,6 +138,16 @@ INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make \
 INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
                           javadoc.make latex.make texi.make
 
+# Decide which version of the GNUstep.conf file we are going to
+# install; the standard one, or the strict gnustep-make v2 one ?
+ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+  GNUSTEP_DOT_CONF_FILE = GNUstep-strict-v2.conf
+else
+  GNUSTEP_DOT_CONF_FILE = GNUstep.conf
+endif
+
+# You can type 'make messages=yes' to see exactly which commands are
+# being executed.  Else we only print a summary description.
 ifeq ($(messages),yes)
   EC = 
 else
@@ -145,7 +155,7 @@ else
 endif
 
 all: generated-files
-	$(EC)(echo "Thanks.  All is ready to install.")
+	$(EC)(echo "Thanks.  All is ready: type 'make install' to install gnustep-make.")
 
 install: generated-files
 	$(EC)(echo "Creating system tools directory: $(tooldir)"; \
@@ -164,7 +174,7 @@ install: generated-files
 		"$(makedir)/Instance/Documentation")
 	$(EC)(echo "Installing GNUstep configuration file in $(GNUSTEP_CONFIG_FILE)"; \
 	 "$(srcdir)/mkinstalldirs" "$(GNUSTEP_CONFIG_FILE_DIR)"; \
-	 $(INSTALL_DATA) GNUstep.conf "$(GNUSTEP_CONFIG_FILE)")
+	 $(INSTALL_DATA) $(GNUSTEP_DOT_CONF_FILE) "$(GNUSTEP_CONFIG_FILE)")
 	 $(EC)(echo "Installing gnustep-make support software")
 	 $(EC)(for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
@@ -209,7 +219,7 @@ install: generated-files
 	   $(INSTALL_DATA) config-noarch.make "$(makedir)"; \
 	   $(INSTALL_DATA) filesystem.make "$(makedir)"; \
 	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
-	$(EC)(echo "Installing manpages"; \
+	$(EC)(echo "Installing (and compressing) manpages"; \
 	  "$(srcdir)/mkinstalldirs" "$(mandir)/man1" \
 	                          "$(mandir)/man7"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/debugapp.1" "$(mandir)/man1"; \
@@ -301,7 +311,7 @@ distclean: clean
 	rm -f openapp opentool executable.template
 	rm -f GNUstep.sh GNUstep.csh fixpath.sh gnustep-config
 	rm -f filesystem.make filesystem.sh filesystem.csh
-	rm -f gnustep-make.spec GNUstep.conf
+	rm -f gnustep-make.spec GNUstep.conf GNUstep-strict-v2.conf
 	rm -f config-precomp-test.out config-precomp-test.h.gch config-precomp-test.log
 
 svn-tag:
@@ -368,7 +378,7 @@ rpm: test-RPM_TOPDIR dist
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make \
                  openapp opentool gnustep-make.spec executable.template gnustep-config \
-                 filesystem.make filesystem.sh filesystem.csh GNUstep.conf
+                 filesystem.make filesystem.sh filesystem.csh GNUstep.conf GNUstep-strict-v2.conf
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -380,6 +390,9 @@ GNUstep.csh: GNUstep.csh.in
 	$(SHELL) config.status
 
 GNUstep.conf: GNUstep.conf.in
+	$(SHELL) config.status
+
+GNUstep-strict-v2.conf: GNUstep-strict-v2.conf.in
 	$(SHELL) config.status
 
 fixpath.sh: fixpath.sh.in

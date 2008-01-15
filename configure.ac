@@ -1406,7 +1406,7 @@ AC_CHECK_PROGS(LATEX2HTML, latex2html)
 # Produce the output files
 #--------------------------------------------------------------------
 AC_CONFIG_FILES([config-noarch.make config.make openapp opentool 
-executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh
+executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf GNUstep.sh GNUstep.csh fixpath.sh
 gnustep-make.spec gnustep-config filesystem.make filesystem.sh filesystem.csh])
 AC_CONFIG_COMMANDS([default],
 	[[chmod a+x openapp opentool fixpath.sh executable.template]],

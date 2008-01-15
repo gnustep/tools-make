@@ -5739,7 +5739,7 @@ done
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec gnustep-config filesystem.make filesystem.sh filesystem.csh"
+ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec gnustep-config filesystem.make filesystem.sh filesystem.csh"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -6327,6 +6327,7 @@ do
     "executable.template") CONFIG_FILES="$CONFIG_FILES executable.template" ;;
     "GNUmakefile") CONFIG_FILES="$CONFIG_FILES GNUmakefile" ;;
     "GNUstep.conf") CONFIG_FILES="$CONFIG_FILES GNUstep.conf" ;;
+    "GNUstep-strict-v2.conf") CONFIG_FILES="$CONFIG_FILES GNUstep-strict-v2.conf" ;;
     "GNUstep.sh") CONFIG_FILES="$CONFIG_FILES GNUstep.sh" ;;
     "GNUstep.csh") CONFIG_FILES="$CONFIG_FILES GNUstep.csh" ;;
     "fixpath.sh") CONFIG_FILES="$CONFIG_FILES fixpath.sh" ;;

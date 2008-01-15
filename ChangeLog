@@ -1,3 +1,19 @@
+2008-01-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep-strict-v2.conf.in: New file which is a "strict
+	gnustep-make v2" version of GNUstep.conf.in, with all the obsolete
+	v1 variables removed.
+	* configure.ac: Create GNUstep-strict-v2.conf file from
+	GNUstep-strict-v2.conf.in.
+	* configure: Regenerated.
+	* GNUmakefile.in: Install GNUstep-strict-v2.conf as configuration
+	file instead of GNUstep.conf when running in strict v2 mode.
+
+	* GNUmakefile.in (all): Updated message, mentioning that you need
+	to type 'make install' to install.
+	(install): Updated message for installing manpages mentioning that
+	we are compressing them on the fly.
+
 2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUmakefile.in: Disable built-in suffixes and vague % rules for
