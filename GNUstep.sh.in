@@ -281,8 +281,7 @@ else
   # GNUSTEP_PATHLIST is deprecated and will be removed.
   #
   # GNUSTEP_PATHLIST is like an abstract path-like shell variable, which
-  # can be used to search the gnustep directories - and in these
-  # scripts, it is also used to set up other shell variables
+  # can be used to search the gnustep directories.
   #
   if [ -z "$GNUSTEP_PATHLIST" ]; then
 
