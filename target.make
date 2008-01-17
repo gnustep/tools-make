@@ -1062,13 +1062,16 @@ endif
 ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        (cd $(LIB_LINK_OBJ_DIR); \
-	  $(CC) $(SHARED_LD_PREFLAGS) \
+	$(CC) $(SHARED_LD_PREFLAGS) \
 	    -v $(SHARED_CFLAGS) -shared \
-	    $(ALL_LDFLAGS) -o $(LIB_LINK_VERSION_FILE) `ls -1 *\.o */*\.o` \
+	    $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	    $(SHARED_LD_POSTFLAGS) ;\
+        && (cd $(LIB_LINK_OBJ_DIR); \
           $(RM_LN_S) $(LIB_LINK_FILE); \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
+
+OBJ_MERGE_CMD		= \
+	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 ifeq ($(CC), cc)
 SHARED_CFLAGS   += +z

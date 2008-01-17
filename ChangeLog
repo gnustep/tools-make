@@ -1,3 +1,8 @@
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* target.make (SHARED_LIB_LINK_CMD, OBJ_MERGE_CMD): Updated for
+	hpux (Patch by Rashmi <rashhegde@gmail.com> with modifications).
+
 2008-01-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUstep-strict-v2.conf.in: New file which is a "strict
