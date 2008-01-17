@@ -1,5 +1,16 @@
 2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* FilesystemLayouts/fhs-system (GNUSTEP_SYSTEM_DOC_MAN): Changed
+	from /man to /share/man.  (GNUSTEP_SYSTEM_DOC_INFO): Changed from
+	/info to /share/info (Patch by Gareth Armstrong
+	<gareth.armstrong@hp.com>).
+	* FilesystemLayouts/fhs-system (GNUSTEP_NETWORK_DOC_MAN,
+	GNUSTEP_NETWORK_DOC_INFO, GNUSTEP_LOCAL_DOC_MAN,
+	GNUSTEP_LOCAL_DOC_INFO): Similar changes
+	* FilesystemLayouts/fhs: Similar changes.
+	
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* target.make (SHARED_LIB_LINK_CMD, OBJ_MERGE_CMD): Updated for
 	hpux (Patch by Rashmi <rashhegde@gmail.com> with modifications).
 
