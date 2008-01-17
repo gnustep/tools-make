@@ -1,5 +1,13 @@
 2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUmakefile.in (install): Install app-wrapper.template,
+	java-executable.template and executable.template with execute
+	permissions to stop warnings from package checking systems.  From
+	a suggestion by Gareth Armstrong <gareth.armstrong@hp.com>.
+	* GNUmakefile.in (uninstall): Remove java-executable.template.
+	
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.sh.in: Removed shebang expressioin '#! /bin/xxx' at the
 	beginning of the file to stop package checking systems from
 	complaining that this is an executable script installed with the

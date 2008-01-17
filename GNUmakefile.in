@@ -111,8 +111,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	tool.make ctool.make test-library.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
-	documentation.make \
-	java-executable.template java-tool.make framework.make \
+	documentation.make java-tool.make framework.make \
 	native-library.make spec-rules.template \
         tar-exclude-list gnustep-make-help
 
@@ -213,9 +212,10 @@ install: generated-files
 	     $(INSTALL_DATA) "$(srcdir)/Instance/Documentation/$$f" \
 	                     "$(makedir)/Instance/Documentation"; \
 	   done; \
-	   $(INSTALL_DATA) "$(srcdir)/app-wrapper.template" "$(makedir)"; \
+	   $(INSTALL_PROGRAM) -m 755 "$(srcdir)/app-wrapper.template" "$(makedir)"; \
+	   $(INSTALL_PROGRAM) -m 755 "$(srcdir)/java-executable.template" "$(makedir)"; \
+	   $(INSTALL_PROGRAM) -m 755 executable.template "$(makedir)"; \
 	   $(INSTALL_DATA) "$(srcdir)/nsi-app.template" "$(makedir)"; \
-	   $(INSTALL_DATA) executable.template "$(makedir)"; \
 	   $(INSTALL_DATA) config-noarch.make "$(makedir)"; \
 	   $(INSTALL_DATA) filesystem.make "$(makedir)"; \
 	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
@@ -281,6 +281,7 @@ uninstall:
 	done
 	rm -f "$(makedir)/executable.template"
 	rm -f "$(makedir)/app-wrapper.template"
+	rm -f "$(makedir)/java-executable.template"
 	rm -f "$(makedir)/nsi-app.template"
 	rm -f "$(GNUSTEP_SYSTEM_ROOT)/share/config.site"
 	rm -f "$(makedir)/config-noarch.make"
