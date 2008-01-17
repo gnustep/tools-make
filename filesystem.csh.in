@@ -1,4 +1,4 @@
-#! /bin/echo This file must be sourced inside csh using: source
+#   This file must be sourced inside csh using: source
 #
 #   @configure_input@
 #

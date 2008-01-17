@@ -1,4 +1,4 @@
-#!/bin/csh
+#   This file must be sourced inside csh using: source
 #
 #   ld_lib_path.csh
 #

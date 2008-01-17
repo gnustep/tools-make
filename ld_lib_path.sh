@@ -1,4 +1,4 @@
-#! /bin/sh
+#   This file must be sourced inside (ba)sh using: .
 #
 #   ld_lib_path.sh
 #

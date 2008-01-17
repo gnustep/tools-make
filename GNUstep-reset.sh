@@ -1,4 +1,4 @@
-#! /bin/echo This file must be sourced inside (ba)sh using: .
+#   This file must be sourced inside (ba)sh using: .
 #
 #   GNUstep-reset.sh
 #

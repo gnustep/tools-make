@@ -1,5 +1,19 @@
 2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUstep.sh.in: Removed shebang expressioin '#! /bin/xxx' at the
+	beginning of the file to stop package checking systems from
+	complaining that this is an executable script installed with the
+	wrong permissions (Problem reported by Gareth Armstrong
+	<gareth.armstrong@hp.com>).
+	* GNUstep.csh.in: Same change.
+	* filesystem.sh.in: Same change.
+	* filesystem.csh.in: Same change.
+	* GNUstep-reset.sh: Same change.
+	* ld_lib_path.sh: Same change.
+	* ld_lib_path.csh: Same change.
+	
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* FilesystemLayouts/fhs-system (GNUSTEP_SYSTEM_DOC_MAN): Changed
 	from /man to /share/man.  (GNUSTEP_SYSTEM_DOC_INFO): Changed from
 	/info to /share/info (Patch by Gareth Armstrong
