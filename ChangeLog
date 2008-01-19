@@ -1,3 +1,8 @@
+2008-01-19  Adam Fedor  <fedor@gnu.org>
+
+	* Master/source-distribution.make: Check for version directory
+	when making export.
+
 2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUmakefile.in (install): Install app-wrapper.template,
