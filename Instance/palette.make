@@ -22,6 +22,9 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Palettes usually link against a gui library (if available).
+DEFAULT_NEEDS_GUI = YES
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -55,15 +58,8 @@ ifeq ($(CC_BUNDLE), yes)
 endif
 
 ifeq ($(LINK_PALETTE_AGAINST_ALL_LIBS), yes)
-PALETTE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+  PALETTE_LIBS += $(ALL_LIBS)
 endif
-
-ALL_PALETTE_LIBS =						\
-	$(ALL_LIB_DIRS)						\
-	$(PALETTE_LIBS)
 
 ifeq ($(BUILD_DLL),yes)
 PALETTE_OBJ_EXT = $(DLL_LIBEXT)
@@ -105,7 +101,7 @@ $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
 	  $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \
-	  $(BUNDLE_LIBFLAGS) $(ALL_PALETTE_LIBS)$(END_ECHO)
+	  $(BUNDLE_LIBFLAGS) $(ALL_LIB_DIRS) $(PALETTE_LIBS)$(END_ECHO)
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 

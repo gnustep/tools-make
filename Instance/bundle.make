@@ -21,6 +21,10 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Bundles usually link against a gui library (if available).  If you
+# don't need a gui library, use xxx_NEEDS_GUI = NO.
+DEFAULT_NEEDS_GUI = YES
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -71,18 +75,11 @@ ifeq ($(CC_BUNDLE), yes)
 endif
 
 ifeq ($(LINK_BUNDLE_AGAINST_ALL_LIBS), yes)
-BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+  BUNDLE_LIBS += $(ALL_LIBS)
 endif
 
-ALL_BUNDLE_LIBS =						\
-	$(ALL_LIB_DIRS)	 					\
-	$(BUNDLE_LIBS)
-
 ifeq ($(BUILD_DLL),yes)
-BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
+  BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
 endif
 
 endif # OBJ_FILES_TO_LINK

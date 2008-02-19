@@ -1,3 +1,55 @@
+2008-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented new variable xxx_NEEDS_GUI that can be used to
+	explicitly require linking/not linking against the gui library.
+	If xxx_NEEDS_GUI is not specified, the default behaviour is the
+	traditional one, which depends on the project type: applications,
+	bundles, frameworks, palettes and libraries link against the gui
+	library if available; all other projects don't.
+	* Instance/rules.make (NEEDS_GUI): New variable.  Set it from
+	xxx_NEEDS_GUI or DEFAULT_NEEDS_GUI.  (ALL_LIBS): New variable
+	listing all libraries to link against.  Set it using NEEDS_GUI to
+	decide if we should link against the gui or not.
+	
+	* Instance/application.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(ALL_GUI_LIBS): Variable removed.  Use ALL_LIBS when linking
+	instead.
+	* Instance/bundle.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(BUNDLE_LIBS): When linking against all libs, use ALL_LIBS.
+	(ALL_BUNDLE_LIBS): Variable removed.
+	* Instance/ctool.make (ALL_TOOL_LIBS): Variable renamed to
+	ALL_LIBS.  Separated out ALL_LIB_DIRS for consistency with other
+	project types.
+	* Instance/framework.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(LIBRARIES_DEPEND_UPON): When linking against all libs, use
+	ALL_LIBS.
+	* Instance/gswapp.make (DEFAULT_NEEDS_GUI): Set to NO.
+	(ALL_GSW_LIBS): Use ALL_LIBS.  Separated ALL_LIB_DIRS; pass it on
+	the command-line.
+	* Instance/gswbundle.make (DEFAULT_NEEDS_GUI): Set to NO.
+	Pass ALL_LIB_DIRS separately from ALL_GSWBUNDLE_LIBS on the
+	linker command-line.
+	* Instance/library.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(LIBRARIES_DEPEND_UPON): When linking against all libs, use
+	ALL_LIBS.
+	* Instance/objc.make (ALL_OBJC_LIBS): Do not include ALL_LIB_DIRS;
+	pass that variable separately on the link command line for
+	consistency with other project types.
+	* Instance/palette.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(PALETTE_LIBS): When linking against all libs, use ALL_LIBS.
+	(ALL_PALETTE_LIBS): Variable removed.  Pass ALL_LIB_DIRS and
+	PALETTE_LIBS directly on the linker command-line.
+	* Instance/tool.make (DEFAULT_NEEDS_GUI): Set to NO.
+	(ALL_TOOL_LIBS): Do not define; use directly ALL_LIB_DIRS
+	and ALL_LIBS when linking.
+
+	* target.make (BUNDLE_LINK_CMD): Replaced ALL_BUNDLE_LIBS
+	with BUNDLE_LIBS and added ALL_LIB_DIRS which is no longer
+	included in BUNDLE_LIBS.
+
+	* Documentation/releasenotes.texi: Added xxx_NEEDS_GUI.
+	* RELEASENOTES: Regenerated.
+	
 2008-01-19  Adam Fedor  <fedor@gnu.org>
 
 	* Master/source-distribution.make: Check for version directory

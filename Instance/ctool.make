@@ -52,8 +52,8 @@ endif
         internal-ctool-install_ \
         internal-ctool-uninstall_
 
-ALL_TOOL_LIBS =							\
-     $(ALL_LIB_DIRS)						\
+# Override the default with just the minimal C libs required to link
+ALL_LIBS =							\
      $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)		\
      $(TARGET_SYSTEM_LIBS)
 
@@ -66,7 +66,7 @@ internal-ctool-all_:: $(GNUSTEP_OBJ_DIR) \
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 	      $(OBJ_FILES_TO_LINK) \
-	      $(ALL_TOOL_LIBS)$(END_ECHO)
+	      $(ALL_LIB_DIRS) $(ALL_LIBS)$(END_ECHO)
 
 internal-ctool-install_:: $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \

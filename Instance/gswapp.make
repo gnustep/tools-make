@@ -23,6 +23,8 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+DEFAULT_NEEDS_GUI = NO
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -69,11 +71,8 @@ endif
 
 # Libraries that go before the WO libraries
 ALL_GSW_LIBS =								\
-	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS)	\
-	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)			\
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
-        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+        $(ALL_LIBS)
 
 GSWAPP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(GSWAPP_EXTENSION))
 GSWAPP_DIR = $(GNUSTEP_BUILD_DIR)/$(GSWAPP_DIR_NAME)
@@ -110,7 +109,7 @@ GSWAPP_FILE = $(GNUSTEP_BUILD_DIR)/$(GSWAPP_FILE_NAME)
 
 $(GSWAPP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
-	$(OBJ_FILES_TO_LINK) $(ALL_GSW_LIBS)$(END_ECHO)
+	$(OBJ_FILES_TO_LINK) $(ALL_LIB_DIRS) $(ALL_GSW_LIBS)$(END_ECHO)
 
 #
 # Compilation targets

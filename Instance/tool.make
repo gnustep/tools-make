@@ -20,6 +20,9 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Tools don't link against gui by default
+DEFAULT_NEEDS_GUI = NO
+
 #
 # The name of the tools is in the TOOL_NAME variable.
 #
@@ -52,12 +55,6 @@ ifeq ($(FINAL_TOOL_INSTALL_DIR),)
   FINAL_TOOL_INSTALL_DIR = $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 endif
 
-ALL_TOOL_LIBS =								\
-       $(ALL_LIB_DIRS)							\
-       $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS)	\
-       $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
-       $(TARGET_SYSTEM_LIBS)
-
 #
 # Compilation targets
 #
@@ -67,7 +64,7 @@ internal-tool-all_:: $(GNUSTEP_OBJ_DIR) \
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_TOOL_LIBS)$(END_ECHO)
+		$(ALL_LIB_DIRS) $(ALL_LIBS)$(END_ECHO)
 
 internal-tool-copy_into_dir::
 	$(ECHO_COPYING_INTO_DIR)$(MKDIRS) $(COPY_INTO_DIR)/$(GNUSTEP_TARGET_LDIR);\

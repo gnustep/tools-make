@@ -21,6 +21,8 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+DEFAULT_NEEDS_GUI = NO
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -83,12 +85,7 @@ endif
 
 # On Solaris we don't need to specifies the libraries the bundle needs.
 # How about the rest of the systems? ALL_BUNDLE_LIBS is temporary empty.
-#ALL_GSWBUNDLE_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) \
-	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) \
-	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-#ALL_GSWBUNDLE_LIBS = 
-#ALL_GSWBUNDLE_LIBS = $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)
+#ALL_GSWBUNDLE_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) $(ALL_LIBS)
 
 internal-gswbundle-all_:: $(GNUSTEP_OBJ_DIR) \
                           build-bundle-dir \
@@ -129,7 +126,7 @@ $(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) \
 	                $(ALL_LDFLAGS) -o $(LDOUT)$(GSWBUNDLE_FILE) \
 			$(OBJ_FILES_TO_LINK) \
-	                $(ALL_GSWBUNDLE_LIBS)$(END_ECHO)
+	                $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)$(END_ECHO)
 
 gswbundle-components: $(GSWBUNDLE_DIR)
 ifneq ($(strip $(COMPONENTS)),)

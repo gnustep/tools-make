@@ -20,6 +20,10 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Frameworks usually link against a gui library (if available).  If
+# you don't need a gui library, use xxx_NEEDS_GUI = NO.
+DEFAULT_NEEDS_GUI = YES
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -168,14 +172,9 @@ ifeq ($(BUILD_DLL), yes)
 endif
 
 ifeq ($(LINK_AGAINST_ALL_LIBS), yes)
-# Link against all libs ... but not the one we're compiling! (not sure
-# when this could happen with frameworks, anyway it makes sense)
-LIBRARIES_DEPEND_UPON += $(filter-out -l$(GNUSTEP_INSTANCE), \
-   $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
-   $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+  # Link against all libs ... but not the one we're compiling! (not sure
+  # when this could happen with frameworks, anyway it makes sense)
+  LIBRARIES_DEPEND_UPON += $(filter-out -l$(GNUSTEP_INSTANCE), $(ALL_LIBS))
 endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\

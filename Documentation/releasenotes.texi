@@ -17,6 +17,17 @@ in addition to GNUstep.sh, please source it in your shell init script
 before or after sourcing GNUstep.sh.  The same applies to
 ~/GNUstep/GNUstep.csh.
 
+@item xxx_NEEDS_GUI
+This new variable can be used to specify that a project needs to be
+linked against the gui library (or not).  If set to YES, the gui
+library will be linked; if set to NO, the gui library will not be
+linked.  If unspecified, the behaviour depends on the project type
+(and is backwards-compatible): applications, bundles, frameworks,
+palettes and libraries link automatically against the gui library;
+other project types do not.  It is recommended that you set
+xxx_NEEDS_GUI for all bundles, frameworks and libraries to clarify how
+the linking should be done.
+
 @end table
 
 @section Version 2.0.0

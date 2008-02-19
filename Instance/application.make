@@ -21,6 +21,9 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Applications usually link against a gui library (if available).
+DEFAULT_NEEDS_GUI = YES
+
 #
 # Include in the common makefile rules
 #
@@ -57,13 +60,6 @@ endif
 ifeq ($(APP_INSTALL_DIR),)
   APP_INSTALL_DIR = $(GNUSTEP_APPS)
 endif
-
-ALL_GUI_LIBS =								     \
-     $(ALL_LIB_DIRS)							     \
-     $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS)		     \
-     $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	     \
-     $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-     $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
 APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
 APP_DIR = $(GNUSTEP_BUILD_DIR)/$(APP_DIR_NAME)
@@ -124,7 +120,7 @@ endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
-	$(OBJ_FILES_TO_LINK) $(ALL_GUI_LIBS)$(END_ECHO)
+	$(OBJ_FILES_TO_LINK) $(ALL_LIB_DIRS) $(ALL_LIBS)$(END_ECHO)
 
 #
 # Compilation targets
