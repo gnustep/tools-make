@@ -364,26 +364,31 @@ LIBRARIES_DEPEND_UPON += $($(GNUSTEP_INSTANCE)_LIBRARIES_DEPEND_UPON)
 
 # You can control whether you want to link against the gui library
 # by using one of the two commands --
+#
 #  xxx_NEEDS_GUI = YES
 #  xxx_NEEDS_GUI = NO
 # (where 'xxx' is the name of your application/bundle/etc.)
 #
-# If you don't specify anything, the default for the project type
-# will be used (this is the DEFAULT_NEEDS_GUI = YES/NO that is 
-# at the top of all project types).
+# You can also change it for all applications/bundles/etc by doing
+#
+# NEEDS_GUI = YES (or NO)
+#
+# If you don't specify anything, the default for the project type will
+# be used (this is the NEEDS_GUI = YES/NO that is at the top of all
+# project types).
 #
 # If the project type doesn't specify anything (eg, doesn't need
 # linking to ObjC libraries, or it is buggy/old or it is from a
 # third-party and hasn't been updated yet) then the default is NO.
 
-NEEDS_GUI = $($(GNUSTEP_INSTANCE)_NEEDS_GUI)
+INTERNAL_NEEDS_GUI = $($(GNUSTEP_INSTANCE)_NEEDS_GUI)
 
-ifeq ($(NEEDS_GUI),)
+ifeq ($(INTERNAL_NEEDS_GUI),)
 
-  NEEDS_GUI = $(DEFAULT_NEEDS_GUI)
+  INTERNAL_NEEDS_GUI = $(NEEDS_GUI)
 
-  ifeq ($(NEEDS_GUI),)
-    NEEDS_GUI = NO
+  ifeq ($(INTERNAL_NEEDS_GUI),)
+    INTERNAL_NEEDS_GUI = NO
   endif
 
 endif
@@ -391,7 +396,7 @@ endif
 # Now we prepare a variable, ALL_LIBS, containing the list of all LIBS
 # that should be used when linking.  This is different depending on
 # whether we need to link against the gui library or not.
-ifeq ($(NEEDS_GUI), YES)
+ifeq ($(INTERNAL_NEEDS_GUI), YES)
 # Please note that you usually need to add ALL_LIB_DIRS before
 # ALL_LIBS when linking.  It's kept separate because sometimes (eg,
 # bundles) we only use ALL_LIB_DIRS and not ALL_LIBS (not sure how

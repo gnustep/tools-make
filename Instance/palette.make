@@ -23,7 +23,9 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Palettes usually link against a gui library (if available).
-DEFAULT_NEEDS_GUI = YES
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = YES
+endif
 
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make

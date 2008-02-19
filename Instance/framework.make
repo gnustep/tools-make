@@ -22,7 +22,9 @@
 
 # Frameworks usually link against a gui library (if available).  If
 # you don't need a gui library, use xxx_NEEDS_GUI = NO.
-DEFAULT_NEEDS_GUI = YES
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = YES
+endif
 
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make

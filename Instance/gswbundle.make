@@ -21,7 +21,9 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-DEFAULT_NEEDS_GUI = NO
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = NO
+endif
 
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make

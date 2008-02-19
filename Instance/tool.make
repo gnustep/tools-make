@@ -21,7 +21,9 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Tools don't link against gui by default
-DEFAULT_NEEDS_GUI = NO
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = NO
+endif
 
 #
 # The name of the tools is in the TOOL_NAME variable.

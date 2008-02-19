@@ -1,5 +1,24 @@
 2008-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	You can now set NEEDS_GUI = YES / NO in your GNUmakefile to change
+	the behaviour for all targets/projects in one go.
+	* Instance/rules.make: Renamed NEEDS_GUI to INTERNAL_NEEDS_GUI and
+	DEFAULT_NEEDS_GUI to NEEDS_GUI.
+	* Instance/application.make (DEFAULT_NEEDS_GUI): Renamed to
+	NEEDS_GUI; do not set if already set.
+	* Instance/bundle.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/tool.make: Same change.
+
+	* Documentation/releasenotes.texi: Added NEEDS_GUI.
+	* RELEASENOTES: Regenerated.
+	
+2008-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Implemented new variable xxx_NEEDS_GUI that can be used to
 	explicitly require linking/not linking against the gui library.
 	If xxx_NEEDS_GUI is not specified, the default behaviour is the

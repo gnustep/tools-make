@@ -21,12 +21,21 @@ before or after sourcing GNUstep.sh.  The same applies to
 This new variable can be used to specify that a project needs to be
 linked against the gui library (or not).  If set to YES, the gui
 library will be linked; if set to NO, the gui library will not be
-linked.  If unspecified, the behaviour depends on the project type
+linked.  If unspecified, the generic variable NEEDS_GUI is used; if
+that is also unspecified, the behaviour depends on the project type
 (and is backwards-compatible): applications, bundles, frameworks,
 palettes and libraries link automatically against the gui library;
 other project types do not.  It is recommended that you set
 xxx_NEEDS_GUI for all bundles, frameworks and libraries to clarify how
 the linking should be done.
+
+@item NEEDS_GUI
+This new variable can be used to specify that all projects built by
+this GNUmakefile need to be linked against the gui library (or not).
+If set to YES, the gui library will be linked; if set to NO, the gui
+library will not be linked.  This behaviour can be overridden for
+specific project targets by using the xxx_NEEDS_GUI variable (see
+above).
 
 @end table
 
