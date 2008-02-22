@@ -77,7 +77,7 @@ variety of other files and tools that are necessary for porting
 programs.
 
 @table @samp
-@item ni2gmodel
+@item nib2gmodel
 This program coverts nib files from any system, such as OPENSTEP to
 a gmodel format file. Gmodel can be read directly by GNUstep or you can
 convert this to a more GNUstep-native gorm format (using the Gorm interface
@@ -147,21 +147,20 @@ archive format (which can be edited by Gorm).  There IS a conversion
 tool called nib2gmodel that can be compiled under OPENSTEP to convert
 nib files to GNUstep gmodel files.
 
-Newer nib files use XML format keyed archiving and may possibly be
-transportable, although differences in class and ivar layout may still
-make this difficult.
+The current version of gui supports reading nib files created as of 10.2. 
+If you have nib files which are older than this, you can convert them by
+loading them into Interface Builder, going to the "file" second and saving 
+the nib using the "10.2 or later format."
 
 @node Can one use the hybrid "Objective-C++", Is there a plan to support Java/YellowBox Bindings?, Can I use my original NIB files?, Compatibility
 @subsection  Can one use the hybrid "Objective-C++"
 
-No. at present the GNU compiler (gcc) does not support
-"Objective-C++". Soon to br released gcc 4.1 will have this support, but
-it is still unclear how robust it will be.
+Yes gcc 4.1 has support for this.
 
 @node Is there a plan to support Java/YellowBox Bindings?, What if I compile GNUstep under OPENSTEP/MacOS X?, Can one use the hybrid "Objective-C++", Compatibility
 @subsection  Is there a plan to support the Java/YellowBox Bindings?
 
-Yes. The GNustep Java library/bridge called JIGS is available now.  JIGS
+Yes. The GNUstep Java library/bridge called JIGS is available now.  JIGS
 is a free (LGPL) Java Interface for GNUstep; it can automatically wrap
 Objective-C libraries based on GNUstep, making them accessible directly
 to the Java programmer as if they were Java libraries. As a side effect,
@@ -174,14 +173,12 @@ objects.
 @node What if I compile GNUstep under OPENSTEP/MacOS X?, Is the Objective C API for GTK related?, Is there a plan to support Java/YellowBox Bindings?, Compatibility
 @subsection  What if I compile GNUstep under OPENSTEP/MacOS X?
 
-GNUstep uses the X-windows display postscript extension.
-The interface to that is not the same as the interface to the
-OPENSTEP/MacOS-X windows server.  While someone could write a
-backend library to provide the interface, nobody has bothered to
-date.
+GNUstep uses different backends to provide the same functionality as 
+Display Postscript.  While someone could write a backend library to 
+provide the interface, nobody has bothered to date.
 
-You can, however, use a GNUstep program with an X11 server 
-running on MacOSX.
+   You can, however, use a GNUstep program with an X11 server running
+on MacOSX.
 
 @node Is the Objective C API for GTK related?, How about implementing parts of the Application Kit with GTK?, What if I compile GNUstep under OPENSTEP/MacOS X?, Compatibility
 @subsection  Is the Objective C API for GTK related?
@@ -355,7 +352,7 @@ If a class or method is in OpenStep but not in MacOS-X or GNUstep
 headers bracketed in @code{#ifndef STRICT_MACOS_X}
 
 There are a couple of people working on this already, so it's a
-good idea to get in touch with Adam or Richard to coordinate efforts.
+good idea to get in touch with Greg, Adam or Richard to coordinate efforts.
 
 @node How do I start writing tests?, How do I start writing applications?, How do I update the task list?, Compiling and Developing
 @subsection  How do I start writing tests?
@@ -401,8 +398,7 @@ out-of-date (or wrong) and update/mark-as-outdated as required.
 @node Why doesn't GDB support Objective-C?,  , How can I help with the GNUstep website?, Compiling and Developing
 @subsection Why doesn't GDB support Objective-C?
 
-Um, it does. As of GDB 6.0, gdb supports debugging of Objective-C
-code.
+As of GDB 6.0, gdb supports debugging of Objective-C code.
 
 @c -------------------------------------------------------------------
 
@@ -610,6 +606,9 @@ was not completed, Aladdin agreed to waive approximately $10,000 in
 promised fees for the work that was actually done and delivered.)  DGS
 works fairly well with a single context.  Alpha channel and compositing
 doesn't work.
+
+Currently, further development on DGS has been abandoned.  The library
+based approach using libart, cairo, etc works much better.
 
 @node What is the relationship between the Display Ghostscript Server and X Windows?,  , What is DGSs current state of development?, GNUstep DisplayGhostScript Server
 @subsection What is the relationship between the Display Ghostscript Server and X Windows?

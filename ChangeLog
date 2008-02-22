@@ -1,3 +1,7 @@
+2008-02-21 21:34-EST Gregory John Casamento <greg_casamento@yahoo.com>
+
+	* Documentation/faq.texi: Minor updates to the faq.
+
 2008-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	You can now set NEEDS_GUI = YES / NO in your GNUmakefile to change
