@@ -8,6 +8,17 @@ migrate to using a newer version of the make system.
 
 @table @samp
 
+@item default filesystem layout on apple-apple-apple
+The default filesystem layout when using the apple-apple-apple
+library-combo has been changed from 'gnustep' to the new 'apple'
+filesystem layout, and on darwin the configuration file is by default
+installed in /Library/GNUstep/GNUstep.conf instead of
+/etc/GNUstep/GNUstep.conf.  Using the 'gnustep' filesystem layout with
+the apple-apple-apple library-combo did not make much sense; in
+gnustep-make version 2.0.5 and newer, a ./configure on Apple Mac OS X
+automatically chooses the right library-combo and filesystem layout to
+compile and install Apple native frameworks and applications.
+
 @item ~/GNUstep/GNUstep.sh
 This script used to be automatically sourced whenever the main
 GNUstep.sh file was sourced.  In gnustep-make version 2 (starting with

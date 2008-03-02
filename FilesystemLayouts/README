@@ -51,4 +51,10 @@ similar directory structure) as you're installing everything straight
 into the standard system locations.  Recommended if you're building
 packages for a Unix system.
 
-
+ * apple: the Apple Mac OS X layout for software using the
+apple-apple-apple library-combo (ie, the Apple frameworks); it
+installs everything in /Library or /usr/local.  Blends very well with
+native Apple Mac OS X systems.  Recommended if you're compiling your
+own software from sources on Apple Mac OS X using the Apple frameworks
+(*not* gnustep-base and gnustep-gui) and want good integration with
+your native system.

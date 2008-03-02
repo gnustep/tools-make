@@ -244,7 +244,8 @@ AC_ARG_WITH(layout,[
    FilesystemLayouts subdirectory for a list of layouts and how 
    to choose which one you want (or create your own).  If a layout 
    is specified, we automatically avoid importing an existing config 
-   file.  The default layout is 'gnustep'.
+   file.  The default layout is 'gnustep' except when the library-combo
+   is apple-apple-apple, in which case the default layout is 'apple'.
    Example: --with-layout=fhs
 ],
   GNUSTEP_FILESYSTEM_LAYOUT="$withval",)
@@ -262,9 +263,16 @@ if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
   GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
 else
   # This is the default layout that is used when installing
-  # GNUstep with no other indication.  We normally use 'gnustep'.
-  AC_MSG_RESULT(none specified: we will use 'gnustep')
-  GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
+  # GNUstep with no other indication.  We normally use 'gnustep',
+  # unless the library-combo is apple-apple-apple, in which case
+  # we use 'apple'.
+  if test "$ac_cv_library_combo" = "apple-apple-apple"; then
+    AC_MSG_RESULT(none specified: we use 'apple' since we're on apple-apple-apple)
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple
+  else
+    AC_MSG_RESULT(none specified: we use 'gnustep')
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
+  fi
 fi
 
 if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&5; then
@@ -388,6 +396,7 @@ if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
   case "$target_os" in
     freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
     netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
+    darwin*)              GNUSTEP_CONFIG_FILE=/Library/GNUstep/GNUstep.conf ;;
     *)	                  GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
   esac
 fi

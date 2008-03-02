@@ -40,6 +40,7 @@ CURRENT_DIR = $(shell pwd)
 	(mkdir tmp-build; \
 	cd tmp-build; \
 	../../configure --prefix="$(CURRENT_DIR)/tmp-installation" \
+			--with-layout=gnustep \
 	                --with-config-file="$(CURRENT_DIR)/tmp-installation/GNUstep.conf"; \
 	make; \
 	make install)

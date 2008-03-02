@@ -1,3 +1,23 @@
+2008-03-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Updated configure and filesystem layouts so that a ./configure on
+	Apple Mac OS X sets up a consistent apple-apple-apple environment.
+	* FileSystemLayouts/apple: New filesystem layout for compiling and
+	installing apple-apple-apple software.
+	* FileSystemLayouts/README: Added the new filesystem layout.
+	* configure.ac: If the library-combo is apple-apple-apple, by
+	default use the apple filesystem layout.  On darwin, use
+	/Library/GNUstep/GNUstep.conf as the default config file.
+	* configure: Regenerated.
+	* Documentation/GNUmakefile
+	(./tmp-installation/System/Library/Makefiles): Specify
+	--with-layout=gnustep when creating the temporary local
+	installation.
+	
+	* Documentation/releasenotes.texi: Explain change of the default
+	filesystem layout on apple-apple-apple.
+	* RELEASENOTES: Regenerated.
+	
 2008-02-21  Gregory John Casamento <greg_casamento@yahoo.com>
 
 	* Documentation/faq.texi: Minor updates to the faq.
