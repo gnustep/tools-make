@@ -1,5 +1,5 @@
 #
-# Mac-like filesystem layout
+# Mac-like filesystem layout for system installations
 #
 
 # This is similar to the layout found on Apple Mac OS X.  It mimicks
@@ -24,6 +24,9 @@ GNUSTEP_LOCAL_USERS_DIR=/Users
 # paths.
 GNUSTEP_MAKEFILES=/System/Library/Makefiles
 
+# FIXME: Maybe GNUSTEP_SYSTEM_APPS should be
+# /System/Library/CoreServices ?  Eg, Finder.app is in there on Apple
+# Mac OS X
 GNUSTEP_SYSTEM_APPS=/Applications
 GNUSTEP_SYSTEM_ADMIN_APPS=/Applications/Utilities
 GNUSTEP_SYSTEM_WEB_APPS=/System/Library/WebApplications
