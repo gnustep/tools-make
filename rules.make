@@ -256,7 +256,7 @@ ALL_CFLAGS = $(C_PRECOMPILED_HEADERS_INCLUDE_FLAGS) \
 
 # if you need, you can define ADDITIONAL_CCFLAGS to add C++ specific flags
 ALL_CCFLAGS = $(CC_PRECOMPILED_HEADERS_INCLUDE_FLAGS) \
-   $(ADDITIONAL_CCFLAGS) $(AUXILIARY_CCFLAGS)
+   $(CCFLAGS) $(ADDITIONAL_CCFLAGS) $(AUXILIARY_CCFLAGS)
 
 # If you need, you can define ADDITIONAL_OBJCCFLAGS to add ObjC++
 # specific flags.  Please note that for maximum flexibility,
@@ -428,42 +428,42 @@ $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.C
-	$(ECHO_COMPILING)$(CC) $< -c \
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cc
-	$(ECHO_COMPILING)$(CC) $< -c \
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cpp
-	$(ECHO_COMPILING)$(CC) $< -c \
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cxx
-	$(ECHO_COMPILING)$(CC) $< -c \
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
-	$(ECHO_COMPILING)$(CC) $< -c \
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
-	$(ECHO_COMPILING)$(CC) $< -c \
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
@@ -485,14 +485,14 @@ $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/Prec
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/
-	$(ECHO_PRECOMPILING)$(CC) -x c++-header $< -c \
+	$(ECHO_PRECOMPILING)$(CXX) -x c++-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/
-	$(ECHO_COMPILING)$(CC) -x objective-c++-header $< -c \
+	$(ECHO_COMPILING)$(CXX) -x objective-c++-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)

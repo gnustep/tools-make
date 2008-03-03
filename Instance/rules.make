@@ -245,6 +245,16 @@ OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 # object file, or not).
 OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(OBJCC_OBJ_FILES) $(WINDRES_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
 
+# If C++ or ObjC++ are involved, we use the C++ compiler instead of
+# the C/ObjC one; this happens automatically when compiling C++ or
+# ObjC++ files, but we also want it to happen when linking, because we
+# want g++ to be used instead of gcc to link.  Most of the link
+# commands in core/make/target.make use $(CC) to link; we want to
+# replace that one with the C++ compiler.  Hence the following.
+ifneq ($(CC_OBJ_FILES)$(OBJCC_OBJ_FILES),)
+  CC = $(CXX)
+endif
+
 ifeq ($(AUTO_DEPENDENCIES),yes)
   ifneq ($(strip $(OBJ_FILES_TO_LINK)),)
     -include $(addsuffix .d, $(basename $(OBJ_FILES_TO_LINK)))

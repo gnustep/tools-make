@@ -1,3 +1,16 @@
+2008-03-03  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Updated C++ and ObjC++ support so that it automatically uses g++
+	to link C++ and ObjC++ files.
+	* configure.ac (AC_PROG_CXX): Detect a C++ compiler (if any).
+	* configure: Regenerated.
+	* config.make.in (CXX, CCFLAGS): New variables.
+	* rules.make: Use CXX, not CC, when compiling C++ and
+	ObjC++. (ALL_CCFLAGS): Added CCFLAGS.
+	* Instance/rules.make: If CC_OBJ_FILES or OBJCC_OBJ_FILES are
+	non-empty, set CC to be the same as CXX so that the C++ compiler
+	is used to link.
+
 2008-03-02  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Updated configure and filesystem layouts so that a ./configure on

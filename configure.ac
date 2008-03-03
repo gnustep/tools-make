@@ -29,6 +29,13 @@ AC_CONFIG_SRCDIR([application.make])
 targetArgument=${target}
 AC_PROG_CC
 AC_PROG_CPP
+
+# We also look for a C++ compiler.  While not strictly needed, some
+# people use gnustep-make to compile C++ code.  It's nice to detect a
+# C++ compiler, if we have one, and automatically use it to
+# compile/link C++ code. :-)
+AC_PROG_CXX
+
 AC_CANONICAL_TARGET([])
 
 AC_MSG_CHECKING(for library combo)
