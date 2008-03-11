@@ -1,3 +1,7 @@
+2008-03-11  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.0.5
+
 2008-03-11  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Fixed NEEDS_GUI and xxx_NEEDS_GUI options to accept "yes" as well

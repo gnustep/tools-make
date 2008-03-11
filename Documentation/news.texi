@@ -9,11 +9,21 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.0.5}
+
+@itemize @bullet
+@item Update C++ and ObjC++ support so that g++ and proper flags are automatically used.
+@item Added a new filesystem layout for Apple Mac OS X and use this by default on this system.
+@item NEEDS_GUI variable added to determine linking behavior against gui library.
+@item New option --enable-strict-v2-mode to test for obsolete variables.
+@item ~/GNUstep/GNUstep.sh is no longer sourced.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.0.4}
 
 Fixed a bug finding relative paths on Windows (during configuration).
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.3}
 

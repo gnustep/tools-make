@@ -1,7 +1,7 @@
 1 Announcement
 **************
 
-The GNUstep Makefile Package version 2.0.4 is now available.
+The GNUstep Makefile Package version 2.0.5 is now available.
 
 1.1 What is the GNUstep makefile package?
 =========================================
@@ -12,15 +12,26 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-1.2 Changes in version `2.0.4'
+1.2 Changes in version `2.0.5'
 ==============================
 
-Fixed a bug finding relative paths on Windows (during configuration).
+   * Update C++ and ObjC++ support so that g++ and proper flags are
+     automatically used.
+
+   * Added a new filesystem layout for Apple Mac OS X and use this by
+     default on this system.
+
+   * NEEDS_GUI variable added to determine linking behavior against gui
+     library.
+
+   * New option -enable-strict-v2-mode to test for obsolete variables.
+
+   * ~/GNUstep/GNUstep.sh is no longer sourced.
 
 1.3 Obtaining gnustep-make
 ==========================
 
-You can get the gstep-make-2.0.4.tar.gz distribution file at
+You can get the gstep-make-2.0.5.tar.gz distribution file at
 `ftp://ftp.gnustep.org/pub/gnustep/core'
 
    Please log bug reports on the GNUstep project page
