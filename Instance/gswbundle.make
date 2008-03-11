@@ -22,7 +22,7 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 ifeq ($(NEEDS_GUI),)
-  NEEDS_GUI = NO
+  NEEDS_GUI = no
 endif
 
 ifeq ($(RULES_MAKE_LOADED),)

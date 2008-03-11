@@ -1,3 +1,23 @@
+2008-03-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed NEEDS_GUI and xxx_NEEDS_GUI options to accept "yes" as well
+	as "YES", to be consistent with all the other boolean options in
+	gnustep-make.
+	* Instance/rules.make (INTERNAL_NEEDS_GUI): Changed to accept
+	"yes" as well as "YES"
+	* Instance/application.make (NEEDS_GUI): Use yes/no in preference
+	to YES/NO for the default values.
+	* Instance/bundle.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/palette.make: Same change.
+
+	* Documentation/releasenotes.texi: Suggest yes/no in preference to
+	YES/NO as possible values for NEEDS_GUI and xxx_NEEDS_GUI.
+	* RELEASENOTE: Regenerated.
+	
 2008-03-03  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Updated C++ and ObjC++ support so that it automatically uses g++

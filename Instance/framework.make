@@ -21,9 +21,9 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 # Frameworks usually link against a gui library (if available).  If
-# you don't need a gui library, use xxx_NEEDS_GUI = NO.
+# you don't need a gui library, use xxx_NEEDS_GUI = no.
 ifeq ($(NEEDS_GUI),)
-  NEEDS_GUI = YES
+  NEEDS_GUI = yes
 endif
 
 ifeq ($(RULES_MAKE_LOADED),)

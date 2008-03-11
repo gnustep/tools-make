@@ -24,7 +24,7 @@
 
 # Palettes usually link against a gui library (if available).
 ifeq ($(NEEDS_GUI),)
-  NEEDS_GUI = YES
+  NEEDS_GUI = yes
 endif
 
 ifeq ($(RULES_MAKE_LOADED),)
