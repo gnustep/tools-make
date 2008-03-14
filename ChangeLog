@@ -1,3 +1,8 @@
+2008-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Fixed subversion URL to get libobjc
+	- reported by Christopher Chandler <chrisjechandler@mac.com>.
+
 2008-03-11  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.5

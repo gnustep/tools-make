@@ -192,7 +192,7 @@ export GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles
 
 Download gnustep-libobjc (you can find it at
 http://www.gnustep.org/resources/downloads.php, or use subversion:
-svn co http://svn.gna.org/svn/gnustep/modules/dev-libs/libobjc),
+svn co http://svn.gna.org/svn/gnustep/libs/libobjc/trunk),
 and compile it:
 
 make
