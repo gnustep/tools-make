@@ -1,3 +1,9 @@
+2008-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* clean_os.sh: Support new versions of Darwin, and future ones as
+	well.  Patch by Blake Nicholson <blaken@umich.edu> with a few
+	changes.
+
 2008-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/README.MinGW: Fixed subversion URL to get libobjc
