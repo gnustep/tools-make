@@ -4,6 +4,19 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.0.6
+
+@table @samp
+
+@item default location of GNUstep.conf on BSD systems
+This has been changed to /etc/GNUstep/GNUstep.conf to be consistent
+across all Unix systems (except for Apple Mac OS X where it is
+installed in /Library/GNUstep/GNUstep.conf).  To install in a
+different location, use the --with-config-file=PATH option, as in
+--with-config-file=/usr/pkg/etc/GNUstep.conf.
+
+@end table
+
 @section Version 2.0.5
 
 @table @samp

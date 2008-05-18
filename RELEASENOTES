@@ -5,7 +5,18 @@ The release notes include descriptions of API changes, behavior changes
 and other information that might help developers and users migrate to
 using a newer version of the make system.
 
-1.1 Version 2.0.5
+1.1 Version 2.0.6
+=================
+
+`default location of GNUstep.conf on BSD systems'
+     This has been changed to /etc/GNUstep/GNUstep.conf to be consistent
+     across all Unix systems (except for Apple Mac OS X where it is
+     installed in /Library/GNUstep/GNUstep.conf).  To install in a
+     different location, use the -with-config-file=PATH option, as in
+     -with-config-file=/usr/pkg/etc/GNUstep.conf.
+
+
+1.2 Version 2.0.5
 =================
 
 `default filesystem layout on apple-apple-apple'
@@ -50,7 +61,7 @@ using a newer version of the make system.
      variable (see above).
 
 
-1.2 Version 2.0.0
+1.3 Version 2.0.0
 =================
 
 Version 2.0.0 is a new major release of gnustep-make which includes a

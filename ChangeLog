@@ -1,3 +1,15 @@
+2008-05-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* configure.ac: Install GNUstep.conf in /etc/GNUstep/GNUstep.conf
+	on OpenBSD, FreeBSD and NetBSD.  Packagers are free to install the
+	configuration file wherever it best suits them; but for simplicity
+	and consistency if gnustep-make is compiled from source and
+	nothing else is specified, we default to /etc/GNUstep/GNUstep.conf
+	on all systems.
+	* configure: Regenerated.
+	* Documentation/releasenotes.texi: Describe change.
+	* RELEASENOTES: Regenerated.
+	
 2008-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
 	
 	* clean_os.sh: Support new versions of Darwin, and future ones as

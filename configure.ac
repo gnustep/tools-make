@@ -401,8 +401,6 @@ AC_ARG_WITH(config-file,[
   GNUSTEP_CONFIG_FILE="$withval",)
 if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
   case "$target_os" in
-    freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
-    netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
     darwin*)              GNUSTEP_CONFIG_FILE=/Library/GNUstep/GNUstep.conf ;;
     *)	                  GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
   esac
