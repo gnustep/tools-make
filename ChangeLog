@@ -1,3 +1,14 @@
+2008-05-22  Blake Nicholson <blaken@umich.edu>
+
+	* configure.ac: Added the --enable-absolute-install-paths option.
+	* configure: Regenerated.
+	* config.make.in: Added GNUSTEP_ABSOLUTE_INSTALL_PATHS.
+	* Instance/library.make, Instance/framework.make: Change
+	LIB_LINK_INSTALL_NAME to an absolute path if
+	GNUSTEP_ABSOLUTE_INSTALL_PATHS is 'yes' in darwin.
+	* Documentation/releasenotes.texi: Updated to reflect changes.
+	* RELEASENOTES: Regenerated.
+
 2008-05-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 	
 	* configure.ac: Install GNUstep.conf in /etc/GNUstep/GNUstep.conf

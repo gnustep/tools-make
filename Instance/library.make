@@ -239,6 +239,13 @@ LIB_LINK_FILE = $(LIBRARY_FILE)
 LIB_LINK_INSTALL_NAME = $(SONAME_LIBRARY_FILE)
 LIB_LINK_INSTALL_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
 
+# On Mac OS X, set absolute install_name if requested
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+  ifeq ($(GNUSTEP_ABSOLUTE_INSTALL_PATHS), yes)
+    LIB_LINK_INSTALL_NAME = $(LIB_LINK_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)
+  endif
+endif
+
 #
 # Internal targets
 #

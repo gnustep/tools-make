@@ -309,6 +309,13 @@ ifneq ($(DYLIB_INSTALL_NAME_BASE),)
 else
   # Use a relative path for easy relocation.
   LIB_LINK_INSTALL_NAME = $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
+
+  # On Mac OS X, set absolute install_name if requested
+  ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+    ifeq ($(GNUSTEP_ABSOLUTE_INSTALL_PATHS), yes)
+      LIB_LINK_INSTALL_NAME = $(LIB_LINK_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
+    endif
+  endif
 endif
 
 

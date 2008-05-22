@@ -8,6 +8,14 @@ migrate to using a newer version of the make system.
 
 @table @samp
 
+@item GNUSTEP_ABSOLUTE_INSTALL_PATHS
+Added the --enable-absolute-install-paths option to configure on
+Darwin.  Enabling this option modifies the process for building
+dynamic libraries so the install_name stored within a library
+is an absolute path.  Dynamic libraries with an absolute
+install_name can be placed in non-standard locations, but may
+not be moved from their designated location.
+
 @item default location of GNUstep.conf on BSD systems
 This has been changed to /etc/GNUstep/GNUstep.conf to be consistent
 across all Unix systems (except for Apple Mac OS X where it is

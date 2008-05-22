@@ -171,3 +171,9 @@ USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 # Whether the compiler is GCC with precompiled header support
 #
 GCC_WITH_PRECOMPILED_HEADERS = @GCC_WITH_PRECOMPILED_HEADERS@
+
+#
+# Whether the install_name for dynamic libraries on darwin should
+# be an absolute path.
+#
+GNUSTEP_ABSOLUTE_INSTALL_PATHS = @GNUSTEP_ABSOLUTE_INSTALL_PATHS@

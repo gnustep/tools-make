@@ -288,6 +288,52 @@ if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&
   exit 1
 fi
 
+# Need to do some checks related to building dylibs on darwin.
+GNUSTEP_ABSOLUTE_INSTALL_PATHS=;
+
+case "$target_os" in
+  darwin*)
+    AC_MSG_CHECKING([if we should build dynamic libraries with an absolute install_name])
+    AC_ARG_ENABLE(absolute-install-paths, [
+--enable-absolute-install-paths
+  Enable the use of absolute paths for the install_name of dynamic
+  libraries on Darwin.  This option is specific to Darwin and is
+  ignored on all other platforms.  Any code that links against a
+  dynamic library with an absolute install_name will tell dyld to
+  find the library at that location.  Enabling this option allows
+  one to place libraries in non-standard locations without having
+  to set DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH in the shell
+  and ~/.MacOSX/environment.plist, but libraries built with an
+  absolute install_name are not relocatable.  By default, this
+  setting is disabled.
+    ], 
+      ac_cv_absolute_install_paths=$enableval,
+      ac_cv_absolute_install_paths="no")
+
+    if test "$ac_cv_absolute_install_paths" = "yes"; then
+      AC_MSG_RESULT(yes)
+      GNUSTEP_ABSOLUTE_INSTALL_PATHS=yes;
+    else
+      AC_MSG_RESULT(no)
+
+      if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT_FILE" = x"apple"; then
+        echo ""
+        echo "*******************************************************"
+        echo "WARNING: To use a layout other than 'apple' on Mac OS X"
+        echo "without enabling absolute install paths you must set"
+        echo "DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH in your shell"
+        echo "start-up script (typically by sourcing GNUstep.sh) and"
+        echo "also in ~/.MacOSX/environment.plist."
+        echo "*******************************************************"
+        echo ""
+      fi
+    fi
+
+    ;;
+esac
+
+AC_SUBST(GNUSTEP_ABSOLUTE_INSTALL_PATHS)
+
 #-------------------------------------------------------------------
 # Read filesystem layout from file
 #-------------------------------------------------------------------
