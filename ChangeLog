@@ -1,5 +1,13 @@
 2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* messages.make (ECHO_UPDATING_VERSION_SYMLINK): Added definition
+	for messages=no.  (ECHO_CREATING_STAMP_FILE): New variable.
+	* Instance/Shared/stamp-string.make
+	(shared-instance-stamp-string): Use ECHO_CREATING_STAMP_FILE
+	instead of ECHO_NOTHING.
+
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Fixed occasional spurious rebuilds of framework headers; improved
 	display of messages when building framework headers.
 

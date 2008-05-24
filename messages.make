@@ -70,6 +70,9 @@ ifneq ($(messages),yes)
   ECHO_INSTALLING_ADD_CLASS_FILES = @(echo " Installing nested class files...";
   ECHO_INSTALLING_PROPERTIES_FILES = @(echo " Installing property files...";
 
+  # Instance/Shared/stamp-string.make
+  ECHO_CREATING_STAMP_FILE = @(echo " Creating stamp file...";
+
   # Instance/Shared/strings.make
   ECHO_MAKING_STRINGS = @(echo " Making/updating strings files...";
 
@@ -102,6 +105,9 @@ else
   ECHO_COPYING_INTO_DIR = 
   ECHO_CREATING =
   ECHO_NOTHING =
+
+  ECHO_UPDATING_VERSION_SYMLINK = 
+
   ECHO_CHOWNING =
   ECHO_STRIPPING =
 
@@ -120,6 +126,8 @@ else
   ECHO_INSTALLING_CLASS_FILES = 
   ECHO_INSTALLING_ADD_CLASS_FILES = 
   ECHO_INSTALLING_PROPERTIES_FILES = 
+
+  ECHO_CREATING_STAMP_FILE = 
 
   ECHO_MAKING_STRINGS = 
   ECHO_AUTOGSDOC = 
