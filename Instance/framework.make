@@ -387,6 +387,22 @@ $(DERIVED_SOURCES_DIR)/.stamp:
 	touch $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
+
+# IMPORTANT: It is tempting to have a file (a header, in this case)
+# depend on the directory in which we want to create it (the
+# .../Headers/ directory in this case).  The idea being that make
+# would automatically create the directory before the file.  That
+# might work for a single file, but could trigger spurious rebuilds if
+# you have more than one file in the directory.  The first file will
+# create the directory, then create the file.  The second file will be
+# created inside the directory; but on some filesystems, creating the
+# file inside the directory then updates the 'last modified' timestamp
+# of the directory.  So next time you run make, the directory is
+# 'newer' than the first file, and because the first file depends on
+# the directory, make will determine that it needs to be updated,
+# triggering a spurious recreation of the file.  If you also have
+# auto-dependencies turned on, this might in turn cause recompilation
+# and further spurious rebuilding to happen.
 $(FRAMEWORK_VERSION_DIR)/Headers/%.h: $(HEADER_FILES_DIR)/%.h
 	$(ECHO_CREATING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
