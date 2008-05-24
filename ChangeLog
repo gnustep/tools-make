@@ -1,5 +1,29 @@
 2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Fixed occasional spurious rebuilds of framework headers; improved
+	display of messages when building framework headers.
+
+	* Instance/framework.make (internal-framework-build-headers):
+	Depend on $(FRAMEWORK_VERSION_DIR)/Headers.
+	($(FRAMEWORK_VERSION_DIR)/Headers/%.h): Do not depend on
+	$(FRAMEWORK_VERSION_DIR)/Headers.
+	(build-framework-dirs): Do not depend on
+	$(FRAMEWORK_VERSION_DIR)/Headers.
+	* Instance/subproject.make (internal-subproject-build-headers):
+	Depend on $(OWNING_PROJECT_HEADER_DIR).
+	($(OWNING_PROJECT_HEADER_DIR)/%.h): Do not depend on
+	$(OWNING_PROJECT_HEADER_DIR).
+	
+	* Instance/framework.make ($(FRAMEWORK_DIR)/Versions/Current): Use
+	ECHO_UPDATING_VERSION_SYMLINK instead of ECHO_NOTHING.
+	($(FRAMEWORK_VERSION_DIR)/Headers/%.h): Use ECHO_CREATING instead
+	of ECHO_NOTHING.
+	* Instance/subproject.make ($(OWNING_PROJECT_HEADER_DIR)/%.h): Use 
+	ECHO_CREATING instead of ECHO_NOTHING.
+	* Instance/messages.make: Added ECHO_UPDATING_VERSION_SYMLINK.
+	
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUmakefile.in (all): Use $(MAKE) instead of make when printing
 	help message, so it prints the correct command on systems where
 	'gmake' needs to be used instead 'make'. (Patch by Sebastian

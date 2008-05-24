@@ -62,7 +62,7 @@ endif
 #    xxx_WEBSERVER_RESOURCE_DIRS
 # The list of localized framework web server GSWeb components are in
 #    xxx_WEBSERVER_LOCALIZED_RESOURCE_DIRS
-# xxx_CURRENT_VERSION_NAME is the compiled version name (default "A")
+# xxx_CURRENT_VERSION_NAME is the compiled version name (default "0")
 # xxx_MAKE_CURRENT_VERSION is used to decide if the framework version
 #   we compiling should be made the current/default version or not
 #   (default is "yes")
@@ -325,7 +325,8 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
                           build-framework
 
-internal-framework-build-headers:: $(FRAMEWORK_HEADER_FILES) \
+internal-framework-build-headers:: $(FRAMEWORK_VERSION_DIR)/Headers \
+                                   $(FRAMEWORK_HEADER_FILES) \
                                    build-framework-dirs
 
 ifeq ($(MAKE_CURRENT_VERSION),yes)
@@ -337,7 +338,7 @@ ifeq ($(MAKE_CURRENT_VERSION),yes)
 # rebuilding the symlink every single time, which is a waste of time.
 UPDATE_CURRENT_SYMLINK_RULE = $(FRAMEWORK_DIR)/Versions/Current
 $(FRAMEWORK_DIR)/Versions/Current: $(FRAMEWORK_VERSION_DIR)
-	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
+	$(ECHO_UPDATING_VERSION_SYMLINK)cd $(FRAMEWORK_DIR)/Versions; \
 	$(RM_LN_S) Current; \
 	$(LN_S) $(CURRENT_VERSION_NAME) Current$(END_ECHO)
 
@@ -353,7 +354,6 @@ endif
 # old Sun Solaris, test -h works but test -L does not.
 build-framework-dirs: $(DERIVED_SOURCES_DIR) \
                       $(FRAMEWORK_LIBRARY_DIR) \
-                      $(FRAMEWORK_VERSION_DIR)/Headers \
                       $(FRAMEWORK_VERSION_DIR)/Resources \
                       $(FRAMEWORK_RESOURCE_DIRS) \
                       $(UPDATE_CURRENT_SYMLINK_RULE)
@@ -387,8 +387,8 @@ $(DERIVED_SOURCES_DIR)/.stamp:
 	touch $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
-$(FRAMEWORK_VERSION_DIR)/Headers/%.h: $(HEADER_FILES_DIR)/%.h $(FRAMEWORK_VERSION_DIR)/Headers
-	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
+$(FRAMEWORK_VERSION_DIR)/Headers/%.h: $(HEADER_FILES_DIR)/%.h
+	$(ECHO_CREATING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
 
 OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)

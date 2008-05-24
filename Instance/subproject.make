@@ -53,13 +53,13 @@ OWNING_PROJECT_HEADER_DIR = $(GNUSTEP_BUILD_DIR)/$(OWNING_PROJECT_HEADER_DIR_NAM
 HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
 OWNING_PROJECT_HEADER_FILES = $(patsubst %.h,$(OWNING_PROJECT_HEADER_DIR)/%.h,$(HEADER_FILES))
 
-internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_FILES)
-
 # We need to build the OWNING_PROJECT_HEADER_DIR directory here
 # because this rule could be executed before the top-level framework
 # has built his dirs
-$(OWNING_PROJECT_HEADER_DIR)/%.h: %.h $(OWNING_PROJECT_HEADER_DIR)
-	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
+internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_DIR) $(OWNING_PROJECT_HEADER_FILES)
+
+$(OWNING_PROJECT_HEADER_DIR)/%.h: %.h
+	$(ECHO_CREATING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
 $(OWNING_PROJECT_HEADER_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)

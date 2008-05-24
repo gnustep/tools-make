@@ -48,6 +48,9 @@ ifneq ($(messages),yes)
   # messages=yes, while hardcoding @( never prints anything.
   ECHO_NOTHING = @(
 
+  # Instance/framework.make
+  ECHO_UPDATING_VERSION_SYMLINK = @(echo " Updating Version/Current symlink...";
+
   # Instance/Shared/bundle.make
   ECHO_COPYING_RESOURCES = @(echo " Copying resources into the $(GNUSTEP_TYPE) wrapper...";
   ECHO_COPYING_LOC_RESOURCES = @(echo " Copying localized resources into the $(GNUSTEP_TYPE) wrapper...";
