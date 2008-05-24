@@ -154,7 +154,7 @@ else
 endif
 
 all: generated-files
-	$(EC)(echo "Thanks.  All is ready: type 'make install' to install gnustep-make.")
+	$(EC)(echo "Thanks.  All is ready: type '$(MAKE) install' to install gnustep-make.")
 
 install: generated-files
 	$(EC)(echo "Creating system tools directory: $(tooldir)"; \

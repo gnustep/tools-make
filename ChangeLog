@@ -1,3 +1,10 @@
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (all): Use $(MAKE) instead of make when printing
+	help message, so it prints the correct command on systems where
+	'gmake' needs to be used instead 'make'. (Patch by Sebastian
+	Reitenbach <buzzdee@web.de>).
+
 2008-05-22  Blake Nicholson <blaken@umich.edu>
 
 	* configure.ac: Added the --enable-absolute-install-paths option.
