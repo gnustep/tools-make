@@ -146,17 +146,18 @@ ifneq ($(OBJ_FILES_TO_LINK),)
 ifneq ($(FOUNDATION_LIB),apple)
 build-bundle: $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
               $(BUNDLE_FILE) \
-              $(BUNDLE_INFO_PLIST_FILE) \
-              shared-instance-bundle-all
+              shared-instance-bundle-all \
+              $(BUNDLE_INFO_PLIST_FILE)
 else
 build-bundle: $(BUNDLE_DIR)/Contents/MacOS \
               $(BUNDLE_FILE) \
-              $(BUNDLE_INFO_PLIST_FILE) \
-              shared-instance-bundle-all
+              shared-instance-bundle-all \
+              $(BUNDLE_INFO_PLIST_FILE)
 endif
 
-# The rule to build $(BUNDLE_DIR)/Resources is already provided
-# by Instance/Shared/bundle.make
+# The rule to build $(BUNDLE_DIR)/Resources (ie,
+# $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH) is already provided by
+# Instance/Shared/bundle.make
 
 $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -173,7 +174,7 @@ endif
 else 
 # Following code for the case OBJ_FILES_TO_LINK is empty - bundle with
 # no shared object in it.
-build-bundle: $(BUNDLE_INFO_PLIST_FILE) shared-instance-bundle-all
+build-bundle: shared-instance-bundle-all $(BUNDLE_INFO_PLIST_FILE) 
 endif # OBJ_FILES_TO_LINK
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
@@ -217,8 +218,7 @@ $(BUNDLE_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
-$(BUNDLE_DIR)/Contents/Info.plist: $(BUNDLE_DIR)/Contents \
-                                        $(GNUSTEP_STAMP_DEPEND)
+$(BUNDLE_DIR)/Contents/Info.plist: $(GNUSTEP_STAMP_DEPEND)
 	$(ECHO_CREATING)(echo "<?xml version='1.0' encoding='utf-8'?>";\
 	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
 	  echo "<!-- Automatically generated, do not edit! -->";\
@@ -236,8 +236,7 @@ $(BUNDLE_DIR)/Contents/Info.plist: $(BUNDLE_DIR)/Contents \
 	  echo "</plist>";\
 	) >$@$(END_ECHO)
 else
-$(BUNDLE_DIR)/Contents/Info.plist: $(BUNDLE_DIR)/Contents \
-                                        $(GNUSTEP_STAMP_DEPEND)
+$(BUNDLE_DIR)/Contents/Info.plist: $(GNUSTEP_STAMP_DEPEND)
 	$(ECHO_CREATING)(echo "<?xml version='1.0' encoding='utf-8'?>";\
 	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
 	  echo "<!-- Automatically generated, do not edit! -->";\
@@ -259,8 +258,7 @@ GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
 # GNUstep bundles
-$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
-                                            $(GNUSTEP_STAMP_DEPEND) \
+$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(GNUSTEP_STAMP_DEPEND) \
                                             $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)\";"; \
@@ -272,8 +270,7 @@ $(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
 	fi$(END_ECHO)
 else # following code for when no object file is built
 # GNUstep bundles
-$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
-                                            $(GNUSTEP_STAMP_DEPEND) \
+$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(GNUSTEP_STAMP_DEPEND) \
                                             $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \

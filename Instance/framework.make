@@ -569,7 +569,7 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 
 # FIXME: MacOSX frameworks should also merge xxxInfo.plist into them
 # MacOSX-S frameworks
-$(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resources
+$(FRAMEWORK_VERSION_DIR)/Resources/Info.plist:
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -581,7 +581,6 @@ GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
 
 # GNUstep frameworks
 $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: \
-                        $(FRAMEWORK_VERSION_DIR)/Resources \
                         $(DUMMY_FRAMEWORK_FILE) \
                         $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \

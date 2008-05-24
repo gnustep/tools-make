@@ -1,5 +1,17 @@
 2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Fixed occasional spurious rebuilds of Info-gnustep.plist and
+	Info.plist files.
+	* Instance/bundle.make (build-bundle): Swapped the order of the
+	shared-instance-bundle-all and $(BUNDLE_INFO_PLIST_FILE)
+	dependencies.
+	(Info.plist, Info-gnustep.plist): Do not depend on building the
+	directory containing the plist file first.
+	* Instance/framework.make (Info.plist, Info-gnustep.plist): Do not
+	depend on creating the directory containing the plist file first.
+	
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* messages.make (ECHO_UPDATING_VERSION_SYMLINK): Added definition
 	for messages=no.  (ECHO_CREATING_STAMP_FILE): New variable.
 	* Instance/Shared/stamp-string.make
@@ -10,7 +22,6 @@
 
 	Fixed occasional spurious rebuilds of framework headers; improved
 	display of messages when building framework headers.
-
 	* Instance/framework.make (internal-framework-build-headers):
 	Depend on $(FRAMEWORK_VERSION_DIR)/Headers.
 	($(FRAMEWORK_VERSION_DIR)/Headers/%.h): Do not depend on
