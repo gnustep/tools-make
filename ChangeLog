@@ -1,3 +1,12 @@
+2008-05-25  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed cases where ./configure wouldn't detect that the compiler
+	supported auto-dependencies.
+	* configure.ac: Fixed regular expression to determine the 
+	GCC version.  If was failing when the string terminated at
+	the minor version.
+	* configure: Regenerated.
+
 2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Fixed occasional spurious rebuilds of Info-gnustep.plist and
