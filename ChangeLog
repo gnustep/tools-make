@@ -1,3 +1,7 @@
+2008-05-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.guess, config.sub: Updated to latest version.
+
 2008-05-25  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Fixed cases where ./configure wouldn't detect that the compiler
