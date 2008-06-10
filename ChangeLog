@@ -1,3 +1,8 @@
+2008-06-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* openapp.in: Avoid 'echo -e' which is not portable (Suggestion
+	from Hubert Chathi <uhoreg@debian.org>)
+
 2008-05-30  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* config.guess, config.sub: Updated to latest version.
