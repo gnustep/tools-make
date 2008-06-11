@@ -1,6 +1,6 @@
 \input texinfo   @c -*-texinfo-*-
 @c %**start of header
-@setfilename make.info
+@setfilename gnustep-make.info
 @settitle GNUstep Makefile Package
 @c %**end of header
 

@@ -66,14 +66,12 @@ include $(GNUSTEP_MAKEFILES)/common.make
 # FIXME: We should prefix everything with 'gnustep' because we
 # generate info files that we then put into the standard info
 # directories, and we don't want those to conflict with info files
-# from other packages!  For example, 'info make' should return GNU
-# make documentation, while 'info gnustep-make' should return
-# GNUstep-make documentation.  At the moment they would have the same
-# name instead, giving rise to unpleasant consequences!  For example
-# in a default installation, 'info make' would return gnustep-make
-# documentation (instead of GNU make one) because the INFOPATH is used
-# before built-in paths!
-DOCUMENT_NAME = gnustep-howto faq filesystem internals machines make userfaq
+# from other packages!   At the moment they could have the same
+# name instead, giving rise to unpleasant consequences!  
+# info 'faq' would probably return our faq before anything else
+# because the INFOPATH is used before built-in paths, but it's
+# still confusing to have conflicts.
+DOCUMENT_NAME = gnustep-howto faq filesystem internals machines gnustep-make userfaq
 
 # The text documents to be generated
 DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS RELEASENOTES GNUstep-HOWTO ANNOUNCE
@@ -91,9 +89,9 @@ FAQ_TEXI_FILES = version.texi
 FAQ_TEXT_MAIN = faq.texi
 FAQ_DOC_INSTALL_DIR = User/GNUstep/
 
-make_TEXI_FILES = \
-make.texi
-make_DOC_INSTALL_DIR = Developer/Make/Manual/
+gnustep-make_TEXI_FILES = \
+gnustep-make.texi
+gnustep-make_DOC_INSTALL_DIR = Developer/Make/Manual/
 
 faq_TEXI_FILES = \
 faq.texi \

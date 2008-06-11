@@ -1,3 +1,14 @@
+2008-06-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/make.texi: Renamed to gnustep-make.texi.
+	* Documentation/gnustep-make.texi: New file.
+	* Documentation/GNUmakefile: Corresponding updates.
+	(Patch by Gareth Armstrong <gareth.armstrong@hp.com>)
+	
+	* Documentation/releasenotes.texi: Mention that the
+	make.info file was renamed to gnustep-make.info.
+	* RELEASENOTES: Regenerated.
+
 2008-06-10  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* openapp.in: Avoid 'echo -e' which is not portable (Suggestion

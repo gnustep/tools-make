@@ -23,6 +23,15 @@ installed in /Library/GNUstep/GNUstep.conf).  To install in a
 different location, use the --with-config-file=PATH option, as in
 --with-config-file=/usr/pkg/etc/GNUstep.conf.
 
+@item gnustep-make.info renamed to make.info
+To prevent conflicts with the standard GNU 'make' info documentation,
+the gnustep-make one has been renamed.  Now you can access it as in
+'info gnustep-make' instead of 'info make', avoiding any conflicts and
+confusion.  Please note that this info documentation is in the
+core/make/Documentation subdirectory and at the moment is not
+automatically installed unless you explicitly go in that subdirectory
+and install it.
+
 @end table
 
 @section Version 2.0.5
