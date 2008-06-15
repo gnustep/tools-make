@@ -9,6 +9,16 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.0.6}
+
+@itemize @bullet
+@item Fixed some spurious rebuilds of plists, and framework headers.
+@item Added the --enable-absolute-install-paths option for Darwin systems.
+@item Install GNUstep.conf in /etc/GNUstep/GNUstep.conf on all systems.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.0.5}
 
 @itemize @bullet
@@ -18,8 +28,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item New option --enable-strict-v2-mode to test for obsolete variables.
 @item ~/GNUstep/GNUstep.sh is no longer sourced.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.4}
 
