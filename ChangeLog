@@ -1,3 +1,9 @@
+2008-06-17  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in: Fixup assignment to gs_variable_value with
+	code which works with more shells (bug #23618).
+	Solution suggested by Hubert Chathi.
+
 2008-06-14  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.6

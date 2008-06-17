@@ -168,7 +168,7 @@ unset GNUSTEP_SH_EXPORT_ALL_VARIABLES
 # Now print whatever variable they asked for
 #
 gs_variable_name=`echo "$1" | sed -e 's/--variable=//'`
-gs_variable_value=$(eval echo "\$$gs_variable_name")
+gs_variable_value=`eval echo '$'"$gs_variable_name"`
 
 if [ "$gs_variable_value" != "" ]; then
   echo "$gs_variable_value"
