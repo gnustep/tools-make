@@ -1,3 +1,9 @@
+2008-06-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-make-help: Mention the MAKEFILE_NAME variable that can
+	be used to use makefiles with a name different from the default
+	'GNUmakefile'.
+
 2008-06-17  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* gnustep-config.in: Fixup assignment to gs_variable_value with

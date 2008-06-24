@@ -3,9 +3,9 @@
 #
 #   GNUstep make help message
 #
-#   Copyright (C) 2007 Free Software Foundation, Inc.
+#   Copyright (C) 2007-2008 Free Software Foundation, Inc.
 #
-#   Author:  Nicola Pero <nicola.pero@meta-innovation.com
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -42,6 +42,9 @@ Most common options that can be used with any of the targets:
  shared=no (builds static executable and objects)
  GNUSTEP_INSTALLATION_DOMAIN=SYSTEM/LOCAL/NETWORK/USER (installs 
    in the specified domain; the default is LOCAL)
+ MAKEFILE_NAME=xxx (uses makefiles called 'xxx'; the default is
+   'GNUmakefile'.  Note that usually you'd use this option as in 
+   'make -f xxx MAKEFILE_NAME=xxx'.)
 You can use multiple of these options at the same time.
 
 Examples:
