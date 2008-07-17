@@ -1,3 +1,7 @@
+2008-07-17  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/machines.texi: Update
+
 2008-06-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* gnustep-make-help: Mention the MAKEFILE_NAME variable that can
