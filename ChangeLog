@@ -1,3 +1,13 @@
+2008-07-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed bug reported by Marko Riedel <markoriedelde@yahoo.de> where
+	test-applications are not linked against the gui library by
+	default.
+	* Instance/test-application.make (NEEDS_GUI): Set to 'yes'.
+	* Instance/test-tool.make (NEEDS_GUI): Set to 'no'.
+	* Instance/tool.make (NEEDS_GUI): Use 'no' instead of 'NO' for 
+	consistency.
+
 2008-07-17  Adam Fedor  <fedor@gnu.org>
 
 	* Documentation/machines.texi: Update

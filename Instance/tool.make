@@ -22,7 +22,7 @@
 
 # Tools don't link against gui by default
 ifeq ($(NEEDS_GUI),)
-  NEEDS_GUI = NO
+  NEEDS_GUI = no
 endif
 
 #
