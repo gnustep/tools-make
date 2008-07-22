@@ -1,3 +1,14 @@
+2008-07-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Keep better track of the original source file used to compile each
+	object file, so that you can have both file.c and file.m in the
+	same project (suggestion by David Chisnall <theraven@sucs.org>).
+	* rules.make: Changed rules so that they dictate how to create
+	for example %.m.o from %.m instead of just %.o from %.m.
+	* Instance/rules.make: Changed all xxx_OBJS variables so that they
+	retain the original extension; for example, OBJC_OBJS now contains
+	%.m.o instead of just %.o.
+	
 2008-07-21  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Fixed bug reported by Marko Riedel <markoriedelde@yahoo.de> where

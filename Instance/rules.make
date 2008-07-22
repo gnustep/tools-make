@@ -194,10 +194,10 @@ SUBPROJECT_OBJ_FILES = $(foreach d, $($(GNUSTEP_INSTANCE)_SUBPROJECTS), \
     $(addprefix $(GNUSTEP_BUILD_DIR)/$(d)/, $(GNUSTEP_OBJ_DIR_NAME)/$(SUBPROJECT_PRODUCT)))
 endif
 
-OBJC_OBJS = $(patsubst %.m,%$(OEXT),$($(GNUSTEP_INSTANCE)_OBJC_FILES))
+OBJC_OBJS = $(patsubst %.m,%.m$(OEXT),$($(GNUSTEP_INSTANCE)_OBJC_FILES))
 OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
 
-OBJCC_OBJS = $(patsubst %.mm,%$(OEXT),$($(GNUSTEP_INSTANCE)_OBJCC_FILES))
+OBJCC_OBJS = $(patsubst %.mm,%.mm$(OEXT),$($(GNUSTEP_INSTANCE)_OBJCC_FILES))
 OBJCC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJCC_OBJS))
 
 JAVA_OBJS = $(patsubst %.java,%.class,$($(GNUSTEP_INSTANCE)_JAVA_FILES))
@@ -208,26 +208,26 @@ JAVA_JNI_OBJ_FILES = $(JAVA_JNI_OBJS)
 
 PSWRAP_C_FILES = $(patsubst %.psw,%.c,$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
 PSWRAP_H_FILES = $(patsubst %.psw,%.h,$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
-PSWRAP_OBJS = $(patsubst %.psw,%$(OEXT),$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
+PSWRAP_OBJS = $(patsubst %.psw,%.c$(OEXT),$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
 PSWRAP_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(PSWRAP_OBJS))
 
-C_OBJS = $(patsubst %.c,%$(OEXT),$($(GNUSTEP_INSTANCE)_C_FILES))
+C_OBJS = $(patsubst %.c,%.c$(OEXT),$($(GNUSTEP_INSTANCE)_C_FILES))
 C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
 
 # C++ files might end in .C, .cc, .cpp, .cxx, .cp so we replace multiple times
-CC_OBJS = $(patsubst %.cc,%$(OEXT),\
-           $(patsubst %.C,%$(OEXT),\
-            $(patsubst %.cp,%$(OEXT),\
-             $(patsubst %.cpp,%$(OEXT),\
-              $(patsubst %.cxx,%$(OEXT),$($(GNUSTEP_INSTANCE)_CC_FILES))))))
+CC_OBJS = $(patsubst %.cc,%.cc$(OEXT),\
+           $(patsubst %.C,%.C$(OEXT),\
+            $(patsubst %.cp,%.cp$(OEXT),\
+             $(patsubst %.cpp,%.cpp$(OEXT),\
+              $(patsubst %.cxx,%.cxx$(OEXT),$($(GNUSTEP_INSTANCE)_CC_FILES))))))
 CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(CC_OBJS))
 
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
-  WINDRES_OBJS = $(patsubst %.rc,%$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
+  WINDRES_OBJS = $(patsubst %.rc,%.rc$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
   WINDRES_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(WINDRES_OBJS))
 else
 ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
-  WINDRES_OBJS = $(patsubst %.rc,%$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
+  WINDRES_OBJS = $(patsubst %.rc,%.rc$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
   WINDRES_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(WINDRES_OBJS))
 else
   WINDRES_OBJ_FILES =

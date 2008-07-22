@@ -415,54 +415,54 @@ VPATH = .
 # as well, so the following rule is simply equivalent to
 # $(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@
 # and similarly all the rules below
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
+$(GNUSTEP_OBJ_DIR)/%.c${OEXT} : %.c
 	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
+$(GNUSTEP_OBJ_DIR)/%.m${OEXT} : %.m
 	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.C
+$(GNUSTEP_OBJ_DIR)/%.C${OEXT} : %.C
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cc
+$(GNUSTEP_OBJ_DIR)/%.cc${OEXT} : %.cc
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cpp
+$(GNUSTEP_OBJ_DIR)/%.cpp${OEXT} : %.cpp
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cxx
+$(GNUSTEP_OBJ_DIR)/%.cxx${OEXT} : %.cxx
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
+$(GNUSTEP_OBJ_DIR)/%.cp${OEXT} : %.cp
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
+$(GNUSTEP_OBJ_DIR)/%.mm${OEXT} : %.mm
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
@@ -579,7 +579,7 @@ ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
 .SUFFIXES: .rc
 
 # A rule to generate a .o file from the .rc file.
-$(GNUSTEP_OBJ_DIR)/%${OEXT}: %.rc
+$(GNUSTEP_OBJ_DIR)/%.rc${OEXT}: %.rc
 	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
 endif
 
@@ -592,7 +592,7 @@ ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
 .SUFFIXES: .rc
 
 # A rule to generate a .o file from the .rc file.
-$(GNUSTEP_OBJ_DIR)/%${OEXT}: %.rc
+$(GNUSTEP_OBJ_DIR)/%.rc${OEXT}: %.rc
 	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
 endif
 
