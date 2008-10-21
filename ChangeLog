@@ -10,6 +10,7 @@
 	
 2008-10-21  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Fixed problem reported by Funda Wang <fundawang@gmail.com>.
 	* GNUstep.sh.in: When adding paths to PATH, CLASSPATH,
 	GUILE_LOAD_PATH and INFOPATH, check that each path is not already
 	there before adding it.  Previously we were checking, but checking
