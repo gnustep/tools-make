@@ -46,6 +46,11 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 # installation directory is xxx_HEADER_FILES_INSTALL_DIR
 # where xxx is the bundle name
 #
+# If you want to insert your own entries into Info.plist (or
+# Info-gnustep.plist) you should create a xxxInfo.plist file (where
+# xxx is the bundle name) and gnustep-make will automatically
+# read it and merge it into Info-gnustep.plist.
+#
 
 .PHONY: internal-bundle-all_ \
         internal-bundle-install_ \

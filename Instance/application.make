@@ -41,9 +41,11 @@ endif
 # The list of supported languages is in xxx_LANGUAGES
 # The name of the application icon (if any) is in xxx_APPLICATION_ICON
 # The name of the app class is xxx_PRINCIPAL_CLASS (defaults to NSApplication).
-# The name of a file containing info.plist entries to be inserted into
-# Info-gnustep.plist (if any) is xxxInfo.plist
-# where xxx is the application name
+#
+# If you want to insert your own entries into Info.plist (or
+# Info-gnustep.plist) you should create a xxxInfo.plist file (where
+# xxx is the application name) and gnustep-make will automatically
+# read it and merge it into Info-gnustep.plist.
 #
 
 .PHONY: internal-app-all_ \

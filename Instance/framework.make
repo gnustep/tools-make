@@ -79,6 +79,11 @@ endif
 # replacement for another framework, which has name YYY -- and which
 # might be installed at the same time :-).
 #
+# If you want to insert your own entries into Info.plist (or
+# Info-gnustep.plist) you should create a xxxInfo.plist file (where
+# xxx is the framework name) and gnustep-make will automatically
+# read it and merge it into Info-gnustep.plist.
+#
 
 # Set VERSION from xxx_VERSION
 ifneq ($($(GNUSTEP_INSTANCE)_VERSION),)
