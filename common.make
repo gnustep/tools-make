@@ -92,6 +92,16 @@ endif
 #
 include $(GNUSTEP_MAKEFILES)/messages.make
 
+ifneq ($(messages),yes)
+  # This flag is passed to make so we do not print the directories that 
+  # we recurse into unless messages=yes is used.
+  GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG = --no-print-directory
+else
+  # If messages=yes is used, let make print out each directory it
+  # recurses into.
+  GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG = 
+endif
+
 #
 # Get flags/config options for core libraries
 #

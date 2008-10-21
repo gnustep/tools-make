@@ -1,5 +1,15 @@
 2008-10-21  Nicola Pero  <nicola@localhost.localdomain>
 
+	Implemented suggestion from David Chisnall <theraven@sucs.org> of
+	using --no-print-directory for recursive make.
+	* common.make (GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG): New variable.
+	Set it to --no-print-directory unless messages=yes.
+	* Master/aggregate.make: Use it when doing recursive invocations
+	that change directory.
+	* Master/rules.make: Same change.
+	
+2008-10-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.sh.in: When adding paths to PATH, CLASSPATH,
 	GUILE_LOAD_PATH and INFOPATH, check that each path is not already
 	there before adding it.  Previously we were checking, but checking

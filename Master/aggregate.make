@@ -71,7 +71,7 @@ internal-all internal-install internal-uninstall internal-clean \
 	  else \
 	    gsbuild="$${abs_build_dir}/$$f"; \
 	  fi; \
-	  if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+	  if $(MAKE) -C $$f -f $$mf $(GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG) --no-keep-going $$operation \
 	       GNUSTEP_BUILD_DIR="$$gsbuild"; then \
 	    :; else exit $$?; \
 	  fi; \

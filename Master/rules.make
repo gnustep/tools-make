@@ -308,7 +308,7 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
       else \
         owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR_NAME)"; \
       fi; \
-      if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+      if $(MAKE) -C $$f -f $$mf $(GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG) --no-keep-going $$operation \
           OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
           GNUSTEP_BUILD_DIR="$$gsbuild" \
@@ -383,7 +383,7 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
       else \
         owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR_NAME)"; \
       fi; \
-      if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+      if $(MAKE) -C $$f -f $$mf $(GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG) --no-keep-going $$operation \
           OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
           GNUSTEP_BUILD_DIR="$$gsbuild" \
