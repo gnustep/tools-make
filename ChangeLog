@@ -1,3 +1,24 @@
+2008-10-21  Nicola Pero  <nicola@localhost.localdomain>
+
+	* GNUstep.sh.in: When adding paths to PATH, CLASSPATH,
+	GUILE_LOAD_PATH and INFOPATH, check that each path is not already
+	there before adding it.  Previously we were checking, but checking
+	the whole string of paths as a single unit; the new code works
+	much better when some of the paths, but not all of them, are
+	already there.  Reduced the number of loops and variables.
+	Inlined code from ld_lib_path.sh, and rewritten it completely to
+	check every single library and framework path before adding it to
+	the library path variables.  Avoid executing any of the framework
+	code unless we are on Darwin.
+	* ld_lib_path.sh: File removed.
+
+	* GNUstep.csh.in: Same changes as for GNUstep.sh.in.
+	* ld_lib_path.csh: File removed.
+
+	* GNUmakefile.in (install): Do not install ld_lib_path.sh and
+	ld_lib_path.csh.
+	(uninstall): Do not uninstall ld_lib_path.csh.
+	
 2008-07-22  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Keep better track of the original source file used to compile each

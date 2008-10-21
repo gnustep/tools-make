@@ -216,54 +216,120 @@ foreach dir ( "${GNUSTEP_SYSTEM_ADMIN_TOOLS}" "${GNUSTEP_NETWORK_ADMIN_TOOLS}" "
   endif
 end
 
-set temp_path = ""
 foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_TOOLS_PATHLIST}"'; do echo $i; done'` )
-  set temp_path="${temp_path}${dir}:"
+  set path_fragment="${dir}"
   if ( "${GNUSTEP_IS_FLATTENED}" == "no" ) then
-    set temp_path="${temp_path}${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:"
-    set temp_path="${temp_path}${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}:"
+    set path_fragment="${dir}:${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+  endif
+
+  if ( ! ${?PATH} ) then
+    setenv PATH "${path_fragment}"
+  else if ( { (echo "$PATH" | fgrep -v "$path_fragment" >/dev/null) } ) then
+    setenv PATH "${path_fragment}:${PATH}"
   endif
 end
-
-if ( ! ${?PATH} ) then
-  setenv PATH "${temp_path}"
-else if ( { (echo "$PATH" | fgrep -v "$temp_path" >/dev/null) } ) then
-  setenv PATH "${temp_path}${PATH}"
-endif
-unset temp_path dir
+unset path_fragment dir
 unset GNUSTEP_TOOLS_PATHLIST
 
-source "${GNUSTEP_MAKEFILES}/ld_lib_path.csh"
+set GNUSTEP_LIBRARIES_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARIES" "$GNUSTEP_LOCAL_LIBRARIES" "$GNUSTEP_NETWORK_LIBRARIES" "$GNUSTEP_SYSTEM_LIBRARIES" $fixup_paths`
+foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARIES_PATHLIST}"'; do echo $i; done'` )
+  if ( "$GNUSTEP_IS_FLATTENED" == "yes" ) then
+    set path_fragment="$dir"
+  else
+    set path_fragment="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+  endif
 
-set gnustep_class_path=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Libraries/Java" "$GNUSTEP_LOCAL_LIBRARY/Libraries/Java" "$GNUSTEP_NETWORK_LIBRARY/Libraries/Java" "$GNUSTEP_SYSTEM_LIBRARY/Libraries/Java" $fixup_paths`
+  switch ( "${GNUSTEP_HOST_OS}" )
 
-if ( ! ${?CLASSPATH} ) then
-  setenv CLASSPATH "${gnustep_class_path}"
-else if ( { (echo "${CLASSPATH}" | fgrep -v "${gnustep_class_path}" >/dev/null) } ) then
-  setenv CLASSPATH "${CLASSPATH}:${gnustep_class_path}"
-endif
+    case *nextstep4* | *darwin* :
+      if ( $?DYLD_LIBRARY_PATH == 0 ) then
+	  setenv DYLD_LIBRARY_PATH "${path_fragment}"
+      else if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+	  setenv DYLD_LIBRARY_PATH "${path_fragment}:${DYLD_LIBRARY_PATH}"
+      endif
+      breaksw
 
-unset gnustep_class_path
+    case *hpux* :
+      if ( $?SHLIB_PATH == 0 ) then
+	  setenv SHLIB_PATH "${path_fragment}"
+      else if ( { (echo "${SHLIB_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+	  setenv SHLIB_PATH "${path_fragment}:${SHLIB_PATH}"
+      endif
 
-set gnustep_guile_path=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Libraries/Guile" "$GNUSTEP_LOCAL_LIBRARY/Libraries/Guile" "$GNUSTEP_NETWORK_LIBRARY/Libraries/Guile" "$GNUSTEP_SYSTEM_LIBRARY/Libraries/Guile" $fixup_paths`
+      if ( $?LD_LIBRARY_PATH == 0 ) then
+	  setenv LD_LIBRARY_PATH "${path_fragment}"
+      else if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+	  setenv LD_LIBRARY_PATH "${path_fragment}:${LD_LIBRARY_PATH}"
+      endif
 
-if ( ! ${?GUILE_LOAD_PATH} ) then
-    setenv GUILE_LOAD_PATH "${gnustep_guile_path}"
-else if ( { (echo "${GUILE_LOAD_PATH}" | fgrep -v "${gnustep_guile_path}" >/dev/null) } ) then
-    setenv GUILE_LOAD_PATH "${gnustep_guile_path}:${GUILE_LOAD_PATH}"
-endif
+      breaksw
 
-unset gnustep_guile_path
+    case * :
+      if ( $?LD_LIBRARY_PATH == 0 ) then
+	  setenv LD_LIBRARY_PATH "${path_fragment}"
+      else if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+	  setenv LD_LIBRARY_PATH "${path_fragment}:${LD_LIBRARY_PATH}"
+      endif
 
-set gnustep_info_path=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_DOC_INFO" "$GNUSTEP_LOCAL_DOC_INFO" "$GNUSTEP_NETWORK_DOC_INFO" "$GNUSTEP_SYSTEM_DOC_INFO" $fixup_paths`
+      breaksw
+  endsw
+end
+unset path_fragment dir
+unset GNUSTEP_LIBRARIES_PATHLIST
 
-if ( ! ${?INFOPATH} ) then
-  setenv INFOPATH "${gnustep_info_path}:"
-else if ( { (echo "${INFOPATH}" | fgrep -v "${gnustep_info_path}" >/dev/null) } ) then
-  setenv INFOPATH "${INFOPATH}:${gnustep_info_path}:"
-endif
+switch ( "${GNUSTEP_HOST_OS}" )
+  case *darwin* :
+    set GNUSTEP_FRAMEWORKS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Frameworks" "$GNUSTEP_LOCAL_LIBRARY/Frameworks" "$GNUSTEP_NETWORK_LIBRARY/Frameworks" "$GNUSTEP_SYSTEM_LIBRARY/Frameworks" $fixup_paths`
+    foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_FRAMEWORKS_PATHLIST}"'; do echo $i; done'` )
+      set path_fragment="$dir"
+      if ( $?DYLD_FRAMEWORK_PATH == 0 ) then
+        setenv DYLD_FRAMEWORK_PATH "${path_fragment}"
+      else if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+        setenv DYLD_FRAMEWORK_PATH "${path_fragment}:${DYLD_FRAMEWORK_PATH}"
+      endif
+    end
+    unset dir path_fragment
+    unset GNUSTEP_FRAMEWORKS_PATHLIST
+    breaksw
+  case * :
+    breaksw
+endsw
 
-unset gnustep_info_path
+set GNUSTEP_LIBRARY_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY" "$GNUSTEP_LOCAL_LIBRARY" "$GNUSTEP_NETWORK_LIBRARY" "$GNUSTEP_SYSTEM_LIBRARY" $fixup_paths`
+
+foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARY_PATHLIST}"'; do echo $i; done'` )
+
+  set path_fragment="${dir}/Libraries/Java"
+  if ( ! ${?CLASSPATH} ) then
+    setenv CLASSPATH "${path_fragment}"
+  else if ( { (echo "$CLASSPATH" | fgrep -v "$path_fragment" >/dev/null) } ) then
+    setenv CLASSPATH "${CLASSPATH}:${path_fragment}"
+  endif
+
+  set path_fragment="${dir}/Libraries/Guile"
+  if ( ! ${?GUILE_LOAD_PATH} ) then
+    setenv GUILE_LOAD_PATH "${path_fragment}"
+  else if ( { (echo "$GUILE_LOAD_PATH" | fgrep -v "$path_fragment" >/dev/null) } ) then
+    setenv GUILE_LOAD_PATH "${path_fragment}:${GUILE_LOAD_PATH}"
+  endif
+
+end
+unset path_fragment dir
+unset GNUSTEP_TOOLS_PATHLIST
+
+set GNUSTEP_INFO_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_DOC_INFO" "$GNUSTEP_LOCAL_DOC_INFO" "$GNUSTEP_NETWORK_DOC_INFO" "$GNUSTEP_SYSTEM_DOC_INFO" $fixup_paths`
+
+foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_INFO_PATHLIST}"'; do echo $i; done'` )
+
+  if ( ! ${?INFOPATH} ) then
+    setenv INFOPATH "${dir}:"
+  else if ( { (echo "${INFOPATH}" | fgrep -v "${dir}" >/dev/null) } ) then
+    setenv INFOPATH "${INFOPATH}:${dir}:"
+  endif
+
+end
+
+unset dir
 
 if ( "${GNUSTEP_MAKE_STRICT_V2_MODE}" == "yes" ) then
   unsetenv GNUSTEP_IS_FLATTENED

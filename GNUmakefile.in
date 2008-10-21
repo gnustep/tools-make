@@ -186,8 +186,6 @@ install: generated-files
 	  $(INSTALL_DATA) GNUstep.csh "$(makedir)"; \
 	  $(INSTALL_DATA) filesystem.sh "$(makedir)"; \
 	  $(INSTALL_DATA) filesystem.csh "$(makedir)"; \
-	  $(INSTALL_DATA) "$(srcdir)/ld_lib_path.sh" "$(makedir)"; \
-	  $(INSTALL_DATA) "$(srcdir)/ld_lib_path.csh" "$(makedir)"; \
 	  $(INSTALL_DATA) "$(srcdir)/GNUstep-reset.sh" "$(makedir)"; \
 	  $(INSTALL_PROGRAM) -m 755 fixpath.sh "$(makedir)"; \
 	  $(INSTALL_PROGRAM) -m 755 openapp "$(tooldir)"; \
@@ -251,10 +249,8 @@ uninstall:
 	-rmdir "$(mandir)"
 	for f in config.guess config.sub install-sh mkinstalldirs \
 		clean_cpu.sh clean_os.sh \
-		clean_vendor.sh cpu.sh ld_lib_path.sh os.sh \
-		vendor.sh \
-		print_unique_pathlist.sh \
-		ld_lib_path.csh fixpath.sh \
+		clean_vendor.sh cpu.sh os.sh vendor.sh \
+		print_unique_pathlist.sh fixpath.sh \
 		filesystem.sh filesystem.csh \
 	        GNUstep.sh GNUstep.csh GNUstep-reset.sh \
 		relative_path.sh strip_makefiles.sh; do \

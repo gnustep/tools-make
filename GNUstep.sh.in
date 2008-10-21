@@ -293,6 +293,13 @@ fi
 #
 # Add path to Tools to PATH
 #
+# NB: functionally, print_unique_pathlist.sh is mostly used to do the
+# fixup_paths thing, since duplicated paths will automatically be
+# checked below when we add them to the PATH.  On the other hand,
+# removing duplicates later can be expensive since we do a echo+grep
+# for each duplicate.  When there are many duplicates it's faster to
+# use print_unique_pathlist.sh first to remove them and skip the
+# echos+greps later.
 GNUSTEP_TOOLS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_TOOLS" "$GNUSTEP_LOCAL_TOOLS" "$GNUSTEP_NETWORK_TOOLS" "$GNUSTEP_SYSTEM_TOOLS" $fixup_paths`
 
 # Now, we check the paths in GNUSTEP_*_ADMIN_TOOLS.  These paths
@@ -320,7 +327,6 @@ done
 #
 old_IFS="$IFS"
 IFS=:
-temp_path=
 for dir in $GNUSTEP_TOOLS_PATHLIST; do
 
   # Prepare the path_fragment
@@ -330,90 +336,181 @@ for dir in $GNUSTEP_TOOLS_PATHLIST; do
     path_fragment="$dir"
   fi
 
-  # Add it to temp_path
-  if [ -z "$temp_path" ]; then
-    temp_path="$path_fragment"
+  # Add it to PATH, but only if not already there (eg, typically /usr/bin is already there)
+  if [ -z "$PATH" ]; then
+    PATH="$path_fragment"
   else
-    temp_path="$temp_path:$path_fragment"
+    if ( echo ${PATH}| grep -v "${path_fragment}" >/dev/null ); then
+      PATH="${path_fragment}:${PATH}"
+    fi
   fi
-
-  unset path_fragment
 
 done
 IFS="$old_IFS"
 unset old_IFS
 unset dir
-if [ -z "$PATH" ]; then
-  PATH="$temp_path"
-else
-  if ( echo ${PATH}| grep -v "${temp_path}" >/dev/null ); then
-    PATH="${temp_path}:${PATH}"
-  fi
-fi
-unset temp_path
+unset path_fragment
 unset GNUSTEP_TOOLS_PATHLIST
 export PATH
 
-. $GNUSTEP_MAKEFILES/ld_lib_path.sh
+# Determine the library paths
+GNUSTEP_LIBRARIES_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARIES" "$GNUSTEP_LOCAL_LIBRARIES" "$GNUSTEP_NETWORK_LIBRARIES" "$GNUSTEP_SYSTEM_LIBRARIES" $fixup_paths`
 
+old_IFS="$IFS"
+IFS=:
+  for dir in $GNUSTEP_LIBRARIES_PATHLIST; do
+
+    # prepare the path_fragment for libraries and this dir
+    if [ "$GNUSTEP_IS_FLATTENED" = "yes" ]; then
+      path_fragment="$dir"
+    else
+      path_fragment="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+    fi
+
+    # Append the path_fragment to lib_paths ... in a different way,
+    # depending on the machine we're on.
+    case "$GNUSTEP_HOST_OS" in
+
+      *nextstep4* | *darwin*)
+        if [ -z "$DYLD_LIBRARY_PATH" ]; then
+          DYLD_LIBRARY_PATH="$path_fragment"
+        else
+          if ( echo ${DYLD_LIBRARY_PATH}|fgrep -v "${path_fragment}" >/dev/null ); then
+	    DYLD_LIBRARY_PATH="$path_fragment:$DYLD_LIBRARY_PATH"
+          fi
+        fi
+        export DYLD_LIBRARY_PATH;;
+
+      *hpux*)
+        if [ -z "$SHLIB_PATH" ]; then
+          SHLIB_PATH="$path_fragment"
+        else
+          if ( echo ${SHLIB_PATH}|fgrep -v "${path_fragment}" >/dev/null ); then
+	    SHLIB_PATH="$path_fragment:$SHLIB_PATH"
+          fi
+        fi
+        export SHLIB_PATH;
+
+        if [ -z "$LD_LIBRARY_PATH" ]; then
+          LD_LIBRARY_PATH="$path_fragment"
+        else
+          if ( echo ${LD_LIBRARY_PATH}| grep -v "${path_fragment}" >/dev/null ); then
+	    LD_LIBRARY_PATH="$path_fragment:$LD_LIBRARY_PATH"
+          fi
+        fi
+        export LD_LIBRARY_PATH;;
+
+      *)
+        if [ -z "$LD_LIBRARY_PATH" ]; then
+          LD_LIBRARY_PATH="$path_fragment"
+        else
+          if ( echo ${LD_LIBRARY_PATH}| grep -v "${path_fragment}" >/dev/null ); then
+	    LD_LIBRARY_PATH="$path_fragment:$LD_LIBRARY_PATH"
+          fi
+        fi
+        export LD_LIBRARY_PATH;;
+    esac
+  done
+IFS="$old_IFS"
+unset old_IFS
+unset dir
+unset path_fragment
+
+unset GNUSTEP_LIBRARIES_PATHLIST
+
+
+# Determine the framework paths - but only on Darwin since it's the
+# only platform where this is of any use.
+case "$GNUSTEP_HOST_OS" in
+
+  *darwin*)
+    GNUSTEP_FRAMEWORKS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY/Frameworks" "$GNUSTEP_LOCAL_LIBRARY/Frameworks" "$GNUSTEP_NETWORK_LIBRARY/Frameworks" "$GNUSTEP_SYSTEM_LIBRARY/Frameworks" $fixup_paths`
+
+    old_IFS="$IFS"
+    IFS=:
+    for dir in $GNUSTEP_FRAMEWORKS_PATHLIST; do
+
+      # prepare the path_fragment for frameworks
+      path_fragment="$dir"
+
+# The code below has been temporarily removed, because...
+# Frameworks in GNUstep-make are supported by creating a link like
+# 
+#   Libraries/libMyFramework.dylib ->
+#      Frameworks/MyFramework.framework/Versions/Current/libMyFramework.dylib,
+#
+# to mitigate the fact that FSF GCC does not support a -framework flag.
+#
+# On Darwin, however, we partially emulate -framework by setting the
+# "install_name" to the framework name during linking. The dynamic
+# linker (dyld) is smart enough to find the framework under this name,
+# but only if DYLD_FRAMEWORK_PATH is set (unless we set the
+# "install_name" to an absolute path, which we don't). We'd really like
+# to fully support -framework, though.
+#
+# Use otool -L MyApplication.app/MyApplication, for instance, to see
+# how the shared libraries/frameworks are linked.
+#
+#    if [ "$LIBRARY_COMBO" = "apple-apple-apple" -o \
+#         "$LIBRARY_COMBO" = "apple" ]; then
+    
+      if [ -z "$DYLD_FRAMEWORK_PATH" ]; then
+        DYLD_FRAMEWORK_PATH="$path_fragment"
+      else
+        if ( echo ${DYLD_FRAMEWORK_PATH}|
+             fgrep -v "${path_fragment}" >/dev/null ); then
+          DYLD_FRAMEWORK_PATH="$path_fragment:$DYLD_FRAMEWORK_PATH"
+        fi
+      fi
+      export DYLD_FRAMEWORK_PATH
+    done
+
+    IFS="$old_IFS"
+    unset old_IFS
+    unset dir
+    unset path_fragment
+
+    unset GNUSTEP_FRAMEWORKS_PATHLIST
+    ;;
+
+  *)
+    ;;
+esac
+
+#
+# Setup Java CLASSPATH and Guile GUILE_LOAD_PATH
+#
 GNUSTEP_LIBRARY_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_LIBRARY" "$GNUSTEP_LOCAL_LIBRARY" "$GNUSTEP_NETWORK_LIBRARY" "$GNUSTEP_SYSTEM_LIBRARY" $fixup_paths`
 
 old_IFS="$IFS"
 IFS=:
-gnustep_class_path=
 for dir in $GNUSTEP_LIBRARY_PATHLIST; do
 
-  if [ -z "$gnustep_class_path" ]; then
-    gnustep_class_path="$dir/Libraries/Java"
+  path_fragment="$dir/Libraries/Java"
+  if [ -z "$CLASSPATH" ]; then
+    CLASSPATH="$path_fragment"
   else
-    gnustep_class_path="$gnustep_class_path:$dir/Libraries/Java"
+    if ( echo ${CLASSPATH}| grep -v "${path_fragment}" >/dev/null ); then
+      CLASSPATH="$CLASSPATH:$path_fragment"
+    fi
+  fi
+
+  path_fragment="$dir/Libraries/Guile"
+  if [ -z "$GUILE_LOAD_PATH" ]; then
+    GUILE_LOAD_PATH="$path_fragment"
+  else
+    if ( echo ${GUILE_LOAD_PATH}| grep -v "${path_fragment}" >/dev/null ); then
+      GUILE_LOAD_PATH="$path_fragment:$GUILE_LOAD_PATH"
+    fi
   fi
 
 done
 IFS="$old_IFS"
 unset old_IFS
 unset dir
-
-if [ -z "$CLASSPATH" ]; then
-  CLASSPATH="$gnustep_class_path"
-else
-  if ( echo ${CLASSPATH}| grep -v "${gnustep_class_path}" >/dev/null ); then
-    CLASSPATH="$CLASSPATH:$gnustep_class_path"
-  fi
-fi
-
-unset gnustep_class_path
+unset path_fragment
 export CLASSPATH
-
-#
-# Setup path for loading guile modules too.
-#
-old_IFS="$IFS"
-IFS=:
-guile_paths=
-for dir in $GNUSTEP_LIBRARY_PATHLIST; do
-
-  if [ -z "$guile_paths" ]; then
-    guile_paths="$dir/Libraries/Guile"
-  else
-    guile_paths="$guile_paths:$dir/Libraries/Guile"
-  fi
-
-done
-IFS="$old_IFS"
-unset old_IFS
-unset dir
-
-if [ -z "$GUILE_LOAD_PATH" ]; then
-  GUILE_LOAD_PATH="$guile_paths"
-else
-  if ( echo ${GUILE_LOAD_PATH}| grep -v "${guile_paths}" >/dev/null ); then
-    GUILE_LOAD_PATH="$guile_paths:$GUILE_LOAD_PATH"
-  fi
-fi
 export GUILE_LOAD_PATH
-unset guile_paths
-unset GNUSTEP_LIBRARY_PATHLIST
 
 #
 # Make sure info files, that we install by default into
@@ -423,33 +520,23 @@ unset GNUSTEP_LIBRARY_PATHLIST
 GNUSTEP_INFO_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_DOC_INFO" "$GNUSTEP_LOCAL_DOC_INFO" "$GNUSTEP_NETWORK_DOC_INFO" "$GNUSTEP_SYSTEM_DOC_INFO" $fixup_paths`
 old_IFS="$IFS"
 IFS=:
-gnustep_info_path=
 for dir in $GNUSTEP_INFO_PATHLIST; do
 
-  if [ -z "$gnustep_info_path" ]; then
-    gnustep_info_path="$dir"
+  if [ -z "$INFOPATH" ]; then
+    # The ':' at the end means to use the built-in paths after searching
+    # the INFOPATH we provide.
+    INFOPATH="${dir}:"
   else
-    gnustep_info_path="$gnustep_info_path:$dir"
+    if ( echo ${INFOPATH}| grep -v "${dir}" >/dev/null ); then
+      INFOPATH="$INFOPATH:${dir}:"
+    fi
   fi
-
 done
 IFS="$old_IFS"
 unset old_IFS
 unset dir
-
-if [ -z "$INFOPATH" ]; then
-  # The ':' at the end means to use the built-in paths after searching
-  # the INFOPATH we provide.
-  INFOPATH="${gnustep_info_path}:"
-else
-  if ( echo ${INFOPATH}| grep -v "${gnustep_info_path}" >/dev/null ); then
-    INFOPATH="$INFOPATH:${gnustep_info_path}:"
-  fi
-fi
-
-unset gnustep_info_path
-export INFOPATH
 unset GNUSTEP_INFO_PATHLIST
+export INFOPATH
 
 #
 # Clean up the environment by removing the filesystem variables.  Do
