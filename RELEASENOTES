@@ -5,7 +5,41 @@ The release notes include descriptions of API changes, behavior changes
 and other information that might help developers and users migrate to
 using a newer version of the make system.
 
-1.1 Version 2.0.6
+1.1 Version 2.0.7
+=================
+
+`--no-print-directory'
+     gnustep-make now uses the -no-print-directory flag when invoking
+     make recursively, so the output has changed - starting from 2.0.7
+     it should be shorter and more readable.
+
+`change to intermediate object file names'
+     gnustep-make now supports having in the same project source files
+     with the same name, but a different extension - for example file.c
+     and file.m.  The names of intermediate object files have been
+     internally changed (for example, from file.o to file.c.o) to
+     support this.
+
+`change in path checking algorithm in GNUstep.sh and GNUstep.csh'
+     GNUstep.sh and GNUstep.csh perform more careful checks for
+     duplicate paths when adding paths to PATH and other path
+     variables.  Now they check each path separately before adding it,
+     which in some cases will produce smaller and less intrusive
+     additions to PATH; in particular, on FHS filesystem layout, they
+     will never add /usr/bin or other system paths if they are already
+     there.  If you are in a situation where there is an overlap
+     between GNUstep paths and system paths and you are using
+     GNUstep.sh or GNUstep.csh, you may want to check the new values of
+     PATH, CLASSPATH, GUILE_LOAD_PATH, INFOPATH, LD_LIBRARY_PATH and
+     similar variables since they may be different from the old ones.
+
+`test applications linked against gnustep-gui by default'
+     Test applications (that is, applications created using
+     test-application.make) are now linked against gnustep-gui by
+     default.
+
+
+1.2 Version 2.0.6
 =================
 
 `GNUSTEP_ABSOLUTE_INSTALL_PATHS'
@@ -33,7 +67,7 @@ using a newer version of the make system.
      go in that subdirectory and install it.
 
 
-1.2 Version 2.0.5
+1.3 Version 2.0.5
 =================
 
 `default filesystem layout on apple-apple-apple'
@@ -78,7 +112,7 @@ using a newer version of the make system.
      variable (see above).
 
 
-1.3 Version 2.0.0
+1.4 Version 2.0.0
 =================
 
 Version 2.0.0 is a new major release of gnustep-make which includes a
