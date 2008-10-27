@@ -1090,7 +1090,7 @@ if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi
 if test "$OBJC_RUNTIME_LIB" = "apple"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
 fi
 if test "$OBJC_THREAD" != ""; then
   LIBS="-lobjc $LIBS $OBJC_THREAD"
@@ -1117,6 +1117,12 @@ elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
   fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
+  LIBS="-lobjc $LIBS"
+  AC_TRY_RUN([#include "config_thread.m"], 
+	objc_threaded="works",
+	objc_threaded="", objc_threaded="works")
+elif test "$OBJC_RUNTIME_LIB" = "apple"; then
+  # Apple doesn't need anything extra for threads
   LIBS="-lobjc $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",

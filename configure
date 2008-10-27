@@ -5235,7 +5235,7 @@ if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
 fi
 if test "$OBJC_RUNTIME_LIB" = "apple"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
 fi
 if test "$OBJC_THREAD" != ""; then
   LIBS="-lobjc $LIBS $OBJC_THREAD"
@@ -5472,6 +5472,53 @@ fi
   fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
+  LIBS="-lobjc $LIBS"
+  if test "$cross_compiling" = yes; then
+  objc_threaded="works"
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+#include "config_thread.m"
+_ACEOF
+rm -f conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  objc_threaded="works"
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+objc_threaded=""
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+elif test "$OBJC_RUNTIME_LIB" = "apple"; then
+  # Apple doesn't need anything extra for threads
   LIBS="-lobjc $LIBS"
   if test "$cross_compiling" = yes; then
   objc_threaded="works"
