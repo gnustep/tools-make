@@ -1296,6 +1296,13 @@ AC_MSG_CHECKING(if the compiler supports precompiled headers)
 
 # So we prefer to actually try them out! ;-)
 
+# (Unfortunately, even that is not enough since we have reports of
+# 4.1.1 GCC prereleases that pass this simple test, but where any
+# serious usage of precompiled headers (ie, including
+# Foundation/Foundation.h and AppKit/AppKit.h) doesn't work.  So in
+# addition to doing this test, we also forcefully disable precompiled
+# headers in 4.1)
+
 # What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc
 # can compile and use a precompiled header.
 
@@ -1306,14 +1313,18 @@ GCC_WITH_PRECOMPILED_HEADERS="no"
 if test ! "${GCC}" = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
-  gs_precomp_test_builddir="`pwd`"
-  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_builddir"; echo $?) 2>&5`
-  if test "$gs_precomp_test_results" = "0"; then
-    GCC_WITH_PRECOMPILED_HEADERS="yes"
-    AC_MSG_RESULT(yes)
+  if test "${gs_cv_gcc_parsed_version}" = "4.1" >&5 2>&5; then
+    AC_MSG_RESULT(no: gcc 4.1 is often shipped with broken precompiled headers)
   else
-    # Please check the config-precomp-test.log log file for more info
-    AC_MSG_RESULT(no: old or buggy gcc)
+    gs_precomp_test_builddir="`pwd`"
+    gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_builddir"; echo $?) 2>&5`
+    if test "$gs_precomp_test_results" = "0"; then
+      GCC_WITH_PRECOMPILED_HEADERS="yes"
+      AC_MSG_RESULT(yes)
+    else
+      # Please check the config-precomp-test.log log file for more info
+      AC_MSG_RESULT(no: old or buggy gcc)
+    fi
   fi
 fi
 

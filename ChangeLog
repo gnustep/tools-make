@@ -1,5 +1,11 @@
 2008-10-27  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac: Disable precompiled headers on gcc 4.1 since
+	there is no reliable ways to determine if they work or not.
+	* configure: Regenerated.
+
+2008-10-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Added special case when checking for thread
 	support on Apple OS X - it should now detect that Apple OS X
 	supports threads but needs no threading library specified.  This
