@@ -1084,7 +1084,7 @@ saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  CFLAGS="$CFLAGS -fgnu-runtime"
+  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
 fi
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"

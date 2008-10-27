@@ -1,13 +1,13 @@
 /* Test whether Objective-C runtime was compiled with thread support */
 
-#ifdef gnu-runtime
+#ifdef GNU_RUNTIME
 /* Dummy NXConstantString impl for so libobjc that doesn't include it */
 #include <objc/NXConstStr.h>
 @implementation NXConstantString
 @end
 #endif
 
-#ifdef gnu-runtime
+#ifdef GNU_RUNTIME
 #include <objc/thr.h>
 #endif
 
@@ -18,7 +18,7 @@ main()
 {
   id o = [Object new];
 
-#ifdef gnu-runtime
+#ifdef GNU_RUNTIME
   return (objc_thread_detach (@selector(hash), o, nil) == NULL) ? -1 : 0;
 #else
   /* On Apple, there is no ObjC-specific thread library.  We need to
