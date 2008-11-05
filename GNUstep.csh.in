@@ -241,7 +241,8 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARIES_PATHLIST}"'; do
 
   switch ( "${GNUSTEP_HOST_OS}" )
 
-    case *nextstep4* | *darwin* :
+    case *nextstep4* :
+    case *darwin* :
       if ( $?DYLD_LIBRARY_PATH == 0 ) then
 	  setenv DYLD_LIBRARY_PATH "${path_fragment}"
       else if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
