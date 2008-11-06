@@ -1,3 +1,9 @@
+2008-11-06  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* GNUstep.csh.in: Fix incorrect case pattern which causes
+	initialization of DYLD_LIBRARY_PATH on Darwin and NEXTSTEP systems
+	to be skipped.
+
 2008-10-27  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Disable precompiled headers on gcc 4.1 since
