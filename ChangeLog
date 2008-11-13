@@ -1,3 +1,7 @@
+2008-11-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MingW: Change instructions to use libffi
+
 2008-11-06  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* GNUstep.csh.in: Fix incorrect case pattern which causes
