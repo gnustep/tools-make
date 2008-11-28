@@ -1,3 +1,9 @@
+2008-11-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* print_unique_pathlist.sh: Reverse the order of the path fragments
+	so that, when the caller iterates through them and prepends them to
+	other paths, they end up prepended in the correct order.
+
 2008-11-13  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/README.MingW: Change instructions to use libffi
