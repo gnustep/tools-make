@@ -210,7 +210,8 @@ set GNUSTEP_TOOLS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTE
 
 foreach dir ( "${GNUSTEP_SYSTEM_ADMIN_TOOLS}" "${GNUSTEP_NETWORK_ADMIN_TOOLS}" "${GNUSTEP_LOCAL_ADMIN_TOOLS}" "${GNUSTEP_USER_ADMIN_TOOLS}" )
   if ( -d "${dir}"  &&  -w "${dir}" ) then
-    if ( { (echo "${GNUSTEP_TOOLS_PATHLIST}" | fgrep -v "${dir}" >/dev/null) } ) then
+    if ( { (echo ":${GNUSTEP_TOOLS_PATHLIST}:"\
+      |grep -v ":${dir}:" >/dev/null) } ) then
       setenv GNUSTEP_TOOLS_PATHLIST "${dir}:${GNUSTEP_TOOLS_PATHLIST}"
     endif
   endif
@@ -224,7 +225,8 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_TOOLS_PATHLIST}"'; do ech
 
   if ( ! ${?PATH} ) then
     setenv PATH "${path_fragment}"
-  else if ( { (echo "$PATH" | fgrep -v "$path_fragment" >/dev/null) } ) then
+  else if ( { (echo ":${PATH}:"\
+    |grep -v ":${path_fragments}:" >/dev/null) } ) then
     setenv PATH "${path_fragment}:${PATH}"
   endif
 end
@@ -245,7 +247,8 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARIES_PATHLIST}"'; do
     case *darwin* :
       if ( $?DYLD_LIBRARY_PATH == 0 ) then
 	  setenv DYLD_LIBRARY_PATH "${path_fragment}"
-      else if ( { (echo "${DYLD_LIBRARY_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+      else if ( { (echo ":${DYLD_LIBRARY_PATH}:"\
+        |grep -v ":${path_fragment}:" >/dev/null) } ) then
 	  setenv DYLD_LIBRARY_PATH "${path_fragment}:${DYLD_LIBRARY_PATH}"
       endif
       breaksw
@@ -253,13 +256,15 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARIES_PATHLIST}"'; do
     case *hpux* :
       if ( $?SHLIB_PATH == 0 ) then
 	  setenv SHLIB_PATH "${path_fragment}"
-      else if ( { (echo "${SHLIB_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+      else if ( { (echo ":${SHLIB_PATH}:"\
+	|grep -v ":${path_fragment}:" >/dev/null) } ) then
 	  setenv SHLIB_PATH "${path_fragment}:${SHLIB_PATH}"
       endif
 
       if ( $?LD_LIBRARY_PATH == 0 ) then
 	  setenv LD_LIBRARY_PATH "${path_fragment}"
-      else if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+      else if ( { (echo ":${LD_LIBRARY_PATH}:"\
+	|grep -v ":${path_fragment}:" >/dev/null) } ) then
 	  setenv LD_LIBRARY_PATH "${path_fragment}:${LD_LIBRARY_PATH}"
       endif
 
@@ -268,7 +273,8 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARIES_PATHLIST}"'; do
     case * :
       if ( $?LD_LIBRARY_PATH == 0 ) then
 	  setenv LD_LIBRARY_PATH "${path_fragment}"
-      else if ( { (echo "${LD_LIBRARY_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+      else if ( { (echo ":${LD_LIBRARY_PATH}:"\
+	|grep -v ":${path_fragment}:" >/dev/null) } ) then
 	  setenv LD_LIBRARY_PATH "${path_fragment}:${LD_LIBRARY_PATH}"
       endif
 
@@ -285,7 +291,8 @@ switch ( "${GNUSTEP_HOST_OS}" )
       set path_fragment="$dir"
       if ( $?DYLD_FRAMEWORK_PATH == 0 ) then
         setenv DYLD_FRAMEWORK_PATH "${path_fragment}"
-      else if ( { (echo "${DYLD_FRAMEWORK_PATH}" | fgrep -v "${path_fragment}" >/dev/null) } ) then
+      else if ( { (echo ":${DYLD_FRAMEWORK_PATH}:"\
+	|grep -v ":${path_fragment}:" >/dev/null) } ) then
         setenv DYLD_FRAMEWORK_PATH "${path_fragment}:${DYLD_FRAMEWORK_PATH}"
       endif
     end
@@ -303,14 +310,16 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARY_PATHLIST}"'; do e
   set path_fragment="${dir}/Libraries/Java"
   if ( ! ${?CLASSPATH} ) then
     setenv CLASSPATH "${path_fragment}"
-  else if ( { (echo "$CLASSPATH" | fgrep -v "$path_fragment" >/dev/null) } ) then
+  else if ( { (echo ":${CLASSPATH}:"\
+    |grep -v ":${path_fragment}:" >/dev/null) } ) then
     setenv CLASSPATH "${CLASSPATH}:${path_fragment}"
   endif
 
   set path_fragment="${dir}/Libraries/Guile"
   if ( ! ${?GUILE_LOAD_PATH} ) then
     setenv GUILE_LOAD_PATH "${path_fragment}"
-  else if ( { (echo "$GUILE_LOAD_PATH" | fgrep -v "$path_fragment" >/dev/null) } ) then
+  else if ( { (echo ":${GUILE_LOAD_PATH}:"\
+    |grep -v ":${path_fragment}:" >/dev/null) } ) then
     setenv GUILE_LOAD_PATH "${path_fragment}:${GUILE_LOAD_PATH}"
   endif
 
@@ -324,7 +333,8 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_INFO_PATHLIST}"'; do echo
 
   if ( ! ${?INFOPATH} ) then
     setenv INFOPATH "${dir}:"
-  else if ( { (echo "${INFOPATH}" | fgrep -v "${dir}" >/dev/null) } ) then
+  else if ( { (echo ":${INFOPATH}:"\
+    |grep -v ":${dir}:" >/dev/null) } ) then
     setenv INFOPATH "${INFOPATH}:${dir}:"
   endif
 

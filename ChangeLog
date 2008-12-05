@@ -1,3 +1,14 @@
+2008-12-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.sh.in:
+	* GNUstep.csh.in:
+	Fix the code for detecting path fragments within a path ... it was
+	just grepping for the fragments without delimiters, so it would think
+	a fragment was present if that fragment happened to be a substring of
+	something which was present.
+	eg. if /usr/GNUstep/Local/Tools/Admin was present, then it would think
+	that /usr/GNUstep/Local/Tools was also present.
+
 2008-11-28  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* print_unique_pathlist.sh: Reverse the order of the path fragments

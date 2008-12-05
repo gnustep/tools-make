@@ -316,7 +316,8 @@ GNUSTEP_TOOLS_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_US
 for dir in "$GNUSTEP_SYSTEM_ADMIN_TOOLS" "$GNUSTEP_NETWORK_ADMIN_TOOLS" "$GNUSTEP_LOCAL_ADMIN_TOOLS" "$GNUSTEP_USER_ADMIN_TOOLS"; do
   if [ -d "$dir"  -a  -w "$dir" ]; then
     # Only add the new dir if it's not already in GNUSTEP_TOOLS_PATHLIST
-    if (echo $GNUSTEP_TOOLS_PATHLIST | grep -v "$dir" >/dev/null); then
+    if (echo ":${GNUSTEP_TOOLS_PATHLIST}:" \
+      |grep -v ":${dir}:" >/dev/null); then
       GNUSTEP_TOOLS_PATHLIST="$dir:$GNUSTEP_TOOLS_PATHLIST"
     fi
   fi
@@ -340,7 +341,8 @@ for dir in $GNUSTEP_TOOLS_PATHLIST; do
   if [ -z "$PATH" ]; then
     PATH="$path_fragment"
   else
-    if ( echo ${PATH}| grep -v "${path_fragment}" >/dev/null ); then
+    if ( echo ":${PATH}:"\
+      |grep -v ":${path_fragment}:" >/dev/null ); then
       PATH="${path_fragment}:${PATH}"
     fi
   fi
@@ -375,7 +377,8 @@ IFS=:
         if [ -z "$DYLD_LIBRARY_PATH" ]; then
           DYLD_LIBRARY_PATH="$path_fragment"
         else
-          if ( echo ${DYLD_LIBRARY_PATH}|fgrep -v "${path_fragment}" >/dev/null ); then
+          if ( echo ":${DYLD_LIBRARY_PATH}:"\
+	    |grep -v ":${path_fragment}:" >/dev/null ); then
 	    DYLD_LIBRARY_PATH="$path_fragment:$DYLD_LIBRARY_PATH"
           fi
         fi
@@ -385,7 +388,8 @@ IFS=:
         if [ -z "$SHLIB_PATH" ]; then
           SHLIB_PATH="$path_fragment"
         else
-          if ( echo ${SHLIB_PATH}|fgrep -v "${path_fragment}" >/dev/null ); then
+          if ( echo ":${SHLIB_PATH}:"\
+	    |grep -v ":${path_fragment}:" >/dev/null ); then
 	    SHLIB_PATH="$path_fragment:$SHLIB_PATH"
           fi
         fi
@@ -394,7 +398,8 @@ IFS=:
         if [ -z "$LD_LIBRARY_PATH" ]; then
           LD_LIBRARY_PATH="$path_fragment"
         else
-          if ( echo ${LD_LIBRARY_PATH}| grep -v "${path_fragment}" >/dev/null ); then
+          if ( echo ":${LD_LIBRARY_PATH}:"\
+	    |grep -v ":${path_fragment}:" >/dev/null ); then
 	    LD_LIBRARY_PATH="$path_fragment:$LD_LIBRARY_PATH"
           fi
         fi
@@ -404,7 +409,8 @@ IFS=:
         if [ -z "$LD_LIBRARY_PATH" ]; then
           LD_LIBRARY_PATH="$path_fragment"
         else
-          if ( echo ${LD_LIBRARY_PATH}| grep -v "${path_fragment}" >/dev/null ); then
+          if ( echo ":${LD_LIBRARY_PATH}:"\
+	    |grep -v ":${path_fragment}:" >/dev/null ); then
 	    LD_LIBRARY_PATH="$path_fragment:$LD_LIBRARY_PATH"
           fi
         fi
@@ -457,8 +463,8 @@ case "$GNUSTEP_HOST_OS" in
       if [ -z "$DYLD_FRAMEWORK_PATH" ]; then
         DYLD_FRAMEWORK_PATH="$path_fragment"
       else
-        if ( echo ${DYLD_FRAMEWORK_PATH}|
-             fgrep -v "${path_fragment}" >/dev/null ); then
+        if ( echo ":${DYLD_FRAMEWORK_PATH}:"\
+	  |grep -v ":${path_fragment}:" >/dev/null ); then
           DYLD_FRAMEWORK_PATH="$path_fragment:$DYLD_FRAMEWORK_PATH"
         fi
       fi
@@ -490,7 +496,8 @@ for dir in $GNUSTEP_LIBRARY_PATHLIST; do
   if [ -z "$CLASSPATH" ]; then
     CLASSPATH="$path_fragment"
   else
-    if ( echo ${CLASSPATH}| grep -v "${path_fragment}" >/dev/null ); then
+    if ( echo ":${CLASSPATH}:"\
+      |grep -v ":${path_fragment}:" >/dev/null ); then
       CLASSPATH="$CLASSPATH:$path_fragment"
     fi
   fi
@@ -499,7 +506,8 @@ for dir in $GNUSTEP_LIBRARY_PATHLIST; do
   if [ -z "$GUILE_LOAD_PATH" ]; then
     GUILE_LOAD_PATH="$path_fragment"
   else
-    if ( echo ${GUILE_LOAD_PATH}| grep -v "${path_fragment}" >/dev/null ); then
+    if ( echo ":${GUILE_LOAD_PATH}:"\
+      |grep -v ":${path_fragment}:" >/dev/null ); then
       GUILE_LOAD_PATH="$path_fragment:$GUILE_LOAD_PATH"
     fi
   fi
@@ -527,7 +535,8 @@ for dir in $GNUSTEP_INFO_PATHLIST; do
     # the INFOPATH we provide.
     INFOPATH="${dir}:"
   else
-    if ( echo ${INFOPATH}| grep -v "${dir}" >/dev/null ); then
+    if ( echo ":${INFOPATH}:"\
+      |grep -v ":${dir}:" >/dev/null ); then
       INFOPATH="$INFOPATH:${dir}:"
     fi
   fi
