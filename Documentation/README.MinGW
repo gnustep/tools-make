@@ -1,5 +1,5 @@
 Date:	28-Feb-2007 (tested under Windows XP)
-Update: 13-Now-2008
+Update: 05-Dec-2008
 Author: Nicola Pero <nicola.pero@meta-innovation.com>
         after Richard Frith-Macdonald <rfm@gnu.org> and others
 
@@ -218,11 +218,14 @@ gnustep-make should have detected your custom libobjc.
 
 Download libffi from the GNUstep website, and type:
 
-./configure --prefix=/mingw --includedir=/mingw/include
+./configure --prefix=/mingw
 make
 make install
+mv /mingw/lib/libffi*/include/* /mingw/include
 
 (if you get a popup about contest.exe failing, just ignore it)
+NB. The headers have to be moved manually because the package wwon't install
+them in the right place.
 
 
 12. Installing additional packages
@@ -277,7 +280,7 @@ from linking correctly if you try to use it.
 
 Go in gnustep-base, and type 
 
-./configure --enable-libffi
+./configure
 make
 make install
 
