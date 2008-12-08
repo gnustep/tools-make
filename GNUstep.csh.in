@@ -226,7 +226,7 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_TOOLS_PATHLIST}"'; do ech
   if ( ! ${?PATH} ) then
     setenv PATH "${path_fragment}"
   else if ( { (echo ":${PATH}:"\
-    |grep -v ":${path_fragments}:" >/dev/null) } ) then
+    |grep -v ":${path_fragment}:" >/dev/null) } ) then
     setenv PATH "${path_fragment}:${PATH}"
   endif
 end
