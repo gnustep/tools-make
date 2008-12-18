@@ -136,7 +136,17 @@ include $(GNUSTEP_MAKEFILES)/filesystem.make
 #
 ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), )
   GNUSTEP_INSTALLATION_DOMAIN = LOCAL
-endif  
+
+  # Exception - support the GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN option (turned 
+  # on by using "./configure --disable-packages" in gnustep-make) which causes
+  # it to install by default into SYSTEM (instead of LOCAL) all 'core' GNUstep
+  # software - which has the GNUSTEP_CORE_SOFTWARE variable set.
+  ifeq ($(GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN), YES)
+    ifeq ($(GNUSTEP_CORE_SOFTWARE), YES)
+      GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
+    endif
+  endif
+endif
 
 # Safety check.  Very annoying when you mistype and you end up
 # installing into /. ;-)

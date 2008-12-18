@@ -960,6 +960,55 @@ fi
 AC_SUBST(GNUSTEP_MULTI_PLATFORM)
 
 #--------------------------------------------------------------------
+# Do we need to install 'core' software into the System domain ?
+#--------------------------------------------------------------------
+#
+# This option install the 'core' GNUstep software into the System
+# domain; as an option, it conflicts with packages - the System domain
+# is supposed to be reserved for them.  It is extremely dangerous to
+# enable it whenever packages are involved, and for this reason we
+# named it "--disable-packages" so that no packager will be tempted
+# to use it. :-)
+#
+AC_MSG_CHECKING(if we should assume packages are never involved so we install core software into System by default)
+AC_ARG_ENABLE(packages, [
+--disable-packages
+   Disabling packages causes 'core' GNUstep software to be installed
+   into the System domain by default.
+   The System domain is normally reserved for 'packages', that is
+   the components shipped with your GNUstep system.  But if you're 
+   building everything from source yourself, the System domain would
+   never be used then.  In that case, you can use this option to change
+   the default installation domain for 'core' GNUstep software, 
+   installing them into System (instead of Local) by default.  Then,
+   gnustep-make will by default install your 'core' GNUstep software
+   into System, and everything else into Local.  This is only the
+   default; you can always install a specific piece of software into 
+   whatever domain you want by using GNUSTEP_INSTALLATION_DOMAIN as
+   in 'make install GNUSTEP_INSTALLATION_DOMAIN=LOCAL'.
+   Disabling 'packages' is very dangerous for end-users since they might be
+   overwriting their System installation if they compile and install
+   source code downloaded from the internet (eg, if they're trying a new
+   version of Gorm).  Unless you are one of these guys building
+   everything from source and with a reason to put core packages into
+   System, please do not use this configure option.  In particular,
+   whenever packages are involved, packages must *not* be disabled.
+   Packagers (people building ready-to-use GNUstep distributions to be
+   distributed to end-users) must never use this option.
+], 
+  ac_cv_packages=$enableval,
+  ac_cv_packages="undefined")
+
+if test "$ac_cv_packages" = "no"; then
+  GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN=YES
+  AC_MSG_RESULT(yes);
+else
+  GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN=NO
+  AC_MSG_RESULT(no);
+fi
+AC_SUBST(GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN)
+
+#--------------------------------------------------------------------
 # Build backend bundles (on by default)
 #--------------------------------------------------------------------
 AC_ARG_ENABLE(backend-bundle, [

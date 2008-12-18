@@ -273,7 +273,7 @@ PACKAGE_BUGREPORT=
 
 ac_unique_file="application.make"
 ac_default_prefix=NONE
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_MAKE_STRICT_V2_MODE GNUSTEP_ABSOLUTE_INSTALL_PATHS GNUSTEP_CONFIG_FILE GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_SYSTEM_APPS GNUSTEP_SYSTEM_ADMIN_APPS GNUSTEP_SYSTEM_WEB_APPS GNUSTEP_SYSTEM_TOOLS GNUSTEP_SYSTEM_ADMIN_TOOLS GNUSTEP_SYSTEM_LIBRARY GNUSTEP_SYSTEM_HEADERS GNUSTEP_SYSTEM_LIBRARIES GNUSTEP_SYSTEM_DOC GNUSTEP_SYSTEM_DOC_INFO GNUSTEP_SYSTEM_DOC_MAN GNUSTEP_NETWORK_APPS GNUSTEP_NETWORK_ADMIN_APPS GNUSTEP_NETWORK_WEB_APPS GNUSTEP_NETWORK_TOOLS GNUSTEP_NETWORK_ADMIN_TOOLS GNUSTEP_NETWORK_LIBRARY GNUSTEP_NETWORK_HEADERS GNUSTEP_NETWORK_LIBRARIES GNUSTEP_NETWORK_DOC GNUSTEP_NETWORK_DOC_INFO GNUSTEP_NETWORK_DOC_MAN GNUSTEP_LOCAL_APPS GNUSTEP_LOCAL_ADMIN_APPS GNUSTEP_LOCAL_WEB_APPS GNUSTEP_LOCAL_TOOLS GNUSTEP_LOCAL_ADMIN_TOOLS GNUSTEP_LOCAL_LIBRARY GNUSTEP_LOCAL_HEADERS GNUSTEP_LOCAL_LIBRARIES GNUSTEP_LOCAL_DOC GNUSTEP_LOCAL_DOC_INFO GNUSTEP_LOCAL_DOC_MAN GNUSTEP_USER_DIR_APPS GNUSTEP_USER_DIR_ADMIN_APPS GNUSTEP_USER_DIR_WEB_APPS GNUSTEP_USER_DIR_TOOLS GNUSTEP_USER_DIR_ADMIN_TOOLS GNUSTEP_USER_DIR_LIBRARY GNUSTEP_USER_DIR_HEADERS GNUSTEP_USER_DIR_LIBRARIES GNUSTEP_USER_DIR_DOC GNUSTEP_USER_DIR_DOC_INFO GNUSTEP_USER_DIR_DOC_MAN GNUSTEP_SYSTEM_USERS_DIR GNUSTEP_NETWORK_USERS_DIR GNUSTEP_LOCAL_USERS_DIR GNUSTEP_SYSTEM_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_USER_DIR GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS GNUMAKE MAKE_WITH_INFO_FUNCTION GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LATEX2HTML LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_MAKE_STRICT_V2_MODE GNUSTEP_ABSOLUTE_INSTALL_PATHS GNUSTEP_CONFIG_FILE GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_SYSTEM_APPS GNUSTEP_SYSTEM_ADMIN_APPS GNUSTEP_SYSTEM_WEB_APPS GNUSTEP_SYSTEM_TOOLS GNUSTEP_SYSTEM_ADMIN_TOOLS GNUSTEP_SYSTEM_LIBRARY GNUSTEP_SYSTEM_HEADERS GNUSTEP_SYSTEM_LIBRARIES GNUSTEP_SYSTEM_DOC GNUSTEP_SYSTEM_DOC_INFO GNUSTEP_SYSTEM_DOC_MAN GNUSTEP_NETWORK_APPS GNUSTEP_NETWORK_ADMIN_APPS GNUSTEP_NETWORK_WEB_APPS GNUSTEP_NETWORK_TOOLS GNUSTEP_NETWORK_ADMIN_TOOLS GNUSTEP_NETWORK_LIBRARY GNUSTEP_NETWORK_HEADERS GNUSTEP_NETWORK_LIBRARIES GNUSTEP_NETWORK_DOC GNUSTEP_NETWORK_DOC_INFO GNUSTEP_NETWORK_DOC_MAN GNUSTEP_LOCAL_APPS GNUSTEP_LOCAL_ADMIN_APPS GNUSTEP_LOCAL_WEB_APPS GNUSTEP_LOCAL_TOOLS GNUSTEP_LOCAL_ADMIN_TOOLS GNUSTEP_LOCAL_LIBRARY GNUSTEP_LOCAL_HEADERS GNUSTEP_LOCAL_LIBRARIES GNUSTEP_LOCAL_DOC GNUSTEP_LOCAL_DOC_INFO GNUSTEP_LOCAL_DOC_MAN GNUSTEP_USER_DIR_APPS GNUSTEP_USER_DIR_ADMIN_APPS GNUSTEP_USER_DIR_WEB_APPS GNUSTEP_USER_DIR_TOOLS GNUSTEP_USER_DIR_ADMIN_TOOLS GNUSTEP_USER_DIR_LIBRARY GNUSTEP_USER_DIR_HEADERS GNUSTEP_USER_DIR_LIBRARIES GNUSTEP_USER_DIR_DOC GNUSTEP_USER_DIR_DOC_INFO GNUSTEP_USER_DIR_DOC_MAN GNUSTEP_SYSTEM_USERS_DIR GNUSTEP_NETWORK_USERS_DIR GNUSTEP_LOCAL_USERS_DIR GNUSTEP_SYSTEM_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_USER_DIR GNUSTEP_MULTI_PLATFORM GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS GNUMAKE MAKE_WITH_INFO_FUNCTION GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LATEX2HTML LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -884,6 +884,31 @@ Optional Features:
    this together with --disable-flattened if you have a single GNUstep
    installation with fat binaries that is being shared over the network
    by a variety of machines with different hardware and o/s.
+
+
+--disable-packages
+   Disabling packages causes 'core' GNUstep software to be installed
+   into the System domain by default.
+   The System domain is normally reserved for 'packages', that is
+   the components shipped with your GNUstep system.  But if you're
+   building everything from source yourself, the System domain would
+   never be used then.  In that case, you can use this option to change
+   the default installation domain for 'core' GNUstep software,
+   installing them into System (instead of Local) by default.  Then,
+   gnustep-make will by default install your 'core' GNUstep software
+   into System, and everything else into Local.  This is only the
+   default; you can always install a specific piece of software into
+   whatever domain you want by using GNUSTEP_INSTALLATION_DOMAIN as
+   in 'make install GNUSTEP_INSTALLATION_DOMAIN=LOCAL'.
+   Disabling 'packages' is very dangerous for end-users since they might be
+   overwriting their System installation if they compile and install
+   source code downloaded from the internet (eg, if they're trying a new
+   version of Gorm).  Unless you are one of these guys building
+   everything from source and with a reason to put core packages into
+   System, please do not use this configure option.  In particular,
+   whenever packages are involved, packages must *not* be disabled.
+   Packagers (people building ready-to-use GNUstep distributions to be
+   distributed to end-users) must never use this option.
 
 
 --disable-backend-bundle
@@ -4533,6 +4558,38 @@ fi
 
 
 #--------------------------------------------------------------------
+# Do we need to install 'core' software into the System domain ?
+#--------------------------------------------------------------------
+#
+# This option install the 'core' GNUstep software into the System
+# domain; as an option, it conflicts with packages - the System domain
+# is supposed to be reserved for them.  It is extremely dangerous to
+# enable it whenever packages are involved, and for this reason we
+# named it "--disable-packages" so that no packager will be tempted
+# to use it. :-)
+#
+echo "$as_me:$LINENO: checking if we should assume packages are never involved so we install core software into System by default" >&5
+echo $ECHO_N "checking if we should assume packages are never involved so we install core software into System by default... $ECHO_C" >&6
+# Check whether --enable-packages or --disable-packages was given.
+if test "${enable_packages+set}" = set; then
+  enableval="$enable_packages"
+  ac_cv_packages=$enableval
+else
+  ac_cv_packages="undefined"
+fi;
+
+if test "$ac_cv_packages" = "no"; then
+  GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN=YES
+  echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6;
+else
+  GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN=NO
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6;
+fi
+
+
+#--------------------------------------------------------------------
 # Build backend bundles (on by default)
 #--------------------------------------------------------------------
 # Check whether --enable-backend-bundle or --disable-backend-bundle was given.
@@ -6301,6 +6358,7 @@ s,@GNUSTEP_NETWORK_ROOT@,$GNUSTEP_NETWORK_ROOT,;t t
 s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_USER_DIR@,$GNUSTEP_USER_DIR,;t t
 s,@GNUSTEP_MULTI_PLATFORM@,$GNUSTEP_MULTI_PLATFORM,;t t
+s,@GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN@,$GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN,;t t
 s,@BACKEND_BUNDLE@,$BACKEND_BUNDLE,;t t
 s,@objc_threaded@,$objc_threaded,;t t
 s,@ac_cv_objc_threaded@,$ac_cv_objc_threaded,;t t

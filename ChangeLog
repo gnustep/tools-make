@@ -1,5 +1,18 @@
 2008-12-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac: New option --disable-packages that causes
+	gnustep-make to assume packages are never involved, so it defaults
+	to installing 'core' software into System by default.
+	* configure: Regenerated.
+	* config-noarch.make.in: Added new variable
+	GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN.
+	* common.make: If GNUSTEP_INSTALLATION_DOMAIN is not set,
+	GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN is set to 'YES' and
+	GNUSTEP_CORE_SOFTWARE is set to 'YES', set
+	GNUSTEP_INSTALLATION_DOMAIN to SYSTEM.
+	
+2008-12-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Documentation/README.Packaging: New file providing complete
 	instructions and recommendations on how to create GNUstep
 	packages.
