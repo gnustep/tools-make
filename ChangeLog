@@ -1,3 +1,9 @@
+2008-12-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.Packaging: New file providing complete
+	instructions and recommendations on how to create GNUstep
+	packages.
+
 2008-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUstep.sh.in:
