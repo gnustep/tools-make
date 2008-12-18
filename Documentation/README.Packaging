@@ -2,7 +2,6 @@ Date:	18-Dec-2008
 Author: Nicola Pero <nicola.pero@meta-innovation.com>
 
 
-
 PURPOSE
 -------
 
@@ -88,17 +87,26 @@ everything else GNUstep is installed.
 
 There are two major options here:
 
- 1. The "standard" GNUstep layout, where all the GNUstep software is
-installed into a separate directory tree (located by default in
-/usr/GNUstep, but you can change this).  This directory tree is
-organized with directories such as Applications, Library, Tools and it
-looks very much like a NeXTSTEP or an Apple Mac OS X filesystem.  The
-main disadvantage of this layout is that it doesn't blend so well with
-the native Unix filesystem so it requires additional handling of
-executable and library paths to get the system to find the executables
-and the libraries.
+ 1. ./configure --with-layout=gnustep
 
- 2. The "FHS" layout, where the GNUstep software is installed into the
+The "standard" GNUstep layout, where all the GNUstep software is
+installed into a separate directory tree located by default in
+/usr/GNUstep.  You can change the default location by using
+--prefix=xxx, as in
+
+ ./configure --with-layout=gnustep --prefix=/opt/GNUstep
+
+to install everything into /opt/GNUstep instead of /usr/GNUstep.  This
+directory tree is organized with directories such as Applications,
+Library, Tools and it looks very much like a NeXTSTEP or an Apple Mac
+OS X filesystem.  The main disadvantage of this layout is that it
+doesn't blend so well with the native Unix filesystem so it requires
+additional handling of executable and library paths to get the system
+to find the executables and the libraries.
+
+ 2. ./configure --with-layout=fhs-system
+
+The "FHS" layout, where the GNUstep software is installed into the
 standard Unix directories such as /usr/bin and /usr/lib.  This blends
 very well with the native Unix filesystem, but you lose the special
 allure of the GNUstep layout.
