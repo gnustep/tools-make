@@ -137,15 +137,34 @@ include $(GNUSTEP_MAKEFILES)/filesystem.make
 ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), )
   GNUSTEP_INSTALLATION_DOMAIN = LOCAL
 
-  # Exception - support the GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN option (turned 
-  # on by using "./configure --disable-packages" in gnustep-make) which causes
-  # it to install by default into SYSTEM (instead of LOCAL) all 'core' GNUstep
-  # software - which has the GNUSTEP_CORE_SOFTWARE variable set.
-  ifeq ($(GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN), YES)
-    ifeq ($(GNUSTEP_CORE_SOFTWARE), YES)
-      GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
-    endif
+  # Try to read install.conf, if one exists.  This file can be used
+  # when compiling from source to specify default installation location
+  # for certain packages.  The location of install.conf can be specified 
+  # using the GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE variable; if that variable 
+  # is not set, we look for a file called install.conf in the same directory as 
+  # the GNUSTEP_CONFIG_FILE.
+  ifeq ($(GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE), )
+    GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE = $(dir $(GNUSTEP_CONFIG_FILE))installation-domains.conf
   endif
+
+  -include $(GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE)
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_SYSTEM_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
+  endif
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_LOCAL_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = LOCAL
+  endif
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_NETWORK_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = NETWORK
+  endif
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_USER_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = USER
+  endif
+
 endif
 
 # Safety check.  Very annoying when you mistype and you end up

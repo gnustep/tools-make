@@ -1,3 +1,23 @@
+2008-12-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	New configuration file that allows hardcore developers building
+	everything from source to specify arbitrary default installation
+	domains for the software.  You just need to copy the
+	installation-domains.conf file to the same directory as the
+	GNUstep.conf file, and edit it to customize the default
+	installation domain (Thanks to Richard for the idea).
+
+	* common.make: Read installation-domains.conf file if it exists,
+	and use it to customize the default installation domains.
+	* installation-domains.conf: New file.
+
+	Reverted last change.
+	* configure.ac: Removed option --disable-packages.
+	* configure: Regenerated.
+	* config-noarch.make.in: Removed
+	GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN.
+	* common.make: Reverted last change.
+	
 2008-12-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: New option --disable-packages that causes
