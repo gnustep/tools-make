@@ -1,5 +1,10 @@
 2008-12-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* installation-domains.conf: Added gnustep-objc to the System
+	packages.
+	
+2008-12-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	New configuration file that allows hardcore developers building
 	everything from source to specify arbitrary default installation
 	domains for the software.  You just need to copy the
