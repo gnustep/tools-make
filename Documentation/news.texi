@@ -9,6 +9,17 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.0.7}
+@itemize @bullet
+@item New configuration file to set default installation
+@item gnustep-make now uses the --no-print-directory flag when invoking make
+@item Files make have same name but different extensions (.c and .m)
+@item Change in path checking algorithm in GNUstep.sh and GNUstep.csh
+@item Test applications linked against gnustep-gui by default
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.0.6}
 
 @itemize @bullet
@@ -16,8 +27,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item Added the --enable-absolute-install-paths option for Darwin systems.
 @item Install GNUstep.conf in /etc/GNUstep/GNUstep.conf on all systems.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.5}
 

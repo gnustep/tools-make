@@ -8,6 +8,14 @@ using a newer version of the make system.
 1.1 Version 2.0.7
 =================
 
+`default installation'
+     New configuration file that allows hardcore developers building
+     everything from source to specify arbitrary default installation
+     domains for the software.  You just need to copy the
+     installation-domains.conf file to the same directory as the
+     GNUstep.conf file, and edit it to customize the default
+     installation domain (Thanks to Richard for the idea).
+
 `--no-print-directory'
      gnustep-make now uses the -no-print-directory flag when invoking
      make recursively, so the output has changed - starting from 2.0.7
