@@ -1,5 +1,12 @@
 2008-12-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* gnustep-config.in: Added -s option when invoking make, fixing
+	the problems with spurious output when gnustep-config was used in
+	a process spawned by a makefile (eg, configure in gnustep-base
+	when triggered by its Makefile.postamble).
+
+2008-12-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* gnustep-config.in: Added new --installation-domain-for=xxx option.
 	* rules.make (print-gnustep-make-installation-domain): New target.
 
