@@ -658,7 +658,8 @@ $(GNUSTEP_OBJ_DIR):
         print-gnustep-make-objc-flags \
         print-gnustep-make-objc-libs \
         print-gnustep-make-base-libs \
-        print-gnustep-make-gui-libs
+        print-gnustep-make-gui-libs \
+        print-gnustep-make-installation-domain
 
 # Print GNUstep make help.  The sed command is used to strip all lines
 # beginning with '#' from the file.  It will find all lines that match
@@ -686,6 +687,9 @@ print-gnustep-make-base-libs:
 # Flags used when linking against Foundation and GUI
 print-gnustep-make-gui-libs:
 	@(echo $(ALL_LDFLAGS) $(CC_LDFLAGS) $(ALL_LIB_DIRS) $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS) $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+
+print-gnustep-make-installation-domain:
+	@(echo $(GNUSTEP_INSTALLATION_DOMAIN))
 
 endif
 # rules.make loaded

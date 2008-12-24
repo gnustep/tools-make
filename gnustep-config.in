@@ -37,6 +37,7 @@ case "$1" in
   --objc-libs)  ;;
   --base-libs)  ;;
   --gui-libs)   ;;
+  --installation-domain-for=*) ;;
   *)
     # An unrecognized option
     echo "Unrecognized option: $1"
@@ -86,6 +87,10 @@ if [ "$1" = "--help" ]; then
     echo
     echo "--gui-libs: prints all the flags required to link a GUI ObjC program"
     echo 
+    echo "--installation-domain-for=xxx: prints the value of the default installation domain"
+    echo "                for the package xxx.  The result could be 'SYSTEM', 'NETWORK', 'LOCAL'"
+    echo "                or 'USER'.  This command always returns LOCAL unless the system has been"
+    echo "                personalized using an installation-domains.conf file."
     exit 0
 fi
 
@@ -146,15 +151,18 @@ export GNUSTEP_MAKEFILES
 #
 case "$1" in
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
-                     exit 0;;
+              exit 0;;
   --objc-flags) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
-                     exit 0;;
+              exit 0;;
   --objc-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes 2>/dev/null
-                     exit 0;;
+              exit 0;;
   --base-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
-                     exit 0;;
+              exit 0;;
   --gui-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
-                     exit 0;;
+              exit 0;;
+  --installation-domain-for=*) gs_package_name=`echo "$1" | sed -e 's/--installation-domain-for=//'`
+              @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-installation-domain PACKAGE_NAME="$gs_package_name" quiet=yes 2>/dev/null
+              exit 0;;
 esac
 
 #

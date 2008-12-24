@@ -1,3 +1,8 @@
+2008-12-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-config.in: Added new --installation-domain-for=xxx option.
+	* rules.make (print-gnustep-make-installation-domain): New target.
+
 2008-12-21  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.7
