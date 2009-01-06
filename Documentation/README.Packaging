@@ -344,8 +344,15 @@ gnustep-base.
 
 gnustep-base has a number of configure options that you may want to
 check; most of them have to do with locating the various libraries on
-your platform.  The package build command sequence is the standard one
-and so would look something like
+your platform.
+
+One special thing about gnustep-base is that in some special cases
+(most notably on MinGW) it needs to know the installation domain at
+configure time.  So make sure to set GNUSTEP_INSTALLATION_DOMAIN in
+the environment *before* running configure.
+
+The package build command sequence is the standard one and so would
+look something like
 
  DESTDIR=/tmp/my-package
  export DESTDIR
