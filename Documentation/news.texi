@@ -9,6 +9,12 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.0.8}
+
+Minor bug fix to deal with installing in different domains
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.0.7}
 @itemize @bullet
 @item New configuration file to set default installation
@@ -17,8 +23,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item Change in path checking algorithm in GNUstep.sh and GNUstep.csh
 @item Test applications linked against gnustep-gui by default
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.6}
 
