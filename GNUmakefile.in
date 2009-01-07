@@ -285,19 +285,17 @@ uninstall:
 	rm -f "$(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make"
 	rm -f "$(GNUSTEP_CONFIG_FILE)"
 	-rmdir "$(GNUSTEP_CONFIG_FILE_DIR)"
-	-for f in "$(makedir)/Instance/Documentation" \
-		"$(makedir)/Instance/Shared" \
-		"$(makedir)/Instance" \
-		"$(makedir)/Master" \
-		"$(makedir)/Auxiliary" \
-		"$(makedir)/Additional" \
-		"$(makedir)/$(GNUSTEP_TARGET_LDIR)" \
-		"$(makedir)/$(GNUSTEP_TARGET_DIR)" \
-		"$(makedir)/$(GNUSTEP_TARGET_CPU)" \
-		"$(makedir)" \
-		"$(tooldir)"; do \
-	  test -d "$$f" && rmdir "$$f"; \
-	done
+	-rmdir "$(makedir)/Instance/Documentation"
+	-rmdir "$(makedir)/Instance/Shared"
+	-rmdir "$(makedir)/Instance"
+	-rmdir "$(makedir)/Master"
+	-rmdir "$(makedir)/Auxiliary"
+	-rmdir "$(makedir)/Additional"
+	-rmdir "$(makedir)/$(GNUSTEP_TARGET_LDIR)"
+	-rmdir "$(makedir)/$(GNUSTEP_TARGET_DIR)"
+	-rmdir "$(makedir)/$(GNUSTEP_TARGET_CPU)"
+	-rmdir "$(makedir)"
+	-rmdir "$(tooldir)"
 
 clean:
 	rm -f *~ Master/*~ Instance/*~ Instance/Shared/*~

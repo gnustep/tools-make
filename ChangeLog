@@ -1,5 +1,10 @@
 2009-01-07  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUmakefile.in (uninstall): Run each 'rmdir' as a separate
+	command.
+
+2009-01-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Documentation/README.Packaging: Mention clearly setting
 	GNUSTEP_INSTALLATION_DOMAIN in the environment before
 	configuring gnustep-base.
