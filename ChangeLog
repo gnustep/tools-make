@@ -1,3 +1,10 @@
+2009-01-10  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Check for objc garbage collection.
+	* config.make.in: Define whether we are using GC.
+	* configure: Regenerate.
+	Initial move towards getting gc working again after years of disuse.
+
 2009-01-07  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUmakefile.in (uninstall): Run each 'rmdir' as a separate

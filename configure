@@ -273,7 +273,7 @@ PACKAGE_BUGREPORT=
 
 ac_unique_file="application.make"
 ac_default_prefix=NONE
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_MAKE_STRICT_V2_MODE GNUSTEP_ABSOLUTE_INSTALL_PATHS GNUSTEP_CONFIG_FILE GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_SYSTEM_APPS GNUSTEP_SYSTEM_ADMIN_APPS GNUSTEP_SYSTEM_WEB_APPS GNUSTEP_SYSTEM_TOOLS GNUSTEP_SYSTEM_ADMIN_TOOLS GNUSTEP_SYSTEM_LIBRARY GNUSTEP_SYSTEM_HEADERS GNUSTEP_SYSTEM_LIBRARIES GNUSTEP_SYSTEM_DOC GNUSTEP_SYSTEM_DOC_INFO GNUSTEP_SYSTEM_DOC_MAN GNUSTEP_NETWORK_APPS GNUSTEP_NETWORK_ADMIN_APPS GNUSTEP_NETWORK_WEB_APPS GNUSTEP_NETWORK_TOOLS GNUSTEP_NETWORK_ADMIN_TOOLS GNUSTEP_NETWORK_LIBRARY GNUSTEP_NETWORK_HEADERS GNUSTEP_NETWORK_LIBRARIES GNUSTEP_NETWORK_DOC GNUSTEP_NETWORK_DOC_INFO GNUSTEP_NETWORK_DOC_MAN GNUSTEP_LOCAL_APPS GNUSTEP_LOCAL_ADMIN_APPS GNUSTEP_LOCAL_WEB_APPS GNUSTEP_LOCAL_TOOLS GNUSTEP_LOCAL_ADMIN_TOOLS GNUSTEP_LOCAL_LIBRARY GNUSTEP_LOCAL_HEADERS GNUSTEP_LOCAL_LIBRARIES GNUSTEP_LOCAL_DOC GNUSTEP_LOCAL_DOC_INFO GNUSTEP_LOCAL_DOC_MAN GNUSTEP_USER_DIR_APPS GNUSTEP_USER_DIR_ADMIN_APPS GNUSTEP_USER_DIR_WEB_APPS GNUSTEP_USER_DIR_TOOLS GNUSTEP_USER_DIR_ADMIN_TOOLS GNUSTEP_USER_DIR_LIBRARY GNUSTEP_USER_DIR_HEADERS GNUSTEP_USER_DIR_LIBRARIES GNUSTEP_USER_DIR_DOC GNUSTEP_USER_DIR_DOC_INFO GNUSTEP_USER_DIR_DOC_MAN GNUSTEP_SYSTEM_USERS_DIR GNUSTEP_NETWORK_USERS_DIR GNUSTEP_LOCAL_USERS_DIR GNUSTEP_SYSTEM_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_USER_DIR GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS GNUMAKE MAKE_WITH_INFO_FUNCTION GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LATEX2HTML LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP CXX CXXFLAGS ac_ct_CXX build build_cpu build_vendor build_os host host_cpu host_vendor host_os target target_cpu target_vendor target_os ac_cv_library_combo cc_cppprecomp cc_bundle CYGWIN RANLIB AR DLLTOOL ac_ct_RANLIB INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA LN_S TAR CHOWN GNUSTEP_MAKE_STRICT_V2_MODE GNUSTEP_ABSOLUTE_INSTALL_PATHS GNUSTEP_CONFIG_FILE GNUSTEP_USER_CONFIG_FILE GNUSTEP_USER_DEFAULTS_DIR GNUSTEP_MAKEFILES HOST_INSTALL GNUSTEP_FLATTENED GNUSTEP_IS_FLATTENED GNUSTEP_SYSTEM_APPS GNUSTEP_SYSTEM_ADMIN_APPS GNUSTEP_SYSTEM_WEB_APPS GNUSTEP_SYSTEM_TOOLS GNUSTEP_SYSTEM_ADMIN_TOOLS GNUSTEP_SYSTEM_LIBRARY GNUSTEP_SYSTEM_HEADERS GNUSTEP_SYSTEM_LIBRARIES GNUSTEP_SYSTEM_DOC GNUSTEP_SYSTEM_DOC_INFO GNUSTEP_SYSTEM_DOC_MAN GNUSTEP_NETWORK_APPS GNUSTEP_NETWORK_ADMIN_APPS GNUSTEP_NETWORK_WEB_APPS GNUSTEP_NETWORK_TOOLS GNUSTEP_NETWORK_ADMIN_TOOLS GNUSTEP_NETWORK_LIBRARY GNUSTEP_NETWORK_HEADERS GNUSTEP_NETWORK_LIBRARIES GNUSTEP_NETWORK_DOC GNUSTEP_NETWORK_DOC_INFO GNUSTEP_NETWORK_DOC_MAN GNUSTEP_LOCAL_APPS GNUSTEP_LOCAL_ADMIN_APPS GNUSTEP_LOCAL_WEB_APPS GNUSTEP_LOCAL_TOOLS GNUSTEP_LOCAL_ADMIN_TOOLS GNUSTEP_LOCAL_LIBRARY GNUSTEP_LOCAL_HEADERS GNUSTEP_LOCAL_LIBRARIES GNUSTEP_LOCAL_DOC GNUSTEP_LOCAL_DOC_INFO GNUSTEP_LOCAL_DOC_MAN GNUSTEP_USER_DIR_APPS GNUSTEP_USER_DIR_ADMIN_APPS GNUSTEP_USER_DIR_WEB_APPS GNUSTEP_USER_DIR_TOOLS GNUSTEP_USER_DIR_ADMIN_TOOLS GNUSTEP_USER_DIR_LIBRARY GNUSTEP_USER_DIR_HEADERS GNUSTEP_USER_DIR_LIBRARIES GNUSTEP_USER_DIR_DOC GNUSTEP_USER_DIR_DOC_INFO GNUSTEP_USER_DIR_DOC_MAN GNUSTEP_SYSTEM_USERS_DIR GNUSTEP_NETWORK_USERS_DIR GNUSTEP_LOCAL_USERS_DIR GNUSTEP_SYSTEM_ROOT GNUSTEP_NETWORK_ROOT GNUSTEP_LOCAL_ROOT GNUSTEP_USER_DIR GNUSTEP_MULTI_PLATFORM BACKEND_BUNDLE USE_OBJC_GC objc_threaded ac_cv_objc_threaded USE_OBJC_EXCEPTIONS AUTO_DEPENDENCIES GCC_WITH_PRECOMPILED_HEADERS SOLARIS_SHARED INCLUDES LIB_DIR OBJCFLAGS GNUMAKE MAKE_WITH_INFO_FUNCTION GNUSTEP_STRIP_MAKEFILES GNUSTEP_MAKE_VERSION GNUSTEP_MAKE_MAJOR_VERSION GNUSTEP_MAKE_MINOR_VERSION GNUSTEP_MAKE_SUBMINOR_VERSION clean_target_os clean_target_cpu clean_target_vendor LATEX2HTML LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -890,6 +890,11 @@ Optional Features:
    Compile GUI backend as a library.  Use this option if the default
    compilation of the GUI backend as a bundle (loadable module) is
    not supported / does not work on your machine.
+
+
+--enable-objc-garbage-collection
+   Use objc garbage collection.  Use this option if you want
+   to use garbage collection for objective-c software.
 
 
 --enable-native-objc-exceptions
@@ -4640,6 +4645,147 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
 fi
 
 #--------------------------------------------------------------------
+# Check if libobjc has garbage collection.
+#--------------------------------------------------------------------
+
+# Check whether --enable-objc-garbage-collection or --disable-objc-garbage-collection was given.
+if test "${enable_objc_garbage_collection+set}" = set; then
+  enableval="$enable_objc_garbage_collection"
+  USE_OBJC_GC=$enableval
+else
+  USE_OBJC_GC=no
+fi;
+
+OBJCRT=-lobjc
+
+saved_CFLAGS="$CFLAGS"
+saved_LIBS="$LIBS"
+CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
+if test "$OBJC_RUNTIME_LIB" = "gnu"; then
+  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+fi
+if test "$OBJC_RUNTIME_LIB" = "nx"; then
+  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+fi
+if test "$OBJC_RUNTIME_LIB" = "apple"; then
+  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
+fi
+
+
+if test "$USE_OBJC_GC" = "yes"; then
+echo "$as_me:$LINENO: checking whether we should use ObjC garbage collection" >&5
+echo $ECHO_N "checking whether we should use ObjC garbage collection... $ECHO_C" >&6
+  LIBS="-lobjc_gc -ldl"
+
+echo "$as_me:$LINENO: checking for class_ivar_set_gcinvisible" >&5
+echo $ECHO_N "checking for class_ivar_set_gcinvisible... $ECHO_C" >&6
+if test "${ac_cv_func_class_ivar_set_gcinvisible+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  cat >conftest.$ac_ext <<_ACEOF
+/* confdefs.h.  */
+_ACEOF
+cat confdefs.h >>conftest.$ac_ext
+cat >>conftest.$ac_ext <<_ACEOF
+/* end confdefs.h.  */
+/* Define class_ivar_set_gcinvisible to an innocuous variant, in case <limits.h> declares class_ivar_set_gcinvisible.
+   For example, HP-UX 11i <limits.h> declares gettimeofday.  */
+#define class_ivar_set_gcinvisible innocuous_class_ivar_set_gcinvisible
+
+/* System header to define __stub macros and hopefully few prototypes,
+    which can conflict with char class_ivar_set_gcinvisible (); below.
+    Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
+    <limits.h> exists even on freestanding compilers.  */
+
+#ifdef __STDC__
+# include <limits.h>
+#else
+# include <assert.h>
+#endif
+
+#undef class_ivar_set_gcinvisible
+
+/* Override any gcc2 internal prototype to avoid an error.  */
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+/* We use char because int might match the return type of a gcc2
+   builtin and then its argument prototype would still apply.  */
+char class_ivar_set_gcinvisible ();
+/* The GNU C library defines this for functions which it implements
+    to always fail with ENOSYS.  Some functions are actually named
+    something starting with __ and the normal name is an alias.  */
+#if defined (__stub_class_ivar_set_gcinvisible) || defined (__stub___class_ivar_set_gcinvisible)
+choke me
+#else
+char (*f) () = class_ivar_set_gcinvisible;
+#endif
+#ifdef __cplusplus
+}
+#endif
+
+int
+main ()
+{
+return f != class_ivar_set_gcinvisible;
+  ;
+  return 0;
+}
+_ACEOF
+rm -f conftest.$ac_objext conftest$ac_exeext
+if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+  (eval $ac_link) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest$ac_exeext'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  ac_cv_func_class_ivar_set_gcinvisible=yes
+else
+  echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+ac_cv_func_class_ivar_set_gcinvisible=no
+fi
+rm -f conftest.err conftest.$ac_objext \
+      conftest$ac_exeext conftest.$ac_ext
+fi
+echo "$as_me:$LINENO: result: $ac_cv_func_class_ivar_set_gcinvisible" >&5
+echo "${ECHO_T}$ac_cv_func_class_ivar_set_gcinvisible" >&6
+if test $ac_cv_func_class_ivar_set_gcinvisible = yes; then
+  gc_ok=yes
+else
+  gc_ok=no
+fi
+
+  if test "$gc_ok" = yes; then
+    OBJCRT="$LIBS"
+  else
+    { echo "$as_me:$LINENO: Garbage collection was requested, but the library couldn't" >&5
+echo "$as_me: Garbage collection was requested, but the library couldn't" >&6;}
+    { echo "$as_me:$LINENO: be found." >&5
+echo "$as_me: be found." >&6;}
+    USE_OBJC_GC=no
+  fi
+fi
+
+
+#--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
 OBJC_THREAD=
@@ -4659,22 +4805,9 @@ fi
 
 echo "$as_me:$LINENO: checking whether objc has thread support" >&5
 echo $ECHO_N "checking whether objc has thread support... $ECHO_C" >&6
-saved_CFLAGS="$CFLAGS"
-saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
-if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-fi
-if test "$OBJC_RUNTIME_LIB" = "nx"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-fi
-if test "$OBJC_RUNTIME_LIB" = "apple"; then
-  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
-fi
 if test "$OBJC_THREAD" != ""; then
-  LIBS="-lobjc $LIBS $OBJC_THREAD"
-
-if test "$cross_compiling" = yes; then
+  LIBS="$OBJCRT $LIBS $OBJC_THREAD"
+  if test "$cross_compiling" = yes; then
   objc_threaded=""
 else
   cat >conftest.$ac_ext <<_ACEOF
@@ -4708,7 +4841,7 @@ fi
 rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 elif test "$host_os" = linux-gnu; then
-  LIBS="-lobjc -lpthread"
+  LIBS="$OBJCRT -lpthread"
   if test "$cross_compiling" = yes; then
   objc_threaded="-lpthread"
 else
@@ -4743,7 +4876,7 @@ fi
 rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 elif test "`echo $host_os|sed 's/[0-9].*//'|sed s/elf//`" = freebsd; then
-  LIBS="-pthread -lobjc"
+  LIBS="-pthread $OBJCRT"
   if test "$cross_compiling" = yes; then
   objc_threaded="-pthread"
 else
@@ -4778,7 +4911,7 @@ fi
 rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lpthread -lobjc"
+    LIBS="-lpthread $OBJCRT"
     if test "$cross_compiling" = yes; then
   objc_threaded="-lpthread"
 else
@@ -4814,7 +4947,7 @@ rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftes
 fi
   fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc -lpcthread"
+    LIBS="$OBJCRT -lpcthread"
     if test "$cross_compiling" = yes; then
   objc_threaded="-lpcthread"
 else
@@ -4851,7 +4984,7 @@ fi
   fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
   if test "$cross_compiling" = yes; then
   objc_threaded="works"
 else
@@ -4887,7 +5020,7 @@ rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftes
 fi
 elif test "$OBJC_RUNTIME_LIB" = "apple"; then
   # Apple doesn't need anything extra for threads
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
   if test "$cross_compiling" = yes; then
   objc_threaded="works"
 else
@@ -4922,7 +5055,7 @@ fi
 rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
 else
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
   if test "$cross_compiling" = yes; then
   objc_threaded=""
 else
@@ -4957,7 +5090,7 @@ fi
 rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lpthread "
+    LIBS="$OBJCRT $saved_LIBS -lpthread "
     if test "$cross_compiling" = yes; then
   objc_threaded=""
 else
@@ -4994,7 +5127,7 @@ fi
   fi
   if test x"$objc_threaded" = x""; then
     # Solaris, OpenBSD/sparc
-    LIBS="-lobjc $saved_LIBS -lpthread -lposix4"
+    LIBS="$OBJCRT $saved_LIBS -lpthread -lposix4"
     if test "$cross_compiling" = yes; then
   objc_threaded=""
 else
@@ -5030,7 +5163,7 @@ rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftes
 fi
   fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lthread "
+    LIBS="$OBJCRT $saved_LIBS -lthread "
     if test "$cross_compiling" = yes; then
   objc_threaded=""
 else
@@ -6302,6 +6435,7 @@ s,@GNUSTEP_LOCAL_ROOT@,$GNUSTEP_LOCAL_ROOT,;t t
 s,@GNUSTEP_USER_DIR@,$GNUSTEP_USER_DIR,;t t
 s,@GNUSTEP_MULTI_PLATFORM@,$GNUSTEP_MULTI_PLATFORM,;t t
 s,@BACKEND_BUNDLE@,$BACKEND_BUNDLE,;t t
+s,@USE_OBJC_GC@,$USE_OBJC_GC,;t t
 s,@objc_threaded@,$objc_threaded,;t t
 s,@ac_cv_objc_threaded@,$ac_cv_objc_threaded,;t t
 s,@USE_OBJC_EXCEPTIONS@,$USE_OBJC_EXCEPTIONS,;t t

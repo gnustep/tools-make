@@ -19,6 +19,7 @@
 #   License along with this library; see the file COPYING.
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 AC_INIT
 AC_PREREQ(2.57)
 AC_CONFIG_SRCDIR([application.make])
@@ -1063,6 +1064,48 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
 fi
 
 #--------------------------------------------------------------------
+# Check if libobjc has garbage collection.
+#--------------------------------------------------------------------
+
+AC_ARG_ENABLE(objc-garbage-collection, [
+--enable-objc-garbage-collection
+   Use objc garbage collection.  Use this option if you want
+   to use garbage collection for objective-c software.
+], 
+USE_OBJC_GC=$enableval,
+USE_OBJC_GC=no)
+
+OBJCRT=-lobjc
+
+saved_CFLAGS="$CFLAGS"
+saved_LIBS="$LIBS"
+CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
+if test "$OBJC_RUNTIME_LIB" = "gnu"; then
+  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+fi
+if test "$OBJC_RUNTIME_LIB" = "nx"; then
+  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+fi
+if test "$OBJC_RUNTIME_LIB" = "apple"; then
+  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
+fi
+
+
+if test "$USE_OBJC_GC" = "yes"; then
+AC_MSG_CHECKING(whether we should use ObjC garbage collection)
+  LIBS="-lobjc_gc -ldl"
+  AC_CHECK_FUNC(class_ivar_set_gcinvisible, gc_ok=yes, gc_ok=no)
+  if test "$gc_ok" = yes; then
+    OBJCRT="$LIBS"
+  else
+    AC_MSG_NOTICE([Garbage collection was requested, but the library couldn't])
+    AC_MSG_NOTICE([be found.])
+    USE_OBJC_GC=no
+  fi
+fi
+AC_SUBST(USE_OBJC_GC)
+
+#--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
 OBJC_THREAD=
@@ -1080,73 +1123,61 @@ fi
 
 
 AC_MSG_CHECKING(whether objc has thread support)
-saved_CFLAGS="$CFLAGS"
-saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
-if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-fi
-if test "$OBJC_RUNTIME_LIB" = "nx"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-fi
-if test "$OBJC_RUNTIME_LIB" = "apple"; then
-  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
-fi
 if test "$OBJC_THREAD" != ""; then
-  LIBS="-lobjc $LIBS $OBJC_THREAD"
+  LIBS="$OBJCRT $LIBS $OBJC_THREAD"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="$OBJC_THREAD",
 	objc_threaded="", objc_threaded="")
 elif test "$host_os" = linux-gnu; then
-  LIBS="-lobjc -lpthread"
+  LIBS="$OBJCRT -lpthread"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
 	objc_threaded="", objc_threaded="-lpthread")
 elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
-  LIBS="-pthread -lobjc"
+  LIBS="-pthread $OBJCRT"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-pthread",
        objc_threaded="", objc_threaded="-pthread")
   if test x"$objc_threaded" = x""; then
-    LIBS="-lpthread -lobjc"
+    LIBS="-lpthread $OBJCRT"
     AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
 	objc_threaded="", objc_threaded="-lpthread")
   fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc -lpcthread"
+    LIBS="$OBJCRT -lpcthread"
     AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpcthread",
 	objc_threaded="", objc_threaded="-lpcthread")
   fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="works")
 elif test "$OBJC_RUNTIME_LIB" = "apple"; then
   # Apple doesn't need anything extra for threads
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="works")
 else
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="")
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lpthread "
+    LIBS="$OBJCRT $saved_LIBS -lpthread "
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lpthread", 
 	objc_threaded="", objc_threaded="")
   fi
   if test x"$objc_threaded" = x""; then
     # Solaris, OpenBSD/sparc
-    LIBS="-lobjc $saved_LIBS -lpthread -lposix4"
+    LIBS="$OBJCRT $saved_LIBS -lpthread -lposix4"
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lpthread -lposix4", 
 	objc_threaded="", objc_threaded="")
   fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lthread "
+    LIBS="$OBJCRT $saved_LIBS -lthread "
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lthread", 
 	objc_threaded="", objc_threaded="")
