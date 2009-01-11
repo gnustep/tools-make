@@ -64,6 +64,27 @@ ac_cv_library_combo=$withval,
 ac_cv_library_combo=$ac_cv_library_combo
 )
 
+#--------------------------------------------------------------------
+# Check if objc should use garbage collection.
+#--------------------------------------------------------------------
+if test "gnugc"=`echo $ac_cv_library_combo|tr '-' ' '|awk '{print $1}'`; then
+  gc=yes
+else
+  gc=no
+fi
+AC_ARG_ENABLE(objc-garbage-collection, [
+--enable-objc-garbage-collection
+   Use objc garbage collection.  Use this option if you want
+   to use garbage collection for objective-c software.
+], 
+OBJC_WITH_GC=$enableval,
+OBJC_WITH_GC=$gc)
+AC_SUBST(OBJC_WITH_GC)
+
+if test "$OBJC_WITH_GC" = "yes"; then
+  ac_cv_library_combo="gnugc-gnu-gnu"
+fi
+
 if test "$ac_cv_library_combo" = "" -o "$ac_cv_library_combo" = "no"; then
   case "$host_os" in
     darwin*)   ac_cv_library_combo=apple-apple-apple ;;
@@ -1063,47 +1084,26 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
   export LD_LIBRARY_PATH
 fi
 
-#--------------------------------------------------------------------
-# Check if libobjc has garbage collection.
-#--------------------------------------------------------------------
-
-AC_ARG_ENABLE(objc-garbage-collection, [
---enable-objc-garbage-collection
-   Use objc garbage collection.  Use this option if you want
-   to use garbage collection for objective-c software.
-], 
-USE_OBJC_GC=$enableval,
-USE_OBJC_GC=no)
-
-OBJCRT=-lobjc
-
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "gnu"; then
   CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+  OBJCRT="-lobjc"
+fi
+if test "$OBJC_RUNTIME_LIB" = "gnugc"; then
+  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+  OBJCRT="-lobjc -ldl -lgc"
 fi
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+  OBJCRT="-lobjc"
 fi
 if test "$OBJC_RUNTIME_LIB" = "apple"; then
   CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
+  OBJCRT="-lobjc"
 fi
 
-
-if test "$USE_OBJC_GC" = "yes"; then
-AC_MSG_CHECKING(whether we should use ObjC garbage collection)
-  LIBS="-lobjc_gc -ldl"
-  AC_CHECK_FUNC(class_ivar_set_gcinvisible, gc_ok=yes, gc_ok=no)
-  if test "$gc_ok" = yes; then
-    OBJCRT="$LIBS"
-  else
-    AC_MSG_NOTICE([Garbage collection was requested, but the library couldn't])
-    AC_MSG_NOTICE([be found.])
-    USE_OBJC_GC=no
-  fi
-fi
-AC_SUBST(USE_OBJC_GC)
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

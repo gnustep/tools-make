@@ -582,6 +582,11 @@ ifeq ($(USE_OBJC_EXCEPTIONS), yes)
   INTERNAL_LDFLAGS += -shared-libgcc -fexceptions
 endif
 
+# If we are using garbage collection we set a define to say so.
+ifeq ($(OBJC_WITH_GC), yes)
+  OBJCFLAGS += -DGS_WITH_GC=1
+endif
+
 #
 # Now decide whether to build shared objects or not.  Nothing depending
 # on the value of the shared variable is allowed before this point!

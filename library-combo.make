@@ -101,9 +101,9 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), gnugc)
   OBJC_LDFLAGS = 
   OBJC_LIB_DIR =
-  OBJC_LIBS = -lobjc_gc -lgc
+  OBJC_LIBS = -lobjc_gc -ldl -lgc
   RUNTIME_FLAG   = -fgnu-runtime
-  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DOBJC_WITH_GC=1
+  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DGS_WITH_GC=1
   ifeq ($(debug),yes)
     RUNTIME_DEFINE += -DGC_DEBUG
   endif

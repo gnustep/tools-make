@@ -1,3 +1,12 @@
+2009-01-11  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* configure:
+	* library-combo.make:
+	* config.make.in:
+	* common.make:
+	Simplify GC changes.
+
 2009-01-10  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Check for objc garbage collection.

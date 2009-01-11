@@ -170,7 +170,7 @@ USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 #
 # Whether we are using the ObjC garbage cllection library.
 #
-USE_OBJC_GC = @USE_OBJC_GC@
+OBJC_WITH_GC = @OBJC_WITH_GC@
 
 #
 # Whether the compiler is GCC with precompiled header support
