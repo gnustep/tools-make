@@ -39,6 +39,31 @@ AC_PROG_CXX
 
 AC_CANONICAL_TARGET([])
 
+
+#--------------------------------------------------------------------
+# Check if objc should use garbage collection.
+#--------------------------------------------------------------------
+AC_ARG_ENABLE(objc-garbage-collection, [
+--enable-objc-garbage-collection
+   Enable objc garbage collection.  Use this option if you want
+   to use garbage collection for objective-c software. This is equivalent
+   to using --with-library-combo=gnugc-gnu-gnu to set the runtime library
+   to be the gnu runtime with garbage collection.
+], 
+OBJC_WITH_GC=$enableval,
+OBJC_WITH_GC="")
+
+if test "$OBJC_WITH_GC" = "yes"; then
+  ac_cv_library_combo="gnugc-gnu-gnu"
+elif test "$OBJC_WITH_GC" = "no"; then
+  if test "$ac_cv_library_combo"="gnugc-gnu-gnu"; then
+    ac_cv_library_combo="gnu-gnu-gnu"
+  fi
+else
+  OBJC_WITH_GC=no
+fi
+AC_SUBST(OBJC_WITH_GC)
+
 AC_MSG_CHECKING(for library combo)
 AC_ARG_WITH(library-combo,[
 --with-library-combo
@@ -63,27 +88,6 @@ AC_ARG_WITH(library-combo,[
 ac_cv_library_combo=$withval,
 ac_cv_library_combo=$ac_cv_library_combo
 )
-
-#--------------------------------------------------------------------
-# Check if objc should use garbage collection.
-#--------------------------------------------------------------------
-if test "gnugc"=`echo $ac_cv_library_combo|tr '-' ' '|awk '{print $1}'`; then
-  gc=yes
-else
-  gc=no
-fi
-AC_ARG_ENABLE(objc-garbage-collection, [
---enable-objc-garbage-collection
-   Use objc garbage collection.  Use this option if you want
-   to use garbage collection for objective-c software.
-], 
-OBJC_WITH_GC=$enableval,
-OBJC_WITH_GC=$gc)
-AC_SUBST(OBJC_WITH_GC)
-
-if test "$OBJC_WITH_GC" = "yes"; then
-  ac_cv_library_combo="gnugc-gnu-gnu"
-fi
 
 if test "$ac_cv_library_combo" = "" -o "$ac_cv_library_combo" = "no"; then
   case "$host_os" in

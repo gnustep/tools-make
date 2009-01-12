@@ -819,8 +819,10 @@ Optional Features:
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
 
 --enable-objc-garbage-collection
-   Use objc garbage collection.  Use this option if you want
-   to use garbage collection for objective-c software.
+   Enable objc garbage collection.  Use this option if you want
+   to use garbage collection for objective-c software. This is equivalent
+   to using --with-library-combo=gnugc-gnu-gnu to set the runtime library
+   to be the gnu runtime with garbage collection.
 
 
 --enable-strict-v2-mode
@@ -3109,6 +3111,29 @@ test -n "$target_alias" &&
     NONENONEs,x,x, &&
   program_prefix=${target_alias}-
 
+
+#--------------------------------------------------------------------
+# Check if objc should use garbage collection.
+#--------------------------------------------------------------------
+# Check whether --enable-objc-garbage-collection or --disable-objc-garbage-collection was given.
+if test "${enable_objc_garbage_collection+set}" = set; then
+  enableval="$enable_objc_garbage_collection"
+  OBJC_WITH_GC=$enableval
+else
+  OBJC_WITH_GC=""
+fi;
+
+if test "$OBJC_WITH_GC" = "yes"; then
+  ac_cv_library_combo="gnugc-gnu-gnu"
+elif test "$OBJC_WITH_GC" = "no"; then
+  if test "$ac_cv_library_combo"="gnugc-gnu-gnu"; then
+    ac_cv_library_combo="gnu-gnu-gnu"
+  fi
+else
+  OBJC_WITH_GC=no
+fi
+
+
 echo "$as_me:$LINENO: checking for library combo" >&5
 echo $ECHO_N "checking for library combo... $ECHO_C" >&6
 
@@ -3120,27 +3145,6 @@ else
   ac_cv_library_combo=$ac_cv_library_combo
 
 fi;
-
-#--------------------------------------------------------------------
-# Check if objc should use garbage collection.
-#--------------------------------------------------------------------
-if test "gnugc"=`echo $ac_cv_library_combo|tr '-' ' '|awk '{print $1}'`; then
-  gc=yes
-else
-  gc=no
-fi
-# Check whether --enable-objc-garbage-collection or --disable-objc-garbage-collection was given.
-if test "${enable_objc_garbage_collection+set}" = set; then
-  enableval="$enable_objc_garbage_collection"
-  OBJC_WITH_GC=$enableval
-else
-  OBJC_WITH_GC=$gc
-fi;
-
-
-if test "$OBJC_WITH_GC" = "yes"; then
-  ac_cv_library_combo="gnugc-gnu-gnu"
-fi
 
 if test "$ac_cv_library_combo" = "" -o "$ac_cv_library_combo" = "no"; then
   case "$host_os" in
