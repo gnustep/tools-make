@@ -246,7 +246,7 @@ from http://gnuwin32.sourceforge.net, and install them.  To
 install them, simply unzip them into /C/xxx/msys/1.0/mingw.
 
 Download gnutls-2.2.1.exe from http://josefsson.org/gnutls4win
-and install it, browsing to the msys/1.0 directory and then taking
+and install it, browsing to the msys/1.0/mingw directory and then taking
 care to remove the trailing gnutls-2.2.1 which appears in the
 'Destination Folder' path, before clicking 'Next' and 'Install'.
 This should result in the correct files being installed in each
