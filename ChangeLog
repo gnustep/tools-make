@@ -25,6 +25,10 @@
 	GNUSTEP_INSTALLATION_DOMAIN in the environment before
 	configuring gnustep-base.
 
+2009-01-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Fix error in path to install gnutls.
+	
 2009-01-06  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.0.8
@@ -88,6 +92,11 @@
 	* Documentation/README.Packaging: New file providing complete
 	instructions and recommendations on how to create GNUstep
 	packages.
+	
+2008-12-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MingW: Fix missing part of ffi
+	instructions.
 
 2008-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
