@@ -1,3 +1,8 @@
+2009-01-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* rule.make (.DELETE_ON_ERROR): Added target.  It should cause GNU
+	make to react more intelligently to errors.
+
 2009-01-11  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:

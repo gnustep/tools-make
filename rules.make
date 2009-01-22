@@ -353,6 +353,13 @@ endif
 # General rules
 VPATH = .
 
+# Set .DELETE_ON_ERROR.  This means that if the rule to build a target
+# file fails, but the rule had modified the target file, the target
+# file is automatically deleted by GNU make when exiting with an
+# error.  The idea is to removed corrupt/partially built files when an
+# error occurs.
+.DELETE_ON_ERROR:
+
 # Disable all built-in suffixes for performance.
 .SUFFIXES:
 
