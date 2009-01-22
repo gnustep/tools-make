@@ -21,6 +21,16 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# TODO: It would be nice to check here that the 'make' command being
+# used is indeed GNU make, and exit with a user-friendly error message
+# if not.  We could, for example, check that the variable MAKE_VERSION
+# (which is defined by GNU make but not other makes) is defined.
+# Unfortunately, there doesn't exist a shared make syntax for checking
+# that a variable is defined across different versiosn of make; BSD
+# make would use '.ifdef' which doesn't work with GNU make, and the
+# GNU make syntax (eg, ifneq ($(MAKE_VERSION),)) wouldn't work with
+# BSD make.
+
 ifeq ($(COMMON_MAKE_LOADED),)
 COMMON_MAKE_LOADED = yes
 
