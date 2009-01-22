@@ -299,7 +299,7 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
 # GNU compiler
 
-INTERNAL_LDFLAGS += -flat_namespace -undefined warning
+INTERNAL_LDFLAGS += -undefined dynamic_lookup 
 
 SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning $(CC_LDFLAGS)
 # Useful flag: -Wl,-single_module.  This flag only
@@ -336,8 +336,7 @@ BUNDLE_LDFLAGS  += -fgnu-runtime -bundle
 else 
 # Apple Compiler
 
-#DYLIB_EXTRA_FLAGS    = -read_only_relocs warning -undefined warning -fno-common
-DYLIB_EXTRA_FLAGS    = -flat_namespace -undefined warning 
+DYLIB_EXTRA_FLAGS    = -undefined dynamic_lookup 
 # Useful optimization flag: -Wl,-single_module.  This flag only
 # works starting with 10.3.
 ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
