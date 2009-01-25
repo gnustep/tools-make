@@ -1035,6 +1035,7 @@ if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
   if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
     gs_cv_objc_incdir="$GNUSTEP_HDIR"
+    gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
   fi
 fi
 
@@ -1052,6 +1053,7 @@ if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
   if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
     gs_cv_objc_incdir="$GNUSTEP_HDIR"
+    gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
   fi
 fi
 
@@ -1069,6 +1071,7 @@ if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
   if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
     gs_cv_objc_incdir="$GNUSTEP_HDIR"
+    gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
   fi
 fi
 #gcc_shared_libobjc=`gcc -print-file-name=libobjc.so`
@@ -1086,6 +1089,13 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
   # And the following to execute them
   LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
   export LD_LIBRARY_PATH
+  # Need to also add the Tools library on mingw
+  case $host_os in
+    *mingw32* )
+      PATH=$PATH:$gs_cv_objc_tools;;
+    * )
+      ;;
+  esac
 fi
 
 saved_CFLAGS="$CFLAGS"
