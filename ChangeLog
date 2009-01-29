@@ -1,5 +1,34 @@
 2009-01-28  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* rules.make (.NOTPARALLEL): Added target.  It should turn off
+	parallel building - which does not work with gnustep-make - even
+	when specified on the command-line as 'make -j'.
+
+2009-01-28  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/resource-set.make (internal-resource_set-uninstall_):
+	Rewritten to be much more accurate.  In particular it now removes
+	LOCALIZED_RESOURCE_DIRS and RESOURCE_DIRS.
+	* Instance/Shared/headers.make
+	(shared-instance-headers-uninstall): Remove
+	GNUSTEP_HEADERS/HEADER_FILES_INSTALL_DIR if it is empty.
+	* Instance/rules.make (internal-$(GNUSTEP_TYPE)-uninstall): Remove
+	the $(GNUSTEP_INSTANCE)_INSTALL_DIRS if empty.
+	($(GNUSTEP_INSTANCE)_INSTALL_DIRS): New rule replacing the one for
+	ADDITIONAL_INSTALL_DIRS, moved into the Master invocation.
+	Do not add $(GNUSTEP_INSTANCE)_INSTALL_DIRS to
+	ADDITIONAL_INSTALL_DIRS.
+	* Master/rules.make (uninstall): Depend on
+	internal-after-uninstall.
+	(internal-after-uninstall): New rule to remove
+	ADDITIONAL_INSTALL_DIRS if empty.
+	($(ADDITIONAL_INSTALL_DIRS)): New rule.
+	(internal-before-install): New rule.  Depend on
+	ADDITIONAL_INSTALL_DIRS.
+	(install): Depend on internal-before-install.
+	
+2009-01-28  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* rules.make: Replaced ${OEXT} with the equivalent syntax $(OEXT)
 	to be consistent with the rest of the code.
 	

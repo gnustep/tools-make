@@ -126,23 +126,32 @@ internal-$(GNUSTEP_TYPE)-uninstall:: before-$(GNUSTEP_INSTANCE)-uninstall \
 
 else
 
-# By adding an ADDITIONAL_INSTALL_DIRS variable (or xxx_INSTALL_DIRS)
-# you can request additional installation directories to be created
-# before the first installation target is executed.
-ADDITIONAL_INSTALL_DIRS += $($(GNUSTEP_INSTANCE)_INSTALL_DIRS)
-
-$(ADDITIONAL_INSTALL_DIRS):
+# By adding an xxx_INSTALL_DIRS variable you can request additional
+# installation directories to be created before the first installation
+# target is executed.  You can also have general
+# ADDITIONAL_INSTALL_DIRS directories that are always created before
+# install is executed; this is done top-level in the Master
+# invocation.
+$($(GNUSTEP_INSTANCE)_INSTALL_DIRS):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-internal-$(GNUSTEP_TYPE)-install:: $(ADDITIONAL_INSTALL_DIRS) \
+internal-$(GNUSTEP_TYPE)-install:: $($(GNUSTEP_INSTANCE)_INSTALL_DIRS) \
                                    before-$(GNUSTEP_INSTANCE)-install \
                                    internal-$(GNUSTEP_TYPE)-install_  \
                                    after-$(GNUSTEP_INSTANCE)-install
 
-# It would be nice to remove ADDITIONAL_INSTALL_DIRS here, if empty.
+# Here we remove the xxx_INSTALL_DIRS of this specific instance.  The
+# global ADDITIONAL_INSTALL_DIRS are removed in the top-level Master
+# invocation.  If we were to remove all of ADDITIONAL_INSTALL_DIRS
+# here, we'd be doing that at every single uninstall target.
 internal-$(GNUSTEP_TYPE)-uninstall:: before-$(GNUSTEP_INSTANCE)-uninstall \
                                    internal-$(GNUSTEP_TYPE)-uninstall_  \
                                    after-$(GNUSTEP_INSTANCE)-uninstall
+ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIRS),)
+	-$(ECHO_NOTHING)for dir in $($(GNUSTEP_INSTANCE)_INSTALL_DIRS); do \
+	  rmdir $$dir ; \
+	done$(END_ECHO)
+endif
 
 endif
 

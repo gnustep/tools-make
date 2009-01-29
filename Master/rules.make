@@ -81,13 +81,13 @@ distclean:: clean before-distclean internal-distclean after-distclean
 export _GNUSTEP_TOP_INVOCATION_DONE = 1
 else
 #  Sub-invocation of make
-install:: before-install internal-install after-install internal-after-install
+install:: internal-before-install before-install internal-install after-install internal-after-install
 
 distclean:: before-distclean internal-distclean after-distclean
 endif
 
 
-uninstall:: before-uninstall internal-uninstall after-uninstall
+uninstall:: before-uninstall internal-uninstall after-uninstall internal-after-uninstall
 
 clean:: before-clean internal-clean after-clean
 
@@ -119,6 +119,16 @@ else
 internal-check-install-permissions:
 endif
 
+# By adding an ADDITIONAL_INSTALL_DIRS variable you can request
+# additional installation directories to be created before the first
+# installation target is executed.  You can also have xxx_INSTALL_DIRS
+# for specific instances, which are processed in the Instance
+# invocation.
+$(ADDITIONAL_INSTALL_DIRS):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
+
+internal-before-install:: $(ADDITIONAL_INSTALL_DIRS)
+
 before-install::
 
 internal-install::
@@ -133,6 +143,13 @@ before-uninstall::
 internal-uninstall::
 
 after-uninstall::
+
+internal-after-uninstall::
+ifneq ($(ADDITIONAL_INSTALL_DIRS),)
+	-$(ECHO_NOTHING)for dir in $(ADDITIONAL_INSTALL_DIRS); do \
+	  rmdir $$dir ; \
+	done$(END_ECHO)
+endif
 
 before-clean::
 

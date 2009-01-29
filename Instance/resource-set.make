@@ -240,13 +240,28 @@ endif # LOCALIZED_RESOURCE_FILES
 
 endif
 
+# Here we try to remove the directories that we created on install.
+# We use a plain rmdir to remove them; if you're manually installing
+# any files in them (eg, in an 'after-install' custom rule), you need
+# to make sure you remove them (in an 'before-uninstall' custom rule)
 
 internal-resource_set-uninstall_:
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
-	-$(ECHO_NOTHING)for language in $(LANGUAGES); do \
+	$(ECHO_NOTHING)for language in $(LANGUAGES); do \
 	  for file in $(LOCALIZED_RESOURCE_FILES); do \
 	    rm -rf $(RESOURCE_FILES_INSTALL_DIR)/$$language.lproj/$$file;\
 	  done; \
+	done$(END_ECHO)
+endif
+ifneq ($(LOCALIZED_RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)for language in $(LANGUAGES); do \
+	  for dir in $(LOCALIZED_RESOURCE_DIRS); do \
+	    rmdir $(RESOURCE_FILES_INSTALL_DIR)/$$language.lproj/$$dir;\
+	  done; \
+	done$(END_ECHO)
+endif
+ifneq ($(LOCALIZED_RESOURCE_FILES)$(LOCALIZED_RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)for language in $(LANGUAGES); do \
 	  rmdir $(RESOURCE_FILES_INSTALL_DIR)/$$language.lproj; \
 	done$(END_ECHO)
 endif
@@ -254,5 +269,12 @@ ifneq ($(RESOURCE_FILES),)
 	$(ECHO_NOTHING)for file in $(RESOURCE_FILES); do \
 	  rm -rf $(RESOURCE_FILES_INSTALL_DIR)/$$file ; \
 	done$(END_ECHO)
-	-rmdir $(RESOURCE_FILES_INSTALL_DIR)
+endif
+ifneq ($(RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)for dir in $(RESOURCE_DIRS); do \
+	  rmdir $(RESOURCE_FILES_INSTALL_DIR)/$$dir ; \
+	done$(END_ECHO)
+endif
+ifneq ($(RESOURCE_FILES)$(RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)rmdir $(RESOURCE_FILES_INSTALL_DIR)$(END_ECHO)
 endif

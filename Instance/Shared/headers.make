@@ -116,6 +116,8 @@ $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/% : $(HEADER_FILES_DIR)/%
 
 endif
 
+# Note that we create this directory, if not there yet.  In the same
+# way, upon uninstall, we delete the directory if it is empty.
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
@@ -126,8 +128,6 @@ shared-instance-headers-uninstall:
 	    rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done$(END_ECHO)
-
-# TODO - during uninstall, it would be pretty to remove
-# $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) if it's empty.
+	-$(ECHO_NOTHING)rmdir $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)$(END_ECHO)
 
 endif # HEADER_FILES = ''

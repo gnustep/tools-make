@@ -360,6 +360,12 @@ VPATH = .
 # error occurs.
 .DELETE_ON_ERROR:
 
+# gnustep-make supports inherently sequential targets such as
+# 'before-install' and 'after-install' which make it really difficult
+# to support parallel building.  At the moment, parallel building is
+# not supported, so make sure to disable it.
+.NOTPARALLEL:
+
 # Disable all built-in suffixes for performance.
 .SUFFIXES:
 
