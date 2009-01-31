@@ -40,11 +40,11 @@ INTRODUCTION TO MINGW
 
 MinGW is a collection of header files and import libraries that allow
 one to use GCC and produce native Windows32 programs that do not rely
-on any 3rd-party DLLs.  GNUstep has only partially been ported to
-MinGW so expect some problems when trying to compile.  Also, there are
-still subtle problems with running GNU tools on Windows, so any
-problems you may encounter may just as easly have to do with the
-compilation tools you are using as with GNUstep.
+on any 3rd-party DLLs.  GNUstep's port to MinGW is recent so expect
+some occasional problems when trying to compile things.  Also, there
+are still occasional subtle problems with running GNU tools on
+Windows, so any problems you may encounter may just as easly have to
+do with the compilation tools you are using as with GNUstep.
 
 MSYS is a very much cut down version of the Cygwin environment ...
 providing a minimal set of tools needed to build programs using
@@ -75,20 +75,20 @@ A. STEP BY STEP INSTALLATION INSTRUCTIONS
 1. Install MinGW
 ================
 
-Download MinGW-5.1.3 from
-http://sourceforge.net/projects/mingw Install it into
+Download MinGW-5.1.4.exe from 
 
-C:/xxx/msys/1.0/mingw
+ http://sourceforge.net/projects/mingw
 
-(where /xxx/ is the top-level path you want to use, I use Nicola/GNUstep so
-I install it into C:/Nicola/GNUstep/msys/1.0/mingw) (earlier versions of 
-MinGW might not work)
+Then start it up.  Select 'Current' as the package version to install.
+Then select 'MinGW Base Tools', 'Objective-C Compiler' and 'MinGW
+Make' as packages to install.  Set the installation path to
 
-PS: Download MinGW-5.1.3.exe, then start it up.  Select 'Current' as
-the package version ot install.  Then select 'MinGW Base Tools',
-'Objective-C Compiler' and 'MinGW Make' as packages to install.  Set
-the installation path to C:\xxx\msys\1.0\mingw.
+C:\xxx\msys\1.0\mingw.
 
+(where \xxx\ is the top-level path you want to use, I use Nicola/GNUstep so
+I install it into C:\Nicola\GNUstep\msys\1.0\mingw)
+
+PS: Earlier versions of MinGW might not work.
 
 2. Install msys
 ===============
@@ -103,8 +103,8 @@ detect it and be happy that it's there and all is setup properly.
 3. Install msys developer toolkit
 =================================
 
-Download msysDTK-1.0.1 from the same site.  Install it into
-C:/xxx/msys/1.0
+Download msysDTK-1.0.1.exe from the same site.  Execute it and install
+into C:/xxx/msys/1.0
 
 
 Now your MSYS/MinGW system should be setup!  There should be an icon
@@ -127,7 +127,7 @@ include/objc headers that come with gcc (gcc -v for location) so that
 they are not accidentally found instead of the libobjc DLL that you
 will compile below.  This is what I did to remove them:
 
-rm -Rf /mingw/lib/gcc/mingw32/3.4.2/include/objc
+rm -Rf /mingw/lib/gcc/mingw32/3.4.5/include/objc
 rm -Rf /mingw/lib/libobjc.a
 rm -Rf /mingw/lib/libobjc.la
 
@@ -216,17 +216,19 @@ gnustep-make should have detected your custom libobjc.
 11. Installing libffi
 =====================
 
-Download libffi from the GNUstep website, and type:
+Download libffi-3.0.1.tar.gz from the GNUstep website, unpack it, compile and install:
 
+cd libffi-3.0.1
 ./configure --prefix=/mingw
 make
 make install
 mv /mingw/lib/libffi*/include/* /mingw/include
 
 (if you get a popup about contest.exe failing, just ignore it)
-NB. The headers have to be moved manually because the package wwon't install
+NB. The headers have to be moved manually because the package won't install
 them in the right place.
-
+(FIXME: Wouldn't it make more sense to install libffi into /usr/local 
+instead of /mingw ?)
 
 12. Installing additional packages
 ==================================
@@ -236,8 +238,8 @@ Download the following packages:
  libintl-0.14.4.bin.zip
  libintl-0.14.4.lib.zip
 
- libiconv-1.9.2-bin.zip 
- libiconv-1.9.2-lib.zip 
+ libiconv-1.9.2-1-bin.zip 
+ libiconv-1.9.2-1-lib.zip 
 
  zlib-1.2.3-bin.zip
  zlib-1.2.3-lib.zip
@@ -245,25 +247,36 @@ Download the following packages:
 from http://gnuwin32.sourceforge.net, and install them.  To
 install them, simply unzip them into /C/xxx/msys/1.0/mingw.
 
-Download gnutls-2.2.1.exe from http://josefsson.org/gnutls4win
-and install it, browsing to the msys/1.0/mingw directory and then taking
-care to remove the trailing gnutls-2.2.1 which appears in the
-'Destination Folder' path, before clicking 'Next' and 'Install'.
-This should result in the correct files being installed in each
-of the bin lib and include subdirectories so that they can be
-found by gnustep-base-2.1.15 or later.
+13. Installing SSL support (Optional)
+=====================================
 
+(Optional) if you want to use the SSL support built in gnustep-base
+(for example, so that gnustep-base can access https:// URLs), you need
+an SSL package.  You can use gnutls (the default), or openssl.
 
-13. XML support
+If you want to use gnutls, then download gnutls-2.2.1.exe from
+http://josefsson.org/gnutls4win and install it, browsing to the
+msys/1.0/mingw directory and then taking care to remove the trailing
+gnutls-2.2.1 which appears in the 'Destination Folder' path, before
+clicking 'Next' and 'Install'.  This should result in the correct
+files being installed in each of the bin lib and include
+subdirectories so that they can be found by gnustep-base-2.1.15 or
+later.
+
+TODO: Add instructions for openssl.
+
+14. XML support
 ===============
 
-You need to get the source code for libxml2 and  build it yourself ...
+You need to get the source code for libxml2 and  build it yourself.
 
-Now download the libxml2 source from http://www.xmlsoft.org I used
-libxml2-2.6.27.tar.gz
+Download the libxml2 source from http://www.xmlsoft.org.
+
+I used libxml2-2.6.32.tar.gz
 
 Unpack the source, change into the directory and do the usual routine --
 
+cd libxml2-2.6.32
 ./configure
 make
 make install
@@ -302,8 +315,9 @@ For the gui, download and install the following packages:
   tiff-3.8.2-1-dep.zip
   tiff-3.8.2-1-lib.zip
 
-  libpng-1.2.8-bin.zip
-  libpng-1.2.8-lib.zip
+  libpng-1.2.34-1-bin.zip
+  libpng-1.2.34-1-dep.zip
+  libpng-1.2.34-1-lib.zip
 
 The process is always the same: download the zip file from the
 gnuwin32 website, then unzip them into /C/xxx/msys/1.0/mingw.
@@ -347,9 +361,10 @@ Before attempting to update your GNUstep installation, be sure to stop/kill
 all running GNUstep programs or services (i.e. gdomap, gdnc, gpbs) since
 Windows cannot overwrite files that are currently in use.
 
-Where we specify specific versions of packages to be used, we have tested
-with those versions ... later or earlier versions may work, but may well not.
-Generally earlier versions should be assumed not to work.
+Where we specify specific versions of packages to be used, we have
+tested with those versions - later or earlier versions may work, but
+may well not.  Generally earlier versions should be assumed not to
+work.
 
 
 
