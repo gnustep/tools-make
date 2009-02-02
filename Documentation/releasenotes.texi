@@ -4,6 +4,25 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.0.9
+
+@table @samp
+
+@item install -p
+gnustep-make now uses 'install -p' by default when installing headers
+and other files.  This preserves the file timestamps and can in some
+cases reduce spurious rebuilds triggered by reinstalling headers that
+have not been modified.  You can use the gnustep-make configure option
+--disable-install-p to disable this behaviour and go back to always 
+using a standard 'install'.
+
+@item uninstallation of resources
+gnustep-make now is more careful and accurate when uninstalling
+resources, which means that 'make uninstall' will do a better job at
+removing directories that were created during by 'make install'.
+
+@end table
+
 @section Version 2.0.7
 
 @table @samp
