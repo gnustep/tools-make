@@ -1,5 +1,10 @@
 2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+
+2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	This change means that file timestamps are more likely to be
 	preserved when files are installed.  For example, if you reinstall
 	a library without having changed the headers, this should/might
