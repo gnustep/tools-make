@@ -1330,6 +1330,16 @@ Optional Features:
    to be the gnu runtime with garbage collection.
 
 
+--disable-install-p
+  Disable using 'install -p' when installing files.  By default,
+  assuming that 'install -p' works, when installing files such as header files or libraries,
+  gnustep-make uses 'install -p', which preserves the original timestamp of the header file or
+  library.  If you do not want the timestamp to be preserved, use this option
+  to have gnustep-make use 'install' instead of 'install -p'.
+  Unless you have a specific reason for not liking the default behaviour
+  this option is most likely irrelevant for you.
+
+
 --enable-strict-v2-mode
   Enable strict gnustep-make version 2 mode by default.  Use this
   option to have gnustep-make be aggressively backwards-incompatible
@@ -3760,7 +3770,6 @@ esac
 
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
-  export INSTALL="install -p"
   export SHELL=sh
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
@@ -4184,6 +4193,43 @@ test -z "$INSTALL_PROGRAM" && INSTALL_PROGRAM='${INSTALL}'
 test -z "$INSTALL_SCRIPT" && INSTALL_SCRIPT='${INSTALL}'
 
 test -z "$INSTALL_DATA" && INSTALL_DATA='${INSTALL} -m 644'
+
+
+{ echo "$as_me:$LINENO: checking if 'install -p' works" >&5
+echo $ECHO_N "checking if 'install -p' works... $ECHO_C" >&6; }
+gs_install_p_test_builddir="`pwd`"
+gs_install_p_test_results=`(INSTALL="$INSTALL"; export INSTALL; cd "$srcdir/config-install-p-test/"; ./run-test.sh "$gs_install_p_test_builddir"; echo $?) 2>&5`
+if test "$gs_install_p_test_results" = "0"; then
+  { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; };
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; };
+fi
+
+{ echo "$as_me:$LINENO: checking if we should use 'install -p' when installing files" >&5
+echo $ECHO_N "checking if we should use 'install -p' when installing files... $ECHO_C" >&6; }
+# Check whether --enable-install-p was given.
+if test "${enable_install_p+set}" = set; then
+  enableval=$enable_install_p; ac_cv_install_p=$enableval
+else
+  ac_cv_install_p="yes"
+fi
+
+
+if test "$ac_cv_install_p" = "yes"; then
+  if test "$gs_install_p_test_results" = "0"; then
+    { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; };
+    INSTALL="${INSTALL} -p"
+  else
+    { echo "$as_me:$LINENO: result: no: install -p does not work" >&5
+echo "${ECHO_T}no: install -p does not work" >&6; };
+  fi
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; };
+fi
 
 { echo "$as_me:$LINENO: checking whether ln -s works" >&5
 echo $ECHO_N "checking whether ln -s works... $ECHO_C" >&6; }

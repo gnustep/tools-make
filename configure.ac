@@ -166,7 +166,6 @@ AC_EXEEXT
 AC_OBJEXT
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
-  export INSTALL="install -p"
   export SHELL=sh
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
@@ -201,6 +200,41 @@ else
 fi
 
 AC_PROG_INSTALL
+
+AC_MSG_CHECKING([if 'install -p' works])
+gs_install_p_test_builddir="`pwd`"
+gs_install_p_test_results=`(INSTALL="$INSTALL"; export INSTALL; cd "$srcdir/config-install-p-test/"; ./run-test.sh "$gs_install_p_test_builddir"; echo $?) 2>&5`
+if test "$gs_install_p_test_results" = "0"; then
+  AC_MSG_RESULT(yes);
+else
+  AC_MSG_RESULT(no);
+fi
+
+AC_MSG_CHECKING([if we should use 'install -p' when installing files])
+AC_ARG_ENABLE(install-p, [
+--disable-install-p
+  Disable using 'install -p' when installing files.  By default,
+  assuming that 'install -p' works, when installing files such as header files or libraries, 
+  gnustep-make uses 'install -p', which preserves the original timestamp of the header file or
+  library.  If you do not want the timestamp to be preserved, use this option
+  to have gnustep-make use 'install' instead of 'install -p'.
+  Unless you have a specific reason for not liking the default behaviour
+  this option is most likely irrelevant for you.
+], 
+  ac_cv_install_p=$enableval,
+  ac_cv_install_p="yes")
+
+if test "$ac_cv_install_p" = "yes"; then
+  if test "$gs_install_p_test_results" = "0"; then
+    AC_MSG_RESULT(yes);
+    INSTALL="${INSTALL} -p"
+  else
+    AC_MSG_RESULT(no: install -p does not work);
+  fi
+else
+  AC_MSG_RESULT(no);
+fi
+
 AC_PROG_LN_S([])
 
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)

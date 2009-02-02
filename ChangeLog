@@ -1,3 +1,24 @@
+2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	This change means that file timestamps are more likely to be
+	preserved when files are installed.  For example, if you reinstall
+	a library without having changed the headers, this should/might
+	prevent code using the library headers from being rebuilt.
+	* configure.ac: Check if 'install -p' works.  If it works, use it
+	by default.  Added --disable-install-p option to revert to the
+	previous behaviour of using 'install' instead of 'install -p'.
+	* configure: Regenerated
+	* config-install-p-test/: New directory.
+	* config-install-p-test/run-test.sh: New file.
+	* config-install-p-test/config-install-p-test-file: New file.
+	
+2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: On MinGW, do not set INSTALL to 'install -p'.
+	Prefer the install program chosen by configure, which has a full
+	path (typically '/bin/install -c') and so it is safer.
+	* configure: Regenerated.
+
 2009-01-31  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/README.MinGW: Updated installation instructions.
