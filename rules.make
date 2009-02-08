@@ -674,13 +674,21 @@ $(GNUSTEP_OBJ_DIR):
         print-gnustep-make-gui-libs \
         print-gnustep-make-installation-domain
 
-# Print GNUstep make help.  The sed command is used to strip all lines
-# beginning with '#' from the file.  It will find all lines that match
-# the pattern ^#.* (which means that they have a '#' at the beginning
-# of the line, followed by any number of chars), and applies to them
-# the operation d, which means delete.
+# Print GNUstep make help.  The sed command '/^#.*/d' is used to strip
+# all lines beginning with '#' from the file.  It will find all lines
+# that match the pattern ^#.* (which means that they have a '#' at the
+# beginning of the line, followed by any number of chars), and applies
+# to them the operation d, which means delete.
+#
+# The gnustep-make-help file uses the string _MAKE_ whenever referring
+# to the 'make' executable - for example, when if it says "type
+# '_MAKE_ install' to install".  We need to replace _MAKE_ with the
+# correct name of GNU make on the system - usually 'make', but for
+# example 'gmake' on OpenBSD.  The sed command 's/_MAKE_/$(notdir
+# $(MAKE))/' does that - it replaces everywhere the string _MAKE_ with
+# the basename of $(MAKE).
 print-gnustep-make-help:
-	@(cat $(GNUSTEP_MAKEFILES)/gnustep-make-help | sed -e '/^#.*/d')
+	@(cat $(GNUSTEP_MAKEFILES)/gnustep-make-help | sed -e '/^#.*/d' -e 's/_MAKE_/$(notdir $(MAKE))/')
 
 # These targets are used by gnustep-config to allow people to get
 # basic compilation/link flags for GNUstep ObjC code.

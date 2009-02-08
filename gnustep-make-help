@@ -28,12 +28,12 @@ that allows you to write powerful, robust and portable makefiles very
 quickly.  Traditionally it is used to build and install GNUstep software.
 
 Most common targets:
- make all (builds)
- make install (builds and installs)
- make uninstall (uninstalls)
- make clean (deletes built files)
- make distclean (deletes all built files)
- make dist (creates a .tar.gz of the software sources)
+ _MAKE_ all (builds)
+ _MAKE_ install (builds and installs)
+ _MAKE_ uninstall (uninstalls)
+ _MAKE_ clean (deletes built files)
+ _MAKE_ distclean (deletes all built files)
+ _MAKE_ dist (creates a .tar.gz of the software sources)
 
 Most common options that can be used with any of the targets:
  messages=yes (prints verbosely all commands being executed)
@@ -44,22 +44,22 @@ Most common options that can be used with any of the targets:
    in the specified domain; the default is LOCAL)
  MAKEFILE_NAME=xxx (uses makefiles called 'xxx'; the default is
    'GNUmakefile'.  Note that usually you'd use this option as in 
-   'make -f xxx MAKEFILE_NAME=xxx'.)
+   '_MAKE_ -f xxx MAKEFILE_NAME=xxx'.)
 You can use multiple of these options at the same time.
 
 Examples:
 
- make messages=yes
+ _MAKE_ messages=yes
    Builds the software and prints verbosely the commands that are
    being used (useful for debugging)
 
- make install GNUSTEP_INSTALLATION_DOMAIN=USER
+ _MAKE_ install GNUSTEP_INSTALLATION_DOMAIN=USER
    Builds the software and installs it into your user domain (normally
    in the GNUstep directory of your home directory).  Note that you 
    need to source GNUstep.sh to be able to use software installed
    in your user domain.
 
- make install strip=yes messages=yes
+ _MAKE_ install strip=yes messages=yes
    Builds and installs the software and strips executables and object
    files before installing.  It also prints verbosely the commands
    being executed.

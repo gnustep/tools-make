@@ -1,3 +1,13 @@
+2009-02-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-make-help: Use _MAKE_ instead of make when referring to
+	the GNU make program.
+	* rules.make (print-gnustep-make-help): Replace _MAKE_ with the
+	basename of $(MAKE) when printing the help, so that on different
+	systems the correct name for GNU make is used in the help.  For
+	example, on OpenBSD it should be 'gmake', not 'make'.  Issue
+	reported by Sebastian Reitenbach <buzzdee@web.de>.
+	
 2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/releasenotes.texi: Updated.
