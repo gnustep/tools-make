@@ -726,6 +726,7 @@ OBJCFLAGS
 GNUMAKE
 MAKE_WITH_INFO_FUNCTION
 GNUSTEP_STRIP_MAKEFILES
+GNUSTEP_MAKE_PARALLEL_BUILDING
 GNUSTEP_MAKE_VERSION
 GNUSTEP_MAKE_MAJOR_VERSION
 GNUSTEP_MAKE_MINOR_VERSION
@@ -1427,6 +1428,16 @@ Optional Features:
    useful if you are trying to find some information on how gnustep-make
    works (eg, if you're trying to locate a bug), and the performance
    gain is quite small, so you probably don't want to strip makefiles.
+
+
+--enable-parallel-building
+  Enable experimental support for parallel building.  You can request
+  parallel building of a project by using the '-j N' flag for make
+  (where N is a number, eg, '-j 4').  This is normally ignored by
+  gnustep-make which by default does not support parallel building.
+  If you enable support for parallel building here, gnustep-make
+  will parallelize the compilation step.  This feature is
+  experimental.  Please only use it for testing it.
 
 
 Optional Packages:
@@ -6256,6 +6267,33 @@ echo "${ECHO_T}no" >&6; };
 fi
 
 
+#-------------------------------------------------
+# Determine if we should enable parallel building
+#-------------------------------------------------
+
+{ echo "$as_me:$LINENO: checking if we should enable support for parallel building" >&5
+echo $ECHO_N "checking if we should enable support for parallel building... $ECHO_C" >&6; }
+# Check whether --enable-parallel-building was given.
+if test "${enable_parallel_building+set}" = set; then
+  enableval=$enable_parallel_building; ac_cv_parallel_building=$enableval
+else
+  ac_cv_parallel_building="no"
+fi
+
+
+if test "$ac_cv_parallel_building" = "yes"; then
+  { echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6; };
+  GNUSTEP_MAKE_PARALLEL_BUILDING="yes"
+else
+  { echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6; };
+  GNUSTEP_MAKE_PARALLEL_BUILDING="no"
+fi
+
+
+
+
 #--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------
@@ -7183,6 +7221,7 @@ OBJCFLAGS!$OBJCFLAGS$ac_delim
 GNUMAKE!$GNUMAKE$ac_delim
 MAKE_WITH_INFO_FUNCTION!$MAKE_WITH_INFO_FUNCTION$ac_delim
 GNUSTEP_STRIP_MAKEFILES!$GNUSTEP_STRIP_MAKEFILES$ac_delim
+GNUSTEP_MAKE_PARALLEL_BUILDING!$GNUSTEP_MAKE_PARALLEL_BUILDING$ac_delim
 GNUSTEP_MAKE_VERSION!$GNUSTEP_MAKE_VERSION$ac_delim
 GNUSTEP_MAKE_MAJOR_VERSION!$GNUSTEP_MAKE_MAJOR_VERSION$ac_delim
 GNUSTEP_MAKE_MINOR_VERSION!$GNUSTEP_MAKE_MINOR_VERSION$ac_delim
@@ -7195,7 +7234,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 61; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 62; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

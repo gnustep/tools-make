@@ -346,7 +346,7 @@ ALL_CPLISTFLAGS += $(ADDITIONAL_CPLISTFLAGS) $(AUXILIARY_CPLISTFLAGS)
 # can not be automatically imported and you might want to declare them
 # specially.  For those symbols, this define is handy.
 #
-ifeq ($(BUILD_DLL),yes)
+ifeq ($(BUILD_DLL), yes)
 ALL_CPPFLAGS += -DGNUSTEP_WITH_DLL
 endif
 
@@ -362,9 +362,17 @@ VPATH = .
 
 # gnustep-make supports inherently sequential targets such as
 # 'before-install' and 'after-install' which make it really difficult
-# to support parallel building.  At the moment, parallel building is
-# not supported, so make sure to disable it.
+# to support parallel building.  At the moment, by default parallel
+# building is not supported.  We only enable it when
+# GNUSTEP_MAKE_PARALLEL_BUILDING = yes and even then only in specific
+# sub-invocations of make tagged with _GNUSTEP_MAKE_PARALLEL = yes.
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 .NOTPARALLEL:
+else
+ifneq ($(_GNUSTEP_MAKE_PARALLEL), yes)
+.NOTPARALLEL:
+endif
+endif
 
 # Disable all built-in suffixes for performance.
 .SUFFIXES:

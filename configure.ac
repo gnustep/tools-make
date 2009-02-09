@@ -1525,6 +1525,35 @@ else
 fi
 AC_SUBST(GNUSTEP_STRIP_MAKEFILES)
 
+#-------------------------------------------------
+# Determine if we should enable parallel building
+#-------------------------------------------------
+
+AC_MSG_CHECKING([if we should enable support for parallel building])
+AC_ARG_ENABLE(parallel-building, [
+--enable-parallel-building
+  Enable experimental support for parallel building.  You can request
+  parallel building of a project by using the '-j N' flag for make
+  (where N is a number, eg, '-j 4').  This is normally ignored by
+  gnustep-make which by default does not support parallel building.
+  If you enable support for parallel building here, gnustep-make
+  will parallelize the compilation step.  This feature is
+  experimental.  Please only use it for testing it.
+], 
+  ac_cv_parallel_building=$enableval,
+  ac_cv_parallel_building="no")
+
+if test "$ac_cv_parallel_building" = "yes"; then
+  AC_MSG_RESULT(yes);
+  GNUSTEP_MAKE_PARALLEL_BUILDING="yes"
+else
+  AC_MSG_RESULT(no);
+  GNUSTEP_MAKE_PARALLEL_BUILDING="no"
+fi
+
+AC_SUBST(GNUSTEP_MAKE_PARALLEL_BUILDING)
+
+
 #--------------------------------------------------------------------
 # Record the version
 #--------------------------------------------------------------------

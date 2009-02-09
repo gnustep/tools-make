@@ -1,3 +1,24 @@
+2009-02-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Added experimental support for parallel building of libraries and
+	tools.  We can extend it to more project types once the concept is
+	proven to work.
+	* configure.ac (--enable-parallel-building): New experimental
+	option, disabled by default.
+	* configure: Regenerated.
+	* config-noarch.make.in (GNUSTEP_MAKE_PARALLEL_BUILDING): New
+	variable.
+	* rules.make (.NOTPARALLEL): Do not create this rule when parallel
+	building is enabled, and we are doing the final compile sub-make
+	invocation that is expected to build in parallel.
+	* Instance/library.make (internal-library-all_): When doing a
+	parallel build, delegate the building of the final object file to
+	a sub-make 'compile' invocation that can safely build in parallel.
+	(internal-library-compile): New target executed in the parallel
+	invocation.
+	* Instance/tool.make (internal-tool-all_): Same.
+	(internal-tool-compile): Same.
+
 2009-02-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* gnustep-make-help: Use _MAKE_ instead of make when referring to

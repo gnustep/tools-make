@@ -152,3 +152,13 @@ ifeq ("@GNUSTEP_MULTI_PLATFORM@","")
   GNUSTEP_HOST_VENDOR = @clean_target_vendor@
   GNUSTEP_HOST_OS = @clean_target_os@
 endif
+
+# Enables of disables parallel building support.  When parallel
+# building support is disabled, the target .NOTPARALLEL: is used in
+# all make invocations of gnustep-make to make sure a traditional non
+# parallel build is always performed.  When parallel building support
+# is enabled, all make invocations are still .NOTPARALLEL except for
+# an additional make invocation which is performed when compiling an
+# executable or library; that invocation does not use .NOTPARALLEL and
+# will compile all the files of the executable or library in parallel.
+GNUSTEP_MAKE_PARALLEL_BUILDING = @GNUSTEP_MAKE_PARALLEL_BUILDING@

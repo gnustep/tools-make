@@ -253,8 +253,25 @@ endif
 #
 # Compilation targets
 #
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
 internal-library-all_:: $(GNUSTEP_OBJ_DIR) \
 			$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-library-all_:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-library-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=$(GNUSTEP_OPERATION) \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-library-compile: $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+endif
 
 $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LIB_LINK_CMD)$(END_ECHO)
