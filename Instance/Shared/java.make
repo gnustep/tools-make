@@ -21,6 +21,11 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 #
+# Note: we do not support building Java stuff in parallel (yet ?).
+# Not sure it would be faster - needs testing.
+#
+
+#
 # input variables:
 #
 #  JAVA_OBJ_FILES, JAVA_JNI_OBJ_FILES, SUBPROJECT_OBJ_FILES :
