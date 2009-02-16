@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/java.make
 #
 #   Instance Makefile rules to build java-based (not necessarily
