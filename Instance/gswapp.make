@@ -35,6 +35,8 @@ endif
 # Instance/Shared/bundle.make because it is linking resources instead of
 # copying them.
 
+# TODO: We should remove this makefile since it's not really supported.
+
 
 # The name of the application is in the GSWAPP_NAME variable.
 # The list of languages the app is localized in are in xxx_LANGUAGES <==
