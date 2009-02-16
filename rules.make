@@ -362,10 +362,18 @@ VPATH = .
 
 # gnustep-make supports inherently sequential targets such as
 # 'before-install' and 'after-install' which make it really difficult
-# to support parallel building.  At the moment, by default parallel
-# building is not supported.  We only enable it when
-# GNUSTEP_MAKE_PARALLEL_BUILDING = yes and even then only in specific
-# sub-invocations of make tagged with _GNUSTEP_MAKE_PARALLEL = yes.
+# to support parallel building.  So we don't enable paralell building
+# in general.  We only enable it when GNUSTEP_MAKE_PARALLEL_BUILDING =
+# yes and even then only in specific 'Compile' sub-invocations of
+# make, tagged with _GNUSTEP_MAKE_PARALLEL = yes.  All the
+# compilations are done in such invocations, so in practical terms, a
+# lot of actual parallelization will be going on for large projects,
+# with a very visible compilation speedup.
+#
+# Note that .NOTPARALLEL was added to GNU make on November 1999, so we
+# consider it safe to use to control the parallel building.  If you
+# have an older GNU make, don't use parallel building because it's
+# unsupported.
 ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 .NOTPARALLEL:
 else
