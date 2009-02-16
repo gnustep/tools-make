@@ -31,8 +31,25 @@ endif
 #
 # Compilation targets
 #
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
 internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
                            $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-subproject-all_:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-subproject-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-subproject-compile: $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)
+endif
 
 # We need to depend on SUBPROJECT_OBJ_FILES to account for sub-subprojects.
 $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT): $(OBJ_FILES_TO_LINK)

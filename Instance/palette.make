@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/palette.make
 #
 #   Instance Makefile rules to build GNUstep-based palettes.
@@ -90,13 +90,32 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
                         $(PALETTE_DIR)/Resources \
                         $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-                        $(PALETTE_FILE) \
+                        internal-palette-run-compile-submake \
                         $(PALETTE_DIR)/Resources/Info-gnustep.plist \
                         $(PALETTE_DIR)/Resources/palette.table \
                         shared-instance-bundle-all
 
 $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-palette-run-compile-submake: $(PALETTE_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-palette-run-compile-submake:
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-palette-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-palette-compile: $(PALETTE_FILE)
+endif
 
 # Standard bundle build using the rules for this target
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)

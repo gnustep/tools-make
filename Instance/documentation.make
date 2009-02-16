@@ -24,6 +24,8 @@ ifeq ($(RULES_MAKE_LOADED),)
   include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+# NB: Parallel building is not supported here (yet?).
+
 #
 # The names of the documents are in the DOCUMENT_NAME variable.
 # These final documents will be generated in info, dvi, ps, and html output.

@@ -1,5 +1,34 @@
 2009-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Extended experimental parallel building support to most project
+	types.  You can use 'make GNUSTEP_MAKE_PARALLEL_BUILDING=YES -j2'
+	to try out the new parallel building support.
+	* Instance/application.make (internal-app-run-compile-submake):
+	New target with separate implementations to support parallel and
+	non-parallel building.
+	(internal-app-compile): New target.
+	(internal-app-all_): Depend on internal-app-run-compile-submake
+	instead of APP_FILE.
+	* Instance/bundle.make (internal-bundle-run-compile-submake),
+	(internal-bundle-compile), (internal-bundle-all_): Same changes.
+	* Instance/framework.make
+	(internal-framework-run-compile-submake),
+	(internal-framework-compile), (build-framework): Same changes.
+	* Instance/palette.make (internal-palette-run-compile-submake),
+	(internal-palette-compile), (internal-palette-all_): Same changes.
+	* Instance/service.make (internal-service-run-compile-submake),
+	(internal-service-compile), (internal-service-all_): Same changes.	
+	
+	* Instance/ctool.make (internal-ctool-all_): When doing a parallel
+	build, use a submake 'compile' invocation to compile.
+	(internal-ctool-compile): New target for the 'compile' invocation.
+	* Instance/objc.make (internal-objc_program-all_),
+	(internal-objc_program-compile): Same changes.
+	* Instance/subproject.make (internal-subproject-all_),
+	(internal-subproject-compile): Same changes.
+	
+2009-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/library.make (internal-library-all_): Fixed
 	GNUSTEP_OPERATION used in submake invocation when doing a parallel
 	build.

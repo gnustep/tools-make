@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/service.make
 #
 #   Instance Makefile rules to build GNUstep-based services.
@@ -75,9 +75,28 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
                         $(SERVICE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-                        $(SERVICE_FILE) \
+                        internal-service-run-compile-submake \
                         $(SERVICE_DIR)/Resources/Info-gnustep.plist \
                         shared-instance-bundle-all
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-service-run-compile-submake: $(SERVICE_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-service-run-compile-submake:
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-service-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-service-compile: $(SERVICE_FILE)
+endif
 
 $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \

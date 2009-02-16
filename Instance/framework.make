@@ -483,12 +483,12 @@ else
 endif
 
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
-build-framework: $(FRAMEWORK_FILE) \
+build-framework: internal-framework-run-compile-submake \
                  shared-instance-bundle-all \
                  $(FRAMEWORK_VERSION_DIR)/Resources/$(FRAMEWORK_INFO_PLIST_FILE) \
                  $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
 else
-build-framework: $(FRAMEWORK_FILE) \
+build-framework: internal-framework-run-compile-submake \
                  shared-instance-bundle-all \
                  $(FRAMEWORK_VERSION_DIR)/Resources/$(FRAMEWORK_INFO_PLIST_FILE)
 endif
@@ -554,6 +554,13 @@ else
   LIB_LINK_FRAMEWORK_FILE = $(LIB_LINK_DLL_FILE)
 endif
 
+# Important: FRAMEWORK_FILE (which is created in the parallel
+# 'compile' invocation) depends on DUMMY_FRAMEWORK_OBJ_FILES as well,
+# which depends on a lot of other rules.  These rules *must* be safe
+# for parallel building, because they will be used during a parallel
+# build.  In particular, note that DUMMY_FRAMEWORK_OBJ_FILE must
+# itself depend on OBJ_FILES_TO_LINK else it might be built before all
+# files are compiled.
 $(FRAMEWORK_FILE): $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING) \
 	$(LIB_LINK_CMD) || $(RM) $(FRAMEWORK_FILE) ; \
@@ -561,6 +568,25 @@ $(FRAMEWORK_FILE): $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
 	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
 	  $(LN_S) $(LIB_LINK_FRAMEWORK_FILE) $(GNUSTEP_INSTANCE)) \
 	$(END_ECHO)
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-framework-run-compile-submake: $(FRAMEWORK_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-framework-run-compile-submake:
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-framework-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-framework-compile: $(FRAMEWORK_FILE)
+endif
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 

@@ -129,11 +129,29 @@ $(APP_FILE): $(OBJ_FILES_TO_LINK)
 #
 # Compilation targets
 #
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-app-run-compile-submake: $(APP_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-app-run-compile-submake:
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-app-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-app-compile: $(APP_FILE)
+endif
 
 ifeq ($(FOUNDATION_LIB), apple)
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_DIR)/Contents/MacOS \
-                    $(APP_FILE) \
+                    internal-app-run-compile-submake \
                     shared-instance-bundle-all \
                     $(APP_INFO_PLIST_FILE)
 
@@ -144,7 +162,7 @@ else
 
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_DIR)/$(GNUSTEP_TARGET_LDIR) \
-                    $(APP_FILE) \
+                    internal-app-run-compile-submake \
                     internal-application-build-template \
                     $(APP_DIR)/Resources \
                     $(APP_INFO_PLIST_FILE) \

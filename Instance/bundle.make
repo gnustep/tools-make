@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instace/bundle.make
 #
 #   Instance makefile rules to build GNUstep-based bundles.
@@ -150,12 +150,12 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 ifneq ($(OBJ_FILES_TO_LINK),)
 ifneq ($(FOUNDATION_LIB),apple)
 build-bundle: $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-              $(BUNDLE_FILE) \
+              internal-bundle-run-compile-submake \
               shared-instance-bundle-all \
               $(BUNDLE_INFO_PLIST_FILE)
 else
 build-bundle: $(BUNDLE_DIR)/Contents/MacOS \
-              $(BUNDLE_FILE) \
+              internal-bundle-run-compile-submake \
               shared-instance-bundle-all \
               $(BUNDLE_INFO_PLIST_FILE)
 endif
@@ -166,6 +166,25 @@ endif
 
 $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-bundle-run-compile-submake: $(BUNDLE_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-bundle-run-compile-submake:
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-bundle-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-bundle-compile: $(BUNDLE_FILE)
+endif
 
 $(BUNDLE_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LINK_CMD)$(END_ECHO)
