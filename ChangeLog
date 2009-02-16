@@ -1,3 +1,10 @@
+2009-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/library.make (internal-library-all_): Fixed
+	GNUSTEP_OPERATION used in submake invocation when doing a parallel
+	build.
+	* Instance/tool.make (internal-tool-all_): Same change.
+
 2009-02-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Added experimental support for parallel building of libraries and
