@@ -32,6 +32,8 @@ endif
 # FIXME - this file has not been updated to use Shared/bundle.make
 # because it is using symlinks rather than copying resources.
 
+# TODO: We should remove this makefile since it's not really supported.
+
 COMPONENTS = $($(GNUSTEP_INSTANCE)_COMPONENTS)
 LANGUAGES = $($(GNUSTEP_INSTANCE)_LANGUAGES)
 WEBSERVER_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_FILES)
