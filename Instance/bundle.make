@@ -56,7 +56,9 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
         internal-bundle-install_ \
         internal-bundle-uninstall_ \
         internal-bundle-copy_into_dir \
-        build-bundle
+        build-bundle \
+        internal-bundle-run-compile-submake \
+        internal-bundle-compile
 
 # In some cases, a bundle without any object file in it is useful - to
 # just store some resources which can be loaded comfortably using the 

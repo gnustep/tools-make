@@ -52,7 +52,9 @@ endif
         internal-app-install_ \
         internal-app-uninstall_ \
         internal-app-copy_into_dir \
-        internal-application-build-template
+        internal-application-build-template \
+        internal-app-run-compile-submake \
+        internal-app-compile
 
 #
 # Determine where to install.  By default, install into GNUSTEP_APPS.

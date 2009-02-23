@@ -46,7 +46,9 @@ endif
 .PHONY: internal-palette-all_ \
         internal-palette-install_ \
         internal-palette-uninstall_ \
-        internal-palette-copy_into_dir
+        internal-palette-copy_into_dir \
+        internal-palette-run-compile-submake \
+        internal-palette-compile
 
 # On windows, this is unfortunately required.
 ifeq ($(BUILD_DLL), yes)

@@ -32,7 +32,8 @@ endif
 
 .PHONY: internal-objc_program-all_ \
         internal-objc_program-install_ \
-        internal-objc_program-uninstall_
+        internal-objc_program-uninstall_ \
+	internal-objc_program-compile
 
 # This is the directory where the objc programs get installed. If you
 # don't specify a directory they will get installed in the Tools

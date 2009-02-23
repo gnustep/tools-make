@@ -50,7 +50,8 @@ endif
 
 .PHONY: internal-ctool-all_ \
         internal-ctool-install_ \
-        internal-ctool-uninstall_
+        internal-ctool-uninstall_ \
+	internal-ctool-compile
 
 # Override the default with just the minimal C libs required to link
 ALL_LIBS =							\

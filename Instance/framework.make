@@ -37,7 +37,9 @@ endif
         internal-framework-install_ \
         internal-framework-distclean \
         internal-framework-clean \
-        internal-framework-uninstall_
+        internal-framework-uninstall_ \
+        internal-framework-run-compile-submake \
+        internal-framework-compile
 
 # The name of the framework is in the FRAMEWORK_NAME variable.
 # The list of framework resource files are in xxx_RESOURCE_FILES

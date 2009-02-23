@@ -38,7 +38,8 @@ endif
 .PHONY: internal-tool-all_       \
         internal-tool-install_   \
         internal-tool-uninstall_ \
-        internal-tool-copy_into_dir
+        internal-tool-copy_into_dir \
+	internal-tool-compile
 
 # This is the directory where the tools get installed. If you don't specify a
 # directory they will get installed in the GNUstep Local Root.

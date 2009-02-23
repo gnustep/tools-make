@@ -51,7 +51,8 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
         internal-library-install_ \
         internal-library-uninstall_ \
         internal-install-lib \
-        internal-install-dirs
+        internal-install-dirs \
+	internal-library-compile
 
 # This is the directory where the libs get installed.  This should *not*
 # include the target arch, os directory or library_combo.

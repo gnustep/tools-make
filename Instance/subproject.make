@@ -26,7 +26,8 @@ endif
 
 .PHONY: internal-subproject-all_       \
         internal-subproject-install_   \
-        internal-subproject-uninstall_
+        internal-subproject-uninstall_ \
+	internal-subproject-compile
 
 #
 # Compilation targets

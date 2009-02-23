@@ -1,3 +1,23 @@
+2009-02-23  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac (GNUSTEP_MAKE_PARALLEL_BUILDING): Enable parallel
+	building support by default.  From now on, you only need to use
+	eg 'make -j 2' to build something using parallel building.  Updated
+	documentation.
+	* configure: Regenerated.
+
+	* Instance/application.make (.PHONY): Added
+	internal-app-run-compile-submake and internal-app-compile.
+	* Instance/bundle.make (.PHONY): Similar change.
+	* Instance/ctool.make (.PHONY): Similar change.
+	* Instance/framework.make (.PHONY): Similar change.
+	* Instance/library.make (.PHONY): Similar change.
+	* Instance/objc.make (.PHONY): Similar change.
+	* Instance/palette.make (.PHONY): Same change.
+	* Instance/service.make (.PHONY): Same change.
+	* Instance/subproject.make (.PHONY): Same change.
+	* Instance/tool.make (.PHONY): Same change.
+	
 2009-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Extended experimental parallel building support to most project

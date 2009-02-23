@@ -37,7 +37,9 @@ endif
         internal-service-install_ \
         internal-service-uninstall_ \
         internal-service-copy_into_dir \
-        service-resource-files
+        service-resource-files \
+        internal-service-run-compile-submake \
+        internal-service-compile
 
 # Libraries that go before the GUI libraries
 ALL_SERVICE_LIBS =							\
