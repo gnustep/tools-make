@@ -16,8 +16,9 @@ for that system as well as there will be significant differences.
 GETTING HELP
 ------------
 
-If you need help with packaging GNUstep or a GNUstep package, please 
-contact the GNUstep mailing list at <discuss-gnustep@gnu.org>.
+If you need help with packaging GNUstep or a GNUstep package, please
+contact the help GNUstep mailing lists <help-gnustep@gnu.org>, or the
+more general GNUstep mailing list <discuss-gnustep@gnu.org>.
 
 
 DESTDIR
