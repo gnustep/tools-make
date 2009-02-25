@@ -1,5 +1,13 @@
 2009-02-25  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* common.make: When printing "This is gnustep-make 2.0.9.  Type
+	'make print-gnustep-make-help' for help.", make sure we replace
+	'make' with whatever command was used to invoke GNU make (eg, on
+	OpenBSD it is often gmake instead of make). Issue reported by
+	Sebastian Reitenbach <buzzdee@web.de>.
+
+2009-02-25  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Documentation/README.Packaging (GETTING HELP): New section.
 
 2009-02-23  Nicola Pero  <nicola.pero@meta-innovation.com>

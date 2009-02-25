@@ -771,11 +771,13 @@ unexport GNUSTEP_TYPE
 ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
 
 # Print out a message with our version number and how to get help on
-# targets and options.
+# targets and options.  We use $(notdir $(MAKE)) to print the command
+# that was used to invoke us; this is usually 'make' but it often is
+# 'gmake' on *BSD systems.
 ifeq ($(MAKE_WITH_INFO_FUNCTION),yes)
   # Use 'make quiet=yes' to disable the message
   ifneq ($(quiet),yes)
-    $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type 'make print-gnustep-make-help' for help.)
+    $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type '$(notdir $(MAKE)) print-gnustep-make-help' for help.)
     ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
       $(info Running in gnustep-make version 2 strict mode.)
     endif
