@@ -564,6 +564,9 @@ endif
 # itself depend on OBJ_FILES_TO_LINK else it might be built before all
 # files are compiled.
 $(FRAMEWORK_FILE): $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING) \
 	$(LIB_LINK_CMD) || $(RM) $(FRAMEWORK_FILE) ; \
 	(cd $(LIB_LINK_OBJ_DIR); \

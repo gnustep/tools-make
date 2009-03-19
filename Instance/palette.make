@@ -121,6 +121,9 @@ endif
 
 # Standard bundle build using the rules for this target
 $(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
 	  $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \

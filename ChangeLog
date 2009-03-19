@@ -1,3 +1,25 @@
+2009-03-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Print a user-friendly warning or notice message when there are no
+	files to link.
+	* messages.make (WARNING_EMPTY_LINKING, NOTICE_EMPTY_LINKING): New
+	messages.
+	* Instance/application.make: Print out the WARNING_EMPTY_LINKING
+	message if we're linking but there are no files to link.
+	* Instance/ctool.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/objc.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/service.make: Same change.
+	* Instance/subproject.make: Same change.
+	* Instance/tool.make: Same change.
+
+	* Instance/bundle.make: Same change but use the
+	NOTICE_EMPTY_LINKING message.
+	
 2009-02-27  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/README.Packaging: File removed - moved it

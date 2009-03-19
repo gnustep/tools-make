@@ -136,3 +136,11 @@ else
 
 endif
 
+# The following are warnings that are always displayed, no matter if
+# messages=yes or messages=no
+
+# Instance/tool.make
+WARNING_EMPTY_LINKING = @(echo " Warning! No files to link. Please check your GNUmakefile! Make sure you set $(GNUSTEP_INSTANCE)_OBJC_FILES (or similar variables)")
+
+# Instance/bundle.make
+NOTICE_EMPTY_LINKING = @(echo " Notice: No files to link - creating a bundle with no object file and only resources")

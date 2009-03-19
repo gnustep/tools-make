@@ -101,6 +101,9 @@ internal-service-compile: $(SERVICE_FILE)
 endif
 
 $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
 	$(OBJ_FILES_TO_LINK) $(ALL_SERVICE_LIBS)$(END_ECHO)
 

@@ -201,6 +201,7 @@ else
 # Following code for the case OBJ_FILES_TO_LINK is empty - bundle with
 # no shared object in it.
 build-bundle: shared-instance-bundle-all $(BUNDLE_INFO_PLIST_FILE) 
+	$(NOTICE_EMPTY_LINKING)
 endif # OBJ_FILES_TO_LINK
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))

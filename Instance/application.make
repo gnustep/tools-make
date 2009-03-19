@@ -125,6 +125,9 @@ ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
 endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
 	$(OBJ_FILES_TO_LINK) $(ALL_LIB_DIRS) $(ALL_LIBS)$(END_ECHO)
 
