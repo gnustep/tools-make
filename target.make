@@ -69,7 +69,7 @@ endif
 #
 # The first one is SHARED_LIB_LINK_CMD - which should be set to the
 # command(s) to use to link a shared library on that platform.  Please
-# note that the variables (stuff like $(CC)) in it are not expanded
+# note that the variables (stuff like $(LD)) in it are not expanded
 # until SHARED_LIB_LINK_CMD is actually used (STATIC_LIB_LINK_CMD is
 # the equivalent variable, used for static libraries).
 #
@@ -207,7 +207,7 @@ endif
 
 ifneq ($(OBJC_COMPILER), NeXT)
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) \
+	$(LD) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
 		-install_name $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIB_LINK_FILE) \
@@ -220,7 +220,7 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 else # OBJC_COMPILER=NeXT
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) \
+	$(LD) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) -dynamic \
 		-compatibility_version 1 -current_version 1 \
 		-read_only_relocs warning -undefined warning \
@@ -234,7 +234,7 @@ SHARED_LIB_LINK_CMD     = \
 endif # OBJC_COMPILER
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
@@ -248,7 +248,7 @@ AFTER_INSTALL_STATIC_LIB_CMD =
 SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .dylib
 
-BUNDLE_LD	=  $(CC)
+BUNDLE_LD	=  $(LD)
 BUNDLE_LDFLAGS  += -bundle -undefined suppress $(ARCH_FLAGS)
 endif
 #
@@ -312,7 +312,7 @@ ifeq ($(findstring darwin8, $(GNUSTEP_TARGET_OS)), darwin8)
   BUNDLE_LIBS += -lSystemStubs
 endif
 SHARED_LIB_LINK_CMD     = \
-	$(CC) \
+	$(LD) \
 		$(SHARED_LD_PREFLAGS) \
 		$(ARCH_FLAGS) -dynamic -dynamiclib	\
 		$(DYLIB_COMPATIBILITY_VERSION)		\
@@ -330,7 +330,7 @@ SHARED_LIB_LINK_CMD     = \
           fi; \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
-BUNDLE_LD       =  $(CC)
+BUNDLE_LD       =  $(LD)
 BUNDLE_LDFLAGS  += -fgnu-runtime -bundle
 
 else 
@@ -344,7 +344,7 @@ ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
 endif
 
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) \
+	$(LD) $(SHARED_LD_PREFLAGS) \
 		-dynamiclib $(ARCH_FLAGS) \
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
@@ -363,7 +363,7 @@ SHARED_LIB_LINK_CMD     = \
 
 SHARED_CFLAGS   += -dynamic
 
-BUNDLE_LD	=  $(CC)
+BUNDLE_LD	=  $(LD)
 BUNDLE_LDFLAGS  += -bundle -undefined error $(ARCH_FLAGS)
 
 endif # CC_TYPE
@@ -378,7 +378,7 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE) )
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
@@ -535,7 +535,7 @@ endif
 ifeq ($(findstring gnu, $(GNUSTEP_TARGET_OS)), gnu)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
            $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS) \
@@ -562,13 +562,13 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS      += -fPIC
 SHARED_LIBEXT      =  .so
 
 HAVE_BUNDLES       =  yes
-BUNDLE_LD	   =  $(CC)
+BUNDLE_LD	   =  $(LD)
 BUNDLE_LDFLAGS     += -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
@@ -587,7 +587,7 @@ freebsdaout = yes
 
 HAVE_SHARED_LIBS	= no
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
+	$(LD) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
 	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o \
 	&& (cd $(LIB_LINK_OBJ_DIR); \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
@@ -597,7 +597,7 @@ SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
@@ -615,7 +615,7 @@ ifeq ($(findstring freebsd, $(GNUSTEP_TARGET_OS)), freebsd)
 ifneq ($(freebsdaout), yes)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+	$(LD) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
 	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS) \
@@ -640,13 +640,13 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
@@ -674,7 +674,7 @@ ifeq ($(findstring netbsd, $(GNUSTEP_TARGET_OS)), netbsd)
 HAVE_SHARED_LIBS    = yes
 SHARED_LD_POSTFLAGS = -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
+	$(LD) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
               $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
                  $^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
                  $(SHARED_LD_POSTFLAGS) \
@@ -682,13 +682,13 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic -Wl,-R/usr/pkg/lib -L/usr/pkg/lib -Wl,-R/usr/X11R6/lib -L/usr/X11R6/lib
 ADDITIONAL_INCLUDE_DIRS += -I/usr/pkg/include
@@ -707,7 +707,7 @@ ifeq ($(findstring dragonfly, $(GNUSTEP_TARGET_OS)), dragonfly)
 HAVE_SHARED_LIBS    = yes
 SHARED_LD_POSTFLAGS = -Wl,-R/usr/pkg/lib -L/usr/pkg/lib
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
+	$(LD) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
               $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
                  $^ $(INTERNAL_LIBRARIES_DEPEND_UPON) \
                  $(SHARED_LD_POSTFLAGS) \
@@ -715,13 +715,13 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic -Wl,-R/usr/pkg/lib -L/usr/pkg/lib -Wl,-R/usr/X11R6/lib -L/usr/X11R6/lib
 ADDITIONAL_INCLUDE_DIRS += -I/usr/pkg/include
@@ -739,7 +739,7 @@ endif
 ifeq ($(findstring openbsd, $(GNUSTEP_TARGET_OS)), openbsd)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+	$(LD) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
 	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS) \
@@ -761,13 +761,13 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
 	)
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS  += -shared -fPIC
 ADDITIONAL_LDFLAGS += -Wl,-E
 STATIC_LDFLAGS += -static
@@ -787,19 +787,19 @@ endif
 ifeq ($(findstring osf, $(GNUSTEP_TARGET_OS)), osf)
 HAVE_SHARED_LIBS	= yes
 SHARED_LIB_LINK_CMD = \
-	$(CC) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
+	$(LD) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
 	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	&& (cd $(LIB_LINK_OBJ_DIR); \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
 
 HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
@@ -819,7 +819,7 @@ ifeq ($(findstring irix, $(GNUSTEP_TARGET_OS)), irix)
 HAVE_SHARED_LIBS        = yes
 
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
            $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
            -Wl,-rpath,$(LIB_LINK_INSTALL_DIR) \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
@@ -856,7 +856,7 @@ ADDITIONAL_LDFLAGS +=
 STATIC_LDFLAGS +=
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD       = $(CC)
+BUNDLE_LD       = $(LD)
 BUNDLE_LDFLAGS  += -shared
 endif
 
@@ -875,7 +875,7 @@ HAVE_SHARED_LIBS = yes
 # symbols to export, creates the DLL (eg, obj/gnustep-base-1_13.dll) and 
 # the import library (eg, obj/libgnustep-base.dll.a).
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared \
         -Wl,--enable-auto-image-base \
         -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
            $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) $^ \
@@ -899,10 +899,10 @@ DLL_LIBEXT	 = .dll
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-  $(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+  $(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
-BUNDLE_LD      = $(CC)
+BUNDLE_LD      = $(LD)
 BUNDLE_LDFLAGS     += -shared -Wl,--enable-auto-image-base
 ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
 
@@ -927,7 +927,7 @@ HAVE_SHARED_LIBS = yes
 # symbols to export, creates the DLL (eg, obj/gnustep-base.dll) and 
 # the import library
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
 	-Wl,--out-implib=$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
 	-Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
@@ -949,10 +949,10 @@ CYGWIN_LD_FLAGS = -Wl,--export-all-symbols -Wl,--enable-auto-import
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) $(CYGWIN_LD_FLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) $(CYGWIN_LD_FLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
-BUNDLE_LD      = $(CC)
+BUNDLE_LD      = $(LD)
 BUNDLE_LDFLAGS += -shared -Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
 	-Wl,--whole-archive
@@ -982,7 +982,7 @@ else
 endif
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) $(GCC_LINK_FLAG) \
+	$(LD) $(SHARED_LD_PREFLAGS) $(GCC_LINK_FLAG) \
 	   -Wl,-h,$(LIB_LINK_SONAME_FILE) \
 	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
@@ -1010,13 +1010,13 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS  = -shared -mimpure-text
 #BUNDLE_LDFLAGS  = -nodefaultlibs -Xlinker -r
 endif
@@ -1033,7 +1033,7 @@ endif
 ifeq ($(findstring sysv4.2, $(GNUSTEP_TARGET_OS)), sysv4.2)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(CC) $(SHARED_LD_PREFLAGS) -shared $(ALL_LDFLAGS) -o $(LIB_LINK_VERSION_FILE) $^ \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared $(ALL_LDFLAGS) -o $(LIB_LINK_VERSION_FILE) $^ \
 	  $(SHARED_LD_POSTFLAGS);\
         && (mv $(LIB_LINK_VERSION_FILE) $(LIB_LINK_OBJ_DIR);\
         cd $(LIB_LINK_OBJ_DIR); \
@@ -1044,7 +1044,7 @@ SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD       = $(CC)
+BUNDLE_LD       = $(LD)
 #BUNDLE_LDFLAGS  += -shared -mimpure-text
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 endif
@@ -1061,7 +1061,7 @@ endif
 ifeq ($(findstring hpux, $(GNUSTEP_TARGET_OS)), hpux)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-	$(CC) $(SHARED_LD_PREFLAGS) \
+	$(LD) $(SHARED_LD_PREFLAGS) \
 	    -v $(SHARED_CFLAGS) -shared \
 	    $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	    $(SHARED_LD_POSTFLAGS) ;\
@@ -1070,7 +1070,7 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(CC) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 ifeq ($(CC), cc)
 SHARED_CFLAGS   += +z
@@ -1085,7 +1085,7 @@ SHARED_LIBEXT   = .sl
 endif
 
 HAVE_BUNDLES    = yes
-BUNDLE_LD	= $(CC)
+BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
 ADDITIONAL_LDFLAGS += -Xlinker +s
 STATIC_LDFLAGS += -static

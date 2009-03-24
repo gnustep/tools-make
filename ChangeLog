@@ -1,3 +1,14 @@
+2009-03-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed compiling software that contain both C/ObjC and C++/ObjC++
+	files: use CC to compile C and ObjC files even if CXX is used to
+	link.  (Problem reported by Riccardo Mottola <multix@gmail.com>).
+	* target.make: Replaced CC with LD everywhere it is used to link -
+	so that we can change the program used to link (LD) without having
+	to change the program used to compile C/ObjC code (CC).
+	* Instance/rules.make (LD): If CC_OBJ_FILES or OBJCC_OBJ_FILES is
+	not empty, set LD to be CXX, while leaving CC unchanged.
+	
 2009-03-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Print a user-friendly warning or notice message when there are no
