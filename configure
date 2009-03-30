@@ -5327,33 +5327,48 @@ else
 
 fi
 
-if test "$OBJC_LIB_FLAG" = ""; then
-  OBJC_LIB_FLAG="-lobjc"
-fi
-{ echo "$as_me:$LINENO: result: $OBJC_LIB_FLAG" >&5
-echo "${ECHO_T}$OBJC_LIB_FLAG" >&6; }
+# We pass the flag, unchanged, to gnustep-make - if it's empty,
+# gnustep-make will be free to use -lobjc or -lobjc_gc depending on
+# the case.
 
+
+# But we need to compute, and print out, what flag we're using now.
+OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
 
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "gnu"; then
   CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-  OBJCRT="$OBJC_LIB_FLAG"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG"
 fi
 if test "$OBJC_RUNTIME_LIB" = "gnugc"; then
   CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-  OBJCRT="$OBJC_LIB_FLAG -ldl -lgc"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc_gc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG -ldl -lgc"
 fi
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-  OBJCRT="$OBJC_LIB_FLAG"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG"
 fi
 if test "$OBJC_RUNTIME_LIB" = "apple"; then
   CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
-  OBJCRT="$OBJC_LIB_FLAG"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG"
 fi
 
+{ echo "$as_me:$LINENO: result: $OBJC_FINAL_LIB_FLAG" >&5
+echo "${ECHO_T}$OBJC_FINAL_LIB_FLAG" >&6; }
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

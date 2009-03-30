@@ -1,5 +1,12 @@
 2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac, library-combo.make: Fixed to automatically use
+	-lobjc_gc for the GNU Objective-C runtime with garbage collection
+	if no --with-objc-lib-flag=... is used in configure.
+	* configure: Regenerated.
+
+2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	From a suggestion by Truls Becken <truls.becken@gmail.com>:
 	* configure.ac (--with-objc-lib-flag): New option allowing to
 	replace the default -lobjc flag with a custom one such as
