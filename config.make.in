@@ -39,6 +39,16 @@ CPP      = @CPP@
 CXX      = @CXX@
 CCFLAGS  = @CXXFLAGS@
 
+ifeq ($(OBJC_RUNTIME_LIB), gnugc)
+  ifeq ($(OBJC_LIB_FLAG),)
+    OBJC_LIB_FLAG = -lobjc_gc
+  endif
+else
+  ifeq ($(OBJC_LIB_FLAG),)
+    OBJC_LIB_FLAG = -lobjc
+  endif
+endif
+
 EXEEXT = @EXEEXT@
 OEXT   = .@OBJEXT@
 LIBEXT = .a

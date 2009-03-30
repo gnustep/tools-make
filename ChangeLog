@@ -1,5 +1,10 @@
 2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* config.make.in (OBJC_LIB_FLAG): Set OBJC_LIB_FLAG here.
+	* library-combo.make: Do not set it here.
+
+2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac, library-combo.make: Fixed to automatically use
 	-lobjc_gc for the GNU Objective-C runtime with garbage collection
 	if no --with-objc-lib-flag=... is used in configure.
@@ -154,7 +159,7 @@
 	systems the correct name for GNU make is used in the help.  For
 	example, on OpenBSD it should be 'gmake', not 'make'.  Issue
 	reported by Sebastian Reitenbach <buzzdee@web.de>.
-	
+
 2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/releasenotes.texi: Updated.
