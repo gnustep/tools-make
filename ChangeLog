@@ -12,7 +12,7 @@
 	
 2009-03-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
-	Fixed compiling software that contain both C/ObjC and C++/ObjC++
+	Fixed compiling software that contains both C/ObjC and C++/ObjC++
 	files: use CC to compile C and ObjC files even if CXX is used to
 	link.  (Problem reported by Riccardo Mottola <multix@gmail.com>).
 	* target.make: Replaced CC with LD everywhere it is used to link -
