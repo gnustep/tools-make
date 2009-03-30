@@ -1,3 +1,15 @@
+2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	From a suggestion by Truls Becken <truls.becken@gmail.com>:
+	* configure.ac (--with-objc-lib-flag): New option allowing to
+	replace the default -lobjc flag with a custom one such as
+	-l:libobjc.so.1, which can be used on some platforms to require
+	linking a specific version of libobjc - a handy trick when you
+	have more than one installed.
+	* configure: Regenerated.
+	* config.make.in (OBJC_LIB_FLAG): New variable.
+	* library-combo.make: Use OBJC_LIB_FLAG instead of -lobjc.
+	
 2009-03-24  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Fixed compiling software that contain both C/ObjC and C++/ObjC++

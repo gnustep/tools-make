@@ -1132,24 +1132,45 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
   esac
 fi
 
+AC_MSG_CHECKING(for the flag to link libobjc)
+AC_ARG_WITH(objc-lib-flag,[
+--with-objc-lib-flag
+   Specify a different flag to link libobjc (the Objective-C runtime
+   library).  The default is -lobjc.  In some situations you may have
+   multiple versions of libobjc installed and if your linker supports
+   it you may want to specify exactly which one must be used; for
+   example on GNU/Linux you should be able to use
+     --with-objc-lib-flag=-l:libobjc.so.1
+   to request libobjc.so.1 (as opposed to, say, libobjc.so.2) to be
+   linked.
+],
+OBJC_LIB_FLAG="$withval",
+OBJC_LIB_FLAG=""
+)
+if test "$OBJC_LIB_FLAG" = ""; then
+  OBJC_LIB_FLAG="-lobjc"
+fi
+AC_MSG_RESULT($OBJC_LIB_FLAG)
+AC_SUBST(OBJC_LIB_FLAG)
+
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "gnu"; then
   CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-  OBJCRT="-lobjc"
+  OBJCRT="$OBJC_LIB_FLAG"
 fi
 if test "$OBJC_RUNTIME_LIB" = "gnugc"; then
   CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-  OBJCRT="-lobjc -ldl -lgc"
+  OBJCRT="$OBJC_LIB_FLAG -ldl -lgc"
 fi
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-  OBJCRT="-lobjc"
+  OBJCRT="$OBJC_LIB_FLAG"
 fi
 if test "$OBJC_RUNTIME_LIB" = "apple"; then
   CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
-  OBJCRT="-lobjc"
+  OBJCRT="$OBJC_LIB_FLAG"
 fi
 
 
