@@ -8,6 +8,15 @@ migrate to using a newer version of the make system.
 
 @table @samp
 
+@item libobjc library
+You can now specify a particular libobjc library to use with the 
+--with-objc-lib-flag in configure.  Make now also automatically uses
+-lobjc_gc when using garbage collection.
+
+@item parallel building
+Parallel building is supported now.  You can build using the normal make
+mechanism, e.g. 'make -j 2'.
+
 @item install -p
 gnustep-make now uses 'install -p' by default when installing headers
 and other files.  This preserves the file timestamps and can in some

@@ -9,11 +9,21 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.0.9}
+
+@itemize @bullet
+@item New --with-objc-lib-flag for specifying libobjc.
+@item Automatically uses -lobjc_gc with configured with garbage collection
+@item Parallel building supported using e.g. make -j 2
+@item Use install -p if available.
+@item make uninstall works better now.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.0.8}
 
 Minor bug fix to deal with installing in different domains
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.7}
 @itemize @bullet
