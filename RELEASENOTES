@@ -5,8 +5,17 @@ The release notes include descriptions of API changes, behavior changes
 and other information that might help developers and users migrate to
 using a newer version of the make system.
 
-1.1 Version 2.0.9
+1.1 Version 2.2.0
 =================
+
+`libobjc library'
+     You can now specify a particular libobjc library to use with the
+     -with-objc-lib-flag in configure.  Make now also automatically uses
+     -lobjc_gc when using garbage collection.
+
+`parallel building'
+     Parallel building is supported now.  You can build using the
+     normal make mechanism, e.g. 'make -j 2'.
 
 `install -p'
      gnustep-make now uses 'install -p' by default when installing

@@ -9,7 +9,7 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
-@section Changes in version @samp{2.0.9}
+@section Changes in version @samp{2.2.0}
 
 @itemize @bullet
 @item New --with-objc-lib-flag for specifying libobjc.
