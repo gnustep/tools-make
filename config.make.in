@@ -31,6 +31,11 @@ MAKE_WITH_INFO_FUNCTION = @MAKE_WITH_INFO_FUNCTION@
 # Binary and compile tools
 #
 CC       = @CC@
+# TODO: Because of the following, OPTFLAG usually ends up being '-g
+# -O2'.  The '-g' is fairly harmless as you can always use strip=yes
+# which will strip the object files upon installation; still, it's not
+# very elegant since -g is already added elsewhere for debug=yes, and
+# it ends up appearing twice in the gcc command-line.
 OPTFLAG  = @CFLAGS@
 OBJCFLAGS= @OBJCFLAGS@
 OBJC_LIB_FLAG = @OBJC_LIB_FLAG@

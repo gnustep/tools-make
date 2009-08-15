@@ -4,6 +4,19 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.2.1
+@table @samp
+
+@item debug=yes no longer strips -O2
+gnustep-make no longer strips the -Ox optimization flag when compiling
+C/Objective-C/C++/Objective-C++ code with debug=yes; as a consequence,
+on most platforms debug=yes (which is the default) now builds using -g
+-O2 instead of just -g.  If you do not want the -O2 flag, you can
+override the OPTFLAG variable on the make command line (or in your
+GNUmakefile) as in 'make OPTFLAG='.
+
+@end table
+
 @section Version 2.2.0
 @table @samp
 

@@ -652,8 +652,6 @@ ifneq ($(debug), no)
 endif
 
 ifeq ($(debug), yes)
-  # This is filtered out as it compromised debugging
-  OPTFLAG := $(filter-out -O%, $(OPTFLAG))
   ADDITIONAL_FLAGS += -g -Wall -DDEBUG -fno-omit-frame-pointer
   INTERNAL_JAVACFLAGS += -g -deprecation
 else

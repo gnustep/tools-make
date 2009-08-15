@@ -1,3 +1,11 @@
+2009-08-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* common.make: Do not filter out the -Ox flags when debug=yes.
+	This means debug=yes now uses "-g -O2" by default - instead of
+	just "-g" (Suggestion by Yavor Doganov <yavor@gnu.org>).
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+
 2009-05-09  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.2.0
