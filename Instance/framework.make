@@ -281,11 +281,12 @@ FRAMEWORK_LIBRARY_FILE         = lib$(GNUSTEP_INSTANCE)$(DLL_LIBEXT)$(LIBEXT)
 VERSION_FRAMEWORK_LIBRARY_FILE = $(FRAMEWORK_LIBRARY_FILE)
 SONAME_FRAMEWORK_FILE  = $(FRAMEWORK_LIBRARY_FILE)
 
-# LIB_LINK_DLL_FILE is the DLL library, Renaissance-0.dll.  Include
-# the INTERFACE_VERSION in the DLL library name.  Applications are
-# linked explicitly to this INTERFACE_VERSION of the library; this
-# works exactly in the same way as under Unix.
-LIB_LINK_DLL_FILE    = $(GNUSTEP_INSTANCE)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
+# LIB_LINK_DLL_FILE is the DLL library, Renaissance-0.dll
+# (cygRenaissance-0.dll on Cygwin).  Include the INTERFACE_VERSION in
+# the DLL library name.  Applications are linked explicitly to this
+# INTERFACE_VERSION of the library; this works exactly in the same way
+# as under Unix.
+LIB_LINK_DLL_FILE    = $(DLL_PREFIX)$(GNUSTEP_INSTANCE)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
 
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # BUILD_DLL

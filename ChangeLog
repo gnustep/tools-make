@@ -1,4 +1,14 @@
-2009-08-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+2009-08-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Patch from Yaakov Selkowitz <yselkowitz@yahoo.com>:
+	* target.make: On Cygwin, use -Wl,--enable-auto-image-import
+	instead of manually rebasing; define DLL_PREFIX to be 'cyg' to
+	match Cygwin conventions and fixed typo in
+	--Wl,-enable-whole-archive option.
+	* Instance/library.make: Prepend DLL_PREFIX when creating a dll.
+	* Instance.framework.make: Same change.
+
+2009-08-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 	
 	* common.make: Do not filter out the -Ox flags when debug=yes.
 	This means debug=yes now uses "-g -O2" by default - instead of

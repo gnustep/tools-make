@@ -928,6 +928,7 @@ HAVE_SHARED_LIBS = yes
 # the import library
 SHARED_LIB_LINK_CMD     = \
         $(LD) $(SHARED_LD_PREFLAGS) -shared -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
+        -Wl,--enable-auto-image-base \
 	-Wl,--out-implib=$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
 	-Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
@@ -942,9 +943,8 @@ SHARED_LIBEXT	 = .dll.a
 BUILD_DLL	 = yes
 CYGWIN_DLL_SUPPORT  = yes
 #SHARED_LIBEXT	 = .a
+DLL_PREFIX       = cyg
 DLL_LIBEXT	 = .dll
-REBASE 		 = rebase 
-REBASE_FLAGS = -d -b 0x68000000 -o 0x10000
 CYGWIN_LD_FLAGS = -Wl,--export-all-symbols -Wl,--enable-auto-import
 #SHARED_CFLAGS	 += 
 
@@ -955,14 +955,14 @@ HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(LD)
 BUNDLE_LDFLAGS += -shared -Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
+        -Wl,--enable-auto-image-base \
 	-Wl,--whole-archive
-BUNDLE_LIBFLAGS += -Wl,--no-whole-archiv
+BUNDLE_LIBFLAGS += -Wl,--no-whole-archive
 BUNDLE_LINK_CMD  = \
         $(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 	-o $(LDOUT)$(BUNDLE_FILE) \
 	$(OBJ_FILES_TO_LINK) \
-	$(BUNDLE_LIBFLAGS) $(ALL_LIB_DIRS) $(BUNDLE_LIBS); \
-	$(REBASE) $(REBASE_FLAGS) $(BUNDLE_FILE)
+	$(BUNDLE_LIBFLAGS) $(ALL_LIB_DIRS) $(BUNDLE_LIBS)
 endif
 
 # end Cygwin
