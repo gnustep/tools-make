@@ -4,30 +4,9 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
-@section Version 2.2.1
+@section Version 2.0.9
+
 @table @samp
-
-@item debug=yes no longer strips -O2
-gnustep-make no longer strips the -Ox optimization flag when compiling
-C/Objective-C/C++/Objective-C++ code with debug=yes; as a consequence,
-on most platforms debug=yes (which is the default) now builds using -g
--O2 instead of just -g.  If you do not want the -O2 flag, you can
-override the OPTFLAG variable on the make command line (or in your
-GNUmakefile) as in 'make OPTFLAG='.
-
-@end table
-
-@section Version 2.2.0
-@table @samp
-
-@item libobjc library
-You can now specify a particular libobjc library to use with the 
---with-objc-lib-flag in configure.  Make now also automatically uses
--lobjc_gc when using garbage collection.
-
-@item parallel building
-Parallel building is supported now.  You can build using the normal make
-mechanism, e.g. 'make -j 2'.
 
 @item install -p
 gnustep-make now uses 'install -p' by default when installing headers
