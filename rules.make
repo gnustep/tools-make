@@ -612,19 +612,6 @@ $(GNUSTEP_OBJ_DIR)/%.rc$(OEXT): %.rc
 	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
 endif
 
-#
-# Special cygwin specific rules to compile Windows resource files (.rc files)
-# into object files. (this is the same rule as mingw32)
-#
-ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
-# Add the .rc suffix on Windows.
-.SUFFIXES: .rc
-
-# A rule to generate a .o file from the .rc file.
-$(GNUSTEP_OBJ_DIR)/%.rc$(OEXT): %.rc
-	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
-endif
-
 # The following dummy rules are needed for performance - we need to
 # prevent make from spending time trying to compute how/if to rebuild
 # the system makefiles!  the following rules tell him that these files

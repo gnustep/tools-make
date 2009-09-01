@@ -235,12 +235,7 @@ ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   WINDRES_OBJS = $(patsubst %.rc,%.rc$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
   WINDRES_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(WINDRES_OBJS))
 else
-ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
-  WINDRES_OBJS = $(patsubst %.rc,%.rc$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
-  WINDRES_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(WINDRES_OBJS))
-else
   WINDRES_OBJ_FILES =
-endif
 endif
 
 OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
