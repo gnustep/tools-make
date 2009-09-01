@@ -1,3 +1,12 @@
+2009-09-01  Riccardo Mottola <rmottola@users.sf.net>
+
+	Patch from Yaakov Selkowitz <yselkowitz@yahoo.com>:
+	Update and un-Win32-ify Cygwin rules.
+	* common.make: MinGW path issues do not apply to Cygwin.
+	* config.make.in: Cygwin supports symlinks now.
+	* rules.make, Instance/rules.make: Don't use windres on Cygwin, as it uses X11.
+	* target.make: Cygwin does not require -lm.
+
 2009-08-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Patch from Yaakov Selkowitz <yselkowitz@yahoo.com>:
