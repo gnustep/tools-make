@@ -1,3 +1,8 @@
+2009-09-17  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: Fix debug build ... somehow filtering out of the -O
+	flag got lost, preventing effective debugging with gdb when debug=yes
+
 2009-09-17  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/releasenotes.texi: Fixed typo in the release notes

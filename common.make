@@ -645,6 +645,11 @@ ifeq ($(profile), yes)
   endif
 endif
 
+ifeq ($(debug), yes)
+  # Optimisation must be removed to permit debugging
+  OPTFLAG := $(filter-out -O%, $(OPTFLAG))
+endif
+
 # Enable debug by default.  This is according to the GNU Coding
 # Standards.
 ifneq ($(debug), no)
