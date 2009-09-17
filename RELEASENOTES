@@ -103,7 +103,7 @@ using a newer version of the make system.
      different location, use the -with-config-file=PATH option, as in
      -with-config-file=/usr/pkg/etc/GNUstep.conf.
 
-`gnustep-make.info renamed to make.info'
+`make.info renamed to gnustep-make.info'
      To prevent conflicts with the standard GNU 'make' info
      documentation, the gnustep-make one has been renamed.  Now you can
      access it as in 'info gnustep-make' instead of 'info make',

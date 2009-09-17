@@ -1,3 +1,10 @@
+2009-09-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/releasenotes.texi: Fixed typo in the release notes
+	for gnustep-make 2.0.6 (reported by Michel Alexandre Salim
+	<salimma@fedoraproject.org>).
+	* RELEASENOTES: Regenerated.
+	
 2009-09-01  Riccardo Mottola <rmottola@users.sf.net>
 
 	Patch from Yaakov Selkowitz <yselkowitz@yahoo.com>:

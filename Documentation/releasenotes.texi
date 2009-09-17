@@ -104,7 +104,7 @@ installed in /Library/GNUstep/GNUstep.conf).  To install in a
 different location, use the --with-config-file=PATH option, as in
 --with-config-file=/usr/pkg/etc/GNUstep.conf.
 
-@item gnustep-make.info renamed to make.info
+@item make.info renamed to gnustep-make.info
 To prevent conflicts with the standard GNU 'make' info documentation,
 the gnustep-make one has been renamed.  Now you can access it as in
 'info gnustep-make' instead of 'info make', avoiding any conflicts and
