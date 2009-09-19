@@ -27,6 +27,10 @@ endif
 # NB: Parallel building is not supported here (yet?).
 
 #
+# TODO: Remove DOCUMENT_TEXT_NAME and use only DOCUMENT_NAME.  DOCUMENT_TEXT_NAME
+# is only used by texi.make.
+#
+
 # The names of the documents are in the DOCUMENT_NAME variable.
 # These final documents will be generated in info, dvi, ps, and html output.
 #
@@ -136,21 +140,3 @@ endif
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_FILES),)
   include $(GNUSTEP_MAKEFILES)/Instance/Documentation/install_files.make
 endif
-
-#
-# textdoc targets - these are meant to be used with texi.make ... maybe
-# they should be moved in there
-#
-internal-textdoc-install_:: $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
-	$(ECHO_NOTHING)$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
-	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)$(END_ECHO)
-
-internal-textdoc-uninstall_::
-	$(ECHO_UNINSTALLING)rm -f \
-          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
-
-internal-textdoc-clean::
-	$(ECHO_NOTHING) rm -f $(GNUSTEP_INSTANCE) $(END_ECHO)
-
-internal-textdoc-distclean::
-

@@ -117,6 +117,7 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
 	         $(GNUSTEP_INSTANCE)/*$(END_ECHO)
+	-$(ECHO_NOTHING) rmdir $(GNUSTEP_INSTANCE) $(END_ECHO)
 
 # NB: Only install doc files if they have been generated
 
@@ -153,4 +154,20 @@ internal-doc-uninstall_::
           $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
 	rm -f \
           $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).html
+
+#
+# textdoc targets - these should be merged with the doc targets
+#
+internal-textdoc-install_:: $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
+	$(ECHO_NOTHING)$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
+	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)$(END_ECHO)
+
+internal-textdoc-uninstall_::
+	$(ECHO_UNINSTALLING)rm -f \
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+
+internal-textdoc-clean::
+	$(ECHO_NOTHING) rm -f $(GNUSTEP_INSTANCE) $(END_ECHO)
+
+internal-textdoc-distclean::
 
