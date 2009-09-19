@@ -1,3 +1,9 @@
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/gnustep.init: Terminate the file with '1;', as
+	required by Perl, fixing building the documentation (tested with
+	Perl 5.8.8 and texinfo 1.76).
+
 2009-09-17  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: Fix debug build ... somehow filtering out of the -O
