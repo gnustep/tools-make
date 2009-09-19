@@ -17,6 +17,12 @@ using a newer version of the make system.
      subdirectory and at the moment is not automatically installed
      unless you explicitly go in that subdirectory and install it.
 
+`better cleaning for texinfo documentation'
+     When you build html documentation from texinfo files, the local
+     directory containing the html files was not being removed when
+     doing a 'make clean'.  Starting with version 2.2.1, 'make clean'
+     removes the directory too.
+
 `debug=yes no longer strips -O2'
      gnustep-make no longer strips the -Ox optimization flag when
      compiling C/Objective-C/C++/Objective-C++ code with debug=yes; as
