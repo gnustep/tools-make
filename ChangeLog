@@ -1,5 +1,21 @@
 2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Renamed all info files by adding a gnustep- prefix so that there
+	is no chance of conflicts with info files from other software
+	(Suggestion from Michel Alexandre Salim
+	<salimma@fedoraproject.org>).
+	* Documentation/faq.texi: Renamed to gnustep-faq.texi.
+	* Documentation/filesystem.texi: Renamed to
+	gnustep-filesystem.texi.  Removed @setfilename.
+	* Documentation/internals.tex: Renamed to gnustep-internals.tex.
+	* Documentation/machines.texi: Renamed to gnustep-machines.texi.
+	Removed @setfilename.
+	* Documentation/gnustep-howto.texi: Updated include of 
+	machines.texi to include gnustep-machines.texi.
+	* Documentation/GNUmakefile: Updated for changes.
+
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/documentation.make: Moved internal-textdoc-install_,
 	internal-textdoc-uninstall_, internal-textdoc-clean,
 	internal-textdoc-distclean to Instance/Documentation/texi.make.

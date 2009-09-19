@@ -1,5 +1,4 @@
 \input texinfo   @c -*-texinfo-*-
-@setfilename machines.info
 @settitle Platform Compatibility
 
 @ifclear HOWTO

@@ -460,7 +460,7 @@ Good Luck!
 @node Machine Specific, Source via SVN, Tools and Applications, Top
 @chapter Machine Specific Instructions
 
-@include machines.texi
+@include gnustep-machines.texi
 
 
 @node Source via SVN,  , Machine Specific, Top
