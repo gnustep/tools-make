@@ -1,5 +1,13 @@
 2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/Documentation/texi.make ($(GNUSTEP_INSTANCE)_toc.html):
+	Changed to be $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html to
+	match what texi2html is currently doing.  This should prevent
+	pointless rebuilds of html documentation from texi documentation.
+	(internal-doc-all_): Updated dependencies for this change.
+	
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Documentation/releasenotes.texi: Updated release notes.
 	* RELEASENOTES: Regenerated.	
 

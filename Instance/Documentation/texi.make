@@ -63,7 +63,7 @@ endif
 
 internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
                     $(GNUSTEP_INSTANCE).pdf \
-                    $(GNUSTEP_INSTANCE)_toc.html
+                    $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html
 
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
@@ -88,7 +88,7 @@ $(GNUSTEP_INSTANCE).pdf: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2PDF) $(GNUSTEP_TEXI2PDF_FLAGS) $(ADDITIONAL_TEXI2PDF_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi -o $@
 
-$(GNUSTEP_INSTANCE)_toc.html: $(TEXI_FILES)
+$(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi
 
