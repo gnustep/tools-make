@@ -7,6 +7,15 @@ migrate to using a newer version of the make system.
 @section Version 2.2.1
 @table @samp
 
+@item info files renamed adding a gnustep- prefix
+To prevent conflicts with other documentation, all the gnustep-make
+info files have been renamed adding a gnustep- prefix.  For example,
+to access the GNUstep faq using info, you now need to type 'info
+gnustep-faq' instead of 'info faq'.  Please note that this info
+documentation is in the core/make/Documentation subdirectory and at
+the moment is not automatically installed unless you explicitly go in
+that subdirectory and install it.
+
 @item debug=yes no longer strips -O2
 gnustep-make no longer strips the -Ox optimization flag when compiling
 C/Objective-C/C++/Objective-C++ code with debug=yes; as a consequence,

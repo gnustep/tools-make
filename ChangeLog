@@ -1,5 +1,11 @@
 2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Documentation/releasenotes.texi: Updated release notes for the
+	rename of the info files.
+	* RELEASENOTES: Regenerated.	
+
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Renamed all info files by adding a gnustep- prefix so that there
 	is no chance of conflicts with info files from other software
 	(Suggestion from Michel Alexandre Salim
