@@ -645,21 +645,48 @@ ifeq ($(profile), yes)
   endif
 endif
 
+# The default set of compilation flags are set in config.make in the
+# OPTFLAGS variable.  They should default to -g -O2.  These should be
+# an "average" set of flags, midway between debugging and performance;
+# they are used, unchanged, when we build with debug=no (the default
+# unless --enable-debug-by-default was used when configuring
+# gnustep-make).  Using the set of GCC flags -g -O2 as default is
+# recommended by the GNU Coding Standards and is common practice.  If
+# you specify debug=yes, you want to do a debug build, so we remove
+# the optimization flag that makes it harder to debug.  If you specify
+# strip=yes, you do not want debugging symbols, so we strip all
+# executables before installing them.  This gives you three main
+# options to use in a default setup:
+#
+# make (some optimization, and some debugging symbols are used)
+# make debug=yes (removes optimization flags)
+# make strip=yes (removes debugging symbols)
+#
+
+# By default we build using debug=no (unless --enable-debug-by-default
+# was specified when configuring gnustep-make) - so that the default
+# compilation flags should be -g -O2.  This is according to the GNU
+# Coding Standards.
+ifeq ($(debug),)
+  debug = $(GNUSTEP_DEFAULT_DEBUG)
+endif
+
 ifeq ($(debug), yes)
-  # Optimisation must be removed to permit debugging
+  # Optimization flags are filtered out as they make debugging harder.
   OPTFLAG := $(filter-out -O%, $(OPTFLAG))
-endif
+  # If OPTFLAG does not already include -g, add it here.
+  ifneq ($(filter -g, $(OPTFLAG)), -g)
+    ADDITIONAL_FLAGS += -g
+  endif
+  # Add standard debug compiler flags.
+  ADDITIONAL_FLAGS += -Wall -DDEBUG -fno-omit-frame-pointer
 
-# Enable debug by default.  This is according to the GNU Coding
-# Standards.
-ifneq ($(debug), no)
-  debug = yes
-endif
-
-ifeq ($(debug), yes)
-  ADDITIONAL_FLAGS += -g -Wall -DDEBUG -fno-omit-frame-pointer
+  # The following is for Java.
   INTERNAL_JAVACFLAGS += -g -deprecation
 else
+  # The default OPTFLAG set in config.make are used to compile.
+
+  # The following is for Java.
   INTERNAL_JAVACFLAGS += -O
 endif
 

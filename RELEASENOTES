@@ -23,13 +23,17 @@ using a newer version of the make system.
      doing a 'make clean'.  Starting with version 2.2.1, 'make clean'
      removes the directory too.
 
-`debug=yes no longer strips -O2'
-     gnustep-make no longer strips the -Ox optimization flag when
-     compiling C/Objective-C/C++/Objective-C++ code with debug=yes; as
-     a consequence, on most platforms debug=yes (which is the default)
-     now builds using -g -O2 instead of just -g.  If you do not want
-     the -O2 flag, you can override the OPTFLAG variable on the make
-     command line (or in your GNUmakefile) as in 'make OPTFLAG='.
+`debug=no made the default'
+     gnustep-make now builds using debug=no by default.  As a
+     consequence, on most platforms C/Objective-C/C++ code is now built
+     by default using -g -O2 instead of just -g.  If you do not want
+     the -O2 flag, you can simply build using 'make debug=yes'.  You
+     can also use the new ./configure -enable-debug-by-default option
+     to make 'debug=yes' the default flag that is always used when
+     compiling if nothing else is specified.  If you do not want the
+     debugging symbols, remember that you can use the 'make strip=yes'
+     option to have them stripped out from all object files when they
+     are installed.
 
 
 1.2 Version 2.2.0

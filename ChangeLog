@@ -1,3 +1,19 @@
+2009-09-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac (--enable-debug-by-default): New option which
+	allows you to change if gnustep-make should build with debug=yes
+	or debug=no by default.  Store the configuration choice in
+	GNUSTEP_DEFAULT_DEBUG. Make debug=no the default, so that normally
+	-g -O2 is the default set of compilation flags used.
+	* configure: Regenerated.
+	* common.make: If the 'debug' variable is empty, set it to
+	GNUSTEP_DEFAULT_DEBUG.  If debug=yes, filter the -O% flags.
+	(ADDITIONAL_FLAGS): If debug=yes, only add -g if it is not already
+	present in OPTFLAG.
+	* config.make.in (GNUSTEP_DEFAULT_DEBUG): New variable.
+	* Documentation/releasenotes.texi: Updated release notes.
+	* RELEASENOTES: Regenerated.
+	
 2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/Documentation/texi.make ($(GNUSTEP_INSTANCE)_toc.html):
@@ -9,7 +25,7 @@
 2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/releasenotes.texi: Updated release notes.
-	* RELEASENOTES: Regenerated.	
+	* RELEASENOTES: Regenerated.
 
 2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
 

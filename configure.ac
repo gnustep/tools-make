@@ -1484,6 +1484,40 @@ AC_SUBST(LIB_DIR)
 AC_SUBST(OBJCFLAGS)
 
 #--------------------------------------------------------------------
+# Check if we need to enable debug=yes builds by default
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING(if we should enable 'make debug=yes' by default)
+AC_ARG_ENABLE(debug-by-default, [
+--enable-debug-by-default
+   Enable building with 'make debug=yes' by default.  When you use
+   gnustep-make to build software, you have a choice of using
+   debug=yes or debug=no.  The debug=no will use the default compiler 
+   flags determined when gnustep-make was configured (usually -g -O2), 
+   while debug=yes will remove the optimization flags and add a 
+   number of debugging compiler flags.  If you do not specify the
+   --enable-debug-by-default option, gnustep-make will default to
+   building with debug=no when nothing is specified.  If you 
+   specify the --enable-debug-by-default option, gnustep-make will
+   default to building with debug=yes instead, which can be handy if you
+   always want to compile software with debug=yes and want to avoid
+   having to type debug=yes each time you compile (an alternative
+   is to define the variable debug=yes in your shell).  If you are
+   unsure, you should stick with the default and ignore this option.
+],
+  ac_cv_debug_by_default=$enableval,
+  ac_cv_debug_by_default="undefined")
+
+if test "$ac_cv_debug_by_default" = "yes"; then
+  GNUSTEP_DEFAULT_DEBUG=yes;
+  AC_MSG_RESULT(yes);
+else
+  GNUSTEP_DEFAULT_DEBUG=no;
+  AC_MSG_RESULT(no);
+fi
+AC_SUBST(GNUSTEP_DEFAULT_DEBUG)
+
+#--------------------------------------------------------------------
 # Check for $(info ...) function in GNU make
 #--------------------------------------------------------------------
 
