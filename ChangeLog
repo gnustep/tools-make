@@ -1,3 +1,8 @@
+2009-09-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Turn off autodependencies on cygwin.
+	* configure: Regenerated.
+	
 2009-09-20  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac (--enable-debug-by-default): New option which

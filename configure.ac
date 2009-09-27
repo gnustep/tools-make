@@ -1383,10 +1383,16 @@ fi
 
 AC_MSG_CHECKING(if the compiler supports autodependencies)
 
-# What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x
+# What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x.  As
+# an exception, we disabled them on cygwin because the compiler
+# generates autodependencies files containing filenames such as
+# G:/GNUstep/mingw/include/stdlib.h which can't really work with GNU
+# make because of the ':'.
 
 AUTO_DEPENDENCIES=""
-if test ! ${GCC} = "yes" ; then
+if test "$CYGWIN" = yes; then
+  AC_MSG_RESULT(no: autodependencies do not work on cygwin)
+elif test ! ${GCC} = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
   if test "${gs_cv_gcc_major_version}" -ge "3" >&5 2>&5; then
