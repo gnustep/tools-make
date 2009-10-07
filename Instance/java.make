@@ -71,7 +71,7 @@ ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
 endif
 
 ifneq ($(JAVA_INSTALLATION_DIR),)
-JAVA_INSTALL_DIR = $(JAVA_INSTALLATION_DIR)
+  JAVA_INSTALL_DIR = $(JAVA_INSTALLATION_DIR)
 endif
 
 # This is the directory where the java classses get
