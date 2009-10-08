@@ -223,7 +223,25 @@ the command-line tool 'defaults' which allows you to read or write
 user defaults.
 
 
-6. SUMMARY OF CONFIGURE OPTIONS
+6. GLOBAL DEFAULTS DATABASE
+===========================
+
+You may also global (ie for all applications and all users) default
+values by placing them in the GlobalDefaults.plist file in the same
+directory as the GNUstep.conf configuration file.
+
+This file should contain data as keys and values in a dictionary using
+the text property list format (the gnustep-base command 'defaults plist'
+will give you a summary of the syntax of a text property list).
+
+It is recommended that, if there are multiple packages wiching to set
+global defaults, the values for each package are stored in a separate
+file and the 'plmerge' command (also available with gnustep-base) is
+used to merge those separate files into Globaldefaults.plist when any
+package is installed or removed.
+ 
+
+7. SUMMARY OF CONFIGURE OPTIONS
 ===============================
 
 If you've followed us up to here, probably your gnustep-make's configure
@@ -236,7 +254,7 @@ Or, if you really wanted to change a lot of things, it might look like
  ./configure --with-layout={FILE} --with-config-file={LOCATION} --with-user-defaults-dir={DEFAULTS_DIR}
 
 
-7. USER ENVIRONMENT
+8. USER ENVIRONMENT
 ===================
 
 GNUstep will install applications, tools and libraries into the
@@ -265,7 +283,7 @@ for your filesystem layout for the paths that you need to add (see
 FilesystemLayouts/ for the documentation of the various layouts).
 
 
-8. DEVELOPER ENVIRONMENT
+9. DEVELOPER ENVIRONMENT
 ========================
 
 To compile software that uses gnustep-make, you also need to set the 
