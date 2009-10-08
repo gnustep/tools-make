@@ -35,6 +35,21 @@ using a newer version of the make system.
      option to have them stripped out from all object files when they
      are installed.
 
+`batch-compilation of Java files'
+     gnustep-make used to compile Java files one by one.  In most Java
+     compilers this is very suboptimal.  Starting from release 2.2.1,
+     gnustep-make will compile all Java files in a Java project with a
+     single Java compiler invocation.  This can significantly speed up
+     compilation of large projects.  To disable it and get the
+     behaviour of gnustep-make 2.2.0, please set the variable
+     BATCH_COMPILE_JAVA_FILES to 'no' (or the variable
+     xxx_BATCH_COMPILE_JAVA_FILES to 'no' to disable it for a single
+     instance).  Please note that if you are using the xxx_FILE_FLAGS
+     or xxx_FILE_FILTER_OUT_FLAGS functionality for Java files, which
+     allows you to customize the compilation flags for each Java file,
+     then batch compilation is automatically disabled and all files are
+     compiled separately.
+
 
 1.2 Version 2.2.0
 =================

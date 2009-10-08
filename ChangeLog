@@ -1,3 +1,23 @@
+2009-10-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented batch-compilation of Java files (ie, all files built
+	in a single javac invocation) to speed up building Java software.
+	In the the large Java project I used as a test case, this change
+	produced a 5x reduction in building time.
+	* rules.make (%.class): If BATCH_COMPILE_JAVA_FILES is not set to
+	no, and JAVA_FILES_TO_BATCH_COMPILE is set and the file we're
+	compiling is in that variable, do a batch compile instead of a
+	single-file compile.
+	* messages.make (INSIDE_ECHO_JAVA_COMPILING): New message.
+	(INSIDE_ECHO_JAVA_BATCH_COMPILING): New message.
+	* Instance/Shared/java.make: If appropriate, set
+	JAVA_FILES_TO_BATCH_COMPILE to the list of files we want to batch
+	compile.
+	($(GNUSTEP_INSTANCE)_BATCH_COMPILE_JAVA_FILES): New variable
+	allowing to disable the batch compilation of Java files if needed.
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
 2009-09-27  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Turn off autodependencies on cygwin.

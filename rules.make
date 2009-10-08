@@ -3,11 +3,11 @@
 #
 #   All of the common makefile rules.
 #
-#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001, 2009 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -548,10 +548,30 @@ $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/:
 endif
 
 # FIXME - using a different build dir with java
+
+# This rule is complicated because it supports for compiling a single
+# file, and batch-compiling a chunk of files.  By default, every file
+# is compiled separately.  But if you set JAVA_FILES_TO_BATCH_COMPILE
+# to a list of .java files, and the file we are compiling falls in
+# that list, we compile all the JAVA_FILES_TO_BATCH_COMPILE in this
+# invocation instead of just that file.  This is worth it as it
+# can speed up compilation by orders of magnitude.
 %.class : %.java
-	$(ECHO_COMPILING)$(JAVAC) \
-	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
-	         $($<_FILE_FLAGS) $<$(END_ECHO)
+ifeq ($(BATCH_COMPILE_JAVA_FILES), no)
+	$(ECHO_COMPILING)$(JAVAC) $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
+	     $($<_FILE_FLAGS) $<$(END_ECHO)
+else
+        # Explanation: $(filter $<,$(JAVA_FILES_TO_BATCH_COMPILE)) is empty if
+        # $< (the file we are compiling) does not appear in
+        # $(JAVA_FILES_TO_BATCH_COMPILE), and not-empty if it appears in
+        # there.
+	$(ECHO_NOTHING)if [ "$(filter $<,$(JAVA_FILES_TO_BATCH_COMPILE))"x != ""x ]; then \
+	  $(INSIDE_ECHO_JAVA_BATCH_COMPILING)$(JAVAC) $(ALL_JAVACFLAGS) $(JAVA_FILES_TO_BATCH_COMPILE); \
+	else \
+	  $(INSIDE_ECHO_JAVA_COMPILING)$(JAVAC) $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
+	     $($<_FILE_FLAGS) $<; \
+	fi$(END_ECHO)
+endif
 
 # A jni header file which is created using JAVAH
 # Example of how this rule will be applied: 

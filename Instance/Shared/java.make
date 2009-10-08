@@ -4,9 +4,9 @@
 #   Makefile fragment with rules to compile and install java files,
 #   with associated property files.
 #
-#   Copyright (C) 2000, 2002 Free Software Foundation, Inc.
+#   Copyright (C) 2000, 2002, 2009 Free Software Foundation, Inc.
 #
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk> 
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -21,18 +21,30 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 #
-# Note: we do not support building Java stuff in parallel (yet ?).
-# Not sure it would be faster - needs testing.
-#
-
-#
 # input variables:
 #
-#  JAVA_OBJ_FILES, JAVA_JNI_OBJ_FILES, SUBPROJECT_OBJ_FILES :
-#  the list of object files (built by Instance/rules.make)
+#  $(GNUSTEP_INSTANCE)_JAVA_FILES: The list of Java files to compile.
+#  These are the files that will be batch-compiled unless
+#  xxx_BATCH_COMPILE_JAVA_FILES is set to no, or unless they can't be
+#  batch-compiled because each of them uses a different flag.
+#
+#  JAVA_OBJ_FILES, JAVA_JNI_OBJ_FILES, SUBPROJECT_OBJ_FILES: the list
+#  of object files (built by Instance/rules.make).  These are the
+#  files that will always be built.  If some of the JAVA_OBJ_FILES are
+#  not built from xxx_JAVA_FILES but from something else, they'll
+#  still be compiled, but one by one - not batched with the
+#  xxx_JAVA_FILES.
 #
 #  $(GNUSTEP_INSTANCE)_JAVA_PROPERTIES_FILES : the list of .properties files
 #  to install together with the .java files
+#
+#  BATCH_COMPILE_JAVA_FILES: if this variable is set to 'no', batch compilation
+#  of all Java files is disabled.
+# 
+#  $(GNUSTEP_INSTANCE)_BATCH_COMPILE_JAVA_FILES: if this variable is set to 'no',
+#  batch compilation of xxx_JAVA_FILES is disabled and they are compiled one by one.
+#  Else, it's enabled by default.
+
 #
 #  GNUSTEP_SHARED_JAVA_INSTALLATION_DIR : the base directory where to
 #  install the files.
@@ -47,7 +59,6 @@
 #  shared-instance-java-clean
 #
 
-
 .PHONY: \
 shared-instance-java-all \
 shared-instance-java-install \
@@ -55,10 +66,42 @@ shared-instance-java-install-dirs \
 shared-instance-java-uninstall \
 shared-instance-java-clean
 
-
 shared-instance-java-all: $(JAVA_OBJ_FILES) \
                          $(JAVA_JNI_OBJ_FILES) \
                          $(SUBPROJECT_OBJ_FILES)
+
+# By default, we enable "batch compilation" of Java files.  This means
+# that whenever make determines that a Java files needs recompilation,
+# the command that recompiles that files will actually recompile all
+# the files in the batch as well - causing make to then skip all
+# subsequent rebuilding - which is much more efficient.
+#
+# You can turn this off by setting
+#
+#   xxx_BATCH_COMPILE_JAVA_FILES = no
+#
+# and this will cause all files to be always compiled one by one.
+ifeq ($(BATCH_COMPILE_JAVA_FILES),)
+  BATCH_COMPILE_JAVA_FILES = $($(GNUSTEP_INSTANCE)_BATCH_COMPILE_JAVA_FILES)
+endif
+
+# First set it to an empty string, which disables batch compilation.
+JAVA_FILES_TO_BATCH_COMPILE = 
+
+ifneq ($(BATCH_COMPILE_JAVA_FILES), no)
+  # We can only batch compile the files if they all have the same flags.
+  # So, if any file has a non-empty xxx_FILE_FILTER_OUT_FLAGS or 
+  # xxx_FILE_FLAGS set, we disable batch compilation.
+  #
+  # PS: Here it would be nicer if we could not disable it completely,
+  # but only batch compile the files that require no special flags.
+
+  ifeq ($(strip $(foreach f,$($(GNUSTEP_INSTANCE)_JAVA_FILES),$($(f)_FILE_FILTER_OUT_FLAGS))$(foreach f,$($(GNUSTEP_INSTANCE)_JAVA_FILES),$($(f)_FILE_FLAGS))),)
+    # OK - batch compilation is enabled, and all files have the same compilation flags, so turn it on :-)
+    # By default, batch compile all xxx_JAVA_FILES.
+    JAVA_FILES_TO_BATCH_COMPILE = $($(GNUSTEP_INSTANCE)_JAVA_FILES)
+  endif
+endif
 
 # Say that you have a Pisa.java source file.  Here we install both
 # Pisa.class (the main class) and also, if they exist, all class files
