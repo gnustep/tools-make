@@ -107,7 +107,7 @@ endif # OBJ_FILES_TO_LINK
 # apple.
 #
 
-internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) build-bundle
+internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) $(OBJ_DIRS_TO_CREATE) build-bundle
 # If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
 # print a warning. They are supposed to provide a xxxInfo.plist which
 # gets merged with the automatically generated entries to generate

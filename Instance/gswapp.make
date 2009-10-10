@@ -124,6 +124,7 @@ endif
 ifeq ($(FOUNDATION_LIB), apple)
 internal-gswapp-all_:: \
 	$(GNUSTEP_OBJ_DIR) \
+        $(OBJ_DIRS_TO_CREATE) \
         $(GSWAPP_DIR)/Contents/MacOS \
         $(GSWAPP_FILE) \
         shared-instance-bundle-all \
@@ -134,6 +135,7 @@ $(GSWAPP_DIR)/Contents/MacOS:
 else
 
 internal-gswapp-all_:: $(GNUSTEP_OBJ_DIR) \
+                    $(OBJ_DIRS_TO_CREATE) \
                     $(GSWAPP_DIR)/$(GNUSTEP_TARGET_LDIR) \
                     $(GSWAPP_FILE) \
                     $(GSWAPP_DIR)/Resources \

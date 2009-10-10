@@ -64,12 +64,13 @@ ALL_LIBS =							\
 ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 # Standard building
 internal-ctool-all_:: $(GNUSTEP_OBJ_DIR) \
+                      $(OBJ_DIRS_TO_CREATE) \
                      $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 else
 # Parallel building.  The actual compilation is delegated to a
 # sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
 # That sub-make invocation will compile files in parallel.
-internal-ctool-all_:: $(GNUSTEP_OBJ_DIR)
+internal-ctool-all_:: $(GNUSTEP_OBJ_DIR) $(OBJ_DIRS_TO_CREATE)
 	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-ctool-compile \
 	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
@@ -81,7 +82,7 @@ internal-ctool-all_:: $(GNUSTEP_OBJ_DIR)
 internal-ctool-compile: $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 endif
 
-$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
+$(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_DIRS_TO_CREATE) $(OBJ_FILES_TO_LINK)
 ifeq ($(OBJ_FILES_TO_LINK),)
 	$(WARNING_EMPTY_LINKING)
 endif

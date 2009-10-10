@@ -90,6 +90,7 @@ GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(PALETTE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
+                        $(OBJ_DIRS_TO_CREATE) \
                         $(PALETTE_DIR)/Resources \
                         $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR) \
                         internal-palette-run-compile-submake \
@@ -133,7 +134,7 @@ internal-palette-compile: $(PALETTE_FILE)
 endif
 
 # Standard bundle build using the rules for this target
-$(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
+$(PALETTE_FILE): $(OBJ_FILES_TO_LINK)
 ifeq ($(OBJ_FILES_TO_LINK),)
 	$(WARNING_EMPTY_LINKING)
 endif

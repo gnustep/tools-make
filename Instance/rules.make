@@ -249,6 +249,22 @@ OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 # object file, or not).
 OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(OBJCC_OBJ_FILES) $(WINDRES_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
 
+# OBJ_DIRS_TO_CREATE is the set of all directories that contain
+# OBJ_FILES_TO_LINK.  For example, if you want to compile
+# ./Source/File.m, you'd generate a obj/Source/File.o file, and we
+# first need to create the directory obj/Source.  Source/File.m would
+# be in OBJC_FILES, obj/Source/File.o would be in OBJ_FILES_TO_LINK,
+# and obj/Source would be in OBJ_DIRS_TO_CREATE.
+#
+# Explanation: $(dir ...) is used to extract the directory; $(sort
+# ...) is used to remove duplicates; $(filter-out ...) is used to
+# remove $(GNUSTEP_OBJ_DIR) which would always appear and is already
+# covered by default.
+OBJ_DIRS_TO_CREATE = $(filter-out $(GNUSTEP_OBJ_DIR)/,$(sort $(dir $(OBJ_FILES_TO_LINK))))
+
+$(OBJ_DIRS_TO_CREATE):
+	$(ECHO_CREATING)cd $(GNUSTEP_BUILD_DIR); $(MKDIRS) $@$(END_ECHO)	
+
 # If C++ or ObjC++ are involved, we use the C++ compiler instead of
 # the C/ObjC one to link; this happens automatically when compiling
 # C++ or ObjC++ files, but we also want it to happen when linking,

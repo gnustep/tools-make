@@ -155,6 +155,7 @@ endif
 
 ifeq ($(FOUNDATION_LIB), apple)
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
+                    $(OBJ_DIRS_TO_CREATE) \
                     $(APP_DIR)/Contents/MacOS \
                     internal-app-run-compile-submake \
                     shared-instance-bundle-all \
@@ -173,6 +174,7 @@ $(APP_DIR)/Contents/MacOS:
 else
 
 internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
+                    $(OBJ_DIRS_TO_CREATE) \
                     $(APP_DIR)/$(GNUSTEP_TARGET_LDIR) \
                     internal-app-run-compile-submake \
                     internal-application-build-template \

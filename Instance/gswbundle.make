@@ -92,6 +92,7 @@ endif
 #ALL_GSWBUNDLE_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) $(ALL_LIBS)
 
 internal-gswbundle-all_:: $(GNUSTEP_OBJ_DIR) \
+                          $(OBJ_DIRS_TO_CREATE) \
                           build-bundle-dir \
                           build-bundle
 
@@ -126,7 +127,7 @@ build-bundle: $(GSWBUNDLE_FILE) \
               gswbundle-webresource-files
 
 
-$(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
+$(GSWBUNDLE_FILE): $(OBJ_FILES_TO_LINK)
 ifeq ($(OBJ_FILES_TO_LINK),)
 	$(WARNING_EMPTY_LINKING)
 endif

@@ -76,6 +76,7 @@ GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(SERVICE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
+                        $(OBJ_DIRS_TO_CREATE) \
                         $(SERVICE_DIR)/$(GNUSTEP_TARGET_LDIR) \
                         internal-service-run-compile-submake \
                         $(SERVICE_DIR)/Resources/Info-gnustep.plist \

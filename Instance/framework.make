@@ -330,7 +330,7 @@ endif
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-framework-all_:: $(GNUSTEP_OBJ_DIR) $(OBJ_DIRS_TO_CREATE) \
                           build-framework
 # If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
 # print a warning. They are supposed to provide a xxxInfo.plist which
@@ -569,6 +569,8 @@ ifneq ($(BUILD_DLL), yes)
 else
   LIB_LINK_FRAMEWORK_FILE = $(LIB_LINK_DLL_FILE)
 endif
+
+LIB_LINK_FILES_TO_LINK = $(OBJ_FILES_TO_LINK)
 
 # Important: FRAMEWORK_FILE (which is created in the parallel
 # 'compile' invocation) depends on DUMMY_FRAMEWORK_OBJ_FILES as well,
