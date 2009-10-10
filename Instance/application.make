@@ -159,6 +159,13 @@ internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     internal-app-run-compile-submake \
                     shared-instance-bundle-all \
                     $(APP_INFO_PLIST_FILE)
+# If they specified Info.plist in the xxx_RESOURCE_FILES, print a
+# warning. They are supposed to provide a xxxInfo.plist which gets
+# merged with the automatically generated entries to generate
+# Info.plist.
+ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+endif
 
 $(APP_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -173,6 +180,13 @@ internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
                     $(APP_INFO_PLIST_FILE) \
                     $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop \
                     shared-instance-bundle-all
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+endif
 
 $(APP_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -303,12 +317,11 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	 -$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	   plmerge $@ "$(GNUSTEP_INSTANCE)Info.plist"; \
 	  fi$(END_ECHO)
-endif
 
-$(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop: \
-		$(APP_DIR)/Resources/Info-gnustep.plist
+$(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop: $(APP_INFO_PLIST_FILE)
 	$(ECHO_CREATING)pl2link $^ $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop$(END_ECHO)
 
+endif
 
 internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir
 

@@ -1,3 +1,19 @@
+2009-10-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Try to warn users if they create their own Info-gnustep.plist file
+	instead of providing an xxxInfo.plist file.
+	* Instance/application.make (internal-app-all_): If
+	Info-gnustep.plist is specified in xxx_RESOURCE_FILES, print a
+	warning recommending to use xxxInfo.plist instead.
+	* Instance/bundle.make (internal-bundle-all_): Same change.
+	* Instance/framework.make (internal-framework-all_): Same change.
+	* Instance/palette.make (internal-palette-all_): Same change.	
+	* Instance/service.make (internal-service-all_): Same change.
+	* messages.make: Added new warning messages.
+
+	* Instance/application.make ($(GNUSTEP_INSTANCE).desktop): Do not
+	attempt to create this file on Apple.
+	
 2009-10-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Implemented batch-compilation of Java files (ie, all files built

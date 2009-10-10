@@ -96,6 +96,19 @@ internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
                         $(PALETTE_DIR)/Resources/Info-gnustep.plist \
                         $(PALETTE_DIR)/Resources/palette.table \
                         shared-instance-bundle-all
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
 
 $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)

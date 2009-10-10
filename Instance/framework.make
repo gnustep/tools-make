@@ -332,6 +332,19 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
                           build-framework
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
 
 internal-framework-build-headers:: $(FRAMEWORK_VERSION_DIR)/Headers \
                                    $(FRAMEWORK_HEADER_FILES) \

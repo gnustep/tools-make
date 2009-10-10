@@ -108,6 +108,19 @@ endif # OBJ_FILES_TO_LINK
 #
 
 internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) build-bundle
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
 
 BUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
 BUNDLE_DIR = $(GNUSTEP_BUILD_DIR)/$(BUNDLE_DIR_NAME)

@@ -150,3 +150,13 @@ WARNING_EMPTY_LINKING = @(echo " Warning! No files to link. Please check your GN
 
 # Instance/bundle.make
 NOTICE_EMPTY_LINKING = @(echo " Notice: No files to link - creating a bundle with no object file and only resources")
+
+# Instance/application.make, Instance/bundle.make, Instance/framework.make
+WARNING_INFO_GNUSTEP_PLIST = @(echo "Warning! You have specified Info-gnustep.plist in $(GNUSTEP_INSTANCE)_RESOURCE_FILES"; \
+                               echo "  Unfortunately, it will not work because Info-gnustep.plist is automatically generated."; \
+                               echo "  To customize Info-gnustep.plist, please create a $(GNUSTEP_INSTANCE)Info.plist file with your custom entries."; \
+                               echo "  $(GNUSTEP_INSTANCE)Info.plist will be automatically merged into Info-gnustep.plist.")
+WARNING_INFO_PLIST = @(echo "Warning! You have specified Info.plist in $(GNUSTEP_INSTANCE)_RESOURCE_FILES"; \
+                       echo "  Unfortunately, it will not work because Info.plist is automatically generated."; \
+                       echo "  To customize Info.plist, please create a $(GNUSTEP_INSTANCE)Info.plist file with your custom entries."; \
+                       echo "  $(GNUSTEP_INSTANCE)Info.plist will be automatically merged into Info.plist.")

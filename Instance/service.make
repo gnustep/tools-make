@@ -80,6 +80,19 @@ internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
                         internal-service-run-compile-submake \
                         $(SERVICE_DIR)/Resources/Info-gnustep.plist \
                         shared-instance-bundle-all
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
 
 ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 # Standard building
