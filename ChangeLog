@@ -1,3 +1,7 @@
+2009-10-26  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/application.make: Replace deprecated Windows GUI flag.
+
 2009-10-10  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Added support for having source files in subdirectories without

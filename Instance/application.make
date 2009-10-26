@@ -121,7 +121,7 @@ endif
 # Move this into target.make, but somehow make sure it is only used
 # when linking applications.
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
-  ALL_LDFLAGS += -mwindows
+  ALL_LDFLAGS += -Wl,-subsystem,windows
 endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
