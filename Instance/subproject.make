@@ -3,10 +3,10 @@
 #
 #   Instance Makefile rules to build subprojects in GNUstep projects.
 #
-#   Copyright (C) 1998, 2001 Free Software Foundation, Inc.
+#   Copyright (C) 1998, 2001, 2010 Free Software Foundation, Inc.
 #
 #   Author:  Jonathan Gapen <jagapen@whitewater.chem.wisc.edu>
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -71,20 +71,33 @@ endif
 ifneq ($(OWNING_PROJECT_HEADER_DIR_NAME),)
 .PHONY: internal-subproject-build-headers
 
+# NB: See headers.make for an explanation of how HEADER_SUBDIRS is
+# computed.
 OWNING_PROJECT_HEADER_DIR = $(GNUSTEP_BUILD_DIR)/$(OWNING_PROJECT_HEADER_DIR_NAME)
-HEADER_FILES = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
-OWNING_PROJECT_HEADER_FILES = $(patsubst %.h,$(OWNING_PROJECT_HEADER_DIR)/%.h,$(HEADER_FILES))
+HEADER_FILES   = $($(GNUSTEP_INSTANCE)_HEADER_FILES)
+HEADER_SUBDIRS = $(strip $(filter-out ./,$(sort $(dir $(HEADER_FILES)))))
+HEADER_FILES_DIR = $($(GNUSTEP_INSTANCE)_HEADER_FILES_DIR)
+ifeq ($(HEADER_FILES_DIR),)
+  HEADER_FILES_DIR = .
+endif
+OWNING_PROJECT_HEADER_FILES   = $(addprefix $(OWNING_PROJECT_HEADER_DIR)/,$(HEADER_FILES))
+OWNING_PROJECT_HEADER_SUBDIRS = $(addprefix $(OWNING_PROJECT_HEADER_DIR)/,$(HEADER_SUBDIRS))
 
 # We need to build the OWNING_PROJECT_HEADER_DIR directory here
 # because this rule could be executed before the top-level framework
 # has built his dirs
-internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_DIR) $(OWNING_PROJECT_HEADER_FILES)
-
-$(OWNING_PROJECT_HEADER_DIR)/%.h: %.h
-	$(ECHO_CREATING)$(INSTALL_DATA) $< $@$(END_ECHO)
+internal-subproject-build-headers:: $(OWNING_PROJECT_HEADER_DIR) \
+                                    $(OWNING_PROJECT_HEADER_SUBDIRS) \
+                                    $(OWNING_PROJECT_HEADER_FILES)
 
 $(OWNING_PROJECT_HEADER_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+$(OWNING_PROJECT_HEADER_SUBDIRS):
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+$(OWNING_PROJECT_HEADER_DIR)/%.h: $(HEADER_FILES_DIR)/%.h
+	$(ECHO_CREATING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
 # End FRAMEWORK code
 else

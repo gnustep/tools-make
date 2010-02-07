@@ -9,6 +9,18 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.2.1}
+
+@itemize @bullet
+@item Support source files in subdirectories without using a subproject.
+@item Support header files in sub-subdirectories.
+@item Batch-compile Java files (much faster).
+@item Changed default compilation flags to -O2 -g.
+@item Fixes for building documentation.
+@item Renamed info files to prevent conflicts.
+@item Updated cygwin support.
+@end itemize
+
 @section Changes in version @samp{2.2.0}
 
 @itemize @bullet

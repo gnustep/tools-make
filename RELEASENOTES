@@ -8,6 +8,37 @@ using a newer version of the make system.
 1.1 Version 2.2.1
 =================
 
+`support for having source files in subdirectories'
+     Starting with version 2.2.1, it is possible to put source files in
+     subdirectories by specifiying them as in xxx_OBJC_FILES =
+     Source/Beauty.m.  This syntax does not work on versions before
+     2.2.1 so you should not use it if you want to support older
+     versions of gnustep-make; previously you had to create a
+     subproject and add a GNUmakefile in the subdirectory using
+     subproject.make.  You can now spread your source files in multiple
+     subdirectories without using subprojects.
+
+`support for having header files in subdirectories'
+     Starting with version 2.2.1, it is possible to put header files in
+     subdirectories by specifiying them as in xxx_HEADER_FILES =
+     Beauty/Beauty.h.  This syntax does not work on versions before
+     2.2.1 so you should not use it if you want to support older
+     versions of gnustep-make.  When headers are put in subdirectories
+     specified in this way, corresponding subdirectories are created
+     when the header files are installed.  For example Beauty/Beauty.h
+     would be automatically installed into
+     GNUSTEP_HEADERS/HEADER_FILES_INSTALL_DIR/Beauty/Beauty.h.  To get
+     the same result in versions before 2.2.1 you would have had to
+     manually create the header installation subdirectories.
+
+`support for HEADER_FILES_DIR in framework subproject'
+     Before version 2.2.1, specifying xxx_HEADER_FILES_DIR in a
+     framework subproject would have no effect.  Starting with version
+     2.2.1, the variable is now recognized and can be used to have the
+     files in a subdirectory.  You should avoid using the variable in
+     framework subprojects if you want to support older versions of
+     gnustep-make.
+
 `info files renamed adding a gnustep- prefix'
      To prevent conflicts with other documentation, all the gnustep-make
      info files have been renamed adding a gnustep- prefix.  For

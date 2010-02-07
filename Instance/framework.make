@@ -3,10 +3,10 @@
 #
 #   Instance Makefile rules to build GNUstep-based frameworks.
 #
-#   Copyright (C) 2000, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+#   Copyright (C) 2000, 2001, 2002, 2003, 2004, 2010 Free Software Foundation, Inc.
 #
 #   Author: Mirko Viviani <mirko.viviani@rccr.cremona.it>
-#   Author: Nicola Pero <n.pero@mi.flashnet.it>
+#   Author: Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -168,11 +168,11 @@ endif
 FRAMEWORK_VERSION_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
 
 # This is not doing much at the moment, it is only defining
-# HEADER_FILES, HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR in the
-# standard way.  Please note that HEADER_FILES might be empty even if
-# we have headers in subprojects that we need to manage and install.
-# So we assume by default that we have some headers even if
-# HEADER_FILES is empty.
+# HEADER_FILES, HEADER_SUBDIRS, HEADER_FILES_DIR and
+# HEADER_FILES_INSTALL_DIR in the standard way.  Please note that
+# HEADER_FILES might be empty even if we have headers in subprojects
+# that we need to manage and install.  So we assume by default that we
+# have some headers even if HEADER_FILES is empty.
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 # On windows, this is unfortunately required.
@@ -234,6 +234,7 @@ ifeq ($(FOUNDATION_LIB),gnu)
 endif
 
 FRAMEWORK_HEADER_FILES = $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
+FRAMEWORK_HEADER_SUBDIRS = $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_SUBDIRS))
 
 # FIXME - do we really those variables too ?
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
@@ -347,6 +348,7 @@ else
 endif
 
 internal-framework-build-headers:: $(FRAMEWORK_VERSION_DIR)/Headers \
+                                   $(FRAMEWORK_HEADER_SUBDIRS) \
                                    $(FRAMEWORK_HEADER_FILES) \
                                    build-framework-dirs
 
@@ -402,6 +404,9 @@ $(FRAMEWORK_LIBRARY_DIR):
 $(FRAMEWORK_VERSION_DIR)/Headers:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
+$(FRAMEWORK_HEADER_SUBDIRS):
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
 $(DERIVED_SOURCES_DIR): $(DERIVED_SOURCES_DIR)/.stamp
 $(DERIVED_SOURCES_DIR)/.stamp:
 	$(ECHO_CREATING)$(MKDIRS) $(DERIVED_SOURCES_DIR); \
@@ -426,7 +431,6 @@ $(DERIVED_SOURCES_DIR)/.stamp:
 # and further spurious rebuilding to happen.
 $(FRAMEWORK_VERSION_DIR)/Headers/%.h: $(HEADER_FILES_DIR)/%.h
 	$(ECHO_CREATING)$(INSTALL_DATA) $< $@$(END_ECHO)
-
 
 OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 

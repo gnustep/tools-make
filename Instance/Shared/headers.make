@@ -3,9 +3,9 @@
 #
 #   Makefile fragment with rules to install header files
 #
-#   Copyright (C) 2002 Free Software Foundation, Inc.
+#   Copyright (C) 2002, 2010 Free Software Foundation, Inc.
 #
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk> 
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -74,6 +74,28 @@ shared-instance-headers-uninstall:
 
 else # we have some HEADER_FILES
 
+# First of all, we need to deal with a special complication, which is
+# if any HEADER_FILES include a subdirectory component (allowed since
+# gnustep-make 2.2.1).  Ie, something like
+#
+#  HEADER_FILES = Beauty/Pride.h
+#
+# This is a complication because to install such a file we first need
+# to create the directory to install it into.
+#
+# The following command determines the install (sub)directories that
+# we need to create.  'dir' extracts the directory from each file
+# ("./" will be returned if there is no such subdirectory); 'sort'
+# removes duplicates from the results, and makes sure that the
+# directories are in the order that they should be created in
+# ("Pride/" comes before "Pride/Beauty").  Finally, filter-out removes
+# ./ from the results as we create the root directory separately.
+HEADER_SUBDIRS = $(strip $(filter-out ./,$(sort $(dir $(HEADER_FILES)))))
+
+# The complete (full path) directories that we need to create when
+# installing.
+HEADER_INSTALL_DIRS_TO_CREATE = $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) $(addprefix $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/,$(HEADER_SUBDIRS))
+
 #
 # We provide two different algorithms of installing headers.
 #
@@ -85,7 +107,7 @@ ifeq ($(GNUSTEP_DEVELOPER),)
 # header files, and install all of them.  This is the default one.
 #
 
-shared-instance-headers-install: $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)
+shared-instance-headers-install: $(HEADER_INSTALL_DIRS_TO_CREATE)
 	$(ECHO_INSTALLING_HEADERS)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    $(INSTALL_DATA) $(HEADER_FILES_DIR)/$$file \
@@ -108,7 +130,7 @@ else
 #
 
 shared-instance-headers-install: \
-  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR) \
+  $(HEADER_INSTALL_DIRS_TO_CREATE) \
   $(addprefix $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/,$(HEADER_FILES))
 
 $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/% : $(HEADER_FILES_DIR)/%
@@ -116,18 +138,21 @@ $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/% : $(HEADER_FILES_DIR)/%
 
 endif
 
-# Note that we create this directory, if not there yet.  In the same
-# way, upon uninstall, we delete the directory if it is empty.
-$(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR):
+# Note that we create these directories, if not there yet.  In the
+# same way, upon uninstall, we delete the directories if they are
+# empty.
+$(HEADER_INSTALL_DIRS_TO_CREATE):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
 
+# TODO/FIXME: the uninstall should delete directories in reverse
+# order, else it will not work when more than one are created.
 shared-instance-headers-uninstall:
 	$(ECHO_NOTHING)for file in $(HEADER_FILES) __done; do \
 	  if [ $$file != __done ]; then \
 	    rm -rf $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)/$$file ; \
 	  fi; \
 	done$(END_ECHO)
-	-$(ECHO_NOTHING)rmdir $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)$(END_ECHO)
+	-$(ECHO_NOTHING)rmdir $(HEADER_INSTALL_DIRS_TO_CREATE)$(END_ECHO)
 
 endif # HEADER_FILES = ''

@@ -1,3 +1,41 @@
+2010-02-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Added support for having header files in sub-subdirectories.  Just
+	list them as in xxx_HEADER_FILES = Beauty/Vanity.h.
+	* Instance/Shared/headers.make (HEADER_SUBDIRS): New variable.
+	(HEADER_INSTALL_DIRS_TO_CREATE): New variable.
+	(shared-instance-headers-install): Create all the required
+	subdirectories in the header install directory.
+	($(HEADER_INSTALL_DIRS_TO_CREATE)): New rule.
+	($(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)): Rule removed.
+	(shared-instance-headers-uninstall): Remove all the subdirectories
+	in the header install directory.
+	* Instance/framework.make (FRAMEWORK_HEADER_SUBDIRS): New
+	variable.  (internal-framework-build-headers): Depend on
+	FRAMEWORK_HEADER_SUBDIRS.  ($(FRAMEWORK_HEADER_SUBDIRS)): New
+	rule.
+	* Instance/subproject.make (HEADER_SUBDIRS): Set variable when
+	OWNING_PROJECT_HEADER_DIR_NAME is set.
+	(OWNING_PROJECT_HEADER_SUBDIRS): New variable when
+	OWNING_PROJECT_HEADER_DIR_NAME is set.
+	(internal-subproject-build-headers): Depend on
+	OWNING_PROJECT_HEADER_SUBDIRS when OWNING_PROJECT_HEADER_DIR_NAME
+	is set.
+	($(OWNING_PROJECT_HEADER_SUBDIRS)): New rule when
+	OWNING_PROJECT_HEADER_DIR_NAME is set.
+	
+	Implemented HEADER_FILES_DIR for framework subprojects.
+	* Instance/subproject.make (HEADER_FILES_DIR): Set this variable
+	when OWNING_PROJECT_HEADER_DIR_NAME is set.
+	($(OWNING_PROJECT_HEADER_DIR)/%.h): Support HEADER_FILES_DIR when
+	OWNIN_PROJECT_HEADER_DIR_NAME is set.
+
+	* Documentation/releasenotes.texi: Updated release notes.
+	* RELEASENOTES: Updated.
+
+	* Documentation/news.texi: Added news for 2.2.1.
+	* NEWS: Updated.
+	
 2009-10-26  Adam Fedor  <fedor@gnu.org>
 
 	* Instance/application.make: Replace deprecated Windows GUI flag.
