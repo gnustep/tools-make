@@ -32,7 +32,7 @@ using a newer version of the make system.
      before the others, you can always add a 'before-all:: ToolA' rule
      which will make sure ToolA is built before the other ones.
 
-     If you want to complete disable parallel building, you can add
+     If you want to disable parallel building altogether, you can add
      GNUSTEP_MAKE_PARALLEL_BUILDING=no just after including
      common.make, or pass it on the command-line.
 
