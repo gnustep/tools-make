@@ -3,8 +3,8 @@
 	Implemented experimental support for parallelizing building
 	different tools.  For example, if you have "TOOL_NAME = autogsdoc
 	cvtenc", the two tools are now built in parallel when you specify
-	'make -j 2'.  Warning: this means the order of building tools is
-	no longer guaranteed.
+	'make -j 2'.  Warning: this means the order in which tools are
+	built is no longer guaranteed.
 	* Master/tool.make (internal-all): When parallel building is
 	enabled, fire off a _GNUSTEP_MAKE_PARALLEL=yes sub-make to build.
 	(internal-master-tool-all): New target used by the
