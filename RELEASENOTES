@@ -23,16 +23,18 @@ using a newer version of the make system.
      are built.  If your GNUmakefile does depend on the order in which
      tools are built, you have a few options.  The preferred option is
      to identify the code or steps that need to be executed before some
-     of the tools are built (for example, you may be generating a
-     customized header in before-ToolA-all::, but the header is
-     actually used when building not only ToolA, but ToolB as well, so
-     the build breaks if ToolB is not built after ToolA) and put them
-     into a before-all:: rule, which is guaranteed to be executed before
-     everything else.  In this way your serialized code is executed
-     first, and the build can continue in a complete parallel fashion
-     afterwards.  If all else fails, you can still disable parallel
-     building in your GNUmakefile by adding
-     GNUSTEP_MAKE_PARALLEL_BUILDING=no just after including common.make.
+     of the tools are built and put them into a before-all:: rule,
+     which is guaranteed to be executed before anything else.  In this
+     way your serialized code is executed first, and the build can
+     continue in a completely parallel fashion afterwards.
+
+     If you just want to force a specific tool (say, ToolA) to be built
+     before the others, you can always add a 'before-all:: ToolA' rule
+     which will make sure ToolA is built before the other ones.
+
+     If you want to complete disable parallel building, you can add
+     GNUSTEP_MAKE_PARALLEL_BUILDING=no just after including
+     common.make, or pass it on the command-line.
 
 `support for having source files in subdirectories'
      Starting with version 2.2.1, it is possible to put source files in
