@@ -26,8 +26,44 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+# Standard building
 internal-all:: $(TOOL_NAME:=.all.tool.variables)
 
+else
+
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yes.
+# That sub-make invocation will fire off the building of the tools in
+# parallel.  This is great as the entire building (including the
+# linking) of the tools is then parallelized.
+
+# Please note that we need to create the ./obj directory before we
+# fire off all the parallel sub-makes, else they'll be a race
+# condition to create it. (typically what happens is that two
+# sub-makes detect that it needs creating, the first one creates it,
+# and when the second one tries to create it, it will fail as it's
+# already been created).
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-tool-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-master-tool-all: $(TOOL_NAME:=.all.tool.variables)
+
+endif
+
+# TODO: Installing and uninstalling in parallel would be extremely
+# cool, but if you fire off many sub-makes (one for each instance) in
+# parallel, you end up with a lot of race conditions as the tools are
+# most often installed in the same directories, which the different
+# sub-makes will attempt to create concurrently.  A better solution
+# would be to fire off a single Master invocation with
+# _GNUSTEP_MAKE_PARELLEL enabled, and in there install all the tools
+# using parallel rules.  This requires moving all the tool installation 
+# code from Instance/ to Master/.
 internal-install:: $(TOOL_NAME:=.install.tool.variables)
 
 internal-uninstall:: $(TOOL_NAME:=.uninstall.tool.variables)
@@ -52,6 +88,8 @@ internal-clean::
 	rm -rf $(GNUSTEP_BUILD_DIR)/Resources
 endif
 
+# TODO: It should be really safe to parallelize the 'strings' targets,
+# but it's worth checking to make sure we're not breaking anything.
 internal-strings:: $(TOOL_NAME:=.strings.tool.variables)
 
 $(TOOL_NAME):

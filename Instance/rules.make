@@ -262,8 +262,32 @@ OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(O
 # covered by default.
 OBJ_DIRS_TO_CREATE = $(filter-out $(GNUSTEP_OBJ_DIR)/,$(sort $(dir $(OBJ_FILES_TO_LINK))))
 
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 $(OBJ_DIRS_TO_CREATE):
-	$(ECHO_CREATING)cd $(GNUSTEP_BUILD_DIR); $(MKDIRS) $@$(END_ECHO)	
+	$(ECHO_CREATING)cd $(GNUSTEP_BUILD_DIR); $(MKDIRS) $@$(END_ECHO)
+else
+# When doing a parallel build, we build instances in parallel.  If two
+# instances need to create the same directory, there could be a race
+# condition and one of the two might fail.  So we use '-' here to tell
+# GNU make to ignore any such errors and keep going.  If the error was
+# a legitimate one (not a concurrency-related one) the build will fail
+# later when the object file can't be put into the directory.  PS:
+# This all can be avoided if you avoid having source files for two
+# instances in the same subdirectory.
+#
+# FIXME/TODO: The better solution would be to prefix the
+# OBJ_DIRS_TO_CREATE with the instance name to avoid any clashes.
+# Then each instance has its own completely separate ./obj/ToolName/
+# directory for its object files and there can be no concurrency
+# issues.  Unfortunately, this requires changing the top-level rules,
+# and would break the "API" as the location of object files would
+# change.  Any GNUmakefile using $(GNUSTEP_OBJ_DIR) might potentially
+# be broken.  So it's a major change and we leave it for 2.4.0.  For
+# now, the hack of ignoring concurrency errors in the unlikely case
+# that two instances need the same OBJ_DIRS_TO_CREATE is enough.
+$(OBJ_DIRS_TO_CREATE):
+	-$(ECHO_CREATING)cd $(GNUSTEP_BUILD_DIR); $(MKDIRS) $@$(END_ECHO)
+endif
 
 # If C++ or ObjC++ are involved, we use the C++ compiler instead of
 # the C/ObjC one to link; this happens automatically when compiling

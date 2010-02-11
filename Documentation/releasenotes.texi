@@ -7,6 +7,31 @@ migrate to using a newer version of the make system.
 @section Version 2.2.1
 @table @samp
 
+@item the order in which tools are built is no longer guaranteed
+If you use something like ``TOOL_NAME = ToolA ToolB'' to build
+multiple tools in the same GNUmakefile, you need to be aware that the
+way the tools are built changed in version 2.2.1.  Before version
+2.2.1, the tools were always built one after the other one, exactly in
+the order specified.  So, in the example ToolA would be built before
+ToolB.  Starting with 2.2.1, the tools might be built completely in
+parallel if parallel building is enabled.  So, the order in which they
+are built is no longer defined and your GNUmakefile should not depend
+on the order in which tools are specified in the GNUmakefile.  Most
+GNUmakefiles should be unaffected because rarely people rely on the
+order in which tools are built.  If your GNUmakefile does depend on
+the order in which tools are built, you have a few options.  The
+preferred option is to identify the code or steps that need to be
+executed before some of the tools are built (for example, you may be
+generating a customized header in before-ToolA-all::, but the header
+is actually used when building not only ToolA, but ToolB as well, so
+the build breaks if ToolB is not built after ToolA) and put them into
+a before-all:: rule, which is guaranteed to be executed before
+everything else.  In this way your serialized code is executed first,
+and the build can continue in a complete parallel fashion afterwards.
+If all else fails, you can still disable parallel building in your
+GNUmakefile by adding GNUSTEP_MAKE_PARALLEL_BUILDING=no just after
+including common.make.
+
 @item support for having source files in subdirectories
 Starting with version 2.2.1, it is possible to put source files in
 subdirectories by specifiying them as in xxx_OBJC_FILES =
