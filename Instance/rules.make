@@ -285,6 +285,12 @@ else
 # be broken.  So it's a major change and we leave it for 2.4.0.  For
 # now, the hack of ignoring concurrency errors in the unlikely case
 # that two instances need the same OBJ_DIRS_TO_CREATE is enough.
+#
+# FIXME: Unfortunately, there is another, more serious problem, which
+# is that some people share source files between different tools.
+# This breaks when they are built in parallel (eg, two submakes trying
+# to create ./obj/Component.o).  So we do need to isolate them more
+# clearly.
 $(OBJ_DIRS_TO_CREATE):
 	-$(ECHO_CREATING)cd $(GNUSTEP_BUILD_DIR); $(MKDIRS) $@$(END_ECHO)
 endif
