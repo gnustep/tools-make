@@ -42,6 +42,16 @@ SHELL = /bin/sh
 # from having to recompute it!
 export GNUSTEP_MAKEFILES
 
+# The fact that this make invocation is building its targets in
+# parallel does not mean that submakes should do it too.  We control
+# exactly which make invocation runs in parallel, and which does not.
+# So, we do not want to export _GNUSTEP_MAKE_PARALLEL to submakes,
+# unless passed on the command line.  FIXME: This does not work, so as
+# a quick hack I added _GNUSTEP_MAKE_PARALLEL=no to all submake
+# invocations.  That works fine, but might be troublesome for custom
+# GNUmakefiles that run submakes.  Need to think.
+#unexport _GNUSTEP_MAKE_PARALLEL
+
 #
 # Get the global config information.  This includes
 # GNUSTEP_SYSTEM_ROOT, GNUSTEP_MAKE_VERSION, GNUSTEP_IS_FLATTENED,

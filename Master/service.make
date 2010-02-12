@@ -27,7 +27,21 @@ endif
 
 SERVICE_NAME := $(strip $(SERVICE_NAME))
 
-internal-all:: $(SERVICE_NAME:=.all.service.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(SERVICE_NAME:=.all.service.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-service-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-master-service-all: $(SERVICE_NAME:=.all.service.variables)
+
+endif
 
 internal-install:: $(SERVICE_NAME:=.install.service.variables)
 
@@ -58,6 +72,6 @@ endif
 
 internal-strings:: $(SERVICE_NAME:=.strings.service.variables)
 
-$(SERVICE_NAME):
+$(SERVICE_NAME): $(GNUSTEP_OBJ_DIR)
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	            $@.all.service.variables

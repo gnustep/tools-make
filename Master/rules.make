@@ -52,7 +52,17 @@ ifeq ($(GNUSTEP_BUILD_DIR),.)
 all:: before-all internal-all after-all
 else
 all:: $(GNUSTEP_BUILD_DIR) before-all internal-all after-all
+
+$(GNUSTEP_BUILD_DIR):
+	$(ECHO_CREATING)$(MKDIRS) $(GNUSTEP_BUILD_DIR)$(END_ECHO)
 endif
+
+# The rule to create the objects file directory.  This should be done
+# in the Master invocation before any parallel stuff is started (to
+# avoid race conditions in trying to create it).
+$(GNUSTEP_OBJ_DIR):
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)$(END_ECHO)
 
 # internal-after-install is used by packaging to get the list of files 
 # installed (see rpm.make); it must come after *all* the installation 
@@ -329,6 +339,7 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
           OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
           GNUSTEP_BUILD_DIR="$$gsbuild" \
+	  _GNUSTEP_MAKE_PARALLEL=no \
         ; then \
         :; \
       else exit $$?; \
@@ -342,7 +353,8 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
     GNUSTEP_TYPE=$$type \
     GNUSTEP_INSTANCE=$$instance \
     GNUSTEP_OPERATION=$$operation \
-    GNUSTEP_BUILD_DIR="$${abs_build_dir}"
+    GNUSTEP_BUILD_DIR="$${abs_build_dir}" \
+    _GNUSTEP_MAKE_PARALLEL=no \
 
 #
 # This rule provides exactly the same code as the %.variables one with
@@ -404,6 +416,7 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
           OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
           GNUSTEP_BUILD_DIR="$$gsbuild" \
+	  _GNUSTEP_MAKE_PARALLEL=no \
         ; then \
         :; \
       else exit $$?; \

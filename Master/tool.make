@@ -20,16 +20,16 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
-TOOL_NAME := $(strip $(TOOL_NAME))
-
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+TOOL_NAME := $(strip $(TOOL_NAME))
+
 ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 
 # Standard building
-internal-all:: $(TOOL_NAME:=.all.tool.variables)
+internal-all:: $(GNUSTEP_OBJ_DIR) $(TOOL_NAME:=.all.tool.variables)
 
 else
 
@@ -92,6 +92,6 @@ endif
 # but it's worth checking to make sure we're not breaking anything.
 internal-strings:: $(TOOL_NAME:=.strings.tool.variables)
 
-$(TOOL_NAME):
+$(TOOL_NAME): $(GNUSTEP_OBJ_DIR)
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	         $@.all.tool.variables

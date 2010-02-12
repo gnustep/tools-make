@@ -690,20 +690,6 @@ $(GNUSTEP_HOME)/$(GNUSTEP_USER_CONFIG_FILE): ;
  endif 
 endif
 
-# The rule to create the GNUSTEP_BUILD_DIR if any.  (TODO: Move this
-# into Master/rules.make with the following one.)
-ifneq ($(GNUSTEP_BUILD_DIR),.)
-$(GNUSTEP_BUILD_DIR):
-	$(ECHO_CREATING)$(MKDIRS) $(GNUSTEP_BUILD_DIR)$(END_ECHO)
-endif
-
-# The rule to create the objects file directory.  This should be done
-# in the Master invocation.  TODO: Move this rule into
-# Master/rules.make once no more makefiles in Instance/ depdend on it.
-$(GNUSTEP_OBJ_DIR):
-	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)$(END_ECHO)
-
 # Now the print targets.
 .PHONY: print-gnustep-make-help \
         print-gnustep-make-objc-flags \

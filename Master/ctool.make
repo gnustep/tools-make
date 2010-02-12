@@ -26,7 +26,21 @@ endif
 
 CTOOL_NAME := $(strip $(CTOOL_NAME))
 
-internal-all:: $(CTOOL_NAME:=.all.ctool.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(CTOOL_NAME:=.all.ctool.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-ctool-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-master-ctool-all: $(CTOOL_NAME:=.all.ctool.variables)
+
+endif
 
 internal-install:: $(CTOOL_NAME:=.install.ctool.variables)
 
@@ -44,6 +58,6 @@ endif
 
 internal-strings:: $(CTOOL_NAME:=.strings.ctool.variables)
 
-$(CTOOL_NAME):
+$(CTOOL_NAME): $(GNUSTEP_OBJ_DIR)
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 	         $@.all.ctool.variables

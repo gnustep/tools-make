@@ -1,5 +1,41 @@
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Implemented parallelizing builds of multiple instances of
+	everything, except for frameworks, documentation, resource sets
+	and java.
+	* rules (GNUSTEP_BUILD_DIR, GNUSTEP_OBJ_DIR): Removed rules to
+	create these directories.
+	* Master/rules.make (GNUSTEP_BUILD_DIR, GNUSTEP_OBJ_DIR): Moved
+	here the rule to create these directories.
+	* Master/rules.make: Updated all rules to pass
+	_GNUSTEP_MAKE_PARALLEL=no to submakes.
+	
+	* Master/application.make (internal-all): Support parallel
+	building.  Depend on GNUSTEP_OBJ_DIR.  (APP_NAME): Depend on
+	GNUSTEP_OBJ_DIR.
+	* Master/bundle.make: Same changes.
+	* Master/clibrary.make: Same changes.
+	* Master/ctool.make: Same changes.
+	* Master/gswapp.make: Same changes.
+	* Master/gsbundle.make: Same changes.
+	* Master/library.make: Same changes.
+	* Master/objc.make: Same changes.
+	* Master/palette.make: Same changes.
+	* Master/service.make: Same changes.
+	* Master/test-application.make: Same changes.
+	* Master/test-library.make: Same changes.
+	* Master/test-tool.make: Same changes.
+
+	* Master/tool.make (internal-all): Depend on GNUSTEP_OBJ_DIR.
+	(TOOL_NAME): Depend on GNUSTEP_OBJ_DIR.
+	* Master/framework.make: Same changes.
+	* Master/subproject.make: Same changes.
+
+	* Master/tool.name (TOOL_NAME): Set after including rules.make for
+	consistency with other make fragments.
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Documentation/releasenotes.texi: Updated.
 	* RELEASENOTES: Regenerated.
 	

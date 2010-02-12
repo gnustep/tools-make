@@ -36,7 +36,9 @@ build-headers:: before-build-headers $(FRAMEWORK_NAME:=.build-headers.framework.
 
 before-all:: build-headers
 
-internal-all:: $(FRAMEWORK_NAME:=.all.framework.variables)
+# TODO: Parallel building
+internal-all:: $(GNUSTEP_OBJ_DIR) $(FRAMEWORK_NAME:=.all.framework.variables)
+
 $(FRAMEWORK_NAME:=.all.framework.variables): $(FRAMEWORK_NAME:=.build-headers.framework.variables)
 
 internal-install:: $(FRAMEWORK_NAME:=.install.framework.variables)
@@ -49,6 +51,6 @@ internal-distclean:: $(FRAMEWORK_NAME:=.distclean.framework.variables)
 
 internal-strings:: $(FRAMEWORK_NAME:=.strings.framework.variables)
 
-$(FRAMEWORK_NAME):
+$(FRAMEWORK_NAME): $(GNUSTEP_OBJ_DIR)
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 		$@.all.framework.variables

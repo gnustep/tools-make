@@ -34,6 +34,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+# TODO: Parallel building.
 internal-all:: $(JAVA_TOOL_NAME:=.all.java_tool.variables)
 
 internal-install:: $(JAVA_TOOL_NAME:=.install.java_tool.variables)

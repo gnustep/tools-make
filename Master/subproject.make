@@ -41,7 +41,10 @@ endif
 
 build-headers:: $(SUBPROJECT_NAME:=.build-headers.subproject.variables)
 
-internal-all:: $(SUBPROJECT_NAME:=.all.subproject.variables)
+# No need for parallel building, since we are guaranteed to always
+# have only one subproject.  Avoid the parallel building submake for
+# efficiency in that case.
+internal-all:: $(GNUSTEP_OBJ_DIR) $(SUBPROJECT_NAME:=.all.subproject.variables)
 
 internal-install:: $(SUBPROJECT_NAME:=.install.subproject.variables)
 
@@ -66,6 +69,6 @@ endif
 
 internal-strings:: $(SUBPROJECT_NAME:=.strings.subproject.variables)
 
-$(SUBPROJECT_NAME):
+$(SUBPROJECT_NAME): $(GNUSTEP_OBJ_DIR)
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.subproject.variables

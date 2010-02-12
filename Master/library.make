@@ -27,7 +27,21 @@ endif
 
 LIBRARY_NAME := $(strip $(LIBRARY_NAME))
 
-internal-all:: $(LIBRARY_NAME:=.all.library.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(LIBRARY_NAME:=.all.library.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-library-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+internal-master-library-all: $(LIBRARY_NAME:=.all.library.variables)
+
+endif
 
 internal-install:: $(LIBRARY_NAME:=.install.library.variables)
 
@@ -52,6 +66,6 @@ endif
 
 internal-strings:: $(LIBRARY_NAME:=.strings.library.variables)
 
-$(LIBRARY_NAME):
+$(LIBRARY_NAME): $(GNUSTEP_OBJ_DIR)
 	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 		$@.all.library.variables
