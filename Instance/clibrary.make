@@ -1,11 +1,11 @@
-#
+#   -*-makefile-*-
 #   Instance/clibrary.make
 #
 #   Instance Makefile rules to build C libraries.
 #
 #   Copyright (C) 2002 Free Software Foundation, Inc.
 #
-#   Author:  Nicola Pero     <nicola@brainstorm.co.uk>
+#   Author:  Nicola Pero     <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #

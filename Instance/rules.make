@@ -1,4 +1,4 @@
-#
+#  -*-makefile-*-
 #   rules.make
 #
 #   Makefile rules for the Instance invocation.

@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/test-library.make
 #
 #   Instance Makefile rules for test/non-installed libraries
