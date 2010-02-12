@@ -65,7 +65,7 @@ ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), USER)
 endif
 NSI_BASE=$(dir $(GNUSTEP_APPS))
 
-ABS_OBJ_DIR:=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
+ABS_OBJ_DIR=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
 GNUSTEP_FILE_LIST = $(ABS_OBJ_DIR)/package/file-list
 GNUSTEP_DELETE_LIST = $(ABS_OBJ_DIR)/package/delete-list
 GNUSTEP_RMDIR_LIST = $(ABS_OBJ_DIR)/package/rmdir-list
