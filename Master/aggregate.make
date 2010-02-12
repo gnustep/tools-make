@@ -3,11 +3,11 @@
 #
 #   Master Makefile rules to build a set of GNUstep-base subprojects.
 #
-#   Copyright (C) 1997-2002 Free Software Foundation, Inc.
+#   Copyright (C) 1997-2010 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
-#   Author:  Nicola Pero <n.pero@mi.flashnet.it>
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -30,6 +30,23 @@ endif
 # variable SUBPROJECTS.  The name is unforunate, because it is confusingly
 # similar to xxx_SUBPROJECTS, which is used for subprojects.
 #
+
+# For this reason, long term we'd like to replace the variable
+# SUBPROJECTS with the variable AGGREGATE_PROJECTS.  As of February
+# 2010, we can't just do it without breaking all GNUmakefiles.  So in
+# February 2010, we added AGGREGATE_PROJECTS, so that gnustep-make now
+# recognizes AGGREGATE_PROJECTS as well as SUBPROJECTS.  In a few
+# years, when everyone is using a version of gnustep-make that does
+# this, we can deprecate SUBPROJECTS and tell everyone to switch to
+# AGGREGATE_PROJECTS without breaking anything :-) In other words, the
+# following three lines of code are for compatibility with future
+# versions of gnustep-make where the variable will be named
+# AGGREGATE_PROJECTS.
+AGGREGATE_PROJECTS := $(strip $(AGGREGATE_PROJECTS))
+ifneq ($(AGGREGATE_PROJECTS),)
+  SUBPROJECTS := $(AGGREGATE_PROJECTS)
+endif
+
 # SUBPROJECTS - which is implemented in this file - are just a list of
 # directories; we step in each directory in turn, and run a submake in
 # there.  The project types in the directories can be anything -

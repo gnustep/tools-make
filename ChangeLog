@@ -1,3 +1,10 @@
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Master/aggregate.make (AGGREGATE_PROJECTS): Recognize the
+	AGGREGATE_PROJECTS variable for compatibility with future
+	gnustep-makes where SUBPROJECTS will be removed and replaced by
+	AGGREGATE_PROJECTS.
+
 2010-02-11  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Implemented experimental support for parallelizing building
