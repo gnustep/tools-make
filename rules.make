@@ -332,7 +332,6 @@ endif
 
 ALL_CPLISTFLAGS += $(ADDITIONAL_CPLISTFLAGS) $(AUXILIARY_CPLISTFLAGS)
 
-
 # If we are using Windows32 DLLs, we pass -DGNUSTEP_WITH_DLL to the
 # compiler.  This preprocessor define might be used by library header
 # files to know they are included from external code needing to use
@@ -411,6 +410,17 @@ endif
 
 %:: SCCS/s.%
 
+# C/ObjC/C++ files are always compiled as part of the instance
+# invocation (eg, while building a tool or an app).  We put the object
+# files (eg, NSObject.o, ie the result of compiling a C/ObjC/C++ file)
+# in separate directories, one for each GNUSTEP_INSTANCE.  The
+# directories are $(GNUSTEP_OBJ_INSTANCE_DIR) (which usually is, eg,
+# ./obj/gdomap.obj/).  This allows different GNUSTEP_INSTANCEs to be
+# built in parallel with no particular conflict.  Here we include the
+# rules for building C/ObjC/C++ files; they are only included when
+# GNUSTEP_INSTANCE is defined.
+ifneq ($(GNUSTEP_INSTANCE),)
+
 #
 # In exceptional conditions, you might need to want to use different compiler
 # flags for a file (for example, if a file doesn't compile with optimization
@@ -444,83 +454,96 @@ endif
 # as well, so the following rule is simply equivalent to
 # $(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@
 # and similarly all the rules below
-$(GNUSTEP_OBJ_DIR)/%.c$(OEXT) : %.c
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.c$(OEXT) : %.c
 	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%.m$(OEXT) : %.m
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.m$(OEXT) : %.m
 	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%.C$(OEXT) : %.C
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.C$(OEXT) : %.C
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%.cc$(OEXT) : %.cc
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cc$(OEXT) : %.cc
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%.cpp$(OEXT) : %.cpp
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cpp$(OEXT) : %.cpp
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%.cxx$(OEXT) : %.cxx
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cxx$(OEXT) : %.cxx
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%.cp$(OEXT) : %.cp
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cp$(OEXT) : %.cp
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%.mm$(OEXT) : %.mm
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.mm$(OEXT) : %.mm
 	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
+#
+# Special mingw32 specific rules to compile Windows resource files (.rc files)
+# into object files.
+#
+ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+# Add the .rc suffix on Windows.
+.SUFFIXES: .rc
+
+# A rule to generate a .o file from the .rc file.
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.rc$(OEXT): %.rc
+	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
+endif
+
 ifeq ($(GCC_WITH_PRECOMPILED_HEADERS),yes)
 # We put the precompiled headers in different directories (depending
 # on the language) so that we can easily have different rules (that
 # use the appropriate compilers/flags) for the different languages.
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/%.h.gch : %.h $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/
 	$(ECHO_PRECOMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/%.h.gch : %.h $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/
 	$(ECHO_PRECOMPILING)$(CC) -x objective-c-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/%.h.gch : %.h $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/
 	$(ECHO_PRECOMPILING)$(CXX) -x c++-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/
 	$(ECHO_COMPILING)$(CXX) -x objective-c++-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
@@ -529,23 +552,25 @@ $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_DIR)/Prec
 # These rules create these directories as needed.  The directories
 # (and the precompiled files in them) will automatically be removed
 # when the GNUSTEP_OBJ_DIR is deleted as part of a clean.
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/C/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjC/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/CC/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjCC/$(END_ECHO)
 
 endif
+
+endif # End of code included only when GNUSTEP_INSTANCE is not empty
 
 # FIXME - using a different build dir with java
 
@@ -619,19 +644,6 @@ endif
 	$(YACC) $(YACC_FLAGS) $<
 	mv -f y.tab.c $@
 
-#
-# Special mingw32 specific rules to compile Windows resource files (.rc files)
-# into object files.
-#
-ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
-# Add the .rc suffix on Windows.
-.SUFFIXES: .rc
-
-# A rule to generate a .o file from the .rc file.
-$(GNUSTEP_OBJ_DIR)/%.rc$(OEXT): %.rc
-	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
-endif
-
 # The following dummy rules are needed for performance - we need to
 # prevent make from spending time trying to compute how/if to rebuild
 # the system makefiles!  the following rules tell him that these files
@@ -678,13 +690,16 @@ $(GNUSTEP_HOME)/$(GNUSTEP_USER_CONFIG_FILE): ;
  endif 
 endif
 
-# The rule to create the GNUSTEP_BUILD_DIR if any.
+# The rule to create the GNUSTEP_BUILD_DIR if any.  (TODO: Move this
+# into Master/rules.make with the following one.)
 ifneq ($(GNUSTEP_BUILD_DIR),.)
 $(GNUSTEP_BUILD_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $(GNUSTEP_BUILD_DIR)$(END_ECHO)
 endif
 
-# The rule to create the objects file directory.
+# The rule to create the objects file directory.  This should be done
+# in the Master invocation.  TODO: Move this rule into
+# Master/rules.make once no more makefiles in Instance/ depdend on it.
 $(GNUSTEP_OBJ_DIR):
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
 	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)$(END_ECHO)

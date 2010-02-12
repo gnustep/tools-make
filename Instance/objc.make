@@ -53,14 +53,14 @@ ALL_OBJC_LIBS =								\
 ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 # Standard building
 internal-objc_program-all_:: \
-                  $(GNUSTEP_OBJ_DIR) \
+                  $(GNUSTEP_OBJ_INSTANCE_DIR) \
                   $(OBJ_DIRS_TO_CREATE) \
                   $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 else
 # Parallel building.  The actual compilation is delegated to a
 # sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
 # That sub-make invocation will compile files in parallel.
-internal-objc_program-all_:: $(GNUSTEP_OBJ_DIR) $(OBJ_DIRS_TO_CREATE)
+internal-objc_program-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE)
 	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-objc_program-compile \
 	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \

@@ -3,9 +3,9 @@
 #
 #   Instance Makefile rules to build GNUstep-based applications.
 #
-#   Copyright (C) 1997, 2001, 2002 Free Software Foundation, Inc.
+#   Copyright (C) 1997 - 2010 Free Software Foundation, Inc.
 #
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #   Based on the original version by Scott Christley.
 #
@@ -154,7 +154,7 @@ internal-app-compile: $(APP_FILE)
 endif
 
 ifeq ($(FOUNDATION_LIB), apple)
-internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-app-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
                     $(OBJ_DIRS_TO_CREATE) \
                     $(APP_DIR)/Contents/MacOS \
                     internal-app-run-compile-submake \
@@ -173,7 +173,7 @@ $(APP_DIR)/Contents/MacOS:
 
 else
 
-internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-app-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
                     $(OBJ_DIRS_TO_CREATE) \
                     $(APP_DIR)/$(GNUSTEP_TARGET_LDIR) \
                     internal-app-run-compile-submake \

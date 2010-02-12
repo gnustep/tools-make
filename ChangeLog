@@ -1,5 +1,45 @@
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Create separate directories to store the object files of each
+	instance.  This allows to safely parallelize building different
+	instances.
+	* common.make (GNUSTEP_OBJ_INSTANCE_DIR,
+	GNUSTEP_OBJ_INSTANCE_DIR_NAME): New variables.
+	* rules.make: Include rules to compile C/ObjC/C++/ObjC++/.rc and
+	to precompile headers only in the Instance invocation.  Updated
+	all rules to store object files into GNUSTEP_OBJ_INSTANCE_DIR
+	instead of GNUSTEP_OBJ_DIR.
+	* Instance/rules.make (GNUSTEP_OBJ_INSTANCE_DIR): New rule.
+	Updated the whole file to put all object files in
+	GNUSTEP_OBJ_INSTANCE_DIR instead of GNUSTEP_OBJ_DIR.
+	(OBJ_DIRS_TO_CREATE): Do not ignore failures any more when
+	building in parallel.
+	* Instance/application.make (internal-app-all_): Depend on
+	GNUSTEP_OBJ_INSTANCE_DIR instead of GNUSTEP_OBJ_DIR.
+	* Instance/bundle.make: Same change.
+	* Instance/ctool.make: Same change.
+	* Instance/framework.make: Same change.	
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/objc.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/service.make: Same change.
+	* Instance/subproject.make: Same change.
+	* Instance/tool.make: Same change.
+	* Instance/framework.make (DUMMY_FRAMEWORK_OBJ_FILE): Put
+	DUMMY_FRAMEWORK_OBJ_FILE inside GNUSTEP_OBJ_INSTANCE_DIR instead
+	of GNUSTEP_OBJ_DIR.
+
+	* Instance/ctool.make
+	($(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)): Do not depend
+	on OBJC_DIRS_TO_CREATE.
+	* Instance/rules.make (OBJ_FILES_TO_LINK_THAT_WE_CREATE): New
+	variable used to prevent spurious attempts to create subproject
+	object directories.
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/clibrary.mak: Added "# -*-makefile-*-" on the first
 	line for emacs.
 	* Instance/rules.make: Same change.	

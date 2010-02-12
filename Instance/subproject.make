@@ -34,14 +34,14 @@ endif
 #
 ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 # Standard building
-internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-subproject-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
                            $(OBJ_DIRS_TO_CREATE) \
                            $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT)
 else
 # Parallel building.  The actual compilation is delegated to a
 # sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
 # That sub-make invocation will compile files in parallel.
-internal-subproject-all_:: $(GNUSTEP_OBJ_DIR) $(OBJ_DIRS_TO_CREATE)
+internal-subproject-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE)
 	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-subproject-compile \
 	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \

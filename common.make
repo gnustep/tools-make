@@ -734,6 +734,14 @@ endif
 
 GNUSTEP_OBJ_DIR = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_OBJ_DIR_NAME)
 
+ifneq ($(GNUSTEP_INSTANCE),)
+  GNUSTEP_OBJ_INSTANCE_DIR_NAME = $(GNUSTEP_OBJ_DIR_NAME)/$(GNUSTEP_INSTANCE).obj
+  GNUSTEP_OBJ_INSTANCE_DIR      = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)
+else
+  GNUSTEP_OBJ_INSTANCE_DIR_NAME = $(warn "Makefile bug ... GNUSTEP_OBJ_INSTANCE_DIR_NAME used in Master invocation!")
+  GNUSTEP_OBJ_INSTANCE_DIR      = $(warn "Makefile bug ... GNUSTEP_OBJ_INSTANCE_DIR used in Master invocation!")
+endif
+
 #
 # Common variables for subprojects
 #

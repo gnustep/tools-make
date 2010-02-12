@@ -89,7 +89,7 @@ GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = .
 GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(PALETTE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-palette-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
                         $(OBJ_DIRS_TO_CREATE) \
                         $(PALETTE_DIR)/Resources \
                         $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR) \

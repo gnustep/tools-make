@@ -160,7 +160,6 @@ endif
 # most of the times we don't perform an Instance invocation at all on
 # make clean or make distclean.
 
-
 #
 # The list of Objective-C source files to be compiled
 # are in the OBJC_FILES variable.
@@ -191,8 +190,10 @@ endif
 # Please note the subtle difference:
 #
 # At `user' level (ie, in the user's GNUmakefile), 
-# the SUBPROJECTS variable is reserved for use with aggregate.make; 
-# the xxx_SUBPROJECTS variable is reserved for use with subproject.make.
+# the SUBPROJECTS variable is reserved for use with aggregate.make
+# (this will be renamed to AGGREGATE_PROJECTS in a future version of
+# gnustep-make); the xxx_SUBPROJECTS variable is reserved for use with
+# subproject.make.
 #
 # This separation *must* be enforced strictly, because nothing prevents 
 # a GNUmakefile from including both aggregate.make and subproject.make!
@@ -204,10 +205,10 @@ SUBPROJECT_OBJ_FILES = $(foreach d, $($(GNUSTEP_INSTANCE)_SUBPROJECTS), \
 endif
 
 OBJC_OBJS = $(patsubst %.m,%.m$(OEXT),$($(GNUSTEP_INSTANCE)_OBJC_FILES))
-OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJC_OBJS))
+OBJC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(OBJC_OBJS))
 
 OBJCC_OBJS = $(patsubst %.mm,%.mm$(OEXT),$($(GNUSTEP_INSTANCE)_OBJCC_FILES))
-OBJCC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(OBJCC_OBJS))
+OBJCC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(OBJCC_OBJS))
 
 JAVA_OBJS = $(patsubst %.java,%.class,$($(GNUSTEP_INSTANCE)_JAVA_FILES))
 JAVA_OBJ_FILES = $(JAVA_OBJS)
@@ -218,10 +219,10 @@ JAVA_JNI_OBJ_FILES = $(JAVA_JNI_OBJS)
 PSWRAP_C_FILES = $(patsubst %.psw,%.c,$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
 PSWRAP_H_FILES = $(patsubst %.psw,%.h,$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
 PSWRAP_OBJS = $(patsubst %.psw,%.c$(OEXT),$($(GNUSTEP_INSTANCE)_PSWRAP_FILES))
-PSWRAP_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(PSWRAP_OBJS))
+PSWRAP_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(PSWRAP_OBJS))
 
 C_OBJS = $(patsubst %.c,%.c$(OEXT),$($(GNUSTEP_INSTANCE)_C_FILES))
-C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_DIR)/,$(C_OBJS))
+C_OBJ_FILES = $(PSWRAP_OBJ_FILES) $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(C_OBJS))
 
 # C++ files might end in .C, .cc, .cpp, .cxx, .cp so we replace multiple times
 CC_OBJS = $(patsubst %.cc,%.cc$(OEXT),\
@@ -229,11 +230,11 @@ CC_OBJS = $(patsubst %.cc,%.cc$(OEXT),\
             $(patsubst %.cp,%.cp$(OEXT),\
              $(patsubst %.cpp,%.cpp$(OEXT),\
               $(patsubst %.cxx,%.cxx$(OEXT),$($(GNUSTEP_INSTANCE)_CC_FILES))))))
-CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(CC_OBJS))
+CC_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(CC_OBJS))
 
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   WINDRES_OBJS = $(patsubst %.rc,%.rc$(OEXT),$($(GNUSTEP_INSTANCE)_WINDRES_FILES))
-  WINDRES_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(WINDRES_OBJS))
+  WINDRES_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(WINDRES_OBJS))
 else
   WINDRES_OBJ_FILES =
 endif
@@ -249,51 +250,46 @@ OBJ_FILES = $($(GNUSTEP_INSTANCE)_OBJ_FILES)
 # object file, or not).
 OBJ_FILES_TO_LINK = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(OBJCC_OBJ_FILES) $(WINDRES_OBJ_FILES) $(SUBPROJECT_OBJ_FILES) $(OBJ_FILES))
 
+# This is the subset of OBJ_FILES_TO_LINK that includes all the files
+# that we compile ourselves.  Since we compile them ourselves, we are
+# responsible for creating the directories in which they are stored.
+# We exclude SUBPROJECT_OBJ_FILES since we are not responsible for
+# creating subproject's directories, and OBJ_FILES since again these
+# are obj files already available / built using some other process
+# over which we have no control, so we are not responsible for
+# creating the directories for them.
+OBJ_FILES_TO_LINK_THAT_WE_CREATE = $(strip $(C_OBJ_FILES) $(OBJC_OBJ_FILES) $(CC_OBJ_FILES) $(OBJCC_OBJ_FILES) $(WINDRES_OBJ_FILES))
+
 # OBJ_DIRS_TO_CREATE is the set of all directories that contain
 # OBJ_FILES_TO_LINK.  For example, if you want to compile
-# ./Source/File.m, you'd generate a obj/Source/File.o file, and we
-# first need to create the directory obj/Source.  Source/File.m would
-# be in OBJC_FILES, obj/Source/File.o would be in OBJ_FILES_TO_LINK,
-# and obj/Source would be in OBJ_DIRS_TO_CREATE.
+# ./Source/File.m, you'd generate a obj/Tool/Source/File.o file, and
+# we first need to create the directory obj/Tool/Source.
+# Tool/Source/File.m would be in OBJC_FILES, obj/Tool/Source/File.o
+# would be in OBJ_FILES_TO_LINK_WE_CREATE, and obj/Tool/Source would
+# be in OBJ_DIRS_TO_CREATE.
 #
 # Explanation: $(dir ...) is used to extract the directory; $(sort
 # ...) is used to remove duplicates; $(filter-out ...) is used to
-# remove $(GNUSTEP_OBJ_DIR) which would always appear and is already
-# covered by default.
-OBJ_DIRS_TO_CREATE = $(filter-out $(GNUSTEP_OBJ_DIR)/,$(sort $(dir $(OBJ_FILES_TO_LINK))))
+# remove $(GNUSTEP_OBJ_INSTANCE_DIR) which would always
+# appear and is already covered by default.
+OBJ_DIRS_TO_CREATE = $(filter-out $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(sort $(dir $(OBJ_FILES_TO_LINK_THAT_WE_CREATE))))
 
-ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Note that when doing a parallel build, we build instances in
+# parallel.  To prevent race conditions in building the directories or
+# compiling the files, each instance has its own build directory to
+# store its own object files, completely separate from the other
+# instances.  The GNUSTEP_OBJ_DIR is built during the Master
+# invocation (so no concurrency issues there); each instance then
+# builds its own GNUSTEP_OBJ_DIR/GNUSTEP_INSTANCE/ subdirectory and
+# puts its object file in there.
 $(OBJ_DIRS_TO_CREATE):
 	$(ECHO_CREATING)cd $(GNUSTEP_BUILD_DIR); $(MKDIRS) $@$(END_ECHO)
-else
-# When doing a parallel build, we build instances in parallel.  If two
-# instances need to create the same directory, there could be a race
-# condition and one of the two might fail.  So we use '-' here to tell
-# GNU make to ignore any such errors and keep going.  If the error was
-# a legitimate one (not a concurrency-related one) the build will fail
-# later when the object file can't be put into the directory.  PS:
-# This all can be avoided if you avoid having source files for two
-# instances in the same subdirectory.
-#
-# FIXME/TODO: The better solution would be to prefix the
-# OBJ_DIRS_TO_CREATE with the instance name to avoid any clashes.
-# Then each instance has its own completely separate ./obj/ToolName/
-# directory for its object files and there can be no concurrency
-# issues.  Unfortunately, this requires changing the top-level rules,
-# and would break the "API" as the location of object files would
-# change.  Any GNUmakefile using $(GNUSTEP_OBJ_DIR) might potentially
-# be broken.  So it's a major change and we leave it for 2.4.0.  For
-# now, the hack of ignoring concurrency errors in the unlikely case
-# that two instances need the same OBJ_DIRS_TO_CREATE is enough.
-#
-# FIXME: Unfortunately, there is another, more serious problem, which
-# is that some people share source files between different tools.
-# This breaks when they are built in parallel (eg, two submakes trying
-# to create ./obj/Component.o).  So we do need to isolate them more
-# clearly.
-$(OBJ_DIRS_TO_CREATE):
-	-$(ECHO_CREATING)cd $(GNUSTEP_BUILD_DIR); $(MKDIRS) $@$(END_ECHO)
-endif
+
+# The rule to create the objects file directory for this specific
+# instance.
+$(GNUSTEP_OBJ_INSTANCE_DIR):
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/$(END_ECHO)
 
 # If C++ or ObjC++ are involved, we use the C++ compiler instead of
 # the C/ObjC one to link; this happens automatically when compiling
@@ -341,16 +337,16 @@ ifeq ($(GCC_WITH_PRECOMPILED_HEADERS),yes)
 #
 
 C_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_C_PRECOMPILED_HEADERS))
-C_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/,$(C_PRECOMPILED_OBJS))
+C_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/,$(C_PRECOMPILED_OBJS))
 
 OBJC_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_OBJC_PRECOMPILED_HEADERS))
-OBJC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/,$(OBJC_PRECOMPILED_OBJS))
+OBJC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/,$(OBJC_PRECOMPILED_OBJS))
 
 CC_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_CC_PRECOMPILED_HEADERS))
-CC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/,$(CC_PRECOMPILED_OBJS))
+CC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/,$(CC_PRECOMPILED_OBJS))
 
 OBJCC_PRECOMPILED_OBJS = $(patsubst %.h,%.h.gch,$($(GNUSTEP_INSTANCE)_OBJCC_PRECOMPILED_HEADERS))
-OBJCC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/,$(OBJCC_PRECOMPILED_OBJS))
+OBJCC_PRECOMPILED_OBJ_FILES = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/,$(OBJCC_PRECOMPILED_OBJS))
 
 # If any of those variables is not empty
 ifneq ($(C_PRECOMPILED_OBJ_FILES)$(OBJC_PRECOMPILED_OBJ_FILES)$(CC_PRECOMPILED_OBJ_FILES)$(OBJCC_PRECOMPILED_OBJ_FILES),)
@@ -366,16 +362,16 @@ ifneq ($(C_PRECOMPILED_OBJ_FILES)$(OBJC_PRECOMPILED_OBJ_FILES)$(CC_PRECOMPILED_O
   # to the non-precompiled header, no matter where the non-precompiled
   # header is).
   ifneq ($(C_PRECOMPILED_OBJ_FILES),)
-    C_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C
+    C_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C
   endif
   ifneq ($(OBJC_PRECOMPILED_OBJ_FILES),)
-    OBJC_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC
+    OBJC_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC
   endif
   ifneq ($(CC_PRECOMPILED_OBJ_FILES),)
-    CC_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC
+    CC_PRECOMPILED_HEADERS_INCLUDE_FLAGS += -I$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC
   endif
   ifneq ($(OBJCC_PRECOMPILED_OBJ_FILES),)
-    OBJCC_PRECOMPILED_HEADERS_INCLUDE_FLAGS  += -I$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC
+    OBJCC_PRECOMPILED_HEADERS_INCLUDE_FLAGS  += -I$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC
   endif
 
 else

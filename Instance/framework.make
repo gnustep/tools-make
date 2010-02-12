@@ -216,7 +216,7 @@ ifeq ($(FOUNDATION_LIB),gnu)
 
   DUMMY_FRAMEWORK = NSFramework_$(subst +,_1,$(subst -,_0,$(subst _,__,$(GNUSTEP_INSTANCE))))
   DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES_DIR)/$(DUMMY_FRAMEWORK).m
-  DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
+  DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(DUMMY_FRAMEWORK).o)
 
   # The following file will hold the list of classes compiled into the
   # framework, ready to be included in the .plist file.  We include the
@@ -331,7 +331,7 @@ endif
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-framework-all_:: $(GNUSTEP_OBJ_DIR) $(OBJ_DIRS_TO_CREATE) \
+internal-framework-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE) \
                           build-framework
 # If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
 # print a warning. They are supposed to provide a xxxInfo.plist which

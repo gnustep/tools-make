@@ -91,7 +91,7 @@ endif
 # How about the rest of the systems? ALL_BUNDLE_LIBS is temporary empty.
 #ALL_GSWBUNDLE_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) $(ALL_LIBS)
 
-internal-gswbundle-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-gswbundle-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
                           $(OBJ_DIRS_TO_CREATE) \
                           build-bundle-dir \
                           build-bundle

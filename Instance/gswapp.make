@@ -123,7 +123,7 @@ endif
 #
 ifeq ($(FOUNDATION_LIB), apple)
 internal-gswapp-all_:: \
-	$(GNUSTEP_OBJ_DIR) \
+	$(GNUSTEP_OBJ_INSTANCE_DIR) \
         $(OBJ_DIRS_TO_CREATE) \
         $(GSWAPP_DIR)/Contents/MacOS \
         $(GSWAPP_FILE) \
@@ -134,7 +134,7 @@ $(GSWAPP_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 else
 
-internal-gswapp-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-gswapp-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
                     $(OBJ_DIRS_TO_CREATE) \
                     $(GSWAPP_DIR)/$(GNUSTEP_TARGET_LDIR) \
                     $(GSWAPP_FILE) \
