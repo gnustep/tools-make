@@ -1,5 +1,10 @@
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Master/nsis.make (ABS_OBJ_DIR): Assign using := instead of = to
+	prevent multiple executions of the subshell.
+
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Documentation/releasenotes.texi: Updated.
 	* RELEASENOTES: Regenerated.
 	
