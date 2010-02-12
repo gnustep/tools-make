@@ -1,5 +1,15 @@
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Implemented parallel building of aggregate projects.  Whenever you
+	use aggregate.make, you can set "GNUSTEP_USE_PARALLEL_AGGREGATE =
+	yes" to have the aggregate projects built in parallel.
+	* Master/aggregate.make (GNUSTEP_USE_PARALLEL_AGGREGATE): New
+	variable.  If it is set to yes, run a parallel submake to build
+	the aggregate projects. (internal-master-aggregate-*): New rules.
+	(%.aggregate): New rule.
+
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* messages.make (ECHO_JAVADOC): New variable.
 	* Instance/Documentation/javadoc.make (INTERNAL_JAVADOCFLAGS):
 	Unless messages=yes is being used, use -quiet flag to keep javadoc

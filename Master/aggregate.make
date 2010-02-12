@@ -71,7 +71,21 @@ endif
 # library.
 SUBPROJECTS := $(strip $(SUBPROJECTS))
 
+# Set this variable to yes to allow parallelizing the build of the
+# different aggregate projects in your GNUmakefile.
+ifeq ($(GNUSTEP_USE_PARALLEL_AGGREGATE), YES)
+  GNUSTEP_USE_PARALLEL_AGGREGATE = yes
+endif
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+  GNUSTEP_USE_PARALLEL_AGGREGATE = no
+endif
+
 ifneq ($(SUBPROJECTS),)
+
+ifneq ($(GNUSTEP_USE_PARALLEL_AGGREGATE), yes)
+
+# Standard, serialized build.  Use a subshell.
 internal-all internal-install internal-uninstall internal-clean \
   internal-distclean internal-check internal-strings::
 	@ operation=$(subst internal-,,$@); \
@@ -93,5 +107,66 @@ internal-all internal-install internal-uninstall internal-clean \
 	    :; else exit $$?; \
 	  fi; \
 	done
+
+else
+
+# Parallel build.  Run a parallel submake and build all the projects
+# in parallel!  Warning: this will massively parallelize your build.
+internal-all internal-install internal-uninstall internal-clean \
+  internal-distclean internal-check internal-strings::
+	$(ECHO_NOTHING)operation=$(subst internal-,,$@); \
+	  $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	  internal-master-aggregate-$$operation \
+	  GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	  _GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+
+.PHONY: \
+  internal-master-aggregate-all \
+  internal-master-aggregate-install \
+  internal-master-aggregate-uninstall \
+  internal-master-aggregate-clean \
+  internal-master-aggregate-distclean \
+  internal-master-aggregate-check \
+  internal-master-aggregate-strings
+
+internal-master-aggregate-all: $(SUBPROJECTS:=.all.aggregate)
+
+internal-master-aggregate-install: $(SUBPROJECTS:=.install.aggregate)
+
+internal-master-aggregate-uninstall: $(SUBPROJECTS:=.uninstall.aggregate)
+
+internal-master-aggregate-clean: $(SUBPROJECTS:=.clean.aggregate)
+
+internal-master-aggregate-distclean: $(SUBPROJECTS:=.distclean.aggregate)
+
+internal-master-aggregate-check: $(SUBPROJECTS:=.check.aggregate)
+
+internal-master-aggregate-strings: $(SUBPROJECTS:=.strings.aggregate)
+
+# See Master/rules.make as to why we use .PRECIOUS instead of .PHONY
+# here.
+.PRECIOUS: %.aggregate
+
+%.aggregate:
+	$(ECHO_NOTHING)instance=$(basename $*); \
+          operation=$(subst .,,$(suffix $*)); \
+	  abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
+	  echo "Making $$operation in $$instance..."; \
+	  mf=$(MAKEFILE_NAME); \
+	  if [ ! -f "$$instance/$$mf" -a -f "$$instance/Makefile" ]; then \
+	    mf=Makefile; \
+	    echo "WARNING: No $(MAKEFILE_NAME) found for aggregate project $$instance; using 'Makefile'"; \
+	  fi; \
+	  if [ "$${abs_build_dir}" = "." ]; then \
+	    gsbuild="."; \
+	  else \
+	    gsbuild="$${abs_build_dir}/$$instance"; \
+	  fi; \
+	  if $(MAKE) -C $$instance -f $$mf $(GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG) --no-keep-going $$operation \
+	       GNUSTEP_BUILD_DIR="$$gsbuild" _GNUSTEP_MAKE_PARALLEL=no; then \
+	    :; else exit $$?; \
+	  fi$(END_ECHO)
+
 endif
 
+endif
