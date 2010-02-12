@@ -232,6 +232,7 @@ after-strings::
 # and use $(call ...) to call them; but because we have users who are using 
 # GNU make older than that, we have to manually `paste' this code 
 # wherever we need to access instance or type or operation.
+# (FIXME: Requiring GNU make >= 3.78 should be OK nowadays)
 #
 # Anyway, the following table tells you what these commands do - 
 #
