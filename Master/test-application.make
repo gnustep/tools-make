@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/test-application.make
 #
 #   Copyright (C) 1997, 2001, 2002 Free Software Foundation, Inc.

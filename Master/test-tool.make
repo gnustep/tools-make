@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/test-tool.make
 #
 #   Copyright (C) 1997, 2001 Free Software Foundation, Inc.

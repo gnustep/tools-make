@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/gswbundle.make
 #
 #   Master Makefile rules to build GNUstep web bundles.

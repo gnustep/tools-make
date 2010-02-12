@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   application.make
 #
 #   Master makefile rules to build GNUstep-based applications.

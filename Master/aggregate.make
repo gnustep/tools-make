@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   aggregate.make
 #
 #   Master Makefile rules to build a set of GNUstep-base subprojects.

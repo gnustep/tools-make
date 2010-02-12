@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   source-distribution.make
 #
 #   Makefile rules to build snapshots from cvs, source .tar.gz etc

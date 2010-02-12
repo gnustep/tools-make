@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/test-library.make
 #
 #   Master Makefile rules for dejagnu/GNUstep based testing

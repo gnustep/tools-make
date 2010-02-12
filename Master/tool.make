@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/tool.make
 #
 #   Master Makefile rules to build GNUstep-based command line tools.

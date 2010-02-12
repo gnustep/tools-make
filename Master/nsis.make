@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   nsis.make
 #
 #   Makefile rules to build a NSIS installer

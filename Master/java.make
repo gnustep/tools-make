@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/java.make
 #
 #   Master Makefile rules to build java-based (not necessarily

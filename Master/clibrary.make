@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/clibrary.make
 #
 #   Master Makefile rules to build C libraries.

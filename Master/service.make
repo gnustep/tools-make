@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/service.make
 #
 #   Master Makefile rules to build GNUstep-based services.

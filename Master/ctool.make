@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/ctool.make
 #
 #   Master Makefile rules to build GNUstep-based command line ctools.

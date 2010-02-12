@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/library.make
 #
 #   Master Makefile rules to build GNUstep-based libraries.

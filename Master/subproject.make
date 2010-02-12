@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/subproject.make
 #
 #   Master Makefile rules to build subprojects in GNUstep projects.

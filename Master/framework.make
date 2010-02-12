@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/framework.make
 #
 #   Master Makefile rules to build GNUstep-based frameworks.

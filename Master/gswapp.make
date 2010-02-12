@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/gswapp.make
 #
 #   Master Makefile rules to build GNUstep web based applications.

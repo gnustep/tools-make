@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/java-tool.make
 #
 #   Master Makefile rules to build Java command-line tools.

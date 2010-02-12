@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/objc.make
 #
 #   Master Makefile rules to build ObjC-based (but not GNUstep) programs.

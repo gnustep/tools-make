@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/bundle.make
 #
 #   Master makefile rules to build GNUstep-based bundles.

@@ -4,7 +4,8 @@
 	line for emacs.
 	* Instance/rules.make: Same change.	
 	* Instance/test-library.make: Same change.
-	
+	* Master/*.make: Same change.
+
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>	
 
 	* Master/aggregate.make (AGGREGATE_PROJECTS): Recognize the

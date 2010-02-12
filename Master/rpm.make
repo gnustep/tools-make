@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   rpm.make
 #
 #   Makefile rules to build a RPM spec files and RPM packages

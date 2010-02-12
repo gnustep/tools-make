@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/palette.make
 #
 #   Master Makefile rules to build GNUstep-based palettes.
