@@ -83,6 +83,9 @@ ifneq ($(messages),yes)
   # Instance/Documentation/autogsdoc.make
   ECHO_AUTOGSDOC = @(echo " Generating reference documentation...";
 
+  # Instance/Documentation/javadoc.make
+  ECHO_JAVADOC = @(echo " Generating javadoc documentation...";
+
   END_ECHO = )
 
 #
@@ -137,6 +140,7 @@ else
 
   ECHO_MAKING_STRINGS = 
   ECHO_AUTOGSDOC = 
+  ECHO_JAVADOC = 
 
   END_ECHO = 
 

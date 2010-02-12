@@ -34,8 +34,12 @@ else
   INTERNAL_JAVADOCFLAGS = -sourcepath ./:$(strip $(JAVADOC_SOURCEPATH))
 endif
 
+ifneq ($(messages),yes)
+  INTERNAL_JAVADOCFLAGS += -quiet
+endif
+
 ALL_JAVADOCFLAGS = $(INTERNAL_CLASSPATHFLAGS) $(INTERNAL_JAVADOCFLAGS) \
-$(ADDITIONAL_JAVADOCFLAGS) $(AUXILIARY_JAVADOCFLAGS)
+                   $(ADDITIONAL_JAVADOCFLAGS) $(AUXILIARY_JAVADOCFLAGS)
 
 # incremental compilation with javadoc is not supported - you can only
 # build once, or always.  by default we build only once - use
@@ -46,7 +50,7 @@ ifneq ($(JAVADOC_BUILD_ALWAYS),YES) # Build only once
 internal-doc-all_:: $(GNUSTEP_INSTANCE)/index.html
 
 $(GNUSTEP_INSTANCE)/index.html:
-	$(ECHO_NOTHING)$(MKDIRS) $(GNUSTEP_INSTANCE); \
+	$(ECHO_JAVADOC)$(MKDIRS) $(GNUSTEP_INSTANCE); \
 	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(GNUSTEP_INSTANCE)$(END_ECHO)
 
 else # Build always
@@ -54,7 +58,7 @@ else # Build always
 internal-doc-all_:: generate-javadoc
 
 generate-javadoc:
-	$(ECHO_NOTHING)$(MKDIRS) $(GNUSTEP_INSTANCE); \
+	$(ECHO_JAVADOC)$(MKDIRS) $(GNUSTEP_INSTANCE); \
 	$(JAVADOC) $(ALL_JAVADOCFLAGS) $(JAVADOC_FILES) -d $(GNUSTEP_INSTANCE)$(END_ECHO)
 
 endif

@@ -1,5 +1,13 @@
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* messages.make (ECHO_JAVADOC): New variable.
+	* Instance/Documentation/javadoc.make (INTERNAL_JAVADOCFLAGS):
+	Unless messages=yes is being used, use -quiet flag to keep javadoc
+	quiet.  Use ECHO_JAVADOC to print a line saying we are generating
+	the javadoc documentation.
+
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Implemented parallelizing builds of multiple instances of
 	everything, except for frameworks, documentation, resource sets
 	and java.
