@@ -1,5 +1,10 @@
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>	
+
 	Create separate directories to store the object files of each
 	instance.  This allows to safely parallelize building different
 	instances.

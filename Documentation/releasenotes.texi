@@ -7,6 +7,31 @@ migrate to using a newer version of the make system.
 @section Version 2.2.1
 @table @samp
 
+@item each instance stores object files in its own subdirectory
+Before version 2.2.1, there was a single object directory where all
+object files where stored.  In the most common case, this directory
+was simply ./obj, so if you compiled file source.m, you'd end up with
+./obj/source.m.o.  Starting with version 2.2.1, different instances
+store their object files in different subdirectories; for example, if
+the file was compiled as part of tool ToolA, it would end up in
+./obj/ToolA.obj/source.m.o, while if compiled as part of ToolB, it
+would end up in ./obj/ToolB.obj/source.m.o.  This allows ToolA and
+ToolB to be built in parallel with no race conditions, even if they
+share some source files.  There are a number of side effects of this
+change.  First of all, in the unlikely event that your GNUmakefile
+depends on the location of the object files (bad idea by the way),
+you'll have to update it.  Second, if you are reusing a single source
+file in multiple instances in the same project, this will now be
+compiled multiple times instead of one (on the plus side, you can
+fully parallelize the build by just using 'make -j N', without having
+to change anything in your GNUmakefile.  On a machine with multiple
+cpus/cores this can massively speed up the build).  Finally, the rules
+to compile C/ObjC/C++/ObjC++/Windres files are no longer available in
+the Master invocation - they are only available when compiling a
+specific instance.  It's hard to imagine a situation where this change
+of private internals would affect any user; but people with their own
+private gnustep-make forks or advanced extensions might be affected.
+
 @item the order in which tools are built is no longer guaranteed
 If you use something like ``TOOL_NAME = ToolA ToolB'' to build
 multiple tools in the same GNUmakefile, you need to be aware that the
