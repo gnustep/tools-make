@@ -1,5 +1,31 @@
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	Implemented new API to build subdirectories.  aggregate.make is
+	still available for backwards-compatibility, but moving forward
+	serial-subdirectories.make and parallel-subdirectories.make will
+	be used (and can be mixed in the same GNUmakefile!) to build
+	subdirectories, clearly specifying if subdirectories are to build
+	serially or in parallel.
+	* aggregate.make: File rewritten to be a wrapper around
+	serial-subdirectories.make and parallel-subdirectories.make
+	* parallel-subdirectories.make: New file.
+	* serial-subdirectories.make: New file.
+	* Master/aggregate.make: File removed.
+	* Master/parallel-subdirectories.make: New file.
+	* Master/serial-subdirectories.make: New file.
+	* messages.make (ECHO_MAKING_OPERATION_IN_DIRECTORY): New message
+	used by the new subdirectories code.
+	* GNUmakefile.in (MAKE_FILES, MASTER_MAKE_FILES): Updated lists of
+	makefiles.
+	
+	* Documentation/releasenotes.texi: Updated with new changes.
+	Also, refer to the next release as 2.4.0 instead of 2.2.1.
+	* Documentation/news.texi: Same changes.
+	* RELEASENOTES: Regenerated.
+	* NEWS: Regenerated.	
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Implemented parallel building of aggregate projects.  Whenever you
 	use aggregate.make, you can set "GNUSTEP_USE_PARALLEL_AGGREGATE =
 	yes" to have the aggregate projects built in parallel.

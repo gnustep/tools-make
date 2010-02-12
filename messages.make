@@ -88,6 +88,10 @@ ifneq ($(messages),yes)
 
   END_ECHO = )
 
+  # Important - the following is special in that it's inside the shell
+  # code, not at the beginning.
+  ECHO_MAKING_OPERATION_IN_DIRECTORY = echo "Making $$operation in $$directory ...";
+
 #
 # Translation of messages:
 #
@@ -143,6 +147,8 @@ else
   ECHO_JAVADOC = 
 
   END_ECHO = 
+
+  ECHO_MAKING_OPERATION_IN_DIRECTORY =
 
 endif
 

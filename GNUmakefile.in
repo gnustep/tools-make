@@ -107,7 +107,8 @@ SVNPREFIX=svn+ssh://svn.gna.org/svn/gnustep/tools/make
 
 MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	common.make empty.make library-combo.make java.make jni.make library.make \
-	messages.make rules.make target.make names.make resource-set.make \
+	messages.make parallel-subdirectories.make rules.make serial-subdirectories.make \
+	target.make names.make resource-set.make \
 	tool.make ctool.make test-library.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
@@ -116,11 +117,12 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
         tar-exclude-list gnustep-make-help
 
 MASTER_MAKE_FILES = \
-        aggregate.make source-distribution.make rpm.make rules.make \
+        source-distribution.make rpm.make rules.make \
         application.make bundle.make clibrary.make ctool.make \
         documentation.make framework.make gswapp.make gswbundle.make \
         library.make nsis.make objc.make java.make java-tool.make palette.make \
-        resource-set.make service.make subproject.make test-application.make \
+	parallel-subdirectories.make resource-set.make serial-subdirectories.make \
+	service.make subproject.make test-application.make \
         test-library.make test-tool.make tool.make
 
 INSTANCE_MAKE_FILES = \

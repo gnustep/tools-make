@@ -9,9 +9,12 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
-@section Changes in version @samp{2.2.1}
+@section Changes in version @samp{2.4.0}
 
 @itemize @bullet
+@item New serial-subdirectories.make and parallel-subdirectories.make.
+@item Support for parallel building of subdirectories.
+@item Support for parallel building of different instances.
 @item Support source files in subdirectories without using a subproject.
 @item Support header files in sub-subdirectories.
 @item Batch-compile Java files (much faster).

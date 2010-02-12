@@ -5,14 +5,52 @@ The release notes include descriptions of API changes, behavior changes
 and other information that might help developers and users migrate to
 using a newer version of the make system.
 
-1.1 Version 2.2.1
+1.1 Version 2.4.0
 =================
 
+`javadoc is run in quiet mode'
+     Starting with version 2.4.0, javadoc is by default executed with
+     the -quiet option (unless messages=yes is specified), and a
+     "Generating javadoc documentation..." is printed instead.
+
+`new API to build subdirectories'
+     Before version 2.4.0, aggregate.make was used to step into
+     subdirectories and build them.  It did not support parallel
+     building.  Starting with version 2.4.0, two new makefile fragments
+     have been introduced: serial-subdirectories.make and
+     parallel-subdirectories.make.  These can be used to build
+     subdirectories, and encourage (indeed, force) the developer to
+     explicitly decide if the subdirectories are to be built serially,
+     or in parallel.
+
+     Using parallel-subdirectories.make often produces massively faster
+     builds (or installs or cleans) during a parallel build on a
+     multicore machine.  But if you use parallel-subdirectories.make,
+     you need to make sure the different subdirectories are completely
+     independent of each other.  One non-obvious race condition that
+     you may to consider is the creation of installation directories.
+     If you have two subdirectories, built in parallel, which install
+     into the same custom installation directory, there may be a race
+     condition (ie, a concurrency problem) when you install as they
+     both try to create the installation directory.  In that case, you
+     should manually create the directory in your top-level GNUmakefile
+     using a 'before-install::' rule.
+
+     aggregate.make is still available if you want or need to be
+     backwards-compatible with older versions of gnustep-make.  It is
+     normally a wrapper around serial-subdirectories.make, but if you
+     specify 'GNUSTEP_USE_PARALLEL_AGGREGATE = yes' in your
+     GNUmakefile, it becomes a wrapper around
+     parallel-subdirectories.make.  aggregate.make will be deprecated
+     in 2012 and removed in 2015, but for the next couple of years it
+     might be a good solution while you wait for your users to upgrade
+     their gnustep-make installations.
+
 `each instance stores object files in its own subdirectory'
-     Before version 2.2.1, there was a single object directory where all
+     Before version 2.4.0, there was a single object directory where all
      object files where stored.  In the most common case, this directory
      was simply ./obj, so if you compiled file source.m, you'd end up
-     with ./obj/source.m.o.  Starting with version 2.2.1, different
+     with ./obj/source.m.o.  Starting with version 2.4.0, different
      instances store their object files in different subdirectories;
      for example, if the file was compiled as part of tool ToolA, it
      would end up in ./obj/ToolA.obj/source.m.o, while if compiled as
@@ -35,61 +73,75 @@ using a newer version of the make system.
      people with their own private gnustep-make forks or advanced
      extensions might be affected.
 
-`the order in which tools are built is no longer guaranteed'
-     If you use something like "TOOL_NAME = ToolA ToolB" to build
-     multiple tools in the same GNUmakefile, you need to be aware that
-     the way the tools are built changed in version 2.2.1.  Before
-     version 2.2.1, the tools were always built one after the other
-     one, exactly in the order specified.  So, in the example ToolA
-     would be built before ToolB.  Starting with 2.2.1, the tools might
-     be built completely in parallel if parallel building is enabled.
-     So, the order in which they are built is no longer defined and
-     your GNUmakefile should not depend on the order in which tools are
-     specified in the GNUmakefile.  Most GNUmakefiles should be
-     unaffected because rarely people rely on the order in which tools
-     are built.  If your GNUmakefile does depend on the order in which
-     tools are built, you have a few options.  The preferred option is
-     to identify the code or steps that need to be executed before some
-     of the tools are built and put them into a before-all:: rule,
-     which is guaranteed to be executed before anything else.  In this
-     way your serialized code is executed first, and the build can
+`the order in which instances are built is no longer guaranteed'
+     If you build more than one tool in the same GNUmakefile by listing
+     them all in TOOL_NAME as in "TOOL_NAME = ToolA ToolB', you need to
+     be aware that the way the instances are built changed in version
+     2.4.0.
+
+     This change affects applications, bundles, ctools, clibraries,
+     libraries, services, palettes, test-applications, test-libraries,
+     test-tools, tools.  It does not affect Java, resource sets or
+     documentation. [FIXME: frameworks ?]
+
+     Before version 2.4.0, instances were always built one after the
+     other one, exactly in the order specified.  So, in the example
+     ToolA would be built before ToolB.  Starting with 2.4.0, the
+     instances might be built completely in parallel if parallel
+     building is enabled.  So, the order in which they are built is no
+     longer defined and your GNUmakefile should not depend on the order
+     in which instances are specified in the GNUmakefile.  Most
+     GNUmakefiles should be unaffected because they rarely rely on the
+     order in which instances are built.  If your GNUmakefile does
+     depend on the order, you have a few options.  The preferred option
+     is to identify the code or steps that need to be executed before
+     some of the instances are built and put them into a before-all::
+     rule, which is guaranteed to be executed before anything else.  In
+     this way your serialized code is executed first, and the build can
      continue in a completely parallel fashion afterwards.
 
-     If you just want to force a specific tool (say, ToolA) to be built
-     before the others, you can always add a 'before-all:: ToolA' rule
-     which will make sure ToolA is built before the other ones.
+     Another option is to move your instances into separate
+     subdirectories, and use serial-subdirectories.make to build them.
+     serial-subdirectories.make will respect the order and always build
+     them in the order you require.
 
      If you want to disable parallel building altogether, you can add
-     GNUSTEP_MAKE_PARALLEL_BUILDING=no just after including
-     common.make, or pass it on the command-line.
+     GNUSTEP_MAKE_PARALLEL_BUILDING=no just after including common.make
+     to prevent a specific GNUmakefile from doing a parallel build.
+
+     Please note that this does not affect the relationship between
+     instances of different types; if you include library.make before
+     tool.make, for example, the library (or libraries) will still be
+     built before the tool (or tools).  It is the order in which the
+     libraries (or tools) are built that is no longer guaranteed.
 
 `support for having source files in subdirectories'
-     Starting with version 2.2.1, it is possible to put source files in
+     Starting with version 2.4.0, it is possible to put source files in
      subdirectories by specifiying them as in xxx_OBJC_FILES =
      Source/Beauty.m.  This syntax does not work on versions before
-     2.2.1 so you should not use it if you want to support older
+     2.4.0 so you should not use it if you want to support older
      versions of gnustep-make; previously you had to create a
      subproject and add a GNUmakefile in the subdirectory using
      subproject.make.  You can now spread your source files in multiple
      subdirectories without using subprojects.
 
 `support for having header files in subdirectories'
-     Starting with version 2.2.1, it is possible to put header files in
+     Starting with version 2.4.0, it is possible to put header files in
      subdirectories by specifiying them as in xxx_HEADER_FILES =
      Beauty/Beauty.h.  This syntax does not work on versions before
-     2.2.1 so you should not use it if you want to support older
+     2.4.0 so you should not use it if you want to support older
      versions of gnustep-make.  When headers are put in subdirectories
      specified in this way, corresponding subdirectories are created
      when the header files are installed.  For example Beauty/Beauty.h
      would be automatically installed into
      GNUSTEP_HEADERS/HEADER_FILES_INSTALL_DIR/Beauty/Beauty.h.  To get
-     the same result in versions before 2.2.1 you would have had to
+     the same result in versions before 2.4.0 you would have had to
      manually create the header installation subdirectories.
 
 `support for HEADER_FILES_DIR in framework subproject'
-     Before version 2.2.1, specifying xxx_HEADER_FILES_DIR in a
+     Before version 2.4.0, specifying xxx_HEADER_FILES_DIR in a
      framework subproject would have no effect.  Starting with version
-     2.2.1, the variable is now recognized and can be used to have the
+     2.4.0, the variable is now recognized and can be used to have the
      files in a subdirectory.  You should avoid using the variable in
      framework subprojects if you want to support older versions of
      gnustep-make.
@@ -106,7 +158,7 @@ using a newer version of the make system.
 `better cleaning for texinfo documentation'
      When you build html documentation from texinfo files, the local
      directory containing the html files was not being removed when
-     doing a 'make clean'.  Starting with version 2.2.1, 'make clean'
+     doing a 'make clean'.  Starting with version 2.4.0, 'make clean'
      removes the directory too.
 
 `debug=no made the default'
@@ -123,7 +175,7 @@ using a newer version of the make system.
 
 `batch-compilation of Java files'
      gnustep-make used to compile Java files one by one.  In most Java
-     compilers this is very suboptimal.  Starting from release 2.2.1,
+     compilers this is very suboptimal.  Starting from release 2.4.0,
      gnustep-make will compile all Java files in a Java project with a
      single Java compiler invocation.  This can significantly speed up
      compilation of large projects.  To disable it and get the
