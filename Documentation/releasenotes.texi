@@ -26,14 +26,11 @@ Using parallel-subdirectories.make often produces massively faster
 builds (or installs or cleans) during a parallel build on a multicore
 machine.  But if you use parallel-subdirectories.make, you need to
 make sure the different subdirectories are completely independent of
-each other.  One non-obvious race condition that you may to consider
-is the creation of installation directories.  If you have two
-subdirectories, built in parallel, which install into the same custom
-installation directory, there may be a race condition (ie, a
-concurrency problem) when you install as they both try to create the
-installation directory.  In that case, you should manually create the
-directory in your top-level GNUmakefile using a 'before-install::'
-rule.
+each other.  The operations that are executed in parallel are 'all',
+'clean', 'distclean', 'check' and 'strings'.  'install' and
+'uninstall' are still executed in serial order to prevent any
+concurrency problems when creating (or removing) common installation
+directories.
 
 aggregate.make is still available if you want or need to be
 backwards-compatible with older versions of gnustep-make.  It is

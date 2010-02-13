@@ -50,8 +50,7 @@ ifneq ($(PARALLEL_SUBDIRECTORIES),)
   # submake invocation will be able to build its
   # 'internal-master-subdirectories-xxx' target in parallel.  If the
   # build is not parallel, that submake will simply build normally.
-  internal-all internal-install internal-uninstall \
-  internal-clean internal-distclean \
+  internal-all internal-clean internal-distclean \
   internal-check internal-strings::
 	$(ECHO_NOTHING)operation=$(subst internal-,,$@); \
 	  $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
@@ -61,16 +60,12 @@ ifneq ($(PARALLEL_SUBDIRECTORIES),)
 
   .PHONY: \
     internal-master-subdirectories-all \
-    internal-master-subdirectories-install \
-    internal-master-subdirectories-uninstall \
     internal-master-subdirectories-clean \
     internal-master-subdirectories-distclean \
     internal-master-subdirectories-check \
     internal-master-subdirectories-strings
 
   internal-master-subdirectories-all: $(PARALLEL_SUBDIRECTORIES:=.all.subdirectories)
-  internal-master-subdirectories-install: $(PARALLEL_SUBDIRECTORIES:=.install.subdirectories)
-  internal-master-subdirectories-uninstall: $(PARALLEL_SUBDIRECTORIES:=.uninstall.subdirectories)
   internal-master-subdirectories-clean: $(PARALLEL_SUBDIRECTORIES:=.clean.subdirectories)
   internal-master-subdirectories-distclean: $(PARALLEL_SUBDIRECTORIES:=.distclean.subdirectories)
   internal-master-subdirectories-check: $(PARALLEL_SUBDIRECTORIES:=.check.subdirectories)
@@ -95,5 +90,26 @@ ifneq ($(PARALLEL_SUBDIRECTORIES),)
 	       GNUSTEP_BUILD_DIR="$$gsbuild" _GNUSTEP_MAKE_PARALLEL=no; then \
 	    :; else exit $$?; \
 	  fi$(END_ECHO)
+
+  # We still do 'install' and 'uninstall' in non-parallel mode, to
+  # prevent any race conditions with the creation of installation
+  # directories.  TODO: It would be cool to make this configurable 
+  # so you could make it parallel if you so wish.
+  internal-install internal-uninstall::
+	$(ECHO_NOTHING)operation=$(subst internal-,,$@); \
+	  abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
+	for directory in $(PARALLEL_SUBDIRECTORIES); do \
+	  $(ECHO_MAKING_OPERATION_IN_DIRECTORY) \
+	  if [ "$${abs_build_dir}" = "." ]; then \
+	    gsbuild="."; \
+	  else \
+	    gsbuild="$${abs_build_dir}/$$directory"; \
+	  fi; \
+	  if $(MAKE) -C $$directory -f $(MAKEFILE_NAME) $(GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG) --no-keep-going \
+                     $$operation \
+	             GNUSTEP_BUILD_DIR="$$gsbuild" _GNUSTEP_MAKE_PARALLEL=no; then \
+	    :; else exit $$?; \
+	  fi; \
+	done$(END_ECHO)
 
 endif

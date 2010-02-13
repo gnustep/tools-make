@@ -1,3 +1,11 @@
+2010-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Master/parallel-subdirectories.make (internal-install
+	internal-uninstall): Install and uninstall in non-parallel mode to
+	avoid any race conditions when installing or uninstalling.
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
 2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Implemented new API to build subdirectories.  aggregate.make is
