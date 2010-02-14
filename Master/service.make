@@ -75,5 +75,5 @@ endif
 internal-strings:: $(SERVICE_NAME:=.strings.service.variables)
 
 $(SERVICE_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	            $@.all.service.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.service.variables$(END_ECHO)
+

@@ -56,9 +56,8 @@ endif
 
 internal-strings:: $(TEST_TOOL_NAME:=.strings.test-tool.variables)
 
-$(TEST_TOOL_NAME):: $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	         $@.all.test-tool.variables
+$(TEST_TOOL_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-tool.variables$(END_ECHO)
 
 internal-install::
 	@ echo Skipping installation of test tools...

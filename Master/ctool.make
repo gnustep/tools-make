@@ -61,5 +61,4 @@ endif
 internal-strings:: $(CTOOL_NAME:=.strings.ctool.variables)
 
 $(CTOOL_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	         $@.all.ctool.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.ctool.variables$(END_ECHO)

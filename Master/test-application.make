@@ -70,10 +70,8 @@ endif
 
 internal-strings:: $(TEST_APP_NAME:=.strings.test-app.variables)
 
-# FIXME: Shouldn't this be a : rule ?
-$(TEST_APP_NAME):: $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	         $@.all.test-app.variables
+$(TEST_APP_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-app.variables$(END_ECHO)
 
 internal-install::
 	@ echo Skipping installation of test apps...

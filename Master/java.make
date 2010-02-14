@@ -45,5 +45,4 @@ internal-distclean:: $(JAVA_PACKAGES_WITH_SUBPROJECTS:=.distclean.java-package.s
 endif
 
 $(JAVA_PACKAGE_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.java-package.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.java-package.variables$(END_ECHO)

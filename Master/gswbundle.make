@@ -68,5 +68,4 @@ endif
 internal-all:: $(GSWBUNDLE_NAME:=.all.gswbundle.variables)
 
 $(GSWBUNDLE_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.gswbundle.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.gswbundle.variables$(END_ECHO)

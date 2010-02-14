@@ -61,5 +61,4 @@ endif
 internal-strings:: $(OBJC_PROGRAM_NAME:=.strings.objc-program.variables)
 
 $(OBJC_PROGRAM_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.objc-program.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.objc-program.variables$(END_ECHO)

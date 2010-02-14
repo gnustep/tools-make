@@ -93,4 +93,4 @@ internal-strings:: $(APP_NAME:=.strings.app.variables)
 # FIXME - GNUSTEP_BUILD_DIR here.  Btw should we remove this or
 # provide a better more general way of doing it ?
 $(APP_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables$(END_ECHO)

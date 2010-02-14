@@ -75,5 +75,4 @@ endif
 internal-strings:: $(PALETTE_NAME:=.strings.palette.variables)
 
 $(PALETTE_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.palette.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.palette.variables$(END_ECHO)

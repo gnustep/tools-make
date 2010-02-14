@@ -52,5 +52,4 @@ internal-distclean:: $(FRAMEWORK_NAME:=.distclean.framework.variables)
 internal-strings:: $(FRAMEWORK_NAME:=.strings.framework.variables)
 
 $(FRAMEWORK_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-		$@.all.framework.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going $@.all.framework.variables$(END_ECHO)

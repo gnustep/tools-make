@@ -77,5 +77,4 @@ endif
 internal-strings:: $(GSWAPP_NAME:=.strings.gswapp.variables)
 
 $(GSWAPP_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	            $@.all.gswapp.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.gswapp.variables$(END_ECHO)

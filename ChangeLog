@@ -1,5 +1,32 @@
 2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Master/application.make ($(APP_NAME)): Use ECHO_NOTHING and
+	END_ECHO.
+	* Master/bundle.make ($(BUNDLE_NAME)): Same change.
+	* Master/clibrary.make ($(CLIBRARY_NAME)): Same change.
+	* Master/ctool.make ($(CTOOL_NAME)): Same change.
+	* Master/framework.make ($(FRAMEWORK_NAME)): Same change.
+	* Master/gswapp.make ($(GSWAPP_NAME)): Same change.
+	* Master/gswbundle.make ($(GSWBUNDLE_NAME)): Same change.
+	* Master/java.make ($(JAVA_PACKAGE_NAME)): Same change.
+	* Master/java-tool.make ($(JAVA_TOOL_NAME)): Same change.
+	* Master/library.make ($(LIBRARY_NAME)): Same change.
+	* Master/objc.make ($(OBJC_PROGRAM_NAME)): Same change.
+	* Master/palette.make ($(PALETTE_NAME)): Same change.
+	* Master/service.make ($(SERVICE_NAME)): Same change.
+	* Master/subproject.make ($(SUBPROJECT_NAME)): Same change.
+	* Master/test-application.make ($(TEST_APP_NAME)): Same change.
+	* Master/test-library.make ($(TEST_LIBRARY_NAME)): Same change.
+	* Master/test-tool.make ($(TEST_TOOL_NAME)): Same change.
+	* Master/tool.make ($(TOOL_NAME)): Same change.
+
+	* Master/test-application.make ($(TEST_APP_NAME)): Make it a :
+	rule, not a :: rule.
+	* Master/test-library.make ($(TEST_LIBRARY_NAME)): Same change.	
+	* Master/test-tool.make ($(TEST_TOOL_NAME)): Same change.
+	
+2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Master/application.make (.PHONY): Declare the new
 	internal-master-app-all target as PHONY.
 	* Master/bundle.make: Similar change.

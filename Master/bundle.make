@@ -68,5 +68,4 @@ endif
 internal-strings:: $(BUNDLE_NAME:=.strings.bundle.variables)
 
 $(BUNDLE_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.bundle.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.bundle.variables$(END_ECHO)

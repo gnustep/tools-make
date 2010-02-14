@@ -69,5 +69,4 @@ endif
 internal-strings:: $(LIBRARY_NAME:=.strings.library.variables)
 
 $(LIBRARY_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.library.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.library.variables$(END_ECHO)

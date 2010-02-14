@@ -95,5 +95,4 @@ endif
 internal-strings:: $(TOOL_NAME:=.strings.tool.variables)
 
 $(TOOL_NAME): $(GNUSTEP_OBJ_DIR)
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
-	         $@.all.tool.variables
+	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going $@.all.tool.variables$(END_ECHO)
