@@ -1,3 +1,21 @@
+2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Master/application.make (.PHONY): Declare the new
+	internal-master-app-all target as PHONY.
+	* Master/bundle.make: Similar change.
+	* Master/clibrary.make: Similar change.
+	* Master/ctool.make: Similar change.
+	* Master/gswapp.make: Similar change.
+	* Master/gswbundle.make: Similar change.
+	* Master/library.make: Similar change.
+	* Master/objc.make: Similar change.
+	* Master/palette.make: Similar change.	
+	* Master/service.make: Similar change.		
+	* Master/test-application.make: Similar change.
+	* Master/test-library.make: Similar change.
+	* Master/test-tool.make: Similar change.	
+	* Master/tool.make: Similar change.
+	
 2010-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Master/parallel-subdirectories.make (internal-install

@@ -38,6 +38,8 @@ internal-all:: $(GNUSTEP_OBJ_DIR)
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
 	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
 
+.PHONY: internal-master-objc-program-all
+
 internal-master-objc-program-all: $(OBJC_PROGRAM_NAME:=.all.objc-program.variables)
 
 endif

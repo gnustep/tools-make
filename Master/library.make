@@ -39,6 +39,8 @@ internal-all:: $(GNUSTEP_OBJ_DIR)
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
 	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
 
+.PHONY: internal-master-library-all
+
 internal-master-library-all: $(LIBRARY_NAME:=.all.library.variables)
 
 endif

@@ -38,6 +38,8 @@ internal-all:: $(GNUSTEP_OBJ_DIR)
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
 	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
 
+.PHONY: internal-master-test-tool-all
+
 internal-master-test-tool-all: $(TEST_TOOL_NAME:=.all.test-tool.variables)
 
 endif

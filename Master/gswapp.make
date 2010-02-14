@@ -43,6 +43,8 @@ internal-all:: $(GNUSTEP_OBJ_DIR)
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
 	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
 
+.PHONY: internal-master-gswapp-all
+
 internal-master-gswapp-all: $(GSWAPP_NAME:=.all.gswapp.variables)
 
 endif
