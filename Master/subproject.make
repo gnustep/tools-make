@@ -70,5 +70,5 @@ endif
 internal-strings:: $(SUBPROJECT_NAME:=.strings.subproject.variables)
 
 $(SUBPROJECT_NAME): $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.subproject.variables$(END_ECHO)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.subproject.variables$(END_ECHO_RECURSIVE_MAKE)
 

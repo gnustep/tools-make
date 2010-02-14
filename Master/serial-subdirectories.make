@@ -50,10 +50,10 @@ ifneq ($(SERIAL_SUBDIRECTORIES),)
   internal-all internal-install internal-uninstall \
   internal-clean internal-distclean \
   internal-check internal-strings::
-	$(ECHO_NOTHING)operation=$(subst internal-,,$@); \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)operation=$(subst internal-,,$@); \
 	  abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
 	for directory in $(SERIAL_SUBDIRECTORIES); do \
-	  $(ECHO_MAKING_OPERATION_IN_DIRECTORY) \
+	  $(INSIDE_ECHO_MAKING_OPERATION_IN_DIRECTORY) \
 	  if [ "$${abs_build_dir}" = "." ]; then \
 	    gsbuild="."; \
 	  else \
@@ -64,6 +64,6 @@ ifneq ($(SERIAL_SUBDIRECTORIES),)
 	             GNUSTEP_BUILD_DIR="$$gsbuild" _GNUSTEP_MAKE_PARALLEL=no; then \
 	    :; else exit $$?; \
 	  fi; \
-	done$(END_ECHO)
+	done$(END_ECHO_RECURSIVE_MAKE)
 
 endif

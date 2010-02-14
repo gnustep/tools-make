@@ -8,6 +8,13 @@ using a newer version of the make system.
 1.1 Version 2.4.0
 =================
 
+`new internalmessages=yes option'
+     Starting with version 2.4.0, gnustep-make recognized the new
+     internalmessages=yes option (separate from messages=yes) which
+     prints all the recursive make invocations that are used.  This is
+     mostly useful to understand how gnustep-make internally works and
+     is not meant for end-users.
+
 `javadoc is run in quiet mode'
      Starting with version 2.4.0, javadoc is by default executed with
      the -quiet option (unless messages=yes is specified), and a

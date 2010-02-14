@@ -602,13 +602,13 @@ else
 # sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
 # That sub-make invocation will compile files in parallel.
 internal-framework-run-compile-submake:
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-framework-compile \
 	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
 	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
 	GNUSTEP_OPERATION=compile \
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
-	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
 
 internal-framework-compile: $(FRAMEWORK_FILE)
 endif

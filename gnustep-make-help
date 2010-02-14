@@ -45,6 +45,8 @@ Most common options that can be used with any of the targets:
  MAKEFILE_NAME=xxx (uses makefiles called 'xxx'; the default is
    'GNUmakefile'.  Note that usually you'd use this option as in 
    '_MAKE_ -f xxx MAKEFILE_NAME=xxx'.)
+ internalmessages=yes (prints verbosely all the recursive make
+   invocations.  Useful for debugging gnustep-make itself.)
 You can use multiple of these options at the same time.
 
 Examples:

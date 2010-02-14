@@ -51,4 +51,4 @@ internal-distclean:: $(JAVA_TOOLS_WITH_SUBPROJECTS:=.distclean.java_tool.subproj
 endif
 
 $(JAVA_TOOL_NAME):
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.java_tool.variables$(END_ECHO)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.java_tool.variables$(END_ECHO_RECURSIVE_MAKE)

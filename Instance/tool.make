@@ -71,13 +71,13 @@ else
 # sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yes.
 # That sub-make invocation will compile files in parallel.
 internal-tool-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-tool-compile \
 	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
 	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
 	GNUSTEP_OPERATION=compile \
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
-	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
 
 internal-tool-compile: $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
 endif

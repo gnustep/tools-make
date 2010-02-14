@@ -33,10 +33,10 @@ internal-all:: $(GNUSTEP_OBJ_DIR) $(TEST_TOOL_NAME:=.all.test-tool.variables)
 else
 
 internal-all:: $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-master-test-tool-all \
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
-	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
 
 .PHONY: internal-master-test-tool-all
 
@@ -57,7 +57,7 @@ endif
 internal-strings:: $(TEST_TOOL_NAME:=.strings.test-tool.variables)
 
 $(TEST_TOOL_NAME): $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-tool.variables$(END_ECHO)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-tool.variables$(END_ECHO_RECURSIVE_MAKE)
 
 internal-install::
 	@ echo Skipping installation of test tools...

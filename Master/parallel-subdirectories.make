@@ -52,11 +52,11 @@ ifneq ($(PARALLEL_SUBDIRECTORIES),)
   # build is not parallel, that submake will simply build normally.
   internal-all internal-clean internal-distclean \
   internal-check internal-strings::
-	$(ECHO_NOTHING)operation=$(subst internal-,,$@); \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)operation=$(subst internal-,,$@); \
 	  $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	  internal-master-subdirectories-$$operation \
 	  GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
-	  _GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+	  _GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
 
   .PHONY: \
     internal-master-subdirectories-all \
@@ -76,10 +76,10 @@ ifneq ($(PARALLEL_SUBDIRECTORIES),)
   .PRECIOUS: %.subdirectories
 
   %.subdirectories:
-	$(ECHO_NOTHING)directory=$(basename $*); \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)directory=$(basename $*); \
           operation=$(subst .,,$(suffix $*)); \
 	  abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
-	  $(ECHO_MAKING_OPERATION_IN_DIRECTORY) \
+	  $(INSIDE_ECHO_MAKING_OPERATION_IN_DIRECTORY) \
 	  if [ "$${abs_build_dir}" = "." ]; then \
 	    gsbuild="."; \
 	  else \
@@ -89,17 +89,17 @@ ifneq ($(PARALLEL_SUBDIRECTORIES),)
 	       $$operation \
 	       GNUSTEP_BUILD_DIR="$$gsbuild" _GNUSTEP_MAKE_PARALLEL=no; then \
 	    :; else exit $$?; \
-	  fi$(END_ECHO)
+	  fi$(END_ECHO_RECURSIVE_MAKE)
 
   # We still do 'install' and 'uninstall' in non-parallel mode, to
   # prevent any race conditions with the creation of installation
   # directories.  TODO: It would be cool to make this configurable 
   # so you could make it parallel if you so wish.
   internal-install internal-uninstall::
-	$(ECHO_NOTHING)operation=$(subst internal-,,$@); \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)operation=$(subst internal-,,$@); \
 	  abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
 	for directory in $(PARALLEL_SUBDIRECTORIES); do \
-	  $(ECHO_MAKING_OPERATION_IN_DIRECTORY) \
+	  $(INSIDE_ECHO_MAKING_OPERATION_IN_DIRECTORY) \
 	  if [ "$${abs_build_dir}" = "." ]; then \
 	    gsbuild="."; \
 	  else \
@@ -110,6 +110,6 @@ ifneq ($(PARALLEL_SUBDIRECTORIES),)
 	             GNUSTEP_BUILD_DIR="$$gsbuild" _GNUSTEP_MAKE_PARALLEL=no; then \
 	    :; else exit $$?; \
 	  fi; \
-	done$(END_ECHO)
+	done$(END_ECHO_RECURSIVE_MAKE)
 
 endif

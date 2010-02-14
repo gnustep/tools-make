@@ -1,5 +1,28 @@
 2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	New internalmessages=yes option that prints all the recursive make
+	invocations.  Do not print any of them for messages=yes.
+	* messages.make (ECHO_NOTHING_RECURSIVE_MAKE,
+	END_ECHO_RECURSIVE_MAKE, INSIDE_ECHO_MAKING_OPERATION,
+	INSIDE_ECHO_MAKING_OPERATION_IN_DIRECTORY,
+	INSIDE_ECHO_MAKING_OPERATION_IN_SUBPROJECTS): New messages.
+	(ECHO_MAKING_OPERATION_IN_DIRECTORY): Message removed.
+	(internalmessages): New variable used to decide if to silence or
+	not the new messages.
+	* Master/rules.make (%.variables): Removed manual check for
+	existence of $(MAKEFILE_NAME) in the subdirectory since the
+	standard GNU make error message is clear enough.  Use the new
+	messages.  (%.subprojects): Same changes.
+	* Master/*.make: Use ECHO_NOTHING_RECURSIVE_MAKE and
+	END_ECHO_RECURSIVE_MAKE instead of ECHO_NOTHING and END_ECHO for
+	recursive make invocations.
+	* Instance/*.make: Same change.
+	* gnustep-make-help: Document the new internalmessages=yes option.
+	* Documentation/releasenotes.texi: Mention the new option.
+	* RELEASENOTES: Regenerated.
+	
+2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Master/application.make ($(APP_NAME)): Use ECHO_NOTHING and
 	END_ECHO.
 	* Master/bundle.make ($(BUNDLE_NAME)): Same change.

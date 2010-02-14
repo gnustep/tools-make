@@ -88,10 +88,6 @@ ifneq ($(messages),yes)
 
   END_ECHO = )
 
-  # Important - the following is special in that it's inside the shell
-  # code, not at the beginning.
-  ECHO_MAKING_OPERATION_IN_DIRECTORY = echo "Making $$operation in $$directory ...";
-
 #
 # Translation of messages:
 #
@@ -148,8 +144,6 @@ else
 
   END_ECHO = 
 
-  ECHO_MAKING_OPERATION_IN_DIRECTORY =
-
 endif
 
 # The following are warnings that are always displayed, no matter if
@@ -170,3 +164,33 @@ WARNING_INFO_PLIST = @(echo "Warning! You have specified Info.plist in $(GNUSTEP
                        echo "  Unfortunately, it will not work because Info.plist is automatically generated."; \
                        echo "  To customize Info.plist, please create a $(GNUSTEP_INSTANCE)Info.plist file with your custom entries."; \
                        echo "  $(GNUSTEP_INSTANCE)Info.plist will be automatically merged into Info.plist.")
+
+# The following are messages that are related to the recursive make invocations.
+# Most users will never want to see the recursive make invocations, so we use the messages
+# are always displayed unless internalmessages=yes is used.
+ifneq ($(internalmessages),yes)
+
+  # ECHO_NOTHING_RECURSIVE_MAKE should be used instead of ECHO_NOTHING
+  # shell code that does recursive make invocations.  It prints nothing, unless
+  # internalmessages=yes is passed.  In that case we display the recursive
+  # invocation commands.
+  ECHO_NOTHING_RECURSIVE_MAKE = @(
+  END_ECHO_RECURSIVE_MAKE = )
+
+  # Important - the following are special in that it's inside the shell
+  # code, not at the beginning.
+  INSIDE_ECHO_MAKING_OPERATION                = echo "Making $$operation for $$type $$instance...";
+  INSIDE_ECHO_MAKING_OPERATION_IN_DIRECTORY   = echo "Making $$operation in $$directory ...";
+  INSIDE_ECHO_MAKING_OPERATION_IN_SUBPROJECTS = echo "Making $$operation in subprojects of $$type $$instance...";
+
+else
+
+  ECHO_NOTHING_RECURSIVE_MAKE =
+  END_ECHO_RECURSIVE_MAKE =
+
+  INSIDE_ECHO_MAKING_OPERATION                = 
+  INSIDE_ECHO_MAKING_OPERATION_IN_DIRECTORY   = 
+  INSIDE_ECHO_MAKING_OPERATION_IN_SUBPROJECTS = 
+
+endif
+

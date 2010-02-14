@@ -34,10 +34,10 @@ internal-all:: $(GNUSTEP_OBJ_DIR) $(TEST_LIBRARY_NAME:=.all.test-lib.variables)
 else
 
 internal-all:: $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-master-test-lib-all \
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
-	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
 
 .PHONY: internal-master-test-lib-all
 
@@ -71,4 +71,4 @@ internal-check:: $(TEST_LIBRARY_NAME:=.check.test-lib.variables)
 internal-strings:: $(TEST_LIBRARY_NAME:=.strings.test-lib.variables)
 
 $(TEST_LIBRARY_NAME): $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-lib.variables$(END_ECHO)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-lib.variables$(END_ECHO_RECURSIVE_MAKE)

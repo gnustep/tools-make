@@ -33,10 +33,10 @@ internal-all:: $(GNUSTEP_OBJ_DIR) $(CTOOL_NAME:=.all.ctool.variables)
 else
 
 internal-all:: $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-master-ctool-all \
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
-	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO)
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
 
 .PHONY: internal-master-ctool-all
 
@@ -61,4 +61,4 @@ endif
 internal-strings:: $(CTOOL_NAME:=.strings.ctool.variables)
 
 $(CTOOL_NAME): $(GNUSTEP_OBJ_DIR)
-	$(ECHO_NOTHING)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.ctool.variables$(END_ECHO)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.ctool.variables$(END_ECHO_RECURSIVE_MAKE)
