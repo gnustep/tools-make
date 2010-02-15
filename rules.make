@@ -554,19 +554,19 @@ $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_
 # when the GNUSTEP_OBJ_DIR is deleted as part of a clean.
 $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/C/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/C/$(END_ECHO)
 
 $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjC/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/ObjC/$(END_ECHO)
 
 $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/CC/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/CC/$(END_ECHO)
 
 $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjCC/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/ObjCC/$(END_ECHO)
 
 endif
 

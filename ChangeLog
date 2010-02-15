@@ -1,3 +1,13 @@
+2010-02-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed precompiler header support (Problem reported by Tim Kack
+	<timkack@gmail.com>).
+	* rules.make ($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/):
+	Create GNUSTEP_OBJ_INSTANCE_DIR_NAME, not GNUSTEP_OBJ_DIR_NAME.
+	($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/): Same change.
+	($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/): Same change.
+	($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/): Same change.
+
 2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	New internalmessages=yes option that prints all the recursive make
