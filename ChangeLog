@@ -325,7 +325,7 @@
 
 	Implemented batch-compilation of Java files (ie, all files built
 	in a single javac invocation) to speed up building Java software.
-	In the the large Java project I used as a test case, this change
+	In the large Java project I used as a test case, this change
 	produced a 5x reduction in building time.
 	* rules.make (%.class): If BATCH_COMPILE_JAVA_FILES is not set to
 	no, and JAVA_FILES_TO_BATCH_COMPILE is set and the file we're
