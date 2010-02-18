@@ -460,8 +460,8 @@ Good Luck!
 @node Machine Specific, Source via SVN, Tools and Applications, Top
 @chapter Machine Specific Instructions
 
-@include gnustep-machines.texi
-
+A list of machines that GNUstep works on can be found on the GNUstep
+Wiki @url{http://wiki.gnustep.org/index.php/Platform_compatibility}.
 
 @node Source via SVN,  , Machine Specific, Top
 @chapter Getting Libraries via SVN

@@ -66,7 +66,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 # We should prefix everything with 'gnustep' because we generate info
 # files that we then put into the standard info directories, and we
 # don't want those to conflict with info files from other packages!
-DOCUMENT_NAME = gnustep-howto gnustep-faq gnustep-filesystem gnustep-internals gnustep-machines gnustep-make gnustep-userfaq
+DOCUMENT_NAME = gnustep-howto gnustep-faq gnustep-filesystem gnustep-internals gnustep-make gnustep-userfaq
 
 # The text documents to be generated
 DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS RELEASENOTES GNUstep-HOWTO ANNOUNCE

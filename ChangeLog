@@ -1,3 +1,8 @@
+2010-02-18  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/{gnustep-howto.texi,gnustep-machines.texi,GNUmakefile}:
+	Deprecate the machines.texi file
+
 2010-02-15  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Fixed precompiler header support (Problem reported by Tim Kack

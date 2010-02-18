@@ -7,6 +7,9 @@
 @chapter Machines
 @end ifclear
 
+This list is out-of-date.  Use the Platform_compatibility guide on the
+GNUstep Wiki for better information.
+
 Below is a list of machines that people have attempted to compile
 GNUstep on. GNUstep compiles with little or no trouble on many of the
 more popular operating systems. Some machines marked with
