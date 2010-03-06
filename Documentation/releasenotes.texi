@@ -7,6 +7,15 @@ migrate to using a newer version of the make system.
 @section Version 2.4.0
 @table @samp
 
+@item Versions of GNU make older then 3.79.1 (June 2000) are no longer supported
+The .NOTPARALLEL pseudo-target is only available in GNU make 3.79 and
+is essential for parallel builds to work.  Starting with version
+2.4.0, gnustep-make recommends using GNU make 3.79.1 or greater; a
+warning will be issued during configure if an older GNU make is
+detected.  Older versions of GNU make are likely to work (except for
+parallel building) but are no longer supported.  As 3.79.1 was
+released about 10 years ago, this should not be a particular problem.
+
 @item new internalmessages=yes option
 Starting with version 2.4.0, gnustep-make recognized the new
 internalmessages=yes option (separate from messages=yes) which prints

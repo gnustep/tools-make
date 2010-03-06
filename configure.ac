@@ -1524,7 +1524,7 @@ fi
 AC_SUBST(GNUSTEP_DEFAULT_DEBUG)
 
 #--------------------------------------------------------------------
-# Check for $(info ...) function in GNU make
+# Check for GNU make
 #--------------------------------------------------------------------
 
 # Search for GNU make.  We try 'gmake' then 'gnumake' then 'make'.  If
@@ -1553,21 +1553,54 @@ gs_cv_make_major_version=`(echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9
 gs_cv_make_minor_version=`(echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\2/') 2>&5`
 AC_MSG_RESULT(version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version})
 
-AC_MSG_CHECKING(if GNU Make has the info function)
-
-# Things may go wrong (eg, make couldn't be found), so by default we
-# assume 'no' here.  If things go wrong, you'll lost some
-# non-essential features.
-MAKE_WITH_INFO_FUNCTION=no
-if test "${gs_cv_make_major_version}" -ge "4" >&5 2>&5; then
-  MAKE_WITH_INFO_FUNCTION=yes
+#--------------------------------------------------------------------
+# Check for GNU Make >= 3.79
+#--------------------------------------------------------------------
+# We want to emit a warning if they are using GNU make < 3.79 as it's
+# no longer supported.  We let them install everything at their own
+# risk though.
+AC_MSG_CHECKING(for GNU Make >= 3.79)
+SUPPORTED_MAKE=no
+if test "${gs_cv_make_major_version}" = "3" >&5 2>&5; then
+  if test "${gs_cv_make_minor_version}" -ge "79" >&5 2>&5; then
+    SUPPORTED_MAKE=yes
+  fi
 fi
 
-if test "${gs_cv_make_major_version}" -ge "3" >&5 2>&5; then
+if test "${gs_cv_make_major_version}" -ge "4" >&5 2>&5; then
+  SUPPORTED_MAKE=yes
+fi
+
+if test "${SUPPORTED_MAKE}" = "yes" >&5 2>&5; then
+  AC_MSG_RESULT(yes)
+else
+  # We do not abort mostly because the checks for GNU make might have
+  # gone wrong and returned the wrong version, and because GNU make <
+  # 3.79.1 probably works anyway (with the exception of parallel
+  # building).
+  AC_MSG_RESULT(no)
+  AC_MSG_WARN(GNU Make >= 3.79.1 is recommended!  Older versions are no longer supported.  Continue at your own risk.)
+fi
+
+#--------------------------------------------------------------------
+# Check for $(info ...) function in GNU make
+#--------------------------------------------------------------------
+AC_MSG_CHECKING(if GNU Make has the info function)
+
+# Things may go wrong (eg, make couldn't be found in one of the
+# previous steps), so by default we assume 'no' here.  If things go
+# wrong, you'll lost some non-essential features.
+MAKE_WITH_INFO_FUNCTION=no
+if test "${gs_cv_make_major_version}" = "3" >&5 2>&5; then
   if test "${gs_cv_make_minor_version}" -ge "81" >&5 2>&5; then
     MAKE_WITH_INFO_FUNCTION=yes
   fi
 fi
+
+if test "${gs_cv_make_major_version}" -ge "4" >&5 2>&5; then
+  MAKE_WITH_INFO_FUNCTION=yes
+fi
+
 AC_MSG_RESULT(${MAKE_WITH_INFO_FUNCTION})
 AC_SUBST(MAKE_WITH_INFO_FUNCTION)
 
