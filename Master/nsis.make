@@ -47,7 +47,7 @@
 # compilation (usually only needed for GNUstep core libraries
 # themselves), define the following make variable:
 #
-# PACKAGE_NEEDS_CONFIGURE = YES
+# PACKAGE_NEEDS_CONFIGURE = yes
 #
 # in your makefile.
 MAKENSIS=makensis

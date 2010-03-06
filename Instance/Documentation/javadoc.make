@@ -43,9 +43,14 @@ ALL_JAVADOCFLAGS = $(INTERNAL_CLASSPATHFLAGS) $(INTERNAL_JAVADOCFLAGS) \
 
 # incremental compilation with javadoc is not supported - you can only
 # build once, or always.  by default we build only once - use
-# `JAVADOC_BUILD_ALWAYS = YES' to force rebuilding it always
+# `JAVADOC_BUILD_ALWAYS = yes' to force rebuilding it always
 
-ifneq ($(JAVADOC_BUILD_ALWAYS),YES) # Build only once
+# Recognize both 'YES' and 'yes'
+ifeq ($(JAVADOC_BUILD_ALWAYS),YES)
+  JAVADOC_BUILD_ALWAYS = yes
+endif
+
+ifneq ($(JAVADOC_BUILD_ALWAYS),yes) # Build only once
 
 internal-doc-all_:: $(GNUSTEP_INSTANCE)/index.html
 

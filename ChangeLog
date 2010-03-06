@@ -1,5 +1,15 @@
 2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/Documentation/javadoc.make (JAVADOC_BUILD_ALWAYS):
+	Recognize 'yes' (which is consistent with all other variables) as
+	well as 'YES' (still recognized for backwards-compatibility).
+	* Master/rpm.make (PACKAGE_NEEDS_CONFIGURE): Recognize
+	'yes' (which is consistent with all other variables) as well as
+	'YES' (still recognized for backwards-compatibility).
+	* Documentation/releasenotes.texi: Updated.
+
+2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Check for GNU make >= 3.79 and emit a warning if
 	it's not found.  Fixed typo in check for $(info ...).
 	* configure: Regenerated.

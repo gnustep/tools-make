@@ -111,7 +111,7 @@
 # compilation (usually only needed for GNUstep core libraries
 # themselves), define the following make variable:
 #
-# PACKAGE_NEEDS_CONFIGURE = YES
+# PACKAGE_NEEDS_CONFIGURE = yes
 #
 # in your makefile.
 
@@ -180,6 +180,11 @@ SPEC_RULES_TEMPLATE=$(GNUSTEP_MAKEFILES)/spec-rules.template
 SPEC_IN=$(PACKAGE_NAME).spec.in
 SPEC_SCRIPT_IN=$(PACKAGE_NAME).script.spec.in
 
+# Recognize both YES and yes
+ifeq ($(PACKAGE_NEEDS_CONFIGURE),YES)
+  PACKAGE_NEEDS_CONFIGURE = yes
+endif
+
 .PHONY: specfile rpm check-RPM_TOPDIR
 
 #
@@ -204,7 +209,7 @@ $(SPEC_FILE): $(SPEC_IN) $(GNUSTEP_OBJ_DIR)
 	$(ECHO_NOTHING)echo "%define gs_install_domain $(GNUSTEP_INSTALLATION_DOMAIN)" >> $@$(END_ECHO)
 	$(ECHO_NOTHING)echo "%define gs_makefiles    $(GNUSTEP_MAKEFILES)" >> $@$(END_ECHO)
 	$(ECHO_NOTHING)echo "%define gs_file_list    $(GNUSTEP_FILE_LIST)" >> $@$(END_ECHO)
-ifeq ($(PACKAGE_NEEDS_CONFIGURE),YES)
+ifeq ($(PACKAGE_NEEDS_CONFIGURE),yes)
 	$(ECHO_NOTHING)echo "%define gs_configure    YES" >> $@$(END_ECHO)
 else
 	$(ECHO_NOTHING)echo "%define gs_configure    NO" >> $@$(END_ECHO)

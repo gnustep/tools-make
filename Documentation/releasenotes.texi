@@ -7,6 +7,14 @@ migrate to using a newer version of the make system.
 @section Version 2.4.0
 @table @samp
 
+@item PACKAGE_NEEDS_CONFIGURE and JAVADOC_BUILD_ALWAYS now support 'yes' and 'no'
+gnustep-make boolean variables traditionally use the values 'yes' and
+'no', with the unfortunate exception of PACKAGE_NEEDS_CONFIGURE and
+JAVADOC_BUILD_ALWAYS which used to only recognize the values 'YES' and
+'NO'.  For consistency with everything else, starting with
+gnustep-make 2.4.0 these two variables recognize the values 'yes' and
+'no' too.
+
 @item Versions of GNU make older then 3.79.1 (June 2000) are no longer supported
 The .NOTPARALLEL pseudo-target is only available in GNU make 3.79 and
 is essential for parallel builds to work.  Starting with version
