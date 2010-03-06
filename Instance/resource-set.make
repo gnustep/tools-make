@@ -181,7 +181,7 @@ ifneq ($(CHOWN_TO),)
 endif
 endif
 
-else # Following code turned on by setting GNUSTEP_DEVELOPER=YES in the shell
+else # Following code turned on by setting GNUSTEP_DEVELOPER=yes in the shell
 
 # TODO/FIXME: Update the code; implement proper
 # LOCALIZED_RESOURCE_FILES that also allows directories etc.

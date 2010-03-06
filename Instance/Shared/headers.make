@@ -119,7 +119,7 @@ else
 
 # 
 # The second one (which you activate by setting GNUSTEP_DEVELOPER to
-# YES in your shell) is the one specifically optimized for faster
+# yes in your shell) is the one specifically optimized for faster
 # development.  We only install headers which are newer than the
 # installed version.  This is much faster if you are developing and
 # need to install headers often, and normally with just few changes.

@@ -198,7 +198,7 @@ $(FULL_RESOURCE_DIRS):
 # case.
 #
 # The default behaviour is 'Normal user'.  To switch to 'Developer'
-# mode, set GNUSTEP_DEVELOPER=YES in the environment.
+# mode, set GNUSTEP_DEVELOPER=yes in the environment.
 #
 # TODO - implement the `Developer` mode :-)
 #
