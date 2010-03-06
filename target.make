@@ -868,12 +868,18 @@ endif
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
 shared = yes
 HAVE_SHARED_LIBS = yes
+
 # This command links the library, generates automatically the list of
-# symbols to export, creates the DLL (eg, obj/gnustep-base-1_13.dll) and 
-# the import library (eg, obj/libgnustep-base.dll.a).
+# symbols to export, creates the DLL (eg, obj/gnustep-base-1_13.dll)
+# and the import library (eg, obj/libgnustep-base.dll.a).  We pass
+# --export-all-symbols to make sure it is always used.  Otherwise,
+# while it is the default, it might silently get disabled if a symbol
+# gets manually exported (eg, because a header of a library we include
+# exports a symbol by mistake).
 SHARED_LIB_LINK_CMD     = \
         $(LD) $(SHARED_LD_PREFLAGS) -shared \
         -Wl,--enable-auto-image-base \
+        -Wl,--export-all-symbols \
         -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
            $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \

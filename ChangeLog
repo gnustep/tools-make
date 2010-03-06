@@ -1,5 +1,13 @@
 2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* target.make (SHARED_LIB_LINK_CMD): On MinGW, pass
+	--export-all-symbols to the linker.  This fixes building
+	gnustep-base on MinGW with more recent libraries.
+	* Documentation/README.MinGW: Updated instructions to work with
+	more recent versions - up to building gnustep-base.
+	
+2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* Instance/Documentation/javadoc.make (JAVADOC_BUILD_ALWAYS):
 	Recognize 'yes' (which is consistent with all other variables) as
 	well as 'YES' (still recognized for backwards-compatibility).
