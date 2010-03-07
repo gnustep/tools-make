@@ -1,3 +1,7 @@
+2010-03-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Updated.
+
 2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* target.make (SHARED_LIB_LINK_CMD): On MinGW, pass

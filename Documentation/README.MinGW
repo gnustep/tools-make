@@ -333,28 +333,20 @@ At this point, you should be able to compile and run any non-gui tool
 and library (to check this try, for example, 'defaults read').  The
 next steps are only required for gui applications.
 
-<NICOLA: Updated on 06-03-2010 up to here>
-
 
 17. Installing gui additional packages
 ======================================
 
 For the gui, download and install the following packages:
 
-  jpeg-6b-4-bin.zip
-  jpeg-6b-4-dep.zip
-  jpeg-6b-4-lib.zip
+  jpeg-6b-4.exe
+  tiff-3.8.2-1.exe
+  libpng-1.2.37-setup.exe
+  libungif-4.1.4-1.exe
 
-  tiff-3.8.2-1-bin.zip
-  tiff-3.8.2-1-dep.zip
-  tiff-3.8.2-1-lib.zip
-
-  libpng-1.2.34-1-bin.zip
-  libpng-1.2.34-1-dep.zip
-  libpng-1.2.34-1-lib.zip
-
-The process is always the same: download the zip file from the
-gnuwin32 website, then unzip them into /C/xxx/msys/1.0/mingw.
+The process is always the same: download the exe file from the
+gnuwin32 website, execute it and install the package into
+C:\xxx\msys\1.0\mingw.
 
 
 18. Installing gnustep-gui
@@ -596,11 +588,7 @@ Finally, before deployment, you need to realize that you are shipping
 a lot of GNUstep (and non-GNUstep) software with your application.
 
 This is fine, just make sure you are aware of the licenses, and that
-you comply with them (by explaining to people where to easily get the
-source code of the GNUstep software, for example [this comment is not
-legal advice -- please check the licenses yourself to make sure you
-are compliant]). (FIXME: Maybe someone should provide the appropriate
-ready-to-use notices that ought to be included ?)
+you comply with them.
 
 
 PACKAGING/WINDOWS TODOS
