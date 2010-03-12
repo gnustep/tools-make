@@ -1,3 +1,15 @@
+2010-03-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	The default is now to use -Wall when compiling C/ObjC/C++/ObjC++
+	unless warn=no is used when invoking make.  Similar for Java,
+	where -deprecation is now used unless warn=no is used.
+	* common.make (ADDITIONAL_FLAGS): Add -Wall or not depending on
+	warn=yes/no, instead of depending on debug=yes/no (Suggestion from
+	Richard Frith-Macdonald).
+	(INTERNAL_JAVACFLAGS): Same for -deprecation.
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
 2010-03-07  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/README.MinGW: Updated.

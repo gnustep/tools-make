@@ -8,6 +8,41 @@ using a newer version of the make system.
 1.1 Version 2.4.0
 =================
 
+`-Wall is now used by default unless 'make warn=no' is specified'
+     Before version 2.4.0, 'make debug=yes' would not only build object
+     files particularly suited for debugging, but would also add the
+     -Wall flag on the compiler command line when compiling
+     C/ObjC/C++/ObjC++.  Starting with 2.4.0, the -Wall flag is
+     controlled by a separate warn flag, so you can turn it on and off
+     indipendentely by doing 'make warn=yes' or 'make warn=no'.  Since
+     warn=yes is the default, the default behaviour also changed;
+     starting with 2.4.0, gnustep-make will use -Wall by default.  You
+     can turn it off by using 'make warn=no'.
+
+     A similar change occurred for Java compilations, where the flag
+     -deprecation, which used to be enabled by debug=yes, is now
+     enabled by warn=yes.  As a consequence, Java code is now compiled
+     by default with the -deprecation flag.  You can turn it off by
+     compiling with 'make warn=no'.
+
+`PACKAGE_NEEDS_CONFIGURE and JAVADOC_BUILD_ALWAYS now support 'yes' and 'no''
+     gnustep-make boolean variables traditionally use the values 'yes'
+     and 'no', with the unfortunate exception of
+     PACKAGE_NEEDS_CONFIGURE and JAVADOC_BUILD_ALWAYS which used to
+     only recognize the values 'YES' and 'NO'.  For consistency with
+     everything else, starting with gnustep-make 2.4.0 these two
+     variables recognize the values 'yes' and 'no' too.
+
+`Versions of GNU make older then 3.79.1 (June 2000) are no longer supported'
+     The .NOTPARALLEL pseudo-target is only available in GNU make 3.79
+     and is essential for parallel builds to work.  Starting with
+     version 2.4.0, gnustep-make recommends using GNU make 3.79.1 or
+     greater; a warning will be issued during configure if an older GNU
+     make is detected.  Older versions of GNU make are likely to work
+     (except for parallel building) but are no longer supported.  As
+     3.79.1 was released about 10 years ago, this should not be a
+     particular problem.
+
 `new internalmessages=yes option'
      Starting with version 2.4.0, gnustep-make recognized the new
      internalmessages=yes option (separate from messages=yes) which

@@ -689,10 +689,10 @@ ifeq ($(debug), yes)
     ADDITIONAL_FLAGS += -g
   endif
   # Add standard debug compiler flags.
-  ADDITIONAL_FLAGS += -Wall -DDEBUG -fno-omit-frame-pointer
+  ADDITIONAL_FLAGS += -DDEBUG -fno-omit-frame-pointer
 
   # The following is for Java.
-  INTERNAL_JAVACFLAGS += -g -deprecation
+  INTERNAL_JAVACFLAGS += -g
 else
   # The default OPTFLAG set in config.make are used to compile.
 
@@ -703,7 +703,8 @@ endif
 ifeq ($(warn), no)
   ADDITIONAL_FLAGS += -UGSWARN
 else
-  ADDITIONAL_FLAGS += -DGSWARN
+  ADDITIONAL_FLAGS += -Wall -DGSWARN
+  INTERNAL_JAVACFLAGS += -deprecation
 endif
 
 ifeq ($(diagnose), no)

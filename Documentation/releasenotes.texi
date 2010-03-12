@@ -7,6 +7,22 @@ migrate to using a newer version of the make system.
 @section Version 2.4.0
 @table @samp
 
+@item -Wall is now used by default unless 'make warn=no' is specified
+Before version 2.4.0, 'make debug=yes' would not only build object
+files particularly suited for debugging, but would also add the -Wall
+flag on the compiler command line when compiling C/ObjC/C++/ObjC++.
+Starting with 2.4.0, the -Wall flag is controlled by a separate warn
+flag, so you can turn it on and off indipendentely by doing 'make
+warn=yes' or 'make warn=no'.  Since warn=yes is the default, the
+default behaviour also changed; starting with 2.4.0, gnustep-make will
+use -Wall by default.  You can turn it off by using 'make warn=no'.
+
+A similar change occurred for Java compilations, where the flag
+-deprecation, which used to be enabled by debug=yes, is now enabled by
+warn=yes.  As a consequence, Java code is now compiled by default with
+the -deprecation flag.  You can turn it off by compiling with 'make
+warn=no'.
+
 @item PACKAGE_NEEDS_CONFIGURE and JAVADOC_BUILD_ALWAYS now support 'yes' and 'no'
 gnustep-make boolean variables traditionally use the values 'yes' and
 'no', with the unfortunate exception of PACKAGE_NEEDS_CONFIGURE and
