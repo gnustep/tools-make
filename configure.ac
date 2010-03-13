@@ -1342,6 +1342,54 @@ fi
 
 AC_SUBST(USE_OBJC_EXCEPTIONS)
 
+
+#--------------------------------------------------------------------
+# Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!
+#--------------------------------------------------------------------
+
+AC_ARG_ENABLE(objc-nonfragile-abi, [
+--enable-objc-nonfragile-abi
+   Use the non-fragile ABI for Objective-C.  Use this option if you want
+   to use non-fragile instance variables provided by clang and the new
+   objc runtime.
+], 
+USE_NONFRAGILE_ABI=$enableval,
+USE_NONFRAGILE_ABI=no)
+
+AC_MSG_CHECKING(whether we should use the nonfragile ABI)
+if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
+  # What we want to do: set USE_NONFRAGILE_ABI to yes if we can compile
+  # something with -fobjc-nonfragile-abi.
+  CFLAGS_nonfragile="$CFLAGS"
+  LIBS_nonfragile="$LIBS"
+  CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
+  LIBS="$LIBS -shared-libgcc -fobjc-nonfragile-abi"
+  AC_RUN_IFELSE([[
+int
+main()
+{
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+return __has_feature(objc_nonfragile_abi) ? 0 : 1;
+}
+]], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
+  AC_MSG_RESULT($USE_NONFRAGILE_ABI)
+  CFLAGS="$CFLAGS_no_nonfragile"
+  LIBS="$LIBS_no_nonfragile"
+
+  if test x$USE_NONFRAGILE_ABI = xno; then
+    AC_MSG_NOTICE([The nonfragile ABI was requested, but the compiler])
+    AC_MSG_NOTICE([doesn't support it.])
+    AC_MSG_ERROR([compiler doesn't support nonfragile ABI])
+  fi
+else
+  AC_MSG_RESULT(not requested by user)
+fi
+
+AC_SUBST(USE_NONFRAGILE_ABI)
+
+
 # Keep LIBS and CFLAGS as they are for a while - we need them in 
 # the following Objective-C tests!
 

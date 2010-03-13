@@ -718,6 +718,7 @@ OBJC_LIB_FLAG
 objc_threaded
 ac_cv_objc_threaded
 USE_OBJC_EXCEPTIONS
+USE_NONFRAGILE_ABI
 AUTO_DEPENDENCIES
 GCC_WITH_PRECOMPILED_HEADERS
 SOLARIS_SHARED
@@ -1421,6 +1422,12 @@ Optional Features:
    Use native Objective-C exceptions.  Use this option if you want
    to use the native Objective-C exception support (@try/@catch/@finally)
    provided by newer GCC compilers.
+
+
+--enable-objc-nonfragile-abi
+   Use the non-fragile ABI for Objective-C.  Use this option if you want
+   to use non-fragile instance variables provided by clang and the new
+   objc runtime.
 
 
 --enable-debug-by-default
@@ -6050,6 +6057,102 @@ fi
 
 
 
+
+#--------------------------------------------------------------------
+# Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!
+#--------------------------------------------------------------------
+
+# Check whether --enable-objc-nonfragile-abi was given.
+if test "${enable_objc_nonfragile_abi+set}" = set; then
+  enableval=$enable_objc_nonfragile_abi; USE_NONFRAGILE_ABI=$enableval
+else
+  USE_NONFRAGILE_ABI=no
+fi
+
+
+{ echo "$as_me:$LINENO: checking whether we should use the nonfragile ABI" >&5
+echo $ECHO_N "checking whether we should use the nonfragile ABI... $ECHO_C" >&6; }
+if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
+  # What we want to do: set USE_NONFRAGILE_ABI to yes if we can compile
+  # something with -fobjc-nonfragile-abi.
+  CFLAGS_nonfragile="$CFLAGS"
+  LIBS_nonfragile="$LIBS"
+  CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
+  LIBS="$LIBS -shared-libgcc -fobjc-nonfragile-abi"
+  if test "$cross_compiling" = yes; then
+  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
+See \`config.log' for more details." >&5
+echo "$as_me: error: cannot run test program while cross compiling
+See \`config.log' for more details." >&2;}
+   { (exit 1); exit 1; }; }
+else
+  cat >conftest.$ac_ext <<_ACEOF
+
+int
+main()
+{
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+return __has_feature(objc_nonfragile_abi) ? 0 : 1;
+}
+
+_ACEOF
+rm -f conftest$ac_exeext
+if { (ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  { (case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); }; }; then
+  USE_NONFRAGILE_ABI=yes
+else
+  echo "$as_me: program exited with status $ac_status" >&5
+echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+( exit $ac_status )
+USE_NONFRAGILE_ABI=no
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
+fi
+
+
+  { echo "$as_me:$LINENO: result: $USE_NONFRAGILE_ABI" >&5
+echo "${ECHO_T}$USE_NONFRAGILE_ABI" >&6; }
+  CFLAGS="$CFLAGS_no_nonfragile"
+  LIBS="$LIBS_no_nonfragile"
+
+  if test x$USE_NONFRAGILE_ABI = xno; then
+    { echo "$as_me:$LINENO: The nonfragile ABI was requested, but the compiler" >&5
+echo "$as_me: The nonfragile ABI was requested, but the compiler" >&6;}
+    { echo "$as_me:$LINENO: doesn't support it." >&5
+echo "$as_me: doesn't support it." >&6;}
+    { { echo "$as_me:$LINENO: error: compiler doesn't support nonfragile ABI" >&5
+echo "$as_me: error: compiler doesn't support nonfragile ABI" >&2;}
+   { (exit 1); exit 1; }; }
+  fi
+else
+  { echo "$as_me:$LINENO: result: not requested by user" >&5
+echo "${ECHO_T}not requested by user" >&6; }
+fi
+
+
+
+
 # Keep LIBS and CFLAGS as they are for a while - we need them in
 # the following Objective-C tests!
 
@@ -7346,6 +7449,7 @@ OBJC_LIB_FLAG!$OBJC_LIB_FLAG$ac_delim
 objc_threaded!$objc_threaded$ac_delim
 ac_cv_objc_threaded!$ac_cv_objc_threaded$ac_delim
 USE_OBJC_EXCEPTIONS!$USE_OBJC_EXCEPTIONS$ac_delim
+USE_NONFRAGILE_ABI!$USE_NONFRAGILE_ABI$ac_delim
 AUTO_DEPENDENCIES!$AUTO_DEPENDENCIES$ac_delim
 GCC_WITH_PRECOMPILED_HEADERS!$GCC_WITH_PRECOMPILED_HEADERS$ac_delim
 SOLARIS_SHARED!$SOLARIS_SHARED$ac_delim
@@ -7369,7 +7473,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 64; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 65; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

@@ -1,3 +1,10 @@
+2010-03-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Add option to enable use of the nonfragile ABI
+	* configure: Regenerate
+	* config.make.in: Set variable to say if nonfragile ABI is to be used
+	* common.make: Add -fobjc-nonfragile-abi if required.
+
 2010-03-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	The default is now to use -Wall when compiling C/ObjC/C++/ObjC++

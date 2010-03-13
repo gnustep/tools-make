@@ -602,6 +602,13 @@ ifeq ($(USE_OBJC_EXCEPTIONS), yes)
   INTERNAL_LDFLAGS += -shared-libgcc -fexceptions
 endif
 
+# If the compiler supports nonfragile ABI and the user wants us to
+# use them, turn them on!
+ifeq ($(USE_NONFRAGILE_ABI), yes)
+  OBJCFLAGS += -fobjc-nonfragile-abi -D_NONFRAGILE_ABI
+  INTERNAL_LDFLAGS += -fobjc-nonfragile-abi
+endif
+
 # If we are using garbage collection we set a define to say so.
 ifeq ($(OBJC_WITH_GC), yes)
   OBJCFLAGS += -DGS_WITH_GC=1
