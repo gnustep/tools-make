@@ -1,3 +1,11 @@
+2010-04-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/library.make: Use LIBRARY_NAME_WITHOUT_LIB instead of
+	GNUSTEP_INSTANCE when installing resources (Patch from Jamison
+	Hope with some modifications)
+	* Documentation/releasenotes.texi: Explain the change.
+	* RELEASENOTES: Regenerated.
+	
 2010-03-13  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Add option to enable use of the nonfragile ABI

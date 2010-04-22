@@ -217,6 +217,25 @@ files, which allows you to customize the compilation flags for each
 Java file, then batch compilation is automatically disabled and all
 files are compiled separately.
 
+@item library resources always installed in directory without 'lib'
+This change only applies to libraries where LIBRARY_NAME starts with
+'lib' and that install resources.  Due to a bug, versions of
+gnustep-make before 2.4.0 would in this case install the resources
+into the wrong directory, without removing 'lib' from the library
+name.  For example, if LIBRARY_NAME is libgnustep-base, the resources
+would have been installed into
+GNUSTEP_LIBRARY/Libraries/libgnustep-base/Versions/1.14/Resources/
+instead of the correct
+GNUSTEP_LIBRARY/Libraries/gnustep-base/Versions/1.14/Resources/.  In
+gnustep-make 2.4.0, this bug has been fixed and the library name,
+without 'lib', will always be used in the resource installation
+directory, no matter if LIBRARY_NAME includes 'lib' or not.
+
+If you have a makefile which is affected and you need to support older
+versions of gnustep-make, you could remove 'lib' from the
+LIBRARY_NAME.  That should install resources in the same directory on
+all gnustep-make versions that support library resources (ie,
+gnustep-make >= 2.0.x).
 @end table
 
 @section Version 2.2.0

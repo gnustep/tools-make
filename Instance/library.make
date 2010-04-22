@@ -346,25 +346,25 @@ internal-library-check::
 ifeq ($($(GNUSTEP_INSTANCE)_HAS_RESOURCE_BUNDLE),yes)
 
 # Include the rules to build resource bundles
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION)/Resources/
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(GNUSTEP_BUILD_DIR)/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION)/Resources/
 
 # We want to install gnustep-base resources into
 # GNUSTEP_LIBRARY/Libraries/gnustep-base/Versions/1.14/Resources/
 # This is similar to a framework resource directory, which might be
 # helpful in the future.
 GNUSTEP_SHARED_BUNDLE_INSTALL_NAME = Resources
-GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = $(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION)
-GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(GNUSTEP_LIBRARY)/Libraries/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION)
+GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = $(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION)
+GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(GNUSTEP_LIBRARY)/Libraries/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-library-all_:: shared-instance-bundle-all
 internal-library-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
-$(GNUSTEP_LIBRARY)/Libraries/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION):
+$(GNUSTEP_LIBRARY)/Libraries/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-internal-library-install_:: $(GNUSTEP_LIBRARY)/Libraries/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION) \
+internal-library-install_:: $(GNUSTEP_LIBRARY)/Libraries/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION) \
                             shared-instance-bundle-install 
 
 internal-library-uninstall:: shared-instance-bundle-uninstall
