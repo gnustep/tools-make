@@ -1,3 +1,13 @@
+2010-04-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed problem reported by Chris Corbyn <chris@w3style.co.uk> where
+	precompiled headers only worked if they had a .h extension, and
+	not a .pch extension, which is common for projects originally
+	built using Apple XCode.
+	* rules.make: Changed precompiled header rules to work to generate
+	%.gch from %, no matter what extension the original header has.
+	* Instance/rules.make: Same change.
+	
 2010-04-22  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/library.make: Use LIBRARY_NAME_WITHOUT_LIB instead of
