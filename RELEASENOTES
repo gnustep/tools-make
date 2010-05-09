@@ -8,6 +8,10 @@ using a newer version of the make system.
 1.1 Version 2.4.0
 =================
 
+`You can enable the use of the non-fragile ivar ABI (for compilers'
+     like clang that support it) using the -enable-objc-nonfragile-abi
+     flag.
+
 `-Wall is now used by default unless 'make warn=no' is specified'
      Before version 2.4.0, 'make debug=yes' would not only build object
      files particularly suited for debugging, but would also add the

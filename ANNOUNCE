@@ -1,7 +1,7 @@
 1 Announcement
 **************
 
-The GNUstep Makefile Package version 2.2.0 is now available.
+The GNUstep Makefile Package version 2.4.0 is now available.
 
 1.1 What is the GNUstep makefile package?
 =========================================
@@ -12,7 +12,32 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-1.2 Changes in version `2.2.0'
+1.2 Changes in version `2.4.0'
+==============================
+
+   * Add -enable-objc-nonfragile-abi flag
+
+   * New serial-subdirectories.make and parallel-subdirectories.make.
+
+   * Support for parallel building of subdirectories.
+
+   * Support for parallel building of different instances.
+
+   * Support source files in subdirectories without using a subproject.
+
+   * Support header files in sub-subdirectories.
+
+   * Batch-compile Java files (much faster).
+
+   * Changed default compilation flags to -O2 -g.
+
+   * Fixes for building documentation.
+
+   * Renamed info files to prevent conflicts.
+
+   * Updated cygwin support.
+
+1.3 Changes in version `2.2.0'
 ==============================
 
    * New -with-objc-lib-flag for specifying libobjc.
@@ -26,10 +51,10 @@ the user to easily create cross-compiled binaries.
 
    * make uninstall works better now.
 
-1.3 Obtaining gnustep-make
+1.4 Obtaining gnustep-make
 ==========================
 
-You can get the gstep-make-2.2.0.tar.gz distribution file at
+You can get the gstep-make-2.4.0.tar.gz distribution file at
 `ftp://ftp.gnustep.org/pub/gnustep/core'
 
    Please log bug reports on the GNUstep project page

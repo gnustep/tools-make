@@ -12,6 +12,7 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @section Changes in version @samp{2.4.0}
 
 @itemize @bullet
+@item Add --enable-objc-nonfragile-abi flag
 @item New serial-subdirectories.make and parallel-subdirectories.make.
 @item Support for parallel building of subdirectories.
 @item Support for parallel building of different instances.

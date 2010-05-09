@@ -1,10 +1,12 @@
 1 NEWS
 ******
 
-The currently released version is `2.2.0'.
+The currently released version is `2.4.0'.
 
 1.1 Changes in version `2.4.0'
 ==============================
+
+   * Add -enable-objc-nonfragile-abi flag
 
    * New serial-subdirectories.make and parallel-subdirectories.make.
 
