@@ -631,7 +631,7 @@ endif
 %.plist : %.cplist
 	$(ECHO_PREPROCESSING)$(CPP) \
 	          $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPLISTFLAGS))\
-	          $($<_FILE_FLAGS) $< | sed '/^#pragma/d' > $@$(END_ECHO)
+	          $($<_FILE_FLAGS) $< | sed -e '/^#pragma/d' -e '/^ *$$/d' > $@$(END_ECHO)
 
 # The following rule builds a .c file from a lex .l file.
 # You can define LEX_FLAGS if you need them.

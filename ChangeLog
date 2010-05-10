@@ -1,3 +1,8 @@
+2010-05-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* rules.make (%.plist): Delete empty lines in the output, fixing
+	generating %.plist from %.cplist on Apple.
+
 2010-05-08  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.4.0
