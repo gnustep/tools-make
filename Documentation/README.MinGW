@@ -138,6 +138,16 @@ start menu.
 From this window we can now start building things.
 
 
+On Windows Vista and later, an additional problem has been reported
+where 'make install' would sometimes fail because of permission
+problems.  The problem is discussed here --
+
+http://lists.gnu.org/archive/html/gnustep-dev/2010-06/msg00055.html
+
+you may have to install the additional MinGW files, as explained
+there.
+
+
 5. Additional Useful Tools [Optional]
 =====================================
 

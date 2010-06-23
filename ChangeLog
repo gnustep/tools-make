@@ -1,3 +1,9 @@
+2010-06-23  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Mention solution to install
+	permission problem when working on Windows Vista and
+	later (Reported by Quentin Mathe <qmathe@gmail.com>).
+
 2010-05-10  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* rules.make (%.plist): Delete empty lines in the output, fixing
