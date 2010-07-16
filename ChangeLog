@@ -1,3 +1,11 @@
+2010-07-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* common.make: Set INTERNAL_OBJCFLAGS, not OBJCFLAGS, so that
+	OBJCFLAGS is a free variable that can be used on the command-line,
+	as in "make OBJCFLAGS=-fobjc-nonfragile-abi", to add some custom
+	Objective-C flags to the compilation run without interfering with
+	the standard ones.
+
 2010-06-23  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Documentation/README.MinGW: Mention solution to install

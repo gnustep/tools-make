@@ -592,26 +592,27 @@ endif
 # compiler warnings.  But we really need to investigate why the
 # warning appear in the first place, if they are serious or not, and
 # what can be done about it.
-OBJCFLAGS = -fno-strict-aliasing
+INTERNAL_OBJCFLAGS = -fno-strict-aliasing
+
 CFLAGS =
 
 # If the compiler supports native ObjC exceptions and the user wants us to
 # use them, turn them on!
 ifeq ($(USE_OBJC_EXCEPTIONS), yes)
-  OBJCFLAGS += -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
+  INTERNAL_OBJCFLAGS += -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
   INTERNAL_LDFLAGS += -shared-libgcc -fexceptions
 endif
 
 # If the compiler supports nonfragile ABI and the user wants us to
 # use them, turn them on!
 ifeq ($(USE_NONFRAGILE_ABI), yes)
-  OBJCFLAGS += -fobjc-nonfragile-abi -D_NONFRAGILE_ABI
+  INTERNAL_OBJCFLAGS += -fobjc-nonfragile-abi -D_NONFRAGILE_ABI
   INTERNAL_LDFLAGS += -fobjc-nonfragile-abi
 endif
 
 # If we are using garbage collection we set a define to say so.
 ifeq ($(OBJC_WITH_GC), yes)
-  OBJCFLAGS += -DGS_WITH_GC=1
+  INTERNAL_OBJCFLAGS += -DGS_WITH_GC=1
 endif
 
 #
