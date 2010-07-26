@@ -1,3 +1,9 @@
+2010-07-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* target.make (EXTRACT_CLASS_NAMES_COMMAND): Allow numbers in
+	class names.  Otherwise, class names containing numbers would not
+	be recognized and not appear in the list of framework classes.
+
 2010-07-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* common.make: Set INTERNAL_OBJCFLAGS, not OBJCFLAGS, so that

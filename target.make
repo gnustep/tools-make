@@ -139,11 +139,11 @@ endif
 #
 # The 'sed' command parses a set of lines, and extracts lines starting
 # with __objc_class_name_XXXX Y, where XXXX is a string of characters
-# from A-Za-z_. and Y is not 'U'.  It then replaces the whole line
+# from A-Za-z0-9_. and Y is not 'U'.  It then replaces the whole line
 # with XXXX, and prints the result. '-n' disables automatic printing
 # for portability, so we are sure we only print what we want on all
 # platforms.
-EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z_.]*\) [^U].*/\1/p;}'
+EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
 #
 # This is the generic version - if the target is not in the following list,
@@ -911,7 +911,7 @@ ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
 
 # On Mingw32, it looks like the class name symbols start with '___' rather 
 # than '__'
-EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z_.]*\) [^U].*/\1/p;}'
+EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
 endif
 
