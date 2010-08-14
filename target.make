@@ -231,7 +231,7 @@ SHARED_LIB_LINK_CMD     = \
 endif # OBJC_COMPILER
 
 OBJ_MERGE_CMD = \
-	$(LD) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
@@ -375,7 +375,7 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE) )
 
 OBJ_MERGE_CMD = \
-	$(LD) -nostdlib -r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
@@ -453,6 +453,8 @@ AFTER_INSTALL_STATIC_LIB_CMD =
 SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .a
 
+# TODO: this should this be BUNDLE_LD = $(LD), and BUNDLE_LDFLAGS should use -Wl,-r instead of -r.
+# Unfortunately I can't test this change.  Can anyone confirm that all still works with this change ?
 BUNDLE_LD	= ld
 BUNDLE_LDFLAGS  += -r $(ARCH_FLAGS)
 endif
@@ -514,6 +516,8 @@ AFTER_INSTALL_STATIC_LIB_CMD =
 SHARED_CFLAGS   += -dynamic
 SHARED_LIBEXT   = .a
 
+# TODO: this should this be BUNDLE_LD = $(LD), and BUNDLE_LDFLAGS should use -Wl,-r instead of -r.
+# Unfortunately I can't test this change.  Can anyone confirm that all still works with this change ?
 BUNDLE_LD	= ld
 BUNDLE_LDFLAGS  += -r $(ARCH_FLAGS)
 endif
@@ -559,7 +563,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS      += -fPIC
 SHARED_LIBEXT      =  .so
@@ -637,7 +641,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -679,7 +683,7 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -712,7 +716,7 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -758,7 +762,7 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
 	)
 
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
@@ -790,7 +794,7 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -843,11 +847,11 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
-SHARED_CFLAGS     += -fPIC
+SHARED_CFLAGS  += -fPIC
 SHARED_LIBEXT   = .so
 
 OBJ_MERGE_CMD		= \
-	/usr/bin/ld -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 ADDITIONAL_LDFLAGS +=
 STATIC_LDFLAGS +=
@@ -902,7 +906,7 @@ DLL_LIBEXT	 = .dll
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-  $(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+  $(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(LD)
@@ -952,7 +956,7 @@ CYGWIN_LD_FLAGS = -Wl,--export-all-symbols -Wl,--enable-auto-import
 #SHARED_CFLAGS	 += 
 
 OBJ_MERGE_CMD = \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) $(CYGWIN_LD_FLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) $(CYGWIN_LD_FLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(LD)
@@ -1013,7 +1017,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS     += -fpic -fPIC
 SHARED_LIBEXT   = .so
@@ -1021,7 +1025,7 @@ SHARED_LIBEXT   = .so
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS  = -shared -mimpure-text
-#BUNDLE_LDFLAGS  = -nodefaultlibs -Xlinker -r
+#BUNDLE_LDFLAGS  = -nodefaultlibs -Xlinker -Wl,-r
 endif
 
 # end Solaris
@@ -1049,7 +1053,7 @@ SHARED_LIBEXT   = .so
 HAVE_BUNDLES    = yes
 BUNDLE_LD       = $(LD)
 #BUNDLE_LDFLAGS  += -shared -mimpure-text
-BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -Wl,-r
 endif
 
 # end Unixware
@@ -1073,7 +1077,7 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 ifeq ($(CC), cc)
 SHARED_CFLAGS   += +z
@@ -1089,7 +1093,7 @@ endif
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(LD)
-BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -r
+BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -Wl,-r
 ADDITIONAL_LDFLAGS += -Xlinker +s
 STATIC_LDFLAGS += -static
 endif

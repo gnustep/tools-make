@@ -1,3 +1,10 @@
+2010-08-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* target.make (OBJ_MERGE_CMD): Use -Wl,-r instead of -r.  -Wl,-r
+	is the correct way of passing the -r flag to the linker, and works
+	with both GCC and clang (Suggestion from a mail by Dimitry Andric
+	<dimitry@andric.com>).
+
 2010-07-26  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* target.make (EXTRACT_CLASS_NAMES_COMMAND): Allow numbers in
