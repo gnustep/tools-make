@@ -477,3 +477,13 @@ ALL_LIBS =								     \
      $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 endif
 
+#
+# Determine the languages used by this instance.  This is used in
+# various places (bundles, resource sets, make_strings) where language
+# resources are managed.
+#
+LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
+
+ifeq ($(LANGUAGES),)
+  LANGUAGES = English
+endif

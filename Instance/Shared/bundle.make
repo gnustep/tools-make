@@ -80,7 +80,7 @@
 #  to create.
 #
 #  $(GNUSTEP_INSTANCE)_LANGUAGES : the list of languages of localized resource
-#  files
+#  files (processed in rules.make, and converted into a LANGUAGES list)
 #
 #  $(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES : a list of localized
 #  resource files to install.
@@ -149,7 +149,6 @@
 RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_FILES) \
                         $($(GNUSTEP_INSTANCE)_COMPONENTS))
 RESOURCE_DIRS = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_DIRS))
-LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
 LOCALIZED_RESOURCE_FILES = \
   $(strip $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES) \
          $($(GNUSTEP_INSTANCE)_LOCALIZED_COMPONENTS))
@@ -173,10 +172,6 @@ ifneq ($(RESOURCE_DIRS),)
 FULL_RESOURCE_DIRS = \
 $(foreach d, $(RESOURCE_DIRS), $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$(d))
 
-endif
-
-ifeq ($(LANGUAGES),)
-  LANGUAGES = English
 endif
 
 $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH):

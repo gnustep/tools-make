@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Shared/java.make
 #
 #   Makefile fragment with rules to compile and install java files,

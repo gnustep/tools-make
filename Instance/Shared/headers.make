@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Shared/headers.make
 #
 #   Makefile fragment with rules to install header files

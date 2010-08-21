@@ -1,3 +1,24 @@
+2010-08-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/Shared/strings.make: Renamed most local variables to
+	standardized names.  Automatically create required, but
+	non-existing, {LANGUAGE}.lproj directories before running
+	make_strings.  If no languages are specified, use English instead
+	of printing an error messages.
+
+	* Instance/rules.make (LANGUAGES): Set this variable here, once
+	for all makefile fragments, instead of having each fragment
+	contain the same duplicated code to set it.
+	* Instance/gswbundle.make (LANGUAGES): Do not set it.
+	* Instance/resource-set.make (LANGUAGES): Do not set it.
+	* Instance/Shared/bundle.make (LANGUAGES): Do not set it.
+	* Instance/Shared/strings.make (LANGUAGES): Do not set it.
+
+	* Instance/Shared/headers.make: Added -*-makefile-*- line at the
+	beginning of the file (for emacs).
+	* Instance/Shared/java.make: Same change.
+	* Instance/Shared/strings.make: Same change.	
+	
 2010-08-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* target.make (OBJ_MERGE_CMD): Use -Wl,-r instead of -r.  -Wl,-r

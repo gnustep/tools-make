@@ -102,12 +102,6 @@ ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $@$(END_ECHO)
 endif
 
-# Determine the list of languages
-override LANGUAGES = $($(GNUSTEP_INSTANCE)_LANGUAGES)
-ifeq ($(LANGUAGES),)
-  override LANGUAGES = English
-endif
-
 # Determine the list of localized resource files
 LOCALIZED_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_FILES)
 LOCALIZED_RESOURCE_DIRS = $($(GNUSTEP_INSTANCE)_LOCALIZED_RESOURCE_DIRS)
