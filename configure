@@ -1418,9 +1418,11 @@ Optional Features:
    not supported / does not work on your machine.
 
 
---enable-native-objc-exceptions
-   Use native Objective-C exceptions.  Use this option if you want
-   to use the native Objective-C exception support (@try/@catch/@finally)
+--disable-native-objc-exceptions
+   Disable native Objective-C exception support
+   (@try/@catch/@finally/@synchronized) which is otherwise
+   automatically enabled if the compiler supports it.  Use this option
+   if you do not want to use the native Objective-C exception support
    provided by newer GCC compilers.
 
 
@@ -5956,15 +5958,17 @@ ac_cv_objc_threaded="$objc_threaded"
 if test "${enable_native_objc_exceptions+set}" = set; then
   enableval=$enable_native_objc_exceptions; USE_OBJC_EXCEPTIONS=$enableval
 else
-  USE_OBJC_EXCEPTIONS=no
+  USE_OBJC_EXCEPTIONS=yes
 fi
 
 
+# Please note that -fobjc-exceptions should automatically enable
+# -fexceptions.
 { echo "$as_me:$LINENO: checking whether we should use native ObjC exceptions" >&5
 echo $ECHO_N "checking whether we should use native ObjC exceptions... $ECHO_C" >&6; }
 if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
   # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
-  # something with @try/@catch/@finally in it.
+  # something with @try/@catch/@finally/@synchronized in it.
   if test ! ${GCC} = "yes" ; then
     USE_OBJC_EXCEPTIONS=no
     { echo "$as_me:$LINENO: result: no: compiler isn't gcc" >&5
@@ -6042,13 +6046,8 @@ echo "${ECHO_T}$USE_OBJC_EXCEPTIONS" >&6; }
     LIBS="$LIBS_no_exceptions"
   fi
   if test x$USE_OBJC_EXCEPTIONS = xno; then
-    { echo "$as_me:$LINENO: Native objective-c exceptions were requested, but the compiler" >&5
-echo "$as_me: Native objective-c exceptions were requested, but the compiler" >&6;}
-    { echo "$as_me:$LINENO: doesn't support them." >&5
-echo "$as_me: doesn't support them." >&6;}
-    { { echo "$as_me:$LINENO: error: compiler doesn't support native objective-c exceptions" >&5
-echo "$as_me: error: compiler doesn't support native objective-c exceptions" >&2;}
-   { (exit 1); exit 1; }; }
+    { echo "$as_me:$LINENO: Native objective-c exceptions are not supported by the compiler" >&5
+echo "$as_me: Native objective-c exceptions are not supported by the compiler" >&6;}
   fi
 else
   { echo "$as_me:$LINENO: result: not requested by user" >&5

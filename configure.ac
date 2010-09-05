@@ -1287,18 +1287,22 @@ AC_SUBST(ac_cv_objc_threaded)
 #--------------------------------------------------------------------
 
 AC_ARG_ENABLE(native-objc-exceptions, [
---enable-native-objc-exceptions
-   Use native Objective-C exceptions.  Use this option if you want
-   to use the native Objective-C exception support (@try/@catch/@finally)
+--disable-native-objc-exceptions
+   Disable native Objective-C exception support
+   (@try/@catch/@finally/@synchronized) which is otherwise
+   automatically enabled if the compiler supports it.  Use this option
+   if you do not want to use the native Objective-C exception support
    provided by newer GCC compilers.
 ], 
 USE_OBJC_EXCEPTIONS=$enableval,
-USE_OBJC_EXCEPTIONS=no)
+USE_OBJC_EXCEPTIONS=yes)
 
+# Please note that -fobjc-exceptions should automatically enable
+# -fexceptions.
 AC_MSG_CHECKING(whether we should use native ObjC exceptions)
 if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
   # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
-  # something with @try/@catch/@finally in it.
+  # something with @try/@catch/@finally/@synchronized in it.
   if test ! ${GCC} = "yes" ; then
     USE_OBJC_EXCEPTIONS=no
     AC_MSG_RESULT(no: compiler isn't gcc)
@@ -1332,9 +1336,7 @@ int main(int argc, char **argv)
     LIBS="$LIBS_no_exceptions"
   fi
   if test x$USE_OBJC_EXCEPTIONS = xno; then
-    AC_MSG_NOTICE([Native objective-c exceptions were requested, but the compiler])
-    AC_MSG_NOTICE([doesn't support them.])
-    AC_MSG_ERROR([compiler doesn't support native objective-c exceptions])
+    AC_MSG_NOTICE(Native objective-c exceptions are not supported by the compiler)
   fi
 else
   AC_MSG_RESULT(not requested by user)

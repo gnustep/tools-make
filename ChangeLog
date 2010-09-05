@@ -1,3 +1,9 @@
+2010-09-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Enable native exceptions by default if the
+	compiler supports them.
+	* configure: Regenerated.
+
 2010-08-21  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/Shared/strings.make: Renamed most local variables to
