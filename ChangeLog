@@ -1,5 +1,10 @@
 2010-09-06  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* config_thread.m: Fixed incorrect usage of pthread_create when
+	testing a non-GNU runtime.
+
+2010-09-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Enable native exceptions by default if the
 	compiler supports them.
 	* configure: Regenerated.

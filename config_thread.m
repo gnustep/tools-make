@@ -9,6 +9,12 @@
 
 #ifdef GNU_RUNTIME
 #include <objc/thr.h>
+#else
+#include <pthread.h>
+void *dummy_thread_function(void *dummy)
+{
+  pthread_exit(NULL);
+}
 #endif
 
 #include <objc/Object.h>
@@ -16,16 +22,17 @@
 int
 main()
 {
+#ifdef GNU_RUNTIME
   id o = [Object new];
 
-#ifdef GNU_RUNTIME
   return (objc_thread_detach (@selector(hash), o, nil) == NULL) ? -1 : 0;
 #else
+
   /* On Apple, there is no ObjC-specific thread library.  We need to
    * use pthread directly.
    */
   pthread_t thread_id;
-  int error = pthread_create (&thread_id, NULL, @selector(hash), o);
+  int error = pthread_create (&thread_id, NULL, dummy_thread_function, NULL);
 
   if (error != 0)
     {
@@ -33,5 +40,6 @@ main()
     }
 
   return 0;
+
 #endif
 }
