@@ -1,3 +1,11 @@
+2010-09-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Always obey an --enable-native-objc-exceptions or
+	--disable-native-objc-exceptions switch if specified.  If nothing
+	is specified, conservatively only enable native ObjC exceptions if
+	they pass a configure test and if GCC >= 4.4.0.
+	* configure: Regenerated.
+
 2010-09-06  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* config_thread.m: Fixed incorrect usage of pthread_create when
