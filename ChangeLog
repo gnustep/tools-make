@@ -1,3 +1,8 @@
+2010-09-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (CC): Only set CC if not already set in the
+	environment.
+
 2010-09-07  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Always obey an --enable-native-objc-exceptions or

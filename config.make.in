@@ -30,7 +30,14 @@ MAKE_WITH_INFO_FUNCTION = @MAKE_WITH_INFO_FUNCTION@
 #
 # Binary and compile tools
 #
-CC       = @CC@
+
+# If CC is already set in the environment, don't override it but use
+# the provided compiler.  This makes it easier to swap compilers on
+# the fly.
+ifeq ($(CC),)
+  CC       = @CC@
+endif
+
 # TODO: Because of the following, OPTFLAG usually ends up being '-g
 # -O2'.  The '-g' is fairly harmless as you can always use strip=yes
 # which will strip the object files upon installation; still, it's not
