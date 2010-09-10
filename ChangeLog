@@ -1,3 +1,21 @@
+2010-09-10  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Use fhs as the default layout on gnu/linux systems.
+	* configure: Regenerated.
+	* GNUstep.conf.in: add layout variable
+	WARNING ...this changes the default behavior to use the 'fhs' layout
+	rather than the 'gnustep' layout on most systems, and assumes that
+	we will add other operating-system specific layouts in future and
+	make them the default for those operating systems.
+	I guess this may be controversial, but I think it's long past time
+	for us to integrate with the native operating system when people
+	download/install from source.
+	If you want the old filesystem layout behavior you need to use
+	configure --with-layout=gnustep
+	To make this less painful, I've changed things to record the layout
+	used in GNUstep.conf so if you don't want the new default you only
+	need to specify --with-layout= the first time you configure/install.
+
 2010-09-10  Nicola Pero  <nicola@nicola.brainstorm.co.uk>
 
 	* configure.ac: When threading tests fail with all expected

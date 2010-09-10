@@ -302,6 +302,7 @@ AC_SUBST(GNUSTEP_MAKE_STRICT_V2_MODE)
 # layout variables; that would be a lot of flags though!  But maybe
 # for completeness we could go through all of them and add a flag for
 # each.
+
 AC_MSG_CHECKING([for GNUstep filesystem layout to use])
 AC_ARG_WITH(layout,[
 --with-layout=FILE
@@ -311,8 +312,15 @@ AC_ARG_WITH(layout,[
    FilesystemLayouts subdirectory for a list of layouts and how 
    to choose which one you want (or create your own).  If a layout 
    is specified, we automatically avoid importing an existing config 
-   file.  The default layout is 'gnustep' except when the library-combo
-   is apple-apple-apple, in which case the default layout is 'apple'.
+   file.
+   If you do not specify a layout then the one recorded in the installed
+   GNUstep config file is used, or if there is no layout specified there
+   then one which depends on your operating system (if a layout for
+   it has been contributed) is used.
+   If there is no system specific layout then 'gnustep' is used except
+   when the library-combo is apple-apple-apple, in which case it is 'apple'.
+   You may specify the layout 'native' to force the default system
+   specific layout to be used instead of the layout in the config file.
    Example: --with-layout=fhs
 ],
   GNUSTEP_FILESYSTEM_LAYOUT="$withval",)
@@ -329,15 +337,31 @@ if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
   AC_MSG_RESULT($GNUSTEP_FILESYSTEM_LAYOUT)
   GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
 else
+  GNUSTEP_PREVIOUS_LAYOUT=`gnustep-config --variable=GNUSTEP_FILESYSTEM_LAYOUT_FILE 2>/dev/null`
+  if test ! x"$GNUSTEP_PREVIOUS_LAYOUT" = x""; then
+    AC_MSG_RESULT($GNUSTEP_PREVIOUS_LAYOUT)
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_PREVIOUS_LAYOUT"
+  else
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=native
+  fi
+fi
+
+if test x"$GNUSTEP_FILESYSTEM_LAYOUT" = x"native"; then
   # This is the default layout that is used when installing
-  # GNUstep with no other indication.  We normally use 'gnustep',
-  # unless the library-combo is apple-apple-apple, in which case
-  # we use 'apple'.
+  # GNUstep with no other indication.  We normally use the native
+  # layout for the target operating system (if we know it) or 'gnustep'
+  # if we don't.
+  # However, if the library-combo is apple-apple-apple we use 'apple'.
+  #
   if test "$ac_cv_library_combo" = "apple-apple-apple"; then
-    AC_MSG_RESULT(none specified: we use 'apple' since we're on apple-apple-apple)
+    AC_MSG_RESULT(default layout: 'apple' since we're on apple-apple-apple)
     GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple
   else
-    AC_MSG_RESULT(none specified: we use 'gnustep')
+    case "$target_os" in
+      linux*)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=fhs ;;
+      *)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep ;;
+    esac
+    AC_MSG_RESULT(default layout: '$GNUSTEP_FILESYSTEM_LAYOUT_FILE')
     GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
   fi
 fi
@@ -347,6 +371,8 @@ if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&
   echo "Please check your --with-layout=xxx argument and try again."
   exit 1
 fi
+
+AC_SUBST(GNUSTEP_FILESYSTEM_LAYOUT_FILE)
 
 # Need to do some checks related to building dylibs on darwin.
 GNUSTEP_ABSOLUTE_INSTALL_PATHS=;
