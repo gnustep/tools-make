@@ -346,7 +346,7 @@ else
   fi
 fi
 
-if test x"$GNUSTEP_FILESYSTEM_LAYOUT" = x"native"; then
+if test x"$GNUSTEP_FILESYSTEM_LAYOUT_FILE" = x"native"; then
   # This is the default layout that is used when installing
   # GNUstep with no other indication.  We normally use the native
   # layout for the target operating system (if we know it) or 'gnustep'
