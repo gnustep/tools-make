@@ -1216,6 +1216,12 @@ elif test "$host_os" = linux-gnu; then
   LIBS="$OBJCRT -lpthread"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
 	objc_threaded="", objc_threaded="-lpthread")
+  if test x"$objc_threaded" = x""; then
+    LIBS="$OBJCRT"
+    AC_TRY_RUN([#include "config_thread.m"],
+          objc_threaded="works",
+	  objc_threaded="", objc_threaded="works")
+  fi
 elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
   LIBS="-pthread $OBJCRT"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-pthread",
@@ -1229,6 +1235,12 @@ elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
     LIBS="$OBJCRT -lpcthread"
     AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpcthread",
 	objc_threaded="", objc_threaded="-lpcthread")
+  fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="$OBJCRT"
+    AC_TRY_RUN([#include "config_thread.m"],
+          objc_threaded="works",
+	  objc_threaded="", objc_threaded="works")
   fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
@@ -1265,6 +1277,12 @@ else
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lthread", 
 	objc_threaded="", objc_threaded="")
+  fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="$OBJCRT"
+    AC_TRY_RUN([#include "config_thread.m"], 
+          objc_threaded="works",
+	  objc_threaded="", objc_threaded="works")
   fi
 fi
 if test x"$objc_threaded" = x""; then

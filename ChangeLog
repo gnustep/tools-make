@@ -1,3 +1,10 @@
+2010-09-10  Nicola Pero  <nicola@nicola.brainstorm.co.uk>
+
+	* configure.ac: When threading tests fail with all expected
+	threading flags/libs, do a last attempt with no explicit threading
+	flags/libs at all.
+	* configure: Regenerated.
+
 2010-09-10  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* config.make.in (CC): Ignore the default CC=cc used by GNU make
