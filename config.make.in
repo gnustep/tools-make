@@ -31,9 +31,15 @@ MAKE_WITH_INFO_FUNCTION = @MAKE_WITH_INFO_FUNCTION@
 # Binary and compile tools
 #
 
-# If CC is already set in the environment, don't override it but use
-# the provided compiler.  This makes it easier to swap compilers on
-# the fly.
+# Ignore the default CC=cc used by GNU make when nothing is specified;
+# in that case, we want to use our own default CC.
+ifeq ($(origin CC), default)
+  CC       = @CC@
+endif
+
+# If CC is already set but not from the GNU make default (ie, in the
+# environment), don't override it but use the provided compiler.  This
+# makes it easier to swap compilers on the fly.
 ifeq ($(CC),)
   CC       = @CC@
 endif

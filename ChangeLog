@@ -1,3 +1,8 @@
+2010-09-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (CC): Ignore the default CC=cc used by GNU make
+	when nothing else is specified.
+
 2010-09-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* config.make.in (CC): Only set CC if not already set in the
