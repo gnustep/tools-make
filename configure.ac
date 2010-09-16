@@ -337,6 +337,8 @@ if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
   AC_MSG_RESULT($GNUSTEP_FILESYSTEM_LAYOUT)
   GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
 else
+  # Find any layout for the currently installed copy of GNUstep (if any)
+  # and use that if possible, otherwise use 'native' layout.
   GNUSTEP_PREVIOUS_LAYOUT=`gnustep-config --variable=GNUSTEP_FILESYSTEM_LAYOUT_FILE 2>/dev/null`
   if test ! x"$GNUSTEP_PREVIOUS_LAYOUT" = x""; then
     AC_MSG_RESULT($GNUSTEP_PREVIOUS_LAYOUT)
@@ -351,18 +353,19 @@ if test x"$GNUSTEP_FILESYSTEM_LAYOUT_FILE" = x"native"; then
   # GNUstep with no other indication.  We normally use the native
   # layout for the target operating system (if we know it) or 'gnustep'
   # if we don't.
-  # However, if the library-combo is apple-apple-apple we use 'apple'.
-  #
+  # However, for backward compatibility, if the library-combo is
+  # apple-apple-apple we use 'apple' irrespective of the target OS
+  # though I'm not sure that really makes sense.
   if test "$ac_cv_library_combo" = "apple-apple-apple"; then
     AC_MSG_RESULT(default layout: 'apple' since we're on apple-apple-apple)
     GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple
   else
     case "$target_os" in
+      darwin*)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple ;;
       linux*)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=fhs ;;
       *)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep ;;
     esac
     AC_MSG_RESULT(default layout: '$GNUSTEP_FILESYSTEM_LAYOUT_FILE')
-    GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
   fi
 fi
 

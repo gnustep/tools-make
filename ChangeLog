@@ -1,3 +1,10 @@
+2010-09-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Remove extra line accidentally added in preious commit.
+	Improve comments on filesystem layout. Make 'apple' the native layout
+	on the darwin operating system.
+	* configure: Regenerated.
+
 2010-09-10  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Use fhs as the default layout on gnu/linux systems.
