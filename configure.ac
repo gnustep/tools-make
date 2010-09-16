@@ -326,26 +326,15 @@ AC_ARG_WITH(layout,[
   GNUSTEP_FILESYSTEM_LAYOUT="$withval",)
 
 # The variable GNUSTEP_FILESYSTEM_LAYOUT is empty if no layout was
-# specified on the command line.  In that case, we read the config
-# file (which might contain more up-to-date information on what layout
-# the user wants).  If the variable is non-empty, then we avoid
-# reading the config file (the user already explicitly specified what
-# layout they want, so we omit to read existing config that might mess
-# that up).
-
+# specified on the command line.  In that case, we use any 'native'
+# layout, but we leave GNUSTEP_FILESYSTEM_LAYOUT unset so that later
+# tests can tell that no layout was specified.
 if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
   AC_MSG_RESULT($GNUSTEP_FILESYSTEM_LAYOUT)
   GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
 else
-  # Find any layout for the currently installed copy of GNUstep (if any)
-  # and use that if possible, otherwise use 'native' layout.
-  GNUSTEP_PREVIOUS_LAYOUT=`gnustep-config --variable=GNUSTEP_FILESYSTEM_LAYOUT_FILE 2>/dev/null`
-  if test ! x"$GNUSTEP_PREVIOUS_LAYOUT" = x""; then
-    AC_MSG_RESULT($GNUSTEP_PREVIOUS_LAYOUT)
-    GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_PREVIOUS_LAYOUT"
-  else
-    GNUSTEP_FILESYSTEM_LAYOUT_FILE=native
-  fi
+  AC_MSG_RESULT(not specified... use 'native')
+  GNUSTEP_FILESYSTEM_LAYOUT_FILE=native
 fi
 
 if test x"$GNUSTEP_FILESYSTEM_LAYOUT_FILE" = x"native"; then
@@ -361,7 +350,6 @@ if test x"$GNUSTEP_FILESYSTEM_LAYOUT_FILE" = x"native"; then
     GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple
   else
     case "$target_os" in
-      darwin*)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple ;;
       linux*)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=fhs ;;
       *)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep ;;
     esac
@@ -374,8 +362,6 @@ if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&
   echo "Please check your --with-layout=xxx argument and try again."
   exit 1
 fi
-
-AC_SUBST(GNUSTEP_FILESYSTEM_LAYOUT_FILE)
 
 # Need to do some checks related to building dylibs on darwin.
 GNUSTEP_ABSOLUTE_INSTALL_PATHS=;

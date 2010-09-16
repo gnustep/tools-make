@@ -1,5 +1,16 @@
 2010-09-16  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* GNUstep.conf.in: revert recent changes.
+	* configure.ac: revert last changes and more.
+	* configure: Regenerated.
+	Reverted recent changes, largely to do with remembering filesystem
+	layout preferences.  Nicola pointed out that remembering preferences
+	automatically might not be good, and suggested a different mechanism.
+	That means current code temporarily needs a --with-layout=gnustep for
+	the old behavior on most systems.
+
+2010-09-16  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* configure.ac: Remove extra line accidentally added in preious commit.
 	Improve comments on filesystem layout. Make 'apple' the native layout
 	on the darwin operating system.
