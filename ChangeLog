@@ -1,3 +1,8 @@
+2010-09-22 Riccardo Mottola
+
+	* installation-domains.conf: add defaults for objc2 and
+	systempreferences
+
 2010-09-16  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUstep.conf.in: revert recent changes.
