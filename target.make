@@ -1019,7 +1019,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 OBJ_MERGE_CMD		= \
 	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
-SHARED_CFLAGS     += -fpic -fPIC
+SHARED_CFLAGS     += -fpic -fPIC -std=gnu99
 SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
