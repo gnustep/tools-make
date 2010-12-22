@@ -1521,8 +1521,7 @@ Optional Features:
 
 --enable-objc-nonfragile-abi
    Use the non-fragile ABI for Objective-C.  Use this option if you want
-   to use non-fragile instance variables provided by clang and the new
-   objc runtime.
+   to use non-fragile instance variables provided by clang and libobjc2.
 
 
 --disable-native-objc-exceptions
@@ -1532,7 +1531,7 @@ Optional Features:
    is GCC >= 4.5.0.  Use this option if you do not want to use
    the native Objective-C exception support provided by newer GCC
    compilers, or if you want to enable it with older compilers (where
-   you most likely would need to use a custom libobjc).
+   you would most likely need to use a custom libobjc).
 
 
 --enable-debug-by-default
@@ -6560,8 +6559,8 @@ $as_echo "no: gcc <= 4.3 has lacking runtime support for native exceptions" >&6;
       fi
     fi
     if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
-      { $as_echo "$as_me:$LINENO: result: yes: well supported by the compiler" >&5
-$as_echo "yes: well supported by the compiler" >&6; }
+      { $as_echo "$as_me:$LINENO: result: yes: supported by the compiler" >&5
+$as_echo "yes: supported by the compiler" >&6; }
     fi
     CFLAGS="$CFLAGS_no_exceptions"
     LIBS="$LIBS_no_exceptions"

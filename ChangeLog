@@ -1,3 +1,8 @@
+2010-12-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Tidied up a few messages.
+	* configure: Regenerated.
+
 2010-10-20  Adam Fedor  <fedor@gnu.org>
 
 	* target.make: Add c99 flag for solaris
@@ -43,7 +48,7 @@
 	used in GNUstep.conf so if you don't want the new default you only
 	need to specify --with-layout= the first time you configure/install.
 
-2010-09-10  Nicola Pero  <nicola@nicola.brainstorm.co.uk>
+2010-09-10  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: When threading tests fail with all expected
 	threading flags/libs, do a last attempt with no explicit threading

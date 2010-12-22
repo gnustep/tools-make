@@ -1319,8 +1319,7 @@ AC_SUBST(ac_cv_objc_threaded)
 AC_ARG_ENABLE(objc-nonfragile-abi, [
 --enable-objc-nonfragile-abi
    Use the non-fragile ABI for Objective-C.  Use this option if you want
-   to use non-fragile instance variables provided by clang and the new
-   objc runtime.
+   to use non-fragile instance variables provided by clang and libobjc2.
 ], 
 USE_NONFRAGILE_ABI=$enableval,
 USE_NONFRAGILE_ABI=no)
@@ -1409,7 +1408,7 @@ AC_ARG_ENABLE(native-objc-exceptions, [
    is GCC >= 4.5.0.  Use this option if you do not want to use 
    the native Objective-C exception support provided by newer GCC 
    compilers, or if you want to enable it with older compilers (where
-   you most likely would need to use a custom libobjc).
+   you would most likely need to use a custom libobjc).
 ], 
 USE_OBJC_EXCEPTIONS=$enableval,
 USE_OBJC_EXCEPTIONS=maybe)
@@ -1466,7 +1465,7 @@ int main(int argc, char **argv)
       fi
     fi
     if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
-      AC_MSG_RESULT(yes: well supported by the compiler)
+      AC_MSG_RESULT(yes: supported by the compiler)
     fi
     CFLAGS="$CFLAGS_no_exceptions"
     LIBS="$LIBS_no_exceptions"
