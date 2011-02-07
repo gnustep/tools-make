@@ -139,6 +139,9 @@ INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make \
 INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
                           javadoc.make latex.make texi.make
 
+TEST_FRAMEWORK_FILES = \
+	GNUmakefile.in Testing.h ObjectTesting.h
+
 # Decide which version of the GNUstep.conf file we are going to
 # install; the standard one, or the strict gnustep-make v2 one ?
 ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
@@ -172,7 +175,8 @@ install: generated-files
 		"$(makedir)/Master" \
 		"$(makedir)/Instance" \
 		"$(makedir)/Instance/Shared" \
-		"$(makedir)/Instance/Documentation")
+		"$(makedir)/Instance/Documentation" \
+		"$(makedir)/TestFramework")
 	$(EC)(echo "Installing GNUstep configuration file in $(GNUSTEP_CONFIG_FILE)"; \
 	 "$(srcdir)/mkinstalldirs" "$(GNUSTEP_CONFIG_FILE_DIR)"; \
 	 $(INSTALL_DATA) $(GNUSTEP_DOT_CONF_FILE) "$(GNUSTEP_CONFIG_FILE)")
@@ -219,6 +223,13 @@ install: generated-files
 	   $(INSTALL_DATA) config-noarch.make "$(makedir)"; \
 	   $(INSTALL_DATA) filesystem.make "$(makedir)"; \
 	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
+	$(EC)(echo "Installing Test Framework scripts"; \
+	  $(INSTALL_PROGRAM) -m 755 TestFramework/runtests.sh "$(tooldir)"; \
+	  $(INSTALL_PROGRAM) -m 755 TestFramework/runtest.sh "$(makedir)/TestFramework")
+	$(EC)(echo "Installing Test Framework support files"; \
+	   for f in $(TEST_FRAMEWORK_FILES); do \
+	     $(INSTALL_DATA) "$(srcdir)/TestFramework/$$f" "$(makedir)/TestFramework"; \
+	   done)
 	$(EC)(echo "Installing (and compressing) manpages"; \
 	  "$(srcdir)/mkinstalldirs" "$(mandir)/man1" \
 	                          "$(mandir)/man7"; \
@@ -262,6 +273,8 @@ uninstall:
 	rm -f "$(tooldir)/debugapp"; \
 	rm -f "$(tooldir)/opentool"; \
 	rm -f "$(tooldir)/gnustep-config"; \
+	rm -f "$(tooldir)/runtests.sh"; \
+	rm -f "$(makedir)/TestFramework/runtest.sh"; \
 	for f in $(MAKE_FILES); do \
 	  rm -f "$(makedir)/$$f"; \
 	done
@@ -277,6 +290,9 @@ uninstall:
 	for f in $(INSTANCE_DOC_MAKE_FILES); do \
 	  rm -f "$(makedir)/Instance/Documentation/$$f"; \
 	done
+	for f in $(TEST_FRAMEWORK_FILES); do \
+	  rm -f "$(makedir)/TestFramework/$$f"; \
+	done
 	rm -f "$(makedir)/executable.template"
 	rm -f "$(makedir)/app-wrapper.template"
 	rm -f "$(makedir)/java-executable.template"
@@ -287,6 +303,7 @@ uninstall:
 	rm -f "$(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make"
 	rm -f "$(GNUSTEP_CONFIG_FILE)"
 	-rmdir "$(GNUSTEP_CONFIG_FILE_DIR)"
+	-rmdir "$(makedir)/TestFramework"
 	-rmdir "$(makedir)/Instance/Documentation"
 	-rmdir "$(makedir)/Instance/Shared"
 	-rmdir "$(makedir)/Instance"

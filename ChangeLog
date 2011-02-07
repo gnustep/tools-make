@@ -1,3 +1,22 @@
+2011-01-07  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/example1.m:
+	* TestFramework/example2.m:
+	* TestFramework/example3.m:
+	* TestFramework/example4.m:
+	* TestFramework/example5.m:
+	* TestFramework/example6.m:
+	* TestFramework/example7.m:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/gnustep-tests:
+	* TestFramework/ObjectTesting.h:
+	* TestFramework/README:
+	* TestFramework/runtest.sh:
+	* TestFramework/Testing.h:
+	Test framework scripts, headers, template, examples, documentation
+	* GNUmakefile.in:
+	Altered to install/uninstall test framework.
+
 2010-12-22  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Tidied up a few messages.
