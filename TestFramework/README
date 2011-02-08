@@ -6,7 +6,7 @@ This testsuite is a general framework for testing the core GNUstep
 libraries. Since, in part, we are testing the very basic level of
 an Objective-C runtime, we can't use more complete unit tests, such
 as OCUnit <http://www.sente.ch/software/ocunit/>.
-The aim of this framework is to provide a simple, yet reasonaply
+The aim of this framework is to provide a simple, yet reasonably
 comprehensive regression test mechanism for Objective-C development.
 
 Please run the GNUstep testsuite (using this framework) often, when
@@ -15,7 +15,7 @@ adding new features, fixing bugs and running on new platforms.
 Where working on features common to both Apple's Cocoa/iOS APIs and
 to GNUstep, please try creating and running test cases in the Apple
 environment before implementing/changing GNUstep code, so that you
-are sure the behavior is the same in bioth cases.
+are sure the behavior is the same in both cases.
 
 
 License 
@@ -24,7 +24,7 @@ License
 The testing framework and many of the test cases in the testsuite are
 copyright by the FSF and distributed under the GPL.  However, some tests
 may not be copyright by the FSF, but retain the copyright of the original
-owner (e.g tests submited as bug reports). You should feel free to add tests
+owner (e.g tests submitted as bug reports). You should feel free to add tests
 that are not copyright by the FSF. The copyright of these tests should
 be clearly stated, however, and they should still be distributed under the
 GPL version 3 or later.
@@ -42,7 +42,7 @@ or where a group of tests within a project is to be run:
 
 gnustep-tests base/NSArray
 
-You may run individual test files by using the runtest.sh script with the
+You may run individual test files by using the gnustep-tests script with the
 name(s) of the Objective-C test source file(s):
 
 gnustep-tests base/NSDate/general.m
@@ -68,7 +68,7 @@ You should look at the example test files in the same directory as
 this README for how to write test cases, and you should examine Testing.h
 to see full documentation of the range of macros provided.
 
-The main workhorse of the test framewrk is the pass() function, which has
+The main workhorse of the test framework is the pass() function, which has
 two arguments ... first an integer expression, and second a string
 describing what is being tested.
 The function uses the global variable 'testHopeful' to decide whether a

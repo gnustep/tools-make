@@ -26,7 +26,7 @@ main()
    */
   NEED(PASS_EQUAL(@"hello", @"there", "faulty string equality test"))
 
-  /* Heres a correct string equality test, but it's never reached because
+  /* Here's a correct string equality test, but it's never reached because
    * the earlier test was needed.
    */
   PASS_EQUAL(@"there", @"there", "NSString equality works")

@@ -16,7 +16,7 @@ main()
    */
   testHopeful = YES;
 
-  /* Here we demonstate the NEED macro.  This says that a need must be met
+  /* Here we demonstrate the NEED macro.  This says that a need must be met
    * in order to continue with the set ... if the test does not pass
    * we can't complete the set and we skip to the end.
    */

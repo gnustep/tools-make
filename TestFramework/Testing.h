@@ -49,7 +49,7 @@ static BOOL testPassed __attribute__((unused)) = NO;
  */
 static NSException *testRaised __attribute__((unused)) = nil;
 
-/* The pass() function is the low-level core of the testsuit.
+/* The pass() function is the low-level core of the testsuite.
  *
  * You call this with two arguments ... an integer expression indicating the
  * success or failure of the testcase (0 is a failure) and a string which
@@ -287,7 +287,7 @@ static void unsupported(const char *format, ...)
       unsupported(desc, ## args); \
     }
 
-/* The NEED macro takes a test macro as an arugment and breaks out of a set
+/* The NEED macro takes a test macro as an argument and breaks out of a set
  * and reports it as unresolved if test does not pass.
  */
 #define	NEED(testToTry) \
