@@ -1431,14 +1431,22 @@ if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
     LIBS="$LIBS -shared-libgcc -fexceptions"
     AC_RUN_IFELSE([[
 #include <stdlib.h>
-#include <objc/Object.h>
+@interface Test { id isa; } @end
+@implementation Test
++ (id)new
+{
+  Test *obj = malloc(sizeof(id));
+  obj->isa = self;
+  return obj;
+}
+@end
 
 int main(int argc, char **argv)
 {
-	Object *o=nil;
+	Test *o = 0;
 	@try
 	{
-		o=[Object new];
+		o=[Test new];
 		@throw o;
 	}
 	@catch (id foo)
