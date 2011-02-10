@@ -1,3 +1,9 @@
+2011-02-10 19:06  David Chisnall <theraven@gna.org>
+
+	* tools/make/trunk/configure, tools/make/trunk/configure.ac: Don't
+	  depend on the existence of Object class for checking whether
+	  exceptions work.
+
 2011-01-07  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example1.m:
