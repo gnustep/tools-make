@@ -34,6 +34,8 @@ if test -z "$GNUSTEP_MAKEFILES"; then
     echo "You need to have GNUstep-make installed and set up."
     echo "Did you remember to source GNUstep.sh?"
   else
+    echo "You forgot to set your GNUSTEP_MAKEFILES environment variable."
+    echo "Setting it to $GNUSTEP_MAKEFILES during this test run."
     export GNUSTEP_MAKEFILES
     . $GNUSTEP_MAKEFILES/GNUstep.sh
   fi
@@ -44,12 +46,24 @@ while test $# != 0
 do
   gs_option=
   case $1 in
+    --documentation)
+      echo
+      echo "$0: Script to run the GNUstep testsuite"
+      echo "Usage: gnustep-tests [directory | test1.m [test2.m ...]]"
+      echo "Runs the specified tests, or any in subdirectories of the"
+      echo "current directory if no arguments are given."
+      echo "Use 'gnustep-tests --help' for basic help."
+      echo
+      cat $GNUSTEP_MAKEFILES/TestFramework/README
+      exit 0
+      ;;
     --help | -h)
       echo
       echo "$0: Script to run the GNUstep testsuite"
       echo "Usage: gnustep-tests [directory | test1.m [test2.m ...]]"
       echo "Runs the specified tests, or any in subdirectories of the"
       echo "current directory if no arguments are given."
+      echo "Use 'gnustep-tests --documentation' for full details."
       echo
       echo "Interpreting the output"
       echo "-----------------------"
@@ -63,8 +77,8 @@ do
       echo "COMPLETED:   The number of separate test files which were run."
       echo "COMPILEFAIL: The number of separate test files which failed to run."
       echo "DASHED:      The number of hopes dashed ... tests which did not"
-      echo "             pass, but which were not expected to pass (known"
-      echo "             bugs etc)."
+      echo "             pass, but which were not expected to pass (new code"
+      echo "             beign worked on etc)."
       echo "FAIL:        The number of individual tests failed"
       echo "PASS:        The number of individual tests passed"
       echo "UNRESOLVED:  The number of unresolved tests ... tests which have"

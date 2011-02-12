@@ -54,6 +54,29 @@ cd base
 gnustep-tests 
 
 
+Interpreting the output
+-----------------------
+
+The summary output lists all test failures ... there should not be any.
+If a test fails then either there is a problem in the software being
+tested, or a problem in the test itself. Either way, you should try to
+fix the problem and provide a patch, or at least report it at:
+https://savannah.gnu.org/bugs/?group=gnustep"
+
+After the listing of any failures is a summary of counts of events:
+COMPLETED:   The number of separate test files which were run.
+COMPILEFAIL: The number of separate test files which failed to run.
+DASHED:      The number of hopes dashed ... tests which did not pass, but
+             which were not expected to pass (new code being worked on etc).
+FAIL:        The number of individual tests failed
+PASS:        The number of individual tests passed
+UNRESOLVED:  The number of unresolved tests ... tests which have
+             been omitted because of an earlier failure etc.
+UNSUPPORTED: The number of unsupported tests ... those for features
+             which work on some platforms, but not on yours.
+
+
+
 Writing Tests
 -------------
 
