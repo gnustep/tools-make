@@ -169,7 +169,7 @@ then
       then
         echo COMPLETED: $1 >&2
       else
-        echo FAIL: $1 >&2
+        echo FAIL: $1 CRASHED without running all tests!!>&2
       fi
     else
       echo COMPLETED: $1 >&2
