@@ -50,7 +50,6 @@ do
   case $1 in
     --clean)
       GSCLEAN=YES
-      break
       ;;
     --documentation)
       echo
