@@ -141,11 +141,11 @@ static void unsupported(const char *format, ...)
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       _cond = (int) expression; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      pass(_cond, " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+      pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
     } \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass(0, " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
     printf("%s: %s", [[testRaised name] UTF8String], \
       [[testRaised description] UTF8String]); \
   NS_ENDHANDLER
@@ -171,7 +171,7 @@ static void unsupported(const char *format, ...)
       _obj = ( expression );\
       _cond = _obj == expect || [_obj isEqual: expect]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      pass(_cond, " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+      pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
       if (0 == _cond) \
 	{ \
           NSString  *s = [_obj description]; \
@@ -191,7 +191,7 @@ static void unsupported(const char *format, ...)
     } \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass(0, " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
     printf("%s: %s", [[testRaised name] UTF8String], \
       [[testRaised description] UTF8String]); \
   NS_ENDHANDLER
@@ -207,12 +207,12 @@ static void unsupported(const char *format, ...)
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
     { code; } \
-    pass(0, " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
   NS_HANDLER \
     testRaised = [localException retain]; \
     pass((expectedExceptionName == nil \
       || [[testRaised name] isEqual: expectedExceptionName]), \
-      " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+      "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
     if (NO == [expectedExceptionName isEqual: [testRaised name]]) \
       fprintf(stderr, "Expected '%s' and got '%s'\n", \
         [expectedExceptionName UTF8String], \
@@ -227,10 +227,10 @@ static void unsupported(const char *format, ...)
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
     { code; } \
-    pass(1, " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(1, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass(0, " %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
     printf("%s: %s", [[testRaised name] UTF8String], \
       [[testRaised description] UTF8String]); \
   NS_ENDHANDLER
@@ -279,13 +279,13 @@ static void unsupported(const char *format, ...)
 	      [[localException reason] UTF8String], \
 	      [[[localException userInfo] description] UTF8String]); \
 	  } \
-        unresolved(" %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+        unresolved("%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
      NS_ENDHANDLER \
      testHopeful = save_hopeful; \
     } \
   else \
     { \
-      unsupported(" %s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+      unsupported("%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
     }
 
 /* The NEED macro takes a test macro as an argument and breaks out of a set
