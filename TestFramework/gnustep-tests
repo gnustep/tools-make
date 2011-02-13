@@ -218,6 +218,7 @@ else
       fi
       rm -f GNUmakefile
       rm -rf obj
+      cd $CWD
     else
       echo "--- Running tests in $dir ---"
       TESTS=`find $dir -name \*.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
