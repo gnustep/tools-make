@@ -105,12 +105,15 @@ END_SET() macros.
 You should look at the example test files in the
 $GNUSTEP_MAKEFILES/TestFramework directory
 for how to write test cases, and you should examine Testing.h
-iin the same directory to see full documentation of the range
+in the same directory to see full documentation of the range
 of macros provided.
 
 The main workhorse of the test framework is the pass() function, which has
-two arguments ... first an integer expression, and second a string
-describing what is being tested.
+a variable number of arguments ... first an integer expression, and second
+a printf style format string describing what is being tested.
+If you are calling the function directly you should use "%s,%d" at the
+start of the format string and pass __FILE__ and __LINE__ as the next two
+parameters (for consistency with the test macros).
 The function uses the global variable 'testHopeful' to decide whether a
 test which did not pass is a 'FAIL' (when testHopeful==NO) or a 'DASHED'
 hope (when testHopeful==YES).
@@ -122,6 +125,7 @@ the testsuite as not having run for some reason.
 There are just four test macros.
 All have uppercase names beginning with 'PASS'.
 All wrap test code and a call to the pass() function in exception handlers.
+All provide file name and line number information in the description string.
 All are code blocks and do not need a semicolon terminator.
 
 PASS		passes if an expression resulting in an integer value is
@@ -192,7 +196,7 @@ crashed during the tests and the tests did not complete.
 
 On rare occasions you might actually want a test program to abort this way
 and have it treated as normal completion.  In order to do this you simply
-create an additional fiel with the same name as the test program and a
+create an additional file with the same name as the test program and a
 file extension of '.abort'.
 eg. If myTest.m is expected to crash, you would create myTest.m.abort to have
 that crash treated as a normal test completion.

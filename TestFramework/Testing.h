@@ -63,6 +63,10 @@ static NSException *testRaised __attribute__((unused)) = nil;
  * that instead.  In particular, please use the PASS_EQUAL() macro wherever
  * you wish to test the equality of a pair of objective-c objects.
  *
+ * If you are calling the function directly, please use a format string
+ * beginning "%s:%d" and pass __FILE__ and __LINE__ as the first two arguments
+ * so that this function will print out the location it was called from.
+ *
  * This function is the most efficient option for general use, but
  * please don't use it if there is any change that the evaluation of
  * the expression used as its first argument might cause an exception
