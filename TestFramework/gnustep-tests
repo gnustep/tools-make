@@ -253,7 +253,9 @@ else
     # Look for each type of test result, sort and count the results,
     # append 's' to each summary, then remove the trailing 's' from
     # any summary with only a single result so the output is pretty.
-    grep "^\(Passed test\|Failed test\|Uncompiled file\|Completed file\|Aborted file\|Dashed hope\|Unresolved set\|Unsupported set\):" tests.sum | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/'> tests.tmp
+    # Sort the resulting lines by number of each status with the most
+    # common (hopefully passes) output first.
+    grep "^\(Passed test\|Failed test\|Uncompiled file\|Completed file\|Aborted file\|Dashed hope\|Unresolved set\|Unsupported set\):" tests.sum | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
   else
     echo "No tests found." > tests.tmp
   fi
