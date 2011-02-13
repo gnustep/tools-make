@@ -131,6 +131,8 @@ static void unsupported(const char *format, ...)
 }
 
 /* Tests a code expression which evaluates to an integer value.
+ * The expression may not contain commas unless it is bracketed.
+ * The format must be a literal string printf style format.
  * If the expression evaluates to zero the test does not pass.
  * If the expression causes an exception to be raised, the exception
  * is caught and logged but the test does not pass.
@@ -155,6 +157,9 @@ static void unsupported(const char *format, ...)
   NS_ENDHANDLER
 
 /* Tests a code expression which evaluates to an object value.
+ * The expression may not contain commas unless it is bracketed.
+ * The expected value may not contain commas unless it is bracketed.
+ * The format must be a literal string printf style format.
  *
  * Where the expression evaluates to an object which is identical to
  * the expect value, or where [object isEqual: expect] returns YES,
@@ -206,6 +211,9 @@ static void unsupported(const char *format, ...)
  * or throws the wrong exception, then the code does not pass.
  * You can supply nil for expectedExceptionName if you don't care about the
  * type of exception.
+ * The code fragment may not contain commas unless it is surrounded by
+ * brackets. eg. PASS_EXCEPTION(({code here}), name, "hello")
+ * The format must be a literal string printf style format.
  */
 #define PASS_EXCEPTION(code, expectedExceptionName, format, ...) \
   NS_DURING \
@@ -226,6 +234,9 @@ static void unsupported(const char *format, ...)
 /* Please use the PASS_RUNS() macro to handle any code where you want the
  * code to run to completion without an exception being thrown, but you don't
  * have a particular expression to be checked.
+ * The code fragment may not contain commas unless it is surrounded by
+ * brackets. eg. PASS_EXCEPTION(({code here}), name, "hello")
+ * The format must be a literal string printf style format.
  */
 #define PASS_RUNS(code, format, ...) \
   NS_DURING \
@@ -269,8 +280,8 @@ static void unsupported(const char *format, ...)
 
 
 /* The END_SET() macro terminates a set of grouped tests.  It's argument is
- * a printf style format string and variable arguments to print a message
- * describing the set.
+ * a literal printf style format string and variable arguments to print a
+ * message describing the set.
  */
 #define END_SET(format, ...) \
 	} \

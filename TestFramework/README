@@ -127,6 +127,7 @@ All have uppercase names beginning with 'PASS'.
 All wrap test code and a call to the pass() function in exception handlers.
 All provide file name and line number information in the description string.
 All are code blocks and do not need a semicolon terminator.
+Code fragments must be enclosed in round brackets if they contain commas.
 
 PASS		passes if an expression resulting in an integer value is
 		non-zero

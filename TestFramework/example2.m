@@ -1,4 +1,4 @@
-#import	<ObjectTesting.h>
+#import	<Testing.h>
 
 /* A second test ... your first go at testing with ObjectiveC
  *

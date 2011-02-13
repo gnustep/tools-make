@@ -1,6 +1,22 @@
 2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/Testing.h:
+	* TestFramework/example1.m:
+	* TestFramework/example2.m:
+	* TestFramework/example3.m:
+	* TestFramework/example4.m:
+	* TestFramework/example5.m:
+	* TestFramework/example6.m:
+	* TestFramework/example7.m:
+	* TestFramework/example8.m:
+	* TestFramework/README:
+	* GNUmakefile.in:
+	Fix header file in examples.  Add comments/documentation to explain
+	use of brackets in macro parameters.  Add an example to demonstrate it.
+
+2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h:
 	* TestFramework/gnustep-tests:
 	* TestFramework/runtest.sh:
 	* TestFramework/README:

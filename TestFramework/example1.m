@@ -1,4 +1,4 @@
-#import	<ObjectTesting.h>
+#import	<Testing.h>
 
 /* This is the absolute minimal test program ...
  * a single test case involving plain C and no Objective-C code.

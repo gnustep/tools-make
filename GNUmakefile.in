@@ -142,7 +142,7 @@ INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
 TEST_FRAMEWORK_FILES = \
 	GNUmakefile.in Testing.h ObjectTesting.h README \
 	example1.m example2.m example3.m example4.m example5.m \
-	example6.m example7.m
+	example6.m example7.m example8.m
 
 # Decide which version of the GNUstep.conf file we are going to
 # install; the standard one, or the strict gnustep-make v2 one ?

@@ -1,4 +1,4 @@
-#import	<ObjectTesting.h>
+#import	<Testing.h>
 
 /* A third test ... using test macros.
  *
