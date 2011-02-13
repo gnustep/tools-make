@@ -138,7 +138,7 @@ then
   $MAKE_CMD $MAKEFLAGS messages=yes debug=yes 2>&1
   if [ $? != 0 ]
   then
-    echo COMPILEFAIL: $1 >&2
+    echo "Uncompiled file: $1" >&2
   else
     # We want aggressive memory checking.
 
@@ -161,12 +161,12 @@ then
     then
       if [ -r $NAME.abort ]
       then
-        echo COMPLETED: $1 >&2
+        echo "Completed file:   $1" >&2
       else
-        echo FAIL: $1 CRASHED without running all tests!!>&2
+        echo "Aborted file:     $1 aborted without running all tests!" >&2
       fi
     else
-      echo COMPLETED: $1 >&2
+      echo "Completed file:   $1" >&2
     fi
   fi
 

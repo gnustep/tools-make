@@ -81,7 +81,8 @@ do
       echo
       echo "After the listing of any failures is a summary of counts of events:"
       echo "COMPLETED:   The number of separate test files which were run."
-      echo "COMPILEFAIL: The number of separate test files which failed to run."
+      echo "COMPILEFAIL: The number of separate test files which did not start."
+      echo "ABORTED:     The number of separate test files which failed to run."
       echo "DASHED:      The number of hopes dashed ... tests which did not"
       echo "             pass, but which were not expected to pass (new code"
       echo "             beign worked on etc)."
@@ -161,14 +162,14 @@ run_test_file ()
   cat $CWD/tests.tmp >> $CWD/tests.log
 
   # Extract the summary information and add it to the summary file.
-  grep "^\(PASS\|FAIL\|COMPILEFAIL\|COMPLETED\|DASHED\|UNRESOLVED\|UNSUPPORTED\)" $CWD/tests.tmp > $CWD/tests.sum.tmp
+  grep "^\(Passed test\|Failed test\|Uncompiled file\|Completed file\|Aborted file\|Dashed hope\|Unresolved set\|Unsupported set\):" $CWD/tests.tmp > $CWD/tests.sum.tmp
   cat $CWD/tests.sum.tmp >> $CWD/tests.sum
 
   # If there were failures or unresolved tests then report them...
-  if grep -L "^\(COMPILEFAIL\|FAIL\|UNRESOLVED\)" $CWD/tests.sum.tmp > /dev/null; then
+  if grep -L "^\(Uncompiled file\|Aborted file\|Unresolved set\|Failed test\):" $CWD/tests.sum.tmp > /dev/null; then
     echo
     echo $TESTFILE:
-    grep "^\(COMPILEFAIL\|FAIL\|UNRESOLVED\)" $CWD/tests.sum.tmp
+    grep "^\(Uncompiled file\|Aborted file \|Unresolved set\|Failed test\):" $CWD/tests.sum.tmp
   fi
 }
 
@@ -193,7 +194,6 @@ if [ x"$TESTDIRS" = x ]
 then
   if [ x"$GSCLEAN" = xYES ]
   then
-    rm -f GNUmakefile
     rm -rf obj
   else
     # Run specific individual test files.
@@ -213,10 +213,9 @@ else
       then
         if [ -f GNUmakefile.tests ]
         then
-          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS clean 2>&1
+          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS clean 2>&1 >> $CWD/tests.log
         fi
       fi
-      rm -f GNUmakefile
       rm -rf obj
       cd $CWD
     else
@@ -244,12 +243,17 @@ fi
 
 if [ x"$GSCLEAN" = xYES ]
 then
+  rm -f tests.log
   rm -f tests.sum
 else
   # Make some stats.
   if [ -r tests.sum ]
   then
-    grep "^[A-Z]*:" tests.sum | cut -d: -f1 | sort | uniq -c > tests.tmp
+    # Nasty pipeline of commands ...
+    # Look for each type of test result, sort and count the results,
+    # append 's' to each summary, then remove the trailing 's' from
+    # any summary with only a single result so the output is pretty.
+    grep "^\(Passed test\|Failed test\|Uncompiled file\|Completed file\|Aborted file\|Dashed hope\|Unresolved set\|Unsupported set\):" tests.sum | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/'> tests.tmp
   else
     echo "No tests found." > tests.tmp
   fi

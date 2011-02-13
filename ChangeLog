@@ -1,5 +1,14 @@
 2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* TestFramework/Testing.h:
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
+	* TestFramework/README:
+	Change test status reports to friendlier text.
+	Record file and line number for each test.
+
+2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* TestFramework/gnustep-tests: Add --clean option
 	* TestFramework/README: Describe the fact that we leave the last
 	binary behind so we can easily run gdb.  Also mention --clean

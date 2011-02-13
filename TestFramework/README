@@ -72,8 +72,9 @@ fix the problem and provide a patch, or at least report it at:
 https://savannah.gnu.org/bugs/?group=gnustep"
 
 After the listing of any failures is a summary of counts of events:
-COMPLETED:   The number of separate test files which were run.
-COMPILEFAIL: The number of separate test files which failed to run.
+COMPLETED:   The number of separate test files which were run to completion.
+COMPILEFAIL: The number of separate test files which did not compile and run.
+CRASHED:     The number of separate test files which failed while running.
 DASHED:      The number of hopes dashed ... tests which did not pass, but
              which were not expected to pass (new code being worked on etc).
 FAIL:        The number of individual tests failed
@@ -173,6 +174,28 @@ rather than generating its own make file.
 You may also specify a GNUmakefile.tests in a project level directory (ie one
 containing subdirectories of tests), and that makefile will be executed when
 you run tests on the project.
+
+NB. When you supply custom makefile fragments which build helper programs etc,
+please remember to add an 'after-clean::' target in the makefile to clean up
+your custom files when gnustep-tests is run with the --clean option.
+
+
+Ignoring aborted test files
+---------------------------
+
+When a test file crashes during running, or terminated with some sort of
+failure status (eg the main() function returns a non-zero value) the framework
+treats the test file as having 'aborted' ... it assumes that the program
+crashed during the tests and the tests did not complete.
+
+On rare occasions you might actually want a test program to abort this way
+and have it treated as normal completion.  In order to do this you simply
+create an additional fiel with the same name as the test program and a
+file extension of '.abort'.
+eg. If myTest.m is expected to crash, you would create myTest.m.abort to have
+that crash treated as a normal test completion.
+
+
 
 Ignoring directories
 --------------------
