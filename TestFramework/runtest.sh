@@ -96,12 +96,6 @@ if [ ! -d $DIR ]; then
 fi
 cd $DIR
 DIR=`pwd`
-# Check that we are not in the top level ... where creating a GNUmakefile
-# would trash an existing makefile.
-if [ -f GNUmakefile ]; then
-  echo "Unable to proceed ... a GNUmakefile already exists"
-  exit 1
-fi
 
 if [ ! "$MAKE_CMD" ]
 then
