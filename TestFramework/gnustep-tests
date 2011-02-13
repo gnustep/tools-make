@@ -169,7 +169,7 @@ run_test_file ()
   if grep -L "^\(Uncompiled file\|Aborted file\|Unresolved set\|Failed test\):" $CWD/tests.sum.tmp > /dev/null; then
     echo
     echo $TESTFILE:
-    grep "^\(Uncompiled file\|Aborted file \|Unresolved set\|Failed test\):" $CWD/tests.sum.tmp
+    grep "^\(Uncompiled file\|Aborted file\|Unresolved set\|Failed test\):" $CWD/tests.sum.tmp
   fi
 }
 
