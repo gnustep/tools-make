@@ -70,7 +70,7 @@ do
       echo "Runs the specified tests, or any in subdirectories of the"
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --documentation' for full details."
-      echo "Use 'gnustep-tests --clean' to remove old logs and leftover files.
+      echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
       echo
       echo "Interpreting the output"
       echo "-----------------------"
