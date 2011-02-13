@@ -41,11 +41,17 @@ if test -z "$GNUSTEP_MAKEFILES"; then
   fi
 fi
 
+GSCLEAN=NO
+
 # Argument checking
 while test $# != 0
 do
   gs_option=
   case $1 in
+    --clean)
+      GSCLEAN=YES
+      break
+      ;;
     --documentation)
       echo
       echo "$0: Script to run the GNUstep testsuite"
@@ -64,6 +70,7 @@ do
       echo "Runs the specified tests, or any in subdirectories of the"
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --documentation' for full details."
+      echo "Use 'gnustep-tests --clean' to remove old logs and leftover files.
       echo
       echo "Interpreting the output"
       echo "-----------------------"
@@ -108,6 +115,12 @@ then
   fi
 fi
 export MAKE_CMD
+
+if test $# = 0
+then
+  echo "Checking for presence of test subdirectories ..."
+fi
+
 TEMP=`echo *`
 TESTDIRS=
 for file in $TEMP
@@ -161,7 +174,7 @@ run_test_file ()
 }
 
 
-# Delete the old files.
+# Replace the old files.
 if [ -f tests.log ]
 then
   mv tests.log oldtests.log
@@ -171,51 +184,82 @@ then
   mv tests.sum oldtests.sum
 fi
 
+if [ x"$GSCLEAN" = xYES ]
+then
+  rm -f oldtests.log
+  rm -f oldtests.sum
+fi
+
 if [ x"$TESTDIRS" = x ]
 then
-  # I think we should depreciate this part, but for now...
-  for TESTFILE in $TESTS
-  do
-    run_test_file
-  done
-else
-  for dir in $TESTDIRS
-  do
-    echo "--- Running tests in $dir ---"
-    TESTS=`find $dir -name \*.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
-    # If there is a GNUmakefile.tests in the directory, run it first.
-    # Unless ... we are at the top level, in which case that file is
-    # our template.
-    cd $dir
-    if [ $TOP != `pwd` ]
-    then
-      if [ -f GNUmakefile.tests ]
-      then
-        $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
-      fi
-    fi
-    cd $CWD
+  if [ x"$GSCLEAN" = xYES ]
+  then
+    rm -f GNUmakefile
+    rm -rf obj
+  else
+    # Run specific individual test files.
     for TESTFILE in $TESTS
     do
       run_test_file
     done
+  fi
+else
+  for dir in $TESTDIRS
+  do
+    if [ x"$GSCLEAN" = xYES ]
+    then
+      echo "--- Cleaning tests in $dir ---"
+      cd $dir
+      if [ $TOP != `pwd` ]
+      then
+        if [ -f GNUmakefile.tests ]
+        then
+          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS clean 2>&1
+        fi
+      fi
+      rm -f GNUmakefile
+      rm -rf obj
+    else
+      echo "--- Running tests in $dir ---"
+      TESTS=`find $dir -name \*.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
+      # If there is a GNUmakefile.tests in the directory, run it first.
+      # Unless ... we are at the top level, in which case that file is
+      # our template.
+      cd $dir
+      if [ $TOP != `pwd` ]
+      then
+        if [ -f GNUmakefile.tests ]
+        then
+          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
+        fi
+      fi
+      cd $CWD
+      for TESTFILE in $TESTS
+      do
+        run_test_file
+      done
+    fi
   done
 fi
 
-# Make some stats.
-if [ -r tests.sum ]
+if [ x"$GSCLEAN" = xYES ]
 then
-  grep "^[A-Z]*:" tests.sum | cut -d: -f1 | sort | uniq -c > tests.tmp
+  rm -f tests.sum
 else
-  echo "No tests found." > tests.tmp
+  # Make some stats.
+  if [ -r tests.sum ]
+  then
+    grep "^[A-Z]*:" tests.sum | cut -d: -f1 | sort | uniq -c > tests.tmp
+  else
+    echo "No tests found." > tests.tmp
+  fi
+
+  echo >> tests.sum
+  cat tests.tmp >> tests.sum
+
+  echo
+  cat tests.tmp
 fi
-
-echo >> tests.sum
-cat tests.tmp >> tests.sum
-
-echo
-cat tests.tmp
-
 
 # Delete the temporary file.
 rm -f tests.tmp tests.sum.tmp

@@ -51,7 +51,15 @@ gnustep-tests ./mytest.m base/NSDate/general.m
 Alternatively, you may run tests from within a project/directory. eg.
 
 cd base
-gnustep-tests 
+gnustep-tests .
+
+If you supply no arguments, the gnustep-test script will examine all the
+subdirectories of the current directory, and attempt to run tests in each.
+
+During testing, temporary files are created and removed for each test,
+but any temporary files from the most recent test are left, as are the
+log files.  You can run 'gnustep-tests --clean' to remove left-over
+temporary files and all log files.
 
 
 Interpreting the output
@@ -75,6 +83,12 @@ UNRESOLVED:  The number of unresolved tests ... tests which have
 UNSUPPORTED: The number of unsupported tests ... those for features
              which work on some platforms, but not on yours.
 
+The binary executable of the most recently execute test file is left in
+the obj subdirectory.  So you can easily debug a failed test by:
+1. running gnustep-tests with the single test file as its argument.
+2. running gdb using obj/filename as an argument.
+3. setting a breakpoint at the exact test which failed, running to there,
+4. and then stepping through slowly to see exactly what is going wrong.
 
 
 Writing Tests

@@ -1,3 +1,9 @@
+2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests: Add --clean option
+	* TestFramework/README: Describe the fact that we leave the last
+	binary behind so we can easily run gdb.  Also mention --clean
+
 2011-02-10 19:06  David Chisnall <theraven@gna.org>
 
 	* tools/make/trunk/configure, tools/make/trunk/configure.ac: Don't
