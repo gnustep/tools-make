@@ -6,6 +6,8 @@
 	* TestFramework/README:
 	Change test status reports to friendlier text.
 	Record file and line number for each test.
+	* GNUmakefile.in:
+	install examples.
 
 2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
 

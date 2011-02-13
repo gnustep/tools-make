@@ -102,9 +102,11 @@ actual test code.
 Groups of tests should be placed between calls to the START_SET() and
 END_SET() macros.
 
-You should look at the example test files in the same directory as
-this README for how to write test cases, and you should examine Testing.h
-to see full documentation of the range of macros provided.
+You should look at the example test files in the
+$GNUSTEP_MAKEFILES/TestFramework directory
+for how to write test cases, and you should examine Testing.h
+iin the same directory to see full documentation of the range
+of macros provided.
 
 The main workhorse of the test framework is the pass() function, which has
 two arguments ... first an integer expression, and second a string
