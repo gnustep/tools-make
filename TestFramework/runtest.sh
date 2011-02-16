@@ -134,9 +134,9 @@ then
   # option if needed.
   if [ "$GSTESTMODE" = "failfast" ]
   then
-    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$TOP^" < $TOP/GNUmakefile.in > GNUmakefile.tmp
+    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile.tmp
   else
-    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@//;s^@INCLUDEDIR@^$TOP^" < $TOP/GNUmakefile.in > GNUmakefile.tmp
+    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@//;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile.tmp
   fi
 
   rm -f GNUmakefile.bck

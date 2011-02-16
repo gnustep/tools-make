@@ -261,3 +261,9 @@ which would confuse the test framework at the point when it analyses the
 log ... so you need to avoid starting a line with any of the special
 phrases generated to mark a passed test or a particular type of failure.
 
+If a Summary.sh file is present in a test directory and gnustep-tests is
+used to run just those tests in that directory, the shell script will be
+executed in order to provide the summary of the test results.  In all other
+cases the summary is done by the Summary.sh script provided in the test
+framework.
+

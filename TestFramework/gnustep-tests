@@ -94,6 +94,8 @@ do
   shift
 done
 
+export GSTESTMODE
+
 if [ ! "$MAKE_CMD" ]
 then
   gmake --version > /dev/null 2>&1
@@ -204,6 +206,7 @@ then
   mv tests.sum oldtests.sum
 fi
 
+SUMD=.
 if [ x"$TESTDIRS" = x ]
 then
   # Run specific individual test files.
@@ -218,6 +221,7 @@ then
 else
   for dir in $TESTDIRS
   do
+    SUMD=$dir
     TESTS=`find $dir -name \*.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
 
     # If there are no test files found, we need to print out a message
@@ -264,7 +268,7 @@ fi
 
 if [ "$GSTESTMODE" = "clean" ]
 then
-  rm -f tests.tmp tests.sum.tmp
+  rm -f GNUmakefile.tmp tests.tmp tests.sum.tmp
   rm -f tests.log tests.sum
   rm -f oldtests.log oldtests.sum
 else
@@ -291,83 +295,17 @@ else
   cat tests.tmp
   echo
 
-  grep -q "\(Failed set\|Failed sets\|Failed test\|Failed tests\|Failed build\|Failed build\|Failed file\|Failed files\)$" tests.tmp
-  if [ $? = 1 ]
-  then
-    echo "All OK!"
-
-    grep -q "\(Dashed hope\|Dashed hopes\)$" tests.tmp
-    if [ $? = 0 ]
-    then
-      echo 
-      echo "But we were hoping that even more tests might have passed if"
-      echo "someone had added support for them to the package.  If you"
-      echo "would like to help, please contact the package maintainer."
-    fi
-
-    grep -q "\(Skipped set\|Skipped sets\)$" tests.tmp
-    if [ $? = 0 ]
-    then
-      echo 
-      echo "Even though no tests failed, we had to skip some testing"
-      echo "due to lack of support on your system.  This might be because"
-      echo "some required software library was just not available when the"
-      echo "software was built (in which case you can install that library"
-      echo "and rebuild, then re-run the tests), or the required functions"
-      echo "may not be available on your operating system at all."
-      echo "If you would like to contribute code to add the missing"
-      echo "functionality, please contact the package maintainer."
-    fi
-
-  else
-    if [ "$GSTESTMODE" = "failfast" ]
-    then
-      exit 0
-    fi
-
-    grep -q "\(Failed build\|Failed build\)$" tests.tmp
-    if [ $? = 0 ]
-    then
-      echo
-      echo "Unfortunately we could not even compile all the test programs."
-      echo "This means that the test could not be run properly, and you need"
-      echo "to try to figure out why and fix it or ask for help."
-    fi
-
-    grep -q "\(Failed file\|Failed files\)$" tests.tmp
-    if [ $? = 0 ]
-    then
-      echo
-      echo "Some testing was abandoned when a test program aborted.  This is"
-      echo "generally a severe problem and may nean that the package is"
-      echo "completely unusuable.  You need to try to fix this and, if it's"
-      echo "not due to some problem on your system, please help by submitting"
-      echo "a patch (or at least a bug report) to the package maintainer."
-    fi
-
-    grep -q "\(Failed set\|Failed sets\)$" tests.tmp
-    if [ $? = 0 ]
-    then
-      echo
-      echo "Some set of tests failed.  This could well mean that a large"
-      echo "number of individual tests dis not pass and that there are"
-      echo "severe problems in the software."
-      echo "Please submit a patch to fix the problem or send a bug report to"
-      echo "the package maintainer."
-    fi
-
-    grep -q "\(Failed test\|Failed tests\)$" tests.tmp
-    if [ $? = 0 ]
-    then
-      echo
-      echo "One or more tests failed.  None of them should have."
-      echo "Please submit a patch to fix the problem or send a bug report to"
-      echo "the package maintainer."
-    fi
-  fi
-
-  echo
 fi
+
+# In the case where we ran a single testsuite, we allow the Summary.sh
+# script in that testsuite to generate our summary.
+if [ x"$TESTDIRS" = x"$SUMD" -a -r $SUMD/Summary.sh -a -x $SUMD/Summary.sh ]
+then
+  RUNCMD=$SUMD/Summary.sh
+else
+  RUNCMD=$GNUSTEP_MAKEFILES/TestFramework/Summary.sh
+fi
+$RUNCMD
 
 # Delete the temporary file.
 rm -f tests.tmp tests.sum.tmp

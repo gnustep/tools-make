@@ -1,18 +1,19 @@
 2011-01-16  Richard Frith-Macdonald <rfm@gnu.org>
 
-	* TestFramework/Testing.h:
-	* TestFramework/gnustep-tests:
 	* TestFramework/example1.m:
 	* TestFramework/example2.m:
 	* TestFramework/example3.m:
 	* TestFramework/example4.m:
 	* TestFramework/example5.m:
-	* TestFramework/GNUmakefile.in:
 	* TestFramework/example6.m:
-	* TestFramework/runtest.sh:
-	* TestFramework/README:
 	* TestFramework/example7.m:
 	* TestFramework/example8.m:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/gnustep-tests:
+	* TestFramework/README:
+	* TestFramework/runtest.sh:
+	* TestFramework/Summary.sh:
+	* TestFramework/Testing.h:
 	Further cleanups, corrections, simplifications, and documentation
 	improvements.
 	Added --failfast option to terminate a test run at the first failure.

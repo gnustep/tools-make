@@ -75,6 +75,7 @@ makedir = $(DESTDIR)@GNUSTEP_MAKEFILES@
 mandir  = $(DESTDIR)@GNUSTEP_SYSTEM_DOC_MAN@
 srcdir = @srcdir@
 VPATH = @srcdir@
+testdir=$(makedir)/TestFramework
 
 override GNUSTEP_IS_FLATTENED = @GNUSTEP_IS_FLATTENED@
 override GNUSTEP_TARGET_CPU = @clean_target_cpu@
@@ -178,7 +179,7 @@ install: generated-files
 		"$(makedir)/Instance" \
 		"$(makedir)/Instance/Shared" \
 		"$(makedir)/Instance/Documentation" \
-		"$(makedir)/TestFramework")
+		"$(testdir)")
 	$(EC)(echo "Installing GNUstep configuration file in $(GNUSTEP_CONFIG_FILE)"; \
 	 "$(srcdir)/mkinstalldirs" "$(GNUSTEP_CONFIG_FILE_DIR)"; \
 	 $(INSTALL_DATA) $(GNUSTEP_DOT_CONF_FILE) "$(GNUSTEP_CONFIG_FILE)")
@@ -227,10 +228,11 @@ install: generated-files
 	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
 	$(EC)(echo "Installing Test Framework scripts"; \
 	  $(INSTALL_PROGRAM) -m 755 TestFramework/gnustep-tests "$(tooldir)"; \
-	  $(INSTALL_PROGRAM) -m 755 TestFramework/runtest.sh "$(makedir)/TestFramework")
+	  $(INSTALL_PROGRAM) -m 755 TestFramework/runtest.sh "$(testdir)"; \
+	  $(INSTALL_PROGRAM) -m 755 TestFramework/Summary.sh "$(testdir)")
 	$(EC)(echo "Installing Test Framework support files"; \
 	   for f in $(TEST_FRAMEWORK_FILES); do \
-	     $(INSTALL_DATA) "$(srcdir)/TestFramework/$$f" "$(makedir)/TestFramework"; \
+	     $(INSTALL_DATA) "$(srcdir)/TestFramework/$$f" "$(testdir)"; \
 	   done)
 	$(EC)(echo "Installing (and compressing) manpages"; \
 	  "$(srcdir)/mkinstalldirs" "$(mandir)/man1" \
@@ -276,7 +278,8 @@ uninstall:
 	rm -f "$(tooldir)/opentool"; \
 	rm -f "$(tooldir)/gnustep-config"; \
 	rm -f "$(tooldir)/gnustep-tests"; \
-	rm -f "$(makedir)/TestFramework/runtest.sh"; \
+	rm -f "$(testdir)/runtest.sh"; \
+	rm -f "$(testdir)/Summary.sh"; \
 	for f in $(MAKE_FILES); do \
 	  rm -f "$(makedir)/$$f"; \
 	done
@@ -293,7 +296,7 @@ uninstall:
 	  rm -f "$(makedir)/Instance/Documentation/$$f"; \
 	done
 	for f in $(TEST_FRAMEWORK_FILES); do \
-	  rm -f "$(makedir)/TestFramework/$$f"; \
+	  rm -f "$(testdir)/$$f"; \
 	done
 	rm -f "$(makedir)/executable.template"
 	rm -f "$(makedir)/app-wrapper.template"
@@ -305,7 +308,7 @@ uninstall:
 	rm -f "$(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make"
 	rm -f "$(GNUSTEP_CONFIG_FILE)"
 	-rmdir "$(GNUSTEP_CONFIG_FILE_DIR)"
-	-rmdir "$(makedir)/TestFramework"
+	-rmdir "$(testdir)"
 	-rmdir "$(makedir)/Instance/Documentation"
 	-rmdir "$(makedir)/Instance/Shared"
 	-rmdir "$(makedir)/Instance"
