@@ -3,7 +3,7 @@
 /* A second test ... your first go at testing with ObjectiveC
  *
  * If you run the test with 'gnustep-tests example2.m' it should
- * report a single test file completed and two test passes.
+ * report two test passes.
  */
 int
 main()

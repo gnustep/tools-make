@@ -95,6 +95,12 @@ static void pass(int testPassed, const char *format, ...)
   vfprintf(stderr, format, args);
   fprintf(stderr, "\n");
   va_end(args);
+#if	defined(FAILFAST)
+  if (NO == testPassed && NO == testHopeful)
+    {
+      exit(1);	// Abandon testing now.
+    }
+#endif
 }
 
 /* The unresolved() function is called with a single string argument to
@@ -109,10 +115,13 @@ static void unresolved(const char *format, ...)
 {
   va_list args;
   va_start(args, format);
-  fprintf(stderr, "Unresolved set:  ");
+  fprintf(stderr, "Failed set:      ");
   vfprintf(stderr, format, args);
   fprintf(stderr, "\n");
   va_end(args);
+#if	defined(FAILFAST)
+  exit(1);	// Abandon testing now.
+#endif
 }
 
 /* The unsupported() function is called with a single string argument to
@@ -124,7 +133,7 @@ static void unsupported(const char *format, ...)
 {
   va_list args;
   va_start(args, format);
-  fprintf(stderr, "Unsupported set: ");
+  fprintf(stderr, "Skipped set:     ");
   vfprintf(stderr, format, args);
   fprintf(stderr, "\n");
   va_end(args);
@@ -304,7 +313,7 @@ static void unsupported(const char *format, ...)
     }
 
 /* The NEED macro takes a test macro as an argument and breaks out of a set
- * and reports it as unresolved if test does not pass.
+ * and reports it as failed if the test does not pass.
  */
 #define	NEED(testToTry) \
   testToTry \

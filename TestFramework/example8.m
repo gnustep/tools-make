@@ -4,7 +4,7 @@
 /* An eighth test ... complex code fragments
  *
  * If you run the test with 'gnustep-tests example8.m' it should
- * report a single test file completed, one test pass.
+ * report one test pass.
  */
 int
 main()

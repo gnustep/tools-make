@@ -3,8 +3,7 @@
 /* A seventh test ... nesting sets.
  *
  * If you run the test with 'gnustep-tests example7.m' it should
- * report a single test file completed, one test fail, two test passes,
- * and one set unresolved.
+ * report a one test fail, two test passes, and one set failed.
  */
 int
 main()

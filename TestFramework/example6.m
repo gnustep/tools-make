@@ -3,8 +3,7 @@
 /* A sixth test ... need.
  *
  * If you run the test with 'gnustep-tests example6.m' it should
- * report a single test file completed, one hope dashed, one test pass,
- * and one set unresolved.
+ * report one hope dashed, one test pass, and one set failed.
  */
 int
 main()

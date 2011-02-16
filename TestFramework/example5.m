@@ -3,8 +3,7 @@
 /* A fifth test ... hope.
  *
  * If you run the test with 'gnustep-tests example5.m' it should
- * report a single test file completed, one hope dashed, two test passes,
- * and one set unresolved.
+ * report one hope dashed and two test passes.
  */
 int
 main()

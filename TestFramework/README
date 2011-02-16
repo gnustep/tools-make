@@ -71,18 +71,32 @@ tested, or a problem in the test itself. Either way, you should try to
 fix the problem and provide a patch, or at least report it at:
 https://savannah.gnu.org/bugs/?group=gnustep"
 
-After the listing of any failures is a summary of counts of events:
-COMPLETED:   The number of separate test files which were run to completion.
-COMPILEFAIL: The number of separate test files which did not compile and run.
-CRASHED:     The number of separate test files which failed while running.
-DASHED:      The number of hopes dashed ... tests which did not pass, but
-             which were not expected to pass (new code being worked on etc).
-FAIL:        The number of individual tests failed
-PASS:        The number of individual tests passed
-UNRESOLVED:  The number of unresolved tests ... tests which have
-             been omitted because of an earlier failure etc.
-UNSUPPORTED: The number of unsupported tests ... those for features
-             which work on some platforms, but not on yours.
+After the listing of any failures is a summary of counts of events as follows.
+
+Passed tests:
+  The number of individual tests which passed.
+
+Failed tests:
+  The number of individual tests failed ... this should really not appear.
+
+Failed builds:
+  The number of separate test files which did not even build/compile.
+
+Failed files:
+  The number of separate test files which failed while running.
+
+Dashed hopes:
+  The number of hopeful tests which did not pass, but
+  which were not expected to pass (new code being worked on etc).
+
+Failed sets:
+  The number of sets of tests which have been abandoned part way through
+  because of some individual test failure or an exception in support code
+  between tests.
+
+Skipped sets:
+  The number of sets of tests whch were skipped entirely ...
+  eg. those for features which work on some platforms, but not on yours.
 
 The binary executable of the most recently execute test file is left in
 the obj subdirectory.  So you can easily debug a failed test by:
@@ -91,6 +105,11 @@ the obj subdirectory.  So you can easily debug a failed test by:
 3. setting a breakpoint at the exact test which failed, running to there,
 4. and then stepping through slowly to see exactly what is going wrong.
 
+You can use the --failfast option with gnustep-tests to tell it to abandon
+testing after the first failure ... in which case you know that the
+executable of the failed test will be available (unless the test file
+failed to even compile of course).  In this case, any core dump file will
+also be left available.
 
 Writing Tests
 -------------
@@ -175,8 +194,17 @@ all the tests in a suite to use a common makefile fragment which can (for
 instance) build common resources before any tests are run.
 
 For total control, the runtest.sh script checks to see if a 'Custom.mk' file
-exists in the directory, and if it does it uses that file to build the tests
-rather than generating its own make file.
+exists in the directory, and if it does it uses that file as the template to
+build the tests rather than using its own make file. The custom makefile
+should use @TESTNAME@ where it wants the name of the test to be built/run,
+@INCLUDEDIR@ where it wants the name of the include directory for test
+framework headers, @FILENAME@ where it wants the name of the source file,
+and @FAILFAST@ where it wants the '-DFAILFAST=1' to be substituted (if
+gnustep-test was invoked with the --failfast option).
+The Custom.mk script should build the test named @TESTNAME@ when it is
+invoked without a target, but it should also implement a 'test' target to
+run the most recently built test and a 'clean' target to clean up after
+all tests.
 
 You may also specify a GNUmakefile.tests in a project level directory (ie one
 containing subdirectories of tests), and that makefile will be executed when
@@ -187,21 +215,20 @@ please remember to add an 'after-clean::' target in the makefile to clean up
 your custom files when gnustep-tests is run with the --clean option.
 
 
-Ignoring aborted test files
----------------------------
+Ignoring failed test files
+--------------------------
 
-When a test file crashes during running, or terminated with some sort of
+When a test file crashes during running, or terminates with some sort of
 failure status (eg the main() function returns a non-zero value) the framework
-treats the test file as having 'aborted' ... it assumes that the program
+treats the test file as having failed ... it assumes that the program
 crashed during the tests and the tests did not complete.
 
 On rare occasions you might actually want a test program to abort this way
 and have it treated as normal completion.  In order to do this you simply
 create an additional file with the same name as the test program and a
 file extension of '.abort'.
-eg. If myTest.m is expected to crash, you would create myTest.m.abort to have
+eg. If myTest.m is expected to crash, you would create myTest.abort to have
 that crash treated as a normal test completion.
-
 
 
 Ignoring directories
@@ -214,4 +241,23 @@ file causes a directory to be ignored.  This is useful in conjunction
 with ../GNUmakefile.super so that projects to build resources for other tests
 can be ignored by the scripts running the tests, and just built as required
 by ../GNUmakefile.super
+
+
+Providing extra information
+---------------------------
+
+If a README file is present in a test directory, it will be added to the
+logs of the test framework at the point when tests in that directory are
+runs.  It will therefore be clearly noticable to anyone examining the log
+after a testrun, and could contain useful information for debugging.
+
+If an URGENT file is present, its contents will be added to the logs like
+those of a README, but it will also be displayed to the person running the
+tests.  As this is very intrusive, you should only use it if it is really
+important theat the person running the testsuite should have the information.
+
+In both cases, you must make sure that the file does not contain anything
+which would confuse the test framework at the point when it analyses the
+log ... so you need to avoid starting a line with any of the special
+phrases generated to mark a passed test or a particular type of failure.
 

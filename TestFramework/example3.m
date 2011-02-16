@@ -3,7 +3,7 @@
 /* A third test ... using test macros.
  *
  * If you run the test with 'gnustep-tests example3.m' it should
- * report a single test file completed, two test passes, and a test fail.
+ * report two test passes, and a test fail.
  */
 
 /* Import a header because we want to use a method from it.

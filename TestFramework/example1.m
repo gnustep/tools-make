@@ -4,7 +4,7 @@
  * a single test case involving plain C and no Objective-C code.
  * 
  * If you run the test with 'gnustep-tests example1.m' it should
- * report a single test file completed and a single test pass
+ * report a single test pass
  */
 int
 main()

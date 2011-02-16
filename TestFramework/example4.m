@@ -3,7 +3,7 @@
 /* A fourth test ... testing for an exception.
  *
  * If you run the test with 'gnustep-tests example4.m' it should
- * report a single test file completed, three test passes.
+ * report three test passes.
  */
 
 /* Import a header because we want to use a method from it.

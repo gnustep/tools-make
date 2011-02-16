@@ -88,6 +88,8 @@ if test -z "$GNUSTEP_MAKEFILES"; then
   fi
 fi
 
+TOP=$GNUSTEP_MAKEFILES/TestFramework
+
 # Move to the test's directory.
 DIR=`dirname $1`
 if [ ! -d $DIR ]; then
@@ -111,23 +113,38 @@ NAME=`basename $1`
 
 if [ ! -f IGNORE ] 
 then
+
+  # remove any leftover makefile from a previous test
+  rm -f GNUmakefile.tmp
+
   # Remove the extension, if there is one. If there is no extension, add
   # .obj .
   TESTNAME=`echo $NAME | sed -e"s/^\([^.]*\)$/\1.obj./;s/\.[^.]*//g"`
 
-  # Check for a custom makefile, if it exists use it.
+  # Check for a custom makefile template, if it exists use it.
   if [ -r Custom.mk ]
   then
-    if [ $NAME = "Custom.mk" ] 
-    then
-      echo "include Custom.mk" >>GNUmakefile
-    else
-      exit 0
-    fi
+    TEMPLATE=Custom.mk
   else
-    # Create the GNUmakefile by filling in the name of the test.
-    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s^@INCLUDEDIR@^$TOP^" < $TOP/GNUmakefile.in > GNUmakefile
+    TEMPLATE=$TOP/GNUmakefile.in
   fi
+
+  # Create the GNUmakefile by filling in the name of the test,
+  # the name of the file, the include directory, and the failfast
+  # option if needed.
+  if [ "$GSTESTMODE" = "failfast" ]
+  then
+    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$TOP^" < $TOP/GNUmakefile.in > GNUmakefile.tmp
+  else
+    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@//;s^@INCLUDEDIR@^$TOP^" < $TOP/GNUmakefile.in > GNUmakefile.tmp
+  fi
+
+  rm -f GNUmakefile.bck
+  if [ -e GNUmakefile ]
+  then
+    mv GNUmakefile GNUmakefile.bck
+  fi
+  mv GNUmakefile.tmp GNUmakefile
 
   # Clean up to avoid contamination by previous tests. (Optimistically) assume
   # that	this will never fail in any interesting way.
@@ -135,10 +152,19 @@ then
 
   # Compile it. Redirect errors to stdout so it shows up in the log, but not
   # in the summary.
-  $MAKE_CMD $MAKEFLAGS messages=yes debug=yes 2>&1
+  $MAKE_CMD $MAKEFLAGS debug=yes 2>&1
   if [ $? != 0 ]
   then
-    echo "Uncompiled file: $1" >&2
+    echo "Failed build:     $1" >&2
+    if [ "$GSTESTMODE" = "failfast" ]
+    then
+      mv GNUmakefile GNUmakefile.tmp
+      if [ -e GNUmakefile.bck ]
+      then
+        mv GNUmakefile.bck GNUmakefile
+      fi
+      exit 1
+    fi
   else
     # We want aggressive memory checking.
 
@@ -163,17 +189,29 @@ then
       then
         echo "Completed file:   $1" >&2
       else
-        echo "Aborted file:     $1 aborted without running all tests!" >&2
+        echo "Failed file:      $1 aborted without running all tests!" >&2
+        if [ "$GSTESTMODE" = "failfast" ]
+        then
+          mv GNUmakefile GNUmakefile.tmp
+          if [ -e GNUmakefile.bck ]
+          then
+            mv GNUmakefile.bck GNUmakefile
+          fi
+          exit 1
+        fi
       fi
     else
       echo "Completed file:   $1" >&2
     fi
   fi
 
-  rm -f GNUmakefile
+  # Restore any old makefile
+  mv GNUmakefile GNUmakefile.tmp
+  if [ -e GNUmakefile.bck ]
+  then
+    mv GNUmakefile.bck GNUmakefile
+  fi
 
-  # Clean up to avoid contaminating later tests. (Optimistically) assume that
-  # this will never fail in any interesting way.
+  # Clean up any core dump.
   rm -f core
-  #$MAKE_CMD clean >/dev/null 2>&1
 fi
