@@ -182,6 +182,10 @@ run_test_file ()
     export GSTESTMODE
     $RUNCMD $run_args $TESTFILE > $CWD/tests.tmp 2>&1
     RUNEXIT=$?
+    if [ "$RUNEXIT" != "2" ]
+    then
+      echo "Failed file:      $TESTFILE" >>$CWD/tests.tmp
+    fi
 
     # Add the information to the detailed log.
     cat $CWD/tests.tmp >> $CWD/tests.log
@@ -221,10 +225,6 @@ then
     run_test_file
     if [ "$RUNEXIT" != "0" ]
     then
-      if [ "$RUNEXIT" != "2" ]
-      then
-        echo "Failed file:      $TESTFILE" >&2
-      fi
       break
     fi
   done
@@ -270,10 +270,6 @@ else
       run_test_file
       if [ "$RUNEXIT" != "0" ]
       then
-        if [ "$RUNEXIT" != "2" ]
-        then
-          echo "Failed file:      $TESTFILE" >&2
-        fi
         break
       fi
     done
