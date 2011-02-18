@@ -144,6 +144,35 @@ OWD=
 RUNCMD=$GNUSTEP_MAKEFILES/TestFramework/runtest.sh
 RUNEXIT=0
 
+# Function for platforms where grep can't search for multiple patterns.
+extract()
+{
+  f=$1
+  shift
+  while test $# != 0
+  do
+    grep "$1" "$f"
+    shift
+  done
+}
+
+# Function for platforms where grep can't search for multiple patterns.
+present()
+{
+  f=$1
+  shift
+  while test $# != 0
+  do
+    grep "$1" "$f" >/dev/null
+    if [ $? = "0" ]
+    then
+      return 0
+    fi
+    shift
+  done
+  return 1
+}
+
 run_test_file ()
 {
   sub=`dirname $TESTFILE`
@@ -191,16 +220,15 @@ run_test_file ()
     cat $CWD/tests.tmp >> $CWD/tests.log
 
     # Extract the summary information and add it to the summary file.
-    grep "^\(Passed test\|Failed test\|Failed build\|Completed file\|Failed file\|Dashed hope\|Failed set\|Skipped set\):" $CWD/tests.tmp > $CWD/tests.sum.tmp
+    extract $CWD/tests.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $CWD/tests.sum.tmp
     cat $CWD/tests.sum.tmp >> $CWD/tests.sum
 
     # If there were failures or unresolved tests then report them...
-    grep "^\(Failed build\|Failed file\|Failed set\|Failed test\):" $CWD/tests.sum.tmp 2>/dev/null >/dev/null
-    if [ $? = "0" ]
+    if present $CWD/tests.sum.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     then
       echo
       echo $TESTFILE:
-      grep "^\(Failed build\|Failed file\|Failed set\|Failed test\):" $CWD/tests.sum.tmp
+      extract $CWD/tests.sum.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     fi
   fi
 }
@@ -293,7 +321,7 @@ else
     # common (hopefully passes) output first.
     # NB. we omit the 'Completed file' tests as uninteresting ... users
     # generally only want to see the total pass count and any problems.
-    grep "^\(Passed test\|Failed test\|Failed build\|Failed file\|Dashed hope\|Failed set\|Skipped set\):" tests.sum | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
+    extract tests.sum "^Passed test:" "^Failed test:" "^Failed build:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
   else
     echo "No tests found." > tests.tmp
   fi
