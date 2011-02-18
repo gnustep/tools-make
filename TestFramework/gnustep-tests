@@ -196,7 +196,7 @@ run_test_file ()
 
     # If there were failures or unresolved tests then report them...
     grep "^\(Failed build\|Failed file\|Failed set\|Failed test\):" $CWD/tests.sum.tmp 2>/dev/null >/dev/null
-    if [ $? = "1" ]
+    if [ $? = "0" ]
     then
       echo
       echo $TESTFILE:
