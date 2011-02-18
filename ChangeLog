@@ -1,8 +1,10 @@
 2011-01-18  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* gnustep-config.in:
 	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
 	* TestFramework/Summary.sh:
-	Tweak use of grep for portability
+	Tweak use of grep for portability.  Try to locate gnu make reliably.
 
 2011-01-16  Richard Frith-Macdonald <rfm@gnu.org>
 

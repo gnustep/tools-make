@@ -59,6 +59,7 @@ if [ "$1" = "--help" ]; then
     echo "                variable.  Here is a list of possible"
     echo "                variables:"
     echo
+    echo "    --variable=GNUMAKE"
     echo "    --variable=GNUSTEP_MAKEFILES"
     echo "    --variable=GNUSTEP_USER_DEFAULTS_DIR"
     echo "    --variable=GNUSTEP_HOST"
@@ -151,6 +152,8 @@ export GNUSTEP_MAKEFILES
 #
 case "$1" in
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
+              exit 0;;
+  --variable=GNUMAKE) echo "@GNUMAKE@"
               exit 0;;
   --objc-flags) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
               exit 0;;

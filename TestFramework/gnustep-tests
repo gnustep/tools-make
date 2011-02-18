@@ -98,12 +98,16 @@ export GSTESTMODE
 
 if [ ! "$MAKE_CMD" ]
 then
-  gmake --version > /dev/null 2>&1
-  if [ $? = 0 ]
+  MAKE_CMD=`gnustep-config --variable=GNUMAKE`
+  $MAKE_CMD --version > /dev/null 2>&1
+  if [ $? != 0 ]
   then
     MAKE_CMD=gmake
-  else
-    MAKE_CMD=make
+    $MAKE_CMD --version > /dev/null 2>&1
+    if [ $? != 0 ]
+    then
+      MAKE_CMD=make
+    fi
   fi
 fi
 export MAKE_CMD

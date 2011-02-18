@@ -101,11 +101,16 @@ DIR=`pwd`
 
 if [ ! "$MAKE_CMD" ]
 then
-  MAKE_CMD=gmake
+  MAKE_CMD=`gnustep-config --variable=GNUMAKE`
   $MAKE_CMD --version > /dev/null 2>&1
   if [ $? != 0 ]
   then
-    MAKE_CMD=make
+    MAKE_CMD=gmake
+    $MAKE_CMD --version > /dev/null 2>&1
+    if [ $? != 0 ]
+    then
+      MAKE_CMD=make
+    fi
   fi
 fi
 
