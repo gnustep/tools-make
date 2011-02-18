@@ -221,6 +221,10 @@ then
     run_test_file
     if [ "$RUNEXIT" != "0" ]
     then
+      if [ "$RUNEXIT" != "2" ]
+      then
+        echo "Failed file:      $TESTFILE" >&2
+      fi
       break
     fi
   done
@@ -266,6 +270,10 @@ else
       run_test_file
       if [ "$RUNEXIT" != "0" ]
       then
+        if [ "$RUNEXIT" != "2" ]
+        then
+          echo "Failed file:      $TESTFILE" >&2
+        fi
         break
       fi
     done
