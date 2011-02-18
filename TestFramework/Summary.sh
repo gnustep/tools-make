@@ -18,12 +18,12 @@ then
   exit 0
 fi
 
-grep -q "\(Failed set\|Failed sets\|Failed test\|Failed tests\|Failed build\|Failed build\|Failed file\|Failed files\)$" tests.sum
+grep "\(Failed set\|Failed sets\|Failed test\|Failed tests\|Failed build\|Failed build\|Failed file\|Failed files\)$" tests.sum >/dev/null
 if [ $? = 1 ]
 then
   echo "All OK!"
 
-  grep -q "\(Dashed hope\|Dashed hopes\)$" tests.sum
+  grep "\(Dashed hope\|Dashed hopes\)$" tests.sum >/dev/null
   if [ $? = 0 ]
   then
     echo 
@@ -32,7 +32,7 @@ then
     echo "would like to help, please contact the package maintainer."
   fi
 
-  grep -q "\(Skipped set\|Skipped sets\)$" tests.sum
+  grep "\(Skipped set\|Skipped sets\)$" tests.sum >/dev/null
   if [ $? = 0 ]
   then
     echo 
@@ -52,7 +52,7 @@ else
     exit 0
   fi
 
-  grep -q "\(Failed build\|Failed build\)$" tests.sum
+  grep "\(Failed build\|Failed build\)$" tests.sum >/dev/null
   if [ $? = 0 ]
   then
     echo
@@ -61,7 +61,7 @@ else
     echo "to try to figure out why and fix it or ask for help."
   fi
 
-  grep -q "\(Failed file\|Failed files\)$" tests.sum
+  grep "\(Failed file\|Failed files\)$" tests.sum >/dev/null
   if [ $? = 0 ]
   then
     echo
@@ -72,7 +72,7 @@ else
     echo "a patch (or at least a bug report) to the package maintainer."
   fi
 
-  grep -q "\(Failed set\|Failed sets\)$" tests.sum
+  grep "\(Failed set\|Failed sets\)$" tests.sum >/dev/null
   if [ $? = 0 ]
   then
     echo
@@ -83,7 +83,7 @@ else
     echo "the package maintainer."
   fi
 
-  grep -q "\(Failed test\|Failed tests\)$" tests.sum
+  grep "\(Failed test\|Failed tests\)$" tests.sum >/dev/null
   if [ $? = 0 ]
   then
     echo

@@ -1,3 +1,9 @@
+2011-01-18  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/Summary.sh:
+	Tweak use of grep for portability
+
 2011-01-16  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example1.m:

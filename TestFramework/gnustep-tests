@@ -187,7 +187,9 @@ run_test_file ()
     cat $CWD/tests.sum.tmp >> $CWD/tests.sum
 
     # If there were failures or unresolved tests then report them...
-    if grep -L "^\(Failed build\|Failed file\|Failed set\|Failed test\):" $CWD/tests.sum.tmp > /dev/null; then
+    grep "^\(Failed build\|Failed file\|Failed set\|Failed test\):" $CWD/tests.sum.tmp 2>/dev/null >/dev/null
+    if [ $? = "0" ]
+    then
       echo
       echo $TESTFILE:
       grep "^\(Failed build\|Failed file\|Failed set\|Failed test\):" $CWD/tests.sum.tmp
