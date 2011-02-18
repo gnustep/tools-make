@@ -182,9 +182,9 @@ run_test_file ()
     export GSTESTMODE
     $RUNCMD $run_args $TESTFILE > $CWD/tests.tmp 2>&1
     RUNEXIT=$?
-    if [ "$RUNEXIT" != "2" ]
+    if [ "$RUNEXIT" = "1" ]
     then
-      echo "Failed file:      $TESTFILE" >>$CWD/tests.tmp
+      echo "Failed file:      $TESTFILE" >> $CWD/tests.tmp
     fi
 
     # Add the information to the detailed log.
@@ -196,7 +196,7 @@ run_test_file ()
 
     # If there were failures or unresolved tests then report them...
     grep "^\(Failed build\|Failed file\|Failed set\|Failed test\):" $CWD/tests.sum.tmp 2>/dev/null >/dev/null
-    if [ $? = "0" ]
+    if [ $? = "1" ]
     then
       echo
       echo $TESTFILE:
