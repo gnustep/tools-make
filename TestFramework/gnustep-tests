@@ -95,6 +95,12 @@ do
 done
 
 export GSTESTMODE
+GSTESTDIR=`pwd`
+export GSTESTDIR
+GSTESTLOG=$GSTESTDIR/tests.log
+export GSTESTLOG
+GSTESTSUM=$GSTESTDIR/tests.sum
+export GSTESTSUM
 
 if test ! "$MAKE_CMD"
 then
@@ -139,8 +145,6 @@ then
   fi
 fi
 
-CWD=`pwd`
-OWD=
 RUNCMD=$GNUSTEP_MAKEFILES/TestFramework/runtest.sh
 RUNEXIT=0
 
@@ -175,60 +179,33 @@ present()
 
 run_test_file ()
 {
-  sub=`dirname $TESTFILE`
-  if test "x$OWD" != "x$sub"
-  then
-    OWD=$sub
-    if test "$GSTESTMODE" = "clean"
-    then
-      echo "--- Cleaning tests in $sub ---"
-      rm -rf $sub/GNUmakefile.tmp $sub/obj $sub/core
-      rm -rf $sub/tests.tmp $sub/tests.sum.tmp
-      rm -rf $sub/tests.log $sub/tests.sum
-      rm -rf $sub/oldtests.log $sub/oldtests.sum
-    else
-      echo "--- Running tests in $sub ---"
-      echo "--- Running tests in $sub ---" >> $CWD/tests.log
-      if test -r $dir/URGENT
-      then
-	cat $dir/URGENT
-	cat $dir/URGENT >> $CWD/tests.log
-      fi
-      if test -r $dir/README
-      then
-	cat $dir/README >> $CWD/tests.log
-      fi
-    fi
-  fi
-
   if test "$GSTESTMODE" != "clean"
   then
-    echo >> $CWD/tests.log
-    echo Testing $TESTFILE... >> $CWD/tests.log
-    echo >> $CWD/tests.sum
+    echo >> $GSTESTLOG
+    echo Testing $TESTFILE... >> $GSTESTLOG
+    echo >> $GSTESTSUM
 
     # Run the test. Log everything to a temporary file.
-    export GSTESTMODE
-    $RUNCMD $run_args $TESTFILE > $CWD/tests.tmp 2>&1
+    $RUNCMD $run_args $TESTFILE > $GWSTESTLOG.tmp 2>&1
     RUNEXIT=$?
     if test "$RUNEXIT" != "0" -a "$RUNEXIT" != "99"
     then
-      echo "Failed script:   $TESTFILE" >> $CWD/tests.tmp
+      echo "Failed script:   $TESTFILE" >> $GWSTESTLOG.tmp
     fi
 
     # Add the information to the detailed log.
-    cat $CWD/tests.tmp >> $CWD/tests.log
+    cat $GWSTESTLOG.tmp >> $GSTESTLOG
 
     # Extract the summary information and add it to the summary file.
-    extract $CWD/tests.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Failed script:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $CWD/tests.sum.tmp
-    cat $CWD/tests.sum.tmp >> $CWD/tests.sum
+    extract $GWSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Failed script:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
+    cat $GSTESTSUM.tmp >> $GSTESTSUM
 
     # If there were failures or unresolved tests then report them...
-    if present $CWD/tests.sum.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+    if present $GSTESTSUM.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     then
       echo
       echo $TESTFILE:
-      extract $CWD/tests.sum.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+      extract $GSTESTSUM.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     fi
   fi
 }
@@ -257,56 +234,90 @@ then
     fi
   done
 else
-  for dir in $TESTDIRS
+  for TESTDIR in $TESTDIRS
   do
-    SUMD=$dir
-    TESTS=`find $dir -name \*.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
-
-    # If there are no test files found, we need to print out a message
-    # at this level to let people know we processed the directory.
-    if test "x$TESTS" = "x"
+    found=no
+    # Get the names of all subdirectories containing source files.
+    SRCDIRS=`find $TESTDIR -name \*.m | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+    if test x"$SRCDIRS" = x
     then
+      continue
+    fi
+    SUMD=$TESTDIR
+    for dir in $SRCDIRS
+    do
+      if test -f $dir/IGNORE
+      then
+        continue
+      fi
+      found=yes
+      cd $dir
+
       if test "$GSTESTMODE" = "clean"
       then
         echo "--- Cleaning tests in $dir ---"
+        rm -rf core obj GNUmakefile.tmp tests.tmp tests.sum.tmp
+        rm -f tests.log tests.sum
+        rm -f oldtests.log oldtests.sum
       else
         echo "--- Running tests in $dir ---"
-        echo "--- Running tests in $dir ---" >> $CWD/tests.log
-        if test -r $dir/URGENT
+	if test -r ./Start.sh -a -x ./Start.sh
 	then
-	  cat $dir/URGENT
-	  cat $dir/URGENT >> $CWD/tests.log
+	  ./Start.sh
 	fi
-        if test -r $dir/README
+      fi
+
+      TESTS=`echo *.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
+      # If there is a GNUmakefile.tests in the directory, run it first.
+      if test -f GNUmakefile.tests
+      then
+        if test "$GSTESTMODE" = "clean"
         then
-	  cat $dir/README >> $CWD/tests.log
+          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS clean 2>&1
+	else
+          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
         fi
       fi
-    fi
 
-    # If there is a GNUmakefile.tests in the directory, run it first.
-    cd $dir
-    if test -f GNUmakefile.tests
-    then
-      $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
-    fi
+      # Now we process each test file in turn.
+      for TESTFILE in $TESTS
+      do
+	run_test_file
+	if test "$RUNEXIT" != "0"
+	then
+	  break
+	fi
+      done
 
-    # Now we process each test file in turn.
-    cd $CWD
-    for TESTFILE in $TESTS
-    do
-      run_test_file
+      if test "$GSTESTMODE" != "clean"
+      then
+	# And perform the cleanup script.
+	if test -r End.sh -a -x End.sh
+	then
+	  End.sh
+	fi
+      fi
+
+      cd $GSTESTDIR
       if test "$RUNEXIT" != "0"
       then
         break
       fi
     done
+    if test $found = no
+    then
+      echo "No tests found in $TESTDIR"
+    fi
+    if test "$RUNEXIT" != "0"
+    then
+      break
+    fi
   done
 fi
 
 if test "$GSTESTMODE" = "clean"
 then
-  rm -f GNUmakefile.tmp tests.tmp tests.sum.tmp
+  rm -rf core obj GNUmakefile.tmp tests.tmp tests.sum.tmp
   rm -f tests.log tests.sum
   rm -f oldtests.log oldtests.sum
 else

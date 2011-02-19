@@ -2,6 +2,15 @@
 
 	* TestFramework/gnustep-tests:
 	* TestFramework/runtest.sh:
+	* TestFramework/README:
+	* TestFramework/Testing.h:
+	Add support for start and end scripts in each test directory.
+	Fix bracketing in macro as suggested by Fred
+
+2011-01-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
 	* TestFramework/Summary.sh:
 	Portability fixes for systems where grep has limited functionality
 	and/or where the shell's builtin 'test' command is limited/faulty.

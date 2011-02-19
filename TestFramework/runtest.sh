@@ -48,7 +48,7 @@ done
 
 if test x"$BASH_VERSION" = x
 then
-# In some shells the builtin test command actually only implements a subset
+# In some shells the built in test command actually only implements a subset
 # of the normally expected functionality (or is partially broken), so we
 # define a function to call a real program to do the job.
 test()
@@ -141,7 +141,11 @@ then
   TESTNAME=`echo $NAME | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
 
   # Check for a custom makefile template, if it exists use it.
-  if test -r Custom.mk
+  # Custom.mk is deprecated ... for backward compatibility only.
+  if test -r GNUmakefile.template
+  else
+    TEMPLATE=GNUmakefile.template
+  elif test -r Custom.mk
   then
     TEMPLATE=Custom.mk
   else

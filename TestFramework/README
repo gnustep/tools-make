@@ -95,7 +95,7 @@ Failed sets:
   between tests.
 
 Skipped sets:
-  The number of sets of tests whch were skipped entirely ...
+  The number of sets of tests which were skipped entirely ...
   eg. those for features which work on some platforms, but not on yours.
 
 The binary executable of the most recently execute test file is left in
@@ -171,6 +171,22 @@ the test in a NEED macro.  Doing this also causes the set to be reported as
 UNRESOLVED.
 
 
+Ignoring failed test files
+--------------------------
+
+When a test file crashes during running, or terminates with some sort of
+failure status (eg the main() function returns a non-zero value) the framework
+treats the test file as having failed ... it assumes that the program
+crashed during the tests and the tests did not complete.
+
+On rare occasions you might actually want a test program to abort this way
+and have it treated as normal completion.  In order to do this you simply
+create an additional file with the same name as the test program and a
+file extension of '.abort'.
+eg. If myTest.m is expected to crash, you would create myTest.abort to have
+that crash treated as a normal test completion.
+
+
 Advanced building
 -----------------
 
@@ -193,17 +209,17 @@ is included at the start of the generated makefile (if it exists).  This allows
 all the tests in a suite to use a common makefile fragment which can (for
 instance) build common resources before any tests are run.
 
-For total control, the runtest.sh script checks to see if a 'Custom.mk' file
+For total control, the framework checks to see if a 'GNUmakefile.template' file
 exists in the directory, and if it does it uses that file as the template to
-build the tests rather than using its own make file. The custom makefile
+build the tests rather than using its own make file. This template makefile
 should use @TESTNAME@ where it wants the name of the test to be built/run,
 @INCLUDEDIR@ where it wants the name of the include directory for test
 framework headers, @FILENAME@ where it wants the name of the source file,
 and @FAILFAST@ where it wants the '-DFAILFAST=1' to be substituted (if
 gnustep-test was invoked with the --failfast option).
-The Custom.mk script should build the test named @TESTNAME@ when it is
-invoked without a target, but it should also implement a 'test' target to
-run the most recently built test and a 'clean' target to clean up after
+The GNUmakefile.template script should build the test named @TESTNAME@ when
+it is invoked without a target, but it should also implement a 'test' target
+to run the most recently built test and a 'clean' target to clean up after
 all tests.
 
 You may also specify a GNUmakefile.tests in a project level directory (ie one
@@ -215,51 +231,33 @@ please remember to add an 'after-clean::' target in the makefile to clean up
 your custom files when gnustep-tests is run with the --clean option.
 
 
-Ignoring failed test files
---------------------------
-
-When a test file crashes during running, or terminates with some sort of
-failure status (eg the main() function returns a non-zero value) the framework
-treats the test file as having failed ... it assumes that the program
-crashed during the tests and the tests did not complete.
-
-On rare occasions you might actually want a test program to abort this way
-and have it treated as normal completion.  In order to do this you simply
-create an additional file with the same name as the test program and a
-file extension of '.abort'.
-eg. If myTest.m is expected to crash, you would create myTest.abort to have
-that crash treated as a normal test completion.
-
-
 Ignoring directories
 --------------------
 
-If, when given the name of a test to be run, the runtest.sh script finds a
-file named 'IGNORE' in the same directory as the named file, it skips
-running of the test.  The effect of this is that the presence of an IGNORE
-file causes a directory to be ignored.  This is useful in conjunction
-with ../GNUmakefile.super so that projects to build resources for other tests
-can be ignored by the scripts running the tests, and just built as required
-by ../GNUmakefile.super
+The presence of an IGNORE file in a directory causes the directory to be
+ignored while running tests.  This is useful in conjunction with the
+various makefile options listed above ... the makefiles mab be used to
+build resources for tests in subdirectories which are ignored by the
+test framework itself.
 
 
-Providing extra information
----------------------------
+Providing extra control and information
+---------------------------------------
 
-If a README file is present in a test directory, it will be added to the
-logs of the test framework at the point when tests in that directory are
-runs.  It will therefore be clearly noticable to anyone examining the log
-after a testrun, and could contain useful information for debugging.
+If a Start.sh script is present in a test directory, it will be run
+immediately before tests are performed in that directory.  It is able
+to append information to the log of the test run using the GSTESTLOG
+variable.
 
-If an URGENT file is present, its contents will be added to the logs like
-those of a README, but it will also be displayed to the person running the
-tests.  As this is very intrusive, you should only use it if it is really
-important theat the person running the testsuite should have the information.
+If an End.sh file is present in a test directory, it will be run immediately
+after the tests in that directory are performed.  It is able to append
+information to the log of the test run using the GSTESTLOG variable.
 
-In both cases, you must make sure that the file does not contain anything
+In both cases, you must make sure that the file does not do anything
 which would confuse the test framework at the point when it analyses the
-log ... so you need to avoid starting a line with any of the special
-phrases generated to mark a passed test or a particular type of failure.
+log ... so you need to avoid starting a line in the log with any of the
+special phrases generated to mark a passed test or a particular type of
+failure.
 
 If a Summary.sh file is present in a test directory and gnustep-tests is
 used to run just those tests in that directory, the shell script will be

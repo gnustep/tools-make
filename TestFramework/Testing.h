@@ -154,7 +154,7 @@ static void unsupported(const char *format, ...)
       int _cond; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      _cond = (int) expression; \
+      _cond = (int)(expression); \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
     } \
@@ -186,7 +186,7 @@ static void unsupported(const char *format, ...)
       id _obj; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      _obj = ( expression );\
+      _obj = (id)(expression);\
       _cond = _obj == expect || [_obj isEqual: expect]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
