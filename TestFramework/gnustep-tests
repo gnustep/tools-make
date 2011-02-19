@@ -186,18 +186,18 @@ run_test_file ()
     echo >> $GSTESTSUM
 
     # Run the test. Log everything to a temporary file.
-    $RUNCMD $run_args $TESTFILE > $GWSTESTLOG.tmp 2>&1
+    $RUNCMD $run_args $TESTFILE > $GSTESTLOG.tmp 2>&1
     RUNEXIT=$?
     if test "$RUNEXIT" != "0" -a "$RUNEXIT" != "99"
     then
-      echo "Failed script:   $TESTFILE" >> $GWSTESTLOG.tmp
+      echo "Failed script:   $TESTFILE" >> $GSTESTLOG.tmp
     fi
 
     # Add the information to the detailed log.
-    cat $GWSTESTLOG.tmp >> $GSTESTLOG
+    cat $GSTESTLOG.tmp >> $GSTESTLOG
 
     # Extract the summary information and add it to the summary file.
-    extract $GWSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Failed script:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
+    extract $GSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Failed script:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
     cat $GSTESTSUM.tmp >> $GSTESTSUM
 
     # If there were failures or unresolved tests then report them...

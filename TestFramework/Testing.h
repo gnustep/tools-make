@@ -184,10 +184,12 @@ static void unsupported(const char *format, ...)
     { \
       int _cond; \
       id _obj; \
+      id _exp; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       _obj = (id)(expression);\
-      _cond = _obj == expect || [_obj isEqual: expect]; \
+      _exp = (id)(expect);\
+      _cond = _obj == _exp || [_obj isEqual: _exp]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
       if (0 == _cond) \
@@ -197,13 +199,13 @@ static void unsupported(const char *format, ...)
             { \
               fprintf(stderr, \
 		"Expected '%s' and got '%s' (unicode codepoint %d)\n", \
-                [[expect description] UTF8String], [s UTF8String], \
+                [[_exp description] UTF8String], [s UTF8String], \
 		[s characterAtIndex: 0]); \
             } \
 	  else \
 	    { \
 	      fprintf(stderr, "Expected '%s' and got '%s'\n", \
-                [[expect description] UTF8String], [s UTF8String]); \
+                [[_exp description] UTF8String], [s UTF8String]); \
 	    } \
 	} \
     } \
@@ -231,12 +233,12 @@ static void unsupported(const char *format, ...)
     pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass((expectedExceptionName == nil \
-      || [[testRaised name] isEqual: expectedExceptionName]), \
+    pass((nil == (expectedExceptionName) \
+      || [[testRaised name] isEqual: (expectedExceptionName)]), \
       "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
-    if (NO == [expectedExceptionName isEqual: [testRaised name]]) \
+    if (NO == [(expectedExceptionName) isEqual: [testRaised name]]) \
       fprintf(stderr, "Expected '%s' and got '%s'\n", \
-        [expectedExceptionName UTF8String], \
+        [(expectedExceptionName) UTF8String], \
         [[testRaised name] UTF8String]); \
   NS_ENDHANDLER
 
