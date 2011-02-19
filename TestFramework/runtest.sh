@@ -143,7 +143,7 @@ then
   # Check for a custom makefile template, if it exists use it.
   # Custom.mk is deprecated ... for backward compatibility only.
   if test -r GNUmakefile.template
-  else
+  then
     TEMPLATE=GNUmakefile.template
   elif test -r Custom.mk
   then
