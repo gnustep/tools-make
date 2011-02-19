@@ -18,13 +18,29 @@ then
   exit 0
 fi
 
-grep "\(Failed set\|Failed sets\|Failed test\|Failed tests\|Failed build\|Failed build\|Failed file\|Failed files\)$" tests.sum >/dev/null
+# Function for platforms where grep can't search for multiple patterns.
+present()
+{
+  f=$1
+  shift
+  while test $# != 0
+  do
+    grep "$1" "$f" >/dev/null
+    if [ $? = "0" ]
+    then
+      return 0
+    fi
+    shift
+  done
+  return 1
+}
+
+present "tests.sum" "Failed set$" "Failed sets$" "Failed test$" "Failed tests$" "Failed build$" "Failed builds$" "Failed file$" "Failed files$" "Failed script$" "Failed scripts$"
 if [ $? = 1 ]
 then
   echo "All OK!"
 
-  grep "\(Dashed hope\|Dashed hopes\)$" tests.sum >/dev/null
-  if [ $? = 0 ]
+  if present "tests.sum" "Dashed hope$" "Dashed hopes$"
   then
     echo 
     echo "But we were hoping that even more tests might have passed if"
@@ -32,8 +48,7 @@ then
     echo "would like to help, please contact the package maintainer."
   fi
 
-  grep "\(Skipped set\|Skipped sets\)$" tests.sum >/dev/null
-  if [ $? = 0 ]
+  if present "tests.sum" "Skipped set$" "Skipped sets$"
   then
     echo 
     echo "Even though no tests failed, we had to skip some testing"
@@ -52,8 +67,16 @@ else
     exit 0
   fi
 
-  grep "\(Failed build\|Failed build\)$" tests.sum >/dev/null
-  if [ $? = 0 ]
+  if present "tests.sum" "Failed script$" "Failed script$"
+  then
+    echo
+    echo "Unfortunately the script to build and run the tests did not work."
+    echo "This means that there is a problem with the test framework itsself"
+    echo "probably due to some system specific problems with the shell"
+    echo "or a problem wiith the installation of the test framework."
+  fi
+
+  if present "tests.sum" "Failed build$" "Failed build$"
   then
     echo
     echo "Unfortunately we could not even compile all the test programs."
@@ -61,8 +84,7 @@ else
     echo "to try to figure out why and fix it or ask for help."
   fi
 
-  grep "\(Failed file\|Failed files\)$" tests.sum >/dev/null
-  if [ $? = 0 ]
+  if present "tests.sum" "Failed file$" "Failed files$"
   then
     echo
     echo "Some testing was abandoned when a test program aborted.  This is"
@@ -72,8 +94,7 @@ else
     echo "a patch (or at least a bug report) to the package maintainer."
   fi
 
-  grep "\(Failed set\|Failed sets\)$" tests.sum >/dev/null
-  if [ $? = 0 ]
+  if present "tests.sum" "Failed set$" "Failed sets$"
   then
     echo
     echo "Some set of tests failed.  This could well mean that a large"
@@ -83,8 +104,7 @@ else
     echo "the package maintainer."
   fi
 
-  grep "\(Failed test\|Failed tests\)$" tests.sum >/dev/null
-  if [ $? = 0 ]
+  if present "tests.sum" "Failed test$" "Failed tests$"
   then
     echo
     echo "One or more tests failed.  None of them should have."

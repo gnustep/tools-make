@@ -168,7 +168,7 @@ then
       then
         mv GNUmakefile.bck GNUmakefile
       fi
-      exit 1
+      exit 999
     fi
   else
     # We want aggressive memory checking.
@@ -192,9 +192,9 @@ then
     then
       if [ -r $NAME.abort ]
       then
-        echo "Completed file:   $1" >&2
+        echo "Completed file:  $1" >&2
       else
-        echo "Failed file:      $1 aborted without running all tests!" >&2
+        echo "Failed file:     $1 aborted without running all tests!" >&2
         if [ "$GSTESTMODE" = "failfast" ]
         then
           mv GNUmakefile GNUmakefile.tmp
@@ -202,11 +202,11 @@ then
           then
             mv GNUmakefile.bck GNUmakefile
           fi
-          exit 1
+          exit 999
         fi
       fi
     else
-      echo "Completed file:   $1" >&2
+      echo "Completed file:  $1" >&2
     fi
   fi
 

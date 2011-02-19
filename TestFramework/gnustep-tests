@@ -211,24 +211,24 @@ run_test_file ()
     export GSTESTMODE
     $RUNCMD $run_args $TESTFILE > $CWD/tests.tmp 2>&1
     RUNEXIT=$?
-    if [ "$RUNEXIT" = "1" ]
+    if [ "$RUNEXIT" != "0" -a "$RUNEXIT" != "999" ]
     then
-      echo "Failed file:      $TESTFILE" >> $CWD/tests.tmp
+      echo "Failed script:   $TESTFILE" >> $CWD/tests.tmp
     fi
 
     # Add the information to the detailed log.
     cat $CWD/tests.tmp >> $CWD/tests.log
 
     # Extract the summary information and add it to the summary file.
-    extract $CWD/tests.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $CWD/tests.sum.tmp
+    extract $CWD/tests.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Failed script:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $CWD/tests.sum.tmp
     cat $CWD/tests.sum.tmp >> $CWD/tests.sum
 
     # If there were failures or unresolved tests then report them...
-    if present $CWD/tests.sum.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+    if present $CWD/tests.sum.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     then
       echo
       echo $TESTFILE:
-      extract $CWD/tests.sum.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+      extract $CWD/tests.sum.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     fi
   fi
 }
@@ -321,7 +321,7 @@ else
     # common (hopefully passes) output first.
     # NB. we omit the 'Completed file' tests as uninteresting ... users
     # generally only want to see the total pass count and any problems.
-    extract tests.sum "^Passed test:" "^Failed test:" "^Failed build:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
+    extract tests.sum "^Passed test:" "^Failed test:" "^Failed script:" "^Failed build:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
   else
     echo "No tests found." > tests.tmp
   fi
