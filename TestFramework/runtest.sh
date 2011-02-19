@@ -46,6 +46,8 @@ do
   shift
 done
 
+if test x"$BASH_VERSION" = x
+then
 # In some shells the builtin test command actually only implements a subset
 # of the normally expected functionality (or is partially broken), so we
 # define a function to call a real program to do the job.
@@ -53,6 +55,7 @@ test()
 {
   /bin/test $@
 }
+fi
 
 if test x$1 = x
 then
@@ -127,7 +130,7 @@ fi
 
 NAME=`basename $1`
 
-if test ! -f IGNORE ] 
+if test ! -f IGNORE
 then
 
   # remove any leftover makefile from a previous test
