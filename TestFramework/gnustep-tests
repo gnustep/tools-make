@@ -357,5 +357,5 @@ fi
 $RUNCMD
 
 # Delete the temporary file.
-rm -f tests.tmp tests.sum.tmp
+rm -f tests.tmp tests.sum.tmp tests.log.tmp
 
