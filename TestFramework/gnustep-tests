@@ -96,15 +96,15 @@ done
 
 export GSTESTMODE
 
-if [ ! "$MAKE_CMD" ]
+if test ! "$MAKE_CMD"
 then
   MAKE_CMD=`gnustep-config --variable=GNUMAKE`
   $MAKE_CMD --version > /dev/null 2>&1
-  if [ $? != 0 ]
+  if test $? != 0
   then
     MAKE_CMD=gmake
     $MAKE_CMD --version > /dev/null 2>&1
-    if [ $? != 0 ]
+    if test $? != 0
     then
       MAKE_CMD=make
     fi
@@ -121,15 +121,15 @@ TEMP=`echo *`
 TESTDIRS=
 for file in $TEMP
 do
-  if [ -d $file -a $file != CVS -a $file != obj ]
+  if test -d $file -a $file != CVS -a $file != obj
   then
     TESTDIRS="$TESTDIRS $file"
   fi
 done
 
-if [ x$1 != x ]
+if test x$1 != x
 then
-  if [ -d $1 ]
+  if test -d $1
   then
     # Only find in the directories specified.
     TESTDIRS=$*
@@ -164,7 +164,7 @@ present()
   while test $# != 0
   do
     grep "$1" "$f" >/dev/null
-    if [ $? = "0" ]
+    if test $? = "0"
     then
       return 0
     fi
@@ -176,10 +176,10 @@ present()
 run_test_file ()
 {
   sub=`dirname $TESTFILE`
-  if [ "x$OWD" != "x$sub" ]
+  if test "x$OWD" != "x$sub"
   then
     OWD=$sub
-    if [ "$GSTESTMODE" = "clean" ]
+    if test "$GSTESTMODE" = "clean"
     then
       echo "--- Cleaning tests in $sub ---"
       rm -rf $sub/GNUmakefile.tmp $sub/obj $sub/core
@@ -189,19 +189,19 @@ run_test_file ()
     else
       echo "--- Running tests in $sub ---"
       echo "--- Running tests in $sub ---" >> $CWD/tests.log
-      if [ -r $dir/URGENT ]
+      if test -r $dir/URGENT
       then
 	cat $dir/URGENT
 	cat $dir/URGENT >> $CWD/tests.log
       fi
-      if [ -r $dir/README ]
+      if test -r $dir/README
       then
 	cat $dir/README >> $CWD/tests.log
       fi
     fi
   fi
 
-  if [ "$GSTESTMODE" != "clean" ]
+  if test "$GSTESTMODE" != "clean"
   then
     echo >> $CWD/tests.log
     echo Testing $TESTFILE... >> $CWD/tests.log
@@ -211,7 +211,7 @@ run_test_file ()
     export GSTESTMODE
     $RUNCMD $run_args $TESTFILE > $CWD/tests.tmp 2>&1
     RUNEXIT=$?
-    if [ "$RUNEXIT" != "0" -a "$RUNEXIT" != "999" ]
+    if test "$RUNEXIT" != "0" -a "$RUNEXIT" != "999"
     then
       echo "Failed script:   $TESTFILE" >> $CWD/tests.tmp
     fi
@@ -235,23 +235,23 @@ run_test_file ()
 
 
 # Replace the old files.
-if [ -f tests.log ]
+if test -f tests.log
 then
   mv tests.log oldtests.log
 fi
-if [ -f tests.sum ]
+if test -f tests.sum
 then
   mv tests.sum oldtests.sum
 fi
 
 SUMD=.
-if [ x"$TESTDIRS" = x ]
+if test x"$TESTDIRS" = x
 then
   # Run specific individual test files.
   for TESTFILE in $TESTS
   do
     run_test_file
-    if [ "$RUNEXIT" != "0" ]
+    if test "$RUNEXIT" != "0"
     then
       break
     fi
@@ -264,20 +264,20 @@ else
 
     # If there are no test files found, we need to print out a message
     # at this level to let people know we processed the directory.
-    if [ "x$TESTS" = "x" ]
+    if test "x$TESTS" = "x"
     then
-      if [ "$GSTESTMODE" = "clean" ]
+      if test "$GSTESTMODE" = "clean"
       then
         echo "--- Cleaning tests in $dir ---"
       else
         echo "--- Running tests in $dir ---"
         echo "--- Running tests in $dir ---" >> $CWD/tests.log
-        if [ -r $dir/URGENT ]
+        if test -r $dir/URGENT
 	then
 	  cat $dir/URGENT
 	  cat $dir/URGENT >> $CWD/tests.log
 	fi
-        if [ -r $dir/README ]
+        if test -r $dir/README
         then
 	  cat $dir/README >> $CWD/tests.log
         fi
@@ -286,7 +286,7 @@ else
 
     # If there is a GNUmakefile.tests in the directory, run it first.
     cd $dir
-    if [ -f GNUmakefile.tests ]
+    if test -f GNUmakefile.tests
     then
       $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
     fi
@@ -296,7 +296,7 @@ else
     for TESTFILE in $TESTS
     do
       run_test_file
-      if [ "$RUNEXIT" != "0" ]
+      if test "$RUNEXIT" != "0"
       then
         break
       fi
@@ -304,14 +304,14 @@ else
   done
 fi
 
-if [ "$GSTESTMODE" = "clean" ]
+if test "$GSTESTMODE" = "clean"
 then
   rm -f GNUmakefile.tmp tests.tmp tests.sum.tmp
   rm -f tests.log tests.sum
   rm -f oldtests.log oldtests.sum
 else
   # Make some stats.
-  if [ -r tests.sum ]
+  if test -r tests.sum
   then
     # Nasty pipeline of commands ...
     # Look for each type of test result, sort and count the results,
@@ -337,7 +337,7 @@ fi
 
 # In the case where we ran a single testsuite, we allow the Summary.sh
 # script in that testsuite to generate our summary.
-if [ x"$TESTDIRS" = x"$SUMD" -a -r $SUMD/Summary.sh -a -x $SUMD/Summary.sh ]
+if test x"$TESTDIRS" = x"$SUMD" -a -r $SUMD/Summary.sh -a -x $SUMD/Summary.sh
 then
   RUNCMD=$SUMD/Summary.sh
 else

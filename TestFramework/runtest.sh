@@ -46,28 +46,36 @@ do
   shift
 done
 
-if [ x$1 = x ]
+# In some shells the builtin test command actually only implements a subset
+# of the normally expected functionality (or is partially broken), so we
+# define a function to call a real program to do the job.
+test()
+{
+  /bin/test $@
+}
+
+if test x$1 = x
 then
   echo "ERROR: $0: No test given"
   exit 1
 fi
 
-if [ $# != 1 ]
+if test $# != 1
 then
   echo "ERROR: $0: Too many arguments (single test file name expected)"
   exit 1
 fi
 
-if [ -e $1 ]
+if test -e $1
 then
 
-  if [ ! -f $1 ]
+  if test ! -f $1
   then
     echo "ERROR: $0: Argument ($1) is not the name of a regular file"
     exit 1
   fi
 
-  if [ ! -r $1 ]
+  if test ! -r $1
   then
     echo "ERROR: $0: Test file ($1) is not readable by you"
     exit 1
@@ -78,9 +86,11 @@ else
   exit 1
 fi
 
-if test -z "$GNUSTEP_MAKEFILES"; then
+if test -z "$GNUSTEP_MAKEFILES"
+then
   GNUSTEP_MAKEFILES=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
-  if test -z "$GNUSTEP_MAKEFILES"; then
+  if test -z "$GNUSTEP_MAKEFILES"
+  then
     echo "You need to have GNUstep-make installed and set up."
     echo "Did you remember to source GNUstep.sh?"
   else
@@ -92,22 +102,23 @@ TOP=$GNUSTEP_MAKEFILES/TestFramework
 
 # Move to the test's directory.
 DIR=`dirname $1`
-if [ ! -d $DIR ]; then
+if test ! -d $DIR
+then
   echo "Unable to proceed ... $DIR is not a directory"
   exit 1
 fi
 cd $DIR
 DIR=`pwd`
 
-if [ ! "$MAKE_CMD" ]
+if test ! "$MAKE_CMD"
 then
   MAKE_CMD=`gnustep-config --variable=GNUMAKE`
   $MAKE_CMD --version > /dev/null 2>&1
-  if [ $? != 0 ]
+  if test $? != 0
   then
     MAKE_CMD=gmake
     $MAKE_CMD --version > /dev/null 2>&1
-    if [ $? != 0 ]
+    if test $? != 0
     then
       MAKE_CMD=make
     fi
@@ -116,7 +127,7 @@ fi
 
 NAME=`basename $1`
 
-if [ ! -f IGNORE ] 
+if test ! -f IGNORE ] 
 then
 
   # remove any leftover makefile from a previous test
@@ -124,10 +135,10 @@ then
 
   # Remove the extension, if there is one. If there is no extension, add
   # .obj .
-  TESTNAME=`echo $NAME | sed -e"s/^\([^.]*\)$/\1.obj./;s/\.[^.]*//g"`
+  TESTNAME=`echo $NAME | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
 
   # Check for a custom makefile template, if it exists use it.
-  if [ -r Custom.mk ]
+  if test -r Custom.mk
   then
     TEMPLATE=Custom.mk
   else
@@ -137,7 +148,7 @@ then
   # Create the GNUmakefile by filling in the name of the test,
   # the name of the file, the include directory, and the failfast
   # option if needed.
-  if [ "$GSTESTMODE" = "failfast" ]
+  if test "$GSTESTMODE" = "failfast"
   then
     sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile.tmp
   else
@@ -145,7 +156,7 @@ then
   fi
 
   rm -f GNUmakefile.bck
-  if [ -e GNUmakefile ]
+  if test -e GNUmakefile
   then
     mv GNUmakefile GNUmakefile.bck
   fi
@@ -158,13 +169,13 @@ then
   # Compile it. Redirect errors to stdout so it shows up in the log, but not
   # in the summary.
   $MAKE_CMD $MAKEFLAGS debug=yes 2>&1
-  if [ $? != 0 ]
+  if test $? != 0
   then
     echo "Failed build:     $1" >&2
-    if [ "$GSTESTMODE" = "failfast" ]
+    if test "$GSTESTMODE" = "failfast"
     then
       mv GNUmakefile GNUmakefile.tmp
-      if [ -e GNUmakefile.bck ]
+      if test -e GNUmakefile.bck
       then
         mv GNUmakefile.bck GNUmakefile
       fi
@@ -188,17 +199,17 @@ then
     # Run it. If it terminates abnormally, mark it as a crash (unless we have
     # a special file to mark it as being expected to abort).
     $MAKE_CMD -s test
-    if [ $? != 0 ]
+    if test $? != 0
     then
-      if [ -r $NAME.abort ]
+      if test -r $NAME.abort
       then
         echo "Completed file:  $1" >&2
       else
         echo "Failed file:     $1 aborted without running all tests!" >&2
-        if [ "$GSTESTMODE" = "failfast" ]
+        if test "$GSTESTMODE" = "failfast"
         then
           mv GNUmakefile GNUmakefile.tmp
-          if [ -e GNUmakefile.bck ]
+          if test -e GNUmakefile.bck
           then
             mv GNUmakefile.bck GNUmakefile
           fi
@@ -212,7 +223,7 @@ then
 
   # Restore any old makefile
   mv GNUmakefile GNUmakefile.tmp
-  if [ -e GNUmakefile.bck ]
+  if test -e GNUmakefile.bck
   then
     mv GNUmakefile.bck GNUmakefile
   fi
