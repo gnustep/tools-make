@@ -182,7 +182,7 @@ then
       then
         mv GNUmakefile.bck GNUmakefile
       fi
-      exit 999
+      exit 99
     fi
   else
     # We want aggressive memory checking.
@@ -216,7 +216,7 @@ then
           then
             mv GNUmakefile.bck GNUmakefile
           fi
-          exit 999
+          exit 99
         fi
       fi
     else

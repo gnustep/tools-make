@@ -211,7 +211,7 @@ run_test_file ()
     export GSTESTMODE
     $RUNCMD $run_args $TESTFILE > $CWD/tests.tmp 2>&1
     RUNEXIT=$?
-    if test "$RUNEXIT" != "0" -a "$RUNEXIT" != "999"
+    if test "$RUNEXIT" != "0" -a "$RUNEXIT" != "99"
     then
       echo "Failed script:   $TESTFILE" >> $CWD/tests.tmp
     fi
