@@ -180,8 +180,12 @@ present()
 
 run_test_file ()
 {
-  if test "$GSTESTMODE" != "clean"
+  if test "$GSTESTMODE" = "clean"
   then
+    # Clean the test. Log everything to a temporary file.
+    $RUNCMD $run_args $TESTFILE > /dev/null 2>&1
+    return
+  else
     echo >> $GSTESTLOG
     echo Testing $TESTFILE... >> $GSTESTLOG
     echo >> $GSTESTSUM
@@ -245,10 +249,6 @@ do
     if test "$GSTESTMODE" = "clean"
     then
       echo "--- Cleaning tests in $dir ---"
-      rm -rf core obj GNUmakefile.tmp
-      rm -f tests.tmp tests.sum.tmp tests.log.tmp
-      rm -f tests.log tests.sum
-      rm -f oldtests.log oldtests.sum
     else
       echo "--- Running tests in $dir ---"
       if test -r ./Start.sh -a -x ./Start.sh
@@ -273,18 +273,24 @@ do
     fi
 
     # Now we process each test file in turn.
+    # When cleaning, we only need to do one clean per directory.
     for TESTFILE in $TESTS
     do
       run_test_file
-      if test "$RUNEXIT" != "0"
+      if test "$RUNEXIT" != "0" -o "$GSTESTMODE" = "clean"
       then
 	break
       fi
     done
     TESTS=
 
-    if test "$GSTESTMODE" != "clean"
+    if test "$GSTESTMODE" = "clean"
     then
+      rm -rf core obj GNUmakefile
+      rm -f tests.tmp tests.sum.tmp tests.log.tmp
+      rm -f tests.log tests.sum
+      rm -f oldtests.log oldtests.sum
+    else
       # And perform the cleanup script.
       if test -r ./End.sh -a -x ./End.sh
       then

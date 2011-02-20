@@ -155,84 +155,67 @@ then
   # Create the GNUmakefile by filling in the name of the test,
   # the name of the file, the include directory, and the failfast
   # option if needed.
+  rm -f GNUmakefile
   if test "$GSTESTMODE" = "failfast"
   then
-    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile.tmp
+    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile
   else
-    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@//;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile.tmp
+    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@//;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile
   fi
-
-  rm -f GNUmakefile.bck
-  if test -e GNUmakefile
-  then
-    mv GNUmakefile GNUmakefile.bck
-  fi
-  mv GNUmakefile.tmp GNUmakefile
 
   # Clean up to avoid contamination by previous tests. (Optimistically) assume
   # that	this will never fail in any interesting way.
   $MAKE_CMD clean >/dev/null 2>&1
 
-  # Compile it. Redirect errors to stdout so it shows up in the log, but not
-  # in the summary.
-  $MAKE_CMD $MAKEFLAGS debug=yes 2>&1
-  if test $? != 0
+  if test "$GSTESTMODE" = "clean"
   then
-    echo "Failed build:     $1" >&2
-    if test "$GSTESTMODE" = "failfast"
-    then
-      mv GNUmakefile GNUmakefile.tmp
-      if test -e GNUmakefile.bck
-      then
-        mv GNUmakefile.bck GNUmakefile
-      fi
-      exit 99
-    fi
+    rm -f GNUmakefile
+    rm -rf obj core
   else
-    # We want aggressive memory checking.
-
-    # Tell glibc to check for malloc errors, and to crash if it detects
-    # any.
-    MALLOC_CHECK_=2
-    export MALLOC_CHECK
-
-    # Tell GNUstep-base to check for messages sent to deallocated objects
-    # and crash if it happens.
-    NSZombieEnabled=YES
-    CRASH_ON_ZOMBIE=YES
-    export NSZombieEnabled CRASH_ON_ZOMBIE
-
-    echo Running $1...
-    # Run it. If it terminates abnormally, mark it as a crash (unless we have
-    # a special file to mark it as being expected to abort).
-    $MAKE_CMD -s test
+    # Compile it. Redirect errors to stdout so it shows up in the log,
+    # but not in the summary.
+    $MAKE_CMD $MAKEFLAGS debug=yes 2>&1
     if test $? != 0
     then
-      if test -r $NAME.abort
+      echo "Failed build:     $1" >&2
+      if test "$GSTESTMODE" = "failfast"
       then
-        echo "Completed file:  $1" >&2
-      else
-        echo "Failed file:     $1 aborted without running all tests!" >&2
-        if test "$GSTESTMODE" = "failfast"
-        then
-          mv GNUmakefile GNUmakefile.tmp
-          if test -e GNUmakefile.bck
-          then
-            mv GNUmakefile.bck GNUmakefile
-          fi
-          exit 99
-        fi
+	exit 99
       fi
     else
-      echo "Completed file:  $1" >&2
-    fi
-  fi
+      # We want aggressive memory checking.
 
-  # Restore any old makefile
-  mv GNUmakefile GNUmakefile.tmp
-  if test -e GNUmakefile.bck
-  then
-    mv GNUmakefile.bck GNUmakefile
+      # Tell glibc to check for malloc errors, and to crash if it detects
+      # any.
+      MALLOC_CHECK_=2
+      export MALLOC_CHECK
+
+      # Tell GNUstep-base to check for messages sent to deallocated objects
+      # and crash if it happens.
+      NSZombieEnabled=YES
+      CRASH_ON_ZOMBIE=YES
+      export NSZombieEnabled CRASH_ON_ZOMBIE
+
+      echo Running $1...
+      # Run it. If it terminates abnormally, mark it as a crash (unless we have
+      # a special file to mark it as being expected to abort).
+      $MAKE_CMD -s test
+      if test $? != 0
+      then
+	if test -r $NAME.abort
+	then
+	  echo "Completed file:  $1" >&2
+	else
+	  echo "Failed file:     $1 aborted without running all tests!" >&2
+	  if test "$GSTESTMODE" = "failfast"
+	  then
+	    exit 99
+	  fi
+	fi
+      else
+	echo "Completed file:  $1" >&2
+      fi
+    fi
   fi
 
   # Clean up any core dump.
