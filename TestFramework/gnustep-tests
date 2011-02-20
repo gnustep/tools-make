@@ -18,9 +18,9 @@
 #  General Public License for more details.
 #
 #
-# Usage: gnustep-tests [directory | test1.m [test2.m ...]]
+# Usage: gnustep-tests [directory | test.m]
 #
-# Runs the tests in the specified directory (or those in the individual files)
+# Runs the tests in the specified directory (or those in the individual file)
 # or all the tests in subdirectories of the current directory if no arguments
 # are given.
 # A summary is written to tests.sum, a log to tests.log, and a brief
@@ -68,7 +68,7 @@ do
     --help | -h)
       echo
       echo "$0: Script to run the GNUstep testsuite"
-      echo "Usage: gnustep-tests [directory | test1.m [test2.m ...]]"
+      echo "Usage: gnustep-tests [directory | test.m]]"
       echo "Runs the specified tests, or any in subdirectories of the"
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --documentation' for full details."
@@ -124,6 +124,7 @@ then
 fi
 
 TEMP=`echo *`
+TESTS=
 TESTDIRS=
 for file in $TEMP
 do
@@ -140,8 +141,8 @@ then
     # Only find in the directories specified.
     TESTDIRS=$*
   else
-    TESTDIRS=
-    TESTS=$*
+    TESTDIRS=`dirname $1`
+    TESTS=$1
   fi
 fi
 
@@ -222,102 +223,95 @@ then
 fi
 
 SUMD=.
-if test x"$TESTDIRS" = x
-then
-  # Run specific individual test files.
-  for TESTFILE in $TESTS
+for TESTDIR in $TESTDIRS
+do
+  found=no
+  # Get the names of all subdirectories containing source files.
+  SRCDIRS=`find $TESTDIR -name \*.m | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+  if test x"$SRCDIRS" = x
+  then
+    continue
+  fi
+  SUMD=$TESTDIR
+  for dir in $SRCDIRS
   do
-    run_test_file
-    if test "$RUNEXIT" != "0"
-    then
-      break
-    fi
-  done
-else
-  for TESTDIR in $TESTDIRS
-  do
-    found=no
-    # Get the names of all subdirectories containing source files.
-    SRCDIRS=`find $TESTDIR -name \*.m | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
-    if test x"$SRCDIRS" = x
+    if test -f $dir/IGNORE
     then
       continue
     fi
-    SUMD=$TESTDIR
-    for dir in $SRCDIRS
-    do
-      if test -f $dir/IGNORE
-      then
-        continue
-      fi
-      found=yes
-      cd $dir
+    found=yes
+    cd $dir
 
+    if test "$GSTESTMODE" = "clean"
+    then
+      echo "--- Cleaning tests in $dir ---"
+      rm -rf core obj GNUmakefile.tmp
+      rm -f tests.tmp tests.sum.tmp tests.log.tmp
+      rm -f tests.log tests.sum
+      rm -f oldtests.log oldtests.sum
+    else
+      echo "--- Running tests in $dir ---"
+      if test -r ./Start.sh -a -x ./Start.sh
+      then
+	./Start.sh
+      fi
+    fi
+
+    if test x"$TESTS" = x
+    then
+      TESTS=`echo *.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
+    fi
+    # If there is a GNUmakefile.tests in the directory, run it first.
+    if test -f GNUmakefile.tests
+    then
       if test "$GSTESTMODE" = "clean"
       then
-        echo "--- Cleaning tests in $dir ---"
-        rm -rf core obj GNUmakefile.tmp tests.tmp tests.sum.tmp
-        rm -f tests.log tests.sum
-        rm -f oldtests.log oldtests.sum
+	$MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS clean 2>&1
       else
-        echo "--- Running tests in $dir ---"
-	if test -r ./Start.sh -a -x ./Start.sh
-	then
-	  ./Start.sh
-	fi
+	$MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
       fi
+    fi
 
-      TESTS=`echo *.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
-      # If there is a GNUmakefile.tests in the directory, run it first.
-      if test -f GNUmakefile.tests
-      then
-        if test "$GSTESTMODE" = "clean"
-        then
-          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS clean 2>&1
-	else
-          $MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
-        fi
-      fi
-
-      # Now we process each test file in turn.
-      for TESTFILE in $TESTS
-      do
-	run_test_file
-	if test "$RUNEXIT" != "0"
-	then
-	  break
-	fi
-      done
-
-      if test "$GSTESTMODE" != "clean"
-      then
-	# And perform the cleanup script.
-	if test -r End.sh -a -x End.sh
-	then
-	  End.sh
-	fi
-      fi
-
-      cd $GSTESTDIR
+    # Now we process each test file in turn.
+    for TESTFILE in $TESTS
+    do
+      run_test_file
       if test "$RUNEXIT" != "0"
       then
-        break
+	break
       fi
     done
-    if test $found = no
+    TESTS=
+
+    if test "$GSTESTMODE" != "clean"
     then
-      echo "No tests found in $TESTDIR"
+      # And perform the cleanup script.
+      if test -r ./End.sh -a -x ./End.sh
+      then
+	./End.sh
+      fi
     fi
+
+    cd $GSTESTDIR
     if test "$RUNEXIT" != "0"
     then
       break
     fi
   done
-fi
+  if test $found = no
+  then
+    echo "No tests found in $TESTDIR"
+  fi
+  if test "$RUNEXIT" != "0"
+  then
+    break
+  fi
+done
 
 if test "$GSTESTMODE" = "clean"
 then
-  rm -rf core obj GNUmakefile.tmp tests.tmp tests.sum.tmp
+  rm -rf core obj GNUmakefile.tmp
+  rm -f tests.tmp tests.sum.tmp tests.log.tmp
   rm -f tests.log tests.sum
   rm -f oldtests.log oldtests.sum
 else

@@ -1,3 +1,15 @@
+2011-01-20  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/README:
+	Simplify ... permit only one test file as an argument, so that we can
+	infer a single test directory easily (the directory containing the
+	file) and thus use the standard code path in which we execute Start.sh
+	and End.sh and run GNUmakefile.tests in the directory containing the
+	file ... ie so that behavior when executing a single test file is
+	identical to behavior when that file is executed as part of a whole
+	testsuite.
+
 2011-01-19  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests:

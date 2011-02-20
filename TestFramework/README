@@ -34,7 +34,7 @@ Running Tests
 -------------
 
 To run a testsuite, use the gnustep-tests script along with the name of
-the project testsuite (directory) you with to test:
+the project testsuite (directory) you wish to test:
 
 gnustep-tests base
 
@@ -42,11 +42,11 @@ or where a group of tests within a project is to be run:
 
 gnustep-tests base/NSArray
 
-You may run individual test files by using the gnustep-tests script with the
-name(s) of the Objective-C test source file(s):
+You may run an individual test file by using the gnustep-tests script with the
+name of the Objective-C test source file:
 
+gnustep-tests mytest.m
 gnustep-tests base/NSDate/general.m
-gnustep-tests ./mytest.m base/NSDate/general.m
 
 Alternatively, you may run tests from within a project/directory. eg.
 
