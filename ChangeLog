@@ -8,7 +8,7 @@
 	and End.sh and run GNUmakefile.tests in the directory containing the
 	file ... ie so that behavior when executing a single test file is
 	identical to behavior when that file is executed as part of a whole
-	testsuite.
+	testsuite.  Don't backup makefile when we create a new one.
 
 2011-01-19  Richard Frith-Macdonald <rfm@gnu.org>
 

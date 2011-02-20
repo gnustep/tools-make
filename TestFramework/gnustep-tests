@@ -142,7 +142,7 @@ then
     TESTDIRS=$*
   else
     TESTDIRS=`dirname $1`
-    TESTS=$1
+    TESTS=`basename $1`
   fi
 fi
 
