@@ -35,7 +35,7 @@ present()
   return 1
 }
 
-present "tests.sum" "Failed set$" "Failed sets$" "Failed test$" "Failed tests$" "Failed build$" "Failed builds$" "Failed file$" "Failed files$" "Failed script$" "Failed scripts$"
+present "tests.sum" "Failed set$" "Failed sets$" "Failed test$" "Failed tests$" "Failed build$" "Failed builds$" "Failed file$" "Failed files$"
 if [ $? = 1 ]
 then
   echo "All OK!"
@@ -65,15 +65,6 @@ else
   if [ "$GSTESTMODE" = "failfast" ]
   then
     exit 0
-  fi
-
-  if present "tests.sum" "Failed script$" "Failed script$"
-  then
-    echo
-    echo "Unfortunately the script to build and run the tests did not work."
-    echo "This means that there is a problem with the test framework itsself"
-    echo "probably due to some system specific problems with the shell"
-    echo "or a problem wiith the installation of the test framework."
   fi
 
   if present "tests.sum" "Failed build$" "Failed build$"

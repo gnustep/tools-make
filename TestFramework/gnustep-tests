@@ -116,9 +116,18 @@ if test "$GSTESTMODE" = "failfast"
 then
   GSTESTFLAGS="$GSTESTFLAGS -DFAILFAST=1"
 fi
-export GSTESTFLAGS
 GSTESTLIBS=`gnustep-config --gui-libs`
-export GSTESTLIBS
+
+if test x"$BASH_VERSION" = x
+then
+# In some shells the built in test command actually only implements a subset
+# of the normally expected functionality (or is partially broken), so we
+# define a function to call a real program to do the job.
+test()
+{
+  /bin/test $@
+}
+fi
 
 if test ! "$MAKE_CMD"
 then
@@ -134,7 +143,6 @@ then
     fi
   fi
 fi
-export MAKE_CMD
 
 if test $# = 0
 then
@@ -163,9 +171,6 @@ then
     TESTS=`basename $1`
   fi
 fi
-
-RUNCMD="$GSTESTTOP/runtest.sh"
-RUNEXIT=0
 
 # Function for platforms where grep can't search for multiple patterns.
 extract()
@@ -196,40 +201,138 @@ present()
   return 1
 }
 
-run_test_file ()
+# Low level function to build and run the Objective-C program $TESTFILE
+# in the current directory.  The TEMPLATE variable must already be set
+# to the name of the make file template if gnustep-make is to do the
+# building.
+# 
+build_and_run ()
 {
+  # Remove the extension, if there is one. If there is no extension, add
+  # .obj .
+  TESTNAME=`echo $TESTFILE | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
+
+  # Run the test.
+
+  if test x"$TEMPLATE" = x
+  then
+    # The very simple case, we just need to compile a single file
+    # putting the executable in the obj subdirectory.
+    rm -rf ./obj
+    mkdir ./obj
+    BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+    CLEAN_CMD=echo
+    RUN_CMD=./obj/$TESTNAME
+  else
+    BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes"
+    CLEAN_CMD="$MAKE_CMD clean"
+    RUN_CMD="$MAKE_CMD -s test"
+    # Create the GNUmakefile by filling in the name of the test,
+    # the name of the file, the include directory, and the failfast
+    # option if needed.
+    rm -f GNUmakefile
+    if test "$GSTESTMODE" = "failfast"
+    then
+      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$GSTESTTOP^" < $TEMPLATE > GNUmakefile
+    else
+      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@//;s^@INCLUDEDIR@^$GSTESTTOP^" < $TEMPLATE > GNUmakefile
+    fi
+  fi
+
   if test "$GSTESTMODE" = "clean"
   then
-    # Clean the test. Log everything to a temporary file.
-    $RUNCMD $run_args $TESTFILE > /dev/null 2>&1
-    return
+    $CLEAN_CMD >/dev/null 2>&1
+    rm -f GNUmakefile
+    rm -rf obj core
+    return 0
+  fi
+
+  # Clean up to avoid contamination by previous tests. Assume
+  # that this will never fail in any interesting way.
+  $CLEAN_CMD >/dev/null 2>&1
+
+  # Compile it. Redirect errors to stdout so it shows up in the log,
+  # but not in the summary.
+  $BUILD_CMD >$GSTESTLOG.tmp 2>&1
+  if test $? != 0
+  then
+    echo "Failed build:     $1" >&2
+    if test "$GSTESTMODE" = "failfast"
+    then
+      return 1
+    fi
+  else
+    # We want aggressive memory checking.
+
+    # Tell glibc to check for malloc errors, and to crash if it detects
+    # any.
+    MALLOC_CHECK_=2
+    export MALLOC_CHECK
+
+    # Tell GNUstep-base to check for messages sent to deallocated objects
+    # and crash if it happens.
+    NSZombieEnabled=YES
+    CRASH_ON_ZOMBIE=YES
+    export NSZombieEnabled CRASH_ON_ZOMBIE
+
+    echo Running $TESTFILE...
+    # Run it. If it terminates abnormally, mark it as a crash (unless we have
+    # a special file to mark it as being expected to abort).
+    $RUN_CMD
+    if test $? != 0
+    then
+      if test -r $TESTFILE.abort
+      then
+	echo "Completed file:  $TESTFILE" >&2
+      else
+	echo "Failed file:     $TESTFILE aborted without running all tests!" >&2
+	if test "$GSTESTMODE" = "failfast"
+	then
+	  return 1
+	fi
+      fi
+    else
+      echo "Completed file:  $TESTFILE" >&2
+    fi
+  fi
+  return 0
+}
+
+# Function to build and run $TESTFILE in the current directory.
+# This actually manages the logging process and calls build_and_run
+# to perform the work.
+#
+run_test_file ()
+{
+  RUNEXIT=0
+  if test "$GSTESTMODE" = "clean"
+  then
+    # Clean the test.
+    build_and_run > /dev/null 2>&1
+    return 0
   else
     echo >> $GSTESTLOG
     echo Testing $TESTFILE... >> $GSTESTLOG
     echo >> $GSTESTSUM
 
-    # Run the test. Log everything to a temporary file.
-    $RUNCMD $run_args $TESTFILE > $GSTESTLOG.tmp 2>&1
+    build_and_run > $GSTESTLOG.tmp 2>&1
     RUNEXIT=$?
-    if test "$RUNEXIT" != "0" -a "$RUNEXIT" != "99"
-    then
-      echo "Failed script:   $TESTFILE" >> $GSTESTLOG.tmp
-    fi
 
     # Add the information to the detailed log.
     cat $GSTESTLOG.tmp >> $GSTESTLOG
 
     # Extract the summary information and add it to the summary file.
-    extract $GSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Failed script:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
+    extract $GSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
     cat $GSTESTSUM.tmp >> $GSTESTSUM
 
     # If there were failures or unresolved tests then report them...
-    if present $GSTESTSUM.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+    if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     then
       echo
       echo $TESTFILE:
-      extract $GSTESTSUM.tmp "^Failed script:" "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+      extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     fi
+    return $RUNEXIT
   fi
 }
 
@@ -290,8 +393,30 @@ do
       fi
     fi
 
+    # Check for a custom makefile template, if it exists use it.
+    # Custom.mk is deprecated ... for backward compatibility only.
+    if test -r GNUmakefile.template
+    then
+      TEMPLATE=GNUmakefile.template
+    elif test -r Custom.mk
+    then
+      TEMPLATE=Custom.mk
+    elif test -r GNUmakefile.preamble 
+    then
+      TEMPLATE=$GSTESTTOP/GNUmakefile.in
+    elif test -r GNUmakefile.postamble
+    then
+      TEMPLATE=$GSTESTTOP/GNUmakefile.in
+    elif test -r ../GNUmakefile.super
+    then
+      TEMPLATE=$GSTESTTOP/GNUmakefile.in
+    else
+      TEMPLATE=
+    fi
+
     # Now we process each test file in turn.
     # When cleaning, we only need to do one clean per directory.
+    RUNEXOT=0
     for TESTFILE in $TESTS
     do
       run_test_file
@@ -350,7 +475,7 @@ else
     # common (hopefully passes) output first.
     # NB. we omit the 'Completed file' tests as uninteresting ... users
     # generally only want to see the total pass count and any problems.
-    extract tests.sum "^Passed test:" "^Failed test:" "^Failed script:" "^Failed build:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
+    extract tests.sum "^Passed test:" "^Failed test:" "^Failed build:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" | cut -d: -f1 | sort | uniq -c | sed -e 's/.*/&s/' | sed -e 's/^\([^0-9]*1[^0-9].*\)s$/\1/' | sort -n -b -r > tests.tmp
   else
     echo "No tests found." > tests.tmp
   fi

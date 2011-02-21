@@ -1,5 +1,13 @@
 2011-01-21  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* TestFramework/gnustep-tests:
+	* TestFramework/Summary.sh:
+	* TestFramework/runtest.sh:
+	* GNUmakefile.in:
+	Simplify by removing intermediary script.
+
+2011-01-21  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* gnustep-config.in: Add CC to list of variables so we can build
 	using the compiler that gnustep-make was configured with.
 	* TestFramework/gnustep-tests:

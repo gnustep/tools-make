@@ -228,7 +228,6 @@ install: generated-files
 	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
 	$(EC)(echo "Installing Test Framework scripts"; \
 	  $(INSTALL_PROGRAM) -m 755 TestFramework/gnustep-tests "$(tooldir)"; \
-	  $(INSTALL_PROGRAM) -m 755 TestFramework/runtest.sh "$(testdir)"; \
 	  $(INSTALL_PROGRAM) -m 755 TestFramework/Summary.sh "$(testdir)")
 	$(EC)(echo "Installing Test Framework support files"; \
 	   for f in $(TEST_FRAMEWORK_FILES); do \
@@ -278,7 +277,6 @@ uninstall:
 	rm -f "$(tooldir)/opentool"; \
 	rm -f "$(tooldir)/gnustep-config"; \
 	rm -f "$(tooldir)/gnustep-tests"; \
-	rm -f "$(testdir)/runtest.sh"; \
 	rm -f "$(testdir)/Summary.sh"; \
 	for f in $(MAKE_FILES); do \
 	  rm -f "$(makedir)/$$f"; \
