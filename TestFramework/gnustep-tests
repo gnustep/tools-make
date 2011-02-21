@@ -41,6 +41,9 @@ if test -z "$GNUSTEP_MAKEFILES"; then
   fi
 fi
 
+GSTESTTOP="$GNUSTEP_MAKEFILES/TestFramework"
+export GSTESTTOP
+
 GSTESTMODE=normal
 
 # Argument checking
@@ -59,7 +62,7 @@ do
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --help' for basic help."
       echo
-      cat $GNUSTEP_MAKEFILES/TestFramework/README
+      cat $GSTESTTOP/README
       exit 0
       ;;
     --failfast)
@@ -101,6 +104,21 @@ GSTESTLOG=$GSTESTDIR/tests.log
 export GSTESTLOG
 GSTESTSUM=$GSTESTDIR/tests.sum
 export GSTESTSUM
+
+if test x"$CC" = x
+then
+  CC=`gnustep-config --variable=CC`
+  export CC
+fi
+GSTESTFLAGS=`gnustep-config --objc-flags`
+GSTESTFLAGS="$GSTESTFLAGS -I$GSTESTTOP"
+if test "$GSTESTMODE" = "failfast"
+then
+  GSTESTFLAGS="$GSTESTFLAGS -DFAILFAST=1"
+fi
+export GSTESTFLAGS
+GSTESTLIBS=`gnustep-config --gui-libs`
+export GSTESTLIBS
 
 if test ! "$MAKE_CMD"
 then
@@ -146,7 +164,7 @@ then
   fi
 fi
 
-RUNCMD=$GNUSTEP_MAKEFILES/TestFramework/runtest.sh
+RUNCMD="$GSTESTTOP/runtest.sh"
 RUNEXIT=0
 
 # Function for platforms where grep can't search for multiple patterns.
@@ -352,7 +370,7 @@ if test x"$TESTDIRS" = x"$SUMD" -a -r $SUMD/Summary.sh -a -x $SUMD/Summary.sh
 then
   RUNCMD=$SUMD/Summary.sh
 else
-  RUNCMD=$GNUSTEP_MAKEFILES/TestFramework/Summary.sh
+  RUNCMD=$GSTESTTOP/Summary.sh
 fi
 $RUNCMD
 

@@ -59,6 +59,7 @@ if [ "$1" = "--help" ]; then
     echo "                variable.  Here is a list of possible"
     echo "                variables:"
     echo
+    echo "    --variable=CC"
     echo "    --variable=GNUMAKE"
     echo "    --variable=GNUSTEP_MAKEFILES"
     echo "    --variable=GNUSTEP_USER_DEFAULTS_DIR"
@@ -151,6 +152,8 @@ export GNUSTEP_MAKEFILES
 # we can compute only using GNUSTEP_MAKEFILES, we can print it out
 #
 case "$1" in
+  --variable=CC) echo "@CC@"
+              exit 0;;
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
               exit 0;;
   --variable=GNUMAKE) echo "@GNUMAKE@"

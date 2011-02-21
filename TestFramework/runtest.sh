@@ -23,6 +23,12 @@
 # Compiles and runs the test test_name. Detailed logging should go to stdout;
 # only summary information should go to stderr.
 
+if test x"GSTESTMODE" = x
+then
+  echo "Do not execute this script directly... use gnustep-tests instead"
+  exit 1
+fi
+
 USEDEBUG=YES
 # Argument checking
 while test $# != 0
@@ -71,70 +77,25 @@ fi
 
 if test -e $1
 then
-
   if test ! -f $1
   then
     echo "ERROR: $0: Argument ($1) is not the name of a regular file"
     exit 1
   fi
-
   if test ! -r $1
   then
     echo "ERROR: $0: Test file ($1) is not readable by you"
     exit 1
   fi
-
 else
   echo "ERROR: $0: Test file ($1) does not exist"
   exit 1
-fi
-
-if test -z "$GNUSTEP_MAKEFILES"
-then
-  GNUSTEP_MAKEFILES=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
-  if test -z "$GNUSTEP_MAKEFILES"
-  then
-    echo "You need to have GNUstep-make installed and set up."
-    echo "Did you remember to source GNUstep.sh?"
-  else
-    . $GNUSTEP_MAKEFILES/GNUstep.sh
-  fi
-fi
-
-TOP=$GNUSTEP_MAKEFILES/TestFramework
-
-# Move to the test's directory.
-DIR=`dirname $1`
-if test ! -d $DIR
-then
-  echo "Unable to proceed ... $DIR is not a directory"
-  exit 1
-fi
-cd $DIR
-DIR=`pwd`
-
-if test ! "$MAKE_CMD"
-then
-  MAKE_CMD=`gnustep-config --variable=GNUMAKE`
-  $MAKE_CMD --version > /dev/null 2>&1
-  if test $? != 0
-  then
-    MAKE_CMD=gmake
-    $MAKE_CMD --version > /dev/null 2>&1
-    if test $? != 0
-    then
-      MAKE_CMD=make
-    fi
-  fi
 fi
 
 NAME=`basename $1`
 
 if test ! -f IGNORE
 then
-
-  # remove any leftover makefile from a previous test
-  rm -f GNUmakefile.tmp
 
   # Remove the extension, if there is one. If there is no extension, add
   # .obj .
@@ -148,33 +109,57 @@ then
   elif test -r Custom.mk
   then
     TEMPLATE=Custom.mk
-  else
-    TEMPLATE=$TOP/GNUmakefile.in
-  fi
-
-  # Create the GNUmakefile by filling in the name of the test,
-  # the name of the file, the include directory, and the failfast
-  # option if needed.
-  rm -f GNUmakefile
-  if test "$GSTESTMODE" = "failfast"
+  elif test -r GNUmakefile.preamble 
   then
-    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile
+    TEMPLATE=$GSTESTTOP/GNUmakefile.in
+  elif test -r GNUmakefile.postamble
+  then
+    TEMPLATE=$GSTESTTOP/GNUmakefile.in
+  elif test -r ../GNUmakefile.super
+  then
+    TEMPLATE=$GSTESTTOP/GNUmakefile.in
   else
-    sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@//;s^@INCLUDEDIR@^$TOP^" < $TEMPLATE > GNUmakefile
+    TEMPLATE=
   fi
 
-  # Clean up to avoid contamination by previous tests. (Optimistically) assume
-  # that	this will never fail in any interesting way.
-  $MAKE_CMD clean >/dev/null 2>&1
+  if test x"$TEMPLATE" = x
+  then
+    # The very simple case, we just need to compile a single file
+    # putting the executable in the obj subdirectory.
+    rm -rf ./obj
+    mkdir ./obj
+    BUILD_CMD="$CC -o ./obj/$TESTNAME $NAME $GSTESTFLAGS $GSTESTLIBS"
+    CLEAN_CMD=echo
+    RUN_CMD=./obj/$TESTNAME
+  else
+    BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes"
+    CLEAN_CMD="$MAKE_CMD clean"
+    RUN_CMD="$MAKE_CMD -s test"
+    # Create the GNUmakefile by filling in the name of the test,
+    # the name of the file, the include directory, and the failfast
+    # option if needed.
+    rm -f GNUmakefile
+    if test "$GSTESTMODE" = "failfast"
+    then
+      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$GSTESTTOP^" < $TEMPLATE > GNUmakefile
+    else
+      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$NAME/;s/@FAILFAST@//;s^@INCLUDEDIR@^$GSTESTTOP^" < $TEMPLATE > GNUmakefile
+    fi
+  fi
 
   if test "$GSTESTMODE" = "clean"
   then
+    $CLEAN_CMD >/dev/null 2>&1
     rm -f GNUmakefile
     rm -rf obj core
   else
+    # Clean up to avoid contamination by previous tests. Assume
+    # that this will never fail in any interesting way.
+    $CLEAN_CMD >/dev/null 2>&1
+
     # Compile it. Redirect errors to stdout so it shows up in the log,
     # but not in the summary.
-    $MAKE_CMD $MAKEFLAGS debug=yes 2>&1
+    $BUILD_CMD 2>&1
     if test $? != 0
     then
       echo "Failed build:     $1" >&2
@@ -199,7 +184,7 @@ then
       echo Running $1...
       # Run it. If it terminates abnormally, mark it as a crash (unless we have
       # a special file to mark it as being expected to abort).
-      $MAKE_CMD -s test
+      $RUN_CMD
       if test $? != 0
       then
 	if test -r $NAME.abort

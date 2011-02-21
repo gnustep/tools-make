@@ -1,3 +1,14 @@
+2011-01-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in: Add CC to list of variables so we can build
+	using the compiler that gnustep-make was configured with.
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
+	Add David Chisnall's suggested performance optimisation of handling
+	simple cases (where we just need to compile a single source file
+	with no special options) by compiling directly ... 25% improvement
+	running the base library testsuite on my debian system using clang.
+
 2011-01-20  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests:
