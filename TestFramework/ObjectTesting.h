@@ -68,7 +68,7 @@
    START_TEST/END_TEST can be used if the code being tested could raise
    and the exception should be considered a test failure.  The exception
    is not reraised to allow subsequent tests to execute.  The START_TEST
-   macro takes an argument which will skip the test as UNSUPPORTED if it
+   macro takes an argument which will skip the test as Skipped if it
    evaluates to 0, allowing runtime control of whether the code block 
    should be executed.  */
 #define START_TEST(supported) if ((supported)) { NS_DURING 

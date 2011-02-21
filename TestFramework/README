@@ -57,9 +57,10 @@ If you supply no arguments, the gnustep-test script will examine all the
 subdirectories of the current directory, and attempt to run tests in each.
 
 During testing, temporary files are created and removed for each test,
-but any temporary files from the most recent test are left, as are the
-log files.  You can run 'gnustep-tests --clean' to remove left-over
-temporary files and all log files.
+but any temporary files from the most recent test in each directory
+are left (to help you debugging), as are the log files.
+You can run 'gnustep-tests --clean' to remove left-over temporary files
+and all log files.
 
 
 Interpreting the output
@@ -79,6 +80,11 @@ Passed tests:
 Failed tests:
   The number of individual tests failed ... this should really not appear.
 
+Failed sets:
+  The number of sets of tests which have been abandoned part way through
+  because of some individual test failure or an exception in support code
+  between tests.
+
 Failed builds:
   The number of separate test files which did not even build/compile.
 
@@ -86,20 +92,16 @@ Failed files:
   The number of separate test files which failed while running.
 
 Dashed hopes:
-  The number of hopeful tests which did not pass, but
-  which were not expected to pass (new code being worked on etc).
-
-Failed sets:
-  The number of sets of tests which have been abandoned part way through
-  because of some individual test failure or an exception in support code
-  between tests.
+  The number of hopeful tests which did not pass, but which were not
+  expected to pass (new code being worked on etc).
 
 Skipped sets:
   The number of sets of tests which were skipped entirely ...
   eg. those for features which work on some platforms, but not on yours.
 
-The binary executable of the most recently execute test file is left in
-the obj subdirectory.  So you can easily debug a failed test by:
+The binary executable of the most recently executed test file iin each test
+directory is left in the obj subdirectory.  So you can easily debug a failed
+test by:
 1. running gnustep-tests with the single test file as its argument.
 2. running gdb using obj/filename as an argument.
 3. setting a breakpoint at the exact test which failed, running to there,
@@ -110,6 +112,7 @@ testing after the first failure ... in which case you know that the
 executable of the failed test will be available (unless the test file
 failed to even compile of course).  In this case, any core dump file will
 also be left available.
+
 
 Writing Tests
 -------------
@@ -155,20 +158,32 @@ PASS_EQUAL	passes if an expression resulting in an object is identical
 PASS_EXCEPTION	passes if a code fragment raises an exception
 PASS_RUNS	passes if a code fragment runs without raising an exception
 
+There is a boolean variable called 'testHopeful' which, if set to YES,
+means that tests which do not pass are considered to be 'Dashed hopes'
+rather than failed tests.  You should set this for tests of code which
+is under development (or which is testing a feature which may be
+unsupported in the package under test) ... to indicate that the test is
+not to be considered a failure if it doesn't pass.
+
 Tests are grouped together, along with any associated non-test code, between
-paired calls to the START_SET and END_SET macros.
+paired calls to the START_SET and END_SET macros. Any setting of testHopeful
+within a set is automatically restored at the end of a set, so it makes sense
+to group hopes together in a set.
 
 You can skip an entire set by supplying NO as the argument to the START_SET
-macro, in which case the entire set will be reported as UNSUPPORTED.
+macro, in which case the entire set will be reported as being Skipped.
+It is appropriate to skip sets of tests if you have checked and found that
+some feature you are testing is not available in the version of the package
+under test.
 
 Any uncaught exception (ie one which occurs outside a one of the four test
 macros and is not caught by an exception handler you write yourself) will
-cause the remaining tests in a set to be skipped.  In this case the set
-will be reported as UNRESOLVED.
+cause the remaining tests in a set to be omitted.  In this case the set
+will be reported as Failed.
 
 You may also arrange to jump to the end of the set if a test fails by wrapping
 the test in a NEED macro.  Doing this also causes the set to be reported as
-UNRESOLVED.
+Failed if the needed test does not pass.
 
 
 Ignoring failed test files
