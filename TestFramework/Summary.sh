@@ -57,6 +57,7 @@ then
     echo "software was built (in which case you can install that library"
     echo "and rebuild, then re-run the tests), or the required functions"
     echo "may not be available on your operating system at all."
+    echo "Please see $GSTESTLOG for more detail.
     echo "If you would like to contribute code to add the missing"
     echo "functionality, please contact the package maintainer."
   fi

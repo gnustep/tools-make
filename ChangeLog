@@ -1,5 +1,13 @@
 2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* TestFramework/example9.m:
+	* TestFramework/Testing.h:
+	* TestFramework/Summary.sh:
+	* GNUmakefile.in:
+	Add example for dealing with an unsupported feature.
+
+2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* TestFramework/gnustep-tests.in:
 	Report path to test file when we run it as suggested by Sergey Golovin.
 

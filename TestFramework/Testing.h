@@ -317,7 +317,9 @@ static void unsupported(const char *format, ...)
 
 /* The END_SET() macro terminates a set of grouped tests.  It's argument is
  * a literal printf style format string and variable arguments to print a
- * message describing the set.
+ * message giving the reason for skipping the set.  This should be a short
+ * message (for immediate display), preferably with a more detailed
+ * explanation on subsequent lines.
  */
 #define END_SET(format, ...) \
 	} \
@@ -330,7 +332,8 @@ static void unsupported(const char *format, ...)
 	      [[localException reason] UTF8String], \
 	      [[[localException userInfo] description] UTF8String]); \
 	  } \
-        unresolved("%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+        unresolved("%s:%d ... problem occurred inside set.", \
+	  __FILE__, __LINE__, ## __VA_ARGS__); \
      NS_ENDHANDLER \
      testHopeful = save_hopeful; \
     } \
