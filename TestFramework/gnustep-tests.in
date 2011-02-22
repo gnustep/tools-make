@@ -327,12 +327,12 @@ run_test_file ()
     extract $GSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
     cat $GSTESTSUM.tmp >> $GSTESTSUM
 
-    # If there were failures or unresolved tests then report them...
-    if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+    # If there were failures or skipped tests then report them...
+    if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
     then
       echo
       echo $TESTFILE:
-      extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
+      extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
     fi
 
     if test x"$GSTESTDBG" != x
