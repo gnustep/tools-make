@@ -168,9 +168,19 @@ then
   then
     # Only find in the directories specified.
     TESTDIRS=$*
-  else
+  elif test -r $1
+  then
     TESTDIRS=`dirname $1`
     TESTS=`basename $1`
+    BARE=`basename $TESTS .m`
+    if test x"$BARE" = x"$TESTS"
+    then
+      echo "The file '$1' does not have a .m extension ... cannot test."
+      exit 1
+    fi
+  else
+    echo "'$1' is not a directory or a readable source file ... cannot test."
+    exit 1
   fi
 fi
 
@@ -331,7 +341,7 @@ run_test_file ()
     if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
     then
       echo
-      echo $TESTFILE:
+      echo $dir/$TESTFILE:
       extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
     fi
 
