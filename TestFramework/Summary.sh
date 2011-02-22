@@ -57,7 +57,7 @@ then
     echo "software was built (in which case you can install that library"
     echo "and rebuild, then re-run the tests), or the required functions"
     echo "may not be available on your operating system at all."
-    echo "Please see $GSTESTLOG for more detail.
+    echo "Please see $GSTESTLOG for more detail."
     echo "If you would like to contribute code to add the missing"
     echo "functionality, please contact the package maintainer."
   fi
@@ -81,7 +81,7 @@ else
     echo
     echo "Some testing was abandoned when a test program aborted.  This is"
     echo "generally a severe problem and may mean that the package is"
-    echo "completely unusable.  You need to try to fix this and, if it's"
+    echo "completely unusable.  You need to try to fix this and, if it is"
     echo "not due to some problem on your system, please help by submitting"
     echo "a patch (or at least a bug report) to the package maintainer."
   fi
