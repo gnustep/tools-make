@@ -277,7 +277,7 @@ build_and_run ()
     CRASH_ON_ZOMBIE=YES
     export NSZombieEnabled CRASH_ON_ZOMBIE
 
-    echo Running $TESTFILE...
+    echo Running $dir/$TESTFILE...
     # Run it. If it terminates abnormally, mark it as a crash (unless we have
     # a special file to mark it as being expected to abort).
     $RUN_CMD
@@ -429,7 +429,7 @@ do
 
     # Now we process each test file in turn.
     # When cleaning, we only need to do one clean per directory.
-    RUNEXOT=0
+    RUNEXIT=0
     for TESTFILE in $TESTS
     do
       run_test_file

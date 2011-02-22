@@ -1,5 +1,10 @@
 2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* TestFramework/gnustep-tests.in:
+	Report path to test file when we run it as suggested by Sergey Golovin.
+
+2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* configure.ac: Check for bash and test programs
 	* configure: regenerate
 	* TestFramework/gnustep-tests: remove ... use gnustep-test.in
