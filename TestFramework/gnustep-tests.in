@@ -226,6 +226,7 @@ build_and_run ()
 
   # Run the test.
 
+  RUN_CMD="./obj/$TESTNAME"
   if test x"$TEMPLATE" = x
   then
     # The very simple case, we just need to compile a single file
@@ -234,20 +235,19 @@ build_and_run ()
     mkdir ./obj
     BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     CLEAN_CMD=echo
-    RUN_CMD="./obj/$TESTNAME"
   else
     BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes"
     CLEAN_CMD="$MAKE_CMD clean"
-    RUN_CMD="$MAKE_CMD -s test"
     # Create the GNUmakefile by filling in the name of the test,
     # the name of the file, the include directory, and the failfast
     # option if needed.
     rm -f GNUmakefile
+    TESTRULES="${TESTNAME}_OBJC_FILES=$TESTFILE"
     if test "$GSTESTMODE" = "failfast"
     then
-      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
+      sed -e "s/@TESTNAMES@/$TESTNAME/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
     else
-      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@//;s^@INCLUDEDIR@^$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
+      sed -e "s/@TESTNAMES@/$TESTNAME/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
     fi
   fi
 
@@ -416,14 +416,9 @@ do
       fi
     fi
 
-    # Check for a custom makefile template, if it exists use it.
-    # Custom.mk is deprecated ... for backward compatibility only.
-    if test -r GNUmakefile.template
+    if test -r GNUmakefile.tests 
     then
-      TEMPLATE=GNUmakefile.template
-    elif test -r Custom.mk
-    then
-      TEMPLATE=Custom.mk
+      TEMPLATE=GNUmakefile.tests
     elif test -r GNUmakefile.preamble 
     then
       TEMPLATE=$GSTESTTOP/GNUmakefile.in

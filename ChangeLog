@@ -1,5 +1,12 @@
 2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* gnustep-tests.in:
+	* GNUmakefile.in:
+	* README:
+	Simplify template makefile options.
+
+2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* TestFramework/example9.m:
 	* TestFramework/Testing.h:
 	* TestFramework/Summary.sh:

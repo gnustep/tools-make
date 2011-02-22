@@ -4,9 +4,9 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 -include ../GNUmakefile.super
 
-TEST_TOOL_NAME = @TESTNAME@
+TEST_TOOL_NAME = @TESTNAMES@
 
-ADDITIONAL_OBJCFLAGS += @FAILFAST@ -I@INCLUDEDIR@ -Wall
+ADDITIONAL_OBJCFLAGS += @TESTFLAGS@ -Wall
 
 ifeq ($(gcov),yes)
 ADDITIONAL_OBJCFLAGS += -ftest-coverage -fprofile-arcs
@@ -14,11 +14,9 @@ ADDITIONAL_LDFLAGS += -ftest-coverage -fprofile-arcs
 ADDITIONAL_TOOL_LIBS+=-lgcov
 endif
 
-@TESTNAME@_OBJC_FILES = @FILENAME@
+@TESTRULES@
 
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/test-tool.make
 -include GNUmakefile.postamble
 
-test:
-	./$(GNUSTEP_OBJ_DIR_NAME)/@TESTNAME@
