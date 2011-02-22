@@ -82,7 +82,7 @@ do
       echo "Use 'gnustep-tests --documentation' for full details."
       echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
       echo "Use 'gnustep-tests --failfast' to stop after the first failure."
-      echo "Use 'gnustep-tests --failfast --debug' to debug the first failure."
+      echo "Use 'gnustep-tests --debug' to run gdb for any failed tests."
       echo
       echo "Interpreting the output"
       echo "-----------------------"
@@ -290,7 +290,7 @@ build_and_run ()
 	echo "Failed file:     $TESTFILE aborted without running all tests!" >&2
 	if test "$GSTESTMODE" = "failfast"
 	then
-	  return 2
+	  return 1
 	fi
       fi
     else
@@ -335,14 +335,14 @@ run_test_file ()
       extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     fi
 
-    if test "$RUNEXIT" = "2" -a x"$GSTESTDBG" != x
+    if test x"$GSTESTDBG" != x
     then
-echo checking
-      line=`grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/\1/'`
-echo got $line
-      echo "break start if line==$line" > "$GSTESTDBG"
-      gdb "./obj/$TESTNAME" -x "$GSTESTDBG"
-      rm -f "$GSTESTDBG"
+      if present "$GSTESTSUM.tmp" "^Failed test:"
+      then
+        grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/break testStart if line==\1/' > "$GSTESTDBG"
+        gdb "./obj/$TESTNAME" -x "$GSTESTDBG"
+        rm -f "$GSTESTDBG"
+      fi
     fi
 
     return $RUNEXIT
