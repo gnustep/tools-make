@@ -1,4 +1,4 @@
-#!/bin/sh
+#!@SHELLPROG@
 #
 #  Runs tests for the GNUstep Testsuite
 #
@@ -127,7 +127,7 @@ then
 # define a function to call a real program to do the job.
 test()
 {
-  /bin/test $@
+  @TESTPROG@ $@
 }
 fi
 

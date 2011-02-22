@@ -1,5 +1,15 @@
 2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* configure.ac: Check for bash and test programs
+	* configure: regenerate
+	* TestFramework/gnustep-tests: remove ... use gnustep-test.in
+	* TestFramework/gnustep-tests.in:
+	Use bash as our shell if possible, and use an external test program
+	determined at configure time if we can't rely on the builtin test
+	function in the shell we end up with.
+
+2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* TestFramework/gnustep-tests:
 	* TestFramework/Testing.h:
 	* TestFramework/README:
