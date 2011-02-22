@@ -43,6 +43,10 @@ static BOOL testHopeful __attribute__((unused)) = NO;
  */
 static BOOL testPassed __attribute__((unused)) = NO;
 
+/* A variable storing the line number of the test currently being run.
+ */
+static unsigned testLineNumber __attribute__((unused)) = 0;
+
 /* A variable set whenever a test macro is executed.  This contains
  * the exception which terminated the test macro, or nil if no exception
  * was raised.
@@ -103,6 +107,19 @@ static void pass(int testPassed, const char *format, ...)
 #endif
 }
 
+/* The start() function is used by the PASS macros to record the line number
+ * in the source code at which the test occurs.  This value is then available
+ * in the testLineNumber variable.
+ * This is also useful when debugging ... you can set a breakpoint in the
+ * start() function for the line number reported in a test failure and
+ * have the debugger stop in just the right place.
+ */
+static void start(unsigned line)  __attribute__((unused));
+static void start(unsigned line)
+{
+  testLineNumber = line;
+}
+
 /* The unresolved() function is called with a single string argument to
  * notify the testsuite that a test failed to complete for some reason.
  * eg. You might call this if an earlier testcase failed and it makes no
@@ -154,6 +171,7 @@ static void unsupported(const char *format, ...)
       int _cond; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
+      start(__LINE__); \
       _cond = (int)(expression); \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
@@ -187,6 +205,7 @@ static void unsupported(const char *format, ...)
       id _exp; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
+      start(__LINE__); \
       _obj = (id)(expression);\
       _exp = (id)(expect);\
       _cond = _obj == _exp || [_obj isEqual: _exp]; \
@@ -229,7 +248,10 @@ static void unsupported(const char *format, ...)
 #define PASS_EXCEPTION(code, expectedExceptionName, format, ...) \
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
-    { code; } \
+    { \
+      start(__LINE__); \
+      code; \
+    } \
     pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
   NS_HANDLER \
     testRaised = [localException retain]; \
@@ -252,7 +274,10 @@ static void unsupported(const char *format, ...)
 #define PASS_RUNS(code, format, ...) \
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
-    { code; } \
+    { \
+      start(__LINE__); \
+      code; \
+    } \
     pass(1, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
   NS_HANDLER \
     testRaised = [localException retain]; \

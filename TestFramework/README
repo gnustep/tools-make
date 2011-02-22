@@ -113,6 +113,13 @@ executable of the failed test will be available (unless the test file
 failed to even compile of course).  In this case, any core dump file will
 also be left available.
 
+As a convenience for debugging, the tests use a start() function in which
+they set the line number of the test, so you can stop in that function and
+upon stepping out of it the debugger will be examining the specified test.
+eg.
+(gdb) break start if line == 42
+(gdb) run
+
 
 Writing Tests
 -------------
