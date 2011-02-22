@@ -1,8 +1,10 @@
 2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* TestFramework/gnustep-tests:
 	* TestFramework/Testing.h:
 	* TestFramework/README:
 	Make it easy to break at the start of a particular failed test.
+	Add --debug option to automatically launch gdb to debug a test.
 
 2011-01-21  Richard Frith-Macdonald <rfm@gnu.org>
 

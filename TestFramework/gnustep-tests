@@ -43,6 +43,8 @@ fi
 
 GSTESTTOP="$GNUSTEP_MAKEFILES/TestFramework"
 export GSTESTTOP
+GSTESTDIR=`pwd`
+export GSTESTDIR
 
 GSTESTMODE=normal
 
@@ -53,6 +55,9 @@ do
   case $1 in
     --clean)
       GSTESTMODE=clean
+      ;;
+      --debug)
+      GSTESTDBG="$GSTESTDIR/gdb.cmds"
       ;;
     --documentation)
       echo
@@ -75,8 +80,9 @@ do
       echo "Runs the specified tests, or any in subdirectories of the"
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --documentation' for full details."
-      echo "Use 'gnustep-tests --failfast' to stop at the first failure."
       echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
+      echo "Use 'gnustep-tests --failfast' to stop after the first failure."
+      echo "Use 'gnustep-tests --failfast --debug' to debug the first failure."
       echo
       echo "Interpreting the output"
       echo "-----------------------"
@@ -88,8 +94,6 @@ do
       echo
       exit 0
       ;;
-      --debug | -d)	# ignore for backward compatibility.
-      ;;
     *)
       break
       ;;
@@ -98,8 +102,6 @@ do
 done
 
 export GSTESTMODE
-GSTESTDIR=`pwd`
-export GSTESTDIR
 GSTESTLOG=$GSTESTDIR/tests.log
 export GSTESTLOG
 GSTESTSUM=$GSTESTDIR/tests.sum
@@ -222,7 +224,7 @@ build_and_run ()
     mkdir ./obj
     BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     CLEAN_CMD=echo
-    RUN_CMD=./obj/$TESTNAME
+    RUN_CMD="./obj/$TESTNAME"
   else
     BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes"
     CLEAN_CMD="$MAKE_CMD clean"
@@ -233,9 +235,9 @@ build_and_run ()
     rm -f GNUmakefile
     if test "$GSTESTMODE" = "failfast"
     then
-      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$GSTESTTOP^" < $TEMPLATE > GNUmakefile
+      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@/-DFAILFAST=1/;s^@INCLUDEDIR@^$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
     else
-      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@//;s^@INCLUDEDIR@^$GSTESTTOP^" < $TEMPLATE > GNUmakefile
+      sed -e "s/@TESTNAME@/$TESTNAME/;s/@FILENAME@/$TESTFILE/;s/@FAILFAST@//;s^@INCLUDEDIR@^$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
     fi
   fi
 
@@ -243,7 +245,7 @@ build_and_run ()
   then
     $CLEAN_CMD >/dev/null 2>&1
     rm -f GNUmakefile
-    rm -rf obj core
+    rm -rf obj core gdb.cmds
     return 0
   fi
 
@@ -288,7 +290,7 @@ build_and_run ()
 	echo "Failed file:     $TESTFILE aborted without running all tests!" >&2
 	if test "$GSTESTMODE" = "failfast"
 	then
-	  return 1
+	  return 2
 	fi
       fi
     else
@@ -332,6 +334,17 @@ run_test_file ()
       echo $TESTFILE:
       extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:"
     fi
+
+    if test "$RUNEXIT" = "2" -a x"$GSTESTDBG" != x
+    then
+echo checking
+      line=`grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/\1/'`
+echo got $line
+      echo "break start if line==$line" > "$GSTESTDBG"
+      gdb "./obj/$TESTNAME" -x "$GSTESTDBG"
+      rm -f "$GSTESTDBG"
+    fi
+
     return $RUNEXIT
   fi
 }
@@ -429,7 +442,7 @@ do
 
     if test "$GSTESTMODE" = "clean"
     then
-      rm -rf core obj GNUmakefile
+      rm -rf core obj GNUmakefile gdb.cmds
       rm -f tests.tmp tests.sum.tmp tests.log.tmp
       rm -f tests.log tests.sum
       rm -f oldtests.log oldtests.sum
@@ -459,7 +472,7 @@ done
 
 if test "$GSTESTMODE" = "clean"
 then
-  rm -rf core obj GNUmakefile.tmp
+  rm -rf core obj GNUmakefile.tmp gdb.cmds
   rm -f tests.tmp tests.sum.tmp tests.log.tmp
   rm -f tests.log tests.sum
   rm -f oldtests.log oldtests.sum

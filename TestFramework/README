@@ -113,13 +113,17 @@ executable of the failed test will be available (unless the test file
 failed to even compile of course).  In this case, any core dump file will
 also be left available.
 
-As a convenience for debugging, the tests use a start() function in which
+As a convenience for debugging, the tests use a testStart() function in which
 they set the line number of the test, so you can stop in that function and
 upon stepping out of it the debugger will be examining the specified test.
 eg.
-(gdb) break start if line == 42
+(gdb) break testStart if line == 42
 (gdb) run
 
+You can use the --debug command line option in conjunction with the --failfast
+option to have testing stopped at the first failure and the gdb debugger
+automatically launched to debug the failed testcase with a breakpoint set
+in the testStart() fucntion for that testcase.
 
 Writing Tests
 -------------

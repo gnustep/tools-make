@@ -107,15 +107,15 @@ static void pass(int testPassed, const char *format, ...)
 #endif
 }
 
-/* The start() function is used by the PASS macros to record the line number
+/* The testStart() function is used by the PASS macros to record the line number
  * in the source code at which the test occurs.  This value is then available
  * in the testLineNumber variable.
  * This is also useful when debugging ... you can set a breakpoint in the
- * start() function for the line number reported in a test failure and
+ * testStart() function for the line number reported in a test failure and
  * have the debugger stop in just the right place.
  */
-static void start(unsigned line)  __attribute__((unused));
-static void start(unsigned line)
+static void testStart(unsigned line)  __attribute__((unused));
+static void testStart(unsigned line)
 {
   testLineNumber = line;
 }
@@ -171,7 +171,7 @@ static void unsupported(const char *format, ...)
       int _cond; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      start(__LINE__); \
+      testStart(__LINE__); \
       _cond = (int)(expression); \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
@@ -205,7 +205,7 @@ static void unsupported(const char *format, ...)
       id _exp; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      start(__LINE__); \
+      testStart(__LINE__); \
       _obj = (id)(expression);\
       _exp = (id)(expect);\
       _cond = _obj == _exp || [_obj isEqual: _exp]; \
@@ -249,7 +249,7 @@ static void unsupported(const char *format, ...)
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
     { \
-      start(__LINE__); \
+      testStart(__LINE__); \
       code; \
     } \
     pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
@@ -275,7 +275,7 @@ static void unsupported(const char *format, ...)
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
     { \
-      start(__LINE__); \
+      testStart(__LINE__); \
       code; \
     } \
     pass(1, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
