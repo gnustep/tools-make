@@ -70,6 +70,9 @@ do
       cat $GSTESTTOP/README
       exit 0
       ;;
+    --verbose)
+      GSVERBOSE=yes
+      ;;
     --failfast)
       GSTESTMODE=failfast
       ;;
@@ -83,6 +86,7 @@ do
       echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
       echo "Use 'gnustep-tests --failfast' to stop after the first failure."
       echo "Use 'gnustep-tests --debug' to run gdb for any failed tests."
+      echo "Use 'gnustep-tests --verbose' for full/detailed log output."
       echo
       echo "Interpreting the output"
       echo "-----------------------"
@@ -327,7 +331,12 @@ run_test_file ()
     echo Testing $TESTFILE... >> $GSTESTLOG
     echo >> $GSTESTSUM
 
-    build_and_run > $GSTESTLOG.tmp 2>&1
+    if test x"$GSVERBOSE" = xyes
+    then
+      build_and_run 2>&1 | tee $GSTESTLOG.tmp
+    else
+      build_and_run > $GSTESTLOG.tmp 2>&1
+    fi
     RUNEXIT=$?
 
     # Add the information to the detailed log.
