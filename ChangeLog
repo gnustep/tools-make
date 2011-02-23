@@ -1,5 +1,14 @@
 2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/Testing.h:
+	Change automated setting of breakpoints in gdb to account for
+	platforms where you can't conditionally break on entry to a function
+	based on a function argument ... so we set a variable before entry
+	instead.
+	
+2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* Testing.h: Fix excess args to printf and incorrect setting of the
 	testPassed flag.
 

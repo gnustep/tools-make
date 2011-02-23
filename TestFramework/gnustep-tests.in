@@ -358,7 +358,7 @@ run_test_file ()
     then
       if present "$GSTESTSUM.tmp" "^Failed test:"
       then
-        grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/break testStart if line==\1/' > "$GSTESTDBG"
+        grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/break testStart if testLineNumber==\1/' > "$GSTESTDBG"
         gdb "./obj/$TESTNAME" -x "$GSTESTDBG"
         rm -f "$GSTESTDBG"
       fi
