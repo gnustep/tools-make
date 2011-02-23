@@ -251,9 +251,10 @@ clean up after all tests.
 Ignoring directories
 --------------------
 
-The presence of an IGNORE file in a directory causes the directory to be
-ignored while running tests.  This is useful in conjunction with the
-various makefile options listed above ... the makefiles mab be used to
+The test framework ignores any directory which does not contain a TestInfo
+file.  This feature prevents accidental attempts to treat a project source
+code directory as a testsuite.  This is also useful in conjunction with the
+various makefile options listed above ... the makefiles may be used to
 build resources for tests in subdirectories which are ignored by the
 test framework itself.
 

@@ -1,6 +1,17 @@
 2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
+	* TestFramework/TestInfo:
+	* TestFramework/README:
+	Replace IGNORE file with TestInfo file having the opposite effect.
+	This makes it safe to run the test script because it will now only
+	do things in directories marked by the presence of a TestInfo file.
+	In future we can use this file to store extra information or settings
+	such as contact details for the package maintainers.
+
+2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
 	* TestFramework/Testing.h:
 	Change automated setting of breakpoints in gdb to account for
 	platforms where you can't conditionally break on entry to a function
