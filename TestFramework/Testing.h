@@ -333,7 +333,7 @@ static void unsupported(const char *format, ...)
 	      [[[localException userInfo] description] UTF8String]); \
 	  } \
         unresolved("%s:%d ... problem occurred inside set.", \
-	  __FILE__, __LINE__, ## __VA_ARGS__); \
+	  __FILE__, __LINE__); \
      NS_ENDHANDLER \
      testHopeful = save_hopeful; \
     } \
