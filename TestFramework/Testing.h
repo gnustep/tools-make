@@ -120,42 +120,6 @@ static void testStart()
   return;
 }
 
-/* The unresolved() function is called with a single string argument to
- * notify the testsuite that a test failed to complete for some reason.
- * eg. You might call this if an earlier testcase failed and it makes no
- * sense to run subsequent tests.
- * This is called if a set is terminated before all the tests in it have
- * been run.
- */
-static void unresolved(const char *format, ...)  __attribute__((unused)) __attribute__ ((format(printf, 1, 2), unused));
-static void unresolved(const char *format, ...)
-{
-  va_list args;
-  va_start(args, format);
-  fprintf(stderr, "Failed set:      ");
-  vfprintf(stderr, format, args);
-  fprintf(stderr, "\n");
-  va_end(args);
-#if	defined(FAILFAST)
-  exit(1);	// Abandon testing now.
-#endif
-}
-
-/* The unsupported() function is called with a single string argument to
- * notify the testsuite that a test could not be run because the capability
- * it is testing does not exist on the current platform.
- */
-static void unsupported(const char *format, ...)  __attribute__((unused)) __attribute__ ((format(printf, 1, 2), unused));
-static void unsupported(const char *format, ...)
-{
-  va_list args;
-  va_start(args, format);
-  fprintf(stderr, "Skipped set:     ");
-  vfprintf(stderr, format, args);
-  fprintf(stderr, "\n");
-  va_end(args);
-}
-
 /* Tests a code expression which evaluates to an integer value.
  * The expression may not contain commas unless it is bracketed.
  * The format must be a literal string printf style format.
@@ -295,62 +259,93 @@ static void unsupported(const char *format, ...)
  * the scope of the current test but could raise exceptions that should
  * be caught to allow further tests to run.
  *
- * You must pass a 'supported' flag to say whether the code should be run
- * or not, if not then the set is reported as unsupported.
+ * You must pass a short description to identify the set at both its
+ * start and its end.  This allows the seat to be easily identified in the
+ * log, and also allows for checking to be sure that each start if a set
+ * is matched by a corresponding end.
  *
  * The state of the 'testHopeful' flag is saved at the start of the set and
  * restored at the end of the set, so you can start your code by setting
- * 'testHopeful=YES;' to mark any tests within the set as being part of a group
- * of tests we don't expect to pass.
+ * 'testHopeful=YES;' to mark any tests within the set as being part of a
+ * group of tests we don't expect to pass.
+ *
+ * Importantly, you may skip some or all of the tests in a set if those
+ * tests are not supported in the package being tested (eg. testing of
+ * functionality which depends on some external library which was not
+ * available when the package being tested was buit).
+ *
+ * Any uncaught exception occurring inside a set will abort the entire set
+ * so that remaining tests in the set will not be executed, but you may
+ * also abandon remaining tests upon any test failure.
  *
  * The tests within the set are enclosed in an autorelease pool, and any
  * temporary objects are cleaned up at the end of the set.
  */
 
-/* The START_SET() macro starts a set of grouped tests or, if the argument
- * is false, skips the set and reports the set as unsupported.
+/* The START_SET() macro starts a set of grouped tests. It must be matched
+ * by a corresponding END_SET() with the same string as an argument.
+ * The argument is a short description to be printed in the log on entry.
  */
-#define START_SET(supported) \
-  if ((supported)) \
-    { \
-      BOOL save_hopeful = testHopeful; \
-      NS_DURING \
-	NSAutoreleasePool *_setPool = [NSAutoreleasePool new]; \
-	{
+#define START_SET(setName) \
+  { \
+    BOOL _save_hopeful = testHopeful; \
+    int	_save_line = __LINE__; \
+    char *_save_set = malloc(strlen(setName) + 1); \
+    strcpy(_save_set, setName); \
+    fprintf(stderr, "Start set:       %s:%d ... %s\n", \
+      __FILE__, __LINE__, _save_set); \
+    fprintf(stderr, "\n"); \
+    NS_DURING \
+      NSAutoreleasePool *_setPool = [NSAutoreleasePool new]; \
+      {
 
 
-/* The END_SET() macro terminates a set of grouped tests.  It's argument is
- * a literal printf style format string and variable arguments to print a
- * message giving the reason for skipping the set.  This should be a short
- * message (for immediate display), preferably with a more detailed
- * explanation on subsequent lines.
+/* The END_SET() macro terminates a set of grouped tests.  It must be matched
+ * by a corresponding START_SET() with the same string as an argument.
+ * The argument is a short description to be printed in the log on entry.
  */
-#define END_SET(format, ...) \
+#define END_SET(setName) \
+      } \
+    [_setPool release]; \
+    NS_HANDLER \
+      if (YES == [[localException name] isEqualToString: @"SkipSet"]) \
+	{ \
+	  fprintf(stderr, "Skipped set:     %s\n", \
+	    [[localException reason] UTF8String]); \
 	} \
-      [_setPool release]; \
-      NS_HANDLER \
-	if (NO == [[localException name] isEqualToString: @"CheckSet"]) \
-	  { \
-	    fprintf(stderr, "EXCEPTION: %s %s %s\n", \
-	      [[localException name] UTF8String], \
-	      [[localException reason] UTF8String], \
-	      [[[localException userInfo] description] UTF8String]); \
-	  } \
-        unresolved("%s:%d ... problem occurred inside set.", \
-	  __FILE__, __LINE__); \
-     NS_ENDHANDLER \
-     testHopeful = save_hopeful; \
-    } \
-  else \
-    { \
-      unsupported("%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
-    }
+      else \
+	{ \
+	  if (YES == [[localException name] isEqualToString: @"FailSet"]) \
+	    { \
+	      fprintf(stderr, \
+		"Failed set:      %s:%d ... need not met in %s.\n", \
+	        __FILE__, _save_line, _save_set); \
+	    } \
+	  else \
+	    { \
+	      fprintf(stderr, "EXCEPTION: %s %s %s\n", \
+		[[localException name] UTF8String], \
+		[[localException reason] UTF8String], \
+		[[[localException userInfo] description] UTF8String]); \
+	      fprintf(stderr, "Failed set:      %s:%d ... problem in %s.\n", \
+	        __FILE__, _save_line, _save_set); \
+	    } \
+	} \
+    NS_ENDHANDLER \
+    fprintf(stderr, "End set:       %s:%d ... %s\n", \
+      __FILE__, __LINE__, _save_set); \
+    if (strcmp(_save_set, setName) != 0) \
+      fprintf(stderr, "Failed set:      %s:%d ... END(%s) with START(%s).\n", \
+        __FILE__, __LINE__, setName, _save_set); \
+    free(_save_set); \
+    testHopeful = _save_hopeful; \
+  }
 
 /* The NEED macro takes a test macro as an argument and breaks out of a set
  * and reports it as failed if the test does not pass.
  */
 #define	NEED(testToTry) \
-  testToTry \
+  {testToTry;} \
   if (NO == testPassed) \
     { \
       if (nil != testRaised) \
@@ -359,9 +354,19 @@ static void unsupported(const char *format, ...)
 	} \
       else \
 	{ \
-	  [NSException raise: @"CheckSet" format: @"Test did not pass"]; \
+	  [NSException raise: @"FailSet" format: @"Test did not pass"]; \
 	} \
     }
+
+/* The SKIP() macro skips the remainder of a set of grouped tests.
+ * Its argument is a literal printf style format string and variable
+ * arguments to print a message giving the reason for skipping the set.
+ * This should be a short one line message (for immediate display),
+ * preferably with a more detailed explanation on subsequent lines.
+ */
+#define	SKIP(fmt, ...) \
+  [NSException raise: @"SkipSet" format: @"%s %d ... " fmt, \
+  __FILE__, __LINE__, ## __VA_ARGS__];
 
 
 /* some good macros to compare floating point numbers */

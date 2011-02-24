@@ -11,7 +11,7 @@ main()
 {
   /* Start a set.
    */
-  START_SET(YES)
+  START_SET("example set")
 
   /* Here we demonstrate that the 'expression' evaluated by the PASS
    * macro can actually be an arbitrarily complex piece of code as
@@ -27,7 +27,7 @@ main()
     NSEqualRanges(r, NSMakeRange(1, 10));
   }), "a long code-fragment/expression works")
 
-  END_SET("test set")
+  END_SET("example set")
 
   return 0;
 }

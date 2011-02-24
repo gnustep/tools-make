@@ -16,7 +16,7 @@ main()
   /* We start a set here ...
    * Having a set means we do not need to bother creating an autorelease pool.
    */
-  START_SET(YES)
+  START_SET("example set")
 
   /* We use a macro here so that any exception in the expression we use
    * will not break out of the set, and the two remaining tests will be

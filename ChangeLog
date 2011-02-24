@@ -1,3 +1,26 @@
+2011-01-24  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/example9.m:
+	* TestFramework/ObjectTesting.h:
+	* TestFramework/README:
+	* TestFramework/Testing.h:
+	* TestFramework/example2.m:
+	* TestFramework/example3.m:
+	* TestFramework/example4.m:
+	* TestFramework/example5.m:
+	* TestFramework/example6.m:
+	* TestFramework/example7.m:
+	* TestFramework/example8.m:
+	Important change to the START_SET and END_SET macros to stop their use
+	being confusing.  They now both take a simple C-string argument which
+	names the set, and the macros check that each end matches a start of
+	the same name.  Since tis means that a START_SET no longer takes an
+	argument sayng whether or notthe set is to be skipped, we now have a
+	SKIP macro to be used inside a set to skip to the end of it.  This
+	is actually more versatile as we can have multiple SKIP macros in the
+	same set, each providing a different reason for the set being skipped.
+	Also removed a few obsolete/unused functions and macros.
+
 2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:

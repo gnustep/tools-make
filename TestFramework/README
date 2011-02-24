@@ -181,8 +181,8 @@ paired calls to the START_SET and END_SET macros. Any setting of testHopeful
 within a set is automatically restored at the end of a set, so it makes sense
 to group hopes together in a set.
 
-You can skip an entire set by supplying NO as the argument to the START_SET
-macro, in which case the entire set will be reported as being Skipped.
+You can skip an entire set by calling the SKIP() macro just after the start,
+in which case the entire set will be reported as being Skipped.
 It is appropriate to skip sets of tests if you have checked and found that
 some feature you are testing is not available in the version of the package
 under test.

@@ -10,7 +10,7 @@ main()
 {
   /* Start a set.
    */
-  START_SET(YES)
+  START_SET("outer set")
 
   /* Our first test in this set will pass.
    */
@@ -18,7 +18,7 @@ main()
 
   /* Now we start a set nested inside the first one.
    */
-  START_SET(YES)
+  START_SET("inner set")
 
   /* And we say we need a test to pass, but it's actually a faulty one
    * which will fail, causing the set to be terminated.

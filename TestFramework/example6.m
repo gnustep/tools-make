@@ -8,7 +8,7 @@
 int
 main()
 {
-  START_SET(YES)
+  START_SET("example set")
 
   /* First set a flag to say that we are not expecting tests to
    * actually pass.

@@ -41,7 +41,7 @@
 /* Quick test to check that we have the class we expect.
  */
 #define TEST_FOR_CLASS(aClassName, aClass, TestDescription) \
-  pass([aClass isKindOfClass: NSClassFromString(aClassName)], TestDescription)
+  PASS([aClass isKindOfClass: NSClassFromString(aClassName)], TestDescription)
 
 /* Quick test to check for a non-empty string in the case where we don't
  * actually know what value we should be expecting.
@@ -54,23 +54,14 @@
       && [_testString length], description); \
   }
 
-/* DEPRECATED
- * This is for backward compatibility, the original havng been replaced
- * by two clearer/simpler macros.
- * Please use PASS_EXCEPTION() for a test which is supposed to raise,
- * or PASS_RUNS() to test that code runs without raising an exception.
- */ 
-#define TEST_EXCEPTION(code, exceptionName, shouldRaise, description) \
-  if (shouldRaise) { PASS_EXCEPTION(code, exceptionName, description) } \
-  else { PASS_RUNS(code, description) }
-
-/* DEPRECATED
+/* DEPRECATED ... please use the START_SET/END_SET and PASS macros instead.
    START_TEST/END_TEST can be used if the code being tested could raise
    and the exception should be considered a test failure.  The exception
    is not reraised to allow subsequent tests to execute.  The START_TEST
    macro takes an argument which will skip the test as Skipped if it
    evaluates to 0, allowing runtime control of whether the code block 
-   should be executed.  */
+   should be executed.
+ */
 #define START_TEST(supported) if ((supported)) { NS_DURING 
 #define END_TEST(result, desc, args...) \
   pass(result, desc, ## args); \
@@ -80,7 +71,12 @@
       [[localException reason] UTF8String], \
       [[[localException userInfo] description] UTF8String]); \
     pass (NO, desc, ## args); NS_ENDHANDLER } \
-  else unsupported (desc, ## args)
+  else { fprintf(stderr, "Failed test: " desc, ## args); \
+    fprintf(stderr, "\n"); }
+
+
+
+
 
 /* Functions to test basic capabilities expected of most classes.
  */
@@ -215,31 +211,33 @@ static void test_NSCoding(NSArray *objects)
   int i;
   for (i = 0; i < [objects count]; i++)
     { 
+      char buf[100];
       id obj = [objects objectAtIndex: i];
       const char *prefix; 
       NSMutableData *data;
       NSArchiver *archiver;
       id decoded;
 
-      START_SET(YES);
-      pass([[[obj class] description] length],
-        "I can extract a class name for object");
+      sprintf(buf, "test_NSCoding object %u", i);
+      START_SET(buf)
+	pass([[[obj class] description] length],
+	  "I can extract a class name for object");
 
-      prefix = [[NSString stringWithFormat: @"Object %i of class '%s'", i,
-        [NSStringFromClass([obj class]) UTF8String]] UTF8String];
-      pass([obj conformsToProtocol: @protocol(NSCoding)], 
-	"conforms to NSCoding protocol");
-      data = (NSMutableData *)[NSMutableData data]; 
-      archiver = [[NSArchiver alloc] initForWritingWithMutableData: data];
-      pass(archiver != nil, "I am able to set up an archiver");
-      data = nil;
-      [archiver encodeRootObject: obj];
-      data = [archiver archiverData];
-      pass(data && [data length] > 0, "%s can be encoded", prefix);
-      decoded = [NSUnarchiver unarchiveObjectWithData: data];
-      pass(decoded != nil, "can be decoded");
-      pass([decoded isEqual: obj], "decoded object equals the original");
-      END_SET("test_NSCoding object %u", i);
+	prefix = [[NSString stringWithFormat: @"Object %i of class '%s'", i,
+	  [NSStringFromClass([obj class]) UTF8String]] UTF8String];
+	pass([obj conformsToProtocol: @protocol(NSCoding)], 
+	  "conforms to NSCoding protocol");
+	data = (NSMutableData *)[NSMutableData data]; 
+	archiver = [[NSArchiver alloc] initForWritingWithMutableData: data];
+	pass(archiver != nil, "I am able to set up an archiver");
+	data = nil;
+	[archiver encodeRootObject: obj];
+	data = [archiver archiverData];
+	pass(data && [data length] > 0, "%s can be encoded", prefix);
+	decoded = [NSUnarchiver unarchiveObjectWithData: data];
+	pass(decoded != nil, "can be decoded");
+	pass([decoded isEqual: obj], "decoded object equals the original");
+      END_SET(buf)
     }
 }
 
@@ -248,25 +246,27 @@ static void test_keyed_NSCoding(NSArray *objects)
   int i;
   for (i = 0; i < [objects count]; i++)
     { 
+      char buf[100];
       id obj = [objects objectAtIndex: i];
       const char *prefix; 
       NSData *data;
       id decoded;
 
-      START_SET(YES);
-      pass([[[obj class] description] length],
-        "I can extract a class name for object");
+      sprintf(buf, "test_keyed_NSCoding object %u", i);
+      START_SET(buf)
+	pass([[[obj class] description] length],
+	  "I can extract a class name for object");
 
-      prefix = [[NSString stringWithFormat: @"Object %i of class '%s'", i,
-        [NSStringFromClass([obj class]) UTF8String]] UTF8String];
-      pass([obj conformsToProtocol: @protocol(NSCoding)], 
-	"conforms to NSCoding protocol");
-      data = [NSKeyedArchiver archivedDataWithRootObject: obj]; 
-      pass([data length] > 0, "%s can be encoded", prefix);
-      decoded = [NSKeyedUnarchiver unarchiveObjectWithData: data];
-      pass (decoded != nil, "can be decoded");
-      PASS_EQUAL(decoded, obj, "decoded object equals the original");
-      END_SET("test_keyed_NSCoding object %u", i);
+	prefix = [[NSString stringWithFormat: @"Object %i of class '%s'", i,
+	  [NSStringFromClass([obj class]) UTF8String]] UTF8String];
+	pass([obj conformsToProtocol: @protocol(NSCoding)], 
+	  "conforms to NSCoding protocol");
+	data = [NSKeyedArchiver archivedDataWithRootObject: obj]; 
+	pass([data length] > 0, "%s can be encoded", prefix);
+	decoded = [NSKeyedUnarchiver unarchiveObjectWithData: data];
+	pass (decoded != nil, "can be decoded");
+	PASS_EQUAL(decoded, obj, "decoded object equals the original")
+      END_SET(buf)
     }
 }
 
@@ -286,6 +286,7 @@ static void test_NSCopying(NSString *iClassName,
   
   for (i = 0; i < [objects count]; i++)
     {
+      char buf[100];
       BOOL immutable;
       NSString *theName;
       const char *prefix;
@@ -293,71 +294,73 @@ static void test_NSCopying(NSString *iClassName,
       Class theClass = Nil;
       id theObj = [objects objectAtIndex: i];
 
-      START_SET(YES);
-      if (iClass != mClass && [theObj isKindOfClass: mClass])
-        { 
-	  immutable = NO;
-          theName = iClassName;
-          theClass = iClass;
-        }
-      else
-        {
-	  immutable = YES;
-          theName = mClassName;
-	  theClass = mClass;
-	}
-     
-      prefix = [[NSString stringWithFormat: @"Object %i of class '%s'",
-	i, [theName UTF8String]] UTF8String];
-      pass([theObj conformsToProtocol: @protocol(NSCopying)], 
-	"conforms to NSCopying");
-      theCopy = [theObj copy];
-      pass(theCopy != nil, "%s understands -copy", prefix);
-      pass([theCopy isKindOfClass: iClass],
-	"%s copy is of correct type", prefix);
-      pass([theObj isEqual: theCopy], "%s original and copy are equal", prefix);
-      if (immutable)
-        { 
-	  if (YES == mustRetain)
-	    {
-	      pass(theCopy == theObj, 
-		"%s is retained by copy with same zone", prefix);
-            }
-          else if (YES == mustCopy)
-            { 
-	      pass(theCopy != theObj,
-		"%s is not retained by copy with same zone", prefix);
-	    }
-	}
-      if (theClass != iClass)
-        {
-          pass(![theCopy isKindOfClass: theClass], 
-	    "%s result of copy is not immutable", prefix);
-	}
-    
-      theCopy = [theObj copyWithZone: testZone];
-      pass(theCopy != nil, "%s understands -copyWithZone", prefix);
-      pass([theCopy isKindOfClass: iClass],
-        "%s zCopy has correct type", prefix);
-      pass([theObj isEqual: theCopy],
-        "%s copy and original are equal", prefix);
-      if (immutable)
-        {
-           if (YES == mustRetain)
-	     {
-	       pass(theCopy == theObj,
-		 "%s is retained by copy with other zone", prefix);
-	     }
-	   else if (YES == mustCopy)
-	     {
-	       pass(theCopy != theObj,
-		 "%s is not retained by copy with other zone", prefix);
-             }
-	}
-     if (theClass != iClass)
-       pass(![theCopy isKindOfClass: theClass],
-	 "%s result of copyWithZone: is not immutable", prefix);
-      END_SET("test_NSCopying object %u", i);
+      sprintf(buf, "test_NSCopying object %u", i);
+      START_SET(buf)
+	if (iClass != mClass && [theObj isKindOfClass: mClass])
+	  { 
+	    immutable = NO;
+	    theName = iClassName;
+	    theClass = iClass;
+	  }
+	else
+	  {
+	    immutable = YES;
+	    theName = mClassName;
+	    theClass = mClass;
+	  }
+       
+	prefix = [[NSString stringWithFormat: @"Object %i of class '%s'",
+	  i, [theName UTF8String]] UTF8String];
+	pass([theObj conformsToProtocol: @protocol(NSCopying)], 
+	  "conforms to NSCopying");
+	theCopy = [theObj copy];
+	pass(theCopy != nil, "%s understands -copy", prefix);
+	pass([theCopy isKindOfClass: iClass],
+	  "%s copy is of correct type", prefix);
+	pass([theObj isEqual: theCopy],
+	  "%s original and copy are equal", prefix);
+	if (immutable)
+	  { 
+	    if (YES == mustRetain)
+	      {
+		pass(theCopy == theObj, 
+		  "%s is retained by copy with same zone", prefix);
+	      }
+	    else if (YES == mustCopy)
+	      { 
+		pass(theCopy != theObj,
+		  "%s is not retained by copy with same zone", prefix);
+	      }
+	  }
+	if (theClass != iClass)
+	  {
+	    pass(![theCopy isKindOfClass: theClass], 
+	      "%s result of copy is not immutable", prefix);
+	  }
+      
+	theCopy = [theObj copyWithZone: testZone];
+	pass(theCopy != nil, "%s understands -copyWithZone", prefix);
+	pass([theCopy isKindOfClass: iClass],
+	  "%s zCopy has correct type", prefix);
+	pass([theObj isEqual: theCopy],
+	  "%s copy and original are equal", prefix);
+	if (immutable)
+	  {
+	     if (YES == mustRetain)
+	       {
+		 pass(theCopy == theObj,
+		   "%s is retained by copy with other zone", prefix);
+	       }
+	     else if (YES == mustCopy)
+	       {
+		 pass(theCopy != theObj,
+		   "%s is not retained by copy with other zone", prefix);
+	       }
+	  }
+       if (theClass != iClass)
+	 pass(![theCopy isKindOfClass: theClass],
+	   "%s result of copyWithZone: is not immutable", prefix);
+      END_SET(buf)
     }
 }
 
@@ -378,6 +381,7 @@ static void test_NSMutableCopying(NSString *iClassName,
   
   for (i = 0; i < [objects count]; i++)
     {
+      char buf[100];
       id theObj = [objects objectAtIndex: i];
       NSString *theName = nil;
       const char *prefix;
@@ -385,42 +389,43 @@ static void test_NSMutableCopying(NSString *iClassName,
       id theCopy = nil;
       Class theClass = Nil;
           
-      START_SET(YES);
-      if (iClass == mClass && [theObj isKindOfClass: mClass])
-        immutable = NO;
-      else
-        immutable = YES;
-      
-      if (immutable)
-        {
-          theName = iClassName;
-          theClass = iClass;
-	}
-      else
-        {
-          theName = mClassName;
-	  theClass = mClass;
-	}
-      
-      prefix = [[NSString stringWithFormat:
-	@"Object %i of class '%s'", i, [theName UTF8String]] UTF8String];
-      pass([theObj conformsToProtocol: @protocol(NSMutableCopying)],
-	"%s conforms to NSMutableCopying protocol", prefix);
-      theCopy = [theObj mutableCopy];
-      pass(theCopy != nil, "%s understands -mutableCopy", prefix);
-      pass([theCopy isKindOfClass: mClass], 
-	"%s mutable copy is of correct type", prefix);
-      pass([theCopy isEqual: theObj], "%s copy equals original", prefix);
-      pass(theCopy != theObj,
-	"%s not retained by mutable copy in the same zone",
-	[mClassName UTF8String]);
-      
-      theCopy = [theObj mutableCopyWithZone: testZone];
-      pass(theCopy != nil,
-	"%s understands mutableCopyWithZone", [mClassName UTF8String]);
-      pass(theCopy != theObj, "%s not retained by mutable copy in other zone",
-	[mClassName UTF8String]);
-      END_SET("test_NSMutableCopying object %u", i);
+      sprintf(buf, "test_NSMutableCopying object %u", i);
+      START_SET(buf);
+	if (iClass == mClass && [theObj isKindOfClass: mClass])
+	  immutable = NO;
+	else
+	  immutable = YES;
+	
+	if (immutable)
+	  {
+	    theName = iClassName;
+	    theClass = iClass;
+	  }
+	else
+	  {
+	    theName = mClassName;
+	    theClass = mClass;
+	  }
+	
+	prefix = [[NSString stringWithFormat:
+	  @"Object %i of class '%s'", i, [theName UTF8String]] UTF8String];
+	pass([theObj conformsToProtocol: @protocol(NSMutableCopying)],
+	  "%s conforms to NSMutableCopying protocol", prefix);
+	theCopy = [theObj mutableCopy];
+	pass(theCopy != nil, "%s understands -mutableCopy", prefix);
+	pass([theCopy isKindOfClass: mClass], 
+	  "%s mutable copy is of correct type", prefix);
+	pass([theCopy isEqual: theObj], "%s copy equals original", prefix);
+	pass(theCopy != theObj,
+	  "%s not retained by mutable copy in the same zone",
+	  [mClassName UTF8String]);
+	
+	theCopy = [theObj mutableCopyWithZone: testZone];
+	pass(theCopy != nil,
+	  "%s understands mutableCopyWithZone", [mClassName UTF8String]);
+	pass(theCopy != theObj, "%s not retained by mutable copy in other zone",
+	  [mClassName UTF8String]);
+      END_SET(buf)
     }
 }
 

@@ -13,7 +13,7 @@
 int
 main()
 {
-  START_SET(YES)
+  START_SET("example set")
 
   /* We test for the code fragment raising an exception.  We don't care
    * about the particular exception, so we pass nil as the expected exception
