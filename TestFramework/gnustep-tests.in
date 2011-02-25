@@ -456,9 +456,11 @@ do
         if test x"$tmp" = x"$TESTFILE"
 	then
           tmp=`basename $TESTFILE .mm`
-          TESTRULES="$TESTRULES\n${tmp}_OBJCC_FILES=$TESTFILE"
+          TESTRULES="$TESTRULES\\
+${tmp}_OBJCC_FILES=$TESTFILE"
 	else
-          TESTRULES="$TESTRULES\n${tmp}_OBJC_FILES=$TESTFILE"
+          TESTRULES="$TESTRULES\\
+${tmp}_OBJC_FILES=$TESTFILE"
 	fi
         TESTNAMES="$TESTNAMES $tmp"
       done
