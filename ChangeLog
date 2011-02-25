@@ -1,5 +1,17 @@
 2011-01-25  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* TestFramework/example9.m: Fix include
+	* TestFramework/example8.m: Fix include
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/README:
+	Add (untested) support for Objective-C++
+	Implement parallel build so that all the tests in a directory should
+	be built simultaneously making more effective use of multiprocessor
+	systems. Add the --sequential command line option to disable this if
+	desired.
+
+2011-01-25  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* TestFramework/Testing.h: Cosmetic improvement ... indent the results
 	of tests and the start/end of sets in the full diagnostic log.
 

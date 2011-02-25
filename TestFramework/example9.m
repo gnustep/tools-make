@@ -1,5 +1,5 @@
 #import	"Testing.h"
-#import	<NSFoundation/NSGeometry.h>
+#import	<Foundation/NSRange.h>
 
 /* A ninth test ... skipping unsupported tests
  *

@@ -235,6 +235,10 @@ is included at the start of the generated makefile (if it exists).  This allows
 all the tests in a suite to use a common makefile fragment to provide
 information for all the testsuite.
 
+Your system should not make any assumption about the order in which test
+files are built ... the test framework may build many test files in parallel
+in order to make effective use of multiple processors.
+
 For total control, the framework checks to see if a 'GNUmakefile.tests' file
 exists in the directory, and if it does it uses that file as a template to
 create the GNUmakefile rather than using its own make file.
@@ -243,9 +247,10 @@ tests to be run, and @TESTRULES@ where it wants the rules to build the
 tests to be included.
 It should also use @GSTESTFLAGS@ where it wants additions flags to tell
 the compiler about the test framework to be substituted.
-The GNUmakefile.tests script should build all the tests when it is
-invoked without a target, and it should also have a 'clean' target to
-clean up after all tests.
+The GNUmakefile.tests script should build each individual test when it is
+invoked with that test name as a target, and it should also build all tests
+if it is invoked without a target, and have a 'clean' target to clean up
+before and after all tests.
 
 
 Ignoring directories

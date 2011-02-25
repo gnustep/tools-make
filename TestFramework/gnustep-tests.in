@@ -62,13 +62,16 @@ do
     --documentation)
       echo
       echo "$0: Script to run the GNUstep testsuite"
-      echo "Usage: gnustep-tests [directory | test1.m [test2.m ...]]"
-      echo "Runs the specified tests, or any in subdirectories of the"
+      echo "Usage: gnustep-tests [directory | test.m]"
+      echo "Runs the specified test, or any in subdirectories of the"
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --help' for basic help."
       echo
       cat $GSTESTTOP/README
       exit 0
+      ;;
+    --sequential)
+      GSSEQUENTIAL=yes
       ;;
     --verbose)
       GSVERBOSE=yes
@@ -87,6 +90,7 @@ do
       echo "Use 'gnustep-tests --failfast' to stop after the first failure."
       echo "Use 'gnustep-tests --debug' to run gdb for any failed tests."
       echo "Use 'gnustep-tests --verbose' for full/detailed log output."
+      echo "Use 'gnustep-tests --sequential' to disable parallel building."
       echo
       echo "Interpreting the output"
       echo "-----------------------"
@@ -179,8 +183,12 @@ then
     BARE=`basename $TESTS .m`
     if test x"$BARE" = x"$TESTS"
     then
-      echo "The file '$1' does not have a .m extension ... cannot test."
-      exit 1
+      BARE=`basename $TESTS .mm`
+      if test x"$BARE" = x"$TESTS"
+      then
+        echo "The file '$1' does not have a .m or .mm extension ... cannot test."
+        exit 1
+      fi
     fi
   else
     echo "'$1' is not a directory or a readable source file ... cannot test."
@@ -238,39 +246,29 @@ build_and_run ()
     rm -rf ./obj
     mkdir ./obj
     BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
-    CLEAN_CMD=echo
   else
-    BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes"
-    CLEAN_CMD="$MAKE_CMD clean"
-    # Create the GNUmakefile by filling in the name of the test,
-    # the name of the file, the include directory, and the failfast
-    # option if needed.
-    rm -f GNUmakefile
-    TESTRULES="${TESTNAME}_OBJC_FILES=$TESTFILE"
-    if test "$GSTESTMODE" = "failfast"
-    then
-      sed -e "s/@TESTNAMES@/$TESTNAME/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
-    else
-      sed -e "s/@TESTNAMES@/$TESTNAME/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
-    fi
+    BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes $TESTNAME"
   fi
 
   if test "$GSTESTMODE" = "clean"
   then
-    $CLEAN_CMD >/dev/null 2>&1
     rm -f GNUmakefile
     rm -rf obj core gdb.cmds
     return 0
   fi
 
-  # Clean up to avoid contamination by previous tests. Assume
-  # that this will never fail in any interesting way.
-  $CLEAN_CMD >/dev/null 2>&1
-
-  # Compile it. Redirect errors to stdout so it shows up in the log,
+  # Compile it if necessary.
+  # Redirect errors to stdout so it shows up in the log,
   # but not in the summary.
-  $BUILD_CMD >$GSTESTLOG.tmp 2>&1
-  if test $? != 0
+  if test "$NEEDBUILD" = "yes"
+  then
+    $BUILD_CMD >$GSTESTLOG.tmp 2>&1
+    BUILDSTATUS=$?
+  else
+    BUILDSTATUS=0
+  fi
+
+  if test $BUILDSTATUS != 0
   then
     echo "Failed build:     $1" >&2
     if test "$GSTESTMODE" = "failfast"
@@ -384,7 +382,7 @@ for TESTDIR in $TESTDIRS
 do
   found=no
   # Get the names of all subdirectories containing source files.
-  SRCDIRS=`find $TESTDIR -name \*.m | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+  SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
   if test x"$SRCDIRS" = x
   then
     continue
@@ -410,35 +408,76 @@ do
       fi
     fi
 
+    # Get the names of all the .m and .mm files in the curret directory.
     if test x"$TESTS" = x
     then
-      TESTS=`echo *.m | sort | sed -e 's/\(^\| \)X[^ ]*//g'`
-    fi
-    # If there is a GNUmakefile.tests in the directory, run it first.
-    if test -f GNUmakefile.tests
-    then
-      if test "$GSTESTMODE" = "clean"
-      then
-	$MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS clean 2>&1
-      else
-	$MAKE_CMD -f GNUmakefile.tests $MAKEFLAGS debug=yes 2>&1
-      fi
+      TESTS=`find . -maxdepth 1 \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
     fi
 
     if test -r GNUmakefile.tests 
     then
+      # There's a custom make template present ... use it.
       TEMPLATE=GNUmakefile.tests
     elif test -r GNUmakefile.preamble 
     then
+      # There's a make preamble present ... use default template.
       TEMPLATE=$GSTESTTOP/GNUmakefile.in
     elif test -r GNUmakefile.postamble
     then
+      # There's a make postamble present ... use default template.
       TEMPLATE=$GSTESTTOP/GNUmakefile.in
     elif test -r ../GNUmakefile.super
     then
+      # There's a make superfile present ... use default template.
       TEMPLATE=$GSTESTTOP/GNUmakefile.in
-    else
+    elif test -r "$TESTS"
+    then
+      # Single readable file ... quicker to compile directly than with template
       TEMPLATE=
+    elif test x"$GSSEQUENTIAL" = xyes
+    then
+      # We don't want to build in parallel, so a makefile won't speed us up
+      TEMPLATE=
+    else
+      # There are multiple files to build ... use make for parallelisation
+      TEMPLATE=$GSTESTTOP/GNUmakefile.in
+    fi
+
+    NEEDBUILD=yes
+    if test x"$TEMPLATE" = x
+    then
+      rm -rf core obj GNUmakefile gdb.cmds
+    else
+      TESTNAMES=
+      TESTRULES=
+      for TESTFILE in $TESTS
+      do
+        tmp=`basename $TESTFILE .m`
+        if test x"$tmp" = x"$TESTFILE"
+	then
+          tmp=`basename $TESTFILE .mm`
+          TESTRULES="$TESTRULES\n${tmp}_OBJCC_FILES=$TESTFILE"
+	else
+          TESTRULES="$TESTRULES\n${tmp}_OBJC_FILES=$TESTFILE"
+	fi
+        TESTNAMES="$TESTNAMES $tmp"
+      done
+      if test "$GSTESTMODE" = "failfast"
+      then
+        sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
+      else
+        sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
+      fi
+      $MAKE_CMD clean >/dev/null 2>&1
+
+      # Try building all the test files in the directory in parallel.
+      # If that works, set NEEDBUILD to 'yes' so that we will try each
+      # individual test file later.
+      $MAKE_CMD $MAKEFLAGS -j debug=yes >/dev/null 2>&1
+      if test $? = 0
+      then
+	NEEDBUILD=no
+      fi
     fi
 
     # Now we process each test file in turn.
@@ -461,7 +500,7 @@ do
       rm -f tests.log tests.sum
       rm -f oldtests.log oldtests.sum
     else
-      # And perform the cleanup script.
+      # And perform the directory end script.
       if test -r ./End.sh -a -x ./End.sh
       then
 	./End.sh
