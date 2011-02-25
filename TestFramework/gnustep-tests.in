@@ -411,7 +411,7 @@ do
     # Get the names of all the .m and .mm files in the curret directory.
     if test x"$TESTS" = x
     then
-      TESTS=`find . -maxdepth 1 \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+      TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
     fi
 
     if test -r GNUmakefile.tests 
