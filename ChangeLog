@@ -1,3 +1,8 @@
+2011-01-25  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h: Cosmetic improvement ... indent the results
+	of tests and the start/end of sets in the full diagnostic log.
+
 2011-01-24  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example9.m:

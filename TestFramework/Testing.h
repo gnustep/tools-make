@@ -33,6 +33,8 @@
 /* A flag indicating that the testsuite is currently processing tests
  * which are actually not expected to pass, but where we hope someone
  * might have committed a bugfix.
+ * You should set this to YES at the start of any set of tests which
+ * are actually unlikely to pass on all systems.
  * The state of this flag is preserved by sets ... on exit from a set
  * it is restored to the state it had on entry.
  */
@@ -40,18 +42,36 @@ static BOOL testHopeful __attribute__((unused)) = NO;
 
 /* A flag indicating whether the most recently executed test passed.
  * This is set by the pass() function (and therefore by any test macro).
+ * Do not modify this directly.
  */
 static BOOL testPassed __attribute__((unused)) = NO;
 
 /* A variable storing the line number of the test currently being run.
+ * Do not modify this directly.
  */
 static unsigned testLineNumber __attribute__((unused)) = 0;
+
+/* A variable storing the indentation of the set currently being run.
+ * Do not modify this directly.
+ */
+static unsigned testIndentation __attribute__((unused)) = 0;
+static inline void testIndent(void) __attribute__((unused));
+static inline void testIndent(void)
+{
+  unsigned	i = testIndentation;
+  while (i-- > 0)
+    {
+      fprintf(stderr, "  ");
+    }
+}
 
 /* A variable set whenever a test macro is executed.  This contains
  * the exception which terminated the test macro, or nil if no exception
  * was raised.
  */
 static NSException *testRaised __attribute__((unused)) = nil;
+
+
 
 /* The pass() function is the low-level core of the testsuite.
  *
@@ -81,6 +101,7 @@ static void pass(int passed, const char *format, ...)
 {
   va_list args;
   va_start(args, format);
+
   if (passed)
     {
       fprintf(stderr, "Passed test:     ");
@@ -96,6 +117,7 @@ static void pass(int passed, const char *format, ...)
       fprintf(stderr, "Failed test:     ");
       testPassed = NO;
     }
+  testIndent();
   vfprintf(stderr, format, args);
   fprintf(stderr, "\n");
   va_end(args);
@@ -289,12 +311,14 @@ static void testStart()
 #define START_SET(setName) \
   { \
     BOOL _save_hopeful = testHopeful; \
+    unsigned _save_indentation = testIndentation; \
     int	_save_line = __LINE__; \
     char *_save_set = malloc(strlen(setName) + 1); \
     strcpy(_save_set, setName); \
-    fprintf(stderr, "Start set:       %s:%d ... %s\n", \
-      __FILE__, __LINE__, _save_set); \
-    fprintf(stderr, "\n"); \
+    fprintf(stderr, "Start set:       "); \
+    testIndent(); \
+    fprintf(stderr, "%s:%d ... %s\n", __FILE__, __LINE__, _save_set); \
+    testIndentation++; \
     NS_DURING \
       NSAutoreleasePool *_setPool = [NSAutoreleasePool new]; \
       {
@@ -310,15 +334,17 @@ static void testStart()
     NS_HANDLER \
       if (YES == [[localException name] isEqualToString: @"SkipSet"]) \
 	{ \
-	  fprintf(stderr, "Skipped set:     %s\n", \
-	    [[localException reason] UTF8String]); \
+	  fprintf(stderr, "Skipped set:     "); \
+          testIndent(); \
+	  fprintf(stderr, "%s\n", [[localException reason] UTF8String]); \
 	} \
       else \
 	{ \
 	  if (YES == [[localException name] isEqualToString: @"FailSet"]) \
 	    { \
-	      fprintf(stderr, \
-		"Failed set:      %s:%d ... need not met in %s.\n", \
+	      fprintf(stderr, "Failed set:      "); \
+              testIndent(); \
+	      fprintf(stderr, "%s:%d ... need not met in %s.\n", \
 	        __FILE__, _save_line, _save_set); \
 	    } \
 	  else \
@@ -327,16 +353,20 @@ static void testStart()
 		[[localException name] UTF8String], \
 		[[localException reason] UTF8String], \
 		[[[localException userInfo] description] UTF8String]); \
-	      fprintf(stderr, "Failed set:      %s:%d ... problem in %s.\n", \
+	      fprintf(stderr, "Failed set:      "); \
+              testIndent(); \
+	      fprintf(stderr, "%s:%d ... problem in %s.\n", \
 	        __FILE__, _save_line, _save_set); \
 	    } \
 	} \
     NS_ENDHANDLER \
-    fprintf(stderr, "End set:       %s:%d ... %s\n", \
-      __FILE__, __LINE__, _save_set); \
     if (strcmp(_save_set, setName) != 0) \
-      fprintf(stderr, "Failed set:      %s:%d ... END(%s) with START(%s).\n", \
+      fprintf(stderr, "Error:      %s:%d ... END(%s) with START(%s).\n", \
         __FILE__, __LINE__, setName, _save_set); \
+    testIndentation = _save_indentation; \
+    fprintf(stderr, "End set:         "); \
+    testIndent(); \
+    fprintf(stderr, "%s:%d ... %s\n", __FILE__, __LINE__, _save_set); \
     free(_save_set); \
     testHopeful = _save_hopeful; \
   }
