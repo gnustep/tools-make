@@ -186,7 +186,7 @@ then
       BARE=`basename $TESTS .mm`
       if test x"$BARE" = x"$TESTS"
       then
-        echo "The file '$1' does not have a .m or .mm extension ... cannot test."
+        echo "The file '$1' does not end in .m or .mm ... cannot test."
         exit 1
       fi
     fi
@@ -384,8 +384,13 @@ SUMD=.
 for TESTDIR in $TESTDIRS
 do
   found=no
-  # Get the names of all subdirectories containing source files.
-  SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+  if test x"$TESTS" = x
+  then
+    # Get the names of all subdirectories containing source files.
+    SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+  else
+    SRCDIRS="$TESTDIRS"
+  fi
   if test x"$SRCDIRS" = x
   then
     continue
@@ -411,7 +416,7 @@ do
       fi
     fi
 
-    # Get the names of all the .m and .mm files in the curret directory.
+    # Get the names of all the .m and .mm files in the current directory.
     if test x"$TESTS" = x
     then
       TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`

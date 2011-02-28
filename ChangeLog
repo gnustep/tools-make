@@ -1,3 +1,9 @@
+2011-01-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/GNUmakefile.in:
+	Fix error testing single file ... was trying subdirectories too.
+
 2011-01-25  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example9.m: Fix include
