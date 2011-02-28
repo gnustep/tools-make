@@ -16,10 +16,10 @@ endif
 
 @TESTRULES@
 
-clean::
-	rm -f core tests.log tests.sum oldtests.log oldtests.sum
-
 -include GNUmakefile.preamble
 include $(GNUSTEP_MAKEFILES)/test-tool.make
 -include GNUmakefile.postamble
+
+after-clean::
+	rm -f core tests.log tests.sum oldtests.log oldtests.sum
 
