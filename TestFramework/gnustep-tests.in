@@ -258,7 +258,7 @@ build_and_run ()
   # but not in the summary.
   if test "$NEEDBUILD" = "yes"
   then
-    echo "Building $GSTESTDIR/$TESTFILE"
+    echo "Building $dir/$TESTFILE"
     echo "$BUILD_CMD"
     $BUILD_CMD 2>&1
     BUILDSTATUS=$?
@@ -489,7 +489,7 @@ ${tmp}_OBJC_FILES=$TESTFILE"
 	# individual test file later.
 	echo "" >>$GSTESTLOG
 	echo "Building in $dir" >>$GSTESTLOG
-	$MAKE_CMD $MAKEFLAGS -j debug=yes >>$GSTESTLOG 2>&1
+	$MAKE_CMD -j 4 $MAKEFLAGS debug=yes >>$GSTESTLOG 2>&1
 	if test $? = 0
 	then
 	  NEEDBUILD=no
