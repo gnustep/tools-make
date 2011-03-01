@@ -4,6 +4,8 @@
 include $(GNUSTEP_MAKEFILES)/common.make
 -include ../GNUmakefile.super
 
+@TESTOPTS@
+
 TEST_TOOL_NAME = @TESTNAMES@
 
 ADDITIONAL_OBJCFLAGS += @TESTFLAGS@ -Wall

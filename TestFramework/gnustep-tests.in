@@ -127,6 +127,7 @@ then
   GSTESTFLAGS="$GSTESTFLAGS -DFAILFAST=1"
 fi
 GSTESTLIBS=`gnustep-config --gui-libs`
+GSTESTOPTS="GNUSTEP_OBJ_DIR=./obj"
 
 if test x"$BASH_VERSION" = x
 then
@@ -478,9 +479,9 @@ ${tmp}_OBJC_FILES=$TESTFILE"
 	done
 	if test "$GSTESTMODE" = "failfast"
 	then
-	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
+	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
 	else
-	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
+	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
 	fi
 	$MAKE_CMD clean >/dev/null 2>&1
 

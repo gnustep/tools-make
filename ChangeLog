@@ -1,6 +1,16 @@
 2011-01-29  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/README:
+	Override GNUSTEP_OBJ_DIR so that executables are always stored in ./obj
+	even if we are building non-flattened.  There's no point using a
+	non-flattened layout inside the test framework as we need to clean and
+	re-build for each test run anyway.
+
+2011-01-29  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
 	Speed up --clean option
 
 2011-01-28  Richard Frith-Macdonald <rfm@gnu.org>
