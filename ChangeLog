@@ -1,4 +1,4 @@
-2011-01-29  Richard Frith-Macdonald <rfm@gnu.org>
+2011-03-01  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
 	* TestFramework/GNUmakefile.in:
@@ -8,18 +8,18 @@
 	non-flattened layout inside the test framework as we need to clean and
 	re-build for each test run anyway.
 
-2011-01-29  Richard Frith-Macdonald <rfm@gnu.org>
+2011-03-01  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
 	Speed up --clean option
 
-2011-01-28  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-28  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
 	* TestFramework/GNUmakefile.in:
 	Fix error testing single file ... was trying subdirectories too.
 
-2011-01-25  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-25  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example9.m: Fix include
 	* TestFramework/example8.m: Fix include
@@ -31,12 +31,12 @@
 	systems. Add the --sequential command line option to disable this if
 	desired.
 
-2011-01-25  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-25  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/Testing.h: Cosmetic improvement ... indent the results
 	of tests and the start/end of sets in the full diagnostic log.
 
-2011-01-24  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-24  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example9.m:
 	* TestFramework/ObjectTesting.h:
@@ -59,7 +59,7 @@
 	same set, each providing a different reason for the set being skipped.
 	Also removed a few obsolete/unused functions and macros.
 
-2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-23  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
 	* TestFramework/TestInfo:
@@ -70,7 +70,7 @@
 	In future we can use this file to store extra information or settings
 	such as contact details for the package maintainers.
 
-2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-23  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
 	* TestFramework/Testing.h:
@@ -79,19 +79,19 @@
 	based on a function argument ... so we set a variable before entry
 	instead.
 	
-2011-01-23  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-23  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Testing.h: Fix excess args to printf and incorrect setting of the
 	testPassed flag.
 
-2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* gnustep-tests.in:
 	* GNUmakefile.in:
 	* README:
 	Simplify template makefile options.
 
-2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example9.m:
 	* TestFramework/Testing.h:
@@ -99,12 +99,12 @@
 	* GNUmakefile.in:
 	Add example for dealing with an unsupported feature.
 
-2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
 	Report path to test file when we run it as suggested by Sergey Golovin.
 
-2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Check for bash and test programs
 	* configure: regenerate
@@ -114,7 +114,7 @@
 	determined at configure time if we can't rely on the builtin test
 	function in the shell we end up with.
 
-2011-01-22  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests:
 	* TestFramework/Testing.h:
@@ -122,7 +122,7 @@
 	Make it easy to break at the start of a particular failed test.
 	Add --debug option to automatically launch gdb to debug a test.
 
-2011-01-21  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-21  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests:
 	* TestFramework/Summary.sh:
@@ -130,7 +130,7 @@
 	* GNUmakefile.in:
 	Simplify by removing intermediary script.
 
-2011-01-21  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-21  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* gnustep-config.in: Add CC to list of variables so we can build
 	using the compiler that gnustep-make was configured with.
@@ -141,7 +141,7 @@
 	with no special options) by compiling directly ... 25% improvement
 	running the base library testsuite on my debian system using clang.
 
-2011-01-20  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-20  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests:
 	* TestFramework/README:
@@ -153,7 +153,7 @@
 	identical to behavior when that file is executed as part of a whole
 	testsuite.  Don't backup makefile when we create a new one.
 
-2011-01-19  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-19  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests:
 	* TestFramework/runtest.sh:
@@ -162,7 +162,7 @@
 	Add support for start and end scripts in each test directory.
 	Fix bracketing in macro as suggested by Fred
 
-2011-01-19  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-19  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests:
 	* TestFramework/runtest.sh:
@@ -170,7 +170,7 @@
 	Portability fixes for systems where grep has limited functionality
 	and/or where the shell's builtin 'test' command is limited/faulty.
 
-2011-01-18  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-18  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* gnustep-config.in:
 	* TestFramework/gnustep-tests:
@@ -178,7 +178,7 @@
 	* TestFramework/Summary.sh:
 	Tweak use of grep for portability.  Try to locate gnu make reliably.
 
-2011-01-16  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-16  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example1.m:
 	* TestFramework/example2.m:
@@ -202,7 +202,7 @@
 	during execution ofa large testsuite.
 	Added summary at end of tests (needs more work)
 
-2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-13  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/Testing.h:
 	* TestFramework/example1.m:
@@ -218,7 +218,7 @@
 	Fix header file in examples.  Add comments/documentation to explain
 	use of brackets in macro parameters.  Add an example to demonstrate it.
 
-2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-13  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/Testing.h:
 	* TestFramework/gnustep-tests:
@@ -229,7 +229,7 @@
 	* GNUmakefile.in:
 	install examples.
 
-2011-01-13  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-13  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests: Add --clean option
 	* TestFramework/README: Describe the fact that we leave the last
@@ -241,7 +241,7 @@
 	  depend on the existence of Object class for checking whether
 	  exceptions work.
 
-2011-01-07  Richard Frith-Macdonald <rfm@gnu.org>
+2011-02-07  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/example1.m:
 	* TestFramework/example2.m:
