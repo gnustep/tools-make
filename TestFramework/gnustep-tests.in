@@ -157,6 +157,9 @@ fi
 if test $# = 0
 then
   echo "Checking for presence of test subdirectories ..."
+  NONAME=yes
+else
+  NONAME=no
 fi
 
 TEMP=`echo *`
@@ -250,19 +253,14 @@ build_and_run ()
     BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes $TESTNAME"
   fi
 
-  if test "$GSTESTMODE" = "clean"
-  then
-    rm -f GNUmakefile
-    rm -rf obj core gdb.cmds
-    return 0
-  fi
-
   # Compile it if necessary.
   # Redirect errors to stdout so it shows up in the log,
   # but not in the summary.
   if test "$NEEDBUILD" = "yes"
   then
-    $BUILD_CMD >$GSTESTLOG.tmp 2>&1
+    echo "Building $GSTESTDIR/$TESTFILE"
+    echo "$BUILD_CMD"
+    $BUILD_CMD 2>&1
     BUILDSTATUS=$?
   else
     BUILDSTATUS=0
@@ -319,54 +317,48 @@ build_and_run ()
 run_test_file ()
 {
   RUNEXIT=0
-  if test "$GSTESTMODE" = "clean"
+
+  echo >> $GSTESTLOG
+  echo Testing $TESTFILE... >> $GSTESTLOG
+  echo >> $GSTESTSUM
+
+  if test x"$GSVERBOSE" = xyes
   then
-    # Clean the test.
-    build_and_run > /dev/null 2>&1
-    return 0
+    build_and_run 2>&1 | tee $GSTESTLOG.tmp
   else
-    echo >> $GSTESTLOG
-    echo Testing $TESTFILE... >> $GSTESTLOG
-    echo >> $GSTESTSUM
-
-    if test x"$GSVERBOSE" = xyes
-    then
-      build_and_run 2>&1 | tee $GSTESTLOG.tmp
-    else
-      build_and_run > $GSTESTLOG.tmp 2>&1
-    fi
-    RUNEXIT=$?
-
-    # Add the information to the detailed log.
-    cat $GSTESTLOG.tmp >> $GSTESTLOG
-
-    # Extract the summary information and add it to the summary file.
-    extract $GSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
-    cat $GSTESTSUM.tmp >> $GSTESTSUM
-
-    # If there were failures or skipped tests then report them...
-    if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
-    then
-      echo
-      echo $dir/$TESTFILE:
-      extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
-    fi
-
-    if test x"$GSTESTDBG" != x
-    then
-      if present "$GSTESTSUM.tmp" "^Failed test:"
-      then
-        grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/break testStart if testLineNumber==\1/' > "$GSTESTDBG"
-        gdb "./obj/$TESTNAME" -x "$GSTESTDBG"
-        rm -f "$GSTESTDBG"
-      elif present "$GSTESTSUM.tmp" "^Failed file:"
-      then
-        gdb "./obj/$TESTNAME"
-      fi
-    fi
-
-    return $RUNEXIT
+    build_and_run > $GSTESTLOG.tmp 2>&1
   fi
+  RUNEXIT=$?
+
+  # Add the information to the detailed log.
+  cat $GSTESTLOG.tmp >> $GSTESTLOG
+
+  # Extract the summary information and add it to the summary file.
+  extract $GSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
+  cat $GSTESTSUM.tmp >> $GSTESTSUM
+
+  # If there were failures or skipped tests then report them...
+  if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
+  then
+    echo
+    echo $dir/$TESTFILE:
+    extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
+  fi
+
+  if test x"$GSTESTDBG" != x
+  then
+    if present "$GSTESTSUM.tmp" "^Failed test:"
+    then
+      grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/break testStart if testLineNumber==\1/' > "$GSTESTDBG"
+      gdb "./obj/$TESTNAME" -x "$GSTESTDBG"
+      rm -f "$GSTESTDBG"
+    elif present "$GSTESTSUM.tmp" "^Failed file:"
+    then
+      gdb "./obj/$TESTNAME"
+    fi
+  fi
+
+  return $RUNEXIT
 }
 
 
@@ -381,6 +373,7 @@ then
 fi
 
 SUMD=.
+foundany=no
 for TESTDIR in $TESTDIRS
 do
   found=no
@@ -402,114 +395,119 @@ do
     then
       continue
     fi
+
+    RUNEXIT=0
     found=yes
+    foundany=yes
+
     cd $dir
 
     if test "$GSTESTMODE" = "clean"
     then
       echo "--- Cleaning tests in $dir ---"
+
+      if test -r GNUmakefile
+      then
+        $MAKE_CMD clean >/dev/null 2>&1
+      fi
+      rm -rf core obj GNUmakefile gdb.cmds tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp
+
     else
       echo "--- Running tests in $dir ---"
+
       if test -r ./Start.sh -a -x ./Start.sh
       then
 	./Start.sh
       fi
-    fi
 
-    # Get the names of all the .m and .mm files in the current directory.
-    if test x"$TESTS" = x
-    then
-      TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
-    fi
+      # Get the names of all the .m and .mm files in the current directory.
+      if test x"$TESTS" = x
+      then
+	TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+      fi
 
-    if test -r GNUmakefile.tests 
-    then
-      # There's a custom make template present ... use it.
-      TEMPLATE=GNUmakefile.tests
-    elif test -r GNUmakefile.preamble 
-    then
-      # There's a make preamble present ... use default template.
-      TEMPLATE=$GSTESTTOP/GNUmakefile.in
-    elif test -r GNUmakefile.postamble
-    then
-      # There's a make postamble present ... use default template.
-      TEMPLATE=$GSTESTTOP/GNUmakefile.in
-    elif test -r ../GNUmakefile.super
-    then
-      # There's a make superfile present ... use default template.
-      TEMPLATE=$GSTESTTOP/GNUmakefile.in
-    elif test -r "$TESTS"
-    then
-      # Single readable file ... quicker to compile directly than with template
-      TEMPLATE=
-    elif test x"$GSSEQUENTIAL" = xyes
-    then
-      # We don't want to build in parallel, so a makefile won't speed us up
-      TEMPLATE=
-    else
-      # There are multiple files to build ... use make for parallelisation
-      TEMPLATE=$GSTESTTOP/GNUmakefile.in
-    fi
+      if test -r GNUmakefile.tests 
+      then
+	# There's a custom make template present ... use it.
+	TEMPLATE=GNUmakefile.tests
+      elif test -r GNUmakefile.preamble 
+      then
+	# There's a make preamble present ... use default template.
+	TEMPLATE=$GSTESTTOP/GNUmakefile.in
+      elif test -r GNUmakefile.postamble
+      then
+	# There's a make postamble present ... use default template.
+	TEMPLATE=$GSTESTTOP/GNUmakefile.in
+      elif test -r ../GNUmakefile.super
+      then
+	# There's a make superfile present ... use default template.
+	TEMPLATE=$GSTESTTOP/GNUmakefile.in
+      elif test -r "$TESTS"
+      then
+	# Single readable file ... quicker to compile directly.
+	TEMPLATE=
+      elif test x"$GSSEQUENTIAL" = xyes
+      then
+	# We don't want to build in parallel, so a makefile won't speed us up
+	TEMPLATE=
+      else
+	# There are multiple files to build ... use make for parallelisation
+	TEMPLATE=$GSTESTTOP/GNUmakefile.in
+      fi
 
-    NEEDBUILD=yes
-    if test x"$TEMPLATE" = x
-    then
-      rm -rf core obj GNUmakefile gdb.cmds
-    else
-      TESTNAMES=
-      TESTRULES=
+      NEEDBUILD=yes
+      if test x"$TEMPLATE" = x
+      then
+	rm -rf core obj GNUmakefile gdb.cmds
+      else
+	TESTNAMES=
+	TESTRULES=
+	for TESTFILE in $TESTS
+	do
+	  tmp=`basename $TESTFILE .m`
+	  if test x"$tmp" = x"$TESTFILE"
+	  then
+	    tmp=`basename $TESTFILE .mm`
+	    TESTRULES="$TESTRULES\\
+${tmp}_OBJCC_FILES=$TESTFILE"
+	  else
+	    TESTRULES="$TESTRULES\\
+${tmp}_OBJC_FILES=$TESTFILE"
+	  fi
+	  TESTNAMES="$TESTNAMES $tmp"
+	done
+	if test "$GSTESTMODE" = "failfast"
+	then
+	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
+	else
+	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
+	fi
+	$MAKE_CMD clean >/dev/null 2>&1
+
+	# Try building all the test files in the directory in parallel.
+	# If that works, set NEEDBUILD to 'yes' so that we will try each
+	# individual test file later.
+	echo "" >>$GSTESTLOG
+	echo "Building in $dir" >>$GSTESTLOG
+	$MAKE_CMD $MAKEFLAGS -j debug=yes >>$GSTESTLOG 2>&1
+	if test $? = 0
+	then
+	  NEEDBUILD=no
+	fi
+      fi
+
+      # Now we process each test file in turn.
+      # When cleaning, we only need to do one clean per directory.
       for TESTFILE in $TESTS
       do
-        tmp=`basename $TESTFILE .m`
-        if test x"$tmp" = x"$TESTFILE"
+	run_test_file
+	if test "$RUNEXIT" != "0"
 	then
-          tmp=`basename $TESTFILE .mm`
-          TESTRULES="$TESTRULES\\
-${tmp}_OBJCC_FILES=$TESTFILE"
-	else
-          TESTRULES="$TESTRULES\\
-${tmp}_OBJC_FILES=$TESTFILE"
+	  break
 	fi
-        TESTNAMES="$TESTNAMES $tmp"
       done
-      if test "$GSTESTMODE" = "failfast"
-      then
-        sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
-      else
-        sed -e "s/@TESTNAMES@/$TESTNAMES/;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
-      fi
-      $MAKE_CMD clean >/dev/null 2>&1
+      TESTS=
 
-      # Try building all the test files in the directory in parallel.
-      # If that works, set NEEDBUILD to 'yes' so that we will try each
-      # individual test file later.
-      $MAKE_CMD $MAKEFLAGS -j debug=yes >/dev/null 2>&1
-      if test $? = 0
-      then
-	NEEDBUILD=no
-      fi
-    fi
-
-    # Now we process each test file in turn.
-    # When cleaning, we only need to do one clean per directory.
-    RUNEXIT=0
-    for TESTFILE in $TESTS
-    do
-      run_test_file
-      if test "$RUNEXIT" != "0" -o "$GSTESTMODE" = "clean"
-      then
-	break
-      fi
-    done
-    TESTS=
-
-    if test "$GSTESTMODE" = "clean"
-    then
-      rm -rf core obj GNUmakefile gdb.cmds
-      rm -f tests.tmp tests.sum.tmp tests.log.tmp
-      rm -f tests.log tests.sum
-      rm -f oldtests.log oldtests.sum
-    else
       # And perform the directory end script.
       if test -r ./End.sh -a -x ./End.sh
       then
@@ -523,22 +521,38 @@ ${tmp}_OBJC_FILES=$TESTFILE"
       break
     fi
   done
+
+  # Log a message if there were no tests in this directory,
+  # but only if the directory was specifically named to be tested.
   if test $found = no
   then
-    echo "No tests found in $TESTDIR"
+    if test "$NONAME" = "no"
+    then
+      echo "No tests found in '$TESTDIR'."
+    fi
   fi
+
   if test "$RUNEXIT" != "0"
   then
     break
   fi
 done
 
+# Log a message if there were no tests found at all and we had been
+# looking in the current directory for test subdirectories.
+if test $foundany = no
+then
+  if test "$NONAME" = "yes"
+  then
+    echo "No test subdirectories found."
+  else
+    echo "No tests found in $TESTDIRS."
+  fi
+fi
+
 if test "$GSTESTMODE" = "clean"
 then
-  rm -rf core obj GNUmakefile.tmp gdb.cmds
-  rm -f tests.tmp tests.sum.tmp tests.log.tmp
-  rm -f tests.log tests.sum
-  rm -f oldtests.log oldtests.sum
+  rm -rf core obj GNUmakefile.tmp gdb.cmds tests.tmp tests.sum.tmp tests.log.tmp tests.log tests.sum oldtests.log oldtests.sum
 else
   # Make some stats.
   if test -r tests.sum
