@@ -237,7 +237,11 @@ information for all the testsuite.
 
 Your system should not make any assumption about the order in which test
 files are built ... the test framework may build many test files in parallel
-in order to make effective use of multiple processors.
+in order to make effective use of multiple processors.  In fact the make
+program will normally build up to four tests at a time, but you can change
+that by setting the MAKEFLAGS environment variable to '-j N' where N is the
+number of simultaneous builds you want to be permitted (or you can simply
+use 'gnustep-tests --sequential' to force building of one test at a time).
 
 For total control, the framework checks to see if a 'GNUmakefile.tests' file
 exists in the directory, and if it does it uses that file as a template to
