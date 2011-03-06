@@ -33,6 +33,7 @@ fi
 case "$1" in
   --variable=*)  ;;
   --help)       ;;
+  --debug-flags) ;;
   --objc-flags) ;;
   --objc-libs)  ;;
   --base-libs)  ;;
@@ -80,6 +81,8 @@ if [ "$1" = "--help" ]; then
     echo
     echo "    For example, you could get the value of GNUSTEP_SYSTEM_TOOLS to find"
     echo "    where command-line system programs are located on this system."
+    echo
+    echo "--debug-flags: prints all the flags required to compile an ObjC file for debug"
     echo
     echo "--objc-flags: prints all the flags required to compile an ObjC file"
     echo
@@ -157,6 +160,8 @@ case "$1" in
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
               exit 0;;
   --variable=GNUMAKE) echo "@GNUMAKE@"
+              exit 0;;
+  --debug-flags) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes debug=yes 2>/dev/null
               exit 0;;
   --objc-flags) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
               exit 0;;

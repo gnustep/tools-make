@@ -120,7 +120,7 @@ then
   CC=`gnustep-config --variable=CC`
   export CC
 fi
-GSTESTFLAGS=`gnustep-config --objc-flags`
+GSTESTFLAGS=`gnustep-config --debug-flags`
 GSTESTFLAGS="$GSTESTFLAGS -I$GSTESTTOP"
 if test "$GSTESTMODE" = "failfast"
 then
