@@ -218,7 +218,7 @@ static void test_NSCoding(NSArray *objects)
       NSArchiver *archiver;
       id decoded;
 
-      sprintf(buf, "test_NSCoding object %u", i);
+      snprintf(buf, sizeof(buf), "test_NSCoding object %u", i);
       START_SET(buf)
 	pass([[[obj class] description] length],
 	  "I can extract a class name for object");
@@ -252,7 +252,7 @@ static void test_keyed_NSCoding(NSArray *objects)
       NSData *data;
       id decoded;
 
-      sprintf(buf, "test_keyed_NSCoding object %u", i);
+      snprintf(buf, sizeof(buf), "test_keyed_NSCoding object %u", i);
       START_SET(buf)
 	pass([[[obj class] description] length],
 	  "I can extract a class name for object");
@@ -294,7 +294,7 @@ static void test_NSCopying(NSString *iClassName,
       Class theClass = Nil;
       id theObj = [objects objectAtIndex: i];
 
-      sprintf(buf, "test_NSCopying object %u", i);
+      snprintf(buf, sizeof(buf), "test_NSCopying object %u", i);
       START_SET(buf)
 	if (iClass != mClass && [theObj isKindOfClass: mClass])
 	  { 
@@ -389,7 +389,7 @@ static void test_NSMutableCopying(NSString *iClassName,
       id theCopy = nil;
       Class theClass = Nil;
           
-      sprintf(buf, "test_NSMutableCopying object %u", i);
+      snprintf(buf, sizeof(buf), "test_NSMutableCopying object %u", i);
       START_SET(buf);
 	if (iClass == mClass && [theObj isKindOfClass: mClass])
 	  immutable = NO;

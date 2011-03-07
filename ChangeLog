@@ -2,6 +2,9 @@
 
 	* TestFramework/Testing.h:
 	Change macro argument names to make collisions almost impossible.
+	* TestFramework/ObjectTesting.h:
+	* TestFramework/Testing.h:
+	Tweak to avoid some warnings on openbsd.
 
 2011-03-06  Richard Frith-Macdonald <rfm@gnu.org>
 

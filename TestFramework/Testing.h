@@ -315,7 +315,7 @@ static void testStart()
     unsigned _save_indentation = testIndentation; \
     int	_save_line = __LINE__; \
     char *_save_set = malloc(strlen(setName) + 1); \
-    strcpy(_save_set, setName); \
+    strncpy(_save_set, setName, strlen(setName) + 1); \
     fprintf(stderr, "Start set:       "); \
     testIndent(); \
     fprintf(stderr, "%s:%d ... %s\n", __FILE__, __LINE__, _save_set); \
