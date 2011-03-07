@@ -151,7 +151,7 @@ static void testStart()
  * Otherwise, the test passes.
  * Basically equivalent to pass() but with exception handling.
  */
-#define PASS(expression, format, ...) \
+#define PASS(testExpression__, testFormat__, ...) \
   NS_DURING \
     { \
       int _cond; \
@@ -159,13 +159,14 @@ static void testStart()
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       testLineNumber = __LINE__; \
       testStart(); \
-      _cond = (int)(expression); \
+      _cond = (int)(testExpression__); \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+      pass(_cond, "%s:%d ... " testFormat__, __FILE__, \
+	__LINE__, ## __VA_ARGS__); \
     } \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
     printf("%s: %s", [[testRaised name] UTF8String], \
       [[testRaised description] UTF8String]); \
   NS_ENDHANDLER
@@ -184,7 +185,7 @@ static void testStart()
  * the string representation of both values is logged so that you
  * can get a better idea of what went wrong.
  */
-#define PASS_EQUAL(expression, expect, format, ...) \
+#define PASS_EQUAL(testExpression__, testExpect__, testFormat__, ...) \
   NS_DURING \
     { \
       int _cond; \
@@ -194,11 +195,11 @@ static void testStart()
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       testLineNumber = __LINE__; \
       testStart(); \
-      _obj = (id)(expression);\
-      _exp = (id)(expect);\
+      _obj = (id)(testExpression__);\
+      _exp = (id)(testExpect__);\
       _cond = _obj == _exp || [_obj isEqual: _exp]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      pass(_cond, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+      pass(_cond, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
       if (0 == _cond) \
 	{ \
           NSString  *s = [_obj description]; \
@@ -218,38 +219,38 @@ static void testStart()
     } \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
     printf("%s: %s", [[testRaised name] UTF8String], \
       [[testRaised description] UTF8String]); \
   NS_ENDHANDLER
 
 /* Please use the PASS_EXCEPTION() macro to handle any code where you
  * want an exception to be thrown.  The macro checks that the supplied
- * code throws the specified exception.  If the code fails to throw,
- * or throws the wrong exception, then the code does not pass.
- * You can supply nil for expectedExceptionName if you don't care about the
- * type of exception.
+ * code throws  an expection with the specified name.  If the code fails
+ * to throw, or throws the wrong exception, then the code does not pass.
+ * You can supply nil for expected exception name if you don't care about
+ * the exact type of exception thrown.
  * The code fragment may not contain commas unless it is surrounded by
  * brackets. eg. PASS_EXCEPTION(({code here}), name, "hello")
  * The format must be a literal string printf style format.
  */
-#define PASS_EXCEPTION(code, expectedExceptionName, format, ...) \
+#define PASS_EXCEPTION(testCode__, testExpect__, testFormat__, ...) \
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
     { \
       testLineNumber = __LINE__; \
       testStart(); \
-      code; \
+      testCode__; \
     } \
-    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass((nil == (expectedExceptionName) \
-      || [[testRaised name] isEqual: (expectedExceptionName)]), \
-      "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
-    if (NO == [(expectedExceptionName) isEqual: [testRaised name]]) \
+    pass((nil == (testExpect__) \
+      || [[testRaised name] isEqual: (testExpect__)]), \
+      "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
+    if (NO == [(testExpect__) isEqual: [testRaised name]]) \
       fprintf(stderr, "Expected '%s' and got '%s'\n", \
-        [(expectedExceptionName) UTF8String], \
+        [(testExpect__) UTF8String], \
         [[testRaised name] UTF8String]); \
   NS_ENDHANDLER
 
@@ -260,18 +261,18 @@ static void testStart()
  * brackets. eg. PASS_EXCEPTION(({code here}), name, "hello")
  * The format must be a literal string printf style format.
  */
-#define PASS_RUNS(code, format, ...) \
+#define PASS_RUNS(testCode__, testFormat__, ...) \
   NS_DURING \
     id _tmp = testRaised; testRaised = nil; [_tmp release]; \
     { \
       testLineNumber = __LINE__; \
       testStart(); \
-      code; \
+      testCode__; \
     } \
-    pass(1, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(1, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
   NS_HANDLER \
     testRaised = [localException retain]; \
-    pass(0, "%s:%d ... " format, __FILE__, __LINE__, ## __VA_ARGS__); \
+    pass(0, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
     printf("%s: %s", [[testRaised name] UTF8String], \
       [[testRaised description] UTF8String]); \
   NS_ENDHANDLER
@@ -395,7 +396,7 @@ static void testStart()
  * preferably with a more detailed explanation on subsequent lines.
  */
 #define	SKIP(fmt, ...) \
-  [NSException raise: @"SkipSet" format: @"%s %d ... " fmt, \
+  [NSException raise: @"SkipSet" testFormat__: @"%s %d ... " fmt, \
   __FILE__, __LINE__, ## __VA_ARGS__];
 
 
