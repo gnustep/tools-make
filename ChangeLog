@@ -1,8 +1,19 @@
+2011-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Always use 'fhs' layout as the default layout
+	except on apple-apple-apple.  Removed 'native' layout.  Updated
+	comments and documentation.  If an invalid --with-layout=xxx
+	option is used, print a list of the available layouts.
+	* configure: Regenerated.
+	* Documentations/releasenotes.texi: Explain the change in default
+	layout.  Tidied up existing entry.
+	* RELEASENOTES: Regenerated.
+
 2011-03-13  Richard Frith-Macdonald <rfm@gnu.org>
 
-	 * TestFramework/gnustep-tests.in:
-	 * TestFramework/GNUmakefile.in:
-	 * TestFramework/README:
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/README:
 	Clean and simplify handling of preprocessor flag and include
 	directory setup.  Use the standard gnustep-make 'ADDITIONAL'
 	environment variables to set test options while still honoring
@@ -262,9 +273,9 @@
 
 2011-02-10 19:06  David Chisnall <theraven@gna.org>
 
-	* tools/make/trunk/configure, tools/make/trunk/configure.ac: Don't
-	  depend on the existence of Object class for checking whether
-	  exceptions work.
+	* configure.ac: Don't depend on the existence of Object class for
+	checking whether exceptions work.
+	* configure: Regenerated.
 
 2011-02-07  Richard Frith-Macdonald <rfm@gnu.org>
 
@@ -294,7 +305,7 @@
 
 	* target.make: Add c99 flag for solaris
 
-2010-09-22 Riccardo Mottola
+2010-09-22 Riccardo Mottola <rm@gnu.org>
 
 	* installation-domains.conf: add defaults for objc2 and
 	systempreferences

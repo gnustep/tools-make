@@ -4,11 +4,43 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.6.0
+@table @samp
+
+@item The default filesystem layout is now the 'fhs' layout
+Before version 2.6.0, the default filesystem layout was the 'gnustep'
+layout.  Starting with 2.6.0, the default filesystem layout has
+changed and is now the 'fhs' layout.  To get the old default layout,
+configure gnustep-make using ./configure --with-layout=gnustep.  Note
+that this change does not affect gnustep-make when used with the
+apple-apple-apple library combo, in which case the default filesystem
+layout remains the 'apple' one.
+
+The change in the default filesystem layout means that the location of
+the GNUstep.sh file in a default installation has changed from
+/usr/GNUstep/System/Library/Makefiles/GNUstep.sh to
+/usr/local/share/GNUstep/Makefiles/GNUstep.sh.  If you use the default
+layout and execute the GNUstep.sh script on startup, you need to
+change the command from
+
+@smallexample
+. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+@end smallexample
+
+to
+
+@smallexample
+. /usr/local/share/GNUstep/Makefiles/GNUstep.sh
+@end smallexample
+
+@end table
+
 @section Version 2.4.0
 @table @samp
 
-@item You can enable the use of the non-fragile ivar ABI (for compilers
-like clang that support it) using the --enable-objc-nonfragile-abi flag.
+@item You can enable the use of the non-fragile ivar ABI
+The --enable-objc-nonfragile-abi flag can be used to enable the
+non-fragile ivar ABI for compilers (such as clang) that support it.
 
 @item -Wall is now used by default unless 'make warn=no' is specified
 Before version 2.4.0, 'make debug=yes' would not only build object

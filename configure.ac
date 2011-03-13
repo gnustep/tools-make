@@ -310,49 +310,28 @@ AC_ARG_WITH(layout,[
    installation to use.  The layout described by FILE will be
    read from the FilesystemLayouts directory.  Check the 
    FilesystemLayouts subdirectory for a list of layouts and how 
-   to choose which one you want (or create your own).  If a layout 
-   is specified, we automatically avoid importing an existing config 
-   file.
-   If you do not specify a layout then the one recorded in the installed
-   GNUstep config file is used, or if there is no layout specified there
-   then one which depends on your operating system (if a layout for
-   it has been contributed) is used.
-   If there is no system specific layout then 'gnustep' is used except
+   to choose which one you want (or create your own).
+   If you do not specify a layout then 'fhs' is used except
    when the library-combo is apple-apple-apple, in which case it is 'apple'.
-   You may specify the layout 'native' to force the default system
-   specific layout to be used instead of the layout in the config file.
    Example: --with-layout=fhs
 ],
   GNUSTEP_FILESYSTEM_LAYOUT="$withval",)
 
 # The variable GNUSTEP_FILESYSTEM_LAYOUT is empty if no layout was
-# specified on the command line.  In that case, we use any 'native'
-# layout, but we leave GNUSTEP_FILESYSTEM_LAYOUT unset so that later
-# tests can tell that no layout was specified.
+# specified on the command line.
 if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
   AC_MSG_RESULT($GNUSTEP_FILESYSTEM_LAYOUT)
   GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
 else
-  AC_MSG_RESULT(not specified... use 'native')
-  GNUSTEP_FILESYSTEM_LAYOUT_FILE=native
-fi
-
-if test x"$GNUSTEP_FILESYSTEM_LAYOUT_FILE" = x"native"; then
   # This is the default layout that is used when installing
-  # GNUstep with no other indication.  We normally use the native
-  # layout for the target operating system (if we know it) or 'gnustep'
-  # if we don't.
-  # However, for backward compatibility, if the library-combo is
-  # apple-apple-apple we use 'apple' irrespective of the target OS
-  # though I'm not sure that really makes sense.
+  # GNUstep with no other indication.  We normally use 'fhs'.
+  # However, if the library-combo is apple-apple-apple we use
+  # 'apple' irrespective of the target OS.
   if test "$ac_cv_library_combo" = "apple-apple-apple"; then
     AC_MSG_RESULT(default layout: 'apple' since we're on apple-apple-apple)
     GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple
   else
-    case "$target_os" in
-      linux*)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=fhs ;;
-      *)	GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep ;;
-    esac
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=fhs
     AC_MSG_RESULT(default layout: '$GNUSTEP_FILESYSTEM_LAYOUT_FILE')
   fi
 fi
@@ -360,6 +339,8 @@ fi
 if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&5; then
   echo "Can not find $srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE"
   echo "Please check your --with-layout=xxx argument and try again."
+  echo "Valid arguments for --with-layout= are:"
+  echo `ls "$srcdir/FilesystemLayouts/" | grep -v README`
   exit 1
 fi
 
