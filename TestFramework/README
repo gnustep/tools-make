@@ -249,10 +249,8 @@ create the GNUmakefile rather than using its own make file.
 This template makefile may use @TESTNAMES@ where it wants a list of the
 tests to be run, and @TESTRULES@ where it wants the rules to build the
 tests to be included.
-It should also use @TESTFLAGS@ where it wants additions flags to tell
-the compiler about the test framework to be substituted, and @TESTOPTS@
-near the start of the file to permit necessary makefile control to say
-where the executables should be stored.
+It should also use @TESTOPTS@ near the start of the file to permit necessary
+makefile control to say where the executables should be stored.
 The GNUmakefile.tests script should build each individual test when it is
 invoked with that test name as a target, and it should also build all tests
 if it is invoked without a target, and have a 'clean' target to clean up

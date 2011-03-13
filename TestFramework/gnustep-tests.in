@@ -120,12 +120,32 @@ then
   CC=`gnustep-config --variable=CC`
   export CC
 fi
-GSTESTFLAGS=`gnustep-config --debug-flags`
-GSTESTFLAGS="$GSTESTFLAGS -I$GSTESTTOP"
+
 if test "$GSTESTMODE" = "failfast"
 then
-  GSTESTFLAGS="$GSTESTFLAGS -DFAILFAST=1"
+  #
+  # We need to add -DFAILFAST=1 to all the code we build as we are wanting
+  # to stop after any test failure.  We do this by using the ADDITIONAL_?FLAGS
+  # environment variables supported by gnustep-make.
+  #
+  ADDITIONAL_CFLAGS="-DFAILFAST=1 $ADDITIONAL_CFLAGS"
+  export ADDITIONAL_CFLAGS
+  ADDITIONAL_OBJCFLAGS="-DFAILFAST=1 $ADDITIONAL_OBJCFLAGS"
+  export ADDITIONAL_OBJCFLAGS
+  ADDITIONAL_CCFLAGS="-DFAILFAST=1 $ADDITIONAL_CCFLAGS"
+  export ADDITIONAL_CCFLAGS
+  ADDITIONAL_OBJCCFLAGS="-DFAILFAST=1 $ADDITIONAL_OBJCCFLAGS"
+  export ADDITIONAL_OBJCCFLAGS
 fi
+
+#
+# We insert our header directory as the first additional header directory
+# so that the test header files are found before any others.
+#
+ADDITIONAL_INCLUDE_DIRS="-I$GSTESTTOP $ADDITIONAL_INCLUDE_DIRS"
+export ADDITIONAL_INCLUDE_DIRS
+
+GSTESTFLAGS=`gnustep-config --debug-flags`
 GSTESTLIBS=`gnustep-config --gui-libs`
 GSTESTOPTS="GNUSTEP_OBJ_DIR=./obj"
 
@@ -477,12 +497,7 @@ ${tmp}_OBJC_FILES=$TESTFILE"
 	  fi
 	  TESTNAMES="$TESTNAMES $tmp"
 	done
-	if test "$GSTESTMODE" = "failfast"
-	then
-	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP -DFAILFAST=1^" < "$TEMPLATE" > GNUmakefile
-	else
-	  sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/;s^@TESTFLAGS@^-I$GSTESTTOP^" < "$TEMPLATE" > GNUmakefile
-	fi
+	sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/" < "$TEMPLATE" > GNUmakefile
 	$MAKE_CMD clean >/dev/null 2>&1
 
 	# Try building all the test files in the directory in parallel.

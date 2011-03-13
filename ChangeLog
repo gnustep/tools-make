@@ -1,3 +1,13 @@
+2011-03-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	 * TestFramework/gnustep-tests.in:
+	 * TestFramework/GNUmakefile.in:
+	 * TestFramework/README:
+	Clean and simplify handling of preprocessor flag and include
+	directory setup.  Use the standard gnustep-make 'ADDITIONAL'
+	environment variables to set test options while still honoring
+	any values already set inthe environment.
+
 2011-03-07  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/Testing.h:
