@@ -90,7 +90,7 @@ else
   then
     echo
     echo "Some set of tests failed.  This could well mean that a large"
-    echo "number of individual tests dis not pass and that there are"
+    echo "number of individual tests did not pass and that there are"
     echo "severe problems in the software."
     echo "Please submit a patch to fix the problem or send a bug report to"
     echo "the package maintainer."
