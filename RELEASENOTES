@@ -55,6 +55,10 @@ using a newer version of the make system.
      file on Darwin has not changed and is still
      /Library/GNUstep/GNUstep.conf regardless of the prefix selected.
 
+`Removed the --with-system-root, --with-local-root and --with-network-root options'
+     These configure options were obsolete and are ignored by all
+     releases in the past 4 years and have now finally been removed.
+
 
 1.2 Version 2.4.0
 =================

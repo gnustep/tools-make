@@ -57,6 +57,10 @@ Finally, also note that the default location of the configuration file
 on Darwin has not changed and is still /Library/GNUstep/GNUstep.conf
 regardless of the prefix selected.
 
+@item Removed the --with-system-root, --with-local-root and --with-network-root options
+These configure options were obsolete and are ignored by all releases
+in the past 4 years and have now finally been removed.
+
 @end table
 
 @section Version 2.4.0

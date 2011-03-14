@@ -1012,33 +1012,6 @@ Optional Packages:
    always /Library/GNUstep/GNUstep.conf regardless of prefix.
 
 
---with-system-root
-   This is an obsolete option.  It used to determine the location of
-   the SYSTEM domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-
-
---with-local-root
-   This is an obsolete option.  It used to determine the location of
-   the LOCAL domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-
-
---with-network-root
-   This is an obsolete option.  It used to determine the location of
-   the NETWORK domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-
-
 --with-user-config-file
    Set the name of the user config file to use.  This can be
    relative to the user's home directory if it is a relative path,
@@ -4141,69 +4114,6 @@ fi
 # ./configure command line options should override those values, but
 # otherwise we should keep them!
 #--------------------------------------------------------------------
-
-#--------------------------------------------------------------------
-# Process --with-system-root
-#--------------------------------------------------------------------
-echo "$as_me:$LINENO: checking if the obsolete --with-system-root option was used" >&5
-echo $ECHO_N "checking if the obsolete --with-system-root option was used... $ECHO_C" >&6
-
-# Check whether --with-system-root or --without-system-root was given.
-if test "${with_system_root+set}" = set; then
-  withval="$with_system_root"
-  OBSOLETE_GNUSTEP_SYSTEM_ROOT="$withval"
-fi;
-if test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"no"; then
-  echo "$as_me:$LINENO: result: $OBSOLETE_GNUSTEP_SYSTEM_ROOT: ignored" >&5
-echo "${ECHO_T}$OBSOLETE_GNUSTEP_SYSTEM_ROOT: ignored" >&6
-  { echo "$as_me:$LINENO: WARNING: ignoring --with-system-root=$OBSOLETE_GNUSTEP_SYSTEM_ROOT option" >&5
-echo "$as_me: WARNING: ignoring --with-system-root=$OBSOLETE_GNUSTEP_SYSTEM_ROOT option" >&2;}
-else
-  echo "$as_me:$LINENO: result: no: good" >&5
-echo "${ECHO_T}no: good" >&6
-fi
-
-#--------------------------------------------------------------------
-# Process --with-local-root
-#--------------------------------------------------------------------
-echo "$as_me:$LINENO: checking if the obsolete --with-local-root option was used" >&5
-echo $ECHO_N "checking if the obsolete --with-local-root option was used... $ECHO_C" >&6
-
-# Check whether --with-local-root or --without-local-root was given.
-if test "${with_local_root+set}" = set; then
-  withval="$with_local_root"
-  OBSOLETE_GNUSTEP_LOCAL_ROOT="$withval"
-fi;
-if test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"no"; then
-  echo "$as_me:$LINENO: result: $OBSOLETE_GNUSTEP_LOCAL_ROOT: ignored" >&5
-echo "${ECHO_T}$OBSOLETE_GNUSTEP_LOCAL_ROOT: ignored" >&6
-  { echo "$as_me:$LINENO: WARNING: ignoring --with-local-root=$OBSOLETE_GNUSTEP_LOCAL_ROOT option" >&5
-echo "$as_me: WARNING: ignoring --with-local-root=$OBSOLETE_GNUSTEP_LOCAL_ROOT option" >&2;}
-else
-  echo "$as_me:$LINENO: result: no: good" >&5
-echo "${ECHO_T}no: good" >&6
-fi
-
-#--------------------------------------------------------------------
-# Process --with-network-root
-#--------------------------------------------------------------------
-echo "$as_me:$LINENO: checking if the obsolete --with-network-root option was used" >&5
-echo $ECHO_N "checking if the obsolete --with-network-root option was used... $ECHO_C" >&6
-
-# Check whether --with-network-root or --without-network-root was given.
-if test "${with_network_root+set}" = set; then
-  withval="$with_network_root"
-  OBSOLETE_GNUSTEP_NETWORK_ROOT="$withval"
-fi;
-if test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"no"; then
-  echo "$as_me:$LINENO: result: $OBSOLETE_GNUSTEP_NETWORK_ROOT: ignored" >&5
-echo "${ECHO_T}$OBSOLETE_GNUSTEP_NETWORK_ROOT: ignored" >&6
-  { echo "$as_me:$LINENO: WARNING: ignoring --with-network-root=$OBSOLETE_GNUSTEP_NETWORK_ROOT option" >&5
-echo "$as_me: WARNING: ignoring --with-network-root=$OBSOLETE_GNUSTEP_NETWORK_ROOT option" >&2;}
-else
-  echo "$as_me:$LINENO: result: no: good" >&5
-echo "${ECHO_T}no: good" >&6
-fi
 
 #--------------------------------------------------------------------
 # Process --with-user-config-file

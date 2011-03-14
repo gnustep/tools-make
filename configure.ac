@@ -583,69 +583,6 @@ fi
 #--------------------------------------------------------------------
 
 #--------------------------------------------------------------------
-# Process --with-system-root
-#--------------------------------------------------------------------
-AC_MSG_CHECKING(if the obsolete --with-system-root option was used)
-AC_ARG_WITH(system-root,[
---with-system-root
-   This is an obsolete option.  It used to determine the location of
-   the SYSTEM domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-],
-OBSOLETE_GNUSTEP_SYSTEM_ROOT="$withval",)
-if test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"no"; then 
-  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_SYSTEM_ROOT: ignored])
-  AC_MSG_WARN([ignoring --with-system-root=$OBSOLETE_GNUSTEP_SYSTEM_ROOT option])
-else
-  AC_MSG_RESULT(no: good)
-fi
-
-#--------------------------------------------------------------------
-# Process --with-local-root
-#--------------------------------------------------------------------
-AC_MSG_CHECKING(if the obsolete --with-local-root option was used)
-AC_ARG_WITH(local-root,[
---with-local-root
-   This is an obsolete option.  It used to determine the location of
-   the LOCAL domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-],
-OBSOLETE_GNUSTEP_LOCAL_ROOT="$withval",)
-if test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"no"; then 
-  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_LOCAL_ROOT: ignored])
-  AC_MSG_WARN([ignoring --with-local-root=$OBSOLETE_GNUSTEP_LOCAL_ROOT option])
-else
-  AC_MSG_RESULT(no: good)
-fi
-
-#--------------------------------------------------------------------
-# Process --with-network-root
-#--------------------------------------------------------------------
-AC_MSG_CHECKING(if the obsolete --with-network-root option was used)
-AC_ARG_WITH(network-root,[
---with-network-root
-   This is an obsolete option.  It used to determine the location of
-   the NETWORK domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-],
-OBSOLETE_GNUSTEP_NETWORK_ROOT="$withval",)
-if test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"no"; then 
-  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_NETWORK_ROOT: ignored])
-  AC_MSG_WARN([ignoring --with-network-root=$OBSOLETE_GNUSTEP_NETWORK_ROOT option])
-else
-  AC_MSG_RESULT(no: good)
-fi
-
-#--------------------------------------------------------------------
 # Process --with-user-config-file
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for user config file to use)
