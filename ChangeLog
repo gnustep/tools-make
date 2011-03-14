@@ -1,3 +1,9 @@
+2011-03-14  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in: Add --developer option
+	* TestFramework/Testing.h: Make --developer turn off hopes
+	* TestFramework/README: Document --developer and GSTESTROOT
+
 2011-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Always use 'fhs' layout as the default layout

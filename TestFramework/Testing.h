@@ -37,6 +37,9 @@
  * are actually unlikely to pass on all systems.
  * The state of this flag is preserved by sets ... on exit from a set
  * it is restored to the state it had on entry.
+ * This flag is ignored if the tests are performed in 'developer' mode
+ * (ie run with the gnustep-tests --developer option and therefore
+ * compiled with the TESTDEV preprocessor macro defined).
  */
 static BOOL testHopeful __attribute__((unused)) = NO;
 
@@ -81,7 +84,8 @@ static NSException *testRaised __attribute__((unused)) = nil;
  *
  * The global variable 'testHopeful' can be set to a non-zero value before
  * calling this function in order to specify that if the condition is
- * not true it should be treated as a dashed hope rather than a failure.
+ * not true it should be treated as a dashed hope rather than a failure
+ * (unless the tests are bing performed in 'developer' mode).
  *
  * If there is a better higher-level test macro available, please use
  * that instead.  In particular, please use the PASS_EQUAL() macro wherever
@@ -107,11 +111,13 @@ static void pass(int passed, const char *format, ...)
       fprintf(stderr, "Passed test:     ");
       testPassed = YES;
     }
+#if	!defined(TESTDEV)
   else if (YES == testHopeful)
     {
       fprintf(stderr, "Dashed hope:     ");
       testPassed = NO;
     }
+#endif
   else
     {
       fprintf(stderr, "Failed test:     ");

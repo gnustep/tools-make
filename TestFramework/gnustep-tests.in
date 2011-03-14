@@ -59,6 +59,9 @@ do
       --debug)
       GSTESTDBG="$GSTESTDIR/gdb.cmds"
       ;;
+      --developer)
+      GSTESTDEV=yes
+      ;;
     --documentation)
       echo
       echo "$0: Script to run the GNUstep testsuite"
@@ -89,6 +92,7 @@ do
       echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
       echo "Use 'gnustep-tests --failfast' to stop after the first failure."
       echo "Use 'gnustep-tests --debug' to run gdb for any failed tests."
+      echo "Use 'gnustep-tests --developer' to treat hopes as real tests."
       echo "Use 'gnustep-tests --verbose' for full/detailed log output."
       echo "Use 'gnustep-tests --sequential' to disable parallel building."
       echo
@@ -121,20 +125,30 @@ then
   export CC
 fi
 
+GSTESTFLAGS=
 if test "$GSTESTMODE" = "failfast"
 then
+  if test x"$GSTESTDEV" = x"yes"
+  then
+    GSTESTFLAGS="-DTESTDEV=1 -DFAILFAST=1"
+  else
+    GSTESTFLAGS="-DFAILFAST=1"
+  fi
+elif test x"$GSTESTDEV" = x"yes"
+then
+  GSTESTFLAGS="-DTESTDEV=1"
+fi
+
+if test x"$GSTESTFLAGS" != x
+then
   #
-  # We need to add -DFAILFAST=1 to all the code we build as we are wanting
-  # to stop after any test failure.  We do this by using the ADDITIONAL_?FLAGS
+  # We need to add flags to all the code we build.
+  # We do this by using the ADDITIONAL_?FLAGS
   # environment variables supported by gnustep-make.
   #
-  ADDITIONAL_CFLAGS="-DFAILFAST=1 $ADDITIONAL_CFLAGS"
-  export ADDITIONAL_CFLAGS
-  ADDITIONAL_OBJCFLAGS="-DFAILFAST=1 $ADDITIONAL_OBJCFLAGS"
+  ADDITIONAL_OBJCFLAGS="$GSTESTFLAGS $ADDITIONAL_OBJCFLAGS"
   export ADDITIONAL_OBJCFLAGS
-  ADDITIONAL_CCFLAGS="-DFAILFAST=1 $ADDITIONAL_CCFLAGS"
-  export ADDITIONAL_CCFLAGS
-  ADDITIONAL_OBJCCFLAGS="-DFAILFAST=1 $ADDITIONAL_OBJCCFLAGS"
+  ADDITIONAL_OBJCCFLAGS="$GSTESTFLAGS $ADDITIONAL_OBJCCFLAGS"
   export ADDITIONAL_OBJCCFLAGS
 fi
 
@@ -409,6 +423,7 @@ do
   then
     continue
   fi
+
   SUMD=$TESTDIR
   for dir in $SRCDIRS
   do
@@ -417,6 +432,22 @@ do
       continue
     fi
 
+    # Step up through parents of the source directory to find the root of the
+    # test suite (the highest level directory containing a TestInfo file.
+    # Provide that in the environment for use within the makefiles/scripts.
+    GSTESTROOT=$dir
+    parentdir=`dirname $GSTESTROOT`
+    while test -f "$parentdir/TestInfo"
+    do
+      GSTESTROOT="$parentdir"
+      parentdir=`dirname $GSTESTROOT`
+      if test $parentdir = $GSTESTROOT
+      then
+	break
+      fi
+    done
+    export GSTESTROOT
+  
     RUNEXIT=0
     found=yes
     foundany=yes

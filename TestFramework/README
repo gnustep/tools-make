@@ -123,10 +123,18 @@ eg.
 You can use the --debug command line option in conjunction with the --failfast
 option to have testing stopped at the first failure and the gdb debugger
 automatically launched to debug the failed testcase with a breakpoint set
-in the testStart() fucntion for that testcase.
+in the testStart() function for that testcase.
+
+You can also use the --developer command line option to define the TESTDEV
+preprocessor variable (to turn on developer only test cases, and to have
+all 'hopes' treated as actual 'tests' with pass/fail results).
 
 Writing Tests
 -------------
+
+The test framework may be used for testing Objective-C, ObjectiveC++, C,
+and C++ code.  The test source files must have a .m (for Objective-C and C)
+or a .mm (for Objective-C++ and C++) file extension in order to be recognised.
 
 A minimal test should be a file importing the header "Testing.h"
 (which defines global variables, functions, and standard test macros)
@@ -196,6 +204,24 @@ You may also arrange to jump to the end of the set if a test fails by wrapping
 the test in a NEED macro.  Doing this also causes the set to be reported as
 Failed if the needed test does not pass.
 
+It's likely that you are writing new tests for a library or framework ...
+and those tests will need to link with that framework.  You should add the
+instructions for that to a GNUmakefile.premable if the directory containing
+your tests, or a GNUmakefile.super in the directory above in th cvase where
+you have multiple test directories.
+eg.
+ADDITIONAL_OBJC_LIBS=-lmyLibrary
+
+When contributing to a test suite, please bracket your new test code using
+#if defined(TESTDEV)
+...
+#endif /* TESTDEV */
+so that it is only built when gnustep-tests is invoked with the --developer
+command line argument.
+This ensures that the new code won't break any existing test code when
+people are simply running the testsuite, and once you are sure that the
+new testcases are correct (and portable to all operating systems), the
+check for TESTDEV can be removed.
 
 Ignoring failed test files
 --------------------------
@@ -232,8 +258,11 @@ tests in the directory are built.
 
 In addition to the preamble/postamble mechanism, the file ../GNUmakefile.super
 is included at the start of the generated makefile (if it exists).  This allows
-all the tests in a suite to use a common makefile fragment to provide
-information for all the testsuite.
+all the test directories in a suite to use a common makefile fragment to provide
+information for the whole testsuite.
+You can also use the GSTESTROOT environment variable to locate resources common
+to the whole testsuite ... it is set automatically by gnustep-test to be the
+absolute path to the topmost directory in the testsuite.
 
 Your system should not make any assumption about the order in which test
 files are built ... the test framework may build many test files in parallel
@@ -257,8 +286,17 @@ if it is invoked without a target, and have a 'clean' target to clean up
 before and after all tests.
 
 
-Ignoring directories
---------------------
+Directory layout
+----------------
+
+A test suite is considered to be a collection of individual test files in
+a single directory or a collection of directories in a hierarchy.
+All directories which contain test files must also contain a TestInfo file
+to mark them as containing files used by the framework, and the root of
+the test suite is considered to be the topmost directory in the hierarchy
+which contains a testInfo file.  The test framework sets the GSTESTROOT
+environment variable to the absolute path of the root of the test suite
+being executed, so scripts and makefiles can use this to locate resources.
 
 The test framework ignores any directory which does not contain a TestInfo
 file.  This feature prevents accidental attempts to treat a project source
