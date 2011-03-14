@@ -1,3 +1,9 @@
+2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Fixed installing
+	TestFramework/Summary.sh when gnustep-make is configured from
+	outside of the source directory.
+
 2011-03-14  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in: Add --developer option

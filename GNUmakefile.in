@@ -228,7 +228,7 @@ install: generated-files
 	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
 	$(EC)(echo "Installing Test Framework scripts"; \
 	  $(INSTALL_PROGRAM) -m 755 TestFramework/gnustep-tests "$(tooldir)"; \
-	  $(INSTALL_PROGRAM) -m 755 TestFramework/Summary.sh "$(testdir)")
+	  $(INSTALL_PROGRAM) -m 755 $(srcdir)/TestFramework/Summary.sh "$(testdir)")
 	$(EC)(echo "Installing Test Framework support files"; \
 	   for f in $(TEST_FRAMEWORK_FILES); do \
 	     $(INSTALL_DATA) "$(srcdir)/TestFramework/$$f" "$(testdir)"; \
