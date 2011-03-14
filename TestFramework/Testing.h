@@ -330,6 +330,18 @@ static void testStart()
       NSAutoreleasePool *_setPool = [NSAutoreleasePool new]; \
       {
 
+/* Helper macro for END_SET() ... do not use directly.
+ */
+#if	defined(TESTDEV)
+# define	OMITTED \
+	{ \
+	  fprintf(stderr, "Skipped set:     "); \
+          testIndent(); \
+	  fprintf(stderr, "%s\n", [[localException reason] UTF8String]); \
+	}
+#else
+# define	OMITTED ;
+#endif
 
 /* The END_SET() macro terminates a set of grouped tests.  It must be matched
  * by a corresponding START_SET() with the same string as an argument.
@@ -345,6 +357,8 @@ static void testStart()
           testIndent(); \
 	  fprintf(stderr, "%s\n", [[localException reason] UTF8String]); \
 	} \
+      else if (YES == [[localException name] isEqualToString: @"OmitSet"]) \
+	OMITTED \
       else \
 	{ \
 	  if (YES == [[localException name] isEqualToString: @"FailSet"]) \
@@ -401,8 +415,17 @@ static void testStart()
  * This should be a short one line message (for immediate display),
  * preferably with a more detailed explanation on subsequent lines.
  */
-#define	SKIP(fmt, ...) \
-  [NSException raise: @"SkipSet" testFormat__: @"%s %d ... " fmt, \
+#define	SKIP(testFormat__, ...) \
+  [NSException raise: @"SkipSet" format: @"%s %d ... " testFormat__, \
+  __FILE__, __LINE__, ## __VA_ARGS__];
+
+/* The OMIT() macro acts just like SKIP() except that it only reports the
+ * set if running in developer mode.  The idea is that it should be used for
+ * groups of tests which are not expected to be available on most platforms
+ * yet, so only developers should see them reported.
+ */
+#define	OMIT(testFormat__, ...) \
+  [NSException raise: @"OmitSet" format: @"%s %d ... " testFormat__, \
   __FILE__, __LINE__, ## __VA_ARGS__];
 
 
