@@ -58,10 +58,6 @@ GSWAPP_EXTENSION = gswa
         internal-gswapp-uninstall_ \
         internal-gswapp-copy_into_dir
 
-# Defined (5 March 2007) for backwards compatibility in case your
-# GNUmakefiles used it -- will be removed any time from 5 March 2011.
-GNUSTEP_GSWAPPS = $(GNUSTEP_WEB_APPS)
-
 #
 # Determine where to install.  By default, install into GNUSTEP_WEB_APPS.
 #

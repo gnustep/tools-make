@@ -1,5 +1,14 @@
 2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/gswapp.make (GNUSTEP_GSWAPPS): Variable removed.
+	This was deprecated on 2007-03.
+	* Instance/resource-set.make: Removed support for
+	xxx_RESOURCE_FILES_INSTALL_DIR.  This was deprecated on 2007-02.
+	* Documentations/releasenotes.texi: Explain the changes.
+	* RELEASENOTES: Regenerated.
+	
+2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Removed obsolete --with-system-root,
 	--with-local-root and --with-network-root options.  These have
 	been obsolete since 2007-02.

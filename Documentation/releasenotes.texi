@@ -61,6 +61,13 @@ regardless of the prefix selected.
 These configure options were obsolete and are ignored by all releases
 in the past 4 years and have now finally been removed.
 
+@item Removed obsolete variables
+Some very old variables that were deprecated 4 years ago have now been
+removed.  This includes xxx_RESOURCE_FILES_INSTALL_DIR in
+resource-set.make (you should use xxx_INSTALL_DIR instead) and
+GNUSTEP_GSWAPPS in gswapp.make (you should use GNUSTEP_WEB_APPS
+instead).
+
 @end table
 
 @section Version 2.4.0
