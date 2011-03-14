@@ -496,15 +496,25 @@ GNUSTEP_LOCAL_DOC_INFO="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOC_INFO"
 AC_MSG_CHECKING([for GNUstep configuration file to use])
 AC_ARG_WITH(config-file,[
 --with-config-file=PATH
-   Set the path of the system GNUstep config file.  Use this option 
-   if you want to have the GNUstep config file in a non-standard place.
+   Set the path of the system GNUstep config file.  Use this option
+   if you want to have the GNUstep config file in a non-standard
+   place.
    Example: --with-config-file=/usr/GNUstep/GNUstep.conf
+   By default, if this option is not specified, the config file is
+   /etc/GNUstep/GNUstep.conf if the prefix is /, /usr or /usr/GNUstep
+   and $prefix/etc/GNUstep/GNUstep.conf otherwise.  On Apple, it is
+   always /Library/GNUstep/GNUstep.conf regardless of prefix.
 ],
   GNUSTEP_CONFIG_FILE="$withval",)
 if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
   case "$target_os" in
     darwin*)              GNUSTEP_CONFIG_FILE=/Library/GNUstep/GNUstep.conf ;;
-    *)	                  GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
+    *)  case x"$GNUSTEP_PREFIX" in
+          x)             GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
+          x/usr)         GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
+          x/usr/GNUstep) GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
+          *)             GNUSTEP_CONFIG_FILE="$GNUSTEP_PREFIX/etc/GNUstep/GNUstep.conf";;
+        esac ;;
   esac
 fi
 if echo "$GNUSTEP_CONFIG_FILE" | grep '[[ 	\\]] > /dev/null'

@@ -1,5 +1,16 @@
 2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac (--with-config-file): If nothing is specified, use
+	/etc/GNUstep/GNUstep.conf if the prefix is /, /usr or
+	/usr/GNUstep, and $prefix/etc/GNUstep/GNUstep.conf in other cases.
+	Updated documentation.
+	* configure: Regenerated.
+	* Documentations/releasenotes.texi: Explain the change in default
+	location of the config file.
+	* RELEASENOTES: Regenerated.	
+
+2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUmakefile.in (install): Fixed installing
 	TestFramework/Summary.sh when gnustep-make is configured from
 	outside of the source directory.

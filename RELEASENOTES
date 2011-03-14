@@ -31,6 +31,30 @@ using a newer version of the make system.
 
           . /usr/local/share/GNUstep/Makefiles/GNUstep.sh
 
+`The default location of the configuration file changed'
+     Before version 2.6.0, the configuration file was always by default
+     /etc/GNUstep/GNUstep.conf no matter what filesystem layout and
+     prefix were used.  Starting with version 2.6.0, that is the
+     default location of the configuration file only when installing
+     system-wide, that is with a prefix set to /, /usr or /usr/GNUstep.
+     In all other cases, the configuration file is by default located
+     in $prefix/etc/GNUstep/GNUstep.conf.
+
+     In particular, this means that if ./configure is invoked with no
+     options specified, the default location of the configuration file
+     is now /usr/local/etc/GNUstep/GNUstep.conf (and no longer
+     /etc/GNUstep/GNUstep.conf).
+
+     Please note that the -with-config-file=xxx option allow you to
+     specify whatever location for the configuration file that you want;
+     the default is only used if no such option is specified and
+     gnustep-make has to pick a reasonable default location for the
+     configuration file.
+
+     Finally, also note that the default location of the configuration
+     file on Darwin has not changed and is still
+     /Library/GNUstep/GNUstep.conf regardless of the prefix selected.
+
 
 1.2 Version 2.4.0
 =================
