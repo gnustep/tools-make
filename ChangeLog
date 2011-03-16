@@ -1,5 +1,12 @@
 2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* config.make.in (CXX): If CXX is specified on the environment or
+	command-line, use the specified value in preference to the one
+	hardcoded into gnustep-make.  (From a suggestion by Banlu
+	Kemiyatorn <object@gmail.com>).
+
+2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUmakefile.in (rpm): Depend on svn-dist and updated
 	location of .tar.gz file to copy.
 	* gnustep-make.spec.in (CFLAGS): Added --with-layout=gnustep
