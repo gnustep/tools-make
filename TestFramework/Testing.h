@@ -254,7 +254,8 @@ static void testStart()
     pass((nil == (testExpect__) \
       || [[testRaised name] isEqual: (testExpect__)]), \
       "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
-    if (NO == [(testExpect__) isEqual: [testRaised name]]) \
+    if (nil != (testExpect__) \
+      && NO == [(testExpect__) isEqual: [testRaised name]]) \
       fprintf(stderr, "Expected '%s' and got '%s'\n", \
         [(testExpect__) UTF8String], \
         [[testRaised name] UTF8String]); \
