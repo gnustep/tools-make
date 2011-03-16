@@ -377,8 +377,8 @@ test-RPM_TOPDIR:
 # rpmbuild and used 'rpm -ba' instead.  It can be removed when we are
 # reasonably sure no more old RPM versions (not having rpmbuild), are
 # still around.
-rpm: test-RPM_TOPDIR dist
-	cp ../gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/
+rpm: test-RPM_TOPDIR svn-dist
+	cp gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz $(RPM_TOPDIR)/SOURCES/
 	cp gnustep-make.spec $(RPM_TOPDIR)/SPECS/
 	cd $(RPM_TOPDIR)/SPECS/
 	if which rpmbuild > /dev/null 2>/dev/null; then \

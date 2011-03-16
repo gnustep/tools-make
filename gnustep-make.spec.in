@@ -33,7 +33,7 @@ GNUstep filesystem layout based on %{gs_prefix}.
 %setup -n %{gs_name}-%{gs_version}
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%{gs_libcombo}
+CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{gs_prefix} --with-library-combo=%{gs_libcombo} --with-layout=gnustep
 make
 
 %install
@@ -64,6 +64,9 @@ rm -rf $RPM_BUILD_ROOT
 # Well - this is the simplest trick you could think of.  We include in
 # the package everything which was installed inside /usr/GNUstep/
 %{gs_prefix}
+
+# Also include the GNUstep config file
+/etc/GNUstep/GNUstep.conf
 
 # Add the profiles for linux as configuration files <FIXME gdomap etc>
 %ifos Linux
