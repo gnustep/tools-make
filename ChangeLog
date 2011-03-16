@@ -2,8 +2,8 @@
 
 	* config.make.in (CXX): If CXX is specified on the environment or
 	command-line, use the specified value in preference to the one
-	hardcoded into gnustep-make.  (From a suggestion by Banlu
-	Kemiyatorn <object@gmail.com>).
+	hardcoded into gnustep-make (From a suggestion by Banlu Kemiyatorn
+	<object@gmail.com>).
 
 2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
