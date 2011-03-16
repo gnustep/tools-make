@@ -508,7 +508,7 @@ gmake: *** No rule to make target `/Makefiles/aggregate.make'.  Stop.
 Make sure you have installed the gnustep-make package and also type:
 
 @example
-source /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+source /usr/local/share/GNUstep/Makefiles/GNUstep.sh
 @end example
 
 You can put this line in your @file{.profile} or @file{.bash_profile} file

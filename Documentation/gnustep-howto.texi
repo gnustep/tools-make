@@ -236,30 +236,29 @@ gnustep-make just type:
 
 The GNUstep makefile package can be configured to use different types
 of filesystem layouts.  By default, GNUstep is installed with a
-GNUstep filesystem layout into /usr/GNUstep.  That is a good,
+Unix-style filesystem layout into /usr/local/.  That is a good,
 recommended default if you don't have an opinion on which filesystem
 layout to use.
 
 But you can also install it somewhere else by using the prefix
-parameter; the following command makes /usr/local/GNUstep the root
-directory:
+parameter; the following command installs it in /opt/GNUstep:
 
 @example
-./configure --prefix=/usr/local/GNUstep
+./configure --prefix=/opt/GNUstep
 @end example
 
-You can also install GNUstep using an FHS layout (or some other filesystem layout
-of your choice) by using the with-layout parameter; the following command
-configures GNUstep to use the standard FHS (unix) filesystem layout:
+You can also install GNUstep using a GNUstep layout (or some other
+filesystem layout of your choice) by using the with-layout parameter;
+the following command configures GNUstep to use the traditional
+GNUstep layout:
 
 @example
-./configure --with-layout=fhs
+./configure --with-layout=gnustep
 @end example
 
 In this document we will always present examples that assume that you
-are using the default GNUstep filesystem layout in /usr/GNUstep.  If
-you are using a different layout, you will need to make the obvious
-changes.
+are using the default filesystem layout in /usr/local/.  If you are
+using a different layout, you will need to make the obvious changes.
 
 @menu
 * Alternate Library Setup::     
@@ -290,7 +289,7 @@ gnustep-make you need to execute GNUstep's shell configuration script,
 as follows:
 
 @example
- . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+ . /usr/local/share/GNUstep/Makefiles/GNUstep.sh
 @end example
 
 before proceeding any further.
@@ -337,17 +336,20 @@ sourcing the @file{GNUstep.sh} shell script before using GNUstep.  The
 shell script @file{GNUstep.sh} is located in the Makefile package; you
 may want to add it to your shell startup file (such as
 @file{.profile}). For instance, if you installed GNUstep with the
-default GNUstep filesystem layout in @file{/usr/GNUstep}, then adding
+default filesystem layout in @file{/usr/local}, then adding
 
 @example
-. /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
+. /usr/local/share/GNUstep/Makefiles/GNUstep.sh
 @end example
 
-in your @file{.profile} file will work (Note the period at the
+in your @file{.profile} file will work.  Note the period at the
 beginning of the line, and the space between the period and the
-following path; if you installed GNUstep somewhere else, you need to
-replace @file{/usr/GNUstep/System/Library/Makefiles} with the path to
-your @file{GNUstep.sh} script).  The script defines environment
+following path.  If you installed GNUstep somewhere else, you need to
+replace @file{/usr/local/share/GNUstep/Makefiles/GNUstep.sh} with the
+path to your @file{GNUstep.sh} script.  Another typical location is
+@file{/usr/GNUstep/System/Library/Makefiles}, which is the default
+location of your @file{GNUstep.sh} script when gnustep-make is
+configured with the GNUstep layout.  The script defines environment
 variables that are needed to find GNUstep files and executables.
 
 Users of csh need to use the @file{GNUstep.csh} script. Read the make
@@ -358,7 +360,7 @@ system, you can try copying/linking the @file{GNUstep.sh} there. For
 csh or tcsh, try
 
 @example
-source /usr/GNUstep/System/Library/Makefiles/GNUstep.csh
+source /usr/local/share/GNUstep/Makefiles/GNUstep.csh
 @end example
 
 Finally, in most filesystem configuration it's also possible to
@@ -369,17 +371,16 @@ installation), instead of sourcing @file{GNUstep.sh} you could manually
 add the Tools directories to your PATH:
 
 @example
-PATH="/usr/GNUstep/System/Tools:/usr/GNUstep/Local/Tools:$PATH"
+PATH="/usr/local/bin:$PATH"
 @end example
 
-manually add @file{/usr/GNUstep/System/Library/Libraries} and
-@file{/usr/GNUstep/Local/Library/Libraries} to your
-@file{/etc/ld.so.conf} file (don't forget to run @code{ldconfig} every
-time you install a library), and set the environment variable
-@code{GNUSTEP_MAKEFILES} when you want to compile something:
+manually add @file{/usr/local/lib} to your @file{/etc/ld.so.conf} file
+(don't forget to run @code{ldconfig} every time you install a
+library), and set the environment variable @code{GNUSTEP_MAKEFILES}
+when you want to compile something:
 
 @example
-GNUSTEP_MAKEFILES=/usr/GNUstep/System/Library/Makefiles
+GNUSTEP_MAKEFILES=/usr/local/share/GNUstep/Makefiles
 @end example
 
 @node GNUstep Home, Time Zone, Environment Setup, Additional Installation
@@ -405,7 +406,7 @@ zone. Type something like @kbd{defaults write NSGlobalDomain "Local
 Time Zone" GB}.  Where @kbd{GB} is a time zone abbreviation.
 
 See
-@file{/usr/GNUstep/System/Library/Libraries/gnustep-base/Versions/1.14/Resources/NSTimeZones/zones/}
+@file{/usr/local/lib/GNUstep/Libraries/gnustep-base/Versions/1.21/Resources/NSTimeZones/zones/}
 (or equivalent on your system depending on your filesystem layout) for
 typical time zones.
 
@@ -419,8 +420,8 @@ you run your first GNUstep app:
 @itemize @bullet
 @item gdomap - Put this in a system startup file, like @file{/etc/rc.local} or @file{/etc/rc.d/rc.local} (customize for your system)
 @example
-if [ -f /usr/GNUstep/System/Tools/gdomap ]; then
-  /usr/GNUstep/System/Tools/gdomap
+if [ -f /usr/local/bin/gdomap ]; then
+  /usr/local/bin/gdomap
 fi
 @end example
 @item gdnc - Start after sourcing @file{GNUstep.sh} (e.g. in .profile)
@@ -448,8 +449,8 @@ appropriate directory, and type make. You will need to install the
 GNUstep core libraries first before doing this.
 
 To run the examples. Use the openapp utility that is part of the
-GNUstep makefile package (and stored in
-@file{/usr/GNUstep/System/Tools}). Usage is:
+GNUstep makefile package (and stored in @file{/usr/local/bin}). Usage
+is:
 
 @example
 openapp application_name [additional arguments to app]

@@ -1,3 +1,16 @@
+2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/gnustep-filesystem.texi: Updated documentation for
+	change in default filesystem layout and configuration file
+	location.
+	* Documentation/gnustep-howto.texi: Same change.
+	* Documentation/install.texi: Same change.
+	* Documentation/gnustep-make.texi (GNUSTEP_INSTALLATION_DOMAIN):
+	Updated explanation of this variable.
+	* Documentation/gnustep-userfaq.texi (No Makefile): Updated
+	location of GNUstep.sh.
+	* INSTALL: Regenerated.
+	
 2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/gswapp.make (GNUSTEP_GSWAPPS): Variable removed.

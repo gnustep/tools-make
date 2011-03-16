@@ -1454,18 +1454,16 @@ make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
 @end smallexample
 
 This command states that the @code{SYSTEM} domain should be used as
-the installation root directory; if that is a standard GNUstep domain
-with the standard GNUstep filesystem hierarchy, then applications in
-the package will be installed in the @file{$GNUSTEP_SYSTEM_ROOT/Apps}
+the installation root directory; in particualr applications in the
+package will be installed in the @file{$GNUSTEP_SYSTEM_APPS}
 directory, libraries in the package will be installed under the
-@file{$GNUSTEP_SYSTEM_ROOT/Library/Libraries} directory, command line
-tools will be installed under the @file{$GNUSTEP_SYSTEM_ROOT/Tools}
-directory, and etc.  If the filesystem layout is a different one, the
-various directories might be located anywhere, which is why it's
-important to also refer to them by using variables such as
-@code{GNUSTEP_APPS}, @code{GNUSTEP_LIBRARIES} and
-@code{GNUSTEP_TOOLS}, which automatically point to the right directory
-on disk for this filesystem layout and installation domain.
+@file{$GNUSTEP_SYSTEM_LIBRARIES} directory, command line tools will be
+installed under the @file{$GNUSTEP_SYSTEM_TOOLS} directory, etc.
+Depending on the filesystem layout, the various directories may be
+located anywhere, which is why it's important to also refer to them by
+using variables such as @code{GNUSTEP_APPS}, @code{GNUSTEP_LIBRARIES}
+and @code{GNUSTEP_TOOLS}, which automatically point to the right
+directory on disk for this filesystem layout and installation domain.
 
 By default the Makefile Package sets
 @code{GNUSTEP_INSTALLATION_DOMAIN} to @code{LOCAL}.

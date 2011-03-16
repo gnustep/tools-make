@@ -60,21 +60,25 @@ then Network, then System.
 
 In this document we give a general overview of the GNUstep domains and
 of the interesting locations in a domain.  We also describe the
-default GNUstep filesystem layout.
+GNUstep filesystem layout.
 
-The default GNUstep filesystem layout is a good way to discuss
-domains, because it is very simple: in the default GNUstep filesystem
-layout, every domain is mapped to a single directory on disk.  For
-example, the System domain could be mapped to the
-@file{/usr/GNUstep/System} directory, and everything that is installed
-into the System domain is then installed into some subdirectory of
-@file{/usr/GNUstep/System}.  Before gnustep-make version 2.0, this was
-the only filesystem layout available.
+The GNUstep filesystem layout is a good way to discuss domains,
+because it is very simple: in the GNUstep filesystem layout, every
+domain is mapped to a single directory on disk.  For example, the
+System domain could be mapped to the @file{/usr/GNUstep/System}
+directory, and everything that is installed into the System domain is
+then installed into some subdirectory of @file{/usr/GNUstep/System}.
+Before gnustep-make version 2.0, this was the only filesystem layout
+available.
 
 Please keep in mind that (starting from gnustep-make version 2.0) this
 is not the case for a general filesystem layout; for example a typical
 FHS (Unix) layout might be installing System Tools in @file{/usr/bin}
 and System Admin Tools in @file{/sbin}.
+
+In fact, starting with gnustep-make version 2.6.0, the default
+filesystem layout is now the FHS (Unix) layout rooted in
+@file{/usr/local}.
 
 @node The System Domain, The Local Domain, Top, Top
 @section The System Domain
@@ -94,8 +98,8 @@ related to system administrative tasks), developer applications
 extensions (bundles for XML, SSL, RTF, etc), as well as all software
 installed by the manufacturer of your distribution.
 
-In the default GNUstep filesystem layout, the entire System domain is
-found in the @file{System} folder of the GNUstep installation.
+In the GNUstep filesystem layout, the entire System domain is found in
+the @file{System} folder of the GNUstep installation.
 
 
 @node The Local Domain, The Network Domain, The System Domain, Top
@@ -115,8 +119,8 @@ should override this default manually when they package the software
 they want to distribute as part of their distribution, so that in that
 case the software is installed in the System domain.
 
-In the default GNUstep filesystem layout the entire Local domain is
-installed as the @file{Local} folder of your GNUstep installation.
+In the GNUstep filesystem layout the entire Local domain is installed
+as the @file{Local} folder of your GNUstep installation.
 
 @node The Network Domain, The Users Domain, The Local Domain, Top
 @section The Network Domain
@@ -137,11 +141,11 @@ with different tasks and requirements.  If you want to take advantage
 of the Network domain, you need to use a filesystem layout with
 a separate Network domain.
 
-In the default GNUstep filesystem layout the Network domain is the
-same as the Local domain; if you want to use the Network domain there
-is a separate GNUstep filesystem layout variant with a separate
-Network domain, in which case the entire Network domain is installed
-as the @file{Network} folder of your GNUstep installation.
+In the GNUstep filesystem layout the Network domain is the same as the
+Local domain; if you want to use the Network domain there is a
+separate GNUstep filesystem layout variant with a separate Network
+domain, in which case the entire Network domain is installed as the
+@file{Network} folder of your GNUstep installation.
 
 
 @node The Users Domain, Structure of a Domain, The Network Domain, Top
@@ -156,9 +160,9 @@ associations for programs. It also holds user installed applications
 and tools (each user has the ability to install their own version of
 an application or tool).
 
-In the default GNUstep filesystem layout (and in most other layouts
-too) the User domain is completely contained in a subdirectory of the
-user's home directory called @file{GNUstep}.
+In the GNUstep filesystem layout (and in most other layouts too) the
+User domain is completely contained in a subdirectory of the user's
+home directory called @file{GNUstep}.
 
 @node Structure of a Domain, Configuration, The Users Domain, Top
 @section Structure of a Domain
@@ -837,11 +841,13 @@ them.
 @node File Format, Windows (MINGW), Configuration, Configuration
 @subsection File Format
 
-By default, the configuration file is called GNUstep.conf and exists
-in /etc/GNUstep on a Unix-like system.  This file is in a format
-suitable for being 'sourced' by the standard unix (Bourne) shell,
-consisting of lines of the form key=value, comments (everything on a
-line from the first hash (#) onwards), or blank lines.
+By default, the configuration file is called GNUstep.conf; it
+typically exists in /etc/GNUstep or /usr/local/etc/GNUstep (depending
+on how gnustep-make was configured) on a Unix-like system.  This file
+is in a format suitable for being 'sourced' by the standard unix
+(Bourne) shell, consisting of lines of the form key=value, comments
+(everything on a line from the first hash (#) onwards), or blank
+lines.
 
 This is very convenient on unix-like systems, but needs care for windows users.
 If a value contains whitespace or backslash characters (or the hash which
@@ -869,9 +875,9 @@ and can't tolerate whitespace in file names.  So you want to do all
 the building in a unix-style environment using only unix-style paths.
 
 On MSYS/MinGW this is done naturally by using the standard unix-style
-/etc/GNUstep/GNUstep.conf config file, where the location is inside
-the MSYS unix-style emulation system.  This is what is normally done
-by gnustep-make, so there is nothing special you need to do here.
+/usr/local/etc/GNUstep/GNUstep.conf config file, where the location is
+inside the MSYS unix-style emulation system.  This is what is normally
+done by gnustep-make, so there is nothing special you need to do here.
 
 On the other hand, the base library (and all applications since they are
 built using it) wants to work with native windows paths so that applications
@@ -884,9 +890,10 @@ runtime.  And this is enabled by default -- in fact gnustep-base will
 use ./GNUstep.conf as config file on MinGW, where the location is
 relative to the location of the gnustep-base.dll.
 
-In other words, gnustep-make will use C:/xxx/etc/GNUstep/GNUstep.conf
-(where 'xxx' is the MSYS installation path), while gnustep-base will
-use a GNUstep.conf file in the same directory as the gnustep-base.dll.
+In other words, gnustep-make will use
+C:/xxx/usr/local/etc/GNUstep/GNUstep.conf (where 'xxx' is the MSYS
+installation path), while gnustep-base will use a GNUstep.conf file in
+the same directory as the gnustep-base.dll.
 
 This ./GNUstep.conf file normally does not even exist; gnustep-base's
 ./configure will hardcode into gnustep-base.dll relative paths to all
