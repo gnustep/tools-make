@@ -1,5 +1,13 @@
 2011-03-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/Documentation/texi.make (internal-textdoc-install_):
+	Only install GNUSTEP_INSTANCE if the file exists.  If not, print
+	the message " Nothing to install because nothing was built
+	(usually because makeinfo is not available)" instead of aborting.
+	* messages.make (ALWAYS_ECHO_NO_LANGUAGES): New variable.	
+	
+2011-03-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: By default, use --enable-absolute-install-paths on
 	Darwin with gnu-gnu-gnu (Suggestion from Wolfgang Lux
 	<wolfgang.lux@gmail.com>).

@@ -158,9 +158,13 @@ internal-doc-uninstall_::
 #
 # textdoc targets - these should be merged with the doc targets
 #
+# Make sure we don't install only files that have been generated!
 internal-textdoc-install_:: $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
-	$(ECHO_NOTHING)$(INSTALL_DATA) $(GNUSTEP_INSTANCE) \
-	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)$(END_ECHO)
+	$(ECHO_NOTHING)if [ -f $(GNUSTEP_INSTANCE) ]; then \
+	    $(INSTALL_DATA) $(GNUSTEP_INSTANCE) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
+	else \
+	   $(INSIDE_ECHO_MISSING_DOCUMENTATION) \
+	fi$(END_ECHO)
 
 internal-textdoc-uninstall_::
 	$(ECHO_UNINSTALLING)rm -f \
@@ -170,4 +174,3 @@ internal-textdoc-clean::
 	$(ECHO_NOTHING) rm -f $(GNUSTEP_INSTANCE) $(END_ECHO)
 
 internal-textdoc-distclean::
-

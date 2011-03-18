@@ -38,6 +38,7 @@ ifneq ($(messages),yes)
   # We use 'INSIDE_ECHO_' instead of 'ECHO_' to mark the difference.
   INSIDE_ECHO_JAVA_COMPILING = echo "Compiling file $< ...";
   INSIDE_ECHO_JAVA_BATCH_COMPILING = echo " Compiling Java files for $(GNUSTEP_INSTANCE) ...";
+  INSIDE_ECHO_MISSING_DOCUMENTATION = echo " Nothing to install because nothing was built (usually because makeinfo is not available)";
   ECHO_LINKING   = @(echo " Linking $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE) ...";
   ECHO_JAVAHING  = @(echo " Running javah on $< ...";
   ECHO_INSTALLING = @(echo " Installing $(GNUSTEP_TYPE) $(GNUSTEP_INSTANCE)...";
@@ -107,6 +108,7 @@ else
   ECHO_COMPILING = 
   INSIDE_ECHO_JAVA_COMPILING = 
   INSIDE_ECHO_JAVA_BATCH_COMPILING = 
+  INSIDE_ECHO_MISSING_DOCUMENTATION =
   ECHO_LINKING = 
   ECHO_JAVAHING = 
   ECHO_INSTALLING =
