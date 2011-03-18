@@ -361,27 +361,32 @@ case "$target_os" in
   to set DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH in the shell
   and ~/.MacOSX/environment.plist, but libraries built with an
   absolute install_name are not relocatable.  By default, this
-  setting is disabled.
-    ], 
+  setting is disabled unless the gnu-gnu-gnu library combo is
+  used, in which case it is enabled.
+    ],
       ac_cv_absolute_install_paths=$enableval,
-      ac_cv_absolute_install_paths="no")
+      ac_cv_absolute_install_paths="undefined")
 
     if test "$ac_cv_absolute_install_paths" = "yes"; then
       AC_MSG_RESULT(yes)
       GNUSTEP_ABSOLUTE_INSTALL_PATHS=yes;
     else
-      AC_MSG_RESULT(no)
-
-      if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT_FILE" = x"apple"; then
-        echo ""
-        echo "*******************************************************"
-        echo "WARNING: To use a layout other than 'apple' on Mac OS X"
-        echo "without enabling absolute install paths you must set"
-        echo "DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH in your shell"
-        echo "start-up script (typically by sourcing GNUstep.sh) and"
-        echo "also in ~/.MacOSX/environment.plist."
-        echo "*******************************************************"
-        echo ""
+      if test "$ac_cv_absolute_install_paths" = "undefined"; then
+        # gnu-gnu-gnu on darwin is difficult because of the risk of
+        # conflicts between the GNU Objective-C runtime and the Apple
+        # one.  absolute-install-paths makes this slightly easier
+        # by hardcoding the absolute path of dynamic libraries into the
+        # programs that link them so that it's less likely that the
+        # wrong dynamic libraries will be pulled in.  So we enable it
+        # by default in that case.
+        if test "$ac_cv_library_combo" = "gnu-gnu-gnu"; then
+           GNUSTEP_ABSOLUTE_INSTALL_PATHS=yes;
+           AC_MSG_RESULT(yes)
+        else
+           AC_MSG_RESULT(no)
+        fi
+      else
+        AC_MSG_RESULT(no)        
       fi
     fi
 

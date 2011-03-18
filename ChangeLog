@@ -1,3 +1,10 @@
+2011-03-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: By default, use --enable-absolute-install-paths on
+	Darwin with gnu-gnu-gnu (Suggestion from Wolfgang Lux
+	<wolfgang.lux@gmail.com>).
+	* configure: Regenerated.
+	
 2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* config.make.in (CXX): If CXX is specified on the environment or
