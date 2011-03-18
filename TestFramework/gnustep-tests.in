@@ -412,6 +412,7 @@ foundany=no
 for TESTDIR in $TESTDIRS
 do
   found=no
+  source=no
   if test x"$TESTS" = x
   then
     # Get the names of all subdirectories containing source files.
@@ -424,6 +425,8 @@ do
     continue
   fi
 
+  # found some source code
+  source=yes
   SUMD=$TESTDIR
   for dir in $SRCDIRS
   do
@@ -575,7 +578,12 @@ ${tmp}_OBJC_FILES=$TESTFILE"
   then
     if test "$NONAME" = "no"
     then
-      echo "No tests found in '$TESTDIR'."
+      if test $source = no
+      then
+        echo "No tests found in '$TESTDIR'."
+      else
+        echo "No directories with 'TestInfo' marker file in '$TESTDIR'."
+      fi
     fi
   fi
 
@@ -593,7 +601,7 @@ then
   then
     echo "No test subdirectories found."
   else
-    echo "No tests found in $TESTDIRS."
+    echo "No tests found in '$TESTDIRS'."
   fi
 fi
 
