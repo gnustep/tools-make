@@ -125,6 +125,12 @@ then
   export CC
 fi
 
+if test x"$CXX" = x
+then
+  CXX=`gnustep-config --variable=CXX`
+  export CXX
+fi
+
 GSTESTFLAGS=
 if test "$GSTESTMODE" = "failfast"
 then
@@ -281,9 +287,16 @@ build_and_run ()
   then
     # The very simple case, we just need to compile a single file
     # putting the executable in the obj subdirectory.
+    # We test for a .mm extension to see which compiler to use.
     rm -rf ./obj
     mkdir ./obj
-    BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+    tmp=`basename $TESTFILE .m`
+    if test x"$tmp" = x"$TESTFILE"
+    then
+      BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+    else
+      BUILD_CMD="$CXX -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+    fi
   else
     BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes $TESTNAME"
   fi
@@ -416,7 +429,14 @@ do
   if test x"$TESTS" = x
   then
     # Get the names of all subdirectories containing source files.
-    SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+    if test x"$CXX" = x
+    then
+      # Only Objective-C (and C)
+      SRCDIRS=`find $TESTDIR -name "*.m" | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+    else
+      # Objective-C and Objective-C++ (implicitly C and C++ too)
+      SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+    fi
   else
     SRCDIRS="$TESTDIRS"
   fi
@@ -475,10 +495,17 @@ do
 	./Start.sh
       fi
 
-      # Get the names of all the .m and .mm files in the current directory.
+      # Get the names of all the source files in the current directory.
       if test x"$TESTS" = x
       then
-	TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+        if test x"$CXX" = x
+        then
+          # Only Objective-C (and C)
+	  TESTS=`find . \( -name . -o -prune \) -name "*.m" | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+	else
+          # Objective-C and Objective-C++ (implicitly C and C++ too)
+	  TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+	fi
       fi
 
       if test -r GNUmakefile.tests 

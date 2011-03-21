@@ -1,3 +1,11 @@
+2011-03-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in: allow checking of the CXX variable to see what
+	compiler (if any) was found to support building Objective-C++ code.
+	* TestFramework/gnustep-tests.in: Check the value of CXX to correctly
+	build Objective-C++ tests and to refrain from running Objective-C++
+	tests on systems which don't have a compiler.
+
 2011-03-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/Documentation/texi.make (internal-textdoc-install_):
