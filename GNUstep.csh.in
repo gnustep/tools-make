@@ -325,7 +325,7 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARY_PATHLIST}"'; do e
 
 end
 unset path_fragment dir
-unset GNUSTEP_TOOLS_PATHLIST
+unset GNUSTEP_LIBRARY_PATHLIST
 
 set GNUSTEP_INFO_PATHLIST=`$GNUSTEP_MAKEFILES/print_unique_pathlist.sh "$GNUSTEP_USER_DOC_INFO" "$GNUSTEP_LOCAL_DOC_INFO" "$GNUSTEP_NETWORK_DOC_INFO" "$GNUSTEP_SYSTEM_DOC_INFO" $fixup_paths`
 

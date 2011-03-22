@@ -517,6 +517,7 @@ IFS="$old_IFS"
 unset old_IFS
 unset dir
 unset path_fragment
+unset GNUSTEP_LIBRARY_PATHLIST
 export CLASSPATH
 export GUILE_LOAD_PATH
 
