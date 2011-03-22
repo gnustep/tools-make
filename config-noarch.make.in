@@ -136,6 +136,9 @@ else
 #  GNUSTEP_USER_ROOT = $(error GNUSTEP_USER_ROOT is obsolete)
 endif
 
+# FIXME: Shouldn't the following go into config.make ?  They are
+# arch-specific.
+
 # If multi-platform support is disabled, just use the hardcoded cpu,
 # vendor and os determined when gnustep-make was configured.  The
 # reason using the hardcoded ones might be better is that config.guess

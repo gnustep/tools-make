@@ -1,5 +1,9 @@
 2011-03-22  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* config-noarch.make.in: Updated comment.
+
+2011-03-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* GNUstep.sh.in: Unset GNUSTEP_LIBRARY_PATHLIST after using it.
 	* GNUstep.csh.in: Likewise.
 
