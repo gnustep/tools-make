@@ -1,3 +1,11 @@
+2011-03-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: work around the fact that AC_PROG_CXX is buggy and
+	reports a compiler even when no working compiler exists.  So if a
+	test compilation fails with the compiler it returns, we clear CXX
+	The compilation is done for an Objective-C++ test file since that's
+	what we actually want a C++ compiler for normally.
+
 2011-03-22  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* config-noarch.make.in: Updated comment.
