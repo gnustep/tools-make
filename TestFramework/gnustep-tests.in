@@ -293,9 +293,9 @@ build_and_run ()
     tmp=`basename $TESTFILE .m`
     if test x"$tmp" = x"$TESTFILE"
     then
-      BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
-    else
       BUILD_CMD="$CXX -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+    else
+      BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     fi
   else
     BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes $TESTNAME"
