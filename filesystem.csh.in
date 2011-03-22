@@ -190,6 +190,107 @@ if ( ! ${?GNUSTEP_USER_DIR_DOC_INFO} ) then
   setenv GNUSTEP_USER_DIR_DOC_INFO "@GNUSTEP_USER_DIR_DOC_INFO@"
 endif
 
+#
+# Now, for all the GNUSTEP_USER_DIR_xxx variables above, replace:
+#
+#  %i with the userid
+#  %u with the username
+#  %% with %
+#
+# This allows you to, for example, specify the GNUSTEP_USER_TOOLS
+# should be /GNUstep/Users/%u/bin/, and that would mean
+# /GNUstep/Users/nicola/bin for user 'nicola' and
+# /GNUstep/Users/richard/bin for user 'richard'.
+#
+
+# Check if any of the strings contain %i ...
+switch ("${GNUSTEP_USER_DIR_APPS}\
+ ${GNUSTEP_USER_DIR_ADMIN_APPS}\
+ ${GNUSTEP_USER_DIR_WEB_APPS}\
+ ${GNUSTEP_USER_DIR_TOOLS}\
+ ${GNUSTEP_USER_DIR_ADMIN_TOOLS}\
+ ${GNUSTEP_USER_DIR_LIBRARY}\
+ ${GNUSTEP_USER_DIR_HEADERS}\
+ ${GNUSTEP_USER_DIR_LIBRARIES}\
+ ${GNUSTEP_USER_DIR_DOC}\
+ ${GNUSTEP_USER_DIR_DOC_MAN}\
+ ${GNUSTEP_USER_DIR_DOC_INFO}")
+  case *%i*:
+    # ... and if so, do the replacement.
+    setenv GNUSTEP__USERID `id -u`
+    setenv GNUSTEP_USER_DIR_APPS        `echo ${GNUSTEP_USER_DIR_APPS}        | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_ADMIN_APPS  `echo ${GNUSTEP_USER_DIR_ADMIN_APPS}  | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_WEB_APPS    `echo ${GNUSTEP_USER_DIR_WEB_APPS}    | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_TOOLS       `echo ${GNUSTEP_USER_DIR_TOOLS}       | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_ADMIN_TOOLS `echo ${GNUSTEP_USER_DIR_ADMIN_TOOLS} | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_LIBRARY     `echo ${GNUSTEP_USER_DIR_LIBRARY}     | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_HEADERS     `echo ${GNUSTEP_USER_DIR_HEADERS}     | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_LIBRARIES   `echo ${GNUSTEP_USER_DIR_LIBRARIES}   | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_DOC         `echo ${GNUSTEP_USER_DIR_DOC}         | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_DOC_MAN     `echo ${GNUSTEP_USER_DIR_DOC_MAN}     | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    setenv GNUSTEP_USER_DIR_DOC_INFO    `echo ${GNUSTEP_USER_DIR_DOC_INFO}    | sed -e "s/%i/${GNUSTEP__USERID}/g"`
+    unsetenv GNUSTEP__USERID
+    breaksw
+endsw
+
+# Check if any of the strings contain %u ...
+switch ("${GNUSTEP_USER_DIR_APPS}\
+ ${GNUSTEP_USER_DIR_ADMIN_APPS}\
+ ${GNUSTEP_USER_DIR_WEB_APPS}\
+ ${GNUSTEP_USER_DIR_TOOLS}\
+ ${GNUSTEP_USER_DIR_ADMIN_TOOLS}\
+ ${GNUSTEP_USER_DIR_LIBRARY}\
+ ${GNUSTEP_USER_DIR_HEADERS}\
+ ${GNUSTEP_USER_DIR_LIBRARIES}\
+ ${GNUSTEP_USER_DIR_DOC}\
+ ${GNUSTEP_USER_DIR_DOC_MAN}\
+ ${GNUSTEP_USER_DIR_DOC_INFO}")
+  case *%u*:
+    # ... and if so, do the replacement.
+    setenv GNUSTEP__USERNAME `id -u -n`
+    setenv GNUSTEP_USER_DIR_APPS        `echo ${GNUSTEP_USER_DIR_APPS}        | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_ADMIN_APPS  `echo ${GNUSTEP_USER_DIR_ADMIN_APPS}  | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_WEB_APPS    `echo ${GNUSTEP_USER_DIR_WEB_APPS}    | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_TOOLS       `echo ${GNUSTEP_USER_DIR_TOOLS}       | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_ADMIN_TOOLS `echo ${GNUSTEP_USER_DIR_ADMIN_TOOLS} | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_LIBRARY     `echo ${GNUSTEP_USER_DIR_LIBRARY}     | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_HEADERS     `echo ${GNUSTEP_USER_DIR_HEADERS}     | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_LIBRARIES   `echo ${GNUSTEP_USER_DIR_LIBRARIES}   | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_DOC         `echo ${GNUSTEP_USER_DIR_DOC}         | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_DOC_MAN     `echo ${GNUSTEP_USER_DIR_DOC_MAN}     | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    setenv GNUSTEP_USER_DIR_DOC_INFO    `echo ${GNUSTEP_USER_DIR_DOC_INFO}    | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
+    unsetenv GNUSTEP__USERNAME
+    breaksw
+endsw
+
+# Check if any of the strings contain %% ...
+switch ("${GNUSTEP_USER_DIR_APPS}\
+ ${GNUSTEP_USER_DIR_ADMIN_APPS}\
+ ${GNUSTEP_USER_DIR_WEB_APPS}\
+ ${GNUSTEP_USER_DIR_TOOLS}\
+ ${GNUSTEP_USER_DIR_ADMIN_TOOLS}\
+ ${GNUSTEP_USER_DIR_LIBRARY}\
+ ${GNUSTEP_USER_DIR_HEADERS}\
+ ${GNUSTEP_USER_DIR_LIBRARIES}\
+ ${GNUSTEP_USER_DIR_DOC}\
+ ${GNUSTEP_USER_DIR_DOC_MAN}\
+ ${GNUSTEP_USER_DIR_DOC_INFO}")
+  case *%%*:
+    # ... and if so, replace %% with %
+    setenv GNUSTEP_USER_DIR_APPS        `echo ${GNUSTEP_USER_DIR_APPS}        | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_ADMIN_APPS  `echo ${GNUSTEP_USER_DIR_ADMIN_APPS}  | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_WEB_APPS    `echo ${GNUSTEP_USER_DIR_WEB_APPS}    | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_TOOLS       `echo ${GNUSTEP_USER_DIR_TOOLS}       | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_ADMIN_TOOLS `echo ${GNUSTEP_USER_DIR_ADMIN_TOOLS} | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_LIBRARY     `echo ${GNUSTEP_USER_DIR_LIBRARY}     | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_HEADERS     `echo ${GNUSTEP_USER_DIR_HEADERS}     | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_LIBRARIES   `echo ${GNUSTEP_USER_DIR_LIBRARIES}   | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_DOC         `echo ${GNUSTEP_USER_DIR_DOC}         | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_DOC_MAN     `echo ${GNUSTEP_USER_DIR_DOC_MAN}     | sed -e 's/%%/%/g'`
+    setenv GNUSTEP_USER_DIR_DOC_INFO    `echo ${GNUSTEP_USER_DIR_DOC_INFO}    | sed -e 's/%%/%/g'`
+    breaksw
+endsw
+
 switch ("${GNUSTEP_USER_DIR_APPS}")
  case /*: # An absolute path
    setenv GNUSTEP_USER_APPS "${GNUSTEP_USER_DIR_APPS}"

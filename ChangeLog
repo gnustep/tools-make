@@ -1,3 +1,15 @@
+2011-03-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* filesystem.make.in (GNUSTEP_USER_DIR_APPS,
+	GNUSTEP_USER_DIR_ADMIN_APPS, GNUSTEP_USER_DIR_WEB_APPS,
+	GNUSTEP_USER_DIR_TOOLS, GNUSTEP_USER_DIR_ADMIN_TOOLS,
+	GNUSTEP_USER_DIR_LIBRARY, GNUSTEP_USER_DIR_HEADERS,
+	GNUSTEP_USER_DIR_LIBRARIES, GNUSTEP_USER_DIR_DOC,
+	GNUSTEP_USER_DIR_DOC_MAN, GNUSTEP_USER_DIR_DOC_INFO): Detect %u,
+	%i and %% and replace them with the user name, the user id or %.
+	* filesystem.sh.in: Same.
+	* filesystem.csh.in: Same.
+	
 2011-03-21  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* gnustep-config.in: allow checking of the CXX variable to see what
