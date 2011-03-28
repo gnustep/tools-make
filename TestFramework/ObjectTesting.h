@@ -35,9 +35,6 @@
  * best to use the current API.
  */
 
-#if	defined(__cplusplus)
-extern "C" {
-#endif
 
 
 
@@ -430,8 +427,4 @@ static void test_NSMutableCopying(NSString *iClassName,
       END_SET(buf)
     }
 }
-
-#if	defined(__cplusplus)
-}
-#endif
 
