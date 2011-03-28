@@ -1,3 +1,9 @@
+2011-03-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h
+	* TestFramework/ObjectTesting.h
+	Fixup for ObjectiveC++
+
 2011-03-22  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: work around the fact that AC_PROG_CXX is buggy and

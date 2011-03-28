@@ -30,6 +30,10 @@
 #import <Foundation/NSObject.h>
 #import <Foundation/NSString.h>
 
+#if	defined(__cplusplus)
+extern "C" {
+#endif
+
 /* A flag indicating that the testsuite is currently processing tests
  * which are actually not expected to pass, but where we hope someone
  * might have committed a bugfix.
@@ -502,3 +506,6 @@ if (__value != __object) \
     (X) = [NSAutoreleasePool new]
 #endif
 
+#if	defined(__cplusplus)
+}
+#endif

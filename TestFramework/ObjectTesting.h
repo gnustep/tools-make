@@ -35,6 +35,9 @@
  * best to use the current API.
  */
 
+#if	defined(__cplusplus)
+extern "C" {
+#endif
 
 
 
@@ -73,7 +76,6 @@
     pass (NO, desc, ## args); NS_ENDHANDLER } \
   else { fprintf(stderr, "Failed test: " desc, ## args); \
     fprintf(stderr, "\n"); }
-
 
 
 
@@ -428,4 +430,8 @@ static void test_NSMutableCopying(NSString *iClassName,
       END_SET(buf)
     }
 }
+
+#if	defined(__cplusplus)
+}
+#endif
 
