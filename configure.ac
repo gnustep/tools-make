@@ -37,6 +37,9 @@ AC_PROG_CPP
 # compile/link C++ code. :-)
 AC_PROG_CXX
 
+# Similarly for the ObjC++ compiler
+AC_PROG_OBJCXX
+
 AC_CANONICAL_TARGET([])
 
 
@@ -1246,11 +1249,11 @@ AC_SUBST(objc_threaded)
 AC_SUBST(ac_cv_objc_threaded)
 
 AC_MSG_CHECKING(whether Objective-C++ is supported)
-AC_LANG_PUSH(C++)
-CXXFLAGS_saved="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS -x objective-c++"
-CPPFLAGS_saved="$CPPFLAGS"
-CPPFLAGS="$CPPFLAGS -x objective-c++"
+AC_LANG_PUSH(Objective C++)
+OBJCXXFLAGS_saved="$OBJCXXFLAGS"
+OBJCXXFLAGS="$OBJCXXFLAGS -x objective-c++"
+OBJCXXPPFLAGS_saved="$OBJCXXPPFLAGS"
+OBJCXXPPFLAGS="$OBJCXXPPFLAGS -x objective-c++"
 AC_RUN_IFELSE([[
 
 @interface	ObjCClass
@@ -1272,12 +1275,12 @@ main()
 ]], objcc=yes, objcc=no)
 AC_MSG_RESULT($objcc)
 if test x"$objcc" = x"no"; then
-  CXX=
+  OBJCXX=
 fi
-AC_SUBST(CXX)
-CXXFLAGS="$CXXFLAGS_saved"
-CPPFLAGS="$CPPFLAGS_saved"
-AC_LANG_POP(C++)
+AC_SUBST(OBJCXX)
+OBJCXXFLAGS="$OBJCXXFLAGS_saved"
+OBJCXXPPFLAGS="$OBJCXXPPFLAGS_saved"
+AC_LANG_POP(Objective C++)
 
 #--------------------------------------------------------------------
 # Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!

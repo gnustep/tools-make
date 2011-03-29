@@ -1,5 +1,14 @@
 2011-03-22  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* configure.ac:
+	* gnustep-config.in:
+	* TestFramework/gnustep-tests.in:
+	Change to only require ObjC++ support (for the test framework).
+	Assume C++ is supported even if it actually isn't, since we usually
+	don't care.
+
+2011-03-22  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* configure.ac: work around the fact that AC_PROG_CXX is buggy and
 	reports a compiler even when no working compiler exists.  So if a
 	test compilation fails with the compiler it returns, we clear CXX

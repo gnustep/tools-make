@@ -119,17 +119,22 @@ export GSTESTLOG
 GSTESTSUM=$GSTESTDIR/tests.sum
 export GSTESTSUM
 
+# We assume that the C compiler supports ObjC
 if test x"$CC" = x
 then
   CC=`gnustep-config --variable=CC`
   export CC
 fi
 
-if test x"$CXX" = x
+# We only suport C++ and ObjC++ code if ObjC++ is available ... so having
+# a C++ compiler is not sufficient, it has to support ObjC++ too.
+if test x"$OBJCXX" = x
 then
-  CXX=`gnustep-config --variable=CXX`
-  export CXX
+  CXX=`gnustep-config --variable=OBJCXX`
+else
+  CXX=
 fi
+export CXX
 
 GSTESTFLAGS=
 if test "$GSTESTMODE" = "failfast"
@@ -293,7 +298,7 @@ build_and_run ()
     tmp=`basename $TESTFILE .m`
     if test x"$tmp" = x"$TESTFILE"
     then
-      BUILD_CMD="$CXX -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+      BUILD_CMD="$OBJCXX -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     else
       BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     fi
@@ -429,7 +434,7 @@ do
   if test x"$TESTS" = x
   then
     # Get the names of all subdirectories containing source files.
-    if test x"$CXX" = x
+    if test x"$OBJCXX" = x
     then
       # Only Objective-C (and C)
       SRCDIRS=`find $TESTDIR -name "*.m" | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
@@ -498,7 +503,7 @@ do
       # Get the names of all the source files in the current directory.
       if test x"$TESTS" = x
       then
-        if test x"$CXX" = x
+        if test x"$OBJCXX" = x
         then
           # Only Objective-C (and C)
 	  TESTS=`find . \( -name . -o -prune \) -name "*.m" | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
