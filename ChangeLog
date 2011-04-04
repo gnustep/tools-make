@@ -1,3 +1,11 @@
+2011-04-04  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* configure:
+	Fake the ObjC++ tests using C++ since only really new versions of
+	autoconf seem to support ObjC++ and we need things to work on older
+	systems.
+
 2011-03-22  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:

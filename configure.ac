@@ -37,8 +37,10 @@ AC_PROG_CPP
 # compile/link C++ code. :-)
 AC_PROG_CXX
 
-# Similarly for the ObjC++ compiler
-AC_PROG_OBJCXX
+# Similarly for the ObjC++ compiler ... but only new versions of autoconf
+# support it, so we pretend by using the C++ compiler
+#AC_PROG_OBJCXX
+OBJCXX=CXX
 
 AC_CANONICAL_TARGET([])
 
@@ -1249,11 +1251,19 @@ AC_SUBST(objc_threaded)
 AC_SUBST(ac_cv_objc_threaded)
 
 AC_MSG_CHECKING(whether Objective-C++ is supported)
-AC_LANG_PUSH(Objective C++)
-OBJCXXFLAGS_saved="$OBJCXXFLAGS"
-OBJCXXFLAGS="$OBJCXXFLAGS -x objective-c++"
-OBJCXXPPFLAGS_saved="$OBJCXXPPFLAGS"
-OBJCXXPPFLAGS="$OBJCXXPPFLAGS -x objective-c++"
+
+# Only new autoconf supports ObjC++ so we use C++ instead for now
+#AC_LANG_PUSH(Objective C++)
+#OBJCXXFLAGS_saved="$OBJCXXFLAGS"
+#OBJCXXFLAGS="$OBJCXXFLAGS -x objective-c++"
+#OBJCXXPPFLAGS_saved="$OBJCXXPPFLAGS"
+#OBJCXXPPFLAGS="$OBJCXXPPFLAGS -x objective-c++"
+AC_LANG_PUSH(C++)
+CXXFLAGS_saved="$CXXFLAGS"
+CXXFLAGS="$CXXFLAGS -x objective-c++"
+CXXPPFLAGS_saved="$CXXPPFLAGS"
+CXXPPFLAGS="$CXXPPFLAGS -x objective-c++"
+
 AC_RUN_IFELSE([[
 
 @interface	ObjCClass
@@ -1278,9 +1288,13 @@ if test x"$objcc" = x"no"; then
   OBJCXX=
 fi
 AC_SUBST(OBJCXX)
-OBJCXXFLAGS="$OBJCXXFLAGS_saved"
-OBJCXXPPFLAGS="$OBJCXXPPFLAGS_saved"
-AC_LANG_POP(Objective C++)
+# Only new autoconf supports ObjC++ so we use C++ instead for now
+#OBJCXXFLAGS="$OBJCXXFLAGS_saved"
+#OBJCXXPPFLAGS="$OBJCXXPPFLAGS_saved"
+#AC_LANG_POP(Objective C++)
+CXXFLAGS="$CXXFLAGS_saved"
+CXXPPFLAGS="$CXXPPFLAGS_saved"
+AC_LANG_POP(C++)
 
 #--------------------------------------------------------------------
 # Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!
