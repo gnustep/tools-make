@@ -1,3 +1,14 @@
+2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* messages.make (INSIDE_ECHO_MISSING_DOCUMENTATION): Renamed to
+	ALWAYS_INSIDE_ECHO_MISSING_DOCUMENTATION, and moved it outside of
+	the if/else.
+	* Instance/Documentation/texi.make (internal-textdoc-install_):
+	Use ALWAYS_INSIDE_ECHO_MISSING_DOCUMENTATION instead of
+	INSIDE_ECHO_MISSING_DOCUMENTATION.  This fixes the rule when
+	messages=yes.  Issue reported by Sebastian Reitenbach
+	<buzzdee@web.de>.
+	
 2011-04-04  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:

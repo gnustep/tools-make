@@ -163,7 +163,7 @@ internal-textdoc-install_:: $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
 	$(ECHO_NOTHING)if [ -f $(GNUSTEP_INSTANCE) ]; then \
 	    $(INSTALL_DATA) $(GNUSTEP_INSTANCE) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	else \
-	   $(INSIDE_ECHO_MISSING_DOCUMENTATION) \
+	  $(ALWAYS_INSIDE_ECHO_MISSING_DOCUMENTATION) \
 	fi$(END_ECHO)
 
 internal-textdoc-uninstall_::
