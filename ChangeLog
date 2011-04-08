@@ -1,3 +1,8 @@
+2011-04-08 Riccardo Mottola <rm@gnu.org>
+
+	* target.make
+	Override gcc's default relax option sent to the linker in case of relative linking -Wl,-r. This shuld affect only SPARC and a few others uncommon archs and be already ignored on the others.
+
 2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/application.make

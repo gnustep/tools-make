@@ -231,7 +231,7 @@ SHARED_LIB_LINK_CMD     = \
 endif # OBJC_COMPILER
 
 OBJ_MERGE_CMD = \
-	$(LD) -nostdlib -Wl,-r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
@@ -375,7 +375,7 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE) )
 
 OBJ_MERGE_CMD = \
-	$(LD) -nostdlib -Wl,-r -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
@@ -563,7 +563,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS      += -fPIC
 SHARED_LIBEXT      =  .so
@@ -641,7 +641,7 @@ AFTER_INSTALL_SHARED_LIB_CHOWN = \
 	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
 	chown $(CHOWN_TO) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -683,7 +683,7 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -716,7 +716,7 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -762,7 +762,7 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
 	)
 
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS   += -fPIC
 SHARED_LIBEXT   = .so
@@ -794,7 +794,7 @@ SHARED_LIB_LINK_CMD = \
 	  $(RM_LN_S) $(LIB_LINK_FILE); \
 	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -Wl,-r -mno-relax $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 SHARED_CFLAGS	+= -fPIC
 SHARED_LIBEXT	= .so
@@ -851,7 +851,7 @@ SHARED_CFLAGS  += -fPIC
 SHARED_LIBEXT   = .so
 
 OBJ_MERGE_CMD		= \
-	$(LD) -Wl,-r $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -Wl,-r -mno-relax $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 ADDITIONAL_LDFLAGS +=
 STATIC_LDFLAGS +=
