@@ -1,5 +1,12 @@
 2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* Instance/application.make
+	($(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop): Make the
+	.desktop file executable after installing it (Suggestion from
+	"Philippe Roussel" <p.o.roussel@free.fr>).
+
+2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* messages.make (INSIDE_ECHO_MISSING_DOCUMENTATION): Renamed to
 	ALWAYS_INSIDE_ECHO_MISSING_DOCUMENTATION, and moved it outside of
 	the if/else.
