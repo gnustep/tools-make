@@ -1,3 +1,10 @@
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Use 'make check GNUSTEP_TEST_OBJCXX=yes' to enable ObjC++
+	testcases when using the test framework.
+	* TestFramework/gnustep-tests.in: Recognize GNUSTEP_TEST_OBJCXX,
+	and reworked choosing the ObjC++ compiler accordingly.
+
 2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Set OBJCXX to ${CXX}, not to the literal CXX.

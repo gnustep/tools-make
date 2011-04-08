@@ -126,15 +126,32 @@ then
   export CC
 fi
 
-# We only suport C++ and ObjC++ code if ObjC++ is available ... so having
-# a C++ compiler is not sufficient, it has to support ObjC++ too.
-if test x"$OBJCXX" = x
+# The C++/ObjC++ tests are currently enabled only if you do 'make
+# check GNUSTEP_TEST_OBJCXX=yes'.
+if test x"$GNUSTEP_TEST_OBJCXX" = x"yes"
 then
-  CXX=`gnustep-config --variable=OBJCXX`
+  # Determine the ObjC++ compiler to use.  Either it was supplied
+  # in the environment or command-line by setting the variable
+  # OBJCXX, or we'll use the default configured in gnustep-make.
+  if test x"$OBJCXX" = x
+  then
+    OBJCXX=`gnustep-config --variable=OBJCXX`
+  fi
+
+  if test x"$OBJCXX" = x
+  then
+    echo "Warning: You asked to run the Objective-C++ testcases, but no Objective-C++ compiler was found."
+    echo "         Objective-C++ testcases will not be ignored."
+    echo "         Try setting OBJCXX to your Objective-C++ compiler to fix this."
+  else
+    # Set the CXX variable which is the one actually used by gnustep-make
+    # to compile and link ObjC++.
+    CXX="$OBJCXX"
+    export CXX
+  fi
 else
-  CXX=
+  OBJCXX=
 fi
-export CXX
 
 GSTESTFLAGS=
 if test "$GSTESTMODE" = "failfast"
