@@ -1,14 +1,14 @@
-2011-04-08 Riccardo Mottola <rm@gnu.org>
+2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Set OBJCXX to ${CXX}, not to the literal CXX.
+	* configure: Updated.
+
+2011-04-08  Riccardo Mottola  <rm@gnu.org>
 
 	* target.make: Override gcc's default relax option sent to the
 	linker in case of relative linking -Wl,-r.  This should affect
 	only SPARC and a few others uncommon archs and be ignored on the
 	others.
-
-2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
-
-	* configure.ac: Set OBJCXX to ${CXX}, not to the literal CXX.
-	* configure: Updated.
 
 2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
 
