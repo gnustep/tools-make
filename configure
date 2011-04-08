@@ -3533,7 +3533,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # Similarly for the ObjC++ compiler ... but only new versions of autoconf
 # support it, so we pretend by using the C++ compiler
 #AC_PROG_OBJCXX
-OBJCXX=CXX
+OBJCXX="${CXX}"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do

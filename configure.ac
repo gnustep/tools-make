@@ -40,7 +40,7 @@ AC_PROG_CXX
 # Similarly for the ObjC++ compiler ... but only new versions of autoconf
 # support it, so we pretend by using the C++ compiler
 #AC_PROG_OBJCXX
-OBJCXX=CXX
+OBJCXX="${CXX}"
 
 AC_CANONICAL_TARGET([])
 
