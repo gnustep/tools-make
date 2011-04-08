@@ -56,10 +56,10 @@ do
     --clean)
       GSTESTMODE=clean
       ;;
-      --debug)
+    --debug)
       GSTESTDBG="$GSTESTDIR/gdb.cmds"
       ;;
-      --developer)
+    --developer)
       GSTESTDEV=yes
       ;;
     --documentation)
