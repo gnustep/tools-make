@@ -1396,82 +1396,51 @@ fi
 
 AC_ARG_ENABLE(native-objc-exceptions, [
 --disable-native-objc-exceptions
-   Disable (or enable) native Objective-C exception support
-   (@try/@catch/@finally/@synchronized).  If unspecified,
-   Objective-C exception support is enabled only if the compiler
-   is GCC >= 4.5.0.  Use this option if you do not want to use 
-   the native Objective-C exception support provided by newer GCC 
-   compilers, or if you want to enable it with older compilers (where
-   you would most likely need to use a custom libobjc).
+   Disable native Objective-C exception support (@try / @catch /
+   @finally / @synchronized).  If unspecified, Objective-C exception
+   support is enabled if the compiler can compile Objective-C code
+   containing @try / @catch / @finally / @synchronized.  Please note
+   that native exceptions also require support in the Objective-C
+   runtime; GNUstep-base will check for that support and may still
+   disable native exceptions if such support is not available.
+   Use this option if you do not want to use the native Objective-C
+   exception support provided by newer compilers.
 ], 
 USE_OBJC_EXCEPTIONS=$enableval,
 USE_OBJC_EXCEPTIONS=maybe)
 
 # Please note that -fobjc-exceptions should automatically enable
 # -fexceptions.
-AC_MSG_CHECKING(whether we should use native ObjC exceptions)
+AC_MSG_CHECKING(whether the compiler supports native ObjC exceptions)
 if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
   # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
-  # something with @try/@catch/@finally/@synchronized in it, and it is
-  # recent enough (GCC >= 4.4.0) as to be shipped with a working uncaught
-  # exception handler.
-  if test ! ${GCC} = "yes" ; then
-    USE_OBJC_EXCEPTIONS=no
-    AC_MSG_RESULT(no: compiler isn't gcc)
-  else
-    CFLAGS_no_exceptions="$CFLAGS"
-    LIBS_no_exceptions="$LIBS"
-    CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
-    LIBS="$LIBS -shared-libgcc -fexceptions"
-    AC_RUN_IFELSE([[
-#include <stdlib.h>
+  # something with @try/@catch/@finally in it.
+  CFLAGS_no_exceptions="$CFLAGS"
+  CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
+  AC_COMPILE_IFELSE([[
+#include <objc/objc.h>
 @interface Test { id isa; } @end
-@implementation Test
-+ (id)new
-{
-  Test *obj = malloc(sizeof(id));
-  obj->isa = self;
-  return obj;
-}
-@end
 
-int main(int argc, char **argv)
+int test (Test *o)
 {
-	Test *o = 0;
-	@try
-	{
-		o=[Test new];
-		@throw o;
-	}
-	@catch (id foo)
-	{
-		if (o!=foo)
-			return 1;
-	}
-	return 0;
+  @try
+    {
+      @throw o;
+    }
+   @catch (id foo)
+    {
+      if (o != foo)
+	return 1;
+    }
+  return 0;
 }
   ]], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
     if test x$USE_OBJC_EXCEPTIONS = xno; then
-      AC_MSG_RESULT(no: native exceptions are not supported by the compiler)
+      AC_MSG_RESULT(no)
     else
-      # Disable native exceptions if GCC < 4.4.0
-      if test "${gs_cv_gcc_major_version}" -le "3" >&5 2>&5; then
-        AC_MSG_RESULT(no: gcc <= 4.3 has lacking runtime support for native exceptions)
-        USE_OBJC_EXCEPTIONS=no
-      fi
-      if test "${gs_cv_gcc_major_version}" = "4" >&5 2>&5; then
-        if test "${gs_cv_gcc_minor_version}" -le "3" >&5 2>&5; then
-          AC_MSG_RESULT(no: gcc <= 4.3 has lacking runtime support for native exceptions)
-          USE_OBJC_EXCEPTIONS=no
-        fi
-      fi
-    fi
-    if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
-      AC_MSG_RESULT(yes: supported by the compiler)
+      AC_MSG_RESULT(yes)
     fi
     CFLAGS="$CFLAGS_no_exceptions"
-    LIBS="$LIBS_no_exceptions"
-  fi
 else
   AC_MSG_RESULT($USE_OBJC_EXCEPTIONS)
 fi

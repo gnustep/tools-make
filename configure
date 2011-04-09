@@ -916,13 +916,15 @@ Optional Features:
 
 
 --disable-native-objc-exceptions
-   Disable (or enable) native Objective-C exception support
-   (@try/@catch/@finally/@synchronized).  If unspecified,
-   Objective-C exception support is enabled only if the compiler
-   is GCC >= 4.5.0.  Use this option if you do not want to use
-   the native Objective-C exception support provided by newer GCC
-   compilers, or if you want to enable it with older compilers (where
-   you would most likely need to use a custom libobjc).
+   Disable native Objective-C exception support (@try / @catch /
+   @finally / @synchronized).  If unspecified, Objective-C exception
+   support is enabled if the compiler can compile Objective-C code
+   containing @try / @catch / @finally / @synchronized.  Please note
+   that native exceptions also require support in the Objective-C
+   runtime; GNUstep-base will check for that support and may still
+   disable native exceptions if such support is not available.
+   Use this option if you do not want to use the native Objective-C
+   exception support provided by newer compilers.
 
 
 --enable-debug-by-default
@@ -5396,6 +5398,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!
 #--------------------------------------------------------------------
 
+# TODO: Enable it by default if the compiler supports it :-)
 # Check whether --enable-objc-nonfragile-abi or --disable-objc-nonfragile-abi was given.
 if test "${enable_objc_nonfragile_abi+set}" = set; then
   enableval="$enable_objc_nonfragile_abi"
@@ -5410,11 +5413,12 @@ if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
   # What we want to do: set USE_NONFRAGILE_ABI to yes if we can compile
   # something with -fobjc-nonfragile-abi.
   CFLAGS_nonfragile="$CFLAGS"
-  LIBS_nonfragile="$LIBS"
   CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
-  LIBS="$LIBS -shared-libgcc -fobjc-nonfragile-abi"
   cat >conftest.$ac_ext <<_ACEOF
 
+/* Note that we never execute this code so it does not really matter
+   what it is.  We are testing that the compiler accepts the
+   '-fobjc-nonfragile-abi' flag.  */
 int
 main()
 {
@@ -5458,7 +5462,6 @@ rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
   echo "$as_me:$LINENO: result: $USE_NONFRAGILE_ABI" >&5
 echo "${ECHO_T}$USE_NONFRAGILE_ABI" >&6
   CFLAGS="$CFLAGS_no_nonfragile"
-  LIBS="$LIBS_no_nonfragile"
 
   if test x$USE_NONFRAGILE_ABI = xno; then
     { echo "$as_me:$LINENO: The nonfragile ABI was requested, but the compiler" >&5
@@ -5532,65 +5535,50 @@ fi;
 
 # Please note that -fobjc-exceptions should automatically enable
 # -fexceptions.
-echo "$as_me:$LINENO: checking whether we should use native ObjC exceptions" >&5
-echo $ECHO_N "checking whether we should use native ObjC exceptions... $ECHO_C" >&6
+echo "$as_me:$LINENO: checking whether the compiler supports native ObjC exceptions" >&5
+echo $ECHO_N "checking whether the compiler supports native ObjC exceptions... $ECHO_C" >&6
 if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
   # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
-  # something with @try/@catch/@finally/@synchronized in it, and it is
-  # recent enough (GCC >= 4.4.0) as to be shipped with a working uncaught
-  # exception handler.
-  if test ! ${GCC} = "yes" ; then
-    USE_OBJC_EXCEPTIONS=no
-    echo "$as_me:$LINENO: result: no: compiler isn't gcc" >&5
-echo "${ECHO_T}no: compiler isn't gcc" >&6
-  else
-    CFLAGS_no_exceptions="$CFLAGS"
-    LIBS_no_exceptions="$LIBS"
-    CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
-    LIBS="$LIBS -shared-libgcc -fexceptions"
-    if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
+  # something with @try/@catch/@finally in it.
+  CFLAGS_no_exceptions="$CFLAGS"
+  CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
   cat >conftest.$ac_ext <<_ACEOF
 
-#include <stdlib.h>
+#include <objc/objc.h>
 @interface Test { id isa; } @end
-@implementation Test
-+ (id)new
-{
-  Test *obj = malloc(sizeof(id));
-  obj->isa = self;
-  return obj;
-}
-@end
 
-int main(int argc, char **argv)
+int test (Test *o)
 {
-	Test *o = 0;
-	@try
-	{
-		o=[Test new];
-		@throw o;
-	}
-	@catch (id foo)
-	{
-		if (o!=foo)
-			return 1;
-	}
-	return 0;
+  @try
+    {
+      @throw o;
+    }
+   @catch (id foo)
+    {
+      if (o != foo)
+	return 1;
+    }
+  return 0;
 }
 
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -5598,40 +5586,20 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   (exit $ac_status); }; }; then
   USE_OBJC_EXCEPTIONS=yes
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-( exit $ac_status )
 USE_OBJC_EXCEPTIONS=no
 fi
-rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
     if test x$USE_OBJC_EXCEPTIONS = xno; then
-      echo "$as_me:$LINENO: result: no: native exceptions are not supported by the compiler" >&5
-echo "${ECHO_T}no: native exceptions are not supported by the compiler" >&6
+      echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
     else
-      # Disable native exceptions if GCC < 4.4.0
-      if test "${gs_cv_gcc_major_version}" -le "3" >&5 2>&5; then
-        echo "$as_me:$LINENO: result: no: gcc <= 4.3 has lacking runtime support for native exceptions" >&5
-echo "${ECHO_T}no: gcc <= 4.3 has lacking runtime support for native exceptions" >&6
-        USE_OBJC_EXCEPTIONS=no
-      fi
-      if test "${gs_cv_gcc_major_version}" = "4" >&5 2>&5; then
-        if test "${gs_cv_gcc_minor_version}" -le "3" >&5 2>&5; then
-          echo "$as_me:$LINENO: result: no: gcc <= 4.3 has lacking runtime support for native exceptions" >&5
-echo "${ECHO_T}no: gcc <= 4.3 has lacking runtime support for native exceptions" >&6
-          USE_OBJC_EXCEPTIONS=no
-        fi
-      fi
-    fi
-    if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
-      echo "$as_me:$LINENO: result: yes: supported by the compiler" >&5
-echo "${ECHO_T}yes: supported by the compiler" >&6
+      echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
     fi
     CFLAGS="$CFLAGS_no_exceptions"
-    LIBS="$LIBS_no_exceptions"
-  fi
 else
   echo "$as_me:$LINENO: result: $USE_OBJC_EXCEPTIONS" >&5
 echo "${ECHO_T}$USE_OBJC_EXCEPTIONS" >&6

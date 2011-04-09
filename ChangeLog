@@ -1,6 +1,15 @@
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
+	when checking for compiler support for native Objective-C
+	exceptions.  Do not check the type or version of the compiler
+	during the check; only check that it can compile
+	@try/@throw/@catch.  Updated check and documentation.
+	* configure: Updated.
+	
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
 	when checking for -fobjc-nonfragile-abi support in the compiler.
 	* configure: Updated.
 
