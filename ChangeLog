@@ -1,5 +1,11 @@
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
+	when checking for ObjC++ support in the compiler.
+	* configure: Updated comments.
+	
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	Use 'make check GNUSTEP_TEST_OBJCXX=yes' to enable ObjC++
 	testcases when using the test framework.
 	* TestFramework/gnustep-tests.in: Recognize GNUSTEP_TEST_OBJCXX,

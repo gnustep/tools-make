@@ -24,6 +24,21 @@ AC_INIT
 AC_PREREQ(2.57)
 AC_CONFIG_SRCDIR([application.make])
 
+#
+# TODO: This configure file should not contain any checks that depend on the
+# Objective-C runtime being used or available.  This is because on
+# some platforms the Objective-C runtime itself is compiled using
+# gnustep-make!
+#
+# All the runtime-dependent checks should go in gnustep-base.
+#
+# We still need compiler checks, because if we are compiling the
+# Objective-C runtime itself, we need to know what compiler we have
+# and what flags we can use.  But these checks should test
+# compilation, not linking or execution, because we don't necessarily
+# have an Objective-C runtime available yet.
+#
+
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
@@ -301,12 +316,6 @@ AC_SUBST(GNUSTEP_MAKE_STRICT_V2_MODE)
 #-------------------------------------------------------------------
 # Determine filesystem layout to use
 #-------------------------------------------------------------------
-
-# Hmmm - currently we only allow them to specify a file containing the
-# filesystem layout.  We could have a separate flag for each of the
-# layout variables; that would be a lot of flags though!  But maybe
-# for completeness we could go through all of them and add a flag for
-# each.
 
 AC_MSG_CHECKING([for GNUstep filesystem layout to use])
 AC_ARG_WITH(layout,[
@@ -1264,7 +1273,7 @@ CXXFLAGS="$CXXFLAGS -x objective-c++"
 CXXPPFLAGS_saved="$CXXPPFLAGS"
 CXXPPFLAGS="$CXXPPFLAGS -x objective-c++"
 
-AC_RUN_IFELSE([[
+AC_COMPILE_IFELSE([[
 
 @interface	ObjCClass
 {
