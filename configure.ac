@@ -1004,6 +1004,10 @@ AC_SUBST(BACKEND_BUNDLE)
 # Miscellaneous flags and setup
 #--------------------------------------------------------------------
 
+# TODO: This check for a custom ObjC library needs to be moved to
+# gnustep-base since it concerns the runtime library (see explanations
+# at the beginning of this file).
+
 if test "$GNUSTEP_IS_FLATTENED" != yes; then
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
@@ -1094,6 +1098,9 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
   esac
 fi
 
+# TODO: This flag needs to be moved to gnustep-base since it concerns
+# the runtime library (see explanations at the beginning of this
+# file).
 AC_MSG_CHECKING(for the flag to link libobjc)
 AC_ARG_WITH(objc-lib-flag,[
 --with-objc-lib-flag
@@ -1154,6 +1161,9 @@ AC_MSG_RESULT($OBJC_FINAL_LIB_FLAG)
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
+# TODO: This check needs to be moved to gnustep-base since it concerns
+# the runtime library (see explanations at the beginning of this
+# file).
 OBJC_THREAD=
 AC_ARG_WITH(thread-lib,[
 --with-thread-lib

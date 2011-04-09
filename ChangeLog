@@ -1,5 +1,10 @@
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* configure.ac: Updated comments.
+	* configure: Regenerated using the latest autoconf (2.68).
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* TestFramework/gnustep-tests.in: Do not add MAKEFLAGS on a
 	sub-make command-line.  This fixes 'make messages=yes check' on
 	the top-level of gnustep-base, for example.
