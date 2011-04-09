@@ -320,7 +320,7 @@ build_and_run ()
       BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     fi
   else
-    BUILD_CMD="$MAKE_CMD $MAKEFLAGS debug=yes $TESTNAME"
+    BUILD_CMD="$MAKE_CMD debug=yes $TESTNAME"
   fi
 
   # Compile it if necessary.
@@ -588,7 +588,7 @@ ${tmp}_OBJC_FILES=$TESTFILE"
 	# individual test file later.
 	echo "" >>$GSTESTLOG
 	echo "Building in $dir" >>$GSTESTLOG
-	$MAKE_CMD -j 4 $MAKEFLAGS debug=yes >>$GSTESTLOG 2>&1
+	$MAKE_CMD -j 4 debug=yes >>$GSTESTLOG 2>&1
 	if test $? = 0
 	then
 	  NEEDBUILD=no
