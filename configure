@@ -5413,13 +5413,6 @@ if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
   LIBS_nonfragile="$LIBS"
   CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
   LIBS="$LIBS -shared-libgcc -fobjc-nonfragile-abi"
-  if test "$cross_compiling" = yes; then
-  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&5
-echo "$as_me: error: cannot run test program while cross compiling
-See \`config.log' for more details." >&2;}
-   { (exit 1); exit 1; }; }
-else
   cat >conftest.$ac_ext <<_ACEOF
 
 int
@@ -5432,12 +5425,23 @@ return __has_feature(objc_nonfragile_abi) ? 0 : 1;
 }
 
 _ACEOF
-rm -f conftest$ac_exeext
-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
-  (eval $ac_link) 2>&5
+rm -f conftest.$ac_objext
+if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+  (eval $ac_compile) 2>conftest.er1
+  ac_status=$?
+  grep -v '^ *+' conftest.er1 >conftest.err
+  rm -f conftest.er1
+  cat conftest.err >&5
+  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+  (exit $ac_status); } &&
+	 { ac_try='test -z "$ac_c_werror_flag"
+			 || test ! -s conftest.err'
+  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+  (eval $ac_try) 2>&5
   ac_status=$?
   echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
+  (exit $ac_status); }; } &&
+	 { ac_try='test -s conftest.$ac_objext'
   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
   (eval $ac_try) 2>&5
   ac_status=$?
@@ -5445,15 +5449,12 @@ if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
   (exit $ac_status); }; }; then
   USE_NONFRAGILE_ABI=yes
 else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
+  echo "$as_me: failed program was:" >&5
 sed 's/^/| /' conftest.$ac_ext >&5
 
-( exit $ac_status )
 USE_NONFRAGILE_ABI=no
 fi
-rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
+rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
   echo "$as_me:$LINENO: result: $USE_NONFRAGILE_ABI" >&5
 echo "${ECHO_T}$USE_NONFRAGILE_ABI" >&6
   CFLAGS="$CFLAGS_no_nonfragile"

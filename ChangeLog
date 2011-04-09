@@ -1,8 +1,14 @@
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
+	when checking for -fobjc-nonfragile-abi support in the compiler.
+	* configure: Updated.
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
 	when checking for ObjC++ support in the compiler.
-	* configure: Updated comments.
+	* configure: Updated.
 	
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
