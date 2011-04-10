@@ -95,7 +95,7 @@ include $(GNUSTEP_MAKEFILES)/library-combo.make
 
 #
 # Get the config information (host/target/library-combo specific),
-# this includes CC, OPTFLAGS etc.
+# this includes CC, OPTFLAG etc.
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
 
@@ -664,7 +664,7 @@ ifeq ($(profile), yes)
 endif
 
 # The default set of compilation flags are set in config.make in the
-# OPTFLAGS variable.  They should default to -g -O2.  These should be
+# OPTFLAG variable.  They should default to -g -O2.  These should be
 # an "average" set of flags, midway between debugging and performance;
 # they are used, unchanged, when we build with debug=no (the default
 # unless --enable-debug-by-default was used when configuring

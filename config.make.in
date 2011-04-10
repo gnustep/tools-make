@@ -62,7 +62,7 @@ endif
 # which will strip the object files upon installation; still, it's not
 # very elegant since -g is already added elsewhere for debug=yes, and
 # it ends up appearing twice in the gcc command-line.
-OPTFLAG  = @CFLAGS@
+OPTFLAG  = @CFLAGS@ @GNUSTEP_C_FBLOCKS_FLAG@
 OBJCFLAGS= @OBJCFLAGS@
 OBJC_LIB_FLAG = @OBJC_LIB_FLAG@
 CPPFLAGS = @CPPFLAGS@
