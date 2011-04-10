@@ -584,7 +584,6 @@ OBJCFLAGS
 LIB_DIR
 INCLUDES
 SOLARIS_SHARED
-GNUSTEP_C_FBLOCKS_FLAG
 GCC_WITH_PRECOMPILED_HEADERS
 AUTO_DEPENDENCIES
 USE_OBJC_EXCEPTIONS
@@ -752,7 +751,6 @@ with_objc_lib_flag
 with_thread_lib
 enable_objc_nonfragile_abi
 enable_native_objc_exceptions
-enable_fblocks
 enable_debug_by_default
 enable_strip_makefiles
 enable_parallel_building
@@ -1491,13 +1489,6 @@ Optional Features:
    disable native exceptions if such support is not available.
    Use this option if you do not want to use the native Objective-C
    exception support provided by newer compilers.
-
---disable-fblocks
-   Disable the '-fblocks' option when compiling C/Objective-C.  Normally,
-   if the compiler supports '-fblocks' (which is expected to enable support
-   for the 'blocks' extension to C and Objective-C), gnustep-make automatically
-   uses it.  Use this option to force gnustep-make to not pass '-fblocks'
-   to the compiler when compiling C or Objective-C even if it supports it.
 
 
 --enable-debug-by-default
@@ -5856,63 +5847,6 @@ fi
 # point.  Useful to keep this in case we need to compile C code again.
 LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
-
-#--------------------------------------------------------------------
-# Check if compiler supports -fblocks
-#--------------------------------------------------------------------
-# Check whether --enable-fblocks was given.
-if test "${enable_fblocks+set}" = set; then :
-  enableval=$enable_fblocks; USE_FBLOCKS=$enableval
-else
-  USE_FBLOCKS=maybe
-fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler supports -fblocks" >&5
-$as_echo_n "checking whether the compiler supports -fblocks... " >&6; }
-if test x"$USE_FBLOCKS" = x"no"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: check disabled" >&5
-$as_echo "check disabled" >&6; }
-else
-  # Attempt compiling something that contains blocks with the
-  # '-fblocks' flag.  If it succeeds, use it.  Else, disable it.
-  CFLAGS_no_fblocks="$CFLAGS"
-  CFLAGS="$CFLAGS -fblocks"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-void (^block)(void) = ^(void) {};
-
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  USE_FBLOCKS=yes
-else
-  USE_FBLOCKS=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    if test x"$USE_FBLOCKS" = xno; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-    else
-      { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-    fi
-    CFLAGS="$CFLAGS_no_fblocks"
-fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to use -fblocks when compiling C/ObjC" >&5
-$as_echo_n "checking whether to use -fblocks when compiling C/ObjC... " >&6; }
-if test x"$USE_FBLOCKS" = xno; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-  GNUSTEP_C_FBLOCKS_FLAG=
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-  GNUSTEP_C_FBLOCKS_FLAG=-fblocks
-fi
-
-
 
 #--------------------------------------------------------------------
 # Check if compiler requires -shared flag on Solaris ...

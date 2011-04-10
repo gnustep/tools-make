@@ -1,10 +1,5 @@
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
-	* configure.ac: Check if the compiler supports -fblocks, and if
-	so, enable it.  Added --disable-fblocks option to turn this off if
-	desired.
-	* configure: Regenerated.
-	* config.make.in (OPTFLAG): Added @GNUSTEP_C_FBLOCKS_FLAG@.
 	* common.make: Updated comments.
 	
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>

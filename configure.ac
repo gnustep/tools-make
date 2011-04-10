@@ -1540,50 +1540,6 @@ LIBS="$saved_LIBS"
 CFLAGS="$saved_CFLAGS"
 
 #--------------------------------------------------------------------
-# Check if compiler supports -fblocks
-#--------------------------------------------------------------------
-AC_ARG_ENABLE(fblocks,
-[--disable-fblocks
-   Disable the '-fblocks' option when compiling C/Objective-C.  Normally,
-   if the compiler supports '-fblocks' (which is expected to enable support
-   for the 'blocks' extension to C and Objective-C), gnustep-make automatically
-   uses it.  Use this option to force gnustep-make to not pass '-fblocks'
-   to the compiler when compiling C or Objective-C even if it supports it.
-], 
-USE_FBLOCKS=$enableval,
-USE_FBLOCKS=maybe)
-
-AC_MSG_CHECKING(whether the compiler supports -fblocks)
-if test x"$USE_FBLOCKS" = x"no"; then
-  AC_MSG_RESULT(check disabled)
-else
-  # Attempt compiling something that contains blocks with the
-  # '-fblocks' flag.  If it succeeds, use it.  Else, disable it.
-  CFLAGS_no_fblocks="$CFLAGS"
-  CFLAGS="$CFLAGS -fblocks"
-  AC_COMPILE_IFELSE([[
-void (^block)(void) = ^(void) {};
-  ]], USE_FBLOCKS=yes, USE_FBLOCKS=no)
-    if test x"$USE_FBLOCKS" = xno; then
-      AC_MSG_RESULT(no)
-    else
-      AC_MSG_RESULT(yes)
-    fi
-    CFLAGS="$CFLAGS_no_fblocks"
-fi
-
-AC_MSG_CHECKING(whether to use -fblocks when compiling C/ObjC)
-if test x"$USE_FBLOCKS" = xno; then
-  AC_MSG_RESULT(no)
-  GNUSTEP_C_FBLOCKS_FLAG=
-else
-  AC_MSG_RESULT(yes)
-  GNUSTEP_C_FBLOCKS_FLAG=-fblocks
-fi
-
-AC_SUBST(GNUSTEP_C_FBLOCKS_FLAG)
-
-#--------------------------------------------------------------------
 # Check if compiler requires -shared flag on Solaris ...
 #--------------------------------------------------------------------
 
