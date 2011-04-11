@@ -1,5 +1,9 @@
 2011-04-11  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* objc.make: Print a deprecation warning if this file is used.
+
+2011-04-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* configure.ac: Set OBJ_MERGE_CMD_FLAG to -r or -Wl,-r depending
 	on whether we're using GCC or clang.
 	* configure: Regenerated.
