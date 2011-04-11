@@ -1,3 +1,12 @@
+2011-04-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Set OBJ_MERGE_CMD_FLAG to -r or -Wl,-r depending
+	on whether we're using GCC or clang.
+	* configure: Regenerated.
+	* config.make.in (OBJ_MERGE_CMD_FLAG): New.
+	* target.make: Use OBJ_MERGE_CMD_FLAG instead of -Wl,-r
+	-mno-relax.
+	
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* common.make: Updated comments.

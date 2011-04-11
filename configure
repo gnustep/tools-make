@@ -587,6 +587,7 @@ SOLARIS_SHARED
 GCC_WITH_PRECOMPILED_HEADERS
 AUTO_DEPENDENCIES
 USE_OBJC_EXCEPTIONS
+OBJ_MERGE_CMD_FLAG
 USE_NONFRAGILE_ABI
 OBJCXX
 ac_cv_objc_threaded
@@ -5654,6 +5655,34 @@ fi
 
 # Keep LIBS and CFLAGS as they are for a while - we need them in
 # the following Objective-C tests!
+
+#--------------------------------------------------------------------
+# Check if we should use -r or -Wl,-r when doing partial linking
+#--------------------------------------------------------------------
+
+# Ideally, we'd use -r or -Wl,-r everywhere and that would work with
+# both GCC and clang.  But -r doesn't work with clang on some
+# platforms, while using -Wl,-r is a problem with GCC on some Sparc
+# systems, where GCC automatically passes --relax to the linker unless
+# you specify -r.  If you specify -Wl,-r, it still passes --relax,
+# producing the error
+#
+#   ld: --relax and -r may not be used together
+#
+# To work around this, we use -Wl,-r with clang, and -r with GCC.
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for the flag to use to do partial linking" >&5
+$as_echo_n "checking for the flag to use to do partial linking... " >&6; }
+if test ${GCC} = "yes" ; then
+  OBJ_MERGE_CMD_FLAG=-r
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: -r" >&5
+$as_echo "-r" >&6; }
+else
+  OBJ_MERGE_CMD_FLAG=-Wl,-r
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: -Wl,-r" >&5
+$as_echo "-Wl,-r" >&6; }
+fi
+
+
 
 #--------------------------------------------------------------------
 # Check for the GCC version - this is used in the following tests

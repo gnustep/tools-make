@@ -1366,6 +1366,31 @@ AC_SUBST(USE_NONFRAGILE_ABI)
 # the following Objective-C tests!
 
 #--------------------------------------------------------------------
+# Check if we should use -r or -Wl,-r when doing partial linking
+#--------------------------------------------------------------------
+
+# Ideally, we'd use -r or -Wl,-r everywhere and that would work with
+# both GCC and clang.  But -r doesn't work with clang on some
+# platforms, while using -Wl,-r is a problem with GCC on some Sparc
+# systems, where GCC automatically passes --relax to the linker unless
+# you specify -r.  If you specify -Wl,-r, it still passes --relax,
+# producing the error
+#
+#   ld: --relax and -r may not be used together
+#
+# To work around this, we use -Wl,-r with clang, and -r with GCC.
+AC_MSG_CHECKING(for the flag to use to do partial linking)
+if test ${GCC} = "yes" ; then
+  OBJ_MERGE_CMD_FLAG=-r
+  AC_MSG_RESULT([-r])
+else
+  OBJ_MERGE_CMD_FLAG=-Wl,-r
+  AC_MSG_RESULT([-Wl,-r])
+fi
+
+AC_SUBST(OBJ_MERGE_CMD_FLAG)
+
+#--------------------------------------------------------------------
 # Check for the GCC version - this is used in the following tests
 #--------------------------------------------------------------------
 
