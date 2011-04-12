@@ -294,8 +294,12 @@ DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
-# GNU compiler
+# GNU runtime
 
+# Make sure that compiler includes the right Objective-C runtime headers when
+# compiling C source files. Normally, the required include path is implicitly
+# added -fgnu-runtime, but this seems to be ignored when compiling C files.
+INTERNAL_CFLAGS := -isystem $(shell $(CC) -print-search-dirs | sed -n '/install:/s/install: //p')include-gnu-runtime
 INTERNAL_LDFLAGS += -undefined dynamic_lookup 
 
 SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning $(CC_LDFLAGS)
@@ -331,7 +335,7 @@ BUNDLE_LD       =  $(LD)
 BUNDLE_LDFLAGS  += -fgnu-runtime -bundle
 
 else 
-# Apple Compiler
+# Apple runtime
 
 DYLIB_EXTRA_FLAGS    = -undefined dynamic_lookup 
 # Useful optimization flag: -Wl,-single_module.  This flag only
@@ -942,7 +946,7 @@ SHARED_LIB_LINK_CMD     = \
 	-Wl,--whole-archive $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \
 	-Wl,--no-whole-archive $(INTERNAL_LIBRARIES_DEPEND_UPON) $(TARGET_SYSTEM_LIBS)\
 	$(SHARED_LD_POSTFLAGS)
-	
+
 AFTER_INSTALL_SHARED_LIB_CMD = 
 AFTER_INSTALL_SHARED_LIB_CHOWN =
 SHARED_LIBEXT	 = .dll.a
