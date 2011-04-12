@@ -296,6 +296,10 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
 # GNU runtime
 
+# FIXME: The following will cause a shell + compiler + sed invocation
+# for every single recursive make invocation ... which is extremely
+# slow.  It needs to be rewritten as a configure check.
+
 # Make sure that compiler includes the right Objective-C runtime headers when
 # compiling C source files. Normally, the required include path is implicitly
 # added -fgnu-runtime, but this seems to be ignored when compiling C files.
