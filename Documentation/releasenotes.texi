@@ -68,6 +68,22 @@ resource-set.make (you should use xxx_INSTALL_DIR instead) and
 GNUSTEP_GSWAPPS in gswapp.make (you should use GNUSTEP_WEB_APPS
 instead).
 
+@item New Test Framework
+GNUstep-make now includes a test framework that can be used to easily
+write testcases for Objective-C software.  The new releases of
+GNUstep-base and GNUstep-gui include regression test suites that use
+this test framework.  Please check the README in the TestFramework
+directory for more information on how it works or how to use it.
+
+@item objc.make is deprecated
+The file objc.make, which is used to compile Objective-C command-line
+tools without a Foundation library such as GNUstep base, is now
+deprecated.  Please use tool.make instead.
+
+@item --enable-absolute-install-paths is now the default on Darwin
+This makes it easier to use GNUstep with the gnu-gnu-gnu library combo
+on Apple Mac OS X.
+
 @end table
 
 @section Version 2.4.0
