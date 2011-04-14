@@ -37,8 +37,8 @@ using a newer version of the make system.
      prefix were used.  Starting with version 2.6.0, that is the
      default location of the configuration file only when installing
      system-wide, that is with a prefix set to /, /usr or /usr/GNUstep.
-     In all other cases, the configuration file is by default located
-     in $prefix/etc/GNUstep/GNUstep.conf.
+     In all other cases, the configuration file is by default located in
+     $prefix/etc/GNUstep/GNUstep.conf.
 
      In particular, this means that if ./configure is invoked with no
      options specified, the default location of the configuration file

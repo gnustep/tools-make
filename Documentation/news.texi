@@ -9,6 +9,20 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.6.0}
+
+@itemize @bullet
+@item The default filesystem layout is now the 'fhs' layout
+@item The default location of the configuration file changed when not installing system-wide
+@item Removed the --with-system-root, --with-local-root and --with-network-root options
+@item Removed obsolete variables (deprecated 4 years ago).
+@item A new test framework is included in the pacakge
+@item objc.make deprecated. Use tool.make instead
+@item --enable-absolute-install-paths is noew the default on Darwin
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.4.0}
 
 @itemize @bullet
@@ -34,8 +48,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item Use install -p if available.
 @item make uninstall works better now.
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.8}
 
