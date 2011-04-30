@@ -184,8 +184,15 @@ endif
 ifneq ($(BUILD_DLL),yes)
 
 LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB)$(SHARED_LIBEXT)
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+# On Mac OS X the version number conventionally precedes the shared
+# library suffix, e.g., libgnustep-base.1.16.1.dylib.
+VERSION_LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB).$(VERSION)$(SHARED_LIBEXT)
+SONAME_LIBRARY_FILE  = $(LIBRARY_NAME_WITH_LIB).$(INTERFACE_VERSION)$(SHARED_LIBEXT)
+else
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(INTERFACE_VERSION)
+endif
 
 else # BUILD_DLL
 
