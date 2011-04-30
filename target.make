@@ -296,14 +296,14 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
 # GNU runtime
 
-# FIXME: The following will cause a shell + compiler + sed invocation
-# for every single recursive make invocation ... which is extremely
-# slow.  It needs to be rewritten as a configure check.
+# Make sure that the compiler includes the right Objective-C runtime headers
+# when compiling plain C source files. When compiling Objective-C source files
+# the necessary directory is implicitly added by the -fgnu-runtime option, but
+# this option is ignored when compiling plain C files.
+ifneq ($(strip $(CC_GNURUNTIME)),)
+INTERNAL_CFLAGS += -isystem $(CC_GNURUNTIME)
+endif
 
-# Make sure that compiler includes the right Objective-C runtime headers when
-# compiling C source files. Normally, the required include path is implicitly
-# added -fgnu-runtime, but this seems to be ignored when compiling C files.
-INTERNAL_CFLAGS := -isystem $(shell $(CC) -print-search-dirs | sed -n '/install:/s/install: //p')include-gnu-runtime
 INTERNAL_LDFLAGS += -undefined dynamic_lookup 
 
 SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning $(CC_LDFLAGS)

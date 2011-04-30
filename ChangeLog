@@ -1,3 +1,11 @@
+2011-04-12  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac:
+	* config.make.in:
+	* target.make: Use configure time check for Objective-C runtime
+	header directory workaround on Darwin/OS X.
+	* configure: Regenerated.
+
 2011-04-14  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.6.0

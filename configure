@@ -593,6 +593,7 @@ OBJCXX
 ac_cv_objc_threaded
 objc_threaded
 OBJC_LIB_FLAG
+cc_gnuruntime
 BACKEND_BUNDLE
 GNUSTEP_MULTI_PLATFORM
 GNUSTEP_USER_DIR
@@ -5164,6 +5165,32 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
       ;;
   esac
 fi
+
+# Special case for Apple systems: When compiling plain C source files that
+# include Objective-C runtime headers we must make sure that the correct
+# header files are used with a gnu-*-* combo. The -fgnu-runtime compiler
+# option takes care of this when compiling Objective-C source files, but
+# has no effect when compiling plain C (or C++) source files.
+cc_gnuruntime=
+case $target_os-$ac_cv_library_combo in
+  darwin*-gnu-*-* )
+    if test "$gs_cv_objc_libdir" = "NONE"; then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: checking GNU Objective-C runtime header directory" >&5
+$as_echo_n "checking GNU Objective-C runtime header directory... " >&6; }
+      install_dir="`$CC -print-search-dirs | sed -n 's/install: //p'`"
+      if test -n "${install_dir}" && \
+        test -d "${install_dir}"include-gnu-runtime; then
+        cc_gnuruntime="${install_dir}"include-gnu-runtime
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: $cc_gnuruntime" >&5
+$as_echo "$cc_gnuruntime" >&6; }
+      else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: NONE" >&5
+$as_echo "NONE" >&6; }
+      fi
+    fi
+    ;;
+esac
+
 
 # TODO: This flag needs to be moved to gnustep-base since it concerns
 # the runtime library (see explanations at the beginning of this

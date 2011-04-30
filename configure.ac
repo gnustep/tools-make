@@ -1098,6 +1098,29 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
   esac
 fi
 
+# Special case for Apple systems: When compiling plain C source files that
+# include Objective-C runtime headers we must make sure that the correct
+# header files are used with a gnu-*-* combo. The -fgnu-runtime compiler
+# option takes care of this when compiling Objective-C source files, but
+# has no effect when compiling plain C (or C++) source files.
+cc_gnuruntime=
+case $target_os-$ac_cv_library_combo in
+  darwin*-gnu-*-* )
+    if test "$gs_cv_objc_libdir" = "NONE"; then
+      AC_MSG_CHECKING(GNU Objective-C runtime header directory)
+      install_dir="`$CC -print-search-dirs | sed -n 's/install: //p'`"
+      if test -n "${install_dir}" && \
+        test -d "${install_dir}"include-gnu-runtime; then
+        cc_gnuruntime="${install_dir}"include-gnu-runtime
+        AC_MSG_RESULT($cc_gnuruntime)
+      else
+        AC_MSG_RESULT(NONE)
+      fi
+    fi
+    ;;
+esac
+AC_SUBST(cc_gnuruntime)
+
 # TODO: This flag needs to be moved to gnustep-base since it concerns
 # the runtime library (see explanations at the beginning of this
 # file).
