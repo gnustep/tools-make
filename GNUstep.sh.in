@@ -498,7 +498,7 @@ for dir in $GNUSTEP_LIBRARY_PATHLIST; do
   else
     if ( echo ":${CLASSPATH}:"\
       |grep -v ":${path_fragment}:" >/dev/null ); then
-      CLASSPATH="$CLASSPATH:$path_fragment"
+      CLASSPATH="$path_fragment:$CLASSPATH"
     fi
   fi
 

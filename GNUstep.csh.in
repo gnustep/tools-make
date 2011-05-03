@@ -312,7 +312,7 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARY_PATHLIST}"'; do e
     setenv CLASSPATH "${path_fragment}"
   else if ( { (echo ":${CLASSPATH}:"\
     |grep -v ":${path_fragment}:" >/dev/null) } ) then
-    setenv CLASSPATH "${CLASSPATH}:${path_fragment}"
+    setenv CLASSPATH "${path_fragment}:${CLASSPATH}"
   endif
 
   set path_fragment="${dir}/Libraries/Guile"

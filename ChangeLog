@@ -1,3 +1,9 @@
+2011-05-03  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* GNUstep.sh.in:
+	* GNUstep.csh.in: Fix definition of CLASSPATH, which was
+	constructed backward.
+
 2011-04-30  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* Instance/library.make:
