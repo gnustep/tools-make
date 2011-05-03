@@ -1,3 +1,9 @@
+2011-05-03  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Rewritten test for clang when determining if we
+	need to use -r or -Wl,-r to do partial linking.
+	* configure: Regenerated.
+
 2011-05-03  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* GNUstep.sh.in:
@@ -46,11 +52,11 @@
 	* config.make.in (OBJ_MERGE_CMD_FLAG): New.
 	* target.make: Use OBJ_MERGE_CMD_FLAG instead of -Wl,-r
 	-mno-relax.
-	
+
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* common.make: Updated comments.
-	
+
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Updated comments.
@@ -70,7 +76,7 @@
 	during the check; only check that it can compile
 	@try/@throw/@catch.  Updated check and documentation.
 	* configure: Updated.
-	
+
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
@@ -82,7 +88,7 @@
 	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
 	when checking for ObjC++ support in the compiler.
 	* configure: Updated.
-	
+
 2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	Use 'make check GNUSTEP_TEST_OBJCXX=yes' to enable ObjC++
@@ -119,7 +125,7 @@
 	INSIDE_ECHO_MISSING_DOCUMENTATION.  This fixes the rule when
 	messages=yes.  Issue reported by Sebastian Reitenbach
 	<buzzdee@web.de>.
-	
+
 2011-04-04  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:
@@ -165,7 +171,7 @@
 	%i and %% and replace them with the user name, the user id or %.
 	* filesystem.sh.in: Same.
 	* filesystem.csh.in: Same.
-	
+
 2011-03-21  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* gnustep-config.in: allow checking of the CXX variable to see what
@@ -180,15 +186,15 @@
 	Only install GNUSTEP_INSTANCE if the file exists.  If not, print
 	the message " Nothing to install because nothing was built
 	(usually because makeinfo is not available)" instead of aborting.
-	* messages.make (ALWAYS_ECHO_NO_LANGUAGES): New variable.	
-	
+	* messages.make (ALWAYS_ECHO_NO_LANGUAGES): New variable.
+
 2011-03-18  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: By default, use --enable-absolute-install-paths on
 	Darwin with gnu-gnu-gnu (Suggestion from Wolfgang Lux
 	<wolfgang.lux@gmail.com>).
 	* configure: Regenerated.
-	
+
 2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* config.make.in (CXX): If CXX is specified on the environment or
@@ -216,7 +222,7 @@
 	* Documentation/gnustep-userfaq.texi (No Makefile): Updated
 	location of GNUstep.sh.
 	* INSTALL: Regenerated.
-	
+
 2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* Instance/gswapp.make (GNUSTEP_GSWAPPS): Variable removed.
@@ -225,7 +231,7 @@
 	xxx_RESOURCE_FILES_INSTALL_DIR.  This was deprecated on 2007-02.
 	* Documentations/releasenotes.texi: Explain the changes.
 	* RELEASENOTES: Regenerated.
-	
+
 2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Removed obsolete --with-system-root,
@@ -234,7 +240,7 @@
 	* configure: Regenerated.
 	* Documentations/releasenotes.texi: Explain the change.
 	* RELEASENOTES: Regenerated.
-	
+
 2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac (--with-config-file): If nothing is specified, use
@@ -244,7 +250,7 @@
 	* configure: Regenerated.
 	* Documentations/releasenotes.texi: Explain the change in default
 	location of the config file.
-	* RELEASENOTES: Regenerated.	
+	* RELEASENOTES: Regenerated.
 
 2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
 

@@ -1403,7 +1403,8 @@ AC_SUBST(USE_NONFRAGILE_ABI)
 #
 # To work around this, we use -Wl,-r with clang, and -r with GCC.
 AC_MSG_CHECKING(for the flag to use to do partial linking)
-if test ${GCC} = "yes" ; then
+gs_cv_using_clang=`${CC} --version 2>&5 | grep -c "clang"`
+if test x"${gs_cv_using_clang}" = x"0" ; then
   OBJ_MERGE_CMD_FLAG=-r
   AC_MSG_RESULT([-r])
 else
