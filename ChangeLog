@@ -1,3 +1,7 @@
+2011-06-04  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.6.1
+
 2011-05-03  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* configure.ac: Rewritten test for clang when determining if we
