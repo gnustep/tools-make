@@ -24,7 +24,7 @@ Bug fix release. Most notably to fix a problem compiling GNUstep with clang.
 @item Removed obsolete variables (deprecated 4 years ago).
 @item A new test framework is included in the pacakge
 @item objc.make deprecated. Use tool.make instead
-@item --enable-absolute-install-paths is noew the default on Darwin
+@item --enable-absolute-install-paths is now the default on Darwin
 @end itemize
 
 @section Changes in version @samp{2.4.0}
