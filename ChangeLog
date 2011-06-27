@@ -1,3 +1,11 @@
+2011-06-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fix for a race condition during parallel builds of tools with
+	resources.
+	* Master/tool.make (MAYBE_GNUSTEP_BUILD_DIR_RESOURCES): New.
+	($(GNUSTEP_BUILD_DIR)/Resources): New rule.
+	(internal-all): Depend on MAYBE_GNUSTEP_BUILD_DIR_RESOURCES.
+
 2011-06-26  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* Instance/framework.make (FRAMEWORK_LIBRARY_FILE): Get names of

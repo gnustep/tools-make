@@ -26,10 +26,31 @@ endif
 
 TOOL_NAME := $(strip $(TOOL_NAME))
 
+# We need to create/delete the GNUSTEP_BUILD_DIR/Resources directory
+# in the Master invocation stage, to prevent different tools, built in
+# parallel, from trying to create it concurrently and causing race
+# conditions.  But, if no tool has a resource bundle, we don't create
+# or delete the directory at all.  ;-)
+TOOLS_WITH_RESOURCE_BUNDLES = $(strip $(foreach tool,$(TOOL_NAME),$($(tool)_HAS_RESOURCE_BUNDLE:yes=$(tool))))
+
+ifneq ($(TOOLS_WITH_RESOURCE_BUNDLES),)
+MAYBE_GNUSTEP_BUILD_DIR_RESOURCES = $(GNUSTEP_BUILD_DIR)/Resources
+$(GNUSTEP_BUILD_DIR)/Resources:
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+# On distclean, we want to efficiently wipe out the Resources/
+# directory.
+internal-clean::
+	rm -rf $(GNUSTEP_BUILD_DIR)/Resources
+else
+MAYBE_GNUSTEP_BUILD_DIR_RESOURCES =
+endif
+
+
 ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
 
 # Standard building
-internal-all:: $(GNUSTEP_OBJ_DIR) $(TOOL_NAME:=.all.tool.variables)
+internal-all:: $(GNUSTEP_OBJ_DIR) $(MAYBE_GNUSTEP_BUILD_DIR_RESOURCES) $(TOOL_NAME:=.all.tool.variables)
 
 else
 
@@ -39,13 +60,14 @@ else
 # parallel.  This is great as the entire building (including the
 # linking) of the tools is then parallelized.
 
-# Please note that we need to create the ./obj directory before we
-# fire off all the parallel sub-makes, else they'll be a race
-# condition to create it. (typically what happens is that two
-# sub-makes detect that it needs creating, the first one creates it,
-# and when the second one tries to create it, it will fail as it's
+# Please note that we need to create the ./obj directory (and the
+# GNUSTEP_BUILD_DIR/Resources directory if any tool has a resource
+# bundle) before we fire off all the parallel sub-makes, else they'll
+# be a race condition to create it. (typically what happens is that
+# two sub-makes detect that it needs creating, the first one creates
+# it, and when the second one tries to create it, it will fail as it's
 # already been created).
-internal-all:: $(GNUSTEP_OBJ_DIR)
+internal-all:: $(GNUSTEP_OBJ_DIR) $(MAYBE_GNUSTEP_BUILD_DIR_RESOURCES)
 	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 	internal-master-tool-all \
 	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
@@ -78,16 +100,6 @@ TOOLS_WITH_SUBPROJECTS = $(strip $(foreach tool,$(TOOL_NAME),$(patsubst %,$(tool
 ifneq ($(TOOLS_WITH_SUBPROJECTS),)
 internal-clean:: $(TOOLS_WITH_SUBPROJECTS:=.clean.tool.subprojects)
 internal-distclean:: $(TOOLS_WITH_SUBPROJECTS:=.distclean.tool.subprojects)
-endif
-
-# On distclean, we also want to efficiently wipe out the Resources/
-# directory if (and only if) there are tools for which
-# xxx_HAS_RESOURCE_BUNDLE=yes
-TOOLS_WITH_RESOURCE_BUNDLES = $(strip $(foreach tool,$(TOOL_NAME),$($(tool)_HAS_RESOURCE_BUNDLE:yes=$(tool))))
-
-ifneq ($(TOOLS_WITH_RESOURCE_BUNDLES),)
-internal-clean::
-	rm -rf $(GNUSTEP_BUILD_DIR)/Resources
 endif
 
 # TODO: It should be really safe to parallelize the 'strings' targets,
