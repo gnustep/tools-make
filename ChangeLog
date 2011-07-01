@@ -1,10 +1,8 @@
-2011-06-29 17:07 David Chisnall <theraven@gna.org>
+2011-06-29  David Chisnall <theraven@gna.org>
 
-	* tools/make/trunk/Instance/framework.make: Make -make not generate
-	  a file that contains an implicit cast that is not permitted by
-	  ARC.
-	  
-	  Is this NSFramework_* stuff actually used by anything anymore?
+	* Instance/framework.make (DUMMY_FRAMEWORK_FILE): Make -make not
+	  generate a file that contains an implicit cast that is not
+	  permitted by ARC.
 
 2011-06-27  Nicola Pero  <nicola.pero@meta-innovation.com>
 
