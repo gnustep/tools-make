@@ -140,6 +140,8 @@ internal-doc-install_:: $(GNUSTEP_DOC_INFO)
 	if [ -f $(GNUSTEP_INSTANCE).html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
+	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
 
 $(GNUSTEP_DOC_INFO):

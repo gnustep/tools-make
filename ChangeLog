@@ -1,3 +1,7 @@
+2011-09-29  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/Documentation/texi.make: Install html chapters as well
+
 2011-06-29  David Chisnall <theraven@gna.org>
 
 	* Instance/framework.make (DUMMY_FRAMEWORK_FILE): Make -make not
