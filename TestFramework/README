@@ -99,7 +99,7 @@ Skipped sets:
   The number of sets of tests which were skipped entirely ...
   eg. those for features which work on some platforms, but not on yours.
 
-The binary executable of the most recently executed test file iin each test
+The binary executable of the most recently executed test file in each test
 directory is left in the obj subdirectory.  So you can easily debug a failed
 test by:
 1. running gnustep-tests with the single test file as its argument.
@@ -126,7 +126,7 @@ automatically launched to debug the failed testcase with a breakpoint set
 in the testStart() function for that testcase.
 
 You can also use the --developer command line option to define the TESTDEV
-preprocessor variable (to turn on developer only test cases, and to have
+pre-processor variable (to turn on developer only test cases, and to have
 all 'hopes' treated as actual 'tests' with pass/fail results).
 
 Writing Tests
@@ -206,8 +206,8 @@ Failed if the needed test does not pass.
 
 It's likely that you are writing new tests for a library or framework ...
 and those tests will need to link with that framework.  You should add the
-instructions for that to a GNUmakefile.premable if the directory containing
-your tests, or a GNUmakefile.super in the directory above in th cvase where
+instructions for that to a GNUmakefile.preamble if the directory containing
+your tests, or a GNUmakefile.super in the directory above in the case where
 you have multiple test directories.
 eg.
 ADDITIONAL_OBJC_LIBS=-lmyLibrary
@@ -250,7 +250,7 @@ Where tests must make use of external resources or ensure that other tests
 have already been run before they are run, you can make use of the gnustep
 make package facilities to control dependencies etc.
 
-Normally the tests in a directory are built run usng a makefile generated in
+Normally the tests in a directory are built run using a makefile generated in
 the directory.  This makefile uses the standard conventions of including
 GNUmakefile.preamble before test-tool.make and including GNUmakefile.postamble
 after test-tool.make, which gives you a high degree of control over how the
