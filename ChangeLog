@@ -1,3 +1,13 @@
+2011-10-15  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* target.make: Use -pthread for compilation on all platforms.
+	While it's not always needed, for the gcc-4.? series of compilers
+	it should always work to turn on preprocessor defines and any other
+	options needed for threaded code (and we have to assume all code we
+	build may be used in a threaded environment).
+	This gives gcc (or clang, which copies gcc) the responsibility for
+	doing this work.
+
 2011-09-29  Adam Fedor  <fedor@gnu.org>
 
 	* Instance/Documentation/texi.make: Install html chapters as well

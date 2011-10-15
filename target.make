@@ -35,13 +35,17 @@ endif
 # Target specific libraries
 #
 TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lm
+
+# All code we build needs to be thread-safe nowadays
+INTERNAL_CFLAGS = -pthread
+INTERNAL_OBJCFLAGS = -pthread
+INTERNAL_LDFLAGS = -pthread
+
 ifneq ("$(objc_threaded)","")
-  INTERNAL_CFLAGS = -D_REENTRANT
-  INTERNAL_OBJCFLAGS = -D_REENTRANT
   AUXILIARY_OBJC_LIBS += $(objc_threaded)
-ifeq ($(shared), no)
-  TARGET_SYSTEM_LIBS += $(objc_threaded)
-endif
+  ifeq ($(shared), no)
+    TARGET_SYSTEM_LIBS += $(objc_threaded)
+  endif
 endif
 
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
@@ -158,7 +162,7 @@ AFTER_INSTALL_STATIC_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
 	$(RANLIB) $(LIB_LINK_VERSION_FILE))
 SHARED_LIB_LINK_CMD =
-SHARED_CFLAGS =
+SHARED_CFLAGS = -pthread 
 SHARED_LIBEXT =
 AFTER_INSTALL_SHARED_LIB_CMD = \
 	(cd $(LIB_LINK_INSTALL_DIR); \
@@ -177,6 +181,7 @@ BUNDLE_LINK_CMD = $(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 # Start of system specific settings
 #
 ####################################################
+
 
 ####################################################
 #
@@ -660,14 +665,6 @@ BUNDLE_LDFLAGS	+= -shared
 ADDITIONAL_LDFLAGS += -rdynamic
 STATIC_LDFLAGS += -static
 
-##
-## The -pthread flag must be passed to all compilation/link commands.
-##
-ifeq ($(objc_threaded), -pthread)
-  INTERNAL_CFLAGS += -pthread
-  INTERNAL_OBJCFLAGS += -pthread
-  INTERNAL_LDFLAGS += -pthread
-endif
 endif
 endif
 #
