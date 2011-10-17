@@ -1,3 +1,10 @@
+2011-10-17  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* FilesystemLayouts/standalone: first draft at a layout to put
+	everything in one directory for easy deployment of relocatable,
+	standalone packages.
+	Use --with-layout=standalone
+
 2011-10-15  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* target.make: Use -pthread for compilation on all platforms.
