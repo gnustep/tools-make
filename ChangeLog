@@ -1,3 +1,10 @@
+2011-11-21  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* target.make: Don't use -undefined dynamic_lookup when linking
+	executables on OS X. This fixes some false positive results for
+	library function tests in configure and also prevents programs
+	crashing at load time due to unresolved references.
+
 2011-10-19  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* target.make: The -pthread compiler flag is broken on windows ...

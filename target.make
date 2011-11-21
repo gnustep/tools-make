@@ -298,6 +298,17 @@ ifeq ($(FOUNDATION_LIB), apple)
 DYLIB_DEF_FRAMEWORKS += -framework Foundation
 endif
 
+DYLIB_EXTRA_FLAGS += -undefined dynamic_lookup 
+# Useful optimization flag: -Wl,-single_module.  This flag only
+# works starting with 10.3 and is the default since 10.5.
+ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
+  DYLIB_EXTRA_FLAGS    += -Wl,-single_module
+endif
+ifeq ($(findstring darwin8, $(GNUSTEP_TARGET_OS)), darwin8)
+  DYLIB_EXTRA_FLAGS    += -Wl,-single_module
+endif
+
+
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
 # GNU runtime
 
@@ -309,16 +320,8 @@ ifneq ($(strip $(CC_GNURUNTIME)),)
 INTERNAL_CFLAGS += -isystem $(CC_GNURUNTIME)
 endif
 
-INTERNAL_LDFLAGS += -undefined dynamic_lookup 
-
 SHARED_LD_PREFLAGS += -Wl,-noall_load -read_only_relocs warning $(CC_LDFLAGS)
-# Useful flag: -Wl,-single_module.  This flag only
-# works starting with 10.3. libs w/ffcall don't link on darwin/ix86 without it.
-ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
-  SHARED_LD_PREFLAGS += -single_module
-endif
 ifeq ($(findstring darwin8, $(GNUSTEP_TARGET_OS)), darwin8)
-  SHARED_LD_PREFLAGS += -single_module
   BUNDLE_LIBS += -lSystemStubs
 endif
 SHARED_LIB_LINK_CMD     = \
@@ -328,6 +331,7 @@ SHARED_LIB_LINK_CMD     = \
 		$(DYLIB_COMPATIBILITY_VERSION)		\
 		$(DYLIB_CURRENT_VERSION)		\
 		-install_name $(LIB_LINK_INSTALL_NAME)	\
+		$(DYLIB_EXTRA_FLAGS)			\
 		$(ALL_LDFLAGS) -o $@					\
 		$(DYLIB_DEF_FRAMEWORKS)			\
 		$^ $(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
@@ -342,16 +346,10 @@ SHARED_LIB_LINK_CMD     = \
 
 BUNDLE_LD       =  $(LD)
 BUNDLE_LDFLAGS  += -fgnu-runtime -bundle
+BUNDLE_LDFLAGS  += -undefined dynamic_lookup
 
 else 
 # Apple runtime
-
-DYLIB_EXTRA_FLAGS    = -undefined dynamic_lookup 
-# Useful optimization flag: -Wl,-single_module.  This flag only
-# works starting with 10.3.
-ifeq ($(findstring darwin7, $(GNUSTEP_TARGET_OS)), darwin7)
-  DYLIB_EXTRA_FLAGS    += -Wl,-single_module
-endif
 
 SHARED_LIB_LINK_CMD     = \
 	$(LD) $(SHARED_LD_PREFLAGS) \
