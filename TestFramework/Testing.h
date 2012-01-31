@@ -203,7 +203,7 @@ static void testStart()
       testStart(); \
       _obj = (id)(testExpression__);\
       _exp = (id)(testExpect__);\
-      _cond = _obj == _exp || [_obj isEqual: _exp]; \
+      _cond = _obj == _exp || [_exp isEqual: _obj]; \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
       if (0 == _cond) \
@@ -216,6 +216,11 @@ static void testStart()
                 [[_exp description] UTF8String], [s UTF8String], \
 		[s characterAtIndex: 0]); \
             } \
+	  else if (nil == s) \
+	    { \
+	      fprintf(stderr, "Expected '%s' and got (nil)\n", \
+                [[_exp description] UTF8String]); \
+	    } \
 	  else \
 	    { \
 	      fprintf(stderr, "Expected '%s' and got '%s'\n", \

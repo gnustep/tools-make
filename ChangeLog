@@ -1,3 +1,8 @@
+2012-01-31  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h: Improve handling of equality testing report
+	when expression evaluates to nil.
+
 2011-11-21  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* target.make: Don't use -undefined dynamic_lookup when linking
