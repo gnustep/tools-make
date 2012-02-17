@@ -73,10 +73,15 @@ REL_INSTALL_DIR=$(GNUSTEP_OBJ_DIR)/package/$(NSI_BASE)
 
 NSI_FILE_NAME=$(PACKAGE_NAME).nsi
 NSI_FILE=$(NSI_FILE_NAME)
+NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-lib.template
+ifneq ($(LIBRARY_NAME),)
+  NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-lib.template
+endif
+ifneq ($(FRAMEWORK_NAME),)
+  NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-lib.template
+endif
 ifneq ($(APP_NAME),)
   NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-app.template
-else
-  NSI_TEMPLATE=
 endif
 NSI_IN=$(PACKAGE_NAME).nsi.in
 

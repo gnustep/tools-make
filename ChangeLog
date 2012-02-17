@@ -1,3 +1,7 @@
+2012-02-17  Adam Fedor  <fedor@gnu.org>
+
+	* Master/nsis.make: Add support for library and framework packages
+
 2012-02-03  Adam Fedor  <fedor@gnu.org>
 
 	* Version 2.6.2
