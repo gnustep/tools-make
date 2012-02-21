@@ -126,9 +126,7 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), apple)
   RUNTIME_FLAG = -fnext-runtime
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
-  ifeq ($(FOUNDATION_LIB), gnu)
-    OBJC_LIBS = $(OBJC_LIB_FLAG)
-  endif
+  OBJC_LIBS = $(OBJC_LIB_FLAG)
 endif
 
 FND_LDFLAGS =

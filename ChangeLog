@@ -1,3 +1,8 @@
+2012-02-21  Graham Lee   <iamleeg@gmail.com>
+	
+	* library-combo.make (OBJC_LIBS): Always set from OBJC_LIB_FLAG
+	when using the 'apple' runtime.
+
 2012-02-17  Adam Fedor  <fedor@gnu.org>
 
 	* Master/nsis.make: Add support for library and framework packages
