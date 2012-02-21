@@ -1,3 +1,9 @@
+2012-02-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* FilesystemLayouts/README: Updated for the fact that 'fhs' is now
+	the default filesystem layout.  Issue pointed out by Fred Kiefer
+	<FredKiefer@gmx.de>.
+	
 2012-02-21  Graham Lee   <iamleeg@gmail.com>
 	
 	* library-combo.make (OBJC_LIBS): Always set from OBJC_LIB_FLAG
