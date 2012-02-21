@@ -62,7 +62,7 @@ if [ -n "$ZSH_VERSION" ]; then
   # If -y is not already set, set it and remember that we
   # need to set it back to what it was at the end.
   if ( setopt | grep shwordsplit > /dev/null ); then :; else
-    set -y
+    setopt shwordsplit
     GS_ZSH_NEED_TO_RESTORE_SET=yes
   fi
 
@@ -666,6 +666,6 @@ else
 fi
 
 if [ -n "$GS_ZSH_NEED_TO_RESTORE_SET" ]; then
-  set +y
+  unsetopt shwordsplit
 fi
 # EOF

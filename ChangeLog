@@ -1,5 +1,11 @@
 2012-02-21  Nicola Pero  <nicola.pero@meta-innovation.com>
 
+	* GNUstep.sh.in: Use "setopt shwordsplit" instead of "set -y" to
+	get zsh to emulate sh's traditional word split behaviour.
+	Suggestion by Alex Merry.
+
+2012-02-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
 	* FilesystemLayouts/README: Updated for the fact that 'fhs' is now
 	the default filesystem layout.  Issue pointed out by Fred Kiefer
 	<FredKiefer@gmx.de>.
