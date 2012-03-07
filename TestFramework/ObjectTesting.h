@@ -158,7 +158,6 @@ static void test_NSObject(NSString *className, NSArray *objects)
       id theObj = [objects objectAtIndex: i];
       id mySelf = nil;
       Class myClass = Nil;
-      int count0;
       int count1;
       int count2;
       Class sup = Nil;
@@ -193,12 +192,11 @@ static void test_NSObject(NSString *className, NSArray *objects)
       [theObj retain];
       [theObj autorelease];
 
-      count0 = [theObj retainCount];
-      [theObj retain];
       count1 = [theObj retainCount];
+      [theObj retain];
       [theObj release];
       count2 = [theObj retainCount];
-      pass((count0 == count2), "%s has working retainCount", prefix);
+      pass((count1 == count2), "%s has working retainCount", prefix);
       pass([[theObj description] isKindOfClass: [NSString class]],
 	"%s has NSString description", prefix);
       pass([theObj performSelector: @selector(self)] == theObj,
@@ -386,7 +384,6 @@ static void test_NSMutableCopying(NSString *iClassName,
       const char *prefix;
       BOOL immutable;
       id theCopy = nil;
-      Class theClass = Nil;
           
       snprintf(buf, sizeof(buf), "test_NSMutableCopying object %u", i);
       START_SET(buf);
@@ -398,12 +395,10 @@ static void test_NSMutableCopying(NSString *iClassName,
 	if (immutable)
 	  {
 	    theName = iClassName;
-	    theClass = iClass;
 	  }
 	else
 	  {
 	    theName = mClassName;
-	    theClass = mClass;
 	  }
 	
 	prefix = [[NSString stringWithFormat:
