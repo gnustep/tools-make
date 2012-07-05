@@ -1355,7 +1355,7 @@ AC_MSG_CHECKING(whether we should use the nonfragile ABI)
 if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
   # What we want to do: set USE_NONFRAGILE_ABI to yes if we can compile
   # something with -fobjc-nonfragile-abi.
-  CFLAGS_nonfragile="$CFLAGS"
+  CFLAGS_no_nonfragile="$CFLAGS"
   CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
   AC_COMPILE_IFELSE([[
 /* Note that we never execute this code so it does not really matter

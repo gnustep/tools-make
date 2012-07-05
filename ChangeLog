@@ -1,3 +1,11 @@
+2012-07-05  Quentin Mathe <quentin.mathe@gmail.com>
+
+	* configure.ac: Fixed ObjC non fragile ABI check to restore CFLAGS 
+	correctly, --enable-objc-nonfragile-abi was breaking native exceptions 
+	detection. Based on a patch by Christopher Armstrong, see bug report 
+	#36186
+	* configure: Regenerated.
+
 2012-02-21  Nicola Pero  <nicola.pero@meta-innovation.com>
 
 	* GNUstep.sh.in: Use "setopt shwordsplit" instead of "set -y" to
