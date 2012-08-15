@@ -1,3 +1,8 @@
+2012-08-15 Stansilav Yaglo <stanislav-yaglo@yandex.ru>
+
+	* Instance/framework.make: Patch #7822. Make dummy framework classes
+	subclasses of NSObject. 
+
 2012-07-05  Quentin Mathe <quentin.mathe@gmail.com>
 
 	* configure.ac: Fixed ObjC non fragile ABI check to restore CFLAGS 

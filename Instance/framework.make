@@ -483,8 +483,9 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR)/.stamp $(OBJ_FILES_TO_LINK) GNUm
 	  classarray="$$classarray)"; \
 	fi; \
 	echo "$$classarray" > $(DUMMY_FRAMEWORK_CLASS_LIST); \
+	echo "#include <Foundation/NSObject.h>" > $@; \
 	echo "#include <Foundation/NSString.h>" > $@; \
-	echo "@interface $(DUMMY_FRAMEWORK)" >> $@; \
+	echo "@interface $(DUMMY_FRAMEWORK) : NSObject" >> $@; \
 	echo "+ (NSString *)frameworkEnv;" >> $@; \
 	echo "+ (NSString *)frameworkPath;" >> $@; \
 	echo "+ (NSString *)frameworkVersion;" >> $@; \
