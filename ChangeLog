@@ -1,3 +1,7 @@
+2012-09-01  Niels Grewe <niels.grewe@halbordnung.de>
+
+	* target.make: Define QNX target.
+
 2012-08-15 Stansilav Yaglo <stanislav-yaglo@yandex.ru>
 
 	* Instance/framework.make: Patch #7822. Make dummy framework classes
