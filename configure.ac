@@ -1379,7 +1379,20 @@ return __has_feature(objc_nonfragile_abi) ? 0 : 1;
     AC_MSG_ERROR([compiler doesn't support nonfragile ABI])
   fi
 else
-  AC_MSG_RESULT(not requested by user)
+  AC_RUN_IFELSE([[
+  int
+   main()
+   {
+   #ifndef __has_feature
+   #define __has_feature(x) 0
+   #endif
+   return __has_feature(objc_nonfragile_abi) ? 0 : 1;
+  }]], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no, USE_NONFRAGILE_ABI=no)
+  if test x$USE_NONFRAGILE_ABI = xyes; then
+    AC_MSG_RESULT([yes (compiler default)])
+  else
+    AC_MSG_RESULT(not requested by user)
+  fi
 fi
 
 AC_SUBST(USE_NONFRAGILE_ABI)

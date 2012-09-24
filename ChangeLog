@@ -1,3 +1,9 @@
+2012-09-24  Niels Grewe <niels.grewe@halbordnung.de>
+
+	* configure.ac: Also try to detect whether the nonfragile ABI is the
+	compiler default.
+	* configure: Regenerate.
+
 2012-09-01  Niels Grewe <niels.grewe@halbordnung.de>
 
 	* target.make: Define QNX target.
