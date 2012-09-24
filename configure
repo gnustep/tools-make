@@ -6342,7 +6342,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 if test "${enable_objc_nonfragile_abi+set}" = set; then
   enableval=$enable_objc_nonfragile_abi; USE_NONFRAGILE_ABI=$enableval
 else
-  USE_NONFRAGILE_ABI=no
+  USE_NONFRAGILE_ABI=unset
 fi
 
 
@@ -6425,53 +6425,15 @@ echo "$as_me: error: compiler doesn't support nonfragile ABI" >&2;}
    { (exit 1); exit 1; }; }
   fi
 else
-  if test "$cross_compiling" = yes; then
-  USE_NONFRAGILE_ABI=no
-else
-  cat >conftest.$ac_ext <<_ACEOF
+  if test x$USE_NONFRAGILE_ABI != xno; then
+  default_nonfragile=`echo -e '#ifndef __has_feature\n#define __has_feature(x) 0\n#endif\n__has_feature(objc_nonfragile_abi)'|$CC $CFLAGS -E -x objective-c - -o - |tail -1`
 
-  int
-   main()
-   {
-   #ifndef __has_feature
-   #define __has_feature(x) 0
-   #endif
-   return __has_feature(objc_nonfragile_abi) ? 0 : 1;
-  }
-_ACEOF
-rm -f conftest$ac_exeext
-if { (ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_link") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
-  { (case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  USE_NONFRAGILE_ABI=yes
-else
-  echo "$as_me: program exited with status $ac_status" >&5
-echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-( exit $ac_status )
-USE_NONFRAGILE_ABI=no
-fi
-rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
-fi
-
-
+    if test x$default_nonfragile = x1; then
+      USE_NONFRAGILE_ABI=yes;
+    else
+      USE_NONFRAGILE_ABI=no;
+    fi
+  fi
   if test x$USE_NONFRAGILE_ABI = xyes; then
     { echo "$as_me:$LINENO: result: yes (compiler default)" >&5
 echo "${ECHO_T}yes (compiler default)" >&6; }

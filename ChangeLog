@@ -1,5 +1,11 @@
 2012-09-24  Niels Grewe <niels.grewe@halbordnung.de>
 
+	* configure.ac: Improve last change based on suggestions by David
+	Chisnall.
+	* configure: Regenerate.
+
+2012-09-24  Niels Grewe <niels.grewe@halbordnung.de>
+
 	* configure.ac: Also try to detect whether the nonfragile ABI is the
 	compiler default.
 	* configure: Regenerate.

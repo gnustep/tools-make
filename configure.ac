@@ -1349,7 +1349,7 @@ AC_ARG_ENABLE(objc-nonfragile-abi, [
    to use non-fragile instance variables provided by clang and libobjc2.
 ], 
 USE_NONFRAGILE_ABI=$enableval,
-USE_NONFRAGILE_ABI=no)
+USE_NONFRAGILE_ABI=unset)
 
 AC_MSG_CHECKING(whether we should use the nonfragile ABI)
 if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
@@ -1379,15 +1379,15 @@ return __has_feature(objc_nonfragile_abi) ? 0 : 1;
     AC_MSG_ERROR([compiler doesn't support nonfragile ABI])
   fi
 else
-  AC_RUN_IFELSE([[
-  int
-   main()
-   {
-   #ifndef __has_feature
-   #define __has_feature(x) 0
-   #endif
-   return __has_feature(objc_nonfragile_abi) ? 0 : 1;
-  }]], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no, USE_NONFRAGILE_ABI=no)
+  if test x$USE_NONFRAGILE_ABI != xno; then
+  default_nonfragile=`echo -e '#ifndef __has_feature\n#define __has_feature(x) 0\n#endif\n__has_feature(objc_nonfragile_abi)'|$CC $CFLAGS -E -x objective-c - -o - |tail -1`
+  
+    if test x$default_nonfragile = x1; then
+      USE_NONFRAGILE_ABI=yes;
+    else
+      USE_NONFRAGILE_ABI=no;
+    fi
+  fi
   if test x$USE_NONFRAGILE_ABI = xyes; then
     AC_MSG_RESULT([yes (compiler default)])
   else
