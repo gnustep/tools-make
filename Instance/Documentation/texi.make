@@ -112,8 +112,8 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).tp   \
 	         $(GNUSTEP_INSTANCE).vr   \
 	         $(GNUSTEP_INSTANCE).vrs  \
-	         $(GNUSTEP_INSTANCE).html \
-	         $(GNUSTEP_INSTANCE)_*.html \
+	         $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html \
+	         $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
 	         $(GNUSTEP_INSTANCE)/*$(END_ECHO)
@@ -133,14 +133,14 @@ internal-doc-install_:: $(GNUSTEP_DOC_INFO)
 	if [ -f $(GNUSTEP_INSTANCE).info ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOC_INFO); \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
+	if [ -f i$(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_toc.html ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE).html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).html \
+	if [ -f $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
 
