@@ -1,3 +1,9 @@
+2012-01-31  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* rules.make: A couple more printout targets for managing installation
+        of libobjc2 if gnustep-config is not available (eg not in PATH) but
+        GNUSTEP_MAKEFILES is defined.
+
 2012-09-24  Niels Grewe <niels.grewe@halbordnung.de>
 
 	* configure.ac: Improve last change based on suggestions by David

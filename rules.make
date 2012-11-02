@@ -696,7 +696,9 @@ endif
         print-gnustep-make-objc-libs \
         print-gnustep-make-base-libs \
         print-gnustep-make-gui-libs \
-        print-gnustep-make-installation-domain
+        print-gnustep-make-installation-domain \
+        print-gnustep-install-headers \
+        print-gnustep-install-libraries
 
 # Print GNUstep make help.  The sed command '/^#.*/d' is used to strip
 # all lines beginning with '#' from the file.  It will find all lines
@@ -735,6 +737,16 @@ print-gnustep-make-gui-libs:
 
 print-gnustep-make-installation-domain:
 	@(echo $(GNUSTEP_INSTALLATION_DOMAIN))
+
+# These targets are used if gnustep-config can't be found but GNUSTEP_MAKEFILES
+# is defined ... they's let you get libraries and their headers (eg libobjc2)
+# installed in the right place.
+
+print-gnustep-install-headers:
+	@(echo $(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_HEADERS))
+
+print-gnustep-install-libraries:
+	@(echo $(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_LIBRARIES))
 
 endif
 # rules.make loaded
