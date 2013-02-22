@@ -1,3 +1,9 @@
+2013-02-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/framework.make: Removed trailing '/' after
+	$(GNUSTEP_TARGET_LDIR) in a couple of cases, to fix building on
+	non-flattened layout.
+
 2012-01-31  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* rules.make: A couple more printout targets for managing installation
