@@ -4,6 +4,10 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.6.3
+
+Bug fixes
+
 @section Version 2.6.2
 @table @samp
 @item Added standalone filesystem layout for putting everything in 

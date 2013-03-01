@@ -9,12 +9,16 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.6.3}
+
+Binor bugfix release.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.6.2}
 
 Added standalone filesystem layout for putting everything in 
 one directory for easy deployment of relocatable. Other bug fixes.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.6.1}
 
