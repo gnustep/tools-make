@@ -1373,13 +1373,13 @@ return __has_feature(objc_nonfragile_abi) ? 0 : 1;
   AC_MSG_RESULT($USE_NONFRAGILE_ABI)
   CFLAGS="$CFLAGS_no_nonfragile"
 
-  if test x$USE_NONFRAGILE_ABI = xno; then
+  if test x"$USE_NONFRAGILE_ABI" = x"no"; then
     AC_MSG_NOTICE([The nonfragile ABI was requested, but the compiler])
     AC_MSG_NOTICE([doesn't support it.])
     AC_MSG_ERROR([compiler doesn't support nonfragile ABI])
   fi
 else
-  if test x$USE_NONFRAGILE_ABI != xno; then
+  if test x"$USE_NONFRAGILE_ABI" != x"no"; then
   default_nonfragile=`echo -e '#ifndef __has_feature\n#define __has_feature(x) 0\n#endif\n__has_feature(objc_nonfragile_abi)'|$CC $CFLAGS -E -x objective-c - -o - |tail -1`
   
     if test x$default_nonfragile = x1; then
@@ -1388,7 +1388,7 @@ else
       USE_NONFRAGILE_ABI=no;
     fi
   fi
-  if test x$USE_NONFRAGILE_ABI = xyes; then
+  if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
     AC_MSG_RESULT([yes (compiler default)])
   else
     AC_MSG_RESULT(not requested by user)
@@ -1432,7 +1432,7 @@ AC_SUBST(OBJ_MERGE_CMD_FLAG)
 #--------------------------------------------------------------------
 
 AC_MSG_CHECKING(for the GCC version)
-if test ! ${GCC} = "yes" ; then
+if test ! x"${GCC}" = x"yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
   # Running gcc -dumpversion we get something like 2.95.4 or
@@ -1458,6 +1458,21 @@ else
 
   AC_MSG_RESULT(version: ${gs_cv_gcc_parsed_version})
 fi
+
+AC_MSG_CHECKING(whether the compiler is clang)
+if test ! x"${GCC}" = x"yes" ; then
+  CLANG_CC=no
+  AC_MSG_RESULT(no)
+else
+  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+    CLANG_CC=yes
+    AC_MSG_RESULT(yes)
+  else
+    CLANG_CC=no
+    AC_MSG_RESULT(no)
+  fi
+fi
+AC_SUBST(CLANG_CC)
 
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.
@@ -1507,7 +1522,7 @@ int test (Test *o)
   return 0;
 }
   ]], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
-    if test x$USE_OBJC_EXCEPTIONS = xno; then
+    if test x"$USE_OBJC_EXCEPTIONS" = x"no"; then
       AC_MSG_RESULT(no)
     else
       AC_MSG_RESULT(yes)
@@ -1516,8 +1531,14 @@ int test (Test *o)
 else
   AC_MSG_RESULT($USE_OBJC_EXCEPTIONS)
 fi
-
 AC_SUBST(USE_OBJC_EXCEPTIONS)
+
+# Check if we need -shared-libgcc linker flags
+if test x"$USE_OBJC_EXCEPTIONS" = x"yes" -a x"${GCC}" = x"yes"; then
+  if test x"$CLANG_CC" = x"no"; then
+    LDFLAGS="$LDFLAGS -shared-libgcc"
+  fi
+fi
 
 #--------------------------------------------------------------------
 # Check if compiler supports -MMD -MP to generate %.d files ...

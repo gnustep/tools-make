@@ -1,5 +1,13 @@
 2012-03-01  Richard Frith-Macdonald <rfm@gnu.org>
 
+        * common.make: Remove -shared-libgcc linker flag
+        * configure.ac: Add check for clang and add -shared-libgcc to linker
+        flags if we aren't using it (using gcc) but are using exceptions.
+        Tidy a little.
+        Patch based on contribtion by Jean-Charles Bertin.
+
+2012-03-01  Richard Frith-Macdonald <rfm@gnu.org>
+
         * Version ... bump subminor number in preparation for next release.
 
 2012-03-01  Richard Frith-Macdonald <rfm@gnu.org>

@@ -600,7 +600,7 @@ CFLAGS =
 # use them, turn them on!
 ifeq ($(USE_OBJC_EXCEPTIONS), yes)
   INTERNAL_OBJCFLAGS += -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
-  INTERNAL_LDFLAGS += -shared-libgcc -fexceptions
+  INTERNAL_LDFLAGS += -fexceptions
 endif
 
 # If the compiler supports nonfragile ABI and the user wants us to
