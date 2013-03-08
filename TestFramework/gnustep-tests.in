@@ -349,7 +349,7 @@ build_and_run ()
     # Tell glibc to check for malloc errors, and to crash if it detects
     # any.
     MALLOC_CHECK_=2
-    export MALLOC_CHECK
+    export MALLOC_CHECK_
 
     # Tell GNUstep-base to check for messages sent to deallocated objects
     # and crash if it happens.
