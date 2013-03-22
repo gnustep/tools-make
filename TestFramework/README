@@ -4,10 +4,13 @@ TestFramework
 
 This testsuite is a general framework for testing the core GNUstep
 libraries. Since, in part, we are testing the very basic level of
-an Objective-C runtime, we can't use more complete unit tests, such
-as OCUnit <http://www.sente.ch/software/ocunit/>.
-The aim of this framework is to provide a simple, yet reasonably
-comprehensive regression test mechanism for Objective-C development.
+an Objective-C runtime, we support testing plain C or C++ as well
+as Objective-C, and aim for better flexibility, ease-of-use, and
+and portability than older frameworks such as as OCUnit.
+
+The aim of this framework is to provide a very simple, yet reasonably
+comprehensive regression test mechanism, primarily for Objective-C
+development.
 
 Please run the GNUstep testsuite (using this framework) often, when
 adding new features, fixing bugs and running on new platforms.
@@ -42,8 +45,8 @@ or where a group of tests within a project is to be run:
 
 gnustep-tests base/NSArray
 
-You may run an individual test file by using the gnustep-tests script with the
-name of the Objective-C test source file:
+You may run an individual test file by using the gnustep-tests script
+with the name of the Objective-C test source file:
 
 gnustep-tests mytest.m
 gnustep-tests base/NSDate/general.m
@@ -119,6 +122,10 @@ upon stepping out of it the debugger will be examining the specified test.
 eg.
 (gdb) break testStart if line == 42
 (gdb) run
+
+If you use the --debug command line option, and any tests fail, then the
+debugger (gdb) will automatically be started for you with breakpoints set
+to the testStart() function of the failed tests.
 
 You can use the --debug command line option in conjunction with the --failfast
 option to have testing stopped at the first failure and the gdb debugger
