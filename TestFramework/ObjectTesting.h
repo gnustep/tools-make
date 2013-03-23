@@ -118,6 +118,7 @@ static void test_alloc(NSString *className)
   obj1 = [theClass allocWithZone: testZone];
   pass([obj1 isKindOfClass: theClass],"%s has working allocWithZone",prefix);
 }
+
 /* perform basic allocation tests without initialisation*/
 static void test_alloc_only(NSString *className)
 {
@@ -136,16 +137,17 @@ static void test_alloc_only(NSString *className)
   PASS_EXCEPTION([obj0 description], NSInvalidArgumentException, "raises NSInvalidArgumentException in description")
 
   PASS_EXCEPTION(if([obj0 init]==nil)[NSException raise: NSInvalidArgumentException format: @""],
-    NSInvalidArgumentException, "returns nil or raises NSInvalidArgumentException in init")
+    NSInvalidArgumentException,
+    "returns nil or raises NSInvalidArgumentException in init")
 
   PASS_EXCEPTION(if([theClass new]==nil)[NSException raise: NSInvalidArgumentException format: @""],
-    NSInvalidArgumentException, "returns nil or raises NSInvalidArgumentException in new")
+    NSInvalidArgumentException,
+    "returns nil or raises NSInvalidArgumentException in new")
 
   obj1 = [theClass allocWithZone: testZone];
   pass([obj1 isKindOfClass: theClass],"%s has working allocWithZone",prefix);
 }
 /* test for the NSObject protocol */
-/* TODO move to ProtocolTesting.h? */
 static void test_NSObject(NSString *className, NSArray *objects)
 {
   int i;
@@ -176,7 +178,8 @@ static void test_NSObject(NSString *className, NSArray *objects)
 	"%s object %.160s is of correct class", prefix,
 	[[theObj description] UTF8String]);
       pass(mySelf == myClass ? ![theObj isMemberOfClass: myClass]
-	: [theObj isMemberOfClass: myClass], "%s isMemberOfClass works", prefix);
+	: [theObj isMemberOfClass: myClass],
+        "%s isMemberOfClass works", prefix);
       sup = [theObj superclass];
       pass(theClass == NSClassFromString(@"NSObject") ? sup == nil
 	: (sup != nil && sup != myClass), "%s can return superclass", prefix);
@@ -203,6 +206,11 @@ static void test_NSObject(NSString *className, NSArray *objects)
 	"%s handles performSelector", prefix);    
     }
 }
+
+/* Archives each object in the array, then unarchives it and checks that
+ * the two are equal.  If the object implements -isEqualAfterCoding: it
+ * uses that method for the equality test, otherwise it use -isEqual:
+ */
 static void test_NSCoding(NSArray *objects)
 {
   int i;
@@ -233,11 +241,19 @@ static void test_NSCoding(NSArray *objects)
 	pass(data && [data length] > 0, "%s can be encoded", prefix);
 	decoded = [NSUnarchiver unarchiveObjectWithData: data];
 	pass(decoded != nil, "can be decoded");
-	pass([decoded isEqual: obj], "decoded object equals the original");
+        if ([decoded respondsToSelector: @selector(isEqualAfterCoding:)])
+	  pass([decoded isEqualAfterCoding: obj],
+            "decoded object equals the original");
+        else
+	  PASS_EQUAL(decoded, obj, "decoded object equals the original")
       END_SET(buf)
     }
 }
 
+/* Archives each object in the array, then unarchives it and checks that
+ * the two are equal.  If the object implements -isEqualAfterCoding: it
+ * uses that method for the equality test, otherwise it use -isEqual:
+ */
 static void test_keyed_NSCoding(NSArray *objects)
 {
   int i;
@@ -262,7 +278,11 @@ static void test_keyed_NSCoding(NSArray *objects)
 	pass([data length] > 0, "%s can be encoded", prefix);
 	decoded = [NSKeyedUnarchiver unarchiveObjectWithData: data];
 	pass (decoded != nil, "can be decoded");
-	PASS_EQUAL(decoded, obj, "decoded object equals the original")
+        if ([decoded respondsToSelector: @selector(isEqualAfterCoding:)])
+	  pass([decoded isEqualAfterCoding: obj],
+            "decoded object equals the original");
+        else
+	  PASS_EQUAL(decoded, obj, "decoded object equals the original")
       END_SET(buf)
     }
 }
