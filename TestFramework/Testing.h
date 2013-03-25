@@ -177,14 +177,28 @@ static void testStart()
       [[testRaised description] UTF8String]); \
   NS_ENDHANDLER
 
+/* This category declaration should keep the compiler happy ...
+ * it defines an informal protocol specifying methods your test
+ * classes may implement to aid with testing.
+ */ 
+@interface      NSObject(TestFramework)
+/* The -isEqualForTestcase: method may be implemented in order to have
+ * the PASS_EQUAL macro perform special equality testing rather than
+ * using the normal equality test method (-isEqual).
+ */
+- (BOOL) isEqualForTestcase: (id)otherObject;
+@end
+
 /* Tests a code expression which evaluates to an object value.
  * The expression may not contain commas unless it is bracketed.
  * The expected value may not contain commas unless it is bracketed.
  * The format must be a literal string printf style format.
  *
  * Where the expression evaluates to an object which is identical to
- * the expect value, or where [object isEqual: expect] returns YES,
- * the test has passed.
+ * the expect value, or where the expect value responds to -isEqualForTestcase:
+ * and calling [expact -isEqualForTestcase: object] return YES,
+ * or where the expect value does not respond to -isEqualForTestcase: and
+ * calling [expect isEqual: object] returns YES, then the test has passed.
  *
  * The particularly useful thing about this macro is that, if the
  * results of the expression and the expected object are not equal,
@@ -203,9 +217,21 @@ static void testStart()
       testStart(); \
       _obj = (id)(testExpression__);\
       _exp = (id)(testExpect__);\
-      _cond = _obj == _exp || [_exp isEqual: _obj]; \
+      if (_obj == _exp) \
+        { \
+          _cond = YES; \
+        } \
+      else if ([_obj respondsToSelector: @selector(isEqualForTestcase:)]) \
+        { \
+          _cond = (BOOL)[(id)_exp isEqualForTestcase: _obj]; \
+        } \
+      else \
+        { \
+          _cond = [_exp isEqual: _obj]; \
+        } \
       [[NSGarbageCollector defaultCollector] collectExhaustively]; \
-      pass(_cond, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
+      pass(_cond, "%s:%d ... " testFormat__, __FILE__, \
+        __LINE__, ## __VA_ARGS__); \
       if (0 == _cond) \
 	{ \
           NSString  *s = [_obj description]; \
