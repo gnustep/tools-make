@@ -24,14 +24,19 @@
 
 /* This file contains macros of testing some basic protocol implementation
  * common to almost all classes.
+ *
  * The reason for using macros rather than functions is that it allows the
- * preprocessor and compiler to generate messages which better report the
- * location of problems in your own testcase code.
+ * preprocessor and compiler to generate messages containign the file name
+ * and line number of the location of problems in your own testcase code.
+ *
+ * Sometimes, with a complex testing process, you want the location of the
+ * problem  within that process ... so to aid that we also have function
+ * equivalents of the macros.
  */
 
 /* Macro to perform basic allocation tests
  */
-#define test_alloc(CN) \
+#define TEST_ALLOC(CN) \
 { \
   NSString *className = (CN); \
   Class theClass = NSClassFromString(className); \
@@ -55,10 +60,15 @@
   obj1 = [theClass allocWithZone: testZone]; \
   PASS([obj1 isKindOfClass: theClass],"%s has working allocWithZone",prefix); \
 }
+static void test_alloc(NSString *CN) __attribute__ ((unused));
+static void test_alloc(NSString *CN)
+{
+  TEST_ALLOC(CN);
+}
 
 /* Macro to perform basic allocation tests without initialisation
  */
-#define test_alloc_only(CN) \
+#define TEST_ALLOC_ONLY(CN) \
 { \
   NSString *className = (CN); \
   Class theClass = NSClassFromString(className); \
@@ -87,13 +97,19 @@
   obj1 = [theClass allocWithZone: testZone]; \
   PASS([obj1 isKindOfClass: theClass],"%s has working allocWithZone",prefix); \
 }
+static void test_alloc_only(NSString *CN) __attribute__ ((unused));
+static void test_alloc_only(NSString *CN)
+{
+  TEST_ALLOC_ONLY(CN);
+}
+
 
 /* Macro to test for the NSObject protocol
  * Arguments are:
  * CN   The name of the class to be tested
  * OJS  An arraayof objects to be tested
  */
-#define test_NSObject(CN, OJS) \
+#define TEST_NSOBJECT(CN, OJS) \
 { \
   NSString *className = (CN); \
   NSArray *objects = (OJS); \
@@ -153,11 +169,17 @@
 	"%s handles performSelector", prefix);     \
     } \
 }
+static void test_NSObject(NSString *CN, NSArray *OJS) __attribute__ ((unused));
+static void test_NSObject(NSString *CN, NSArray *OJS)
+{
+  TEST_NSOBJECT(CN, OJS)
+}
+
 
 /* Archives each object in the array, then unarchives it and checks that
  * the two are equal (using the PASS_EQUAL macro).
  */
-#define test_NSCoding(OJS) \
+#define TEST_NSCODING(OJS) \
 { \
   NSArray *objects = (OJS); \
   int i; \
@@ -192,12 +214,18 @@
       END_SET(buf) \
     } \
 }
+static void test_NSCoding(NSArray *OJS) __attribute__ ((unused));
+static void test_NSCoding(NSArray *OJS)
+{
+  TEST_NSCODING(OJS);
+}
+
 
 /* Archives each object in the argument array,
  * then unarchives it and checks that the two are
  * equal using the PASS_EQUAL macro.
  */
-#define test_keyed_NSCoding(OJS) \
+#define TEST_KEYED_NSCODING(OJS) \
 { \
   NSArray       *objects = (OJS); \
   int i; \
@@ -226,6 +254,12 @@
       END_SET(buf) \
     } \
 }
+static void test_keyed_NSCoding(NSArray *OJS) __attribute__ ((unused));
+static void test_keyed_NSCoding(NSArray *OJS)
+{
+  TEST_KEYED_NSCODING(OJS);
+}
+
 
 /* A macro for testing that objects conform to, and
  * implement the NSCopying protocol.
@@ -244,7 +278,7 @@
  *      instance must always be made as real copies
  *      rather than by retaining the original.
  */
-#define test_NSCopying(ICN, MCN, OJS, MRT, MCP) \
+#define TEST_NSCOPYING(ICN, MCN, OJS, MRT, MCP) \
 { \
   NSString *iClassName = (ICN); \
   NSString *mClassName = (MCN); \
@@ -338,6 +372,15 @@
       END_SET(buf) \
     } \
 }
+static void test_NSCopying(
+  NSString *ICN, NSString *MCN, NSArray *OJS, BOOL MRT, BOOL MCP)
+  __attribute__ ((unused));
+static void test_NSCopying(
+  NSString *ICN, NSString *MCN, NSArray *OJS, BOOL MRT, BOOL MCP)
+{
+  TEST_NSCOPYING(ICN, MCN, OJS, MRT, MCP);
+}
+
 
 
 /* A macro for testing that objects conform to, and
@@ -351,7 +394,7 @@
  * OJS  An NSArray object containg one or more objects 
  *      to be tested.
  */
-#define test_NSMutableCopying(ICN, MCN, OJS) \
+#define TEST_NSMUTABLECOPYING(ICN, MCN, OJS) \
 { \
   NSString *iClassName = (ICN); \
   NSString *mClassName = (MCN); \
@@ -414,6 +457,14 @@
       END_SET(buf) \
     } \
 }
+static void test_NSMutableCopying(
+  NSString *ICN, NSString *MCN, NSArray *OJS) __attribute__ ((unused));
+static void test_NSMutableCopying(NSString *ICN, NSString *MCN, NSArray *OJS)
+{
+  TEST_NSMUTABLECOPYING(ICN, MCN, OJS);
+}
+
+
 
 
 /* DEPRECATED ... please use the START_SET/END_SET and PASS macros instead.
