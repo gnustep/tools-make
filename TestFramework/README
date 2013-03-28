@@ -170,7 +170,7 @@ the result of the test (YES if the test passed, NO otherwise).
 The only other functions are for occasional use to report sections of
 the testsuite as not having run for some reason.
 
-There are just four test macros.
+There are just four basic test macros.
 All have uppercase names beginning with 'PASS'.
 All wrap test code and a call to the pass() function in exception handlers.
 All provide file name and line number information in the description string.
@@ -180,7 +180,9 @@ Code fragments must be enclosed in round brackets if they contain commas.
 PASS		passes if an expression resulting in an integer value is
 		non-zero
 PASS_EQUAL	passes if an expression resulting in an object is identical
-		to or -isEqual: to another object.
+		to or -isEqual: to another object (if the expected object
+                implements the -isEqualForTestcase: method, that is used
+                instead of -isEqual:)
 PASS_EXCEPTION	passes if a code fragment raises an exception
 PASS_RUNS	passes if a code fragment runs without raising an exception
 

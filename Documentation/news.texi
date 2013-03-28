@@ -9,11 +9,17 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
-@section Changes in version @samp{2.6.3}
+@section Changes in version @samp{2.6.4}
 
-Binor bugfix release.
+Test framework extended equality tests.
+
+Android build target
 
 @ifclear ANNOUNCE-ONLY
+
+@section Changes in version @samp{2.6.3}
+
+Minor bugfix release.
 
 @section Changes in version @samp{2.6.2}
 

@@ -4,6 +4,12 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.6.4
+
+Test framework enhancement (extended equality tests)
+
+Android built target
+
 @section Version 2.6.3
 
 Bug fixes

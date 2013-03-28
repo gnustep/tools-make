@@ -103,5 +103,7 @@ else
     echo "Please submit a patch to fix the problem or send a bug report to"
     echo "the package maintainer."
   fi
+
+  echo "Please see $GSTESTLOG for more detail."
 fi
 

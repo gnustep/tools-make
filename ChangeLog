@@ -1,3 +1,9 @@
+2012-03-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+        Make release
+	* Version 2.6.4
+        Update release notes/documentation
+
 2012-03-25  Richard Frith-Macdonald <rfm@gnu.org>
 
         * TestFramework/Testing.h: Use -isEqualForTestcase: for PASS_EQUAL
