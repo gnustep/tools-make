@@ -351,7 +351,7 @@ static void test_keyed_NSCoding(NSArray *OJS)
 	PASS(theCopy != nil, "%s understands -copyWithZone", prefix); \
 	PASS([theCopy isKindOfClass: iClass], \
 	  "%s zCopy has correct type", prefix); \
-	PASS([theObj isEqual: theCopy], \
+	PASS_EQUAL(theCopy, theObj, \
 	  "%s copy and original are equal", prefix); \
 	if (immutable) \
 	  { \

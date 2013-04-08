@@ -1,3 +1,8 @@
+2012-04-08  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * TestFramework/ObjectTesting.h: Fix error performing equality test
+        in copying protocol test macro.
+
 2012-03-28  Richard Frith-Macdonald <rfm@gnu.org>
 
         Make release
