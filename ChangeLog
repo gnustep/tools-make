@@ -1,3 +1,7 @@
+2013-06-17  Stefan Bidi <stefanbidi@gmail.com>
+
+        * TestFramework/gnustep-tests.in: add support for .c and .cc files
+
 2012-04-08  Richard Frith-Macdonald <rfm@gnu.org>
 
         * TestFramework/ObjectTesting.h: Fix error performing equality test

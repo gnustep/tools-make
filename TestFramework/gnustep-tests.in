@@ -252,8 +252,16 @@ then
       BARE=`basename $TESTS .mm`
       if test x"$BARE" = x"$TESTS"
       then
-        echo "The file '$1' does not end in .m or .mm ... cannot test."
-        exit 1
+        BARE=`basename $TESTS .c`
+        if test x"$BARE" = x"$TESTS"
+        then
+          BARE=`basename $TESTS .cc`
+          if test x"$BARE" = x"TESTS"
+          then
+            echo "The file '$1' does not end in .m, .mm, .c or .cc ... cannot test."
+            exit 1
+          fi
+        fi
       fi
     fi
   else
@@ -315,7 +323,19 @@ build_and_run ()
     tmp=`basename $TESTFILE .m`
     if test x"$tmp" = x"$TESTFILE"
     then
-      BUILD_CMD="$OBJCXX -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+      tmp=`basename $TESTFILE .mm`
+      if test x"$tmp" = x"$TESTFILE"
+      then
+        tmp=`basename $TESTFILE .c`
+        if test x"$tmp" = x"$TESTFILE"
+        then
+          BUILD_CMD="$CXX -o ./obj/$TESTNAME $TESTFILE $ADDITIONAL_CXXFLAGS $ADDITIONAL_LDFLAGS"
+        else
+          BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $ADDITIONAL_CFLAGS $ADDITIONAL_LDFLAGS"
+        fi
+      else
+        BUILD_CMD="$OBJCXX -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
+      fi
     else
       BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     fi
@@ -454,10 +474,10 @@ do
     if test x"$OBJCXX" = x
     then
       # Only Objective-C (and C)
-      SRCDIRS=`find $TESTDIR -name "*.m" | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+      SRCDIRS=`find $TESTDIR -name "*.m" -o -name "*.c" | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
     else
       # Objective-C and Objective-C++ (implicitly C and C++ too)
-      SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+      SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" -o -name "*.c" -o -name "*.cc" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
     fi
   else
     SRCDIRS="$TESTDIRS"
@@ -523,10 +543,10 @@ do
         if test x"$OBJCXX" = x
         then
           # Only Objective-C (and C)
-	  TESTS=`find . \( -name . -o -prune \) -name "*.m" | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+	  TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
 	else
           # Objective-C and Objective-C++ (implicitly C and C++ too)
-	  TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+	  TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
 	fi
       fi
 
@@ -572,8 +592,21 @@ do
 	  if test x"$tmp" = x"$TESTFILE"
 	  then
 	    tmp=`basename $TESTFILE .mm`
-	    TESTRULES="$TESTRULES\\
+            if test x"$tmp" = x"$TESTFILE"
+            then
+              tmp=`basename $TESTFILE .c`
+              if test x"$tmp" = x"$TESTFILE"
+              then
+                TESTRULES="$TESTRULES\\
+${tmp}_CC_FILES=$TESTFILE"
+              else
+                TESTRULES="$TESTRULES\\
+${tmp}_C_FILES=$TESTFILE"
+              fi
+            else
+              TESTRULES="$TESTRULES\\
 ${tmp}_OBJCC_FILES=$TESTFILE"
+            fi
 	  else
 	    TESTRULES="$TESTRULES\\
 ${tmp}_OBJC_FILES=$TESTFILE"
