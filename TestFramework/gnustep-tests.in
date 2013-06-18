@@ -617,8 +617,8 @@ ${tmp}_OBJC_FILES=$TESTFILE"
 	$MAKE_CMD clean >/dev/null 2>&1
 
 	# Try building all the test files in the directory in parallel.
-	# If that works, set NEEDBUILD to 'yes' so that we will try each
-	# individual test file later.
+	# If that works, set NEEDBUILD to 'no' so that we do not build
+	# each individual test file later.
 	echo "" >>$GSTESTLOG
 	echo "Building in $dir" >>$GSTESTLOG
 	$MAKE_CMD -j 4 debug=yes >>$GSTESTLOG 2>&1
