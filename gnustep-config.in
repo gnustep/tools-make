@@ -61,6 +61,7 @@ if [ "$1" = "--help" ]; then
     echo "                variables:"
     echo
     echo "    --variable=CC"
+    echo "    --variable=CPP"
     echo "    --variable=CXX"
     echo "    --variable=OBJCXX"
     echo "    --variable=GNUMAKE"
@@ -158,6 +159,8 @@ export GNUSTEP_MAKEFILES
 #
 case "$1" in
   --variable=CC) echo "@CC@"
+              exit 0;;
+  --variable=CPP) echo "@CPP@"
               exit 0;;
   --variable=CXX) echo "@CXX@"
               exit 0;;
