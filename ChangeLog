@@ -1,3 +1,9 @@
+2013-07-04  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * rules.make: Fix order of includes directories ... SYSTEM_INCLUDES
+        should come last so that conflices between files of the same name in
+        different directories are resolved in the correct/expected order.
+
 2013-06-17  Stefan Bidi <stefanbidi@gmail.com>
 
         * TestFramework/gnustep-tests.in: add support for .c and .cc files
