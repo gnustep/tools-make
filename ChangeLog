@@ -1,3 +1,10 @@
+2013-07-14  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac: Rewrite test whether the compiler supports the
+	non-fragile ABI with portable code that does not rely on a BSD
+	compatible echo command.
+	* configure: Regenerated.
+
 2013-07-04  Richard Frith-Macdonald <rfm@gnu.org>
 
         * rules.make: Fix order of includes directories ... SYSTEM_INCLUDES
