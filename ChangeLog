@@ -1,3 +1,10 @@
+2013-07-26  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac: Rewrite test whether the compiler supports the
+	non-fragile ABI once more, so that it now reports the correct
+	result.
+	* configure: Regenerated.
+
 2013-07-26  Richard Frith-Macdonald <rfm@gnu.org>
 
         * Version:
