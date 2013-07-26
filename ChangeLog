@@ -1,3 +1,11 @@
+2013-07-26  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * Version:
+        * Documentation/news.texi:
+        * Documentation/releasenotes.texi:
+        Make minor bugfix release ... Version 2.6.5
+        Update release notes/documentation
+
 2013-07-14  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* configure.ac: Rewrite test whether the compiler supports the

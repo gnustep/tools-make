@@ -4,11 +4,21 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.6.5
+
+Bugfix for non-fragile ABI test
+
+Bugfix order if include diorectories for system includes
+
+Bugfix equality test for prorocol testing
+
+Added minimal test support for .c and .cc files.
+
 @section Version 2.6.4
 
 Test framework enhancement (extended equality tests)
 
-Android built target
+Android build target
 
 @section Version 2.6.3
 
