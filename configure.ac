@@ -57,6 +57,9 @@ AC_PROG_CXX
 #AC_PROG_OBJCXX
 OBJCXX="${CXX}"
 
+# We may use egrep for some tests further down below
+AC_PROG_EGREP
+
 AC_CANONICAL_TARGET([])
 
 
@@ -1380,16 +1383,12 @@ return __has_feature(objc_nonfragile_abi) ? 0 : 1;
   fi
 else
   if test x"$USE_NONFRAGILE_ABI" != x"no"; then
-    AC_COMPILE_IFELSE([[
-int
-main()
-{
+    AC_EGREP_CPP([^1$], [
 #ifndef __has_feature
 #define __has_feature(x) 0
 #endif
-return __has_feature(objc_nonfragile_abi) ? 0 : 1;
-}
-]], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
+__has_feature(objc_nonfragile_abi)
+], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
   fi
   if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
     AC_MSG_RESULT([yes (compiler default)])

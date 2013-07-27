@@ -1,3 +1,9 @@
+2013-07-27  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Revert last change to get nonfragile abi detection
+        working on gnu/linux and freebsd again (not tested on other platforms).
+	* configure: Regenerated.
+
 2013-07-26  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* configure.ac: Rewrite test whether the compiler supports the
