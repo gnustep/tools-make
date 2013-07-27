@@ -1,3 +1,10 @@
+2013-07-27  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac: Really fix the test whether the compiler uses the
+	non-fragile ABI by default. It should now work on all platforms
+	with either gcc or clang.
+	* configure: Regenerated.
+
 2013-07-27  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Revert last change to get nonfragile abi detection

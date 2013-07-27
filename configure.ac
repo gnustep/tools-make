@@ -1383,12 +1383,15 @@ return __has_feature(objc_nonfragile_abi) ? 0 : 1;
   fi
 else
   if test x"$USE_NONFRAGILE_ABI" != x"no"; then
+    saved_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS -x objective-c"
     AC_EGREP_CPP([^1$], [
 #ifndef __has_feature
 #define __has_feature(x) 0
 #endif
 __has_feature(objc_nonfragile_abi)
 ], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
+    CPPFLAGS=$saved_CPPFLAGS
   fi
   if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
     AC_MSG_RESULT([yes (compiler default)])
