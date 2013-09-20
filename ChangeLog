@@ -1,3 +1,15 @@
+2013-09-20  Ivan Vucica  <ivan@vucica.net>
+
+	* GNUmakefile.in: Added deb.make. Also added new target,
+	'deb' which (using 'equivs-build') produces a Debian package
+	for gnustep-make.
+
+	* Master/deb.make: This file provides new targets 'deb' and
+	'debfile'. To produce a .deb package, you will need to install
+	package named 'equivs'. At the moment, manual patching of
+	/usr/bin/equivs-build is also necessary; please review comments
+	inside Master/deb.make for further information.
+	
 2013-07-27  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* configure.ac: Really fix the test whether the compiler uses the

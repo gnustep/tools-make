@@ -121,7 +121,7 @@ MASTER_MAKE_FILES = \
         source-distribution.make rpm.make rules.make \
         application.make bundle.make clibrary.make ctool.make \
         documentation.make framework.make gswapp.make gswbundle.make \
-        library.make nsis.make objc.make java.make java-tool.make palette.make \
+        library.make nsis.make deb.make objc.make java.make java-tool.make palette.make \
 	parallel-subdirectories.make resource-set.make serial-subdirectories.make \
 	service.make subproject.make test-application.make \
         test-library.make test-tool.make tool.make
@@ -223,6 +223,7 @@ install: generated-files
 	   $(INSTALL_PROGRAM) -m 755 "$(srcdir)/java-executable.template" "$(makedir)"; \
 	   $(INSTALL_PROGRAM) -m 755 executable.template "$(makedir)"; \
 	   $(INSTALL_DATA) "$(srcdir)/nsi-app.template" "$(makedir)"; \
+	   $(INSTALL_DATA) "$(srcdir)/deb-equivs-control.template" "$(makedir)"; \
 	   $(INSTALL_DATA) config-noarch.make "$(makedir)"; \
 	   $(INSTALL_DATA) filesystem.make "$(makedir)"; \
 	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
@@ -300,6 +301,7 @@ uninstall:
 	rm -f "$(makedir)/app-wrapper.template"
 	rm -f "$(makedir)/java-executable.template"
 	rm -f "$(makedir)/nsi-app.template"
+	rm -f "$(makedir)/deb-equivs-control.template"
 	rm -f "$(GNUSTEP_SYSTEM_ROOT)/share/config.site"
 	rm -f "$(makedir)/config-noarch.make"
 	rm -f "$(makedir)/filesystem.make"
@@ -392,6 +394,31 @@ rpm: test-RPM_TOPDIR svn-dist
 	  fi; \
 	fi; \
 	$${rpmbuild} -ba gnustep-make.spec
+
+deb: gnustep-make_$(GNUSTEP_MAKE_VERSION)_all.deb
+
+gnustep-make_$(GNUSTEP_MAKE_VERSION)_all.deb: gnustep-make.debequivs
+	equivs-build gnustep-make.debequivs
+	-rm gnustep-make.debequivs
+
+gnustep-make.debequivs:
+	-rm -rf /tmp/gsmake-deb
+	make install DESTDIR=/tmp/gsmake-deb
+	deb_infile=deb-equivs-control.template ;		\
+	DEB_DOMAIN=System ;					\
+	DEB_LOWERCASE_PACKAGE_NAME=gnustep-make ;		\
+	PACKAGE_VERSION=$(GNUSTEP_MAKE_VERSION) ;		\
+	DEB_ARCHITECTURE=all ;					\
+	GNUSTEP_FILE_LIST=/tmp/gsmake-deb.list ;		\
+	echo -n 'Files:' > $${GNUSTEP_FILE_LIST} ; \
+	find /tmp/gsmake-deb -type f | sed 's,/tmp/gsmake-deb\(.*\)/\(.*\), /tmp/gsmake-deb\1/\2 \1,' >> $${GNUSTEP_FILE_LIST} ;	\
+	sed -e :t						\
+	    -e "s,@gs_domain@,$${DEB_DOMAIN},;t t"		\
+	    -e "s,@gs_name@,$${DEB_LOWERCASE_PACKAGE_NAME},;t t" \
+	    -e "s,@gs_version@,$${PACKAGE_VERSION},;t t"	\
+	    -e "s,@gs_arch@,$${DEB_ARCHITECTURE},;t t"		\
+	    -e "/@file_list@/{ r $${GNUSTEP_FILE_LIST}" -e "d}"	\
+		$$deb_infile > gnustep-make.debequivs
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make \
                  openapp opentool gnustep-make.spec executable.template gnustep-config \
