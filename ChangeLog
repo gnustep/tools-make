@@ -1,5 +1,15 @@
 2013-09-20  Ivan Vucica  <ivan@vucica.net>
 
+	* Master/deb.make: File enumeration now uses 'find'. Fixed
+	problem where files outside 'Local' were being accidentally
+	dropped from the package. Symlinks are now also included
+	in the installed file list.
+
+	* GNUmakefile.in: Symlinks are now also included in the
+	installed file list.
+
+2013-09-20  Ivan Vucica  <ivan@vucica.net>
+
 	* deb-equivs-control.template: Added forgotten file.
 
 2013-09-20  Ivan Vucica  <ivan@vucica.net>

@@ -411,7 +411,7 @@ gnustep-make.debequivs:
 	DEB_ARCHITECTURE=all ;					\
 	GNUSTEP_FILE_LIST=/tmp/gsmake-deb.list ;		\
 	echo -n 'Files:' > $${GNUSTEP_FILE_LIST} ; \
-	find /tmp/gsmake-deb -type f | sed 's,/tmp/gsmake-deb\(.*\)/\(.*\), /tmp/gsmake-deb\1/\2 \1,' >> $${GNUSTEP_FILE_LIST} ;	\
+	find /tmp/gsmake-deb -type l -or -type f | sed 's,/tmp/gsmake-deb\(.*\)/\(.*\), /tmp/gsmake-deb\1/\2 \1,' >> $${GNUSTEP_FILE_LIST} ;	\
 	sed -e :t						\
 	    -e "s,@gs_domain@,$${DEB_DOMAIN},;t t"		\
 	    -e "s,@gs_name@,$${DEB_LOWERCASE_PACKAGE_NAME},;t t" \

@@ -65,14 +65,16 @@ DEB_BUILD=equivs-build
 # so we need to match these regardless of the local filesystem layout
 # Hackish way to get the installation dir/domain
 DEB_DOMAIN=System
+DEB_BASE=$(dir $(GNUSTEP_SYSTEM_ROOT))
 ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), LOCAL)
   DEB_DOMAIN=Local
+  DEB_BASE=$(dir $(GNUSTEP_LOCAL_ROOT))
 endif
 # Which user would we install in? Use Local instead.
 ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), USER)
   DEB_DOMAIN=Local
+  DEB_BASE=$(dir $(GNUSTEP_LOCAL_ROOT))
 endif
-DEB_BASE=$(dir $(GNUSTEP_APPS))
 
 ABS_OBJ_DIR=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
 GNUSTEP_FILE_LIST = $(ABS_OBJ_DIR)/package/file-list
@@ -108,30 +110,8 @@ deb_build_filelist::
 	# and that's what counts.
 	$(ECHO_NOTHING)rm -f $(GNUSTEP_FILE_LIST)$(END_ECHO)
 	$(ECHO_NOTHING)echo -n "Files:" > $(GNUSTEP_FILE_LIST)$(END_ECHO)
-	$(ECHO_NOTHING)cdir="nosuchdirectory";					\
-	for file in `$(TAR) Pcf - $(REL_INSTALL_DIR) | $(TAR) t`; do		\
-	  wfile=`echo $$file | sed "s,$(REL_INSTALL_DIR),,"`;	\
-	  wodir=`readlink -f $(REL_INSTALL_DIR)`;				\
-	  wodir="$$wodir/";							\
-	  slashsuffix=`basename $${file}yes`;					\
-	  if [ "$$slashsuffix" = yes ]; then					\
-	    newdir=`dirname $$file`/`basename $$file`;				\
-	  else									\
-	    newdir=`dirname $$file`;						\
-	  fi;									\
-	  if [ "$$file" = "$(REL_INSTALL_DIR)/" ]; then				\
-	    :;									\
-	  elif [ -d "$$file" ]; then						\
-	    cdir=$$newdir;							\
-	    wdir=$$wfile;							\
-	  elif [ $$cdir != $$newdir ]; then					\
-	    cdir=$$newdir;							\
-	    wdir=`dirname "$$wfile"`;						\
-	    echo " $$wodir$$wfile $(DEB_DESTINATION)/$(DEB_DOMAIN)/$$wdir" >> $(GNUSTEP_FILE_LIST); \
-	  else									\
-	    echo " $$wodir$$wfile $(DEB_DESTINATION)/$(DEB_DOMAIN)/$$wdir" >> $(GNUSTEP_FILE_LIST); \
-	  fi;									\
-	done$(END_ECHO)                                                    
+	$(ECHO_NOTHING)find $(REL_INSTALL_DIR) -type l -or -type f | sed 's,'$(REL_INSTALL_DIR)'\(.*\)/\(.*\), '$(REL_INSTALL_DIR)'\1/\2 '$(DEB_DESTINATION)'/\1,' >> $(GNUSTEP_FILE_LIST)$(END_ECHO)
+
 
 #
 # The user will type `make debfile' to generate the equivs control file
