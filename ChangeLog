@@ -1,5 +1,9 @@
 2013-09-20  Ivan Vucica  <ivan@vucica.net>
 
+	* deb-equivs-control.template: Added forgotten file.
+
+2013-09-20  Ivan Vucica  <ivan@vucica.net>
+
 	* GNUmakefile.in: Added deb.make. Also added new target,
 	'deb' which (using 'equivs-build') produces a Debian package
 	for gnustep-make.
