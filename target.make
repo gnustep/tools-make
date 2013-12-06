@@ -926,6 +926,7 @@ HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(LD)
 BUNDLE_LDFLAGS     += -shared -Wl,--enable-auto-image-base
 ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
+ADDITIONAL_FLAGS += -fno-omit-frame-pointer
 
 # On Mingw32, it looks like the class name symbols start with '___' rather 
 # than '__'
