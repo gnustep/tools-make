@@ -1,3 +1,9 @@
+2013-12-07  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* target.make: Add -keep_private_externs to linker flags on OS X
+	when merging the object files of a subproject for compatibility
+	with other platforms.
+
 2013-12-06  Adam Fedor  <fedor@gnu.org>
 
 	* target.make: Add no-omit-framepointer on mingw32

@@ -390,7 +390,7 @@ AFTER_INSTALL_SHARED_LIB_CMD = \
          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE) )
 
 OBJ_MERGE_CMD = \
-	$(LD) -nostdlib $(OBJ_MERGE_CMD_FLAG) -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+	$(LD) -nostdlib -keep_private_externs $(OBJ_MERGE_CMD_FLAG) $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 
 STATIC_LIB_LINK_CMD	= \
 	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
