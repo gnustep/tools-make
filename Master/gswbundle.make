@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/gswbundle.make
 #
 #   Master Makefile rules to build GNUstep web bundles.
@@ -31,7 +31,23 @@ endif
 
 GSWBUNDLE_NAME := $(strip $(GSWBUNDLE_NAME))
 
-internal-all:: $(GSWBUNDLE_NAME:=.all.gswbundle.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(GSWBUNDLE_NAME:=.all.gswbundle.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-gswbundle-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-gswbundle-all
+
+internal-master-gswbundle-all: $(GSWBUNDLE_NAME:=.all.gswbundle.variables)
+
+endif
 
 internal-install:: $(GSWBUNDLE_NAME:=.install.gswbundle.variables)
 
@@ -51,6 +67,5 @@ endif
 
 internal-all:: $(GSWBUNDLE_NAME:=.all.gswbundle.variables)
 
-$(GSWBUNDLE_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.gswbundle.variables
+$(GSWBUNDLE_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.gswbundle.variables$(END_ECHO_RECURSIVE_MAKE)

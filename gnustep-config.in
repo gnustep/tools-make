@@ -33,10 +33,12 @@ fi
 case "$1" in
   --variable=*)  ;;
   --help)       ;;
+  --debug-flags) ;;
   --objc-flags) ;;
   --objc-libs)  ;;
   --base-libs)  ;;
   --gui-libs)   ;;
+  --installation-domain-for=*) ;;
   *)
     # An unrecognized option
     echo "Unrecognized option: $1"
@@ -58,8 +60,12 @@ if [ "$1" = "--help" ]; then
     echo "                variable.  Here is a list of possible"
     echo "                variables:"
     echo
+    echo "    --variable=CC"
+    echo "    --variable=CPP"
+    echo "    --variable=CXX"
+    echo "    --variable=OBJCXX"
+    echo "    --variable=GNUMAKE"
     echo "    --variable=GNUSTEP_MAKEFILES"
-    echo "    --variable=GNUSTEP_USER_DIR"
     echo "    --variable=GNUSTEP_USER_DEFAULTS_DIR"
     echo "    --variable=GNUSTEP_HOST"
     echo "    --variable=GNUSTEP_HOST_CPU"
@@ -79,6 +85,8 @@ if [ "$1" = "--help" ]; then
     echo "    For example, you could get the value of GNUSTEP_SYSTEM_TOOLS to find"
     echo "    where command-line system programs are located on this system."
     echo
+    echo "--debug-flags: prints all the flags required to compile an ObjC file for debug"
+    echo
     echo "--objc-flags: prints all the flags required to compile an ObjC file"
     echo
     echo "--objc-libs: prints all the flags required to link a pure ObjC program (no foundation/gui)"
@@ -87,6 +95,10 @@ if [ "$1" = "--help" ]; then
     echo
     echo "--gui-libs: prints all the flags required to link a GUI ObjC program"
     echo 
+    echo "--installation-domain-for=xxx: prints the value of the default installation domain"
+    echo "                for the package xxx.  The result could be 'SYSTEM', 'NETWORK', 'LOCAL'"
+    echo "                or 'USER'.  This command always returns LOCAL unless the system has been"
+    echo "                personalized using an installation-domains.conf file."
     exit 0
 fi
 
@@ -146,16 +158,31 @@ export GNUSTEP_MAKEFILES
 # we can compute only using GNUSTEP_MAKEFILES, we can print it out
 #
 case "$1" in
+  --variable=CC) echo "@CC@"
+              exit 0;;
+  --variable=CPP) echo "@CPP@"
+              exit 0;;
+  --variable=CXX) echo "@CXX@"
+              exit 0;;
+  --variable=OBJCXX) echo "@OBJCXX@"
+              exit 0;;
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
-                     exit 0;;
-  --objc-flags) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
-                     exit 0;;
-  --objc-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes 2>/dev/null
-                     exit 0;;
-  --base-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
-                     exit 0;;
-  --gui-libs) @GNUMAKE@ -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
-                     exit 0;;
+              exit 0;;
+  --variable=GNUMAKE) echo "@GNUMAKE@"
+              exit 0;;
+  --debug-flags) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes debug=yes 2>/dev/null
+              exit 0;;
+  --objc-flags) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
+              exit 0;;
+  --objc-libs) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes 2>/dev/null
+              exit 0;;
+  --base-libs) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
+              exit 0;;
+  --gui-libs) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
+              exit 0;;
+  --installation-domain-for=*) gs_package_name=`echo "$1" | sed -e 's/--installation-domain-for=//'`
+              @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-installation-domain PACKAGE_NAME="$gs_package_name" quiet=yes 2>/dev/null
+              exit 0;;
 esac
 
 #
@@ -169,7 +196,7 @@ unset GNUSTEP_SH_EXPORT_ALL_VARIABLES
 # Now print whatever variable they asked for
 #
 gs_variable_name=`echo "$1" | sed -e 's/--variable=//'`
-gs_variable_value=$(eval echo "\$$gs_variable_name")
+gs_variable_value=`eval echo '$'"$gs_variable_name"`
 
 if [ "$gs_variable_value" != "" ]; then
   echo "$gs_variable_value"

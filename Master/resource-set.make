@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/resource-set.make
 #
 #   Master makefile rules to install resource files

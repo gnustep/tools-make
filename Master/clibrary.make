@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/clibrary.make
 #
 #   Master Makefile rules to build C libraries.
@@ -27,7 +27,23 @@ endif
 
 CLIBRARY_NAME := $(strip $(CLIBRARY_NAME))
 
-internal-all:: $(CLIBRARY_NAME:=.all.clibrary.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(CLIBRARY_NAME:=.all.clibrary.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-clibrary-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-clibrary-all
+
+internal-master-clibrary-all: $(CLIBRARY_NAME:=.all.clibrary.variables)
+
+endif
 
 internal-install:: $(CLIBRARY_NAME:=.install.clibrary.variables)
 
@@ -52,6 +68,5 @@ endif
 
 internal-strings:: $(CLIBRARY_NAME:=.strings.clibrary.variables)
 
-$(CLIBRARY_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.clibrary.variables
+$(CLIBRARY_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.clibrary.variables$(END_ECHO_RECURSIVE_MAKE)

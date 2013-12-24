@@ -40,6 +40,7 @@ CURRENT_DIR = $(shell pwd)
 	(mkdir tmp-build; \
 	cd tmp-build; \
 	../../configure --prefix="$(CURRENT_DIR)/tmp-installation" \
+			--with-layout=gnustep \
 	                --with-config-file="$(CURRENT_DIR)/tmp-installation/GNUstep.conf"; \
 	make; \
 	make install)
@@ -62,22 +63,15 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 # The documents to be generated
 
-# FIXME: We should prefix everything with 'gnustep' because we
-# generate info files that we then put into the standard info
-# directories, and we don't want those to conflict with info files
-# from other packages!  For example, 'info make' should return GNU
-# make documentation, while 'info gnustep-make' should return
-# GNUstep-make documentation.  At the moment they would have the same
-# name instead, giving rise to unpleasant consequences!  For example
-# in a default installation, 'info make' would return gnustep-make
-# documentation (instead of GNU make one) because the INFOPATH is used
-# before built-in paths!
-DOCUMENT_NAME = gnustep-howto faq filesystem internals machines make userfaq
+# We should prefix everything with 'gnustep' because we generate info
+# files that we then put into the standard info directories, and we
+# don't want those to conflict with info files from other packages!
+DOCUMENT_NAME = gnustep-howto gnustep-faq gnustep-filesystem gnustep-internals gnustep-make gnustep-userfaq
 
 # The text documents to be generated
-DOCUMENT_TEXT_NAME = FAQ INSTALL README NEWS RELEASENOTES GNUstep-HOWTO ANNOUNCE
+DOCUMENT_TEXT_NAME = INSTALL README NEWS RELEASENOTES ANNOUNCE
 
-TOP_DOC_FILES = FAQ INSTALL README NEWS RELEASENOTES GNUstep-HOWTO ANNOUNCE
+TOP_DOC_FILES = INSTALL README NEWS RELEASENOTES ANNOUNCE
 README_FILES = README.Darwin README.MinGWOnCygwin README.Cygwin \
 	README.MinGW
 
@@ -87,39 +81,39 @@ GNUstep-HOWTO_TEXT_MAIN = gnustep-howto.texi
 GNUstep-HOWTO_DOC_INSTALL_DIR = User/GNUstep/
 
 FAQ_TEXI_FILES = version.texi
-FAQ_TEXT_MAIN = faq.texi
+FAQ_TEXT_MAIN = gnustep-faq.texi
 FAQ_DOC_INSTALL_DIR = User/GNUstep/
 
-make_TEXI_FILES = \
-make.texi
-make_DOC_INSTALL_DIR = Developer/Make/Manual/
+gnustep-make_TEXI_FILES = \
+gnustep-make.texi
+gnustep-make_DOC_INSTALL_DIR = Developer/Make/Manual/
 
-faq_TEXI_FILES = \
-faq.texi \
+gnustep-faq_TEXI_FILES = \
+gnustep-faq.texi \
 version.texi
-faq_DOC_INSTALL_DIR = User/GNUstep/
+gnustep-faq_DOC_INSTALL_DIR = User/GNUstep/
 
-userfaq_TEXI_FILES = \
-userfaq.texi \
+gnustep-userfaq_TEXI_FILES = \
+gnustep-userfaq.texi \
 version.texi
-userfaq_DOC_INSTALL_DIR = User/GNUstep/
+gnustep-userfaq_DOC_INSTALL_DIR = User/GNUstep/
 
-filesystem_TEXI_FILES = \
-filesystem.texi
-filesystem_DOC_INSTALL_DIR = User/GNUstep/
+gnustep-filesystem_TEXI_FILES = \
+gnustep-filesystem.texi
+gnustep-filesystem_DOC_INSTALL_DIR = User/GNUstep/
 
-machines_TEXI_FILES = \
-machines.texi 
-machines_DOC_INSTALL_DIR = User/GNUstep/
+gnustep-machines_TEXI_FILES = \
+gnustep-machines.texi 
+gnustep-machines_DOC_INSTALL_DIR = User/GNUstep/
 
 gnustep-howto_TEXI_FILES = \
 gnustep-howto.texi \
 version.texi
 gnustep-howto_DOC_INSTALL_DIR = User/GNUstep/
 
-internals_LATEX_FILES = \
-internals.tex
-internals_DOC_INSTALL_DIR = Developer/Make/Manual/Internals/
+gnustep-internals_LATEX_FILES = \
+gnustep-internals.tex
+gnustep-internals_DOC_INSTALL_DIR = Developer/Make/Manual/Internals/
 
 INSTALL_TEXI_FILES = version.texi
 INSTALL_TEXT_MAIN = install.texi
@@ -172,4 +166,5 @@ after-uninstall::
 
 after-distclean::
 	rm -f version.texi
+
 endif

@@ -51,7 +51,6 @@ GNUSTEP_USER_DEFAULTS_DIR=@GNUSTEP_USER_DEFAULTS_DIR@
 # Traditionally, this is /usr/GNUstep/System/Library/Makefiles
 GNUSTEP_MAKEFILES=@GNUSTEP_MAKEFILES@
 
-
 # This is where the user home directories are.  Only used to provide
 # NSUserDirectory in gnustep-base.  Never used anywhere else.
 GNUSTEP_SYSTEM_USERS_DIR=@GNUSTEP_SYSTEM_USERS_DIR@

@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   source-distribution.make
 #
 #   Makefile rules to build snapshots from cvs, source .tar.gz etc
@@ -225,8 +225,8 @@ svn-snapshot: internal-svn-export
 
 internal-svn-export:
 	$(ECHO_NOTHING)echo "Exporting from module $(SVN_MODULE_NAME) on SVN..."; \
-	if [ -e $(SVN_MODULE_NAME) ]; then \
-	  echo "*Error* cannot export: $(SVN_MODULE_NAME) already exists"; \
+	if [ -e $(VERSION_NAME) ]; then \
+	  echo "*Error* cannot export: $(VERSION_NAME) already exists"; \
 	  exit 1; \
 	fi; \
 	$(SVN) export $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/$(EXPORT_SVN_NAME) $(VERSION_NAME); \

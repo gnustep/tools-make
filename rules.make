@@ -3,11 +3,11 @@
 #
 #   All of the common makefile rules.
 #
-#   Copyright (C) 1997, 2001 Free Software Foundation, Inc.
+#   Copyright (C) 1997, 2001, 2009 Free Software Foundation, Inc.
 #
 #   Author:  Scott Christley <scottc@net-community.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -241,22 +241,24 @@ ALL_OBJCFLAGS = $(OBJC_PRECOMPILED_HEADERS_INCLUDE_FLAGS) \
    $(AUXILIARY_OBJCFLAGS) $(ADDITIONAL_INCLUDE_DIRS) \
    $(AUXILIARY_INCLUDE_DIRS) \
    $(DERIVED_SOURCES_HEADERS_FLAG) \
-   -I. $(SYSTEM_INCLUDES) \
+   -I. \
    $(GNUSTEP_HEADERS_FLAGS) \
-   $(GNUSTEP_FRAMEWORKS_FLAGS)
+   $(GNUSTEP_FRAMEWORKS_FLAGS) \
+   $(SYSTEM_INCLUDES)
 
 ALL_CFLAGS = $(C_PRECOMPILED_HEADERS_INCLUDE_FLAGS) \
    $(INTERNAL_CFLAGS) $(ADDITIONAL_CFLAGS) \
    $(AUXILIARY_CFLAGS) $(ADDITIONAL_INCLUDE_DIRS) \
    $(AUXILIARY_INCLUDE_DIRS) \
    $(DERIVED_SOURCES_HEADERS_FLAG) \
-   -I. $(SYSTEM_INCLUDES) \
+   -I. \
    $(GNUSTEP_HEADERS_FLAGS) \
-   $(GNUSTEP_FRAMEWORKS_FLAGS)
+   $(GNUSTEP_FRAMEWORKS_FLAGS) \
+   $(SYSTEM_INCLUDES)
 
 # if you need, you can define ADDITIONAL_CCFLAGS to add C++ specific flags
 ALL_CCFLAGS = $(CC_PRECOMPILED_HEADERS_INCLUDE_FLAGS) \
-   $(ADDITIONAL_CCFLAGS) $(AUXILIARY_CCFLAGS)
+   $(CCFLAGS) $(ADDITIONAL_CCFLAGS) $(AUXILIARY_CCFLAGS)
 
 # If you need, you can define ADDITIONAL_OBJCCFLAGS to add ObjC++
 # specific flags.  Please note that for maximum flexibility,
@@ -270,14 +272,16 @@ ALL_CCFLAGS = $(CC_PRECOMPILED_HEADERS_INCLUDE_FLAGS) \
 # can remove AUXILIARY_OBJCCFLAGS from the following line, which would
 # be cleaner. :-)
 ALL_OBJCCFLAGS = $(OBJCC_PRECOMPILED_HEADERS_INCLUDE_FLAGS) \
-   $(INTERNAL_OBJCFLAGS) $(ADDITIONAL_OBJCCFLAGS) \
+   $(INTERNAL_OBJCFLAGS) \
+   $(ADDITIONAL_OBJCCFLAGS) \
    $(AUXILIARY_OBJCFLAGS) \
    $(AUXILIARY_OBJCCFLAGS) $(ADDITIONAL_INCLUDE_DIRS) \
    $(AUXILIARY_INCLUDE_DIRS) \
    $(DERIVED_SOURCES_HEADERS_FLAG) \
-   -I. $(SYSTEM_INCLUDES) \
+   -I. \
    $(GNUSTEP_HEADERS_FLAGS) \
-   $(GNUSTEP_FRAMEWORKS_FLAGS)
+   $(GNUSTEP_FRAMEWORKS_FLAGS) \
+   $(SYSTEM_INCLUDES)
 
 INTERNAL_CLASSPATHFLAGS = -classpath ./$(subst ::,:,:$(strip $(ADDITIONAL_CLASSPATH)):)$(CLASSPATH)
 
@@ -332,7 +336,6 @@ endif
 
 ALL_CPLISTFLAGS += $(ADDITIONAL_CPLISTFLAGS) $(AUXILIARY_CPLISTFLAGS)
 
-
 # If we are using Windows32 DLLs, we pass -DGNUSTEP_WITH_DLL to the
 # compiler.  This preprocessor define might be used by library header
 # files to know they are included from external code needing to use
@@ -346,12 +349,41 @@ ALL_CPLISTFLAGS += $(ADDITIONAL_CPLISTFLAGS) $(AUXILIARY_CPLISTFLAGS)
 # can not be automatically imported and you might want to declare them
 # specially.  For those symbols, this define is handy.
 #
-ifeq ($(BUILD_DLL),yes)
+ifeq ($(BUILD_DLL), yes)
 ALL_CPPFLAGS += -DGNUSTEP_WITH_DLL
 endif
 
 # General rules
 VPATH = .
+
+# Set .DELETE_ON_ERROR.  This means that if the rule to build a target
+# file fails, but the rule had modified the target file, the target
+# file is automatically deleted by GNU make when exiting with an
+# error.  The idea is to removed corrupt/partially built files when an
+# error occurs.
+.DELETE_ON_ERROR:
+
+# gnustep-make supports inherently sequential targets such as
+# 'before-install' and 'after-install' which make it really difficult
+# to support parallel building.  So we don't enable paralell building
+# in general.  We only enable it when GNUSTEP_MAKE_PARALLEL_BUILDING =
+# yes and even then only in specific 'Compile' sub-invocations of
+# make, tagged with _GNUSTEP_MAKE_PARALLEL = yes.  All the
+# compilations are done in such invocations, so in practical terms, a
+# lot of actual parallelization will be going on for large projects,
+# with a very visible compilation speedup.
+#
+# Note that .NOTPARALLEL was added to GNU make on November 1999, so we
+# consider it safe to use to control the parallel building.  If you
+# have an older GNU make, don't use parallel building because it's
+# unsupported.
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+.NOTPARALLEL:
+else
+ifneq ($(_GNUSTEP_MAKE_PARALLEL), yes)
+.NOTPARALLEL:
+endif
+endif
 
 # Disable all built-in suffixes for performance.
 .SUFFIXES:
@@ -359,7 +391,7 @@ VPATH = .
 # Then define our own.
 .SUFFIXES: .m .c .psw .java .h .cpp .cxx .C .cc .cp .mm
 
-.PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%${OEXT}
+.PRECIOUS: %.c %.h $(GNUSTEP_OBJ_DIR)/%$(OEXT)
 
 # Disable all built-in rules with a vague % as target, for performance.
 %: %.c
@@ -381,6 +413,17 @@ VPATH = .
 %:: s.%
 
 %:: SCCS/s.%
+
+# C/ObjC/C++ files are always compiled as part of the instance
+# invocation (eg, while building a tool or an app).  We put the object
+# files (eg, NSObject.o, ie the result of compiling a C/ObjC/C++ file)
+# in separate directories, one for each GNUSTEP_INSTANCE.  The
+# directories are $(GNUSTEP_OBJ_INSTANCE_DIR) (which usually is, eg,
+# ./obj/gdomap.obj/).  This allows different GNUSTEP_INSTANCEs to be
+# built in parallel with no particular conflict.  Here we include the
+# rules for building C/ObjC/C++ files; they are only included when
+# GNUSTEP_INSTANCE is defined.
+ifneq ($(GNUSTEP_INSTANCE),)
 
 #
 # In exceptional conditions, you might need to want to use different compiler
@@ -415,84 +458,97 @@ VPATH = .
 # as well, so the following rule is simply equivalent to
 # $(CC) $< -c $(ALL_CPPFLAGS) $(ALL_CFLAGS) -o $@
 # and similarly all the rules below
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.c
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.c$(OEXT) : %.c
 	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.m
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.m$(OEXT) : %.m
 	$(ECHO_COMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.C
-	$(ECHO_COMPILING)$(CC) $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.C$(OEXT) : %.C
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cc
-	$(ECHO_COMPILING)$(CC) $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cc$(OEXT) : %.cc
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cpp
-	$(ECHO_COMPILING)$(CC) $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cpp$(OEXT) : %.cpp
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cxx
-	$(ECHO_COMPILING)$(CC) $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cxx$(OEXT) : %.cxx
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.cp
-	$(ECHO_COMPILING)$(CC) $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.cp$(OEXT) : %.cp
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/%${OEXT} : %.mm
-	$(ECHO_COMPILING)$(CC) $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.mm$(OEXT) : %.mm
+	$(ECHO_COMPILING)$(CXX) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
+
+#
+# Special mingw32 specific rules to compile Windows resource files (.rc files)
+# into object files.
+#
+ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+# Add the .rc suffix on Windows.
+.SUFFIXES: .rc
+
+# A rule to generate a .o file from the .rc file.
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.rc$(OEXT): %.rc
+	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
+endif
 
 ifeq ($(GCC_WITH_PRECOMPILED_HEADERS),yes)
 # We put the precompiled headers in different directories (depending
 # on the language) so that we can easily have different rules (that
 # use the appropriate compilers/flags) for the different languages.
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/%.gch : % $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/
 	$(ECHO_PRECOMPILING)$(CC) $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/%.gch : % $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/
 	$(ECHO_PRECOMPILING)$(CC) -x objective-c-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/%.h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/
-	$(ECHO_PRECOMPILING)$(CC) -x c++-header $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/%.gch : % $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/
+	$(ECHO_PRECOMPILING)$(CXX) -x c++-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_CFLAGS)   \
 	                                                $(ALL_CCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/
-	$(ECHO_COMPILING)$(CC) -x objective-c++-header $< -c \
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/%.gch : % $(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/
+	$(ECHO_COMPILING)$(CXX) -x objective-c++-header $< -c \
 	      $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPPFLAGS) \
 	                                                $(ALL_OBJCCFLAGS)) \
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
@@ -500,29 +556,51 @@ $(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/%h.gch : %.h $(GNUSTEP_OBJ_DIR)/Prec
 # These rules create these directories as needed.  The directories
 # (and the precompiled files in them) will automatically be removed
 # when the GNUSTEP_OBJ_DIR is deleted as part of a clean.
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/C/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/C/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/C/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjC/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjC/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/ObjC/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/CC/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/CC/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/CC/$(END_ECHO)
 
-$(GNUSTEP_OBJ_DIR)/PrecompiledHeaders/ObjCC/:
+$(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/:
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)/PrecompiledHeaders/ObjCC/$(END_ECHO)
+	$(MKDIRS) ./$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)/PrecompiledHeaders/ObjCC/$(END_ECHO)
 
 endif
 
+endif # End of code included only when GNUSTEP_INSTANCE is not empty
+
 # FIXME - using a different build dir with java
+
+# This rule is complicated because it supports for compiling a single
+# file, and batch-compiling a chunk of files.  By default, every file
+# is compiled separately.  But if you set JAVA_FILES_TO_BATCH_COMPILE
+# to a list of .java files, and the file we are compiling falls in
+# that list, we compile all the JAVA_FILES_TO_BATCH_COMPILE in this
+# invocation instead of just that file.  This is worth it as it
+# can speed up compilation by orders of magnitude.
 %.class : %.java
-	$(ECHO_COMPILING)$(JAVAC) \
-	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
-	         $($<_FILE_FLAGS) $<$(END_ECHO)
+ifeq ($(BATCH_COMPILE_JAVA_FILES), no)
+	$(ECHO_COMPILING)$(JAVAC) $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
+	     $($<_FILE_FLAGS) $<$(END_ECHO)
+else
+        # Explanation: $(filter $<,$(JAVA_FILES_TO_BATCH_COMPILE)) is empty if
+        # $< (the file we are compiling) does not appear in
+        # $(JAVA_FILES_TO_BATCH_COMPILE), and not-empty if it appears in
+        # there.
+	$(ECHO_NOTHING)if [ "$(filter $<,$(JAVA_FILES_TO_BATCH_COMPILE))"x != ""x ]; then \
+	  $(INSIDE_ECHO_JAVA_BATCH_COMPILING)$(JAVAC) $(ALL_JAVACFLAGS) $(JAVA_FILES_TO_BATCH_COMPILE); \
+	else \
+	  $(INSIDE_ECHO_JAVA_COMPILING)$(JAVAC) $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVACFLAGS)) \
+	     $($<_FILE_FLAGS) $<; \
+	fi$(END_ECHO)
+endif
 
 # A jni header file which is created using JAVAH
 # Example of how this rule will be applied: 
@@ -557,7 +635,7 @@ endif
 %.plist : %.cplist
 	$(ECHO_PREPROCESSING)$(CPP) \
 	          $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_CPLISTFLAGS))\
-	          $($<_FILE_FLAGS) $< | sed '/^#pragma/d' > $@$(END_ECHO)
+	          $($<_FILE_FLAGS) $< | sed -e '/^#pragma/d' -e '/^ *$$/d' > $@$(END_ECHO)
 
 # The following rule builds a .c file from a lex .l file.
 # You can define LEX_FLAGS if you need them.
@@ -569,32 +647,6 @@ endif
 %.c: %.y
 	$(YACC) $(YACC_FLAGS) $<
 	mv -f y.tab.c $@
-
-#
-# Special mingw32 specific rules to compile Windows resource files (.rc files)
-# into object files.
-#
-ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
-# Add the .rc suffix on Windows.
-.SUFFIXES: .rc
-
-# A rule to generate a .o file from the .rc file.
-$(GNUSTEP_OBJ_DIR)/%${OEXT}: %.rc
-	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
-endif
-
-#
-# Special cygwin specific rules to compile Windows resource files (.rc files)
-# into object files. (this is the same rule as mingw32)
-#
-ifeq ($(findstring cygwin, $(GNUSTEP_TARGET_OS)), cygwin)
-# Add the .rc suffix on Windows.
-.SUFFIXES: .rc
-
-# A rule to generate a .o file from the .rc file.
-$(GNUSTEP_OBJ_DIR)/%${OEXT}: %.rc
-	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
-endif
 
 # The following dummy rules are needed for performance - we need to
 # prevent make from spending time trying to compute how/if to rebuild
@@ -642,31 +694,31 @@ $(GNUSTEP_HOME)/$(GNUSTEP_USER_CONFIG_FILE): ;
  endif 
 endif
 
-# The rule to create the GNUSTEP_BUILD_DIR if any.
-ifneq ($(GNUSTEP_BUILD_DIR),.)
-$(GNUSTEP_BUILD_DIR):
-	$(ECHO_CREATING)$(MKDIRS) $(GNUSTEP_BUILD_DIR)$(END_ECHO)
-endif
-
-# The rule to create the objects file directory.
-$(GNUSTEP_OBJ_DIR):
-	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
-	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)$(END_ECHO)
-
 # Now the print targets.
 .PHONY: print-gnustep-make-help \
         print-gnustep-make-objc-flags \
         print-gnustep-make-objc-libs \
         print-gnustep-make-base-libs \
-        print-gnustep-make-gui-libs
+        print-gnustep-make-gui-libs \
+        print-gnustep-make-installation-domain \
+        print-gnustep-install-headers \
+        print-gnustep-install-libraries
 
-# Print GNUstep make help.  The sed command is used to strip all lines
-# beginning with '#' from the file.  It will find all lines that match
-# the pattern ^#.* (which means that they have a '#' at the beginning
-# of the line, followed by any number of chars), and applies to them
-# the operation d, which means delete.
+# Print GNUstep make help.  The sed command '/^#.*/d' is used to strip
+# all lines beginning with '#' from the file.  It will find all lines
+# that match the pattern ^#.* (which means that they have a '#' at the
+# beginning of the line, followed by any number of chars), and applies
+# to them the operation d, which means delete.
+#
+# The gnustep-make-help file uses the string _MAKE_ whenever referring
+# to the 'make' executable - for example, when if it says "type
+# '_MAKE_ install' to install".  We need to replace _MAKE_ with the
+# correct name of GNU make on the system - usually 'make', but for
+# example 'gmake' on OpenBSD.  The sed command 's/_MAKE_/$(notdir
+# $(MAKE))/' does that - it replaces everywhere the string _MAKE_ with
+# the basename of $(MAKE).
 print-gnustep-make-help:
-	@(cat $(GNUSTEP_MAKEFILES)/gnustep-make-help | sed -e '/^#.*/d')
+	@(cat $(GNUSTEP_MAKEFILES)/gnustep-make-help | sed -e '/^#.*/d' -e 's/_MAKE_/$(notdir $(MAKE))/')
 
 # These targets are used by gnustep-config to allow people to get
 # basic compilation/link flags for GNUstep ObjC code.
@@ -686,6 +738,19 @@ print-gnustep-make-base-libs:
 # Flags used when linking against Foundation and GUI
 print-gnustep-make-gui-libs:
 	@(echo $(ALL_LDFLAGS) $(CC_LDFLAGS) $(ALL_LIB_DIRS) $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS) $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+
+print-gnustep-make-installation-domain:
+	@(echo $(GNUSTEP_INSTALLATION_DOMAIN))
+
+# These targets are used if gnustep-config can't be found but GNUSTEP_MAKEFILES
+# is defined ... they's let you get libraries and their headers (eg libobjc2)
+# installed in the right place.
+
+print-gnustep-install-headers:
+	@(echo $(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_HEADERS))
+
+print-gnustep-install-libraries:
+	@(echo $(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_LIBRARIES))
 
 endif
 # rules.make loaded

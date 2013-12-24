@@ -1,16 +1,2403 @@
+2013-12-24  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * Version:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Make minor bugfix release ... Version 2.6.6
+	Update release notes/documentation
+
+2013-12-12  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* Master/tool.make: on clean only delete the subdirectory that gets
+	created when calling make.
+
+2013-12-07  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* target.make: Add -keep_private_externs to linker flags on OS X
+	when merging the object files of a subproject for compatibility
+	with other platforms.
+
+2013-12-06  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Add no-omit-framepointer on mingw32
+
+2013-09-20  Ivan Vucica  <ivan@vucica.net>
+
+	* Master/deb.make: File enumeration now uses 'find'. Fixed
+	problem where files outside 'Local' were being accidentally
+	dropped from the package. Symlinks are now also included
+	in the installed file list.
+
+	* GNUmakefile.in: Symlinks are now also included in the
+	installed file list.
+
+2013-09-20  Ivan Vucica  <ivan@vucica.net>
+
+	* deb-equivs-control.template: Added forgotten file.
+
+2013-09-20  Ivan Vucica  <ivan@vucica.net>
+
+	* GNUmakefile.in: Added deb.make. Also added new target,
+	'deb' which (using 'equivs-build') produces a Debian package
+	for gnustep-make.
+
+	* Master/deb.make: This file provides new targets 'deb' and
+	'debfile'. To produce a .deb package, you will need to install
+	package named 'equivs'. At the moment, manual patching of
+	/usr/bin/equivs-build is also necessary; please review comments
+	inside Master/deb.make for further information.
+	
+2013-07-27  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac: Really fix the test whether the compiler uses the
+	non-fragile ABI by default. It should now work on all platforms
+	with either gcc or clang.
+	* configure: Regenerated.
+
+2013-07-27  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Revert last change to get nonfragile abi detection
+        working on gnu/linux and freebsd again (not tested on other platforms).
+	* configure: Regenerated.
+
+2013-07-26  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac: Rewrite test whether the compiler supports the
+	non-fragile ABI once more, so that it now reports the correct
+	result.
+	* configure: Regenerated.
+
+2013-07-26  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * Version:
+        * Documentation/news.texi:
+        * Documentation/releasenotes.texi:
+        Make minor bugfix release ... Version 2.6.5
+        Update release notes/documentation
+
+2013-07-14  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac: Rewrite test whether the compiler supports the
+	non-fragile ABI with portable code that does not rely on a BSD
+	compatible echo command.
+	* configure: Regenerated.
+
+2013-07-04  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * rules.make: Fix order of includes directories ... SYSTEM_INCLUDES
+        should come last so that conflices between files of the same name in
+        different directories are resolved in the correct/expected order.
+
+2013-06-17  Stefan Bidi <stefanbidi@gmail.com>
+
+        * TestFramework/gnustep-tests.in: add support for .c and .cc files
+
+2012-04-08  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * TestFramework/ObjectTesting.h: Fix error performing equality test
+        in copying protocol test macro.
+
+2012-03-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+        Make release
+	* Version 2.6.4
+        Update release notes/documentation
+
+2012-03-25  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * TestFramework/Testing.h: Use -isEqualForTestcase: for PASS_EQUAL
+        macro equality testing if the expected value responds to it.
+        Add informal protocol declaring -isEqualForTestcase:
+        * TestFramework/ObjectTesting.h: Convert protocol checking functions
+        to macros (so error messages get file/line number information) and
+        get copy and coding before/after equality checks to use the
+        PASS_EQUAL macro so that we can easily make customised tests by
+        implementing -isEqualForTestcase: for the class being tested.
+
+2012-03-16  Emmanuel Maillard <mailing-lists@e-maillard.com>
+
+        * target.make: Add target for android
+
+2012-03-08  Jean-Charles BERTIN <jc.bertin@axinoe.com>
+
+        * TestFramework/gnustep-tests.in: Fix typo
+
+2012-03-01  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * common.make: Remove -shared-libgcc linker flag
+        * configure.ac: Add check for clang and add -shared-libgcc to linker
+        flags if we aren't using it (using gcc) but are using exceptions.
+        Tidy a little.
+        Patch based on contribtion by Jean-Charles Bertin.
+
+2012-03-01  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * Version ... bump subminor number in preparation for next release.
+
+2012-03-01  Richard Frith-Macdonald <rfm@gnu.org>
+
+        Make release
+	* Version 2.6.3
+        * Update release notes
+
+2013-02-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/framework.make: Removed trailing '/' after
+	$(GNUSTEP_TARGET_LDIR) in a couple of cases, to fix building on
+	non-flattened layout.
+
+2012-01-31  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* rules.make: A couple more printout targets for managing installation
+        of libobjc2 if gnustep-config is not available (eg not in PATH) but
+        GNUSTEP_MAKEFILES is defined.
+
+2012-09-24  Niels Grewe <niels.grewe@halbordnung.de>
+
+	* configure.ac: Improve last change based on suggestions by David
+	Chisnall.
+	* configure: Regenerate.
+
+2012-09-24  Niels Grewe <niels.grewe@halbordnung.de>
+
+	* configure.ac: Also try to detect whether the nonfragile ABI is the
+	compiler default.
+	* configure: Regenerate.
+
+2012-09-01  Niels Grewe <niels.grewe@halbordnung.de>
+
+	* target.make: Define QNX target.
+
+2012-08-15 Stansilav Yaglo <stanislav-yaglo@yandex.ru>
+
+	* Instance/framework.make: Patch #7822. Make dummy framework classes
+	subclasses of NSObject. 
+
+2012-07-05  Quentin Mathe <quentin.mathe@gmail.com>
+
+	* configure.ac: Fixed ObjC non fragile ABI check to restore CFLAGS 
+	correctly, --enable-objc-nonfragile-abi was breaking native exceptions 
+	detection. Based on a patch by Christopher Armstrong, see bug report 
+	#36186
+	* configure: Regenerated.
+
+2012-02-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in: Use "setopt shwordsplit" instead of "set -y" to
+	get zsh to emulate sh's traditional word split behaviour.
+	Suggestion by Alex Merry.
+
+2012-02-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* FilesystemLayouts/README: Updated for the fact that 'fhs' is now
+	the default filesystem layout.  Issue pointed out by Fred Kiefer
+	<FredKiefer@gmx.de>.
+	
+2012-02-21  Graham Lee   <iamleeg@gmail.com>
+	
+	* library-combo.make (OBJC_LIBS): Always set from OBJC_LIB_FLAG
+	when using the 'apple' runtime.
+
+2012-02-17  Adam Fedor  <fedor@gnu.org>
+
+	* Master/nsis.make: Add support for library and framework packages
+
+2012-02-03  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.6.2
+	* Update release notes
+
+2012-01-31  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h: Improve handling of equality testing report
+	when expression evaluates to nil.
+
+2011-11-21  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* target.make: Don't use -undefined dynamic_lookup when linking
+	executables on OS X. This fixes some false positive results for
+	library function tests in configure and also prevents programs
+	crashing at load time due to unresolved references.
+
+2011-10-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* target.make: The -pthread compiler flag is broken on windows ...
+	don't use it there.
+
+2011-10-17  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* FilesystemLayouts/standalone: first draft at a layout to put
+	everything in one directory for easy deployment of relocatable,
+	standalone packages.
+	Use --with-layout=standalone
+
+2011-10-15  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* target.make: Use -pthread for compilation on all platforms.
+	While it's not always needed, for the gcc-4.? series of compilers
+	it should always work to turn on preprocessor defines and any other
+	options needed for threaded code (and we have to assume all code we
+	build may be used in a threaded environment).
+	This gives gcc (or clang, which copies gcc) the responsibility for
+	doing this work.
+
+2011-09-29  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/Documentation/texi.make: Install html chapters as well
+
+2011-06-29  David Chisnall <theraven@gna.org>
+
+	* Instance/framework.make (DUMMY_FRAMEWORK_FILE): Make -make not
+	  generate a file that contains an implicit cast that is not
+	  permitted by ARC.
+
+2011-06-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fix for a race condition during parallel builds of tools with
+	resources.
+	* Master/tool.make (MAYBE_GNUSTEP_BUILD_DIR_RESOURCES): New.
+	($(GNUSTEP_BUILD_DIR)/Resources): New rule.
+	(internal-all): Depend on MAYBE_GNUSTEP_BUILD_DIR_RESOURCES.
+
+2011-06-26  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* Instance/framework.make (FRAMEWORK_LIBRARY_FILE): Get names of
+	versioned dynamic libraries in frameworks right under Darwin/OS X.
+
+2011-06-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* Documentation/news.texi (Changes in version @samp{2.6.0}): Fixed
+	typo.
+
+2011-06-04  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.6.1
+
+2011-05-03  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Rewritten test for clang when determining if we
+	need to use -r or -Wl,-r to do partial linking.
+	* configure: Regenerated.
+
+2011-05-03  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* GNUstep.sh.in:
+	* GNUstep.csh.in: Fix definition of CLASSPATH, which was
+	constructed backward.
+
+2011-04-30  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* Instance/library.make:
+	* Instance/framework.make: Change naming convention for versioned
+	dynamic library files on Darwin/OS X to match the OS's convention
+	that the version number precedes the .dylib suffix.
+
+2011-04-30  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac:
+	* config.make.in:
+	* target.make: Use configure time check for Objective-C runtime
+	header directory workaround on Darwin/OS X.
+	* configure: Regenerated.
+
+2011-04-14  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.6.0
+
+2011-04-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+
+2011-04-12  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* target.make: Add workaround to pick up the right Objective-C
+	runtime headers when compiling plain C files with the GNU runtime
+	on Darwin/OS X.
+
+2011-04-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* objc.make: Print a deprecation warning if this file is used.
+
+2011-04-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Set OBJ_MERGE_CMD_FLAG to -r or -Wl,-r depending
+	on whether we're using GCC or clang.
+	* configure: Regenerated.
+	* config.make.in (OBJ_MERGE_CMD_FLAG): New.
+	* target.make: Use OBJ_MERGE_CMD_FLAG instead of -Wl,-r
+	-mno-relax.
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* common.make: Updated comments.
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Updated comments.
+	* configure: Regenerated using the latest autoconf (2.68).
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* TestFramework/gnustep-tests.in: Do not add MAKEFLAGS on a
+	sub-make command-line.  This fixes 'make messages=yes check' on
+	the top-level of gnustep-base, for example.
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
+	when checking for compiler support for native Objective-C
+	exceptions.  Do not check the type or version of the compiler
+	during the check; only check that it can compile
+	@try/@throw/@catch.  Updated check and documentation.
+	* configure: Updated.
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
+	when checking for -fobjc-nonfragile-abi support in the compiler.
+	* configure: Updated.
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Use AC_COMPILE_IFELSE instead of AC_TRY_IFELSE
+	when checking for ObjC++ support in the compiler.
+	* configure: Updated.
+
+2011-04-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Use 'make check GNUSTEP_TEST_OBJCXX=yes' to enable ObjC++
+	testcases when using the test framework.
+	* TestFramework/gnustep-tests.in: Recognize GNUSTEP_TEST_OBJCXX,
+	and reworked choosing the ObjC++ compiler accordingly.
+
+2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Set OBJCXX to ${CXX}, not to the literal CXX.
+	* configure: Updated.
+
+2011-04-08  Riccardo Mottola  <rm@gnu.org>
+
+	* target.make: Override gcc's default relax option sent to the
+	linker in case of relative linking -Wl,-r.  This should affect
+	only SPARC and a few others uncommon archs and be ignored on the
+	others.
+
+2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/application.make
+	($(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop): Make the
+	.desktop file executable after installing it (Suggestion from
+	"Philippe Roussel" <p.o.roussel@free.fr>).
+
+2011-04-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* messages.make (INSIDE_ECHO_MISSING_DOCUMENTATION): Renamed to
+	ALWAYS_INSIDE_ECHO_MISSING_DOCUMENTATION, and moved it outside of
+	the if/else.
+	* Instance/Documentation/texi.make (internal-textdoc-install_):
+	Use ALWAYS_INSIDE_ECHO_MISSING_DOCUMENTATION instead of
+	INSIDE_ECHO_MISSING_DOCUMENTATION.  This fixes the rule when
+	messages=yes.  Issue reported by Sebastian Reitenbach
+	<buzzdee@web.de>.
+
+2011-04-04  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* configure:
+	Fake the ObjC++ tests using C++ since only really new versions of
+	autoconf seem to support ObjC++ and we need things to work on older
+	systems.
+
+2011-03-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* gnustep-config.in:
+	* TestFramework/gnustep-tests.in:
+	Change to only require ObjC++ support (for the test framework).
+	Assume C++ is supported even if it actually isn't, since we usually
+	don't care.
+
+2011-03-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: work around the fact that AC_PROG_CXX is buggy and
+	reports a compiler even when no working compiler exists.  So if a
+	test compilation fails with the compiler it returns, we clear CXX
+	The compilation is done for an Objective-C++ test file since that's
+	what we actually want a C++ compiler for normally.
+
+2011-03-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config-noarch.make.in: Updated comment.
+
+2011-03-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in: Unset GNUSTEP_LIBRARY_PATHLIST after using it.
+	* GNUstep.csh.in: Likewise.
+
+2011-03-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* filesystem.make.in (GNUSTEP_USER_DIR_APPS,
+	GNUSTEP_USER_DIR_ADMIN_APPS, GNUSTEP_USER_DIR_WEB_APPS,
+	GNUSTEP_USER_DIR_TOOLS, GNUSTEP_USER_DIR_ADMIN_TOOLS,
+	GNUSTEP_USER_DIR_LIBRARY, GNUSTEP_USER_DIR_HEADERS,
+	GNUSTEP_USER_DIR_LIBRARIES, GNUSTEP_USER_DIR_DOC,
+	GNUSTEP_USER_DIR_DOC_MAN, GNUSTEP_USER_DIR_DOC_INFO): Detect %u,
+	%i and %% and replace them with the user name, the user id or %.
+	* filesystem.sh.in: Same.
+	* filesystem.csh.in: Same.
+
+2011-03-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in: allow checking of the CXX variable to see what
+	compiler (if any) was found to support building Objective-C++ code.
+	* TestFramework/gnustep-tests.in: Check the value of CXX to correctly
+	build Objective-C++ tests and to refrain from running Objective-C++
+	tests on systems which don't have a compiler.
+
+2011-03-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/Documentation/texi.make (internal-textdoc-install_):
+	Only install GNUSTEP_INSTANCE if the file exists.  If not, print
+	the message " Nothing to install because nothing was built
+	(usually because makeinfo is not available)" instead of aborting.
+	* messages.make (ALWAYS_ECHO_NO_LANGUAGES): New variable.
+
+2011-03-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: By default, use --enable-absolute-install-paths on
+	Darwin with gnu-gnu-gnu (Suggestion from Wolfgang Lux
+	<wolfgang.lux@gmail.com>).
+	* configure: Regenerated.
+
+2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (CXX): If CXX is specified on the environment or
+	command-line, use the specified value in preference to the one
+	hardcoded into gnustep-make (From a suggestion by Banlu Kemiyatorn
+	<object@gmail.com>).
+
+2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (rpm): Depend on svn-dist and updated
+	location of .tar.gz file to copy.
+	* gnustep-make.spec.in (CFLAGS): Added --with-layout=gnustep
+	to configure command.
+	(%files): Added /etc/GNUstep/GNUstep.conf.
+
+2011-03-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/gnustep-filesystem.texi: Updated documentation for
+	change in default filesystem layout and configuration file
+	location.
+	* Documentation/gnustep-howto.texi: Same change.
+	* Documentation/install.texi: Same change.
+	* Documentation/gnustep-make.texi (GNUSTEP_INSTALLATION_DOMAIN):
+	Updated explanation of this variable.
+	* Documentation/gnustep-userfaq.texi (No Makefile): Updated
+	location of GNUstep.sh.
+	* INSTALL: Regenerated.
+
+2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/gswapp.make (GNUSTEP_GSWAPPS): Variable removed.
+	This was deprecated on 2007-03.
+	* Instance/resource-set.make: Removed support for
+	xxx_RESOURCE_FILES_INSTALL_DIR.  This was deprecated on 2007-02.
+	* Documentations/releasenotes.texi: Explain the changes.
+	* RELEASENOTES: Regenerated.
+
+2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Removed obsolete --with-system-root,
+	--with-local-root and --with-network-root options.  These have
+	been obsolete since 2007-02.
+	* configure: Regenerated.
+	* Documentations/releasenotes.texi: Explain the change.
+	* RELEASENOTES: Regenerated.
+
+2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac (--with-config-file): If nothing is specified, use
+	/etc/GNUstep/GNUstep.conf if the prefix is /, /usr or
+	/usr/GNUstep, and $prefix/etc/GNUstep/GNUstep.conf in other cases.
+	Updated documentation.
+	* configure: Regenerated.
+	* Documentations/releasenotes.texi: Explain the change in default
+	location of the config file.
+	* RELEASENOTES: Regenerated.
+
+2011-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Fixed installing
+	TestFramework/Summary.sh when gnustep-make is configured from
+	outside of the source directory.
+
+2011-03-14  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in: Add --developer option
+	* TestFramework/Testing.h: Make --developer turn off hopes
+	* TestFramework/README: Document --developer and GSTESTROOT
+
+2011-03-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Always use 'fhs' layout as the default layout
+	except on apple-apple-apple.  Removed 'native' layout.  Updated
+	comments and documentation.  If an invalid --with-layout=xxx
+	option is used, print a list of the available layouts.
+	* configure: Regenerated.
+	* Documentations/releasenotes.texi: Explain the change in default
+	layout.  Tidied up existing entry.
+	* RELEASENOTES: Regenerated.
+
+2011-03-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/README:
+	Clean and simplify handling of preprocessor flag and include
+	directory setup.  Use the standard gnustep-make 'ADDITIONAL'
+	environment variables to set test options while still honoring
+	any values already set inthe environment.
+
+2011-03-07  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h:
+	Change macro argument names to make collisions almost impossible.
+	* TestFramework/ObjectTesting.h:
+	* TestFramework/Testing.h:
+	Tweak to avoid some warnings on openbsd.
+
+2011-03-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in:
+	* TestFramework/GNUmakefile.in:
+        Add and use --debug-flags optin to gnustep-config ... to get the correct
+        flags to build a file for debugging.
+
+2011-03-01  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/README:
+	Override GNUSTEP_OBJ_DIR so that executables are always stored in ./obj
+	even if we are building non-flattened.  There's no point using a
+	non-flattened layout inside the test framework as we need to clean and
+	re-build for each test run anyway.
+
+2011-03-01  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	Speed up --clean option
+
+2011-02-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/GNUmakefile.in:
+	Fix error testing single file ... was trying subdirectories too.
+
+2011-02-25  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/example9.m: Fix include
+	* TestFramework/example8.m: Fix include
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/README:
+	Add (untested) support for Objective-C++
+	Implement parallel build so that all the tests in a directory should
+	be built simultaneously making more effective use of multiprocessor
+	systems. Add the --sequential command line option to disable this if
+	desired.
+
+2011-02-25  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h: Cosmetic improvement ... indent the results
+	of tests and the start/end of sets in the full diagnostic log.
+
+2011-02-24  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/example9.m:
+	* TestFramework/ObjectTesting.h:
+	* TestFramework/README:
+	* TestFramework/Testing.h:
+	* TestFramework/example2.m:
+	* TestFramework/example3.m:
+	* TestFramework/example4.m:
+	* TestFramework/example5.m:
+	* TestFramework/example6.m:
+	* TestFramework/example7.m:
+	* TestFramework/example8.m:
+	Important change to the START_SET and END_SET macros to stop their use
+	being confusing.  They now both take a simple C-string argument which
+	names the set, and the macros check that each end matches a start of
+	the same name.  Since tis means that a START_SET no longer takes an
+	argument sayng whether or notthe set is to be skipped, we now have a
+	SKIP macro to be used inside a set to skip to the end of it.  This
+	is actually more versatile as we can have multiple SKIP macros in the
+	same set, each providing a different reason for the set being skipped.
+	Also removed a few obsolete/unused functions and macros.
+
+2011-02-23  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/TestInfo:
+	* TestFramework/README:
+	Replace IGNORE file with TestInfo file having the opposite effect.
+	This makes it safe to run the test script because it will now only
+	do things in directories marked by the presence of a TestInfo file.
+	In future we can use this file to store extra information or settings
+	such as contact details for the package maintainers.
+
+2011-02-23  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	* TestFramework/Testing.h:
+	Change automated setting of breakpoints in gdb to account for
+	platforms where you can't conditionally break on entry to a function
+	based on a function argument ... so we set a variable before entry
+	instead.
+	
+2011-02-23  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Testing.h: Fix excess args to printf and incorrect setting of the
+	testPassed flag.
+
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-tests.in:
+	* GNUmakefile.in:
+	* README:
+	Simplify template makefile options.
+
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/example9.m:
+	* TestFramework/Testing.h:
+	* TestFramework/Summary.sh:
+	* GNUmakefile.in:
+	Add example for dealing with an unsupported feature.
+
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	Report path to test file when we run it as suggested by Sergey Golovin.
+
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Check for bash and test programs
+	* configure: regenerate
+	* TestFramework/gnustep-tests: remove ... use gnustep-test.in
+	* TestFramework/gnustep-tests.in:
+	Use bash as our shell if possible, and use an external test program
+	determined at configure time if we can't rely on the builtin test
+	function in the shell we end up with.
+
+2011-02-22  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/Testing.h:
+	* TestFramework/README:
+	Make it easy to break at the start of a particular failed test.
+	Add --debug option to automatically launch gdb to debug a test.
+
+2011-02-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/Summary.sh:
+	* TestFramework/runtest.sh:
+	* GNUmakefile.in:
+	Simplify by removing intermediary script.
+
+2011-02-21  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in: Add CC to list of variables so we can build
+	using the compiler that gnustep-make was configured with.
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
+	Add David Chisnall's suggested performance optimisation of handling
+	simple cases (where we just need to compile a single source file
+	with no special options) by compiling directly ... 25% improvement
+	running the base library testsuite on my debian system using clang.
+
+2011-02-20  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/README:
+	Simplify ... permit only one test file as an argument, so that we can
+	infer a single test directory easily (the directory containing the
+	file) and thus use the standard code path in which we execute Start.sh
+	and End.sh and run GNUmakefile.tests in the directory containing the
+	file ... ie so that behavior when executing a single test file is
+	identical to behavior when that file is executed as part of a whole
+	testsuite.  Don't backup makefile when we create a new one.
+
+2011-02-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
+	* TestFramework/README:
+	* TestFramework/Testing.h:
+	Add support for start and end scripts in each test directory.
+	Fix bracketing in macro as suggested by Fred
+
+2011-02-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
+	* TestFramework/Summary.sh:
+	Portability fixes for systems where grep has limited functionality
+	and/or where the shell's builtin 'test' command is limited/faulty.
+
+2011-02-18  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in:
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
+	* TestFramework/Summary.sh:
+	Tweak use of grep for portability.  Try to locate gnu make reliably.
+
+2011-02-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/example1.m:
+	* TestFramework/example2.m:
+	* TestFramework/example3.m:
+	* TestFramework/example4.m:
+	* TestFramework/example5.m:
+	* TestFramework/example6.m:
+	* TestFramework/example7.m:
+	* TestFramework/example8.m:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/gnustep-tests:
+	* TestFramework/README:
+	* TestFramework/runtest.sh:
+	* TestFramework/Summary.sh:
+	* TestFramework/Testing.h:
+	Further cleanups, corrections, simplifications, and documentation
+	improvements.
+	Added --failfast option to terminate a test run at the first failure.
+	Added recording of READEME to logs, and display of URGENT information.
+	Added tracking of entry to subdirectories so there's something to see
+	during execution ofa large testsuite.
+	Added summary at end of tests (needs more work)
+
+2011-02-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h:
+	* TestFramework/example1.m:
+	* TestFramework/example2.m:
+	* TestFramework/example3.m:
+	* TestFramework/example4.m:
+	* TestFramework/example5.m:
+	* TestFramework/example6.m:
+	* TestFramework/example7.m:
+	* TestFramework/example8.m:
+	* TestFramework/README:
+	* GNUmakefile.in:
+	Fix header file in examples.  Add comments/documentation to explain
+	use of brackets in macro parameters.  Add an example to demonstrate it.
+
+2011-02-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Testing.h:
+	* TestFramework/gnustep-tests:
+	* TestFramework/runtest.sh:
+	* TestFramework/README:
+	Change test status reports to friendlier text.
+	Record file and line number for each test.
+	* GNUmakefile.in:
+	install examples.
+
+2011-02-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests: Add --clean option
+	* TestFramework/README: Describe the fact that we leave the last
+	binary behind so we can easily run gdb.  Also mention --clean
+
+2011-02-10 19:06  David Chisnall <theraven@gna.org>
+
+	* configure.ac: Don't depend on the existence of Object class for
+	checking whether exceptions work.
+	* configure: Regenerated.
+
+2011-02-07  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/example1.m:
+	* TestFramework/example2.m:
+	* TestFramework/example3.m:
+	* TestFramework/example4.m:
+	* TestFramework/example5.m:
+	* TestFramework/example6.m:
+	* TestFramework/example7.m:
+	* TestFramework/GNUmakefile.in:
+	* TestFramework/gnustep-tests:
+	* TestFramework/ObjectTesting.h:
+	* TestFramework/README:
+	* TestFramework/runtest.sh:
+	* TestFramework/Testing.h:
+	Test framework scripts, headers, template, examples, documentation
+	* GNUmakefile.in:
+	Altered to install/uninstall test framework.
+
+2010-12-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Tidied up a few messages.
+	* configure: Regenerated.
+
+2010-10-20  Adam Fedor  <fedor@gnu.org>
+
+	* target.make: Add c99 flag for solaris
+
+2010-09-22 Riccardo Mottola <rm@gnu.org>
+
+	* installation-domains.conf: add defaults for objc2 and
+	systempreferences
+
+2010-09-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.conf.in: revert recent changes.
+	* configure.ac: revert last changes and more.
+	* configure: Regenerated.
+	Reverted recent changes, largely to do with remembering filesystem
+	layout preferences.  Nicola pointed out that remembering preferences
+	automatically might not be good, and suggested a different mechanism.
+	That means current code temporarily needs a --with-layout=gnustep for
+	the old behavior on most systems.
+
+2010-09-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Remove extra line accidentally added in preious commit.
+	Improve comments on filesystem layout. Make 'apple' the native layout
+	on the darwin operating system.
+	* configure: Regenerated.
+
+2010-09-10  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Use fhs as the default layout on gnu/linux systems.
+	* configure: Regenerated.
+	* GNUstep.conf.in: add layout variable
+	WARNING ...this changes the default behavior to use the 'fhs' layout
+	rather than the 'gnustep' layout on most systems, and assumes that
+	we will add other operating-system specific layouts in future and
+	make them the default for those operating systems.
+	I guess this may be controversial, but I think it's long past time
+	for us to integrate with the native operating system when people
+	download/install from source.
+	If you want the old filesystem layout behavior you need to use
+	configure --with-layout=gnustep
+	To make this less painful, I've changed things to record the layout
+	used in GNUstep.conf so if you don't want the new default you only
+	need to specify --with-layout= the first time you configure/install.
+
+2010-09-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: When threading tests fail with all expected
+	threading flags/libs, do a last attempt with no explicit threading
+	flags/libs at all.
+	* configure: Regenerated.
+
+2010-09-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (CC): Ignore the default CC=cc used by GNU make
+	when nothing else is specified.
+
+2010-09-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (CC): Only set CC if not already set in the
+	environment.
+
+2010-09-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Always obey an --enable-native-objc-exceptions or
+	--disable-native-objc-exceptions switch if specified.  If nothing
+	is specified, conservatively only enable native ObjC exceptions if
+	they pass a configure test and if GCC >= 4.4.0.
+	* configure: Regenerated.
+
+2010-09-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config_thread.m: Fixed incorrect usage of pthread_create when
+	testing a non-GNU runtime.
+
+2010-09-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Enable native exceptions by default if the
+	compiler supports them.
+	* configure: Regenerated.
+
+2010-08-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/Shared/strings.make: Renamed most local variables to
+	standardized names.  Automatically create required, but
+	non-existing, {LANGUAGE}.lproj directories before running
+	make_strings.  If no languages are specified, use English instead
+	of printing an error messages.
+
+	* Instance/rules.make (LANGUAGES): Set this variable here, once
+	for all makefile fragments, instead of having each fragment
+	contain the same duplicated code to set it.
+	* Instance/gswbundle.make (LANGUAGES): Do not set it.
+	* Instance/resource-set.make (LANGUAGES): Do not set it.
+	* Instance/Shared/bundle.make (LANGUAGES): Do not set it.
+	* Instance/Shared/strings.make (LANGUAGES): Do not set it.
+
+	* Instance/Shared/headers.make: Added -*-makefile-*- line at the
+	beginning of the file (for emacs).
+	* Instance/Shared/java.make: Same change.
+	* Instance/Shared/strings.make: Same change.	
+	
+2010-08-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* target.make (OBJ_MERGE_CMD): Use -Wl,-r instead of -r.  -Wl,-r
+	is the correct way of passing the -r flag to the linker, and works
+	with both GCC and clang (Suggestion from a mail by Dimitry Andric
+	<dimitry@andric.com>).
+
+2010-07-26  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* target.make (EXTRACT_CLASS_NAMES_COMMAND): Allow numbers in
+	class names.  Otherwise, class names containing numbers would not
+	be recognized and not appear in the list of framework classes.
+
+2010-07-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* common.make: Set INTERNAL_OBJCFLAGS, not OBJCFLAGS, so that
+	OBJCFLAGS is a free variable that can be used on the command-line,
+	as in "make OBJCFLAGS=-fobjc-nonfragile-abi", to add some custom
+	Objective-C flags to the compilation run without interfering with
+	the standard ones.
+
+2010-06-23  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Mention solution to install
+	permission problem when working on Windows Vista and
+	later (Reported by Quentin Mathe <qmathe@gmail.com>).
+
+2010-05-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* rules.make (%.plist): Delete empty lines in the output, fixing
+	generating %.plist from %.cplist on Apple.
+
+2010-05-08  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.4.0
+
+2010-04-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed problem reported by Chris Corbyn <chris@w3style.co.uk> where
+	precompiled headers only worked if they had a .h extension, and
+	not a .pch extension, which is common for projects originally
+	built using Apple XCode.
+	* rules.make: Changed precompiled header rules to work to generate
+	%.gch from %, no matter what extension the original header has.
+	* Instance/rules.make: Same change.
+	
+2010-04-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/library.make: Use LIBRARY_NAME_WITHOUT_LIB instead of
+	GNUSTEP_INSTANCE when installing resources (Patch from Jamison
+	Hope with some modifications)
+	* Documentation/releasenotes.texi: Explain the change.
+	* RELEASENOTES: Regenerated.
+	
+2010-03-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Add option to enable use of the nonfragile ABI
+	* configure: Regenerate
+	* config.make.in: Set variable to say if nonfragile ABI is to be used
+	* common.make: Add -fobjc-nonfragile-abi if required.
+
+2010-03-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	The default is now to use -Wall when compiling C/ObjC/C++/ObjC++
+	unless warn=no is used when invoking make.  Similar for Java,
+	where -deprecation is now used unless warn=no is used.
+	* common.make (ADDITIONAL_FLAGS): Add -Wall or not depending on
+	warn=yes/no, instead of depending on debug=yes/no (Suggestion from
+	Richard Frith-Macdonald).
+	(INTERNAL_JAVACFLAGS): Same for -deprecation.
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
+2010-03-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Updated.
+
+2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* target.make (SHARED_LIB_LINK_CMD): On MinGW, pass
+	--export-all-symbols to the linker.  This fixes building
+	gnustep-base on MinGW with more recent libraries.
+	* Documentation/README.MinGW: Updated instructions to work with
+	more recent versions - up to building gnustep-base.
+	
+2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/Documentation/javadoc.make (JAVADOC_BUILD_ALWAYS):
+	Recognize 'yes' (which is consistent with all other variables) as
+	well as 'YES' (still recognized for backwards-compatibility).
+	* Master/rpm.make (PACKAGE_NEEDS_CONFIGURE): Recognize
+	'yes' (which is consistent with all other variables) as well as
+	'YES' (still recognized for backwards-compatibility).
+	* Documentation/releasenotes.texi: Updated.
+
+2010-03-06  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Check for GNU make >= 3.79 and emit a warning if
+	it's not found.  Fixed typo in check for $(info ...).
+	* configure: Regenerated.
+	* Documentation/releasenotes.texi: Mention that versions of GNU
+	Make older than 3.79.1 (released June 2000) are no longer
+	supported.
+	
+2010-02-18  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/{gnustep-howto.texi,gnustep-machines.texi,GNUmakefile}:
+	Deprecate the machines.texi file
+
+2010-02-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed precompiler header support (Problem reported by Tim Kack
+	<timkack@gmail.com>).
+	* rules.make ($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/C/):
+	Create GNUSTEP_OBJ_INSTANCE_DIR_NAME, not GNUSTEP_OBJ_DIR_NAME.
+	($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjC/): Same change.
+	($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/CC/): Same change.
+	($(GNUSTEP_OBJ_INSTANCE_DIR)/PrecompiledHeaders/ObjCC/): Same change.
+
+2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	New internalmessages=yes option that prints all the recursive make
+	invocations.  Do not print any of them for messages=yes.
+	* messages.make (ECHO_NOTHING_RECURSIVE_MAKE,
+	END_ECHO_RECURSIVE_MAKE, INSIDE_ECHO_MAKING_OPERATION,
+	INSIDE_ECHO_MAKING_OPERATION_IN_DIRECTORY,
+	INSIDE_ECHO_MAKING_OPERATION_IN_SUBPROJECTS): New messages.
+	(ECHO_MAKING_OPERATION_IN_DIRECTORY): Message removed.
+	(internalmessages): New variable used to decide if to silence or
+	not the new messages.
+	* Master/rules.make (%.variables): Removed manual check for
+	existence of $(MAKEFILE_NAME) in the subdirectory since the
+	standard GNU make error message is clear enough.  Use the new
+	messages.  (%.subprojects): Same changes.
+	* Master/*.make: Use ECHO_NOTHING_RECURSIVE_MAKE and
+	END_ECHO_RECURSIVE_MAKE instead of ECHO_NOTHING and END_ECHO for
+	recursive make invocations.
+	* Instance/*.make: Same change.
+	* gnustep-make-help: Document the new internalmessages=yes option.
+	* Documentation/releasenotes.texi: Mention the new option.
+	* RELEASENOTES: Regenerated.
+	
+2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Master/application.make ($(APP_NAME)): Use ECHO_NOTHING and
+	END_ECHO.
+	* Master/bundle.make ($(BUNDLE_NAME)): Same change.
+	* Master/clibrary.make ($(CLIBRARY_NAME)): Same change.
+	* Master/ctool.make ($(CTOOL_NAME)): Same change.
+	* Master/framework.make ($(FRAMEWORK_NAME)): Same change.
+	* Master/gswapp.make ($(GSWAPP_NAME)): Same change.
+	* Master/gswbundle.make ($(GSWBUNDLE_NAME)): Same change.
+	* Master/java.make ($(JAVA_PACKAGE_NAME)): Same change.
+	* Master/java-tool.make ($(JAVA_TOOL_NAME)): Same change.
+	* Master/library.make ($(LIBRARY_NAME)): Same change.
+	* Master/objc.make ($(OBJC_PROGRAM_NAME)): Same change.
+	* Master/palette.make ($(PALETTE_NAME)): Same change.
+	* Master/service.make ($(SERVICE_NAME)): Same change.
+	* Master/subproject.make ($(SUBPROJECT_NAME)): Same change.
+	* Master/test-application.make ($(TEST_APP_NAME)): Same change.
+	* Master/test-library.make ($(TEST_LIBRARY_NAME)): Same change.
+	* Master/test-tool.make ($(TEST_TOOL_NAME)): Same change.
+	* Master/tool.make ($(TOOL_NAME)): Same change.
+
+	* Master/test-application.make ($(TEST_APP_NAME)): Make it a :
+	rule, not a :: rule.
+	* Master/test-library.make ($(TEST_LIBRARY_NAME)): Same change.	
+	* Master/test-tool.make ($(TEST_TOOL_NAME)): Same change.
+	
+2010-02-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Master/application.make (.PHONY): Declare the new
+	internal-master-app-all target as PHONY.
+	* Master/bundle.make: Similar change.
+	* Master/clibrary.make: Similar change.
+	* Master/ctool.make: Similar change.
+	* Master/gswapp.make: Similar change.
+	* Master/gswbundle.make: Similar change.
+	* Master/library.make: Similar change.
+	* Master/objc.make: Similar change.
+	* Master/palette.make: Similar change.	
+	* Master/service.make: Similar change.		
+	* Master/test-application.make: Similar change.
+	* Master/test-library.make: Similar change.
+	* Master/test-tool.make: Similar change.	
+	* Master/tool.make: Similar change.
+	
+2010-02-13  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Master/parallel-subdirectories.make (internal-install
+	internal-uninstall): Install and uninstall in non-parallel mode to
+	avoid any race conditions when installing or uninstalling.
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented new API to build subdirectories.  aggregate.make is
+	still available for backwards-compatibility, but moving forward
+	serial-subdirectories.make and parallel-subdirectories.make will
+	be used (and can be mixed in the same GNUmakefile!) to build
+	subdirectories, clearly specifying if subdirectories are to build
+	serially or in parallel.
+	* aggregate.make: File rewritten to be a wrapper around
+	serial-subdirectories.make and parallel-subdirectories.make
+	* parallel-subdirectories.make: New file.
+	* serial-subdirectories.make: New file.
+	* Master/aggregate.make: File removed.
+	* Master/parallel-subdirectories.make: New file.
+	* Master/serial-subdirectories.make: New file.
+	* messages.make (ECHO_MAKING_OPERATION_IN_DIRECTORY): New message
+	used by the new subdirectories code.
+	* GNUmakefile.in (MAKE_FILES, MASTER_MAKE_FILES): Updated lists of
+	makefiles.
+	
+	* Documentation/releasenotes.texi: Updated with new changes.
+	Also, refer to the next release as 2.4.0 instead of 2.2.1.
+	* Documentation/news.texi: Same changes.
+	* RELEASENOTES: Regenerated.
+	* NEWS: Regenerated.	
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented parallel building of aggregate projects.  Whenever you
+	use aggregate.make, you can set "GNUSTEP_USE_PARALLEL_AGGREGATE =
+	yes" to have the aggregate projects built in parallel.
+	* Master/aggregate.make (GNUSTEP_USE_PARALLEL_AGGREGATE): New
+	variable.  If it is set to yes, run a parallel submake to build
+	the aggregate projects. (internal-master-aggregate-*): New rules.
+	(%.aggregate): New rule.
+
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* messages.make (ECHO_JAVADOC): New variable.
+	* Instance/Documentation/javadoc.make (INTERNAL_JAVADOCFLAGS):
+	Unless messages=yes is being used, use -quiet flag to keep javadoc
+	quiet.  Use ECHO_JAVADOC to print a line saying we are generating
+	the javadoc documentation.
+
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented parallelizing builds of multiple instances of
+	everything, except for frameworks, documentation, resource sets
+	and java.
+	* rules (GNUSTEP_BUILD_DIR, GNUSTEP_OBJ_DIR): Removed rules to
+	create these directories.
+	* Master/rules.make (GNUSTEP_BUILD_DIR, GNUSTEP_OBJ_DIR): Moved
+	here the rule to create these directories.
+	* Master/rules.make: Updated all rules to pass
+	_GNUSTEP_MAKE_PARALLEL=no to submakes.
+	
+	* Master/application.make (internal-all): Support parallel
+	building.  Depend on GNUSTEP_OBJ_DIR.  (APP_NAME): Depend on
+	GNUSTEP_OBJ_DIR.
+	* Master/bundle.make: Same changes.
+	* Master/clibrary.make: Same changes.
+	* Master/ctool.make: Same changes.
+	* Master/gswapp.make: Same changes.
+	* Master/gsbundle.make: Same changes.
+	* Master/library.make: Same changes.
+	* Master/objc.make: Same changes.
+	* Master/palette.make: Same changes.
+	* Master/service.make: Same changes.
+	* Master/test-application.make: Same changes.
+	* Master/test-library.make: Same changes.
+	* Master/test-tool.make: Same changes.
+
+	* Master/tool.make (internal-all): Depend on GNUSTEP_OBJ_DIR.
+	(TOOL_NAME): Depend on GNUSTEP_OBJ_DIR.
+	* Master/framework.make: Same changes.
+	* Master/subproject.make: Same changes.
+
+	* Master/tool.name (TOOL_NAME): Set after including rules.make for
+	consistency with other make fragments.
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>	
+
+	Create separate directories to store the object files of each
+	instance.  This allows to safely parallelize building different
+	instances.
+	* common.make (GNUSTEP_OBJ_INSTANCE_DIR,
+	GNUSTEP_OBJ_INSTANCE_DIR_NAME): New variables.
+	* rules.make: Include rules to compile C/ObjC/C++/ObjC++/.rc and
+	to precompile headers only in the Instance invocation.  Updated
+	all rules to store object files into GNUSTEP_OBJ_INSTANCE_DIR
+	instead of GNUSTEP_OBJ_DIR.
+	* Instance/rules.make (GNUSTEP_OBJ_INSTANCE_DIR): New rule.
+	Updated the whole file to put all object files in
+	GNUSTEP_OBJ_INSTANCE_DIR instead of GNUSTEP_OBJ_DIR.
+	(OBJ_DIRS_TO_CREATE): Do not ignore failures any more when
+	building in parallel.
+	* Instance/application.make (internal-app-all_): Depend on
+	GNUSTEP_OBJ_INSTANCE_DIR instead of GNUSTEP_OBJ_DIR.
+	* Instance/bundle.make: Same change.
+	* Instance/ctool.make: Same change.
+	* Instance/framework.make: Same change.	
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/objc.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/service.make: Same change.
+	* Instance/subproject.make: Same change.
+	* Instance/tool.make: Same change.
+	* Instance/framework.make (DUMMY_FRAMEWORK_OBJ_FILE): Put
+	DUMMY_FRAMEWORK_OBJ_FILE inside GNUSTEP_OBJ_INSTANCE_DIR instead
+	of GNUSTEP_OBJ_DIR.
+
+	* Instance/ctool.make
+	($(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)): Do not depend
+	on OBJC_DIRS_TO_CREATE.
+	* Instance/rules.make (OBJ_FILES_TO_LINK_THAT_WE_CREATE): New
+	variable used to prevent spurious attempts to create subproject
+	object directories.
+	
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/clibrary.mak: Added "# -*-makefile-*-" on the first
+	line for emacs.
+	* Instance/rules.make: Same change.	
+	* Instance/test-library.make: Same change.
+	* Master/*.make: Same change.
+
+2010-02-12  Nicola Pero  <nicola.pero@meta-innovation.com>	
+
+	* Master/aggregate.make (AGGREGATE_PROJECTS): Recognize the
+	AGGREGATE_PROJECTS variable for compatibility with future
+	gnustep-makes where SUBPROJECTS will be removed and replaced by
+	AGGREGATE_PROJECTS.
+
+2010-02-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented experimental support for parallelizing building
+	different tools.  For example, if you have "TOOL_NAME = autogsdoc
+	cvtenc", the two tools are now built in parallel when you specify
+	'make -j 2'.  Warning: this means the order in which tools are
+	built is no longer guaranteed.
+	* Master/tool.make (internal-all): When parallel building is
+	enabled, fire off a _GNUSTEP_MAKE_PARALLEL=yes sub-make to build.
+	(internal-master-tool-all): New target used by the
+	_GNUSTEP_MAKE_PARALLEL=yes sub-make when parallel building is
+	enabled.
+	* Instance/rules.make (OBJ_DIRS_TO_CREATE): When building in
+	parallel, ignore failures to create an object subdirectory.
+	* Documentation/releasenotes.texi: Updated.
+	* Documentation/RELEASENOTES: Regenerated.
+	* RELEASENOTES: Updated.
+	
+2010-02-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Added support for having header files in sub-subdirectories.  Just
+	list them as in xxx_HEADER_FILES = Beauty/Vanity.h.
+	* Instance/Shared/headers.make (HEADER_SUBDIRS): New variable.
+	(HEADER_INSTALL_DIRS_TO_CREATE): New variable.
+	(shared-instance-headers-install): Create all the required
+	subdirectories in the header install directory.
+	($(HEADER_INSTALL_DIRS_TO_CREATE)): New rule.
+	($(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR)): Rule removed.
+	(shared-instance-headers-uninstall): Remove all the subdirectories
+	in the header install directory.
+	* Instance/framework.make (FRAMEWORK_HEADER_SUBDIRS): New
+	variable.  (internal-framework-build-headers): Depend on
+	FRAMEWORK_HEADER_SUBDIRS.  ($(FRAMEWORK_HEADER_SUBDIRS)): New
+	rule.
+	* Instance/subproject.make (HEADER_SUBDIRS): Set variable when
+	OWNING_PROJECT_HEADER_DIR_NAME is set.
+	(OWNING_PROJECT_HEADER_SUBDIRS): New variable when
+	OWNING_PROJECT_HEADER_DIR_NAME is set.
+	(internal-subproject-build-headers): Depend on
+	OWNING_PROJECT_HEADER_SUBDIRS when OWNING_PROJECT_HEADER_DIR_NAME
+	is set.
+	($(OWNING_PROJECT_HEADER_SUBDIRS)): New rule when
+	OWNING_PROJECT_HEADER_DIR_NAME is set.
+	
+	Implemented HEADER_FILES_DIR for framework subprojects.
+	* Instance/subproject.make (HEADER_FILES_DIR): Set this variable
+	when OWNING_PROJECT_HEADER_DIR_NAME is set.
+	($(OWNING_PROJECT_HEADER_DIR)/%.h): Support HEADER_FILES_DIR when
+	OWNIN_PROJECT_HEADER_DIR_NAME is set.
+
+	* Documentation/releasenotes.texi: Updated release notes.
+	* RELEASENOTES: Updated.
+
+	* Documentation/news.texi: Added news for 2.2.1.
+	* NEWS: Updated.
+	
+2009-10-26  Adam Fedor  <fedor@gnu.org>
+
+	* Instance/application.make: Replace deprecated Windows GUI flag.
+
+2009-10-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Added support for having source files in subdirectories without
+	using a subproject.  Just list them as in xxx_OBJC_FILES =
+	Source/Beauty.m.
+	* Instance/rules.make (OBJ_DIRS_TO_CREATE): New variables computed
+	from OBJ_FILES_TO_LINK.  ($(OBJ_DIRS_TO_CREATE)): New rule to
+	create the directories.
+	* Instance/application.make (internal-app-all_): Depend on
+	OBJ_DIRS_TO_CREATE.
+	* Instance/bundle.make (internal-bundle-all_): Same change.
+	* Instance/ctool.make (internal-ctool-all_): Same change.	
+	* Instance/framework.make (internal-framework-all_): Same change.
+	* Instance/gswapp.make (internal-gswapp-all_): Same change.
+	* Instance/gswbundle.make (internal-gswbundle-all_): Same change.
+	* Instance/objc.make (internal-objc_program-all_): Same change.
+	* Instance/palette.make (internal-palette-all_): Same change.
+	* Instance/service.make (internal-service-all_): Same change.
+	* Instance/subproject.make (internal-subproject-all_): Same change.
+	* Instance/tool.make (internal-tool-all_): Same change.
+
+2009-10-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Try to warn users if they create their own Info-gnustep.plist file
+	instead of providing an xxxInfo.plist file.
+	* Instance/application.make (internal-app-all_): If
+	Info-gnustep.plist is specified in xxx_RESOURCE_FILES, print a
+	warning recommending to use xxxInfo.plist instead.
+	* Instance/bundle.make (internal-bundle-all_): Same change.
+	* Instance/framework.make (internal-framework-all_): Same change.
+	* Instance/palette.make (internal-palette-all_): Same change.	
+	* Instance/service.make (internal-service-all_): Same change.
+	* messages.make: Added new warning messages.
+
+	* Instance/application.make ($(GNUSTEP_INSTANCE).desktop): Do not
+	attempt to create this file on Apple.
+	
+2009-10-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented batch-compilation of Java files (ie, all files built
+	in a single javac invocation) to speed up building Java software.
+	In the large Java project I used as a test case, this change
+	produced a 5x reduction in building time.
+	* rules.make (%.class): If BATCH_COMPILE_JAVA_FILES is not set to
+	no, and JAVA_FILES_TO_BATCH_COMPILE is set and the file we're
+	compiling is in that variable, do a batch compile instead of a
+	single-file compile.
+	* messages.make (INSIDE_ECHO_JAVA_COMPILING): New message.
+	(INSIDE_ECHO_JAVA_BATCH_COMPILING): New message.
+	* Instance/Shared/java.make: If appropriate, set
+	JAVA_FILES_TO_BATCH_COMPILE to the list of files we want to batch
+	compile.
+	($(GNUSTEP_INSTANCE)_BATCH_COMPILE_JAVA_FILES): New variable
+	allowing to disable the batch compilation of Java files if needed.
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+	
+2009-09-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Turn off autodependencies on cygwin.
+	* configure: Regenerated.
+	
+2009-09-20  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac (--enable-debug-by-default): New option which
+	allows you to change if gnustep-make should build with debug=yes
+	or debug=no by default.  Store the configuration choice in
+	GNUSTEP_DEFAULT_DEBUG. Make debug=no the default, so that normally
+	-g -O2 is the default set of compilation flags used.
+	* configure: Regenerated.
+	* common.make: If the 'debug' variable is empty, set it to
+	GNUSTEP_DEFAULT_DEBUG.  If debug=yes, filter the -O% flags.
+	(ADDITIONAL_FLAGS): If debug=yes, only add -g if it is not already
+	present in OPTFLAG.
+	* config.make.in (GNUSTEP_DEFAULT_DEBUG): New variable.
+	* Documentation/releasenotes.texi: Updated release notes.
+	* RELEASENOTES: Regenerated.
+	
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/Documentation/texi.make ($(GNUSTEP_INSTANCE)_toc.html):
+	Changed to be $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html to
+	match what texi2html is currently doing.  This should prevent
+	pointless rebuilds of html documentation from texi documentation.
+	(internal-doc-all_): Updated dependencies for this change.
+	
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/releasenotes.texi: Updated release notes.
+	* RELEASENOTES: Regenerated.
+
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Renamed all info files by adding a gnustep- prefix so that there
+	is no chance of conflicts with info files from other software
+	(Suggestion from Michel Alexandre Salim
+	<salimma@fedoraproject.org>).
+	* Documentation/faq.texi: Renamed to gnustep-faq.texi.
+	* Documentation/filesystem.texi: Renamed to
+	gnustep-filesystem.texi.  Removed @setfilename.
+	* Documentation/internals.tex: Renamed to gnustep-internals.tex.
+	* Documentation/machines.texi: Renamed to gnustep-machines.texi.
+	Removed @setfilename.
+	* Documentation/gnustep-howto.texi: Updated include of 
+	machines.texi to include gnustep-machines.texi.
+	* Documentation/GNUmakefile: Updated for changes.
+
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/documentation.make: Moved internal-textdoc-install_,
+	internal-textdoc-uninstall_, internal-textdoc-clean,
+	internal-textdoc-distclean to Instance/Documentation/texi.make.
+	* Instance/Documentation/texi.make (internal-doc-clean): Remove
+	the GNUSTEP_INSTANCE directory if empty.
+	
+2009-09-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/gnustep.init: Terminate the file with '1;', as
+	required by Perl, fixing building the documentation (tested with
+	Perl 5.8.8 and texinfo 1.76).
+
+2009-09-17  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: Fix debug build ... somehow filtering out of the -O
+	flag got lost, preventing effective debugging with gdb when debug=yes
+
+2009-09-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/releasenotes.texi: Fixed typo in the release notes
+	for gnustep-make 2.0.6 (reported by Michel Alexandre Salim
+	<salimma@fedoraproject.org>).
+	* RELEASENOTES: Regenerated.
+	
+2009-09-01  Riccardo Mottola <rmottola@users.sf.net>
+
+	Patch from Yaakov Selkowitz <yselkowitz@yahoo.com>:
+	Update and un-Win32-ify Cygwin rules.
+	* common.make: MinGW path issues do not apply to Cygwin.
+	* config.make.in: Cygwin supports symlinks now.
+	* rules.make, Instance/rules.make: Don't use windres on Cygwin, as it uses X11.
+	* target.make: Cygwin does not require -lm.
+
+2009-08-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Patch from Yaakov Selkowitz <yselkowitz@yahoo.com>:
+	* target.make: On Cygwin, use -Wl,--enable-auto-image-import
+	instead of manually rebasing; define DLL_PREFIX to be 'cyg' to
+	match Cygwin conventions and fixed typo in
+	--Wl,-enable-whole-archive option.
+	* Instance/library.make: Prepend DLL_PREFIX when creating a dll.
+	* Instance.framework.make: Same change.
+
+2009-08-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* common.make: Do not filter out the -Ox flags when debug=yes.
+	This means debug=yes now uses "-g -O2" by default - instead of
+	just "-g" (Suggestion by Yavor Doganov <yavor@gnu.org>).
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+
+2009-05-09  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.2.0
+
+2009-05-06  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/news.texi, Documentation/releasenotes.texi: Update.
+
+2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (OBJC_LIB_FLAG): Set OBJC_LIB_FLAG here.
+	* library-combo.make: Do not set it here.
+
+2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac, library-combo.make: Fixed to automatically use
+	-lobjc_gc for the GNU Objective-C runtime with garbage collection
+	if no --with-objc-lib-flag=... is used in configure.
+	* configure: Regenerated.
+
+2009-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	From a suggestion by Truls Becken <truls.becken@gmail.com>:
+	* configure.ac (--with-objc-lib-flag): New option allowing to
+	replace the default -lobjc flag with a custom one such as
+	-l:libobjc.so.1, which can be used on some platforms to require
+	linking a specific version of libobjc - a handy trick when you
+	have more than one installed.
+	* configure: Regenerated.
+	* config.make.in (OBJC_LIB_FLAG): New variable.
+	* library-combo.make: Use OBJC_LIB_FLAG instead of -lobjc.
+	
+2009-03-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed compiling software that contains both C/ObjC and C++/ObjC++
+	files: use CC to compile C and ObjC files even if CXX is used to
+	link.  (Problem reported by Riccardo Mottola <multix@gmail.com>).
+	* target.make: Replaced CC with LD everywhere it is used to link -
+	so that we can change the program used to link (LD) without having
+	to change the program used to compile C/ObjC code (CC).
+	* Instance/rules.make (LD): If CC_OBJ_FILES or OBJCC_OBJ_FILES is
+	not empty, set LD to be CXX, while leaving CC unchanged.
+	
+2009-03-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Print a user-friendly warning or notice message when there are no
+	files to link.
+	* messages.make (WARNING_EMPTY_LINKING, NOTICE_EMPTY_LINKING): New
+	messages.
+	* Instance/application.make: Print out the WARNING_EMPTY_LINKING
+	message if we're linking but there are no files to link.
+	* Instance/ctool.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/objc.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/service.make: Same change.
+	* Instance/subproject.make: Same change.
+	* Instance/tool.make: Same change.
+
+	* Instance/bundle.make: Same change but use the
+	NOTICE_EMPTY_LINKING message.
+	
+2009-02-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.Packaging: File removed - moved it
+	top-level to README.Packaging.
+	* README.Packaging: New file.
+	
+2009-02-25  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* common.make: When printing "This is gnustep-make 2.0.9.  Type
+	'make print-gnustep-make-help' for help.", make sure we replace
+	'make' with whatever command was used to invoke GNU make (eg, on
+	OpenBSD it is often gmake instead of make). Issue reported by
+	Sebastian Reitenbach <buzzdee@web.de>.
+
+2009-02-25  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.Packaging (GETTING HELP): New section.
+
+2009-02-23  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac (GNUSTEP_MAKE_PARALLEL_BUILDING): Enable parallel
+	building support by default.  From now on, you only need to use
+	eg 'make -j 2' to build something using parallel building.  Updated
+	documentation.
+	* configure: Regenerated.
+
+	* Instance/application.make (.PHONY): Added
+	internal-app-run-compile-submake and internal-app-compile.
+	* Instance/bundle.make (.PHONY): Similar change.
+	* Instance/ctool.make (.PHONY): Similar change.
+	* Instance/framework.make (.PHONY): Similar change.
+	* Instance/library.make (.PHONY): Similar change.
+	* Instance/objc.make (.PHONY): Similar change.
+	* Instance/palette.make (.PHONY): Same change.
+	* Instance/service.make (.PHONY): Same change.
+	* Instance/subproject.make (.PHONY): Same change.
+	* Instance/tool.make (.PHONY): Same change.
+	
+2009-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Extended experimental parallel building support to most project
+	types.  You can use 'make GNUSTEP_MAKE_PARALLEL_BUILDING=YES -j2'
+	to try out the new parallel building support.
+	* Instance/application.make (internal-app-run-compile-submake):
+	New target with separate implementations to support parallel and
+	non-parallel building.
+	(internal-app-compile): New target.
+	(internal-app-all_): Depend on internal-app-run-compile-submake
+	instead of APP_FILE.
+	* Instance/bundle.make (internal-bundle-run-compile-submake),
+	(internal-bundle-compile), (internal-bundle-all_): Same changes.
+	* Instance/framework.make
+	(internal-framework-run-compile-submake),
+	(internal-framework-compile), (build-framework): Same changes.
+	* Instance/palette.make (internal-palette-run-compile-submake),
+	(internal-palette-compile), (internal-palette-all_): Same changes.
+	* Instance/service.make (internal-service-run-compile-submake),
+	(internal-service-compile), (internal-service-all_): Same changes.	
+	
+	* Instance/ctool.make (internal-ctool-all_): When doing a parallel
+	build, use a submake 'compile' invocation to compile.
+	(internal-ctool-compile): New target for the 'compile' invocation.
+	* Instance/objc.make (internal-objc_program-all_),
+	(internal-objc_program-compile): Same changes.
+	* Instance/subproject.make (internal-subproject-all_),
+	(internal-subproject-compile): Same changes.
+	
+2009-02-16  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/library.make (internal-library-all_): Fixed
+	GNUSTEP_OPERATION used in submake invocation when doing a parallel
+	build.
+	* Instance/tool.make (internal-tool-all_): Same change.
+
+2009-02-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Added experimental support for parallel building of libraries and
+	tools.  We can extend it to more project types once the concept is
+	proven to work.
+	* configure.ac (--enable-parallel-building): New experimental
+	option, disabled by default.
+	* configure: Regenerated.
+	* config-noarch.make.in (GNUSTEP_MAKE_PARALLEL_BUILDING): New
+	variable.
+	* rules.make (.NOTPARALLEL): Do not create this rule when parallel
+	building is enabled, and we are doing the final compile sub-make
+	invocation that is expected to build in parallel.
+	* Instance/library.make (internal-library-all_): When doing a
+	parallel build, delegate the building of the final object file to
+	a sub-make 'compile' invocation that can safely build in parallel.
+	(internal-library-compile): New target executed in the parallel
+	invocation.
+	* Instance/tool.make (internal-tool-all_): Same.
+	(internal-tool-compile): Same.
+
+2009-02-08  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-make-help: Use _MAKE_ instead of make when referring to
+	the GNU make program.
+	* rules.make (print-gnustep-make-help): Replace _MAKE_ with the
+	basename of $(MAKE) when printing the help, so that on different
+	systems the correct name for GNU make is used in the help.  For
+	example, on OpenBSD it should be 'gmake', not 'make'.  Issue
+	reported by Sebastian Reitenbach <buzzdee@web.de>.
+
+2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/releasenotes.texi: Updated.
+	* RELEASENOTES: Regenerated.
+
+2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	This change means that file timestamps are more likely to be
+	preserved when files are installed.  For example, if you reinstall
+	a library without having changed the headers, this should/might
+	prevent code using the library headers from being rebuilt.
+	* configure.ac: Check if 'install -p' works.  If it works, use it
+	by default.  Added --disable-install-p option to revert to the
+	previous behaviour of using 'install' instead of 'install -p'.
+	* configure: Regenerated
+	* config-install-p-test/: New directory.
+	* config-install-p-test/run-test.sh: New file.
+	* config-install-p-test/config-install-p-test-file: New file.
+	
+2009-02-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: On MinGW, do not set INSTALL to 'install -p'.
+	Prefer the install program chosen by configure, which has a full
+	path (typically '/bin/install -c') and so it is safer.
+	* configure: Regenerated.
+
+2009-01-31  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Updated installation instructions.
+	In particular, use MinGW 5.1.4 instead of 5.1.3.
+
+2009-01-28  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* rules.make (.NOTPARALLEL): Added target.  It should turn off
+	parallel building - which does not work with gnustep-make - even
+	when specified on the command-line as 'make -j'.
+
+2009-01-28  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Instance/resource-set.make (internal-resource_set-uninstall_):
+	Rewritten to be much more accurate.  In particular it now removes
+	LOCALIZED_RESOURCE_DIRS and RESOURCE_DIRS.
+	* Instance/Shared/headers.make
+	(shared-instance-headers-uninstall): Remove
+	GNUSTEP_HEADERS/HEADER_FILES_INSTALL_DIR if it is empty.
+	* Instance/rules.make (internal-$(GNUSTEP_TYPE)-uninstall): Remove
+	the $(GNUSTEP_INSTANCE)_INSTALL_DIRS if empty.
+	($(GNUSTEP_INSTANCE)_INSTALL_DIRS): New rule replacing the one for
+	ADDITIONAL_INSTALL_DIRS, moved into the Master invocation.
+	Do not add $(GNUSTEP_INSTANCE)_INSTALL_DIRS to
+	ADDITIONAL_INSTALL_DIRS.
+	* Master/rules.make (uninstall): Depend on
+	internal-after-uninstall.
+	(internal-after-uninstall): New rule to remove
+	ADDITIONAL_INSTALL_DIRS if empty.
+	($(ADDITIONAL_INSTALL_DIRS)): New rule.
+	(internal-before-install): New rule.  Depend on
+	ADDITIONAL_INSTALL_DIRS.
+	(install): Depend on internal-before-install.
+	
+2009-01-28  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* rules.make: Replaced ${OEXT} with the equivalent syntax $(OEXT)
+	to be consistent with the rest of the code.
+	
+2009-01-25  Adam Fedor  <fedor@gnu.org>
+
+	* configure.ac: Add PATH to custom objc library on MinGW (Fix
+	for Bug #25394)
+
+2009-01-22  Adam Fedor  <fedor@gnu.org>
+
+	* target.make (darwin): Don't use -flat_namespace
+
+2009-01-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* rule.make (.DELETE_ON_ERROR): Added target.  It should cause GNU
+	make to react more intelligently to errors.
+
+2009-01-11  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* configure:
+	* library-combo.make:
+	* config.make.in:
+	* common.make:
+	Simplify GC changes.
+
+2009-01-10  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Check for objc garbage collection.
+	* config.make.in: Define whether we are using GC.
+	* configure: Regenerate.
+	Initial move towards getting gc working again after years of disuse.
+
+2009-01-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (uninstall): Run each 'rmdir' as a separate
+	command.
+
+2009-01-07  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.Packaging: Mention clearly setting
+	GNUSTEP_INSTALLATION_DOMAIN in the environment before
+	configuring gnustep-base.
+
+2009-01-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MinGW: Fix error in path to install gnutls.
+	
+2009-01-06  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.0.8
+
+2008-12-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-config.in: Added -s option when invoking make, fixing
+	the problems with spurious output when gnustep-config was used in
+	a process spawned by a makefile (eg, configure in gnustep-base
+	when triggered by its Makefile.postamble).
+
+2008-12-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-config.in: Added new --installation-domain-for=xxx option.
+	* rules.make (print-gnustep-make-installation-domain): New target.
+
+2008-12-21  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.0.7
+
+2008-12-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* installation-domains.conf: Added gnustep-objc to the System
+	packages.
+	
+2008-12-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	New configuration file that allows hardcore developers building
+	everything from source to specify arbitrary default installation
+	domains for the software.  You just need to copy the
+	installation-domains.conf file to the same directory as the
+	GNUstep.conf file, and edit it to customize the default
+	installation domain (Thanks to Richard for the idea).
+
+	* common.make: Read installation-domains.conf file if it exists,
+	and use it to customize the default installation domains.
+	* installation-domains.conf: New file.
+
+	Reverted last change.
+	* configure.ac: Removed option --disable-packages.
+	* configure: Regenerated.
+	* config-noarch.make.in: Removed
+	GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN.
+	* common.make: Reverted last change.
+	
+2008-12-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: New option --disable-packages that causes
+	gnustep-make to assume packages are never involved, so it defaults
+	to installing 'core' software into System by default.
+	* configure: Regenerated.
+	* config-noarch.make.in: Added new variable
+	GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN.
+	* common.make: If GNUSTEP_INSTALLATION_DOMAIN is not set,
+	GNUSTEP_INSTALL_CORE_INTO_SYSTEM_DOMAIN is set to 'YES' and
+	GNUSTEP_CORE_SOFTWARE is set to 'YES', set
+	GNUSTEP_INSTALLATION_DOMAIN to SYSTEM.
+	
+2008-12-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.Packaging: New file providing complete
+	instructions and recommendations on how to create GNUstep
+	packages.
+	
+2008-12-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MingW: Fix missing part of ffi
+	instructions.
+
+2008-12-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUstep.sh.in:
+	* GNUstep.csh.in:
+	Fix the code for detecting path fragments within a path ... it was
+	just grepping for the fragments without delimiters, so it would think
+	a fragment was present if that fragment happened to be a substring of
+	something which was present.
+	eg. if /usr/GNUstep/Local/Tools/Admin was present, then it would think
+	that /usr/GNUstep/Local/Tools was also present.
+
+2008-11-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* print_unique_pathlist.sh: Reverse the order of the path fragments
+	so that, when the caller iterates through them and prepends them to
+	other paths, they end up prepended in the correct order.
+
+2008-11-13  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/README.MingW: Change instructions to use libffi
+
+2008-11-06  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* GNUstep.csh.in: Fix incorrect case pattern which causes
+	initialization of DYLD_LIBRARY_PATH on Darwin and NEXTSTEP systems
+	to be skipped.
+
+2008-10-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Disable precompiled headers on gcc 4.1 since
+	there is no reliable ways to determine if they work or not.
+	* configure: Regenerated.
+
+2008-10-27  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Added special case when checking for thread
+	support on Apple OS X - it should now detect that Apple OS X
+	supports threads but needs no threading library specified.  This
+	implicitly fixes the following check for native ObjC exceptions.
+	* configure: Regenerated.
+	* config_thread.m: Rewritten Apple runtime case to use pthread
+	directly.
+
+2008-10-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/releasenotes.texi: Updated for latest changes.
+	* RELEASENOTES: Regenerated.
+
+2008-10-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented suggestion from David Chisnall <theraven@sucs.org> of
+	using --no-print-directory for recursive make.
+	* common.make (GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG): New variable.
+	Set it to --no-print-directory unless messages=yes.
+	* Master/aggregate.make: Use it when doing recursive invocations
+	that change directory.
+	* Master/rules.make: Same change.
+	
+2008-10-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed problem reported by Funda Wang <fundawang@gmail.com>.
+	* GNUstep.sh.in: When adding paths to PATH, CLASSPATH,
+	GUILE_LOAD_PATH and INFOPATH, check that each path is not already
+	there before adding it.  Previously we were checking, but checking
+	the whole string of paths as a single unit; the new code works
+	much better when some of the paths, but not all of them, are
+	already there.  Reduced the number of loops and variables.
+	Inlined code from ld_lib_path.sh, and rewritten it completely to
+	check every single library and framework path before adding it to
+	the library path variables.  Avoid executing any of the framework
+	code unless we are on Darwin.
+	* ld_lib_path.sh: File removed.
+
+	* GNUstep.csh.in: Same changes as for GNUstep.sh.in.
+	* ld_lib_path.csh: File removed.
+
+	* GNUmakefile.in (install): Do not install ld_lib_path.sh and
+	ld_lib_path.csh.
+	(uninstall): Do not uninstall ld_lib_path.csh.
+	
+2008-07-22  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Keep better track of the original source file used to compile each
+	object file, so that you can have both file.c and file.m in the
+	same project (suggestion by David Chisnall <theraven@sucs.org>).
+	* rules.make: Changed rules so that they dictate how to create
+	for example %.m.o from %.m instead of just %.o from %.m.
+	* Instance/rules.make: Changed all xxx_OBJS variables so that they
+	retain the original extension; for example, OBJC_OBJS now contains
+	%.m.o instead of just %.o.
+	
+2008-07-21  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed bug reported by Marko Riedel <markoriedelde@yahoo.de> where
+	test-applications are not linked against the gui library by
+	default.
+	* Instance/test-application.make (NEEDS_GUI): Set to 'yes'.
+	* Instance/test-tool.make (NEEDS_GUI): Set to 'no'.
+	* Instance/tool.make (NEEDS_GUI): Use 'no' instead of 'NO' for 
+	consistency.
+
+2008-07-17  Adam Fedor  <fedor@gnu.org>
+
+	* Documentation/machines.texi: Update
+
+2008-06-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* gnustep-make-help: Mention the MAKEFILE_NAME variable that can
+	be used to use makefiles with a name different from the default
+	'GNUmakefile'.
+
+2008-06-17  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* gnustep-config.in: Fixup assignment to gs_variable_value with
+	code which works with more shells (bug #23618).
+	Solution suggested by Hubert Chathi.
+
+2008-06-14  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.0.6
+
+2008-06-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/make.texi: Renamed to gnustep-make.texi.
+	* Documentation/gnustep-make.texi: New file.
+	* Documentation/GNUmakefile: Corresponding updates.
+	(Patch by Gareth Armstrong <gareth.armstrong@hp.com>)
+	
+	* Documentation/releasenotes.texi: Mention that the
+	make.info file was renamed to gnustep-make.info.
+	* RELEASENOTES: Regenerated.
+
+2008-06-10  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* openapp.in: Avoid 'echo -e' which is not portable (Suggestion
+	from Hubert Chathi <uhoreg@debian.org>)
+
+2008-05-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.guess, config.sub: Updated to latest version.
+
+2008-05-25  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed cases where ./configure wouldn't detect that the compiler
+	supported auto-dependencies.
+	* configure.ac: Fixed regular expression to determine the 
+	GCC version.  If was failing when the string terminated at
+	the minor version.
+	* configure: Regenerated.
+
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed occasional spurious rebuilds of Info-gnustep.plist and
+	Info.plist files.
+	* Instance/bundle.make (build-bundle): Swapped the order of the
+	shared-instance-bundle-all and $(BUNDLE_INFO_PLIST_FILE)
+	dependencies.
+	(Info.plist, Info-gnustep.plist): Do not depend on building the
+	directory containing the plist file first.
+	* Instance/framework.make (Info.plist, Info-gnustep.plist): Do not
+	depend on creating the directory containing the plist file first.
+	
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* messages.make (ECHO_UPDATING_VERSION_SYMLINK): Added definition
+	for messages=no.  (ECHO_CREATING_STAMP_FILE): New variable.
+	* Instance/Shared/stamp-string.make
+	(shared-instance-stamp-string): Use ECHO_CREATING_STAMP_FILE
+	instead of ECHO_NOTHING.
+
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed occasional spurious rebuilds of framework headers; improved
+	display of messages when building framework headers.
+	* Instance/framework.make (internal-framework-build-headers):
+	Depend on $(FRAMEWORK_VERSION_DIR)/Headers.
+	($(FRAMEWORK_VERSION_DIR)/Headers/%.h): Do not depend on
+	$(FRAMEWORK_VERSION_DIR)/Headers.
+	(build-framework-dirs): Do not depend on
+	$(FRAMEWORK_VERSION_DIR)/Headers.
+	* Instance/subproject.make (internal-subproject-build-headers):
+	Depend on $(OWNING_PROJECT_HEADER_DIR).
+	($(OWNING_PROJECT_HEADER_DIR)/%.h): Do not depend on
+	$(OWNING_PROJECT_HEADER_DIR).
+	
+	* Instance/framework.make ($(FRAMEWORK_DIR)/Versions/Current): Use
+	ECHO_UPDATING_VERSION_SYMLINK instead of ECHO_NOTHING.
+	($(FRAMEWORK_VERSION_DIR)/Headers/%.h): Use ECHO_CREATING instead
+	of ECHO_NOTHING.
+	* Instance/subproject.make ($(OWNING_PROJECT_HEADER_DIR)/%.h): Use 
+	ECHO_CREATING instead of ECHO_NOTHING.
+	* Instance/messages.make: Added ECHO_UPDATING_VERSION_SYMLINK.
+	
+2008-05-24  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (all): Use $(MAKE) instead of make when printing
+	help message, so it prints the correct command on systems where
+	'gmake' needs to be used instead 'make'. (Patch by Sebastian
+	Reitenbach <buzzdee@web.de>).
+
+2008-05-22  Blake Nicholson <blaken@umich.edu>
+
+	* configure.ac: Added the --enable-absolute-install-paths option.
+	* configure: Regenerated.
+	* config.make.in: Added GNUSTEP_ABSOLUTE_INSTALL_PATHS.
+	* Instance/library.make, Instance/framework.make: Change
+	LIB_LINK_INSTALL_NAME to an absolute path if
+	GNUSTEP_ABSOLUTE_INSTALL_PATHS is 'yes' in darwin.
+	* Documentation/releasenotes.texi: Updated to reflect changes.
+	* RELEASENOTES: Regenerated.
+
+2008-05-18  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* configure.ac: Install GNUstep.conf in /etc/GNUstep/GNUstep.conf
+	on OpenBSD, FreeBSD and NetBSD.  Packagers are free to install the
+	configuration file wherever it best suits them; but for simplicity
+	and consistency if gnustep-make is compiled from source and
+	nothing else is specified, we default to /etc/GNUstep/GNUstep.conf
+	on all systems.
+	* configure: Regenerated.
+	* Documentation/releasenotes.texi: Describe change.
+	* RELEASENOTES: Regenerated.
+	
+2008-03-30  Nicola Pero  <nicola.pero@meta-innovation.com>
+	
+	* clean_os.sh: Support new versions of Darwin, and future ones as
+	well.  Patch by Blake Nicholson <blaken@umich.edu> with a few
+	changes.
+
+2008-03-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* Documentation/README.MinGW: Fixed subversion URL to get libobjc
+	- reported by Christopher Chandler <chrisjechandler@mac.com>.
+
+2008-03-11  Adam Fedor  <fedor@gnu.org>
+
+	* Version 2.0.5
+
+2008-03-11  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Fixed NEEDS_GUI and xxx_NEEDS_GUI options to accept "yes" as well
+	as "YES", to be consistent with all the other boolean options in
+	gnustep-make.
+	* Instance/rules.make (INTERNAL_NEEDS_GUI): Changed to accept
+	"yes" as well as "YES"
+	* Instance/application.make (NEEDS_GUI): Use yes/no in preference
+	to YES/NO for the default values.
+	* Instance/bundle.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/palette.make: Same change.
+
+	* Documentation/releasenotes.texi: Suggest yes/no in preference to
+	YES/NO as possible values for NEEDS_GUI and xxx_NEEDS_GUI.
+	* RELEASENOTE: Regenerated.
+	
+2008-03-03  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Updated C++ and ObjC++ support so that it automatically uses g++
+	to link C++ and ObjC++ files.
+	* configure.ac (AC_PROG_CXX): Detect a C++ compiler (if any).
+	* configure: Regenerated.
+	* config.make.in (CXX, CCFLAGS): New variables.
+	* rules.make: Use CXX, not CC, when compiling C++ and
+	ObjC++. (ALL_CCFLAGS): Added CCFLAGS.
+	* Instance/rules.make: If CC_OBJ_FILES or OBJCC_OBJ_FILES are
+	non-empty, set CC to be the same as CXX so that the C++ compiler
+	is used to link.
+
+2008-03-02  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Updated configure and filesystem layouts so that a ./configure on
+	Apple Mac OS X sets up a consistent apple-apple-apple environment.
+	* FileSystemLayouts/apple: New filesystem layout for compiling and
+	installing apple-apple-apple software.
+	* FileSystemLayouts/README: Added the new filesystem layout.
+	* configure.ac: If the library-combo is apple-apple-apple, by
+	default use the apple filesystem layout.  On darwin, use
+	/Library/GNUstep/GNUstep.conf as the default config file.
+	* configure: Regenerated.
+	* Documentation/GNUmakefile
+	(./tmp-installation/System/Library/Makefiles): Specify
+	--with-layout=gnustep when creating the temporary local
+	installation.
+	
+	* Documentation/releasenotes.texi: Explain change of the default
+	filesystem layout on apple-apple-apple.
+	* RELEASENOTES: Regenerated.
+	
+2008-02-21  Gregory John Casamento <greg_casamento@yahoo.com>
+
+	* Documentation/faq.texi: Minor updates to the faq.
+
+2008-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	You can now set NEEDS_GUI = YES / NO in your GNUmakefile to change
+	the behaviour for all targets/projects in one go.
+	* Instance/rules.make: Renamed NEEDS_GUI to INTERNAL_NEEDS_GUI and
+	DEFAULT_NEEDS_GUI to NEEDS_GUI.
+	* Instance/application.make (DEFAULT_NEEDS_GUI): Renamed to
+	NEEDS_GUI; do not set if already set.
+	* Instance/bundle.make: Same change.
+	* Instance/framework.make: Same change.
+	* Instance/gswapp.make: Same change.
+	* Instance/gswbundle.make: Same change.
+	* Instance/library.make: Same change.
+	* Instance/palette.make: Same change.
+	* Instance/tool.make: Same change.
+
+	* Documentation/releasenotes.texi: Added NEEDS_GUI.
+	* RELEASENOTES: Regenerated.
+	
+2008-02-19  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	Implemented new variable xxx_NEEDS_GUI that can be used to
+	explicitly require linking/not linking against the gui library.
+	If xxx_NEEDS_GUI is not specified, the default behaviour is the
+	traditional one, which depends on the project type: applications,
+	bundles, frameworks, palettes and libraries link against the gui
+	library if available; all other projects don't.
+	* Instance/rules.make (NEEDS_GUI): New variable.  Set it from
+	xxx_NEEDS_GUI or DEFAULT_NEEDS_GUI.  (ALL_LIBS): New variable
+	listing all libraries to link against.  Set it using NEEDS_GUI to
+	decide if we should link against the gui or not.
+	
+	* Instance/application.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(ALL_GUI_LIBS): Variable removed.  Use ALL_LIBS when linking
+	instead.
+	* Instance/bundle.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(BUNDLE_LIBS): When linking against all libs, use ALL_LIBS.
+	(ALL_BUNDLE_LIBS): Variable removed.
+	* Instance/ctool.make (ALL_TOOL_LIBS): Variable renamed to
+	ALL_LIBS.  Separated out ALL_LIB_DIRS for consistency with other
+	project types.
+	* Instance/framework.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(LIBRARIES_DEPEND_UPON): When linking against all libs, use
+	ALL_LIBS.
+	* Instance/gswapp.make (DEFAULT_NEEDS_GUI): Set to NO.
+	(ALL_GSW_LIBS): Use ALL_LIBS.  Separated ALL_LIB_DIRS; pass it on
+	the command-line.
+	* Instance/gswbundle.make (DEFAULT_NEEDS_GUI): Set to NO.
+	Pass ALL_LIB_DIRS separately from ALL_GSWBUNDLE_LIBS on the
+	linker command-line.
+	* Instance/library.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(LIBRARIES_DEPEND_UPON): When linking against all libs, use
+	ALL_LIBS.
+	* Instance/objc.make (ALL_OBJC_LIBS): Do not include ALL_LIB_DIRS;
+	pass that variable separately on the link command line for
+	consistency with other project types.
+	* Instance/palette.make (DEFAULT_NEEDS_GUI): Set to YES.
+	(PALETTE_LIBS): When linking against all libs, use ALL_LIBS.
+	(ALL_PALETTE_LIBS): Variable removed.  Pass ALL_LIB_DIRS and
+	PALETTE_LIBS directly on the linker command-line.
+	* Instance/tool.make (DEFAULT_NEEDS_GUI): Set to NO.
+	(ALL_TOOL_LIBS): Do not define; use directly ALL_LIB_DIRS
+	and ALL_LIBS when linking.
+
+	* target.make (BUNDLE_LINK_CMD): Replaced ALL_BUNDLE_LIBS
+	with BUNDLE_LIBS and added ALL_LIB_DIRS which is no longer
+	included in BUNDLE_LIBS.
+
+	* Documentation/releasenotes.texi: Added xxx_NEEDS_GUI.
+	* RELEASENOTES: Regenerated.
+	
+2008-01-19  Adam Fedor  <fedor@gnu.org>
+
+	* Master/source-distribution.make: Check for version directory
+	when making export.
+
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in (install): Install app-wrapper.template,
+	java-executable.template and executable.template with execute
+	permissions to stop warnings from package checking systems.  From
+	a suggestion by Gareth Armstrong <gareth.armstrong@hp.com>.
+	* GNUmakefile.in (uninstall): Remove java-executable.template.
+	
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in: Removed shebang expression '#! /bin/xxx' at the
+	beginning of the file to stop package checking systems from
+	complaining that this is an executable script installed with the
+	wrong permissions (Problem reported by Gareth Armstrong
+	<gareth.armstrong@hp.com>).
+	* GNUstep.csh.in: Same change.
+	* filesystem.sh.in: Same change.
+	* filesystem.csh.in: Same change.
+	* GNUstep-reset.sh: Same change.
+	* ld_lib_path.sh: Same change.
+	* ld_lib_path.csh: Same change.
+	
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* FilesystemLayouts/fhs-system (GNUSTEP_SYSTEM_DOC_MAN): Changed
+	from /man to /share/man.  (GNUSTEP_SYSTEM_DOC_INFO): Changed from
+	/info to /share/info (Patch by Gareth Armstrong
+	<gareth.armstrong@hp.com>).
+	* FilesystemLayouts/fhs-system (GNUSTEP_NETWORK_DOC_MAN,
+	GNUSTEP_NETWORK_DOC_INFO, GNUSTEP_LOCAL_DOC_MAN,
+	GNUSTEP_LOCAL_DOC_INFO): Similar changes
+	* FilesystemLayouts/fhs: Similar changes.
+	
+2008-01-17  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* target.make (SHARED_LIB_LINK_CMD, OBJ_MERGE_CMD): Updated for
+	hpux (Patch by Rashmi <rashhegde@gmail.com> with modifications).
+
+2008-01-15  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep-strict-v2.conf.in: New file which is a "strict
+	gnustep-make v2" version of GNUstep.conf.in, with all the obsolete
+	v1 variables removed.
+	* configure.ac: Create GNUstep-strict-v2.conf file from
+	GNUstep-strict-v2.conf.in.
+	* configure: Regenerated.
+	* GNUmakefile.in: Install GNUstep-strict-v2.conf as configuration
+	file instead of GNUstep.conf when running in strict v2 mode.
+
+	* GNUmakefile.in (all): Updated message, mentioning that you need
+	to type 'make install' to install.
+	(install): Updated message for installing manpages mentioning that
+	we are compressing them on the fly.
+
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUmakefile.in: Disable built-in suffixes and vague % rules for
+	performance.
+	* GNUstep.csh.in: Fixed typo in line that sources
+	GNUSTEP_USER_CONFIG_FILE.
+	
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: New option --enable-strict-v2-mode that can be
+	used when debugging/upgrading makefiles and software to test that
+	they do not rely on obsolete/deprecated gnustep-make v1 variables.
+	Define GNUSTEP_MAKE_STRICT_V2_MODE when the option is set.
+	* configure: Regenerated.
+	* config-noarch.make.in, GNUstep.sh.in,
+	GNUstep.csh.in (GNUSTEP_MAKE_STRICT_V2_MODE): New variable, set
+	from the --enable-strict-v2-mode config option.
+	* GNUmakefile.in: If special_prefix is used and we are in strict
+	v2 mode, abort with an error.
+	* GNUstep.sh.in: When in strict v2 mode, never export
+	GNUSTEP_*_ROOT, GNUSTEP_FLATTENED and GNUSTEP_PATHLIST; instead
+	actively unset them if they are set in the environment.  Export
+	GNUSTEP_IS_FLATTENED, LIBRARY_COMBO and GNUSTEP_HOST_* only if
+	GNUSTEP_SH_EXPORT_ALL_VARIABLES is set.
+	* GNUstep.csh.in: When in strict v2 mode, never setenv any of the
+	GNUSTEP_*_ROOT, GNUSTEP_FLATTENED, GNUSTEP_PATHLIST,
+	GNUSTEP_IS_FLATTENED, LIBRARY_COMBO and GNUSTEP_HOST_* variables;
+	unset them if they are set in the environment.
+
+	* config-noarch.make.in: When in strict v2 mode, do not define
+	GNUSTEP_*_ROOT, GNUSTEP_USER_DIR and GNUSTEP_FLATTENED.	
+	* GNUstep-reset.sh: Unset GNUSTEP_MAKE_STRICT_V2_MODE for safety.
+	* common.make: In strict v2 mode do not define
+	GNUSTEP_DOCUMENTATION, GNUSTEP_DOCUMENTATION_MAN and
+	GNUSTEP_DOCUMENTATION_INFO.  In strict v2 mode, abort with an
+	error if INSTALL_ROOT_DIR or GNUSTEP_INSTALLATION_DIR is set.
+	Print an info line if strict v2 mode is turned on.
+
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in: Dropped sourcing user
+	GNUSTEP_USER_ROOT/GNUstep.sh at the end of the script.  The
+	location of the file is no longer meaningfully defined in
+	gnustep-make v2 so we'd need a new mechanism to define a new
+	location, but the feature looks generally obsolete/pointless in
+	gnustep-make v2 so we'd rather drop it.
+	If you have a custom shell script you want to source at start up,
+	you can simply add it in your shell init script before or after
+	sourcing GNUstep.sh.  If you are trying to customize the
+	filesystem or environment, you need to customize your layout or
+	config files so that your changes are detected by gnustep-base as
+	well as gnustep-make.
+	* GNUstep.csh.in: Same change.
+	* Documentation/releasenotes.texi: Document the change.
+	* RELEASENOTES: Regenerated.
+	
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.csh.in: At the end of the script unset
+	GNUSTEP_SYSTEM_WEB_APPS, GNUSTEP_LOCAL_WEB_APPS,
+	GNUSTEP_NETWORK_WEB_APPS, GNUSTEP_USER_WEB_APPS.
+
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in (GNUSTEP_KEEP_CONFIG_FILE,
+	GNUSTEP_KEEP_USER_CONFIG_FILE): New variables used to remember if
+	GNUSTEP_CONFIG_FILE and GNUSTEP_USER_CONFIG_FILE were already set
+	in the environment by the user or if we set them in the script;
+	use them to decide if we need to keep them at the end of the
+	script, or unset them.
+	(GNUSTEP_USER_DEFAULTS_DIR): Unset or export this variable as
+	required.
+	* GNUstep.csh.in: Similar changes.
+	
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* configure.ac: Clearly explain in the help that --with-user-dir
+	is an obsolete option in gnustep-make v2.  Print a warning if it
+	used, and otherwise ignore it.
+	* configure: Regenerated.
+	* gnustep-config.in: Updated help removing mention of
+	GNUSTEP_USER_DIR.
+	* GNUstep.sh.in: Unset GNUSTEP_USER_DIR after using it.
+	* GNUstep.csh.in: Same change.
+	
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* GNUstep.sh.in: Unset GNUSTEP_SYSTEM_USERS_DIR,
+	GNUSTEP_LOCAL_USERS_DIR, GNUSTEP_NETWORK_USERS_DIR at the end, or
+	export them if GNUSTEP_SH_EXPORT_ALL_VARIABLES if set.
+	* GNUstep.csh.in: Unset the same variables at the end.
+
+2008-01-14  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* filesystem.sh.in: Fixed typo which was causing
+	GNUSTEP_USER_DIR_WEB_APPS not to be removed from the environment.
+
+2008-01-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* relative_path.sh: Added optional third parameter to specify
+	whether 'strict' or 'short' output is required.  Default to
+	'strict' so that the configuration system works.
+	* Instance/application.make: Use 'short' option to
+	relative_path.sh to get more compact paths.
+	* Instance/framework.make: Same change.
+	
+2008-01-09  Nicola Pero  <nicola.pero@meta-innovation.com>
+
+	* config.make.in (LN_S_RECURSIVE): New variable.
+	* Instance/application.make: Use it when symlinking a directory.
+	* Instance/framework.make: Same changes.
+	
 2008-01-08  Adam Fedor  <fedor@gnu.org>
 
-	* Version 2.0.4.
+	* Version 2.0.4 (on stable branch).
 
 2008-01-03  Richard Frith-Macdonald <rfm@gnu.org>
 
-        * relative_path.sh: Revert previous change as it broke the use of
+	* relative_path.sh: Revert previous change as it broke the use of
 	relative paths within the configuration system ... critical for
 	ms-windows systems where relative paths are used by default!
-	
+
 2008-01-01  Adam Fedor  <fedor@gnu.org>
 
-	* Version 2.0.3.
+	* Version 2.0.3 (on stable branch).
 
 2007-12-30  Adam Fedor  <fedor@gnu.org>
 
@@ -120,15 +2507,15 @@
 	source dir is used. (Patch by Hubert Chathi <uhoreg@debian.org>
 	with modifications).
 	
-2007-10-30  Adam Fedor  <fedor@gnu.org>
+2007-11-08  Adam Fedor  <fedor@gnu.org>
 
-	* Version 2.0.2
+	* Mark for Version 2.0.2 (on stable branch)
 
 2007-10-31  David Ayers  <ayers@fsfe.org>
 
 	* rules.make: Implement ADDITIONAL_NATIVE_LIB_DIRS.
 	* Documentation/make.texi: Document ADDITIONAL_NATIVE_LIB_DIRS.
-        
+	
 2007-10-30  Adam Fedor  <fedor@gnu.org>
 
 	* Update license to GPL 3
@@ -153,10 +2540,9 @@
 
 	* Documentation/README.Darwin: Minor updates and corrections.
 
-2007-05-25  Adam Fedor  <fedor@gnu.org>
+2007-05-23  Adam Fedor  <fedor@gnu.org>
 
-	* Version 2.0.1
-	* NEWS: update
+	* Mark for Version 2.0.1 (on stable branch)
 
 2007-05-12  Nicola Pero  <nicola.pero@meta-innovation.com>
 

@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   application.make
 #
 #   Master makefile rules to build GNUstep-based applications.
@@ -27,7 +27,24 @@ endif
 
 APP_NAME := $(strip $(APP_NAME))
 
-internal-all:: $(APP_NAME:=.all.app.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(APP_NAME:=.all.app.variables)
+
+else
+
+# See tool.make for an explanation of the parallel building.
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-app-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-app-all
+
+internal-master-app-all: $(APP_NAME:=.all.app.variables)
+
+endif
 
 internal-install:: $(APP_NAME:=.install.app.variables)
 
@@ -55,7 +72,7 @@ ifeq ($(GNUSTEP_IS_FLATTENED), no)
 	(cd $(GNUSTEP_BUILD_DIR); rm -rf *.$(APP_EXTENSION))
 endif
 
-# The following make trick extracts all tools in APP_NAME for which
+# The following make trick extracts all apps in APP_NAME for which
 # the xxx_SUBPROJECTS variable is set to something non-empty.
 # For those apps (and only for them), we need to run 'clean' and
 # 'distclean' in subprojects too.
@@ -75,5 +92,5 @@ internal-strings:: $(APP_NAME:=.strings.app.variables)
 
 # FIXME - GNUSTEP_BUILD_DIR here.  Btw should we remove this or
 # provide a better more general way of doing it ?
-$(APP_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables
+$(APP_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.app.variables$(END_ECHO_RECURSIVE_MAKE)

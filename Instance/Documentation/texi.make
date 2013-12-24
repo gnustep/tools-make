@@ -63,7 +63,7 @@ endif
 
 internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
                     $(GNUSTEP_INSTANCE).pdf \
-                    $(GNUSTEP_INSTANCE)_toc.html
+                    $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html
 
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
@@ -88,7 +88,7 @@ $(GNUSTEP_INSTANCE).pdf: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2PDF) $(GNUSTEP_TEXI2PDF_FLAGS) $(ADDITIONAL_TEXI2PDF_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi -o $@
 
-$(GNUSTEP_INSTANCE)_toc.html: $(TEXI_FILES)
+$(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi
 
@@ -112,11 +112,12 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).tp   \
 	         $(GNUSTEP_INSTANCE).vr   \
 	         $(GNUSTEP_INSTANCE).vrs  \
-	         $(GNUSTEP_INSTANCE).html \
-	         $(GNUSTEP_INSTANCE)_*.html \
+	         $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html \
+	         $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
 	         $(GNUSTEP_INSTANCE)/*$(END_ECHO)
+	-$(ECHO_NOTHING) rmdir $(GNUSTEP_INSTANCE) $(END_ECHO)
 
 # NB: Only install doc files if they have been generated
 
@@ -132,12 +133,14 @@ internal-doc-install_:: $(GNUSTEP_DOC_INFO)
 	if [ -f $(GNUSTEP_INSTANCE).info ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOC_INFO); \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE)_toc.html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
+	if [ -f i$(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_toc.html ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE).html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).html \
+	if [ -f $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html \
+	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
 
@@ -154,3 +157,22 @@ internal-doc-uninstall_::
 	rm -f \
           $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).html
 
+#
+# textdoc targets - these should be merged with the doc targets
+#
+# Make sure we don't install only files that have been generated!
+internal-textdoc-install_:: $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)
+	$(ECHO_NOTHING)if [ -f $(GNUSTEP_INSTANCE) ]; then \
+	    $(INSTALL_DATA) $(GNUSTEP_INSTANCE) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
+	else \
+	  $(ALWAYS_INSIDE_ECHO_MISSING_DOCUMENTATION) \
+	fi$(END_ECHO)
+
+internal-textdoc-uninstall_::
+	$(ECHO_UNINSTALLING)rm -f \
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+
+internal-textdoc-clean::
+	$(ECHO_NOTHING) rm -f $(GNUSTEP_INSTANCE) $(END_ECHO)
+
+internal-textdoc-distclean::

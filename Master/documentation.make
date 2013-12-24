@@ -27,6 +27,7 @@ endif
 DOCUMENT_NAME := $(strip $(DOCUMENT_NAME))
 DOCUMENT_TEXT_NAME := $(strip $(DOCUMENT_TEXT_NAME))
 
+# FIXME/TODO: Parallel build of documentation
 internal-all:: $(DOCUMENT_NAME:=.all.doc.variables) \
               $(DOCUMENT_TEXT_NAME:=.all.textdoc.variables)
 

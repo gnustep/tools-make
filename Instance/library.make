@@ -21,6 +21,12 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Libraries usually link against a gui library (if available).  If you
+# don't need a gui library, use xxx_NEEDS_GUI = no.
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = yes
+endif
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -45,7 +51,8 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
         internal-library-install_ \
         internal-library-uninstall_ \
         internal-install-lib \
-        internal-install-dirs
+        internal-install-dirs \
+	internal-library-compile
 
 # This is the directory where the libs get installed.  This should *not*
 # include the target arch, os directory or library_combo.
@@ -109,14 +116,9 @@ ifeq ($(BUILD_DLL), yes)
 endif
 
 ifeq ($(LINK_AGAINST_ALL_LIBS), yes)
-# Link against all libs ... but not the one we're compiling! (this can
-# happen, for example, with gnustep-gui)
-LIBRARIES_DEPEND_UPON += $(filter-out -l$(LIBRARY_NAME_WITHOUT_LIB), \
-   $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
-   $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+  # Link against all libs ... but not the one we're compiling! (this can
+  # happen, for example, with gnustep-gui)
+  LIBRARIES_DEPEND_UPON += $(filter-out -l$(LIBRARY_NAME_WITHOUT_LIB), $(ALL_LIBS))
 endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
@@ -182,8 +184,15 @@ endif
 ifneq ($(BUILD_DLL),yes)
 
 LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB)$(SHARED_LIBEXT)
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+# On Mac OS X the version number conventionally precedes the shared
+# library suffix, e.g., libgnustep-base.1.16.1.dylib.
+VERSION_LIBRARY_FILE = $(LIBRARY_NAME_WITH_LIB).$(VERSION)$(SHARED_LIBEXT)
+SONAME_LIBRARY_FILE  = $(LIBRARY_NAME_WITH_LIB).$(INTERFACE_VERSION)$(SHARED_LIBEXT)
+else
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE).$(VERSION)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE).$(INTERFACE_VERSION)
+endif
 
 else # BUILD_DLL
 
@@ -212,11 +221,12 @@ LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(DLL_LIBEXT)$(LIBEXT)
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 
-# LIB_LINK_DLL_FILE is the DLL library, gnustep-base-1.dll.  Include
-# the INTERFACE_VERSION in the DLL library name.  Applications are
-# linked explicitly to this INTERFACE_VERSION of the library; this
-# works exactly in the same way as under Unix.
-LIB_LINK_DLL_FILE    = $(LIBRARY_NAME_WITHOUT_LIB)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
+# LIB_LINK_DLL_FILE is the DLL library, gnustep-base-1.dll
+# (cyggnustep-base-1.dll on Cygwin).  Include the INTERFACE_VERSION in
+# the DLL library name.  Applications are linked explicitly to this
+# INTERFACE_VERSION of the library; this works exactly in the same way
+# as under Unix.
+LIB_LINK_DLL_FILE    = $(DLL_PREFIX)$(LIBRARY_NAME_WITHOUT_LIB)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
 endif # BUILD_DLL
 
 else # following code for static libs
@@ -238,6 +248,13 @@ LIB_LINK_FILE = $(LIBRARY_FILE)
 LIB_LINK_INSTALL_NAME = $(SONAME_LIBRARY_FILE)
 LIB_LINK_INSTALL_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
 
+# On Mac OS X, set absolute install_name if requested
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+  ifeq ($(GNUSTEP_ABSOLUTE_INSTALL_PATHS), yes)
+    LIB_LINK_INSTALL_NAME = $(LIB_LINK_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)
+  endif
+endif
+
 #
 # Internal targets
 #
@@ -245,10 +262,31 @@ LIB_LINK_INSTALL_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
 #
 # Compilation targets
 #
-internal-library-all_:: $(GNUSTEP_OBJ_DIR) \
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-library-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                        $(OBJ_DIRS_TO_CREATE) \
 			$(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-library-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-library-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-library-compile: $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE)
+endif
 
 $(GNUSTEP_OBJ_DIR)/$(VERSION_LIBRARY_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LIB_LINK_CMD)$(END_ECHO)
 
 #
@@ -315,25 +353,25 @@ internal-library-check::
 ifeq ($($(GNUSTEP_INSTANCE)_HAS_RESOURCE_BUNDLE),yes)
 
 # Include the rules to build resource bundles
-GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION)/Resources/
+GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(GNUSTEP_BUILD_DIR)/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION)/Resources/
 
 # We want to install gnustep-base resources into
 # GNUSTEP_LIBRARY/Libraries/gnustep-base/Versions/1.14/Resources/
 # This is similar to a framework resource directory, which might be
 # helpful in the future.
 GNUSTEP_SHARED_BUNDLE_INSTALL_NAME = Resources
-GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = $(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION)
-GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(GNUSTEP_LIBRARY)/Libraries/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION)
+GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = $(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION)
+GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(GNUSTEP_LIBRARY)/Libraries/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION)
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
 internal-library-all_:: shared-instance-bundle-all
 internal-library-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
-$(GNUSTEP_LIBRARY)/Libraries/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION):
+$(GNUSTEP_LIBRARY)/Libraries/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION):
 	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
 
-internal-library-install_:: $(GNUSTEP_LIBRARY)/Libraries/$(GNUSTEP_INSTANCE)/Versions/$(INTERFACE_VERSION) \
+internal-library-install_:: $(GNUSTEP_LIBRARY)/Libraries/$(LIBRARY_NAME_WITHOUT_LIB)/Versions/$(INTERFACE_VERSION) \
                             shared-instance-bundle-install 
 
 internal-library-uninstall:: shared-instance-bundle-uninstall

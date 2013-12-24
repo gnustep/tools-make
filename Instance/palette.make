@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/palette.make
 #
 #   Instance Makefile rules to build GNUstep-based palettes.
@@ -22,6 +22,11 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Palettes usually link against a gui library (if available).
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = yes
+endif
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -41,7 +46,9 @@ endif
 .PHONY: internal-palette-all_ \
         internal-palette-install_ \
         internal-palette-uninstall_ \
-        internal-palette-copy_into_dir
+        internal-palette-copy_into_dir \
+        internal-palette-run-compile-submake \
+        internal-palette-compile
 
 # On windows, this is unfortunately required.
 ifeq ($(BUILD_DLL), yes)
@@ -55,15 +62,8 @@ ifeq ($(CC_BUNDLE), yes)
 endif
 
 ifeq ($(LINK_PALETTE_AGAINST_ALL_LIBS), yes)
-PALETTE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+  PALETTE_LIBS += $(ALL_LIBS)
 endif
-
-ALL_PALETTE_LIBS =						\
-	$(ALL_LIB_DIRS)						\
-	$(PALETTE_LIBS)
 
 ifeq ($(BUILD_DLL),yes)
 PALETTE_OBJ_EXT = $(DLL_LIBEXT)
@@ -89,23 +89,59 @@ GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = .
 GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(PALETTE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-palette-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-palette-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                        $(OBJ_DIRS_TO_CREATE) \
                         $(PALETTE_DIR)/Resources \
                         $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-                        $(PALETTE_FILE) \
+                        internal-palette-run-compile-submake \
                         $(PALETTE_DIR)/Resources/Info-gnustep.plist \
                         $(PALETTE_DIR)/Resources/palette.table \
                         shared-instance-bundle-all
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
 
 $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $(PALETTE_DIR)/$(GNUSTEP_TARGET_LDIR)$(END_ECHO)
 
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-palette-run-compile-submake: $(PALETTE_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-palette-run-compile-submake:
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-palette-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-palette-compile: $(PALETTE_FILE)
+endif
+
 # Standard bundle build using the rules for this target
-$(PALETTE_FILE) : $(OBJ_FILES_TO_LINK)
+$(PALETTE_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(BUNDLE_LD) $(BUNDLE_LDFLAGS) \
 	  -o $(LDOUT)$(PALETTE_FILE) \
 	  $(OBJ_FILES_TO_LINK) $(ALL_LDFLAGS) \
-	  $(BUNDLE_LIBFLAGS) $(ALL_PALETTE_LIBS)$(END_ECHO)
+	  $(BUNDLE_LIBFLAGS) $(ALL_LIB_DIRS) $(PALETTE_LIBS)$(END_ECHO)
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 

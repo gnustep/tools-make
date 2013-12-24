@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   nsis.make
 #
 #   Makefile rules to build a NSIS installer
@@ -47,7 +47,7 @@
 # compilation (usually only needed for GNUstep core libraries
 # themselves), define the following make variable:
 #
-# PACKAGE_NEEDS_CONFIGURE = YES
+# PACKAGE_NEEDS_CONFIGURE = yes
 #
 # in your makefile.
 MAKENSIS=makensis
@@ -73,10 +73,15 @@ REL_INSTALL_DIR=$(GNUSTEP_OBJ_DIR)/package/$(NSI_BASE)
 
 NSI_FILE_NAME=$(PACKAGE_NAME).nsi
 NSI_FILE=$(NSI_FILE_NAME)
+NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-lib.template
+ifneq ($(LIBRARY_NAME),)
+  NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-lib.template
+endif
+ifneq ($(FRAMEWORK_NAME),)
+  NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-lib.template
+endif
 ifneq ($(APP_NAME),)
   NSI_TEMPLATE=$(GNUSTEP_MAKEFILES)/nsi-app.template
-else
-  NSI_TEMPLATE=
 endif
 NSI_IN=$(PACKAGE_NAME).nsi.in
 
@@ -100,9 +105,9 @@ nsis_build_filelist::
 	  wodir=`echo $(REL_INSTALL_DIR) | tr '/' '\'`;				\
 	  slashsuffix=`basename $${file}yes`;					\
 	  if [ "$$slashsuffix" = yes ]; then					\
-  	    newdir=`dirname $$file`/`basename $$file`;				\
+	    newdir=`dirname $$file`/`basename $$file`;				\
 	  else									\
-  	    newdir=`dirname $$file`;						\
+	    newdir=`dirname $$file`;						\
 	  fi;									\
 	  if [ "$$file" = "$(REL_INSTALL_DIR)/" ]; then				\
 	    :;									\

@@ -21,6 +21,10 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = no
+endif
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -28,8 +32,9 @@ endif
 # FIXME - this file has not been updated to use Shared/bundle.make
 # because it is using symlinks rather than copying resources.
 
+# TODO: We should remove this makefile since it's not really supported.
+
 COMPONENTS = $($(GNUSTEP_INSTANCE)_COMPONENTS)
-LANGUAGES = $($(GNUSTEP_INSTANCE)_LANGUAGES)
 WEBSERVER_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_FILES)
 LOCALIZED_WEBSERVER_RESOURCE_FILES = $($(GNUSTEP_INSTANCE)_LOCALIZED_WEBSERVER_RESOURCE_FILES)
 WEBSERVER_RESOURCE_DIRS = $($(GNUSTEP_INSTANCE)_WEBSERVER_RESOURCE_DIRS)
@@ -83,14 +88,10 @@ endif
 
 # On Solaris we don't need to specifies the libraries the bundle needs.
 # How about the rest of the systems? ALL_BUNDLE_LIBS is temporary empty.
-#ALL_GSWBUNDLE_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) \
-	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) \
-	$(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
-#ALL_GSWBUNDLE_LIBS = 
-#ALL_GSWBUNDLE_LIBS = $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)
+#ALL_GSWBUNDLE_LIBS = $(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS) $(ALL_LIBS)
 
-internal-gswbundle-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-gswbundle-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                          $(OBJ_DIRS_TO_CREATE) \
                           build-bundle-dir \
                           build-bundle
 
@@ -101,11 +102,6 @@ GSWBUNDLE_FILE_NAME = \
 GSWBUNDLE_FILE = $(GNUSTEP_BUILD_DIR)/$(GSWBUNDLE_FILE_NAME)
 GSWBUNDLE_RESOURCE_DIRS = $(foreach d, $(RESOURCE_DIRS), $(GSWBUNDLE_DIR)/Resources/$(d))
 GSWBUNDLE_WEBSERVER_RESOURCE_DIRS =  $(foreach d, $(WEBSERVER_RESOURCE_DIRS), $(GSWBUNDLE_DIR)/Resources/WebServer/$(d))
-
-ifeq ($(strip $(LANGUAGES)),)
-  LANGUAGES="English"
-endif
-
 
 build-bundle-dir: $(GSWBUNDLE_DIR)/Resources \
                   $(GSWBUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
@@ -125,11 +121,14 @@ build-bundle: $(GSWBUNDLE_FILE) \
               gswbundle-webresource-files
 
 
-$(GSWBUNDLE_FILE) : $(OBJ_FILES_TO_LINK)
+$(GSWBUNDLE_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(GSWBUNDLE_LD) $(GSWBUNDLE_LDFLAGS) \
 	                $(ALL_LDFLAGS) -o $(LDOUT)$(GSWBUNDLE_FILE) \
 			$(OBJ_FILES_TO_LINK) \
-	                $(ALL_GSWBUNDLE_LIBS)$(END_ECHO)
+	                $(ALL_LIB_DIRS) $(ALL_GSWBUNDLE_LIBS)$(END_ECHO)
 
 gswbundle-components: $(GSWBUNDLE_DIR)
 ifneq ($(strip $(COMPONENTS)),)

@@ -19,9 +19,25 @@
 #   License along with this library; see the file COPYING.
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
 AC_INIT
 AC_PREREQ(2.57)
 AC_CONFIG_SRCDIR([application.make])
+
+#
+# TODO: This configure file should not contain any checks that depend on the
+# Objective-C runtime being used or available.  This is because on
+# some platforms the Objective-C runtime itself is compiled using
+# gnustep-make!
+#
+# All the runtime-dependent checks should go in gnustep-base.
+#
+# We still need compiler checks, because if we are compiling the
+# Objective-C runtime itself, we need to know what compiler we have
+# and what flags we can use.  But these checks should test
+# compilation, not linking or execution, because we don't necessarily
+# have an Objective-C runtime available yet.
+#
 
 #--------------------------------------------------------------------
 # Setup the library combination
@@ -29,7 +45,47 @@ AC_CONFIG_SRCDIR([application.make])
 targetArgument=${target}
 AC_PROG_CC
 AC_PROG_CPP
+
+# We also look for a C++ compiler.  While not strictly needed, some
+# people use gnustep-make to compile C++ code.  It's nice to detect a
+# C++ compiler, if we have one, and automatically use it to
+# compile/link C++ code. :-)
+AC_PROG_CXX
+
+# Similarly for the ObjC++ compiler ... but only new versions of autoconf
+# support it, so we pretend by using the C++ compiler
+#AC_PROG_OBJCXX
+OBJCXX="${CXX}"
+
+# We may use egrep for some tests further down below
+AC_PROG_EGREP
+
 AC_CANONICAL_TARGET([])
+
+
+#--------------------------------------------------------------------
+# Check if objc should use garbage collection.
+#--------------------------------------------------------------------
+AC_ARG_ENABLE(objc-garbage-collection, [
+--enable-objc-garbage-collection
+   Enable objc garbage collection.  Use this option if you want
+   to use garbage collection for objective-c software. This is equivalent
+   to using --with-library-combo=gnugc-gnu-gnu to set the runtime library
+   to be the gnu runtime with garbage collection.
+], 
+OBJC_WITH_GC=$enableval,
+OBJC_WITH_GC="")
+
+if test "$OBJC_WITH_GC" = "yes"; then
+  ac_cv_library_combo="gnugc-gnu-gnu"
+elif test "$OBJC_WITH_GC" = "no"; then
+  if test "$ac_cv_library_combo"="gnugc-gnu-gnu"; then
+    ac_cv_library_combo="gnu-gnu-gnu"
+  fi
+else
+  OBJC_WITH_GC=no
+fi
+AC_SUBST(OBJC_WITH_GC)
 
 AC_MSG_CHECKING(for library combo)
 AC_ARG_WITH(library-combo,[
@@ -133,7 +189,6 @@ AC_EXEEXT
 AC_OBJEXT
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
-  export INSTALL="install -p"
   export SHELL=sh
   export CC=${CC:-gcc}
   export AR=${AR:-ar}
@@ -168,6 +223,41 @@ else
 fi
 
 AC_PROG_INSTALL
+
+AC_MSG_CHECKING([if 'install -p' works])
+gs_install_p_test_builddir="`pwd`"
+gs_install_p_test_results=`(INSTALL="$INSTALL"; export INSTALL; cd "$srcdir/config-install-p-test/"; ./run-test.sh "$gs_install_p_test_builddir"; echo $?) 2>&5`
+if test "$gs_install_p_test_results" = "0"; then
+  AC_MSG_RESULT(yes);
+else
+  AC_MSG_RESULT(no);
+fi
+
+AC_MSG_CHECKING([if we should use 'install -p' when installing files])
+AC_ARG_ENABLE(install-p, [
+--disable-install-p
+  Disable using 'install -p' when installing files.  By default,
+  assuming that 'install -p' works, when installing files such as header files or libraries, 
+  gnustep-make uses 'install -p', which preserves the original timestamp of the header file or
+  library.  If you do not want the timestamp to be preserved, use this option
+  to have gnustep-make use 'install' instead of 'install -p'.
+  Unless you have a specific reason for not liking the default behaviour
+  this option is most likely irrelevant for you.
+], 
+  ac_cv_install_p=$enableval,
+  ac_cv_install_p="yes")
+
+if test "$ac_cv_install_p" = "yes"; then
+  if test "$gs_install_p_test_results" = "0"; then
+    AC_MSG_RESULT(yes);
+    INSTALL="${INSTALL} -p"
+  else
+    AC_MSG_RESULT(no: install -p does not work);
+  fi
+else
+  AC_MSG_RESULT(no);
+fi
+
 AC_PROG_LN_S([])
 
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)
@@ -190,14 +280,46 @@ fi
 #-------------------------------------------------------------------
 
 #-------------------------------------------------------------------
+# Determine if we should enable strict gnustep-make v2 mode by default
+#-------------------------------------------------------------------
+
+AC_MSG_CHECKING([if we should enable strict gnustep-make version 2 mode by default])
+AC_ARG_ENABLE(strict-v2-mode, [
+--enable-strict-v2-mode
+  Enable strict gnustep-make version 2 mode by default.  Use this
+  option to have gnustep-make be aggressively backwards-incompatible
+  with gnustep-make version 1.  You can use it when you are debugging /
+  upgrading your makefiles and software to gnustep-make version 2 and
+  want to test test that they do not depend on obsolete or deprecated
+  version 1 features and variables.  Important: you must never ship
+  gnustep-make to end-users with --enable-strict-v2-mode as it would
+  cause extremely confusing and dangerous problems with software that
+  has not been updated to gnustep-make v2 yet.  Use it only on test
+  builds or development machines to test that makefiles and software
+  have been updated.  Make sure to use it extremely carefully with old
+  makefiles because it can produce unpredictable and dangerous results
+  (for examples, since GNUSTEP_SYSTEM_ROOT is undefined when using
+  --enable-strict-v2-mode, installing into GNUSTEP_SYSTEM_ROOT/Headers
+  would actually install into /Headers).
+], 
+  ac_cv_strict_v2_mode=$enableval,
+  ac_cv_strict_v2_mode="no")
+
+if test "$ac_cv_strict_v2_mode" = "yes"; then
+  AC_MSG_RESULT(yes);
+  GNUSTEP_MAKE_STRICT_V2_MODE="yes"
+  AC_MSG_WARN(Use strict version 2 mode at your own risk; it must only be used on development/test systems)
+else
+  AC_MSG_RESULT(no);
+  GNUSTEP_MAKE_STRICT_V2_MODE="no"
+fi
+
+AC_SUBST(GNUSTEP_MAKE_STRICT_V2_MODE)
+
+#-------------------------------------------------------------------
 # Determine filesystem layout to use
 #-------------------------------------------------------------------
 
-# Hmmm - currently we only allow them to specify a file containing the
-# filesystem layout.  We could have a separate flag for each of the
-# layout variables; that would be a lot of flags though!  But maybe
-# for completeness we could go through all of them and add a flag for
-# each.
 AC_MSG_CHECKING([for GNUstep filesystem layout to use])
 AC_ARG_WITH(layout,[
 --with-layout=FILE
@@ -205,36 +327,90 @@ AC_ARG_WITH(layout,[
    installation to use.  The layout described by FILE will be
    read from the FilesystemLayouts directory.  Check the 
    FilesystemLayouts subdirectory for a list of layouts and how 
-   to choose which one you want (or create your own).  If a layout 
-   is specified, we automatically avoid importing an existing config 
-   file.  The default layout is 'gnustep'.
+   to choose which one you want (or create your own).
+   If you do not specify a layout then 'fhs' is used except
+   when the library-combo is apple-apple-apple, in which case it is 'apple'.
    Example: --with-layout=fhs
 ],
   GNUSTEP_FILESYSTEM_LAYOUT="$withval",)
 
 # The variable GNUSTEP_FILESYSTEM_LAYOUT is empty if no layout was
-# specified on the command line.  In that case, we read the config
-# file (which might contain more up-to-date information on what layout
-# the user wants).  If the variable is non-empty, then we avoid
-# reading the config file (the user already explicitly specified what
-# layout they want, so we omit to read existing config that might mess
-# that up).
-
+# specified on the command line.
 if test ! x"$GNUSTEP_FILESYSTEM_LAYOUT" = x""; then
   AC_MSG_RESULT($GNUSTEP_FILESYSTEM_LAYOUT)
   GNUSTEP_FILESYSTEM_LAYOUT_FILE="$GNUSTEP_FILESYSTEM_LAYOUT"
 else
   # This is the default layout that is used when installing
-  # GNUstep with no other indication.  We normally use 'gnustep'.
-  AC_MSG_RESULT(none specified: we will use 'gnustep')
-  GNUSTEP_FILESYSTEM_LAYOUT_FILE=gnustep
+  # GNUstep with no other indication.  We normally use 'fhs'.
+  # However, if the library-combo is apple-apple-apple we use
+  # 'apple' irrespective of the target OS.
+  if test "$ac_cv_library_combo" = "apple-apple-apple"; then
+    AC_MSG_RESULT(default layout: 'apple' since we're on apple-apple-apple)
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=apple
+  else
+    GNUSTEP_FILESYSTEM_LAYOUT_FILE=fhs
+    AC_MSG_RESULT(default layout: '$GNUSTEP_FILESYSTEM_LAYOUT_FILE')
+  fi
 fi
 
 if test ! -f "$srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE" >&5 2>&5; then
   echo "Can not find $srcdir/FilesystemLayouts/$GNUSTEP_FILESYSTEM_LAYOUT_FILE"
   echo "Please check your --with-layout=xxx argument and try again."
+  echo "Valid arguments for --with-layout= are:"
+  echo `ls "$srcdir/FilesystemLayouts/" | grep -v README`
   exit 1
 fi
+
+# Need to do some checks related to building dylibs on darwin.
+GNUSTEP_ABSOLUTE_INSTALL_PATHS=;
+
+case "$target_os" in
+  darwin*)
+    AC_MSG_CHECKING([if we should build dynamic libraries with an absolute install_name])
+    AC_ARG_ENABLE(absolute-install-paths, [
+--enable-absolute-install-paths
+  Enable the use of absolute paths for the install_name of dynamic
+  libraries on Darwin.  This option is specific to Darwin and is
+  ignored on all other platforms.  Any code that links against a
+  dynamic library with an absolute install_name will tell dyld to
+  find the library at that location.  Enabling this option allows
+  one to place libraries in non-standard locations without having
+  to set DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH in the shell
+  and ~/.MacOSX/environment.plist, but libraries built with an
+  absolute install_name are not relocatable.  By default, this
+  setting is disabled unless the gnu-gnu-gnu library combo is
+  used, in which case it is enabled.
+    ],
+      ac_cv_absolute_install_paths=$enableval,
+      ac_cv_absolute_install_paths="undefined")
+
+    if test "$ac_cv_absolute_install_paths" = "yes"; then
+      AC_MSG_RESULT(yes)
+      GNUSTEP_ABSOLUTE_INSTALL_PATHS=yes;
+    else
+      if test "$ac_cv_absolute_install_paths" = "undefined"; then
+        # gnu-gnu-gnu on darwin is difficult because of the risk of
+        # conflicts between the GNU Objective-C runtime and the Apple
+        # one.  absolute-install-paths makes this slightly easier
+        # by hardcoding the absolute path of dynamic libraries into the
+        # programs that link them so that it's less likely that the
+        # wrong dynamic libraries will be pulled in.  So we enable it
+        # by default in that case.
+        if test "$ac_cv_library_combo" = "gnu-gnu-gnu"; then
+           GNUSTEP_ABSOLUTE_INSTALL_PATHS=yes;
+           AC_MSG_RESULT(yes)
+        else
+           AC_MSG_RESULT(no)
+        fi
+      else
+        AC_MSG_RESULT(no)        
+      fi
+    fi
+
+    ;;
+esac
+
+AC_SUBST(GNUSTEP_ABSOLUTE_INSTALL_PATHS)
 
 #-------------------------------------------------------------------
 # Read filesystem layout from file
@@ -342,16 +518,25 @@ GNUSTEP_LOCAL_DOC_INFO="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOC_INFO"
 AC_MSG_CHECKING([for GNUstep configuration file to use])
 AC_ARG_WITH(config-file,[
 --with-config-file=PATH
-   Set the path of the system GNUstep config file.  Use this option 
-   if you want to have the GNUstep config file in a non-standard place.
+   Set the path of the system GNUstep config file.  Use this option
+   if you want to have the GNUstep config file in a non-standard
+   place.
    Example: --with-config-file=/usr/GNUstep/GNUstep.conf
+   By default, if this option is not specified, the config file is
+   /etc/GNUstep/GNUstep.conf if the prefix is /, /usr or /usr/GNUstep
+   and $prefix/etc/GNUstep/GNUstep.conf otherwise.  On Apple, it is
+   always /Library/GNUstep/GNUstep.conf regardless of prefix.
 ],
   GNUSTEP_CONFIG_FILE="$withval",)
 if test "$GNUSTEP_CONFIG_FILE" = "" -o "$GNUSTEP_CONFIG_FILE" = "no"; then
   case "$target_os" in
-    freebsd* | openbsd* ) GNUSTEP_CONFIG_FILE=/usr/etc/GNUstep.conf ;;
-    netbsd* )             GNUSTEP_CONFIG_FILE=/usr/pkg/etc/GNUstep.conf ;;
-    *)	                  GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf ;;
+    darwin*)              GNUSTEP_CONFIG_FILE=/Library/GNUstep/GNUstep.conf ;;
+    *)  case x"$GNUSTEP_PREFIX" in
+          x)             GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
+          x/usr)         GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
+          x/usr/GNUstep) GNUSTEP_CONFIG_FILE=/etc/GNUstep/GNUstep.conf;;
+          *)             GNUSTEP_CONFIG_FILE="$GNUSTEP_PREFIX/etc/GNUstep/GNUstep.conf";;
+        esac ;;
   esac
 fi
 if echo "$GNUSTEP_CONFIG_FILE" | grep '[[ 	\\]] > /dev/null'
@@ -420,69 +605,6 @@ fi
 #--------------------------------------------------------------------
 
 #--------------------------------------------------------------------
-# Process --with-system-root
-#--------------------------------------------------------------------
-AC_MSG_CHECKING(if the obsolete --with-system-root option was used)
-AC_ARG_WITH(system-root,[
---with-system-root
-   This is an obsolete option.  It used to determine the location of
-   the SYSTEM domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-],
-OBSOLETE_GNUSTEP_SYSTEM_ROOT="$withval",)
-if test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_SYSTEM_ROOT" = x"no"; then 
-  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_SYSTEM_ROOT: ignored])
-  AC_MSG_WARN([ignoring --with-system-root=$OBSOLETE_GNUSTEP_SYSTEM_ROOT option])
-else
-  AC_MSG_RESULT(no: good)
-fi
-
-#--------------------------------------------------------------------
-# Process --with-local-root
-#--------------------------------------------------------------------
-AC_MSG_CHECKING(if the obsolete --with-local-root option was used)
-AC_ARG_WITH(local-root,[
---with-local-root
-   This is an obsolete option.  It used to determine the location of
-   the LOCAL domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-],
-OBSOLETE_GNUSTEP_LOCAL_ROOT="$withval",)
-if test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_LOCAL_ROOT" = x"no"; then 
-  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_LOCAL_ROOT: ignored])
-  AC_MSG_WARN([ignoring --with-local-root=$OBSOLETE_GNUSTEP_LOCAL_ROOT option])
-else
-  AC_MSG_RESULT(no: good)
-fi
-
-#--------------------------------------------------------------------
-# Process --with-network-root
-#--------------------------------------------------------------------
-AC_MSG_CHECKING(if the obsolete --with-network-root option was used)
-AC_ARG_WITH(network-root,[
---with-network-root
-   This is an obsolete option.  It used to determine the location of
-   the NETWORK domain directory under the 'gnustep' layout.  We ignore
-   this option so that you can write ./configure commands that work
-   with both old and new gnustep-makes.  To get the effect of this
-   option with this version of gnustep-make, please create your own layout
-   file and use --with-layout=xxx to use it.
-],
-OBSOLETE_GNUSTEP_NETWORK_ROOT="$withval",)
-if test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"" && test ! x"$OBSOLETE_GNUSTEP_NETWORK_ROOT" = x"no"; then 
-  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_NETWORK_ROOT: ignored])
-  AC_MSG_WARN([ignoring --with-network-root=$OBSOLETE_GNUSTEP_NETWORK_ROOT option])
-else
-  AC_MSG_RESULT(no: good)
-fi
-
-#--------------------------------------------------------------------
 # Process --with-user-config-file
 #--------------------------------------------------------------------
 AC_MSG_CHECKING(for user config file to use)
@@ -516,34 +638,24 @@ AC_SUBST(GNUSTEP_USER_CONFIG_FILE)
 #--------------------------------------------------------------------
 # Process --with-user-dir
 #--------------------------------------------------------------------
-AC_MSG_CHECKING(for user dir to use)
+AC_MSG_CHECKING(if the obsolete --with-user-dir option was used)
 AC_ARG_WITH(user-dir,[
 --with-user-dir
-   Set the GNUSTEP_USER_DIR directory for all users.  This can be
-   relative to the user's home directory if it is a relative path,
-   or an absolute directory (the same for all users) if it is an
-   absolute path.  Use this option if you want to have the 
-   GNUSTEP_USER_DIR directory in a non default place for all users.
-   The default is 'GNUstep'.
-   Example: --with-user-dir='gnustep'
+   This is an obsolete option.  It used to determine the location of
+   the USER domain directory (inside of each user's home directory)
+   under the 'gnustep' layout.  We ignore this option so that you can
+   write ./configure commands that work with both old and new
+   gnustep-makes.  To get the effect of this option with this version
+   of gnustep-make, please create your own layout file and use
+   --with-layout=xxx to use it.
 ],
-GNUSTEP_USER_DIR="$withval",)
-# Keep in mind we already have a default value set by the filesystem
-# layout, so it should never be empty.
-if echo "$GNUSTEP_USER_DIR" | grep '[[ 	\\]] > /dev/null'
-then
-  echo "found a backslash or space (illegal) in '$GNUSTEP_USER_DIR'"
-  echo "Please try again using --with-user-dir= to specify a value."
-  if test "$MSWIND" = "yes"
-  then
-    echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
-    echo "environment use native paths throughout."
-  fi
-  exit 1
+OBSOLETE_GNUSTEP_USER_DIR="$withval",)
+if test ! x"$OBSOLETE_GNUSTEP_USER_DIR" = x"" && test ! x"$OBSOLETE_GNUSTEP_USER_DIR" = x"no"; then 
+  AC_MSG_RESULT([$OBSOLETE_GNUSTEP_USER_DIR: ignored])
+  AC_MSG_WARN([ignoring --with-user-dir=$OBSOLETE_GNUSTEP_USER_DIR option])
+else
+  AC_MSG_RESULT(no: good)
 fi
-AC_MSG_RESULT($GNUSTEP_USER_DIR)
-AC_SUBST(GNUSTEP_USER_DIR)
 
 #--------------------------------------------------------------------
 # Process --with-user-defaults-dir
@@ -895,13 +1007,17 @@ AC_SUBST(BACKEND_BUNDLE)
 # Miscellaneous flags and setup
 #--------------------------------------------------------------------
 
+# TODO: This check for a custom ObjC library needs to be moved to
+# gnustep-base since it concerns the runtime library (see explanations
+# at the beginning of this file).
+
 if test "$GNUSTEP_IS_FLATTENED" != yes; then
   clean_target_os=`$srcdir/clean_os.sh $target_os`
   clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
   obj_dir="$clean_target_cpu/$clean_target_os"
 fi
 
-# Check to see if the libobjc library is in our GNUSTEP_SYSTEM_LIBRARIES.
+# Check to see if the libobjc library is in our GNUSTEP_SYSTEM_LIBRARIES
 # If so, there are probably other libraries that we want there also, so
 # leave the proper includes in CPPFLAGS and LDFLAGS
 AC_MSG_CHECKING(for custom shared objc library)
@@ -922,6 +1038,7 @@ if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
   if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
     gs_cv_objc_incdir="$GNUSTEP_HDIR"
+    gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
   fi
 fi
 
@@ -939,6 +1056,7 @@ if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
   if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
     gs_cv_objc_incdir="$GNUSTEP_HDIR"
+    gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
   fi
 fi
 
@@ -956,6 +1074,7 @@ if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
   if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
     gs_cv_objc_libdir="$GNUSTEP_LDIR"
     gs_cv_objc_incdir="$GNUSTEP_HDIR"
+    gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
   fi
 fi
 #gcc_shared_libobjc=`gcc -print-file-name=libobjc.so`
@@ -973,11 +1092,104 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
   # And the following to execute them
   LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
   export LD_LIBRARY_PATH
+  # Need to also add the Tools library on mingw
+  case $host_os in
+    *mingw32* )
+      PATH=$PATH:$gs_cv_objc_tools;;
+    * )
+      ;;
+  esac
 fi
+
+# Special case for Apple systems: When compiling plain C source files that
+# include Objective-C runtime headers we must make sure that the correct
+# header files are used with a gnu-*-* combo. The -fgnu-runtime compiler
+# option takes care of this when compiling Objective-C source files, but
+# has no effect when compiling plain C (or C++) source files.
+cc_gnuruntime=
+case $target_os-$ac_cv_library_combo in
+  darwin*-gnu-*-* )
+    if test "$gs_cv_objc_libdir" = "NONE"; then
+      AC_MSG_CHECKING(GNU Objective-C runtime header directory)
+      install_dir="`$CC -print-search-dirs | sed -n 's/install: //p'`"
+      if test -n "${install_dir}" && \
+        test -d "${install_dir}"include-gnu-runtime; then
+        cc_gnuruntime="${install_dir}"include-gnu-runtime
+        AC_MSG_RESULT($cc_gnuruntime)
+      else
+        AC_MSG_RESULT(NONE)
+      fi
+    fi
+    ;;
+esac
+AC_SUBST(cc_gnuruntime)
+
+# TODO: This flag needs to be moved to gnustep-base since it concerns
+# the runtime library (see explanations at the beginning of this
+# file).
+AC_MSG_CHECKING(for the flag to link libobjc)
+AC_ARG_WITH(objc-lib-flag,[
+--with-objc-lib-flag
+   Specify a different flag to link libobjc (the Objective-C runtime
+   library).  The default is -lobjc.  In some situations you may have
+   multiple versions of libobjc installed and if your linker supports
+   it you may want to specify exactly which one must be used; for
+   example on GNU/Linux you should be able to use
+     --with-objc-lib-flag=-l:libobjc.so.1
+   to request libobjc.so.1 (as opposed to, say, libobjc.so.2) to be
+   linked.
+],
+OBJC_LIB_FLAG="$withval",
+OBJC_LIB_FLAG=""
+)
+# We pass the flag, unchanged, to gnustep-make - if it's empty,
+# gnustep-make will be free to use -lobjc or -lobjc_gc depending on
+# the case.
+AC_SUBST(OBJC_LIB_FLAG)
+
+# But we need to compute, and print out, what flag we're using now.
+OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
+
+saved_CFLAGS="$CFLAGS"
+saved_LIBS="$LIBS"
+CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
+if test "$OBJC_RUNTIME_LIB" = "gnu"; then
+  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG"
+fi
+if test "$OBJC_RUNTIME_LIB" = "gnugc"; then
+  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc_gc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG -ldl -lgc"
+fi
+if test "$OBJC_RUNTIME_LIB" = "nx"; then
+  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG"
+fi
+if test "$OBJC_RUNTIME_LIB" = "apple"; then
+  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
+  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
+    OBJC_FINAL_LIB_FLAG=-lobjc
+  fi
+  OBJCRT="$OBJC_FINAL_LIB_FLAG"
+fi
+
+AC_MSG_RESULT($OBJC_FINAL_LIB_FLAG)
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
+# TODO: This check needs to be moved to gnustep-base since it concerns
+# the runtime library (see explanations at the beginning of this
+# file).
 OBJC_THREAD=
 AC_ARG_WITH(thread-lib,[
 --with-thread-lib
@@ -993,70 +1205,82 @@ fi
 
 
 AC_MSG_CHECKING(whether objc has thread support)
-saved_CFLAGS="$CFLAGS"
-saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
-if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  CFLAGS="$CFLAGS -fgnu-runtime"
-fi
-if test "$OBJC_RUNTIME_LIB" = "nx"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-fi
-if test "$OBJC_RUNTIME_LIB" = "apple"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-fi
 if test "$OBJC_THREAD" != ""; then
-  LIBS="-lobjc $LIBS $OBJC_THREAD"
+  LIBS="$OBJCRT $LIBS $OBJC_THREAD"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="$OBJC_THREAD",
 	objc_threaded="", objc_threaded="")
 elif test "$host_os" = linux-gnu; then
-  LIBS="-lobjc -lpthread"
+  LIBS="$OBJCRT -lpthread"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
 	objc_threaded="", objc_threaded="-lpthread")
+  if test x"$objc_threaded" = x""; then
+    LIBS="$OBJCRT"
+    AC_TRY_RUN([#include "config_thread.m"],
+          objc_threaded="works",
+	  objc_threaded="", objc_threaded="works")
+  fi
 elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
-  LIBS="-pthread -lobjc"
+  LIBS="-pthread $OBJCRT"
   AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-pthread",
        objc_threaded="", objc_threaded="-pthread")
   if test x"$objc_threaded" = x""; then
-    LIBS="-lpthread -lobjc"
+    LIBS="-lpthread $OBJCRT"
     AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
 	objc_threaded="", objc_threaded="-lpthread")
   fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc -lpcthread"
+    LIBS="$OBJCRT -lpcthread"
     AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpcthread",
 	objc_threaded="", objc_threaded="-lpcthread")
   fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="$OBJCRT"
+    AC_TRY_RUN([#include "config_thread.m"],
+          objc_threaded="works",
+	  objc_threaded="", objc_threaded="works")
+  fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
+  AC_TRY_RUN([#include "config_thread.m"], 
+	objc_threaded="works",
+	objc_threaded="", objc_threaded="works")
+elif test "$OBJC_RUNTIME_LIB" = "apple"; then
+  # Apple doesn't need anything extra for threads
+  LIBS="$OBJCRT $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="works")
 else
-  LIBS="-lobjc $LIBS"
+  LIBS="$OBJCRT $LIBS"
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="")
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lpthread "
+    LIBS="$OBJCRT $saved_LIBS -lpthread "
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lpthread", 
 	objc_threaded="", objc_threaded="")
   fi
   if test x"$objc_threaded" = x""; then
     # Solaris, OpenBSD/sparc
-    LIBS="-lobjc $saved_LIBS -lpthread -lposix4"
+    LIBS="$OBJCRT $saved_LIBS -lpthread -lposix4"
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lpthread -lposix4", 
 	objc_threaded="", objc_threaded="")
   fi
   if test x"$objc_threaded" = x""; then
-    LIBS="-lobjc $saved_LIBS -lthread "
+    LIBS="$OBJCRT $saved_LIBS -lthread "
     AC_TRY_RUN([#include "config_thread.m"], 
     	objc_threaded="-lthread", 
 	objc_threaded="", objc_threaded="")
+  fi
+  if test x"$objc_threaded" = x""; then
+    LIBS="$OBJCRT"
+    AC_TRY_RUN([#include "config_thread.m"], 
+          objc_threaded="works",
+	  objc_threaded="", objc_threaded="works")
   fi
 fi
 if test x"$objc_threaded" = x""; then
@@ -1071,78 +1295,149 @@ ac_cv_objc_threaded="$objc_threaded"
 AC_SUBST(objc_threaded)
 AC_SUBST(ac_cv_objc_threaded)
 
-# Do not restore LIBS and CFLAGS yet as we need to test if the
-# compiler supports native exceptions.
+AC_MSG_CHECKING(whether Objective-C++ is supported)
 
-#--------------------------------------------------------------------
-# Check if GCC supports -fobjc-exceptions, and if so, turn it on!
-#--------------------------------------------------------------------
+# Only new autoconf supports ObjC++ so we use C++ instead for now
+#AC_LANG_PUSH(Objective C++)
+#OBJCXXFLAGS_saved="$OBJCXXFLAGS"
+#OBJCXXFLAGS="$OBJCXXFLAGS -x objective-c++"
+#OBJCXXPPFLAGS_saved="$OBJCXXPPFLAGS"
+#OBJCXXPPFLAGS="$OBJCXXPPFLAGS -x objective-c++"
+AC_LANG_PUSH(C++)
+CXXFLAGS_saved="$CXXFLAGS"
+CXXFLAGS="$CXXFLAGS -x objective-c++"
+CXXPPFLAGS_saved="$CXXPPFLAGS"
+CXXPPFLAGS="$CXXPPFLAGS -x objective-c++"
 
-AC_ARG_ENABLE(native-objc-exceptions, [
---enable-native-objc-exceptions
-   Use native Objective-C exceptions.  Use this option if you want
-   to use the native Objective-C exception support (@try/@catch/@finally)
-   provided by newer GCC compilers.
-], 
-USE_OBJC_EXCEPTIONS=$enableval,
-USE_OBJC_EXCEPTIONS=no)
+AC_COMPILE_IFELSE([[
 
-AC_MSG_CHECKING(whether we should use native ObjC exceptions)
-if test x"$USE_OBJC_EXCEPTIONS" = x"yes"; then
-  # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
-  # something with @try/@catch/@finally in it.
-  if test ! ${GCC} = "yes" ; then
-    USE_OBJC_EXCEPTIONS=no
-    AC_MSG_RESULT(no: compiler isn't gcc)
-  else
-    CFLAGS_no_exceptions="$CFLAGS"
-    LIBS_no_exceptions="$LIBS"
-    CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
-    LIBS="$LIBS -shared-libgcc -fexceptions"
-    AC_RUN_IFELSE([[
-#include <stdlib.h>
-#include <objc/Object.h>
-
-int main(int argc, char **argv)
+@interface	ObjCClass
 {
-	Object *o=nil;
-	@try
-	{
-		o=[Object new];
-		@throw o;
-	}
-	@catch (id foo)
-	{
-		if (o!=foo)
-			return 1;
-	}
-	return 0;
+  int x;
 }
-  ]], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
-    AC_MSG_RESULT($USE_OBJC_EXCEPTIONS)
-    CFLAGS="$CFLAGS_no_exceptions"
-    LIBS="$LIBS_no_exceptions"
-  fi
-  if test x$USE_OBJC_EXCEPTIONS = xno; then
-    AC_MSG_NOTICE([Native objective-c exceptions were requested, but the compiler])
-    AC_MSG_NOTICE([doesn't support them.])
-    AC_MSG_ERROR([compiler doesn't support native objective-c exceptions])
+@end
+
+class CppClass
+{
+  int x;
+};
+
+int
+main()
+{
+  return 0;
+}
+]], objcc=yes, objcc=no)
+AC_MSG_RESULT($objcc)
+if test x"$objcc" = x"no"; then
+  OBJCXX=
+fi
+AC_SUBST(OBJCXX)
+# Only new autoconf supports ObjC++ so we use C++ instead for now
+#OBJCXXFLAGS="$OBJCXXFLAGS_saved"
+#OBJCXXPPFLAGS="$OBJCXXPPFLAGS_saved"
+#AC_LANG_POP(Objective C++)
+CXXFLAGS="$CXXFLAGS_saved"
+CXXPPFLAGS="$CXXPPFLAGS_saved"
+AC_LANG_POP(C++)
+
+#--------------------------------------------------------------------
+# Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!
+#--------------------------------------------------------------------
+
+# TODO: Enable it by default if the compiler supports it :-)
+AC_ARG_ENABLE(objc-nonfragile-abi, [
+--enable-objc-nonfragile-abi
+   Use the non-fragile ABI for Objective-C.  Use this option if you want
+   to use non-fragile instance variables provided by clang and libobjc2.
+], 
+USE_NONFRAGILE_ABI=$enableval,
+USE_NONFRAGILE_ABI=unset)
+
+AC_MSG_CHECKING(whether we should use the nonfragile ABI)
+if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
+  # What we want to do: set USE_NONFRAGILE_ABI to yes if we can compile
+  # something with -fobjc-nonfragile-abi.
+  CFLAGS_no_nonfragile="$CFLAGS"
+  CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
+  AC_COMPILE_IFELSE([[
+/* Note that we never execute this code so it does not really matter
+   what it is.  We are testing that the compiler accepts the
+   '-fobjc-nonfragile-abi' flag.  */
+int
+main()
+{
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+return __has_feature(objc_nonfragile_abi) ? 0 : 1;
+}
+]], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
+  AC_MSG_RESULT($USE_NONFRAGILE_ABI)
+  CFLAGS="$CFLAGS_no_nonfragile"
+
+  if test x"$USE_NONFRAGILE_ABI" = x"no"; then
+    AC_MSG_NOTICE([The nonfragile ABI was requested, but the compiler])
+    AC_MSG_NOTICE([doesn't support it.])
+    AC_MSG_ERROR([compiler doesn't support nonfragile ABI])
   fi
 else
-  AC_MSG_RESULT(not requested by user)
+  if test x"$USE_NONFRAGILE_ABI" != x"no"; then
+    saved_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS -x objective-c"
+    AC_EGREP_CPP([^1$], [
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+__has_feature(objc_nonfragile_abi)
+], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
+    CPPFLAGS=$saved_CPPFLAGS
+  fi
+  if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
+    AC_MSG_RESULT([yes (compiler default)])
+  else
+    AC_MSG_RESULT(not requested by user)
+  fi
 fi
 
-AC_SUBST(USE_OBJC_EXCEPTIONS)
+AC_SUBST(USE_NONFRAGILE_ABI)
+
 
 # Keep LIBS and CFLAGS as they are for a while - we need them in 
 # the following Objective-C tests!
+
+#--------------------------------------------------------------------
+# Check if we should use -r or -Wl,-r when doing partial linking
+#--------------------------------------------------------------------
+
+# Ideally, we'd use -r or -Wl,-r everywhere and that would work with
+# both GCC and clang.  But -r doesn't work with clang on some
+# platforms, while using -Wl,-r is a problem with GCC on some Sparc
+# systems, where GCC automatically passes --relax to the linker unless
+# you specify -r.  If you specify -Wl,-r, it still passes --relax,
+# producing the error
+#
+#   ld: --relax and -r may not be used together
+#
+# To work around this, we use -Wl,-r with clang, and -r with GCC.
+AC_MSG_CHECKING(for the flag to use to do partial linking)
+gs_cv_using_clang=`${CC} --version 2>&5 | grep -c "clang"`
+if test x"${gs_cv_using_clang}" = x"0" ; then
+  OBJ_MERGE_CMD_FLAG=-r
+  AC_MSG_RESULT([-r])
+else
+  OBJ_MERGE_CMD_FLAG=-Wl,-r
+  AC_MSG_RESULT([-Wl,-r])
+fi
+
+AC_SUBST(OBJ_MERGE_CMD_FLAG)
 
 #--------------------------------------------------------------------
 # Check for the GCC version - this is used in the following tests
 #--------------------------------------------------------------------
 
 AC_MSG_CHECKING(for the GCC version)
-if test ! ${GCC} = "yes" ; then
+if test ! x"${GCC}" = x"yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
   # Running gcc -dumpversion we get something like 2.95.4 or
@@ -1161,12 +1456,93 @@ else
   # All square brackets are doubled because this file is processed by m4 first.
   # Finally, any error messages are redirected to &5, so that they are logged
   # into config.log but don't clutter the normal user output.
-  gs_cv_gcc_major_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\2/") 2>&5`;
-  gs_cv_gcc_minor_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]].*\)/\4/") 2>&5`;
+  gs_cv_gcc_major_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\2/") 2>&5`;
+  gs_cv_gcc_minor_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\4/") 2>&5`;
 
   gs_cv_gcc_parsed_version=${gs_cv_gcc_major_version}.${gs_cv_gcc_minor_version}
 
   AC_MSG_RESULT(version: ${gs_cv_gcc_parsed_version})
+fi
+
+AC_MSG_CHECKING(whether the compiler is clang)
+if test ! x"${GCC}" = x"yes" ; then
+  CLANG_CC=no
+  AC_MSG_RESULT(no)
+else
+  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+    CLANG_CC=yes
+    AC_MSG_RESULT(yes)
+  else
+    CLANG_CC=no
+    AC_MSG_RESULT(no)
+  fi
+fi
+AC_SUBST(CLANG_CC)
+
+# Do not restore LIBS and CFLAGS yet as we need to test if the
+# compiler supports native exceptions.
+
+#--------------------------------------------------------------------
+# Check if GCC supports -fobjc-exceptions, and if so, turn it on!
+#--------------------------------------------------------------------
+
+AC_ARG_ENABLE(native-objc-exceptions, [
+--disable-native-objc-exceptions
+   Disable native Objective-C exception support (@try / @catch /
+   @finally / @synchronized).  If unspecified, Objective-C exception
+   support is enabled if the compiler can compile Objective-C code
+   containing @try / @catch / @finally / @synchronized.  Please note
+   that native exceptions also require support in the Objective-C
+   runtime; GNUstep-base will check for that support and may still
+   disable native exceptions if such support is not available.
+   Use this option if you do not want to use the native Objective-C
+   exception support provided by newer compilers.
+], 
+USE_OBJC_EXCEPTIONS=$enableval,
+USE_OBJC_EXCEPTIONS=maybe)
+
+# Please note that -fobjc-exceptions should automatically enable
+# -fexceptions.
+AC_MSG_CHECKING(whether the compiler supports native ObjC exceptions)
+if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
+  # What we want to do: set USE_OBJC_EXCEPTIONS to yes if we can compile
+  # something with @try/@catch/@finally in it.
+  CFLAGS_no_exceptions="$CFLAGS"
+  CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
+  AC_COMPILE_IFELSE([[
+#include <objc/objc.h>
+@interface Test { id isa; } @end
+
+int test (Test *o)
+{
+  @try
+    {
+      @throw o;
+    }
+   @catch (id foo)
+    {
+      if (o != foo)
+	return 1;
+    }
+  return 0;
+}
+  ]], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
+    if test x"$USE_OBJC_EXCEPTIONS" = x"no"; then
+      AC_MSG_RESULT(no)
+    else
+      AC_MSG_RESULT(yes)
+    fi
+    CFLAGS="$CFLAGS_no_exceptions"
+else
+  AC_MSG_RESULT($USE_OBJC_EXCEPTIONS)
+fi
+AC_SUBST(USE_OBJC_EXCEPTIONS)
+
+# Check if we need -shared-libgcc linker flags
+if test x"$USE_OBJC_EXCEPTIONS" = x"yes" -a x"${GCC}" = x"yes"; then
+  if test x"$CLANG_CC" = x"no"; then
+    LDFLAGS="$LDFLAGS -shared-libgcc"
+  fi
 fi
 
 #--------------------------------------------------------------------
@@ -1175,10 +1551,16 @@ fi
 
 AC_MSG_CHECKING(if the compiler supports autodependencies)
 
-# What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x
+# What we want to do: set AUTO_DEPENDENCIES to yes if gcc => 3.x.  As
+# an exception, we disabled them on cygwin because the compiler
+# generates autodependencies files containing filenames such as
+# G:/GNUstep/mingw/include/stdlib.h which can't really work with GNU
+# make because of the ':'.
 
 AUTO_DEPENDENCIES=""
-if test ! ${GCC} = "yes" ; then
+if test "$CYGWIN" = yes; then
+  AC_MSG_RESULT(no: autodependencies do not work on cygwin)
+elif test ! ${GCC} = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
   if test "${gs_cv_gcc_major_version}" -ge "3" >&5 2>&5; then
@@ -1203,6 +1585,13 @@ AC_MSG_CHECKING(if the compiler supports precompiled headers)
 
 # So we prefer to actually try them out! ;-)
 
+# (Unfortunately, even that is not enough since we have reports of
+# 4.1.1 GCC prereleases that pass this simple test, but where any
+# serious usage of precompiled headers (ie, including
+# Foundation/Foundation.h and AppKit/AppKit.h) doesn't work.  So in
+# addition to doing this test, we also forcefully disable precompiled
+# headers in 4.1)
+
 # What we want to do: set GCC_WITH_PRECOMPILED_HEADERS to yes if gcc
 # can compile and use a precompiled header.
 
@@ -1213,14 +1602,18 @@ GCC_WITH_PRECOMPILED_HEADERS="no"
 if test ! "${GCC}" = "yes" ; then
   AC_MSG_RESULT(no: it's not gcc)
 else
-  gs_precomp_test_builddir="`pwd`"
-  gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_builddir"; echo $?) 2>&5`
-  if test "$gs_precomp_test_results" = "0"; then
-    GCC_WITH_PRECOMPILED_HEADERS="yes"
-    AC_MSG_RESULT(yes)
+  if test "${gs_cv_gcc_parsed_version}" = "4.1" >&5 2>&5; then
+    AC_MSG_RESULT(no: gcc 4.1 is often shipped with broken precompiled headers)
   else
-    # Please check the config-precomp-test.log log file for more info
-    AC_MSG_RESULT(no: old or buggy gcc)
+    gs_precomp_test_builddir="`pwd`"
+    gs_precomp_test_results=`(CC="$CC"; export CC; CFLAGS="$CFLAGS"; export CFLAGS; CPPLAGS="$CPPFLAGS"; export CPPFLAGS; LDFLAGS="$LDFLAGS"; export LDFLAGS; LIBS="$LIBS"; export LIBS; cd "$srcdir/config-precomp-test/"; ./run-test.sh "$gs_precomp_test_builddir"; echo $?) 2>&5`
+    if test "$gs_precomp_test_results" = "0"; then
+      GCC_WITH_PRECOMPILED_HEADERS="yes"
+      AC_MSG_RESULT(yes)
+    else
+      # Please check the config-precomp-test.log log file for more info
+      AC_MSG_RESULT(no: old or buggy gcc)
+    fi
   fi
 fi
 
@@ -1265,7 +1658,41 @@ AC_SUBST(LIB_DIR)
 AC_SUBST(OBJCFLAGS)
 
 #--------------------------------------------------------------------
-# Check for $(info ...) function in GNU make
+# Check if we need to enable debug=yes builds by default
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING(if we should enable 'make debug=yes' by default)
+AC_ARG_ENABLE(debug-by-default, [
+--enable-debug-by-default
+   Enable building with 'make debug=yes' by default.  When you use
+   gnustep-make to build software, you have a choice of using
+   debug=yes or debug=no.  The debug=no will use the default compiler 
+   flags determined when gnustep-make was configured (usually -g -O2), 
+   while debug=yes will remove the optimization flags and add a 
+   number of debugging compiler flags.  If you do not specify the
+   --enable-debug-by-default option, gnustep-make will default to
+   building with debug=no when nothing is specified.  If you 
+   specify the --enable-debug-by-default option, gnustep-make will
+   default to building with debug=yes instead, which can be handy if you
+   always want to compile software with debug=yes and want to avoid
+   having to type debug=yes each time you compile (an alternative
+   is to define the variable debug=yes in your shell).  If you are
+   unsure, you should stick with the default and ignore this option.
+],
+  ac_cv_debug_by_default=$enableval,
+  ac_cv_debug_by_default="undefined")
+
+if test "$ac_cv_debug_by_default" = "yes"; then
+  GNUSTEP_DEFAULT_DEBUG=yes;
+  AC_MSG_RESULT(yes);
+else
+  GNUSTEP_DEFAULT_DEBUG=no;
+  AC_MSG_RESULT(no);
+fi
+AC_SUBST(GNUSTEP_DEFAULT_DEBUG)
+
+#--------------------------------------------------------------------
+# Check for GNU make
 #--------------------------------------------------------------------
 
 # Search for GNU make.  We try 'gmake' then 'gnumake' then 'make'.  If
@@ -1294,21 +1721,54 @@ gs_cv_make_major_version=`(echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9
 gs_cv_make_minor_version=`(echo ${gs_cv_make_version} | sed -e 's/\([[0-9]][[0-9]]*\)[[^0-9]]\([[0-9]][[0-9]]*\).*/\2/') 2>&5`
 AC_MSG_RESULT(version: ${gs_cv_make_major_version}.${gs_cv_make_minor_version})
 
-AC_MSG_CHECKING(if GNU Make has the info function)
-
-# Things may go wrong (eg, make couldn't be found), so by default we
-# assume 'no' here.  If things go wrong, you'll lost some
-# non-essential features.
-MAKE_WITH_INFO_FUNCTION=no
-if test "${gs_cv_make_major_version}" -ge "4" >&5 2>&5; then
-  MAKE_WITH_INFO_FUNCTION=yes
+#--------------------------------------------------------------------
+# Check for GNU Make >= 3.79
+#--------------------------------------------------------------------
+# We want to emit a warning if they are using GNU make < 3.79 as it's
+# no longer supported.  We let them install everything at their own
+# risk though.
+AC_MSG_CHECKING(for GNU Make >= 3.79)
+SUPPORTED_MAKE=no
+if test "${gs_cv_make_major_version}" = "3" >&5 2>&5; then
+  if test "${gs_cv_make_minor_version}" -ge "79" >&5 2>&5; then
+    SUPPORTED_MAKE=yes
+  fi
 fi
 
-if test "${gs_cv_make_major_version}" -ge "3" >&5 2>&5; then
+if test "${gs_cv_make_major_version}" -ge "4" >&5 2>&5; then
+  SUPPORTED_MAKE=yes
+fi
+
+if test "${SUPPORTED_MAKE}" = "yes" >&5 2>&5; then
+  AC_MSG_RESULT(yes)
+else
+  # We do not abort mostly because the checks for GNU make might have
+  # gone wrong and returned the wrong version, and because GNU make <
+  # 3.79.1 probably works anyway (with the exception of parallel
+  # building).
+  AC_MSG_RESULT(no)
+  AC_MSG_WARN(GNU Make >= 3.79.1 is recommended!  Older versions are no longer supported.  Continue at your own risk.)
+fi
+
+#--------------------------------------------------------------------
+# Check for $(info ...) function in GNU make
+#--------------------------------------------------------------------
+AC_MSG_CHECKING(if GNU Make has the info function)
+
+# Things may go wrong (eg, make couldn't be found in one of the
+# previous steps), so by default we assume 'no' here.  If things go
+# wrong, you'll lost some non-essential features.
+MAKE_WITH_INFO_FUNCTION=no
+if test "${gs_cv_make_major_version}" = "3" >&5 2>&5; then
   if test "${gs_cv_make_minor_version}" -ge "81" >&5 2>&5; then
     MAKE_WITH_INFO_FUNCTION=yes
   fi
 fi
+
+if test "${gs_cv_make_major_version}" -ge "4" >&5 2>&5; then
+  MAKE_WITH_INFO_FUNCTION=yes
+fi
+
 AC_MSG_RESULT(${MAKE_WITH_INFO_FUNCTION})
 AC_SUBST(MAKE_WITH_INFO_FUNCTION)
 
@@ -1341,6 +1801,36 @@ else
   AC_MSG_RESULT(no);
 fi
 AC_SUBST(GNUSTEP_STRIP_MAKEFILES)
+
+#-------------------------------------------------
+# Determine if we should enable parallel building
+#-------------------------------------------------
+
+AC_MSG_CHECKING([if we should enable support for parallel building])
+AC_ARG_ENABLE(parallel-building, [
+--disable-parallel-building
+  Disable support for parallel building.  Normally this is enabled
+  and you can request parallel building of a project by using the '-j N' 
+  flag for make (where N is a number, eg, '-j 4').  If you know that 
+  you are never going to be using parallel building, you can disable 
+  parallel building here - which will ignore all '-j N' flags, and
+  also avoid executing a 'compile' submake invocation - resulting
+  in slightly faster non-parallel builds, but making it impossible
+  to do parallel builds.
+],
+  ac_cv_parallel_building=$enableval,
+  ac_cv_parallel_building="yes")
+
+if test "$ac_cv_parallel_building" = "yes"; then
+  AC_MSG_RESULT(yes);
+  GNUSTEP_MAKE_PARALLEL_BUILDING="yes"
+else
+  AC_MSG_RESULT(no);
+  GNUSTEP_MAKE_PARALLEL_BUILDING="no"
+fi
+
+AC_SUBST(GNUSTEP_MAKE_PARALLEL_BUILDING)
+
 
 #--------------------------------------------------------------------
 # Record the version
@@ -1376,11 +1866,19 @@ AC_SUBST(target)
 AC_CHECK_PROGS(LATEX2HTML, latex2html)
 
 #--------------------------------------------------------------------
+# For test framework
+#--------------------------------------------------------------------
+AC_PATH_PROG(SHELLPROG,bash,/bin/sh)
+AC_PATH_PROG(TESTPROG, test)
+
+#--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
 AC_CONFIG_FILES([config-noarch.make config.make openapp opentool 
-executable.template GNUmakefile GNUstep.conf GNUstep.sh GNUstep.csh fixpath.sh
-gnustep-make.spec gnustep-config filesystem.make filesystem.sh filesystem.csh])
+executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf
+GNUstep.sh GNUstep.csh fixpath.sh
+gnustep-make.spec gnustep-config TestFramework/gnustep-tests
+filesystem.make filesystem.sh filesystem.csh])
 AC_CONFIG_COMMANDS([default],
 	[[chmod a+x openapp opentool fixpath.sh executable.template]],
 	[[]])

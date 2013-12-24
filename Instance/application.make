@@ -3,9 +3,9 @@
 #
 #   Instance Makefile rules to build GNUstep-based applications.
 #
-#   Copyright (C) 1997, 2001, 2002 Free Software Foundation, Inc.
+#   Copyright (C) 1997 - 2010 Free Software Foundation, Inc.
 #
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk>
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #   Author:  Ovidiu Predescu <ovidiu@net-community.com>
 #   Based on the original version by Scott Christley.
 #
@@ -20,6 +20,11 @@
 #   License along with this library; see the file COPYING.
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+
+# Applications usually link against a gui library (if available).
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = yes
+endif
 
 #
 # Include in the common makefile rules
@@ -36,16 +41,20 @@ endif
 # The list of supported languages is in xxx_LANGUAGES
 # The name of the application icon (if any) is in xxx_APPLICATION_ICON
 # The name of the app class is xxx_PRINCIPAL_CLASS (defaults to NSApplication).
-# The name of a file containing info.plist entries to be inserted into
-# Info-gnustep.plist (if any) is xxxInfo.plist
-# where xxx is the application name
+#
+# If you want to insert your own entries into Info.plist (or
+# Info-gnustep.plist) you should create a xxxInfo.plist file (where
+# xxx is the application name) and gnustep-make will automatically
+# read it and merge it into Info-gnustep.plist.
 #
 
 .PHONY: internal-app-all_ \
         internal-app-install_ \
         internal-app-uninstall_ \
         internal-app-copy_into_dir \
-        internal-application-build-template
+        internal-application-build-template \
+        internal-app-run-compile-submake \
+        internal-app-compile
 
 #
 # Determine where to install.  By default, install into GNUSTEP_APPS.
@@ -57,13 +66,6 @@ endif
 ifeq ($(APP_INSTALL_DIR),)
   APP_INSTALL_DIR = $(GNUSTEP_APPS)
 endif
-
-ALL_GUI_LIBS =								     \
-     $(ALL_LIB_DIRS)							     \
-     $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS)		     \
-     $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)	     \
-     $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-     $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
 
 APP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(APP_EXTENSION))
 APP_DIR = $(GNUSTEP_BUILD_DIR)/$(APP_DIR_NAME)
@@ -119,37 +121,74 @@ endif
 # Move this into target.make, but somehow make sure it is only used
 # when linking applications.
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
-  ALL_LDFLAGS += -mwindows
+  ALL_LDFLAGS += -Wl,-subsystem,windows
 endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
-	$(OBJ_FILES_TO_LINK) $(ALL_GUI_LIBS)$(END_ECHO)
+	$(OBJ_FILES_TO_LINK) $(ALL_LIB_DIRS) $(ALL_LIBS)$(END_ECHO)
 
 #
 # Compilation targets
 #
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-app-run-compile-submake: $(APP_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-app-run-compile-submake:
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-app-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-app-compile: $(APP_FILE)
+endif
 
 ifeq ($(FOUNDATION_LIB), apple)
-internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-app-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                    $(OBJ_DIRS_TO_CREATE) \
                     $(APP_DIR)/Contents/MacOS \
-                    $(APP_FILE) \
+                    internal-app-run-compile-submake \
                     shared-instance-bundle-all \
                     $(APP_INFO_PLIST_FILE)
+# If they specified Info.plist in the xxx_RESOURCE_FILES, print a
+# warning. They are supposed to provide a xxxInfo.plist which gets
+# merged with the automatically generated entries to generate
+# Info.plist.
+ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+endif
 
 $(APP_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 else
 
-internal-app-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-app-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                    $(OBJ_DIRS_TO_CREATE) \
                     $(APP_DIR)/$(GNUSTEP_TARGET_LDIR) \
-                    $(APP_FILE) \
+                    internal-app-run-compile-submake \
                     internal-application-build-template \
                     $(APP_DIR)/Resources \
                     $(APP_INFO_PLIST_FILE) \
                     $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop \
                     shared-instance-bundle-all
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+endif
 
 $(APP_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -280,12 +319,12 @@ $(APP_INFO_PLIST_FILE): $(GNUSTEP_STAMP_DEPEND) $(GNUSTEP_PLIST_DEPEND)
 	 -$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
 	   plmerge $@ "$(GNUSTEP_INSTANCE)Info.plist"; \
 	  fi$(END_ECHO)
+
+$(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop: $(APP_INFO_PLIST_FILE)
+	$(ECHO_CREATING)pl2link $^ $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop; \
+	                 chmod a+x $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop$(END_ECHO)
+
 endif
-
-$(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop: \
-		$(APP_DIR)/Resources/Info-gnustep.plist
-	$(ECHO_CREATING)pl2link $^ $(APP_DIR)/Resources/$(GNUSTEP_INSTANCE).desktop$(END_ECHO)
-
 
 internal-app-copy_into_dir:: shared-instance-bundle-copy_into_dir
 
@@ -339,7 +378,7 @@ internal-install-app-wrapper: $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 	$(ECHO_NOTHING)\
 	  cd $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR); \
 	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
-	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR) $(APP_INSTALL_DIR)/$(APP_FILE_NAME)` \
+	  $(LN_S_RECURSIVE) `$(REL_PATH_SCRIPT) $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR) $(APP_INSTALL_DIR)/$(APP_FILE_NAME) short` \
 	          $(GNUSTEP_INSTANCE)$(END_ECHO)
 else
 # Not sure that we can use relative paths with 'exec' in a portable

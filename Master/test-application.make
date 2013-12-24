@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/test-application.make
 #
 #   Copyright (C) 1997, 2001, 2002 Free Software Foundation, Inc.
@@ -27,7 +27,23 @@ endif
 # Building of test applications works as in application.make, except
 # you can't install them!
 
-internal-all:: $(TEST_APP_NAME:=.all.test-app.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(TEST_APP_NAME:=.all.test-app.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-test-app-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-test-app-all
+
+internal-master-test-app-all: $(TEST_APP_NAME:=.all.test-app.variables)
+
+endif
 
 _PSWRAP_C_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.c))
 _PSWRAP_H_FILES = $(foreach app,$(TEST_APP_NAME),$($(app)_PSWRAP_FILES:.psw=.h))
@@ -54,9 +70,8 @@ endif
 
 internal-strings:: $(TEST_APP_NAME:=.strings.test-app.variables)
 
-$(TEST_APP_NAME)::
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	         $@.all.test-app.variables
+$(TEST_APP_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-app.variables$(END_ECHO_RECURSIVE_MAKE)
 
 internal-install::
 	@ echo Skipping installation of test apps...

@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/service.make
 #
 #   Instance Makefile rules to build GNUstep-based services.
@@ -37,7 +37,9 @@ endif
         internal-service-install_ \
         internal-service-uninstall_ \
         internal-service-copy_into_dir \
-        service-resource-files
+        service-resource-files \
+        internal-service-run-compile-submake \
+        internal-service-compile
 
 # Libraries that go before the GUI libraries
 ALL_SERVICE_LIBS =							\
@@ -73,13 +75,49 @@ GNUSTEP_SHARED_BUNDLE_INSTALL_LOCAL_PATH = .
 GNUSTEP_SHARED_BUNDLE_INSTALL_PATH = $(SERVICE_INSTALL_DIR)
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-service-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-service-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                        $(OBJ_DIRS_TO_CREATE) \
                         $(SERVICE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-                        $(SERVICE_FILE) \
+                        internal-service-run-compile-submake \
                         $(SERVICE_DIR)/Resources/Info-gnustep.plist \
                         shared-instance-bundle-all
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-service-run-compile-submake: $(SERVICE_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-service-run-compile-submake:
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-service-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-service-compile: $(SERVICE_FILE)
+endif
 
 $(SERVICE_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
 	$(OBJ_FILES_TO_LINK) $(ALL_SERVICE_LIBS)$(END_ECHO)
 

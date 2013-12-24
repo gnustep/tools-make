@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/java.make
 #
 #   Master Makefile rules to build java-based (not necessarily
@@ -26,6 +26,9 @@ endif
 
 JAVA_PACKAGE_NAME := $(strip $(JAVA_PACKAGE_NAME))
 
+# Parallel building here is probably of little help since most
+# GNUmakefiles will have a single java package.  There is no point in
+# having more than one.
 internal-all:: $(JAVA_PACKAGE_NAME:=.all.java-package.variables)
 
 internal-install:: $(JAVA_PACKAGE_NAME:=.install.java-package.variables)
@@ -42,5 +45,4 @@ internal-distclean:: $(JAVA_PACKAGES_WITH_SUBPROJECTS:=.distclean.java-package.s
 endif
 
 $(JAVA_PACKAGE_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.java-package.variables
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.java-package.variables$(END_ECHO_RECURSIVE_MAKE)

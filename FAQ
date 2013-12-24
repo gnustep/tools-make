@@ -1,7 +1,7 @@
 1 GNUstep Frequently Asked Questions with Answers
 *************************************************
 
-Last updated 8 January 2008.  Please send corrections to
+Last updated 20 December 2008.  Please send corrections to
 <gnustep-maintainer@gnu.org>. Also look at the user FAQ for more user
 oriented questions.
 
@@ -49,7 +49,7 @@ systems (expect for the unimplemented parts, of course), there are a
 variety of other files and tools that are necessary for porting
 programs.
 
-`ni2gmodel'
+`nib2gmodel'
      This program coverts nib files from any system, such as OPENSTEP to
      a gmodel format file. Gmodel can be read directly by GNUstep or
      you can convert this to a more GNUstep-native gorm format (using
@@ -119,21 +119,20 @@ archive format (which can be edited by Gorm).  There IS a conversion
 tool called nib2gmodel that can be compiled under OPENSTEP to convert
 nib files to GNUstep gmodel files.
 
-   Newer nib files use XML format keyed archiving and may possibly be
-transportable, although differences in class and ivar layout may still
-make this difficult.
+   The current version of gui supports reading nib files created as of
+10.2.  If you have nib files which are older than this, you can convert
+them by loading them into Interface Builder, going to the "file" second
+and saving the nib using the "10.2 or later format."
 
 1.1.8 Can one use the hybrid "Objective-C++"
 --------------------------------------------
 
-No. at present the GNU compiler (gcc) does not support "Objective-C++".
-Soon to br released gcc 4.1 will have this support, but it is still
-unclear how robust it will be.
+Yes gcc 4.1 has support for this.
 
 1.1.9 Is there a plan to support the Java/YellowBox Bindings?
 -------------------------------------------------------------
 
-Yes. The GNustep Java library/bridge called JIGS is available now.  JIGS
+Yes. The GNUstep Java library/bridge called JIGS is available now.  JIGS
 is a free (LGPL) Java Interface for GNUstep; it can automatically wrap
 Objective-C libraries based on GNUstep, making them accessible directly
 to the Java programmer as if they were Java libraries. As a side effect,
@@ -146,10 +145,9 @@ objects.
 1.1.10 What if I compile GNUstep under OPENSTEP/MacOS X?
 --------------------------------------------------------
 
-GNUstep uses the X-windows display postscript extension.  The interface
-to that is not the same as the interface to the OPENSTEP/MacOS-X
-windows server.  While someone could write a backend library to provide
-the interface, nobody has bothered to date.
+GNUstep uses different backends to provide the same functionality as
+Display Postscript.  While someone could write a backend library to
+provide the interface, nobody has bothered to date.
 
    You can, however, use a GNUstep program with an X11 server running
 on MacOSX.
@@ -308,7 +306,7 @@ it's a low priority TODO.  It should be added to the GNUstep headers
 bracketed in `#ifndef STRICT_MACOS_X'
 
    There are a couple of people working on this already, so it's a good
-idea to get in touch with Adam or Richard to coordinate efforts.
+idea to get in touch with Greg, Adam or Richard to coordinate efforts.
 
 1.2.7 How do I start writing tests?
 -----------------------------------
@@ -354,7 +352,7 @@ out-of-date (or wrong) and update/mark-as-outdated as required.
 1.2.10 Why doesn't GDB support Objective-C?
 -------------------------------------------
 
-Um, it does. As of GDB 6.0, gdb supports debugging of Objective-C code.
+As of GDB 6.0, gdb supports debugging of Objective-C code.
 
 1.3 GNU Objective C Compiler and Runtime
 ========================================
@@ -402,8 +400,7 @@ The GNUstep Base Library is a library of general-purpose, non-graphical
 Objective C objects.  For example, it includes classes for strings,
 object collections, byte streams, typed coders, invocations,
 notifications, notification dispatchers, moments in time, network ports,
-remote object messaging support (distributed objects), event loops, and
-random number generators.
+remote object messaging support (distributed objects), and event loops.
 
    It provides functionality that aims to implement the non-graphical
 portion of the OpenStep standard (the Foundation library).
@@ -533,6 +530,9 @@ was not completed, Aladdin agreed to waive approximately $10,000 in
 promised fees for the work that was actually done and delivered.)  DGS
 works fairly well with a single context.  Alpha channel and compositing
 doesn't work.
+
+   Currently, further development on DGS has been abandoned.  The
+library based approach using libart, cairo, etc works much better.
 
 1.6.3 What is the relationship between the Display Ghostscript Server and X Windows?
 ------------------------------------------------------------------------------------

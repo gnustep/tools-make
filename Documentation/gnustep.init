@@ -21,3 +21,8 @@ sub nothing
 $T2H_print_About = \&nothing;
 $T2H_SECTION_NAVIGATION = 0;
 #$T2H_print_navigation = \&nothing;
+
+# Perl initialization file must end with the following instruction
+# that returns true, confirming the initialization completed
+# successfully.
+1;

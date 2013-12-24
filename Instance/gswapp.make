@@ -23,6 +23,10 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = no
+endif
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -30,6 +34,8 @@ endif
 # FIXME/TODO - this file has not been updated to use
 # Instance/Shared/bundle.make because it is linking resources instead of
 # copying them.
+
+# TODO: We should remove this makefile since it's not really supported.
 
 
 # The name of the application is in the GSWAPP_NAME variable.
@@ -52,10 +58,6 @@ GSWAPP_EXTENSION = gswa
         internal-gswapp-uninstall_ \
         internal-gswapp-copy_into_dir
 
-# Defined (5 March 2007) for backwards compatibility in case your
-# GNUmakefiles used it -- will be removed any time from 5 March 2011.
-GNUSTEP_GSWAPPS = $(GNUSTEP_WEB_APPS)
-
 #
 # Determine where to install.  By default, install into GNUSTEP_WEB_APPS.
 #
@@ -69,11 +71,8 @@ endif
 
 # Libraries that go before the WO libraries
 ALL_GSW_LIBS =								\
-	$(ALL_LIB_DIRS)							\
 	$(ADDITIONAL_GSW_LIBS) $(AUXILIARY_GSW_LIBS) $(GSW_LIBS)	\
-	$(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)			\
-	$(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS)	\
-        $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+        $(ALL_LIBS)
 
 GSWAPP_DIR_NAME = $(GNUSTEP_INSTANCE:=.$(GSWAPP_EXTENSION))
 GSWAPP_DIR = $(GNUSTEP_BUILD_DIR)/$(GSWAPP_DIR_NAME)
@@ -109,15 +108,19 @@ GSWAPP_FILE = $(GNUSTEP_BUILD_DIR)/$(GSWAPP_FILE_NAME)
 #
 
 $(GSWAPP_FILE): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
-	$(OBJ_FILES_TO_LINK) $(ALL_GSW_LIBS)$(END_ECHO)
+	$(OBJ_FILES_TO_LINK) $(ALL_LIB_DIRS) $(ALL_GSW_LIBS)$(END_ECHO)
 
 #
 # Compilation targets
 #
 ifeq ($(FOUNDATION_LIB), apple)
 internal-gswapp-all_:: \
-	$(GNUSTEP_OBJ_DIR) \
+	$(GNUSTEP_OBJ_INSTANCE_DIR) \
+        $(OBJ_DIRS_TO_CREATE) \
         $(GSWAPP_DIR)/Contents/MacOS \
         $(GSWAPP_FILE) \
         shared-instance-bundle-all \
@@ -127,7 +130,8 @@ $(GSWAPP_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 else
 
-internal-gswapp-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-gswapp-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                    $(OBJ_DIRS_TO_CREATE) \
                     $(GSWAPP_DIR)/$(GNUSTEP_TARGET_LDIR) \
                     $(GSWAPP_FILE) \
                     $(GSWAPP_DIR)/Resources \

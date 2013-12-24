@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instace/bundle.make
 #
 #   Instance makefile rules to build GNUstep-based bundles.
@@ -21,6 +21,12 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Bundles usually link against a gui library (if available).  If you
+# don't need a gui library, use xxx_NEEDS_GUI = no.
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = yes
+endif
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -40,12 +46,19 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 # installation directory is xxx_HEADER_FILES_INSTALL_DIR
 # where xxx is the bundle name
 #
+# If you want to insert your own entries into Info.plist (or
+# Info-gnustep.plist) you should create a xxxInfo.plist file (where
+# xxx is the bundle name) and gnustep-make will automatically
+# read it and merge it into Info-gnustep.plist.
+#
 
 .PHONY: internal-bundle-all_ \
         internal-bundle-install_ \
         internal-bundle-uninstall_ \
         internal-bundle-copy_into_dir \
-        build-bundle
+        build-bundle \
+        internal-bundle-run-compile-submake \
+        internal-bundle-compile
 
 # In some cases, a bundle without any object file in it is useful - to
 # just store some resources which can be loaded comfortably using the 
@@ -71,18 +84,11 @@ ifeq ($(CC_BUNDLE), yes)
 endif
 
 ifeq ($(LINK_BUNDLE_AGAINST_ALL_LIBS), yes)
-BUNDLE_LIBS += $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS)
+  BUNDLE_LIBS += $(ALL_LIBS)
 endif
 
-ALL_BUNDLE_LIBS =						\
-	$(ALL_LIB_DIRS)	 					\
-	$(BUNDLE_LIBS)
-
 ifeq ($(BUILD_DLL),yes)
-BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
+  BUNDLE_OBJ_EXT = $(DLL_LIBEXT)
 endif
 
 endif # OBJ_FILES_TO_LINK
@@ -101,7 +107,20 @@ endif # OBJ_FILES_TO_LINK
 # apple.
 #
 
-internal-bundle-all_:: $(GNUSTEP_OBJ_DIR) build-bundle
+internal-bundle-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE) build-bundle
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
 
 BUNDLE_DIR_NAME = $(GNUSTEP_INSTANCE:=$(BUNDLE_EXTENSION))
 BUNDLE_DIR = $(GNUSTEP_BUILD_DIR)/$(BUNDLE_DIR_NAME)
@@ -146,21 +165,41 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 ifneq ($(OBJ_FILES_TO_LINK),)
 ifneq ($(FOUNDATION_LIB),apple)
 build-bundle: $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR) \
-              $(BUNDLE_FILE) \
-              $(BUNDLE_INFO_PLIST_FILE) \
-              shared-instance-bundle-all
+              internal-bundle-run-compile-submake \
+              shared-instance-bundle-all \
+              $(BUNDLE_INFO_PLIST_FILE)
 else
 build-bundle: $(BUNDLE_DIR)/Contents/MacOS \
-              $(BUNDLE_FILE) \
-              $(BUNDLE_INFO_PLIST_FILE) \
-              shared-instance-bundle-all
+              internal-bundle-run-compile-submake \
+              shared-instance-bundle-all \
+              $(BUNDLE_INFO_PLIST_FILE)
 endif
 
-# The rule to build $(BUNDLE_DIR)/Resources is already provided
-# by Instance/Shared/bundle.make
+# The rule to build $(BUNDLE_DIR)/Resources (ie,
+# $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH) is already provided by
+# Instance/Shared/bundle.make
 
 $(BUNDLE_DIR)/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-bundle-run-compile-submake: $(BUNDLE_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-bundle-run-compile-submake:
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-bundle-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-bundle-compile: $(BUNDLE_FILE)
+endif
 
 $(BUNDLE_FILE): $(OBJ_FILES_TO_LINK)
 	$(ECHO_LINKING)$(BUNDLE_LINK_CMD)$(END_ECHO)
@@ -174,7 +213,8 @@ endif
 else 
 # Following code for the case OBJ_FILES_TO_LINK is empty - bundle with
 # no shared object in it.
-build-bundle: $(BUNDLE_INFO_PLIST_FILE) shared-instance-bundle-all
+build-bundle: shared-instance-bundle-all $(BUNDLE_INFO_PLIST_FILE) 
+	$(NOTICE_EMPTY_LINKING)
 endif # OBJ_FILES_TO_LINK
 
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
@@ -218,8 +258,7 @@ $(BUNDLE_DIR)/Contents/MacOS:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
-$(BUNDLE_DIR)/Contents/Info.plist: $(BUNDLE_DIR)/Contents \
-                                        $(GNUSTEP_STAMP_DEPEND)
+$(BUNDLE_DIR)/Contents/Info.plist: $(GNUSTEP_STAMP_DEPEND)
 	$(ECHO_CREATING)(echo "<?xml version='1.0' encoding='utf-8'?>";\
 	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
 	  echo "<!-- Automatically generated, do not edit! -->";\
@@ -237,8 +276,7 @@ $(BUNDLE_DIR)/Contents/Info.plist: $(BUNDLE_DIR)/Contents \
 	  echo "</plist>";\
 	) >$@$(END_ECHO)
 else
-$(BUNDLE_DIR)/Contents/Info.plist: $(BUNDLE_DIR)/Contents \
-                                        $(GNUSTEP_STAMP_DEPEND)
+$(BUNDLE_DIR)/Contents/Info.plist: $(GNUSTEP_STAMP_DEPEND)
 	$(ECHO_CREATING)(echo "<?xml version='1.0' encoding='utf-8'?>";\
 	  echo "<!DOCTYPE plist SYSTEM 'file://localhost/System/Library/DTDs/PropertyList.dtd'>";\
 	  echo "<!-- Automatically generated, do not edit! -->";\
@@ -260,8 +298,7 @@ GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
 
 ifneq ($(OBJ_FILES_TO_LINK),)
 # GNUstep bundles
-$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
-                                            $(GNUSTEP_STAMP_DEPEND) \
+$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(GNUSTEP_STAMP_DEPEND) \
                                             $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)$(BUNDLE_OBJ_EXT)\";"; \
@@ -273,8 +310,7 @@ $(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
 	fi$(END_ECHO)
 else # following code for when no object file is built
 # GNUstep bundles
-$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(BUNDLE_DIR)/Resources \
-                                            $(GNUSTEP_STAMP_DEPEND) \
+$(BUNDLE_DIR)/Resources/Info-gnustep.plist: $(GNUSTEP_STAMP_DEPEND) \
                                             $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \

@@ -86,14 +86,16 @@ endif
 export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)
 
 OBJC_LDFLAGS =
-OBJC_LIBS =
+OBJC_LIBS = 
+
 #
 # Set the appropriate ObjC runtime library and other information
 #
+# PS: OBJC_LIB_FLAG is set by config.make.
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
   OBJC_LDFLAGS =
   OBJC_LIB_DIR =
-  OBJC_LIBS = -lobjc
+  OBJC_LIBS = $(OBJC_LIB_FLAG)
   RUNTIME_FLAG   = -fgnu-runtime
   RUNTIME_DEFINE = -DGNU_RUNTIME=1
 endif
@@ -101,9 +103,9 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), gnugc)
   OBJC_LDFLAGS = 
   OBJC_LIB_DIR =
-  OBJC_LIBS = -lobjc_gc -lgc
+  OBJC_LIBS = $(OBJC_LIB_FLAG) -ldl -lgc
   RUNTIME_FLAG   = -fgnu-runtime
-  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DOBJC_WITH_GC=1
+  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DGS_WITH_GC=1
   ifeq ($(debug),yes)
     RUNTIME_DEFINE += -DGC_DEBUG
   endif
@@ -113,7 +115,7 @@ ifeq ($(OBJC_RUNTIME_LIB), nx)
   RUNTIME_FLAG = -fnext-runtime
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
   ifeq ($(FOUNDATION_LIB), gnu)
-    OBJC_LIBS = -lobjc
+    OBJC_LIBS = $(OBJC_LIB_FLAG)
   endif
 endif
 
@@ -124,9 +126,7 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), apple)
   RUNTIME_FLAG = -fnext-runtime
   RUNTIME_DEFINE = -DNeXT_RUNTIME=1
-  ifeq ($(FOUNDATION_LIB), gnu)
-    OBJC_LIBS = -lobjc
-  endif
+  OBJC_LIBS = $(OBJC_LIB_FLAG)
 endif
 
 FND_LDFLAGS =

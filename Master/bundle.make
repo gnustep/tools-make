@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/bundle.make
 #
 #   Master makefile rules to build GNUstep-based bundles.
@@ -27,7 +27,23 @@ endif
 
 BUNDLE_NAME := $(strip $(BUNDLE_NAME))
 
-internal-all:: $(BUNDLE_NAME:=.all.bundle.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(BUNDLE_NAME:=.all.bundle.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-bundle-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-bundle-all
+
+internal-master-bundle-all: $(BUNDLE_NAME:=.all.bundle.variables)
+
+endif
 
 internal-install:: $(BUNDLE_NAME:=.install.bundle.variables)
 
@@ -51,6 +67,5 @@ endif
 
 internal-strings:: $(BUNDLE_NAME:=.strings.bundle.variables)
 
-$(BUNDLE_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.bundle.variables
+$(BUNDLE_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.bundle.variables$(END_ECHO_RECURSIVE_MAKE)

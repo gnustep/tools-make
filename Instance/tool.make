@@ -20,6 +20,11 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Tools don't link against gui by default
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = no
+endif
+
 #
 # The name of the tools is in the TOOL_NAME variable.
 #
@@ -33,7 +38,8 @@ endif
 .PHONY: internal-tool-all_       \
         internal-tool-install_   \
         internal-tool-uninstall_ \
-        internal-tool-copy_into_dir
+        internal-tool-copy_into_dir \
+	internal-tool-compile
 
 # This is the directory where the tools get installed. If you don't specify a
 # directory they will get installed in the GNUstep Local Root.
@@ -52,22 +58,37 @@ ifeq ($(FINAL_TOOL_INSTALL_DIR),)
   FINAL_TOOL_INSTALL_DIR = $(TOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_LDIR)
 endif
 
-ALL_TOOL_LIBS =								\
-       $(ALL_LIB_DIRS)							\
-       $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS)	\
-       $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS)	\
-       $(TARGET_SYSTEM_LIBS)
-
 #
 # Compilation targets
 #
-internal-tool-all_:: $(GNUSTEP_OBJ_DIR) \
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-tool-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                     $(OBJ_DIRS_TO_CREATE) \
                      $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yes.
+# That sub-make invocation will compile files in parallel.
+internal-tool-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-tool-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-tool-compile: $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+endif
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) $(CC_LDFLAGS) -o $(LDOUT)$@ \
 		$(OBJ_FILES_TO_LINK) \
-		$(ALL_TOOL_LIBS)$(END_ECHO)
+		$(ALL_LIB_DIRS) $(ALL_LIBS)$(END_ECHO)
 
 internal-tool-copy_into_dir::
 	$(ECHO_COPYING_INTO_DIR)$(MKDIRS) $(COPY_INTO_DIR)/$(GNUSTEP_TARGET_LDIR);\

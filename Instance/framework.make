@@ -3,10 +3,10 @@
 #
 #   Instance Makefile rules to build GNUstep-based frameworks.
 #
-#   Copyright (C) 2000, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+#   Copyright (C) 2000, 2001, 2002, 2003, 2004, 2010 Free Software Foundation, Inc.
 #
 #   Author: Mirko Viviani <mirko.viviani@rccr.cremona.it>
-#   Author: Nicola Pero <n.pero@mi.flashnet.it>
+#   Author: Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -20,6 +20,12 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Frameworks usually link against a gui library (if available).  If
+# you don't need a gui library, use xxx_NEEDS_GUI = no.
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = yes
+endif
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
@@ -31,7 +37,9 @@ endif
         internal-framework-install_ \
         internal-framework-distclean \
         internal-framework-clean \
-        internal-framework-uninstall_
+        internal-framework-uninstall_ \
+        internal-framework-run-compile-submake \
+        internal-framework-compile
 
 # The name of the framework is in the FRAMEWORK_NAME variable.
 # The list of framework resource files are in xxx_RESOURCE_FILES
@@ -56,7 +64,7 @@ endif
 #    xxx_WEBSERVER_RESOURCE_DIRS
 # The list of localized framework web server GSWeb components are in
 #    xxx_WEBSERVER_LOCALIZED_RESOURCE_DIRS
-# xxx_CURRENT_VERSION_NAME is the compiled version name (default "A")
+# xxx_CURRENT_VERSION_NAME is the compiled version name (default "0")
 # xxx_MAKE_CURRENT_VERSION is used to decide if the framework version
 #   we compiling should be made the current/default version or not
 #   (default is "yes")
@@ -72,6 +80,11 @@ endif
 # be mostly used to have a framework with name XXX work as a drop-in
 # replacement for another framework, which has name YYY -- and which
 # might be installed at the same time :-).
+#
+# If you want to insert your own entries into Info.plist (or
+# Info-gnustep.plist) you should create a xxxInfo.plist file (where
+# xxx is the framework name) and gnustep-make will automatically
+# read it and merge it into Info-gnustep.plist.
 #
 
 # Set VERSION from xxx_VERSION
@@ -155,11 +168,11 @@ endif
 FRAMEWORK_VERSION_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
 
 # This is not doing much at the moment, it is only defining
-# HEADER_FILES, HEADER_FILES_DIR and HEADER_FILES_INSTALL_DIR in the
-# standard way.  Please note that HEADER_FILES might be empty even if
-# we have headers in subprojects that we need to manage and install.
-# So we assume by default that we have some headers even if
-# HEADER_FILES is empty.
+# HEADER_FILES, HEADER_SUBDIRS, HEADER_FILES_DIR and
+# HEADER_FILES_INSTALL_DIR in the standard way.  Please note that
+# HEADER_FILES might be empty even if we have headers in subprojects
+# that we need to manage and install.  So we assume by default that we
+# have some headers even if HEADER_FILES is empty.
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 
 # On windows, this is unfortunately required.
@@ -168,14 +181,9 @@ ifeq ($(BUILD_DLL), yes)
 endif
 
 ifeq ($(LINK_AGAINST_ALL_LIBS), yes)
-# Link against all libs ... but not the one we're compiling! (not sure
-# when this could happen with frameworks, anyway it makes sense)
-LIBRARIES_DEPEND_UPON += $(filter-out -l$(GNUSTEP_INSTANCE), \
-   $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) \
-   $(BACKEND_LIBS) \
-   $(GUI_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) \
-   $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) \
-   $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+  # Link against all libs ... but not the one we're compiling! (not sure
+  # when this could happen with frameworks, anyway it makes sense)
+  LIBRARIES_DEPEND_UPON += $(filter-out -l$(GNUSTEP_INSTANCE), $(ALL_LIBS))
 endif
 
 INTERNAL_LIBRARIES_DEPEND_UPON =				\
@@ -208,7 +216,7 @@ ifeq ($(FOUNDATION_LIB),gnu)
 
   DUMMY_FRAMEWORK = NSFramework_$(subst +,_1,$(subst -,_0,$(subst _,__,$(GNUSTEP_INSTANCE))))
   DUMMY_FRAMEWORK_FILE = $(DERIVED_SOURCES_DIR)/$(DUMMY_FRAMEWORK).m
-  DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_DIR)/,$(DUMMY_FRAMEWORK).o)
+  DUMMY_FRAMEWORK_OBJ_FILE = $(addprefix $(GNUSTEP_OBJ_INSTANCE_DIR)/,$(DUMMY_FRAMEWORK).o)
 
   # The following file will hold the list of classes compiled into the
   # framework, ready to be included in the .plist file.  We include the
@@ -226,6 +234,7 @@ ifeq ($(FOUNDATION_LIB),gnu)
 endif
 
 FRAMEWORK_HEADER_FILES = $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_FILES))
+FRAMEWORK_HEADER_SUBDIRS = $(addprefix $(FRAMEWORK_VERSION_DIR)/Headers/,$(HEADER_SUBDIRS))
 
 # FIXME - do we really those variables too ?
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
@@ -243,8 +252,15 @@ FRAMEWORK_CURRENT_LIBRARY_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_CURRENT_LIBRARY
 ifneq ($(BUILD_DLL), yes)
 
 FRAMEWORK_LIBRARY_FILE = lib$(GNUSTEP_INSTANCE)$(SHARED_LIBEXT)
+ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+# On Mac OS X the version number conventionally precedes the shared
+# library suffix, e.g., libgnustep-base.1.16.1.dylib.
+VERSION_FRAMEWORK_LIBRARY_FILE = lib$(GNUSTEP_INSTANCE).$(VERSION)$(SHARED_LIBEXT)
+SONAME_FRAMEWORK_FILE = lib$(GNUSTEP_INSTANCE).$(INTERFACE_VERSION)$(SHARED_LIBEXT)
+else
 VERSION_FRAMEWORK_LIBRARY_FILE = $(FRAMEWORK_LIBRARY_FILE).$(VERSION)
 SONAME_FRAMEWORK_FILE = $(FRAMEWORK_LIBRARY_FILE).$(INTERFACE_VERSION)
+endif
 
 else # BUILD_DLL
 
@@ -273,11 +289,12 @@ FRAMEWORK_LIBRARY_FILE         = lib$(GNUSTEP_INSTANCE)$(DLL_LIBEXT)$(LIBEXT)
 VERSION_FRAMEWORK_LIBRARY_FILE = $(FRAMEWORK_LIBRARY_FILE)
 SONAME_FRAMEWORK_FILE  = $(FRAMEWORK_LIBRARY_FILE)
 
-# LIB_LINK_DLL_FILE is the DLL library, Renaissance-0.dll.  Include
-# the INTERFACE_VERSION in the DLL library name.  Applications are
-# linked explicitly to this INTERFACE_VERSION of the library; this
-# works exactly in the same way as under Unix.
-LIB_LINK_DLL_FILE    = $(GNUSTEP_INSTANCE)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
+# LIB_LINK_DLL_FILE is the DLL library, Renaissance-0.dll
+# (cygRenaissance-0.dll on Cygwin).  Include the INTERFACE_VERSION in
+# the DLL library name.  Applications are linked explicitly to this
+# INTERFACE_VERSION of the library; this works exactly in the same way
+# as under Unix.
+LIB_LINK_DLL_FILE    = $(DLL_PREFIX)$(GNUSTEP_INSTANCE)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
 
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # BUILD_DLL
@@ -308,16 +325,38 @@ ifneq ($(DYLIB_INSTALL_NAME_BASE),)
 else
   # Use a relative path for easy relocation.
   LIB_LINK_INSTALL_NAME = $(GNUSTEP_INSTANCE).framework/$(GNUSTEP_INSTANCE)
+
+  # On Mac OS X, set absolute install_name if requested
+  ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
+    ifeq ($(GNUSTEP_ABSOLUTE_INSTALL_PATHS), yes)
+      LIB_LINK_INSTALL_NAME = $(LIB_LINK_INSTALL_DIR)/$(GNUSTEP_INSTANCE)
+    endif
+  endif
 endif
 
 
 GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH = $(FRAMEWORK_VERSION_DIR)/Resources
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/bundle.make
 
-internal-framework-all_:: $(GNUSTEP_OBJ_DIR) \
+internal-framework-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE) \
                           build-framework
+# If they specified Info-gnustep.plist in the xxx_RESOURCE_FILES,
+# print a warning. They are supposed to provide a xxxInfo.plist which
+# gets merged with the automatically generated entries to generate
+# Info-gnustep.plist.
+ifneq ($(FOUNDATION_LIB), apple)
+  ifneq ($(filter Info-gnustep.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_GNUSTEP_PLIST)
+  endif
+else
+  ifneq ($(filter Info.plist,$($(GNUSTEP_INSTANCE)_RESOURCE_FILES)),)
+	$(WARNING_INFO_PLIST)
+  endif
+endif
 
-internal-framework-build-headers:: $(FRAMEWORK_HEADER_FILES) \
+internal-framework-build-headers:: $(FRAMEWORK_VERSION_DIR)/Headers \
+                                   $(FRAMEWORK_HEADER_SUBDIRS) \
+                                   $(FRAMEWORK_HEADER_FILES) \
                                    build-framework-dirs
 
 ifeq ($(MAKE_CURRENT_VERSION),yes)
@@ -329,7 +368,7 @@ ifeq ($(MAKE_CURRENT_VERSION),yes)
 # rebuilding the symlink every single time, which is a waste of time.
 UPDATE_CURRENT_SYMLINK_RULE = $(FRAMEWORK_DIR)/Versions/Current
 $(FRAMEWORK_DIR)/Versions/Current: $(FRAMEWORK_VERSION_DIR)
-	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR)/Versions; \
+	$(ECHO_UPDATING_VERSION_SYMLINK)cd $(FRAMEWORK_DIR)/Versions; \
 	$(RM_LN_S) Current; \
 	$(LN_S) $(CURRENT_VERSION_NAME) Current$(END_ECHO)
 
@@ -345,7 +384,6 @@ endif
 # old Sun Solaris, test -h works but test -L does not.
 build-framework-dirs: $(DERIVED_SOURCES_DIR) \
                       $(FRAMEWORK_LIBRARY_DIR) \
-                      $(FRAMEWORK_VERSION_DIR)/Headers \
                       $(FRAMEWORK_VERSION_DIR)/Resources \
                       $(FRAMEWORK_RESOURCE_DIRS) \
                       $(UPDATE_CURRENT_SYMLINK_RULE)
@@ -353,17 +391,17 @@ ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR); \
 	  if [ ! -h "Resources" ]; then \
 	    $(RM_LN_S) Resources; \
-	    $(LN_S) Versions/Current/Resources Resources; \
+	    $(LN_S_RECURSIVE) Versions/Current/Resources Resources; \
 	  fi; \
 	  if [ ! -h "Headers" ]; then \
 	    $(RM_LN_S) Headers; \
-	    $(LN_S) Versions/Current/Headers Headers; \
+	    $(LN_S_RECURSIVE) Versions/Current/Headers Headers; \
 	  fi$(END_ECHO)
 endif
 	$(ECHO_NOTHING)cd $(DERIVED_SOURCES_DIR); \
 	  if [ ! -h "$(HEADER_FILES_INSTALL_DIR)" ]; then \
 	    $(RM_LN_S) ./$(HEADER_FILES_INSTALL_DIR); \
-	    $(LN_S) ../$(FRAMEWORK_DIR_NAME)/Headers \
+	    $(LN_S_RECURSIVE) ../$(FRAMEWORK_DIR_NAME)/Headers \
                     ./$(HEADER_FILES_INSTALL_DIR); \
 	  fi$(END_ECHO)
 
@@ -373,15 +411,33 @@ $(FRAMEWORK_LIBRARY_DIR):
 $(FRAMEWORK_VERSION_DIR)/Headers:
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
+$(FRAMEWORK_HEADER_SUBDIRS):
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
 $(DERIVED_SOURCES_DIR): $(DERIVED_SOURCES_DIR)/.stamp
 $(DERIVED_SOURCES_DIR)/.stamp:
 	$(ECHO_CREATING)$(MKDIRS) $(DERIVED_SOURCES_DIR); \
 	touch $@$(END_ECHO)
 
 # Need to share this code with the headers code ... but how.
-$(FRAMEWORK_VERSION_DIR)/Headers/%.h: $(HEADER_FILES_DIR)/%.h $(FRAMEWORK_VERSION_DIR)/Headers
-	$(ECHO_NOTHING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
+# IMPORTANT: It is tempting to have a file (a header, in this case)
+# depend on the directory in which we want to create it (the
+# .../Headers/ directory in this case).  The idea being that make
+# would automatically create the directory before the file.  That
+# might work for a single file, but could trigger spurious rebuilds if
+# you have more than one file in the directory.  The first file will
+# create the directory, then create the file.  The second file will be
+# created inside the directory; but on some filesystems, creating the
+# file inside the directory then updates the 'last modified' timestamp
+# of the directory.  So next time you run make, the directory is
+# 'newer' than the first file, and because the first file depends on
+# the directory, make will determine that it needs to be updated,
+# triggering a spurious recreation of the file.  If you also have
+# auto-dependencies turned on, this might in turn cause recompilation
+# and further spurious rebuilding to happen.
+$(FRAMEWORK_VERSION_DIR)/Headers/%.h: $(HEADER_FILES_DIR)/%.h
+	$(ECHO_CREATING)$(INSTALL_DATA) $< $@$(END_ECHO)
 
 OBJC_OBJ_FILES_TO_INSPECT = $(OBJC_OBJ_FILES) $(SUBPROJECT_OBJ_FILES)
 
@@ -427,19 +483,20 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR)/.stamp $(OBJ_FILES_TO_LINK) GNUm
 	  classarray="$$classarray)"; \
 	fi; \
 	echo "$$classarray" > $(DUMMY_FRAMEWORK_CLASS_LIST); \
+	echo "#include <Foundation/NSObject.h>" > $@; \
 	echo "#include <Foundation/NSString.h>" > $@; \
-	echo "@interface $(DUMMY_FRAMEWORK)" >> $@; \
+	echo "@interface $(DUMMY_FRAMEWORK) : NSObject" >> $@; \
 	echo "+ (NSString *)frameworkEnv;" >> $@; \
 	echo "+ (NSString *)frameworkPath;" >> $@; \
 	echo "+ (NSString *)frameworkVersion;" >> $@; \
-	echo "+ (NSString **)frameworkClasses;" >> $@; \
+	echo "+ (NSString *const*)frameworkClasses;" >> $@; \
 	echo "@end" >> $@; \
 	echo "@implementation $(DUMMY_FRAMEWORK)" >> $@; \
 	echo "+ (NSString *)frameworkEnv { return nil; }" >> $@; \
 	echo "+ (NSString *)frameworkPath { return @\"$(FRAMEWORK_INSTALL_DIR)\"; }" >> $@; \
 	echo "+ (NSString *)frameworkVersion { return @\"$(CURRENT_VERSION_NAME)\"; }" >> $@; \
 	echo "static NSString *allClasses[] = {$$classlist};" >> $@; \
-	echo "+ (NSString **)frameworkClasses { return allClasses; }" >> $@;\
+	echo "+ (NSString *const*)frameworkClasses { return allClasses; }" >> $@;\
 	echo "@end" >> $@$(END_ECHO)
 
 ifeq ($(FOUNDATION_LIB),gnu)
@@ -454,12 +511,12 @@ else
 endif
 
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
-build-framework: $(FRAMEWORK_FILE) \
+build-framework: internal-framework-run-compile-submake \
                  shared-instance-bundle-all \
                  $(FRAMEWORK_VERSION_DIR)/Resources/$(FRAMEWORK_INFO_PLIST_FILE) \
                  $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)
 else
-build-framework: $(FRAMEWORK_FILE) \
+build-framework: internal-framework-run-compile-submake \
                  shared-instance-bundle-all \
                  $(FRAMEWORK_VERSION_DIR)/Resources/$(FRAMEWORK_INFO_PLIST_FILE)
 endif
@@ -479,7 +536,7 @@ ifeq ($(findstring darwin, $(GNUSTEP_TARGET_OS)), darwin)
 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE): $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE): $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)
 ifeq ($(MAKE_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework; \
 	$(RM_LN_S) $(GNUSTEP_INSTANCE); \
@@ -505,15 +562,15 @@ ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
 $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 
-$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE): $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/
+$(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE): $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR)
 ifeq ($(MAKE_CURRENT_VERSION),yes)
 	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_INSTANCE).framework/$(GNUSTEP_TARGET_LDIR); \
 	$(RM_LN_S) $(GNUSTEP_INSTANCE) $(FRAMEWORK_LIBRARY_FILE); \
 	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_TARGET_LDIR) \
-	                            Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE)` \
+	                            Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE) short` \
 	        $(GNUSTEP_INSTANCE); \
 	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_TARGET_LDIR) \
-	                            Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(FRAMEWORK_LIBRARY_FILE)` \
+	                            Versions/Current/$(GNUSTEP_TARGET_LDIR)/$(FRAMEWORK_LIBRARY_FILE) short` \
 	        $(FRAMEWORK_LIBRARY_FILE)$(END_ECHO)
 endif
 endif
@@ -525,13 +582,44 @@ else
   LIB_LINK_FRAMEWORK_FILE = $(LIB_LINK_DLL_FILE)
 endif
 
+LIB_LINK_FILES_TO_LINK = $(OBJ_FILES_TO_LINK)
+
+# Important: FRAMEWORK_FILE (which is created in the parallel
+# 'compile' invocation) depends on DUMMY_FRAMEWORK_OBJ_FILES as well,
+# which depends on a lot of other rules.  These rules *must* be safe
+# for parallel building, because they will be used during a parallel
+# build.  In particular, note that DUMMY_FRAMEWORK_OBJ_FILE must
+# itself depend on OBJ_FILES_TO_LINK else it might be built before all
+# files are compiled.
 $(FRAMEWORK_FILE): $(DUMMY_FRAMEWORK_OBJ_FILE) $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING) \
 	$(LIB_LINK_CMD) || $(RM) $(FRAMEWORK_FILE) ; \
 	(cd $(LIB_LINK_OBJ_DIR); \
 	  $(RM_LN_S) $(GNUSTEP_INSTANCE); \
 	  $(LN_S) $(LIB_LINK_FRAMEWORK_FILE) $(GNUSTEP_INSTANCE)) \
 	$(END_ECHO)
+
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-framework-run-compile-submake: $(FRAMEWORK_FILE)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-framework-run-compile-submake:
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-framework-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-framework-compile: $(FRAMEWORK_FILE)
+endif
 
 PRINCIPAL_CLASS = $(strip $($(GNUSTEP_INSTANCE)_PRINCIPAL_CLASS))
 
@@ -545,7 +633,7 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 
 # FIXME: MacOSX frameworks should also merge xxxInfo.plist into them
 # MacOSX-S frameworks
-$(FRAMEWORK_VERSION_DIR)/Resources/Info.plist: $(FRAMEWORK_VERSION_DIR)/Resources
+$(FRAMEWORK_VERSION_DIR)/Resources/Info.plist:
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
@@ -557,7 +645,6 @@ GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
 
 # GNUstep frameworks
 $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: \
-                        $(FRAMEWORK_VERSION_DIR)/Resources \
                         $(DUMMY_FRAMEWORK_FILE) \
                         $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -589,7 +676,7 @@ ifeq ($(strip),yes)
 endif
 	$(ECHO_INSTALLING_HEADERS)cd $(GNUSTEP_HEADERS); \
 	$(RM_LN_S) $(HEADER_FILES_INSTALL_DIR); \
-	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers` $(HEADER_FILES_INSTALL_DIR); \
+	$(LN_S_RECURSIVE) `$(REL_PATH_SCRIPT) $(GNUSTEP_HEADERS) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)/Headers short` $(HEADER_FILES_INSTALL_DIR); \
 	$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)cd $(GNUSTEP_HEADERS); \
@@ -600,11 +687,11 @@ endif
 	$(RM_LN_S) $(FRAMEWORK_LIBRARY_FILE); \
 	$(RM_LN_S) $(SONAME_FRAMEWORK_FILE); \
 	$(RM_LN_S) $(VERSION_FRAMEWORK_LIBRARY_FILE); \
-	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(FRAMEWORK_LIBRARY_FILE)` $(FRAMEWORK_LIBRARY_FILE); \
+	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(FRAMEWORK_LIBRARY_FILE) short` $(FRAMEWORK_LIBRARY_FILE); \
 	if test -r "$(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE)"; then \
-	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE)` $(SONAME_FRAMEWORK_FILE); \
+	  $(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(SONAME_FRAMEWORK_FILE) short` $(SONAME_FRAMEWORK_FILE); \
 	fi; \
-	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE)` $(VERSION_FRAMEWORK_LIBRARY_FILE)$(END_ECHO)
+	$(LN_S) `$(REL_PATH_SCRIPT) $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_CURRENT_LIBRARY_DIR_NAME)/$(VERSION_FRAMEWORK_LIBRARY_FILE) short` $(VERSION_FRAMEWORK_LIBRARY_FILE)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)cd $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR); \
 	$(CHOWN) $(CHOWN_TO) $(FRAMEWORK_LIBRARY_FILE); \

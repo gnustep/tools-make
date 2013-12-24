@@ -17,6 +17,11 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# Applications usually link against a gui library (if available).
+ifeq ($(NEEDS_GUI),)
+  NEEDS_GUI = yes
+endif
+
 ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif

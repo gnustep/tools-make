@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/ctool.make
 #
 #   Master Makefile rules to build GNUstep-based command line ctools.
@@ -26,7 +26,23 @@ endif
 
 CTOOL_NAME := $(strip $(CTOOL_NAME))
 
-internal-all:: $(CTOOL_NAME:=.all.ctool.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(CTOOL_NAME:=.all.ctool.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-ctool-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-ctool-all
+
+internal-master-ctool-all: $(CTOOL_NAME:=.all.ctool.variables)
+
+endif
 
 internal-install:: $(CTOOL_NAME:=.install.ctool.variables)
 
@@ -44,6 +60,5 @@ endif
 
 internal-strings:: $(CTOOL_NAME:=.strings.ctool.variables)
 
-$(CTOOL_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	         $@.all.ctool.variables
+$(CTOOL_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.ctool.variables$(END_ECHO_RECURSIVE_MAKE)

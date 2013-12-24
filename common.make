@@ -21,6 +21,16 @@
 #   If not, write to the Free Software Foundation,
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
+# TODO: It would be nice to check here that the 'make' command being
+# used is indeed GNU make, and exit with a user-friendly error message
+# if not.  We could, for example, check that the variable MAKE_VERSION
+# (which is defined by GNU make but not other makes) is defined.
+# Unfortunately, there doesn't exist a shared make syntax for checking
+# that a variable is defined across different versiosn of make; BSD
+# make would use '.ifdef' which doesn't work with GNU make, and the
+# GNU make syntax (eg, ifneq ($(MAKE_VERSION),)) wouldn't work with
+# BSD make.
+
 ifeq ($(COMMON_MAKE_LOADED),)
 COMMON_MAKE_LOADED = yes
 
@@ -31,6 +41,16 @@ SHELL = /bin/sh
 # gnustep-config, so we want to export it to avoid sub-GNUmakefiles
 # from having to recompute it!
 export GNUSTEP_MAKEFILES
+
+# The fact that this make invocation is building its targets in
+# parallel does not mean that submakes should do it too.  We control
+# exactly which make invocation runs in parallel, and which does not.
+# So, we do not want to export _GNUSTEP_MAKE_PARALLEL to submakes,
+# unless passed on the command line.  FIXME: This does not work, so as
+# a quick hack I added _GNUSTEP_MAKE_PARALLEL=no to all submake
+# invocations.  That works fine, but might be troublesome for custom
+# GNUmakefiles that run submakes.  Need to think.
+#unexport _GNUSTEP_MAKE_PARALLEL
 
 #
 # Get the global config information.  This includes
@@ -75,7 +95,7 @@ include $(GNUSTEP_MAKEFILES)/library-combo.make
 
 #
 # Get the config information (host/target/library-combo specific),
-# this includes CC, OPTFLAGS etc.
+# this includes CC, OPTFLAG etc.
 #
 include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
 
@@ -91,6 +111,16 @@ endif
 # Get standard messages
 #
 include $(GNUSTEP_MAKEFILES)/messages.make
+
+ifneq ($(messages),yes)
+  # This flag is passed to make so we do not print the directories that 
+  # we recurse into unless messages=yes is used.
+  GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG = --no-print-directory
+else
+  # If messages=yes is used, let make print out each directory it
+  # recurses into.
+  GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG = 
+endif
 
 #
 # Get flags/config options for core libraries
@@ -126,7 +156,36 @@ include $(GNUSTEP_MAKEFILES)/filesystem.make
 #
 ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), )
   GNUSTEP_INSTALLATION_DOMAIN = LOCAL
-endif  
+
+  # Try to read install.conf, if one exists.  This file can be used
+  # when compiling from source to specify default installation location
+  # for certain packages.  The location of install.conf can be specified 
+  # using the GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE variable; if that variable 
+  # is not set, we look for a file called install.conf in the same directory as 
+  # the GNUSTEP_CONFIG_FILE.
+  ifeq ($(GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE), )
+    GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE = $(dir $(GNUSTEP_CONFIG_FILE))installation-domains.conf
+  endif
+
+  -include $(GNUSTEP_INSTALLATION_DOMAINS_CONF_FILE)
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_SYSTEM_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
+  endif
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_LOCAL_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = LOCAL
+  endif
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_NETWORK_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = NETWORK
+  endif
+
+  ifneq ($(filter $(PACKAGE_NAME), $(GNUSTEP_PACKAGES_TO_INSTALL_INTO_USER_BY_DEFAULT)), )
+    GNUSTEP_INSTALLATION_DOMAIN = USER
+  endif
+
+endif
 
 # Safety check.  Very annoying when you mistype and you end up
 # installing into /. ;-)
@@ -166,7 +225,11 @@ ifneq ($(GNUSTEP_INSTALLATION_DIR),)
   # GNUstep filesystem rooted in GNUSTEP_INSTALLATION_DIR.
   # This is not recommended since it does not work with custom
   # filesystem configurations.
-  $(warning GNUSTEP_INSTALLATION_DIR is deprecated.  Please use GNUSTEP_INSTALLATION_DOMAIN instead)
+  ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+    $(error GNUSTEP_INSTALLATION_DIR is deprecated.  Please use GNUSTEP_INSTALLATION_DOMAIN instead)
+  else
+    $(warning GNUSTEP_INSTALLATION_DIR is deprecated.  Please use GNUSTEP_INSTALLATION_DOMAIN instead)
+  endif
 
   #
   # DESTDIR allows you to relocate the entire installation somewhere else
@@ -265,10 +328,16 @@ endif
 # compatibility hack in place for about 4 years from now, so until
 # Feb 2011.
 #
-GNUSTEP_DOCUMENTATION      = $(GNUSTEP_DOC)
-GNUSTEP_DOCUMENTATION_MAN  = $(GNUSTEP_DOC_MAN)
-GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOC_INFO)
-
+ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+# FIXME - these would be nice but needs careful testing
+#  GNUSTEP_DOCUMENTATION      = $(error GNUSTEP_DOCUMENTATION is deprecated)
+#  GNUSTEP_DOCUMENTATION_MAN  = $(error GNUSTEP_DOCUMENTATION_MAN is deprecated)
+#  GNUSTEP_DOCUMENTATION_INFO = $(error GNUSTEP_DOCUMENTATION_INF is deprecated)
+else
+  GNUSTEP_DOCUMENTATION      = $(GNUSTEP_DOC)
+  GNUSTEP_DOCUMENTATION_MAN  = $(GNUSTEP_DOC_MAN)
+  GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOC_INFO)
+endif
 
 #
 # INSTALL_ROOT_DIR is the obsolete way of relocating stuff.  It used
@@ -284,13 +353,25 @@ GNUSTEP_DOCUMENTATION_INFO = $(GNUSTEP_DOC_INFO)
 # Anyway, until all makefiles have been updated, we set INSTALL_ROOT_DIR for backwards 
 # compatibility.
 #
+ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+  ifneq ($(INSTALL_ROOT_DIR),)
+    $(error INSTALL_ROOT_DIR is deprecated in gnustep-make v2, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+  endif
+endif
+
 ifneq ($(DESTDIR),)
   ifeq ($(INSTALL_ROOT_DIR),)
     INSTALL_ROOT_DIR = $(DESTDIR)
   endif
 endif
 
-INSTALL_ROOT_DIR += $(warning INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+# FIXME: Test that using 'error' here works reliably.
+#  INSTALL_ROOT_DIR += $(error INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+  INSTALL_ROOT_DIR += $(warning INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+else
+  INSTALL_ROOT_DIR += $(warning INSTALL_ROOT_DIR is deprecated, please replace any instance of INSTALL_ROOT_DIR with DESTDIR)
+endif
 
 # The default name of the makefile to be used in recursive invocations of make
 ifeq ($(MAKEFILE_NAME),)
@@ -511,14 +592,27 @@ endif
 # compiler warnings.  But we really need to investigate why the
 # warning appear in the first place, if they are serious or not, and
 # what can be done about it.
-OBJCFLAGS = -fno-strict-aliasing
+INTERNAL_OBJCFLAGS = -fno-strict-aliasing
+
 CFLAGS =
 
 # If the compiler supports native ObjC exceptions and the user wants us to
 # use them, turn them on!
 ifeq ($(USE_OBJC_EXCEPTIONS), yes)
-  OBJCFLAGS += -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
-  INTERNAL_LDFLAGS += -shared-libgcc -fexceptions
+  INTERNAL_OBJCFLAGS += -fexceptions -fobjc-exceptions -D_NATIVE_OBJC_EXCEPTIONS
+  INTERNAL_LDFLAGS += -fexceptions
+endif
+
+# If the compiler supports nonfragile ABI and the user wants us to
+# use them, turn them on!
+ifeq ($(USE_NONFRAGILE_ABI), yes)
+  INTERNAL_OBJCFLAGS += -fobjc-nonfragile-abi -D_NONFRAGILE_ABI
+  INTERNAL_LDFLAGS += -fobjc-nonfragile-abi
+endif
+
+# If we are using garbage collection we set a define to say so.
+ifeq ($(OBJC_WITH_GC), yes)
+  INTERNAL_OBJCFLAGS += -DGS_WITH_GC=1
 endif
 
 #
@@ -569,25 +663,56 @@ ifeq ($(profile), yes)
   endif
 endif
 
-# Enable debug by default.  This is according to the GNU Coding
-# Standards.
-ifneq ($(debug), no)
-  debug = yes
+# The default set of compilation flags are set in config.make in the
+# OPTFLAG variable.  They should default to -g -O2.  These should be
+# an "average" set of flags, midway between debugging and performance;
+# they are used, unchanged, when we build with debug=no (the default
+# unless --enable-debug-by-default was used when configuring
+# gnustep-make).  Using the set of GCC flags -g -O2 as default is
+# recommended by the GNU Coding Standards and is common practice.  If
+# you specify debug=yes, you want to do a debug build, so we remove
+# the optimization flag that makes it harder to debug.  If you specify
+# strip=yes, you do not want debugging symbols, so we strip all
+# executables before installing them.  This gives you three main
+# options to use in a default setup:
+#
+# make (some optimization, and some debugging symbols are used)
+# make debug=yes (removes optimization flags)
+# make strip=yes (removes debugging symbols)
+#
+
+# By default we build using debug=no (unless --enable-debug-by-default
+# was specified when configuring gnustep-make) - so that the default
+# compilation flags should be -g -O2.  This is according to the GNU
+# Coding Standards.
+ifeq ($(debug),)
+  debug = $(GNUSTEP_DEFAULT_DEBUG)
 endif
 
 ifeq ($(debug), yes)
-  # This is filtered out as it compromised debugging
+  # Optimization flags are filtered out as they make debugging harder.
   OPTFLAG := $(filter-out -O%, $(OPTFLAG))
-  ADDITIONAL_FLAGS += -g -Wall -DDEBUG -fno-omit-frame-pointer
-  INTERNAL_JAVACFLAGS += -g -deprecation
+  # If OPTFLAG does not already include -g, add it here.
+  ifneq ($(filter -g, $(OPTFLAG)), -g)
+    ADDITIONAL_FLAGS += -g
+  endif
+  # Add standard debug compiler flags.
+  ADDITIONAL_FLAGS += -DDEBUG -fno-omit-frame-pointer
+
+  # The following is for Java.
+  INTERNAL_JAVACFLAGS += -g
 else
+  # The default OPTFLAG set in config.make are used to compile.
+
+  # The following is for Java.
   INTERNAL_JAVACFLAGS += -O
 endif
 
 ifeq ($(warn), no)
   ADDITIONAL_FLAGS += -UGSWARN
 else
-  ADDITIONAL_FLAGS += -DGSWARN
+  ADDITIONAL_FLAGS += -Wall -DGSWARN
+  INTERNAL_JAVACFLAGS += -deprecation
 endif
 
 ifeq ($(diagnose), no)
@@ -627,6 +752,14 @@ else
 endif
 
 GNUSTEP_OBJ_DIR = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_OBJ_DIR_NAME)
+
+ifneq ($(GNUSTEP_INSTANCE),)
+  GNUSTEP_OBJ_INSTANCE_DIR_NAME = $(GNUSTEP_OBJ_DIR_NAME)/$(GNUSTEP_INSTANCE).obj
+  GNUSTEP_OBJ_INSTANCE_DIR      = $(GNUSTEP_BUILD_DIR)/$(GNUSTEP_OBJ_INSTANCE_DIR_NAME)
+else
+  GNUSTEP_OBJ_INSTANCE_DIR_NAME = $(warn "Makefile bug ... GNUSTEP_OBJ_INSTANCE_DIR_NAME used in Master invocation!")
+  GNUSTEP_OBJ_INSTANCE_DIR      = $(warn "Makefile bug ... GNUSTEP_OBJ_INSTANCE_DIR used in Master invocation!")
+endif
 
 #
 # Common variables for subprojects
@@ -695,11 +828,16 @@ unexport GNUSTEP_TYPE
 ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
 
 # Print out a message with our version number and how to get help on
-# targets and options.
+# targets and options.  We use $(notdir $(MAKE)) to print the command
+# that was used to invoke us; this is usually 'make' but it often is
+# 'gmake' on *BSD systems.
 ifeq ($(MAKE_WITH_INFO_FUNCTION),yes)
   # Use 'make quiet=yes' to disable the message
   ifneq ($(quiet),yes)
-    $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type 'make print-gnustep-make-help' for help.)
+    $(info This is gnustep-make $(GNUSTEP_MAKE_VERSION). Type '$(notdir $(MAKE)) print-gnustep-make-help' for help.)
+    ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
+      $(info Running in gnustep-make version 2 strict mode.)
+    endif
   endif
 endif
 
@@ -714,14 +852,12 @@ endif
 ifneq ($(FOUNDATION_LIB), apple)
 # Under Win32 paths are so confused this warning is not worthwhile
 ifneq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
-ifneq ($(findstring cygwin, $(GNUSTEP_HOST_OS)), cygwin)
 
   ifeq ($(findstring $(GNUSTEP_SYSTEM_TOOLS),$(PATH)),)
     $(warning WARNING: Your PATH may not be set up correctly !)
     $(warning Please try again after adding "$(GNUSTEP_SYSTEM_TOOLS)" to your path)
   endif
 
-endif
 endif
 endif # code used when FOUNDATION_LIB != apple
 

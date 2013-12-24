@@ -1,11 +1,11 @@
-#
+#   -*-makefile-*-
 #   Shared/strings.make
 #
 #   Makefile fragment with rules to run make_strings
 #
-#   Copyright (C) 2002 Free Software Foundation, Inc.
+#   Copyright (C) 2002, 2010 Free Software Foundation, Inc.
 #
-#   Author:  Nicola Pero <nicola@brainstorm.co.uk> 
+#   Author:  Nicola Pero <nicola.pero@meta-innovation.com>
 #
 #   This file is part of the GNUstep Makefile Package.
 #
@@ -22,7 +22,8 @@
 #
 # input variables:
 #
-# $(GNUSTEP_INSTANCE)_LANGUAGES: the list of languages
+# $(GNUSTEP_INSTANCE)_LANGUAGES: the list of languages (processed in rules.make,
+#   and converted into LANGUAGES)
 #
 # $(GNUSTEP_INSTANCE)_STRINGS_FILES: the list of ObjC/C/.h files to
 #   parse; if not set, it defaults to $(GNUSTEP_INSTANCE)_OBJC_FILES and
@@ -39,41 +40,38 @@
 #
 
 ifneq ($(strip $($(GNUSTEP_INSTANCE)_STRINGS_FILES)),)
- Str_STRINGS_FILES = $($(GNUSTEP_INSTANCE)_STRINGS_FILES)
+ GNUSTEP_STRINGS_FILES = $(strip $($(GNUSTEP_INSTANCE)_STRINGS_FILES))
 else
 
- Str1_STRINGS_FILES = \
+ GNUSTEP_STRINGS_FILES = $(strip \
   $($(GNUSTEP_INSTANCE)_OBJC_FILES) \
   $($(GNUSTEP_INSTANCE)_C_FILES) \
-  $(addprefix $($(GNUSTEP_INSTANCE)_HEADER_FILES_DIR),$($(GNUSTEP_INSTANCE)_HEADER_FILES))
-
- Str_STRINGS_FILES = $(strip $(Str1_STRINGS_FILES))
+  $(addprefix $($(GNUSTEP_INSTANCE)_HEADER_FILES_DIR),$($(GNUSTEP_INSTANCE)_HEADER_FILES)))
 
 endif
 
 .PHONY: internal-$(GNUSTEP_TYPE)-strings
 
-ifeq ($(Str_STRINGS_FILES),)
+ifeq ($(GNUSTEP_STRINGS_FILES),)
 
 internal-$(GNUSTEP_TYPE)-strings::
 	$(ALWAYS_ECHO_NO_FILES)
 
-else # we have some STRINGS_FILES
+else # we have some GNUSTEP_STRINGS_FILES
 
-Str_LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
-
-Str_MAKE_STRINGS_OPTIONS = $(strip $($(GNUSTEP_INSTANCE)_MAKE_STRINGS_OPTIONS))
-ifeq ($(Str_MAKE_STRINGS_OPTIONS),)
-  Str_MAKE_STRINGS_OPTIONS = $(MAKE_STRINGS_OPTIONS)
+GNUSTEP_MAKE_STRINGS_OPTIONS = $(strip $($(GNUSTEP_INSTANCE)_MAKE_STRINGS_OPTIONS))
+ifeq ($(GNUSTEP_MAKE_STRINGS_OPTIONS),)
+  GNUSTEP_MAKE_STRINGS_OPTIONS = $(MAKE_STRINGS_OPTIONS)
 endif
 
-internal-$(GNUSTEP_TYPE)-strings::
-ifeq ($(Str_LANGUAGES),)
-	$(ALWAYS_ECHO_NO_LANGUAGES)
-else
-	$(ECHO_MAKING_STRINGS)make_strings $(Str_MAKE_STRINGS_OPTIONS) \
-	  -L "$(Str_LANGUAGES)" \
-	  $(Str_STRINGS_FILES)$(END_ECHO)
-endif
+GNUSTEP_LANGUAGE_DIRS = $(foreach l, $(LANGUAGES), $(l).lproj)
 
-endif # Str_STRING_FILES = ''
+$(GNUSTEP_LANGUAGE_DIRS):
+	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
+
+internal-$(GNUSTEP_TYPE)-strings:: $(GNUSTEP_LANGUAGE_DIRS)
+	$(ECHO_MAKING_STRINGS)make_strings $(GNUSTEP_MAKE_STRINGS_OPTIONS) \
+	  -L "$(LANGUAGES)" \
+	  $(GNUSTEP_STRINGS_FILES)$(END_ECHO)
+
+endif # GNUSTEP_STRING_FILES = ''

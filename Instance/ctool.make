@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Instance/ctool.make
 #
 #   Instance Makefile rules to build GNUstep-based command line ctools.
@@ -50,23 +50,45 @@ endif
 
 .PHONY: internal-ctool-all_ \
         internal-ctool-install_ \
-        internal-ctool-uninstall_
+        internal-ctool-uninstall_ \
+	internal-ctool-compile
 
-ALL_TOOL_LIBS =							\
-     $(ALL_LIB_DIRS)						\
+# Override the default with just the minimal C libs required to link
+ALL_LIBS =							\
      $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS)		\
      $(TARGET_SYSTEM_LIBS)
 
 #
 # Compilation targets
 #
-internal-ctool-all_:: $(GNUSTEP_OBJ_DIR) \
-	              $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+# Standard building
+internal-ctool-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) \
+                      $(OBJ_DIRS_TO_CREATE) \
+                     $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+else
+# Parallel building.  The actual compilation is delegated to a
+# sub-make invocation where _GNUSTEP_MAKE_PARALLEL is set to yet.
+# That sub-make invocation will compile files in parallel.
+internal-ctool-all_:: $(GNUSTEP_OBJ_INSTANCE_DIR) $(OBJ_DIRS_TO_CREATE)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-ctool-compile \
+	GNUSTEP_TYPE=$(GNUSTEP_TYPE) \
+	GNUSTEP_INSTANCE=$(GNUSTEP_INSTANCE) \
+	GNUSTEP_OPERATION=compile \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+internal-ctool-compile: $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT)
+endif
 
 $(GNUSTEP_OBJ_DIR)/$(GNUSTEP_INSTANCE)$(EXEEXT): $(OBJ_FILES_TO_LINK)
+ifeq ($(OBJ_FILES_TO_LINK),)
+	$(WARNING_EMPTY_LINKING)
+endif
 	$(ECHO_LINKING)$(LD) $(ALL_LDFLAGS) -o $(LDOUT)$@ \
 	      $(OBJ_FILES_TO_LINK) \
-	      $(ALL_TOOL_LIBS)$(END_ECHO)
+	      $(ALL_LIB_DIRS) $(ALL_LIBS)$(END_ECHO)
 
 internal-ctool-install_:: $(CTOOL_INSTALL_DIR)/$(GNUSTEP_TARGET_DIR)
 	$(ECHO_INSTALLING)$(INSTALL_PROGRAM) -m 0755 \

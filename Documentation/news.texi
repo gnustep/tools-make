@@ -9,11 +9,115 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.6.6}
+
+Debian packaging support
+
+Minor bugfixes.
+
+@ifclear ANNOUNCE-ONLY
+
+@section Changes in version @samp{2.6.5}
+
+Bugfix for non-fragile ABI test
+
+Bugfix order if include diorectories for system includes
+
+Bugfix equality test for prorocol testing
+
+Added minimal test support for .c and .cc files.
+
+@section Changes in version @samp{2.6.4}
+
+Test framework extended equality tests.
+
+Android build target
+
+@section Changes in version @samp{2.6.3}
+
+Minor bugfix release.
+
+@section Changes in version @samp{2.6.2}
+
+Added standalone filesystem layout for putting everything in 
+one directory for easy deployment of relocatable. Other bug fixes.
+
+@section Changes in version @samp{2.6.1}
+
+Bug fix release. Most notably to fix a problem compiling GNUstep with clang.
+
+@section Changes in version @samp{2.6.0}
+
+@itemize @bullet
+@item The default filesystem layout is now the 'fhs' layout
+@item The default location of the configuration file changed when not installing system-wide
+@item Removed the --with-system-root, --with-local-root and --with-network-root options
+@item Removed obsolete variables (deprecated 4 years ago).
+@item A new test framework is included in the pacakge
+@item objc.make deprecated. Use tool.make instead
+@item --enable-absolute-install-paths is now the default on Darwin
+@end itemize
+
+@section Changes in version @samp{2.4.0}
+
+@itemize @bullet
+@item Add --enable-objc-nonfragile-abi flag
+@item New serial-subdirectories.make and parallel-subdirectories.make.
+@item Support for parallel building of subdirectories.
+@item Support for parallel building of different instances.
+@item Support source files in subdirectories without using a subproject.
+@item Support header files in sub-subdirectories.
+@item Batch-compile Java files (much faster).
+@item Changed default compilation flags to -O2 -g.
+@item Fixes for building documentation.
+@item Renamed info files to prevent conflicts.
+@item Updated cygwin support.
+@end itemize
+
+@section Changes in version @samp{2.2.0}
+
+@itemize @bullet
+@item New --with-objc-lib-flag for specifying libobjc.
+@item Automatically uses -lobjc_gc with configured with garbage collection
+@item Parallel building supported using e.g. make -j 2
+@item Use install -p if available.
+@item make uninstall works better now.
+@end itemize
+
+@section Changes in version @samp{2.0.8}
+
+Minor bug fix to deal with installing in different domains
+
+@section Changes in version @samp{2.0.7}
+@itemize @bullet
+@item New configuration file to set default installation
+@item gnustep-make now uses the --no-print-directory flag when invoking make
+@item Files make have same name but different extensions (.c and .m)
+@item Change in path checking algorithm in GNUstep.sh and GNUstep.csh
+@item Test applications linked against gnustep-gui by default
+@end itemize
+
+@section Changes in version @samp{2.0.6}
+
+@itemize @bullet
+@item Fixed some spurious rebuilds of plists, and framework headers.
+@item Added the --enable-absolute-install-paths option for Darwin systems.
+@item Install GNUstep.conf in /etc/GNUstep/GNUstep.conf on all systems.
+@end itemize
+
+@section Changes in version @samp{2.0.5}
+
+@itemize @bullet
+@item Update C++ and ObjC++ support so that g++ and proper flags are automatically used.
+@item Added a new filesystem layout for Apple Mac OS X and use this by default on this system.
+@item NEEDS_GUI variable added to determine linking behavior against gui library.
+@item New option --enable-strict-v2-mode to test for obsolete variables.
+@item ~/GNUstep/GNUstep.sh is no longer sourced.
+@end itemize
+
 @section Changes in version @samp{2.0.4}
 
 Fixed a bug finding relative paths on Windows (during configuration).
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.0.3}
 
@@ -22,7 +126,7 @@ Add Windows installer makefile for Applications.
 
 @section Changes in version @samp{2.0.2}
 
-Update license to GPLv3. Bug fixes.
+Update license to GPLv3.
 
 @section Changes in version @samp{2.0.1}
 

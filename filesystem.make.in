@@ -133,8 +133,9 @@ GNUSTEP_LOCAL_JAVA                = $(GNUSTEP_LOCAL_LIBRARY)/Libraries/Java
 
 #
 # USER domain
-# Please note that here the GNUstep.conf values are called GNUSTEP_USER_DIR_*
-# which we convert into the actual GNUSTEP_USER_* after prepending (if needed)
+# Please note that here the GNUstep.conf values are called
+# GNUSTEP_USER_DIR_* which we convert into the actual GNUSTEP_USER_*
+# after replacing %u, %i and %% and prepending (if needed)
 # GNUSTEP_HOME.
 #
 GNUSTEP_USER_DIR_APPS        ?= @GNUSTEP_USER_DIR_APPS@
@@ -149,6 +150,101 @@ GNUSTEP_USER_DIR_DOC         ?= @GNUSTEP_USER_DIR_DOC@
 GNUSTEP_USER_DIR_DOC_MAN     ?= @GNUSTEP_USER_DIR_DOC_MAN@
 GNUSTEP_USER_DIR_DOC_INFO    ?= @GNUSTEP_USER_DIR_DOC_INFO@
 
+#
+# Now, for all the GNUSTEP_USER_DIR_xxx variables above, replace:
+#
+#  %u with the username
+#  %i with the userid
+#  %% with %
+#
+# This allows you to, for example, specify the GNUSTEP_USER_TOOLS
+# should be /GNUstep/Users/%u/bin/, and that would mean
+# /GNUstep/Users/nicola/bin for user 'nicola' and
+# /GNUstep/Users/richard/bin for user 'richard'.
+#
+
+# Avoid attempting the replacement of %u and %i if there are no %u or
+# %i to replace.  Determining the user name and id requires a shell
+# commands, which is slow.  So, before we do that, try to figure out
+# if doing the substitutions is required or not.
+
+# FIXME: Even with this protection, we'd still do the subshell call
+# once per sub-make invocation.
+
+# Check if any of the strings contain %i...
+ifneq ($(findstring %i,\
+ $(GNUSTEP_USER_DIR_APPS)\
+ $(GNUSTEP_USER_DIR_ADMIN_APPS)\
+ $(GNUSTEP_USER_DIR_WEB_APPS)\
+ $(GNUSTEP_USER_DIR_TOOLS)\
+ $(GNUSTEP_USER_DIR_ADMIN_TOOLS)\
+ $(GNUSTEP_USER_DIR_LIBRARY)\
+ $(GNUSTEP_USER_DIR_HEADERS)\
+ $(GNUSTEP_USER_DIR_LIBRARIES)\
+ $(GNUSTEP_USER_DIR_DOC)\
+ $(GNUSTEP_USER_DIR_DOC_MAN)\
+ $(GNUSTEP_USER_DIR_DOC_INFO)),)
+  # ... and if so, do the replacement.
+  GNUSTEP__USERID := $(shell id -u)
+  GNUSTEP_USER_DIR_APPS        := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_APPS))
+  GNUSTEP_USER_DIR_ADMIN_APPS  := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_ADMIN_APPS))
+  GNUSTEP_USER_DIR_WEB_APPS    := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_WEB_APPS))
+  GNUSTEP_USER_DIR_TOOLS       := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_TOOLS))
+  GNUSTEP_USER_DIR_ADMIN_TOOLS := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_ADMIN_TOOLS))
+  GNUSTEP_USER_DIR_LIBRARY     := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_LIBRARY))
+  GNUSTEP_USER_DIR_HEADERS     := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_HEADERS))
+  GNUSTEP_USER_DIR_LIBRARIES   := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_LIBRARIES))
+  GNUSTEP_USER_DIR_DOC         := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_DOC))
+  GNUSTEP_USER_DIR_DOC_MAN     := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_DOC_MAN))
+  GNUSTEP_USER_DIR_DOC_INFO    := $(subst %i,$(GNUSTEP__USERID),$(GNUSTEP_USER_DIR_DOC_INFO))
+endif
+
+# Check if any of the strings contain %u ...
+ifneq ($(findstring %u,\
+ $(GNUSTEP_USER_DIR_APPS)\
+ $(GNUSTEP_USER_DIR_ADMIN_APPS)\
+ $(GNUSTEP_USER_DIR_WEB_APPS)\
+ $(GNUSTEP_USER_DIR_TOOLS)\
+ $(GNUSTEP_USER_DIR_ADMIN_TOOLS)\
+ $(GNUSTEP_USER_DIR_LIBRARY)\
+ $(GNUSTEP_USER_DIR_HEADERS)\
+ $(GNUSTEP_USER_DIR_LIBRARIES)\
+ $(GNUSTEP_USER_DIR_DOC)\
+ $(GNUSTEP_USER_DIR_DOC_MAN)\
+ $(GNUSTEP_USER_DIR_DOC_INFO)),)
+  # ... and if so, do the replacement.
+  GNUSTEP__USERNAME := $(shell id -u -n)
+  GNUSTEP_USER_DIR_APPS        := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_APPS))
+  GNUSTEP_USER_DIR_ADMIN_APPS  := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_ADMIN_APPS))
+  GNUSTEP_USER_DIR_WEB_APPS    := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_WEB_APPS))
+  GNUSTEP_USER_DIR_TOOLS       := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_TOOLS))
+  GNUSTEP_USER_DIR_ADMIN_TOOLS := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_ADMIN_TOOLS))
+  GNUSTEP_USER_DIR_LIBRARY     := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_LIBRARY))
+  GNUSTEP_USER_DIR_HEADERS     := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_HEADERS))
+  GNUSTEP_USER_DIR_LIBRARIES   := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_LIBRARIES))
+  GNUSTEP_USER_DIR_DOC         := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_DOC))
+  GNUSTEP_USER_DIR_DOC_MAN     := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_DOC_MAN))
+  GNUSTEP_USER_DIR_DOC_INFO    := $(subst %u,$(GNUSTEP__USERNAME),$(GNUSTEP_USER_DIR_DOC_INFO))
+endif
+
+# Warning (FIXME?): If the username itself contains '%%' (eg, a user
+# with name 'nicola%%'), then such occurrences would get replaced with
+# '%' by the following.
+
+# Always replace '%%' with '%'.
+GNUSTEP_USER_DIR_APPS        := $(subst %%,%,$(GNUSTEP_USER_DIR_APPS))
+GNUSTEP_USER_DIR_ADMIN_APPS  := $(subst %%,%,$(GNUSTEP_USER_DIR_ADMIN_APPS))
+GNUSTEP_USER_DIR_WEB_APPS    := $(subst %%,%,$(GNUSTEP_USER_DIR_WEB_APPS))
+GNUSTEP_USER_DIR_TOOLS       := $(subst %%,%,$(GNUSTEP_USER_DIR_TOOLS))
+GNUSTEP_USER_DIR_ADMIN_TOOLS := $(subst %%,%,$(GNUSTEP_USER_DIR_ADMIN_TOOLS))
+GNUSTEP_USER_DIR_LIBRARY     := $(subst %%,%,$(GNUSTEP_USER_DIR_LIBRARY))
+GNUSTEP_USER_DIR_HEADERS     := $(subst %%,%,$(GNUSTEP_USER_DIR_HEADERS))
+GNUSTEP_USER_DIR_LIBRARIES   := $(subst %%,%,$(GNUSTEP_USER_DIR_LIBRARIES))
+GNUSTEP_USER_DIR_DOC         := $(subst %%,%,$(GNUSTEP_USER_DIR_DOC))
+GNUSTEP_USER_DIR_DOC_MAN     := $(subst %%,%,$(GNUSTEP_USER_DIR_DOC_MAN))
+GNUSTEP_USER_DIR_DOC_INFO    := $(subst %%,%,$(GNUSTEP_USER_DIR_DOC_INFO))
+
+
 # Now, any directories in the user domain that are relative (ie, they
 # don't start with '/') get automatically prefixed with GNUSTEP_HOME.
 
@@ -158,7 +254,7 @@ ifneq ($(filter /%, $(GNUSTEP_USER_DIR_APPS)),)
 else
  # Path does no start with '/', consider it as relative to GNUSTEP_HOME
  GNUSTEP_USER_APPS = $(GNUSTEP_HOME)/$(GNUSTEP_USER_DIR_APPS)
-endif 
+endif
 
 ifneq ($(filter /%, $(GNUSTEP_USER_DIR_ADMIN_APPS)),)
  # Path starts with '/', so we can use it as it is
@@ -223,7 +319,6 @@ ifneq ($(filter /%, $(GNUSTEP_USER_DIR_DOC_INFO)),)
 else
  GNUSTEP_USER_DOC_INFO = $(GNUSTEP_HOME)/$(GNUSTEP_USER_DIR_DOC_INFO)
 endif 
-
 
 #
 # USER domain, variables that are fixed to subdirs of LIBRARY

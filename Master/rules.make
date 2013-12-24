@@ -52,7 +52,17 @@ ifeq ($(GNUSTEP_BUILD_DIR),.)
 all:: before-all internal-all after-all
 else
 all:: $(GNUSTEP_BUILD_DIR) before-all internal-all after-all
+
+$(GNUSTEP_BUILD_DIR):
+	$(ECHO_CREATING)$(MKDIRS) $(GNUSTEP_BUILD_DIR)$(END_ECHO)
 endif
+
+# The rule to create the objects file directory.  This should be done
+# in the Master invocation before any parallel stuff is started (to
+# avoid race conditions in trying to create it).
+$(GNUSTEP_OBJ_DIR):
+	$(ECHO_NOTHING)cd $(GNUSTEP_BUILD_DIR); \
+	$(MKDIRS) ./$(GNUSTEP_OBJ_DIR_NAME)$(END_ECHO)
 
 # internal-after-install is used by packaging to get the list of files 
 # installed (see rpm.make); it must come after *all* the installation 
@@ -81,13 +91,13 @@ distclean:: clean before-distclean internal-distclean after-distclean
 export _GNUSTEP_TOP_INVOCATION_DONE = 1
 else
 #  Sub-invocation of make
-install:: before-install internal-install after-install internal-after-install
+install:: internal-before-install before-install internal-install after-install internal-after-install
 
 distclean:: before-distclean internal-distclean after-distclean
 endif
 
 
-uninstall:: before-uninstall internal-uninstall after-uninstall
+uninstall:: before-uninstall internal-uninstall after-uninstall internal-after-uninstall
 
 clean:: before-clean internal-clean after-clean
 
@@ -119,6 +129,16 @@ else
 internal-check-install-permissions:
 endif
 
+# By adding an ADDITIONAL_INSTALL_DIRS variable you can request
+# additional installation directories to be created before the first
+# installation target is executed.  You can also have xxx_INSTALL_DIRS
+# for specific instances, which are processed in the Instance
+# invocation.
+$(ADDITIONAL_INSTALL_DIRS):
+	$(ECHO_CREATING)$(MKINSTALLDIRS) $@$(END_ECHO)
+
+internal-before-install:: $(ADDITIONAL_INSTALL_DIRS)
+
 before-install::
 
 internal-install::
@@ -133,6 +153,13 @@ before-uninstall::
 internal-uninstall::
 
 after-uninstall::
+
+internal-after-uninstall::
+ifneq ($(ADDITIONAL_INSTALL_DIRS),)
+	-$(ECHO_NOTHING)for dir in $(ADDITIONAL_INSTALL_DIRS); do \
+	  rmdir $$dir ; \
+	done$(END_ECHO)
+endif
 
 before-clean::
 
@@ -205,6 +232,7 @@ after-strings::
 # and use $(call ...) to call them; but because we have users who are using 
 # GNU make older than that, we have to manually `paste' this code 
 # wherever we need to access instance or type or operation.
+# (FIXME: Requiring GNU make >= 3.78 should be OK nowadays)
 #
 # Anyway, the following table tells you what these commands do - 
 #
@@ -267,20 +295,15 @@ endif
 # below is 'inlined' here for speed (so that we don't run a separate
 # shell just to execute that code).
 %.variables:
-	@ \
+	$(ECHO_NOTHING_RECURSIVE_MAKE) \
 instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
 type=$(subst -,_,$(subst .,,$(suffix $*))); \
 abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
 if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
-  echo Making $$operation in subprojects of $$type $$instance...; \
+  $(INSIDE_ECHO_MAKING_OPERATION_IN_SUBPROJECTS) \
   for f in $($(basename $(basename $*))_SUBPROJECTS) __done; do \
     if [ $$f != __done ]; then       \
-      mf=$(MAKEFILE_NAME); \
-      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-        mf=Makefile; \
-        echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-      fi; \
       if [ "$${abs_build_dir}" = "." ]; then \
         gsbuild="."; \
       else \
@@ -308,10 +331,11 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
       else \
         owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR_NAME)"; \
       fi; \
-      if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+      if $(MAKE) -C $$f -f $(MAKEFILE_NAME) $(GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG) --no-keep-going $$operation \
           OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
           GNUSTEP_BUILD_DIR="$$gsbuild" \
+	  _GNUSTEP_MAKE_PARALLEL=no \
         ; then \
         :; \
       else exit $$?; \
@@ -319,13 +343,14 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
     fi; \
   done; \
 fi; \
-echo Making $$operation for $$type $$instance...; \
+$(INSIDE_ECHO_MAKING_OPERATION) \
 $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
     internal-$${type}-$$operation \
     GNUSTEP_TYPE=$$type \
     GNUSTEP_INSTANCE=$$instance \
     GNUSTEP_OPERATION=$$operation \
-    GNUSTEP_BUILD_DIR="$${abs_build_dir}"
+    GNUSTEP_BUILD_DIR="$${abs_build_dir}" \
+    _GNUSTEP_MAKE_PARALLEL=no$(END_ECHO_RECURSIVE_MAKE)
 
 #
 # This rule provides exactly the same code as the %.variables one with
@@ -342,20 +367,15 @@ $(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
 # would be nice to remove this hack without loosing functionality (or
 # polluting other general-purpose makefiles).
 %.subprojects:
-	@ \
+	$(ECHO_NOTHING_RECURSIVE_MAKE) \
 instance=$(basename $(basename $*)); \
 operation=$(subst .,,$(suffix $(basename $*))); \
 type=$(subst -,_,$(subst .,,$(suffix $*))); \
 abs_build_dir="$(ABS_GNUSTEP_BUILD_DIR)"; \
 if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
-  echo Making $$operation in subprojects of $$type $$instance...; \
+  $(INSIDE_ECHO_MAKING_OPERATION_IN_SUBPROJECTS) \
   for f in $($(basename $(basename $*))_SUBPROJECTS) __done; do \
     if [ $$f != __done ]; then       \
-      mf=$(MAKEFILE_NAME); \
-      if [ ! -f $$f/$$mf -a -f $$f/Makefile ]; then \
-        mf=Makefile; \
-        echo "WARNING: No $(MAKEFILE_NAME) found for subproject $$f; using 'Makefile'"; \
-      fi; \
       if [ "$${abs_build_dir}" = "." ]; then \
         gsbuild="."; \
       else \
@@ -383,17 +403,18 @@ if [ "$($(basename $(basename $*))_SUBPROJECTS)" != "" ]; then \
       else \
         owning_project_header_dir="../$(OWNING_PROJECT_HEADER_DIR_NAME)"; \
       fi; \
-      if $(MAKE) -C $$f -f $$mf --no-keep-going $$operation \
+      if $(MAKE) -C $$f -f $(MAKEFILE_NAME) $(GNUSTEP_MAKE_NO_PRINT_DIRECTORY_FLAG) --no-keep-going $$operation \
           OWNING_PROJECT_HEADER_DIR_NAME="$${owning_project_header_dir}" \
           DERIVED_SOURCES="../$(DERIVED_SOURCES)" \
           GNUSTEP_BUILD_DIR="$$gsbuild" \
+	  _GNUSTEP_MAKE_PARALLEL=no \
         ; then \
         :; \
       else exit $$?; \
       fi; \
     fi; \
   done; \
-fi
+fi$(END_ECHO_RECURSIVE_MAKE)
 
 #
 # Now rules for packaging - all automatically included

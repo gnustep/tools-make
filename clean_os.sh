@@ -32,16 +32,23 @@ case "$1" in
 	exit 0
 	;;
     # Remove version number for Darwin
+    # Versions currently most common have a quick hardcoded lookup
+    darwin9*)
+        echo darwin9
+        exit 0
+        ;;
+    darwin8*)
+        echo darwin8
+        exit 0
+        ;;
     darwin7*)
         echo darwin7
         exit 0
         ;;
-    darwin6*)
-        echo darwin6
-        exit 0
-        ;;
-    darwin5*)
-        echo darwin5
+    # Any other Darwin version falls here, where we use a slower sed
+    # subprocess to remove everything but the first major number.
+    darwin*)
+        echo `echo "$1" | sed s/\\\\..*//`
         exit 0
         ;;
     *)

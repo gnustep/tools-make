@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/palette.make
 #
 #   Master Makefile rules to build GNUstep-based palettes.
@@ -28,7 +28,23 @@ endif
 
 PALETTE_NAME:=$(strip $(PALETTE_NAME))
 
-internal-all:: $(PALETTE_NAME:=.all.palette.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(PALETTE_NAME:=.all.palette.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-palette-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-palette-all
+
+internal-master-palette-all: $(PALETTE_NAME:=.all.palette.variables)
+
+endif
 
 internal-install:: $(PALETTE_NAME:=.install.palette.variables)
 
@@ -58,6 +74,5 @@ endif
 
 internal-strings:: $(PALETTE_NAME:=.strings.palette.variables)
 
-$(PALETTE_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.palette.variables
+$(PALETTE_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.palette.variables$(END_ECHO_RECURSIVE_MAKE)

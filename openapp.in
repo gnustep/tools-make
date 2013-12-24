@@ -299,15 +299,15 @@ if [ -n "$openapp_debug_mode" ]; then
   openapp_corefiles="core*"
   for openapp_corefile in $openapp_corefiles; do
     if [ -f "$openapp_corefile" ]; then
-      echo -e "Core image ($openapp_corefile) has been found in working directory. Use it (y/n)? ";
+      echo "Core image ($openapp_corefile) has been found in working directory. Use it (y/n)? ";
       # Need an argument here for Solaris
       read REPLY;
       if [ $REPLY = y ]; then
-        echo -e "Using it.";
+        echo "Using it.";
         corearg="--core=$openapp_corefile";
         break;
       else
-        echo -e "Ignoring it.";
+        echo "Ignoring it.";
       fi
     fi
   done

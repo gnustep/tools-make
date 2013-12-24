@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/test-library.make
 #
 #   Master Makefile rules for dejagnu/GNUstep based testing
@@ -27,7 +27,23 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-internal-all:: $(TEST_LIBRARY_NAME:=.all.test-lib.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(TEST_LIBRARY_NAME:=.all.test-lib.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-test-lib-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-test-lib-all
+
+internal-master-test-lib-all: $(TEST_LIBRARY_NAME:=.all.test-lib.variables)
+
+endif
 
 internal-install:: $(TEST_LIBRARY_NAME:=.install.test-lib.variables)
 
@@ -54,6 +70,5 @@ internal-check:: $(TEST_LIBRARY_NAME:=.check.test-lib.variables)
 
 internal-strings:: $(TEST_LIBRARY_NAME:=.strings.test-lib.variables)
 
-$(TEST_LIBRARY_NAME)::
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.test-lib.variables
+$(TEST_LIBRARY_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.test-lib.variables$(END_ECHO_RECURSIVE_MAKE)

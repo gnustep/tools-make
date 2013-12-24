@@ -1,5 +1,4 @@
 \input texinfo   @c -*-texinfo-*-
-@setfilename machines.info
 @settitle Platform Compatibility
 
 @ifclear HOWTO
@@ -7,6 +6,9 @@
 @node Machine Specific, Compilers, , (DIR)
 @chapter Machines
 @end ifclear
+
+This list is out-of-date.  Use the Platform_compatibility guide on the
+GNUstep Wiki for better information.
 
 Below is a list of machines that people have attempted to compile
 GNUstep on. GNUstep compiles with little or no trouble on many of the
@@ -674,13 +676,12 @@ gdnc doesn't work.  If you recompile the kernel then it starts working.
 @node Suse/Intel, Suse 7.x/PPC, Suse 6.x/Intel, Machine Specific
 @section Suse/Intel (@emph{Supported})
 
-GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, 9.1, 9.3, and 
-10.1 of Suse
+GNUstep has been tested on version 7.0, 8.0, 8.1, 8.2, 9.0, 9.1, 9.3, 
+10.1, 11.0
 
 @table @var
 @item Recommended compiler
-The default compiler that comes with Susu is fine. Also 
-gcc2.95.x, gcc3.0.x, 3.1 and 3.2 work, but 2.95 is faster.
+The default compiler that comes with Susu is fine. 
 Compile with --threads-enabled (non-standard).
 
 @item Extra libs needed 

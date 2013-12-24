@@ -1,0 +1,35 @@
+# This is a slightly modified copy of /usr/share/equivs/template.ctl,
+# which would be created by 'equivs-control' program.
+
+### Commented entries have reasonable defaults.
+### Uncomment to edit them.
+# Source: <source package name; defaults to package name>
+Section: misc
+Priority: optional
+# Homepage: <enter URL here; no default>
+Standards-Version: 3.9.2
+
+Package: @gs_name@
+Version: @gs_version@
+Maintainer: GNUstep Developers  <gnustep-dev@gnu.org>
+
+# Note: Use 'all' if universal.
+Architecture: @gs_arch@
+
+# Pre-Depends: <comma-separated list of packages>
+# Depends: <comma-separated list of packages>
+# Recommends: <comma-separated list of packages>
+# Suggests: <comma-separated list of packages>
+# Provides: <comma-separated list of packages>
+# Replaces: <comma-separated list of packages>
+# Copyright: <copyright file; defaults to GPL2>
+# Changelog: <changelog file; defaults to a generic changelog>
+# Readme: <README.Debian file; defaults to a generic one>
+
+# Extra-Files: <comma-separated list of additional files for the doc directory>
+
+Files: @file_list@
+Description: <short description; defaults to some wise words> 
+ long description and info
+ .
+ second paragraph

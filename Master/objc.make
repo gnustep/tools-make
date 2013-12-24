@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/objc.make
 #
 #   Master Makefile rules to build ObjC-based (but not GNUstep) programs.
@@ -26,7 +26,23 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-internal-all:: $(OBJC_PROGRAM_NAME:=.all.objc-program.variables)
+ifeq ($(GNUSTEP_MAKE_PARALLEL_BUILDING), no)
+
+internal-all:: $(GNUSTEP_OBJ_DIR) $(OBJC_PROGRAM_NAME:=.all.objc-program.variables)
+
+else
+
+internal-all:: $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory --no-keep-going \
+	internal-master-objc-program-all \
+	GNUSTEP_BUILD_DIR="$(GNUSTEP_BUILD_DIR)" \
+	_GNUSTEP_MAKE_PARALLEL=yes$(END_ECHO_RECURSIVE_MAKE)
+
+.PHONY: internal-master-objc-program-all
+
+internal-master-objc-program-all: $(OBJC_PROGRAM_NAME:=.all.objc-program.variables)
+
+endif
 
 internal-install:: $(OBJC_PROGRAM_NAME:=.install.objc-program.variables)
 
@@ -44,6 +60,5 @@ endif
 
 internal-strings:: $(OBJC_PROGRAM_NAME:=.strings.objc-program.variables)
 
-$(OBJC_PROGRAM_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-		$@.all.objc-program.variables
+$(OBJC_PROGRAM_NAME): $(GNUSTEP_OBJ_DIR)
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.objc-program.variables$(END_ECHO_RECURSIVE_MAKE)

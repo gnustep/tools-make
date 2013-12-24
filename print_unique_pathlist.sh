@@ -28,6 +28,11 @@
 # from Win32 to Unix style), and prints the 4 paths separated by ':',
 # removing duplicates.
 
+# The order of the paths printed is the REVERSE of the order in which
+# they were supplied, this is so that code which iterates through them
+# prepending them to a PATH will leave them in the correct order in
+# that path.
+
 # GNUSTEP_MAKEFILES needs to be defined when you execute this script.
 
 if [ ! $# -eq 5 ]; then
@@ -78,5 +83,23 @@ if [ "$GS_MAKE_PATH_4" != "$GS_MAKE_PATH_1" ]; then
     fi
   fi
 fi
+
+# Now reverse the order of the path fragments so that the calling code
+# can iterate through them and prepend each in turn to another path.
+old_IFS="$IFS"
+IFS=:
+reversed=""
+for dir in $GS_MAKE_RESULT; do
+  path_fragment="$dir"
+  if [ -z "$reversed" ]; then
+    reversed="$path_fragment"
+  else
+    reversed="$path_fragment:$reversed"
+  fi
+done
+GS_MAKE_RESULT="$reversed"
+IFS="$old_IFS"
+unset reversed
+unset old_IFS
 
 echo "$GS_MAKE_RESULT"

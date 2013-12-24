@@ -59,18 +59,6 @@ ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
   RESOURCE_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
 endif
 
-# Use the old xxx_RESOURCE_FILES_INSTALL_DIR setting only if the new
-# one is not available.  If you need your makefile to be compatible
-# with both old and new versions of make, you can use both settings.
-ifeq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
-  ifneq ($($(GNUSTEP_INSTANCE)_RESOURCE_FILES_INSTALL_DIR),)
-    # This is deprecated because we need to prepend GNUSTEP_INSTALLATION_DIR to it, which
-    # is deprecated.  This was deprecated on 12 Feb 2007.
-    $(warning xxx_RESOURCE_FILES_INSTALL_DIR is deprecated, please use xxx_INSTALL_DIR instead)
-    RESOURCE_FILES_INSTALL_DIR = $(GNUSTEP_INSTALLATION_DIR)/$($(GNUSTEP_INSTANCE)_RESOURCE_FILES_INSTALL_DIR)
-  endif
-endif
-
 ifeq ($(RESOURCE_FILES_INSTALL_DIR),)
   RESOURCE_FILES_INSTALL_DIR = $(GNUSTEP_RESOURCES)/$(GNUSTEP_INSTANCE)
 endif
@@ -100,12 +88,6 @@ $(RESOURCE_FILES_INSTALL_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $@$(END_ECHO)
-endif
-
-# Determine the list of languages
-override LANGUAGES = $($(GNUSTEP_INSTANCE)_LANGUAGES)
-ifeq ($(LANGUAGES),)
-  override LANGUAGES = English
 endif
 
 # Determine the list of localized resource files
@@ -181,7 +163,7 @@ ifneq ($(CHOWN_TO),)
 endif
 endif
 
-else # Following code turned on by setting GNUSTEP_DEVELOPER=YES in the shell
+else # Following code turned on by setting GNUSTEP_DEVELOPER=yes in the shell
 
 # TODO/FIXME: Update the code; implement proper
 # LOCALIZED_RESOURCE_FILES that also allows directories etc.
@@ -240,13 +222,28 @@ endif # LOCALIZED_RESOURCE_FILES
 
 endif
 
+# Here we try to remove the directories that we created on install.
+# We use a plain rmdir to remove them; if you're manually installing
+# any files in them (eg, in an 'after-install' custom rule), you need
+# to make sure you remove them (in an 'before-uninstall' custom rule)
 
 internal-resource_set-uninstall_:
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
-	-$(ECHO_NOTHING)for language in $(LANGUAGES); do \
+	$(ECHO_NOTHING)for language in $(LANGUAGES); do \
 	  for file in $(LOCALIZED_RESOURCE_FILES); do \
 	    rm -rf $(RESOURCE_FILES_INSTALL_DIR)/$$language.lproj/$$file;\
 	  done; \
+	done$(END_ECHO)
+endif
+ifneq ($(LOCALIZED_RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)for language in $(LANGUAGES); do \
+	  for dir in $(LOCALIZED_RESOURCE_DIRS); do \
+	    rmdir $(RESOURCE_FILES_INSTALL_DIR)/$$language.lproj/$$dir;\
+	  done; \
+	done$(END_ECHO)
+endif
+ifneq ($(LOCALIZED_RESOURCE_FILES)$(LOCALIZED_RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)for language in $(LANGUAGES); do \
 	  rmdir $(RESOURCE_FILES_INSTALL_DIR)/$$language.lproj; \
 	done$(END_ECHO)
 endif
@@ -254,5 +251,12 @@ ifneq ($(RESOURCE_FILES),)
 	$(ECHO_NOTHING)for file in $(RESOURCE_FILES); do \
 	  rm -rf $(RESOURCE_FILES_INSTALL_DIR)/$$file ; \
 	done$(END_ECHO)
-	-rmdir $(RESOURCE_FILES_INSTALL_DIR)
+endif
+ifneq ($(RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)for dir in $(RESOURCE_DIRS); do \
+	  rmdir $(RESOURCE_FILES_INSTALL_DIR)/$$dir ; \
+	done$(END_ECHO)
+endif
+ifneq ($(RESOURCE_FILES)$(RESOURCE_DIRS),)
+	-$(ECHO_NOTHING)rmdir $(RESOURCE_FILES_INSTALL_DIR)$(END_ECHO)
 endif

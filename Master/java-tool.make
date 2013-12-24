@@ -1,4 +1,4 @@
-#
+#   -*-makefile-*-
 #   Master/java-tool.make
 #
 #   Master Makefile rules to build Java command-line tools.
@@ -34,6 +34,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+# TODO: Parallel building.
 internal-all:: $(JAVA_TOOL_NAME:=.all.java_tool.variables)
 
 internal-install:: $(JAVA_TOOL_NAME:=.install.java_tool.variables)
@@ -50,5 +51,4 @@ internal-distclean:: $(JAVA_TOOLS_WITH_SUBPROJECTS:=.distclean.java_tool.subproj
 endif
 
 $(JAVA_TOOL_NAME):
-	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
-	         $@.all.java_tool.variables
+	$(ECHO_NOTHING_RECURSIVE_MAKE)$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory $@.all.java_tool.variables$(END_ECHO_RECURSIVE_MAKE)
