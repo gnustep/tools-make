@@ -9,6 +9,14 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.6.6}
+
+Debian packaging support
+
+Minor bugfixes.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.6.5}
 
 Bugfix for non-fragile ABI test
@@ -18,8 +26,6 @@ Bugfix order if include diorectories for system includes
 Bugfix equality test for prorocol testing
 
 Added minimal test support for .c and .cc files.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.6.4}
 

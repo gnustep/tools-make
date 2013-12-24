@@ -41,7 +41,7 @@ $(GNUSTEP_BUILD_DIR)/Resources:
 # On distclean, we want to efficiently wipe out the Resources/
 # directory.
 internal-clean::
-	rm -rf $(GNUSTEP_BUILD_DIR)/Resources
+	rm -rf $(MAYBE_GNUSTEP_BUILD_DIR_RESOURCES)/$(TOOL_NAME)
 else
 MAYBE_GNUSTEP_BUILD_DIR_RESOURCES =
 endif

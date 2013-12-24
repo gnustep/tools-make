@@ -1,3 +1,16 @@
+2013-12-24  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * Version:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Make minor bugfix release ... Version 2.6.6
+	Update release notes/documentation
+
+2013-12-12  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* Master/tool.make: on clean only delete the subdirectory that gets
+	created when calling make.
+
 2013-12-07  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* target.make: Add -keep_private_externs to linker flags on OS X
