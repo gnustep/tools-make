@@ -143,7 +143,7 @@ ARCHIVE_FILE = $(VERSION_NAME).tar$(COMPRESSION_EXT)
 
 VERTAG = $(subst .,_,$(PACKAGE_VERSION))
 
-.PHONY: dist cvs-tag cvs-dist cvs-snapshot internal-cvs-export svn-tag svn-tag-stable svn-dist internal-svn-export svn-snapshot
+.PHONY: dist cvs-tag cvs-dist cvs-snapshot internal-cvs-export svn-tag svn-tag-stable svn-dist svn-bugfix internal-svn-export svn-snapshot
 
 #
 # Build a .tar.gz with the whole directory tree
