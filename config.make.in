@@ -46,7 +46,7 @@ endif
 
 # Ignore the default CXX=g++ used by GNU make when nothing is specified;
 # in that case, we want to use our own default CXX.
-ifeq ($(origin CC), default)
+ifeq ($(origin CXX), default)
   CXX       = @CXX@
 endif
 

@@ -1,3 +1,8 @@
+2013-12-25 Fred Kiefer <FredKiefer@gmx.de>
+
+	* config.make.in: Use the correct CXX compiler. Fixes bug #36722.
+	Patch by Johannes Lundberg <johannes@brilliantservice.co.jp>.
+
 2013-12-24  Richard Frith-Macdonald <rfm@gnu.org>
 
         * Version:
