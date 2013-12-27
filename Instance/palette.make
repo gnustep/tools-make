@@ -155,16 +155,13 @@ ifeq ($(PALETTE_ICON),)
   PALETTE_ICON = $(GNUSTEP_INSTANCE)
 endif
 
-# Depend on xxxInfo.plist but only if it exists.
-GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
-
 # FIXME - xxxInfo.plist in this case is not really a plist!
 
 $(PALETTE_DIR)/Resources/Info-gnustep.plist: $(PALETTE_DIR)/Resources $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(PALETTE_NAME)$(PALETTE_OBJ_EXT)\";"; \
-	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
-	    cat $(GNUSTEP_INSTANCE)Info.plist; \
+	  if [ -r "$(GNUSTEP_PLIST_DEPEND)" ]; then \
+	    cat $(GNUSTEP_PLIST_DEPEND); \
 	  fi; \
 	  echo "}") >$@$(END_ECHO)
 

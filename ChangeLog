@@ -1,5 +1,15 @@
 2013-12-25 Fred Kiefer <FredKiefer@gmx.de>
 
+	* Instance/rules.make: Add detection for different forms of the Info.plist.
+	* Instance/application.make,
+	* Instance/bundle.make,
+	* Instance/framework.make,
+	* Instance/gswapp.make,
+	* Instance/palette.make,
+	* Instance/service.make: Use GNUSTEP_PLIST_DEPEND directly.
+
+2013-12-25 Fred Kiefer <FredKiefer@gmx.de>
+
 	* config.make.in: Use the correct CXX compiler. Fixes bug #36722.
 	Patch by Johannes Lundberg <johannes@brilliantservice.co.jp>.
 

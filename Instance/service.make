@@ -130,9 +130,6 @@ ifeq ($(GNUSTEP_MAKE_SERVICES),)
   GNUSTEP_MAKE_SERVICES = make_services
 endif
 
-# Depend on xxxInfo.plist but only if it exists.
-GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
-
 ifeq ($(GNUSTEP_PLIST_DEPEND),)
   $(warning Service $(GNUSTEP_INSTANCE) missing $(GNUSTEP_INSTANCE)Info.plist)
 endif
@@ -143,8 +140,8 @@ $(SERVICE_DIR)/Resources/Info-gnustep.plist: \
             $(SERVICE_DIR)/Resources $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
 	  echo "  NSExecutable = \"$(GNUSTEP_INSTANCE)\";"; \
-	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
-	    cat $(GNUSTEP_INSTANCE)Info.plist; \
+	  if [ -r "$(GNUSTEP_PLIST_DEPEND)" ]; then \
+	    cat $(GNUSTEP_PLIST_DEPEND); \
 	  fi; \
 	  echo "}") >$@ ;\
 	if $(GNUSTEP_MAKE_SERVICES) --test $@; then : ; else rm -f $@; false; \

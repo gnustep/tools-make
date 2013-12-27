@@ -153,8 +153,6 @@ HAS_GSWCOMPONENTS = $($(GNUSTEP_INSTANCE)_HAS_GSWCOMPONENTS)
 GSWAPP_INFO_PLIST = $($(GNUSTEP_INSTANCE)_GSWAPP_INFO_PLIST)
 MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_MODEL_FILE)))))
 
-# Depend on xxxInfo.plist but only if it exists.
-GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
 
 $(GSWAPP_INFO_PLIST_FILE): $(GNUSTEP_PLIST_DEPEND)
 	$(ECHO_CREATING)(echo "{"; echo '  NOTE = "Automatically generated, do not edit!";'; \
@@ -164,8 +162,8 @@ $(GSWAPP_INFO_PLIST_FILE): $(GNUSTEP_PLIST_DEPEND)
 	    echo "  HasGSWComponents = \"$(HAS_GSWCOMPONENTS)\";"; \
 	  fi; \
 	  echo "  NSMainNibFile = \"$(MAIN_MODEL_FILE)\";"; \
-	  if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
-	    cat $(GNUSTEP_INSTANCE)Info.plist; \
+	  if [ -r "$(GNUSTEP_PLIST_DEPEND)" ]; then \
+	    cat $(GNUSTEP_PLIST_DEPEND); \
 	  fi; \
 	  if [ "$(GSWAPP_INFO_PLIST)" != "" ]; then \
 	    cat $(GSWAPP_INFO_PLIST); \

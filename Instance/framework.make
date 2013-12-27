@@ -640,9 +640,6 @@ $(FRAMEWORK_VERSION_DIR)/Resources/Info.plist:
 	  echo "  NSPrincipalClass = \"$(PRINCIPAL_CLASS)\";"; \
 	  echo "}") >$@$(END_ECHO)
 
-# Depend on xxxInfo.plist but only if it exists.
-GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
-
 # GNUstep frameworks
 $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: \
                         $(DUMMY_FRAMEWORK_FILE) \
@@ -655,8 +652,8 @@ $(FRAMEWORK_VERSION_DIR)/Resources/Info-gnustep.plist: \
 	  cat $(DUMMY_FRAMEWORK_CLASS_LIST); \
 	  echo "  ;"; \
 	  echo "}") >$@$(END_ECHO)
-	$(ECHO_NOTHING)if [ -r "$(GNUSTEP_INSTANCE)Info.plist" ]; then \
-	   plmerge $@ $(GNUSTEP_INSTANCE)Info.plist; \
+	$(ECHO_NOTHING)if [ -r "$(GNUSTEP_PLIST_DEPEND)" ]; then \
+	   plmerge $@ $(GNUSTEP_PLIST_DEPEND); \
 	 fi$(END_ECHO)
 
 ifneq ($(BUILD_DLL),yes)

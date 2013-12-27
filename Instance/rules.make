@@ -487,3 +487,43 @@ LANGUAGES = $(strip $($(GNUSTEP_INSTANCE)_LANGUAGES))
 ifeq ($(LANGUAGES),)
   LANGUAGES = English
 endif
+
+# You can have a single xxxInfo.plist for both GNUstep and Apple.
+# Often enough, you can just put in it all fields required by both
+# GNUstep and Apple; if there is a conflict, you can provide
+# axxxInfo.cplist (please note the suffix!) - that file is
+# automatically run through the C preprocessor to generate a
+# xxxInfo.plist file from it.  The preprocessor will define GNUSTEP
+# when using gnustep-base, APPLE when using Apple FoundationKit, NEXT
+# when using NeXT/OPENStep FoundationKit, and UNKNOWN when using
+# something else, so you can use
+# #ifdef GNUSTEP
+#   ... some plist code for GNUstep ...
+# #else
+#   ... some plist code for Apple ...
+# #endif
+# to have your .cplist use different code for each.
+#
+
+# Our problem is that we'd like to always depend on xxxInfo.plist if
+# it's there, and not depend on it if it's not there - which we solve
+# by expanding $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)Info.plist)
+
+# older versions of XCode use the form Info-xxx.plist
+ifeq ($(GNUSTEP_PLIST_DEPEND),)
+  GNUSTEP_PLIST_DEPEND = $(wildcard Info-$(GNUSTEP_INSTANCE).plist)
+endif
+
+# Newer versions of XCode use the form xxx-Info.plist
+ifeq ($(GNUSTEP_PLIST_DEPEND),)
+  GNUSTEP_PLIST_DEPEND = $(wildcard $(GNUSTEP_INSTANCE)-Info.plist)
+endif
+
+# As a special case, if xxxInfo.cplist is there, in this case as well
+# we'd like to depend on xxxInfo.plist.
+ifeq ($(GNUSTEP_PLIST_DEPEND),)
+   # xxxInfo.plist is not there.  Check if xxxInfo.cplist is there, and
+   # if so, convert it to xxxInfo.plist and add it to the dependencies.
+   GNUSTEP_PLIST_DEPEND = $(patsubst %.cplist,%.plist,$(wildcard $(GNUSTEP_INSTANCE)Info.cplist))
+endif
