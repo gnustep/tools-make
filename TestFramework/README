@@ -62,6 +62,9 @@ subdirectories of the current directory, and attempt to run tests in each.
 During testing, temporary files are created and removed for each test,
 but any temporary files from the most recent test in each directory
 are left (to help you debugging), as are the log files.
+The summary log of a test run is left in the tests.sum file.
+The detailed log of a test run is left in the tests.log file.
+The log from any previous run is left in oldtests.sum (and oldtests.log).
 You can run 'gnustep-tests --clean' to remove left-over temporary files
 and all log files.
 
