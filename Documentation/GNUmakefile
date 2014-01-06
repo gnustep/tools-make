@@ -23,14 +23,20 @@ ifeq ($(GNUSTEP_MAKEFILES),)
 # in the subdirectory ./tmp-installation, the run make again passing
 # GNUSTEP_MAKEFILES set to point to the new makefile installation
 
-# To execute all, or clean, or install, we first depend on a local
+# To execute all, or clean, we first depend on a local
 # temporary installation of gnustep-make; when we have it, we source
-# GNUstep.sh, then we run the make command again.  Please note that
-# "make install" will install into our temporary gnustep-make
-# directory, which is usually not particularly useful, but anyway.
-all clean install regenerate: ./tmp-installation/System/Library/Makefiles
+# GNUstep.sh, then we run the make command again.
+all regenerate: ./tmp-installation/System/Library/Makefiles
 	@echo "** Running 'make $@' using the local/temporary gnustep-make installation **"
 	$(MAKE) $@ GNUSTEP_MAKEFILES="$(CURRENT_DIR)/tmp-installation/System/Library/Makefiles"
+	@echo "** Finished local/temporary documentation in $(CURRENT_DIR)/tmp-installation. **"
+	@echo "** Use an installed gnustep-make if you wish to install documentation. **"
+
+clean: ./tmp-installation/System/Library/Makefiles
+	$(MAKE) $@ GNUSTEP_MAKEFILES="$(CURRENT_DIR)/tmp-installation/System/Library/Makefiles"
+
+install:
+	@echo "** To install the documentation you first install/set-up gnustep-make **"
 
 CURRENT_DIR = $(shell pwd)
 

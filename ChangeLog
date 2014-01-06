@@ -1,6 +1,14 @@
+2014-01-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* INSTALL:
+	* Documentation/GNUmakefile:
+	Make it clearer (ie very explicit) that you need to install
+	gnustep-make in order to install documentation.
+
 2013-12-25 Fred Kiefer <FredKiefer@gmx.de>
 
-	* Instance/rules.make: Add detection for different forms of the Info.plist.
+	* Instance/rules.make: Add detection for different forms of
+	the Info.plist.
 	* Instance/application.make,
 	* Instance/bundle.make,
 	* Instance/framework.make,
