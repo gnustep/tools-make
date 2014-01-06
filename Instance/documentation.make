@@ -27,8 +27,8 @@ endif
 # NB: Parallel building is not supported here (yet?).
 
 #
-# TODO: Remove DOCUMENT_TEXT_NAME and use only DOCUMENT_NAME.  DOCUMENT_TEXT_NAME
-# is only used by texi.make.
+# TODO: Remove DOCUMENT_TEXT_NAME and use only DOCUMENT_NAME.
+# DOCUMENT_TEXT_NAME is only used by texi.make.
 #
 
 # The names of the documents are in the DOCUMENT_NAME variable.

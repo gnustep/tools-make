@@ -1,5 +1,13 @@
 2014-01-06  Richard Frith-Macdonald <rfm@gnu.org>
 
+	* Instance/Documentation/texi.make:
+	Revert change from 2009-09-19 since texi2html now seems to be
+	behaving as expected.  However, attempt to move any html files
+	from the subdirectory in case we are using a version which still
+	puts them there.
+
+2014-01-06  Richard Frith-Macdonald <rfm@gnu.org>
+
 	* INSTALL:
 	* Documentation/GNUmakefile:
 	Make it clearer (ie very explicit) that you need to install

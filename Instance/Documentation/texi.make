@@ -63,7 +63,7 @@ endif
 
 internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
                     $(GNUSTEP_INSTANCE).pdf \
-                    $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html
+                    $(GNUSTEP_INSTANCE).html
 
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
@@ -88,9 +88,14 @@ $(GNUSTEP_INSTANCE).pdf: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2PDF) $(GNUSTEP_TEXI2PDF_FLAGS) $(ADDITIONAL_TEXI2PDF_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi -o $@
 
-$(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html: $(TEXI_FILES)
+# Some versions of texi2html placed the html files in a subdirectory,
+# so after running it we try to move any from the subdirectory to
+# where they are expected.
+$(GNUSTEP_INSTANCE).html: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
-		$(GNUSTEP_INSTANCE).texi
+		$(GNUSTEP_INSTANCE).texi; \
+		mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html .; \
+		mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html .
 
 $(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
 	-$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) $(ADDITIONAL_MAKETEXT_FLAGS) \
@@ -112,8 +117,8 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).tp   \
 	         $(GNUSTEP_INSTANCE).vr   \
 	         $(GNUSTEP_INSTANCE).vrs  \
-	         $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html \
-	         $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
+		 $(GNUSTEP_INSTANCE).html \
+		 $(GNUSTEP_INSTANCE)_*.html \
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
 	         $(GNUSTEP_INSTANCE)/*$(END_ECHO)
@@ -133,14 +138,14 @@ internal-doc-install_:: $(GNUSTEP_DOC_INFO)
 	if [ -f $(GNUSTEP_INSTANCE).info ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOC_INFO); \
 	fi
-	if [ -f i$(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_toc.html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
+	if [ -f i$(GNUSTEP_INSTANCE)_toc.html ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html \
+	if [ -f $(GNUSTEP_INSTANCE).html ]; then \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
 
