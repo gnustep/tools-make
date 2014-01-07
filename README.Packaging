@@ -361,6 +361,27 @@ around this basic set of commands.
 
 
 
+DOCUMENTATION
+-------------
+
+Once you have packaged gnustep-make, you can package the gnustep-make
+documentation.
+
+ cd Documentation
+ DESTDIR=/tmp/my-package
+ export DESTDIR
+
+ GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
+ export GNUSTEP_INSTALLATION_DOMAIN
+
+ make
+ make install
+
+A similar process may be used to package documentation for each of the
+gnustep core libraries.
+
+
+
 GNUSTEP-BASE
 ------------
 
