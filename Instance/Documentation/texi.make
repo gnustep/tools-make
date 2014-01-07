@@ -92,10 +92,15 @@ $(GNUSTEP_INSTANCE).pdf: $(TEXI_FILES)
 # so after running it we try to move any from the subdirectory to
 # where they are expected.
 $(GNUSTEP_INSTANCE).html: $(TEXI_FILES)
-	-$(GNUSTEP_TEXI2HTML) $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
+	-$(GNUSTEP_TEXI2HTML) \
+                $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi; \
-		mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html .; \
-		mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html .
+                if [ -f $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_toc.html ]; \
+                then \
+                  mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html .; \
+                  mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html .; \
+                  rmdir $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE); \
+                fi
 
 $(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
 	-$(GNUSTEP_MAKETEXT) $(GNUSTEP_MAKETEXT_FLAGS) $(ADDITIONAL_MAKETEXT_FLAGS) \
