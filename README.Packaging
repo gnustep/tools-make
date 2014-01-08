@@ -43,7 +43,9 @@ that were installed into that directory.
 GNUSTEP-MAKE
 ------------
 
-When packaging GNUstep, you should start by packaging gnustep-make.
+When packaging GNUstep, you should start by packaging gnustep-make
+(you should at least have read the INSTALL document to give you an
+overview of how gnustep-make is installed).
 
 GNUstep-make includes both the basic filesystem layout configuration
 files and scripts that are used by all the other GNUstep software, and
@@ -226,7 +228,7 @@ user defaults.
 6. GLOBAL DEFAULTS DATABASE
 ===========================
 
-You may also global (ie for all applications and all users) default
+You may define global (ie for all applications and all users) default
 values by placing them in the GlobalDefaults.plist file in the same
 directory as the GNUstep.conf configuration file.
 
@@ -309,7 +311,14 @@ GNUSTEP_INSTALLATION_DOMAIN
 ---------------------------
 
 Once you have packaged gnustep-make, you are ready to start packaging
-all other GNUstep software, starting with gnustep-base.
+all other GNUstep software, starting with gnustep-base (or perhaps with
+the gnustep-make documentation).
+
+To build/package GNUstep software, you should normally install the
+gnustep-make package you just built, but you may use another gnustep-make
+installation as long as you ensure that the GNUstep.conf file used by
+that installation contains paths matching those in your new
+gnustep-make package.
 
 By default, all GNUstep software will install into the "LOCAL" domain
 if you compile it from source.  Depending on your filesystem layout,
@@ -385,8 +394,7 @@ gnustep core libraries.
 GNUSTEP-BASE
 ------------
 
-Once you have packaged gnustep-make, your next step is to package
-gnustep-base.
+Your next step is to package gnustep-base.
 
 gnustep-base has a number of configure options that you may want to
 check; most of them have to do with locating the various libraries on
