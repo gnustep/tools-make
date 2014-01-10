@@ -170,18 +170,18 @@ case "$1" in
               exit 0;;
   --variable=GNUMAKE) echo "@GNUMAKE@"
               exit 0;;
-  --debug-flags) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes debug=yes 2>/dev/null
+  --debug-flags) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes debug=yes 2>/dev/null
               exit 0;;
-  --objc-flags) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
+  --objc-flags) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
               exit 0;;
-  --objc-libs) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes 2>/dev/null
+  --objc-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes 2>/dev/null
               exit 0;;
-  --base-libs) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
+  --base-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
               exit 0;;
-  --gui-libs) @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
+  --gui-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
               exit 0;;
   --installation-domain-for=*) gs_package_name=`echo "$1" | sed -e 's/--installation-domain-for=//'`
-              @GNUMAKE@ -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-installation-domain PACKAGE_NAME="$gs_package_name" quiet=yes 2>/dev/null
+              @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-installation-domain PACKAGE_NAME="$gs_package_name" quiet=yes 2>/dev/null
               exit 0;;
 esac
 
