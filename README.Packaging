@@ -373,8 +373,8 @@ around this basic set of commands.
 DOCUMENTATION
 -------------
 
-Once you have packaged gnustep-make, you can package the gnustep-make
-documentation.
+Once you have packaged gnustep-make and installed the package,
+you can package the gnustep-make documentation.
 
  cd Documentation
  DESTDIR=/tmp/my-package
@@ -389,6 +389,14 @@ documentation.
 A similar process may be used to package documentation for each of the
 gnustep core libraries.
 
+As a special case in gnustepmake, you can use special commands to build
+and install the documentation.
+
+To build and install the gnustep-make documentation from the top level:
+  make install-docs
+
+To build and install the gnustep-make documnentation with gnustep-make:
+  make install-all
 
 
 GNUSTEP-BASE

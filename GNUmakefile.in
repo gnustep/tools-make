@@ -322,9 +322,11 @@ uninstall:
 	-rmdir "$(tooldir)"
 
 clean:
+	(cd Documentation; make distclean)
 	rm -f *~ Master/*~ Instance/*~ Instance/Shared/*~
 
 distclean: clean
+	(cd Documentation; make distclean)
 	rm -f GNUmakefile config-noarch.make config.make config.h
 	rm -f config.cache config.log config.status
 	rm -f openapp opentool executable.template
@@ -332,6 +334,14 @@ distclean: clean
 	rm -f filesystem.make filesystem.sh filesystem.csh
 	rm -f gnustep-make.spec GNUstep.conf GNUstep-strict-v2.conf
 	rm -f config-precomp-test.out config-precomp-test.h.gch config-precomp-test.log
+
+docs:
+	(cd Documentation; make)
+
+install-docs:
+	(cd Documentation; make install)
+
+install-all:	install install-docs
 
 svn-tag:
 	svn copy $(SVNPREFIX)/trunk $(SVNPREFIX)/tags/make-$(VERTAG) \

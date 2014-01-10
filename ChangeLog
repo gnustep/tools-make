@@ -1,3 +1,12 @@
+2014-01-10  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUmakefile.in: Implement Sebastien's suggestions for make targets
+	to build/install documentation with or without gnustep-make as a
+	convenience for packagers.
+	* Documentation/GNUmakefile: Use uninstalled gnustep-make from
+	enclosing directory if available ... based on idea by Niels and
+	code/comments by Markus.
+
 2014-01-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/texi.make:

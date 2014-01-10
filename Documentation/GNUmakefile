@@ -12,6 +12,26 @@
 # documentation from the internet!  Or just read the documentation in
 # source format. :-)
 
+# As a special case, if gnustep-make has been configured (GNUstep.conf exists)
+# in the enclosing directory, and has not yet been installed (GNUSTEP_MAKEFILES
+# is not defined), we attempt to use the uninstalled version.
+# 
+# As all makefile fragments in the source tree are positioned relative to
+# each other in the same way they're installed, this works fine.
+#
+# If future changes happen to introduce different behaviour between the
+# makefile fragments in the source tree and installed ones (which is not
+# a trivial change), this strategy has to be reviewed.  One possible solution
+# then is to install make into a temporary directory (DESTDIR?) first, then to
+# use these.
+#
+
+ifeq ($(GNUSTEP_MAKEFILES),)
+  ifeq ($(wildcard ../GNUstep.conf),../GNUstep.conf)
+    GNUSTEP_MAKEFILES=..
+  endif
+endif
+
 ifeq ($(GNUSTEP_MAKEFILES),)
 
 # We have no gnustep-make installation to use.  We need gnustep-make
@@ -22,6 +42,8 @@ ifeq ($(GNUSTEP_MAKEFILES),)
 # have a gnustep-make installation to use, we create a temporary one
 # in the subdirectory ./tmp-installation, the run make again passing
 # GNUSTEP_MAKEFILES set to point to the new makefile installation
+
+CURRENT_DIR = $(shell pwd)
 
 # To execute all, or clean, we first depend on a local
 # temporary installation of gnustep-make; when we have it, we source
@@ -37,8 +59,6 @@ clean: ./tmp-installation/System/Library/Makefiles
 
 install:
 	@echo "** To install the documentation you first install/set-up gnustep-make **"
-
-CURRENT_DIR = $(shell pwd)
 
 # This creates a local temporary installation of GNUstep-make
 ./tmp-installation/System/Library/Makefiles:
@@ -169,6 +189,9 @@ after-install:: $(GNUSTEP_DOC)/Developer/Make/Manual $(GNUSTEP_DOC)/User/GNUstep
 #  Uninstall manually man pages
 after-uninstall::
 	rm -f $(GNUSTEP_DOC)/Developer/Make/Manual/DESIGN
+
+after-clean::
+	rm -rf tmp-build tmp-installation
 
 after-distclean::
 	rm -f version.texi
