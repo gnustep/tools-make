@@ -336,10 +336,10 @@ distclean: clean
 	rm -f config-precomp-test.out config-precomp-test.h.gch config-precomp-test.log
 
 docs:
-	(cd Documentation; make)
+	(cd Documentation; $(MAKE))
 
 install-docs:
-	(cd Documentation; make install)
+	(cd Documentation; $(MAKE) install)
 
 install-all:	install install-docs
 

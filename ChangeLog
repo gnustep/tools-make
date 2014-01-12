@@ -1,6 +1,13 @@
+2014-01-12  Sebastian Reitenbach <sebastia@l00-bugdead-prods.de>
+
+	* config.make.in, GNUmakefile.in
+	  Do not hardcode "make". It already gets detected via configure,
+	  so use the found name, especially on *BSD systems where its called
+          gmake
+
 2014-01-10  Richard Frith-Macdonald <rfm@gnu.org>
 
-	* GNUmakefile.in: Implement Sebastien's suggestions for make targets
+	* GNUmakefile.in: Implement Sebastian's suggestions for make targets
 	to build/install documentation with or without gnustep-make as a
 	convenience for packagers.
 	* Documentation/GNUmakefile: Use uninstalled gnustep-make from
