@@ -322,11 +322,11 @@ uninstall:
 	-rmdir "$(tooldir)"
 
 clean:
-	(cd Documentation; make distclean)
+	(cd Documentation; $(MAKE) distclean)
 	rm -f *~ Master/*~ Instance/*~ Instance/Shared/*~
 
 distclean: clean
-	(cd Documentation; make distclean)
+	(cd Documentation; $(MAKE) distclean)
 	rm -f GNUmakefile config-noarch.make config.make config.h
 	rm -f config.cache config.log config.status
 	rm -f openapp opentool executable.template

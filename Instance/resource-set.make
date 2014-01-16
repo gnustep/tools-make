@@ -39,10 +39,11 @@ endif
 # The list of resource directories to create are in xxx_RESOURCE_DIRS
 # The directory in which to install the resources is in the
 #                xxx_INSTALL_DIR
-# The directory in which the resources are is in the 
+# The directory in which the resources are found is
 #                xxx_RESOURCE_FILES_DIR (defaults to ./ if omitted)
 # The list of LANGUAGES is in the xxx_LANGUAGES variable.
-# The list of localized files/dirs to be read from yyy.lproj and copied
+# The list of localized files/dirs to be read
+#    from $(xxx_RESOURCE_FILES_DIR)/yyy.lproj and copied
 #    into $(RESOURCE_FILES_INSTALL_DIR)/yyy.lproj for each language yyy
 #    is in the xxx_LOCALIZED_RESOURCE_FILES variable.
 # The list of localized dirs to be created empty inside each
@@ -118,7 +119,7 @@ internal-resource_set-install_: \
   $(foreach LANGUAGE,$(LANGUAGES),$(addprefix $(RESOURCE_FILES_INSTALL_DIR)/$(LANGUAGE), $(LOCALIZED_RESOURCE_DIRS)))
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_NOTHING)for f in $(RESOURCE_FILES); do \
-	  if [ -f $$f -o -d $$f ]; then \
+	  if [ -f $(RESOURCE_FILES_DIR)/$$f -o -d $(RESOURCE_FILES_DIR)/$$f ]; then \
 	    cp -fr $(RESOURCE_FILES_DIR)/$$f \
 	           $(RESOURCE_FILES_INSTALL_DIR)/$$f; \
 	  else \
@@ -127,7 +128,7 @@ ifneq ($(RESOURCE_FILES),)
 	done$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)for f in $(RESOURCE_FILES); do \
-	  if [ -f $$f -o -d $$f ]; then \
+	  if [ -f $(RESOURCE_FILES_DIR)/$$f -o -d $(RESOURCE_FILES_DIR)/$$f ]; then \
 	    $(CHOWN) -R $(CHOWN_TO) $(RESOURCE_FILES_INSTALL_DIR)/$$f; \
 	  fi; \
 	done$(END_ECHO)
@@ -135,26 +136,26 @@ endif
 endif
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	$(ECHO_NOTHING)for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
+	  if [ -d $(RESOURCE_FILES_DIR)/$$l.lproj ]; then \
 	    $(MKINSTALLDIRS) $(RESOURCE_FILES_INSTALL_DIR)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f -o -d $$l.lproj/$$f ]; then \
-	        cp -fr $$l.lproj/$$f \
+	      if [ -f $(RESOURCE_FILES_DIR)/$$l.lproj/$$f -o -d $(RESOURCE_FILES_DIR)$$l.lproj/$$f ]; then \
+	        cp -fr $(RESOURCE_FILES_DIR)/$$l.lproj/$$f \
 	               $(RESOURCE_FILES_INSTALL_DIR)/$$l.lproj; \
 	      else \
-	        echo "Warning: $$l.lproj/$$f not found - ignoring"; \
+	        echo "Warning: $(RESOURCE_FILES_DIR)/$$l.lproj/$$f not found - ignoring"; \
 	      fi; \
 	    done; \
 	  else \
-	    echo "Warning: $$l.lproj not found - ignoring"; \
+	    echo "Warning: $(RESOURCE_FILES_DIR)/$$l.lproj not found - ignoring"; \
 	  fi; \
 	done$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
+	  if [ -d $(RESOURCE_FILES_DIR)/$$l.lproj ]; then \
 	    $(CHOWN) -R $(CHOWN_TO) $(RESOURCE_FILES_INSTALL_DIR)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f -o -d $$l.lproj/$$f ]; then \
+	      if [ -f $(RESOURCE_FILES_DIR)/$$l.lproj/$$f -o -d $(RESOURCE_FILES_DIR)/$$l.lproj/$$f ]; then \
 	        $(CHOWN) -R $(CHOWN_TO) $(RESOURCE_FILES_INSTALL_DIR)/$$l.lproj/$$f; \
 	      fi; \
 	    done; \
@@ -201,19 +202,19 @@ $(addsuffix .lproj,$(addprefix $(RESOURCE_FILES_INSTALL_DIR)/,$(LANGUAGES))):
 internal-resource-set-install-languages: \
 $(addsuffix .lproj,$(addprefix $(RESOURCE_FILES_INSTALL_DIR)/,$(LANGUAGES)))
 	$(ECHO_NOTHING)for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
+	  if [ -d $(RESOURCE_FILES_DIR)/$$l.lproj ]; then \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f ]; then \
-	        if [ $$l.lproj -nt $(RESOURCE_FILES_INSTALL_DIR)/$$l.lproj/$$f ]; then \
-	        $(INSTALL_DATA) $$l.lproj/$$f \
+	      if [ -f $(RESOURCE_FILES_DIR)/$$l.lproj/$$f ]; then \
+	        if [ $(RESOURCE_FILES_DIR)/$$l.lproj -nt $(RESOURCE_FILES_INSTALL_DIR)/$$l.lproj/$$f ]; then \
+	        $(INSTALL_DATA) $(RESOURCE_FILES_DIR)/$$l.lproj/$$f \
 	                        $(RESOURCE_FILES_INSTALL_DIR)/$$l.lproj; \
 	        fi; \
 	      else \
-	        echo "Warning: $$l.lproj/$$f not found - ignoring"; \
+	        echo "Warning: $(RESOURCE_FILES_DIR)/$$l.lproj/$$f not found - ignoring"; \
 	      fi; \
 	    done; \
 	  else \
-	    echo "Warning: $$l.lproj not found - ignoring"; \
+	    echo "Warning: $(RESOURCE_FILES_DIR)/$$l.lproj not found - ignoring"; \
 	  fi; \
 	done$(END_ECHO)
 

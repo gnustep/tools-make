@@ -546,7 +546,7 @@ then
   if test "$MSWIND" = "yes"
   then
     echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
+    echo "the make package even though gnustep programs built in the mingw"
     echo "environment use native paths throughout."
   fi
   exit 1
@@ -627,7 +627,7 @@ then
   if test "$MSWIND" = "yes"
   then
     echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
+    echo "the make package even though gnustep programs built in the mingw"
     echo "environment use native paths throughout."
   fi
   exit 1
@@ -681,7 +681,7 @@ then
   if test "$MSWIND" = "yes"
   then
     echo "Please note that on windows you must use unix-style paths within"
-    echo "the make package even though gnustep programs built in the mingw32"
+    echo "the make package even though gnustep programs built in the mingw"
     echo "environment use native paths throughout."
   fi
   exit 1

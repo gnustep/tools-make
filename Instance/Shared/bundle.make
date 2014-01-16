@@ -79,6 +79,10 @@
 #  $(GNUSTEP_INSTANCE)_RESOURCE_DIRS : a list of additional resource dirs
 #  to create.
 #
+#  $(GNUSTEP_INSTANCE)_RESOURCE_FILES_DIR : the directory in which the
+#  resource files and localized resource files are to be found
+#  (defaults to ./ if omitted).
+#
 #  $(GNUSTEP_INSTANCE)_LANGUAGES : the list of languages of localized resource
 #  files (processed in rules.make, and converted into a LANGUAGES list)
 #
@@ -145,6 +149,12 @@
 # target; the caller might need to provide the rule for cases when we
 # are not included, so we let the caller always provide it}
 #
+
+# Determine the dir to take the resources from
+RESOURCE_FILES_DIR = $($(GNUSTEP_INSTANCE)_RESOURCE_FILES_DIR)
+ifeq ($(RESOURCE_FILES_DIR),)
+RESOURCE_FILES_DIR = ./
+endif
 
 RESOURCE_FILES = $(strip $($(GNUSTEP_INSTANCE)_RESOURCE_FILES) \
                         $($(GNUSTEP_INSTANCE)_COMPONENTS))
@@ -223,39 +233,39 @@ shared-instance-bundle-all: $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH) \
                       shared-instance-bundle-all-gsweb
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_COPYING_RESOURCES)for f in $(RESOURCE_FILES); do \
-	  if [ -f $$f -o -d $$f ]; then \
-	    cp -fr $$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
+	  if [ -f $(RESOURCE_FILES_DIR)/$$f -o -d $(RESOURCE_FILES_DIR)/$$f ]; then \
+	    cp -fr $(RESOURCE_FILES_DIR)/$$f $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/; \
 	  else \
-	    echo "Warning: $$f not found - ignoring"; \
+	    echo "Warning: $(RESOURCE_FILES_DIR)/$$f not found - ignoring"; \
 	  fi; \
 	done$(END_ECHO)
 endif
 ifneq ($(LOCALIZED_RESOURCE_DIRS),)
 	$(ECHO_CREATING_LOC_RESOURCE_DIRS)for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
+	  if [ -d $(RESOURCE_FILES_DIR)/$$l.lproj ]; then \
 	    $(MKDIRS) $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_DIRS); do \
 	      $(MKDIRS) $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj/$$f; \
 	    done; \
 	  else \
-	    echo "Warning: $$l.lproj not found - ignoring"; \
+	    echo "Warning: $(RESOURCE_FILES_DIR)/$$l.lproj not found - ignoring"; \
 	  fi; \
 	done$(END_ECHO)
 endif
 ifneq ($(LOCALIZED_RESOURCE_FILES),)
 	$(ECHO_COPYING_LOC_RESOURCES)for l in $(LANGUAGES); do \
-	  if [ -d $$l.lproj ]; then \
+	  if [ -d $(RESOURCE_FILES_DIR)/$$l.lproj ]; then \
 	    $(MKDIRS) $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj; \
 	    for f in $(LOCALIZED_RESOURCE_FILES); do \
-	      if [ -f $$l.lproj/$$f -o -d $$l.lproj/$$f ]; then \
-	        cp -fr $$l.lproj/$$f \
+	      if [ -f $(RESOURCE_FILES_DIR)/$$l.lproj/$$f -o -d $(RESOURCE_FILES_DIR)/$$l.lproj/$$f ]; then \
+	        cp -fr $(RESOURCE_FILES_DIR)/$$l.lproj/$$f \
 	              $(GNUSTEP_SHARED_BUNDLE_RESOURCE_PATH)/$$l.lproj/; \
 	      else \
-	        echo "Warning: $$l.lproj/$$f not found - ignoring"; \
+	        echo "Warning: $(RESOURCE_FILES_DIR)/$$l.lproj/$$f not found - ignoring"; \
 	      fi; \
 	    done; \
 	  else \
-	    echo "Warning: $$l.lproj not found - ignoring"; \
+	    echo "Warning: $(RESOURCE_FILES_DIR)/$$l.lproj not found - ignoring"; \
 	  fi; \
 	done$(END_ECHO)
 endif
