@@ -527,7 +527,7 @@ do
       then
         $MAKE_CMD clean >/dev/null 2>&1
       fi
-      rm -rf core obj GNUmakefile gdb.cmds tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp
+      rm -rf core core.* *.core obj GNUmakefile gdb.cmds tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp
 
     else
       echo "--- Running tests in $dir ---"

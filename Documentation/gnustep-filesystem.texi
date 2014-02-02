@@ -25,7 +25,7 @@ any later version published by the Free Software Foundation.
 @end titlepage
 
 @node Top, The System Domain, (dir), (dir)
-@top GNUstep Filesystem Hierarchy
+@chapter GNUstep Filesystem Hierarchy
  
 @menu
 * The System Domain::           

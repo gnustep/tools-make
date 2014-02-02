@@ -8,6 +8,11 @@
 @smallbook
 @setchapternewpage odd
 
+@dircategory Software development
+@direntry
+* GNUstep Make: (gnustep-make).         The GNUstep build system.
+@end direntry
+
 @ifinfo
 
 Copyright @copyright{}  2000 Free Software Foundation, Inc.
