@@ -1,3 +1,8 @@
+2014-03-27  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * TestFramework/ObjectTesting.h: Add PASS_MATCH macro for matching
+	against a regular expresssion.
+
 2014-01-16  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUmakefile.in:

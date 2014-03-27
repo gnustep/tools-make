@@ -28,6 +28,7 @@
 #import <Foundation/NSGarbageCollector.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSObject.h>
+#import <Foundation/NSRegularExpression.h>
 #import <Foundation/NSString.h>
 
 /* A flag indicating that the testsuite is currently processing tests
@@ -251,6 +252,79 @@ static void testStart()
 	    { \
 	      fprintf(stderr, "Expected '%s' and got '%s'\n", \
                 [[_exp description] UTF8String], [s UTF8String]); \
+	    } \
+	} \
+    } \
+  NS_HANDLER \
+    testRaised = [localException retain]; \
+    pass(0, "%s:%d ... " testFormat__, __FILE__, __LINE__, ## __VA_ARGS__); \
+    printf("%s: %s", [[testRaised name] UTF8String], \
+      [[testRaised description] UTF8String]); \
+  NS_ENDHANDLER
+
+/* Tests a code expression which evaluates to an object value.
+ * The expression may not contain commas unless it is bracketed.
+ * The expected pattern may not contain commas unless it is bracketed.
+ * The format must be a literal string printf style format.
+ *
+ * Where the expression evaluates to an object whose description matches
+ * the expect value reguilar expression, the test has passed.
+ *
+ * If the results of the expression and the expected pattern o not match,
+ * the string representation of both values is logged so that you
+ * can get a better idea of what went wrong.
+ */
+#define PASS_MATCH(testExpression__, testExpect__, testFormat__, ...) \
+  NS_DURING \
+    { \
+      int _cond; \
+      id _obj; \
+      id _dsc; \
+      id _exp; \
+      id _pat; \
+      id _tmp = testRaised; testRaised = nil; [_tmp release]; \
+      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
+      testLineNumber = __LINE__; \
+      testStart(); \
+      _obj = (id)(testExpression__);\
+      _dsc = [_obj description];\
+      _pat = (id)(testExpect__);\
+      _exp = [[[NSRegularExpression alloc] initWithPattern: _pat \
+        options: 0 error: 0] autorelease];\
+      if (nil != _dsc && nil != _exp) \
+        { \
+          NSRange       r = NSMakeRange(0, [_dsc length]);\
+          r = [_exp rangeOfFirstMatchInString: _dsc options: 0 range: r];\
+          if (r.length > 0)\
+            { \
+              _cond = YES; \
+            } \
+        } \
+      else \
+        { \
+          _cond = NO; \
+        } \
+      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
+      pass(_cond, "%s:%d ... " testFormat__, __FILE__, \
+        __LINE__, ## __VA_ARGS__); \
+      if (0 == _cond) \
+	{ \
+          if ([_dsc length] == 1) \
+            { \
+              fprintf(stderr, \
+		"Expected '%s' and got '%s' (unicode codepoint %d)\n", \
+                [[_pat description] UTF8String], [_dsc UTF8String], \
+		[_dsc characterAtIndex: 0]); \
+            } \
+	  else if (nil == _dsc) \
+	    { \
+	      fprintf(stderr, "Expected '%s' and got (nil)\n", \
+                [[_pat description] UTF8String]); \
+	    } \
+	  else \
+	    { \
+	      fprintf(stderr, "Expected '%s' and got '%s'\n", \
+                [[_pat description] UTF8String], [_dsc UTF8String]); \
 	    } \
 	} \
     } \
