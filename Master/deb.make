@@ -30,18 +30,6 @@
 #
 # Processor architecture is detected from output of $(CC) -dumpmachine.
 # If $(CC) is not defined, gcc is used.
-#
-# NOTE! NOTE! NOTE!
-# equivs-build 2.0.9 has a bug and will NOT work with absolute
-# paths, which is something this version of deb.make depends on.
-# See: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=662946
-#
-# Until the patch goes into upstream 'equivs', you will need to 
-# patch your /usr/bin/equivs-build manually. Find the line:
-#  $install_files{"$2/$1"} = $1;
-# change it to:
-#  $install_files{"$2/".basename($1)} = $1;
-#
 
 # [1] Add - after common.make - the following lines in your GNUmakefile:
 #
@@ -59,85 +47,44 @@
 # PACKAGE_NEEDS_CONFIGURE = yes
 #
 # in your makefile.
-DEB_BUILD=equivs-build
-
-# the GNUstep Debian packages always put things in, e.g. /GNUstep/System, 
-# so we need to match these regardless of the local filesystem layout
-# Hackish way to get the installation dir/domain
-DEB_DOMAIN=System
-DEB_BASE=$(dir $(GNUSTEP_SYSTEM_ROOT))
-ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), LOCAL)
-  DEB_DOMAIN=Local
-  DEB_BASE=$(dir $(GNUSTEP_LOCAL_ROOT))
-endif
-# Which user would we install in? Use Local instead.
-ifeq ($(GNUSTEP_INSTALLATION_DOMAIN), USER)
-  DEB_DOMAIN=Local
-  DEB_BASE=$(dir $(GNUSTEP_LOCAL_ROOT))
-endif
-
-ABS_OBJ_DIR=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
-GNUSTEP_FILE_LIST = $(ABS_OBJ_DIR)/package/file-list
-REL_INSTALL_DIR=$(GNUSTEP_OBJ_DIR)/package/$(DEB_BASE)
 
 ifeq ($(CC), )
-  CC=gcc
+  CC=cc
 endif
-DEB_ARCHITECTURE=$(shell (/bin/bash -c "$(CC) -dumpmachine | sed -e 's,\\([^-]*\\).*,\\1,g'"))
-DEB_LOWERCASE_PACKAGE_NAME=$(shell (echo $(PACKAGE_NAME) | sed -e 's/\(.*\)/\L\1/'))
+_DEB_ARCH=$(GNUSTEP_TARGET_CPU) # $(shell (/bin/bash -c "$(CC) -dumpmachine | sed -e 's,\\([^-]*\\).*,\\1,g'"))
+_DEB_LOWERCASE_PACKAGE_NAME=$(shell (echo $(PACKAGE_NAME) | sed -e 's/\(.*\)/\L\1/'))
 
-DEB_FILE_NAME=$(PACKAGE_NAME).debequivs
-DEB_FILE=$(DEB_LOWERCASE_PACKAGE_NAME)_$(VERSION)_$(DEB_ARCHITECTURE).deb
-DEB_TEMPLATE=$(GNUSTEP_MAKEFILES)/deb-equivs-control.template
-DEB_IN=$(PACKAGE_NAME).control.in
+_DEB_VERSION=$(PACKAGE_VERSION)
+ifeq ($(_DEB_VERSION), )
+  _DEB_VERSION=$(VERSION)
+endif
+_DEB_ORIGTARNAME=$(_DEB_LOWERCASE_PACKAGE_NAME)_$(_DEB_VERSION)
+_DEB_FILE=$(_DEB_TARNAME)_$(_DEB_ARCH).deb
 
-# DEB_DESTINATION=\$$DOMDIR
-DEB_DESTINATION=/GNUstep
+_ABS_OBJ_DIR=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
 
-.PHONY: debfile deb deb_package_install deb_build_filelist
+ifeq ($(DEB_BUILD_DEPENDS), )
+DEB_BUILD_DEPENDS=gnustep-make (=$(GNUSTEP_MAKE_VERSION))
+else
+DEB_BUILD_DEPENDS=$(DEB_BUILD_DEPENDS), gnustep-make (=$(GNUSTEP_MAKE_VERSION))
+endif
 
-deb_package_install:
-	$(ECHO_NOTHING)if [ -d $(ABS_OBJ_DIR)/package ]; then \
-	  rm -rf $(ABS_OBJ_DIR)/package; fi;$(END_ECHO)
-	$(ECHO_NOTHING)$(MAKE) DESTDIR=$(ABS_OBJ_DIR)/package deblist=yes install$(END_ECHO)
+.PHONY: deb
 
-#
-# Target to build up the file lists
-#
-deb_build_filelist::
-	# Note: 'readlink -f PATH' is here in place of 'realpath'.
-	# While 'readlink' is not available everywhere, it's available under Debian,
-	# and that's what counts.
-	$(ECHO_NOTHING)rm -f $(GNUSTEP_FILE_LIST)$(END_ECHO)
-	$(ECHO_NOTHING)echo -n "Files:" > $(GNUSTEP_FILE_LIST)$(END_ECHO)
-	$(ECHO_NOTHING)find $(REL_INSTALL_DIR) -type l -or -type f | sed 's,'$(REL_INSTALL_DIR)'\(.*\)/\(.*\), '$(REL_INSTALL_DIR)'\1/\2 '$(DEB_DESTINATION)'/\1,' >> $(GNUSTEP_FILE_LIST)$(END_ECHO)
-
-
-#
-# The user will type `make debfile' to generate the equivs control file
-#
-debfile: $(DEB_FILE_NAME)
-
-#
-# This is the real target
-#
-$(DEB_FILE_NAME): deb_package_install deb_build_filelist
-	$(ECHO_NOTHING)echo "Generating the deb equivs control file..."$(END_ECHO)
-	$(ECHO_NOTHING)rm -f $@$(END_ECHO)
-	$(ECHO_NOTHING)if [ -f $(DEB_IN) ]; then		\
-	  deb_infile=${DEB_IN};					\
-	  else							\
-	  deb_infile=${DEB_TEMPLATE}; fi;			\
-	  sed -e :t						\
-	    -e "s,@gs_domain@,$(DEB_DOMAIN),;t t"		\
-	    -e "s,@gs_name@,$(DEB_LOWERCASE_PACKAGE_NAME),;t t"	\
-	    -e "s,@gs_version@,$(PACKAGE_VERSION),;t t"		\
-	    -e "s,@gs_arch@,$(DEB_ARCHITECTURE),;t t"		\
-	    -e "/@file_list@/{ r ${GNUSTEP_FILE_LIST}" -e "d}"	\
-		$$deb_infile > $@				\
-	$(END_ECHO)
-
-deb: debfile
+ifeq ($(_DEB_SHOULD_EXPORT), )
+../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz: dist
+deb: ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz
+	_DEB_SHOULD_EXPORT=1 make deb
+else
+# Export all variables, but only in explicit invocation of 'make deb'
+export
+deb:
 	$(ECHO_NOTHING)echo "Generating the deb package..."$(END_ECHO)
-	${DEB_BUILD} $(DEB_FILE_NAME)
-
+	-rm -rf $(_ABS_OBJ_DIR)/debian_dist
+	mkdir -p $(_ABS_OBJ_DIR)/debian_dist
+	cp ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz $(_ABS_OBJ_DIR)/debian_dist/$(_DEB_ORIGTARNAME).orig.tar.gz
+	cd $(_ABS_OBJ_DIR)/debian_dist && tar xfz $(_DEB_ORIGTARNAME).orig.tar.gz
+	/bin/bash $(GNUSTEP_MAKEFILES)/bake_debian_files.sh $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/
+	printf "\noverride_dh_auto_configure:\n\tdh_auto_configure -- $(DEB_CONFIGURE_FLAGS)\noverride_dh_auto_build:\n\tmake\n\tdh_auto_build\nbuild::\n\tmake" >> $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/debian/rules
+	cd $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/ && debuild -us -uc
+endif

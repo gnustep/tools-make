@@ -1,3 +1,13 @@
+2014-04-07  Ivan Vucica <ivan@vucica.net>
+
+	* Master/deb.make, bake_debian_files.sh: Rewrite of .deb-building
+	system that will produce both a source package and a binary package.
+	Work in progress; currently only gnustep-make itself builds correctly.
+	* GNUmakefile.in: Added the svn-export target which uses local files
+	to do the equivalent of 'make dist'. Switched to new way of building
+	.deb using bake_debian_files.sh.
+	* deb-equivs-control.template: No longer necessary; removed.
+
 2014-03-27  Richard Frith-Macdonald <rfm@gnu.org>
 
         * TestFramework/ObjectTesting.h: Add PASS_MATCH macro for matching
