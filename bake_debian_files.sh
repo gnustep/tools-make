@@ -66,22 +66,31 @@ DEB_DISTRIBUTION=${DEB_DISTRIBUTION:-${default_distribution}}
 if which python > /dev/null ; then
 FN=$(python - << _EOF
 
-# TODO: This code does not perform substitution of variables in .spec.in files.
-
 import tempfile
 import sys
 
 def process_specfile(specfilename):
   description_mode=False
-  with tempfile.NamedTemporaryFile(delete=False) as tf:
-    with open(specfilename) as specfile:
+  with open(specfilename) as specfile:
+    with tempfile.NamedTemporaryFile(delete=False) as tf:
+
       print tf.name
+      vars={}
+
       for line in specfile.readlines():
         line=line.rstrip()
+        for var in vars:
+          line.replace('%{%s}' % var, vars[var])
+
         if description_mode:
           if len(line.lstrip()) > 0 and line.lstrip()[0] == '#':
             continue
+          if len(line.lstrip()) > 0 and line.lstrip()[0] == '%':
+            description_mode=False
+            continue
           tf.write("RPM_DESCRIPTION=\"\${RPM_DESCRIPTION}%s\\n\"\n" % line.replace('\\'', '\\\\\\'').replace('\\"', '\\\\\\"').replace('(', '\\(').replace(')', '\\)'))
+          continue
+
         if not len(line):
           continue
         components=line.split(':')
@@ -142,6 +151,11 @@ def process_specfile(specfilename):
         else:
           if line == "%description":
             description_mode = True
+          elif line.startswith('%define'):
+            segs=line[len('%define')+1].lstrip().split(' ')
+            segs=[seg.rstrip().lstrip() for seg in segs]
+            vars[segs[0]] = ' '.segs[1:].join()
+            
 
 try:
   process_specfile('${DEB_PACKAGE}.spec')
@@ -260,7 +274,7 @@ echo "Description:" "$(echo "${DEB_DESCRIPTION}" | sed 's/^[\s]*$/./' | sed 's/\
 
 echo "${DEB_SOURCE} (${DEB_VERSION}) ${DEB_DISTRIBUTION}; urgency=low" >> "${destination}"/changelog
 echo "" >> "${destination}"/changelog
-echo "  * New build." >> "${destination}"/changelog
+echo "   * New build." >> "${destination}"/changelog
 echo "" >> "${destination}"/changelog
 echo "" >> "${destination}"/changelog
 echo " -- ${DEB_PACKAGE_BUILDER}  $(date -R)" >> "${destination}"/changelog

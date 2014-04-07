@@ -66,25 +66,26 @@ _ABS_OBJ_DIR=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
 ifeq ($(DEB_BUILD_DEPENDS), )
 DEB_BUILD_DEPENDS=gnustep-make (=$(GNUSTEP_MAKE_VERSION))
 else
-DEB_BUILD_DEPENDS=$(DEB_BUILD_DEPENDS), gnustep-make (=$(GNUSTEP_MAKE_VERSION))
+DEB_BUILD_DEPENDS+=, gnustep-make (=$(GNUSTEP_MAKE_VERSION))
 endif
 
 .PHONY: deb
 
 ifeq ($(_DEB_SHOULD_EXPORT), )
-../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz: dist
-deb: ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz
-	_DEB_SHOULD_EXPORT=1 make deb
-else
-# Export all variables, but only in explicit invocation of 'make deb'
-export
+
 deb:
+	if [ ! -e ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz ] ; then make dist ; else echo "Source file already exists; NOT rebuilding. Please manually remove if desired." ; fi
 	$(ECHO_NOTHING)echo "Generating the deb package..."$(END_ECHO)
 	-rm -rf $(_ABS_OBJ_DIR)/debian_dist
 	mkdir -p $(_ABS_OBJ_DIR)/debian_dist
 	cp ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz $(_ABS_OBJ_DIR)/debian_dist/$(_DEB_ORIGTARNAME).orig.tar.gz
 	cd $(_ABS_OBJ_DIR)/debian_dist && tar xfz $(_DEB_ORIGTARNAME).orig.tar.gz
-	/bin/bash $(GNUSTEP_MAKEFILES)/bake_debian_files.sh $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/
+	_DEB_SHOULD_EXPORT=1 make _debfiles
 	printf "\noverride_dh_auto_configure:\n\tdh_auto_configure -- $(DEB_CONFIGURE_FLAGS)\noverride_dh_auto_build:\n\tmake\n\tdh_auto_build\nbuild::\n\tmake" >> $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/debian/rules
 	cd $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/ && debuild -us -uc
+else
+# Export all variables, but only if we explicitly are working with bake_debian_files.sh
+export
+_debfiles:
+	/bin/bash $(GNUSTEP_MAKEFILES)/bake_debian_files.sh $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/
 endif
