@@ -161,6 +161,14 @@ else
   EC = @
 endif
 
+# To produce a signed Debian source and binary package,
+# call 'make debsign=yes'.
+ifeq ($(debsign),yes)
+  DEBUILD_ARGS = -nc
+else
+  DEBUILD_ARGS = -us -uc -nc
+endif
+
 all: generated-files
 	$(EC)(echo "Thanks.  All is ready: type '$(MAKE) install' to install gnustep-make.")
 
@@ -252,6 +260,12 @@ install: generated-files
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
 	   echo "Stripping makefiles and shell scripts..."; \
 	   cd "$(makedir)"; ./strip_makefiles.sh; \
+	   fi)
+	$(EC)(if [ "@GNUSTEP_INSTALL_LD_SO_CONF@" = "yes" ] ; then \
+	   echo "Installing ld.so.conf.d/gnustep-make.conf due to custom prefix..."; \
+	   "$(srcdir)/mkinstalldirs" $(DESTDIR)/etc/ld.so.conf.d ; \
+	    $(INSTALL_DATA) gnustep-make-ld.so.conf  "$(DESTDIR)/etc/ld.so.conf.d/gnustep-make.conf"; \
+	    \
 	   fi)
 
 uninstall:
@@ -423,13 +437,15 @@ debian_dist/gnustep-make_$(GNUSTEP_MAKE_VERSION)_all.deb: dist
 	cp gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz debian_dist/gnustep-make_$(GNUSTEP_MAKE_VERSION).orig.tar.gz
 	cd debian_dist && tar xfz gnustep-make_$(GNUSTEP_MAKE_VERSION).orig.tar.gz
 	PACKAGE_NAME="gnustep-make" VERSION=$(GNUSTEP_MAKE_VERSION) DEB_MAINTAINER="GNUstep Developers <gnustep-dev@gnu.org>" DEB_ARCHITECTURE=all /bin/bash bake_debian_files.sh debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/
-	printf "\noverride_dh_auto_configure:\n\tdh_auto_configure -- $(DEB_CONFIGURE_FLAGS)\n" >> debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/debian/rules
-	cd debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/ && debuild -us -uc
+	cd debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/ && dpkg-source --commit -q
+	cd debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/ && debuild $(DEBUILD_ARGS) -S
+	cd debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/ && debuild $(DEBUILD_ARGS) -b
 	# rm -rf debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make \
                  openapp opentool gnustep-make.spec executable.template gnustep-config \
-                 filesystem.make filesystem.sh filesystem.csh GNUstep.conf GNUstep-strict-v2.conf
+                 filesystem.make filesystem.sh filesystem.csh GNUstep.conf GNUstep-strict-v2.conf \
+                 gnustep-make-ld.so.conf
 
 GNUmakefile: GNUmakefile.in config.status
 	$(SHELL) config.status
@@ -478,3 +494,7 @@ executable.template: executable.template.in
 
 gnustep-config: gnustep-config.in
 	$(SHELL) config.status
+
+gnustep-make-ld.so.conf: gnustep-make-ld.so.conf.in
+	$(SHELL) config.status
+

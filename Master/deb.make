@@ -69,23 +69,63 @@ else
 DEB_BUILD_DEPENDS+=, gnustep-make (=$(GNUSTEP_MAKE_VERSION))
 endif
 
-.PHONY: deb
+# To produce a signed Debian source and binary package,
+# call 'make debsign=yes'.
+ifeq ($(debsign),yes)
+  DEBUILD_ARGS = -nc
+else
+  DEBUILD_ARGS = -us -uc -nc
+endif
+
+
+###
 
 ifeq ($(_DEB_SHOULD_EXPORT), )
 
-deb:
-	if [ ! -e ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz ] ; then make dist ; else echo "Source file already exists; NOT rebuilding. Please manually remove if desired." ; fi
-	$(ECHO_NOTHING)echo "Generating the deb package..."$(END_ECHO)
+#
+
+.PHONY: deb
+
+_debenv.phony::
+	-rm _debenv
+	_DEB_SHOULD_EXPORT=1 make _debenv
+
+# Order is important; we want debfiles to be done first so ./configure
+# is not unnecessarily run during submake.
+../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz: | _debenv.phony dist
+
+deb-prep:: ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz 
+	$(ECHO_NOTHING)echo "Baking deb control files ("$(GNUSTEP_TARGET_CPU)")..."$(END_ECHO)
+	/bin/bash -c ". _debenv && mkdir -p $(_ABS_OBJ_DIR)/debian_files && $(GNUSTEP_MAKEFILES)/bake_debian_files.sh $(_ABS_OBJ_DIR)/debian_files"
+	-rm _debenv
+
+	$(ECHO_NOTHING)echo "Preparing directory layout for building deb package..."$(END_ECHO)
 	-rm -rf $(_ABS_OBJ_DIR)/debian_dist
 	mkdir -p $(_ABS_OBJ_DIR)/debian_dist
 	cp ../$(PACKAGE_NAME)-$(PACKAGE_VERSION).tar.gz $(_ABS_OBJ_DIR)/debian_dist/$(_DEB_ORIGTARNAME).orig.tar.gz
 	cd $(_ABS_OBJ_DIR)/debian_dist && tar xfz $(_DEB_ORIGTARNAME).orig.tar.gz
-	_DEB_SHOULD_EXPORT=1 make _debfiles
-	printf "\noverride_dh_auto_configure:\n\tdh_auto_configure -- $(DEB_CONFIGURE_FLAGS)\noverride_dh_auto_build:\n\tmake\n\tdh_auto_build\nbuild::\n\tmake" >> $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/debian/rules
-	cd $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/ && debuild -us -uc
+
+	mkdir -p $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/debian
+	mv $(_ABS_OBJ_DIR)/debian_files/debian/* $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/debian
+	-rm -rf $(_ABS_OBJ_DIR)/debian_files
+
+
+deb:: deb-prep
+	$(ECHO_NOTHING)echo "Building Debian package..."$(END_ECHO)
+	cd $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/ && debuild $(DEBUILD_ARGS) -S
+	cd $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/ && debuild $(DEBUILD_ARGS) -b
+
+#
 else
+#
+
+.PHONY: debfiles
+
 # Export all variables, but only if we explicitly are working with bake_debian_files.sh
 export
-_debfiles:
-	/bin/bash $(GNUSTEP_MAKEFILES)/bake_debian_files.sh $(_ABS_OBJ_DIR)/debian_dist/$(PACKAGE_NAME)-$(PACKAGE_VERSION)/
+_debenv:
+	export > _debenv
 endif
+
+###
+

@@ -470,6 +470,7 @@ fi
 GNUSTEP_PREFIX=`echo "$GNUSTEP_PREFIX" | sed 's%/*$%%'`
 
 AC_MSG_RESULT($GNUSTEP_PREFIX)
+AC_SUBST(GNUSTEP_PREFIX)
 
 # Now we apply the prefix (we don't need to apply it to
 # GNUSTEP_SYSTEM_USERS_DIR and similar, which are something like
@@ -1002,6 +1003,29 @@ else
   BACKEND_BUNDLE=;
 fi
 AC_SUBST(BACKEND_BUNDLE)
+
+#--------------------------------------------------------------------
+# Enable installation of ld.so.conf.d/gnustep-make.conf
+#--------------------------------------------------------------------
+AC_ARG_ENABLE(install-ld-so-conf, [
+--enable-install-ld-so-conf
+   Enable installation of ld.so.conf/gnustep-make.conf. This is useful
+   if you are installing in a non-standard prefix, and a component of
+   the build system needs to be able to find libraries even without
+   GNUstep.sh or equivalent providing environment. Some packaging
+   systems clear out the environment at certain points during the
+   packaging build process, hence making LD_LIBRARY_PATH set by
+   gnustep-make.conf ineffective.
+], 
+  ac_cv_install_ld_so_conf=$enableval,
+  ac_cv_install_ld_so_conf="undefined")
+
+if test "$ac_cv_install_ld_so_conf" = "yes"; then
+  GNUSTEP_INSTALL_LD_SO_CONF=yes;
+else
+  GNUSTEP_INSTALL_LD_SO_CONF=;
+fi
+AC_SUBST(GNUSTEP_INSTALL_LD_SO_CONF)
 
 #--------------------------------------------------------------------
 # Miscellaneous flags and setup
@@ -1878,7 +1902,7 @@ AC_CONFIG_FILES([config-noarch.make config.make openapp opentool
 executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf
 GNUstep.sh GNUstep.csh fixpath.sh
 gnustep-make.spec gnustep-config TestFramework/gnustep-tests
-filesystem.make filesystem.sh filesystem.csh])
+filesystem.make filesystem.sh filesystem.csh gnustep-make-ld.so.conf])
 AC_CONFIG_COMMANDS([default],
 	[[chmod a+x openapp opentool fixpath.sh executable.template]],
 	[[]])

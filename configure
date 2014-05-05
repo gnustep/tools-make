@@ -715,6 +715,7 @@ GNUSTEP_NETWORK_ROOT
 GNUSTEP_LOCAL_ROOT
 GNUSTEP_USER_DIR
 GNUSTEP_MULTI_PLATFORM
+GNUSTEP_INSTALL_LD_SO_CONF
 BACKEND_BUNDLE
 cc_gnuruntime
 OBJC_LIB_FLAG
@@ -734,6 +735,7 @@ OBJCFLAGS
 GNUSTEP_DEFAULT_DEBUG
 GNUMAKE
 MAKE_WITH_INFO_FUNCTION
+GNUSTEP_PREFIX
 GNUSTEP_STRIP_MAKEFILES
 GNUSTEP_MAKE_PARALLEL_BUILDING
 GNUSTEP_MAKE_VERSION
@@ -1425,6 +1427,16 @@ Optional Features:
    Compile GUI backend as a library.  Use this option if the default
    compilation of the GUI backend as a bundle (loadable module) is
    not supported / does not work on your machine.
+
+
+--enable-install-ld-so-conf
+   Enable installation of ld.so.conf/gnustep-make.conf. This is useful
+   if you are installing in a non-standard prefix, and a component of
+   the build system needs to be able to find libraries even without
+   GNUstep.sh or equivalent providing environment. Some packaging
+   systems clear out the environment at certain points during the
+   packaging build process, hence making LD_LIBRARY_PATH set by
+   gnustep-make.conf ineffective.
 
 
 --enable-objc-nonfragile-abi
@@ -5357,6 +5369,25 @@ fi
 
 
 #--------------------------------------------------------------------
+# Enable installation of ld.so.conf.d/gnustep-make.conf
+#--------------------------------------------------------------------
+#
+# Check whether --enable-install-ld-so-conf was given.
+if test "${enable_install_ld_so_conf+set}" = set; then
+  enableval=$enable_install_ld_so_conf; ac_cv_install_ld_so_conf=$enableval
+else
+  ac_cv_install_ld_so_conf="undefined"
+fi
+
+
+if test "$ac_cv_install_ld_so_conf" = "yes"; then
+  GNUSTEP_INSTALL_LD_SO_CONF=yes;
+else
+  GNUSTEP_INSTALL_LD_SO_CONF=;
+fi
+
+
+#--------------------------------------------------------------------
 # Miscellaneous flags and setup
 #--------------------------------------------------------------------
 
@@ -7117,7 +7148,7 @@ fi
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec gnustep-config TestFramework/gnustep-tests filesystem.make filesystem.sh filesystem.csh"
+ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec gnustep-make-ld.so.conf gnustep-config TestFramework/gnustep-tests filesystem.make filesystem.sh filesystem.csh"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -7710,6 +7741,7 @@ do
     "GNUstep.csh") CONFIG_FILES="$CONFIG_FILES GNUstep.csh" ;;
     "fixpath.sh") CONFIG_FILES="$CONFIG_FILES fixpath.sh" ;;
     "gnustep-make.spec") CONFIG_FILES="$CONFIG_FILES gnustep-make.spec" ;;
+    "gnustep-make-ld.so.conf") CONFIG_FILES="$CONFIG_FILES gnustep-make-ld.so.conf" ;;
     "gnustep-config") CONFIG_FILES="$CONFIG_FILES gnustep-config" ;;
     "TestFramework/gnustep-tests") CONFIG_FILES="$CONFIG_FILES TestFramework/gnustep-tests" ;;
     "filesystem.make") CONFIG_FILES="$CONFIG_FILES filesystem.make" ;;
@@ -7915,6 +7947,7 @@ _ACEOF
 ac_delim='%!_!# '
 for ac_last_try in false false false false false :; do
   cat >conf$$subs.sed <<_ACEOF
+GNUSTEP_PREFIX!$GNUSTEP_PREFIX$ac_delim
 GNUSTEP_NETWORK_ADMIN_APPS!$GNUSTEP_NETWORK_ADMIN_APPS$ac_delim
 GNUSTEP_NETWORK_WEB_APPS!$GNUSTEP_NETWORK_WEB_APPS$ac_delim
 GNUSTEP_NETWORK_TOOLS!$GNUSTEP_NETWORK_TOOLS$ac_delim
@@ -7955,6 +7988,7 @@ GNUSTEP_NETWORK_ROOT!$GNUSTEP_NETWORK_ROOT$ac_delim
 GNUSTEP_LOCAL_ROOT!$GNUSTEP_LOCAL_ROOT$ac_delim
 GNUSTEP_USER_DIR!$GNUSTEP_USER_DIR$ac_delim
 GNUSTEP_MULTI_PLATFORM!$GNUSTEP_MULTI_PLATFORM$ac_delim
+GNUSTEP_INSTALL_LD_SO_CONF!$GNUSTEP_INSTALL_LD_SO_CONF$ac_delim
 BACKEND_BUNDLE!$BACKEND_BUNDLE$ac_delim
 cc_gnuruntime!$cc_gnuruntime$ac_delim
 OBJC_LIB_FLAG!$OBJC_LIB_FLAG$ac_delim
@@ -7990,7 +8024,7 @@ LIBOBJS!$LIBOBJS$ac_delim
 LTLIBOBJS!$LTLIBOBJS$ac_delim
 _ACEOF
 
-  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 73; then
+  if test `sed -n "s/.*$ac_delim\$/X/p" conf$$subs.sed | grep -c X` = 75; then
     break
   elif $ac_last_try; then
     { { echo "$as_me:$LINENO: error: could not make $CONFIG_STATUS" >&5

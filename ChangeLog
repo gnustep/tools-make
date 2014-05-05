@@ -1,3 +1,19 @@
+2014-05-05  Ivan Vucica <ivan@vucica.net>
+
+	* GNUmakefile.in: Separately building source and binary package,
+	optionally signing. Support for gnustep-make-ld.so.conf.
+	* Master/deb.make: Tweaked procedure for building Debian packages
+	to avoid cleaning when attempting to get 'make' variables that can
+	be passed on to bake_debian_files.sh as environment variables.
+	Signing packages is now optional, and source and binary packages
+	are built separately.
+	* bake_debian.files.sh: Improved .spec parsing. Introduced
+	dependency on CDBS (which simplifies customizing of debian/rules)
+	while automating some edge cases. Handling of DEB_VERSION_SUFFIX.
+	* configure, configure.ac: Support for --enable-install-ld-so-conf.
+	* gnustep-make-ld.so.conf.in: Template for the dynamic linker
+	configuration file ld.so.conf/gnustep-make.conf.
+
 2014-04-07  Ivan Vucica <ivan@vucica.net>
 
 	* Master/deb.make, bake_debian_files.sh: Rewrite of .deb-building

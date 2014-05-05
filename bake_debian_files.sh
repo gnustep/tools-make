@@ -40,27 +40,30 @@ if [[ "${distrib_id}" == "Ubuntu" ]] ; then
   default_distribution=$(grep DISTRIB_CODENAME /etc/lsb-release | sed 's/DISTRIB_CODENAME=//')
 fi
 target_arch=${GNUSTEP_TARGET_CPU:-any}
-if [[ "${target_arch}" -eq "i686" ]] ; then
+if [[ "${target_arch}" == "i686" ]] ; then
   target_arch=i386
-elif [[ "${target_arch}" -eq "x86_64" ]] ; then
+elif [[ "${target_arch}" == "x86_64" ]] ; then
   target_arch=amd64
 fi
 
+PACKAGE_VERSION=${PACKAGE_VERSION:-${VERSION}}
 DEB_SOURCE=${DEB_SOURCE:-${deb_lowercase_package_name}}
 DEB_PACKAGE=${DEB_PACKAGE:-${deb_lowercase_package_name}}
 DEB_ARCHITECTURE=${DEB_ARCHITECTURE:-${target_arch}} #$(shell (/bin/bash -c "$(CC) -dumpmachine | sed -e 's,\\([^-]*\\).*,\\1,g'"))}
 DEB_SECTION=${DEB_SECTION:-gnustep}
 DEB_PRIORITY=${DEB_PRIORTY:-optional}
 DEB_VCS_SVN=${DEB_VCS_SVN:-${svn_path}}
-DEB_VERSION=${DEB_VERSION:-${PACKAGE_VERSION:-${VERSION}}}
+DEB_VERSION=${DEB_VERSION:-${PACKAGE_VERSION}}
 if [ -z "${DEB_BUILD_DEPENDS}" ] ; then
-DEB_BUILD_DEPENDS="debhelper (>= 9)"
+DEB_BUILD_DEPENDS="debhelper (>= 9), cdbs"
 else
-DEB_BUILD_DEPENDS="${DEB_BUILD_DEPENDS}, debhelper (>= 9)"
+DEB_BUILD_DEPENDS="${DEB_BUILD_DEPENDS}, debhelper (>= 9), cdbs"
 fi
 DEB_DEPENDS='${shlibs:Depends}, ${misc:Depends}'" ${DEB_DEPENDS}"
 
 DEB_DISTRIBUTION=${DEB_DISTRIBUTION:-${default_distribution}}
+
+# DEB_VERSION_SUFFIX intentionally unset.
 
 # Attempt to extract information from a .spec or a .spec.in file.
 if which python > /dev/null ; then
@@ -80,7 +83,7 @@ def process_specfile(specfilename):
       for line in specfile.readlines():
         line=line.rstrip()
         for var in vars:
-          line.replace('%{%s}' % var, vars[var])
+          line=line.replace('%{' + var + '}', vars[var])
 
         if description_mode:
           if len(line.lstrip()) > 0 and line.lstrip()[0] == '#':
@@ -152,9 +155,9 @@ def process_specfile(specfilename):
           if line == "%description":
             description_mode = True
           elif line.startswith('%define'):
-            segs=line[len('%define')+1].lstrip().split(' ')
+            segs=line[len('%define')+1:].lstrip().replace('\\t', ' ').split(' ')
             segs=[seg.rstrip().lstrip() for seg in segs]
-            vars[segs[0]] = ' '.segs[1:].join()
+            vars[segs[0]] = ' '.join(segs[1:])
             
 
 try:
@@ -177,7 +180,7 @@ DEB_DESCRIPTION="${DEB_DESCRIPTION:-$(printf "Debian packaging for GNUstep based
 
 # Check that maintainer and package builder are set.
 if [ -z "${DEB_MAINTAINER}" ] ; then
-  echo "error: You must set DEB_MAINTAINER in GNUmakefile or on command line."
+  echo "error: You must set DEB_MAINTAINER in GNUmakefile, in .spec file, or on command line."
   exit 1
 fi
 if [ -z "${DEB_PACKAGE_BUILDER}" ] ; then
@@ -195,6 +198,10 @@ fi
 if [ -z "${DEB_VERSION}" ] ; then
   echo "error: Package version was not properly set in GNUmakefile."
   exit 1
+fi
+if [ ! -z "${DEB_VERSION_SUFFIX}" ] ; then
+  DEB_VERSION=${DEB_VERSION}-${DEB_VERSION_SUFFIX}
+  #ln -s ${destination}/../../${PACKAGE_NAME}-${VERSION}.orig.tar.gz ${destination}/../../${PACKAGE_NAME}-${DEB_VERSION}.orig.tar.gz
 fi
 
 echo ${destination}
@@ -291,8 +298,32 @@ echo "3.0 (quilt)" > "${destination}"/source/format
 # Intentionally overwriting.
 cat > "${destination}"/rules << _EOF
 #!/usr/bin/make -f
-%:
-	dh \$@
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/autotools.mk
+
+DEB_BUILD_PARALLEL = 1
+
+DEB_CONFIGURE_EXTRA_FLAGS += ${DEB_CONFIGURE_EXTRA_FLAGS}
+DEB_CONFIGURE_SCRIPT_ENV += ${DEB_CONFIGURE_SCRIPT_ENV}
+DEB_DH_LINK_ARGS += ${DEB_DH_LINK_ARGS}
+
+DEB_SHLIBS_ARGS_ALL += ${DEB_SHLIBS_ARGS_ALL}
+DEB_SHLIBS_ARGS += ${DEB_SHLIBS_ARGS}
+DEB_SHLIBS_INCLUDE += ${DEB_SHLIBS_INCLUDE}
+
+DEB_MAKE_ENVVARS += BUILDING_DEB=1
+
+export build : 
+ifneq (${PACKAGE_NAME}, gnustep-make)
+  GNUSTEP_MAKEFILES = \$(shell gnustep-config --variable=GNUSTEP_MAKEFILES)
+  ifneq (\$(GNUSTEP_MAKEFILES), )
+    DEB_MAKE_ENVVARS += \$(shell sh -c ". \$(GNUSTEP_MAKEFILES)/GNUstep.sh && env |grep GNUSTEP")
+  else
+    $(error Failed to get GNUSTEP_MAKEFILES variable. Is gnustep-config properly installed?)
+    exit 1
+  endif
+endif
+
 _EOF
 chmod 755 "${destination}"/rules
 
