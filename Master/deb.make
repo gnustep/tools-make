@@ -84,8 +84,6 @@ ifeq ($(_DEB_SHOULD_EXPORT), )
 
 #
 
-.PHONY: deb
-
 _debenv.phony::
 	-rm _debenv
 	_DEB_SHOULD_EXPORT=1 make _debenv
