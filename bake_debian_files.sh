@@ -104,7 +104,7 @@ def process_specfile(specfilename):
             tf.write("DEB_PACKAGE=\${DEB_PACKAGE:-%s}\n" % value)
             tf.write("DEB_SOURCE=\${DEB_SOURCE:-%s}\n" % value)
           elif key=="Release":
-            tf.write("DEB_VERSION_SUFFIX=\${DEB_VERSION_SUFFIX:-~%s}\n" % value)
+            tf.write("DEB_VERSION_SUFFIX=\${DEB_VERSION_SUFFIX:-%s}\n" % value)
           elif key=="Source":
             # Source URL is not mappable to anything useful.
             # Possibly only includable in README.Debian.
