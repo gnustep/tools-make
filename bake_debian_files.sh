@@ -66,6 +66,9 @@ DEB_BUILD_DEPENDS="debhelper (>= 9), cdbs"
 else
 DEB_BUILD_DEPENDS="${DEB_BUILD_DEPENDS}, debhelper (>= 9), cdbs"
 fi
+if [ ! -z "${DEB_DEPENDS}" ]; then
+DEB_DEPENDS=", ${DEB_DEPENDS}"
+fi
 DEB_DEPENDS='${shlibs:Depends}, ${misc:Depends}'" ${DEB_DEPENDS}"
 
 DEB_DISTRIBUTION=${DEB_DISTRIBUTION:-${default_distribution}}

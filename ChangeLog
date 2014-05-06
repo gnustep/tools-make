@@ -1,5 +1,10 @@
 2014-05-06  Ivan Vucica <ivan@vucica.net>
 
+	* bake_debian_files.sh: If DEB_DEPENDS is non-empty, prepend a
+	comma.
+
+2014-05-06  Ivan Vucica <ivan@vucica.net>
+
 	* GNUmakefile.in: Tarball may now have the SVN revision and
 	date appended to its version. This is done for svn-snapshot
 	and svn-export targets to ensure we have a 'unique' .orig.tar.gz
