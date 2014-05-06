@@ -137,7 +137,26 @@ endif
 
 endif # COMPRESSION
 
-VERSION_NAME = $(PACKAGE_NAME)-$(PACKAGE_VERSION)
+# Due to peculiarities of some packaging systems or package distribution
+# systems, we may want to permit customization of tarball version string.
+
+ifeq ($(TARBALL_VERSION), )
+TARBALL_VERSION := $(PACKAGE_VERSION)
+endif
+
+ifeq ($(TARBALL_VERSION_INCLUDE_SVN_REVISION), yes)
+# Revision; potentially expensive so expand when used.
+SVN_REVISION = $(shell svn info . | sed -ne 's/^Revision: //p')
+TARBALL_VERSION := $(TARBALL_VERSION).$(SVN_REVISION)
+endif
+
+ifeq ($(TARBALL_VERSION_INCLUDE_DATE_TIME), yes)
+# Expand immediately; it should be constant in the script.
+DATE_TIME_VERSION := $(shell date +%Y.%m.%d.%H.%M)
+TARBALL_VERSION := $(TARBALL_VERSION).$(DATE_TIME_VERSION)
+endif
+
+VERSION_NAME = $(PACKAGE_NAME)-$(TARBALL_VERSION)
 
 ARCHIVE_FILE = $(VERSION_NAME).tar$(COMPRESSION_EXT)
 
@@ -207,21 +226,27 @@ svn-tag:
 # Build a .tar.gz from the SVN sources using revision/tag 
 # $(SVN_TAG_NAME)-$(VERTAG) as for a new release of the package.
 #
-svn-dist: EXPORT_SVN_NAME = tags/$(SVN_TAG_NAME)-$(VERTAG) 
+svn-dist: EXPORT_SVN_URL = $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/tags/$(SVN_TAG_NAME)-$(VERTAG) 
 svn-dist: internal-svn-export
 
 #
 # Build a .tar.gz from the SVN source from the stable branch
 # as a bugfix release.
 #
-svn-bugfix: EXPORT_SVN_NAME = branches/stable
+svn-bugfix: EXPORT_SVN_URL = $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/branches/stable
 svn-bugfix: internal-svn-export
 
 #
 # Build a .tar.gz from the SVN source as they are now
 #
-svn-snapshot: EXPORT_SVN_NAME = trunk
+svn-snapshot: EXPORT_SVN_URL = $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/trunk
 svn-snapshot: internal-svn-export
+
+#
+# Build a .tar.gz from the local SVN tree
+#
+svn-export: EXPORT_SVN_URL = .
+svn-export: internal-svn-export
 
 internal-svn-export:
 	$(ECHO_NOTHING)echo "Exporting from module $(SVN_MODULE_NAME) on SVN..."; \
@@ -229,7 +254,7 @@ internal-svn-export:
 	  echo "*Error* cannot export: $(VERSION_NAME) already exists"; \
 	  exit 1; \
 	fi; \
-	$(SVN) export $(SVN_BASE_URL)/$(SVN_MODULE_NAME)/$(EXPORT_SVN_NAME) $(VERSION_NAME); \
+	$(SVN) export $(EXPORT_SVN_URL) $(VERSION_NAME); \
 	echo "Generating $(ARCHIVE_FILE)"; \
 	if [ -f $(ARCHIVE_FILE) ]; then            \
 	  echo "$(ARCHIVE_FILE) already exists:";   \

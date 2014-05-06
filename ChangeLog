@@ -1,3 +1,40 @@
+2014-05-06  Ivan Vucica <ivan@vucica.net>
+
+	* GNUmakefile.in: Tarball may now have the SVN revision and
+	date appended to its version. This is done for svn-snapshot
+	and svn-export targets to ensure we have a 'unique' .orig.tar.gz
+	for uploading to the Launchpad PPA. The full name of the tarball
+	will be saved in a text file usable by scripts.
+	Tarball also has to be explicitly and separately produced and
+	optionally specifying DEB_TARBALL_VERSION when building a Debian
+	package.
+	Debian control files now can (and need to) be separately built 
+	using the target debfiles.
+	* Master/source-distribution.make: Similarly to how gnustep-make
+	can export working copy as a tarball, the target svn-export has
+	been added to other GNUmakefiles.
+	Introduced TARBALL_VERSION as an overridable version string in
+	the tarball name.
+	Environment variables TARBALL_VERSION_INCLUDE_SVN_REVISION and
+	TARBALL_VERSION_INCLUDE_DATE_TIME now allow expanding the
+	tarball version with the svn revision and date+time.
+	Instead of EXPORT_SVN_NAME, now specifying entire EXPORT_SVN_URL
+	so that svn-export can specify '.'.
+	* Master/deb.make: Switched to use of TARBALL_VERSION as the
+	definitive version string in tarball name.
+	Added debclean target.
+	User now has to explicitly make a choice how the dist tarball
+	will be produced.
+	Depending on the method, tarball may be placed in the current
+	or parent directory, so we detect that (and prefer the current
+	directory).
+	* bake_debian_files: Now defaulting to target_arch=any so that
+	the package gets built on all platforms when uploaded on Launchpad,
+	instead of detecting an arch from gnustep-make and burning that
+	arch into the source package.
+	Added support for TARBALL_VERSION.
+	Fixed a 'command not found' error.
+
 2014-05-05  Ivan Vucica <ivan@vucica.net>
 
 	* GNUmakefile.in: Separately building source and binary package,

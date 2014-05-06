@@ -169,6 +169,18 @@ else
   DEBUILD_ARGS = -us -uc -nc
 endif
 
+# Version code that will be used in 'svn-export' target. Expand immediately; 
+# it should be constant in the script.
+DATE_TIME_VERSION := $(shell date +%Y.%m.%d.%H.%M)
+
+# Revision; potentially expensive so expand when used.
+SVN_REVISION = $(shell svn info . | sed -ne 's/^Revision: //p')
+
+# Used to override version of .tar.gz that will be copied and used as .orig.tar.gz.
+ifeq ($(DEB_TARBALL_VERSION), )
+DEB_TARBALL_VERSION = $(GNUSTEP_MAKE_VERSION)
+endif
+
 all: generated-files
 	$(EC)(echo "Thanks.  All is ready: type '$(MAKE) install' to install gnustep-make.")
 
@@ -374,18 +386,18 @@ svn-dist:
 
 svn-snapshot:
 	svn export $(SVNPREFIX)/trunk \
-	  gnustep-make-$(GNUSTEP_MAKE_VERSION)
-	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
-	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	  gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION)
+	echo $(GNUSTEP_MAKE_VERSION).$(SVN_REVISION) > svn-snapshot-tarball-version
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION)
 
 svn-export:
 	@echo Note: any local changes are included.
 	svn export . \
-	  gnustep-make-$(GNUSTEP_MAKE_VERSION)
-	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
-	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
-
-dist: svn-export
+	  gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION)
+	echo $(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION) > svn-export-tarball-version
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION)
 
 cvs-tag:
 	cvs -z3 rtag make-$(VERTAG) make
@@ -429,18 +441,33 @@ rpm: test-RPM_TOPDIR svn-dist
 	fi; \
 	$${rpmbuild} -ba gnustep-make.spec
 
-deb: debian_dist/gnustep-make_$(GNUSTEP_MAKE_VERSION)_all.deb
-
-debian_dist/gnustep-make_$(GNUSTEP_MAKE_VERSION)_all.deb: dist
+debclean: 
 	-rm -rf debian_dist
+
+deb: debian_dist/gnustep-make_$(DEB_TARBALL_VERSION)_any.deb
+
+debian_dist/gnustep-make_$(DEB_TARBALL_VERSION)_any.deb: debfiles
+	cd debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/ && EDITOR=/bin/true dpkg-source --commit -q . gnustep-make-automatic
+	cd debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/ && debuild $(DEBUILD_ARGS) -S
+	cd debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/ && debuild $(DEBUILD_ARGS) -b
+
+debfiles: debian_dist/gnustep-make_$(DEB_TARBALL_VERSION).orig.tar.gz
+	cd debian_dist && tar xfz gnustep-make_$(DEB_TARBALL_VERSION).orig.tar.gz
+	PACKAGE_NAME="gnustep-make" VERSION=$(DEB_TARBALL_VERSION) DEB_MAINTAINER="GNUstep Developers <gnustep-dev@gnu.org>" DEB_ARCHITECTURE=any /bin/bash bake_debian_files.sh debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/
+
+# Manual export is required to permit user to override .orig.tar.gz during the build process.
+# We also allow user to make a choice of where to grab .orig.tar.gz from.
+debian_dist/gnustep-make_$(DEB_TARBALL_VERSION).orig.tar.gz:
+	$(EC)(if [ ! -e gnustep-make-$(DEB_TARBALL_VERSION).tar.gz ] ; then \
+	  echo "Please manually create gnustep-make-$(DEB_TARBALL_VERSION).tar.gz." ; \
+	  echo "Some available make targets:" ; \
+	  echo " * svn-dist" ; \
+	  echo " * svn-snapshot" ; \
+	  echo " * svn-export" ; \
+	fi)
+
 	mkdir -p debian_dist
-	cp gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz debian_dist/gnustep-make_$(GNUSTEP_MAKE_VERSION).orig.tar.gz
-	cd debian_dist && tar xfz gnustep-make_$(GNUSTEP_MAKE_VERSION).orig.tar.gz
-	PACKAGE_NAME="gnustep-make" VERSION=$(GNUSTEP_MAKE_VERSION) DEB_MAINTAINER="GNUstep Developers <gnustep-dev@gnu.org>" DEB_ARCHITECTURE=all /bin/bash bake_debian_files.sh debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/
-	cd debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/ && dpkg-source --commit -q
-	cd debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/ && debuild $(DEBUILD_ARGS) -S
-	cd debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)/ && debuild $(DEBUILD_ARGS) -b
-	# rm -rf debian_dist/gnustep-make-$(GNUSTEP_MAKE_VERSION)
+	cp gnustep-make-$(DEB_TARBALL_VERSION).tar.gz debian_dist/gnustep-make_$(DEB_TARBALL_VERSION).orig.tar.gz
 
 generated-files: GNUmakefile GNUstep.sh GNUstep.csh fixpath.sh config-noarch.make config.make \
                  openapp opentool gnustep-make.spec executable.template gnustep-config \

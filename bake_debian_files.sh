@@ -39,11 +39,18 @@ distrib_id="$(grep DISTRIB_ID /etc/lsb-release | sed 's/DISTRIB_ID=\(.*\)$/\1/')
 if [[ "${distrib_id}" == "Ubuntu" ]] ; then
   default_distribution=$(grep DISTRIB_CODENAME /etc/lsb-release | sed 's/DISTRIB_CODENAME=//')
 fi
-target_arch=${GNUSTEP_TARGET_CPU:-any}
-if [[ "${target_arch}" == "i686" ]] ; then
-  target_arch=i386
-elif [[ "${target_arch}" == "x86_64" ]] ; then
-  target_arch=amd64
+
+if true ; then
+  # Forcing 'any' as we'd like Launchpad to build packages for all architectures.
+  # DEB_ARCHITECTURE can still be overridden.
+  target_arch=any
+else
+  target_arch=${GNUSTEP_TARGET_CPU:-any}
+  if [[ "${target_arch}" == "i686" ]] ; then
+    target_arch=i386
+  elif [[ "${target_arch}" == "x86_64" ]] ; then
+    target_arch=amd64
+  fi
 fi
 
 PACKAGE_VERSION=${PACKAGE_VERSION:-${VERSION}}
@@ -53,7 +60,7 @@ DEB_ARCHITECTURE=${DEB_ARCHITECTURE:-${target_arch}} #$(shell (/bin/bash -c "$(C
 DEB_SECTION=${DEB_SECTION:-gnustep}
 DEB_PRIORITY=${DEB_PRIORTY:-optional}
 DEB_VCS_SVN=${DEB_VCS_SVN:-${svn_path}}
-DEB_VERSION=${DEB_VERSION:-${PACKAGE_VERSION}}
+DEB_VERSION=${DEB_VERSION:-${TARBALL_VERSION:-${PACKAGE_VERSION}}}
 if [ -z "${DEB_BUILD_DEPENDS}" ] ; then
 DEB_BUILD_DEPENDS="debhelper (>= 9), cdbs"
 else
@@ -319,12 +326,13 @@ ifneq (${PACKAGE_NAME}, gnustep-make)
   ifneq (\$(GNUSTEP_MAKEFILES), )
     DEB_MAKE_ENVVARS += \$(shell sh -c ". \$(GNUSTEP_MAKEFILES)/GNUstep.sh && env |grep GNUSTEP")
   else
-    $(error Failed to get GNUSTEP_MAKEFILES variable. Is gnustep-config properly installed?)
+    \$(error Failed to get GNUSTEP_MAKEFILES variable. Is gnustep-config properly installed?)
     exit 1
   endif
 endif
 
 _EOF
+
 chmod 755 "${destination}"/rules
 
 ##########
