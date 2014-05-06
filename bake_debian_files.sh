@@ -306,7 +306,12 @@ echo "3.0 (quilt)" > "${destination}"/source/format
 cat > "${destination}"/rules << _EOF
 #!/usr/bin/make -f
 include /usr/share/cdbs/1/rules/debhelper.mk
+ifneq (\$(wildcard configure),)
 include /usr/share/cdbs/1/class/autotools.mk
+else
+include /usr/share/cdbs/1/class/makefile.mk
+DEB_MAKE_INSTALL_TARGET := install DESTDIR=\$(CURDIR)/debian/${deb_lowercase_package_name}
+endif
 
 DEB_BUILD_PARALLEL = 1
 

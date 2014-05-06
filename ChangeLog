@@ -28,12 +28,13 @@
 	Depending on the method, tarball may be placed in the current
 	or parent directory, so we detect that (and prefer the current
 	directory).
-	* bake_debian_files: Now defaulting to target_arch=any so that
+	* bake_debian_files.sh: Now defaulting to target_arch=any so that
 	the package gets built on all platforms when uploaded on Launchpad,
 	instead of detecting an arch from gnustep-make and burning that
 	arch into the source package.
 	Added support for TARBALL_VERSION.
 	Fixed a 'command not found' error.
+	Added support for projects without autotools.
 
 2014-05-05  Ivan Vucica <ivan@vucica.net>
 
