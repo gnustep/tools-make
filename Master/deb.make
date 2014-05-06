@@ -66,12 +66,6 @@ _DEB_FILE=$(_DEB_TARNAME)_$(_DEB_ARCH).deb
 
 _ABS_OBJ_DIR=$(shell (cd "$(GNUSTEP_BUILD_DIR)"; pwd))/obj
 
-ifeq ($(DEB_BUILD_DEPENDS), )
-DEB_BUILD_DEPENDS=gnustep-make (>=$(GNUSTEP_MAKE_VERSION))
-else
-DEB_BUILD_DEPENDS+=, gnustep-make (>=$(GNUSTEP_MAKE_VERSION))
-endif
-
 # To produce a signed Debian source and binary package,
 # call 'make debsign=yes'.
 ifeq ($(debsign),yes)
@@ -88,6 +82,14 @@ _DEB_TARBALL = $(shell (test -e $(VERSION_NAME).tar.gz && echo $(VERSION_NAME).t
 ifeq ($(_DEB_SHOULD_EXPORT), )
 
 #
+
+ifeq ($(DEB_BUILD_DEPENDS),)
+  DEB_BUILD_DEPENDS = gnustep-make (>=$(GNUSTEP_MAKE_VERSION))
+  export DEB_BUILD_DEPENDS
+else
+  DEB_BUILD_DEPENDS += , gnustep-make (>=$(GNUSTEP_MAKE_VERSION))
+  export DEB_BUILD_DEPENDS
+endif
 
 _debenv.phony::
 	-rm _debenv
