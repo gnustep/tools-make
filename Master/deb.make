@@ -84,10 +84,10 @@ ifeq ($(_DEB_SHOULD_EXPORT), )
 #
 
 ifeq ($(DEB_BUILD_DEPENDS),)
-  DEB_BUILD_DEPENDS = gnustep-make (>=$(GNUSTEP_MAKE_VERSION))
+  DEB_BUILD_DEPENDS = gnustep-make (>= $(GNUSTEP_MAKE_VERSION))
   export DEB_BUILD_DEPENDS
 else
-  DEB_BUILD_DEPENDS += , gnustep-make (>=$(GNUSTEP_MAKE_VERSION))
+  DEB_BUILD_DEPENDS += , gnustep-make (>= $(GNUSTEP_MAKE_VERSION))
   export DEB_BUILD_DEPENDS
 endif
 
@@ -119,7 +119,7 @@ debfiles:: _debenv.phony
 	mv $(_ABS_OBJ_DIR)/debian_files/debian/* $(_ABS_OBJ_DIR)/debian_dist/$(VERSION_NAME)/debian
 	-rm -rf $(_ABS_OBJ_DIR)/debian_files
 
-deb:: debfiles
+deb::
 	$(ECHO_NOTHING)echo "Building Debian package..."$(END_ECHO)
 	cd $(_ABS_OBJ_DIR)/debian_dist/$(VERSION_NAME)/ && debuild $(DEBUILD_ARGS) -S
 	cd $(_ABS_OBJ_DIR)/debian_dist/$(VERSION_NAME)/ && debuild $(DEBUILD_ARGS) -b
