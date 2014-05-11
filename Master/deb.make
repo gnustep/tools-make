@@ -84,10 +84,10 @@ ifeq ($(_DEB_SHOULD_EXPORT), )
 #
 
 ifeq ($(DEB_BUILD_DEPENDS),)
-  DEB_BUILD_DEPENDS = gnustep-make (>= $(GNUSTEP_MAKE_VERSION))
+  DEB_BUILD_DEPENDS =gnustep-make (>= $(shell dpkg -s gnustep-make | grep 'Version: ' | sed 's/Version: //'))
   export DEB_BUILD_DEPENDS
 else
-  DEB_BUILD_DEPENDS += , gnustep-make (>= $(GNUSTEP_MAKE_VERSION))
+  DEB_BUILD_DEPENDS +=, gnustep-make (>=  $(shell dpkg -s gnustep-make | grep 'Version: ' | sed 's/Version: //'))
   export DEB_BUILD_DEPENDS
 endif
 
@@ -103,6 +103,7 @@ debfiles:: _debenv.phony
 	$(ECHO_NOTHING)(if [ -z "$(_DEB_TARBALL)" ] || [ ! -e "$(_DEB_TARBALL)" ] ; then \
 	  echo "No tarball found. Please produce it manually using a target such as dist, svn-dist, " ; \
 	  echo "svn-bugfix, svn-snapshot or svn-export." ; \
+	  echo "Expecting name $(VERSION_NAME).tar.gz in current or parent directory." ; \
 	  exit 1 ; \
 	fi)$(END_ECHO)
 	$(ECHO_NOTHING)echo "Baking deb control files ("$(GNUSTEP_TARGET_CPU)")..."$(END_ECHO)

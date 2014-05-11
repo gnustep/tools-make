@@ -1,3 +1,22 @@
+2014-05-11  Ivan Vucica <ivan@vucica.net>
+
+	* GNUmakefile.in: Date-time and svn-revision suffix are now using
+	the tilde character to ensure that the 'actual' commit and 'actual'
+	tagged release are treated as being newer by the Debian packaging.
+	Also stopped using periods in date-time.
+	debfiles target will no longer be automatically run, allowing for
+	build scripts to do some customization of debfiles inbetween, or
+	to permit the packager maintain the debfiles separately.
+	* Master/deb.make: Slightly cleaner build dependency line for
+	gnustep-make. 
+	The version of gnustep-make we build-depend on is now read using
+	dpkg -s.
+	* Master/source-distribution.make: Date-time and svn-revision
+	suffix are now using the tilde character to ensure that the 
+	'actual' commit and 'actual' tagged release are treated as being
+	newer by the Debian packaging. Also stopped using periods in
+	date-time.
+
 2014-05-06  Ivan Vucica <ivan@vucica.net>
 
 	* bake_debian_files.sh: If DEB_DEPENDS is non-empty, prepend a

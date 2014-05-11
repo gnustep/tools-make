@@ -171,7 +171,7 @@ endif
 
 # Version code that will be used in 'svn-export' target. Expand immediately; 
 # it should be constant in the script.
-DATE_TIME_VERSION := $(shell date +%Y.%m.%d.%H.%M)
+DATE_TIME_VERSION := $(shell date +%Y%m%d%H%M)
 
 # Revision; potentially expensive so expand when used.
 SVN_REVISION = $(shell svn info . | sed -ne 's/^Revision: //p')
@@ -386,18 +386,18 @@ svn-dist:
 
 svn-snapshot:
 	svn export $(SVNPREFIX)/trunk \
-	  gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION)
-	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION)
-	echo $(GNUSTEP_MAKE_VERSION).$(SVN_REVISION) > svn-snapshot-tarball-version
-	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION)
+	  gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)
+	echo $(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION) > svn-snapshot-tarball-version
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)
 
 svn-export:
 	@echo Note: any local changes are included.
 	svn export . \
-	  gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION)
-	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION)
-	echo $(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION) > svn-export-tarball-version
-	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION).$(SVN_REVISION).$(DATE_TIME_VERSION)
+	  gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)~date$(DATE_TIME_VERSION)
+	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)~date$(DATE_TIME_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)~date$(DATE_TIME_VERSION)
+	echo $(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)~date$(DATE_TIME_VERSION) > svn-export-tarball-version
+	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)~svn$(SVN_REVISION)~date$(DATE_TIME_VERSION)
 
 cvs-tag:
 	cvs -z3 rtag make-$(VERTAG) make
@@ -446,7 +446,11 @@ debclean:
 
 deb: debian_dist/gnustep-make_$(DEB_TARBALL_VERSION)_any.deb
 
-debian_dist/gnustep-make_$(DEB_TARBALL_VERSION)_any.deb: debfiles
+debian_dist/gnustep-make_$(DEB_TARBALL_VERSION)_any.deb:
+	$(EC)(if [ ! -e "debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/debian/control" ] ; then \
+	  echo "Please manually run 'make debfiles' first." ; \
+	  echo "Intentionally not automatically depending to ease customization between steps." ; \
+	fi)
 	cd debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/ && EDITOR=/bin/true dpkg-source --commit -q . gnustep-make-automatic
 	cd debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/ && debuild $(DEBUILD_ARGS) -S
 	cd debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/ && debuild $(DEBUILD_ARGS) -b

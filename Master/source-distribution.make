@@ -147,13 +147,13 @@ endif
 ifeq ($(TARBALL_VERSION_INCLUDE_SVN_REVISION), yes)
 # Revision; potentially expensive so expand when used.
 SVN_REVISION = $(shell svn info . | sed -ne 's/^Revision: //p')
-TARBALL_VERSION := $(TARBALL_VERSION).$(SVN_REVISION)
+TARBALL_VERSION := $(TARBALL_VERSION)~svn$(SVN_REVISION)
 endif
 
 ifeq ($(TARBALL_VERSION_INCLUDE_DATE_TIME), yes)
 # Expand immediately; it should be constant in the script.
-DATE_TIME_VERSION := $(shell date +%Y.%m.%d.%H.%M)
-TARBALL_VERSION := $(TARBALL_VERSION).$(DATE_TIME_VERSION)
+DATE_TIME_VERSION := $(shell date +%Y%m%d%H%M)
+TARBALL_VERSION := $(TARBALL_VERSION)~date$(DATE_TIME_VERSION)
 endif
 
 VERSION_NAME = $(PACKAGE_NAME)-$(TARBALL_VERSION)
