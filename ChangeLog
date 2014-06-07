@@ -1,3 +1,8 @@
+2014-06-07  Ivan Vucica <ivan@vucica.net>
+
+	* Master/deb.make: Now adding gnustep-make dependency to the
+	DEB_BUILD_DEPENDS only when creating _debenv file.
+
 2014-05-11  Ivan Vucica <ivan@vucica.net>
 
 	* GNUmakefile.in: Date-time and svn-revision suffix are now using

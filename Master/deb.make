@@ -83,14 +83,6 @@ ifeq ($(_DEB_SHOULD_EXPORT), )
 
 #
 
-ifeq ($(DEB_BUILD_DEPENDS),)
-  DEB_BUILD_DEPENDS =gnustep-make (>= $(shell dpkg -s gnustep-make | grep 'Version: ' | sed 's/Version: //'))
-  export DEB_BUILD_DEPENDS
-else
-  DEB_BUILD_DEPENDS +=, gnustep-make (>=  $(shell dpkg -s gnustep-make | grep 'Version: ' | sed 's/Version: //'))
-  export DEB_BUILD_DEPENDS
-endif
-
 _debenv.phony::
 	-rm _debenv
 	_DEB_SHOULD_EXPORT=1 make _debenv
@@ -129,7 +121,15 @@ deb::
 else
 #
 
-.PHONY: debfiles
+ifeq ($(DEB_BUILD_DEPENDS),)
+  DEB_BUILD_DEPENDS =gnustep-make (>= $(shell dpkg -s gnustep-make | grep 'Version: ' | sed 's/Version: //'))
+  export DEB_BUILD_DEPENDS
+else
+  DEB_BUILD_DEPENDS +=, gnustep-make (>=  $(shell dpkg -s gnustep-make | grep 'Version: ' | sed 's/Version: //'))
+  export DEB_BUILD_DEPENDS
+endif
+
+.PHONY: _debenv
 
 # Export all variables, but only if we explicitly are working with bake_debian_files.sh
 export
