@@ -261,6 +261,8 @@ install: generated-files
 	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/debugapp.1.gz" && gzip -9 "$(mandir)/man1/debugapp.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/gnustep-config.1" "$(mandir)/man1"; \
 	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/gnustep-config.1.gz" && gzip -9 "$(mandir)/man1/gnustep-config.1"; \
+	  $(INSTALL_DATA) "$(srcdir)/Documentation/gnustep-tests.1" "$(mandir)/man1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/gnustep-tests.1.gz" && gzip -9 "$(mandir)/man1/gnustep-tests.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/openapp.1" "$(mandir)/man1"; \
 	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/openapp.1.gz" && gzip -9 "$(mandir)/man1/openapp.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/opentool.1" "$(mandir)/man1"; \
@@ -283,6 +285,7 @@ install: generated-files
 uninstall:
 	rm -f "$(mandir)/man1/debugapp.1" "$(mandir)/man1/debugapp.1.gz"; \
 	rm -f "$(mandir)/man1/gnustep-config.1" "$(mandir)/man1/gnustep-config.1.gz"; \
+	rm -f "$(mandir)/man1/gnustep-tests.1" "$(mandir)/man1/gnustep-tests.1.gz"; \
 	rm -f "$(mandir)/man1/openapp.1" "$(mandir)/man1/openapp.1.gz"; \
 	rm -f "$(mandir)/man1/opentool.1" "$(mandir)/man1/opentool.1.gz"; \
 	rm -f "$(mandir)/man7/GNUstep.7" "$(mandir)/man7/GNUstep.7.gz"; \

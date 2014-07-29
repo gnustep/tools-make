@@ -1,3 +1,15 @@
+2014-06-29  Nicolas Boulenguez  <nicolas@debian.org>  (tiny change)
+
+	* common.make (INTERNAL_CFLAGS): Do not ignore user-specified
+          CFLAGS.
+
+2014-06-29  Yavor Doganov  <yavor@gnu.org>
+
+	* Documentation/GNUstep.7:
+	* Documentation/debugapp.1: Typo fix.
+	* Documentation/gnustep-tests.1: New.
+	* GNUmakefile.in (install, uninstall): Handle gnustep-tests.1.
+
 2014-06-07  Ivan Vucica <ivan@vucica.net>
 
 	* Master/deb.make: Now adding gnustep-make dependency to the
