@@ -26,10 +26,13 @@ endif
 
 JAVA_PACKAGE_NAME := $(strip $(JAVA_PACKAGE_NAME))
 
+
 # Parallel building here is probably of little help since most
 # GNUmakefiles will have a single java package.  There is no point in
 # having more than one.
 internal-all:: $(JAVA_PACKAGE_NAME:=.all.java-package.variables)
+
+internal-jar:: $(JAVA_PACKAGE_NAME:=.jar.java-package.variables)
 
 internal-install:: $(JAVA_PACKAGE_NAME:=.install.java-package.variables)
 

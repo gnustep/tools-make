@@ -800,6 +800,12 @@ ifeq ($(JAVAH),)
 endif
 
 #
+# The java jar tool.
+#
+ifeq ($(JAR),)
+  JAR = $(JAVA_HOME)/bin/jar
+endif
+
 # Common variables - default values
 #
 # Because this file is included at the beginning of the user's

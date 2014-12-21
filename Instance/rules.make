@@ -38,6 +38,8 @@
  internal-precompile-headers \
  before-$(GNUSTEP_INSTANCE)-all after-$(GNUSTEP_INSTANCE)-all \
  internal-$(GNUSTEP_TYPE)-all \
+ before-$(GNUSTEP_INSTANCE)-jar after-$(GNUSTEP_INSTANCE)-jar \
+ internal-$(GNUSTEP_TYPE)-jar \
  before-$(GNUSTEP_INSTANCE)-install after-$(GNUSTEP_INSTANCE)-install \
  internal-$(GNUSTEP_TYPE)-install \
  before-$(GNUSTEP_INSTANCE)-uninstall after-$(GNUSTEP_INSTANCE)-uninstall \
@@ -86,7 +88,6 @@ internal-$(GNUSTEP_TYPE)-all:: internal-precompile-headers \
                                internal-$(GNUSTEP_TYPE)-all_  \
                                after-$(GNUSTEP_INSTANCE)-all \
                                internal-$(GNUSTEP_TYPE)-copy_into_dir
-
 # To copy into a dir, we always have to first make sure the dir exists :-)
 $(COPY_INTO_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $@$(END_ECHO)
@@ -94,6 +95,10 @@ $(COPY_INTO_DIR):
 # The specific project-type makefiles will add more commands.
 internal-$(GNUSTEP_TYPE)-copy_into_dir:: $(COPY_INTO_DIR)
 endif
+
+before-$(GNUSTEP_INSTANCE)-jar::
+
+after-$(GNUSTEP_INSTANCE)-jar::
 
 before-$(GNUSTEP_INSTANCE)-install::
 

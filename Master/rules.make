@@ -53,9 +53,14 @@ all:: before-all internal-all after-all
 else
 all:: $(GNUSTEP_BUILD_DIR) before-all internal-all after-all
 
+
+
 $(GNUSTEP_BUILD_DIR):
 	$(ECHO_CREATING)$(MKDIRS) $(GNUSTEP_BUILD_DIR)$(END_ECHO)
 endif
+
+
+jar:: all before-jar internal-jar after-jar
 
 # The rule to create the objects file directory.  This should be done
 # in the Master invocation before any parallel stuff is started (to
@@ -114,6 +119,13 @@ before-all::
 internal-all::
 
 after-all::
+
+before-jar::
+
+internal-jar::
+
+after-jar::
+
 
 ifneq ($(GNUSTEP_INSTALLATION_DIR),)
 internal-check-install-permissions:
@@ -190,6 +202,7 @@ after-strings::
 
 .PHONY: \
  all before-all internal-all after-all \
+ jar before-jar internal-jar after-jar \
  install before-install internal-install after-install \
  internal-after-install \
  uninstall before-uninstall internal-uninstall after-uninstall \

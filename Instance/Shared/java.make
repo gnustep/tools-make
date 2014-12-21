@@ -64,11 +64,26 @@ shared-instance-java-all \
 shared-instance-java-install \
 shared-instance-java-install-dirs \
 shared-instance-java-uninstall \
+shared-instance-java-jar \
 shared-instance-java-clean
 
 shared-instance-java-all: $(JAVA_OBJ_FILES) \
                          $(JAVA_JNI_OBJ_FILES) \
                          $(SUBPROJECT_OBJ_FILES)
+
+ifeq ($(strip $($(GNUSTEP_INSTANCE)_JAVA_JAR_NAME)),)
+  JAVA_JAR_FILE = $(subst .,-,$(GNUSTEP_INSTANCE)).jar
+else
+  JAVA_JAR_FILE = $($(GNUSTEP_INSTANCE)_JAVA_JAR_NAME).jar
+endif
+
+JAVA_MANIFEST_FILE = $($(GNUSTEP_INSTANCE)_JAVA_MANIFEST_FILE)
+ifeq ($(strip $(JAVA_MANIFEST_FILE)),)
+  JAVA_JAR_FLAGS = cf
+else
+  JAVA_JAR_FLAGS = cmf
+endif
+
 
 # By default, we enable "batch compilation" of Java files.  This means
 # that whenever make determines that a Java files needs recompilation,
@@ -124,6 +139,19 @@ ADDITIONAL_JAVA_OBJ_FILES = $(subst $$,\$$,$(UNESCAPED_ADD_JAVA_OBJ_FILES))
 
 JAVA_PROPERTIES_FILES = $($(GNUSTEP_INSTANCE)_JAVA_PROPERTIES_FILES)
 
+
+$(JAVA_JAR_FILE): $(JAVA_MANIFEST_FILE) \
+                  $(JAVA_OBJ_FILES) \
+                  $(ADDITIONAL_JAVA_OBJ_FILES) \
+                  $(JAVA_PROPERTIES_FILES) 
+	$(ECHO_CREATING_JAR_FILE)$(JAR) $(JAVA_JAR_FLAGS) $(JAVA_MANIFEST_FILE) \
+                  $(JAVA_JAR_FILE) $(filter-out $(JAVA_MANIFEST_FILE),$^);\
+  $(END_ECHO)
+
+shared-instance-java-jar-manifest: $(JAVA_JAR_MANIFEST_FILE)
+
+shared-instance-java-jar: $(JAVA_JAR_FILE)
+
 shared-instance-java-install: shared-instance-java-install-dirs
 ifneq ($(JAVA_OBJ_FILES),)
 	$(ECHO_INSTALLING_CLASS_FILES)for file in $(JAVA_OBJ_FILES) __done; do \
@@ -162,6 +190,7 @@ $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR):
 shared-instance-java-clean:
 	$(ECHO_NOTHING)rm -f $(JAVA_OBJ_FILES) \
 	      $(ADDITIONAL_JAVA_OBJ_FILES) \
+        $(JAVA_JAR_FILE) \
 	      $(JAVA_JNI_OBJ_FILES)$(END_ECHO)
 
 shared-instance-java-uninstall:

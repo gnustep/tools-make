@@ -241,6 +241,48 @@ respects it is similar to a Bundle.
 This project provides rules for building java programs. It also makes it
 easy to make java projects that interact with the GNUstep libraries.
 
+@subsubsection Project Variables
+
+@defvr {Java project} JAVA_PACKAGE_NAME
+@code{JAVA_PACKAGE_NAME} is the reverse DNS style Java package name that
+resides in this project.
+@end defvr
+
+@defvr {Java project} JAVA_FILES
+@code{xxx_JAVA_FILES} is the list of Java source code files, with a 
+@file{.java} extension, that are compiled for the @strong{xxx} project.
+@strong{xxx} should be replaced with the name of the Java package
+specified in @code{JAVA_PACKAGE_NAME}.
+@end defvr
+
+@defvr {Java project} JAVA_JNI_FILES
+@code{xxx_JAVA_JNI_FILES} is the list of Java source code files for
+which @code{javah} should produce header files for integration with 
+Objective-C code.
+@strong{xxx} should be replaced with the name of the Java package
+specified in @code{JAVA_PACKAGE_NAME}.
+@end defvr
+
+@defvr {Java project} JAVA_PROPERTIES_FILES
+@code{xxx_JAVA_PROPERTIES_FILES} can be used to specify properties files
+to install.
+@strong{xxx} should be replaced with the name of the Java package
+specified in @code{JAVA_PACKAGE_NAME}.
+@end defvr
+
+@defvr {Java project} JAVA_MANIFEST_FILE
+@code{xxx_JAVA_MANIFEST_FILE} can be used to specify a manifest fragment
+that is used when building a jar file for the @strong{xxx} package.
+@strong{xxx} should be replaced with the name of the Java package
+specified in @code{JAVA_PACKAGE_NAME}.
+@end defvr
+
+@defvr {Java project} JAVA_JAR_NAME
+@code{xxx_JAVA_JAR_NAME} can be used to specify a custom name for the jar
+built by @code{make jar}. The default would be the package name (@strong{xxx}) 
+with all dots replaced by hyphens.
+@end defvr
+
 @node library.make, native-library.make, java.make, Project Types
 @subsection Libraries (@file{library.make})
 @menu

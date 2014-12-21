@@ -58,6 +58,7 @@ endif
 # xxx_JAVA_PROPERTIES_FILES
 
 .PHONY: internal-java_package-all_ \
+        internal-java_package-jar \
         internal-java_package-clean \
         internal-java_package-distclean \
         internal-java_package-install_ \
@@ -85,6 +86,8 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/java.make
 
 
 internal-java_package-all_:: shared-instance-java-all
+
+internal-java_package-jar:: shared-instance-java-jar
 
 internal-java_package-install_:: shared-instance-java-install
 

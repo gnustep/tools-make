@@ -78,7 +78,7 @@ ifneq ($(messages),yes)
   ECHO_INSTALLING_CLASS_FILES = @(echo " Installing class files...";
   ECHO_INSTALLING_ADD_CLASS_FILES = @(echo " Installing nested class files...";
   ECHO_INSTALLING_PROPERTIES_FILES = @(echo " Installing property files...";
-
+  ECHO_CREATING_JAR_FILE = @(echo " Creating jar file...";
   # Instance/Shared/stamp-string.make
   ECHO_CREATING_STAMP_FILE = @(echo " Creating stamp file...";
 
@@ -118,7 +118,7 @@ else
   ECHO_UNINSTALLING =
   ECHO_COPYING_INTO_DIR = 
   ECHO_CREATING =
-  ECHO_NOTHING =
+  ECHO_NOTHING = 
 
   ECHO_UPDATING_VERSION_SYMLINK = 
 
@@ -140,7 +140,7 @@ else
   ECHO_INSTALLING_CLASS_FILES = 
   ECHO_INSTALLING_ADD_CLASS_FILES = 
   ECHO_INSTALLING_PROPERTIES_FILES = 
-
+  ECHO_CREATING_JAR_FILE = 
   ECHO_CREATING_STAMP_FILE = 
 
   ECHO_MAKING_STRINGS = 
