@@ -84,6 +84,20 @@ else
   JAVA_JAR_FLAGS = cmf
 endif
 
+ifeq ($(strip $($(GNUSTEP_INSTANCE)_JAVA_INSTALL_AS_JAR)),yes)
+  JAVA_JAR_INSTALL_DEP = $(JAVA_JAR_FILE)
+else
+  JAVA_JAR_INSTALL_DEP = 
+endif
+
+ifeq ($(strip $(as_jar)),yes)
+  JAVA_JAR_INSTALL_DEP = $(JAVA_JAR_FILE)
+else
+  ifeq ($(strip $(as_jar)),no)
+    JAVA_JAR_INSTALL_DEP = 
+  endif
+endif
+
 
 # By default, we enable "batch compilation" of Java files.  This means
 # that whenever make determines that a Java files needs recompilation,
@@ -148,11 +162,13 @@ $(JAVA_JAR_FILE): $(JAVA_MANIFEST_FILE) \
                   $(JAVA_JAR_FILE) $(filter-out $(JAVA_MANIFEST_FILE),$^);\
   $(END_ECHO)
 
-shared-instance-java-jar-manifest: $(JAVA_JAR_MANIFEST_FILE)
-
 shared-instance-java-jar: $(JAVA_JAR_FILE)
 
-shared-instance-java-install: shared-instance-java-install-dirs
+shared-instance-java-install: shared-instance-java-install-dirs $(JAVA_JAR_INSTALL_DEP)
+ifneq ($(strip $(JAVA_JAR_INSTALL_DEP)),)
+	$(ECHO_NOTHING) $(INSTALL_DATA) $(JAVA_JAR_INSTALL_DEP) $(JAVA_INSTALL_DIR)/$(JAVA_JAR_INSTALL_DEP) \
+  $(END_ECHO)
+else
 ifneq ($(JAVA_OBJ_FILES),)
 	$(ECHO_INSTALLING_CLASS_FILES)for file in $(JAVA_OBJ_FILES) __done; do \
 	  if [ $$file != __done ]; then \
@@ -177,7 +193,7 @@ ifneq ($(JAVA_PROPERTIES_FILES),)
 	  fi; \
 	done$(END_ECHO)
 endif
-
+endif
 shared-instance-java-install-dirs: $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)
 ifneq ($(JAVA_OBJ_FILES),)
 	$(ECHO_NOTHING)$(MKINSTALLDIRS) \
@@ -194,6 +210,10 @@ shared-instance-java-clean:
 	      $(JAVA_JNI_OBJ_FILES)$(END_ECHO)
 
 shared-instance-java-uninstall:
+ifneq ($(strip $(JAVA_JAR_INSTALL_DEP)),)
+	$(ECHO_NOTHING) rm -f $(JAVA_INSTALL_DIR)/$(JAVA_JAR_INSTALL_DEP) \
+  $(END_ECHO)
+else
 ifneq ($(JAVA_OBJ_FILES),)
 	$(ECHO_NOTHING)for file in $(JAVA_OBJ_FILES) __done; do \
 	  if [ $$file != __done ]; then \
@@ -214,4 +234,5 @@ ifneq ($(JAVA_PROPERTIES_FILES),)
 	    rm -f $(GNUSTEP_SHARED_JAVA_INSTALLATION_DIR)/$$file ; \
 	  fi; \
 	done$(END_ECHO)
+endif
 endif

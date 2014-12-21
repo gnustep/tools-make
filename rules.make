@@ -86,6 +86,17 @@ export strip
 endif
 
 #
+# Manage jar installation
+#
+ifeq ($(as_jar),yes)
+export as_jar
+else
+  ifeq ($(as_jar),no)
+    export as_jar
+  endif
+endif
+
+#
 # Prepare the arguments to install to set user/group of installed files
 #
 INSTALL_AS = 

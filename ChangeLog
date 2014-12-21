@@ -1,4 +1,12 @@
 2014-12-21: Niels Grewe <niels.grewe@halbordnung.de>
+
+	* rules.make
+	* Instance/Shared/java.make:
+	Add as_jar option to install the jar file instead of the expanded
+	class hierarchy.
+
+2014-12-21: Niels Grewe <niels.grewe@halbordnung.de>
+
 	* Instance/Shared/java.make
 	* Instance/java.make
 	* Instance/rules.make
