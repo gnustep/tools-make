@@ -535,109 +535,117 @@ do
       if test -r ./Start.sh -a -x ./Start.sh
       then
 	./Start.sh
+        STARTSCRIPTSTATUS=$?
+      else
+        STARTSCRIPTSTATUS=0
       fi
 
-      # Get the names of all the source files in the current directory.
-      if test x"$TESTS" = x
+      if test $STARTSCRIPTSTATUS = 0
       then
-        if test x"$OBJCXX" = x
+        # Get the names of all the source files in the current directory.
+        if test x"$TESTS" = x
         then
-          # Only Objective-C (and C)
-	  TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
-	else
-          # Objective-C and Objective-C++ (implicitly C and C++ too)
-	  TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
-	fi
-      fi
+          if test x"$OBJCXX" = x
+          then
+            # Only Objective-C (and C)
+            TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+          else
+            # Objective-C and Objective-C++ (implicitly C and C++ too)
+            TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+          fi
+        fi
 
-      if test -r GNUmakefile.tests 
-      then
-	# There's a custom make template present ... use it.
-	TEMPLATE=GNUmakefile.tests
-      elif test -r GNUmakefile.preamble 
-      then
-	# There's a make preamble present ... use default template.
-	TEMPLATE=$GSTESTTOP/GNUmakefile.in
-      elif test -r GNUmakefile.postamble
-      then
-	# There's a make postamble present ... use default template.
-	TEMPLATE=$GSTESTTOP/GNUmakefile.in
-      elif test -r ../GNUmakefile.super
-      then
-	# There's a make superfile present ... use default template.
-	TEMPLATE=$GSTESTTOP/GNUmakefile.in
-      elif test -r "$TESTS"
-      then
-	# Single readable file ... quicker to compile directly.
-	TEMPLATE=
-      elif test x"$GSSEQUENTIAL" = xyes
-      then
-	# We don't want to build in parallel, so a makefile won't speed us up
-	TEMPLATE=
-      else
-	# There are multiple files to build ... use make for parallelisation
-	TEMPLATE=$GSTESTTOP/GNUmakefile.in
-      fi
+        if test -r GNUmakefile.tests 
+        then
+          # There's a custom make template present ... use it.
+          TEMPLATE=GNUmakefile.tests
+        elif test -r GNUmakefile.preamble 
+        then
+          # There's a make preamble present ... use default template.
+          TEMPLATE=$GSTESTTOP/GNUmakefile.in
+        elif test -r GNUmakefile.postamble
+        then
+          # There's a make postamble present ... use default template.
+          TEMPLATE=$GSTESTTOP/GNUmakefile.in
+        elif test -r ../GNUmakefile.super
+        then
+          # There's a make superfile present ... use default template.
+          TEMPLATE=$GSTESTTOP/GNUmakefile.in
+        elif test -r "$TESTS"
+        then
+          # Single readable file ... quicker to compile directly.
+          TEMPLATE=
+        elif test x"$GSSEQUENTIAL" = xyes
+        then
+          # We don't want to build in parallel, so a makefile won't speed us up
+          TEMPLATE=
+        else
+          # There are multiple files to build ... use make for parallelisation
+          TEMPLATE=$GSTESTTOP/GNUmakefile.in
+        fi
 
-      NEEDBUILD=yes
-      if test x"$TEMPLATE" = x
-      then
-	rm -rf core obj GNUmakefile gdb.cmds
-      else
-	TESTNAMES=
-	TESTRULES=
-	for TESTFILE in $TESTS
-	do
-	  tmp=`basename $TESTFILE .m`
-	  if test x"$tmp" = x"$TESTFILE"
-	  then
-	    tmp=`basename $TESTFILE .mm`
+        NEEDBUILD=yes
+        if test x"$TEMPLATE" = x
+        then
+          rm -rf core obj GNUmakefile gdb.cmds
+        else
+          TESTNAMES=
+          TESTRULES=
+          for TESTFILE in $TESTS
+          do
+            tmp=`basename $TESTFILE .m`
             if test x"$tmp" = x"$TESTFILE"
             then
-              tmp=`basename $TESTFILE .c`
+              tmp=`basename $TESTFILE .mm`
               if test x"$tmp" = x"$TESTFILE"
               then
-                TESTRULES="$TESTRULES\\
+                tmp=`basename $TESTFILE .c`
+                if test x"$tmp" = x"$TESTFILE"
+                then
+                  TESTRULES="$TESTRULES\\
 ${tmp}_CC_FILES=$TESTFILE"
+                else
+                  TESTRULES="$TESTRULES\\
+${tmp}_C_FILES=$TESTFILE"
+                fi
               else
                 TESTRULES="$TESTRULES\\
-${tmp}_C_FILES=$TESTFILE"
+${tmp}_OBJCC_FILES=$TESTFILE"
               fi
             else
               TESTRULES="$TESTRULES\\
-${tmp}_OBJCC_FILES=$TESTFILE"
-            fi
-	  else
-	    TESTRULES="$TESTRULES\\
 ${tmp}_OBJC_FILES=$TESTFILE"
-	  fi
-	  TESTNAMES="$TESTNAMES $tmp"
-	done
-	sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/" < "$TEMPLATE" > GNUmakefile
-	$MAKE_CMD clean >/dev/null 2>&1
+            fi
+            TESTNAMES="$TESTNAMES $tmp"
+          done
+          sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/" < "$TEMPLATE" > GNUmakefile
+          $MAKE_CMD clean >/dev/null 2>&1
 
-	# Try building all the test files in the directory in parallel.
-	# If that works, set NEEDBUILD to 'no' so that we do not build
-	# each individual test file later.
-	echo "" >>$GSTESTLOG
-	echo "Building in $dir" >>$GSTESTLOG
-	$MAKE_CMD -j 4 debug=yes >>$GSTESTLOG 2>&1
-	if test $? = 0
-	then
-	  NEEDBUILD=no
-	fi
+          # Try building all the test files in the directory in parallel.
+          # If that works, set NEEDBUILD to 'no' so that we do not build
+          # each individual test file later.
+          echo "" >>$GSTESTLOG
+          echo "Building in $dir" >>$GSTESTLOG
+          $MAKE_CMD -j 4 debug=yes >>$GSTESTLOG 2>&1
+          if test $? = 0
+          then
+            NEEDBUILD=no
+          fi
+        fi
+
+        # Now we process each test file in turn.
+        # When cleaning, we only need to do one clean per directory.
+        for TESTFILE in $TESTS
+        do
+          run_test_file
+          if test "$RUNEXIT" != "0"
+          then
+            break
+          fi
+        done
+      else
+        echo "Start.sh failed in '$TESTDIR' ... tests abandoned."
       fi
-
-      # Now we process each test file in turn.
-      # When cleaning, we only need to do one clean per directory.
-      for TESTFILE in $TESTS
-      do
-	run_test_file
-	if test "$RUNEXIT" != "0"
-	then
-	  break
-	fi
-      done
       TESTS=
 
       # And perform the directory end script.

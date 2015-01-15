@@ -1,3 +1,9 @@
+2015-01-15  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * TestFramework/gnustep-tests.in: Check status of Start.sh script so
+	we refrain from attempting tests in a directory whose startup script
+	has failed.
+
 2014-12-21: Niels Grewe <niels.grewe@halbordnung.de>
 
 	* rules.make
