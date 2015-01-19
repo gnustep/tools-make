@@ -24,6 +24,7 @@
 #include <stdarg.h>
 
 #import <Foundation/NSAutoreleasePool.h>
+#import <Foundation/NSDate.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSGarbageCollector.h>
 #import <Foundation/NSObjCRuntime.h>
@@ -75,6 +76,21 @@ static inline void testIndent(void)
  */
 static NSException *testRaised __attribute__((unused)) = nil;
 
+/* The setEnded function pointer may be set to a function which is to be
+ * executed when the set ends, with its three parameters being the name
+ * of the set, a flag to say whether the set completed successfully, and
+ * the duration of the set.
+ * The SET_TIMER() macro turns on/off timing and, if timeing was
+ * already on, adds the time of the current period to the duration.
+ */
+static void (*setEnded)(const char *name, BOOL completed, double duration) = 0;
+#define SET_TIMER(active) \
+({ \
+  double        started = _setTiming; \
+  _setTiming = [NSDate timeIntervalSinceReferenceDate]; \
+  if (started > 0.0) setDuration += _setTiming - started; \
+  if (NO == active) _setTiming = 0.0; \
+})\
 
 
 /* The pass() function is the low-level core of the testsuite.
@@ -420,9 +436,16 @@ static void testStart()
 /* The START_SET() macro starts a set of grouped tests. It must be matched
  * by a corresponding END_SET() with the same string as an argument.
  * The argument is a short description to be printed in the log on entry.
+ * The duration of each set is automatically timed (you can suspend/resume
+ * timing using the SET_TIMER macro).  Each timed period is added to the
+ * setDuration local variable while a set is executing (you can of course
+ * modify this variable using code inside the set).
  */
 #define START_SET(setName) \
   { \
+    double setDuration = 0.0; \
+    BOOL _setSuccess = YES; \
+    double _setTiming = [NSDate timeIntervalSinceReferenceDate]; \
     BOOL _save_hopeful = testHopeful; \
     unsigned _save_indentation = testIndentation; \
     int	_save_line = __LINE__; \
@@ -452,11 +475,16 @@ static void testStart()
 /* The END_SET() macro terminates a set of grouped tests.  It must be matched
  * by a corresponding START_SET() with the same string as an argument.
  * The argument is a short description to be printed in the log on entry.
+ * When a set ends, the function pointed to by the setEnded function is
+ * called with three arguments which allow you to perform extra reporting
+ * or cleanup etc.  The three arguments are the set name, a flag to say
+ * whether the set completed successfully, and the duration of the set.
  */
 #define END_SET(setName) \
       } \
     [_setPool release]; \
     NS_HANDLER \
+      _setSuccess = NO; \
       if (YES == [[localException name] isEqualToString: @"SkipSet"]) \
 	{ \
 	  fprintf(stderr, "Skipped set:     "); \
@@ -487,6 +515,8 @@ static void testStart()
 	    } \
 	} \
     NS_ENDHANDLER \
+    SET_TIMER(NO); \
+    if (0 != setEnded) (*setEnded)(setName, _setSuccess, setDuration); \
     if (strcmp(_save_set, setName) != 0) \
       fprintf(stderr, "Error:      %s:%d ... END(%s) with START(%s).\n", \
         __FILE__, __LINE__, setName, _save_set); \

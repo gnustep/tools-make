@@ -1,3 +1,9 @@
+2015-01-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * TestFramework/gnustep-tests.in: Report abandoned files as failed.
+        * TestFramework/Testing.h: Add timing of the duration of sets and a
+	hook to perform additional reporting etc on set end.
+
 2015-01-15  Richard Frith-Macdonald <rfm@gnu.org>
 
         * TestFramework/gnustep-tests.in: Check status of Start.sh script so

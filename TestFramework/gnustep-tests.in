@@ -540,20 +540,21 @@ do
         STARTSCRIPTSTATUS=0
       fi
 
+      # Get the names of all the source files in the current directory.
+      if test x"$TESTS" = x
+      then
+        if test x"$OBJCXX" = x
+        then
+          # Only Objective-C (and C)
+          TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+        else
+          # Objective-C and Objective-C++ (implicitly C and C++ too)
+          TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+        fi
+      fi
+
       if test $STARTSCRIPTSTATUS = 0
       then
-        # Get the names of all the source files in the current directory.
-        if test x"$TESTS" = x
-        then
-          if test x"$OBJCXX" = x
-          then
-            # Only Objective-C (and C)
-            TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
-          else
-            # Objective-C and Objective-C++ (implicitly C and C++ too)
-            TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
-          fi
-        fi
 
         if test -r GNUmakefile.tests 
         then
@@ -645,6 +646,10 @@ ${tmp}_OBJC_FILES=$TESTFILE"
         done
       else
         echo "Start.sh failed in '$TESTDIR' ... tests abandoned."
+        for TESTFILE in $TESTS
+        do
+          echo "Failed file:     $TESTFILE aborted without running any tests!" | tee -a $GSTESTSUM >> $GSTESTLOG
+        done
       fi
       TESTS=
 
