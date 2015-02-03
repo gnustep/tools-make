@@ -380,7 +380,14 @@ build_and_run ()
     echo Running $dir/$TESTFILE...
     # Run it. If it terminates abnormally, mark it as a crash (unless we have
     # a special file to mark it as being expected to abort).
-    $RUN_CMD
+
+    if test -r ./Env.sh
+    then
+      ( . ./Env.sh; $RUN_CMD )
+    else
+      $RUN_CMD
+    fi
+
     if test $? != 0
     then
       if test -r $TESTFILE.abort

@@ -336,6 +336,11 @@ log ... so you need to avoid starting a line in the log with any of the
 special phrases generated to mark a passed test or a particular type of
 failure.
 
+If an Env.sh script is present in a test directory, then it will be
+sourced immediately before each test in order to allow you to set up
+special environment variables for the test.  This script should produce
+no output.
+
 If a Summary.sh file is present in a test directory and gnustep-tests is
 used to run just those tests in that directory, the shell script will be
 executed in order to provide the summary of the test results.  In all other
