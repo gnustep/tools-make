@@ -1,3 +1,7 @@
+2015-02-19  Germán Arias <germanandre@gmx.es>
+
+	* Documentation/README.MinGW: Update instructions for latest MinGW.
+
 2015-01-19  Richard Frith-Macdonald <rfm@gnu.org>
 
         * TestFramework/gnustep-tests.in: Report abandoned files as failed.
