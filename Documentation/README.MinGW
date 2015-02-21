@@ -422,7 +422,40 @@ make
 make install
 
 
-25. Install WinUXTheme (optional)
+25. Install gnustep-back with cairo graphics (optional but highly recommended)
+==============================================================================
+
+Download fallowing packages:
+
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/cairo_1.10.2-2_win32.zip
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/cairo-dev_1.10.2-2_win32.zip
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/libpng_1.4.3-1_win32.zip
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/freetype_2.4.2-1_win32.zip
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/freetype-dev_2.4.2-1_win32.zip
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/fontconfig_2.8.0-2_win32.zip
+http://ftp.gnome.org/pub/gnome/binaries/win32/dependencies/fontconfig-dev_2.8.0-2_win32.zip
+
+
+Copy these packages at your MINGWPATH directory and unpack them. Now move some
+headers:
+
+mv /MOUNTDIR/include/cairo/* /MOUNTDIR/include/
+mv /MOUNTDIR/include/freetype2/freetype/ /MOUNTDIR/include/
+
+Now we need recompile gnustep-back to use cairo backend:
+
+cd back
+make distclean
+./configure --enable-graphics=cairo --with-name=cairo LIBS=-lcairo
+make
+make install
+
+Now set defaults to use this backend:
+
+defaults write NSGlobalDomain GSBackend cairo
+
+
+26. Install WinUXTheme (optional)
 =================================
 
 Get WinUXTheme:
@@ -440,7 +473,7 @@ Set it:
 defaults write NSGlobalDomain GSTheme WinUXTheme
 
 
-26. Source the gnustep script when launch the console
+27. Source the gnustep script when launch the console
 =====================================================
 
 Edit the file /MINGWPATH/msys/etc/profile and add this line to source the
@@ -449,7 +482,7 @@ gnustep script:
 . /local/share/GNUstep/Makefiles/GNUstep.sh
 
 
-27. Testing your gui installation
+28. Testing your gui installation
 =================================
 
 Get the examples:

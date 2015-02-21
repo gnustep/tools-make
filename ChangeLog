@@ -1,3 +1,8 @@
+2015-02-21  Germán Arias <germanandre@gmx.es>
+
+	* Documentation/README.MinGW: Add instructions to install cairo
+	backend.
+
 2015-02-19  Germán Arias <germanandre@gmx.es>
 
 	* Documentation/README.MinGW: Update instructions for latest MinGW.
