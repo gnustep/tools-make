@@ -1,3 +1,7 @@
+2015-03-04  Germán Arias <germanandre@gmx.es>
+
+	* Documentation/README.MinGW: Fix typos.
+
 2015-02-21  Germán Arias <germanandre@gmx.es>
 
 	* Documentation/README.MinGW: Add instructions to install cairo

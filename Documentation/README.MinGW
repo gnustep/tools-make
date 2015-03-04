@@ -299,7 +299,7 @@ svn co http://svn.gna.org/svn/gnustep/libs/base/trunk base
 
 Then compile and install it:
 
-ca base
+cd base
 ./configure
 make
 make install
@@ -476,7 +476,7 @@ defaults write NSGlobalDomain GSTheme WinUXTheme
 27. Source the gnustep script when launch the console
 =====================================================
 
-Edit the file /MINGWPATH/msys/etc/profile and add this line to source the
+Edit the file /MINGWPATH/msys/etc/x.x/profile and add this line to source the
 gnustep script:
 
 . /local/share/GNUstep/Makefiles/GNUstep.sh
