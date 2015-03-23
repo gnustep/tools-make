@@ -1,3 +1,9 @@
+2015-03-23  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/resource-set.make: Fix bug which could cause a resource
+	dictionary to be installed inside an existing copy of the same
+	resource dictionary.
+
 2015-03-04  Germán Arias <germanandre@gmx.es>
 
 	* Documentation/README.MinGW: Fix typos.

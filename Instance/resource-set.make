@@ -120,6 +120,7 @@ internal-resource_set-install_: \
 ifneq ($(RESOURCE_FILES),)
 	$(ECHO_NOTHING)for f in $(RESOURCE_FILES); do \
 	  if [ -f $(RESOURCE_FILES_DIR)/$$f -o -d $(RESOURCE_FILES_DIR)/$$f ]; then \
+	    rm -rf $(RESOURCE_FILES_INSTALL_DIR)/$$f;\
 	    cp -fr $(RESOURCE_FILES_DIR)/$$f \
 	           $(RESOURCE_FILES_INSTALL_DIR)/$$f; \
 	  else \
