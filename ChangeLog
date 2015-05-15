@@ -1,3 +1,14 @@
+2015-05-15  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	* ANNOUNCE:
+	* INSTALL:
+	* NEWS:
+	* RELEASENOTES:
+	* Version:
+	2.6.7 bugfix/improvement release
+
 2015-03-23  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/resource-set.make: Fix bug which could cause a resource

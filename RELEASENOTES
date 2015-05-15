@@ -5,14 +5,25 @@ The release notes include descriptions of API changes, behavior changes
 and other information that might help developers and users migrate to
 using a newer version of the make system.
 
-1.1 Version 2.6.6
+1.1 Version 2.6.7
+=================
+
+Improved package building support
+
+   Improved environment variable support
+
+   Improved Java support
+
+   Various minor bugfixes, documentation spelling corrections etc.
+
+1.2 Version 2.6.6
 =================
 
 Debian packagge generation support added.
 
    Bug fixes
 
-1.2 Version 2.6.5
+1.3 Version 2.6.5
 =================
 
 Bugfix for non-fragile ABI test
@@ -23,19 +34,19 @@ Bugfix for non-fragile ABI test
 
    Added minimal test support for .c and .cc files.
 
-1.3 Version 2.6.4
+1.4 Version 2.6.4
 =================
 
 Test framework enhancement (extended equality tests)
 
    Android build target
 
-1.4 Version 2.6.3
+1.5 Version 2.6.3
 =================
 
 Bug fixes
 
-1.5 Version 2.6.2
+1.6 Version 2.6.2
 =================
 
 `Added standalone filesystem layout for putting everything in'
@@ -43,12 +54,12 @@ Bug fixes
 
 `Other bug fixes'
 
-1.6 Version 2.6.1
+1.7 Version 2.6.1
 =================
 
 Bug fixes
 
-1.7 Version 2.6.0
+1.8 Version 2.6.0
 =================
 
 `The default filesystem layout is now the 'fhs' layout'
@@ -127,7 +138,7 @@ Bug fixes
      combo on Apple Mac OS X.
 
 
-1.8 Version 2.4.0
+1.9 Version 2.4.0
 =================
 
 `You can enable the use of the non-fragile ivar ABI'
@@ -374,8 +385,8 @@ Bug fixes
      on all gnustep-make versions that support library resources (ie,
      gnustep-make >= 2.0.x).
 
-1.9 Version 2.2.0
-=================
+1.10 Version 2.2.0
+==================
 
 `libobjc library'
      You can now specify a particular libobjc library to use with the
@@ -400,7 +411,7 @@ Bug fixes
      at removing directories that were created during by 'make install'.
 
 
-1.10 Version 2.0.7
+1.11 Version 2.0.7
 ==================
 
 `default installation'
@@ -442,7 +453,7 @@ Bug fixes
      default.
 
 
-1.11 Version 2.0.6
+1.12 Version 2.0.6
 ==================
 
 `GNUSTEP_ABSOLUTE_INSTALL_PATHS'
@@ -470,7 +481,7 @@ Bug fixes
      go in that subdirectory and install it.
 
 
-1.12 Version 2.0.5
+1.13 Version 2.0.5
 ==================
 
 `default filesystem layout on apple-apple-apple'
@@ -515,7 +526,7 @@ Bug fixes
      variable (see above).
 
 
-1.13 Version 2.0.0
+1.14 Version 2.0.0
 ==================
 
 Version 2.0.0 is a new major release of gnustep-make which includes a

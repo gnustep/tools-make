@@ -38,9 +38,7 @@ GNUstep-HOWTO and are also located at the GNUstep web site at
 will end up installed into /usr/GNUstep using a GNUstep-tailored
 filesystem layout).
 
-   To make and install the documentation you must first have configured and
-installed gnustep-make (and set up your environment by sourceing GNUstep.sh
-if necessary).  Once that's done all that's required is:
+   To make and install the documentation:
 
      cd Documentation
      make
@@ -225,13 +223,6 @@ GNUSTEP_NETWORK_TOOLS and GNUSTEP_LOCAL_TOOLS to your PATH, and add
 your GNUSTEP_SYSTEM_LIBRARIES, GNUSTEP_NETWORK_LIBRARIES and
 GNUSTEP_LOCAL_LIBRARIES to your linker paths (which is /etc/ld.so.conf
 on GNU/Linux).
-
-   It is recommended that, unless gnustep-make was installed in the native
-filesystem layout for your operating system, the GNUstep environment is set
-up by sourcing the GNUstep.sh file.
-
-eg.
-     . /usr/GNUstep/System/Library/Makefiles/GNUstep.sh
 
    To build software, you also need to set GNUSTEP_MAKEFILES. (PS: This
 requirement is likely to go away soon)

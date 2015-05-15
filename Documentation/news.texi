@@ -9,13 +9,23 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.6.7}
+
+Improved package building support
+
+Improved environment variable support
+
+Improved Java support
+
+Various minor bugfixes, documentation spelling corrections etc.
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.6.6}
 
 Debian packaging support
 
 Minor bugfixes.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.6.5}
 
