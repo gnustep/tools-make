@@ -47,6 +47,10 @@ ifeq ($(the_library_combo), gnu)
   the_library_combo = gnu-gnu-gnu
 endif
 
+ifeq ($(the_library_combo), ng)
+  the_library_combo = ng-gnu-gnu
+endif
+
 ifeq ($(the_library_combo), fd)
   the_library_combo = gnu-fd-gnu
 endif
@@ -98,6 +102,14 @@ ifeq ($(OBJC_RUNTIME_LIB), gnu)
   OBJC_LIBS = $(OBJC_LIB_FLAG)
   RUNTIME_FLAG   = -fgnu-runtime
   RUNTIME_DEFINE = -DGNU_RUNTIME=1
+endif
+
+ifeq ($(OBJC_RUNTIME_LIB), ng)
+  OBJC_LDFLAGS =
+  OBJC_LIB_DIR =
+  OBJC_LIBS = $(OBJC_LIB_FLAG) -fobjc-nonfragile-abi
+  RUNTIME_FLAG   = -fobjc-runtime=gnustep -fblocks -fno-objc-legacy-dispatch
+  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -D_NONFRAGILE_ABI=1
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), gnugc)
