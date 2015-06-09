@@ -151,7 +151,7 @@ endif
 # with XXXX, and prints the result. '-n' disables automatic printing
 # for portability, so we are sure we only print what we want on all
 # platforms.
-EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
 #
 # This is the generic version - if the target is not in the following list,
@@ -279,7 +279,7 @@ HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
 # The output of nm is slightly different on Darwin, it doesn't support -P
-EXTRACT_CLASS_NAMES_COMMAND = nm  -g $$object_file | sed -n -e '/[^U] ___objc_class_name_/ {s/[0-9a-f]* [^U] ___objc_class_name_//p;}'
+EXTRACT_CLASS_NAMES_COMMAND = $(NM)  -g $$object_file | sed -n -e '/[^U] ___objc_class_name_/ {s/[0-9a-f]* [^U] ___objc_class_name_//p;}'
 
 ifeq ($(FOUNDATION_LIB), apple)
   ifneq ($(arch),)
@@ -781,7 +781,7 @@ ADDITIONAL_LDFLAGS += -Wl,-E
 STATIC_LDFLAGS += -static
 
 # nm on OpenBSD is rather like on Darwin
-EXTRACT_CLASS_NAMES_COMMAND = nm  -g $$object_file | sed -n -e '/[^U] __objc_class_name_/ {s/[0-9a-f]* [^U] __objc_class_name_//p;}'
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -g $$object_file | sed -n -e '/[^U] __objc_class_name_/ {s/[0-9a-f]* [^U] __objc_class_name_//p;}'
 endif
 #
 # end OpenBSD 3.x
@@ -930,7 +930,7 @@ ADDITIONAL_FLAGS += -fno-omit-frame-pointer
 
 # On Mingw32, it looks like the class name symbols start with '___' rather 
 # than '__'
-EXTRACT_CLASS_NAMES_COMMAND = nm -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
 endif
 

@@ -1,3 +1,13 @@
+2015-06-09  Riccardo Mottola <rm@gnu.org>
+
+	* config.make.in
+	* configure.ac
+	* target.make
+	Check for nm and gnm as gnu nm, use a $(NM) variable instead of hard-coding the binary name of nm
+
+	* configure
+	Regerenated
+
 2015-05-15  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/news.texi:

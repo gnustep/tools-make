@@ -260,6 +260,9 @@ fi
 
 AC_PROG_LN_S([])
 
+AC_CHECK_PROGS(NM, gnm, nm)
+
+
 AC_CHECK_PROGS(TAR, gnutar gtar, tar)
 AC_ARG_WITH(tar,[
 --with-tar

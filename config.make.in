@@ -164,6 +164,7 @@ INSTALL_DATA	= @INSTALL_DATA@
 TAR		= @TAR@
 MAKE		= @GNUMAKE@
 MKDIRS		= $(GNUSTEP_MAKEFILES)/mkinstalldirs
+NM              = @NM@
 
 LATEX2HTML      = @LATEX2HTML@
 
