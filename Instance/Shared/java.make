@@ -159,7 +159,7 @@ $(JAVA_JAR_FILE): $(JAVA_MANIFEST_FILE) \
                   $(ADDITIONAL_JAVA_OBJ_FILES) \
                   $(JAVA_PROPERTIES_FILES) 
 	$(ECHO_CREATING_JAR_FILE)$(JAR) $(JAVA_JAR_FLAGS) $(JAVA_MANIFEST_FILE) \
-                  $(JAVA_JAR_FILE) $(filter-out $(JAVA_MANIFEST_FILE),$^);\
+                  $(JAVA_JAR_FILE) $(subst $$,\$$,$(filter-out $(JAVA_MANIFEST_FILE),$^));\
   $(END_ECHO)
 
 shared-instance-java-jar: $(JAVA_JAR_FILE)
