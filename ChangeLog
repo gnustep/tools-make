@@ -1,15 +1,15 @@
 2015-06-25 Niels Grewe <niels.grewe@halbordnung.de>
 
-	* Instance/Shared/java.make: Fix escaping of inner classes when building jar
-	  files.
+	* Instance/Shared/java.make: Fix escaping of inner classes when
+	building jar files.
 
 2015-06-09  Riccardo Mottola <rm@gnu.org>
 
 	* config.make.in
 	* configure.ac
 	* target.make
-	Check for nm and gnm as gnu nm, use a $(NM) variable instead of hard-coding the binary name of nm
-
+	Check for nm and gnm as gnu nm, use a $(NM) variable instead of
+	hard-coding the binary name of nm
 	* configure
 	Regerenated
 
