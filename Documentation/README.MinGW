@@ -195,7 +195,7 @@ Get gnustep-make:
 
 svn co http://svn.gna.org/svn/gnustep/tools/make/trunk make
 
-Then install it:
+Then install it (avoid warning about conftest.exe):
 
 cd make
 ./configure
@@ -370,16 +370,23 @@ make install
 21. Install Aspell
 ==================
 
-Download the windows port http://aspell.net/. And
-install it in your MINGWPATH directory.
+Download the windows port http://aspell.net/win32/. And
+install it in your MINGWPATH directory (directly in your MINGWPATH directory,
+not under the Aspell directory).
 
-Install any other required dictionary from source (not binaries) for the
-corresponding version, in this case 0.50:
+Download also the dev package, unpack it and copy the libraries and headers
+to the corresponding directories at your MINWGPATH directory.
 
-cd aspell-xx-x.x
-./cofigure
-make
-make install
+Download also the installers for the dictionaries you want use, extract and
+install them into your MINGWPATH directory (directly in your MINGWPATH
+directory, not under the Aspell directory).
+
+Now you need change the name of some libraries, go to directory MINGWPATH/lib
+and change the name of these files:
+
+aspell-15.def   ---->  aspell.def
+aspell-15.lib   ---->  aspell.lib
+libaspell-15-dll.lib  ---->  libaspell-dll.lib
 
 
 22. Add path to icu libraries
@@ -482,7 +489,16 @@ gnustep script:
 . /local/share/GNUstep/Makefiles/GNUstep.sh
 
 
-28. Testing your gui installation
+28. Set up the spell chequer service
+====================================
+
+The spell chequer service need be configured. So we need launch it once
+to configure it. Run the command:
+
+/local/lib/GNUstep/Seervices/GSspell.services/GSspell.exe
+
+
+29. Testing your gui installation
 =================================
 
 Get the examples:
@@ -557,41 +573,50 @@ cp -R /home/Nico/Gomoku-1.2.8/Gomoku.app /home/Nico/
 3. Copy DLLs into your application
 ==================================
 
-Now search for MinGW/GNUstep DLL files in /bin and /local/bin, and
-copy them all into Gomoku.app:
+Now search for MinGW/GNUstep DLL files in /MOUNTDIR/bin, /MOUNTDIR/lib and
+/local/bin, and copy them all into Gomoku.app:
 
-cp $(find /bin -name *.dll) /home/Nico/Gomoku.app/
+cp $(find /MOUNTDIR/bin -name *.dll) /home/Nico/Gomoku.app/
+cp $(find /MOUNTDIR/lib -name *.dll) /home/Nico/Gomoku.app/
 cp $(find /local/bin -name *.dll) /home/Nico/Gomoku.app/
 
 
-4. Copy your GNUstep Library folder
+4. Copy config files into your application
+==========================================
+
+Now copy the "etc" directory in /MOUNTDIR to Gomoku.app:
+
+cp -R /MOUNTDIR/etc /home/Nico/Gomoku.app/
+
+
+5. Copy your GNUstep Library folder
 ===================================
 
 Now copy all of the GNUstep resources into the application --
 
 mkdir -p /home/Nicola/Gomoku.app/GNUstep/
-cp -R /usr/local/lib/GNUstep/* /home/Nico/Gomoku.app/GNUstep/
+cp -R /local/lib/GNUstep/* /home/Nico/Gomoku.app/GNUstep/
 
 I put them all into Gomoku.app/GNUstep/, which means that later on
 I'll set up the GNUstep.conf file to map GNUSTEP_*_LIBRARY to that
 directory.
 
 
-5. Copy key GNUstep binary programs
+6. Copy key GNUstep binary programs
 ===================================
 
-mkdir -p /home/Nicola/Gomoku.app/GNUstep/Tools/
-cp /local/bin/gpbs.exe /home/Nicola/Gomoku.app/GNUstep/Tools
-cp /local/bin/gdnc.exe /home/Nicola/Gomoku.app/GNUstep/Tools
-cp /local/bin/gdomap.exe /home/Nicola/Gomoku.app/GNUstep/Tools
-cp /local/bin/make_services.exe /home/Nicola/Gomoku.app/GNUstep/Tools
+cp /local/bin/gpbs.exe /home/Nicola/Gomoku.app
+cp /local/bin/gdnc.exe /home/Nicola/Gomoku.app
+cp /local/bin/gdomap.exe /home/Nicola/Gomoku.app
+cp /local/bin/make_services.exe /home/Nicola/Gomoku.app
+cp /local/bin/defaults.exe /home/Nicola/Gomoku.app
 
-I put them all into Gomoku.app/GNUStep/Tools, which means that later
+I put them all into Gomoku.app, which means that later
 on I'll set up the GNUstep.conf file to map GNUSTEP_*_TOOLS to that
 directory.
 
 
-6. Add a GNUstep.conf
+7. Add a GNUstep.conf
 =====================
 
 You need to add a Gomoku.app/GNUstep.conf file to tell gnustep-base
@@ -604,8 +629,8 @@ GNUSTEP_USER_DEFAULTS_DIR=GNUstep/Defaults
 
 GNUSTEP_SYSTEM_APPS=./GNUstep/Apps
 GNUSTEP_SYSTEM_ADMIN_APPS=./GNUstep/Apps
-GNUSTEP_SYSTEM_TOOLS=./GNUstep/Tools
-GNUSTEP_SYSTEM_ADMIN_TOOLS=./GNUstep/Tools
+GNUSTEP_SYSTEM_TOOLS=./
+GNUSTEP_SYSTEM_ADMIN_TOOLS=./
 GNUSTEP_SYSTEM_LIBRARY=./GNUstep
 GNUSTEP_SYSTEM_HEADERS=./GNUstep/Headers
 GNUSTEP_SYSTEM_LIBRARIES=./GNUstep/Libraries
@@ -615,8 +640,8 @@ GNUSTEP_SYSTEM_DOC_INFO=./GNUstep/Documentation/info
 
 GNUSTEP_NETWORK_APPS=./GNUstep/Apps
 GNUSTEP_NETWORK_ADMIN_APPS=./GNUstep/Apps
-GNUSTEP_NETWORK_TOOLS=./GNUstep/Tools
-GNUSTEP_NETWORK_ADMIN_TOOLS=./GNUstep/Tools
+GNUSTEP_NETWORK_TOOLS=./
+GNUSTEP_NETWORK_ADMIN_TOOLS=./
 GNUSTEP_NETWORK_LIBRARY=./GNUstep
 GNUSTEP_NETWORK_HEADERS=./GNUstep/Headers
 GNUSTEP_NETWORK_LIBRARIES=./GNUstep/Libraries
@@ -626,8 +651,8 @@ GNUSTEP_NETWORK_DOC_INFO=./GNUstep/Documentation/info
 
 GNUSTEP_LOCAL_APPS=./GNUstep/Apps
 GNUSTEP_LOCAL_ADMIN_APPS=./GNUstep/Apps
-GNUSTEP_LOCAL_TOOLS=./GNUstep/Tools
-GNUSTEP_LOCAL_ADMIN_TOOLS=./GNUstep/Tools
+GNUSTEP_LOCAL_TOOLS=./
+GNUSTEP_LOCAL_ADMIN_TOOLS=./
 GNUSTEP_LOCAL_LIBRARY=./GNUstep
 GNUSTEP_LOCAL_HEADERS=./GNUstep/Headers
 GNUSTEP_LOCAL_LIBRARIES=./GNUstep/Libraries
@@ -639,7 +664,26 @@ So, just copy and paste this code into a GNUstep.conf file that you
 put into /home/Nico/Gomoku.app/GNUstep.conf.
 
 
-7. Now the application should be working
+8. Add a GlobalDefaults.plist
+=============================
+
+You need to add a Gomoku.app/GlobalDefaults.plist file to tell GNUstep
+the defaults you want use (the theme, backend, etc.), and save this file
+with write/read permission only for the owner (chmod 600). For example:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//GNUstep//DTD plist 0.9//EN" "http://www.gnustep.org/plist-0_9.xml">
+<plist version="0.9">
+  <dict>
+	<key>GSTheme</key>
+	<string>WinUXTheme</string>
+	<key>GSBackend</key>
+	<string>cairo</string>
+  </dict>
+</plist>
+
+
+8. Now the application should be working
 ========================================
 
 At this stage, everything should be working "standalone".
@@ -652,7 +696,7 @@ Gomoku.app/ directory! :-)
 Try it out and make sure that it works.
 
 
-8. Cleanup
+9. Cleanup
 ==========
 
 If you look at your Gomoku.app/ directory, you will see that it is
@@ -685,8 +729,8 @@ Generally, you may want to build the whole stuff making sure you only
 include what you strictly need.
 
 
-9. Stripping
-============
+10. Stripping
+=============
 
 The resulting directory might still be pretty big.  If you are trying
 to distribute it over the internet, your users will probably
@@ -700,7 +744,7 @@ That will reduce the size a lot.  If you're not distributing it over
 the internet, you might be happy leaving the symbols in though.
 
 
-10. Checking Licenses
+11. Checking Licenses
 ====================
 
 Finally, before deployment, you need to realize that you are shipping

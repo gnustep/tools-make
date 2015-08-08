@@ -1,3 +1,8 @@
+2015-08-08  Germán Arias <germanandre@gmx.es>
+
+	* Documentation/README.MinGW: Add instructions to install aspell and
+	to make a standalone directory to distribute apps.
+
 2015-06-25 Niels Grewe <niels.grewe@halbordnung.de>
 
 	* Instance/Shared/java.make: Fix escaping of inner classes when
