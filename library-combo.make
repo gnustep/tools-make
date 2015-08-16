@@ -108,8 +108,8 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
   OBJC_LDFLAGS =
   OBJC_LIB_DIR =
   OBJC_LIBS = $(OBJC_LIB_FLAG) -fobjc-nonfragile-abi
-  RUNTIME_FLAG   = -fobjc-runtime=gnustep -fblocks -fno-objc-legacy-dispatch
-  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -D_NONFRAGILE_ABI=1
+  RUNTIME_FLAG = -fobjc-runtime=gnustep-1.8 -fblocks -fno-objc-legacy-dispatch
+  RUNTIME_DEFINE = -DGNUSTEP_RUNTIME=1 -D_NONFRAGILE_ABI=1
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), gnugc)

@@ -124,6 +124,7 @@ fi
 case "$ac_cv_library_combo" in
   apple) ac_cv_library_combo=apple-apple-apple ;;
   gnu)   ac_cv_library_combo=gnu-gnu-gnu ;;
+  ng)    ac_cv_library_combo=ng-gnu-gnu ;;
   nx)    ac_cv_library_combo=nx-nx-nx ;;
 esac
 
@@ -190,13 +191,21 @@ AC_OBJEXT
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
   export SHELL=sh
-  export CC=${CC:-gcc}
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    export CC=${CC:-clang}
+  else
+    export CC=${CC:-gcc}
+  fi
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
 elif test "$CYGWIN" = yes; then
   echo "hosted on cygwin .."
-  export CC=${CC:-gcc}
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    export CC=${CC:-clang}
+  else
+    export CC=${CC:-gcc}
+  fi
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
@@ -208,8 +217,13 @@ fi
 if test "x$target" != "x$host"; then
   echo "cross compiling from $host to $target .."
   cross_compiling="yes"
-  AC_CHECK_PROG(CC,      "${targetArgument}-gcc",     dnl
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    AC_CHECK_PROG(CC,    "${targetArgument}-clang",   dnl
+                         "${targetArgument}-clang",   clang)
+  else
+    AC_CHECK_PROG(CC,    "${targetArgument}-gcc",     dnl
                          "${targetArgument}-gcc",     gcc)
+  fi
   AC_CHECK_PROG(RANLIB,  "${targetArgument}-ranlib",  dnl
                          "${targetArgument}-ranlib",  ranlib)
   AC_CHECK_PROG(AR,      "${targetArgument}-ar",      dnl
@@ -217,6 +231,25 @@ if test "x$target" != "x$host"; then
   AC_CHECK_PROG(DLLTOOL, "${targetArgument}-dlltool", dnl
                          "${targetArgument}-dlltool", dlltool)
 else
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    #
+    # Detect compiler support for Blocks; perhaps someday -fblocks won't be
+    # required, in which case we'll need to change this.
+    #
+    saveCFLAGS="$CFLAGS"
+    CFLAGS="$CFLAGS -fblocks"
+    AC_LANG_PUSH(C)
+    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[(void)^{int i; i = 0; }();])], [
+      ac_cv_blocks="yes"
+    ], [
+      ac_cv_blocks="no"
+    ])
+    CFLAGS="$saveCFLAGS"
+    AC_LANG_POP(C)
+    if test "$ac_cv_blocks" = no; then
+      AC_MSG_ERROR([Your compiler doesn't appear to support blocks. To fix this use the CC environment varibale to specify a different compiler (or use a different library-combo)]);
+    fi
+  fi
   AC_CHECK_PROG(AR,      ar,      ar)
   AC_CHECK_PROG(DLLTOOL, dlltool, dlltool)
   AC_PROG_RANLIB
@@ -1336,7 +1369,7 @@ CXXFLAGS="$CXXFLAGS -x objective-c++"
 CXXPPFLAGS_saved="$CXXPPFLAGS"
 CXXPPFLAGS="$CXXPPFLAGS -x objective-c++"
 
-AC_COMPILE_IFELSE([[
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[
 
 @interface	ObjCClass
 {
@@ -1354,7 +1387,7 @@ main()
 {
   return 0;
 }
-]], objcc=yes, objcc=no)
+])], objcc=yes, objcc=no)
 AC_MSG_RESULT($objcc)
 if test x"$objcc" = x"no"; then
   OBJCXX=
@@ -1387,7 +1420,7 @@ if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
   # something with -fobjc-nonfragile-abi.
   CFLAGS_no_nonfragile="$CFLAGS"
   CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
-  AC_COMPILE_IFELSE([[
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[
 /* Note that we never execute this code so it does not really matter
    what it is.  We are testing that the compiler accepts the
    '-fobjc-nonfragile-abi' flag.  */
@@ -1399,7 +1432,7 @@ main()
 #endif
 return __has_feature(objc_nonfragile_abi) ? 0 : 1;
 }
-]], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
+])], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
   AC_MSG_RESULT($USE_NONFRAGILE_ABI)
   CFLAGS="$CFLAGS_no_nonfragile"
 
@@ -1536,7 +1569,7 @@ if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
   # something with @try/@catch/@finally in it.
   CFLAGS_no_exceptions="$CFLAGS"
   CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
-  AC_COMPILE_IFELSE([[
+  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[
 #include <objc/objc.h>
 @interface Test { id isa; } @end
 
@@ -1553,7 +1586,7 @@ int test (Test *o)
     }
   return 0;
 }
-  ]], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
+  ])], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
     if test x"$USE_OBJC_EXCEPTIONS" = x"no"; then
       AC_MSG_RESULT(no)
     else

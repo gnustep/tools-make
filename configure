@@ -3795,6 +3795,7 @@ fi
 case "$ac_cv_library_combo" in
   apple) ac_cv_library_combo=apple-apple-apple ;;
   gnu)   ac_cv_library_combo=gnu-gnu-gnu ;;
+  ng)    ac_cv_library_combo=ng-gnu-gnu ;;
   nx)    ac_cv_library_combo=nx-nx-nx ;;
 esac
 
@@ -3864,13 +3865,21 @@ esac
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
   export SHELL=sh
-  export CC=${CC:-gcc}
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    export CC=${CC:-clang}
+  else
+    export CC=${CC:-gcc}
+  fi
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
 elif test "$CYGWIN" = yes; then
   echo "hosted on cygwin .."
-  export CC=${CC:-gcc}
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    export CC=${CC:-clang}
+  else
+    export CC=${CC:-gcc}
+  fi
   export AR=${AR:-ar}
   export RANLIB=${RANLIB:-ranlib}
   export DLLTOOL=${DLLTOOL:-dlltool}
@@ -3882,7 +3891,47 @@ fi
 if test "x$target" != "x$host"; then
   echo "cross compiling from $host to $target .."
   cross_compiling="yes"
-  # Extract the first word of ""${targetArgument}-gcc"", so it can be a program name with args.
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    # Extract the first word of ""${targetArgument}-clang"", so it can be a program name with args.
+set dummy "${targetArgument}-clang"; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_prog_CC+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  if test -n "$CC"; then
+  ac_cv_prog_CC="$CC" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_prog_CC="                         "${targetArgument}-clang""
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  test -z "$ac_cv_prog_CC" && ac_cv_prog_CC="clang"
+fi
+fi
+CC=$ac_cv_prog_CC
+if test -n "$CC"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $CC" >&5
+$as_echo "$CC" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+  else
+    # Extract the first word of ""${targetArgument}-gcc"", so it can be a program name with args.
 set dummy "${targetArgument}-gcc"; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
@@ -3920,6 +3969,7 @@ $as_echo "no" >&6; }
 fi
 
 
+  fi
   # Extract the first word of ""${targetArgument}-ranlib"", so it can be a program name with args.
 set dummy "${targetArgument}-ranlib"; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -4035,6 +4085,52 @@ fi
 
 
 else
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    #
+    # Detect compiler support for Blocks; perhaps someday -fblocks won't be
+    # required, in which case we'll need to change this.
+    #
+    saveCFLAGS="$CFLAGS"
+    CFLAGS="$CFLAGS -fblocks"
+    ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main ()
+{
+(void)^{int i; i = 0; }();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+
+      ac_cv_blocks="yes"
+
+else
+
+      ac_cv_blocks="no"
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+    CFLAGS="$saveCFLAGS"
+    ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+    if test "$ac_cv_blocks" = no; then
+      as_fn_error $? "Your compiler doesn't appear to support blocks. To fix this use the CC environment varibale to specify a different compiler (or use a different library-combo)" "$LINENO" 5;
+    fi
+  fi
   # Extract the first word of "ar", so it can be a program name with args.
 set dummy ar; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -5505,8 +5601,7 @@ fi
 $as_echo_n "checking whether objc has thread support... " >&6; }
 if test "$OBJC_THREAD" != ""; then
   LIBS="$OBJCRT $LIBS $OBJC_THREAD"
-
-if test "$cross_compiling" = yes; then :
+  if test "$cross_compiling" = yes; then :
   objc_threaded=""
 else
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
@@ -5806,6 +5901,10 @@ CXXPPFLAGS="$CXXPPFLAGS -x objective-c++"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
+int
+main ()
+{
+
 
 @interface	ObjCClass
 {
@@ -5824,6 +5923,9 @@ main()
   return 0;
 }
 
+  ;
+  return 0;
+}
 _ACEOF
 if ac_fn_cxx_try_compile "$LINENO"; then :
   objcc=yes
@@ -5873,6 +5975,10 @@ if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
+int
+main ()
+{
+
 /* Note that we never execute this code so it does not really matter
    what it is.  We are testing that the compiler accepts the
    '-fobjc-nonfragile-abi' flag.  */
@@ -5885,6 +5991,9 @@ main()
 return __has_feature(objc_nonfragile_abi) ? 0 : 1;
 }
 
+  ;
+  return 0;
+}
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
   USE_NONFRAGILE_ABI=yes
@@ -6052,6 +6161,10 @@ if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
+int
+main ()
+{
+
 #include <objc/objc.h>
 @interface Test { id isa; } @end
 
@@ -6069,6 +6182,9 @@ int test (Test *o)
   return 0;
 }
 
+  ;
+  return 0;
+}
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
   USE_OBJC_EXCEPTIONS=yes

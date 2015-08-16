@@ -1,3 +1,10 @@
+2015-08-16 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* library-combo.make: Use David's suggested runtime flag for the
+	next generation (ng) runtime combo.
+	* configure.ac: Check for compiler blocks support for ng combo.
+	Fix some program source quoting for newer autoconf
+
 2015-08-08  Germán Arias <germanandre@gmx.es>
 
 	* Documentation/README.MinGW: Add instructions to install aspell and
