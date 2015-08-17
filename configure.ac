@@ -1369,7 +1369,7 @@ CXXFLAGS="$CXXFLAGS -x objective-c++"
 CXXPPFLAGS_saved="$CXXPPFLAGS"
 CXXPPFLAGS="$CXXPPFLAGS -x objective-c++"
 
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[
+AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 
 @interface	ObjCClass
 {
@@ -1387,7 +1387,7 @@ main()
 {
   return 0;
 }
-])], objcc=yes, objcc=no)
+]])], objcc=yes, objcc=no)
 AC_MSG_RESULT($objcc)
 if test x"$objcc" = x"no"; then
   OBJCXX=
@@ -1420,7 +1420,7 @@ if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
   # something with -fobjc-nonfragile-abi.
   CFLAGS_no_nonfragile="$CFLAGS"
   CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 /* Note that we never execute this code so it does not really matter
    what it is.  We are testing that the compiler accepts the
    '-fobjc-nonfragile-abi' flag.  */
@@ -1432,7 +1432,7 @@ main()
 #endif
 return __has_feature(objc_nonfragile_abi) ? 0 : 1;
 }
-])], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
+]])], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
   AC_MSG_RESULT($USE_NONFRAGILE_ABI)
   CFLAGS="$CFLAGS_no_nonfragile"
 
@@ -1569,7 +1569,7 @@ if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
   # something with @try/@catch/@finally in it.
   CFLAGS_no_exceptions="$CFLAGS"
   CFLAGS="$CFLAGS -fexceptions -fobjc-exceptions"
-  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 #include <objc/objc.h>
 @interface Test { id isa; } @end
 
@@ -1586,7 +1586,7 @@ int test (Test *o)
     }
   return 0;
 }
-  ])], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
+  ]])], USE_OBJC_EXCEPTIONS=yes, USE_OBJC_EXCEPTIONS=no)
     if test x"$USE_OBJC_EXCEPTIONS" = x"no"; then
       AC_MSG_RESULT(no)
     else

@@ -1,3 +1,11 @@
+2015-08-17  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* configure.ac: Fix the previous change, which had broken the tests
+	for Objective C++, the fragile API and native exception support,
+	by using the correct autoconf macros.
+
+	* configure: Regenerated.
+
 2015-08-16 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* library-combo.make: Use David's suggested runtime flag for the
