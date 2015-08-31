@@ -64,6 +64,7 @@ if [ "$1" = "--help" ]; then
     echo "    --variable=CPP"
     echo "    --variable=CXX"
     echo "    --variable=OBJCXX"
+    echo "    --variable=LDFLAGS"
     echo "    --variable=GNUMAKE"
     echo "    --variable=GNUSTEP_MAKEFILES"
     echo "    --variable=GNUSTEP_USER_DEFAULTS_DIR"
@@ -165,6 +166,8 @@ case "$1" in
   --variable=CXX) echo "@CXX@"
               exit 0;;
   --variable=OBJCXX) echo "@OBJCXX@"
+              exit 0;;
+  --variable=LDFLAGS) echo "@LDFLAGS@"
               exit 0;;
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
               exit 0;;
