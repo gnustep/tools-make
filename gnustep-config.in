@@ -167,6 +167,8 @@ case "$1" in
               exit 0;;
   --variable=OBJCXX) echo "@OBJCXX@"
               exit 0;;
+  --variable=CPPFLAGS) echo "@CPPFLAGS@"
+              exit 0;;
   --variable=LDFLAGS) echo "@LDFLAGS@"
               exit 0;;
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
