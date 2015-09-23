@@ -1,3 +1,7 @@
+2015-09-23  Germán Arias <germanandre@gmx.es>
+
+	* Documentation/README.MinGW: Fix errors in services path.
+
 2015-08-17  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* configure.ac: Fix the previous change, which had broken the tests

@@ -495,7 +495,7 @@ gnustep script:
 The spell chequer service need be configured. So we need launch it once
 to configure it. Run the command:
 
-/local/lib/GNUstep/Seervices/GSspell.services/GSspell.exe
+/local/lib/GNUstep/Services/GSspell.service/GSspell.exe
 
 
 29. Testing your gui installation
