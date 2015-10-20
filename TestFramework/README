@@ -306,7 +306,7 @@ a single directory or a collection of directories in a hierarchy.
 All directories which contain test files must also contain a TestInfo file
 to mark them as containing files used by the framework, and the root of
 the test suite is considered to be the topmost directory in the hierarchy
-which contains a testInfo file.  The test framework sets the GSTESTROOT
+which contains a TestInfo file.  The test framework sets the GSTESTROOT
 environment variable to the absolute path of the root of the test suite
 being executed, so scripts and makefiles can use this to locate resources.
 
@@ -316,6 +316,11 @@ code directory as a testsuite.  This is also useful in conjunction with the
 various makefile options listed above ... the makefiles may be used to
 build resources for tests in subdirectories which are ignored by the
 test framework itself.
+
+In addition to being a marker, the TestInfo file is a shell script which 
+is sourced before execution of each test program in its directory, typically
+it is used to set up environment variables (eg. LD_LIBRARY_PATH to tell the
+program where to find dynamic libraries the tests use).
 
 
 Providing extra control and information
@@ -335,11 +340,6 @@ which would confuse the test framework at the point when it analyses the
 log ... so you need to avoid starting a line in the log with any of the
 special phrases generated to mark a passed test or a particular type of
 failure.
-
-If an Env.sh script is present in a test directory, then it will be
-sourced immediately before each test in order to allow you to set up
-special environment variables for the test.  This script should produce
-no output.
 
 If a Summary.sh file is present in a test directory and gnustep-tests is
 used to run just those tests in that directory, the shell script will be

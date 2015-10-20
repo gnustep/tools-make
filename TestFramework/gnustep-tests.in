@@ -381,11 +381,12 @@ build_and_run ()
     # Run it. If it terminates abnormally, mark it as a crash (unless we have
     # a special file to mark it as being expected to abort).
 
+    # Env.sh is deprecated ... we should only use TestInfo to setup for a test
     if test -r ./Env.sh
     then
       ( . ./Env.sh; $RUN_CMD )
     else
-      $RUN_CMD
+      ( . ./TestInfo; $RUN_CMD )
     fi
 
     if test $? != 0
