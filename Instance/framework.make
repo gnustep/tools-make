@@ -68,6 +68,8 @@ endif
 # xxx_MAKE_CURRENT_VERSION is used to decide if the framework version
 #   we compiling should be made the current/default version or not
 #   (default is "yes")
+# xxx_TEST_DIR is the directory in which 'make check' will cause tests
+#   to be run using gnustep-tests.
 #
 # where xxx is the framework name
 #
@@ -808,6 +810,17 @@ internal-framework-uninstall_::
 	$(RM_LN_S) $(LIB_LINK_DLL_FILE); \
 	$(END_ECHO)
 endif
+
+internal-framework-check::
+ifneq ($($(GNUSTEP_INSTANCE)_TEST_DIR),)
+	@(echo "export LD_LIBRARY_PATH=\"$$(pwd)/$(GNUSTEP_INSTANCE).framework:$(LD_LIBRARY_PATH)\"" > $($(GNUSTEP_INSTANCE)_TEST_DIR)/TestInfo; \
+	if [ "$(DEBUG)" = "" ]; then \
+	  gnustep-tests $($(GNUSTEP_INSTANCE)_TEST_DIR);\
+	else \
+	  gnustep-tests --debug $($(GNUSTEP_INSTANCE)_TEST_DIR);\
+	fi;)
+endif
+
 #
 # Cleaning targets
 #

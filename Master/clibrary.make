@@ -45,6 +45,8 @@ internal-master-clibrary-all: $(CLIBRARY_NAME:=.all.clibrary.variables)
 
 endif
 
+internal-check:: $(CLIBRARY_NAME:=.check.clibrary.variables)
+
 internal-install:: $(CLIBRARY_NAME:=.install.clibrary.variables)
 
 internal-uninstall:: $(CLIBRARY_NAME:=.uninstall.clibrary.variables)

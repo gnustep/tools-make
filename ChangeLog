@@ -2,6 +2,15 @@
 
 	* TestFramework/gnustep-tests.in: Deprecate Env.sh ... use TestInfo to
 	set test ewnvironment
+	* Instance/framework.make: Add rule to invoke gnustep-tests
+	* Instance/library.make: Add rule to invoke gnustep-tests
+	* Master/clibrary.make: pass 'make check' to instance
+	* Master/framework.make: pass 'make check' to instance
+	* Master/library.make: pass 'make check' to instance
+	* Master/test-library.make: pass 'make check' to instance
+	Simple minded initial attempt to make unit testing for libraries and
+	frameworks easier by having a built-in rule to execute test files in
+	a subdirectory specified using xxx_TEST_DIR
 
 2015-09-23  Germán Arias <germanandre@gmx.es>
 

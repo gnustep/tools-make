@@ -41,6 +41,8 @@ internal-all:: $(GNUSTEP_OBJ_DIR) $(FRAMEWORK_NAME:=.all.framework.variables)
 
 $(FRAMEWORK_NAME:=.all.framework.variables): $(FRAMEWORK_NAME:=.build-headers.framework.variables)
 
+internal-check:: $(FRAMEWORK_NAME:=.check.framework.variables)
+
 internal-install:: $(FRAMEWORK_NAME:=.install.framework.variables)
 
 internal-uninstall:: $(FRAMEWORK_NAME:=.uninstall.framework.variables)

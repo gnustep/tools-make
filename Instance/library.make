@@ -43,6 +43,8 @@ include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
 # The directory where the header files are located is xxx_HEADER_FILES_DIR
 # The directory where to install the header files inside the library
 # installation directory is xxx_HEADER_FILES_INSTALL_DIR
+# The directory in which 'make check' will cause tests to be run using
+# gnustep-tests is xxx_TEST_DIR
 #
 #	Where xxx is the name of the library
 #
@@ -338,7 +340,17 @@ endif
 #
 # Testing targets
 #
+# Put the path to the directory containing the library to be tested in
+# LD_LIBRARY_PATH for running the tests and then invoke gnustep-tests
 internal-library-check::
+ifneq ($($(GNUSTEP_INSTANCE)_TEST_DIR),)
+	@(echo "export LD_LIBRARY_PATH=\"$$(pwd)/$(GNUSTEP_OBJ_DIR):$(LD_LIBRARY_PATH)\"" > $($(GNUSTEP_INSTANCE)_TEST_DIR)/TestInfo; \
+	if [ "$(DEBUG)" = "" ]; then \
+	  gnustep-tests $($(GNUSTEP_INSTANCE)_TEST_DIR);\
+	else \
+	  gnustep-tests --debug $($(GNUSTEP_INSTANCE)_TEST_DIR);\
+	fi;)
+endif
 
 #
 # If the user makefile contains the command

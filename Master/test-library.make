@@ -45,6 +45,8 @@ internal-master-test-lib-all: $(TEST_LIBRARY_NAME:=.all.test-lib.variables)
 
 endif
 
+internal-check:: $(TEST_LIBRARY_NAME:=.check.test-lib.variables)
+
 internal-install:: $(TEST_LIBRARY_NAME:=.install.test-lib.variables)
 
 internal-uninstall:: $(TEST_LIBRARY_NAME:=.uninstall.test-lib.variables)
