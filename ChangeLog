@@ -1,3 +1,8 @@
+2015-11-21 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/framework.make: Remove unused methods (-frameworkEnv and
+	-frameworkPath) from the dummy class.
+
 2015-11-20 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in: Deprecate Env.sh ... use TestInfo to

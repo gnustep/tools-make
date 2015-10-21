@@ -488,14 +488,10 @@ $(DUMMY_FRAMEWORK_FILE): $(DERIVED_SOURCES_DIR)/.stamp $(OBJ_FILES_TO_LINK) GNUm
 	echo "#include <Foundation/NSObject.h>" > $@; \
 	echo "#include <Foundation/NSString.h>" > $@; \
 	echo "@interface $(DUMMY_FRAMEWORK) : NSObject" >> $@; \
-	echo "+ (NSString *)frameworkEnv;" >> $@; \
-	echo "+ (NSString *)frameworkPath;" >> $@; \
 	echo "+ (NSString *)frameworkVersion;" >> $@; \
 	echo "+ (NSString *const*)frameworkClasses;" >> $@; \
 	echo "@end" >> $@; \
 	echo "@implementation $(DUMMY_FRAMEWORK)" >> $@; \
-	echo "+ (NSString *)frameworkEnv { return nil; }" >> $@; \
-	echo "+ (NSString *)frameworkPath { return @\"$(FRAMEWORK_INSTALL_DIR)\"; }" >> $@; \
 	echo "+ (NSString *)frameworkVersion { return @\"$(CURRENT_VERSION_NAME)\"; }" >> $@; \
 	echo "static NSString *allClasses[] = {$$classlist};" >> $@; \
 	echo "+ (NSString *const*)frameworkClasses { return allClasses; }" >> $@;\
