@@ -350,7 +350,7 @@ build_and_run ()
   then
     echo "Building $dir/$TESTFILE"
     echo "$BUILD_CMD"
-    $BUILD_CMD 2>&1
+    ( . ./TestInfo; $BUILD_CMD) 2>&1
     BUILDSTATUS=$?
   else
     BUILDSTATUS=0
@@ -535,7 +535,7 @@ do
       then
         $MAKE_CMD clean >/dev/null 2>&1
       fi
-      rm -rf core core.* *.core obj GNUmakefile gdb.cmds tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp
+      rm -rf core core.* *.core obj GNUmakefile gdb.cmds tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp gscheckenv gscheckmak
 
     else
       echo "--- Running tests in $dir ---"
@@ -635,7 +635,7 @@ ${tmp}_OBJC_FILES=$TESTFILE"
           # each individual test file later.
           echo "" >>$GSTESTLOG
           echo "Building in $dir" >>$GSTESTLOG
-          $MAKE_CMD -j 4 debug=yes >>$GSTESTLOG 2>&1
+          ( . ./TestInfo; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
           if test $? = 0
           then
             NEEDBUILD=no
