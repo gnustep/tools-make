@@ -27,6 +27,7 @@
 # summary to stdout.
 # The log and summary from the previous testrun are renamed to
 # oldtests.log and oldtests.sum, available for comparison.
+# The exit value of the script is 0 if there are no failures, 1 otherwise.
 
 if test -z "$GNUSTEP_MAKEFILES"; then
   GNUSTEP_MAKEFILES=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
@@ -765,7 +766,16 @@ else
   RUNCMD=$GSTESTTOP/Summary.sh
 fi
 $RUNCMD
+FAILS=$?
 
 # Delete the temporary file.
 rm -f tests.tmp tests.sum.tmp tests.log.tmp
 
+# Our exit status is 0 unless some test failed.
+present "$GSTESTSUM" "Failed set$" "Failed sets$" "Failed test$" "Failed tests$" "Failed build$" "Failed builds$" "Failed file$" "Failed files$"
+if [ $? = 1 ]
+then
+  exit 0
+else
+  exit 1
+fi

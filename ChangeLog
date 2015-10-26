@@ -1,3 +1,8 @@
+2015-11-26 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	Exit with status 1 if there are any test failures, 0 otherwise.
+
 2015-11-24 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/framework.make:
