@@ -58,7 +58,7 @@ DEB_SOURCE=${DEB_SOURCE:-${deb_lowercase_package_name}}
 DEB_PACKAGE=${DEB_PACKAGE:-${deb_lowercase_package_name}}
 DEB_ARCHITECTURE=${DEB_ARCHITECTURE:-${target_arch}} #$(shell (/bin/bash -c "$(CC) -dumpmachine | sed -e 's,\\([^-]*\\).*,\\1,g'"))}
 DEB_SECTION=${DEB_SECTION:-gnustep}
-DEB_PRIORITY=${DEB_PRIORTY:-optional}
+DEB_PRIORITY=${DEB_PRIORITY:-optional}
 DEB_VCS_SVN=${DEB_VCS_SVN:-${svn_path}}
 DEB_VERSION=${DEB_VERSION:-${TARBALL_VERSION:-${PACKAGE_VERSION}}}
 if [ -z "${DEB_BUILD_DEPENDS}" ] ; then
