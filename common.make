@@ -594,7 +594,27 @@ endif
 # what can be done about it.
 INTERNAL_OBJCFLAGS = -fno-strict-aliasing
 
+# Linux CentOS 6.5 i386 clang...
+# Clang inserts move aligned packed instructions (i.e. movaps,etc) assembly
+# code however stack is not aligned causing fault crashes...
+ifeq ($(CC),clang)
+ifeq ($(wildcard /etc/redhat-release),"")
+RH_RELEASE := $(shell cat /etc/redhat-release)
+ifeq ($(findstring $(RH_RELEASE)),CentOS)
+ifeq ($(findstring $(RH_RELEASE)),6.5)
+LINUXVER := $(subst ., ,$(subst -, ,$(shell uname -r)))
+LINUXREV := $(word 4,$(LINUXVER))
+ifeq ($(shell (test $(LINUXREV) -le 431 && echo 0)), 0)
+INTERNAL_OBJCFLAGS = -mno-sse
+endif
+endif
+endif
+endif
+endif
+
 CFLAGS =
+
+INTERNAL_LDFLAGS += 
 
 # If the compiler supports native ObjC exceptions and the user wants us to
 # use them, turn them on!
