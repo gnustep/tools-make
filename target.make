@@ -894,6 +894,7 @@ SHARED_CFLAGS =
 # while it is the default, it might silently get disabled if a symbol
 # gets manually exported (eg, because a header of a library we include
 # exports a symbol by mistake).
+ifneq ($(CC),clang)
 SHARED_LIB_LINK_CMD     = \
         $(LD) $(SHARED_LD_PREFLAGS) -shared \
         -Wl,--enable-auto-image-base \
@@ -902,6 +903,17 @@ SHARED_LIB_LINK_CMD     = \
            $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS)
+else
+SHARED_LIB_LINK_CMD     = \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared \
+        -Wl,--enable-auto-image-base \
+        -Wl,--export-all-symbols \
+        -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
+	   -Wl,--whole-archive $^ $(ALL_LDFLAGS) -Wl,--no-whole-archive \
+	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+	   $(SHARED_LD_POSTFLAGS)
+endif
 
 AFTER_INSTALL_SHARED_LIB_CMD = 
 AFTER_INSTALL_SHARED_LIB_CHOWN =
@@ -919,12 +931,32 @@ SHARED_LIBEXT    = .dll.a
 DLL_LIBEXT	 = .dll
 #SHARED_CFLAGS	 += 
 
+ifneq ($(CC),clang)
 OBJ_MERGE_CMD = \
   $(LD) -nostdlib $(OBJ_MERGE_CMD_FLAG) $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+else
+OBJ_MERGE_CMD = \
+  ar cr $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+endif
 
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(LD)
-BUNDLE_LDFLAGS     += -shared -Wl,--enable-auto-image-base
+
+ifeq ($(CC),clang)
+BUNDLE_LDFLAGS += -shared -Wl,--export-all-symbols \
+	-Wl,--enable-auto-import \
+        -Wl,--enable-auto-image-base \
+	-Wl,--whole-archive
+BUNDLE_LIBFLAGS += -Wl,--no-whole-archive
+BUNDLE_LINK_CMD  = \
+        $(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+	-o $(LDOUT)$(BUNDLE_FILE) \
+	$(OBJ_FILES_TO_LINK) \
+	$(BUNDLE_LIBFLAGS) $(ALL_LIB_DIRS) $(BUNDLE_LIBS)
+else
+BUNDLE_LDFLAGS += -shared -Wl,--enable-auto-image-base
+endif
+
 ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
 ADDITIONAL_FLAGS += -fno-omit-frame-pointer
 
