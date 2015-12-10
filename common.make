@@ -600,12 +600,12 @@ INTERNAL_OBJCFLAGS = -fno-strict-aliasing
 ifeq ($(CC),clang)
 ifeq ($(wildcard /etc/redhat-release),"")
 RH_RELEASE := $(shell cat /etc/redhat-release)
-ifeq ($(findstring $(RH_RELEASE)),CentOS)
-ifeq ($(findstring $(RH_RELEASE)),6.5)
+ifeq ($(findstring CentOS,$(RH_RELEASE)),CentOS)
+ifeq ($(findstring 6.5,$(RH_RELEASE)),6.5)
 LINUXVER := $(subst ., ,$(subst -, ,$(shell uname -r)))
 LINUXREV := $(word 4,$(LINUXVER))
 ifeq ($(shell (test $(LINUXREV) -le 431 && echo 0)), 0)
-INTERNAL_OBJCFLAGS = -mno-sse
+INTERNAL_OBJCFLAGS += -mno-sse
 endif
 endif
 endif
