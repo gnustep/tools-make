@@ -1,3 +1,8 @@
+2015-12-11 23:34-EST Gregory John Casamento <greg.casamento@gmail.com>
+
+	* common.make: Mute error when trying to parse redhat-version
+	file.
+
 2015-11-26 Ivan Vucica <ivan@vucica.net>
 
 	* ChangeLog:
