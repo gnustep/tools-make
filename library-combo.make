@@ -108,7 +108,7 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
   OBJC_LDFLAGS =
   OBJC_LIB_DIR =
   OBJC_LIBS = $(OBJC_LIB_FLAG) -fobjc-nonfragile-abi
-  RUNTIME_FLAG = -fobjc-runtime=gnustep-1.8 -fblocks -fno-objc-legacy-dispatch
+  RUNTIME_FLAG = -fobjc-runtime=gnustep-1.8 -fblocks
   RUNTIME_DEFINE = -DGNUSTEP_RUNTIME=1 -D_NONFRAGILE_ABI=1
   # Projects may control the use of ARC by defining GS_WITH_ARC=1
   # or GS_WITH_ARC=0 at the start of their GNUmakefile, or in the environment,
