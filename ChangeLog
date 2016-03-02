@@ -1,3 +1,11 @@
+2016-03-02 Niels Grewe <niels.grewe@halbordnung.de>
+	* Master/documentation.make:
+	Support skipping the documentation build if skip_documentation=yes
+	is supplied
+	* Documentation/gnustep-make.texi:
+	Document the new skip_documentation feature (and messages=yes, which
+	as also missing).
+
 2015-12-11 23:34-EST Gregory John Casamento <greg.casamento@gmail.com>
 
 	* common.make: Mute error when trying to parse redhat-version

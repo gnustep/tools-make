@@ -1515,4 +1515,24 @@ directory on disk for this filesystem layout and installation domain.
 By default the Makefile Package sets
 @code{GNUSTEP_INSTALLATION_DOMAIN} to @code{LOCAL}.
 
+@defvar messages
+@code{messages} can be set to @samp{yes} in order to increase the
+verbosity and see all the commands the make is executing.
+@end defvar
+
+@smallexample
+make messages=yes
+@end smallexample
+
+@defvar skip_documentation
+@code{skip_documentation} controls whether the documentation targets in
+a project will be executed. If you don't desire building the
+documentation (which might require a working LaTeX installation, etc.)
+you can set this to @samp{yes}.
+@end defvar
+
+@smallexample
+make skip_documentation=yes
+@end smallexample
+
 @bye

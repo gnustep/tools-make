@@ -24,6 +24,18 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
+ifeq ($(skip_documentation),yes)
+internal-all::
+  $(info Not building documentation on user request)
+internal-install::
+  $(info Not building documentation on user request)
+internal-uninstall::
+  $(info Not building documentation on user request)
+internal-clean::
+  $(info Not building documentation on user request)
+insternal-distclean::
+  $(info Not building documentation on user request)
+else
 DOCUMENT_NAME := $(strip $(DOCUMENT_NAME))
 DOCUMENT_TEXT_NAME := $(strip $(DOCUMENT_TEXT_NAME))
 
@@ -42,7 +54,7 @@ internal-clean:: $(DOCUMENT_NAME:=.clean.doc.variables) \
 
 internal-distclean:: $(DOCUMENT_NAME:=.distclean.doc.variables) \
                      $(DOCUMENT_TEXT_NAME:=.distclean.textdoc.variables)
-
+endif
 #$(DOCUMENT_NAME):
 #	@$(MAKE) -f $(MAKEFILE_NAME) --no-print-directory \
 #		$@.all.doc.variables
