@@ -693,8 +693,6 @@ RANLIB
 CYGWIN
 cc_bundle
 cc_cppprecomp
-ac_cv_library_combo
-OBJC_WITH_GC
 target_os
 target_vendor
 target_cpu
@@ -720,6 +718,8 @@ CPPFLAGS
 LDFLAGS
 CFLAGS
 CC
+ac_cv_library_combo
+OBJC_WITH_GC
 target_alias
 host_alias
 build_alias
@@ -2278,10 +2278,84 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 # have an Objective-C runtime available yet.
 #
 
+targetArgument=${target}
+
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
-targetArgument=${target}
+
+#--------------------------------------------------------------------
+# Check if objc should use garbage collection.
+#--------------------------------------------------------------------
+# Check whether --enable-objc-garbage-collection was given.
+if test "${enable_objc_garbage_collection+set}" = set; then :
+  enableval=$enable_objc_garbage_collection; OBJC_WITH_GC=$enableval
+else
+  OBJC_WITH_GC=""
+fi
+
+
+if test "$OBJC_WITH_GC" = "yes"; then
+  ac_cv_library_combo="gnugc-gnu-gnu"
+elif test "$OBJC_WITH_GC" = "no"; then
+  if test "$ac_cv_library_combo"="gnugc-gnu-gnu"; then
+    ac_cv_library_combo="gnu-gnu-gnu"
+  fi
+else
+  OBJC_WITH_GC=no
+fi
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library combo" >&5
+$as_echo_n "checking for library combo... " >&6; }
+
+# Check whether --with-library-combo was given.
+if test "${with_library_combo+set}" = set; then :
+  withval=$with_library_combo; ac_cv_library_combo=$withval
+else
+  ac_cv_library_combo=$ac_cv_library_combo
+
+fi
+
+
+if test "$ac_cv_library_combo" = "" -o "$ac_cv_library_combo" = "no"; then
+  case "$host_os" in
+    darwin*)   ac_cv_library_combo=apple-apple-apple ;;
+    nextstep4) ac_cv_library_combo=nx-nx-nx          ;;
+    openstep4) ac_cv_library_combo=nx-nx-nx          ;;
+    *)         ac_cv_library_combo=gnu-gnu-gnu       ;;
+  esac
+fi
+
+case "$ac_cv_library_combo" in
+  apple) ac_cv_library_combo=apple-apple-apple ;;
+  gnu)   ac_cv_library_combo=gnu-gnu-gnu ;;
+  ng)    ac_cv_library_combo=ng-gnu-gnu ;;
+  nx)    ac_cv_library_combo=nx-nx-nx ;;
+esac
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_library_combo" >&5
+$as_echo "$ac_cv_library_combo" >&6; }
+
+OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
+
+# The ng runtime library setting requires clang rather than gcc
+if test "$OBJC_RUNTIME_LIB" = "ng"; then
+  if test "$OBJCC" = ""; then
+    OBJCC=clang
+  fi
+  if test "$CC" = ""; then
+    CC=clang
+  fi
+  if test "$OBJCXX" = ""; then
+    OBJCXX=clang++
+  fi
+  if test "$CXX" = ""; then
+    CXX=clang++
+  fi
+fi
+
 ac_ext=c
 ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
@@ -3747,63 +3821,6 @@ test -n "$target_alias" &&
   test "$program_prefix$program_suffix$program_transform_name" = \
     NONENONEs,x,x, &&
   program_prefix=${target_alias}-
-
-
-#--------------------------------------------------------------------
-# Check if objc should use garbage collection.
-#--------------------------------------------------------------------
-# Check whether --enable-objc-garbage-collection was given.
-if test "${enable_objc_garbage_collection+set}" = set; then :
-  enableval=$enable_objc_garbage_collection; OBJC_WITH_GC=$enableval
-else
-  OBJC_WITH_GC=""
-fi
-
-
-if test "$OBJC_WITH_GC" = "yes"; then
-  ac_cv_library_combo="gnugc-gnu-gnu"
-elif test "$OBJC_WITH_GC" = "no"; then
-  if test "$ac_cv_library_combo"="gnugc-gnu-gnu"; then
-    ac_cv_library_combo="gnu-gnu-gnu"
-  fi
-else
-  OBJC_WITH_GC=no
-fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for library combo" >&5
-$as_echo_n "checking for library combo... " >&6; }
-
-# Check whether --with-library-combo was given.
-if test "${with_library_combo+set}" = set; then :
-  withval=$with_library_combo; ac_cv_library_combo=$withval
-else
-  ac_cv_library_combo=$ac_cv_library_combo
-
-fi
-
-
-if test "$ac_cv_library_combo" = "" -o "$ac_cv_library_combo" = "no"; then
-  case "$host_os" in
-    darwin*)   ac_cv_library_combo=apple-apple-apple ;;
-    nextstep4) ac_cv_library_combo=nx-nx-nx          ;;
-    openstep4) ac_cv_library_combo=nx-nx-nx          ;;
-    *)         ac_cv_library_combo=gnu-gnu-gnu       ;;
-  esac
-fi
-
-case "$ac_cv_library_combo" in
-  apple) ac_cv_library_combo=apple-apple-apple ;;
-  gnu)   ac_cv_library_combo=gnu-gnu-gnu ;;
-  ng)    ac_cv_library_combo=ng-gnu-gnu ;;
-  nx)    ac_cv_library_combo=nx-nx-nx ;;
-esac
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_library_combo" >&5
-$as_echo "$ac_cv_library_combo" >&6; }
-
-OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 
 #--------------------------------------------------------------------
 # Check if we are using Apple cc

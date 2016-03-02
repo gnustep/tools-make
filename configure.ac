@@ -39,29 +39,11 @@ AC_CONFIG_SRCDIR([application.make])
 # have an Objective-C runtime available yet.
 #
 
+targetArgument=${target}
+
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
-targetArgument=${target}
-AC_PROG_CC
-AC_PROG_CPP
-
-# We also look for a C++ compiler.  While not strictly needed, some
-# people use gnustep-make to compile C++ code.  It's nice to detect a
-# C++ compiler, if we have one, and automatically use it to
-# compile/link C++ code. :-)
-AC_PROG_CXX
-
-# Similarly for the ObjC++ compiler ... but only new versions of autoconf
-# support it, so we pretend by using the C++ compiler
-#AC_PROG_OBJCXX
-OBJCXX="${CXX}"
-
-# We may use egrep for some tests further down below
-AC_PROG_EGREP
-
-AC_CANONICAL_TARGET([])
-
 
 #--------------------------------------------------------------------
 # Check if objc should use garbage collection.
@@ -132,6 +114,41 @@ AC_SUBST(ac_cv_library_combo)
 AC_MSG_RESULT($ac_cv_library_combo)
 
 OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
+
+# The ng runtime library setting requires clang rather than gcc
+if test "$OBJC_RUNTIME_LIB" = "ng"; then
+  if test "$OBJCC" = ""; then
+    OBJCC=clang
+  fi
+  if test "$CC" = ""; then
+    CC=clang
+  fi
+  if test "$OBJCXX" = ""; then
+    OBJCXX=clang++
+  fi
+  if test "$CXX" = ""; then
+    CXX=clang++
+  fi
+fi
+
+AC_PROG_CC
+AC_PROG_CPP
+
+# We also look for a C++ compiler.  While not strictly needed, some
+# people use gnustep-make to compile C++ code.  It's nice to detect a
+# C++ compiler, if we have one, and automatically use it to
+# compile/link C++ code. :-)
+AC_PROG_CXX
+
+# Similarly for the ObjC++ compiler ... but only new versions of autoconf
+# support it, so we pretend by using the C++ compiler
+#AC_PROG_OBJCXX
+OBJCXX="${CXX}"
+
+# We may use egrep for some tests further down below
+AC_PROG_EGREP
+
+AC_CANONICAL_TARGET([])
 
 #--------------------------------------------------------------------
 # Check if we are using Apple cc

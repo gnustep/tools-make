@@ -110,6 +110,15 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
   OBJC_LIBS = $(OBJC_LIB_FLAG) -fobjc-nonfragile-abi
   RUNTIME_FLAG = -fobjc-runtime=gnustep-1.8 -fblocks -fno-objc-legacy-dispatch
   RUNTIME_DEFINE = -DGNUSTEP_RUNTIME=1 -D_NONFRAGILE_ABI=1
+  # By default we enable ARC for ng code, but projects may disable it
+  # by defining GS_WITH_ARC=0 at the start of their GNUmakefile
+  ifeq ($(GS_WITH_ARC),)
+    GS_WITH_ARC = 1
+  endif
+  ifeq ($(GS_WITH_ARC), 1)
+    RUNTIME_FLAG += -fobjc-arc
+    RUNTIME_DEFINE += -DGS_WITH_ARC=1
+  endif
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), gnugc)
@@ -118,7 +127,7 @@ ifeq ($(OBJC_RUNTIME_LIB), gnugc)
   OBJC_LIBS = $(OBJC_LIB_FLAG) -ldl -lgc
   RUNTIME_FLAG   = -fgnu-runtime
   RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DGS_WITH_GC=1
-  ifeq ($(debug),yes)
+  ifeq ($(debug), yes)
     RUNTIME_DEFINE += -DGC_DEBUG
   endif
 endif
@@ -146,7 +155,7 @@ FND_LIBS =
 #
 # Set the appropriate Foundation library
 #
-ifeq ($(FOUNDATION_LIB),gnu)
+ifeq ($(FOUNDATION_LIB), gnu)
   FOUNDATION_LIBRARY_NAME   = gnustep-base
   FOUNDATION_LIBRARY_DEFINE = -DGNUSTEP_BASE_LIBRARY=1
 endif
@@ -180,7 +189,7 @@ endif
 # FIXME - Ask Helge to move this inside his libFoundation, and have 
 # it installed as a $(GNUSTEP_MAKEFILES)/Additional/libFoundation.make
 #
-ifeq ($(FOUNDATION_LIB),fd)
+ifeq ($(FOUNDATION_LIB), fd)
   -include $(GNUSTEP_MAKEFILES)/libFoundation.make
 
   FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
