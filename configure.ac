@@ -89,6 +89,8 @@ AC_ARG_WITH(library-combo,[
    binaries that support multiple library combos.  In that case,
    this flag will only configure the default one, but you can still
    use other ones at run-time.
+   Please use 'ng-gnu-gnu' to build with 'next generation' cutting edge
+   runtime and compile time featured (requires a recent version of clang).
 ],
 ac_cv_library_combo=$withval,
 ac_cv_library_combo=$ac_cv_library_combo

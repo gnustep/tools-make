@@ -110,10 +110,16 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
   OBJC_LIBS = $(OBJC_LIB_FLAG) -fobjc-nonfragile-abi
   RUNTIME_FLAG = -fobjc-runtime=gnustep-1.8 -fblocks -fno-objc-legacy-dispatch
   RUNTIME_DEFINE = -DGNUSTEP_RUNTIME=1 -D_NONFRAGILE_ABI=1
-  # By default we enable ARC for ng code, but projects may disable it
-  # by defining GS_WITH_ARC=0 at the start of their GNUmakefile
+  # Projects may control the use of ARC by defining GS_WITH_ARC=1
+  # or GS_WITH_ARC=0 at the start of their GNUmakefile, or in the environment,
+  # or as an argument to the 'make' command.
+  # The default behavior is not to use ARC, unless GNUSTEP_NG_ARC is
+  # set to 1 (perhaps in the GNUstep config file; GNUstep.conf).
+  #
   ifeq ($(GS_WITH_ARC),)
-    GS_WITH_ARC = 1
+    ifeq ($(GNUSTEP_NG_ARC), 1)
+      GS_WITH_ARC=1
+    endif
   endif
   ifeq ($(GS_WITH_ARC), 1)
     RUNTIME_FLAG += -fobjc-arc

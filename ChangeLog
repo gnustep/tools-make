@@ -1,9 +1,19 @@
+2016-03-02 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Improve selection of clang when 'ng' runtime library
+	is selected.
+	* configure: Regenerate.
+	* library-combo.make: Add support for ARC with the 'ng' runtime
+	setting.  Enabled by defining GS_WITH_ARC=1 at the start of the
+	GNUmakefile or in the environment or in the 'make' arguments.
+
 2016-03-02 Niels Grewe <niels.grewe@halbordnung.de>
+
 	* Master/documentation.make:
-	Support skipping the documentation build if skip_documentation=yes
+	Support skipping the documentation build if documentation=no
 	is supplied
 	* Documentation/gnustep-make.texi:
-	Document the new skip_documentation feature (and messages=yes, which
+	Document the new documentation=no feature (and messages=yes, which
 	as also missing).
 
 2015-12-11 23:34-EST Gregory John Casamento <greg.casamento@gmail.com>
