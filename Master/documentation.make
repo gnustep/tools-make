@@ -24,7 +24,7 @@ ifeq ($(RULES_MAKE_LOADED),)
 include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
-ifeq ($(skip_documentation),yes)
+ifeq ($(documentation),no)
 internal-all::
   $(info Not building documentation on user request)
 internal-install::

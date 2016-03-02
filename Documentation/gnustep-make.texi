@@ -1524,15 +1524,16 @@ verbosity and see all the commands the make is executing.
 make messages=yes
 @end smallexample
 
-@defvar skip_documentation
-@code{skip_documentation} controls whether the documentation targets in
+@defvar documentation
+@code{documentation} controls whether the documentation targets in
 a project will be executed. If you don't desire building the
 documentation (which might require a working LaTeX installation, etc.)
-you can set this to @samp{yes}.
+you can set this to @samp{no}. Otherwise the documentation will
+be built.
 @end defvar
 
 @smallexample
-make skip_documentation=yes
+make documentation=no
 @end smallexample
 
 @bye
