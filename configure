@@ -1430,19 +1430,9 @@ Optional Features:
 --enable-strict-v2-mode
   Enable strict gnustep-make version 2 mode by default.  Use this
   option to have gnustep-make be aggressively backwards-incompatible
-  with gnustep-make version 1.  You can use it when you are debugging /
-  upgrading your makefiles and software to gnustep-make version 2 and
-  want to test test that they do not depend on obsolete or deprecated
-  version 1 features and variables.  Important: you must never ship
-  gnustep-make to end-users with --enable-strict-v2-mode as it would
-  cause extremely confusing and dangerous problems with software that
-  has not been updated to gnustep-make v2 yet.  Use it only on test
-  builds or development machines to test that makefiles and software
-  have been updated.  Make sure to use it extremely carefully with old
-  makefiles because it can produce unpredictable and dangerous results
-  (for examples, since GNUSTEP_SYSTEM_ROOT is undefined when using
-  --enable-strict-v2-mode, installing into GNUSTEP_SYSTEM_ROOT/Headers
-  would actually install into /Headers).
+  with gnustep-make version 1.  You should use it to help upgrade old
+  makefiles.  Packegers should make sure that old makefiles have been
+  upgraded before releasing builds using this option.
 
 
 --enable-absolute-install-paths
@@ -4613,7 +4603,7 @@ $as_echo_n "checking if we should enable strict gnustep-make version 2 mode by d
 if test "${enable_strict_v2_mode+set}" = set; then :
   enableval=$enable_strict_v2_mode; ac_cv_strict_v2_mode=$enableval
 else
-  ac_cv_strict_v2_mode="no"
+  ac_cv_strict_v2_mode="yes"
 fi
 
 
@@ -4621,12 +4611,14 @@ if test "$ac_cv_strict_v2_mode" = "yes"; then
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; };
   GNUSTEP_MAKE_STRICT_V2_MODE="yes"
-  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Use strict version 2 mode at your own risk; it must only be used on development/test systems" >&5
-$as_echo "$as_me: WARNING: Use strict version 2 mode at your own risk; it must only be used on development/test systems" >&2;}
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Useing strict version 2 mode; ancient makefiles may need to be updated" >&5
+$as_echo "$as_me: WARNING: Useing strict version 2 mode; ancient makefiles may need to be updated" >&2;}
 else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
 $as_echo "no" >&6; };
   GNUSTEP_MAKE_STRICT_V2_MODE="no"
+  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Disable strict version 2 mode at your own risk; it may allow faulty makefiles to go unnoticed" >&5
+$as_echo "$as_me: WARNING: Disable strict version 2 mode at your own risk; it may allow faulty makefiles to go unnoticed" >&2;}
 fi
 
 

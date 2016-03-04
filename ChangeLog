@@ -1,3 +1,14 @@
+2016-03-04 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac: Enable strict v2 mode by default
+	* configure: regenerate
+	* README.Packaging: Warn about updating ancient makefiles
+	* Documentation/library-combo.7: Talk about ng runtime
+	* Version:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Update prior to new release
+
 2016-03-02 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Improve selection of clang when 'ng' runtime library

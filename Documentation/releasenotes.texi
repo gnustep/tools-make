@@ -4,6 +4,20 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.6.8
+
+Configure option '--with-library-combo=ng-gnu-gnu' to use the 'Next Generation' setup of the latest ObjectiveC-2 runtime and compiler features rather than traditional runtime.  Requires the new runtime and a recent clang compiler.
+
+Command line option 'documentation=no' to suppress builds of documentation.
+
+Integration of testsuite for regression/unit testing of libraries using the 'check' target.  In your makefile define libraryname_TEST_DIR = TestsSubdirectory
+
+Various minor bugfixes, documentation spelling corrections etc.
+
+The '--enable-strict-v2-mode' option is now, after eight years, turned on by default (in anticipation of finally removing backward compatibility with version one).  WARNING; Packagers please ensure that you update any old gnustep-make version one makefiles.
+
+Garbage collection support to be removed at the next release.
+
 @section Version 2.6.7
 
 Improved package building support

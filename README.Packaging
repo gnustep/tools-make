@@ -163,17 +163,16 @@ filesystem layout.
 =================
 
 The library-combo defines the main components of your Objective-C
-environment.  Unless you're on Darwin or Apple, it's unlikely that you
-ever need to bother with library-combos and the default gnu-gnu-gnu is
-perfect for you.
+environment.
 
-"gnu-gnu-gnu" means that the system is using the GNU Objective-C
-runtime library, the GNU foundation/base library, and the GNU app/gui
-library.  It is possible in some situations to replace some of these
-components with Apple libraries, for example, eg, the apple-gnu-gnu
-library combo would mean using the Apple Objective-C runtime library
-instead of the GNU one.
+The default is currently "gnu-gnu-gnu", which means that the system
+is using the GNU Objective-C runtime library, the GNU foundation/base
+library, and the GNU app/gui library.
 
+You may well wish to use "ng-gnu-gnu", which means that the runtime
+library is the GNUstep runtime for ObjectiveC-2, and also means that
+the latest language features are expected with the compiler.
+To use this you must ship the GNUstep runtime and clang-3.1 or later.
 
 4. CONFIGURATION FILE
 =====================
@@ -253,7 +252,7 @@ command now looks something like
 
 Or, if you really wanted to change a lot of things, it might look like
 
- ./configure --with-layout={FILE} --with-config-file={LOCATION} --with-user-defaults-dir={DEFAULTS_DIR}
+ ./configure --with-layout={FILE} --with-library-combo=ng-gnu-gnu --with-config-file={LOCATION} --with-user-defaults-dir={DEFAULTS_DIR}
 
 
 8. USER ENVIRONMENT

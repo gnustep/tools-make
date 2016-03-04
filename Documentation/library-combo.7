@@ -39,12 +39,12 @@ etc. flags.
 An important issue is to let to a package the ability to deal with various libraries and configurations available now:
 .TP
 .B Objective-C runtimes
-In the Objective-C world there are three major runtimes: the NeXT runtime, the Apple runtime and the
+In the Objective-C world there are three major runtimes: the GNUstep runtime, the Apple runtime and the
 .SM GNU
 runtime (both with and without garbage collection enabled). They are different in several respects and a program or library that works at the runtime level should be aware of them. 
 .TP
 .B Foundation libraries
-There are several Foundation libraries an application or tool can be written on top of: NeXT Foundation library which runs on NeXTStep/OPENSTEP systems, gnustep-base, libFoundation and Apple Cocoa system.
+There are different Foundation libraries an application or tool can be written on top of: gnustep-base, libFoundation and Apple Cocoa system.
 .TP
 .B Graphical interfaces
 Until now three libraries provide or try to provide OpenStep compliant systems: the AppKit from NeXT, gnustep-gui and Cocoa from Apple.
@@ -52,17 +52,17 @@ Until now three libraries provide or try to provide OpenStep compliant systems: 
 If a program wants to work with all the possible combinations it will have to provide different binaries for each combination because it's not possible to have a tool compiled for NeXT Foundation that runs with gnustep-base or vice-versa. To summarize, a program can be compiled for these combinations:
 .TP
 .B Objective-C runtime
-nx (for NeXT), gnu (for
+ng (for GNUstep Next Generation), gnu (for
 .SM GNU
-without garbage collection), gnugc (for
+without garbage collection, or for GNUstep without latest language features), gnugc (for
 .SM GNU
-with garbage collection), apple (for Apple)
+with garbage collection), apple (for Apple), nx (for NeXT)
 .TP
 .B Foundation library
-nx (for NeXT), gnu (for gnustep-base), fd (for libFoundation), apple (for Apple Cocoa)
+gnu (for gnustep-base), fd (for libFoundation), apple (for Apple Cocoa), nx (for NeXT Foundation)
 .TP
 .B GUI library
-nx (for NeXT), gnu (for gnustep-gui), apple (for Apple Cocoa)
+gnu (for gnustep-gui), apple (for Apple Cocoa), nx (for NeXT GUI)
 .PP
 We'll denote the fact that an application was compiled for a certain combination of the above values by using the abbreviations of the different subsystems and placing dashes between them. For example an application compiled for NeXT Foundation using NeXT AppKit will have the compile attribute nx\-nx\-nx. An application compiled for Apple Cocoa with the
 .SM GNU
@@ -80,6 +80,8 @@ under Unix will be denoted by gnu\-gnu\-gnu. Here is a list of some of the possi
      nx		    fd		gnu
 .RS 0
      gnu		    gnu		gnu
+.RS 0
+     ng		    gnu		gnu
 .RS 0
      gnu		    fd		gnu
 .RS 0
