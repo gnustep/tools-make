@@ -52,6 +52,7 @@ any later version published by the Free Software Foundation.
 * GNUmakefile.preamble::        
 * GNUmakefile.postamble::       
 * Common Variables::            
+* Other Variables::            
 @end menu
 
 @node Makefile Introduction, Makefile Structure, Top, Top
@@ -921,6 +922,13 @@ linker as the following example illustrates.
 ADDITIONAL_GUI_LIBS = -lMiscGui
 @end smallexample
 
+@defvar GS_WITH_ARC
+@code{GS_WITH_ARC} may be set to 1 to say that Objective-C source code
+is to be compiled for ARC memory management.  This variable must be set
+before @file{common.make} is included, and only works if the library
+combo includes the 'ng' runtime specification.
+@end defvar
+
 @defvar LIBRARIES_DEPEND_UPON
 @code{LIBRARIES_DEPEND_UPON} is the set of libraries that the shared
 library depends upon, see @ref{library.make} for more information about
@@ -980,7 +988,7 @@ define things that should happen after a process is complete.
 You can even define additional rules such as ones that a particular to
 your specific package or that are to be used by developers only.
 
-@node Common Variables,  , GNUmakefile.postamble, Top
+@node Common Variables, Other Variables, GNUmakefile.postamble, Top
 @section Common Variables (@file{common.make})
 @menu
 * Directory Paths::             
@@ -1333,9 +1341,12 @@ platform, see Cross Compiling.
 @defvar OBJC_RUNTIME_LIB
 @code{OBJC_RUNTIME_LIB} is assigned the code that indicates the
 Objective-C Runtime library which compiled Objective-C programs will
-use; the three possible values are: @samp{gnu} for the GNU Runtime,
-@samp{nx} for the NeXT Runtime, and @samp{sun} for the Sun
-Microsystems Runtime.  The Objective-C Runtime library can be changed
+use; the four possible values are: @samp{ng} for the GNUstep Runtime
+with latest language features turned on at acompile time, @samp{gnu}
+for the GNU Runtime (or the GNUstep runtime with traditional
+language features compiled), @samp{nx} for the NeXT Runtime,
+and @samp{sun} for the Sun Microsystems Runtime.
+The Objective-C Runtime library can be changed
 to use a library other than the default with the @samp{library_combo}
 make parameter, see @ref{Running Make} for more details.  Read
 @ref{Library Combination} for more information on how the Makefile
@@ -1351,7 +1362,8 @@ Objective-C Runtime library that compiled Objective-C programs will
 use.  This macro is useful if the compiled program must execute
 different code based upon the Objective-C Runtime being used.  See
 @ref{GNUmakefile.preamble} for an example on how to pass this
-preprocessor flag when compiling.  The three possible values are:
+preprocessor flag when compiling.  The four possible values are:
+@samp{-DGNUSTEP_RUNTIME=1} for the GNUstep ObjectiveC-2 Runtime,
 @samp{-DGNU_RUNTIME=1} for the GNU Runtime, @samp{-DNeXT_RUNTIME=1}
 for the NeXT Runtime, and @samp{-DSun_RUNTIME=1} for the Sun
 Microsystems Runtime.
@@ -1535,5 +1547,45 @@ be built.
 @smallexample
 make documentation=no
 @end smallexample
+
+@node Other Variables,  , Common Variables, Top
+@section Other Variables
+
+@defvar GS_WITH_ARC
+@code{GS_WITH_ARC = 1} turns on ARC for the current build if using the
+Next Generation runtime setting.
+This variable may be defined as an environment variable, or on the make
+command line, or (usually) at the start of GNUmakefile.
+@end defvar
+The variable needs to be defined before common.make is included, and the library-combo
+needs to be ng-gnu-gnu for it to take effect (in which case it causes the
+-fobjc-arc flag to be used when compiling any Objective-C source files).
+
+@defvar xxx_FILE_FILTER_OUT_FLAGS
+@code{xxx_FILE_FILTER_OUT_FLAGS} (where xxx is the file name, such as mframe.m)
+is a filter-out make pattern of flags to be filtered out 
+from the compilation flags when compiling xxx.
+In exceptional conditions, you might need to want to use different compiler
+flags for a file (for example, if a file doesn't compile with optimization
+turned on, you might want to compile that single file with optimizations
+turned off).
+@end defvar
+@smallexample
+file.m_FILE_FILTER_OUT_FLAGS = -O% -fomit-frame-pointer
+@end smallexample
+This says that when compiling file.m we should disable optimization flags,
+and also remove frame pointer information.
+
+@defvar xxx_FILE_FLAGS
+@code{xxx_FILE_FLAGS} (where xxx is the file name, such as main.m) 
+add special compilation flags to be used when compiling xxx.
+In exceptional conditions, you might need to want to use different compiler
+flags for a file (for example, if ou want to turn on automated reference
+counting for that file)
+@end defvar
+@smallexample
+file.m_FILE_FLAGS = -fobjc-arc
+@end smallexample
+This says that when compiling file.m we should turn on ARC.
 
 @bye

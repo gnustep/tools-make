@@ -13,6 +13,8 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
 Configure option '--with-library-combo=ng-gnu-gnu' to use the 'Next Generation' setup of the latest ObjectiveC-2 runtime and compiler features rather than traditional runtime.  Requires the new runtime and a recent clang compiler.
 
+With the 'ng' runtime in use, you can define GS_WITH_ARC=1 at the start of a makefile, or in your environment, or in the command line arguments to have objC code built using ARC.
+
 Command line option 'documentation=no' to suppress builds of documentation.
 
 Integration of testsuite for regression/unit testing of libraries using the 'check' target.  In your makefile define libraryname_TEST_DIR = TestsSubdirectory
