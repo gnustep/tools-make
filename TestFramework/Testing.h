@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
+#include <string.h>
 
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDate.h>
