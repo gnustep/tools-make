@@ -41,6 +41,8 @@ AC_CONFIG_SRCDIR([application.make])
 
 targetArgument=${target}
 
+AC_CANONICAL_TARGET([])
+
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
@@ -149,8 +151,6 @@ OBJCXX="${CXX}"
 
 # We may use egrep for some tests further down below
 AC_PROG_EGREP
-
-AC_CANONICAL_TARGET([])
 
 #--------------------------------------------------------------------
 # Check if we are using Apple cc

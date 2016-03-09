@@ -1513,7 +1513,7 @@ make GNUSTEP_INSTALLATION_DOMAIN=SYSTEM
 @end smallexample
 
 This command states that the @code{SYSTEM} domain should be used as
-the installation root directory; in particualr applications in the
+the installation root directory; in particular applications in the
 package will be installed in the @file{$GNUSTEP_SYSTEM_APPS}
 directory, libraries in the package will be installed under the
 @file{$GNUSTEP_SYSTEM_LIBRARIES} directory, command line tools will be
@@ -1551,15 +1551,29 @@ make documentation=no
 @node Other Variables,  , Common Variables, Top
 @section Other Variables
 
+Since gnustep-make is a system of scripts rather than compiled code,
+all the source is always present and available to read, so the main
+documentation is intentionally provided as comments within that source.
+
+In particular, gnustep-make variables are documented at the head of the
+project-type files in which they are used.
+eg $GNUSTEP_MAKEFILES/Instance/library.make for the variables
+used to build a library.
+
+However, there are some variables which, while not in provided in
+@file{common.make} are of more general use, and therefore may reasonably
+be documented here:
+
 @defvar GS_WITH_ARC
 @code{GS_WITH_ARC = 1} turns on ARC for the current build if using the
 Next Generation runtime setting.
 This variable may be defined as an environment variable, or on the make
 command line, or (usually) at the start of GNUmakefile.
 @end defvar
-The variable needs to be defined before common.make is included, and the library-combo
-needs to be ng-gnu-gnu for it to take effect (in which case it causes the
--fobjc-arc flag to be used when compiling any Objective-C source files).
+The variable needs to be defined before @file{common.make} is included,
+and the library-combo needs to be ng-gnu-gnu for it to take effect (in
+which case it causes the -fobjc-arc flag to be used when compiling any
+Objective-C source files).
 
 @defvar xxx_FILE_FILTER_OUT_FLAGS
 @code{xxx_FILE_FILTER_OUT_FLAGS} (where xxx is the file name, such as mframe.m)
