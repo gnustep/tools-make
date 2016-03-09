@@ -21,6 +21,7 @@
 #define Testing_h
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdarg.h>
 
 #import <Foundation/NSAutoreleasePool.h>
