@@ -1574,6 +1574,15 @@ The variable needs to be defined before @file{common.make} is included,
 and the library-combo needs to be ng-gnu-gnu for it to take effect (in
 which case it causes the -fobjc-arc flag to be used when compiling any
 Objective-C source files).
+Alternatively, to switch on ARC for individual files, you can have a makefile
+fragment like this:
+@smallexample
+ifeq ($(OBJC_RUNTIME_LIB), ng)
+file1.m_FILE_FLAGS+=-fobjc-arc
+file2.m_FILE_FLAGS+=-fobjc-arc
+file9.m_FILE_FLAGS+=-fobjc-arc
+endif
+@end smallexample
 
 @defvar xxx_FILE_FILTER_OUT_FLAGS
 @code{xxx_FILE_FILTER_OUT_FLAGS} (where xxx is the file name, such as mframe.m)
