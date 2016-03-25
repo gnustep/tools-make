@@ -534,9 +534,6 @@ endif
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
   OBJC_RUNTIME = GNU
 endif
-ifeq ($(OBJC_RUNTIME_LIB), gnugc)
-  OBJC_RUNTIME = GNU
-endif
 
 # If all of the following really needed ?  If the system is not
 # flattened, multiple Foundation libraries are not permitted anyway,

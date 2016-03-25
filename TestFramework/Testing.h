@@ -28,7 +28,6 @@
 #import <Foundation/NSAutoreleasePool.h>
 #import <Foundation/NSDate.h>
 #import <Foundation/NSException.h>
-#import <Foundation/NSGarbageCollector.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSObject.h>
 #import <Foundation/NSRegularExpression.h>
@@ -181,11 +180,9 @@ static void testStart()
     { \
       int _cond; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
-      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       testLineNumber = __LINE__; \
       testStart(); \
       _cond = (int)(testExpression__); \
-      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " testFormat__, __FILE__, \
 	__LINE__, ## __VA_ARGS__); \
     } \
@@ -231,7 +228,6 @@ static void testStart()
       id _obj; \
       id _exp; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
-      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       testLineNumber = __LINE__; \
       testStart(); \
       _obj = (id)(testExpression__);\
@@ -248,7 +244,6 @@ static void testStart()
         { \
           _cond = [_exp isEqual: _obj]; \
         } \
-      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " testFormat__, __FILE__, \
         __LINE__, ## __VA_ARGS__); \
       if (0 == _cond) \
@@ -301,7 +296,6 @@ static void testStart()
       id _exp; \
       id _pat; \
       id _tmp = testRaised; testRaised = nil; [_tmp release]; \
-      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       testLineNumber = __LINE__; \
       testStart(); \
       _obj = (id)(testExpression__);\
@@ -322,7 +316,6 @@ static void testStart()
         { \
           _cond = NO; \
         } \
-      [[NSGarbageCollector defaultCollector] collectExhaustively]; \
       pass(_cond, "%s:%d ... " testFormat__, __FILE__, \
         __LINE__, ## __VA_ARGS__); \
       if (0 == _cond) \

@@ -1,3 +1,14 @@
+2016-03-25 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make:
+	* config.make.in:
+	* configure.ac:
+	* library-combo.make:
+	* Documentation/library-combo.7:
+	* TestFramework/Testing.h:
+	* configure:
+	Remove garbage collection support
+
 2016-03-04 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac: Enable strict v2 mode by default

@@ -62,12 +62,6 @@ combo_list = $(subst -, ,$(the_library_combo))
 # FOUNDATION_LIB and the GUI_LIB variable manually overriding our
 # determination.
 
-# gc=yes is just another way of saying you want OBJC_RUNTIME_LIB = gnugc
-# to be used!
-ifeq ($(gc), yes)
-  OBJC_RUNTIME_LIB = gnugc
-endif
-
 ifeq ($(OBJC_RUNTIME_LIB),)
   OBJC_RUNTIME_LIB = $(word 1,$(combo_list))
 endif
@@ -124,17 +118,6 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
   ifeq ($(GS_WITH_ARC), 1)
     RUNTIME_FLAG += -fobjc-arc
     RUNTIME_DEFINE += -DGS_WITH_ARC=1
-  endif
-endif
-
-ifeq ($(OBJC_RUNTIME_LIB), gnugc)
-  OBJC_LDFLAGS = 
-  OBJC_LIB_DIR =
-  OBJC_LIBS = $(OBJC_LIB_FLAG) -ldl -lgc
-  RUNTIME_FLAG   = -fgnu-runtime
-  RUNTIME_DEFINE = -DGNU_RUNTIME=1 -DGS_WITH_GC=1
-  ifeq ($(debug), yes)
-    RUNTIME_DEFINE += -DGC_DEBUG
   endif
 endif
 
@@ -200,9 +183,6 @@ ifeq ($(FOUNDATION_LIB), fd)
 
   FND_DEFINE = -DLIB_FOUNDATION_LIBRARY=1
   FND_LIBS = -lFoundation
-
-  # If gc=yes was passed and libFoundation was compiled with Boehm's
-  # GC support, use the appropriate libraries
 
   ifeq ($(gc), yes)
     ifeq ($(LIBFOUNDATION_WITH_GC), yes)

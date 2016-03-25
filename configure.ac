@@ -47,30 +47,6 @@ AC_CANONICAL_TARGET([])
 # Setup the library combination
 #--------------------------------------------------------------------
 
-#--------------------------------------------------------------------
-# Check if objc should use garbage collection.
-#--------------------------------------------------------------------
-AC_ARG_ENABLE(objc-garbage-collection, [
---enable-objc-garbage-collection
-   Enable objc garbage collection.  Use this option if you want
-   to use garbage collection for objective-c software. This is equivalent
-   to using --with-library-combo=gnugc-gnu-gnu to set the runtime library
-   to be the gnu runtime with garbage collection.
-], 
-OBJC_WITH_GC=$enableval,
-OBJC_WITH_GC="")
-
-if test "$OBJC_WITH_GC" = "yes"; then
-  ac_cv_library_combo="gnugc-gnu-gnu"
-elif test "$OBJC_WITH_GC" = "no"; then
-  if test "$ac_cv_library_combo"="gnugc-gnu-gnu"; then
-    ac_cv_library_combo="gnu-gnu-gnu"
-  fi
-else
-  OBJC_WITH_GC=no
-fi
-AC_SUBST(OBJC_WITH_GC)
-
 AC_MSG_CHECKING(for library combo)
 AC_ARG_WITH(library-combo,[
 --with-library-combo
@@ -1213,8 +1189,7 @@ OBJC_LIB_FLAG="$withval",
 OBJC_LIB_FLAG=""
 )
 # We pass the flag, unchanged, to gnustep-make - if it's empty,
-# gnustep-make will be free to use -lobjc or -lobjc_gc depending on
-# the case.
+# gnustep-make will be free to use -lobjc
 AC_SUBST(OBJC_LIB_FLAG)
 
 # But we need to compute, and print out, what flag we're using now.
@@ -1229,13 +1204,6 @@ if test "$OBJC_RUNTIME_LIB" = "gnu"; then
     OBJC_FINAL_LIB_FLAG=-lobjc
   fi
   OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
-if test "$OBJC_RUNTIME_LIB" = "gnugc"; then
-  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc_gc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG -ldl -lgc"
 fi
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"

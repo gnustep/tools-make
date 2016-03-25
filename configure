@@ -707,7 +707,6 @@ LDFLAGS
 CFLAGS
 CC
 ac_cv_library_combo
-OBJC_WITH_GC
 target_os
 target_vendor
 target_cpu
@@ -761,7 +760,6 @@ SHELL'
 ac_subst_files=''
 ac_user_opts='
 enable_option_checking
-enable_objc_garbage_collection
 with_library_combo
 enable_install_p
 with_tar
@@ -1409,13 +1407,6 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-
---enable-objc-garbage-collection
-   Enable objc garbage collection.  Use this option if you want
-   to use garbage collection for objective-c software. This is equivalent
-   to using --with-library-combo=gnugc-gnu-gnu to set the runtime library
-   to be the gnu runtime with garbage collection.
-
 
 --disable-install-p
   Disable using 'install -p' when installing files.  By default,
@@ -2415,28 +2406,6 @@ test -n "$target_alias" &&
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
-
-#--------------------------------------------------------------------
-# Check if objc should use garbage collection.
-#--------------------------------------------------------------------
-# Check whether --enable-objc-garbage-collection was given.
-if test "${enable_objc_garbage_collection+set}" = set; then :
-  enableval=$enable_objc_garbage_collection; OBJC_WITH_GC=$enableval
-else
-  OBJC_WITH_GC=""
-fi
-
-
-if test "$OBJC_WITH_GC" = "yes"; then
-  ac_cv_library_combo="gnugc-gnu-gnu"
-elif test "$OBJC_WITH_GC" = "no"; then
-  if test "$ac_cv_library_combo"="gnugc-gnu-gnu"; then
-    ac_cv_library_combo="gnu-gnu-gnu"
-  fi
-else
-  OBJC_WITH_GC=no
-fi
-
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library combo" >&5
 $as_echo_n "checking for library combo... " >&6; }
@@ -5545,8 +5514,7 @@ else
 fi
 
 # We pass the flag, unchanged, to gnustep-make - if it's empty,
-# gnustep-make will be free to use -lobjc or -lobjc_gc depending on
-# the case.
+# gnustep-make will be free to use -lobjc
 
 
 # But we need to compute, and print out, what flag we're using now.
@@ -5561,13 +5529,6 @@ if test "$OBJC_RUNTIME_LIB" = "gnu"; then
     OBJC_FINAL_LIB_FLAG=-lobjc
   fi
   OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
-if test "$OBJC_RUNTIME_LIB" = "gnugc"; then
-  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc_gc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG -ldl -lgc"
 fi
 if test "$OBJC_RUNTIME_LIB" = "nx"; then
   CFLAGS="$CFLAGS -DNeXT_RUNTIME"

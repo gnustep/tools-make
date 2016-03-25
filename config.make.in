@@ -75,14 +75,8 @@ CCFLAGS  = @CXXFLAGS@
 # configured.
 GNUSTEP_DEFAULT_DEBUG = @GNUSTEP_DEFAULT_DEBUG@
 
-ifeq ($(OBJC_RUNTIME_LIB), gnugc)
-  ifeq ($(OBJC_LIB_FLAG),)
-    OBJC_LIB_FLAG = -lobjc_gc
-  endif
-else
-  ifeq ($(OBJC_LIB_FLAG),)
-    OBJC_LIB_FLAG = -lobjc
-  endif
+ifeq ($(OBJC_LIB_FLAG),)
+  OBJC_LIB_FLAG = -lobjc
 endif
 
 EXEEXT = @EXEEXT@
@@ -216,11 +210,6 @@ USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 # Whether the ObjC compiler supports -fobjc-nonfragile-abi
 #
 USE_NONFRAGILE_ABI = @USE_NONFRAGILE_ABI@
-
-#
-# Whether we are using the ObjC garbage cllection library.
-#
-OBJC_WITH_GC = @OBJC_WITH_GC@
 
 #
 # Whether the compiler is GCC with precompiled header support
