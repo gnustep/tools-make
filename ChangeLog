@@ -1,3 +1,9 @@
+2016-05-13  Yavor Doganov  <yavor@gnu.org>
+
+	* Instance/framework.make:
+	Forgotten patch to allow multiple versions of a framework to be
+	installed.
+
 2016-05-13 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* GNUmakefile.in:
