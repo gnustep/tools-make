@@ -1,3 +1,14 @@
+2016-05-13 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* GNUmakefile.in:
+	* TestFramework/gnustep-tests.in:
+	* config.make.in:
+	* common.make:
+	* library-combo.make:
+	* configure.ac:
+	* configure:
+	Minor tweaks... use ARC by default if ng runtime is specified
+
 2016-03-25 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make:

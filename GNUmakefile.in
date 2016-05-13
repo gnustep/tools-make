@@ -88,10 +88,12 @@ ifeq ($(GNUSTEP_IS_FLATTENED), no)
   override GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
   override GNUSTEP_TARGET_LDIR = $(GNUSTEP_TARGET_DIR)/$(GNUSTEP_LIB_COMBO)
   override MAYBE_LIBRARY_COMBO = $(GNUSTEP_LIB_COMBO)
+  override MAKE_CONFIG_DIR = $(GNUSTEP_TARGET_LDIR)
 else
   override GNUSTEP_TARGET_DIR = .
   override GNUSTEP_TARGET_LDIR = .
   override MAYBE_LIBRARY_COMBO = .
+  override MAKE_CONFIG_DIR = $(GNUSTEP_LIB_COMBO)
 endif
 
 export GNUSTEP_TARGET_DIR
@@ -193,6 +195,7 @@ install: generated-files
 		"$(makedir)/$(GNUSTEP_TARGET_CPU)" \
 		"$(makedir)/$(GNUSTEP_TARGET_DIR)" \
 		"$(makedir)/$(GNUSTEP_TARGET_LDIR)" \
+		"$(makedir)/$(GNUSTEP_LIB_COMBO)" \
 		"$(makedir)/Additional" \
 		"$(makedir)/Auxiliary" \
 		"$(makedir)/Master" \
@@ -246,7 +249,7 @@ install: generated-files
 	   $(INSTALL_DATA) -m 755 "$(srcdir)/bake_debian_files.sh" "$(makedir)"; \
 	   $(INSTALL_DATA) config-noarch.make "$(makedir)"; \
 	   $(INSTALL_DATA) filesystem.make "$(makedir)"; \
-	   $(INSTALL_DATA) config.make "$(makedir)/$(GNUSTEP_TARGET_LDIR)")
+	   $(INSTALL_DATA) config.make "$(makedir)/$(MAKE_CONFIG_DIR)")
 	$(EC)(echo "Installing Test Framework scripts"; \
 	  $(INSTALL_PROGRAM) -m 755 TestFramework/gnustep-tests "$(tooldir)"; \
 	  $(INSTALL_PROGRAM) -m 755 $(srcdir)/TestFramework/Summary.sh "$(testdir)")
@@ -258,19 +261,19 @@ install: generated-files
 	  "$(srcdir)/mkinstalldirs" "$(mandir)/man1" \
 	                          "$(mandir)/man7"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/debugapp.1" "$(mandir)/man1"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/debugapp.1.gz" && gzip -9 "$(mandir)/man1/debugapp.1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/debugapp.1.gz" && gzip -9 -n "$(mandir)/man1/debugapp.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/gnustep-config.1" "$(mandir)/man1"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/gnustep-config.1.gz" && gzip -9 "$(mandir)/man1/gnustep-config.1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/gnustep-config.1.gz" && gzip -9 -n "$(mandir)/man1/gnustep-config.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/gnustep-tests.1" "$(mandir)/man1"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/gnustep-tests.1.gz" && gzip -9 "$(mandir)/man1/gnustep-tests.1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/gnustep-tests.1.gz" && gzip -9 -n "$(mandir)/man1/gnustep-tests.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/openapp.1" "$(mandir)/man1"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/openapp.1.gz" && gzip -9 "$(mandir)/man1/openapp.1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/openapp.1.gz" && gzip -9 -n "$(mandir)/man1/openapp.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/opentool.1" "$(mandir)/man1"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/opentool.1.gz" && gzip -9 "$(mandir)/man1/opentool.1"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man1/opentool.1.gz" && gzip -9 -n "$(mandir)/man1/opentool.1"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/GNUstep.7" "$(mandir)/man7"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/GNUstep.7.gz" && gzip -9 "$(mandir)/man7/GNUstep.7"; \
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/GNUstep.7.gz" && gzip -9 -n "$(mandir)/man7/GNUstep.7"; \
 	  $(INSTALL_DATA) "$(srcdir)/Documentation/library-combo.7" "$(mandir)/man7"; \
-	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/library-combo.7.gz" && gzip -9 "$(mandir)/man7/library-combo.7")
+	  which gzip > /dev/null 2>&1 && rm -f "$(mandir)/man7/library-combo.7.gz" && gzip -9 -n "$(mandir)/man7/library-combo.7")
 	$(EC)(if [ "@GNUSTEP_STRIP_MAKEFILES@" = "strip" ]; then \
 	   echo "Stripping makefiles and shell scripts..."; \
 	   cd "$(makedir)"; ./strip_makefiles.sh; \
@@ -334,7 +337,7 @@ uninstall:
 	rm -f "$(GNUSTEP_SYSTEM_ROOT)/share/config.site"
 	rm -f "$(makedir)/config-noarch.make"
 	rm -f "$(makedir)/filesystem.make"
-	rm -f "$(makedir)/$(GNUSTEP_TARGET_LDIR)/config.make"
+	rm -f "$(makedir)/$(MAKE_CONFIG_DIR)/config.make"
 	rm -f "$(GNUSTEP_CONFIG_FILE)"
 	-rmdir "$(GNUSTEP_CONFIG_FILE_DIR)"
 	-rmdir "$(testdir)"
@@ -347,6 +350,7 @@ uninstall:
 	-rmdir "$(makedir)/$(GNUSTEP_TARGET_LDIR)"
 	-rmdir "$(makedir)/$(GNUSTEP_TARGET_DIR)"
 	-rmdir "$(makedir)/$(GNUSTEP_TARGET_CPU)"
+	-rmdir "$(makedir)/$(GNUSTEP_LIB_COMBO)"
 	-rmdir "$(makedir)"
 	-rmdir "$(tooldir)"
 

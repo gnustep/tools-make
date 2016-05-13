@@ -78,6 +78,70 @@ REL_PATH_SCRIPT        = $(GNUSTEP_MAKEFILES)/relative_path.sh
 #
 include $(GNUSTEP_MAKEFILES)/names.make
 
+# Get library_combo from LIBRARY_COMBO or default_library_combo (or
+# from the command line if the user defined it on the command line by
+# invoking `make library_combo=gnu-gnu-gnu'; command line
+# automatically takes the precedence over makefile definitions, so
+# setting library_combo here has no effect if the user already defined
+# it on the command line).
+ifdef LIBRARY_COMBO
+  library_combo := $(LIBRARY_COMBO)
+else
+  library_combo := $(default_library_combo)
+endif
+
+# Handle abbreviations for library combinations.
+the_library_combo = $(library_combo)
+
+ifeq ($(the_library_combo), nx)
+  the_library_combo = nx-nx-nx
+endif
+
+ifeq ($(the_library_combo), apple)
+  the_library_combo = apple-apple-apple
+endif
+
+ifeq ($(the_library_combo), gnu)
+  the_library_combo = gnu-gnu-gnu
+endif
+
+ifeq ($(the_library_combo), ng)
+  the_library_combo = ng-gnu-gnu
+endif
+
+ifeq ($(the_library_combo), fd)
+  the_library_combo = gnu-fd-gnu
+endif
+
+# Strip out the individual libraries from the library_combo string
+combo_list = $(subst -, ,$(the_library_combo))
+
+# NB: The user can always specify any of the OBJC_RUNTIME_LIB, the
+# FOUNDATION_LIB and the GUI_LIB variable manually overriding our
+# determination.
+
+ifeq ($(OBJC_RUNTIME_LIB),)
+  OBJC_RUNTIME_LIB = $(word 1,$(combo_list))
+endif
+
+ifeq ($(FOUNDATION_LIB),)
+  FOUNDATION_LIB = $(word 2,$(combo_list))
+endif
+
+ifeq ($(GUI_LIB),)
+  GUI_LIB = $(word 3,$(combo_list))
+endif
+
+# Now build and export the final LIBRARY_COMBO variable, which is the
+# only variable (together with OBJC_RUNTIME_LIB, FOUNDATION_LIB and
+# GUI_LIB) the other makefiles need to know about.  This LIBRARY_COMBO
+# might be different from the original one, because we might have
+# replaced it with a library_combo provided on the command line, or we
+# might have fixed up parts of it in accordance to some custom
+# OBJC_RUNTIME_LIB, FOUNDATION_LIB and/or GUI_LIB !
+export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)
+
+
 ifeq ($(GNUSTEP_IS_FLATTENED), no)
   GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
   GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
@@ -90,14 +154,18 @@ else
   GNUSTEP_TARGET_LDIR = .
 endif
 
-# Then, work out precisely library combos etc
-include $(GNUSTEP_MAKEFILES)/library-combo.make
-
 #
 # Get the config information (host/target/library-combo specific),
 # this includes CC, OPTFLAG etc.
 #
-include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
+ifeq ($(GNUSTEP_IS_FLATTENED),yes)
+  include $(GNUSTEP_MAKEFILES)/$(LIBRARY_COMBO)/config.make
+else
+  include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
+endif
+
+# Then, work out precisely library combos etc
+include $(GNUSTEP_MAKEFILES)/library-combo.make
 
 # GNUSTEP_BUILD_DIR is the directory in which anything generated
 # during the build will be placed.  '.' means it's the same as the
@@ -350,8 +418,8 @@ endif
 # So all instances of INSTALL_ROOT_DIR in user's makefiles should be
 # replaced with DESTDIR.
 #
-# Anyway, until all makefiles have been updated, we set INSTALL_ROOT_DIR for backwards 
-# compatibility.
+# Anyway, until all makefiles have been updated, we set INSTALL_ROOT_DIR
+# for backwards compatibility.
 #
 ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
   ifneq ($(INSTALL_ROOT_DIR),)
@@ -414,12 +482,18 @@ endif
 
 # First, we add paths based in the USER domain.
 
+# But don't add GNUSTEP_USER_ROOT paths if being built by dpkg-buildpackage;
+# this is a Debian-specific convenience for package builders.
+ifndef DEB_BUILD_ARCH
+
 # Please note that the following causes GS_HEADER_PATH to be evaluated
 # with the variable domain equal to USER, which gives the effect we
 # wanted.
 GNUSTEP_HEADERS_DIRS = $(foreach domain,USER,$(GS_HEADER_PATH))
 GNUSTEP_LIBRARIES_DIRS = $(foreach domain,USER,$(GS_LIBRARY_PATH))
 GNUSTEP_FRAMEWORKS_DIRS = $(foreach domain,USER,$(GS_FRAMEWORK_PATH))
+
+endif
 
 # Second, if LOCAL flags are different from USER flags (which have
 # already been added), we add the LOCAL flags too.

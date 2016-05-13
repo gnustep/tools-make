@@ -212,6 +212,11 @@ USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 USE_NONFRAGILE_ABI = @USE_NONFRAGILE_ABI@
 
 #
+# Whether the ObjC compiler supports -fobjc-arc
+#
+USE_ARC = @USE_ARC@
+
+#
 # Whether the compiler is GCC with precompiled header support
 #
 GCC_WITH_PRECOMPILED_HEADERS = @GCC_WITH_PRECOMPILED_HEADERS@

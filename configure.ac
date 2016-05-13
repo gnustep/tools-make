@@ -97,6 +97,7 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 
 # The ng runtime library setting requires clang rather than gcc
 if test "$OBJC_RUNTIME_LIB" = "ng"; then
+  defaultng=yes;
   if test "$OBJCC" = ""; then
     OBJCC=clang
   fi
@@ -109,6 +110,8 @@ if test "$OBJC_RUNTIME_LIB" = "ng"; then
   if test "$CXX" = ""; then
     CXX=clang++
   fi
+else
+  defaultng=no;
 fi
 
 AC_PROG_CC
@@ -1379,18 +1382,18 @@ CXXFLAGS="$CXXFLAGS_saved"
 CXXPPFLAGS="$CXXPPFLAGS_saved"
 AC_LANG_POP(C++)
 
+if test "$OBJC_RUNTIME_LIB" != ng; then
 #--------------------------------------------------------------------
-# Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!
+# Check if compiler supports -fobjc-nonfragile-abi, and if so, turn it on!
 #--------------------------------------------------------------------
 
-# TODO: Enable it by default if the compiler supports it :-)
 AC_ARG_ENABLE(objc-nonfragile-abi, [
 --enable-objc-nonfragile-abi
    Use the non-fragile ABI for Objective-C.  Use this option if you want
    to use non-fragile instance variables provided by clang and libobjc2.
 ], 
 USE_NONFRAGILE_ABI=$enableval,
-USE_NONFRAGILE_ABI=unset)
+USE_NONFRAGILE_ABI=notset)
 
 AC_MSG_CHECKING(whether we should use the nonfragile ABI)
 if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
@@ -1437,8 +1440,68 @@ __has_feature(objc_nonfragile_abi)
     AC_MSG_RESULT(not requested by user)
   fi
 fi
-
+fi
 AC_SUBST(USE_NONFRAGILE_ABI)
+
+#--------------------------------------------------------------------
+# Check if compiler supports -fobjc-arc, and if so, turn it on!
+#--------------------------------------------------------------------
+
+AC_ARG_ENABLE(objc-arc, [
+--enable-objc-arc
+   Use automatic retain counts for Objective-C.  Use this option if you want
+   to use the ARC mechanism of the Objective-C compiler and runtime.
+], 
+USE_ARC=$enableval,
+USE_ARC=$defaultng)
+
+AC_MSG_CHECKING(whether we should use ARC)
+if test x"$USE_ARC" = x"yes"; then
+  # What we want to do: set USE_ARC to yes if we can compile
+  # something with -fobjc-arc.
+  CFLAGS_no_arc="$CFLAGS"
+  CFLAGS="$CFLAGS -fobjc-runtime=gnustep-1.8 -fobjc-arc"
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+/* Note that we never execute this code so it does not really matter
+   what it is.  We are testing that the compiler accepts the
+   '-fobjc-arc' flag.  */
+int
+main()
+{
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+return __has_feature(objc_arc) ? 0 : 1;
+}
+]])], USE_ARC=yes, USE_ARC=no)
+  AC_MSG_RESULT($USE_ARC)
+  CFLAGS="$CFLAGS_no_arc"
+
+  if test x"$USE_ARC" = x"no"; then
+    AC_MSG_NOTICE([Building ARC code was requested, but the compiler])
+    AC_MSG_NOTICE([doesn't support it.])
+    AC_MSG_ERROR([compiler doesn't support ARC])
+  fi
+else
+  if test x"$USE_ARC" != x"no"; then
+    saved_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS -x objective-c"
+    AC_EGREP_CPP([^1$], [
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+__has_feature(objc_arc)
+], USE_ARC=yes, USE_ARC=no)
+    CPPFLAGS=$saved_CPPFLAGS
+  fi
+  if test x"$USE_ARC" = x"yes"; then
+    AC_MSG_RESULT([yes (compiler default)])
+  else
+    AC_MSG_RESULT(not requested by user)
+  fi
+fi
+
+AC_SUBST(USE_ARC)
 
 
 # Keep LIBS and CFLAGS as they are for a while - we need them in 
@@ -1917,6 +1980,7 @@ executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf
 GNUstep.sh GNUstep.csh fixpath.sh
 gnustep-make.spec gnustep-config TestFramework/gnustep-tests
 filesystem.make filesystem.sh filesystem.csh gnustep-make-ld.so.conf])
+AC_CONFIG_FILES([runtime/$OBJC_RUNTIME_LIB.make:config.make.in])
 AC_CONFIG_COMMANDS([default],
 	[[chmod a+x openapp opentool fixpath.sh executable.template]],
 	[[]])

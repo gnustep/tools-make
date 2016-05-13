@@ -611,7 +611,7 @@ do
         NEEDBUILD=yes
         if test x"$TEMPLATE" = x
         then
-          rm -rf core obj GNUmakefile gdb.cmds
+          rm -rf core core.* *.core obj GNUmakefile gdb.cmds
         else
           TESTNAMES=
           TESTRULES=
@@ -730,7 +730,7 @@ fi
 
 if test "$GSTESTMODE" = "clean"
 then
-  rm -rf core obj GNUmakefile.tmp gdb.cmds tests.tmp tests.sum.tmp tests.log.tmp tests.log tests.sum oldtests.log oldtests.sum
+  rm -rf core core.* *.core obj GNUmakefile.tmp gdb.cmds tests.tmp tests.sum.tmp tests.log.tmp tests.log tests.sum oldtests.log oldtests.sum
 else
   # Make some stats.
   if test -r tests.sum

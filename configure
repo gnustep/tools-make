@@ -610,6 +610,7 @@ AUTO_DEPENDENCIES
 USE_OBJC_EXCEPTIONS
 CLANG_CC
 OBJ_MERGE_CMD_FLAG
+USE_ARC
 USE_NONFRAGILE_ABI
 OBJCXX
 ac_cv_objc_threaded
@@ -778,6 +779,7 @@ enable_install_ld_so_conf
 with_objc_lib_flag
 with_thread_lib
 enable_objc_nonfragile_abi
+enable_objc_arc
 enable_native_objc_exceptions
 enable_debug_by_default
 enable_strip_makefiles
@@ -1496,6 +1498,11 @@ Optional Features:
 --enable-objc-nonfragile-abi
    Use the non-fragile ABI for Objective-C.  Use this option if you want
    to use non-fragile instance variables provided by clang and libobjc2.
+
+
+--enable-objc-arc
+   Use automatic retain counts for Objective-C.  Use this option if you want
+   to use the ARC mechanism of the Objective-C compiler and runtime.
 
 
 --disable-native-objc-exceptions
@@ -2443,6 +2450,7 @@ OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
 
 # The ng runtime library setting requires clang rather than gcc
 if test "$OBJC_RUNTIME_LIB" = "ng"; then
+  defaultng=yes;
   if test "$OBJCC" = ""; then
     OBJCC=clang
   fi
@@ -2455,6 +2463,8 @@ if test "$OBJC_RUNTIME_LIB" = "ng"; then
   if test "$CXX" = ""; then
     CXX=clang++
   fi
+else
+  defaultng=no;
 fi
 
 ac_ext=c
@@ -5917,16 +5927,16 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
+if test "$OBJC_RUNTIME_LIB" != ng; then
 #--------------------------------------------------------------------
-# Check if GCC supports -fobjc-nonfragile-abi, and if so, turn it on!
+# Check if compiler supports -fobjc-nonfragile-abi, and if so, turn it on!
 #--------------------------------------------------------------------
 
-# TODO: Enable it by default if the compiler supports it :-)
 # Check whether --enable-objc-nonfragile-abi was given.
 if test "${enable_objc_nonfragile_abi+set}" = set; then :
   enableval=$enable_objc_nonfragile_abi; USE_NONFRAGILE_ABI=$enableval
 else
-  USE_NONFRAGILE_ABI=unset
+  USE_NONFRAGILE_ABI=notset
 fi
 
 
@@ -5995,6 +6005,92 @@ rm -f conftest*
     CPPFLAGS=$saved_CPPFLAGS
   fi
   if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes (compiler default)" >&5
+$as_echo "yes (compiler default)" >&6; }
+  else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not requested by user" >&5
+$as_echo "not requested by user" >&6; }
+  fi
+fi
+fi
+
+
+#--------------------------------------------------------------------
+# Check if compiler supports -fobjc-arc, and if so, turn it on!
+#--------------------------------------------------------------------
+
+# Check whether --enable-objc-arc was given.
+if test "${enable_objc_arc+set}" = set; then :
+  enableval=$enable_objc_arc; USE_ARC=$enableval
+else
+  USE_ARC=$defaultng
+fi
+
+
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether we should use ARC" >&5
+$as_echo_n "checking whether we should use ARC... " >&6; }
+if test x"$USE_ARC" = x"yes"; then
+  # What we want to do: set USE_ARC to yes if we can compile
+  # something with -fobjc-arc.
+  CFLAGS_no_arc="$CFLAGS"
+  CFLAGS="$CFLAGS -fobjc-runtime=gnustep-1.8 -fobjc-arc"
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Note that we never execute this code so it does not really matter
+   what it is.  We are testing that the compiler accepts the
+   '-fobjc-arc' flag.  */
+int
+main()
+{
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+return __has_feature(objc_arc) ? 0 : 1;
+}
+
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"; then :
+  USE_ARC=yes
+else
+  USE_ARC=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $USE_ARC" >&5
+$as_echo "$USE_ARC" >&6; }
+  CFLAGS="$CFLAGS_no_arc"
+
+  if test x"$USE_ARC" = x"no"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: Building ARC code was requested, but the compiler" >&5
+$as_echo "$as_me: Building ARC code was requested, but the compiler" >&6;}
+    { $as_echo "$as_me:${as_lineno-$LINENO}: doesn't support it." >&5
+$as_echo "$as_me: doesn't support it." >&6;}
+    as_fn_error $? "compiler doesn't support ARC" "$LINENO" 5
+  fi
+else
+  if test x"$USE_ARC" != x"no"; then
+    saved_CPPFLAGS=$CPPFLAGS
+    CPPFLAGS="$CPPFLAGS -x objective-c"
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+__has_feature(objc_arc)
+
+_ACEOF
+if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+  $EGREP "^1$" >/dev/null 2>&1; then :
+  USE_ARC=yes
+else
+  USE_ARC=no
+fi
+rm -f conftest*
+
+    CPPFLAGS=$saved_CPPFLAGS
+  fi
+  if test x"$USE_ARC" = x"yes"; then
     { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes (compiler default)" >&5
 $as_echo "yes (compiler default)" >&6; }
   else
@@ -6668,6 +6764,8 @@ fi
 # Produce the output files
 #--------------------------------------------------------------------
 ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec gnustep-config TestFramework/gnustep-tests filesystem.make filesystem.sh filesystem.csh gnustep-make-ld.so.conf"
+
+ac_config_files="$ac_config_files runtime/$OBJC_RUNTIME_LIB.make:config.make.in"
 
 ac_config_commands="$ac_config_commands default"
 
@@ -7404,6 +7502,7 @@ do
     "filesystem.sh") CONFIG_FILES="$CONFIG_FILES filesystem.sh" ;;
     "filesystem.csh") CONFIG_FILES="$CONFIG_FILES filesystem.csh" ;;
     "gnustep-make-ld.so.conf") CONFIG_FILES="$CONFIG_FILES gnustep-make-ld.so.conf" ;;
+    "runtime/$OBJC_RUNTIME_LIB.make") CONFIG_FILES="$CONFIG_FILES runtime/$OBJC_RUNTIME_LIB.make:config.make.in" ;;
     "default") CONFIG_COMMANDS="$CONFIG_COMMANDS default" ;;
 
   *) as_fn_error $? "invalid argument: \`$ac_config_target'" "$LINENO" 5;;
