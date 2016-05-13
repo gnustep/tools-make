@@ -6,7 +6,7 @@
 # Use this if you want GNUstep to blend into a Debian based GNU/Linux
 # filesystem (including related distributions like Ubuntu) and you are
 # compiling gnustep-make so that it can be shipped as part of the
-# istribution/basic system installation.
+# distribution/basic system installation.
 #
 # We put SYSTEM into /usr, and LOCAL into /usr/local.  This allows you
 # to make a distinction between stuff that you ship as part of your
