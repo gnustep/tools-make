@@ -55,15 +55,15 @@ ifeq ($(GNUSTEP_TEXI2PDF_FLAGS),)
 endif
 
 ifeq ($(GNUSTEP_TEXI2HTML),)
-  GNUSTEP_TEXI2HTML = texi2html
+  GNUSTEP_TEXI2HTML = makeinfo --html
 endif
 ifeq ($(GNUSTEP_TEXI2HTML_FLAGS),)
-  GNUSTEP_TEXI2HTML_FLAGS = -split_chapter -expandinfo
+  GNUSTEP_TEXI2HTML_FLAGS =
 endif
 
 internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
                     $(GNUSTEP_INSTANCE).pdf \
-                    $(GNUSTEP_INSTANCE).html
+                    $(GNUSTEP_INSTANCE)/index.html
 
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
@@ -91,7 +91,7 @@ $(GNUSTEP_INSTANCE).pdf: $(TEXI_FILES)
 # Some versions of texi2html placed the html files in a subdirectory,
 # so after running it we try to move any from the subdirectory to
 # where they are expected.
-$(GNUSTEP_INSTANCE).html: $(TEXI_FILES)
+$(GNUSTEP_INSTANCE)/index.html: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2HTML) \
                 $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi; \
@@ -145,13 +145,12 @@ internal-doc-install_:: $(GNUSTEP_DOC_INFO)
 	fi
 	if [ -f i$(GNUSTEP_INSTANCE)_toc.html ]; then \
 	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
-	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
+	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR) || true ; \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE).html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).html \
-	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
-	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
+	if [ -f $(GNUSTEP_INSTANCE)/index.html ]; then \
+	  $(MKINSTALLDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \
+	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.html \
+	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \
 	fi
 
 $(GNUSTEP_DOC_INFO):
@@ -166,6 +165,8 @@ internal-doc-uninstall_::
           $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
 	rm -f \
           $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).html
+	rm -f \
+	  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)/*.html
 
 #
 # textdoc targets - these should be merged with the doc targets

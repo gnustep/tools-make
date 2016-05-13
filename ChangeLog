@@ -3,6 +3,9 @@
 	* Instance/framework.make:
 	Forgotten patch to allow multiple versions of a framework to be
 	installed.
+	* Documentation/GNUmakefile:
+	* Instance/Documentation/texi.make:
+	Forgotten patch to update for newere makeinfo which produces html.
 
 2016-05-13 Richard Frith-Macdonald <rfm@gnu.org>
 
