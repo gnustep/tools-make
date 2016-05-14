@@ -1,3 +1,9 @@
+2016-05-13 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/Summary.sh:
+	* TestFramework/gnustep-tests.in:
+	Avoid some pointless warnings when cleaning
+
 2016-05-13  Yavor Doganov  <yavor@gnu.org>
 
 	* Instance/framework.make:

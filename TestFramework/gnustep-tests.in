@@ -772,10 +772,15 @@ FAILS=$?
 rm -f tests.tmp tests.sum.tmp tests.log.tmp
 
 # Our exit status is 0 unless some test failed.
-present "$GSTESTSUM" "Failed set$" "Failed sets$" "Failed test$" "Failed tests$" "Failed build$" "Failed builds$" "Failed file$" "Failed files$"
-if [ $? = 1 ]
+if test -r "$GSTESTSUM"
 then
-  exit 0
+  present "$GSTESTSUM" "Failed set$" "Failed sets$" "Failed test$" "Failed tests$" "Failed build$" "Failed builds$" "Failed file$" "Failed files$"
+  if [ $? = 1 ]
+  then
+    exit 0
+  else
+    exit 1
+  fi
 else
-  exit 1
+  exit 0
 fi
