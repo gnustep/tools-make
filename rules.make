@@ -523,10 +523,18 @@ $(GNUSTEP_OBJ_INSTANCE_DIR)/%.mm$(OEXT) : %.mm
 	      $($<_FILE_FLAGS) -o $@$(END_ECHO)
 
 #
-# Special mingw32 specific rules to compile Windows resource files (.rc files)
+# Special mingw specific rules to compile Windows resource files (.rc files)
 # into object files.
 #
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+# Add the .rc suffix on Windows.
+.SUFFIXES: .rc
+
+# A rule to generate a .o file from the .rc file.
+$(GNUSTEP_OBJ_INSTANCE_DIR)/%.rc$(OEXT): %.rc
+	$(ECHO_COMPILING)windres $< $@$(END_ECHO)
+
+else ifeq ($(findstring mingw64, $(GNUSTEP_TARGET_OS)), mingw64)
 # Add the .rc suffix on Windows.
 .SUFFIXES: .rc
 

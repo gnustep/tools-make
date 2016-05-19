@@ -48,6 +48,8 @@ endif
 # Windows
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   JAVA_OS = win32
+else ifeq ($(findstring mingw64, $(GNUSTEP_TARGET_OS)), mingw64)
+  JAVA_OS = win32
 endif
 
 # Add more platforms here

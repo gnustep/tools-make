@@ -56,7 +56,12 @@ ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) \
 	-lws2_32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
 	-lmpr -lnetapi32 -lm -I. # the -I is a dummy to avoid -lm^M
+else ifeq ($(findstring mingw64, $(GNUSTEP_TARGET_OS)), mingw64)
+  TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) \
+	-lws2_32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
+	-lmpr -lnetapi32 -lm -I. # the -I is a dummy to avoid -lm^M
 endif
+
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
   TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lsocket -lnsl -lm
 endif
@@ -876,7 +881,7 @@ endif
 #
 # Mingw32
 #
-ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
+ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32) 
 shared = yes
 HAVE_SHARED_LIBS = yes
 
@@ -967,6 +972,104 @@ EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^___objc_cla
 endif
 
 # end Mingw32
+#
+####################################################
+
+####################################################
+#
+# Mingw64
+#
+ifeq ($(findstring mingw64, $(GNUSTEP_TARGET_OS)), mingw64) 
+shared = yes
+HAVE_SHARED_LIBS = yes
+
+# There's some sort of gcc bug that -pthread doesn't work on windows
+# so we need to reset the variables which use it.
+INTERNAL_CFLAGS = 
+INTERNAL_OBJCFLAGS = 
+INTERNAL_LDFLAGS = 
+SHARED_CFLAGS = 
+
+# This command links the library, generates automatically the list of
+# symbols to export, creates the DLL (eg, obj/gnustep-base-1_13.dll)
+# and the import library (eg, obj/libgnustep-base.dll.a).  We pass
+# --export-all-symbols to make sure it is always used.  Otherwise,
+# while it is the default, it might silently get disabled if a symbol
+# gets manually exported (eg, because a header of a library we include
+# exports a symbol by mistake).
+ifneq ($(CC),clang)
+SHARED_LIB_LINK_CMD     = \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared \
+        -Wl,--enable-auto-image-base \
+        -Wl,--export-all-symbols \
+        -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+           $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) $^ \
+	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+	   $(SHARED_LD_POSTFLAGS)
+else
+SHARED_LIB_LINK_CMD     = \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared \
+        -Wl,--enable-auto-image-base \
+        -Wl,--export-all-symbols \
+        -Wl,--out-implib,$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+	   -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
+	   -Wl,--whole-archive $^ $(ALL_LDFLAGS) -Wl,--no-whole-archive \
+	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
+	   $(SHARED_LD_POSTFLAGS)
+endif
+
+AFTER_INSTALL_SHARED_LIB_CMD = 
+AFTER_INSTALL_SHARED_LIB_CHOWN =
+
+BUILD_DLL	 = yes
+LIBEXT	 	 = .a
+# Technically, in this Unix-inspired building system, a DLL is
+# composed of a .dll file which goes in the executable path and is the
+# one which is loaded at runtime, and a .dll.a file which goes in the
+# library path and which is linked into the application in order to
+# enable it use the .dll.  Anything in gnustep-make which is looking
+# for shared libs should detect / look for the .dll.a as that's what
+# we link applications against.
+SHARED_LIBEXT    = .dll.a
+DLL_LIBEXT	 = .dll
+#SHARED_CFLAGS	 += 
+
+ifneq ($(CC),clang)
+OBJ_MERGE_CMD = \
+  $(LD) -nostdlib $(OBJ_MERGE_CMD_FLAG) $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+else
+OBJ_MERGE_CMD = \
+  ar cr $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+endif
+
+HAVE_BUNDLES   = yes
+BUNDLE_LD      = $(LD)
+
+ifeq ($(CC),clang)
+BUNDLE_LDFLAGS += -shared -Wl,--export-all-symbols \
+	-Wl,--enable-auto-import \
+        -Wl,--enable-auto-image-base \
+	-Wl,--whole-archive
+BUNDLE_LIBFLAGS += -Wl,--no-whole-archive
+BUNDLE_LINK_CMD  = \
+        $(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+	-o $(LDOUT)$(BUNDLE_FILE) \
+	$(OBJ_FILES_TO_LINK) \
+	$(BUNDLE_LIBFLAGS) $(ALL_LIB_DIRS) $(BUNDLE_LIBS)
+else
+BUNDLE_LDFLAGS += -shared -Wl,--enable-auto-image-base
+endif
+
+ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
+ADDITIONAL_FLAGS += -fno-omit-frame-pointer
+
+# On Mingw64, it looks like the class name symbols start with '___' rather 
+# than '__'
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+
+endif
+
+# end Mingw64
 #
 ####################################################
 

@@ -1,3 +1,13 @@
+2016-05-19 Seong Gu Lee <sgleehd@gmail.com>
+
+	* Instance/application.make:
+	* config.guess:
+	* config.sub:
+	* jni.make:
+	* rules.make:
+	* target.make:
+	mingw64 tweaks
+
 2016-05-13 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/Summary.sh:
