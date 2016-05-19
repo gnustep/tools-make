@@ -739,7 +739,7 @@ endif
 print-gnustep-make-help:
 	@(cat $(GNUSTEP_MAKEFILES)/gnustep-make-help | sed -e '/^#.*/d' -e 's/_MAKE_/$(notdir $(MAKE))/')
 
-# These targets are used by gnustep-config to allow people to get
+# These targets are used by gnustep-config to allow people to see the
 # basic compilation/link flags for GNUstep ObjC code.
 
 # Flags used when compiling ObjC
@@ -762,7 +762,7 @@ print-gnustep-make-installation-domain:
 	@(echo $(GNUSTEP_INSTALLATION_DOMAIN))
 
 # These targets are used if gnustep-config can't be found but GNUSTEP_MAKEFILES
-# is defined ... they's let you get libraries and their headers (eg libobjc2)
+# is defined ... they let you get libraries and their headers (eg libobjc2)
 # installed in the right place.
 
 print-gnustep-install-headers:

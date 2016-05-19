@@ -2,9 +2,10 @@
 #
 #   @configure_input@
 #
-#   Script that outputs GNUstep filesystem configuration; can
-#   be used by non-gnustep-make building/config systems to know
-#   how GNUstep is configured on this machine
+#   Script that outputs GNUstep filesystem configuration; Primarily to
+#   provide information about the default/current GNUstep installation,
+#   but may be used by non-gnustep-make building/config systems to ask
+#   gnustep-make how GNUstep is configured on this machine
 #
 #   Copyright (C) 2007 Free Software Foundation, Inc.
 #

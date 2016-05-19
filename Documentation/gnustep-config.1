@@ -10,7 +10,10 @@ gnustep-config \- prints information about the current gnustep installation.
 .RB | \-\-objc-flags | \-\-objc-libs | \-\-base-libs | \-\-gui-libs " ]"
 .SH DESCRIPTION
 .B gnustep-config
-can print information about the currently installed GNUstep system. It can output dependend on the options used the different flags used for compilation, but also the different internal variables used by the make system.
+can print information about the currently installed GNUstep system. Output
+is generated dynamically based on environment variables such as
+GNUSTEP_CONFIG_FILE and GNUSTEP_MAKEFILES,
+though default values for these are generated when the tool is configured/installed.  Output is primarily the locations in which various GNUstep resources are installed, but also provide flags used to build differnt types of GNUstep project.
 .SH OPTIONS
 .TP
 .BI \-\-variable= variable
