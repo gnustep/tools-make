@@ -84,7 +84,8 @@ static NSException *testRaised __attribute__((unused)) = nil;
  * The SET_TIMER() macro turns on/off timing and, if timeing was
  * already on, adds the time of the current period to the duration.
  */
-static void (*setEnded)(const char *name, BOOL completed, double duration) = 0;
+static void (*setEnded)(const char *name, BOOL completed, double duration)
+  __attribute__((unused)) = 0;
 #define SET_TIMER(active) \
 ({ \
   double        started = _setTiming; \
