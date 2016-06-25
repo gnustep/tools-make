@@ -674,18 +674,6 @@ endif
 
 $(GNUSTEP_MAKEFILES)/*.make: ;
 
-ifeq ($(GNUSTEP_IS_FLATTENED), no)
-# If this file can't be found, we can't load the config for that
-# library combo / target, so we can't do anything.  We print an
-# error and exit.
-$(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)/config.make:
-	$(ECHO_NOTHING)\
-	echo "Error - can not find configuration for '$(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)'"; \
-	echo "Please configure, make and make install gnustep-make again using"; \
-	echo "./configure --with-library-combo=$(LIBRARY_COMBO)"; \
-	exit 1$(END_ECHO)
-endif
-
 $(GNUSTEP_MAKEFILES)/Additional/*.make: ;
 
 $(GNUSTEP_MAKEFILES)/Master/*.make: ;
@@ -720,6 +708,10 @@ endif
         print-gnustep-make-base-libs \
         print-gnustep-make-gui-libs \
         print-gnustep-make-installation-domain \
+        print-gnustep-make-host-dir \
+        print-gnustep-make-host-ldir \
+        print-gnustep-make-target-dir \
+        print-gnustep-make-target-ldir \
         print-gnustep-install-headers \
         print-gnustep-install-libraries
 
@@ -760,6 +752,18 @@ print-gnustep-make-gui-libs:
 
 print-gnustep-make-installation-domain:
 	@(echo $(GNUSTEP_INSTALLATION_DOMAIN))
+
+print-gnustep-make-host-dir:
+	@(echo $(GNUSTEP_HOST_DIR))
+
+print-gnustep-make-target-ldir:
+	@(echo $(GNUSTEP_TARGET_LDIR))
+
+print-gnustep-make-target-dir:
+	@(echo $(GNUSTEP_TARGET_DIR))
+
+print-gnustep-make-host-ldir:
+	@(echo $(GNUSTEP_HOST_LDIR))
 
 # These targets are used if gnustep-config can't be found but GNUSTEP_MAKEFILES
 # is defined ... they let you get libraries and their headers (eg libobjc2)

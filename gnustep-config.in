@@ -39,7 +39,11 @@ case "$1" in
   --objc-libs)  ;;
   --base-libs)  ;;
   --gui-libs)   ;;
+  --host-dir) ;;
+  --host-ldir) ;;
   --installation-domain-for=*) ;;
+  --target-dir-for=*) ;;
+  --target-ldir-for=*) ;;
   *)
     # An unrecognized option
     echo "Unrecognized option: $1"
@@ -97,10 +101,18 @@ if [ "$1" = "--help" ]; then
     echo
     echo "--gui-libs: prints all the flags required to link a GUI ObjC program"
     echo 
+    echo "--host-dir: prints the host architecture name"
+    echo 
+    echo "--host-ldir: prints the host architecture and library combo name"
+    echo 
     echo "--installation-domain-for=xxx: prints the value of the default installation domain"
     echo "                for the package xxx.  The result could be 'SYSTEM', 'NETWORK', 'LOCAL'"
     echo "                or 'USER'.  This command always returns LOCAL unless the system has been"
     echo "                personalized using an installation-domains.conf file."
+    echo "--target-dir-for=xxx: prints the standardised target architecture directory"
+    echo 
+    echo "--target-ldir-for=xxx: prints the target architecture and library combo name"
+    echo 
     exit 0
 fi
 
@@ -186,8 +198,20 @@ case "$1" in
               exit 0;;
   --gui-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
               exit 0;;
+  --host-dir) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-host-dir quiet=yes 2>/dev/null
+              exit 0;;
+  --host-ldir) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-host-ldir quiet=yes 2>/dev/null
+              exit 0;;
   --installation-domain-for=*) gs_package_name=`echo "$1" | sed -e 's/--installation-domain-for=//'`
               @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-installation-domain PACKAGE_NAME="$gs_package_name" quiet=yes 2>/dev/null
+              exit 0;;
+  --target-dir-for=*)
+                gs_target=`echo "$1" | sed -e 's/--target-dir-for=//'`
+                @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-target-dir target="$gs_target" quiet=yes 2>/dev/null
+              exit 0;;
+  --target-ldir-for=*)
+                gs_target=`echo "$1" | sed -e 's/--target-ldir-for=//'`
+                @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-target-ldir target="$gs_target" quiet=yes 2>/dev/null
               exit 0;;
 esac
 

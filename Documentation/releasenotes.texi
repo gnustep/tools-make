@@ -4,6 +4,21 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.7.0
+
+When building non-flattened, the subdirectory name for libraries/binaries
+is changed for Debian compatibility (and simplicity) to use a directory
+whose name is of the form architecture/library-combo rather than nested
+directories of the form cpu/os-abi/library-combo.  The architecture name
+format is a sanitised triplet cpu-os-abi (where previously we had cpu/os-abi).
+
+When building non-flattened, header files are now installed in an architecture
+and library-combo dependent subdirectory in the same way that binary libraries
+are installed.  This removes an inconsistency and makes sense with Debian
+multiarch support which puts headers in an architecture specific subdirectory.
+
+The long since deprecated GNUSTEP_INSTALLATION_DIR is removed.
+
 @section Version 2.6.8
 
 Configure option '--with-library-combo=ng-gnu-gnu' to use the 'Next Generation' setup of the latest ObjectiveC-2 runtime and compiler features rather than traditional runtime.  Requires the new runtime and a recent clang compiler.

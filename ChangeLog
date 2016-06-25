@@ -1,3 +1,35 @@
+2016-06-25 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/releasenotes.texi:
+	* GNUmakefile.in:
+	* GNUstep.csh.in:
+	* GNUstep.sh.in:
+	* Master/rules.make:
+	* common.make:
+	* config-noarch.make.in:
+	* gnustep-config.in:
+	* openapp.in:
+	* opentool.in:
+	* rules.make:
+	When building non-flattened, the subdirectory name for
+	libraries/binaries is changed for Debian compatibility (and simplicity)
+	to use a directory whose name is of the form architecture/library-combo
+	rather than nested directories of the form cpu/os-abi/library-combo.
+	The architecture name format is a sanitised triplet cpu-os-abi (where
+	previously we had cpu/os-abi).
+	When building non-flattened, header files are now installed in an
+	architecture and library-combo dependent subdirectory in the same way
+	that binary libraries are installed.  This removes an inconsistency and
+	makes sense with Debian multiarch support which puts headers in an
+	architecture specific subdirectory.
+	These changes are the first step in making GNUstep work seamlessly
+	with Debian multiarch.  To use them you will need to rebuild your
+	entire gnustep installation, and in particular build a version of
+	gnustep-base which has correspoinding changes to know where to look
+	up resources at runtime.
+	However, the changes should have no effect on a flattened installation
+	(currently the default).
+
 2016-05-19 Seong Gu Lee <sgleehd@gmail.com>
 
 	* Instance/application.make:

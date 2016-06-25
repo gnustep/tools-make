@@ -74,12 +74,10 @@ endif
 # not set in the config files (or on the command-line or in
 # environment).
 ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
-# FIXME: These should abort if the variables are ever evaluated, but
-# it needs testing.
-#  GNUSTEP_SYSTEM_ROOT = $(error GNUSTEP_SYSTEM_ROOT is obsolete)
-#  GNUSTEP_LOCAL_ROOT = $(error GNUSTEP_LOCAL_ROOT is obsolete)
-#  GNUSTEP_NETWORK_ROOT = $(error GNUSTEP_NETWORK_ROOT is obsolete)
-#  GNUSTEP_USER_DIR = $(error GNUSTEP_USER_DIR is obsolete)
+  GNUSTEP_SYSTEM_ROOT = $(error GNUSTEP_SYSTEM_ROOT is obsolete)
+  GNUSTEP_LOCAL_ROOT = $(error GNUSTEP_LOCAL_ROOT is obsolete)
+  GNUSTEP_NETWORK_ROOT = $(error GNUSTEP_NETWORK_ROOT is obsolete)
+  GNUSTEP_USER_DIR = $(error GNUSTEP_USER_DIR is obsolete)
 else
   GNUSTEP_SYSTEM_ROOT = @GNUSTEP_SYSTEM_ROOT@
   GNUSTEP_LOCAL_ROOT = @GNUSTEP_LOCAL_ROOT@
@@ -111,8 +109,7 @@ endif
 # GNUSTEP_FLATTENED is obsolete, please use GNUSTEP_IS_FLATTENED
 # instead
 ifeq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
-# FIXME: Test that this is OK
-#  GNUSTEP_FLATTENED = $(error GNUSTEP_FLATTENED is obsolete)
+  GNUSTEP_FLATTENED = $(error GNUSTEP_FLATTENED is obsolete)
 else
   GNUSTEP_FLATTENED = @GNUSTEP_FLATTENED@
 endif
@@ -131,9 +128,7 @@ ifneq ($(GNUSTEP_MAKE_STRICT_V2_MODE),yes)
    GNUSTEP_USER_ROOT = $(GNUSTEP_HOME)/$(GNUSTEP_USER_DIR)
   endif 
 else
-# FIXME: Test that this is OK.  When I use it, it seems to
-# abort even if GNUSTEP_USER_ROOT is never referenced!
-#  GNUSTEP_USER_ROOT = $(error GNUSTEP_USER_ROOT is obsolete)
+  GNUSTEP_USER_ROOT = $(error GNUSTEP_USER_ROOT is obsolete)
 endif
 
 # FIXME: Shouldn't the following go into config.make ?  They are

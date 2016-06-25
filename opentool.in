@@ -153,16 +153,16 @@ case "$tool" in
           # GNUSTEP_NETWORK_TOOLS
           # GNUSTEP_SYSTEM_TOOLS
 	  #
-	  # We look in the GNUSTEP_HOST_CPU/GNUSTEP_HOST_OS/LIBRARY_COMBO
-	  # subdirectory first, then the GNUSTEP_HOST_CPU/GNUSTEP_HOST_OS
+	  # We look in the GNUSTEP_HOST_CPU-GNUSTEP_HOST_OS/LIBRARY_COMBO
+	  # subdirectory first, then the GNUSTEP_HOST_CPU-GNUSTEP_HOST_OS
 	  # subdirectory, then the top-level directory.
 	  # (For flattened systems we skip the first two options.
 	  #
           # TODO: Also search Admin Tools directories if appropriate
 	  for dir in "$GNUSTEP_USER_TOOLS" "$GNUSTEP_LOCAL_TOOLS" "$GNUSTEP_NETWORK_TOOLS" "$GNUSTEP_SYSTEM_TOOLS" ; do
 	    if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
-	      tmpgnudir="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
-	      tmplibdir="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO"
+	      tmpgnudir="$dir/$GNUSTEP_HOST_CPU-$GNUSTEP_HOST_OS"
+	      tmplibdir="$dir/$GNUSTEP_HOST_CPU-$GNUSTEP_HOST_OS/$LIBRARY_COMBO"
 	      # echo "$tmplibdir/$tool";
 	      if [ -x "$tmplibdir/$tool" ]; then
 		# echo "Found: $tmplibdir/$tool";

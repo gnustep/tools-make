@@ -332,7 +332,7 @@ for dir in $GNUSTEP_TOOLS_PATHLIST; do
 
   # Prepare the path_fragment
   if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
-    path_fragment="$dir:$dir/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:$dir/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+    path_fragment="$dir:$dir/${GNUSTEP_HOST_CPU}-${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:$dir/${GNUSTEP_HOST_CPU}-${GNUSTEP_HOST_OS}"
   else
     path_fragment="$dir"
   fi
@@ -366,7 +366,7 @@ IFS=:
     if [ "$GNUSTEP_IS_FLATTENED" = "yes" ]; then
       path_fragment="$dir"
     else
-      path_fragment="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+      path_fragment="$dir/$GNUSTEP_HOST_CPU-$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/$GNUSTEP_HOST_CPU-$GNUSTEP_HOST_OS"
     fi
 
     # Append the path_fragment to lib_paths ... in a different way,

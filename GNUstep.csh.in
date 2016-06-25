@@ -220,7 +220,7 @@ end
 foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_TOOLS_PATHLIST}"'; do echo $i; done'` )
   set path_fragment="${dir}"
   if ( "${GNUSTEP_IS_FLATTENED}" == "no" ) then
-    set path_fragment="${dir}:${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:${dir}/${GNUSTEP_HOST_CPU}/${GNUSTEP_HOST_OS}"
+    set path_fragment="${dir}:${dir}/${GNUSTEP_HOST_CPU}-${GNUSTEP_HOST_OS}/${LIBRARY_COMBO}:${dir}/${GNUSTEP_HOST_CPU}-${GNUSTEP_HOST_OS}"
   endif
 
   if ( ! ${?PATH} ) then
@@ -238,7 +238,7 @@ foreach dir ( `/bin/sh -c 'IFS=:; for i in '"${GNUSTEP_LIBRARIES_PATHLIST}"'; do
   if ( "$GNUSTEP_IS_FLATTENED" == "yes" ) then
     set path_fragment="$dir"
   else
-    set path_fragment="$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS"
+    set path_fragment="$dir/$GNUSTEP_HOST_CPU-$GNUSTEP_HOST_OS/$LIBRARY_COMBO:$dir/$GNUSTEP_HOST_CPU-$GNUSTEP_HOST_OS"
   endif
 
   switch ( "${GNUSTEP_HOST_OS}" )

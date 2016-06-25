@@ -269,7 +269,7 @@ if [ "$GNUSTEP_IS_FLATTENED" = "no" ]; then
 
   case "$LIBRARY_COMBO" in
     apple-*) openapp_app_executable="$openapp_full_appname/Contents/MacOS/$openapp_appname";;
-    *)       openapp_app_executable="$openapp_full_appname/$GNUSTEP_HOST_CPU/$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$openapp_appname";;
+    *)       openapp_app_executable="$openapp_full_appname/$GNUSTEP_HOST_CPU-$GNUSTEP_HOST_OS/$LIBRARY_COMBO/$openapp_appname";;
   esac
 
 else

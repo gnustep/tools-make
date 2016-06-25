@@ -85,7 +85,7 @@ override GNUSTEP_TARGET_OS = @clean_target_os@
 override GNUSTEP_LIB_COMBO = @ac_cv_library_combo@
 
 ifeq ($(GNUSTEP_IS_FLATTENED), no)
-  override GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
+  override GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)-$(GNUSTEP_TARGET_OS)
   override GNUSTEP_TARGET_LDIR = $(GNUSTEP_TARGET_DIR)/$(GNUSTEP_LIB_COMBO)
   override MAYBE_LIBRARY_COMBO = $(GNUSTEP_LIB_COMBO)
   override MAKE_CONFIG_DIR = $(GNUSTEP_TARGET_LDIR)
@@ -93,7 +93,7 @@ else
   override GNUSTEP_TARGET_DIR = .
   override GNUSTEP_TARGET_LDIR = .
   override MAYBE_LIBRARY_COMBO = .
-  override MAKE_CONFIG_DIR = $(GNUSTEP_LIB_COMBO)
+  override MAKE_CONFIG_DIR = .
 endif
 
 export GNUSTEP_TARGET_DIR
@@ -192,10 +192,8 @@ install: generated-files
 	 echo "Creating makefile directories in: $(makedir)"; \
 	 "$(srcdir)/mkinstalldirs" \
 		"$(makedir)" \
-		"$(makedir)/$(GNUSTEP_TARGET_CPU)" \
 		"$(makedir)/$(GNUSTEP_TARGET_DIR)" \
 		"$(makedir)/$(GNUSTEP_TARGET_LDIR)" \
-		"$(makedir)/$(GNUSTEP_LIB_COMBO)" \
 		"$(makedir)/Additional" \
 		"$(makedir)/Auxiliary" \
 		"$(makedir)/Master" \

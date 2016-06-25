@@ -77,8 +77,8 @@ $(GNUSTEP_OBJ_DIR):
 # install depends on all as per GNU/Unix habits, conventions and standards.
 
 # The very first top-most make invocation we want to have install
-# depend on internal-check-install-permissions and on all, and
-# distclean depend on clean.  We used to check MAKELEVEL=0 here to
+# depend on all, and distclean depend on clean.
+# We used to check MAKELEVEL=0 here to
 # determine if this is the top-most invocation of make, but that does
 # not work if the top-most invocation of make is done from within a
 # (non-gnustep-make) makefile itself!  So we use a marker variable.
@@ -87,7 +87,7 @@ $(GNUSTEP_OBJ_DIR):
 # subinvocations will have it set and we can distinguish them.
 ifeq ($(_GNUSTEP_TOP_INVOCATION_DONE),)
 # Top-most invocation of make
-install:: internal-check-install-permissions all \
+install:: all \
           before-install internal-install after-install internal-after-install
 
 distclean:: clean before-distclean internal-distclean after-distclean
@@ -126,20 +126,6 @@ internal-jar::
 
 after-jar::
 
-
-ifneq ($(GNUSTEP_INSTALLATION_DIR),)
-internal-check-install-permissions:
-	@if [ -d "$(GNUSTEP_INSTALLATION_DIR)" \
-	      -a ! -w "$(GNUSTEP_INSTALLATION_DIR)" ]; then \
-	  echo "*ERROR*: the software is configured to install itself into $(GNUSTEP_INSTALLATION_DIR)"; \
-	  echo "but you do not have permissions to write in that directory:";\
-	  echo "Aborting installation."; \
-	  echo ""; \
-	  exit 1; \
-	fi
-else
-internal-check-install-permissions:
-endif
 
 # By adding an ADDITIONAL_INSTALL_DIRS variable you can request
 # additional installation directories to be created before the first

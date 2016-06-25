@@ -143,8 +143,8 @@ export LIBRARY_COMBO = $(OBJC_RUNTIME_LIB)-$(FOUNDATION_LIB)-$(GUI_LIB)
 
 
 ifeq ($(GNUSTEP_IS_FLATTENED), no)
-  GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)/$(GNUSTEP_HOST_OS)
-  GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)/$(GNUSTEP_TARGET_OS)
+  GNUSTEP_HOST_DIR = $(GNUSTEP_HOST_CPU)-$(GNUSTEP_HOST_OS)
+  GNUSTEP_TARGET_DIR = $(GNUSTEP_TARGET_CPU)-$(GNUSTEP_TARGET_OS)
   GNUSTEP_HOST_LDIR = $(GNUSTEP_HOST_DIR)/$(LIBRARY_COMBO)
   GNUSTEP_TARGET_LDIR = $(GNUSTEP_TARGET_DIR)/$(LIBRARY_COMBO)
 else
@@ -159,9 +159,10 @@ endif
 # this includes CC, OPTFLAG etc.
 #
 ifeq ($(GNUSTEP_IS_FLATTENED),yes)
-  include $(GNUSTEP_MAKEFILES)/$(LIBRARY_COMBO)/config.make
+  include $(GNUSTEP_MAKEFILES)/config.make
 else
-  include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
+  -include $(GNUSTEP_MAKEFILES)/config.make
+  -include $(GNUSTEP_MAKEFILES)/$(GNUSTEP_TARGET_LDIR)/config.make
 endif
 
 # Then, work out precisely library combos etc
@@ -327,7 +328,7 @@ ifneq ($(GNUSTEP_INSTALLATION_DIR),)
   ifeq ($(GNUSTEP_IS_FLATTENED),yes)
     GNUSTEP_HEADERS            = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers
   else
-    GNUSTEP_HEADERS            = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers/$(LIBRARY_COMBO)
+    GNUSTEP_HEADERS            = $(GNUSTEP_INSTALLATION_DIR)/Library/Headers/$(GNUSTEP_TARGET_LDIR)
   endif
   GNUSTEP_APPLICATION_SUPPORT  = $(GNUSTEP_LIBRARY)/ApplicationSupport
   GNUSTEP_BUNDLES              = $(GNUSTEP_LIBRARY)/Bundles
@@ -366,7 +367,7 @@ else
   ifeq ($(GNUSTEP_IS_FLATTENED),yes)
     GNUSTEP_HEADERS              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_HEADERS)
   else
-    GNUSTEP_HEADERS              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_HEADERS)/$(LIBRARY_COMBO)
+    GNUSTEP_HEADERS              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_HEADERS)/$(GNUSTEP_TARGET_LDIR)
   endif
   GNUSTEP_APPLICATION_SUPPORT  = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_APPLICATION_SUPPORT)
   GNUSTEP_BUNDLES              = $(MAYBE_DESTDIR)$(GNUSTEP_$(GNUSTEP_INSTALLATION_DOMAIN)_BUNDLES)
@@ -457,8 +458,8 @@ ifeq ($(GNUSTEP_IS_FLATTENED), no)
 # Later, we'll systematically replace domain with USER, the LOCAL,
 # then NETWORK, then SYSTEM.
 GS_HEADER_PATH = \
- $(GNUSTEP_$(domain)_HEADERS)/$(LIBRARY_COMBO)/$(GNUSTEP_TARGET_DIR) \
- $(GNUSTEP_$(domain)_HEADERS)/$(LIBRARY_COMBO) \
+ $(GNUSTEP_$(domain)_HEADERS)/$(GNUSTEP_TARGET_LDIR) \
+ $(GNUSTEP_$(domain)_HEADERS)/$(GNUSTEP_TARGET_DIR) \
  $(GNUSTEP_$(domain)_HEADERS)
 
 GS_LIBRARY_PATH = \
@@ -607,37 +608,6 @@ ifeq ($(OBJC_RUNTIME_LIB), apple)
 endif
 ifeq ($(OBJC_RUNTIME_LIB), gnu)
   OBJC_RUNTIME = GNU
-endif
-
-# If all of the following really needed ?  If the system is not
-# flattened, multiple Foundation libraries are not permitted anyway,
-# so libFoundation could just put his headers in Foundation/.  If
-# library combos are used, all headers are in a library-combo
-# directory, so libFoundation could still put his headers in
-# Foundation/ and no conflict should arise.  As for the
-# GNUSTEP_TARGET_DIR, maybe we should key all of our headers in a
-# GNUSTEP_TARGET_LDIR directory (rather than just a LIBRARY_COMBO
-# directory).  But does it really matter in practice anyway ?
-ifeq ($(GNUSTEP_IS_FLATTENED),yes)
-GNUSTEP_HEADERS_FND_DIRS = \
-  $(GNUSTEP_USER_HEADERS)/libFoundation \
-  $(GNUSTEP_LOCAL_HEADERS)/libFoundation \
-  $(GNUSTEP_NETWORK_HEADERS)/libFoundation \
-  $(GNUSTEP_SYSTEM_HEADERS)/libFoundation \
-  $(GNUSTEP_USER_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_LOCAL_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_NETWORK_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_SYSTEM_HEADERS)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
-else
-GNUSTEP_HEADERS_FND_DIRS = \
-  $(GNUSTEP_USER_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_LOCAL_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_NETWORK_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_SYSTEM_HEADERS)/$(LIBRARY_COMBO)/libFoundation \
-  $(GNUSTEP_USER_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_LOCAL_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_NETWORK_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME) \
-  $(GNUSTEP_SYSTEM_HEADERS)/$(LIBRARY_COMBO)/libFoundation/$(GNUSTEP_TARGET_DIR)/$(OBJC_RUNTIME)
 endif
 
 ifeq ($(REMOVE_EMPTY_DIRS), yes)
