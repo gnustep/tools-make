@@ -171,14 +171,22 @@ esac
 case $host_os in
   *cygwin*  )
 	MINGW32=no
+	MINGW64=no
 	CYGWIN=yes
 	MSWIND=yes;;
   *mingw32* )
 	MINGW32=yes
+	MINGW64=no
+	CYGWIN=no
+	MSWIND=yes;;
+  *mingw64* )
+	MINGW32=no
+	MINGW64=yes
 	CYGWIN=no
 	MSWIND=yes;;
           * )
 	MINGW32=no
+	MINGW64=no
 	CYGWIN=no
 	MSWIND=no;;
 esac
@@ -188,6 +196,17 @@ AC_EXEEXT
 AC_OBJEXT
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
+  export SHELL=sh
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    export CC=${CC:-clang}
+  else
+    export CC=${CC:-gcc}
+  fi
+  export AR=${AR:-ar}
+  export RANLIB=${RANLIB:-ranlib}
+  export DLLTOOL=${DLLTOOL:-dlltool}
+elif test "$MINGW64" = yes; then
+  echo "hosted on mingw64 .."
   export SHELL=sh
   if test "$OBJC_RUNTIME_LIB" = ng; then
     export CC=${CC:-clang}
@@ -238,7 +257,7 @@ else
     CFLAGS="$CFLAGS -fblocks"
     AC_LANG_PUSH(C)
     AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[(void)^{int i; i = 0; }();])], [
-      ac_cv_blocks="yes"
+      ac64v_blocks="yes"
     ], [
       ac_cv_blocks="no"
     ])
@@ -304,8 +323,10 @@ AC_ARG_WITH(tar,[
 
 AC_CHECK_PROG(CHOWN, chown, chown, none)
 if test "$MINGW32" = no; then
-  if test "$CHOWN" = "none"; then
-    AC_MSG_ERROR("Could not find chown.");
+  if test "$MINGW64" = no; then
+    if test "$CHOWN" = "none"; then
+      AC_MSG_ERROR("Could not find chown.");
+    fi
   fi
 fi
 
@@ -1287,6 +1308,12 @@ elif test "$MINGW32" = yes; then
   AC_TRY_RUN([#include "config_thread.m"], 
 	objc_threaded="works",
 	objc_threaded="", objc_threaded="works")
+elif test "$MINGW64" = yes; then
+  # Mingw doesn't need anything extra for threads
+  LIBS="$OBJCRT $LIBS"
+  AC_TRY_RUN([#include "config_thread.m"], 
+	objc_threaded="works",
+	objc_threaded="", objc_threaded="works")
 elif test "$OBJC_RUNTIME_LIB" = "apple"; then
   # Apple doesn't need anything extra for threads
   LIBS="$OBJCRT $LIBS"
@@ -1601,6 +1628,12 @@ AC_ARG_ENABLE(native-objc-exceptions, [
 ], 
 USE_OBJC_EXCEPTIONS=$enableval,
 USE_OBJC_EXCEPTIONS=maybe)
+
+if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
+  if test x"$MSWIND" = x"yes"; then
+    USE_OBJC_EXCEPTIONS=no
+  fi
+fi
 
 # Please note that -fobjc-exceptions should automatically enable
 # -fexceptions.

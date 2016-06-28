@@ -3835,14 +3835,22 @@ esac
 case $host_os in
   *cygwin*  )
 	MINGW32=no
+	MINGW64=no
 	CYGWIN=yes
 	MSWIND=yes;;
   *mingw32* )
 	MINGW32=yes
+	MINGW64=no
+	CYGWIN=no
+	MSWIND=yes;;
+  *mingw64* )
+	MINGW32=no
+	MINGW64=yes
 	CYGWIN=no
 	MSWIND=yes;;
           * )
 	MINGW32=no
+	MINGW64=no
 	CYGWIN=no
 	MSWIND=no;;
 esac
@@ -3852,6 +3860,17 @@ esac
 
 if test "$MINGW32" = yes; then
   echo "hosted on mingw32 .."
+  export SHELL=sh
+  if test "$OBJC_RUNTIME_LIB" = ng; then
+    export CC=${CC:-clang}
+  else
+    export CC=${CC:-gcc}
+  fi
+  export AR=${AR:-ar}
+  export RANLIB=${RANLIB:-ranlib}
+  export DLLTOOL=${DLLTOOL:-dlltool}
+elif test "$MINGW64" = yes; then
+  echo "hosted on mingw64 .."
   export SHELL=sh
   if test "$OBJC_RUNTIME_LIB" = ng; then
     export CC=${CC:-clang}
@@ -4100,7 +4119,7 @@ main ()
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
 
-      ac_cv_blocks="yes"
+      ac64v_blocks="yes"
 
 else
 
@@ -4563,8 +4582,10 @@ fi
 
 
 if test "$MINGW32" = no; then
-  if test "$CHOWN" = "none"; then
-    as_fn_error $? "\"Could not find chown.\"" "$LINENO" 5;
+  if test "$MINGW64" = no; then
+    if test "$CHOWN" = "none"; then
+      as_fn_error $? "\"Could not find chown.\"" "$LINENO" 5;
+    fi
   fi
 fi
 
@@ -5730,6 +5751,25 @@ rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
   conftest.$ac_objext conftest.beam conftest.$ac_ext
 fi
 
+elif test "$MINGW64" = yes; then
+  # Mingw doesn't need anything extra for threads
+  LIBS="$OBJCRT $LIBS"
+  if test "$cross_compiling" = yes; then :
+  objc_threaded="works"
+else
+  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+#include "config_thread.m"
+_ACEOF
+if ac_fn_c_try_run "$LINENO"; then :
+  objc_threaded="works"
+else
+  objc_threaded=""
+fi
+rm -f core *.core core.conftest.* gmon.out bb.out conftest$ac_exeext \
+  conftest.$ac_objext conftest.beam conftest.$ac_ext
+fi
+
 elif test "$OBJC_RUNTIME_LIB" = "apple"; then
   # Apple doesn't need anything extra for threads
   LIBS="$OBJCRT $LIBS"
@@ -6202,6 +6242,12 @@ else
   USE_OBJC_EXCEPTIONS=maybe
 fi
 
+
+if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
+  if test x"$MSWIND" = x"yes"; then
+    USE_OBJC_EXCEPTIONS=no
+  fi
+fi
 
 # Please note that -fobjc-exceptions should automatically enable
 # -fexceptions.
