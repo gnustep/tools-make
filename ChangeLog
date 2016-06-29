@@ -1,3 +1,7 @@
+2015-06-29 Niels Grewe <niels.grewe@halbordnung.de>
+
+	* Instance/framework.make: Fix installation of Resources symlinks.
+
 2016-06-25 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/releasenotes.texi:

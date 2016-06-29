@@ -391,6 +391,10 @@ build-framework-dirs: $(DERIVED_SOURCES_DIR) \
                       $(UPDATE_CURRENT_SYMLINK_RULE)
 ifeq ($(FRAMEWORK_VERSION_SUPPORT), yes)
 	$(ECHO_NOTHING)cd $(FRAMEWORK_DIR); \
+	  if [ ! -h "Resources" ]; then \
+	    $(RM_LN_S) Resources; \
+	    $(LN_S_RECURSIVE) Versions/Current/Resources Resources; \
+	  fi; \
 	  if [ ! -h "Headers" ]; then \
 	    $(RM_LN_S) Headers; \
 	    $(LN_S_RECURSIVE) Versions/Current/Headers Headers; \
