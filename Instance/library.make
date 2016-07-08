@@ -32,6 +32,7 @@ include $(GNUSTEP_MAKEFILES)/rules.make
 endif
 
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/pkgconfig.make
 
 #
 # The name of the library (including the 'lib' prefix) is 
@@ -296,7 +297,8 @@ endif
 #
 internal-library-install_:: internal-install-dirs \
                             internal-install-lib \
-                            shared-instance-headers-install
+                            shared-instance-headers-install \
+                            shared-instance-pkgconfig-install
 
 # Depend on creating all the dirs
 internal-install-dirs:: $(FINAL_LIBRARY_INSTALL_DIR) \
@@ -326,7 +328,7 @@ internal-install-lib::
 	fi$(END_ECHO)
 endif
 
-internal-library-uninstall_:: shared-instance-headers-uninstall
+internal-library-uninstall_:: shared-instance-headers-uninstall shared-instance-pkgconfig-uninstall
 	$(ECHO_UNINSTALLING)rm -f $(FINAL_LIBRARY_INSTALL_DIR)/$(VERSION_LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(LIBRARY_FILE) \
 	      $(FINAL_LIBRARY_INSTALL_DIR)/$(SONAME_LIBRARY_FILE)$(END_ECHO)

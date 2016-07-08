@@ -79,6 +79,10 @@ ifneq ($(messages),yes)
   ECHO_INSTALLING_ADD_CLASS_FILES = @(echo " Installing nested class files...";
   ECHO_INSTALLING_PROPERTIES_FILES = @(echo " Installing property files...";
   ECHO_CREATING_JAR_FILE = @(echo " Creating jar file...";
+
+  # Instance/Shared/pkgconfig.make
+  ECHO_INSTALLING_PKGCONFIG = @(echo " Installing pkg-config files...";
+
   # Instance/Shared/stamp-string.make
   ECHO_CREATING_STAMP_FILE = @(echo " Creating stamp file...";
 

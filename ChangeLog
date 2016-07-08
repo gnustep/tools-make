@@ -1,4 +1,21 @@
-2015-06-29 Niels Grewe <niels.grewe@halbordnung.de>
+2016-07-08 Niels Grewe <niels.grewe@halbordnung.de>
+
+	* GNUstep.conf.in
+	* GNUstep.csh.in
+	* GNUstep.sh.in
+	* Instance/Shared/pkgconfig.make
+	* Instance/framework.make
+	* Instance/library.make
+	* config-noarch.make.in
+	* configure
+	* configure.ac
+	* messages.make
+
+Preliminary support for pkg-config files. The GNUstep.sh scripts
+set the PKG_CONFIG_PATH and $(INSTANCE)_PKGCONFIG_FILES can be used
+to specify the files to install.
+
+2016-06-29 Niels Grewe <niels.grewe@halbordnung.de>
 
 	* Instance/framework.make: Fix installation of Resources symlinks.
 

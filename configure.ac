@@ -43,6 +43,8 @@ targetArgument=${target}
 
 AC_CANONICAL_TARGET([])
 
+AC_PATH_PROG(GNUSTEP_HAS_PKGCONFIG, pkgconfig, yes, no)
+
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------

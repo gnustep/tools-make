@@ -176,6 +176,7 @@ FRAMEWORK_VERSION_DIR = $(GNUSTEP_BUILD_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)
 # that we need to manage and install.  So we assume by default that we
 # have some headers even if HEADER_FILES is empty.
 include $(GNUSTEP_MAKEFILES)/Instance/Shared/headers.make
+include $(GNUSTEP_MAKEFILES)/Instance/Shared/pkgconfig.make
 
 # On windows, this is unfortunately required.
 ifeq ($(BUILD_DLL), yes)
@@ -660,7 +661,7 @@ ifeq ($(FOUNDATION_LIB),gnu)
 
 internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
-                      $(GNUSTEP_HEADERS)
+                      $(GNUSTEP_HEADERS) shared-instance-pkgconfig-install
 	$(ECHO_INSTALLING)(cd $(GNUSTEP_BUILD_DIR); \
 	  $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list \
 	    $(FRAMEWORK_DIR_NAME)) \
@@ -776,7 +777,7 @@ $(GNUSTEP_HEADERS):
 ifneq ($(BUILD_DLL), yes)
 # NB: We use '$(RM_LN_S)' to remove the symlinks to insure
 #     that we do not remove customized real directories.  
-internal-framework-uninstall_::
+internal-framework-uninstall_:: shared-instance-pkgconfig-uninstall
 	$(ECHO_UNINSTALLING)if [ "$(HEADER_FILES)" != "" ]; then \
 	  for file in $(HEADER_FILES) __done; do \
 	    if [ $$file != __done ]; then \
