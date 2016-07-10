@@ -137,7 +137,7 @@ INSTANCE_MAKE_FILES = \
         test-library.make test-tool.make tool.make
 
 INSTANCE_SHARED_MAKE_FILES = bundle.make headers.make java.make \
-                             stamp-string.make strings.make
+                             pkgconfig.make stamp-string.make strings.make
 
 INSTANCE_DOC_MAKE_FILES = autogsdoc.make gsdoc.make install_files.make \
                           javadoc.make latex.make texi.make
