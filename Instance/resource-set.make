@@ -1,5 +1,5 @@
 #   -*-makefile-*-
-#   Instace/resource-set.make
+#   Instance/resource-set.make
 #
 #   Instance makefile rules to install resource files
 #
@@ -54,7 +54,8 @@ endif
         internal-resource_set-uninstall_
 
 #
-# Determine where to install.  By default, install into GNUSTEP_RESOURCES/GNUSTEP_INSTANCE
+# Determine where to install.
+# By default, install into GNUSTEP_RESOURCES/GNUSTEP_INSTANCE
 #
 ifneq ($($(GNUSTEP_INSTANCE)_INSTALL_DIR),)
   RESOURCE_FILES_INSTALL_DIR = $($(GNUSTEP_INSTANCE)_INSTALL_DIR)
