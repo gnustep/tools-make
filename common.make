@@ -753,6 +753,8 @@ endif
 ifeq ($(debug), yes)
   # Optimization flags are filtered out as they make debugging harder.
   OPTFLAG := $(filter-out -O%, $(OPTFLAG))
+  CCFLAGS := $(filter-out -O%, $(CCFLAGS))
+  ADDITIONAL_FLAGS := $(filter-out -O%, $(ADDITIONAL_FLAGS))
   # If OPTFLAG does not already include -g, add it here.
   ifneq ($(filter -g, $(OPTFLAG)), -g)
     ADDITIONAL_FLAGS += -g
