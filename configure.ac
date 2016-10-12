@@ -1631,11 +1631,11 @@ AC_ARG_ENABLE(native-objc-exceptions, [
 USE_OBJC_EXCEPTIONS=$enableval,
 USE_OBJC_EXCEPTIONS=maybe)
 
-if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
-  if test x"$MSWIND" = x"yes"; then
-    USE_OBJC_EXCEPTIONS=no
-  fi
-fi
+#if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
+#  if test x"$MSWIND" = x"yes"; then
+#    USE_OBJC_EXCEPTIONS=no
+#  fi
+#fi
 
 # Please note that -fobjc-exceptions should automatically enable
 # -fexceptions.
