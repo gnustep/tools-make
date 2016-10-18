@@ -6286,11 +6286,11 @@ else
 fi
 
 
-#if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
-#  if test x"$MSWIND" = x"yes"; then
-#    USE_OBJC_EXCEPTIONS=no
-#  fi
-#fi
+if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
+  if test x"$MSWIND" = x"yes"; then
+    USE_OBJC_EXCEPTIONS=no
+  fi
+fi
 
 # Please note that -fobjc-exceptions should automatically enable
 # -fexceptions.
