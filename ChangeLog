@@ -1,3 +1,7 @@
+2016-11-22 Doug Simons <doug.simons@testplant.com>
+
+	* target.make: Fix EXTRACT_CLASS_NAMES_COMMAND for Mingw64.
+
 2016-08-19 Giah de Barag <gdb@crelg.com>
 
 	* common.make: filter out optimisation flags when in debug mode.
