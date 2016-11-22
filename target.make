@@ -1063,9 +1063,9 @@ endif
 ADDITIONAL_LDFLAGS += -Wl,--enable-auto-import
 ADDITIONAL_FLAGS += -fno-omit-frame-pointer
 
-# On Mingw64, it looks like the class name symbols start with '___' rather 
-# than '__'
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+# On Mingw64, it looks like the class name symbols start with '__' rather 
+# than '___' like Mingw32
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
 endif
 
