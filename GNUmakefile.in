@@ -332,7 +332,6 @@ uninstall:
 	rm -f "$(makedir)/java-executable.template"
 	rm -f "$(makedir)/nsi-app.template"
 	rm -f "$(makedir)/bake_debian_files.sh"
-	rm -f "$(GNUSTEP_SYSTEM_ROOT)/share/config.site"
 	rm -f "$(makedir)/config-noarch.make"
 	rm -f "$(makedir)/filesystem.make"
 	rm -f "$(makedir)/$(MAKE_CONFIG_DIR)/config.make"
