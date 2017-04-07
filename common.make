@@ -667,8 +667,7 @@ endif
 # If the compiler supports nonfragile ABI and the user wants us to
 # use them, turn them on!
 ifeq ($(USE_NONFRAGILE_ABI), yes)
-  INTERNAL_OBJCFLAGS += -D_NONFRAGILE_ABI
-  INTERNAL_LDFLAGS += -fobjc-nonfragile-abi
+  INTERNAL_OBJCFLAGS += -fobjc-nonfragile-abi -D_NONFRAGILE_ABI
 endif
 
 # If we are using garbage collection we set a define to say so.

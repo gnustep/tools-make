@@ -1,3 +1,8 @@
+2017-04-07 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make: correct earlier change ... error pointed out by
+	Galen Rhodes as b ug #50751
+
 2016-11-22 Doug Simons <doug.simons@testplant.com>
 
 	* target.make: Fix EXTRACT_CLASS_NAMES_COMMAND for Mingw64.
