@@ -49,6 +49,14 @@ endif
 # The list of localized dirs to be created empty inside each
 #    $(RESOURCE_FILES_INSTALL_DIR)/yyy.lproj for each language yyy
 #    is in the xxx_LOCALIZED_RESOURCE_DIRS variable.
+# 
+# NB. Info-gnustep.plist and Info.plist are NOT considered resource files.
+# These files are generated automatically by certain projects, and if you
+# want to insert your own entries into Info0gnustep.plist or Info.plist
+# you should create a xxxInfo.plist file (where xxx is the application name)
+# in the same directory as your makefile, and gnustep-make will automatically
+# read it and merge it into the generated Info-gnustep.plist.
+# For more detail, see rules.make
 
 .PHONY: internal-resource_set-install_ \
         internal-resource_set-uninstall_

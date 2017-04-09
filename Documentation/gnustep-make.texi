@@ -189,6 +189,14 @@ two different types of projects within the same directory (e.g. a tool
 and a java program), include both the desired makefiles in your main
 make file.
 
+The documentation for variables used to control each project type is
+provided at the start of each individual makefile (common.make and rules.make
+document more general variables).
+
+The documentation for installing resources (a feature shared by many project
+types) is in resource-set.make.
+
+
 @node aggregate.make, application.make, Project Types, Project Types
 @subsection Aggregate (@file{aggregate.make})
 
