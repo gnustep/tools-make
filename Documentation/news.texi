@@ -9,6 +9,20 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.7.0}
+
+Garbage collection support removed
+
+ARC enabled by default if the ng runtime is used
+
+Multi-architecture directory layout adjusted to be more Debian compatible
+
+Framework support fixes
+
+Various other minor bugfixes
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.6.8}
 
 Configure option '--with-library-combo=ng-gnu-gnu' to use the 'Next Generation' setup of the latest ObjectiveC-2 runtime and compiler features rather than traditional runtime.  Requires the new runtime and a recent clang compiler.
@@ -24,8 +38,6 @@ Various minor bugfixes, documentation spelling corrections etc.
 The '--enable-strict-v2-mode' option is now, after eight years, turned on by default (in anticipation of finally removing backward compatibility with version one).  WARNING; Packagers please ensure that you update any old gnustep-make version one makefiles.
 
 Garbage collection support to be removed at the next release.
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.6.7}
 

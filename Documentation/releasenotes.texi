@@ -19,6 +19,8 @@ multiarch support which puts headers in an architecture specific subdirectory.
 
 The long since deprecated GNUSTEP_INSTALLATION_DIR is removed.
 
+Various bugfixes and minor improvements.
+
 @section Version 2.6.8
 
 Configure option '--with-library-combo=ng-gnu-gnu' to use the 'Next Generation' setup of the latest ObjectiveC-2 runtime and compiler features rather than traditional runtime.  Requires the new runtime and a recent clang compiler.

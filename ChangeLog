@@ -1,7 +1,19 @@
+2017-04-14 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Version: 2.7.0 release
+	* Documentation/news.texi: 2.7.0 release
+	* Documentation/releasenotes.texi: 2.7.0 release
+	* ANNOUNCE:
+	* INSTALL:
+	* NEWS:
+	* README:
+	* RELEASENOTES:
+	Regenerate documentation
+
 2017-04-07 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: correct earlier change ... error pointed out by
-	Galen Rhodes as b ug #50751
+	Galen Rhodes as bug #50751
 
 2016-11-22 Doug Simons <doug.simons@testplant.com>
 
