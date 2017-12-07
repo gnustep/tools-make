@@ -32,7 +32,7 @@
 # SVN_BASE_URL = http://svn.gna.org/svn/gnustep/libs
 #
 # SVN_TAG_NAME is the same as SVN_MODULE_NAME if not set and is used to
-# tag and retreive a module version
+# tag and retrieve a module version.
 #
 # For CVS exports, you may want to define something like:
 #
