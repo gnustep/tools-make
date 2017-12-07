@@ -418,6 +418,49 @@ cvs-snapshot:
 	tar --gzip -cf gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz gnustep-make-$(GNUSTEP_MAKE_VERSION)
 	rm -rf gnustep-make-$(GNUSTEP_MAKE_VERSION)
 
+ifeq ($(GIT_TAG_SIGN), )
+GIT_TAG_ANNOTATION_FLAGS = -a
+else
+  ifeq ($(GIT_TAG_SIGN), yes)
+  GIT_TAG_ANNOTATION_FLAGS = -s
+  else
+  GIT_TAG_ANNOTATION_FLAGS = -u $(GIT_TAG_SIGN)
+  endif
+endif
+
+git-tag-stable:
+	echo "*Error* tagging stable branch in Git is not supported at this time." && exit 1
+
+ifeq ($(GIT_TAG_ANNOUNCE_FILE),)
+git-tag:
+	git tag \
+	  $(GIT_TAG_ANNOTATION_FLAGS) \
+	  make-$(VERTAG) \
+	  -m "Release $(GNUSTEP_MAKE_VERSION)."
+else
+ifneq ($(GIT_TAG_ANNOUNCE_OMIT_PREFACE),yes)
+.INTERMEDIATE += git-tag-announce-file.tmp
+git-tag-announce-file.tmp:
+	printf "Release $(GNUSTEP_MAKE_VERSION).\n\n" > git-tag-announce-file.tmp
+	cat $(GIT_TAG_ANNOUNCE_FILE) >> git-tag-announce-file.tmp
+
+git-tag: git-tag-announce-file.tmp
+	git tag \
+	  $(GIT_TAG_ANNOTATION_FLAGS) \
+	  make-$(VERTAG) \
+	  -F git-tag-announce-file.tmp
+else
+git-tag:
+	git tag \
+	  $(GIT_TAG_ANNOTATION_FLAGS) \
+	  make-$(VERTAG) \
+	  -F $(GIT_TAG_ANNOUNCE_FILE)
+endif
+endif
+
+git-dist:
+	git archive --format=tar.gz make-$(VERTAG) -o gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz --prefix=gnustep-make-$(GNUSTEP_MAKE_VERSION)/
+
 test-RPM_TOPDIR:
 	@(if [ -z "$(RPM_TOPDIR)" ]; then                                  \
 	  echo "Error - RPM_TOPDIR variable not set.";                     \

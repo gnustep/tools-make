@@ -2,6 +2,8 @@
 
 	* Master/source-distribution.make: Allow creating a Git tag and
 	creating a tarball from a git tag.
+	* GNUmakefile.in: Allow creating a Git tag and creating a tarball
+	from a Git tag, for releasing gnustep-make itself.
 
 2017-04-14 Richard Frith-Macdonald <rfm@gnu.org>
 
