@@ -36,6 +36,18 @@
 # integration does not interact with remote repository, so specifying
 # a base URL is not needed.
 #
+# When Git tagging, an ANNOUNCE file can be used to create the annotated Git
+# tag's commit message.
+# - Passing GIT_TAG_ANNOUNCE_FILE will copy the file, then prefix it with
+#   a one-line 'Release $(PACKAGE_VERSION).' and an empty line.
+# - Additionally passing GIT_TAG_ANNOUNCE_OMIT_PREFACE will use the ANNOUNCE
+#   file verbatim, without the prefix.
+#
+# GIT_TAG_SIGN can be used to control whether the annotated Git tag should
+# be GPG-signed. Empty value or unspecified means no signature, 'yes' means
+# use the default signing key, and another value specifies which key should
+# be used; you can use things like key ID or e-mail address.
+#
 # For SVN exports, you may want to define something like:
 #
 # SVN_MODULE_NAME = base
@@ -156,6 +168,24 @@ endif
 endif
 
 endif # COMPRESSION
+
+# Whether to GPG sign the Git tag.
+#
+# - By default (or with empty variable GIT_TAG_SIGN), annotated tag will be
+#   created without signature.
+# - If GIT_TAG_SIGN has value of 'yes', default e-mail address's key will
+#   be used.
+# - If GIT_TAG_SIGN has another value, the value will be used as the signing
+#   e-mail address.
+ifeq ($(GIT_TAG_SIGN), )
+GIT_TAG_ANNOTATION_FLAGS = -a
+else
+  ifeq ($(GIT_TAG_SIGN), yes)
+  GIT_TAG_ANNOTATION_FLAGS = -s
+  else
+  GIT_TAG_ANNOTATION_FLAGS = -u $(GIT_TAG_SIGN)
+  endif
+endif
 
 # Due to peculiarities of some packaging systems or package distribution
 # systems, we may want to permit customization of tarball version string.
@@ -371,8 +401,32 @@ endif
 #
 # New tag still needs to be published with git push --tags.
 #
+ifeq ($(GIT_TAG_ANNOUNCE_FILE),)
 git-tag:
-	$(GIT) tag -a $(GIT_TAG_NAME)-$(VERTAG) -m "Tag version $(VERTAG)"
+	$(GIT) tag \
+	  $(GIT_TAG_ANNOTATION_FLAGS) \
+	  $(GIT_TAG_NAME)-$(VERTAG) \
+	  -m "Release $(PACKAGE_VERSION)"
+else
+ifneq ($(GIT_TAG_ANNOUNCE_OMIT_PREFACE),yes)
+.INTERMEDIATE += git-tag-announce-file.tmp
+git-tag-announce-file.tmp:
+	printf "Release $(PACKAGE_VERSION).\n\n" > git-tag-announce-file.tmp
+	cat $(GIT_TAG_ANNOUNCE_FILE) >> git-tag-announce-file.tmp
+
+git-tag: git-tag-announce-file.tmp
+	$(GIT) tag \
+	  $(GIT_TAG_ANNOTATION_FLAGS) \
+	  $(GIT_TAG_NAME)-$(VERTAG) \
+	  -F git-tag-announce-file.tmp
+else
+git-tag:
+	$(GIT) tag \
+	  $(GIT_TAG_ANNOTATION_FLAGS) \
+	  $(GIT_TAG_NAME)-$(VERTAG) \
+	  -F $(GIT_TAG_ANNOUNCE_FILE)
+endif
+endif
 
 #
 # Build a .tar.gz from the Git sources using revision/tag
