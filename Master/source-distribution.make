@@ -26,6 +26,16 @@
 # PACKAGE_NAME = gnustep-base
 # PACKAGE_VERSION = 1.0.0
 #
+# For Git exports, you may want to define something like:
+#
+# GIT_MODULE_NAME = libs-base
+#
+# GIT_MODULE_NAME will default to the value of PACKAGE_NAME.
+# GIT_TAG_NAME is the same as GIT_MODULE_NAME if not set, and is used as
+# a prefix when creating a tag or exporting a tag. Currently, the Git
+# integration does not interact with remote repository, so specifying
+# a base URL is not needed.
+#
 # For SVN exports, you may want to define something like:
 #
 # SVN_MODULE_NAME = base
@@ -87,6 +97,13 @@ ifeq ($(SVN_TAG_NAME),)
   SVN_TAG_NAME = $(SVN_MODULE_NAME)
 endif
 
+ifeq ($(GIT_MODULE_NAME),)
+  GIT_MODULE_NAME = $(SVN_MODULE_NAME)
+endif
+ifeq ($(GIT_TAG_NAME),)
+  GIT_TAG_NAME = $(GIT_MODULE_NAME)
+endif
+
 
 # Set the cvs command we use.  Most of the times, this is 'cvs' and
 # you need to do nothing.  But you can override 'cvs' with something
@@ -97,6 +114,9 @@ ifeq ($(CVS),)
 endif
 ifeq ($(SVN),)
   SVN = svn
+endif
+ifeq ($(GIT),)
+  GIT = git
 endif
 
 #
@@ -345,3 +365,58 @@ ifneq ($(RELEASE_DIR),)
 	fi; \
 	mv $(ARCHIVE_FILE) $(RELEASE_DIR)$(END_ECHO)
 endif
+
+#
+# Create an annotated Git tag with the $(GIT_TAG_NAME)-$(VERTAG) tag.
+#
+# New tag still needs to be published with git push --tags.
+#
+git-tag:
+	$(GIT) tag -a $(GIT_TAG_NAME)-$(VERTAG) -m "Tag version $(VERTAG)"
+
+#
+# Build a .tar.gz from the Git sources using revision/tag
+# $(GIT_TAG_NAME)-$(VERTAG) as for a new release of the package.
+#
+# Note: .dist-ignore is unused at this time.
+#
+git-dist:
+	$(ECHO_NOTHING)echo "Exporting from branch or tag $(GIT_TAG_NAME)-$(VERTAG) on local Git repository..."; \
+	if $(GIT) show $(GIT_TAG_NAME)-$(VERTAG):.dist-ignore 2>/dev/null >/dev/null; then \
+          echo "*Error* cannot export: dist-ignore is currently unused"; \
+	else \
+	  $(GIT) archive --format=tar.gz $(GIT_TAG_NAME)-$(VERTAG) -o $(ARCHIVE_FILE) --prefix=$(VERSION_NAME)/ ; \
+        fi ; \
+	if [ ! -f $(ARCHIVE_FILE) ]; then \
+	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
+	  exit 1; \
+	fi;$(END_ECHO)
+ifneq ($(RELEASE_DIR),)
+	$(ECHO_NOTHING)echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
+	if [ ! -d $(RELEASE_DIR) ]; then \
+	  $(MKDIRS) $(RELEASE_DIR); \
+	fi; \
+	if [ -f $(RELEASE_DIR)/$(ARCHIVE_FILE) ]; then \
+	  echo "$(RELEASE_DIR)/$(ARCHIVE_FILE) already exists:";    \
+	  echo "Saving old version in $(RELEASE_DIR)/$(ARCHIVE_FILE)~";\
+	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
+	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
+	fi; \
+	mv $(ARCHIVE_FILE) $(RELEASE_DIR)$(END_ECHO)
+endif
+
+git-tag-stable:
+	$(ECHO_NOTHING)echo "*Error* tagging stable branch in Git is not supported at this time."$(END_ECHO)
+	exit 1
+
+git-bugfix:
+	$(ECHO_NOTHING)echo "*Error* creating a bugfix release from the stable branch in Git is not supported at this time."$(END_ECHO)
+	exit 1
+
+git-snapshot:
+	$(ECHO_NOTHING)echo "*Error* creating a snapshot tarball from the current Git master is not supported at this time."$(END_ECHO)
+	exit 1
+
+git-export:
+	$(ECHO_NOTHING)echo "*Error* creating a tarball from the current Git working copy is not supported at this time."$(END_ECHO)
+	exit 1
