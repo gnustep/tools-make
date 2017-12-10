@@ -1,3 +1,11 @@
+2017-12-10 Ivan Vucica <ivan@vucica.net>
+
+	* Master/source-distribution.make
+	* GNUmakefile.in:
+	When adding an ANNOUNCE file to the annotated tag, added dependency
+	on the passed ANNOUNCE file to ensure the temporary file which
+	prepends 'Release x.yz' gets regenerated while tagging.
+
 2017-12-07 Ivan Vucica <ivan@vucica.net>
 
 	* Master/source-distribution.make: Allow creating a Git tag and

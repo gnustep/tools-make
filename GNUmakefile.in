@@ -439,16 +439,16 @@ git-tag:
 	  -m "Release $(GNUSTEP_MAKE_VERSION)."
 else
 ifneq ($(GIT_TAG_ANNOUNCE_OMIT_PREFACE),yes)
-.INTERMEDIATE += git-tag-announce-file.tmp
-git-tag-announce-file.tmp:
-	printf "Release $(GNUSTEP_MAKE_VERSION).\n\n" > git-tag-announce-file.tmp
-	cat $(GIT_TAG_ANNOUNCE_FILE) >> git-tag-announce-file.tmp
+.INTERMEDIATE += git-tag-announce-file_$(GNUSTEP_MAKE_VERSION).tmp
+git-tag-announce-file_$(GNUSTEP_MAKE_VERSION).tmp: $(GIT_TAG_ANNOUNCE_FILE)
+	printf "Release $(GNUSTEP_MAKE_VERSION).\n\n" > $@
+	cat $(GIT_TAG_ANNOUNCE_FILE) >> $@
 
-git-tag: git-tag-announce-file.tmp
+git-tag: git-tag-announce-file_$(GNUSTEP_MAKE_VERSION).tmp
 	git tag \
 	  $(GIT_TAG_ANNOTATION_FLAGS) \
 	  make-$(VERTAG) \
-	  -F git-tag-announce-file.tmp
+	  -F $<
 else
 git-tag:
 	git tag \

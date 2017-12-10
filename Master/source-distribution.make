@@ -409,16 +409,16 @@ git-tag:
 	  -m "Release $(PACKAGE_VERSION)"
 else
 ifneq ($(GIT_TAG_ANNOUNCE_OMIT_PREFACE),yes)
-.INTERMEDIATE += git-tag-announce-file.tmp
-git-tag-announce-file.tmp:
-	printf "Release $(PACKAGE_VERSION).\n\n" > git-tag-announce-file.tmp
-	cat $(GIT_TAG_ANNOUNCE_FILE) >> git-tag-announce-file.tmp
+.INTERMEDIATE += git-tag-announce-file-$(VERTAG).tmp
+git-tag-announce-file-$(VERTAG).tmp: $(GIT_TAG_ANNOUNCE_FILE)
+	printf "Release $(PACKAGE_VERSION).\n\n" > $@
+	cat $(GIT_TAG_ANNOUNCE_FILE) >> $@
 
-git-tag: git-tag-announce-file.tmp
+git-tag: git-tag-announce-file-$(VERTAG).tmp
 	$(GIT) tag \
 	  $(GIT_TAG_ANNOTATION_FLAGS) \
 	  $(GIT_TAG_NAME)-$(VERTAG) \
-	  -F git-tag-announce-file.tmp
+	  -F $<
 else
 git-tag:
 	$(GIT) tag \
