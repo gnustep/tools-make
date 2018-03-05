@@ -192,80 +192,6 @@ BUNDLE_LINK_CMD = $(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
 ####################################################
 
 
-####################################################
-#
-# MacOSX-Server 1.0
-#
-ifeq ($(findstring rhapsody5, $(GNUSTEP_TARGET_OS)), rhapsody5)
-ifeq ($(OBJC_RUNTIME_LIB), apple)
-HAVE_BUNDLES     = yes
-endif
-
-HAVE_SHARED_LIBS = yes
-SHARED_LIBEXT    = .dylib
-
-ifeq ($(FOUNDATION_LIB), apple)
-  # Use the NeXT compiler
-  CC = cc
-  OBJC_COMPILER = NeXT
-  ifneq ($(arch),)
-    ARCH_FLAGS = $(foreach a, $(arch), -arch $(a))
-    INTERNAL_OBJCFLAGS += $(ARCH_FLAGS)
-    INTERNAL_CFLAGS    += $(ARCH_FLAGS)
-    INTERNAL_LDFLAGS   += $(ARCH_FLAGS)
-  endif
-endif
-
-ifneq ($(OBJC_COMPILER), NeXT)
-SHARED_LIB_LINK_CMD     = \
-	$(LD) $(SHARED_LD_PREFLAGS) \
-		-dynamiclib $(ARCH_FLAGS) -dynamic \
-		-compatibility_version 1 -current_version 1 \
-		-install_name $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIB_LINK_FILE) \
-		$(ALL_LDFLAGS) -o $@ \
-		-framework Foundation \
-		-framework System \
-		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
-		-lobjc -lgcc $^ $(SHARED_LD_POSTFLAGS) \
-	&& (cd $(LIB_LINK_OBJ_DIR); $(RM_LN_S) $(LIB_LINK_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
-else # OBJC_COMPILER=NeXT
-SHARED_LIB_LINK_CMD     = \
-	$(LD) $(SHARED_LD_PREFLAGS) \
-		-dynamiclib $(ARCH_FLAGS) -dynamic \
-		-compatibility_version 1 -current_version 1 \
-		-read_only_relocs warning -undefined warning \
-		-install_name $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR)/$(LIB_LINK_FILE) \
-		$(ALL_LDFLAGS) -o $@ \
-		$(INTERNAL_LIBRARIES_DEPEND_UPON) $(LIBRARIES_FOUNDATION_DEPEND_UPON) \
-		-framework Foundation \
-		$^ $(SHARED_LD_POSTFLAGS) \
-	&& (cd $(LIB_LINK_OBJ_DIR); $(RM_LN_S) $(LIB_LINK_FILE); \
-          $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
-endif # OBJC_COMPILER
-
-OBJ_MERGE_CMD = \
-	$(LD) -nostdlib $(OBJ_MERGE_CMD_FLAG) -d $(ALL_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
-
-STATIC_LIB_LINK_CMD	= \
-	/usr/bin/libtool $(STATIC_LD_PREFLAGS) -static $(ARCH_FLAGS) $(ALL_LDFLAGS) -o $@ $^ \
-	$(STATIC_LD_POSTFLAGS)
-
-# This doesn't work with 4.1, what about others?
-#ADDITIONAL_LDFLAGS += -Wl,-read_only_relocs,suppress
-
-AFTER_INSTALL_STATIC_LIB_CMD =
-
-SHARED_CFLAGS   += -dynamic
-SHARED_LIBEXT   = .dylib
-
-BUNDLE_LD	=  $(LD)
-BUNDLE_LDFLAGS  += -bundle -undefined suppress $(ARCH_FLAGS)
-endif
-#
-# end MacOSX-Server 1.0
-#
-####################################################
 
 ####################################################
 #
@@ -596,35 +522,6 @@ STATIC_LDFLAGS += -static
 endif
 #
 # end Linux ELF
-#
-####################################################
-
-####################################################
-#
-# FreeBSD a.out (2.2.x)
-#
-ifeq ($(findstring freebsdaout, $(GNUSTEP_TARGET_OS)), freebsdaout)
-freebsdaout = yes
-
-HAVE_SHARED_LIBS	= no
-SHARED_LIB_LINK_CMD = \
-	$(LD) -shared -Wl,-soname,$(LIB_LINK_VERSION_FILE) \
-	   $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ /usr/lib/c++rt0.o \
-	&& (cd $(LIB_LINK_OBJ_DIR); \
-	  $(RM_LN_S) $(LIB_LINK_FILE); \
-	  $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
-
-SHARED_CFLAGS	+= -fPIC
-SHARED_LIBEXT	= .so
-
-HAVE_BUNDLES	= yes
-BUNDLE_LD	= $(LD)
-BUNDLE_LDFLAGS	+= -shared
-ADDITIONAL_LDFLAGS += -rdynamic
-STATIC_LDFLAGS += -static
-endif
-#
-# end FreeBSD A.out
 #
 ####################################################
 

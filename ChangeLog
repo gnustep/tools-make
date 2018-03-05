@@ -1,6 +1,11 @@
 2018-03-05 Riccardo Mottola <rm@gnu.org>
 
 	* target.make
+	Remove legacy Rhapsody and FreeBSD-out support
+
+2018-03-05 Riccardo Mottola <rm@gnu.org>
+
+	* target.make
 	netbsd: cleanup old X11R6 directories and generally remove additional dirs
 
 2017-12-10 Ivan Vucica <ivan@vucica.net>
