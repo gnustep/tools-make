@@ -703,8 +703,8 @@ SHARED_LIBEXT	= .so
 HAVE_BUNDLES	= yes
 BUNDLE_LD	= $(LD)
 BUNDLE_LDFLAGS	+= -shared
-ADDITIONAL_LDFLAGS += -rdynamic -Wl,-R/usr/pkg/lib -L/usr/pkg/lib -Wl,-R/usr/X11R6/lib -L/usr/X11R6/lib
-ADDITIONAL_INCLUDE_DIRS += -I/usr/pkg/include
+ADDITIONAL_LDFLAGS += -rdynamic
+ADDITIONAL_INCLUDE_DIRS += 
 STATIC_LDFLAGS += -static
 endif
 #
