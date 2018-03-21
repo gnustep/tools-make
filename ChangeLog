@@ -1,3 +1,12 @@
+2018-03-21 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/framework.make:
+	* Instance/library.make:
+	When automatically invoking testsuite for 'make check', pass
+	additional linker flags to use -rpath so built testcases can
+	be executed standalone and still use the locally built
+	library/framework.  Idea by David
+
 2018-03-05 Riccardo Mottola <rm@gnu.org>
 
 	* target.make
@@ -6,7 +15,8 @@
 2018-03-05 Riccardo Mottola <rm@gnu.org>
 
 	* target.make
-	netbsd: cleanup old X11R6 directories and generally remove additional dirs
+	netbsd: cleanup old X11R6 directories and generally
+	remove additional dirs
 
 2017-12-10 Ivan Vucica <ivan@vucica.net>
 

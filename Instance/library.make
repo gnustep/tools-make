@@ -355,6 +355,8 @@ ifneq ($($(GNUSTEP_INSTANCE)_TEST_DIR),)
 	  > $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
 	echo "ADDITIONAL_INCLUDE_DIRS += \"-I$(GNUSTEP_MAKEFILES)/TestFramework -I$$(pwd)\"" \
 	  >> $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
+	echo "ADDITIONAL_LDFLAGS += -Wl,-rpath,$$(pwd)/$(GNUSTEP_OBJ_DIR)\"" \
+	  >> $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
 	echo "ADDITIONAL_LIB_DIRS += \"-L$$(pwd)/$(GNUSTEP_OBJ_DIR)\"" \
 	  >> $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
 	echo "ADDITIONAL_TOOL_LIBS += \"-l$(LIBRARY_NAME_WITHOUT_LIB)\"" \

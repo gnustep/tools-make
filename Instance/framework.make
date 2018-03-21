@@ -821,6 +821,7 @@ ifneq ($($(GNUSTEP_INSTANCE)_TEST_DIR),)
 	  > $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
 	echo "ADDITIONAL_INCLUDE_DIRS += \"-I$(GNUSTEP_MAKEFILES)/TestFramework -I$(FRAMEWORK_VERSION_DIR)/Headers\"" \
 	  >> $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
+	echo "ADDITIONAL_LDFLAGS += -Wl,-rpath,$$(pwd)/$(GNUSTEP_INSTANCE).framework\"" \ >> $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
 	echo "ADDITIONAL_LIB_DIRS += \"-L$(FRAMEWORK_VERSION_DIR))\"" \
 	  >> $($(GNUSTEP_INSTANCE)_TEST_DIR)/make-check.mak; \
 	echo "ADDITIONAL_TOOL_LIBS += \"-l$(GNUSTEP_INSTANCE)\"" \
