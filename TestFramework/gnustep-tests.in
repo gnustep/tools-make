@@ -341,7 +341,11 @@ build_and_run ()
       BUILD_CMD="$CC -o ./obj/$TESTNAME $TESTFILE $GSTESTFLAGS $GSTESTLIBS"
     fi
   else
-    BUILD_CMD="$MAKE_CMD debug=yes $TESTNAME"
+    if test x"$GSVERBOSE" = xyes
+      BUILD_CMD="$MAKE_CMD messages=yes debug=yes $TESTNAME"
+    else
+      BUILD_CMD="$MAKE_CMD debug=yes $TESTNAME"
+    fi
   fi
 
   # Compile it if necessary.
