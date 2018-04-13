@@ -342,6 +342,7 @@ build_and_run ()
     fi
   else
     if test x"$GSVERBOSE" = xyes
+    then
       BUILD_CMD="$MAKE_CMD messages=yes debug=yes $TESTNAME"
     else
       BUILD_CMD="$MAKE_CMD debug=yes $TESTNAME"
