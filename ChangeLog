@@ -1,3 +1,9 @@
+2018-07-05  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* Instance/framework.make:
+	* Instance/library.make:
+	Fix quotation errors in automatically generated testsuite flags.
+
 2018-03-22 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in: When invoked with --verbose
