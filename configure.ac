@@ -1411,67 +1411,6 @@ CXXFLAGS="$CXXFLAGS_saved"
 CXXPPFLAGS="$CXXPPFLAGS_saved"
 AC_LANG_POP(C++)
 
-if test "$OBJC_RUNTIME_LIB" != ng; then
-#--------------------------------------------------------------------
-# Check if compiler supports -fobjc-nonfragile-abi, and if so, turn it on!
-#--------------------------------------------------------------------
-
-AC_ARG_ENABLE(objc-nonfragile-abi, [
---enable-objc-nonfragile-abi
-   Use the non-fragile ABI for Objective-C.  Use this option if you want
-   to use non-fragile instance variables provided by clang and libobjc2.
-], 
-USE_NONFRAGILE_ABI=$enableval,
-USE_NONFRAGILE_ABI=notset)
-
-AC_MSG_CHECKING(whether we should use the nonfragile ABI)
-if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
-  # What we want to do: set USE_NONFRAGILE_ABI to yes if we can compile
-  # something with -fobjc-nonfragile-abi.
-  CFLAGS_no_nonfragile="$CFLAGS"
-  CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
-  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
-/* Note that we never execute this code so it does not really matter
-   what it is.  We are testing that the compiler accepts the
-   '-fobjc-nonfragile-abi' flag.  */
-int
-main()
-{
-#ifndef __has_feature
-#define __has_feature(x) 0
-#endif
-return __has_feature(objc_nonfragile_abi) ? 0 : 1;
-}
-]])], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
-  AC_MSG_RESULT($USE_NONFRAGILE_ABI)
-  CFLAGS="$CFLAGS_no_nonfragile"
-
-  if test x"$USE_NONFRAGILE_ABI" = x"no"; then
-    AC_MSG_NOTICE([The nonfragile ABI was requested, but the compiler])
-    AC_MSG_NOTICE([doesn't support it.])
-    AC_MSG_ERROR([compiler doesn't support nonfragile ABI])
-  fi
-else
-  if test x"$USE_NONFRAGILE_ABI" != x"no"; then
-    saved_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS -x objective-c"
-    AC_EGREP_CPP([^1$], [
-#ifndef __has_feature
-#define __has_feature(x) 0
-#endif
-__has_feature(objc_nonfragile_abi)
-], USE_NONFRAGILE_ABI=yes, USE_NONFRAGILE_ABI=no)
-    CPPFLAGS=$saved_CPPFLAGS
-  fi
-  if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
-    AC_MSG_RESULT([yes (compiler default)])
-  else
-    AC_MSG_RESULT(not requested by user)
-  fi
-fi
-fi
-AC_SUBST(USE_NONFRAGILE_ABI)
-
 #--------------------------------------------------------------------
 # Check if compiler supports -fobjc-arc, and if so, turn it on!
 #--------------------------------------------------------------------

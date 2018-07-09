@@ -664,17 +664,6 @@ ifeq ($(USE_OBJC_EXCEPTIONS), yes)
   INTERNAL_LDFLAGS += -fexceptions
 endif
 
-# If the compiler supports nonfragile ABI and the user wants us to
-# use them, turn them on!
-ifeq ($(USE_NONFRAGILE_ABI), yes)
-  INTERNAL_OBJCFLAGS += -fobjc-nonfragile-abi -D_NONFRAGILE_ABI
-endif
-
-# If we are using garbage collection we set a define to say so.
-ifeq ($(OBJC_WITH_GC), yes)
-  INTERNAL_OBJCFLAGS += -DGS_WITH_GC=1
-endif
-
 #
 # Now decide whether to build shared objects or not.  Nothing depending
 # on the value of the shared variable is allowed before this point!

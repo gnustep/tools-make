@@ -611,7 +611,6 @@ USE_OBJC_EXCEPTIONS
 CLANG_CC
 OBJ_MERGE_CMD_FLAG
 USE_ARC
-USE_NONFRAGILE_ABI
 OBJCXX
 ac_cv_objc_threaded
 objc_threaded
@@ -779,7 +778,6 @@ enable_backend_bundle
 enable_install_ld_so_conf
 with_objc_lib_flag
 with_thread_lib
-enable_objc_nonfragile_abi
 enable_objc_arc
 enable_native_objc_exceptions
 enable_debug_by_default
@@ -1494,11 +1492,6 @@ Optional Features:
    systems clear out the environment at certain points during the
    packaging build process, hence making LD_LIBRARY_PATH set by
    gnustep-make.conf ineffective.
-
-
---enable-objc-nonfragile-abi
-   Use the non-fragile ABI for Objective-C.  Use this option if you want
-   to use non-fragile instance variables provided by clang and libobjc2.
 
 
 --enable-objc-arc
@@ -6010,94 +6003,6 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-if test "$OBJC_RUNTIME_LIB" != ng; then
-#--------------------------------------------------------------------
-# Check if compiler supports -fobjc-nonfragile-abi, and if so, turn it on!
-#--------------------------------------------------------------------
-
-# Check whether --enable-objc-nonfragile-abi was given.
-if test "${enable_objc_nonfragile_abi+set}" = set; then :
-  enableval=$enable_objc_nonfragile_abi; USE_NONFRAGILE_ABI=$enableval
-else
-  USE_NONFRAGILE_ABI=notset
-fi
-
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether we should use the nonfragile ABI" >&5
-$as_echo_n "checking whether we should use the nonfragile ABI... " >&6; }
-if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
-  # What we want to do: set USE_NONFRAGILE_ABI to yes if we can compile
-  # something with -fobjc-nonfragile-abi.
-  CFLAGS_no_nonfragile="$CFLAGS"
-  CFLAGS="$CFLAGS -fobjc-nonfragile-abi"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-/* Note that we never execute this code so it does not really matter
-   what it is.  We are testing that the compiler accepts the
-   '-fobjc-nonfragile-abi' flag.  */
-int
-main()
-{
-#ifndef __has_feature
-#define __has_feature(x) 0
-#endif
-return __has_feature(objc_nonfragile_abi) ? 0 : 1;
-}
-
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  USE_NONFRAGILE_ABI=yes
-else
-  USE_NONFRAGILE_ABI=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $USE_NONFRAGILE_ABI" >&5
-$as_echo "$USE_NONFRAGILE_ABI" >&6; }
-  CFLAGS="$CFLAGS_no_nonfragile"
-
-  if test x"$USE_NONFRAGILE_ABI" = x"no"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: The nonfragile ABI was requested, but the compiler" >&5
-$as_echo "$as_me: The nonfragile ABI was requested, but the compiler" >&6;}
-    { $as_echo "$as_me:${as_lineno-$LINENO}: doesn't support it." >&5
-$as_echo "$as_me: doesn't support it." >&6;}
-    as_fn_error $? "compiler doesn't support nonfragile ABI" "$LINENO" 5
-  fi
-else
-  if test x"$USE_NONFRAGILE_ABI" != x"no"; then
-    saved_CPPFLAGS=$CPPFLAGS
-    CPPFLAGS="$CPPFLAGS -x objective-c"
-
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-#ifndef __has_feature
-#define __has_feature(x) 0
-#endif
-__has_feature(objc_nonfragile_abi)
-
-_ACEOF
-if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
-  $EGREP "^1$" >/dev/null 2>&1; then :
-  USE_NONFRAGILE_ABI=yes
-else
-  USE_NONFRAGILE_ABI=no
-fi
-rm -f conftest*
-
-    CPPFLAGS=$saved_CPPFLAGS
-  fi
-  if test x"$USE_NONFRAGILE_ABI" = x"yes"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes (compiler default)" >&5
-$as_echo "yes (compiler default)" >&6; }
-  else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: not requested by user" >&5
-$as_echo "not requested by user" >&6; }
-  fi
-fi
-fi
-
-
 #--------------------------------------------------------------------
 # Check if compiler supports -fobjc-arc, and if so, turn it on!
 #--------------------------------------------------------------------
@@ -6154,7 +6059,8 @@ else
   if test x"$USE_ARC" != x"no"; then
     saved_CPPFLAGS=$CPPFLAGS
     CPPFLAGS="$CPPFLAGS -x objective-c"
-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
 #ifndef __has_feature

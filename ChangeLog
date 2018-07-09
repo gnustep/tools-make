@@ -1,3 +1,17 @@
+2018-07-09 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/library-combo.7:
+	* common.make:
+	* config.make.in:
+	* configure:
+	* configure.ac:
+	* library-combo.make:
+	Changes removing nonfragile ABI settings I made over a year ago and
+	somehow failed to commit.  With the ng runtime we always use the
+	nonfragile ABI (since it's required for ARC).  With the gnu runtime
+	we don't have it and can't use it.  Anything else is for experts
+	(and if we want to make that easier it's better done in gnustep-base).
+
 2018-07-05  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* Instance/framework.make:

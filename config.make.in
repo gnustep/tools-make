@@ -207,11 +207,6 @@ AUTO_DEPENDENCIES = @AUTO_DEPENDENCIES@
 USE_OBJC_EXCEPTIONS = @USE_OBJC_EXCEPTIONS@
 
 #
-# Whether the ObjC compiler supports -fobjc-nonfragile-abi
-#
-USE_NONFRAGILE_ABI = @USE_NONFRAGILE_ABI@
-
-#
 # Whether the ObjC compiler supports -fobjc-arc
 #
 USE_ARC = @USE_ARC@
