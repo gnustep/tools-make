@@ -1175,8 +1175,8 @@ fi
 
 # Special case for Apple systems: When compiling plain C source files that
 # include Objective-C runtime headers we must make sure that the correct
-# header files are used with a gnu-*-* combo. The -fgnu-runtime compiler
-# option takes care of this when compiling Objective-C source files, but
+# header files are used with a gnu-*-* combo. The -fobjc-runtime=gcc compiler
+# option should take care of this when compiling Objective-C source files, but
 # has no effect when compiling plain C (or C++) source files.
 cc_gnuruntime=
 case $target_os-$ac_cv_library_combo in
@@ -1221,11 +1221,29 @@ AC_SUBST(OBJC_LIB_FLAG)
 # But we need to compute, and print out, what flag we're using now.
 OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
 
+AC_MSG_CHECKING(whether the compiler is clang)
+if test ! x"${GCC}" = x"yes" ; then
+  CLANG_CC=no
+  AC_MSG_RESULT(no)
+else
+  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+    CLANG_CC=yes
+    AC_MSG_RESULT(yes)
+  else
+    CLANG_CC=no
+    AC_MSG_RESULT(no)
+  fi
+fi
+AC_SUBST(CLANG_CC)
+
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+  if test x"$CLANG_CC" = x"yes"; then
+    CFLAGS="$CFLAGS -fobjc-runtime=gcc"
+  fi
+  CFLAGS="$CFLAGS -DGNU_RUNTIME"
   if test "$OBJC_FINAL_LIB_FLAG" = ""; then
     OBJC_FINAL_LIB_FLAG=-lobjc
   fi
@@ -1532,21 +1550,6 @@ else
 
   AC_MSG_RESULT(version: ${gs_cv_gcc_parsed_version})
 fi
-
-AC_MSG_CHECKING(whether the compiler is clang)
-if test ! x"${GCC}" = x"yes" ; then
-  CLANG_CC=no
-  AC_MSG_RESULT(no)
-else
-  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-    CLANG_CC=yes
-    AC_MSG_RESULT(yes)
-  else
-    CLANG_CC=no
-    AC_MSG_RESULT(no)
-  fi
-fi
-AC_SUBST(CLANG_CC)
 
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.

@@ -57,6 +57,8 @@ ifeq ($(CXX),)
   CXX       = @CXX@
 endif
 
+CLANG_CC = @CLANG_CC@
+
 # TODO: Because of the following, OPTFLAG usually ends up being '-g
 # -O2'.  The '-g' is fairly harmless as you can always use strip=yes
 # which will strip the object files upon installation; still, it's not

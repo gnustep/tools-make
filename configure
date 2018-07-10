@@ -608,12 +608,12 @@ SOLARIS_SHARED
 GCC_WITH_PRECOMPILED_HEADERS
 AUTO_DEPENDENCIES
 USE_OBJC_EXCEPTIONS
-CLANG_CC
 OBJ_MERGE_CMD_FLAG
 USE_ARC
 OBJCXX
 ac_cv_objc_threaded
 objc_threaded
+CLANG_CC
 OBJC_LIB_FLAG
 cc_gnuruntime
 GNUSTEP_INSTALL_LD_SO_CONF
@@ -5542,8 +5542,8 @@ fi
 
 # Special case for Apple systems: When compiling plain C source files that
 # include Objective-C runtime headers we must make sure that the correct
-# header files are used with a gnu-*-* combo. The -fgnu-runtime compiler
-# option takes care of this when compiling Objective-C source files, but
+# header files are used with a gnu-*-* combo. The -fobjc-runtime=gcc compiler
+# option should take care of this when compiling Objective-C source files, but
 # has no effect when compiling plain C (or C++) source files.
 cc_gnuruntime=
 case $target_os-$ac_cv_library_combo in
@@ -5587,11 +5587,33 @@ fi
 # But we need to compute, and print out, what flag we're using now.
 OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
 
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
+$as_echo_n "checking whether the compiler is clang... " >&6; }
+if test ! x"${GCC}" = x"yes" ; then
+  CLANG_CC=no
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+else
+  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+    CLANG_CC=yes
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+  else
+    CLANG_CC=no
+    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+  fi
+fi
+
+
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
 CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
 if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  CFLAGS="$CFLAGS -fgnu-runtime -DGNU_RUNTIME"
+  if test x"$CLANG_CC" = x"yes"; then
+    CFLAGS="$CFLAGS -fobjc-runtime=gcc"
+  fi
+  CFLAGS="$CFLAGS -DGNU_RUNTIME"
   if test "$OBJC_FINAL_LIB_FLAG" = ""; then
     OBJC_FINAL_LIB_FLAG=-lobjc
   fi
@@ -6157,25 +6179,6 @@ else
   { $as_echo "$as_me:${as_lineno-$LINENO}: result: version: ${gs_cv_gcc_parsed_version}" >&5
 $as_echo "version: ${gs_cv_gcc_parsed_version}" >&6; }
 fi
-
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
-$as_echo_n "checking whether the compiler is clang... " >&6; }
-if test ! x"${GCC}" = x"yes" ; then
-  CLANG_CC=no
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-else
-  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-    CLANG_CC=yes
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-  else
-    CLANG_CC=no
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-  fi
-fi
-
 
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.

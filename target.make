@@ -249,7 +249,7 @@ ifeq ($(OBJC_RUNTIME_LIB), gnu)
 
 # Make sure that the compiler includes the right Objective-C runtime headers
 # when compiling plain C source files. When compiling Objective-C source files
-# the necessary directory is implicitly added by the -fgnu-runtime option, but
+# the necessary directory should be added by the -fobjc-runtime=gcc option, but
 # this option is ignored when compiling plain C files.
 ifneq ($(strip $(CC_GNURUNTIME)),)
 INTERNAL_CFLAGS += -isystem $(CC_GNURUNTIME)
@@ -280,8 +280,10 @@ SHARED_LIB_LINK_CMD     = \
           $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_FILE))
 
 BUNDLE_LD       =  $(LD)
-BUNDLE_LDFLAGS  += -fgnu-runtime -bundle
-BUNDLE_LDFLAGS  += -undefined dynamic_lookup
+ifeq ($(CLANG_CC), yes)
+BUNDLE_LDFLAGS  += -fobjc-runtime=gcc
+endif
+BUNDLE_LDFLAGS  += -bundle -undefined dynamic_lookup
 
 else 
 # Apple runtime

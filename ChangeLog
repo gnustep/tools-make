@@ -1,3 +1,14 @@
+2018-07-10 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* config.make.in:
+	* configure:
+	* configure.ac:
+	* library-combo.make:
+	* target.make:
+	Change to use -fobjc-runtime=gcc when building with clang but
+	targetting the gnu/gcc runtime ABI.  Suggested by David as the
+	correct way to tell clang what runtime it should be targetting.
+
 2018-07-09 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/library-combo.7:

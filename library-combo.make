@@ -31,7 +31,11 @@ ifeq ($(OBJC_RUNTIME_LIB), gnu)
   OBJC_LDFLAGS =
   OBJC_LIB_DIR =
   OBJC_LIBS = $(OBJC_LIB_FLAG)
-  RUNTIME_FLAG   = -fgnu-runtime
+  ifeq ($(CLANG_CC), yes)
+    RUNTIME_FLAG   = -fobjc-runtime=gcc
+  else
+    RUNTIME_FLAG   =
+  endif
   RUNTIME_DEFINE = -DGNU_RUNTIME=1
 endif
 
