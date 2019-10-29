@@ -461,6 +461,13 @@ endif
 git-dist:
 	git archive --format=tar.gz make-$(VERTAG) -o gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz --prefix=gnustep-make-$(GNUSTEP_MAKE_VERSION)/
 
+hg-tag:
+	hg tag -m "Release $(PACKAGE_VERSION)" make-$(VERTAG)
+
+hg-dist:
+	hg archive -r make-$(VERTAG) -p gnustep-make-$(GNUSTEP_MAKE_VERSION)/ \
+	  gnustep-make-$(GNUSTEP_MAKE_VERSION).tar.gz
+
 test-RPM_TOPDIR:
 	@(if [ -z "$(RPM_TOPDIR)" ]; then                                  \
 	  echo "Error - RPM_TOPDIR variable not set.";                     \

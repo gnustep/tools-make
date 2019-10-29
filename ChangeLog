@@ -1,3 +1,10 @@
+2019-10-29  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* GNUmakefile.in:
+	* Master/source-distribution.make:
+	Add support for creating Mercurial tags and creating tarballs from
+	a Mercurial tag.
+
 2018-07-10 Richard Frith-Macdonald <rfm@gnu.org>
 
 	* config.make.in:

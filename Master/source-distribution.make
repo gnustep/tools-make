@@ -116,6 +116,13 @@ ifeq ($(GIT_TAG_NAME),)
   GIT_TAG_NAME = $(GIT_MODULE_NAME)
 endif
 
+ifeq ($(HG_MODULE_NAME),)
+  HG_MODULE_NAME = $(SVN_MODULE_NAME)
+endif
+ifeq ($(HG_TAG_NAME),)
+  HG_TAG_NAME = $(HG_MODULE_NAME)
+endif
+
 
 # Set the cvs command we use.  Most of the times, this is 'cvs' and
 # you need to do nothing.  But you can override 'cvs' with something
@@ -129,6 +136,9 @@ ifeq ($(SVN),)
 endif
 ifeq ($(GIT),)
   GIT = git
+endif
+ifeq ($(HG),)
+  HG = hg
 endif
 
 #
@@ -473,4 +483,51 @@ git-snapshot:
 
 git-export:
 	$(ECHO_NOTHING)echo "*Error* creating a tarball from the current Git working copy is not supported at this time."$(END_ECHO)
+	exit 1
+
+#
+# Tag the Mercurial source with $(HG_TAG_NAME)-$(VERTAG) tag.
+#
+hg-tag:
+	$(HG) tag -m "Release $(PACKAGE_VERSION)" $(HG_TAG_NAME)-$(VERTAG)
+
+#
+# Build a .tar.gz from the Hg sources using revision/tag
+# $(HG_TAG_NAME)-$(VERTAG) as for a new release of the package.
+#
+hg-dist:
+	$(ECHO_NOTHING)echo "Exporting from branch or tag $(HG_TAG_NAME)-$(VERTAG) on local Mercurial repository..."; \
+	$(HG) archive -r $(HG_TAG_NAME)-$(VERTAG) -p $(VERSION_NAME)/ $(ARCHIVE_FILE); \
+	if [ ! -f $(ARCHIVE_FILE) ]; then \
+	  echo "*Error* creating .tar$(COMPRESSION_EXT) archive"; \
+	  exit 1; \
+	fi;$(END_ECHO)
+ifneq ($(RELEASE_DIR),)
+	$(ECHO_NOTHING)echo "Moving $(ARCHIVE_FILE) to $(RELEASE_DIR)..."; \
+	if [ ! -d $(RELEASE_DIR) ]; then \
+	  $(MKDIRS) $(RELEASE_DIR); \
+	fi; \
+	if [ -f $(RELEASE_DIR)/$(ARCHIVE_FILE) ]; then \
+	  echo "$(RELEASE_DIR)/$(ARCHIVE_FILE) already exists:";    \
+	  echo "Saving old version in $(RELEASE_DIR)/$(ARCHIVE_FILE)~";\
+	  mv $(RELEASE_DIR)/$(ARCHIVE_FILE) \
+	     $(RELEASE_DIR)/$(ARCHIVE_FILE)~;\
+	fi; \
+	mv $(ARCHIVE_FILE) $(RELEASE_DIR)$(END_ECHO)
+endif
+
+hg-tag-stable:
+	$(ECHO_NOTHING)echo "*Error* tagging stable branch in Mercurial is not supported at this time."$(END_ECHO)
+	exit 1
+
+hg-bugfix:
+	$(ECHO_NOTHING)echo "*Error* creating a bugfix release from the stable branch in Mercurial is not supported at this time."$(END_ECHO)
+	exit 1
+
+hg-snapshot:
+	$(ECHO_NOTHING)echo "*Error* creating a snapshot tarball from the current Mercurial master is not supported at this time."$(END_ECHO)
+	exit 1
+
+hg-export:
+	$(ECHO_NOTHING)echo "*Error* creating a tarball from the current Mercurial working copy is not supported at this time."$(END_ECHO)
 	exit 1
