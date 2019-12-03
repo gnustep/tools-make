@@ -23,6 +23,7 @@
 AC_INIT
 AC_PREREQ(2.57)
 AC_CONFIG_SRCDIR([application.make])
+AC_CONFIG_MACRO_DIRS([m4])
 
 #
 # TODO: This configure file should not contain any checks that depend on the
@@ -1221,20 +1222,7 @@ AC_SUBST(OBJC_LIB_FLAG)
 # But we need to compute, and print out, what flag we're using now.
 OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
 
-AC_MSG_CHECKING(whether the compiler is clang)
-if test ! x"${GCC}" = x"yes" ; then
-  CLANG_CC=no
-  AC_MSG_RESULT(no)
-else
-  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-    CLANG_CC=yes
-    AC_MSG_RESULT(yes)
-  else
-    CLANG_CC=no
-    AC_MSG_RESULT(no)
-  fi
-fi
-AC_SUBST(CLANG_CC)
+GS_CHECK_CC_IS_CLANG()
 
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
@@ -1523,33 +1511,7 @@ AC_SUBST(OBJ_MERGE_CMD_FLAG)
 # Check for the GCC version - this is used in the following tests
 #--------------------------------------------------------------------
 
-AC_MSG_CHECKING(for the GCC version)
-if test ! x"${GCC}" = x"yes" ; then
-  AC_MSG_RESULT(no: it's not gcc)
-else
-  # Running gcc -dumpversion we get something like 2.95.4 or
-  #  egcs-2.91.66 or 3.0.2 or 3.1 20011211
-  # We want to discard anything but the major number.
-  # Explanation of the regexp -
-  # \([^0-9]*\) matches non numeric chars at the beginning
-  # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 2^nd
-  #  subpattern)
-  # \([^0-9]*\) matches one or more non numeric chars
-  # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 4^nd
-  #  subpattern)
-  # \([^0-9].*\) matches a non numeric char followed by anything
-  # /\2/ replace the whole lot with the 2^nd subpattern
-  # /\4/ replace the whole lot with the 4^nd subpattern
-  # All square brackets are doubled because this file is processed by m4 first.
-  # Finally, any error messages are redirected to &5, so that they are logged
-  # into config.log but don't clutter the normal user output.
-  gs_cv_gcc_major_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\2/") 2>&5`;
-  gs_cv_gcc_minor_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\4/") 2>&5`;
-
-  gs_cv_gcc_parsed_version=${gs_cv_gcc_major_version}.${gs_cv_gcc_minor_version}
-
-  AC_MSG_RESULT(version: ${gs_cv_gcc_parsed_version})
-fi
+GS_CHECK_GCC_VERSION()
 
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.

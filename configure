@@ -739,6 +739,7 @@ infodir
 docdir
 oldincludedir
 includedir
+runstatedir
 localstatedir
 sharedstatedir
 sysconfdir
@@ -834,6 +835,7 @@ datadir='${datarootdir}'
 sysconfdir='${prefix}/etc'
 sharedstatedir='${prefix}/com'
 localstatedir='${prefix}/var'
+runstatedir='${localstatedir}/run'
 includedir='${prefix}/include'
 oldincludedir='/usr/include'
 docdir='${datarootdir}/doc/${PACKAGE}'
@@ -1086,6 +1088,15 @@ do
   | -silent | --silent | --silen | --sile | --sil)
     silent=yes ;;
 
+  -runstatedir | --runstatedir | --runstatedi | --runstated \
+  | --runstate | --runstat | --runsta | --runst | --runs \
+  | --run | --ru | --r)
+    ac_prev=runstatedir ;;
+  -runstatedir=* | --runstatedir=* | --runstatedi=* | --runstated=* \
+  | --runstate=* | --runstat=* | --runsta=* | --runst=* | --runs=* \
+  | --run=* | --ru=* | --r=*)
+    runstatedir=$ac_optarg ;;
+
   -sbindir | --sbindir | --sbindi | --sbind | --sbin | --sbi | --sb)
     ac_prev=sbindir ;;
   -sbindir=* | --sbindir=* | --sbindi=* | --sbind=* | --sbin=* \
@@ -1223,7 +1234,7 @@ fi
 for ac_var in	exec_prefix prefix bindir sbindir libexecdir datarootdir \
 		datadir sysconfdir sharedstatedir localstatedir includedir \
 		oldincludedir docdir infodir htmldir dvidir pdfdir psdir \
-		libdir localedir mandir
+		libdir localedir mandir runstatedir
 do
   eval ac_val=\$$ac_var
   # Remove trailing slashes.
@@ -1376,6 +1387,7 @@ Fine tuning of the installation directories:
   --sysconfdir=DIR        read-only single-machine data [PREFIX/etc]
   --sharedstatedir=DIR    modifiable architecture-independent data [PREFIX/com]
   --localstatedir=DIR     modifiable single-machine data [PREFIX/var]
+  --runstatedir=DIR       modifiable per-process data [LOCALSTATEDIR/run]
   --libdir=DIR            object code libraries [EPREFIX/lib]
   --includedir=DIR        C header files [PREFIX/include]
   --oldincludedir=DIR     C header files for non-gcc [/usr/include]
@@ -2242,6 +2254,7 @@ ac_cpp='$CPP $CPPFLAGS'
 ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
 ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
 
 
 
@@ -5587,22 +5600,27 @@ fi
 # But we need to compute, and print out, what flag we're using now.
 OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
 $as_echo_n "checking whether the compiler is clang... " >&6; }
-if test ! x"${GCC}" = x"yes" ; then
-  CLANG_CC=no
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
+if ${_gs_cv_cc_is_clang+:} false; then :
+  $as_echo_n "(cached) " >&6
 else
-  if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-    CLANG_CC=yes
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-  else
-    CLANG_CC=no
-    { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-  fi
+      _gs_cv_cc_is_clang="no"
+    if test x"${GCC}" = x"yes" ; then
+        if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+            _gs_cv_cc_is_clang="yes";
+        fi
+    fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_cc_is_clang" >&5
+$as_echo "$_gs_cv_cc_is_clang" >&6; }
+    gs_cv_cc_is_clang=${_gs_cv_cc_is_clang}
+    CLANG_CC=${_gs_cv_cc_is_clang}
+
+    if test "x$_gs_cv_cc_is_clang" = x"yes"; then :
+
 fi
 
 
@@ -6149,36 +6167,50 @@ fi
 # Check for the GCC version - this is used in the following tests
 #--------------------------------------------------------------------
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for the GCC version" >&5
-$as_echo_n "checking for the GCC version... " >&6; }
-if test ! x"${GCC}" = x"yes" ; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no: it's not gcc" >&5
-$as_echo "no: it's not gcc" >&6; }
+
+
+  if test x"${gs_cv_cc_is_clang}" = x"yes"; then
+    compiler_identification="clang"
+  else
+    compiler_identification="GCC"
+  fi
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the ${compiler_identification} version" >&5
+$as_echo_n "checking for the ${compiler_identification} version... " >&6; }
+if ${_gs_cv_gcc_parsed_version+:} false; then :
+  $as_echo_n "(cached) " >&6
 else
-  # Running gcc -dumpversion we get something like 2.95.4 or
-  #  egcs-2.91.66 or 3.0.2 or 3.1 20011211
-  # We want to discard anything but the major number.
-  # Explanation of the regexp -
-  # \([^0-9]*\) matches non numeric chars at the beginning
-  # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 2^nd
-  #  subpattern)
-  # \([^0-9]*\) matches one or more non numeric chars
-  # \([0-9][0-9]*\) matches 1 or more numeric chars (this is the 4^nd
-  #  subpattern)
-  # \([^0-9].*\) matches a non numeric char followed by anything
-  # /\2/ replace the whole lot with the 2^nd subpattern
-  # /\4/ replace the whole lot with the 4^nd subpattern
-  # All square brackets are doubled because this file is processed by m4 first.
-  # Finally, any error messages are redirected to &5, so that they are logged
-  # into config.log but don't clutter the normal user output.
-  gs_cv_gcc_major_version=`(${CC} -dumpversion | sed "s/\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*.*\)/\2/") 2>&5`;
-  gs_cv_gcc_minor_version=`(${CC} -dumpversion | sed "s/\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*.*\)/\4/") 2>&5`;
+      _gs_cv_gcc_major_version=""
+    _gs_cv_gcc_minor_version=""
+    _gs_cv_gcc_parsed_version="no: it's not gcc"
+    if test x"${GCC}" = x"yes" ; then
+                                                                                                      _gs_cv_gcc_major_version=`(${CC} -dumpversion | sed "s/\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*.*\)/\2/") 2>&5`;
+      _gs_cv_gcc_minor_version=`(${CC} -dumpversion | sed "s/\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*\)\([0-9][0-9]*\)\([^0-9]*.*\)/\4/") 2>&5`;
+      _gs_cv_gcc_parsed_version="${_gs_cv_gcc_major_version}.${_gs_cv_gcc_minor_version}";
+    fi
 
-  gs_cv_gcc_parsed_version=${gs_cv_gcc_major_version}.${gs_cv_gcc_minor_version}
-
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: version: ${gs_cv_gcc_parsed_version}" >&5
-$as_echo "version: ${gs_cv_gcc_parsed_version}" >&6; }
 fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_gcc_parsed_version" >&5
+$as_echo "$_gs_cv_gcc_parsed_version" >&6; }
+  if test ! x"${_gs_cv_gcc_parsed_version}" = x"no: it's not gcc"; then
+     _gs_cv_gcc_major_version="${_gs_cv_gcc_parsed_version%%.*}"
+     _gs_cv_gcc_minor_version="${_gs_cv_gcc_parsed_version#*.}"
+  fi
+  if test "x$_gs_cv_gcc_major_version" = x""; then :
+  { gs_cv_gcc_major_version=; unset gs_cv_gcc_major_version;}
+else
+  gs_cv_gcc_major_version=${_gs_cv_gcc_major_version}
+fi
+  if test "x$_gs_cv_gcc_minor_version" = x""; then :
+  { gs_cv_gcc_minor_version=; unset gs_cv_gcc_minor_version;}
+else
+  gs_cv_gcc_minor_version=${_gs_cv_gcc_minor_version}
+fi
+  if test "x$_gs_cv_gcc_major_version" = x""; then :
+  { gs_cv_gcc_parsed_version=; unset gs_cv_gcc_parsed_version;}
+else
+  gs_cv_gcc_parsed_version="${_gs_cv_gcc_major_version}.${_gs_cv_gcc_minor_version}"
+fi
+
 
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.
