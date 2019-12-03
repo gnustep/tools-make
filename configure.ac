@@ -49,54 +49,7 @@ AC_PATH_PROG(GNUSTEP_HAS_PKGCONFIG, pkgconfig, yes, no)
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
-
-AC_MSG_CHECKING(for library combo)
-AC_ARG_WITH(library-combo,[
---with-library-combo
-   Define the default "library combo".  The library combo is a string
-   of the form aaa-bbb-ccc where 'aaa' is the Objective-C runtime
-   library to use (examples are 'gnu' and 'apple'), 
-   'bbb' is the Foundation library to use (examples are 'gnu' for
-   gnustep-base, and 'apple' for Apple Cocoa FoundationKit),
-   and 'ccc' is the ApplicationKit to use (examples are 'gnu'
-   for gnustep-gui and 'apple' for Apple Cocoa AppKit).  Use this 
-   option if you want to force a different default library combo than 
-   the one that would be used by default.  For example, on Darwin GNUstep
-   will automatically use the Apple Objective-C frameworks by
-   default (library-combo=apple-apple-apple); if you are planning 
-   on installing and using gnustep-base on there, you would need 
-   to use --with-library-combo=gnu-gnu-gnu instead.  Please notice
-   that if --disable-flattened is used, gnustep-make can have fat
-   binaries that support multiple library combos.  In that case,
-   this flag will only configure the default one, but you can still
-   use other ones at run-time.
-   Please use 'ng-gnu-gnu' to build with 'next generation' cutting edge
-   runtime and compile time featured (requires a recent version of clang).
-],
-ac_cv_library_combo=$withval,
-ac_cv_library_combo=$ac_cv_library_combo
-)
-
-if test "$ac_cv_library_combo" = "" -o "$ac_cv_library_combo" = "no"; then
-  case "$host_os" in
-    darwin*)   ac_cv_library_combo=apple-apple-apple ;;
-    nextstep4) ac_cv_library_combo=nx-nx-nx          ;;
-    openstep4) ac_cv_library_combo=nx-nx-nx          ;;
-    *)         ac_cv_library_combo=gnu-gnu-gnu       ;;
-  esac
-fi
-
-case "$ac_cv_library_combo" in
-  apple) ac_cv_library_combo=apple-apple-apple ;;
-  gnu)   ac_cv_library_combo=gnu-gnu-gnu ;;
-  ng)    ac_cv_library_combo=ng-gnu-gnu ;;
-  nx)    ac_cv_library_combo=nx-nx-nx ;;
-esac
-
-AC_SUBST(ac_cv_library_combo)
-AC_MSG_RESULT($ac_cv_library_combo)
-
-OBJC_RUNTIME_LIB=`echo $ac_cv_library_combo | awk -F- '{print $1}'`
+GS_LIBRARY_COMBO()
 
 # The ng runtime library setting requires clang rather than gcc
 if test "$OBJC_RUNTIME_LIB" = "ng"; then
