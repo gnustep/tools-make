@@ -1466,6 +1466,8 @@ AC_SUBST(OBJ_MERGE_CMD_FLAG)
 
 GS_CHECK_GCC_VERSION()
 
+
+GS_RUNTIME_ABI()
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.
 

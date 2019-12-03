@@ -608,6 +608,7 @@ SOLARIS_SHARED
 GCC_WITH_PRECOMPILED_HEADERS
 AUTO_DEPENDENCIES
 USE_OBJC_EXCEPTIONS
+gs_cv_runtime_abi
 OBJ_MERGE_CMD_FLAG
 USE_ARC
 OBJCXX
@@ -780,6 +781,7 @@ enable_install_ld_so_conf
 with_objc_lib_flag
 with_thread_lib
 enable_objc_arc
+with_runtime_abi
 enable_native_objc_exceptions
 enable_debug_by_default
 enable_strip_makefiles
@@ -1660,6 +1662,8 @@ Optional Packages:
    Specify alternate thread library.  Use this flag if configure can
    not properly determine the thread library used by your libobjc.
 
+  --with-runtime-abi      When using the ng runtime library, allows control
+                          over the -fobjc-runtime= flag passed to clang.
 
 Some influential environment variables:
   CC          C compiler command
@@ -6218,6 +6222,42 @@ fi
   { gs_cv_gcc_parsed_version=; unset gs_cv_gcc_parsed_version;}
 else
   gs_cv_gcc_parsed_version="${_gs_cv_gcc_major_version}.${_gs_cv_gcc_minor_version}"
+fi
+
+
+
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for runtime ABI" >&5
+$as_echo_n "checking for runtime ABI... " >&6; }
+if ${_gs_cv_runtime_abi+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+    case "$OBJC_RUNTIME_LIB" in
+        gnu) default_runtime_abi=gcc         ;;
+        ng)  default_runtime_abi=gnustep-1.8 ;;
+        *)   default_runtime_abi="(unknown)" ;;
+    esac
+    if test ! x"" = x""; then
+        default_runtime_abi=""
+    fi
+
+# Check whether --with-runtime-abi was given.
+if test "${with_runtime_abi+set}" = set; then :
+  withval=$with_runtime_abi;
+else
+  with_runtime_abi=${default_runtime_abi}
+fi
+
+    _gs_cv_runtime_abi=${with_runtime_abi}
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_runtime_abi" >&5
+$as_echo "$_gs_cv_runtime_abi" >&6; }
+  if test "x$_gs_cv_runtime_abi" = x"(unknown)"; then :
+  { gs_cv_runtime_abi=; unset gs_cv_runtime_abi;}
+else
+  gs_cv_runtime_abi=${_gs_cv_runtime_abi}
 fi
 
 

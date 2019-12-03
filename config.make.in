@@ -228,3 +228,5 @@ GNUSTEP_ABSOLUTE_INSTALL_PATHS = @GNUSTEP_ABSOLUTE_INSTALL_PATHS@
 # Whether to use -r or -Wl,-r when doing partial linking
 #
 OBJ_MERGE_CMD_FLAG = @OBJ_MERGE_CMD_FLAG@
+
+DEFAULT_OBJC_RUNTIME_ABI = @gs_cv_runtime_abi@
