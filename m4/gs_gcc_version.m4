@@ -11,6 +11,7 @@
 #   * gs_cv_gcc_parsed_version (the combined version string)
 AC_DEFUN([GS_CHECK_GCC_VERSION],dnl
   [AC_REQUIRE([AC_PROG_CC])
+  AC_REQUIRE([AC_PROG_AWK])
   AC_REQUIRE([GS_CHECK_CC_IS_CLANG])
   if test x"${gs_cv_cc_is_clang}" = x"yes"; then
     compiler_identification="clang"
@@ -44,8 +45,8 @@ AC_DEFUN([GS_CHECK_GCC_VERSION],dnl
     fi
   ])
   if test ! x"${_gs_cv_gcc_parsed_version}" = x"no: it's not gcc"; then
-     _gs_cv_gcc_major_version="${_gs_cv_gcc_parsed_version%%.*}"
-     _gs_cv_gcc_minor_version="${_gs_cv_gcc_parsed_version#*.}"
+     _gs_cv_gcc_major_version=$(echo $_gs_cv_gcc_parsed_version | $AWK -F. '{ print $[1] }')
+     _gs_cv_gcc_minor_version=$(echo $_gs_cv_gcc_parsed_version | $AWK -F. '{ print $[2] }')
   fi
   AS_VAR_IF([_gs_cv_gcc_major_version], [""], [AS_UNSET([gs_cv_gcc_major_version])], [AS_VAR_SET([gs_cv_gcc_major_version], [${_gs_cv_gcc_major_version}])])
   AS_VAR_IF([_gs_cv_gcc_minor_version], [""], [AS_UNSET([gs_cv_gcc_minor_version])], [AS_VAR_SET([gs_cv_gcc_minor_version], [${_gs_cv_gcc_minor_version}])])

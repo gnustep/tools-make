@@ -11,6 +11,7 @@
 #
 AC_DEFUN([GS_LIBRARY_COMBO],dnl
   [AC_REQUIRE([AC_CANONICAL_TARGET])
+  AC_REQUIRE([AC_PROG_AWK])
   AC_CACHE_CHECK([for library combo],[_gs_cv_libray_combo], [
     case "$host_os" in
         darwin*)   default_library_combo=apple-apple-apple ;;
@@ -53,6 +54,6 @@ AC_DEFUN([GS_LIBRARY_COMBO],dnl
     _gs_cv_libray_combo=${with_library_combo}
   ])
   AS_VAR_SET([ac_cv_library_combo], [${_gs_cv_libray_combo}])
-  AS_VAR_SET([OBJC_RUNTIME_LIB], [${_gs_cv_libray_combo%%-*}])
+  AS_VAR_SET([OBJC_RUNTIME_LIB], [$(echo ${_gs_cv_libray_combo} | $AWK -F- '{ print $[1] }')])
   AC_SUBST([ac_cv_library_combo], [${_gs_cv_libray_combo}])
 ])
