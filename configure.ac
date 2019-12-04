@@ -1127,6 +1127,8 @@ if test "$gs_cv_objc_libdir" != "NONE"; then
   esac
 fi
 
+GS_CUSTOM_OBJC_RUNTIME_DOMAIN()
+
 # Special case for Apple systems: When compiling plain C source files that
 # include Objective-C runtime headers we must make sure that the correct
 # header files are used with a gnu-*-* combo. The -fobjc-runtime=gcc compiler
@@ -1153,29 +1155,11 @@ AC_SUBST(cc_gnuruntime)
 # TODO: This flag needs to be moved to gnustep-base since it concerns
 # the runtime library (see explanations at the beginning of this
 # file).
-AC_MSG_CHECKING(for the flag to link libobjc)
-AC_ARG_WITH(objc-lib-flag,[
---with-objc-lib-flag
-   Specify a different flag to link libobjc (the Objective-C runtime
-   library).  The default is -lobjc.  In some situations you may have
-   multiple versions of libobjc installed and if your linker supports
-   it you may want to specify exactly which one must be used; for
-   example on GNU/Linux you should be able to use
-     --with-objc-lib-flag=-l:libobjc.so.1
-   to request libobjc.so.1 (as opposed to, say, libobjc.so.2) to be
-   linked.
-],
-OBJC_LIB_FLAG="$withval",
-OBJC_LIB_FLAG=""
-)
-# We pass the flag, unchanged, to gnustep-make - if it's empty,
-# gnustep-make will be free to use -lobjc
-AC_SUBST(OBJC_LIB_FLAG)
-
+GS_OBJC_LIB_FLAG()
+GS_OBJC_RUNTIME()
+GS_CHECK_CC_IS_CLANG()
 # But we need to compute, and print out, what flag we're using now.
 OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
-
-GS_CHECK_CC_IS_CLANG()
 
 saved_CFLAGS="$CFLAGS"
 saved_LIBS="$LIBS"
@@ -1204,8 +1188,6 @@ if test "$OBJC_RUNTIME_LIB" = "apple"; then
   fi
   OBJCRT="$OBJC_FINAL_LIB_FLAG"
 fi
-
-AC_MSG_RESULT($OBJC_FINAL_LIB_FLAG)
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

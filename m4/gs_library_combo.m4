@@ -12,8 +12,7 @@
 AC_DEFUN([GS_LIBRARY_COMBO],dnl
   [AC_REQUIRE([AC_CANONICAL_TARGET])
   AC_REQUIRE([AC_PROG_AWK])
-  AC_CACHE_CHECK([for library combo],[_gs_cv_libray_combo], [
-    case "$host_os" in
+  case "$host_os" in
         darwin*)   default_library_combo=apple-apple-apple ;;
         nextstep4) default_library_combo=nx-nx-nx          ;;
         openstep4) default_library_combo=nx-nx-nx          ;;
@@ -45,6 +44,7 @@ AC_DEFUN([GS_LIBRARY_COMBO],dnl
             runtime and compile time features (requires a recent version of clang).
         ])],,
         [with_library_combo=]${default_library_combo})
+  AC_CACHE_CHECK([for library combo],[_gs_cv_libray_combo], [
     case "$with_library_combo" in
         apple) with_library_combo=apple-apple-apple ;;
         gnu)   with_library_combo=gnu-gnu-gnu ;;
