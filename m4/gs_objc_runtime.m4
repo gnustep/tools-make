@@ -78,15 +78,18 @@ AC_DEFUN([GS_CUSTOM_OBJC_RUNTIME_DOMAIN], [
 ])
 
 AC_DEFUN([GS_LIBOBJC_PKG], [
-    if test x"$GNUSTEP_HAS_PKGCONFIG" = x"yes"; then
+    AC_REQUIRE([GS_OBJC_LIB_FLAG])
+    if test x"$GNUSTEP_HAS_PKGCONFIG" = x"yes" -a x"$OBJC_LIB_FLAG" = x""; then
         PKG_CHECK_MODULES([libobjc], [libobjc >= 2], [
             AS_VAR_SET([libobjc_SUPPORTS_ABI2], ["yes"])
         ], [
-            PKG_CHECK_MODULES([libobjc], [libobjc])
-            AS_VAR_SET([libobjc_SUPPORTS_ABI2], ["no"])
+            PKG_CHECK_EXISTS([libobjc], [
+                PKG_CHECK_MODULES([libobjc], [libobjc], [
+                    AS_VAR_SET([libobjc_SUPPORTS_ABI2], ["no"])
+                ])
+            ])
         ])
     fi
-    
 ])
 
 
@@ -114,8 +117,73 @@ AC_DEFUN([GS_OBJC_LIB_FLAG], [
     AC_MSG_RESULT(${effective_flag})
 ])
 
-AC_DEFUN([GS_OBJC_RUNTIME], [
+AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
+    AC_REQUIRE([AC_CANONICAL_TARGET])
+    AC_REQUIRE([GS_OBJ_DIR])
+    AC_REQUIRE([GS_CHECK_CC_IS_CLANG])
     AC_REQUIRE([GS_CUSTOM_OBJC_RUNTIME_DOMAIN])
     AC_REQUIRE([GS_OBJC_LIB_FLAG])
     AC_REQUIRE([GS_LIBOBJC_PKG])
+
+    dnl pkg-config makes it easy for us to configure the flags
+    if test ! x"$libobjc_LIBS" = x""; then
+        OBJC_CPPFLAGS=$libobjc_CFLAGS
+        OBJC_LDFLAGS=$libobjc_LIBS
+        OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
+    dnl we need to invest more smarts if
+    elif test ! x"$gs_cv_libobjc_domain" = x""; then
+        if test x"$gs_cv_libobjc_domain" = x"SYSTEM"; then
+            GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
+        elif test x"$gs_cv_libobjc_domain" = x"NETWORK"; then
+            GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
+        elif test x"$gs_cv_libobjc_domain" = x"LOCAL"; then
+            GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
+        elif test x"$gs_cv_libobjc_domain" = x"USER"; then
+            GNUSTEP_LDIR="$GNUSTEP_USER_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_USER_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_USER_TOOLS"
+        fi
+        if  test x"$GNUSTEP_IS_FLATTENED" = x"yes"; then
+            GNUSTEP_LDIR="$GNUSTEP_LDIR/$gs_cv_obj_dir"
+            GNUSTEP_HDIR="$GNUSTEP_HDIR/$LIBRARY_COMBO"
+        fi
+        # The following are needed to compile the test programs
+        OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
+        OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
+        OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
+
+        # And the following to execute them
+        LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
+        export LD_LIBRARY_PATH
+        # Need to also add the Tools library on mingw
+        case $host_os in
+            *mingw32* )
+            PATH=$PATH:$gs_cv_objc_tools;;
+            * )
+            ;;
+        esac
+    fi
+    if test x"$OBJC_FINAL_LIB_FLAG" = x""; then
+        OBJC_FINAL_LIB_FLAG="-lobjc"
+    fi
+    saved_CFLAGS="$CFLAGS"
+    saved_LIBS="$LIBS"
+    CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
+    if test "$OBJC_RUNTIME_LIB" = "gnu"; then
+        if test x"$CLANG_CC" = x"yes"; then
+            CFLAGS="$CFLAGS -fobjc-runtime=gcc"
+        fi
+        CFLAGS="$CFLAGS -DGNU_RUNTIME"
+    elif test "$OBJC_RUNTIME_LIB" = "nx"; then
+        CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+    elif test "$OBJC_RUNTIME_LIB" = "apple"; then
+        CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
+    fi
+    OBJCRT="$OBJC_FINAL_LIB_FLAG"
 ])

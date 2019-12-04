@@ -614,15 +614,15 @@ USE_ARC
 OBJCXX
 ac_cv_objc_threaded
 objc_threaded
-CLANG_CC
 libobjc_LIBS
 libobjc_CFLAGS
 PKG_CONFIG_LIBDIR
 PKG_CONFIG_PATH
 PKG_CONFIG
 OBJC_LIB_FLAG
-cc_gnuruntime
 SED
+CLANG_CC
+cc_gnuruntime
 GNUSTEP_INSTALL_LD_SO_CONF
 BACKEND_BUNDLE
 GNUSTEP_MULTI_PLATFORM
@@ -5533,99 +5533,77 @@ fi
 # gnustep-base since it concerns the runtime library (see explanations
 # at the beginning of this file).
 
-if test "$GNUSTEP_IS_FLATTENED" != yes; then
-  clean_target_os=`$srcdir/clean_os.sh $target_os`
-  clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
-  obj_dir="$clean_target_cpu/$clean_target_os"
-fi
+# Special case for Apple systems: When compiling plain C source files that
+# include Objective-C runtime headers we must make sure that the correct
+# header files are used with a gnu-*-* combo. The -fobjc-runtime=gcc compiler
+# option should take care of this when compiling Objective-C source files, but
+# has no effect when compiling plain C (or C++) source files.
+cc_gnuruntime=
+case $target_os-$ac_cv_library_combo in
+  darwin*-gnu-*-* )
+    if test "$gs_cv_objc_libdir" = "NONE"; then
+      { $as_echo "$as_me:${as_lineno-$LINENO}: checking GNU Objective-C runtime header directory" >&5
+$as_echo_n "checking GNU Objective-C runtime header directory... " >&6; }
+      install_dir="`$CC -print-search-dirs | sed -n 's/install: //p'`"
+      if test -n "${install_dir}" && \
+        test -d "${install_dir}"include-gnu-runtime; then
+        cc_gnuruntime="${install_dir}"include-gnu-runtime
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: $cc_gnuruntime" >&5
+$as_echo "$cc_gnuruntime" >&6; }
+      else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: NONE" >&5
+$as_echo "NONE" >&6; }
+      fi
+    fi
+    ;;
+esac
 
-# Check to see if the libobjc library is in our GNUSTEP_SYSTEM_LIBRARIES
-# If so, there are probably other libraries that we want there also, so
-# leave the proper includes in CPPFLAGS and LDFLAGS
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for custom shared objc library" >&5
-$as_echo_n "checking for custom shared objc library... " >&6; }
-if ${gs_cv_objc_libdir+:} false; then :
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for object subdirectory" >&5
+$as_echo_n "checking for object subdirectory... " >&6; }
+if ${_gs_cv_obj_dir+:} false; then :
   $as_echo_n "(cached) " >&6
 else
-  gs_cv_objc_libdir=NONE
-gs_cv_objc_incdir=NONE
-# Try GNUSTEP_SYSTEM_LIBRARIES first
-if test "$GNUSTEP_IS_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
-  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
+
+        if test "$GNUSTEP_IS_FLATTENED" != yes; then
+            clean_target_os=`$srcdir/clean_os.sh $target_os`
+            clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
+            _gs_cv_obj_dir="$clean_target_cpu/$clean_target_os"
+        else
+            _gs_cv_obj_dir="(none)"
+        fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_obj_dir" >&5
+$as_echo "$_gs_cv_obj_dir" >&6; }
+    if test "x$_gs_cv_obj_dir" = x"(none)"; then :
+  { gs_cv_obj_dir=; unset gs_cv_obj_dir;}
 else
-  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES/$obj_dir"
-  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS/$LIBRARY_COMBO"
+  gs_cv_obj_dir=${_gs_cv_obj_dir}
 fi
 
-if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
-  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
-    gs_cv_objc_libdir="$GNUSTEP_LDIR"
-    gs_cv_objc_incdir="$GNUSTEP_HDIR"
-    gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
-  fi
-fi
 
-# Try GNUSTEP_NETWORK_LIBRARIES second (override GNUSTEP_SYSTEM if
-# found)
-if test "$GNUSTEP_IS_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES"
-  GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS"
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
+$as_echo_n "checking whether the compiler is clang... " >&6; }
+if ${_gs_cv_cc_is_clang+:} false; then :
+  $as_echo_n "(cached) " >&6
 else
-  GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES/$obj_dir"
-  GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS/$LIBRARY_COMBO"
-fi
-
-if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
-  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
-    gs_cv_objc_libdir="$GNUSTEP_LDIR"
-    gs_cv_objc_incdir="$GNUSTEP_HDIR"
-    gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
-  fi
-fi
-
-# Try GNUSTEP_LOCAL_LIBRARIES third (override GNUSTEP_SYSTEM and
-# GNUSTEP_NETWORK if found)
-if test "$GNUSTEP_IS_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES"
-  GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS"
-else
-  GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES/$obj_dir"
-  GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS/$LIBRARY_COMBO"
-fi
-
-if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
-  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
-    gs_cv_objc_libdir="$GNUSTEP_LDIR"
-    gs_cv_objc_incdir="$GNUSTEP_HDIR"
-    gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
-  fi
-fi
-#gcc_shared_libobjc=`gcc -print-file-name=libobjc.so`
-#if test -f "$gcc_shared_libobjc"; then
-#  gs_cv_objc_libdir=`dirname $gcc_shared_libobjc`
-#fi
+      _gs_cv_cc_is_clang="no"
+    if test x"${GCC}" = x"yes" ; then
+        if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+            _gs_cv_cc_is_clang="yes";
+        fi
+    fi
 
 fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_cc_is_clang" >&5
+$as_echo "$_gs_cv_cc_is_clang" >&6; }
+    gs_cv_cc_is_clang=${_gs_cv_cc_is_clang}
+    CLANG_CC=${_gs_cv_cc_is_clang}
 
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_objc_libdir" >&5
-$as_echo "$gs_cv_objc_libdir" >&6; }
+    if test "x$_gs_cv_cc_is_clang" = x"yes"; then :
 
-if test "$gs_cv_objc_libdir" != "NONE"; then
-  # The following are needed to compile the test programs
-  OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
-  OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
-
-  # And the following to execute them
-  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
-  export LD_LIBRARY_PATH
-  # Need to also add the Tools library on mingw
-  case $host_os in
-    *mingw32* )
-      PATH=$PATH:$gs_cv_objc_tools;;
-    * )
-      ;;
-  esac
 fi
 
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
@@ -5696,30 +5674,6 @@ fi
 $as_echo "$ac_cv_path_SED" >&6; }
  SED="$ac_cv_path_SED"
   rm -f conftest.sed
-
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for object subdirectory" >&5
-$as_echo_n "checking for object subdirectory... " >&6; }
-if ${_gs_cv_obj_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-        if test "$GNUSTEP_IS_FLATTENED" != yes; then
-            clean_target_os=`$srcdir/clean_os.sh $target_os`
-            clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
-            _gs_cv_obj_dir="$clean_target_cpu/$clean_target_os"
-        else
-            _gs_cv_obj_dir="(none)"
-        fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_obj_dir" >&5
-$as_echo "$_gs_cv_obj_dir" >&6; }
-    if test "x$_gs_cv_obj_dir" = x"(none)"; then :
-  { gs_cv_obj_dir=; unset gs_cv_obj_dir;}
-else
-  gs_cv_obj_dir=${_gs_cv_obj_dir}
-fi
 
 
 
@@ -6013,36 +5967,6 @@ fi
 $as_echo "$gs_cv_libobjc_domain" >&6; }
 
 
-# Special case for Apple systems: When compiling plain C source files that
-# include Objective-C runtime headers we must make sure that the correct
-# header files are used with a gnu-*-* combo. The -fobjc-runtime=gcc compiler
-# option should take care of this when compiling Objective-C source files, but
-# has no effect when compiling plain C (or C++) source files.
-cc_gnuruntime=
-case $target_os-$ac_cv_library_combo in
-  darwin*-gnu-*-* )
-    if test "$gs_cv_objc_libdir" = "NONE"; then
-      { $as_echo "$as_me:${as_lineno-$LINENO}: checking GNU Objective-C runtime header directory" >&5
-$as_echo_n "checking GNU Objective-C runtime header directory... " >&6; }
-      install_dir="`$CC -print-search-dirs | sed -n 's/install: //p'`"
-      if test -n "${install_dir}" && \
-        test -d "${install_dir}"include-gnu-runtime; then
-        cc_gnuruntime="${install_dir}"include-gnu-runtime
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: $cc_gnuruntime" >&5
-$as_echo "$cc_gnuruntime" >&6; }
-      else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: NONE" >&5
-$as_echo "NONE" >&6; }
-      fi
-    fi
-    ;;
-esac
-
-
-# TODO: This flag needs to be moved to gnustep-base since it concerns
-# the runtime library (see explanations at the beginning of this
-# file).
-
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the flag to link libobjc" >&5
 $as_echo_n "checking for the flag to link libobjc... " >&6; }
 
@@ -6184,7 +6108,8 @@ $as_echo "no" >&6; }
 	fi
 fi
 
-    if test x"$GNUSTEP_HAS_PKGCONFIG" = x"yes"; then
+
+    if test x"$GNUSTEP_HAS_PKGCONFIG" = x"yes" -a x"$OBJC_LIB_FLAG" = x""; then
 
 pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for libobjc" >&5
@@ -6245,102 +6170,12 @@ fi
 	echo "$libobjc_PKG_ERRORS" >&5
 
 
-
-pkg_failed=no
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for libobjc" >&5
-$as_echo_n "checking for libobjc... " >&6; }
-
-if test -n "$libobjc_CFLAGS"; then
-    pkg_cv_libobjc_CFLAGS="$libobjc_CFLAGS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
+            if test -n "$PKG_CONFIG" && \
     { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc\""; } >&5
   ($PKG_CONFIG --exists --print-errors "libobjc") 2>&5
   ac_status=$?
   $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
   test $ac_status = 0; }; then
-  pkg_cv_libobjc_CFLAGS=`$PKG_CONFIG --cflags "libobjc" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-if test -n "$libobjc_LIBS"; then
-    pkg_cv_libobjc_LIBS="$libobjc_LIBS"
- elif test -n "$PKG_CONFIG"; then
-    if test -n "$PKG_CONFIG" && \
-    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc\""; } >&5
-  ($PKG_CONFIG --exists --print-errors "libobjc") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; then
-  pkg_cv_libobjc_LIBS=`$PKG_CONFIG --libs "libobjc" 2>/dev/null`
-		      test "x$?" != "x0" && pkg_failed=yes
-else
-  pkg_failed=yes
-fi
- else
-    pkg_failed=untried
-fi
-
-
-
-if test $pkg_failed = yes; then
-   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-
-if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
-        _pkg_short_errors_supported=yes
-else
-        _pkg_short_errors_supported=no
-fi
-        if test $_pkg_short_errors_supported = yes; then
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
-        else
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
-        fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$libobjc_PKG_ERRORS" >&5
-
-	as_fn_error $? "Package requirements (libobjc) were not met:
-
-$libobjc_PKG_ERRORS
-
-Consider adjusting the PKG_CONFIG_PATH environment variable if you
-installed software in a non-standard prefix.
-
-Alternatively, you may set the environment variables libobjc_CFLAGS
-and libobjc_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details." "$LINENO" 5
-elif test $pkg_failed = untried; then
-     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
-$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
-as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
-is in your PATH or set the PKG_CONFIG environment variable to the full
-path to pkg-config.
-
-Alternatively, you may set the environment variables libobjc_CFLAGS
-and libobjc_LIBS to avoid the need to call pkg-config.
-See the pkg-config man page for more details.
-
-To get pkg-config, see <http://pkg-config.freedesktop.org/>.
-See \`config.log' for more details" "$LINENO" 5; }
-else
-	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-	libobjc_LIBS=$pkg_cv_libobjc_LIBS
-        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-
-fi
-            libobjc_SUPPORTS_ABI2="no"
-
-elif test $pkg_failed = untried; then
-     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
 
 
 pkg_failed=no
@@ -6432,8 +6267,118 @@ else
         { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 $as_echo "yes" >&6; }
 
+                    libobjc_SUPPORTS_ABI2="no"
+
 fi
-            libobjc_SUPPORTS_ABI2="no"
+
+fi
+
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+            if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libobjc") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+
+
+pkg_failed=no
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for libobjc" >&5
+$as_echo_n "checking for libobjc... " >&6; }
+
+if test -n "$libobjc_CFLAGS"; then
+    pkg_cv_libobjc_CFLAGS="$libobjc_CFLAGS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libobjc") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_libobjc_CFLAGS=`$PKG_CONFIG --cflags "libobjc" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+if test -n "$libobjc_LIBS"; then
+    pkg_cv_libobjc_LIBS="$libobjc_LIBS"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { $as_echo "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libobjc") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_libobjc_LIBS=`$PKG_CONFIG --libs "libobjc" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
+
+
+
+if test $pkg_failed = yes; then
+   	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+
+if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
+        _pkg_short_errors_supported=yes
+else
+        _pkg_short_errors_supported=no
+fi
+        if test $_pkg_short_errors_supported = yes; then
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
+        else
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
+        fi
+	# Put the nasty error message in config.log where it belongs
+	echo "$libobjc_PKG_ERRORS" >&5
+
+	as_fn_error $? "Package requirements (libobjc) were not met:
+
+$libobjc_PKG_ERRORS
+
+Consider adjusting the PKG_CONFIG_PATH environment variable if you
+installed software in a non-standard prefix.
+
+Alternatively, you may set the environment variables libobjc_CFLAGS
+and libobjc_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details." "$LINENO" 5
+elif test $pkg_failed = untried; then
+     	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+	{ { $as_echo "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+$as_echo "$as_me: error: in \`$ac_pwd':" >&2;}
+as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
+is in your PATH or set the PKG_CONFIG environment variable to the full
+path to pkg-config.
+
+Alternatively, you may set the environment variables libobjc_CFLAGS
+and libobjc_LIBS to avoid the need to call pkg-config.
+See the pkg-config man page for more details.
+
+To get pkg-config, see <http://pkg-config.freedesktop.org/>.
+See \`config.log' for more details" "$LINENO" 5; }
+else
+	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+	libobjc_LIBS=$pkg_cv_libobjc_LIBS
+        { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
+$as_echo "yes" >&6; }
+
+                    libobjc_SUPPORTS_ABI2="no"
+
+fi
+
+fi
 
 else
 	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
@@ -6453,58 +6398,67 @@ fi
 
 
 
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
-$as_echo_n "checking whether the compiler is clang... " >&6; }
-if ${_gs_cv_cc_is_clang+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-      _gs_cv_cc_is_clang="no"
-    if test x"${GCC}" = x"yes" ; then
-        if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-            _gs_cv_cc_is_clang="yes";
+
+        if test ! x"$libobjc_LIBS" = x""; then
+        OBJC_CPPFLAGS=$libobjc_CFLAGS
+        OBJC_LDFLAGS=$libobjc_LIBS
+        OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
+        elif test ! x"$gs_cv_libobjc_domain" = x""; then
+        if test x"$gs_cv_libobjc_domain" = x"SYSTEM"; then
+            GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
+        elif test x"$gs_cv_libobjc_domain" = x"NETWORK"; then
+            GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
+        elif test x"$gs_cv_libobjc_domain" = x"LOCAL"; then
+            GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
+        elif test x"$gs_cv_libobjc_domain" = x"USER"; then
+            GNUSTEP_LDIR="$GNUSTEP_USER_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_USER_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_USER_TOOLS"
         fi
+        if  test x"$GNUSTEP_IS_FLATTENED" = x"yes"; then
+            GNUSTEP_LDIR="$GNUSTEP_LDIR/$gs_cv_obj_dir"
+            GNUSTEP_HDIR="$GNUSTEP_HDIR/$LIBRARY_COMBO"
+        fi
+        # The following are needed to compile the test programs
+        OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
+        OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
+        OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
+
+        # And the following to execute them
+        LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
+        export LD_LIBRARY_PATH
+        # Need to also add the Tools library on mingw
+        case $host_os in
+            *mingw32* )
+            PATH=$PATH:$gs_cv_objc_tools;;
+            * )
+            ;;
+        esac
     fi
+    if test x"$OBJC_FINAL_LIB_FLAG" = x""; then
+        OBJC_FINAL_LIB_FLAG="-lobjc"
+    fi
+    saved_CFLAGS="$CFLAGS"
+    saved_LIBS="$LIBS"
+    CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
+    if test "$OBJC_RUNTIME_LIB" = "gnu"; then
+        if test x"$CLANG_CC" = x"yes"; then
+            CFLAGS="$CFLAGS -fobjc-runtime=gcc"
+        fi
+        CFLAGS="$CFLAGS -DGNU_RUNTIME"
+    elif test "$OBJC_RUNTIME_LIB" = "nx"; then
+        CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+    elif test "$OBJC_RUNTIME_LIB" = "apple"; then
+        CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
+    fi
+    OBJCRT="$OBJC_FINAL_LIB_FLAG"
 
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_cc_is_clang" >&5
-$as_echo "$_gs_cv_cc_is_clang" >&6; }
-    gs_cv_cc_is_clang=${_gs_cv_cc_is_clang}
-    CLANG_CC=${_gs_cv_cc_is_clang}
-
-    if test "x$_gs_cv_cc_is_clang" = x"yes"; then :
-
-fi
-
-# But we need to compute, and print out, what flag we're using now.
-OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
-
-saved_CFLAGS="$CFLAGS"
-saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
-if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  if test x"$CLANG_CC" = x"yes"; then
-    CFLAGS="$CFLAGS -fobjc-runtime=gcc"
-  fi
-  CFLAGS="$CFLAGS -DGNU_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
-if test "$OBJC_RUNTIME_LIB" = "nx"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
-if test "$OBJC_RUNTIME_LIB" = "apple"; then
-  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

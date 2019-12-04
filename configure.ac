@@ -1037,98 +1037,6 @@ AC_SUBST(GNUSTEP_INSTALL_LD_SO_CONF)
 # gnustep-base since it concerns the runtime library (see explanations
 # at the beginning of this file).
 
-if test "$GNUSTEP_IS_FLATTENED" != yes; then
-  clean_target_os=`$srcdir/clean_os.sh $target_os`
-  clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
-  obj_dir="$clean_target_cpu/$clean_target_os"
-fi
-
-# Check to see if the libobjc library is in our GNUSTEP_SYSTEM_LIBRARIES
-# If so, there are probably other libraries that we want there also, so
-# leave the proper includes in CPPFLAGS and LDFLAGS
-AC_MSG_CHECKING(for custom shared objc library)
-AC_CACHE_VAL(gs_cv_objc_libdir,
-[dnl
-gs_cv_objc_libdir=NONE
-gs_cv_objc_incdir=NONE
-# Try GNUSTEP_SYSTEM_LIBRARIES first
-if test "$GNUSTEP_IS_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
-  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
-else
-  GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES/$obj_dir"
-  GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS/$LIBRARY_COMBO"
-fi
-
-if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
-  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
-    gs_cv_objc_libdir="$GNUSTEP_LDIR"
-    gs_cv_objc_incdir="$GNUSTEP_HDIR"
-    gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
-  fi
-fi
-
-# Try GNUSTEP_NETWORK_LIBRARIES second (override GNUSTEP_SYSTEM if
-# found)
-if test "$GNUSTEP_IS_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES"
-  GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS"
-else
-  GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES/$obj_dir"
-  GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS/$LIBRARY_COMBO"
-fi
-
-if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
-  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
-    gs_cv_objc_libdir="$GNUSTEP_LDIR"
-    gs_cv_objc_incdir="$GNUSTEP_HDIR"
-    gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
-  fi
-fi
-
-# Try GNUSTEP_LOCAL_LIBRARIES third (override GNUSTEP_SYSTEM and
-# GNUSTEP_NETWORK if found)
-if test "$GNUSTEP_IS_FLATTENED" = yes; then
-  GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES"
-  GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS"
-else
-  GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES/$obj_dir"
-  GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS/$LIBRARY_COMBO"
-fi
-
-if test -f "$GNUSTEP_HDIR/objc/objc.h"; then
-  if test -f "$GNUSTEP_LDIR/libobjc.a" -o -f "$GNUSTEP_LDIR/libobjc.so" -o -f "$GNUSTEP_LDIR/libobjc.dll.a" -o -f "$GNUSTEP_LDIR/libobjc-gnu.dylib"; then
-    gs_cv_objc_libdir="$GNUSTEP_LDIR"
-    gs_cv_objc_incdir="$GNUSTEP_HDIR"
-    gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
-  fi
-fi
-#gcc_shared_libobjc=`gcc -print-file-name=libobjc.so`
-#if test -f "$gcc_shared_libobjc"; then
-#  gs_cv_objc_libdir=`dirname $gcc_shared_libobjc`
-#fi
-])
-AC_MSG_RESULT($gs_cv_objc_libdir)
-
-if test "$gs_cv_objc_libdir" != "NONE"; then
-  # The following are needed to compile the test programs
-  OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
-  OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
-
-  # And the following to execute them
-  LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
-  export LD_LIBRARY_PATH
-  # Need to also add the Tools library on mingw
-  case $host_os in
-    *mingw32* )
-      PATH=$PATH:$gs_cv_objc_tools;;
-    * )
-      ;;
-  esac
-fi
-
-GS_CUSTOM_OBJC_RUNTIME_DOMAIN()
-
 # Special case for Apple systems: When compiling plain C source files that
 # include Objective-C runtime headers we must make sure that the correct
 # header files are used with a gnu-*-* combo. The -fobjc-runtime=gcc compiler
@@ -1152,42 +1060,7 @@ case $target_os-$ac_cv_library_combo in
 esac
 AC_SUBST(cc_gnuruntime)
 
-# TODO: This flag needs to be moved to gnustep-base since it concerns
-# the runtime library (see explanations at the beginning of this
-# file).
-GS_OBJC_LIB_FLAG()
-GS_OBJC_RUNTIME()
-GS_CHECK_CC_IS_CLANG()
-# But we need to compute, and print out, what flag we're using now.
-OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
-
-saved_CFLAGS="$CFLAGS"
-saved_LIBS="$LIBS"
-CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
-if test "$OBJC_RUNTIME_LIB" = "gnu"; then
-  if test x"$CLANG_CC" = x"yes"; then
-    CFLAGS="$CFLAGS -fobjc-runtime=gcc"
-  fi
-  CFLAGS="$CFLAGS -DGNU_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
-if test "$OBJC_RUNTIME_LIB" = "nx"; then
-  CFLAGS="$CFLAGS -DNeXT_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
-if test "$OBJC_RUNTIME_LIB" = "apple"; then
-  CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
-  if test "$OBJC_FINAL_LIB_FLAG" = ""; then
-    OBJC_FINAL_LIB_FLAG=-lobjc
-  fi
-  OBJCRT="$OBJC_FINAL_LIB_FLAG"
-fi
+GS_CHECK_OBJC_RUNTIME()
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
