@@ -8,6 +8,9 @@
 #
 AC_DEFUN([GS_RUNTIME_ABI],dnl
   [AC_REQUIRE([GS_LIBRARY_COMBO])
+   AC_REQUIRE([GS_CHECK_RUNTIME_ABI20_SUPPORT])
+   AC_REQUIRE([GS_CHECK_CC_IS_CLANG])
+   AC_REQUIRE([GS_CHECK_GCC_VERSION])
    case "$OBJC_RUNTIME_LIB" in
         gnu) default_runtime_abi=gcc         ;;
         ng)  default_runtime_abi=gnustep-1.8 ;;
@@ -15,6 +18,8 @@ AC_DEFUN([GS_RUNTIME_ABI],dnl
     esac
     if test ! x"$1" = x""; then
         default_runtime_abi="$1"
+    elif test x"$OBJC_RUNTIME_LIB" = x"ng" -a x"$libobjc_SUPPORTS_ABI20" = x"yes" -a x"$CLANG_CC" = x"yes" -a "${gs_cv_gcc_major_version}" -ge "8"; then
+        default_runtime_abi=gnustep-2.0
     fi
     AC_ARG_WITH([runtime-abi],
         [AS_HELP_STRING([--with-runtime-abi], [

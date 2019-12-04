@@ -79,14 +79,14 @@ AC_DEFUN([GS_CUSTOM_OBJC_RUNTIME_DOMAIN], [
 
 AC_DEFUN([GS_LIBOBJC_PKG], [
     AC_REQUIRE([GS_OBJC_LIB_FLAG])
+    libobjc_SUPPORTS_ABI20=""
     if test x"$GNUSTEP_HAS_PKGCONFIG" = x"yes" -a x"$OBJC_LIB_FLAG" = x""; then
         PKG_CHECK_MODULES([libobjc], [libobjc >= 2], [
-            AS_VAR_SET([libobjc_SUPPORTS_ABI2], ["yes"])
+            dnl we already know that this
+            AS_VAR_SET([libobjc_SUPPORTS_ABI20], ["yes"])
         ], [
             PKG_CHECK_EXISTS([libobjc], [
-                PKG_CHECK_MODULES([libobjc], [libobjc], [
-                    AS_VAR_SET([libobjc_SUPPORTS_ABI2], ["no"])
-                ])
+                PKG_CHECK_MODULES([libobjc], [libobjc])
             ])
         ])
     fi
@@ -128,7 +128,7 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
     dnl pkg-config makes it easy for us to configure the flags
     if test ! x"$libobjc_LIBS" = x""; then
         OBJC_CPPFLAGS=$libobjc_CFLAGS
-        OBJC_LDFLAGS=$libobjc_LIBS
+        OBCJ_LDFLAGS=""
         OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
     dnl we need to invest more smarts if
     elif test ! x"$gs_cv_libobjc_domain" = x""; then
@@ -153,6 +153,8 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
             GNUSTEP_LDIR="$GNUSTEP_LDIR/$gs_cv_obj_dir"
             GNUSTEP_HDIR="$GNUSTEP_HDIR/$LIBRARY_COMBO"
         fi
+        gs_cv_objc_incdir=$GNUSTEP_HDIR
+        gs_cv_objc_libdir=$GNUSTEP_LDIR
         # The following are needed to compile the test programs
         OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
         OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
@@ -172,6 +174,7 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
     if test x"$OBJC_FINAL_LIB_FLAG" = x""; then
         OBJC_FINAL_LIB_FLAG="-lobjc"
     fi
+    OBJC_LDFLAGS="$OBJC_LDFLAGS $OBJC_FINAL_LIB_FLAG"
     saved_CFLAGS="$CFLAGS"
     saved_LIBS="$LIBS"
     CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
@@ -186,4 +189,23 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
         CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
     fi
     OBJCRT="$OBJC_FINAL_LIB_FLAG"
+])
+
+AC_DEFUN([_GS_HAVE_OBJC_LOAD], [
+    AC_REQUIRE([GS_CHECK_OBJC_RUNTIME])
+    AC_CHECK_FUNC([__objc_load])
+])
+
+AC_DEFUN([GS_CHECK_RUNTIME_ABI20_SUPPORT], [
+    AC_REQUIRE([GS_CHECK_OBJC_RUNTIME])
+    AC_REQUIRE([_GS_HAVE_OBJC_LOAD])
+    AC_CACHE_CHECK([whether runtime library supports the gnustep-2.0 ABI],
+        [gs_cv_libobjc_abi_20], [
+            if test x"$libobjc_SUPPORTS_ABI20" = x""; then
+                gs_cv_libobjc_abi_20=$ac_cv_func___objc_load
+            else
+                gs_cv_libobjc_abi_20=$libobjc_SUPPORTS_ABI20
+            fi
+    ])
+    AS_VAR_SET([libobjc_SUPPORTS_ABI20], [${gs_cv_libobjc_abi_20}])
 ])
