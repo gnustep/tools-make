@@ -4,7 +4,7 @@
 #
 # DESCRIPTION
 #
-# This macro determine the correct runtime ABI  to use.
+# This macro determine the correct runtime ABI to use.
 #
 AC_DEFUN([GS_RUNTIME_ABI],dnl
   [AC_REQUIRE([GS_LIBRARY_COMBO])

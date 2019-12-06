@@ -1323,6 +1323,10 @@ GS_CHECK_GCC_VERSION()
 
 
 GS_RUNTIME_ABI()
+# If we determined that the user wants the gnustep-2.0 ABI, check for potential linker problems.
+if test $gs_cv_runtime_abi = 'gnustep-2.0'; then
+  GS_CHECK_ABI20_LINKER()
+fi
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.
 

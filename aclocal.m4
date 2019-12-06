@@ -289,6 +289,7 @@ AS_VAR_IF([$1], [""], [$5], [$4])dnl
 ])dnl PKG_CHECK_VAR
 
 m4_include([m4/gs_cc_is_clang.m4])
+m4_include([m4/gs_check_abi20_linker.m4])
 m4_include([m4/gs_gcc_version.m4])
 m4_include([m4/gs_library_combo.m4])
 m4_include([m4/gs_objc_runtime.m4])

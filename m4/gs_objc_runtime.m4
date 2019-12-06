@@ -1,3 +1,12 @@
+# SYNOPSIS
+#
+#   GS_OBJ_DIR()
+#
+# DESCRIPTION
+#
+# This macro may only be used after general gnustep-make configuration has completed. It will return the object directory
+# required for a non-flattened setup.
+#
 AC_DEFUN([GS_OBJ_DIR], [
     AC_CACHE_CHECK([for object subdirectory],[_gs_cv_obj_dir], [
         if test "$GNUSTEP_IS_FLATTENED" != yes; then
@@ -11,6 +20,15 @@ AC_DEFUN([GS_OBJ_DIR], [
     AS_VAR_IF([_gs_cv_obj_dir], ["(none)"], AS_UNSET(gs_cv_obj_dir), [AS_VAR_SET([gs_cv_obj_dir], [${_gs_cv_obj_dir}])])
 ])
 
+
+# SYNOPSIS
+#
+#   GS_DOMAIN_DIR([installation-domain],[HEADERS or LIBRARIES])
+#
+# DESCRIPTION
+#
+# Expands to the variable pointing to the correct headers or libraries directory in that domain
+#
 AC_DEFUN([GS_DOMAIN_DIR],[
     AC_REQUIRE([GS_OBJ_DIR])
     m4_pushdef([search_dir], [m4_join([],[gs_cv_], $1, [_], $2, [_dir])])
@@ -24,6 +42,16 @@ AC_DEFUN([GS_DOMAIN_DIR],[
     m4_popdef([search_dir])
 ])
 
+
+# SYNOPSIS
+#
+#   GS_DOMAIN_DIR([prefix],[HEADERS or LIBRARIES],[comma separated list of file names])
+#
+# DESCRIPTION
+#
+# This macros performs a search for the mentioned files in all installation domains and returns 
+# a list of which domains the file(s) were found in as `$prefix_DOMAINS'. If more than file is
+# specified the search will succeed if one of the files is found.
 AC_DEFUN([GS_DOMAINS_FOR_FILES],[
     m4_pushdef([cache_var], [m4_join([], [gs_cv_], $1,  [_domains])])
     AC_REQUIRE([GS_OBJ_DIR])
@@ -49,14 +77,17 @@ AC_DEFUN([GS_DOMAINS_FOR_FILES],[
     m4_popdef([cache_var])
 ])
 
+# Helper macro for finding the installation domain of a pre-installed libobjc library
 AC_DEFUN([_GS_LIBOJC_DOMAINS],[
     GS_DOMAINS_FOR_FILES([LIBOBJC], [LIBRARIES], [libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib])
 ])
 
+# Helper macro for finding the installation domain of the pre-installed libobjc headers
 AC_DEFUN([_GS_OBJC_HEADER_DOMAINS],[
     GS_DOMAINS_FOR_FILES([OBJC_HEADERS], [HEADERS], [objc/objc.h])
 ])
 
+# Helper macro to detect in which installation domain (if any) a custom libobjc library is installed.
 AC_DEFUN([GS_CUSTOM_OBJC_RUNTIME_DOMAIN], [
     AC_REQUIRE([AC_PROG_SED])
     AC_REQUIRE([_GS_LIBOJC_DOMAINS])
@@ -77,6 +108,8 @@ AC_DEFUN([GS_CUSTOM_OBJC_RUNTIME_DOMAIN], [
     ])
 ])
 
+# Helper macro to find libobjc via package config. In addition to the usual pkg-config flags, this will
+# also set libobjc_SUPPORTS_ABI20 to `yes' or `no' depending on whether the version has support for it.
 AC_DEFUN([GS_LIBOBJC_PKG], [
     AC_REQUIRE([GS_OBJC_LIB_FLAG])
     libobjc_SUPPORTS_ABI20=""
@@ -92,7 +125,7 @@ AC_DEFUN([GS_LIBOBJC_PKG], [
     fi
 ])
 
-
+# Helper macro to implement the --with-objc-lib-flag commandline parameter
 AC_DEFUN([GS_OBJC_LIB_FLAG], [
     AC_MSG_CHECKING(for the flag to link libobjc)
     AC_ARG_WITH([objc-lib-flag],
@@ -117,6 +150,19 @@ AC_DEFUN([GS_OBJC_LIB_FLAG], [
     AC_MSG_RESULT(${effective_flag})
 ])
 
+# SYNOPSIS
+#
+#   GS_CHECK_OBJC_RUNTIME()
+#
+# DESCRIPTION
+#
+# Configure the installed Objective-C runtime, if it is installed. This sets up CFLAGS/LDFLAGS/LD_LIBRARY_PATH 
+# as required. Additionally, following variables are set after execution of this macro:
+# * OBJC_CPPFLAGS
+# * OBCJ_LDFLAGS
+# * OBJC_FINAL_LIB_FLAG
+# * OBJCRT
+#
 AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
     AC_REQUIRE([AC_CANONICAL_TARGET])
     AC_REQUIRE([GS_OBJ_DIR])
@@ -191,11 +237,20 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
     OBJCRT="$OBJC_FINAL_LIB_FLAG"
 ])
 
+
+# Helper macro for checking gnustep-2.0 ABI support in libobjc via the __objc_load macro
 AC_DEFUN([_GS_HAVE_OBJC_LOAD], [
     AC_REQUIRE([GS_CHECK_OBJC_RUNTIME])
     AC_CHECK_FUNC([__objc_load])
 ])
 
+# SYNOPSIS
+#
+#   GS_CHECK_RUNTIME_ABI20_SUPPORT()
+#
+# DESCRIPTION
+# 
+# Checks for support for the gnustep-2.0 ABI in the runtime library. Sets the `libobjc_SUPPORTS_ABI20' variable.
 AC_DEFUN([GS_CHECK_RUNTIME_ABI20_SUPPORT], [
     AC_REQUIRE([GS_CHECK_OBJC_RUNTIME])
     AC_REQUIRE([_GS_HAVE_OBJC_LOAD])

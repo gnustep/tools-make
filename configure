@@ -7200,6 +7200,36 @@ else
 fi
 
 
+# If we determined that the user wants the gnustep-2.0 ABI, check for potential linker problems.
+if test $gs_cv_runtime_abi = 'gnustep-2.0'; then
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for an gnustep-2.0 ABI compatible linker" >&5
+$as_echo_n "checking for an gnustep-2.0 ABI compatible linker... " >&6; }
+if ${gs_cv_abi20_linker+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+          gs_cv_abi20_linker="unkown"
+
+        gs_cv_abi20_linker_prog=$($CC --print-prog-name=ld)
+        if $gs_cv_abi20_linker_prog --version | $GREP -q 'GNU ld'; then
+            gs_cv_abi20_linker="unlikely (GNU ld)"
+        elif $gs_cv_abi20_linker_prog --version | $GREP -q 'GNU gold'; then
+            gs_cv_abi20_linker="yes (GNU gold)"
+        elif $gs_cv_abi20_linker_prog --version | $GREP -q 'LLD'; then
+            gs_cv_abi20_linker="yes (LLD)"
+        fi
+
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_abi20_linker" >&5
+$as_echo "$gs_cv_abi20_linker" >&6; }
+    if echo "$gs_cv_abi20_linker" | $GREP -q -v '^yes'; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The detected linker might not produce working Objective-C binaries using the gnustep-2.0 ABI. Consider using gold or LLD." >&5
+$as_echo "$as_me: WARNING: The detected linker might not produce working Objective-C binaries using the gnustep-2.0 ABI. Consider using gold or LLD." >&2;}
+    fi
+
+fi
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.
 
