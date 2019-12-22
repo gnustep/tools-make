@@ -12,13 +12,21 @@
 AC_DEFUN([GS_LIBRARY_COMBO],dnl
   [AC_REQUIRE([AC_CANONICAL_TARGET])
   AC_REQUIRE([AC_PROG_AWK])
+  gs_cv_library_combo_from_existing_install=no
   m4_ifblank([$1], [
     case "$host_os" in
           darwin*[)]   default_library_combo=apple-apple-apple ;;
           nextstep4[)] default_library_combo=nx-nx-nx          ;;
           openstep4[)] default_library_combo=nx-nx-nx          ;;
           *[)]         default_library_combo=gnu-gnu-gnu       ;;
-      esac
+    esac
+    if test x"$HAVE_GNUSTEP_CONFIG" = x"yes"; then
+      maybe_library_combo=$(gnustep-config --variable=LIBRARY_COMBO||echo "")
+      if test ! x"$maybe_library_combo" = x""; then
+        default_library_combo=$maybe_library_combo
+        gs_cv_library_combo_from_existing_install=yes
+      fi
+    fi
   ], [
     default_library_combo="$1"
     ])
@@ -53,7 +61,12 @@ AC_DEFUN([GS_LIBRARY_COMBO],dnl
           gs_cv_library_combo_implicit=no
         ],[dnl
           with_library_combo=${default_library_combo}
-          gs_cv_library_combo_implicit=yes
+          if test x"$gs_cv_library_combo_from_existing_install" = x"yes"; then
+            gs_cv_library_combo_implicit=no
+            AC_MSG_NOTICE([Using library combo $default_library_combo from your existing installation of gnustep-make. To prevent this, pass --with-library-combo explicitly.])
+          else
+            gs_cv_library_combo_implicit=yes
+          fi
         ])
   AC_CACHE_CHECK([for library combo],[_gs_cv_libray_combo], [
     case "$with_library_combo" in

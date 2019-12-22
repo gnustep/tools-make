@@ -45,7 +45,7 @@ targetArgument=${target}
 AC_CANONICAL_TARGET([])
 
 AC_PATH_PROG(GNUSTEP_HAS_PKGCONFIG, pkgconfig, yes, no)
-
+AC_CHECK_PROG([HAVE_GNUSTEP_CONFIG], [gnustep-config], yes, no)
 #--------------------------------------------------------------------
 # Setup the library combination
 #--------------------------------------------------------------------
@@ -1089,7 +1089,7 @@ if test "$OBJC_RUNTIME_LIB" = "gnu" -a x"$gs_cv_cc_is_clang" = x"yes" -a  x"$gs_
   if test x"$ac_cv_func_objc_test_capability" = x"yes"; then
     GS_LIBRARY_COMBO([ng-gnu-gnu],[yes])
     LIBRARY_COMBO=ng-gnu-gnu
-    AC_MSG_NOTICE([library combo has been upgraded to `ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly])
+    AC_MSG_NOTICE([library combo has been upgraded to `ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly.])
   fi
   m4_foreach([saved_var], [rt_save_variables], [dnl
     AS_VAR_SET([m4_strip(saved_var)], m4_join([], [$gs_cv_ng_rt_saved_], m4_strip(saved_var)))
