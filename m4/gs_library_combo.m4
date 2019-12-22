@@ -1,6 +1,6 @@
 # SYNOPSIS
 #
-#   GS_LIBRARY_COMBO([default_library_combo])
+#   GS_LIBRARY_COMBO([default_library_combo],[no-cache])
 #
 # DESCRIPTION
 #
@@ -12,15 +12,22 @@
 AC_DEFUN([GS_LIBRARY_COMBO],dnl
   [AC_REQUIRE([AC_CANONICAL_TARGET])
   AC_REQUIRE([AC_PROG_AWK])
-  case "$host_os" in
-        darwin*)   default_library_combo=apple-apple-apple ;;
-        nextstep4) default_library_combo=nx-nx-nx          ;;
-        openstep4) default_library_combo=nx-nx-nx          ;;
-        *)         default_library_combo=gnu-gnu-gnu       ;;
-    esac
-    if test ! x"$1" = x""; then
-        default_library_combo="$1"
-    fi
+  m4_ifblank([$1], [
+    case "$host_os" in
+          darwin*[)]   default_library_combo=apple-apple-apple ;;
+          nextstep4[)] default_library_combo=nx-nx-nx          ;;
+          openstep4[)] default_library_combo=nx-nx-nx          ;;
+          *[)]         default_library_combo=gnu-gnu-gnu       ;;
+      esac
+  ], [
+    default_library_combo="$1"
+    ])
+
+  m4_if([$2], [yes], [
+    AS_UNSET([_gs_cv_libray_combo])
+    AS_UNSET([with_library_combo])
+  ])
+
     AC_ARG_WITH([library-combo],
         [AS_HELP_STRING([--with-libray-combo], [
             Define the default "library combo".  The library combo is a string
@@ -42,8 +49,12 @@ AC_DEFUN([GS_LIBRARY_COMBO],dnl
             use other ones at run-time.
             Please use 'ng-gnu-gnu' to build with 'next generation' cutting edge
             runtime and compile time features (requires a recent version of clang).
-        ])],,
-        [with_library_combo=]${default_library_combo})
+        ])],[
+          gs_cv_library_combo_implicit=no
+        ],[dnl
+          with_library_combo=${default_library_combo}
+          gs_cv_library_combo_implicit=yes
+        ])
   AC_CACHE_CHECK([for library combo],[_gs_cv_libray_combo], [
     case "$with_library_combo" in
         apple) with_library_combo=apple-apple-apple ;;

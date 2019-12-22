@@ -621,7 +621,6 @@ PKG_CONFIG_PATH
 PKG_CONFIG
 OBJC_LIB_FLAG
 SED
-CLANG_CC
 cc_gnuruntime
 GNUSTEP_INSTALL_LD_SO_CONF
 BACKEND_BUNDLE
@@ -697,6 +696,7 @@ INSTALL_PROGRAM
 DLLTOOL
 AR
 RANLIB
+CLANG_CC
 CYGWIN
 cc_bundle
 cc_cppprecomp
@@ -1889,48 +1889,6 @@ fi
 
 } # ac_fn_cxx_try_compile
 
-# ac_fn_c_try_run LINENO
-# ----------------------
-# Try to link conftest.$ac_ext, and return whether this succeeded. Assumes
-# that executables *can* be run.
-ac_fn_c_try_run ()
-{
-  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
-  if { { ac_try="$ac_link"
-case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
-$as_echo "$ac_try_echo"; } >&5
-  (eval "$ac_link") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; } && { ac_try='./conftest$ac_exeext'
-  { { case "(($ac_try" in
-  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-  *) ac_try_echo=$ac_try;;
-esac
-eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
-$as_echo "$ac_try_echo"; } >&5
-  (eval "$ac_try") 2>&5
-  ac_status=$?
-  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
-  test $ac_status = 0; }; }; then :
-  ac_retval=0
-else
-  $as_echo "$as_me: program exited with status $ac_status" >&5
-       $as_echo "$as_me: failed program was:" >&5
-sed 's/^/| /' conftest.$ac_ext >&5
-
-       ac_retval=$ac_status
-fi
-  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
-  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
-  as_fn_set_status $ac_retval
-
-} # ac_fn_c_try_run
-
 # ac_fn_c_try_link LINENO
 # -----------------------
 # Try to link conftest.$ac_ext, and return whether this succeeded.
@@ -2043,6 +2001,48 @@ $as_echo "$ac_res" >&6; }
   eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
 
 } # ac_fn_c_check_func
+
+# ac_fn_c_try_run LINENO
+# ----------------------
+# Try to link conftest.$ac_ext, and return whether this succeeded. Assumes
+# that executables *can* be run.
+ac_fn_c_try_run ()
+{
+  as_lineno=${as_lineno-"$1"} as_lineno_stack=as_lineno_stack=$as_lineno_stack
+  if { { ac_try="$ac_link"
+case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+$as_echo "$ac_try_echo"; } >&5
+  (eval "$ac_link") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; } && { ac_try='./conftest$ac_exeext'
+  { { case "(($ac_try" in
+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
+  *) ac_try_echo=$ac_try;;
+esac
+eval ac_try_echo="\"\$as_me:${as_lineno-$LINENO}: $ac_try_echo\""
+$as_echo "$ac_try_echo"; } >&5
+  (eval "$ac_try") 2>&5
+  ac_status=$?
+  $as_echo "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; }; then :
+  ac_retval=0
+else
+  $as_echo "$as_me: program exited with status $ac_status" >&5
+       $as_echo "$as_me: failed program was:" >&5
+sed 's/^/| /' conftest.$ac_ext >&5
+
+       ac_retval=$ac_status
+fi
+  rm -rf conftest.dSYM conftest_ipa8_conftest.oo
+  eval $as_lineno_stack; ${as_lineno_stack:+:} unset as_lineno
+  as_fn_set_status $ac_retval
+
+} # ac_fn_c_try_run
 cat >config.log <<_ACEOF
 This file contains any messages produced by compilers while
 running configure, to aid debugging if configure makes a mistake.
@@ -2645,21 +2645,27 @@ done
 
 
 
-  case "$host_os" in
-        darwin*)   default_library_combo=apple-apple-apple ;;
-        nextstep4) default_library_combo=nx-nx-nx          ;;
-        openstep4) default_library_combo=nx-nx-nx          ;;
-        *)         default_library_combo=gnu-gnu-gnu       ;;
-    esac
-    if test ! x"" = x""; then
-        default_library_combo=""
-    fi
+
+    case "$host_os" in
+          darwin*)   default_library_combo=apple-apple-apple ;;
+          nextstep4) default_library_combo=nx-nx-nx          ;;
+          openstep4) default_library_combo=nx-nx-nx          ;;
+          *)         default_library_combo=gnu-gnu-gnu       ;;
+      esac
+
+
+
+
 
 # Check whether --with-library-combo was given.
 if test "${with_library_combo+set}" = set; then :
   withval=$with_library_combo;
+          gs_cv_library_combo_implicit=no
+
 else
-  with_library_combo=${default_library_combo}
+            with_library_combo=${default_library_combo}
+          gs_cv_library_combo_implicit=yes
+
 fi
 
   { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library combo" >&5
@@ -4129,13 +4135,37 @@ elif test "$CYGWIN" = yes; then
   export DLLTOOL=${DLLTOOL:-dlltool}
 fi
 
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
+$as_echo_n "checking whether the compiler is clang... " >&6; }
+if ${_gs_cv_cc_is_clang+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+      _gs_cv_cc_is_clang="no"
+    if test x"${GCC}" = x"yes" ; then
+        if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+            _gs_cv_cc_is_clang="yes";
+        fi
+    fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_cc_is_clang" >&5
+$as_echo "$_gs_cv_cc_is_clang" >&6; }
+    gs_cv_cc_is_clang=${_gs_cv_cc_is_clang}
+    CLANG_CC=${_gs_cv_cc_is_clang}
+
+    if test "x$_gs_cv_cc_is_clang" = x"yes"; then :
+
+fi
+
+
 #--------------------------------------------------------------------
 # Find the binary and compile tools
 #--------------------------------------------------------------------
 if test "x$target" != "x$host"; then
   echo "cross compiling from $host to $target .."
   cross_compiling="yes"
-  if test "$OBJC_RUNTIME_LIB" = ng; then
+  if test "$OBJC_RUNTIME_LIB" = ng -o x"$gs_cv_cc_is_clang" = x"yes"; then
     # Extract the first word of ""${targetArgument}-clang"", so it can be a program name with args.
 set dummy "${targetArgument}-clang"; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -4356,7 +4386,7 @@ main ()
 _ACEOF
 if ac_fn_c_try_compile "$LINENO"; then :
 
-      ac64v_blocks="yes"
+      ac_cv_blocks="yes"
 
 else
 
@@ -5672,53 +5702,6 @@ $as_echo "NONE" >&6; }
 esac
 
 
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for object subdirectory" >&5
-$as_echo_n "checking for object subdirectory... " >&6; }
-if ${_gs_cv_obj_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-        if test "$GNUSTEP_IS_FLATTENED" != yes; then
-            clean_target_os=`$srcdir/clean_os.sh $target_os`
-            clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
-            _gs_cv_obj_dir="$clean_target_cpu/$clean_target_os"
-        else
-            _gs_cv_obj_dir="(none)"
-        fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_obj_dir" >&5
-$as_echo "$_gs_cv_obj_dir" >&6; }
-    if test "x$_gs_cv_obj_dir" = x"(none)"; then :
-  { gs_cv_obj_dir=; unset gs_cv_obj_dir;}
-else
-  gs_cv_obj_dir=${_gs_cv_obj_dir}
-fi
-
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether the compiler is clang" >&5
-$as_echo_n "checking whether the compiler is clang... " >&6; }
-if ${_gs_cv_cc_is_clang+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-      _gs_cv_cc_is_clang="no"
-    if test x"${GCC}" = x"yes" ; then
-        if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-            _gs_cv_cc_is_clang="yes";
-        fi
-    fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_cc_is_clang" >&5
-$as_echo "$_gs_cv_cc_is_clang" >&6; }
-    gs_cv_cc_is_clang=${_gs_cv_cc_is_clang}
-    CLANG_CC=${_gs_cv_cc_is_clang}
-
-    if test "x$_gs_cv_cc_is_clang" = x"yes"; then :
-
-fi
-
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for a sed that does not truncate output" >&5
 $as_echo_n "checking for a sed that does not truncate output... " >&6; }
 if ${ac_cv_path_SED+:} false; then :
@@ -5789,295 +5772,28 @@ $as_echo "$ac_cv_path_SED" >&6; }
   rm -f conftest.sed
 
 
-
-
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib" >&5
-$as_echo_n "checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib... " >&6; }
-if ${gs_cv_LIBOBJC_domains+:} false; then :
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for object subdirectory" >&5
+$as_echo_n "checking for object subdirectory... " >&6; }
+if ${_gs_cv_obj_dir+:} false; then :
   $as_echo_n "(cached) " >&6
 else
 
-    gs_cv_LIBOBJC_domains=""
-    INFIX=""
+        if test "$GNUSTEP_IS_FLATTENED" != yes; then
+            clean_target_os=`$srcdir/clean_os.sh $target_os`
+            clean_target_cpu=`$srcdir/clean_cpu.sh $target_cpu`
+            _gs_cv_obj_dir="$clean_target_cpu/$clean_target_os"
+        else
+            _gs_cv_obj_dir="(none)"
+        fi
 
-
-
-
-
-    if ${gs_cv_SYSTEM_LIBRARIES_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_obj_dir" >&5
+$as_echo "$_gs_cv_obj_dir" >&6; }
+    if test "x$_gs_cv_obj_dir" = x"(none)"; then :
+  { gs_cv_obj_dir=; unset gs_cv_obj_dir;}
 else
-
-       gs_cv_SYSTEM_LIBRARIES_dir=$GNUSTEP_SYSTEM_LIBRARIES
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_SYSTEM_LIBRARIES_dir="${gs_cv_SYSTEM_LIBRARIES_dir}/${gs_cv_obj_dir}"
-        fi
-
+  gs_cv_obj_dir=${_gs_cv_obj_dir}
 fi
-
-
-
-        if test -d  $gs_cv_SYSTEM_LIBRARIES_dir; then
-            if test -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc-gnu.dylib" ; then
-                gs_cv_LIBOBJC_domains="${gs_cv_LIBOBJC_domains}${INFIX}SYSTEM"
-                INFIX=", "
-            fi
-        fi
-
-
-
-
-
-
-    if ${gs_cv_NETWORK_LIBRARIES_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-       gs_cv_NETWORK_LIBRARIES_dir=$GNUSTEP_NETWORK_LIBRARIES
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_NETWORK_LIBRARIES_dir="${gs_cv_NETWORK_LIBRARIES_dir}/${gs_cv_obj_dir}"
-        fi
-
-fi
-
-
-
-        if test -d  $gs_cv_NETWORK_LIBRARIES_dir; then
-            if test -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc-gnu.dylib" ; then
-                gs_cv_LIBOBJC_domains="${gs_cv_LIBOBJC_domains}${INFIX}NETWORK"
-                INFIX=", "
-            fi
-        fi
-
-
-
-
-
-
-    if ${gs_cv_LOCAL_LIBRARIES_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-       gs_cv_LOCAL_LIBRARIES_dir=$GNUSTEP_LOCAL_LIBRARIES
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_LOCAL_LIBRARIES_dir="${gs_cv_LOCAL_LIBRARIES_dir}/${gs_cv_obj_dir}"
-        fi
-
-fi
-
-
-
-        if test -d  $gs_cv_LOCAL_LIBRARIES_dir; then
-            if test -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc-gnu.dylib" ; then
-                gs_cv_LIBOBJC_domains="${gs_cv_LIBOBJC_domains}${INFIX}LOCAL"
-                INFIX=", "
-            fi
-        fi
-
-
-
-
-
-
-    if ${gs_cv_USER_LIBRARIES_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-       gs_cv_USER_LIBRARIES_dir=$GNUSTEP_USER_LIBRARIES
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_USER_LIBRARIES_dir="${gs_cv_USER_LIBRARIES_dir}/${gs_cv_obj_dir}"
-        fi
-
-fi
-
-
-
-        if test -d  $gs_cv_USER_LIBRARIES_dir; then
-            if test -f "$gs_cv_USER_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc-gnu.dylib" ; then
-                gs_cv_LIBOBJC_domains="${gs_cv_LIBOBJC_domains}${INFIX}USER"
-                INFIX=", "
-            fi
-        fi
-
-
-    if test x"${gs_cv_LIBOBJC_domains}" = x""; then
-        gs_cv_LIBOBJC_domains="(none)"
-    fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_LIBOBJC_domains" >&5
-$as_echo "$gs_cv_LIBOBJC_domains" >&6; }
-    if test "x$gs_cv_LIBOBJC_domains" = x"(none)"; then :
-  { LIBOBJC_DOMAINS=; unset LIBOBJC_DOMAINS;}
-else
-  LIBOBJC_DOMAINS=${gs_cv_LIBOBJC_domains}
-fi
-
-
-
-
-
-
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing headers objc/objc.h" >&5
-$as_echo_n "checking for domains containing headers objc/objc.h... " >&6; }
-if ${gs_cv_OBJC_HEADERS_domains+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-    gs_cv_OBJC_HEADERS_domains=""
-    INFIX=""
-
-
-
-
-
-    if ${gs_cv_SYSTEM_HEADERS_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-       gs_cv_SYSTEM_HEADERS_dir=$GNUSTEP_SYSTEM_HEADERS
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_SYSTEM_HEADERS_dir="${gs_cv_SYSTEM_HEADERS_dir}/${LIBRARY_COMBO}"
-        fi
-
-fi
-
-
-
-        if test -d  $gs_cv_SYSTEM_HEADERS_dir; then
-            if test -f "$gs_cv_SYSTEM_HEADERS_dir/objc/objc.h" ; then
-                gs_cv_OBJC_HEADERS_domains="${gs_cv_OBJC_HEADERS_domains}${INFIX}SYSTEM"
-                INFIX=", "
-            fi
-        fi
-
-
-
-
-
-
-    if ${gs_cv_NETWORK_HEADERS_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-       gs_cv_NETWORK_HEADERS_dir=$GNUSTEP_NETWORK_HEADERS
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_NETWORK_HEADERS_dir="${gs_cv_NETWORK_HEADERS_dir}/${LIBRARY_COMBO}"
-        fi
-
-fi
-
-
-
-        if test -d  $gs_cv_NETWORK_HEADERS_dir; then
-            if test -f "$gs_cv_NETWORK_HEADERS_dir/objc/objc.h" ; then
-                gs_cv_OBJC_HEADERS_domains="${gs_cv_OBJC_HEADERS_domains}${INFIX}NETWORK"
-                INFIX=", "
-            fi
-        fi
-
-
-
-
-
-
-    if ${gs_cv_LOCAL_HEADERS_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-       gs_cv_LOCAL_HEADERS_dir=$GNUSTEP_LOCAL_HEADERS
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_LOCAL_HEADERS_dir="${gs_cv_LOCAL_HEADERS_dir}/${LIBRARY_COMBO}"
-        fi
-
-fi
-
-
-
-        if test -d  $gs_cv_LOCAL_HEADERS_dir; then
-            if test -f "$gs_cv_LOCAL_HEADERS_dir/objc/objc.h" ; then
-                gs_cv_OBJC_HEADERS_domains="${gs_cv_OBJC_HEADERS_domains}${INFIX}LOCAL"
-                INFIX=", "
-            fi
-        fi
-
-
-
-
-
-
-    if ${gs_cv_USER_HEADERS_dir+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-       gs_cv_USER_HEADERS_dir=$GNUSTEP_USER_HEADERS
-
-        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
-            gs_cv_USER_HEADERS_dir="${gs_cv_USER_HEADERS_dir}/${LIBRARY_COMBO}"
-        fi
-
-fi
-
-
-
-        if test -d  $gs_cv_USER_HEADERS_dir; then
-            if test -f "$gs_cv_USER_HEADERS_dir/objc/objc.h" ; then
-                gs_cv_OBJC_HEADERS_domains="${gs_cv_OBJC_HEADERS_domains}${INFIX}USER"
-                INFIX=", "
-            fi
-        fi
-
-
-    if test x"${gs_cv_OBJC_HEADERS_domains}" = x""; then
-        gs_cv_OBJC_HEADERS_domains="(none)"
-    fi
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_OBJC_HEADERS_domains" >&5
-$as_echo "$gs_cv_OBJC_HEADERS_domains" >&6; }
-    if test "x$gs_cv_OBJC_HEADERS_domains" = x"(none)"; then :
-  { OBJC_HEADERS_DOMAINS=; unset OBJC_HEADERS_DOMAINS;}
-else
-  OBJC_HEADERS_DOMAINS=${gs_cv_OBJC_HEADERS_domains}
-fi
-
-
-
-
-
-
-
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for custom shared objc library domain" >&5
-$as_echo_n "checking for custom shared objc library domain... " >&6; }
-if ${gs_cv_libobjc_domain+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-
-        gs_cv_libobjc_domain=""
-        for i in $(echo ${LIBOBJC_DOMAINS}| $SED "s/, / /g"); do
-            for j in $(echo ${OBJC_HEADERS_DOMAINS}| $SED "s/, / /g"); do
-                if test x"$i" = x"$j"; then
-                    gs_cv_libobjc_domain=$i
-                    break
-                fi
-            done
-            if test ! x"$gs_cv_libobjc_domain" = x""; then
-                break
-            fi
-        done
-
-fi
-{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_libobjc_domain" >&5
-$as_echo "$gs_cv_libobjc_domain" >&6; }
 
 
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for the flag to link libobjc" >&5
@@ -6502,6 +6218,850 @@ fi
     fi
 
 
+if test "$OBJC_RUNTIME_LIB" = "gnu" -a x"$gs_cv_cc_is_clang" = x"yes" -a  x"$gs_cv_library_combo_implicit" = x"yes"; then
+
+
+        gs_cv_ng_rt_saved_OBJC_CPPFLAGS=$OBJC_CPPFLAGS
+        gs_cv_ng_rt_saved_OBJC_LDFLAGS=$OBJC_LDFLAGS
+        gs_cv_ng_rt_saved_OBJC_FINAL_LIB_FLAG=$OBJC_FINAL_LIB_FLAG
+        gs_cv_ng_rt_saved_CFLAGS=$CFLAGS
+        gs_cv_ng_rt_saved_LIBS=$LIBS
+        gs_cv_ng_rt_saved_saved_CFLAGS=$saved_CFLAGS
+        gs_cv_ng_rt_saved_saved_LDFLAGS=$saved_LDFLAGS
+        gs_cv_ng_rt_saved_OBJCRT=$OBJCRT
+        gs_cv_ng_rt_saved_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
+        gs_cv_ng_rt_saved_PATH=$PATH
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib" >&5
+$as_echo_n "checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib... " >&6; }
+if ${gs_cv_ng_libobjc_domains_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+    gs_cv_ng_libobjc_domains_ng_gnu_gnu=""
+    INFIX=""
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu=$GNUSTEP_SYSTEM_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu="${gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" ; then
+                gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}SYSTEM"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu=$GNUSTEP_NETWORK_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu="${gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" ; then
+                gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}NETWORK"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu=$GNUSTEP_LOCAL_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu="${gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" ; then
+                gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}LOCAL"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu=$GNUSTEP_USER_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu="${gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" ; then
+                gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}USER"
+                INFIX=", "
+            fi
+        fi
+
+
+    if test x"${gs_cv_ng_libobjc_domains_ng_gnu_gnu}" = x""; then
+        gs_cv_ng_libobjc_domains_ng_gnu_gnu="(none)"
+    fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_ng_libobjc_domains_ng_gnu_gnu" >&5
+$as_echo "$gs_cv_ng_libobjc_domains_ng_gnu_gnu" >&6; }
+    if test "x$gs_cv_ng_libobjc_domains_ng_gnu_gnu" = x"(none)"; then :
+  { NG_LIBOBJC_DOMAINS=; unset NG_LIBOBJC_DOMAINS;}
+else
+  NG_LIBOBJC_DOMAINS=${gs_cv_ng_libobjc_domains_ng_gnu_gnu}
+fi
+
+
+
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing headers objc/objc.h" >&5
+$as_echo_n "checking for domains containing headers objc/objc.h... " >&6; }
+if ${gs_cv_ng_objc_headers_domains_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+    gs_cv_ng_objc_headers_domains_ng_gnu_gnu=""
+    INFIX=""
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu=$GNUSTEP_SYSTEM_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu="${gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu}/${gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_SYSTEM_HEADERS_dir_ng_gnu_gnu/objc/objc.h" ; then
+                gs_cv_ng_objc_headers_domains_ng_gnu_gnu="${gs_cv_ng_objc_headers_domains_ng_gnu_gnu}${INFIX}SYSTEM"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu=$GNUSTEP_NETWORK_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu="${gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu}/${gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_NETWORK_HEADERS_dir_ng_gnu_gnu/objc/objc.h" ; then
+                gs_cv_ng_objc_headers_domains_ng_gnu_gnu="${gs_cv_ng_objc_headers_domains_ng_gnu_gnu}${INFIX}NETWORK"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu=$GNUSTEP_LOCAL_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu="${gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu}/${gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_LOCAL_HEADERS_dir_ng_gnu_gnu/objc/objc.h" ; then
+                gs_cv_ng_objc_headers_domains_ng_gnu_gnu="${gs_cv_ng_objc_headers_domains_ng_gnu_gnu}${INFIX}LOCAL"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_USER_HEADERS_dir_ng_gnu_gnu_combo=ng-gnu-gnu
+    if ${gs_cv_USER_HEADERS_dir_ng_gnu_gnu+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_USER_HEADERS_dir_ng_gnu_gnu=$GNUSTEP_USER_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_USER_HEADERS_dir_ng_gnu_gnu="${gs_cv_USER_HEADERS_dir_ng_gnu_gnu}/${gs_cv_USER_HEADERS_dir_ng_gnu_gnu_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_USER_HEADERS_dir_ng_gnu_gnu; then
+            if test -f "$gs_cv_USER_HEADERS_dir_ng_gnu_gnu/objc/objc.h" ; then
+                gs_cv_ng_objc_headers_domains_ng_gnu_gnu="${gs_cv_ng_objc_headers_domains_ng_gnu_gnu}${INFIX}USER"
+                INFIX=", "
+            fi
+        fi
+
+
+    if test x"${gs_cv_ng_objc_headers_domains_ng_gnu_gnu}" = x""; then
+        gs_cv_ng_objc_headers_domains_ng_gnu_gnu="(none)"
+    fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_ng_objc_headers_domains_ng_gnu_gnu" >&5
+$as_echo "$gs_cv_ng_objc_headers_domains_ng_gnu_gnu" >&6; }
+    if test "x$gs_cv_ng_objc_headers_domains_ng_gnu_gnu" = x"(none)"; then :
+  { NG_OBJC_HEADERS_DOMAINS=; unset NG_OBJC_HEADERS_DOMAINS;}
+else
+  NG_OBJC_HEADERS_DOMAINS=${gs_cv_ng_objc_headers_domains_ng_gnu_gnu}
+fi
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for custom shared objc library domain" >&5
+$as_echo_n "checking for custom shared objc library domain... " >&6; }
+if ${gs_cv_libobjc_domain_ng+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+        gs_cv_libobjc_domain_ng=""
+        for i in $(echo ${NG_LIBOBJC_DOMAINS}| $SED "s/, / /g"); do
+            for j in $(echo ${NG_OBJC_HEADERS_DOMAINS}| $SED "s/, / /g"); do
+                if test x"$i" = x"$j"; then
+                    gs_cv_libobjc_domain_ng=$i
+                    break
+                fi
+            done
+            if test ! x"$gs_cv_libobjc_domain_ng" = x""; then
+                break
+            fi
+        done
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_libobjc_domain_ng" >&5
+$as_echo "$gs_cv_libobjc_domain_ng" >&6; }
+
+
+
+
+
+
+
+
+
+        gs_cv_rt_combo_ng=ng-gnu-gnu
+        gs_cv_rt_lib_ng=ng
+
+        if test ! x"$libobjc_LIBS" = x""; then
+        OBJC_CPPFLAGS=$libobjc_CFLAGS
+        OBCJ_LDFLAGS=""
+        OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
+        elif test ! x"$gs_cv_libobjc_domain_ng" = x""; then
+        if test x"$gs_cv_libobjc_domain_ng" = x"SYSTEM"; then
+            GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
+        elif test x"$gs_cv_libobjc_domain_ng" = x"NETWORK"; then
+            GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
+        elif test x"$gs_cv_libobjc_domain_ng" = x"LOCAL"; then
+            GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
+        elif test x"$gs_cv_libobjc_domain_ng" = x"USER"; then
+            GNUSTEP_LDIR="$GNUSTEP_USER_LIBRARIES"
+            GNUSTEP_HDIR="$GNUSTEP_USER_HEADERS"
+            gs_cv_objc_tools="$GNUSTEP_USER_TOOLS"
+        fi
+        if  test x"$GNUSTEP_IS_FLATTENED" = x"yes"; then
+            GNUSTEP_LDIR="$GNUSTEP_LDIR/$gs_cv_obj_dir"
+            GNUSTEP_HDIR="$GNUSTEP_HDIR/$gs_cv_rt_combo_ng"
+        fi
+        gs_cv_objc_incdir=$GNUSTEP_HDIR
+        gs_cv_objc_libdir=$GNUSTEP_LDIR
+        # The following are needed to compile the test programs
+        OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
+        OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
+        OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
+
+        # And the following to execute them
+        LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
+        export LD_LIBRARY_PATH
+        # Need to also add the Tools library on mingw
+        case $host_os in
+            *mingw32* )
+            PATH=$PATH:$gs_cv_objc_tools;;
+            * )
+            ;;
+        esac
+    fi
+    if test x"$OBJC_FINAL_LIB_FLAG" = x""; then
+        OBJC_FINAL_LIB_FLAG="-lobjc"
+    fi
+    OBJC_LDFLAGS="$OBJC_LDFLAGS $OBJC_FINAL_LIB_FLAG"
+    saved_CFLAGS="$CFLAGS"
+    saved_LIBS="$LIBS"
+    CFLAGS="$CFLAGS -x objective-c -I$srcdir $OBJC_CPPFLAGS $OBJC_LDFLAGS"
+    if test "$gs_cv_rt_lib_ng" = "gnu"; then
+        if test x"$CLANG_CC" = x"yes"; then
+            CFLAGS="$CFLAGS -fobjc-runtime=gcc"
+        fi
+        CFLAGS="$CFLAGS -DGNU_RUNTIME"
+    elif test "$gs_cv_rt_lib_ng" = "nx"; then
+        CFLAGS="$CFLAGS -DNeXT_RUNTIME"
+    elif test "$gs_cv_rt_lib_ng" = "apple"; then
+        CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
+    fi
+    OBJCRT="$OBJC_FINAL_LIB_FLAG"
+
+
+
+
+
+
+  ac_fn_c_check_func "$LINENO" "objc_test_capability" "ac_cv_func_objc_test_capability"
+if test "x$ac_cv_func_objc_test_capability" = xyes; then :
+
+fi
+
+  if test x"$ac_cv_func_objc_test_capability" = x"yes"; then
+
+
+
+    default_library_combo="ng-gnu-gnu"
+
+
+
+    { _gs_cv_libray_combo=; unset _gs_cv_libray_combo;}
+    { with_library_combo=; unset with_library_combo;}
+
+
+
+# Check whether --with-library-combo was given.
+if test "${with_library_combo+set}" = set; then :
+  withval=$with_library_combo;
+          gs_cv_library_combo_implicit=no
+
+else
+            with_library_combo=${default_library_combo}
+          gs_cv_library_combo_implicit=yes
+
+fi
+
+  { $as_echo "$as_me:${as_lineno-$LINENO}: checking for library combo" >&5
+$as_echo_n "checking for library combo... " >&6; }
+if ${_gs_cv_libray_combo+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+    case "$with_library_combo" in
+        apple) with_library_combo=apple-apple-apple ;;
+        gnu)   with_library_combo=gnu-gnu-gnu ;;
+        ng)    with_library_combo=ng-gnu-gnu ;;
+        nx)    with_library_combo=nx-nx-nx ;;
+    esac
+    _gs_cv_libray_combo=${with_library_combo}
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $_gs_cv_libray_combo" >&5
+$as_echo "$_gs_cv_libray_combo" >&6; }
+  ac_cv_library_combo=${_gs_cv_libray_combo}
+  OBJC_RUNTIME_LIB=$(echo ${_gs_cv_libray_combo} | $AWK -F- '{ print $1 }')
+  ac_cv_library_combo=${_gs_cv_libray_combo}
+
+
+    LIBRARY_COMBO=ng-gnu-gnu
+    { $as_echo "$as_me:${as_lineno-$LINENO}: library combo has been upgraded to \`ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly" >&5
+$as_echo "$as_me: library combo has been upgraded to \`ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly" >&6;}
+  fi
+      OBJC_CPPFLAGS=$gs_cv_ng_rt_saved_OBJC_CPPFLAGS
+    { gs_cv_ng_rt_saved_OBJC_CPPFLAGS=; unset gs_cv_ng_rt_saved_OBJC_CPPFLAGS;}
+      OBJC_LDFLAGS=$gs_cv_ng_rt_saved_OBJC_LDFLAGS
+    { gs_cv_ng_rt_saved_OBJC_LDFLAGS=; unset gs_cv_ng_rt_saved_OBJC_LDFLAGS;}
+      OBJC_FINAL_LIB_FLAG=$gs_cv_ng_rt_saved_OBJC_FINAL_LIB_FLAG
+    { gs_cv_ng_rt_saved_OBJC_FINAL_LIB_FLAG=; unset gs_cv_ng_rt_saved_OBJC_FINAL_LIB_FLAG;}
+      CFLAGS=$gs_cv_ng_rt_saved_CFLAGS
+    { gs_cv_ng_rt_saved_CFLAGS=; unset gs_cv_ng_rt_saved_CFLAGS;}
+      LIBS=$gs_cv_ng_rt_saved_LIBS
+    { gs_cv_ng_rt_saved_LIBS=; unset gs_cv_ng_rt_saved_LIBS;}
+      saved_CFLAGS=$gs_cv_ng_rt_saved_saved_CFLAGS
+    { gs_cv_ng_rt_saved_saved_CFLAGS=; unset gs_cv_ng_rt_saved_saved_CFLAGS;}
+      saved_LDFLAGS=$gs_cv_ng_rt_saved_saved_LDFLAGS
+    { gs_cv_ng_rt_saved_saved_LDFLAGS=; unset gs_cv_ng_rt_saved_saved_LDFLAGS;}
+      OBJCRT=$gs_cv_ng_rt_saved_OBJCRT
+    { gs_cv_ng_rt_saved_OBJCRT=; unset gs_cv_ng_rt_saved_OBJCRT;}
+      LD_LIBRARY_PATH=$gs_cv_ng_rt_saved_LD_LIBRARY_PATH
+    { gs_cv_ng_rt_saved_LD_LIBRARY_PATH=; unset gs_cv_ng_rt_saved_LD_LIBRARY_PATH;}
+      PATH=$gs_cv_ng_rt_saved_PATH
+    { gs_cv_ng_rt_saved_PATH=; unset gs_cv_ng_rt_saved_PATH;}
+
+fi
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib" >&5
+$as_echo_n "checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib... " >&6; }
+if ${gs_cv_dflt_libobjc_domains+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+    gs_cv_dflt_libobjc_domains=""
+    INFIX=""
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_SYSTEM_LIBRARIES_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_SYSTEM_LIBRARIES_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_SYSTEM_LIBRARIES_dir=$GNUSTEP_SYSTEM_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_SYSTEM_LIBRARIES_dir="${gs_cv_SYSTEM_LIBRARIES_dir}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_SYSTEM_LIBRARIES_dir; then
+            if test -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc-gnu.dylib" ; then
+                gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}SYSTEM"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_NETWORK_LIBRARIES_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_NETWORK_LIBRARIES_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_NETWORK_LIBRARIES_dir=$GNUSTEP_NETWORK_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_NETWORK_LIBRARIES_dir="${gs_cv_NETWORK_LIBRARIES_dir}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_NETWORK_LIBRARIES_dir; then
+            if test -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc-gnu.dylib" ; then
+                gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}NETWORK"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_LOCAL_LIBRARIES_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_LOCAL_LIBRARIES_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_LOCAL_LIBRARIES_dir=$GNUSTEP_LOCAL_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_LOCAL_LIBRARIES_dir="${gs_cv_LOCAL_LIBRARIES_dir}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_LOCAL_LIBRARIES_dir; then
+            if test -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc-gnu.dylib" ; then
+                gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}LOCAL"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_USER_LIBRARIES_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_USER_LIBRARIES_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_USER_LIBRARIES_dir=$GNUSTEP_USER_LIBRARIES
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_USER_LIBRARIES_dir="${gs_cv_USER_LIBRARIES_dir}/${gs_cv_obj_dir}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_USER_LIBRARIES_dir; then
+            if test -f "$gs_cv_USER_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc-gnu.dylib" ; then
+                gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}USER"
+                INFIX=", "
+            fi
+        fi
+
+
+    if test x"${gs_cv_dflt_libobjc_domains}" = x""; then
+        gs_cv_dflt_libobjc_domains="(none)"
+    fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_dflt_libobjc_domains" >&5
+$as_echo "$gs_cv_dflt_libobjc_domains" >&6; }
+    if test "x$gs_cv_dflt_libobjc_domains" = x"(none)"; then :
+  { DFLT_LIBOBJC_DOMAINS=; unset DFLT_LIBOBJC_DOMAINS;}
+else
+  DFLT_LIBOBJC_DOMAINS=${gs_cv_dflt_libobjc_domains}
+fi
+
+
+
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing headers objc/objc.h" >&5
+$as_echo_n "checking for domains containing headers objc/objc.h... " >&6; }
+if ${gs_cv_dflt_objc_headers_domains+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+    gs_cv_dflt_objc_headers_domains=""
+    INFIX=""
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_SYSTEM_HEADERS_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_SYSTEM_HEADERS_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_SYSTEM_HEADERS_dir=$GNUSTEP_SYSTEM_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_SYSTEM_HEADERS_dir="${gs_cv_SYSTEM_HEADERS_dir}/${gs_cv_SYSTEM_HEADERS_dir_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_SYSTEM_HEADERS_dir; then
+            if test -f "$gs_cv_SYSTEM_HEADERS_dir/objc/objc.h" ; then
+                gs_cv_dflt_objc_headers_domains="${gs_cv_dflt_objc_headers_domains}${INFIX}SYSTEM"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_NETWORK_HEADERS_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_NETWORK_HEADERS_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_NETWORK_HEADERS_dir=$GNUSTEP_NETWORK_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_NETWORK_HEADERS_dir="${gs_cv_NETWORK_HEADERS_dir}/${gs_cv_NETWORK_HEADERS_dir_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_NETWORK_HEADERS_dir; then
+            if test -f "$gs_cv_NETWORK_HEADERS_dir/objc/objc.h" ; then
+                gs_cv_dflt_objc_headers_domains="${gs_cv_dflt_objc_headers_domains}${INFIX}NETWORK"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_LOCAL_HEADERS_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_LOCAL_HEADERS_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_LOCAL_HEADERS_dir=$GNUSTEP_LOCAL_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_LOCAL_HEADERS_dir="${gs_cv_LOCAL_HEADERS_dir}/${gs_cv_LOCAL_HEADERS_dir_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_LOCAL_HEADERS_dir; then
+            if test -f "$gs_cv_LOCAL_HEADERS_dir/objc/objc.h" ; then
+                gs_cv_dflt_objc_headers_domains="${gs_cv_dflt_objc_headers_domains}${INFIX}LOCAL"
+                INFIX=", "
+            fi
+        fi
+
+
+
+
+
+    _LIBRARY_COMBO=${LIBRARY_COMBO}
+
+
+    gs_cv_USER_HEADERS_dir_combo=${_LIBRARY_COMBO}
+    if ${gs_cv_USER_HEADERS_dir+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+       gs_cv_USER_HEADERS_dir=$GNUSTEP_USER_HEADERS
+
+        if test ! "$GNUSTEP_IS_FLATTENED" = yes; then
+            gs_cv_USER_HEADERS_dir="${gs_cv_USER_HEADERS_dir}/${gs_cv_USER_HEADERS_dir_combo}"
+        fi
+
+fi
+
+
+
+    { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
+
+        if test -d  $gs_cv_USER_HEADERS_dir; then
+            if test -f "$gs_cv_USER_HEADERS_dir/objc/objc.h" ; then
+                gs_cv_dflt_objc_headers_domains="${gs_cv_dflt_objc_headers_domains}${INFIX}USER"
+                INFIX=", "
+            fi
+        fi
+
+
+    if test x"${gs_cv_dflt_objc_headers_domains}" = x""; then
+        gs_cv_dflt_objc_headers_domains="(none)"
+    fi
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_dflt_objc_headers_domains" >&5
+$as_echo "$gs_cv_dflt_objc_headers_domains" >&6; }
+    if test "x$gs_cv_dflt_objc_headers_domains" = x"(none)"; then :
+  { DFLT_OBJC_HEADERS_DOMAINS=; unset DFLT_OBJC_HEADERS_DOMAINS;}
+else
+  DFLT_OBJC_HEADERS_DOMAINS=${gs_cv_dflt_objc_headers_domains}
+fi
+
+
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for custom shared objc library domain" >&5
+$as_echo_n "checking for custom shared objc library domain... " >&6; }
+if ${gs_cv_libobjc_domain_dflt+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+
+        gs_cv_libobjc_domain_dflt=""
+        for i in $(echo ${DFLT_LIBOBJC_DOMAINS}| $SED "s/, / /g"); do
+            for j in $(echo ${DFLT_OBJC_HEADERS_DOMAINS}| $SED "s/, / /g"); do
+                if test x"$i" = x"$j"; then
+                    gs_cv_libobjc_domain_dflt=$i
+                    break
+                fi
+            done
+            if test ! x"$gs_cv_libobjc_domain_dflt" = x""; then
+                break
+            fi
+        done
+
+fi
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_libobjc_domain_dflt" >&5
+$as_echo "$gs_cv_libobjc_domain_dflt" >&6; }
 
 
 
@@ -6513,20 +7073,20 @@ fi
         OBJC_CPPFLAGS=$libobjc_CFLAGS
         OBCJ_LDFLAGS=""
         OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
-        elif test ! x"$gs_cv_libobjc_domain" = x""; then
-        if test x"$gs_cv_libobjc_domain" = x"SYSTEM"; then
+        elif test ! x"$gs_cv_libobjc_domain_dflt" = x""; then
+        if test x"$gs_cv_libobjc_domain_dflt" = x"SYSTEM"; then
             GNUSTEP_LDIR="$GNUSTEP_SYSTEM_LIBRARIES"
             GNUSTEP_HDIR="$GNUSTEP_SYSTEM_HEADERS"
             gs_cv_objc_tools="$GNUSTEP_SYSTEM_TOOLS"
-        elif test x"$gs_cv_libobjc_domain" = x"NETWORK"; then
+        elif test x"$gs_cv_libobjc_domain_dflt" = x"NETWORK"; then
             GNUSTEP_LDIR="$GNUSTEP_NETWORK_LIBRARIES"
             GNUSTEP_HDIR="$GNUSTEP_NETWORK_HEADERS"
             gs_cv_objc_tools="$GNUSTEP_NETWORK_TOOLS"
-        elif test x"$gs_cv_libobjc_domain" = x"LOCAL"; then
+        elif test x"$gs_cv_libobjc_domain_dflt" = x"LOCAL"; then
             GNUSTEP_LDIR="$GNUSTEP_LOCAL_LIBRARIES"
             GNUSTEP_HDIR="$GNUSTEP_LOCAL_HEADERS"
             gs_cv_objc_tools="$GNUSTEP_LOCAL_TOOLS"
-        elif test x"$gs_cv_libobjc_domain" = x"USER"; then
+        elif test x"$gs_cv_libobjc_domain_dflt" = x"USER"; then
             GNUSTEP_LDIR="$GNUSTEP_USER_LIBRARIES"
             GNUSTEP_HDIR="$GNUSTEP_USER_HEADERS"
             gs_cv_objc_tools="$GNUSTEP_USER_TOOLS"
@@ -6571,6 +7131,8 @@ fi
         CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
     fi
     OBJCRT="$OBJC_FINAL_LIB_FLAG"
+
+
 
 
 #--------------------------------------------------------------------
@@ -7224,10 +7786,16 @@ else
 fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result: $gs_cv_abi20_linker" >&5
 $as_echo "$gs_cv_abi20_linker" >&6; }
-    if echo "$gs_cv_abi20_linker" | $GREP -q -v '^yes'; then
+    if echo "$gs_cv_abi20_linker" | $GREP -q '^yes'; then
+        _gs_abi20_linker=yes
+    else
+        _gs_abi20_linker=no
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The detected linker might not produce working Objective-C binaries using the gnustep-2.0 ABI. Consider using gold or LLD." >&5
 $as_echo "$as_me: WARNING: The detected linker might not produce working Objective-C binaries using the gnustep-2.0 ABI. Consider using gold or LLD." >&2;}
     fi
+    if test "x$_gs_abi20_linker" = x"yes"; then :
+
+fi
 
 fi
 # Do not restore LIBS and CFLAGS yet as we need to test if the

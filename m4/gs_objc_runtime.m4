@@ -23,7 +23,7 @@ AC_DEFUN([GS_OBJ_DIR], [
 
 # SYNOPSIS
 #
-#   GS_DOMAIN_DIR([installation-domain],[HEADERS or LIBRARIES])
+#   GS_DOMAIN_DIR([installation-domain],[HEADERS or LIBRARIES],[override-library-combo])
 #
 # DESCRIPTION
 #
@@ -31,7 +31,10 @@ AC_DEFUN([GS_OBJ_DIR], [
 #
 AC_DEFUN([GS_DOMAIN_DIR],[
     AC_REQUIRE([GS_OBJ_DIR])
-    m4_pushdef([search_dir], [m4_join([],[gs_cv_], $1, [_], $2, [_dir])])
+    AS_VAR_SET([_LIBRARY_COMBO], [${LIBRARY_COMBO}])
+    m4_pushdef([search_dir], [m4_join([_],[gs_cv], $1, $2, [dir], AS_TR_SH($3))])
+    AS_VAR_PUSHDEF([LIBRARY_COMBO], m4_join([], search_dir, [_combo]))
+    LIBRARY_COMBO=m4_default([$3], [${_LIBRARY_COMBO}])
     AC_CACHE_VAL(search_dir,[
        search_dir=m4_join([],[$GNUSTEP_], $1, [_], $2)
     
@@ -39,13 +42,15 @@ AC_DEFUN([GS_DOMAIN_DIR],[
             search_dir="${search_dir}/m4_case([$2], [HEADERS], [${LIBRARY_COMBO}], [LIBRARIES], [${gs_cv_obj_dir}])"
         fi
     ])
+    AS_VAR_POPDEF([LIBRARY_COMBO])
     m4_popdef([search_dir])
+    AS_UNSET(_LIBRARY_COMBO)
 ])
 
 
 # SYNOPSIS
 #
-#   GS_DOMAIN_DIR([prefix],[HEADERS or LIBRARIES],[comma separated list of file names])
+#   GS_DOMAINS_FOR_FILES([prefix],[HEADERS or LIBRARIES],[comma separated list of file names][optional-library-combo-override])
 #
 # DESCRIPTION
 #
@@ -53,14 +58,14 @@ AC_DEFUN([GS_DOMAIN_DIR],[
 # a list of which domains the file(s) were found in as `$prefix_DOMAINS'. If more than file is
 # specified the search will succeed if one of the files is found.
 AC_DEFUN([GS_DOMAINS_FOR_FILES],[
-    m4_pushdef([cache_var], [m4_join([], [gs_cv_], $1,  [_domains])])
+    m4_pushdef([cache_var], [m4_join([_], [gs_cv], m4_tolower($1),  [domains], AS_TR_SH($4))])
     AC_REQUIRE([GS_OBJ_DIR])
     AC_CACHE_CHECK(m4_join([ ], [for domains containing], m4_tolower($2), m4_join([, ], [$3])), cache_var, [
     cache_var=""
     INFIX=""
     m4_foreach([domain], [SYSTEM, NETWORK, LOCAL, USER], [
-        m4_pushdef([search_dir], [m4_join([],[gs_cv_], domain, [_], $2, [_dir])])
-        GS_DOMAIN_DIR([domain],[$2])
+        m4_pushdef([search_dir], [m4_join([_],[gs_cv], domain, $2, [dir], AS_TR_SH($4))])
+        GS_DOMAIN_DIR([domain],[$2],[$4])
         if test -d  $search_dir; then
             if test -f "$search_dir/m4_combine(m4_join([], [-o -f "$], search_dir, [/]), [$3], [" ], []); then
                 cache_var="${cache_var}${INFIX}domain"
@@ -77,21 +82,16 @@ AC_DEFUN([GS_DOMAINS_FOR_FILES],[
     m4_popdef([cache_var])
 ])
 
-# Helper macro for finding the installation domain of a pre-installed libobjc library
-AC_DEFUN([_GS_LIBOJC_DOMAINS],[
-    GS_DOMAINS_FOR_FILES([LIBOBJC], [LIBRARIES], [libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib])
-])
-
-# Helper macro for finding the installation domain of the pre-installed libobjc headers
-AC_DEFUN([_GS_OBJC_HEADER_DOMAINS],[
-    GS_DOMAINS_FOR_FILES([OBJC_HEADERS], [HEADERS], [objc/objc.h])
-])
-
 # Helper macro to detect in which installation domain (if any) a custom libobjc library is installed.
 AC_DEFUN([GS_CUSTOM_OBJC_RUNTIME_DOMAIN], [
     AC_REQUIRE([AC_PROG_SED])
-    AC_REQUIRE([_GS_LIBOJC_DOMAINS])
-    AC_REQUIRE([_GS_OBJC_HEADER_DOMAINS])
+    m4_pushdef([LIBOBJC], m4_join([_], [$1], [LIBOBJC]))
+    m4_pushdef([OBJC_HEADERS], m4_join([_], [$1], [OBJC_HEADERS]))
+    m4_pushdef([LIBOBJC_DOMAINS], m4_join([_], LIBOBJC, [DOMAINS]))
+    m4_pushdef([OBJC_HEADERS_DOMAINS], m4_join([_], OBJC_HEADERS, [DOMAINS]))
+    m4_pushdef([gs_cv_libobjc_domain], m4_join([_], [gs_cv_libobjc_domain], m4_tolower($1)))
+    GS_DOMAINS_FOR_FILES([LIBOBJC], [LIBRARIES], [libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib], [$2])
+    GS_DOMAINS_FOR_FILES([OBJC_HEADERS], [HEADERS], [objc/objc.h], [$2])
     AC_CACHE_CHECK([for custom shared objc library domain], [gs_cv_libobjc_domain], [
         gs_cv_libobjc_domain=""
         for i in $(echo ${LIBOBJC_DOMAINS}| $SED "s/, / /g"); do
@@ -106,6 +106,11 @@ AC_DEFUN([GS_CUSTOM_OBJC_RUNTIME_DOMAIN], [
             fi
         done
     ])
+    m4_popdef([LIBOBJC])
+    m4_popdef([OBJC_HEADERS])
+    m4_popdef([LIBOBJC_DOMAINS])
+    m4_popdef([OBJC_HEADERS_DOMAINS])
+    m4_popdef([gs_cv_libobjc_domain])
 ])
 
 # Helper macro to find libobjc via package config. In addition to the usual pkg-config flags, this will
@@ -152,7 +157,7 @@ AC_DEFUN([GS_OBJC_LIB_FLAG], [
 
 # SYNOPSIS
 #
-#   GS_CHECK_OBJC_RUNTIME()
+#   GS_CHECK_OBJC_RUNTIME([prefix],[library-combo])
 #
 # DESCRIPTION
 #
@@ -167,10 +172,16 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
     AC_REQUIRE([AC_CANONICAL_TARGET])
     AC_REQUIRE([GS_OBJ_DIR])
     AC_REQUIRE([GS_CHECK_CC_IS_CLANG])
-    AC_REQUIRE([GS_CUSTOM_OBJC_RUNTIME_DOMAIN])
     AC_REQUIRE([GS_OBJC_LIB_FLAG])
     AC_REQUIRE([GS_LIBOBJC_PKG])
-
+    AS_VAR_PUSHDEF([gs_cv_libobjc_domain], m4_join([_], [gs_cv_libobjc_domain], m4_tolower(m4_default([$1], [DFLT]))))
+    GS_CUSTOM_OBJC_RUNTIME_DOMAIN(m4_default([$1], [DFLT]), [$2])
+    m4_ifnblank([$2], [
+        AS_VAR_PUSHDEF([LIBRARY_COMBO], m4_join([_], [gs_cv_rt_combo], m4_tolower($1)))
+        AS_VAR_PUSHDEF([OBJC_RUNTIME_LIB], m4_join([_], [gs_cv_rt_lib], m4_tolower($1)))
+        AS_VAR_SET([LIBRARY_COMBO], [$2])
+        AS_VAR_SET([OBJC_RUNTIME_LIB], m4_substr([$2], 0, m4_index([$2], [-])))
+    ])
     dnl pkg-config makes it easy for us to configure the flags
     if test ! x"$libobjc_LIBS" = x""; then
         OBJC_CPPFLAGS=$libobjc_CFLAGS
@@ -235,6 +246,11 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
         CFLAGS="$CFLAGS -DAPPLE_RUNTIME"
     fi
     OBJCRT="$OBJC_FINAL_LIB_FLAG"
+    AS_VAR_POPDEF([gs_cv_libobjc_domain])
+    m4_ifnblank([$2], [
+        AS_VAR_POPDEF([LIBRARY_COMBO])
+        AS_VAR_POPDEF([OBJC_RUNTIME_LIB])
+    ])
 ])
 
 

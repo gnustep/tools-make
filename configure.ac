@@ -184,13 +184,15 @@ elif test "$CYGWIN" = yes; then
   export DLLTOOL=${DLLTOOL:-dlltool}
 fi
 
+GS_CHECK_CC_IS_CLANG()
+
 #--------------------------------------------------------------------
 # Find the binary and compile tools
 #--------------------------------------------------------------------
 if test "x$target" != "x$host"; then
   echo "cross compiling from $host to $target .."
   cross_compiling="yes"
-  if test "$OBJC_RUNTIME_LIB" = ng; then
+  if test "$OBJC_RUNTIME_LIB" = ng -o x"$gs_cv_cc_is_clang" = x"yes"; then
     AC_CHECK_PROG(CC,    "${targetArgument}-clang",   dnl
                          "${targetArgument}-clang",   clang)
   else
@@ -213,7 +215,7 @@ else
     CFLAGS="$CFLAGS -fblocks"
     AC_LANG_PUSH(C)
     AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[(void)^{int i; i = 0; }();])], [
-      ac64v_blocks="yes"
+      ac_cv_blocks="yes"
     ], [
       ac_cv_blocks="no"
     ])
@@ -1059,6 +1061,43 @@ case $target_os-$ac_cv_library_combo in
     ;;
 esac
 AC_SUBST(cc_gnuruntime)
+
+dnl these macros are required by GS_CHECK_OBJC_RUNTIME, but we need to explicitly execute them here because we wrap this initial use of the macro in an
+dnl conditional
+AC_PROG_SED()
+GS_OBJ_DIR()
+GS_OBJC_LIB_FLAG()
+GS_LIBOBJC_PKG()
+
+if test "$OBJC_RUNTIME_LIB" = "gnu" -a x"$gs_cv_cc_is_clang" = x"yes" -a  x"$gs_cv_library_combo_implicit" = x"yes"; then
+  m4_define([rt_save_variables], [[OBJC_CPPFLAGS],dnl
+                                  [OBJC_LDFLAGS],dnl
+                                  [OBJC_FINAL_LIB_FLAG],dnl
+                                  [CFLAGS],dnl
+                                  [LIBS],dnl
+                                  [saved_CFLAGS],dnl
+                                  [saved_LDFLAGS],dnl
+                                  [OBJCRT],dnl
+                                  [LD_LIBRARY_PATH],dnl
+                                  [PATH]])
+
+  m4_foreach([to_save], [rt_save_variables], [dnl
+      AS_VAR_SET([m4_join([_], [gs_cv_ng_rt_saved], m4_strip(to_save))], m4_join([], [$], m4_strip(to_save)))
+  ])dnl
+  GS_CHECK_OBJC_RUNTIME([NG], [ng-gnu-gnu])
+  AC_CHECK_FUNC([objc_test_capability])
+  if test x"$ac_cv_func_objc_test_capability" = x"yes"; then
+    GS_LIBRARY_COMBO([ng-gnu-gnu],[yes])
+    LIBRARY_COMBO=ng-gnu-gnu
+    AC_MSG_NOTICE([library combo has been upgraded to `ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly])
+  fi
+  m4_foreach([saved_var], [rt_save_variables], [dnl
+    AS_VAR_SET([m4_strip(saved_var)], m4_join([], [$gs_cv_ng_rt_saved_], m4_strip(saved_var)))
+    AS_UNSET(m4_join([_], [gs_cv_ng_rt_saved], m4_strip(saved_var)))
+  ])dnl
+   m4_undefine([rt_save_variables])
+fi
+
 
 GS_CHECK_OBJC_RUNTIME()
 
