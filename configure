@@ -6699,12 +6699,10 @@ $as_echo "$gs_cv_libobjc_domain_ng" >&6; }
 
 
 
-  ac_fn_c_check_func "$LINENO" "objc_test_capability" "ac_cv_func_objc_test_capability"
+
+      ac_fn_c_check_func "$LINENO" "objc_test_capability" "ac_cv_func_objc_test_capability"
 if test "x$ac_cv_func_objc_test_capability" = xyes; then :
 
-fi
-
-  if test x"$ac_cv_func_objc_test_capability" = x"yes"; then
 
 
   gs_cv_library_combo_from_existing_install=no
@@ -6760,8 +6758,11 @@ $as_echo "$_gs_cv_libray_combo" >&6; }
     LIBRARY_COMBO=ng-gnu-gnu
     { $as_echo "$as_me:${as_lineno-$LINENO}: library combo has been upgraded to \`ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly." >&5
 $as_echo "$as_me: library combo has been upgraded to \`ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly." >&6;}
-  fi
-      OBJC_CPPFLAGS=$gs_cv_ng_rt_saved_OBJC_CPPFLAGS
+
+fi
+
+
+        OBJC_CPPFLAGS=$gs_cv_ng_rt_saved_OBJC_CPPFLAGS
     { gs_cv_ng_rt_saved_OBJC_CPPFLAGS=; unset gs_cv_ng_rt_saved_OBJC_CPPFLAGS;}
       OBJC_LDFLAGS=$gs_cv_ng_rt_saved_OBJC_LDFLAGS
     { gs_cv_ng_rt_saved_OBJC_LDFLAGS=; unset gs_cv_ng_rt_saved_OBJC_LDFLAGS;}

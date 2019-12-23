@@ -1070,6 +1070,11 @@ GS_OBJC_LIB_FLAG()
 GS_LIBOBJC_PKG()
 
 if test "$OBJC_RUNTIME_LIB" = "gnu" -a x"$gs_cv_cc_is_clang" = x"yes" -a  x"$gs_cv_library_combo_implicit" = x"yes"; then
+  dnl in order to determine whether the installed runtime library supports the `ng' library combo,
+  dnl we need to detect the runtime with that combo specifically. Unfortunately,
+  dnl GS_CHECK_OBJC_RUNTIME is a very invasive macro that sets up lots of variables needed later on. 
+  dnl For that reason, we need to save the state of  all variables that are changed by this and
+  dnl restore them afterwards
   m4_define([rt_save_variables], [[OBJC_CPPFLAGS],dnl
                                   [OBJC_LDFLAGS],dnl
                                   [OBJC_FINAL_LIB_FLAG],dnl
@@ -1085,12 +1090,16 @@ if test "$OBJC_RUNTIME_LIB" = "gnu" -a x"$gs_cv_cc_is_clang" = x"yes" -a  x"$gs_
       AS_VAR_SET([m4_join([_], [gs_cv_ng_rt_saved], m4_strip(to_save))], m4_join([], [$], m4_strip(to_save)))
   ])dnl
   GS_CHECK_OBJC_RUNTIME([NG], [ng-gnu-gnu])
-  AC_CHECK_FUNC([objc_test_capability])
-  if test x"$ac_cv_func_objc_test_capability" = x"yes"; then
+
+  dnl The gnustep runtime library has objc_test_capability -- the GCC runtime doesn't, so we can use  this
+  dnl to distinguish between them
+  AC_CHECK_FUNC([objc_test_capability], [
     GS_LIBRARY_COMBO([ng-gnu-gnu],[yes])
     LIBRARY_COMBO=ng-gnu-gnu
     AC_MSG_NOTICE([library combo has been upgraded to `ng-gnu-gnu' because compiler/runtime support is available. To prevent this, pass --with-library-combo explicitly.])
-  fi
+  ])
+
+  dnl restare state
   m4_foreach([saved_var], [rt_save_variables], [dnl
     AS_VAR_SET([m4_strip(saved_var)], m4_join([], [$gs_cv_ng_rt_saved_], m4_strip(saved_var)))
     AS_UNSET(m4_join([_], [gs_cv_ng_rt_saved], m4_strip(saved_var)))
