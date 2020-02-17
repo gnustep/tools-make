@@ -930,12 +930,22 @@ linker as the following example illustrates.
 ADDITIONAL_GUI_LIBS = -lMiscGui
 @end smallexample
 
-@defvar GS_WITH_ARC
-@code{GS_WITH_ARC} may be set to 1 to say that Objective-C source code
-is to be compiled for ARC memory management.  This variable must be set
-before @file{common.make} is included, and only works if the library
-combo includes the 'ng' runtime specification.
+@defvar ADDITIONAL_INSTALL_DIRS
+@code{ADDITIONAL_INSTALL_DIRS} is the list of additional directories
+that should be created when the Makefile Package installs the file for
+the project.  These directories are only one that the project needs to
+be created but that the Makefile Package does not automatically
+create.  The directories should be absolute paths but use the
+@code{GNUSTEP_LIBRARY} variable and other Makefile Package define
+variables, see @ref{Directory Paths}, so that the directories get
+created in the appropriate place relative to the other file installed
+for the project.  The following example illustrates how two additional
+directories can be created during installation.
 @end defvar
+
+@smallexample
+ADDITIONAL_INSTALL_DIRS = $(GNUSTEP_RESOURCES)/MyProject
+@end smallexample
 
 @defvar LIBRARIES_DEPEND_UPON
 @code{LIBRARIES_DEPEND_UPON} is the set of libraries that the shared
@@ -961,23 +971,6 @@ additional user library.
 
 @smallexample
 LIBRARIES_DEPEND_UPON = -lsimple $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS)
-@end smallexample
-
-@defvar ADDITIONAL_INSTALL_DIRS
-@code{ADDITIONAL_INSTALL_DIRS} is the list of additional directories
-that should be created when the Makefile Package installs the file for
-the project.  These directories are only one that the project needs to
-be created but that the Makefile Package does not automatically
-create.  The directories should be absolute paths but use the
-@code{GNUSTEP_LIBRARY} variable and other Makefile Package define
-variables, see @ref{Directory Paths}, so that the directories get
-created in the appropriate place relative to the other file installed
-for the project.  The following example illustrates how two additional
-directories can be created during installation.
-@end defvar
-
-@smallexample
-ADDITIONAL_INSTALL_DIRS = $(GNUSTEP_RESOURCES)/MyProject
 @end smallexample
 
 @node GNUmakefile.postamble, Common Variables, GNUmakefile.preamble, Top
@@ -1573,24 +1566,23 @@ However, there are some variables which, while not in provided in
 be documented here:
 
 @defvar GS_WITH_ARC
-@code{GS_WITH_ARC = 1} turns on ARC for the current build if using the
-Next Generation runtime setting.
-This variable may be defined as an environment variable, or on the make
-command line, or (usually) at the start of GNUmakefile.
+@code{GS_WITH_ARC} may be set to 1 to turns on ARC for the current build if using the Next Generation runtime setting.  This variable may be defined as an environment variable, or on the make command line, or (usually) in the GNUmakefile.  The library-combo needs to specify the next generation runtime (eg ng-gnu-gnu) for this variable to take effect.  When the ng runtme is used, setting this variable causes the the flags specified in ARC_OBJCFLAGS to be used when compiling any Objective-C source files).  If no value is defined for @code{ARC_OBJCFLAGS} it is assumed to be '-fobjc-arc -fobjc-arc-exceptions' so that code is built with ARC enabled and with support for exceptions (objects are not leaked when an exception occurs).  Alternatively, to switch on ARC for individual files, you can have a makefile fragment like this:
 @end defvar
-The variable needs to be defined before @file{common.make} is included,
-and the library-combo needs to be ng-gnu-gnu for it to take effect (in
-which case it causes the -fobjc-arc flag to be used when compiling any
-Objective-C source files).
-Alternatively, to switch on ARC for individual files, you can have a makefile
-fragment like this:
 @smallexample
 ifeq ($(OBJC_RUNTIME_LIB), ng)
-file1.m_FILE_FLAGS+=-fobjc-arc
-file2.m_FILE_FLAGS+=-fobjc-arc
-file9.m_FILE_FLAGS+=-fobjc-arc
+file1.m_FILE_FLAGS+="-fobjc-arc -fobjc-arc-exceptions"
+file2.m_FILE_FLAGS+="-fobjc-arc -fobjc-arc-exceptions"
+file9.m_FILE_FLAGS+="-fobjc-arc -fobjc-arc-exceptions"
 endif
 @end smallexample
+
+@defvar ARC_CPPFLAGS
+@code{ARC_CPPFLAGS} sets the flags to defien preprocessor values be used when building code for ARC. This variable is used only if ng runtime is used and the @code{GS_WITH_ARC} variable is set to say that ARC is used.
+@end defvar
+
+@defvar ARC_OBJCFLAGS
+@code{ARC_OBJCFLAGS} sets the compiler/linker flags to be used when building code for ARC. This variable is used only if ng runtime is used and the 'GS_WITH_ARC' variable is set to say that ARC is used.  The -fobjc-arc flag enables ARC, but by default ARC_OBJCFLAGS is assumed to be -fobjc-arc -fobjc-arc-exceptions, which adds support for exceptions (reducing performance, but preventing leaked memory when an exception occurs).
+@end defvar
 
 @defvar xxx_FILE_FILTER_OUT_FLAGS
 @code{xxx_FILE_FILTER_OUT_FLAGS} (where xxx is the file name, such as mframe.m)

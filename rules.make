@@ -204,6 +204,41 @@ ifeq ($(AUTO_DEPENDENCIES_FLAGS),)
 endif
 endif
 
+ifeq ($(OBJC_RUNTIME_LIB), ng)
+  # Projects may control the use of ARC by defining GS_WITH_ARC=1
+  # or GS_WITH_ARC=0 in their GNUmakefile, or in the environment,
+  # or as an argument to the 'make' command.
+  # The default behavior is not to use ARC, unless GNUSTEP_NG_ARC is
+  # set to 1 (perhaps in the GNUstep config file; GNUstep.conf).
+  # The value of ARC_OBJCFLAGS is used to specify the flags passed
+  # to the compiler when building ARC code.  If it has not been set,
+  # it defaults to -fobjc-arc -fobjc-arc-exceptions so that objects
+  # are not leaked when an exception is raised. 
+  # The value of ARC_CPPFLAGS is used to specify the flags passed
+  # to the preprocessor when building ARC code.  If it has not been set,
+  # it defaults to -DGS_WITH_ARC=1
+  ifeq ($(GS_WITH_ARC),)
+    ifeq ($(GNUSTEP_NG_ARC), 1)
+      GS_WITH_ARC=1
+    endif
+  endif
+  ifeq ($(GS_WITH_ARC), 1)
+    ifeq ($(ARC_OBJCFLAGS),)
+      ARC_OBJCFLAGS = -fobjc-arc -fobjc-arc-exceptions
+    endif
+    ifeq ($(ARC_CPPFLAGS),)
+      ARC_CPPFLAGS = -DGS_WITH_ARC=1
+    endif
+    INTERNAL_OBJC_FLAGS += $(ARC_OBJCFLAGS)
+  else
+    ARC_OBJCFLAGS=
+    ARC_CPPFLAGS=
+  endif
+else
+  ARC_OBJCFLAGS=
+  ARC_CPPFLAGS=
+endif
+
 # The difference between ADDITIONAL_XXXFLAGS and AUXILIARY_XXXFLAGS is the
 # following:
 #
@@ -241,7 +276,7 @@ endif
 #
 
 ALL_CPPFLAGS = $(AUTO_DEPENDENCIES_FLAGS) $(CPPFLAGS) $(ADDITIONAL_CPPFLAGS) \
-               $(AUXILIARY_CPPFLAGS)
+               $(AUXILIARY_CPPFLAGS) $(ARC_CPPFLAGS)
 
 # -I./obj/PrecompiledHeaders/ObjC must be before anything else because
 # we want an existing and working precompiled header to be used before
@@ -311,7 +346,8 @@ ALL_LDFLAGS += $(ADDITIONAL_LDFLAGS) $(AUXILIARY_LDFLAGS) $(GUI_LDFLAGS) \
                $(BACKEND_LDFLAGS) $(SYSTEM_LDFLAGS) $(INTERNAL_LDFLAGS)
 # In some cases, ld is used for linking instead of $(CC), so we can't use
 # this in ALL_LDFLAGS
-CC_LDFLAGS = $(RUNTIME_FLAG)
+CC_LDFLAGS = $(RUNTIME_FLAG) $(ARC_OBJCFLAGS)
+
 
 ALL_LIB_DIRS = $(ADDITIONAL_FRAMEWORK_DIRS) $(AUXILIARY_FRAMEWORK_DIRS) \
    $(ADDITIONAL_LIB_DIRS) $(AUXILIARY_LIB_DIRS) \
