@@ -156,7 +156,20 @@ endif
 # with XXXX, and prints the result. '-n' disables automatic printing
 # for portability, so we are sure we only print what we want on all
 # platforms.
+ifdef RUNTIME_VERSION
+RUNTIME_VERSION_NUMBER :=$(shell echo $(RUNTIME_VERSION) | cut -f2 -d"-")
+RUNTIME_VERSION_MAJOR := $(shell echo $(RUNTIME_VERSION_NUMBER) | cut -f1 -d.)
+RUNTIME_VERSION_MINOR := $(shell echo $(RUNTIME_VERSION_NUMBER) | cut -f2 -d.)
+RUNTIME_VERSION_GTE_2_0 := $(shell [ $(RUNTIME_VERSION_MAJOR) -gt 2 -o $(RUNTIME_VERSION_MAJOR) -eq 2 ] && echo true)
+else
+RUNTIME_VERSION_GTE_2_0 := false
+endif
+
+ifeq ($(RUNTIME_VERSION_GTE_2_0),true)
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^._OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^._OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+else
 EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+endif
 
 #
 # This is the generic version - if the target is not in the following list,
