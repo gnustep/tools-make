@@ -217,12 +217,7 @@ HAVE_SHARED_LIBS = yes
 SHARED_LIBEXT    = .dylib
 
 # The output of nm is slightly different on Darwin, it doesn't support -P
-
-ifeq ($(USING_GNUSTEP_RUNTIME_VERSION_GTE_2_0),true)
-EXTRACT_CLASS_NAMES_COMMAND = $(NM)  -g $$object_file | sed -n -e '/[^U] .__OBJC_CLASS_/ {s/[0-9a-f]* [^U] .__OBJC_CLASS_//p;}'
-else
-EXTRACT_CLASS_NAMES_COMMAND = $(NM)  -g $$object_file | sed -n -e '/[^U] ___objc_class_name_/ {s/[0-9a-f]* [^U] ___objc_class_name_//p;}'
-endif
+EXTRACT_CLASS_NAMES_COMMAND = $(NM)  -g $$object_file | sed -n -e '/[^U] .__OBJC_CLASS_/ {s/[0-9a-f]* [^U] .__OBJC_CLASS_//p;}' -e '/[^U] ___objc_class_name_/ {s/[0-9a-f]* [^U] ___objc_class_name_//p;}'
 
 ifeq ($(FOUNDATION_LIB), apple)
   ifneq ($(arch),)
@@ -698,11 +693,7 @@ STATIC_LDFLAGS += -static
 
 # nm on OpenBSD is rather like on Darwin
 
-ifeq ($(USING_GNUSTEP_RUNTIME_VERSION_GTE_2_0),true)
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -g $$object_file | sed -n -e '/[^U] ._OBJC_CLASS_/ {s/[0-9a-f]* [^U] ._OBJC_CLASS_//p;}'
-else
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -g $$object_file | sed -n -e '/[^U] __objc_class_name_/ {s/[0-9a-f]* [^U] __objc_class_name_//p;}'
-endif
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -g $$object_file | sed -n -e '/[^U] ._OBJC_CLASS_/ {s/[0-9a-f]* [^U] ._OBJC_CLASS_//p;}' -e '/[^U] __objc_class_name_/ {s/[0-9a-f]* [^U] __objc_class_name_//p;}'
 
 endif
 #
@@ -885,11 +876,7 @@ ADDITIONAL_FLAGS += -fno-omit-frame-pointer
 # On Mingw32, it looks like the class name symbols start with '___' rather 
 # than '__'
 
-ifeq ($(USING_GNUSTEP_RUNTIME_VERSION_GTE_2_0),true)
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^.__OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^.__OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
-else
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^___objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
-endif
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^.__OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^.__OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}' -e '/^___objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^___objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
 endif
 
@@ -988,11 +975,7 @@ ADDITIONAL_FLAGS += -fno-omit-frame-pointer
 # On Mingw64, it looks like the class name symbols start with '__' rather 
 # than '___' like Mingw32
 
-ifeq ($(USING_GNUSTEP_RUNTIME_VERSION_GTE_2_0),true)
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^._OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^._OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
-else
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
-endif
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^._OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^._OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}' -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
 endif
 
