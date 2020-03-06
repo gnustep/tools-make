@@ -108,6 +108,8 @@ clean:: before-clean internal-clean after-clean
 
 check:: before-check internal-check after-check
 
+android-check:: before-android-check internal-android-check after-android-check
+
 strings:: before-strings internal-strings after-strings
 
 #
@@ -177,6 +179,12 @@ before-check::
 internal-check::
 
 after-check::
+
+before-android-check::
+
+internal-android-check::
+
+after-android-check::
 
 before-strings::
 
