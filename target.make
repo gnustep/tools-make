@@ -156,7 +156,14 @@ endif
 # with XXXX, and prints the result. '-n' disables automatic printing
 # for portability, so we are sure we only print what we want on all
 # platforms.
-EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+
+
+#
+# NB. With the gnustep-2.0 ABI the class name prefix is ._OBJC_CLASS_
+# rather than __objc_class_name_ so we search for either.
+#
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}' -e '/^\._OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^\._OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+
 
 #
 # This is the generic version - if the target is not in the following list,
