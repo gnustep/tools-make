@@ -4,7 +4,6 @@
 @settitle GNUstep Makefile Package
 @c %**end of header
 
-@setcontentsaftertitlepage
 @smallbook
 @setchapternewpage odd
 
@@ -38,6 +37,9 @@ under the terms of the GNU Free Documentation License, Version 1.1 or
 any later version published by the Free Software Foundation.
 
 @end titlepage
+
+@contents 
+
 @page
 
 @c Makefile Package Chapter
@@ -973,6 +975,7 @@ additional user library.
 LIBRARIES_DEPEND_UPON = -lsimple $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS)
 @end smallexample
 
+
 @node GNUmakefile.postamble, Common Variables, GNUmakefile.preamble, Top
 @section Global Rules (@file{GNUmakefile.postamble})
 
@@ -1354,6 +1357,29 @@ make parameter, see @ref{Running Make} for more details.  Read
 Package handles different library combinations.  If a makefile must
 perform specific operations dependent upon the Objective-C Runtime
 library then this variable is the one to check.
+@end defvar
+
+@defvar RUNTIME_VERSION
+@code{RUNTIME_VERSION} is set to and allows you to override the Objective-C
+runtime ABI in use by the clang compiler. Generally, gnustep-make will provide
+a sane default for you.Please be aware that mixing different ABIs in the same
+binary is not generally supported. Possible values:
+
+@table @samp
+@item gcc
+This is the classic ABI also implemented by GCC which does not support advanced
+features such as ARC or non-fragile instance variables.
+
+@item gnustep-1.8
+This is the first iteration of the GNUstep Objective-C ABI, which supports the
+advanced features while remaining compatible with the GCC ABI. Requires the
+GNUstep Objective-C runtime (libobjc2) 1.8 or later.
+
+@item gnustep-2.0
+This version breaks compatibility with the older runtime ABIs in order to 
+provide better introspection metadata, reduced memory usage and smaller 
+binaries. Requires the GNUstep Objective-C runtime (libobjc2) 2.0 or later.
+@end table
 @end defvar
 
 @defvar RUNTIME_DEFINE

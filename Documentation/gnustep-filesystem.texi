@@ -3,7 +3,6 @@
 @c %**start of header
 @settitle GNUstep Filesystem Hierarchy Document
 @c %**end of header
-@setcontentsaftertitlepage
 @smallbook
 
 @titlepage
@@ -23,6 +22,9 @@ under the terms of the GNU Free Documentation License, Version 1.1 or
 any later version published by the Free Software Foundation.
 
 @end titlepage
+
+@contents
+
 
 @node Top, The System Domain, (dir), (dir)
 @chapter GNUstep Filesystem Hierarchy

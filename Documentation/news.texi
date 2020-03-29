@@ -9,6 +9,22 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.8.0}
+
+@itemize
+
+@item Better library combo and ABI detection: gnustep-make will now attempt to 
+detect the optimal library combo and ABI supported by the installed compiler 
+and Objective-C runtime library. Explicit selection of the runtime ABI is now
+possible using the @code{--with-runtime-abi} configure option.
+
+@item Full support for the gnustep-2.0 Objective-C ABI.
+
+@item Support for creating a Git tag and creating a tarball from a git tag 
+using the @code{git-tag} and @code{git-dist} targets.
+
+@end itemize
+
 @section Changes in version @samp{2.7.0}
 
 Garbage collection support removed
