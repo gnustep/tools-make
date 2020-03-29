@@ -1,3 +1,14 @@
+2020-02-17 Richard Frith-Macdonald <rfm@gnu.org>
+
+	* library-combo.make: removed GS_WITH_ARC support
+	* rules.make: added GS_WITH_ARC stuff
+	* Documentation/gnustep-make.texi: Document the changes ...
+	We can define GS_WITH_ARC more freely (it is no longer necessary to
+	define it before common.make).  The default compiler flags for ARC
+	support now include -fobjc-arc-exceptions.  We can now define
+	ARC_CPPFLAGS and ARC_OBJCFLAGS to overide the flags sent to the
+	preprocessor and compiler/linker when ARC is enabled using GS_WITH_ARC
+
 2019-10-29  Wolfgang Lux  <wolfgang.lux@gmail.com>
 
 	* GNUmakefile.in:

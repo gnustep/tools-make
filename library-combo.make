@@ -44,25 +44,14 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
   OBJC_LIB_DIR =
   OBJC_LIBS = $(OBJC_LIB_FLAG)
   ifeq ($(RUNTIME_VERSION),)
-    RUNTIME_VERSION=gnustep-1.8
+    ifneq ($(DEFAULT_OBJC_RUNTIME_ABI),)
+      RUNTIME_VERSION=$(DEFAULT_OBJC_RUNTIME_ABI)
+   else
+     RUNTIME_VERSION=gnustep-1.8
+   endif
   endif
   RUNTIME_FLAG = -fobjc-runtime=$(RUNTIME_VERSION) -fblocks
   RUNTIME_DEFINE = -DGNUSTEP_RUNTIME=1 -D_NONFRAGILE_ABI=1
-  # Projects may control the use of ARC by defining GS_WITH_ARC=1
-  # or GS_WITH_ARC=0 at the start of their GNUmakefile, or in the environment,
-  # or as an argument to the 'make' command.
-  # The default behavior is not to use ARC, unless GNUSTEP_NG_ARC is
-  # set to 1 (perhaps in the GNUstep config file; GNUstep.conf).
-  #
-  ifeq ($(GS_WITH_ARC),)
-    ifeq ($(GNUSTEP_NG_ARC), 1)
-      GS_WITH_ARC=1
-    endif
-  endif
-  ifeq ($(GS_WITH_ARC), 1)
-    RUNTIME_FLAG += -fobjc-arc
-    RUNTIME_DEFINE += -DGS_WITH_ARC=1
-  endif
 endif
 
 ifeq ($(OBJC_RUNTIME_LIB), nx)
