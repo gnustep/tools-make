@@ -23,6 +23,11 @@ possible using the @code{--with-runtime-abi} configure option.
 @item Support for creating a Git tag and creating a tarball from a git tag 
 using the @code{git-tag} and @code{git-dist} targets.
 
+@item Support for creating a Mercurial tag and creating a tarball from a hg
+tag using the @code{hg-tag} and @code{hg-dist} targets.
+
+@item Dropped legacy Rhapsody and FreeBSD-out support.
+
 @end itemize
 
 @section Changes in version @samp{2.7.0}

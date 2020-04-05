@@ -1,7 +1,7 @@
 1 Announcement
 **************
 
-The GNUstep Makefile Package version 2.7.0 is now available.
+The GNUstep Makefile Package version 2.8.0 is now available.
 
 1.1 What is the GNUstep makefile package?
 =========================================
@@ -12,7 +12,26 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-1.2 Changes in version '2.7.0'
+1.2 Changes in version '2.8.0'
+==============================
+
+   * Better library combo and ABI detection: gnustep-make will now
+     attempt to detect the optimal library combo and ABI supported by
+     the installed compiler and Objective-C runtime library.  Explicit
+     selection of the runtime ABI is now possible using the
+     '--with-runtime-abi' configure option.
+
+   * Full support for the gnustep-2.0 Objective-C ABI.
+
+   * Support for creating a Git tag and creating a tarball from a git
+     tag using the 'git-tag' and 'git-dist' targets.
+
+   * Support for creating a Mercurial tag and creating a tarball from a
+     hg tag using the 'hg-tag' and 'hg-dist' targets.
+
+   * Dropped legacy Rhapsody and FreeBSD-out support.
+
+1.3 Changes in version '2.7.0'
 ==============================
 
 Garbage collection support removed
@@ -26,10 +45,10 @@ compatible
 
    Various other minor bugfixes
 
-1.3 Obtaining gnustep-make
+1.4 Obtaining gnustep-make
 ==========================
 
-You can get the gstep-make-2.7.0.tar.gz distribution file at
+You can get the gstep-make-2.8.0.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
    Please log bug reports on the GNUstep project page
