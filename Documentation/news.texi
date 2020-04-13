@@ -30,6 +30,8 @@ tag using the @code{hg-tag} and @code{hg-dist} targets.
 
 @end itemize
 
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.7.0}
 
 Garbage collection support removed
@@ -41,8 +43,6 @@ Multi-architecture directory layout adjusted to be more Debian compatible
 Framework support fixes
 
 Various other minor bugfixes
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.6.8}
 
