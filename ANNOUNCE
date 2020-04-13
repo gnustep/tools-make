@@ -3,7 +3,7 @@
 
 The GNUstep Makefile Package version 2.8.0 is now available.
 
-1.1 What is the GNUstep makefile package?
+1.1 What is the GNUstep Makefile Package?
 =========================================
 
 The makefile package is a simple, powerful and extensible way to write
@@ -48,9 +48,32 @@ compatible
 1.4 Obtaining gnustep-make
 ==========================
 
-You can get the gstep-make-2.8.0.tar.gz distribution file at
+You can get the gnustep-make-2.8.0.tar.gz distribution file at
 <ftp://ftp.gnustep.org/pub/gnustep/core>
 
-   Please log bug reports on the GNUstep project page
+   It is accompanied by gnustep-make-2.8.0.tar.gz.sig, a PGP signature
+which you can validate by putting both files in the same directory and
+using:
+
+     gpg --verify gnustep-make-2.8.0.tar.gz.sig
+
+   Signature has been created using the key with the following
+fingerprint:
+
+     83AA E47C E829 A414 6EF8  3420 CA86 8D4C 9914 9679
+
+   Read the INSTALL file or the GNUstep-HOWTO for installation
+instructions.
+
+1.5 Where do I send bug reports?
+================================
+
+Please log bug reports on the GNUstep project page
 <http://savannah.gnu.org/bugs/?group=gnustep> or send bug reports to
 <bug-gnustep@gnu.org>.
+
+1.6 Obtaining GNUstep Software
+==============================
+
+Check out the GNUstep web site.  (<http://www.gnustep.org/>) and the GNU
+web site.  (<http://www.gnu.org/>)
