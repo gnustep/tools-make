@@ -4,6 +4,24 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.8.0
+
+We now include better library combo and ABI detection: gnustep-make will now
+attempt to detect the optimal library combo and ABI supported by the
+installed compiler and Objective-C runtime library. Explicit selection of the
+runtime ABI is now possible using the @code{--with-runtime-abi} configure
+option.
+
+There's now full support for the gnustep-2.0 Objective-C ABI.
+
+This release includes support for creating a Git tag and creating a tarball
+from a git tag using the @code{git-tag} and @code{git-dist} targets.
+
+This release includes support for creating a Mercurial tag and creating a
+tarball from a hg tag using the @code{hg-tag} and @code{hg-dist} targets.
+
+We have dropped legacy Rhapsody and FreeBSD-out support.
+
 @section Version 2.7.0
 
 When building non-flattened, the subdirectory name for libraries/binaries

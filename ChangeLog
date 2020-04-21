@@ -1,4 +1,37 @@
-2020-02-17 Richard Frith-Macdonald <rfm@gnu.org>
+2020-04-13  Ivan Vucica <ivan@vucica.net>
+
+	* Documentation/announce.texi:
+	* ANNOUNCE:
+	Normalize the accompanying text for the release announcement across
+	core packages: standardize chapter name and GPG information.
+
+2020-04-05  Ivan Vucica <ivan@vucica.net>
+
+	* ANNOUNCE:
+	* NEWS:
+	* RELEASENOTES:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Update release notes for 2.8.0.
+	* Version:
+	Bump version to 2.8.0.
+
+
+2020-02-28  Patryk Laurent <plaurent@me.com>
+
+	* target.make: Unified cross-OS class name extraction and unified
+	for other OSes (Darwin, OpenBSD, MinGW).
+
+2020-02-22  Patryk Laurent <plaurent@me.com>
+
+	* target.make: Improved detection of runtime version. Fixed class
+	name extraction for Darwin, OpenBSD and MinGW32/64.
+
+2020-02-18  Patryk Laurent <plaurent@me.com>
+
+	* target.make: Fixed EXTRACT_CLASS_NAMES_COMMAND for runtime v2.
+
+2020-02-17  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* library-combo.make: removed GS_WITH_ARC support
 	* rules.make: added GS_WITH_ARC stuff
