@@ -1,3 +1,8 @@
+2020-04-14  Yavor Doganov  <yavor@gnu.org>
+
+	* config-precomp-test/run-test.sh: Put $LIBS at the end so that it
+	works with GCC >= 9 (which implies -Wl,--as-needed).
+
 2020-04-13  Ivan Vucica <ivan@vucica.net>
 
 	* Documentation/announce.texi:

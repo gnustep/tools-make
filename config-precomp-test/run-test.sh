@@ -77,8 +77,8 @@ fi
 
 # Try to compile the file first.
 echo "** Compile the file without precompiled headers" >>"$gs_logfile" 2>&1
-echo "$CC -o \"$gs_builddir/config-precomp-test.out\" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS config-precomp-test.m" >>"$gs_logfile" 2>&1
-$CC -o "$gs_builddir/config-precomp-test.out" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS config-precomp-test.m >>"$gs_logfile" 2>&1
+echo "$CC -o \"$gs_builddir/config-precomp-test.out\" $CFLAGS $CPPFLAGS $LDFLAGS config-precomp-test.m $LIBS" >>"$gs_logfile" 2>&1
+$CC -o "$gs_builddir/config-precomp-test.out" $CFLAGS $CPPFLAGS $LDFLAGS config-precomp-test.m $LIBS >>"$gs_logfile" 2>&1
 if test ! "$?" = "0"; then
   echo "Failure" >>"$gs_logfile" 2>&1
   rm -f "$gs_builddir/config-precomp-test.out"
@@ -101,8 +101,8 @@ echo "" >>"$gs_logfile" 2>&1
 
 # Now try to compile again with the preprocessed header.  It might get ignored - which is fine.
 echo "** Compile the file with precompiled headers" >>"$gs_logfile" 2>&1
-echo "$CC -o \"$gs_builddir/config-precomp-test.out\" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS -I\"$gs_builddir\" config-precomp-test.m" >>"$gs_logfile" 2>&1
-$CC -o "$gs_builddir/config-precomp-test.out" $CFLAGS $CPPFLAGS $LDFLAGS $LIBS -I"$gs_builddir" config-precomp-test.m >>"$gs_logfile" 2>&1
+echo "$CC -o \"$gs_builddir/config-precomp-test.out\" $CFLAGS $CPPFLAGS $LDFLAGS -I\"$gs_builddir\" config-precomp-test.m $LIBS" >>"$gs_logfile" 2>&1
+$CC -o "$gs_builddir/config-precomp-test.out" $CFLAGS $CPPFLAGS $LDFLAGS -I"$gs_builddir" config-precomp-test.m $LIBS >>"$gs_logfile" 2>&1
 if test ! "$?" = "0"; then
   echo "Failure" >>"$gs_logfile" 2>&1
   rm -f "$gs_builddir/config-precomp-test.out" "$gs_builddir/config-precomp-test.h.gch"
