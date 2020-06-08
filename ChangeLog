@@ -1,3 +1,10 @@
+2020-06-07 Fred Kiefer <FredKiefer@gmx.de>
+
+	* gs_gcc_version.m4: Add -dumpfullversion to the version
+	extraction. Versions of gcc > 7.0 require this parameter to output
+	the full version number. Older versions should just ignore this option.
+	* configure: Regenerate
+
 2020-04-14  Yavor Doganov  <yavor@gnu.org>
 
 	* config-precomp-test/run-test.sh: Put $LIBS at the end so that it
