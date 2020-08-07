@@ -564,7 +564,8 @@ static void testStart()
 /* some good macros to compare floating point numbers */
 #import <math.h>
 #import <float.h>
-#define EQ(x, y) (fabs((x) - (y)) <= fabs((x) + (y)) * (FLT_EPSILON * 100))
+#define EQ(x, y) \
+  (((x) >= ((y) - FLT_EPSILON*100)) && ((x) <= ((y) + FLT_EPSILON*100)))
 #define LE(x, y) ((x)<(y) || EQ(x, y))
 #define GE(x, y) ((y)<(x) || EQ(x, y))
 #define LT(x, y) (!GE(x, y))

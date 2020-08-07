@@ -39,8 +39,8 @@ AC_DEFUN([GS_CHECK_GCC_VERSION],dnl
       dnl All square brackets are doubled because this file is processed by m4 first.
       dnl Finally, any error messages are redirected to &5, so that they are logged
       dnl into config.log but don't clutter the normal user output.
-      _gs_cv_gcc_major_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\2/") 2>&5`;
-      _gs_cv_gcc_minor_version=`(${CC} -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\4/") 2>&5`;
+      _gs_cv_gcc_major_version=`(${CC} -dumpfullversion -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\2/") 2>&5`;
+      _gs_cv_gcc_minor_version=`(${CC} -dumpfullversion -dumpversion | sed "s/\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*\)\([[0-9]][[0-9]]*\)\([[^0-9]]*.*\)/\4/") 2>&5`;
       _gs_cv_gcc_parsed_version="${_gs_cv_gcc_major_version}.${_gs_cv_gcc_minor_version}";
     fi
   ])
