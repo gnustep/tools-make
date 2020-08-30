@@ -21,7 +21,7 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 AC_INIT
-AC_PREREQ(2.57)
+AC_PREREQ(2.65)
 AC_CONFIG_SRCDIR([application.make])
 AC_CONFIG_MACRO_DIRS([m4])
 
@@ -79,10 +79,8 @@ AC_PROG_CPP
 # compile/link C++ code. :-)
 AC_PROG_CXX
 
-# Similarly for the ObjC++ compiler ... but only new versions of autoconf
-# support it, so we pretend by using the C++ compiler
-#AC_PROG_OBJCXX
-OBJCXX="${CXX}"
+# Similarly for the ObjC++ compiler...
+AC_PROG_OBJCXX
 
 # We may use egrep for some tests further down below
 AC_PROG_EGREP
@@ -1229,17 +1227,11 @@ AC_SUBST(ac_cv_objc_threaded)
 
 AC_MSG_CHECKING(whether Objective-C++ is supported)
 
-# Only new autoconf supports ObjC++ so we use C++ instead for now
-#AC_LANG_PUSH(Objective C++)
-#OBJCXXFLAGS_saved="$OBJCXXFLAGS"
-#OBJCXXFLAGS="$OBJCXXFLAGS -x objective-c++"
-#OBJCXXPPFLAGS_saved="$OBJCXXPPFLAGS"
-#OBJCXXPPFLAGS="$OBJCXXPPFLAGS -x objective-c++"
-AC_LANG_PUSH(C++)
-CXXFLAGS_saved="$CXXFLAGS"
-CXXFLAGS="$CXXFLAGS -x objective-c++"
-CXXPPFLAGS_saved="$CXXPPFLAGS"
-CXXPPFLAGS="$CXXPPFLAGS -x objective-c++"
+AC_LANG_PUSH(Objective C++)
+OBJCXXFLAGS_saved="$OBJCXXFLAGS"
+OBJCXXFLAGS="$OBJCXXFLAGS -x objective-c++"
+OBJCXXPPFLAGS_saved="$OBJCXXPPFLAGS"
+OBJCXXPPFLAGS="$OBJCXXPPFLAGS -x objective-c++"
 
 AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 
@@ -1265,13 +1257,9 @@ if test x"$objcc" = x"no"; then
   OBJCXX=
 fi
 AC_SUBST(OBJCXX)
-# Only new autoconf supports ObjC++ so we use C++ instead for now
-#OBJCXXFLAGS="$OBJCXXFLAGS_saved"
-#OBJCXXPPFLAGS="$OBJCXXPPFLAGS_saved"
-#AC_LANG_POP(Objective C++)
-CXXFLAGS="$CXXFLAGS_saved"
-CXXPPFLAGS="$CXXPPFLAGS_saved"
-AC_LANG_POP(C++)
+OBJCXXFLAGS="$OBJCXXFLAGS_saved"
+OBJCXXPPFLAGS="$OBJCXXPPFLAGS_saved"
+AC_LANG_POP(Objective C++)
 
 #--------------------------------------------------------------------
 # Check if compiler supports -fobjc-arc, and if so, turn it on!
