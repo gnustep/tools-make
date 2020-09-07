@@ -223,11 +223,11 @@ MAIN_MODEL_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUS
 
 MAIN_MARKUP_FILE = $(strip $(subst .gsmarkup,,$($(GNUSTEP_INSTANCE)_MAIN_MARKUP_FILE)))
 
-MAIN_STORYBOARD_FILE = $(strip $(subst .gmodel,,$(subst .gorm,,$(subst .nib,,$($(GNUSTEP_INSTANCE)_MAIN_STORYBOARD_FILE)))))
+MAIN_STORYBOARD_FILE = $(strip $(subst .storyboard,,$($(GNUSTEP_INSTANCE)_MAIN_STORYBOARD_FILE)))
 
 # We must recreate Info.plist if PRINCIPAL_CLASS and/or
 # APPLICATION_ICON and/or MAIN_MODEL_FILE and/or MAIN_MARKUP_FILE and/or
-# MAIN_STORBOARD_FILE has changed since last time we built Info.plist.
+# MAIN_STORYBOARD_FILE has changed since last time we built Info.plist.
 # We use stamp-string.make, which will store the variables in a stamp file
 # inside GNUSTEP_STAMP_DIR, and rebuild Info.plist if
 # GNUSTEP_STAMP_STRING changes.  We will also depend on xxxInfo.plist
