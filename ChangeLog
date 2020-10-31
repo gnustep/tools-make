@@ -1,3 +1,7 @@
+2020-10-31  Yavor Doganov  <yavor@gnu.org>
+
+	* Instance/Documentation/texi.make: Honor @setfilename.
+
 2020-08-30  Ladislav Michl <ladis@linux-mips.org>
 
 	* configure.ac: Increase AC version number and use OBJCXX directly.
