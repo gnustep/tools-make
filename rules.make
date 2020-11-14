@@ -337,13 +337,19 @@ $(ADDITIONAL_JAVACFLAGS) $(AUXILIARY_JAVACFLAGS)
 ALL_JAVAHFLAGS = $(INTERNAL_CLASSPATHFLAGS) $(ADDITIONAL_JAVAHFLAGS) \
 $(AUXILIARY_JAVAHFLAGS)
 
+# CORE_LDFLAGS are those used for both partial link and final link.
 ifeq ($(shared),no)
-  ALL_LDFLAGS = $(STATIC_LDFLAGS)
+  CORE_LDFLAGS = $(STATIC_LDFLAGS)
 else
-  ALL_LDFLAGS =
+  CORE_LDFLAGS =
 endif
-ALL_LDFLAGS += $(ADDITIONAL_LDFLAGS) $(AUXILIARY_LDFLAGS) $(GUI_LDFLAGS) \
+CORE_LDFLAGS += $(ADDITIONAL_LDFLAGS) $(AUXILIARY_LDFLAGS) $(GUI_LDFLAGS) \
                $(BACKEND_LDFLAGS) $(SYSTEM_LDFLAGS) $(INTERNAL_LDFLAGS)
+
+# ALL_LDFLAGS are the set of flags used in the final link of an executable
+# or a shared library/bundle.
+ALL_LDFLAGS += $(CORE_LDFLAGS) $(FINAL_LDFLAGS)
+
 # In some cases, ld is used for linking instead of $(CC), so we can't use
 # this in ALL_LDFLAGS
 CC_LDFLAGS = $(RUNTIME_FLAG) $(ARC_OBJCFLAGS)
