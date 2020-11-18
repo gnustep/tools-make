@@ -1,4 +1,4 @@
-#   -*-makefile-*-
+#   -*-makefile-gmake*-
 #   Instance/Documentation/texi.make
 #
 #   Instance Makefile rules to build Texinfo documentation.
@@ -61,9 +61,23 @@ ifeq ($(GNUSTEP_TEXI2HTML_FLAGS),)
   GNUSTEP_TEXI2HTML_FLAGS =
 endif
 
-internal-doc-all_:: $(GNUSTEP_INSTANCE).info \
-                    $(GNUSTEP_INSTANCE).pdf \
-                    $(GNUSTEP_INSTANCE)/index.html
+# Extract @setfilename value from the .texi file, if available, and
+# set OUTFILE accordingly.  Ignore textdoc targets.
+# The @setfilename command may appear more than once in a Texinfo
+# file; we only need the first occurrence.  It may have ".info" suffix
+# or may be followed by a Texinfo comment.
+ifeq ($(TEXT_MAIN),)
+  SETFILENAME := $(shell grep ^@setfilename $(GNUSTEP_INSTANCE).texi)
+    ifneq ($(SETFILENAME),)
+      OUTFILE := $(subst .info,,$(word 2, $(SETFILENAME)))
+    else
+      OUTFILE := $(GNUSTEP_INSTANCE)
+  endif
+endif
+
+internal-doc-all_:: $(OUTFILE).info \
+                    $(OUTFILE).pdf \
+                    $(OUTFILE)/index.html
 
 internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 
@@ -72,7 +86,7 @@ internal-textdoc-all_:: $(GNUSTEP_INSTANCE)
 # without worring that the build will crash if the user doesn't have the
 # doc programs. Also don't install them if they haven't been generated.
 
-$(GNUSTEP_INSTANCE).info: $(TEXI_FILES)
+$(OUTFILE).info: $(TEXI_FILES)
 	-$(GNUSTEP_MAKEINFO) $(GNUSTEP_MAKEINFO_FLAGS) $(ADDITIONAL_MAKEINFO_FLAGS) \
 		-o $@ $(GNUSTEP_INSTANCE).texi
 
@@ -84,22 +98,22 @@ $(GNUSTEP_INSTANCE).ps: $(GNUSTEP_INSTANCE).dvi
 	-$(GNUSTEP_DVIPS) $(GNUSTEP_DVIPS_FLAGS) $(ADDITIONAL_DVIPS_FLAGS) \
 		$(GNUSTEP_INSTANCE).dvi -o $@
 
-$(GNUSTEP_INSTANCE).pdf: $(TEXI_FILES)
+$(OUTFILE).pdf: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2PDF) $(GNUSTEP_TEXI2PDF_FLAGS) $(ADDITIONAL_TEXI2PDF_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi -o $@
 
 # Some versions of texi2html placed the html files in a subdirectory,
 # so after running it we try to move any from the subdirectory to
 # where they are expected.
-$(GNUSTEP_INSTANCE)/index.html: $(TEXI_FILES)
+$(OUTFILE)/index.html: $(TEXI_FILES)
 	-$(GNUSTEP_TEXI2HTML) \
                 $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi; \
-                if [ -f $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_toc.html ]; \
+                if [ -f $(OUTFILE)/$(OUTFILE)_toc.html ]; \
                 then \
-                  mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE).html .; \
-                  mv $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE)_*.html .; \
-                  rmdir $(GNUSTEP_INSTANCE)/$(GNUSTEP_INSTANCE); \
+                  mv $(OUTFILE)/$(OUTFILE).html .; \
+                  mv $(OUTFILE)/$(OUTFILE)_*.html .; \
+                  rmdir $(OUTFILE)/$(OUTFILE); \
                 fi
 
 $(GNUSTEP_INSTANCE): $(TEXI_FILES) $(TEXT_MAIN)
@@ -111,13 +125,13 @@ internal-doc-clean::
 	         $(GNUSTEP_INSTANCE).cp   \
 	         $(GNUSTEP_INSTANCE).cps  \
 	         $(GNUSTEP_INSTANCE).dvi  \
-	         $(GNUSTEP_INSTANCE).fn   \
-	         $(GNUSTEP_INSTANCE).info* \
+	         $(GNUSTEP_INSTANCE).fn*  \
+	         $(OUTFILE).info* \
 	         $(GNUSTEP_INSTANCE).ky   \
 	         $(GNUSTEP_INSTANCE).log  \
 	         $(GNUSTEP_INSTANCE).pg   \
 	         $(GNUSTEP_INSTANCE).ps   \
-	         $(GNUSTEP_INSTANCE).pdf  \
+	         $(OUTFILE).pdf  \
 	         $(GNUSTEP_INSTANCE).toc  \
 	         $(GNUSTEP_INSTANCE).tp   \
 	         $(GNUSTEP_INSTANCE).vr   \
@@ -126,8 +140,8 @@ internal-doc-clean::
 		 $(GNUSTEP_INSTANCE)_*.html \
 	         $(GNUSTEP_INSTANCE).ps.gz  \
 	         $(GNUSTEP_INSTANCE).tar.gz \
-	         $(GNUSTEP_INSTANCE)/*$(END_ECHO)
-	-$(ECHO_NOTHING) rmdir $(GNUSTEP_INSTANCE) $(END_ECHO)
+	         $(OUTFILE)/*$(END_ECHO)
+	-$(ECHO_NOTHING) rmdir $(OUTFILE) $(END_ECHO)
 
 # NB: Only install doc files if they have been generated
 
@@ -136,21 +150,21 @@ internal-doc-clean::
 # install-info too - to keep up-to-date the dir index in that
 # directory.  
 internal-doc-install_:: $(GNUSTEP_DOC_INFO)
-	if [ -f $(GNUSTEP_INSTANCE).pdf ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).pdf \
+	if [ -f $(OUTFILE).pdf ]; then \
+	  $(INSTALL_DATA) $(OUTFILE).pdf \
 	                $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE).info ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE).info* $(GNUSTEP_DOC_INFO); \
+	if [ -f $(OUTFILE).info ]; then \
+	  $(INSTALL_DATA) $(OUTFILE).info* $(GNUSTEP_DOC_INFO); \
 	fi
-	if [ -f i$(GNUSTEP_INSTANCE)_toc.html ]; then \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)_*.html \
+	if [ -f i$(OUTFILE)_toc.html ]; then \
+	  $(INSTALL_DATA) $(OUTFILE)_*.html \
 	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR) || true ; \
 	fi
-	if [ -f $(GNUSTEP_INSTANCE)/index.html ]; then \
-	  $(MKINSTALLDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \
-	  $(INSTALL_DATA) $(GNUSTEP_INSTANCE)/*.html \
-	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \
+	if [ -f $(OUTFILE)/index.html ]; then \
+	  $(MKINSTALLDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(OUTFILE); \
+	  $(INSTALL_DATA) $(OUTFILE)/*.html \
+	                  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(OUTFILE); \
 	fi
 
 $(GNUSTEP_DOC_INFO):
@@ -158,15 +172,15 @@ $(GNUSTEP_DOC_INFO):
 
 internal-doc-uninstall_::
 	rm -f \
-          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).pdf
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(OUTFILE).pdf
 	rm -f \
-          $(GNUSTEP_DOC_INFO)/$(GNUSTEP_INSTANCE).info*
+          $(GNUSTEP_DOC_INFO)/$(OUTFILE).info*
 	rm -f \
-          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)_*.html
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(OUTFILE)_*.html
 	rm -f \
-          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE).html
+          $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(OUTFILE).html
 	rm -f \
-	  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)/*.html
+	  $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(OUTFILE)/*.html
 
 #
 # textdoc targets - these should be merged with the doc targets

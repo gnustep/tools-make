@@ -1,3 +1,16 @@
+2020-11-14  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* rules.make:
+	* target.make:
+	New variables FINAL_LDFLAGS and CORE_LDFLAGS such that ALL_LDFLAGS is
+	now a combination of the two, and is used for final linking of an
+	executable re shared library/bundle, while CORE_LDFLAGS is used when
+	performing a partial link in a subproject.
+
+2020-10-31  Yavor Doganov  <yavor@gnu.org>
+
+	* Instance/Documentation/texi.make: Honor @setfilename.
+
 2020-08-30  Ladislav Michl <ladis@linux-mips.org>
 
 	* configure.ac: Increase AC version number and use OBJCXX directly.
