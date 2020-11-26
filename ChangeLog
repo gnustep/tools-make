@@ -1,3 +1,10 @@
+2020-11-26  Frederik Seiffert <frederik@algoriddim.com>
+
+	* configure
+	* configure.ac:
+	Enable checking for native Objective-C exception support on Windows
+	if non-gnu runtime is used (i.e. ng runtime).
+
 2020-11-14  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* rules.make:

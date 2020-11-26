@@ -1386,7 +1386,7 @@ USE_OBJC_EXCEPTIONS=$enableval,
 USE_OBJC_EXCEPTIONS=maybe)
 
 if test x"$USE_OBJC_EXCEPTIONS" = x"maybe"; then
-  if test x"$MSWIND" = x"yes"; then
+  if test x"$MSWIND" = x"yes" -a "$OBJC_RUNTIME_LIB" = "gnu"; then
     USE_OBJC_EXCEPTIONS=no
   fi
 fi
