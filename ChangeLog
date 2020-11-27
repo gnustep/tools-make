@@ -2,6 +2,12 @@
 
 	* configure
 	* configure.ac:
+	Check for objc.dll to support libobjc2 on Windows.
+
+2020-11-26  Frederik Seiffert <frederik@algoriddim.com>
+
+	* configure
+	* configure.ac:
 	Enable checking for native Objective-C exception support on Windows
 	if non-gnu runtime is used (i.e. ng runtime).
 
