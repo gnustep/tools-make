@@ -90,7 +90,7 @@ AC_DEFUN([GS_CUSTOM_OBJC_RUNTIME_DOMAIN], [
     m4_pushdef([LIBOBJC_DOMAINS], m4_join([_], LIBOBJC, [DOMAINS]))
     m4_pushdef([OBJC_HEADERS_DOMAINS], m4_join([_], OBJC_HEADERS, [DOMAINS]))
     m4_pushdef([gs_cv_libobjc_domain], m4_join([_], [gs_cv_libobjc_domain], m4_tolower($1)))
-    GS_DOMAINS_FOR_FILES([LIBOBJC], [LIBRARIES], [libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.dll], [$2])
+    GS_DOMAINS_FOR_FILES([LIBOBJC], [LIBRARIES], [libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.lib], [$2])
     GS_DOMAINS_FOR_FILES([OBJC_HEADERS], [HEADERS], [objc/objc.h], [$2])
     AC_CACHE_CHECK([for custom shared objc library domain], [gs_cv_libobjc_domain], [
         gs_cv_libobjc_domain=""
