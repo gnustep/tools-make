@@ -6580,8 +6580,8 @@ if test "$OBJC_RUNTIME_LIB" = "gnu" -a x"$gs_cv_cc_is_clang" = x"yes" -a  x"$gs_
 
 
 
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.dll" >&5
-$as_echo_n "checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.dll... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.lib" >&5
+$as_echo_n "checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.lib... " >&6; }
 if ${gs_cv_ng_libobjc_domains_ng_gnu_gnu+:} false; then :
   $as_echo_n "(cached) " >&6
 else
@@ -6613,7 +6613,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu; then
-            if test -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/objc.dll" ; then
+            if test -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir_ng_gnu_gnu/objc.lib" ; then
                 gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}SYSTEM"
                 INFIX=", "
             fi
@@ -6644,7 +6644,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu; then
-            if test -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/objc.dll" ; then
+            if test -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_NETWORK_LIBRARIES_dir_ng_gnu_gnu/objc.lib" ; then
                 gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}NETWORK"
                 INFIX=", "
             fi
@@ -6675,7 +6675,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu; then
-            if test -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/objc.dll" ; then
+            if test -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_LOCAL_LIBRARIES_dir_ng_gnu_gnu/objc.lib" ; then
                 gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}LOCAL"
                 INFIX=", "
             fi
@@ -6706,7 +6706,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu; then
-            if test -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/objc.dll" ; then
+            if test -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.a" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.so" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc.dll.a" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/libobjc-gnu.dylib" -o -f "$gs_cv_USER_LIBRARIES_dir_ng_gnu_gnu/objc.lib" ; then
                 gs_cv_ng_libobjc_domains_ng_gnu_gnu="${gs_cv_ng_libobjc_domains_ng_gnu_gnu}${INFIX}USER"
                 INFIX=", "
             fi
@@ -7083,8 +7083,8 @@ fi
 
 
 
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.dll" >&5
-$as_echo_n "checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.dll... " >&6; }
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.lib" >&5
+$as_echo_n "checking for domains containing libraries libobjc.a, libobjc.so, libobjc.dll.a, libobjc-gnu.dylib, objc.lib... " >&6; }
 if ${gs_cv_dflt_libobjc_domains+:} false; then :
   $as_echo_n "(cached) " >&6
 else
@@ -7116,7 +7116,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_SYSTEM_LIBRARIES_dir; then
-            if test -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/objc.dll" ; then
+            if test -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_SYSTEM_LIBRARIES_dir/objc.lib" ; then
                 gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}SYSTEM"
                 INFIX=", "
             fi
@@ -7147,7 +7147,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_NETWORK_LIBRARIES_dir; then
-            if test -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/objc.dll" ; then
+            if test -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_NETWORK_LIBRARIES_dir/objc.lib" ; then
                 gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}NETWORK"
                 INFIX=", "
             fi
@@ -7178,7 +7178,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_LOCAL_LIBRARIES_dir; then
-            if test -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/objc.dll" ; then
+            if test -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_LOCAL_LIBRARIES_dir/objc.lib" ; then
                 gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}LOCAL"
                 INFIX=", "
             fi
@@ -7209,7 +7209,7 @@ fi
     { _LIBRARY_COMBO=; unset _LIBRARY_COMBO;}
 
         if test -d  $gs_cv_USER_LIBRARIES_dir; then
-            if test -f "$gs_cv_USER_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_USER_LIBRARIES_dir/objc.dll" ; then
+            if test -f "$gs_cv_USER_LIBRARIES_dir/libobjc.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.so" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc.dll.a" -o -f "$gs_cv_USER_LIBRARIES_dir/libobjc-gnu.dylib" -o -f "$gs_cv_USER_LIBRARIES_dir/objc.lib" ; then
                 gs_cv_dflt_libobjc_domains="${gs_cv_dflt_libobjc_domains}${INFIX}USER"
                 INFIX=", "
             fi
