@@ -9,6 +9,20 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.9.0}
+
+@itemize
+
+@item Better check for objc on Windows.
+@item Split linker flags to better support partial linking.
+@item Better support for newer gcc versions.
+@item Add support for story board files.
+@item Increase autoconfig version and handle OBJCXX variables directly.
+@item Fix bug that prevented ARC from getting used.
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.8.0}
 
 @itemize
@@ -29,8 +43,6 @@ tag using the @code{hg-tag} and @code{hg-dist} targets.
 @item Dropped legacy Rhapsody and FreeBSD-out support.
 
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.7.0}
 
