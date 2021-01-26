@@ -1,3 +1,16 @@
+2021-01-29  Frederik Seiffert <frederik@algoriddim.com>
+
+	* Instance/rules.make:
+	* Instance/subproject.make:
+	* common.make:
+	Link subproject object files directly. Instead of merging all
+	subproject object files into subproject.o, we now create
+	subproject.txt containing a list of all object files, and use these
+	directly in SUBPROJECT_OBJ_FILES.
+	This enables building on platforms like Windows MSVC where `ld -r` is
+	not supported, and generally avoids issues with incremental linking
+	that have historically existed in some linker versions.
+
 2021-01-18  Fred Kiefer <FredKiefer@gmx.de>
 
 	* Documentation/news.texi: Update for upcoming release.

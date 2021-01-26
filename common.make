@@ -815,7 +815,7 @@ endif
 #
 # Common variables for subprojects
 #
-SUBPROJECT_PRODUCT = subproject$(OEXT)
+SUBPROJECT_PRODUCT = subproject.txt
 
 #
 # Set JAVA_HOME if not set.

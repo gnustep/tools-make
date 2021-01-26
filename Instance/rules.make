@@ -206,7 +206,9 @@ endif
 
 ifneq ($($(GNUSTEP_INSTANCE)_SUBPROJECTS),)
 SUBPROJECT_OBJ_FILES = $(foreach d, $($(GNUSTEP_INSTANCE)_SUBPROJECTS), \
-    $(addprefix $(GNUSTEP_BUILD_DIR)/$(d)/, $(GNUSTEP_OBJ_DIR_NAME)/$(SUBPROJECT_PRODUCT)))
+    $(foreach o, $(shell cat \
+    $(GNUSTEP_BUILD_DIR)/$(d)/$(GNUSTEP_OBJ_DIR_NAME)/$(SUBPROJECT_PRODUCT)), \
+    $(addprefix $(GNUSTEP_BUILD_DIR)/$(d)/, $(o))))
 endif
 
 OBJC_OBJS = $(patsubst %.m,%.m$(OEXT),$($(GNUSTEP_INSTANCE)_OBJC_FILES))
