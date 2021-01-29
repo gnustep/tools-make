@@ -200,9 +200,15 @@ endif
 else # BUILD_DLL
 
 # When you build a DLL, you have to install it in a directory which is
-# in your PATH.
+# in your PATH. On Windows MSVC we use the library directory that will
+# also contain other libraries like objc.dll. Otherwise (i.e. on MinGW)
+# we use the tools directory.
 ifeq ($(DLL_INSTALLATION_DIR),)
-  DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
+  ifeq ($(GNUSTEP_TARGET_OS), windows)
+    DLL_INSTALLATION_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
+  else
+    DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
+  endif
 endif
 
 # When we build a DLL, we also pass -DBUILD_lib{library_name}_DLL=1 to
@@ -219,8 +225,13 @@ endif
 CLEAN_library_NAME = $(subst -,_,$(LIBRARY_NAME_WITH_LIB))
 SHARED_CFLAGS += -DBUILD_$(CLEAN_library_NAME)_DLL=1
 
-# LIBRARY_FILE is the import library, libgnustep-base.dll.a
-LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(DLL_LIBEXT)$(LIBEXT)
+# LIBRARY_FILE is the import library, i.e. gnustep-base.lib for Windows
+# MSVC, or libgnustep-base.dll.a for MinGW.
+ifeq ($(GNUSTEP_TARGET_OS), windows)
+  LIBRARY_FILE         = $(LIBRARY_NAME_WITHOUT_LIB)$(LIBEXT)
+else
+  LIBRARY_FILE         = $(LIBRARY_NAME_WITH_LIB)$(DLL_LIBEXT)$(LIBEXT)
+endif
 VERSION_LIBRARY_FILE = $(LIBRARY_FILE)
 SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 
@@ -230,6 +241,9 @@ SONAME_LIBRARY_FILE  = $(LIBRARY_FILE)
 # INTERFACE_VERSION of the library; this works exactly in the same way
 # as under Unix.
 LIB_LINK_DLL_FILE    = $(DLL_PREFIX)$(LIBRARY_NAME_WITHOUT_LIB)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
+ifeq ($(GNUSTEP_TARGET_OS), windows)
+  LIB_LINK_PDB_FILE  = $(DLL_PREFIX)$(LIBRARY_NAME_WITHOUT_LIB)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_PDBEXT)
+endif
 endif # BUILD_DLL
 
 else # following code for static libs
@@ -326,6 +340,15 @@ internal-install-lib::
 	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_DLL_FILE) \
 	                     $(DLL_INSTALLATION_DIR) ; \
 	fi$(END_ECHO)
+
+ifeq ($(GNUSTEP_TARGET_OS), windows)
+# On Windows MSVC, also install the PDB file.
+internal-install-lib::
+	$(ECHO_INSTALLING)if [ -f $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_PDB_FILE) ]; then \
+	  $(INSTALL_PROGRAM) $(GNUSTEP_OBJ_DIR)/$(LIB_LINK_PDB_FILE) \
+	                     $(DLL_INSTALLATION_DIR) ; \
+	fi$(END_ECHO)
+endif
 endif
 
 internal-library-uninstall_:: shared-instance-headers-uninstall shared-instance-pkgconfig-uninstall

@@ -4474,10 +4474,8 @@ if ${_gs_cv_cc_is_clang+:} false; then :
   $as_echo_n "(cached) " >&6
 else
       _gs_cv_cc_is_clang="no"
-    if test x"${GCC}" = x"yes" ; then
-        if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-            _gs_cv_cc_is_clang="yes";
-        fi
+    if "${CC}" -v 2>&1 | grep -q 'clang version'; then
+        _gs_cv_cc_is_clang="yes";
     fi
 
 fi

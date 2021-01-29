@@ -1,6 +1,17 @@
 2021-01-29  Frederik Seiffert <frederik@algoriddim.com>
 
 	* common.make:
+	* configure:
+	* m4/gs_cc_is_clang.m4:
+	* target.make:
+	Added support for building on Windows with Clang MSVC target.
+	Requires passing a host like --host=x86_64-pc-windows.
+	Removes the check for $GCC in gs_cc_is_clang.m4 as it will be false
+	when using the MSVC ABI due to __GNUC__ not being defined.
+
+2021-01-29  Frederik Seiffert <frederik@algoriddim.com>
+
+	* common.make:
 	* target.make:
 	Check $CLANG_CC instead of comparing $CC with "clang". Fixes checks
 	when $CC is set to something like /path/to/clang.
