@@ -638,7 +638,7 @@ INTERNAL_OBJCFLAGS = -fno-strict-aliasing
 # Linux CentOS 6.5 i386 clang...
 # Clang inserts move aligned packed instructions (i.e. movaps,etc) assembly
 # code however stack is not aligned causing fault crashes...
-ifeq ($(CC),clang)
+ifeq ($(CLANG_CC), yes)
 ifneq ($(wildcard /etc/redhat-release),"")
 RH_RELEASE := $(shell cat 2>/dev/null /etc/redhat-release)
 ifeq ($(findstring CentOS,$(RH_RELEASE)),CentOS)

@@ -1,5 +1,12 @@
 2021-01-29  Frederik Seiffert <frederik@algoriddim.com>
 
+	* common.make:
+	* target.make:
+	Check $CLANG_CC instead of comparing $CC with "clang". Fixes checks
+	when $CC is set to something like /path/to/clang.
+
+2021-01-29  Frederik Seiffert <frederik@algoriddim.com>
+
 	* Instance/rules.make:
 	* Instance/subproject.make:
 	* common.make:

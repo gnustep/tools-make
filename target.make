@@ -845,7 +845,7 @@ SHARED_LIBEXT    = .dll.a
 DLL_LIBEXT	 = .dll
 #SHARED_CFLAGS	 += 
 
-ifneq ($(CC),clang)
+ifneq ($(CLANG_CC), yes)
 OBJ_MERGE_CMD = \
   $(LD) -nostdlib $(OBJ_MERGE_CMD_FLAG) $(CORE_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 else
@@ -856,7 +856,7 @@ endif
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(LD)
 
-ifeq ($(CC),clang)
+ifeq ($(CLANG_CC), yes)
 BUNDLE_LDFLAGS += -shared -Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
         -Wl,--enable-auto-image-base \
@@ -907,7 +907,7 @@ SHARED_CFLAGS =
 # while it is the default, it might silently get disabled if a symbol
 # gets manually exported (eg, because a header of a library we include
 # exports a symbol by mistake).
-ifneq ($(CC),clang)
+ifneq ($(CLANG_CC), yes)
 SHARED_LIB_LINK_CMD     = \
         $(LD) $(SHARED_LD_PREFLAGS) -shared \
         -Wl,--enable-auto-image-base \
@@ -944,7 +944,7 @@ SHARED_LIBEXT    = .dll.a
 DLL_LIBEXT	 = .dll
 #SHARED_CFLAGS	 += 
 
-ifneq ($(CC),clang)
+ifneq ($(CLANG_CC), yes)
 OBJ_MERGE_CMD = \
   $(LD) -nostdlib $(OBJ_MERGE_CMD_FLAG) $(CORE_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
 else
@@ -955,7 +955,7 @@ endif
 HAVE_BUNDLES   = yes
 BUNDLE_LD      = $(LD)
 
-ifeq ($(CC),clang)
+ifeq ($(CLANG_CC), yes)
 BUNDLE_LDFLAGS += -shared -Wl,--export-all-symbols \
 	-Wl,--enable-auto-import \
         -Wl,--enable-auto-image-base \
