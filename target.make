@@ -34,7 +34,10 @@ endif
 #
 # Target specific libraries
 #
-TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) -lm
+TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS)
+ifneq ($(GNUSTEP_TARGET_OS), windows)
+	TARGET_SYSTEM_LIBS += -lm
+endif
 
 # All code we build needs to be thread-safe nowadays
 INTERNAL_CFLAGS = -pthread
@@ -60,6 +63,10 @@ else ifeq ($(findstring mingw64, $(GNUSTEP_TARGET_OS)), mingw64)
   TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) \
 	-lws2_32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
 	-lmpr -lnetapi32 -lm -I. # the -I is a dummy to avoid -lm^M
+else ifeq ($(GNUSTEP_TARGET_OS), windows)
+  TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) \
+	-lws2_32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
+	-lmpr -lnetapi32 -lkernel32 -lshell32
 endif
 
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)
@@ -808,7 +815,7 @@ SHARED_CFLAGS =
 # while it is the default, it might silently get disabled if a symbol
 # gets manually exported (eg, because a header of a library we include
 # exports a symbol by mistake).
-ifneq ($(CC),clang)
+ifneq ($(CLANG_CC), yes)
 SHARED_LIB_LINK_CMD     = \
         $(LD) $(SHARED_LD_PREFLAGS) -shared \
         -Wl,--enable-auto-image-base \
@@ -1045,6 +1052,56 @@ endif
 #
 ####################################################
 
+####################################################
+#
+# Windows MSVC
+#
+ifeq ($(GNUSTEP_TARGET_OS), windows)
+shared = yes
+HAVE_SHARED_LIBS = yes
+
+# This command links the library, generates the list of symbols to export from
+# the dllexport annotations, creates the DLL (eg, obj/gnustep-base-1_13.dll),
+# a PDB file (eg, obj/gnustep-base-1_13.pdb, requires -g flag), and the import
+# library (eg, obj/gnustep-base.lib).
+SHARED_LIB_LINK_CMD     = \
+	$(LD) $(SHARED_LD_PREFLAGS) -g -Wl,-dll \
+	-Wl,-implib:$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) \
+	-Wl,-pdb:$(LIB_LINK_OBJ_DIR)/$(LIB_LINK_PDB_FILE) \
+	$(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_DLL_FILE) $^ \
+	$(INTERNAL_LIBRARIES_DEPEND_UPON) \
+	$(SHARED_LD_POSTFLAGS)
+
+AFTER_INSTALL_SHARED_LIB_CMD =
+AFTER_INSTALL_SHARED_LIB_CHOWN =
+
+BUILD_DLL	 = yes
+LIBEXT	 	 = .lib
+SHARED_LIBEXT    = .lib
+DLL_LIBEXT	 = .dll
+DLL_PDBEXT	 = .pdb
+#SHARED_CFLAGS	 +=
+
+OBJ_MERGE_CMD = ar cr $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
+
+HAVE_BUNDLES   = yes
+BUNDLE_LD      = $(LD)
+
+BUNDLE_LDFLAGS += -Wl,-dll
+BUNDLE_LINK_CMD  = \
+	$(BUNDLE_LD) $(BUNDLE_LDFLAGS) $(ALL_LDFLAGS) \
+	-o $(LDOUT)$(BUNDLE_FILE) \
+	$(OBJ_FILES_TO_LINK) \
+	$(BUNDLE_LIBFLAGS) $(ALL_LIB_DIRS) $(BUNDLE_LIBS)
+
+# On Windows MSVC, class name symbols start with '__'
+EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^._OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^._OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}' -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
+
+endif
+
+# end Windows MSVC
+#
+####################################################
 
 ####################################################
 #
