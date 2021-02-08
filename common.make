@@ -909,12 +909,14 @@ endif
 ifneq ($(FOUNDATION_LIB), apple)
 # Under Win32 paths are so confused this warning is not worthwhile
 ifneq ($(findstring mingw, $(GNUSTEP_HOST_OS)), mingw)
+ifneq ($(GNUSTEP_HOST_OS), windows)
 
   ifeq ($(findstring $(GNUSTEP_SYSTEM_TOOLS),$(PATH)),)
     $(warning WARNING: Your PATH may not be set up correctly !)
     $(warning Please try again after adding "$(GNUSTEP_SYSTEM_TOOLS)" to your path)
   endif
 
+endif
 endif
 endif # code used when FOUNDATION_LIB != apple
 
