@@ -85,8 +85,28 @@ else
   GNUSTEP_USER_DIR = @GNUSTEP_USER_DIR@
 endif
 
+# When building using Windows-native "make", GNUSTEP_MAKEFILES can be a
+# Windows-style path (with drive prefix and forward slashes), but
+# including GNUSTEP_CONFIG_FILE below will turn it into a Unix-style
+# path, breaking further uses of $GNUSTEP_MAKEFILES. As a hacky
+# workaround we save the original path if it seems to be Windows-style
+# (i.e. with drive letter prefix), and restore it below if needed.
+ifeq ($(GNUSTEP_HOST_OS), windows)
+ifeq ($(findstring :/, $(GNUSTEP_MAKEFILES)), :/)
+ORIGINAL_GNUSTEP_MAKEFILES:=$(GNUSTEP_MAKEFILES)
+endif
+endif
+
 # This includes the GNUstep configuration file, but only if it exists
 -include $(GNUSTEP_CONFIG_FILE)
+
+# Restore original GNUSTEP_MAKEFILES path to Windows-style path if new
+# path is Unix-style.
+ifneq ($(ORIGINAL_GNUSTEP_MAKEFILES),)
+ifneq ($(findstring :/, $(GNUSTEP_MAKEFILES)), :/)
+GNUSTEP_MAKEFILES:=$(ORIGINAL_GNUSTEP_MAKEFILES)
+endif
+endif
 
 # FIXME: determining GNUSTEP_HOME
 GNUSTEP_HOME = $(HOME)

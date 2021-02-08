@@ -1,3 +1,9 @@
+2021-02-12  Frederik Seiffert <frederik@algoriddim.com>
+
+	* common.make: Silence PATH warning on Windows MSVC.
+	* config-noarch.make.in: Add workaround for GNUSTEP_MAKEFILES
+	breaking when using Windows-native "make".
+
 2021-01-29  Frederik Seiffert <frederik@algoriddim.com>
 
 	* common.make:
