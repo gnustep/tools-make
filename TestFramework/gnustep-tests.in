@@ -77,6 +77,9 @@ do
     --sequential)
       GSSEQUENTIAL=yes
       ;;
+    --notimestamps)
+      GSTEST_TS=0
+      ;;
     --verbose)
       GSVERBOSE=yes
       ;;
@@ -96,6 +99,7 @@ do
       echo "Use 'gnustep-tests --developer' to treat hopes as real tests."
       echo "Use 'gnustep-tests --verbose' for full/detailed log output."
       echo "Use 'gnustep-tests --sequential' to disable parallel building."
+      echo "Use 'gnustep-tests --notimestamps' to disable testcase timestamps."
       echo
       echo "Interpreting the output"
       echo "-----------------------"
@@ -154,18 +158,23 @@ else
   OBJCXX=
 fi
 
-GSTESTFLAGS=
+if test x"$GSTEST_TS" = x"no"
+then
+  GSTESTFLAGS="-DTEST_TS=0"
+else
+  GSTESTFLAGS="-DTEST_TS=1"
+fi
 if test "$GSTESTMODE" = "failfast"
 then
   if test x"$GSTESTDEV" = x"yes"
   then
-    GSTESTFLAGS="-DTESTDEV=1 -DFAILFAST=1"
+    GSTESTFLAGS="$GSTESTFLAGS -DTESTDEV=1 -DFAILFAST=1"
   else
-    GSTESTFLAGS="-DFAILFAST=1"
+    GSTESTFLAGS="$GSTESTFLAGS -DFAILFAST=1"
   fi
 elif test x"$GSTESTDEV" = x"yes"
 then
-  GSTESTFLAGS="-DTESTDEV=1"
+  GSTESTFLAGS="$GSTESTFLAGS -DTESTDEV=1"
 fi
 
 if test x"$GSTESTFLAGS" != x

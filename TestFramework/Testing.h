@@ -1,6 +1,6 @@
 /* Testing - Include basic tests macros for the GNUstep Testsuite
 
-   Copyright (C) 2005-2011 Free Software Foundation, Inc.
+   Copyright (C) 2005-2021 Free Software Foundation, Inc.
 
    Written by: Alexander Malmberg <alexander@malmberg.org>
    Updated by: Richard Frith-Macdonald <rfm@gnu.org>
@@ -57,6 +57,15 @@ static BOOL testPassed __attribute__((unused)) = NO;
  */
 static unsigned testLineNumber __attribute__((unused)) = 0;
 
+/* A flag indicating whether timestamps should be produced in the output
+ * for each testcase.  By default it is set to TEST_TS if defined, but
+ * test code may override that default.
+ */
+#if     !defined(TEST_TS)
+#define TEST_TS  0
+#endif
+static BOOL testTimestamps __attribute__((unused)) = TEST_TS;
+
 /* A variable storing the indentation of the set currently being run.
  * Do not modify this directly.
  */
@@ -104,7 +113,11 @@ static void (*setEnded)(const char *name, BOOL completed, double duration)
  * The global variable 'testHopeful' can be set to a non-zero value before
  * calling this function in order to specify that if the condition is
  * not true it should be treated as a dashed hope rather than a failure
- * (unless the tests are bing performed in 'developer' mode).
+ * (unless the tests are being performed in 'developer' mode).
+ *
+ * The global variable 'testTimestamps' can be set to a non-zero value before
+ * calling this function in order to specify that the output logged is to
+ * include the timestamp of the testcase completion (entry into this function).
  *
  * If there is a better higher-level test macro available, please use
  * that instead.  In particular, please use the PASS_EQUAL() macro wherever
@@ -124,22 +137,30 @@ static void pass(int passed, const char *format, ...)
 {
   va_list args;
   va_start(args, format);
+  const char *ts = "";
 
+  if (testTimestamps)
+    {
+      NSCalendarDate    *d = [NSCalendarDate date];
+
+      [d setCalendarFormat: @"(%Y-%m-%d %H:%M:%S.%F %z) "];
+      ts = [[d description] cString];
+    }
   if (passed)
     {
-      fprintf(stderr, "Passed test:     ");
+      fprintf(stderr, "Passed test:     %s", ts);
       testPassed = YES;
     }
 #if	!defined(TESTDEV)
   else if (YES == testHopeful)
     {
-      fprintf(stderr, "Dashed hope:     ");
+      fprintf(stderr, "Dashed hope:     %s", ts);
       testPassed = NO;
     }
 #endif
   else
     {
-      fprintf(stderr, "Failed test:     ");
+      fprintf(stderr, "Failed test:     %s", ts);
       testPassed = NO;
     }
   testIndent();

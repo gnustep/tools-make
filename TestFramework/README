@@ -135,6 +135,10 @@ option to have testing stopped at the first failure and the gdb debugger
 automatically launched to debug the failed testcase with a breakpoint set
 in the testStart() function for that testcase.
 
+You can use the --notimestamps command line option to turn off timestamps of
+individual testcases if you want a less verbose output (though test code may
+override this default by setting the testTimestamps variable itself).
+
 You can also use the --developer command line option to define the TESTDEV
 pre-processor variable (to turn on developer only test cases, and to have
 all 'hopes' treated as actual 'tests' with pass/fail results).
