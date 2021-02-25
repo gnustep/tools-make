@@ -4402,6 +4402,15 @@ case "$target_os" in
 		LIB_DIR="$LIB_DIR -L/usr/local/lib";;
   netbsd*)	INCLUDES="$INCLUDES -I/usr/pkg/include"
 		LIB_DIR="$LIB_DIR -Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
+  *mingw32* )
+# NB. autoconf expects the triplet (cpu-vendor-os) to have mingw32 or
+# mingw64 as the os part, but the mingw-w64 project chose a different
+# triplet (cpu-w64-mingw32) which looks like mingw32.  To handle that
+# we convert the triplet back to the standard form.
+	if test "$target_vendor" = w64; then
+		target_vendor=pc
+		target_os=mingw64
+	fi;;
 esac
 
 #--------------------------------------------------------------------
@@ -4414,8 +4423,19 @@ case $host_os in
 	CYGWIN=yes
 	MSWIND=yes;;
   *mingw32* )
-	MINGW32=yes
-	MINGW64=no
+	if test "$host_vendor" = w64; then
+# NB. autoconf expects the triplet (cpu-vendor-os) to have mingw32 or
+# mingw64 as the os part, but the mingw-w64 project chose a different
+# triplet (cpu-w64-mingw32) which looks like mingw32.  To handle that
+# we convert the triplet back to the standard form.
+		host_vendor=pc
+		host_os=mingw64
+		MINGW32=yes
+		MINGW64=no
+	else
+		MINGW32=yes
+		MINGW64=no
+	fi
 	CYGWIN=no
 	MSWIND=yes;;
   *mingw64* )
