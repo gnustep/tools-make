@@ -145,8 +145,8 @@ case $host_os in
 # we convert the triplet back to the standard form.
 		host_vendor=pc
 		host_os=mingw64
-		MINGW32=yes
-		MINGW64=no
+		MINGW32=no
+		MINGW64=yes
 	else
 		MINGW32=yes
 		MINGW64=no
