@@ -4394,6 +4394,20 @@ $as_echo "$cc_bundle" >&6; }
 
 
 #--------------------------------------------------------------------
+# config.guess returns mingw64 and pc as the os and vendor, but the
+# mingw-w64 project chose to use mingw32 and w64 respectively.  We
+#need to standardise on one.
+#--------------------------------------------------------------------
+if test "$host_os" = mingw64; then
+  host_os=mingw32
+  host_vendor=w64
+fi
+if test "$target_os" = mingw64; then
+  target_os=mingw32
+  target_vendor=w64
+fi
+
+#--------------------------------------------------------------------
 # specific target_os options
 #--------------------------------------------------------------------
 case "$target_os" in
@@ -4402,15 +4416,6 @@ case "$target_os" in
 		LIB_DIR="$LIB_DIR -L/usr/local/lib";;
   netbsd*)	INCLUDES="$INCLUDES -I/usr/pkg/include"
 		LIB_DIR="$LIB_DIR -Wl,-R/usr/pkg/lib -L/usr/pkg/lib";;
-  *mingw32* )
-# NB. autoconf expects the triplet (cpu-vendor-os) to have mingw32 or
-# mingw64 as the os part, but the mingw-w64 project chose a different
-# triplet (cpu-w64-mingw32) which looks like mingw32.  To handle that
-# we convert the triplet back to the standard form.
-	if test "$target_vendor" = w64; then
-		target_vendor=pc
-		target_os=mingw64
-	fi;;
 esac
 
 #--------------------------------------------------------------------
@@ -4418,36 +4423,26 @@ esac
 #--------------------------------------------------------------------
 case $host_os in
   *cygwin*  )
-	MINGW32=no
-	MINGW64=no
-	CYGWIN=yes
-	MSWIND=yes;;
+    MINGW32=no
+    MINGW64=no
+    CYGWIN=yes
+    MSWIND=yes;;
   *mingw32* )
-	if test "$host_vendor" = w64; then
-# NB. autoconf expects the triplet (cpu-vendor-os) to have mingw32 or
-# mingw64 as the os part, but the mingw-w64 project chose a different
-# triplet (cpu-w64-mingw32) which looks like mingw32.  To handle that
-# we convert the triplet back to the standard form.
-		host_vendor=pc
-		host_os=mingw64
-		MINGW32=no
-		MINGW64=yes
-	else
-		MINGW32=yes
-		MINGW64=no
-	fi
-	CYGWIN=no
-	MSWIND=yes;;
-  *mingw64* )
-	MINGW32=no
-	MINGW64=yes
-	CYGWIN=no
-	MSWIND=yes;;
-          * )
-	MINGW32=no
-	MINGW64=no
-	CYGWIN=no
-	MSWIND=no;;
+    if test $host_vendor = pc
+    then
+      MINGW32=yes
+      MINGW64=no
+    else
+      MINGW32=no
+      MINGW64=yes
+    fi
+    CYGWIN=no
+    MSWIND=yes;;
+  * )
+    MINGW32=no
+    MINGW64=no
+    CYGWIN=no
+    MSWIND=no;;
 esac
 
 

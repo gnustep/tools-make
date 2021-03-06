@@ -122,8 +122,6 @@ endif
 # when linking applications.
 ifeq ($(findstring mingw32, $(GNUSTEP_TARGET_OS)), mingw32)
   ALL_LDFLAGS += -Wl,-subsystem,windows
-else ifeq ($(findstring mingw64, $(GNUSTEP_TARGET_OS)), mingw32)
-  ALL_LDFLAGS += -Wl,-subsystem,windows
 endif
 
 $(APP_FILE): $(OBJ_FILES_TO_LINK)
