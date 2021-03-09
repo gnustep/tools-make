@@ -1,3 +1,9 @@
+2021-03-09  Frederik Seiffert <frederik@algoriddim.com>
+
+	* target.make:
+	Link against debug or release UCRT DLLs for Windows MSVC and remove
+	unused -pthread flag.
+
 2021-02-12  Frederik Seiffert <frederik@algoriddim.com>
 
 	* common.make: Silence PATH warning on Windows MSVC.
