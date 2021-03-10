@@ -4918,6 +4918,12 @@ fi
 
 fi
 
+# On Windows MSVC, AC_PROG_CC will not detect Clang in MSVC mode as a
+# GNU C compiler and therefore set CFLAGS to just "-g", so we fix it.
+if test "$target_os" = windows -a x"${GCC}" != x"yes" -a x"$gs_cv_cc_is_clang" = x"yes"; then
+  CFLAGS="-g -O2"
+fi
+
 # Find a good install program.  We prefer a C program (faster),
 # so one script is as good as another.  But avoid the broken or
 # incompatible versions:

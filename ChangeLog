@@ -3,6 +3,9 @@
 	* target.make:
 	Link against debug or release UCRT DLLs for Windows MSVC and remove
 	unused -pthread flag.
+	* configure:
+	* configure.ac:
+	Fix CFLAGS for Windows MSVC.
 
 2021-02-12  Frederik Seiffert <frederik@algoriddim.com>
 
