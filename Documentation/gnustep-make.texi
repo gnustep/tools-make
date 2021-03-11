@@ -1596,9 +1596,9 @@ be documented here:
 @end defvar
 @smallexample
 ifeq ($(OBJC_RUNTIME_LIB), ng)
-file1.m_FILE_FLAGS+="-fobjc-arc -fobjc-arc-exceptions"
-file2.m_FILE_FLAGS+="-fobjc-arc -fobjc-arc-exceptions"
-file9.m_FILE_FLAGS+="-fobjc-arc -fobjc-arc-exceptions"
+file1.m_FILE_FLAGS += -DGS_WITH_ARC=1 -fobjc-arc -fobjc-arc-exceptions
+file2.m_FILE_FLAGS += -DGS_WITH_ARC=1 -fobjc-arc -fobjc-arc-exceptions
+file9.m_FILE_FLAGS += -DGS_WITH_ARC=1 -fobjc-arc -fobjc-arc-exceptions
 endif
 @end smallexample
 
