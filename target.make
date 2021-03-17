@@ -42,10 +42,11 @@ endif
 # All code we build needs to be thread-safe nowadays
 INTERNAL_CFLAGS = -pthread
 INTERNAL_OBJCFLAGS = -pthread
-ifeq ($(findstring android, $(GNUSTEP_TARGET_OS)), android)
-  INTERNAL_LDFLAGS = 
-else
-  INTERNAL_LDFLAGS = -pthread
+INTERNAL_LDFLAGS =
+ifneq ($(findstring android, $(GNUSTEP_TARGET_OS)), android)
+	ifneq ($(GNUSTEP_TARGET_OS), windows)
+		INTERNAL_LDFLAGS = -pthread
+	endif
 endif
 
 ifneq ("$(objc_threaded)","")
@@ -63,6 +64,16 @@ else ifeq ($(GNUSTEP_TARGET_OS), windows)
   TARGET_SYSTEM_LIBS = $(CONFIG_SYSTEM_LIBS) \
 	-lws2_32 -ladvapi32 -lcomctl32 -luser32 -lcomdlg32 \
 	-lmpr -lnetapi32 -lkernel32 -lshell32
+	
+	# link against debug or release UCRT DLLs (i.e. /MDd or /MD)
+	ifeq ($(debug),)
+		debug = $(GNUSTEP_DEFAULT_DEBUG)
+	endif
+	ifeq ($(debug), yes)
+		TARGET_SYSTEM_LIBS += -lmsvcrtd -lvcruntimed -lucrtd
+	else
+		TARGET_SYSTEM_LIBS += -lmsvcrt -lvcruntime -lucrt
+	endif
 endif
 
 ifeq ($(findstring solaris, $(GNUSTEP_TARGET_OS)), solaris)

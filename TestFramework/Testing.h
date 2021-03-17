@@ -26,7 +26,7 @@
 #include <string.h>
 
 #import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSDate.h>
+#import <Foundation/NSCalendarDate.h>
 #import <Foundation/NSException.h>
 #import <Foundation/NSObjCRuntime.h>
 #import <Foundation/NSObject.h>

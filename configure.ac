@@ -243,6 +243,12 @@ else
   AC_PROG_RANLIB
 fi
 
+# On Windows MSVC, AC_PROG_CC will not detect Clang in MSVC mode as a
+# GNU C compiler and therefore set CFLAGS to just "-g", so we fix it.
+if test "$target_os" = windows -a x"${GCC}" != x"yes" -a x"$gs_cv_cc_is_clang" = x"yes"; then
+  CFLAGS="-g -O2"
+fi
+
 AC_PROG_INSTALL
 
 AC_MSG_CHECKING([if 'install -p' works])
