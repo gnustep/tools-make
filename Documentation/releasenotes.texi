@@ -4,6 +4,23 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.9.0
+
+We have improved support for newer GCC versions (GCC9 and newer).
+
+Building with ARC has been fixed.
+
+We've added support for storyboard files in @code{GNUmakefile}s.
+
+On Windows, we now support building with MSVC's Clang toolchain.
+
+Subprojects' object files are now linked individually in their parent project,
+rather than being first linked into @code{subproject.o}.
+
+We have also changed the way @code{OBJCXX} flags are handled, and increased the
+minimum version of autoconf used to 2.65. (The regenerated @code{configure} file
+will not handle runstatedir anymore.)
+
 @section Version 2.8.0
 
 We now include better library combo and ABI detection: gnustep-make will now

@@ -13,12 +13,29 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 
 @itemize
 
-@item Better check for objc on Windows.
-@item Split linker flags to better support partial linking.
+@item Better check for objc runtime on Windows.
+
+@item Split linker flags to better support partial linking: @code{ALL_LDFLAGS}
+is now a combination of @code{FINAL_LDFLAGS} and @code{ALL_LDFLAGS}.
+
 @item Better support for newer gcc versions.
-@item Add support for story board files.
-@item Increase autoconfig version and handle OBJCXX variables directly.
+
+@item Add support for storyboard files.
+
+@item Increase autoconf version to 2.65 and make autoconf handle Objective-C++
+and OBJCXX variables directly.
+
 @item Fix bug that prevented ARC from getting used.
+
+@item Link subproject object files directly instead of first merging them into
+@code{subproject.o}.
+
+@item Support building on Windows with Clang MSVC target.
+
+@item Improve mingw64 support: for instance, adopt the triplet used by the
+mingw-w64 project rather than using the one returned by autoconf. Fixes building
+Gorm.
+
 @end itemize
 
 @ifclear ANNOUNCE-ONLY

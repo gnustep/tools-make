@@ -1,3 +1,14 @@
+2021-03-21  Ivan Vucica <ivan@vucica.net>
+
+	* ANNOUNCE:
+	* NEWS:
+	* RELEASENOTES:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Update release notes for 2.9.0.
+	* Version:
+	Bump version to 2.9.0.
+
 2021-03-09  Frederik Seiffert <frederik@algoriddim.com>
 
 	* target.make:
@@ -6,6 +17,27 @@
 	* configure:
 	* configure.ac:
 	Fix CFLAGS for Windows MSVC.
+
+2021-03-06  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/application.make:
+	* configure:
+	* configure.ac:
+	* jni.make:
+	* rules.make:
+	* target.make:
+	Adopt the triplet used by the mingw-w64 project (where the OS is always
+	mingw32 and we differentiate 64bit Windows using the vendor part),
+	rather than the one returned by autoconf. Scrap most of the code to
+	differentiate between the two systems.
+
+2021-02-25  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure:
+	* configure.ac:
+	Convert mingw-w64's triplet (cpu-w64-mingw32) which looks like mingw32
+	back to standard form.
+
 
 2021-02-12  Frederik Seiffert <frederik@algoriddim.com>
 
