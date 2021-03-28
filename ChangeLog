@@ -1,3 +1,9 @@
+2021-03-28  Frederik Seiffert <frederik@algoriddim.com>
+
+	* TestFramework/Testing.h:
+	Add workaround for Clang bug on Windows MSVC when tests contain no
+	Objective-C constructs.
+
 2021-03-21  Ivan Vucica <ivan@vucica.net>
 
 	* ANNOUNCE:
