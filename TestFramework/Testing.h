@@ -33,6 +33,13 @@
 #import <Foundation/NSRegularExpression.h>
 #import <Foundation/NSString.h>
 
+#if defined(__OBJC__) && defined(__clang__) && defined(_MSC_VER)
+/* Work around Clang bug on Windows MSVC when tests contain no
+ * Objective-C constructs: https://bugs.llvm.org/show_bug.cgi?id=49681
+ */
+id __work_around_clang_bug = @"__unused__";
+#endif
+
 /* A flag indicating that the testsuite is currently processing tests
  * which are actually not expected to pass, but where we hope someone
  * might have committed a bugfix.
