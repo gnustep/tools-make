@@ -1788,6 +1788,7 @@ AC_PATH_PROG(TESTPROG, test)
 AC_CONFIG_FILES([config-noarch.make config.make openapp opentool 
 executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf
 GNUstep.sh GNUstep.csh fixpath.sh
+GNUstep-reset.sh
 gnustep-make.spec gnustep-config TestFramework/gnustep-tests
 filesystem.make filesystem.sh filesystem.csh gnustep-make-ld.so.conf])
 AC_CONFIG_FILES([runtime/$OBJC_RUNTIME_LIB.make:config.make.in])
