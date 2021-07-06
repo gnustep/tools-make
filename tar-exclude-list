@@ -1,2 +1,4 @@
 CVS
 *.svn
+*.git
+*.hg
