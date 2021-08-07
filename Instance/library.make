@@ -200,15 +200,9 @@ endif
 else # BUILD_DLL
 
 # When you build a DLL, you have to install it in a directory which is
-# in your PATH. On Windows MSVC we use the library directory that will
-# also contain other libraries like objc.dll. Otherwise (i.e. on MinGW)
-# we use the tools directory.
+# in your PATH.
 ifeq ($(DLL_INSTALLATION_DIR),)
-  ifeq ($(GNUSTEP_TARGET_OS), windows)
-    DLL_INSTALLATION_DIR = $(FINAL_LIBRARY_INSTALL_DIR)
-  else
-    DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
-  endif
+  DLL_INSTALLATION_DIR = $(GNUSTEP_TOOLS)/$(GNUSTEP_TARGET_LDIR)
 endif
 
 # When we build a DLL, we also pass -DBUILD_lib{library_name}_DLL=1 to
