@@ -1009,6 +1009,10 @@ BUNDLE_LINK_CMD  = \
 # On Windows MSVC, class name symbols start with '__'
 EXTRACT_CLASS_NAMES_COMMAND = $(NM) -Pg $$object_file | sed -n -e '/^._OBJC_CLASS_[A-Za-z0-9_.]* [^U]/ {s/^._OBJC_CLASS_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}' -e '/^__objc_class_name_[A-Za-z0-9_.]* [^U]/ {s/^__objc_class_name_\([A-Za-z0-9_.]*\) [^U].*/\1/p;}'
 
+# Suppress Clang warning in Base when including "GNUstepBase/GSConfig.h":
+# #include resolved using non-portable Microsoft search rules as: ././GNUstepBase/GSConfig.h
+ADDITIONAL_FLAGS += -Wno-microsoft-include
+
 endif
 
 # end Windows MSVC
