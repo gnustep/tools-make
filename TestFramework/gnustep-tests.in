@@ -292,6 +292,12 @@ extract()
   done
 }
 
+# Get the name of a test from its file name
+getname()
+{
+  TESTNAME=`echo $1 | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
+}
+
 # Function for platforms where grep can't search for multiple patterns.
 present()
 {
@@ -309,20 +315,25 @@ present()
   return 1
 }
 
-# Low level function to build and run the Objective-C program $TESTFILE
-# in the current directory.  The TEMPLATE variable must already be set
-# to the name of the make file template if gnustep-make is to do the
-# building.
+# Low level function to build the Objective-C program $TESTFILE
+# in the current directory.  The TEMPLATE variable must already
+# be set to the name of the make file template if gnustep-make
+# is to do the building.
 # 
-build_and_run ()
+build_test ()
 {
+  # The argument to this function is the name of a test file.
   # Remove the extension, if there is one. If there is no extension, add
   # .obj .
-  TESTNAME=`echo $TESTFILE | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
+  local TESTFILE=$1
+  local TESTNAME=`echo $TESTFILE | sed -e"s/^\(test^.]*\)$/\1.obj./;s/\.[^.]*//g"`
+  local BUILD_STATUS
+  local BUILD_CMD
+  local tmp
 
-  # Run the test.
+  # Build the test.
+  echo "Building $TESTNAME"
 
-  RUN_CMD="./obj/$TESTNAME"
   if test x"$TEMPLATE" = x
   then
     # The very simple case, we just need to compile a single file
@@ -358,32 +369,42 @@ build_and_run ()
     fi
   fi
 
-  # Compile it if necessary.
   # Redirect errors to stdout so it shows up in the log,
   # but not in the summary.
-  if test "$NEEDBUILD" = "yes"
+  echo "Building $dir/$TESTFILE"
+  echo "$BUILD_CMD"
+  if test -r ./make-check.env
   then
-    echo "Building $dir/$TESTFILE"
-    echo "$BUILD_CMD"
-    if test -r ./make-check.env
-    then
-      ( . ./make-check.env; . ./TestInfo; $BUILD_CMD) 2>&1
-    else
-      ( . ./TestInfo; $BUILD_CMD) 2>&1
-    fi
-    BUILDSTATUS=$?
+    ( . ./make-check.env; . ./TestInfo; $BUILD_CMD) 2>&1
   else
-    BUILDSTATUS=0
+    ( . ./TestInfo; $BUILD_CMD) 2>&1
   fi
 
-  if test $BUILDSTATUS != 0
+  if test $? != 0
   then
+    rm -f ./obj/$TESTNAME
     echo "Failed build:     $1" >&2
     if test "$GSTESTMODE" = "failfast"
     then
       return 1
     fi
-  else
+  fi
+  return 0
+}
+
+run_test ()
+{
+  # Remove the extension, if there is one. If there is no extension, add
+  # .obj .
+  local TESTFILE=$1
+  local TESTNAME=$2
+
+  # Run the test.
+
+  local RUN_CMD="./obj/$TESTNAME"
+
+  if test -x $RUN_CMD
+  then
     # We want aggressive memory checking.
 
     # Tell glibc to check for malloc errors, and to crash if it detects
@@ -429,36 +450,45 @@ build_and_run ()
     else
       echo "Completed file:  $TESTFILE" >&2
     fi
+  else
+    echo "Skipped (not built) file:  $TESTFILE" >&2
   fi
   return 0
 }
 
-# Function to build and run $TESTFILE in the current directory.
-# This actually manages the logging process and calls build_and_run
-# to perform the work.
-#
-run_test_file ()
-{
-  RUNEXIT=0
 
-  echo >> $GSTESTLOG
-  echo Testing $TESTFILE... >> $GSTESTLOG
-  echo >> $GSTESTSUM
+run_test_log ()
+{
+  local TESTFILE=$1
+  local TESTNAME=$2
+  local TESTLOG=$3
+  local TESTVRB=$4
+
+  echo >> $TESTLOG
+  echo Testing $TESTFILE... >> $TESTLOG
 
   if test x"$GSVERBOSE" = xyes
   then
-    build_and_run 2>&1 | tee $GSTESTLOG.tmp
+    run_test $TESTFILE $TESTNAME 2>&1 | tee -a $TESTLOG
   else
-    build_and_run > $GSTESTLOG.tmp 2>&1
+    run_test $TESTFILE $TESTNAME >> $TESTLOG 2>&1
   fi
   RUNEXIT=$?
+}
 
-  # Add the information to the detailed log.
-  cat $GSTESTLOG.tmp >> $GSTESTLOG
+proc_test_log ()
+{
+  local TESTFILE=$1
+  local TESTNAME=$2
+  local TESTLOG=$3
+  local TESTVRB=$4
 
   # Extract the summary information and add it to the summary file.
-  extract $GSTESTLOG.tmp "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
+  extract $TESTLOG "^Passed test:" "^Failed test:" "^Failed build:" "^Completed file:" "^Failed file:" "^Dashed hope:" "^Failed set:" "^Skipped set:" > $GSTESTSUM.tmp
   cat $GSTESTSUM.tmp >> $GSTESTSUM
+
+  cat $TESTLOG >> $GSTESTLOG
+  rm $TESTLOG
 
   # If there were failures or skipped tests then report them...
   if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
@@ -466,6 +496,9 @@ run_test_file ()
     echo
     echo $dir/$TESTFILE:
     extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
+    RUNEXIT=1
+  else
+    RUNEXIT=0
   fi
 
   if test x"$GSTESTDBG" != x
@@ -481,9 +514,8 @@ run_test_file ()
     fi
   fi
 
-  return $RUNEXIT
+  return 0
 }
-
 
 # Replace the old files.
 if test -f tests.log
@@ -622,7 +654,6 @@ do
           TEMPLATE=$GSTESTTOP/GNUmakefile.in
         fi
 
-        NEEDBUILD=yes
         if test x"$TEMPLATE" = x
         then
           rm -rf core core.* *.core obj GNUmakefile gdb.cmds
@@ -659,33 +690,119 @@ ${tmp}_OBJC_FILES=$TESTFILE"
           sed -e "s/@TESTNAMES@/$TESTNAMES/;s^@TESTOPTS@^$GSTESTOPTS^;s/@TESTRULES@/$TESTRULES/" < "$TEMPLATE" > GNUmakefile
           $MAKE_CMD clean >/dev/null 2>&1
 
-          # Try building all the test files in the directory in parallel.
-          # If that works, set NEEDBUILD to 'no' so that we do not build
-          # each individual test file later.
-          echo "" >>$GSTESTLOG
-          echo "Building in $dir" >>$GSTESTLOG
-          if test -r ./make-check.env
+          if test x"$GSSEQUENTIAL" = xyes
           then
-            ( . ./make-check.env; . ./TestInfo; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
+            build_state=1
           else
-            ( . ./TestInfo; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
+            # Try building all the test files in the directory in parallel.
+            # If that fails, try building them individually.
+            echo "" >>$GSTESTLOG
+            echo "Building in $dir" >>$GSTESTLOG
+            if test -r ./make-check.env
+            then
+              ( . ./make-check.env; . ./TestInfo; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
+            else
+              ( . ./TestInfo; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
+            fi
+            build_state=$?
           fi
-          if test $? = 0
+          if test $build_state != 0
           then
-            NEEDBUILD=no
+            for TESTFILE in $TESTS
+            do
+              build_test "$TESTFILE"
+            done
           fi
         fi
 
-        # Now we process each test file in turn.
-        # When cleaning, we only need to do one clean per directory.
+        # Build up a list of the names of all the tests available.
+        declare -A TESTMAP
+        ALLTESTS=""
         for TESTFILE in $TESTS
         do
-          run_test_file
-          if test "$RUNEXIT" != "0"
+          getname $TESTFILE
+          TESTMAP["$TESTNAME"]="$TESTFILE"
+          if test "$ALLTESTS" = ""
           then
-            break
+            ALLTESTS="$TESTNAME"
+          else
+            ALLTESTS="$ALLTESTS $TESTNAME"
           fi
         done
+
+        # Get the values defined for PARALLEL and PARALLEL in TestInfo
+        # These variables should specify the names of sets of tests to
+        # be executed in parallel or sequentially respectively.
+        GSPAR=`( . ./TestInfo; echo "$PARALLEL") 2>&1`
+        GSSEQ=`( . ./TestInfo; echo "$SEQUENCE") 2>&1`
+
+        # When PARALLEL and SEQUENCE are both missing or empty, we treat
+        # it as if SEQUENCE had been set to contain an asterisk so that
+        # all the tests are executed in order.
+        if test "$GSPAR" = "" -a "$GSSEQ" = ""
+        then
+          GSSEQ="*"
+        fi
+
+        # Any occurrence of an asterisk in PARALLEL or SEQUENCE is replaced
+        # by the names of all the tests separated by white space.
+        GSPAR=`echo "$GSPAR" | sed -e "s/\*/ $ALLTESTS /g"`
+        GSSEQ=`echo "$GSSEQ" | sed -e "s/\*/ $ALLTESTS /g"`
+
+        # NB. we check the map to see that a file exists for each test name
+        # because the names we have been given may not exist in the set of
+        # tests being run (ie specified at the cvommand line).
+
+        # Now we process sequence test file in turn.
+        for TESTNAME in $GSSEQ
+        do
+          TESTFILE=${TESTMAP[$TESTNAME]}
+          if test "$TESTFILE" != ""
+          then
+            if test x"$GSVERBOSE" = xyes
+            then
+              echo "Sequence perform $TESTNAME"
+            fi
+            run_test_log $TESTFILE $TESTNAME ${TESTNAME}.out ${TESTNAME}.err
+            proc_test_log $TESTFILE $TESTNAME ${TESTNAME}.out ${TESTNAME}.err
+            if test "$RUNEXIT" != "0"
+            then
+              break
+            fi
+          fi
+        done
+
+        # And process all parallel test files together
+        i=0
+        for TESTNAME in $GSPAR
+        do
+          TESTFILE=${TESTMAP[$TESTNAME]}
+          if test "$TESTFILE" != ""
+          then
+            if test x"$GSVERBOSE" = xyes
+            then
+              echo "Parallel startup TESTNAME"
+            fi
+            run_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err &
+            ((i+=1))
+          fi
+        done
+        wait
+        i=0
+        for TESTNAME in $GSPAR
+        do
+          TESTFILE=${TESTMAP[$TESTNAME]}
+          if test "$TESTFILE" != ""
+          then
+            proc_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err
+            if test "$RUNEXIT" != "0"
+            then
+              break
+            fi
+            ((i+=1))
+          fi
+        done
+
       else
         echo "Start.sh failed in '$TESTDIR' ... tests abandoned."
         for TESTFILE in $TESTS

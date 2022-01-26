@@ -288,6 +288,11 @@ that by setting the MAKEFLAGS environment variable to '-j N' where N is the
 number of simultaneous builds you want to be permitted (or you can simply
 use 'gnustep-tests --sequential' to force building of one test at a time).
 
+Running of the tests is, by default, done sequentially in alphabetical order,
+but this may be overridden to change the order of sequential tests and to run
+tests concurrently.  The mechanism for this is to set values in the TestInfo
+file.
+
 For total control, the framework checks to see if a 'GNUmakefile.tests' file
 exists in the directory, and if it does it uses that file as a template to
 create the GNUmakefile rather than using its own make file.
