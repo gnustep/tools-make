@@ -464,8 +464,9 @@ run_test_log ()
   local TESTLOG=$3
   local TESTVRB=$4
 
-  echo >> $TESTLOG
-  echo Testing $TESTFILE... >> $TESTLOG
+  # Create temporary files
+  echo > $TESTVRB
+  echo Testing $TESTFILE... > $TESTLOG
 
   if test x"$GSVERBOSE" = xyes
   then
