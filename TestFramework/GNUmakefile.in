@@ -24,5 +24,6 @@ include $(GNUSTEP_MAKEFILES)/test-tool.make
 
 after-clean::
 	rm -f core core.* *.core \
+	test_*.log test_*.err \
 	tests.log tests.sum oldtests.log oldtests.sum
 
