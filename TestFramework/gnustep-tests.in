@@ -592,7 +592,7 @@ do
       then
         $MAKE_CMD clean >/dev/null 2>&1
       fi
-      rm -rf core core.* *.core obj GNUmakefile gdb.cmds tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp make-check.mak make-check.env
+      rm -rf core core.* *.core obj GNUmakefile gdb.cmds test_*.err test_*.out tests.log tests.sum oldtests.log oldtests.sum tests.tmp tests.sum.tmp tests.log.tmp make-check.mak make-check.env
 
     else
       echo "--- Running tests in $dir ---"
@@ -754,6 +754,7 @@ ${tmp}_OBJC_FILES=$TESTFILE"
         # tests being run (ie specified at the cvommand line).
 
         # Now we process sequence test file in turn.
+        i=0
         for TESTNAME in $GSSEQ
         do
           TESTFILE=${TESTMAP[$TESTNAME]}
@@ -763,12 +764,13 @@ ${tmp}_OBJC_FILES=$TESTFILE"
             then
               echo "Sequence perform $TESTNAME"
             fi
-            run_test_log $TESTFILE $TESTNAME ${TESTNAME}.out ${TESTNAME}.err
-            proc_test_log $TESTFILE $TESTNAME ${TESTNAME}.out ${TESTNAME}.err
+            run_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err
+            proc_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err
             if test "$RUNEXIT" != "0"
             then
               break
             fi
+            ((i+=1))
           fi
         done
 
@@ -861,7 +863,7 @@ fi
 
 if test "$GSTESTMODE" = "clean"
 then
-  rm -rf core core.* *.core obj GNUmakefile.tmp gdb.cmds tests.tmp tests.sum.tmp tests.log.tmp tests.log tests.sum oldtests.log oldtests.sum
+  rm -rf core core.* *.core obj GNUmakefile.tmp gdb.cmds test_*.err test_*.out tests.tmp tests.sum.tmp tests.log.tmp tests.log tests.sum oldtests.log oldtests.sum
 else
   # Make some stats.
   if test -r tests.sum
@@ -900,7 +902,7 @@ $RUNCMD
 FAILS=$?
 
 # Delete the temporary file.
-rm -f tests.tmp tests.sum.tmp tests.log.tmp
+rm -f test_*.err test_*.out tests.tmp tests.sum.tmp tests.log.tmp
 
 # Our exit status is 0 unless some test failed.
 if test -r "$GSTESTSUM"
