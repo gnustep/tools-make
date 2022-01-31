@@ -12,3 +12,5 @@
 # delimited list of all the available tests in the directory.
 # If neither variable is specified the system assumes SEQUENCE="*" so that
 # all available tests are executed sequentially.
+# Test names may occur more than once, in which case those tests will be
+# executed more than once.

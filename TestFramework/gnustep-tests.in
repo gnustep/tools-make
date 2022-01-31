@@ -489,7 +489,9 @@ proc_test_log ()
   cat $GSTESTSUM.tmp >> $GSTESTSUM
 
   cat $TESTLOG >> $GSTESTLOG
-  rm $TESTLOG
+  rm -f $TESTLOG
+  cat $TESTVRB
+  rm -f $TESTVRB
 
   # If there were failures or skipped tests then report them...
   if present $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
