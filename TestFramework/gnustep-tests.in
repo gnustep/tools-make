@@ -465,12 +465,12 @@ run_test_log ()
   local TESTVRB=$4
 
   # Create temporary files
-  echo > $TESTVRB
+  touch $TESTVRB
   echo Testing $TESTFILE... > $TESTLOG
 
   if test x"$GSVERBOSE" = xyes
   then
-    run_test $TESTFILE $TESTNAME 2>&1 | tee -a $TESTLOG
+    run_test $TESTFILE $TESTNAME 2>&1 | tee -a $TESTLOG >> $TESTVRB
   else
     run_test $TESTFILE $TESTNAME >> $TESTLOG 2>&1
   fi
@@ -786,7 +786,7 @@ ${tmp}_OBJC_FILES=$TESTFILE"
           then
             if test x"$GSVERBOSE" = xyes
             then
-              echo "Parallel startup TESTNAME"
+              echo "Parallel startup $TESTNAME"
             fi
             run_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err &
             ((i+=1))
