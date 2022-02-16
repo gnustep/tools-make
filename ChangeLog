@@ -1,3 +1,10 @@
+2022-02-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in:
+	Fix bug introduced in rewrite for parallelisation: we were getting
+	immediate end of testing when one file failed, but that behavior
+	should only occur when --failfast is specified.
+
 2022-01-26  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/README:

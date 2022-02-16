@@ -435,7 +435,8 @@ run_test ()
       fi
     fi
 
-    if test $? != 0
+    result=$?
+    if test $result != 0
     then
       if test -r $TESTFILE.abort
       then
@@ -474,7 +475,14 @@ run_test_log ()
   else
     run_test $TESTFILE $TESTNAME >> $TESTLOG 2>&1
   fi
-  RUNEXIT=$?
+  result=$?
+  if test "$result" != "0"
+  then
+    if test "$GSTESTMODE" = "failfast"
+    then
+      RUNEXIT=1
+    fi
+  fi
 }
 
 proc_test_log ()
@@ -499,7 +507,10 @@ proc_test_log ()
     echo
     echo $dir/$TESTFILE:
     extract $GSTESTSUM.tmp "^Failed build:" "^Failed file:" "^Failed set:" "^Failed test:" "^Skipped set:"
-    RUNEXIT=1
+    if test "$GSTESTMODE" = "failfast"
+    then
+      RUNEXIT=1
+    fi
   else
     RUNEXIT=0
   fi
@@ -771,7 +782,7 @@ ${tmp}_OBJC_FILES=$TESTFILE"
             proc_test_log $TESTFILE $TESTNAME test_$i.out test_$i.err
             if test "$RUNEXIT" != "0"
             then
-              break
+	      break
             fi
             ((i+=1))
           fi
