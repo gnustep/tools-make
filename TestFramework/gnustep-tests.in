@@ -375,9 +375,9 @@ build_test ()
   echo "$BUILD_CMD"
   if test -r ./make-check.env
   then
-    ( . ./make-check.env; . ./TestInfo; $BUILD_CMD) 2>&1
+    ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; $BUILD_CMD) 2>&1
   else
-    ( . ./TestInfo; $BUILD_CMD) 2>&1
+    ( . ./TestInfo > /dev/null 2>&1; $BUILD_CMD) 2>&1
   fi
 
   if test $? != 0
@@ -429,9 +429,9 @@ run_test ()
     else
       if test -r ./make-check.env
       then
-        ( . ./make-check.env; . ./TestInfo; $RUN_CMD )
+        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; $RUN_CMD )
       else
-        ( . ./TestInfo; $RUN_CMD )
+        ( . ./TestInfo > /dev/null 2>&1; $RUN_CMD )
       fi
     fi
 
@@ -714,9 +714,9 @@ ${tmp}_OBJC_FILES=$TESTFILE"
             echo "Building in $dir" >>$GSTESTLOG
             if test -r ./make-check.env
             then
-              ( . ./make-check.env; . ./TestInfo; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
+              ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
             else
-              ( . ./TestInfo; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
+              ( . ./TestInfo > /dev/null 2>&1; $MAKE_CMD -j 4 debug=yes) >>$GSTESTLOG 2>&1
             fi
             build_state=$?
           fi
@@ -747,8 +747,8 @@ ${tmp}_OBJC_FILES=$TESTFILE"
         # Get the values defined for PARALLEL and PARALLEL in TestInfo
         # These variables should specify the names of sets of tests to
         # be executed in parallel or sequentially respectively.
-        GSPAR=`( . ./TestInfo; echo "$PARALLEL") 2>&1`
-        GSSEQ=`( . ./TestInfo; echo "$SEQUENCE") 2>&1`
+        GSPAR=`( . ./TestInfo > /dev/null 2>&1; echo "$PARALLEL") 2>&1`
+        GSSEQ=`( . ./TestInfo > /dev/null 2>&1; echo "$SEQUENCE") 2>&1`
 
         # When PARALLEL and SEQUENCE are both missing or empty, we treat
         # it as if SEQUENCE had been set to contain an asterisk so that
