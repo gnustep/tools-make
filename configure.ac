@@ -21,7 +21,7 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 AC_INIT
-AC_PREREQ(2.65)
+AC_PREREQ([2.71])
 AC_CONFIG_SRCDIR([application.make])
 AC_CONFIG_MACRO_DIRS([m4])
 
@@ -1152,86 +1152,60 @@ fi
 AC_MSG_CHECKING(whether objc has thread support)
 if test "$OBJC_THREAD" != ""; then
   LIBS="$OBJCRT $LIBS $OBJC_THREAD"
-  AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="$OBJC_THREAD",
-	objc_threaded="", objc_threaded="")
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="$OBJC_THREAD"],[objc_threaded=""],[objc_threaded=""])
 elif test "$host_os" = linux-gnu; then
   LIBS="$OBJCRT -lpthread"
-  AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
-	objc_threaded="", objc_threaded="-lpthread")
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-lpthread"],[objc_threaded=""],[objc_threaded="-lpthread"])
   if test x"$objc_threaded" = x""; then
     LIBS="$OBJCRT"
-    AC_TRY_RUN([#include "config_thread.m"],
-          objc_threaded="works",
-	  objc_threaded="", objc_threaded="works")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
   fi
 elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
   LIBS="-pthread $OBJCRT"
-  AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-pthread",
-       objc_threaded="", objc_threaded="-pthread")
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-pthread"],[objc_threaded=""],[objc_threaded="-pthread"])
   if test x"$objc_threaded" = x""; then
     LIBS="-lpthread $OBJCRT"
-    AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpthread",
-	objc_threaded="", objc_threaded="-lpthread")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-lpthread"],[objc_threaded=""],[objc_threaded="-lpthread"])
   fi
   if test x"$objc_threaded" = x""; then
     LIBS="$OBJCRT -lpcthread"
-    AC_TRY_RUN([#include "config_thread.m"], objc_threaded="-lpcthread",
-	objc_threaded="", objc_threaded="-lpcthread")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-lpcthread"],[objc_threaded=""],[objc_threaded="-lpcthread"])
   fi
   if test x"$objc_threaded" = x""; then
     LIBS="$OBJCRT"
-    AC_TRY_RUN([#include "config_thread.m"],
-          objc_threaded="works",
-	  objc_threaded="", objc_threaded="works")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
   fi
 elif test "$MINGW32" = yes; then
   # Mingw doesn't need anything extra for threads
   LIBS="$OBJCRT $LIBS"
-  AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="works",
-	objc_threaded="", objc_threaded="works")
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
 elif test "$MINGW64" = yes; then
   # Mingw doesn't need anything extra for threads
   LIBS="$OBJCRT $LIBS"
-  AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="works",
-	objc_threaded="", objc_threaded="works")
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
 elif test "$OBJC_RUNTIME_LIB" = "apple"; then
   # Apple doesn't need anything extra for threads
   LIBS="$OBJCRT $LIBS"
-  AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="works",
-	objc_threaded="", objc_threaded="works")
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
 else
   LIBS="$OBJCRT $LIBS"
-  AC_TRY_RUN([#include "config_thread.m"], 
-	objc_threaded="works",
-	objc_threaded="", objc_threaded="")
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded=""])
   if test x"$objc_threaded" = x""; then
     LIBS="$OBJCRT $saved_LIBS -lpthread "
-    AC_TRY_RUN([#include "config_thread.m"], 
-    	objc_threaded="-lpthread", 
-	objc_threaded="", objc_threaded="")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-lpthread"],[objc_threaded=""],[objc_threaded=""])
   fi
   if test x"$objc_threaded" = x""; then
     # Solaris, OpenBSD/sparc
     LIBS="$OBJCRT $saved_LIBS -lpthread -lposix4"
-    AC_TRY_RUN([#include "config_thread.m"], 
-    	objc_threaded="-lpthread -lposix4", 
-	objc_threaded="", objc_threaded="")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-lpthread -lposix4"],[objc_threaded=""],[objc_threaded=""])
   fi
   if test x"$objc_threaded" = x""; then
     LIBS="$OBJCRT $saved_LIBS -lthread "
-    AC_TRY_RUN([#include "config_thread.m"], 
-    	objc_threaded="-lthread", 
-	objc_threaded="", objc_threaded="")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-lthread"],[objc_threaded=""],[objc_threaded=""])
   fi
   if test x"$objc_threaded" = x""; then
     LIBS="$OBJCRT"
-    AC_TRY_RUN([#include "config_thread.m"], 
-          objc_threaded="works",
-	  objc_threaded="", objc_threaded="works")
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
   fi
 fi
 if test x"$objc_threaded" = x""; then
