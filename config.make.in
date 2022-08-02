@@ -154,16 +154,6 @@ LEX             = lex
 CHOWN           = chown
 STRIP           = strip
 
-# The Windows MSVC toolchain does not support debugging via the default
-# debugger gdb, this is why lldb is used instead.
-# 1. gdb can't read MSVC-compiled executables
-# 2. gdb is distributed with an MinGW environment
-ifeq (@target_os@,windows)
-  DEBUGGER = lldb
-else
-  DEBUGGER = gdb
-endif
-
 INSTALL		= @HOST_INSTALL@
 INSTALL_PROGRAM	= @INSTALL_PROGRAM@
 INSTALL_DATA	= @INSTALL_DATA@
