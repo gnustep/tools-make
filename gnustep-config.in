@@ -184,6 +184,10 @@ case "$1" in
               exit 0;;
   --variable=LDFLAGS) echo "@LDFLAGS@"
               exit 0;;
+  --variable=EXEEXT) echo "@EXEEXT@"
+              exit 0;;
+  --variable=DEBUGGER) echo "@DEBUGGER@"
+              exit 0;;
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
               exit 0;;
   --variable=GNUMAKE) echo "@GNUMAKE@"
