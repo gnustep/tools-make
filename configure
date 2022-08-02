@@ -5389,8 +5389,6 @@ printf "%s\n" "$ac_cv_path_EGREP" >&6; }
 
 
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for debugger..." >&5
-printf %s "checking for debugger...... " >&6; }
 # Search for a debugger. We try 'gdb' then 'lldb'.  If
 # we can't find it, we set it to 'gdb', even if that will fail later
 # on.
@@ -5445,8 +5443,6 @@ test -n "$DEBUGGER" || DEBUGGER="gdb"
 
 # Used by gnustep-config to output the debugger variable and
 # gnustep-tests.
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $DEBUGGER" >&5
-printf "%s\n" "$DEBUGGER" >&6; }
 
 
 #--------------------------------------------------------------------
@@ -7476,8 +7472,8 @@ fi
     if test x"$GNUSTEP_HAS_PKGCONFIG" = x"yes" -a x"$OBJC_LIB_FLAG" = x""; then
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libobjc" >&5
-printf %s "checking for libobjc... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libobjc >= 2" >&5
+printf %s "checking for libobjc >= 2... " >&6; }
 
 if test -n "$libobjc_CFLAGS"; then
     pkg_cv_libobjc_CFLAGS="$libobjc_CFLAGS"
@@ -7517,7 +7513,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -7584,7 +7580,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -7611,7 +7607,7 @@ Alternatively, you may set the environment variables libobjc_CFLAGS
 and libobjc_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
@@ -7636,7 +7632,7 @@ fi
 fi
 
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
             if test -n "$PKG_CONFIG" && \
@@ -7689,7 +7685,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -7716,7 +7712,7 @@ Alternatively, you may set the environment variables libobjc_CFLAGS
 and libobjc_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}

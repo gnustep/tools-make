@@ -85,7 +85,6 @@ AC_PROG_OBJCXX
 # We may use egrep for some tests further down below
 AC_PROG_EGREP
 
-AC_MSG_CHECKING([for debugger...])
 # Search for a debugger. We try 'gdb' then 'lldb'.  If
 # we can't find it, we set it to 'gdb', even if that will fail later
 # on.
@@ -93,7 +92,6 @@ AC_CHECK_PROGS(DEBUGGER, [gdb lldb], gdb)
 
 # Used by gnustep-config to output the debugger variable and
 # gnustep-tests.
-AC_MSG_RESULT($DEBUGGER)
 AC_SUBST(DEBUGGER)
 
 #--------------------------------------------------------------------
