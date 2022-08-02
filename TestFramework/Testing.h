@@ -473,8 +473,15 @@ static void testStart()
     BOOL _save_hopeful = testHopeful; \
     unsigned _save_indentation = testIndentation; \
     int	_save_line = __LINE__; \
-    char *_save_set = (char*)malloc(strlen(setName) + 1); \
+    size_t _save_set_size = strlen(setName) + 1 \
+    char *_save_set = (char*)malloc(_save_set_size); \
+/* strncpy is deprecated on MSVC
+ */
+#if defined(_MSC_VER)
+    strncpy_s(_save_set, _save_set_size, setName, _save_set_size); \
+#else
     strncpy(_save_set, setName, strlen(setName) + 1); \
+#endif
     fprintf(stderr, "Start set:       "); \
     testIndent(); \
     fprintf(stderr, "%s:%d ... %s\n", __FILE__, __LINE__, _save_set); \
