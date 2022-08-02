@@ -40,6 +40,14 @@
 id __work_around_clang_bug = @"__unused__";
 #endif
 
+/* strncpy is deprecated on Windows MSVC. Use strncpy_s instead.
+ */
+#if defined(_MSC_VER)
+    #define STRNCPY(dest, size_dest, src, size_src) strncpy_s(dest, size_dest, src, size_src);
+#else
+    #define STRNCPY(dest, size_dest, src, size_src) strncpy(dest, src, size_dest);
+#endif
+
 /* A flag indicating that the testsuite is currently processing tests
  * which are actually not expected to pass, but where we hope someone
  * might have committed a bugfix.
@@ -473,15 +481,9 @@ static void testStart()
     BOOL _save_hopeful = testHopeful; \
     unsigned _save_indentation = testIndentation; \
     int	_save_line = __LINE__; \
-    size_t _save_set_size = strlen(setName) + 1 \
+    size_t _save_set_size = strlen(setName) + 1; \
     char *_save_set = (char*)malloc(_save_set_size); \
-/* strncpy is deprecated on MSVC
- */
-#if defined(_MSC_VER)
-    strncpy_s(_save_set, _save_set_size, setName, _save_set_size); \
-#else
-    strncpy(_save_set, setName, strlen(setName) + 1); \
-#endif
+    STRNCPY(_save_set, _save_set_size, setName, _save_set_size); \
     fprintf(stderr, "Start set:       "); \
     testIndent(); \
     fprintf(stderr, "%s:%d ... %s\n", __FILE__, __LINE__, _save_set); \
