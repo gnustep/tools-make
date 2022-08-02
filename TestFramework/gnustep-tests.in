@@ -522,11 +522,11 @@ proc_test_log ()
     if present "$GSTESTSUM.tmp" "^Failed test:"
     then
       grep '^Failed test:' "$GSTESTLOG.tmp" | sed -e 's/^Failed test:[^:]*:\([0-9][0-9]*\).*/break testStart if testLineNumber==\1/' > "$GSTESTDBG"
-      DEBUGGER "./obj/$TESTNAME"EXT -x "$GSTESTDBG"
+      $DEBUGGER "./obj/$TESTNAME"$EXT -x "$GSTESTDBG"
       rm -f "$GSTESTDBG"
     elif present "$GSTESTSUM.tmp" "^Failed file:"
     then
-      DEBUGGER "./obj/$TESTNAME"EXT
+      $DEBUGGER "./obj/$TESTNAME"$EXT
     fi
   fi
 
