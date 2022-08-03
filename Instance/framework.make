@@ -299,6 +299,11 @@ SONAME_FRAMEWORK_FILE  = $(FRAMEWORK_LIBRARY_FILE)
 # as under Unix.
 LIB_LINK_DLL_FILE    = $(DLL_PREFIX)$(GNUSTEP_INSTANCE)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_LIBEXT)
 
+# LIB_LINK_PDB_FILE is the PDB symbol file. The program database (PDB)
+# includes instructions for formatting trace messages so that they
+# can be presented in a human-readable display.
+LIB_LINK_PDB_FILE  = $(DLL_PREFIX)$(GNUSTEP_INSTANCE)-$(subst .,_,$(INTERFACE_VERSION))$(DLL_PDBEXT)
+
 FRAMEWORK_OBJ_EXT = $(DLL_LIBEXT)
 endif # BUILD_DLL
 
