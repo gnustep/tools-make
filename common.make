@@ -747,6 +747,12 @@ ifeq ($(debug), yes)
   ifneq ($(filter -g, $(OPTFLAG)), -g)
     ADDITIONAL_FLAGS += -g
   endif
+
+  # Embed PDB Debug Info on Windows MSVC
+  ifeq (@target_os@,windows)
+    LDFLAGS += -debug
+  endif
+
   # Add standard debug compiler flags.
   ADDITIONAL_FLAGS += -DDEBUG -fno-omit-frame-pointer
 
