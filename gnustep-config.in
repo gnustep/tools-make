@@ -70,6 +70,8 @@ if [ "$1" = "--help" ]; then
     echo "    --variable=CXX"
     echo "    --variable=OBJCXX"
     echo "    --variable=LDFLAGS"
+    echo "    --variable=EXEEXT"
+    echo "    --variable=DEBUGGER"
     echo "    --variable=GNUMAKE"
     echo "    --variable=GNUSTEP_MAKEFILES"
     echo "    --variable=GNUSTEP_USER_DEFAULTS_DIR"
@@ -183,6 +185,10 @@ case "$1" in
   --variable=CPPFLAGS) echo "@CPPFLAGS@"
               exit 0;;
   --variable=LDFLAGS) echo "@LDFLAGS@"
+              exit 0;;
+  --variable=EXEEXT) echo "@EXEEXT@"
+              exit 0;;
+  --variable=DEBUGGER) echo "@DEBUGGER@"
               exit 0;;
   --variable=GNUSTEP_MAKEFILES) echo "$GNUSTEP_MAKEFILES"
               exit 0;;

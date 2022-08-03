@@ -730,6 +730,7 @@ CLANG_CC
 CYGWIN
 cc_bundle
 cc_cppprecomp
+DEBUGGER
 EGREP
 GREP
 ac_ct_OBJCXX
@@ -5388,6 +5389,62 @@ printf "%s\n" "$ac_cv_path_EGREP" >&6; }
 
 
 
+# Search for a debugger. We try 'gdb' then 'lldb'.  If
+# we can't find it, we set it to 'gdb', even if that will fail later
+# on.
+for ac_prog in gdb lldb
+do
+  # Extract the first word of "$ac_prog", so it can be a program name with args.
+set dummy $ac_prog; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_prog_DEBUGGER+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  if test -n "$DEBUGGER"; then
+  ac_cv_prog_DEBUGGER="$DEBUGGER" # Let the user override the test.
+else
+as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_prog_DEBUGGER="$ac_prog"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+fi
+fi
+DEBUGGER=$ac_cv_prog_DEBUGGER
+if test -n "$DEBUGGER"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $DEBUGGER" >&5
+printf "%s\n" "$DEBUGGER" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+  test -n "$DEBUGGER" && break
+done
+test -n "$DEBUGGER" || DEBUGGER="gdb"
+
+
+# Used by gnustep-config to output the debugger variable and
+# gnustep-tests.
+
+
 #--------------------------------------------------------------------
 # Check if we are using Apple cc
 #--------------------------------------------------------------------
@@ -7415,8 +7472,8 @@ fi
     if test x"$GNUSTEP_HAS_PKGCONFIG" = x"yes" -a x"$OBJC_LIB_FLAG" = x""; then
 
 pkg_failed=no
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libobjc" >&5
-printf %s "checking for libobjc... " >&6; }
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for libobjc >= 2" >&5
+printf %s "checking for libobjc >= 2... " >&6; }
 
 if test -n "$libobjc_CFLAGS"; then
     pkg_cv_libobjc_CFLAGS="$libobjc_CFLAGS"
@@ -7456,7 +7513,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -7523,7 +7580,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -7550,7 +7607,7 @@ Alternatively, you may set the environment variables libobjc_CFLAGS
 and libobjc_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
@@ -7575,7 +7632,7 @@ fi
 fi
 
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
             if test -n "$PKG_CONFIG" && \
@@ -7628,7 +7685,7 @@ fi
 
 
 if test $pkg_failed = yes; then
-   	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 
 if $PKG_CONFIG --atleast-pkgconfig-version 0.20; then
@@ -7655,7 +7712,7 @@ Alternatively, you may set the environment variables libobjc_CFLAGS
 and libobjc_LIBS to avoid the need to call pkg-config.
 See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
-     	{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
 	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
