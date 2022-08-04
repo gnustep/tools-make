@@ -50,6 +50,7 @@ export GSTESTDIR
 GSTESTMODE=normal
 
 GSMAKEOPTIONS="debug=yes"
+GSVERBOSECFLAG=
 
 # Argument checking
 while test $# != 0
@@ -91,6 +92,7 @@ do
     --verbose)
       GSVERBOSE=yes
       GSMAKEOPTIONS+=" messages=yes"
+      GSVERBOSECFLAG="-v"
       ;;
     --failfast)
       GSTESTMODE=failfast
