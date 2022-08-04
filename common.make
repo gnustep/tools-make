@@ -749,8 +749,8 @@ ifeq ($(debug), yes)
   endif
 
   # Embed PDB Debug Info on Windows MSVC
-  ifeq (@target_os@,windows)
-    LDFLAGS += -debug
+  ifeq ($GNUSTEP_TARGET_OS,windows)
+    LDFLAGS += -Wl,-debug
   endif
 
   # Add standard debug compiler flags.
