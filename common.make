@@ -747,7 +747,6 @@ ifeq ($(debug), yes)
   ifneq ($(filter -g, $(OPTFLAG)), -g)
     ADDITIONAL_FLAGS += -g
   endif
-
   # Add standard debug compiler flags.
   ADDITIONAL_FLAGS += -DDEBUG -fno-omit-frame-pointer
 
