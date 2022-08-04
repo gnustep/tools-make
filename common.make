@@ -748,11 +748,6 @@ ifeq ($(debug), yes)
     ADDITIONAL_FLAGS += -g
   endif
 
-  # Embed PDB Debug Info on Windows MSVC
-  ifeq ($GNUSTEP_TARGET_OS,windows)
-    LDFLAGS += -Wl,-debug
-  endif
-
   # Add standard debug compiler flags.
   ADDITIONAL_FLAGS += -DDEBUG -fno-omit-frame-pointer
 
