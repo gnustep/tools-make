@@ -43,6 +43,14 @@ endif
 INTERNAL_CFLAGS = -pthread
 INTERNAL_OBJCFLAGS = -pthread
 INTERNAL_LDFLAGS =
+  
+ifeq ($(debug), yes)
+  # Embed PDB Debug Info on Windows MSVC
+  ifeq ($(findstring windows, $(GNUSTEP_TARGET_OS)), windows)
+    INTERNAL_LDFLAGS += -Wl,-debug
+  endif
+endif
+
 ifneq ($(findstring android, $(GNUSTEP_TARGET_OS)), android)
 	ifneq ($(GNUSTEP_TARGET_OS), windows)
 		INTERNAL_LDFLAGS = -pthread
