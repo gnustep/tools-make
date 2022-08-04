@@ -106,7 +106,7 @@ do
       echo "Use 'gnustep-tests --documentation' for full details."
       echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
       echo "Use 'gnustep-tests --failfast' to stop after the first failure."
-      echo "Use 'gnustep-tests --debug' to run gdb for any failed tests."
+      echo "Use 'gnustep-tests --debug' to run gdb/lldb for any failed tests."
       echo "Use 'gnustep-tests --make-debug' to enable make debug output."
       echo "Use 'gnustep-tests --make-no-silent' to disable silent make output."
       echo "Use 'gnustep-tests --developer' to treat hopes as real tests."
