@@ -1169,6 +1169,13 @@ elif test "$host_os" = linux-gnu; then
     LIBS="$OBJCRT"
     AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
   fi
+elif test "$host_os" = linux-musl; then
+  LIBS="$OBJCRT -lpthread"
+  AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-lpthread"],[objc_threaded=""],[objc_threaded="-lpthread"])
+  if test x"$objc_threaded" = x""; then
+    LIBS="$OBJCRT"
+    AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="works"],[objc_threaded=""],[objc_threaded="works"])
+  fi
 elif test "`echo $host_os|sed 's/[[0-9]].*//'|sed s/elf//`" = freebsd; then
   LIBS="-pthread $OBJCRT"
   AC_RUN_IFELSE([AC_LANG_SOURCE([[#include "config_thread.m"]])],[objc_threaded="-pthread"],[objc_threaded=""],[objc_threaded="-pthread"])
