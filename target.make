@@ -24,6 +24,9 @@
 # the 'shared' variable, because we have not set it up yet when this
 # file is processed!
 
+# variable to for all OSs treated as Linux and Linux-like
+IS_LINUX = no
+
 #
 # Host and target specific settings
 #
@@ -497,12 +500,23 @@ endif
 
 ####################################################
 #
-# Linux ELF with GNU or GNU/Hurd
+# Linux ELF with GNU or GNU/HURD
 #
 # The following ifeq matches both 'linux-gnu' (which is GNU/Linux ELF)
 # and 'gnu0.3' (I've been told GNUSTEP_TARGET_OS is 'gnu0.3' on
-# GNU/Hurd at the moment).  We want the same code in both cases.
+# GNU/Hurd at the moment).
+# We treat GNU/HURD as GNU/Linux for now
 ifeq ($(findstring gnu, $(GNUSTEP_TARGET_OS)), gnu)
+IS_LINUX = yes
+endif
+
+# The following ifeq matches 'linux-musl' but does not re-match 'linux-gnu'
+# We treat is as GNU/Linux
+ifeq ($(findstring linux-musl, $(GNUSTEP_TARGET_OS)), linux-musl)
+IS_LINUX = yes
+endif
+
+ifeq ($(IS_LINUX), yes)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         $(LD) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
@@ -545,57 +559,6 @@ STATIC_LDFLAGS += -static
 endif
 #
 # end Linux ELF
-#
-####################################################
-
-####################################################
-#
-# Linux ELF with MUSL
-#
-# The following ifeq matches 'linux-musl' but does not re-match 'linux-gnu'
-ifeq ($(findstring linux-musl, $(GNUSTEP_TARGET_OS)), linux-musl)
-HAVE_SHARED_LIBS        = yes
-SHARED_LIB_LINK_CMD     = \
-        $(LD) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
-           $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
-	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
-	   $(SHARED_LD_POSTFLAGS) \
-	&& (cd $(LIB_LINK_OBJ_DIR); \
-          $(RM_LN_S) $(LIB_LINK_FILE); \
-          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
-            $(RM_LN_S) $(LIB_LINK_SONAME_FILE);\
-            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
-          fi; \
-          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
-	)
-AFTER_INSTALL_SHARED_LIB_CMD = \
-	(cd $(LIB_LINK_INSTALL_DIR); \
-          $(RM_LN_S) $(LIB_LINK_FILE); \
-          if [ "$(LIB_LINK_SONAME_FILE)" != "$(LIB_LINK_VERSION_FILE)" ]; then\
-            $(RM_LN_S) $(LIB_LINK_SONAME_FILE);\
-            $(LN_S) $(LIB_LINK_VERSION_FILE) $(LIB_LINK_SONAME_FILE); \
-          fi; \
-          $(LN_S) $(LIB_LINK_SONAME_FILE) $(LIB_LINK_FILE); \
-	)
-AFTER_INSTALL_SHARED_LIB_CHOWN = \
-	(cd $(LIB_LINK_INSTALL_DIR); \
-	chown $(CHOWN_TO) $(LIB_LINK_SONAME_FILE); \
-	chown $(CHOWN_TO) $(LIB_LINK_FILE))
-
-OBJ_MERGE_CMD		= \
-	$(LD) -nostdlib $(OBJ_MERGE_CMD_FLAG) $(CORE_LDFLAGS) -o $(GNUSTEP_OBJ_DIR)/$(SUBPROJECT_PRODUCT) $^ ;
-
-SHARED_CFLAGS      += -fPIC
-SHARED_LIBEXT      =  .so
-
-HAVE_BUNDLES       =  yes
-BUNDLE_LD	   =  $(LD)
-BUNDLE_LDFLAGS     += -shared
-FINAL_LDFLAGS      = -rdynamic
-STATIC_LDFLAGS += -static
-endif
-#
-# end Linux ELF - MUSL
 #
 ####################################################
 
