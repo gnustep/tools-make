@@ -24,6 +24,9 @@
 # the 'shared' variable, because we have not set it up yet when this
 # file is processed!
 
+# variable to for all OSs treated as Linux and Linux-like
+IS_LINUX = no
+
 #
 # Host and target specific settings
 #
@@ -497,12 +500,23 @@ endif
 
 ####################################################
 #
-# Linux ELF or GNU/Hurd
+# Linux ELF with GNU or GNU/HURD
 #
 # The following ifeq matches both 'linux-gnu' (which is GNU/Linux ELF)
 # and 'gnu0.3' (I've been told GNUSTEP_TARGET_OS is 'gnu0.3' on
-# GNU/Hurd at the moment).  We want the same code in both cases.
+# GNU/Hurd at the moment).
+# We treat GNU/HURD as GNU/Linux for now
 ifeq ($(findstring gnu, $(GNUSTEP_TARGET_OS)), gnu)
+IS_LINUX = yes
+endif
+
+# The following ifeq matches 'linux-musl' but does not re-match 'linux-gnu'
+# We treat is as GNU/Linux
+ifeq ($(findstring linux-musl, $(GNUSTEP_TARGET_OS)), linux-musl)
+IS_LINUX = yes
+endif
+
+ifeq ($(IS_LINUX), yes)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
         $(LD) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
