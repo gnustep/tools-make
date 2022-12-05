@@ -1,3 +1,11 @@
+2022-12-05  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in: use the -a option to force grep
+	to treat log files as text rather than binary.  If treated as binary
+	it would not extract the information we need.
+	* TestFramework/Testing.h: fix uninitialised variable in the macro
+	to test for a regexp match.
+
 2022-03-01  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in:
