@@ -340,18 +340,15 @@ static void testStart()
       _pat = (id)(testExpect__);\
       _exp = [[[NSRegularExpression alloc] initWithPattern: _pat \
         options: 0 error: 0] autorelease];\
+      _cond = 0; \
       if (nil != _dsc && nil != _exp) \
         { \
           NSRange       r = NSMakeRange(0, [_dsc length]);\
           r = [_exp rangeOfFirstMatchInString: _dsc options: 0 range: r];\
           if (r.length > 0)\
             { \
-              _cond = YES; \
+              _cond = 1; \
             } \
-        } \
-      else \
-        { \
-          _cond = NO; \
         } \
       pass(_cond, "%s:%d ... " testFormat__, __FILE__, \
         __LINE__, ## __VA_ARGS__); \
