@@ -8,6 +8,8 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 TEST_TOOL_NAME = @TESTNAMES@
 
+ADDITIONAL_CPPFLAGS += -I$(GNUSTEP_MAKEFILES)/TestFramework
+
 ifeq ($(gcov),yes)
 ADDITIONAL_OBJCFLAGS += -ftest-coverage -fprofile-arcs
 ADDITIONAL_OBJCCFLAGS += -ftest-coverage -fprofile-arcs
