@@ -4,6 +4,16 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.9.1
+
+Test framework has workaround for clang issues when building with MSCV.
+
+A few minor test framework issues inroduced by the parallelisation rewrite are fixed.
+
+A bug in the PASS_MATCH macro is fixed.
+
+The test framework makefiles now automatically add the framework header directory to the compiler flags, so testcases can be more reliably built by invoking make directly (rather than via the gnustep-tests script).
+
 @section Version 2.9.0
 
 We have improved support for newer GCC versions (GCC9 and newer).

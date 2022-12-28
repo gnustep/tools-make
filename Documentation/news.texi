@@ -9,6 +9,18 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.9.1}
+
+@itemize
+
+@item  Add workaround for Clang bug on Windows MSVC when tests contain no Objective-C constructs.
+
+@item  Various fixes for minor issues introduced in the test framework by parallelisation mof testcase execution.
+
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.9.0}
 
 @itemize
@@ -37,8 +49,6 @@ mingw-w64 project rather than using the one returned by autoconf. Fixes building
 Gorm.
 
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.8.0}
 

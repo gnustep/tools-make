@@ -1,3 +1,13 @@
+2022-12-28  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * ANNOUNCE:
+	* NEWS:
+	* RELEASENOTES:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Update announcement and release notes for 2.9.1.
+	* Version: Bump version to 2.9.1.
+
 2022-12-05  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in: use the -a option to force grep
