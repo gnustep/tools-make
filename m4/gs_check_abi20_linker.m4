@@ -11,7 +11,7 @@ AC_DEFUN([GS_CHECK_ABI20_LINKER], [dnl
     AC_REQUIRE([AC_PROG_CC])
     AC_REQUIRE([AC_PROG_GREP])
     AC_CACHE_CHECK([for an gnustep-2.0 ABI compatible linker],[gs_cv_abi20_linker], [dnl
-        gs_cv_abi20_linker="unkown"
+        gs_cv_abi20_linker="unknown"
         AS_VAR_PUSHDEF([LD], [gs_cv_abi20_linker_prog])
         LD=$($CC --print-prog-name=ld)
         if $LD --version | $GREP -q 'GNU ld'; then
