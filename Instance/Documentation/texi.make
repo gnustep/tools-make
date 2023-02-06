@@ -106,7 +106,7 @@ $(OUTFILE).pdf: $(TEXI_FILES)
 # so after running it we try to move any from the subdirectory to
 # where they are expected.
 $(OUTFILE)/index.html: $(TEXI_FILES)
-	-$(GNUSTEP_TEXI2HTML) \
+	-$(GNUSTEP_TEXI2HTML) --output=$(OUTFILE) \
                 $(GNUSTEP_TEXI2HTML_FLAGS) $(ADDITIONAL_TEXI2HTML_FLAGS) \
 		$(GNUSTEP_INSTANCE).texi; \
                 if [ -f $(OUTFILE)/$(OUTFILE)_toc.html ]; \
