@@ -1,3 +1,9 @@
+2023-02-06  Riccard Mottola <rm@gnu.org>
+
+	* Master/source-distribution.make
+	Try to implement .dist-ignore support for git-dist: after archive,
+	export and recompress again by excluding .dist-ignore
+
 2022-12-28  Richard Frith-Macdonald <rfm@gnu.org>
 
         * ANNOUNCE:

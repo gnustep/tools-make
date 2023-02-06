@@ -447,7 +447,13 @@ endif
 git-dist:
 	$(ECHO_NOTHING)echo "Exporting from branch or tag $(GIT_TAG_NAME)-$(VERTAG) on local Git repository..."; \
 	if $(GIT) show $(GIT_TAG_NAME)-$(VERTAG):.dist-ignore 2>/dev/null >/dev/null; then \
-          echo "*Error* cannot export: dist-ignore is currently unused"; \
+	  $(GIT) archive --format=tar.gz $(GIT_TAG_NAME)-$(VERTAG) -o $(ARCHIVE_FILE) --prefix=$(VERSION_NAME)/ ; \
+	  echo "Extracting $(ARCHIVE_FILE)"; \
+	  $(TAR) xzf $(ARCHIVE_FILE); \
+	  rm $(ARCHIVE_FILE); \
+	  $(TAR) cfX - $(VERSION_NAME)/.dist-ignore $(VERSION_NAME) \
+	      | $(COMPRESSION_PROGRAM) > $(ARCHIVE_FILE); \
+	  rm -rf $(VERSION_NAME);                  \
 	else \
 	  $(GIT) archive --format=tar.gz $(GIT_TAG_NAME)-$(VERTAG) -o $(ARCHIVE_FILE) --prefix=$(VERSION_NAME)/ ; \
         fi ; \
