@@ -110,9 +110,9 @@ APP_FILE = $(GNUSTEP_BUILD_DIR)/$(APP_FILE_NAME)
 # application (Gorm.exe).  Using this terminology, just add
 # Gorm.app/Gorm.exe.a to the list of objects you link and you get it
 # working.  TODO: Move this into target.make
-ifeq ($(BUILD_DLL), yes)
-  ALL_LDFLAGS += -Wl,--export-all-symbols -Wl,--out-implib,$(GNUSTEP_BUILD_DIR)/$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE).exe$(LIBEXT)
-endif
+#ifeq ($(BUILD_DLL), yes)
+#  ALL_LDFLAGS += -Wl,--export-all-symbols -Wl,--out-implib,$(GNUSTEP_BUILD#_DIR)/$(APP_DIR_NAME)/$(GNUSTEP_TARGET_LDIR)/$(GNUSTEP_INSTANCE).exe$(LIBE#XT)
+#endif
 
 # If building on MinGW, also mark the application as a 'GUI'
 # application.  This prevents an ugly terminal window from being
