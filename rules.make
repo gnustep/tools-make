@@ -204,7 +204,20 @@ ifeq ($(AUTO_DEPENDENCIES_FLAGS),)
 endif
 endif
 
+#
+# Detect ARC support
 ifeq ($(OBJC_RUNTIME_LIB), ng)
+  GS_RUNTIME_HAS_ARC = 1
+endif
+ifeq ($(OBJC_RUNTIME_LIB), apple)
+  DARWIN_VERSION = $(patsubst darwin%,%,$(filter darwin%, $(GNUSTEP_TARGET_OS)))
+# Initial release of ARC in darwin10
+  ifeq ($(shell echo "$(DARWIN_VERSION) >= 10" | bc), 1)
+    GS_RUNTIME_HAS_ARC = 1
+  endif
+endif
+
+ifneq ($(GS_RUNTIME_HAS_ARC),)
   # Projects may control the use of ARC by defining GS_WITH_ARC=1
   # or GS_WITH_ARC=0 in their GNUmakefile, or in the environment,
   # or as an argument to the 'make' command.
