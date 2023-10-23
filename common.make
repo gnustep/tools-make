@@ -745,7 +745,7 @@ ifeq ($(debug), yes)
   ADDITIONAL_FLAGS := $(filter-out -O%, $(ADDITIONAL_FLAGS))
   # If OPTFLAG does not already include -g, add it here.
   ifneq ($(filter -g, $(OPTFLAG)), -g)
-    ADDITIONAL_FLAGS += -g
+    OPTFLAG += -g
   endif
   # Add standard debug compiler flags.
   ADDITIONAL_FLAGS += -DDEBUG -fno-omit-frame-pointer
@@ -757,6 +757,16 @@ else
 
   # The following is for Java.
   INTERNAL_JAVACFLAGS += -O
+endif
+
+# On Windows MSVC we also need -gcodeview to generate debug symbols, and since
+# Autoconf does not add it we add it here.
+ifeq ($(GNUSTEP_TARGET_OS), windows)
+  ifeq ($(filter -g, $(OPTFLAG)), -g)
+    ifneq ($(filter -gcodeview, $(OPTFLAG)), -gcodeview)
+      OPTFLAG += -gcodeview
+    endif
+  endif
 endif
 
 ifeq ($(warn), no)
