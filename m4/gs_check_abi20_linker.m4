@@ -10,7 +10,6 @@
 AC_DEFUN([GS_CHECK_ABI20_LINKER], [
   AC_MSG_CHECKING([which linker is being used])
 
-  # Write a simple test program to a file.
   echo 'int main() { return 0; }' > conftest.c
 
   # Try compiling with verbose output to capture linker information.
