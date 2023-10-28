@@ -17,7 +17,7 @@ the user to easily create cross-compiled binaries.
 
 The file 'NEWS' has this packages feature history.
 
-   The files 'INSTALL' or 'GNUstep-HOWTO' give instructions for
+   The files 'INSTALL' give instructions for
 installing the packages.  Also see the 'machines' documentation and
 various machine specific READMEs in the Documentation directory.
 
