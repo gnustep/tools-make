@@ -7,27 +7,36 @@
 #   This macro checks whether we are using a linker that has known problems with the gnustep-2.0 ABI.
 #   If so, we currently just print a warning because we don't have a 100% accurate way of checking yet.
 #
-AC_DEFUN([GS_CHECK_ABI20_LINKER], [dnl
-    AC_REQUIRE([AC_PROG_CC])
-    AC_REQUIRE([AC_PROG_GREP])
-    AC_CACHE_CHECK([for an gnustep-2.0 ABI compatible linker],[gs_cv_abi20_linker], [dnl
-        gs_cv_abi20_linker="unknown"
-        AS_VAR_PUSHDEF([LD], [gs_cv_abi20_linker_prog])
-        LD=$($CC --print-prog-name=ld)
-        if $LD --version | $GREP -q 'GNU ld'; then
-            gs_cv_abi20_linker="unlikely (GNU ld)"
-        elif $LD --version | $GREP -q 'GNU gold'; then
-            gs_cv_abi20_linker="yes (GNU gold)"
-        elif $LD --version | $GREP -q 'LLD'; then
-            gs_cv_abi20_linker="yes (LLD)"
-        fi
-        AS_VAR_POPDEF([LD])
-    ])
-    if echo "$gs_cv_abi20_linker" | $GREP -q '^yes'; then
-        _gs_abi20_linker=yes
-    else
-        _gs_abi20_linker=no
-        AC_MSG_WARN([The detected linker might not produce working Objective-C binaries using the gnustep-2.0 ABI. Consider using gold or LLD.])
-    fi
-    AS_VAR_IF([_gs_abi20_linker], ["yes"], [$1], [$2])
+AC_DEFUN([GS_CHECK_ABI20_LINKER], [
+  AC_MSG_CHECKING([which linker is being used])
+
+  # Write a simple test program to a file.
+  echo 'int main() { return 0; }' > conftest.c
+
+  # Try compiling with verbose output to capture linker information.
+  $CC $CFLAGS $LDFLAGS -o conftest conftest.c -Wl,--verbose > compile.log 2>&1
+
+  # Determine which linker is being used based on the log.
+  linker="unknown"  # Default to unknown.
+  if grep -q "GNU ld" compile.log; then
+    linker="GNU ld"
+  # GNU gold does not print a header line, so we just check for "gold".
+  elif grep -q "gold" compile.log; then
+    linker="GNU gold"
+  # LLD does not print a header line, so we just check for "lld".
+  elif grep -q "lld" compile.log; then
+    linker="lld"
+  fi
+
+  AC_MSG_RESULT([$linker])
+
+  # Clean up the test artifacts.
+  rm -f conftest.c conftest
+
+  # Based on the identified linker, we may want to display a warning or take other actions.
+  if test "x$linker" = "xGNU ld"; then
+    AC_MSG_WARN([The detected linker (GNU ld) might not produce working Objective-C binaries using the gnustep-2.0 ABI. Consider using GNU gold or LLD.])
+  elif test "x$linker" = "xunknown" && test -n "$explicit_linker_flag"; then
+    AC_MSG_WARN([Unable to confirm if the explicitly specified linker '$explicit_linker_flag' is compatible with the gnustep-2.0 ABI.])
+  fi
 ])
