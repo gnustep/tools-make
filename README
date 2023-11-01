@@ -17,9 +17,9 @@ the user to easily create cross-compiled binaries.
 
 The file 'NEWS' has this packages feature history.
 
-   The files 'INSTALL' or 'GNUstep-HOWTO' give instructions for
-installing the packages.  Also see the 'machines' documentation and
-various machine specific READMEs in the Documentation directory.
+   The file 'INSTALL' gives instructions for configuring and installing
+gnustep-make.  Also see the 'machines' documentation
+and various machine specific READMEs in the Documentation directory.
 
    Files in the 'Documentation' directory have information on the design
 of the Makefile system and how to write your own makefiles that work
