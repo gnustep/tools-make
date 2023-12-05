@@ -1,3 +1,9 @@
+2023-12-05  Yavor Doganov  <yavor@gnu.org>
+
+	* Documentation/gnustep-make.texi: Fix PDF generation with
+	texinfo/7.1; reorder sectioning commands.
+	* Documentation/gnustep-filesystem.texi: Likewise.
+
 2022-02-06  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/texi.make: for index.html specify explicit

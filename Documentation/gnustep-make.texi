@@ -44,7 +44,7 @@ any later version published by the Free Software Foundation.
 
 @c Makefile Package Chapter
 @node Top, Makefile Introduction, (dir), (dir)
-@chapter Makefile Package
+@top Makefile Package
 
 @menu
 * Makefile Introduction::       
@@ -58,7 +58,7 @@ any later version published by the Free Software Foundation.
 @end menu
 
 @node Makefile Introduction, Makefile Structure, Top, Top
-@section Introduction
+@chapter Introduction
 
 The Makefile package is a system of make commands that is designed to
 encapsulate all the complex details of building and installing various types
@@ -68,7 +68,7 @@ a fairly simple main makefile need to be written which specifies the
 type of project and files involved in the project.
 
 @node Makefile Structure, Running Make, Makefile Introduction, Top
-@section Structure of a Makefile
+@chapter Structure of a Makefile
 
 Here is an example makefile (named GNUmakefile to emphasis the fact that it relies on special features of the GNU make program).
 
@@ -98,7 +98,7 @@ This is all that is necessary to define the project.
 
 
 @node Running Make, Project Types, Makefile Structure, Top
-@section Running Make
+@chapter Running Make
 @menu
 * Debug Information::           
 * Profile Information::         
@@ -111,7 +111,7 @@ the package, and the package is compiled without any additional
 interaction.  
 
 @node Debug Information, Profile Information, Running Make, Running Make
-@subsection Debug Information
+@section Debug Information
 
 By default the Makefile Package tells the compiler to generate
 debugging information when compiling Objective-C and C files.  The
@@ -124,7 +124,7 @@ make debug=no
 @end smallexample
 
 @node Profile Information, Library Types, Debug Information, Running Make
-@subsection Profile Information
+@section Profile Information
 
 By default the Makefile Package does not tell the compiler to generate
 profiling information when compiling Objective-C and C files.  The
@@ -137,7 +137,7 @@ make profile=yes
 @end smallexample
 
 @node Library Types,  , Profile Information, Running Make
-@subsection Static, Shared, and Dynamic Link Libraries
+@section Static, Shared, and Dynamic Link Libraries
 
 By default the Makefile Package will generate a shared library if it is
 building a library project type, and it will link with shared libraries
@@ -157,7 +157,7 @@ DLLs will be built by default unless the Makefile Package is told to
 build using static libraries instead, as in the above command.
 
 @node Project Types, GNUmakefile.preamble, Running Make, Top
-@section Project Types
+@chapter Project Types
 @menu
 * aggregate.make::              
 * application.make::            
@@ -200,7 +200,7 @@ types) is in resource-set.make.
 
 
 @node aggregate.make, application.make, Project Types, Project Types
-@subsection Aggregate (@file{aggregate.make})
+@section Aggregate (@file{aggregate.make})
 
 An Aggregate project is a project that consists of several
 subprojects. Each subproject can be of any other valid project type
@@ -213,46 +213,46 @@ that the Aggregate project should build.
 @end defvr
 
 @node application.make, bundle.make, aggregate.make, Project Types
-@subsection Graphical Applications (@file{application.make})
+@section Graphical Applications (@file{application.make})
 
 An application is an Objective-C program that includes a GUI component,
 and by default links in all the GNUstep libraries required for GUI
 development, such as the Base and Gui libraries.
 
 @node bundle.make, ctool.make, application.make, Project Types
-@subsection Bundles (@file{bundle.make})
+@section Bundles (@file{bundle.make})
 
 A bundle is a collection of resources and code that can be used to
 enhance an existing application or tool dynamically using the NSBundle
 class from the GNUstep base library.
 
 @node ctool.make, documentation.make, bundle.make, Project Types
-@subsection Command Line C Tools (@file{ctool.make})
+@section Command Line C Tools (@file{ctool.make})
 
 A ctool is a project that only uses C language files.
 Otherwise it is similar to the ObjC project type.
 
 @node documentation.make, framework.make, ctool.make, Project Types
-@subsection Documentation (@file{documentation.make})
+@section Documentation (@file{documentation.make})
 
 The Documentation project provides rules to use various types of
 documentation such as texi and LaTeX documentation, and convert them
 into finished documentation (info, PostScript, HTML, etc). 
 
 @node framework.make, java.make, documentation.make, Project Types
-@subsection Frameworks (@file{framework.make})
+@section Frameworks (@file{framework.make})
 
 A Framework is a collection of resources and a library that provides
 common code that can be linked into a Tool or Application. In many
 respects it is similar to a Bundle.
 
 @node java.make, library.make, framework.make, Project Types
-@subsection Java (@file{java.make})
+@section Java (@file{java.make})
 
 This project provides rules for building java programs. It also makes it
 easy to make java projects that interact with the GNUstep libraries.
 
-@subsubsection Project Variables
+@subsection Project Variables
 
 @defvr {Java project} JAVA_PACKAGE_NAME
 @code{JAVA_PACKAGE_NAME} is the reverse DNS style Java package name that
@@ -295,7 +295,7 @@ with all dots replaced by hyphens.
 @end defvr
 
 @node library.make, native-library.make, java.make, Project Types
-@subsection Libraries (@file{library.make})
+@section Libraries (@file{library.make})
 @menu
 * library.make variables::      
 * Example Library Makefile::    
@@ -308,7 +308,7 @@ Static libraries are supported on all platforms; while, shared libraries
 and DLLs are only supported on some platforms.
 
 @node library.make variables, Example Library Makefile, library.make, library.make
-@subsubsection Project Variables
+@subsection Project Variables
 
 @defvr {Library project} LIBRARY_NAME
 @code{LIBRARY_NAME} should be assigned the list of name of libraries to
@@ -446,7 +446,7 @@ Replace the @strong{xxx} with the name of the library as listed by the
 @end defvr
 
 @node Example Library Makefile,  , library.make variables, library.make
-@subsubsection Example Makefile
+@subsection Example Makefile
 
 This example makefile illustrates two libraries, @file{libone} and
 @file{libtwo}, that are to be generated.
@@ -514,7 +514,7 @@ located, and the header files will be installed into the @file{two}
 subdirectory within @code{GNUSTEP_HEADERS}.
 
 @node native-library.make, nsis.make, library.make, Project Types
-@subsection Native Library (@file{native-library.make})
+@section Native Library (@file{native-library.make})
 
 A "native library" is a project which is to be built as a shared
 library on most targets and as a framework on Darwin.  (Currently
@@ -541,7 +541,7 @@ This will be converted into -L../MyPath/$(GNUSTEP_OBJ_DIR) flag
 on for most targets and into -F../MyPath flag for apple-apple-apple.
 
 @node nsis.make, objc.make, native-library.make, Project Types
-@subsection NSIS Installer (@file{nsis.make})
+@section NSIS Installer (@file{nsis.make})
 
 The NSIS make project provides rules for automatically generating NSIS
 installers for Windows operating systems. In order to get this functionality,
@@ -592,7 +592,7 @@ If not set it defaults to @code{LOCAL}.
 @end defvr
 
 @node objc.make, palette.make, nsis.make, Project Types
-@subsection Objective-C Programs (@file{objc.make})
+@section Objective-C Programs (@file{objc.make})
 @menu
 * objc.make variables::         
 * Example ObjC Makefile::       
@@ -604,7 +604,7 @@ Objective-C programs which only use the Objective-C Runtime Library and
 the classes it defines are candidates for this project type.
 
 @node objc.make variables, Example ObjC Makefile, objc.make, objc.make
-@subsubsection Project Variables
+@subsection Project Variables
 
 Most of the project variables work the same as in Library
 projects (see @ref{library.make}).
@@ -630,7 +630,7 @@ of the program as listed by the @code{OBJC_PROGRAM_NAME} variable.
 @end defvr
 
 @node Example ObjC Makefile,  , objc.make variables, objc.make
-@subsubsection Example Makefile
+@subsection Example Makefile
 
 This makefile illustrates two Objective-C programs, @file{simple} and
 @file{list} that are to be generated.
@@ -677,13 +677,13 @@ Runtime library; presumably @file{simple.m} has code which is dependent
 upon the Objective-C Runtime.
 
 @node palette.make, rpm.make, objc.make, Project Types
-@subsection Palettes (@file{palette.make})
+@section Palettes (@file{palette.make})
 
 A palette is a Bundle that provides some kind of GUI functionality.
 Otherwise it is similar to the Bundle project.
 
 @node rpm.make, service.make, palette.make, Project Types
-@subsection RPMs (@file{rpm.make})
+@section RPMs (@file{rpm.make})
 
 The RPM project provides rules for automatically generating RPM spec
 files in order to make RPM distributions. Note that this project
@@ -740,25 +740,25 @@ Library containing the Objective-C runtime.
 @end example
 
 @node service.make, subproject.make, rpm.make, Project Types
-@subsection Services (@file{service.make})
+@section Services (@file{service.make})
 
 A Service is like a Tool that provides a service to a running GNUstep program.
 
 @node subproject.make, tool.make, service.make, Project Types
-@subsection Subprojects (@file{subproject.make})
+@section Subprojects (@file{subproject.make})
 
 A Subproject provides a way to organize code in a large application into
 subunits. The code in the subproject is merged in with the main tool
 or application.
 
 @node tool.make,  , subproject.make, Project Types
-@subsection Command Line Tools (@file{tool.make})
+@section Command Line Tools (@file{tool.make})
 
 A tool is an ObjC project that by default links in the GNUstep base
 library. Otherwise it is similar to the ObjC project type.
 
 @node GNUmakefile.preamble, GNUmakefile.postamble, Project Types, Top
-@section Global Variables (@file{GNUmakefile.preamble})
+@chapter Global Variables (@file{GNUmakefile.preamble})
 
 @file{GNUmakefile.preamble} is an optional file that may be put within the
 package for declaring global makefile variables for the package.  The
@@ -977,7 +977,7 @@ LIBRARIES_DEPEND_UPON = -lsimple $(FND_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS)
 
 
 @node GNUmakefile.postamble, Common Variables, GNUmakefile.preamble, Top
-@section Global Rules (@file{GNUmakefile.postamble})
+@chapter Global Rules (@file{GNUmakefile.postamble})
 
 The @file{GNUmakefile.postamble} file is an optional file you may
 include in your package to define additional rules that should be
@@ -993,7 +993,7 @@ You can even define additional rules such as ones that a particular to
 your specific package or that are to be used by developers only.
 
 @node Common Variables, Other Variables, GNUmakefile.postamble, Top
-@section Common Variables (@file{common.make})
+@chapter Common Variables (@file{common.make})
 @menu
 * Directory Paths::             
 * Scripts::                     
@@ -1013,7 +1013,7 @@ defined variables as the resultant behaviour of the Makefile Package is
 undefined.
 
 @node Directory Paths, Scripts, Common Variables, Common Variables
-@subsection Directory Paths
+@section Directory Paths
 
 @defvar GNUSTEP_MAKEFILES
 @code{GNUSTEP_MAKEFILES} is the absolute path to the directory where the
@@ -1180,7 +1180,7 @@ where the binary file is located.
 @end defvar
 
 @node Scripts, Platform Information, Directory Paths, Common Variables
-@subsection Scripts
+@section Scripts
 
 @defvar CONFIG_GUESS_SCRIPT
 @code{CONFIG_GUESS_SCRIPT} is the absolute path to the
@@ -1263,7 +1263,7 @@ script; it is used internally by the Makefile Package.
 @end defvar
 
 @node Platform Information, Library Combination, Scripts, Common Variables
-@subsection Host and Target Platform Information
+@section Host and Target Platform Information
 
 @defvar GNUSTEP_HOST
 @code{GNUSTEP_HOST} is the canonical host platform name; i.e. the name
@@ -1340,7 +1340,7 @@ platform, see Cross Compiling.
 @end defvar
 
 @node Library Combination, Overridable Flags, Platform Information, Common Variables
-@subsection Library Combination
+@section Library Combination
 
 @defvar OBJC_RUNTIME_LIB
 @code{OBJC_RUNTIME_LIB} is assigned the code that indicates the
@@ -1489,7 +1489,7 @@ there is not backend library; i.e. @code{GUI_BACKEND_LIB} is
 @end defvar
 
 @node Overridable Flags,  , Library Combination, Common Variables
-@subsection Overridable Flags
+@section Overridable Flags
 
 @defvar OBJCFLAGS
 @code{OBJCFLAGS} are flags that are passed to the compiler when
@@ -1576,7 +1576,7 @@ make documentation=no
 @end smallexample
 
 @node Other Variables,  , Common Variables, Top
-@section Other Variables
+@chapter Other Variables
 
 Since gnustep-make is a system of scripts rather than compiled code,
 all the source is always present and available to read, so the main

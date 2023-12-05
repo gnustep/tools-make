@@ -26,10 +26,11 @@ any later version published by the Free Software Foundation.
 @contents
 
 
-@node Top, The System Domain, (dir), (dir)
-@chapter GNUstep Filesystem Hierarchy
+@node Top
+@top GNUstep Filesystem Hierarchy
  
 @menu
+* Introduction::
 * The System Domain::           
 * The Local Domain::            
 * The Network Domain::          
@@ -37,6 +38,9 @@ any later version published by the Free Software Foundation.
 * Structure of a Domain::
 * Configuration::                 
 @end menu
+
+@node Introduction
+@chapter Introduction
 
 On GNUstep, there are four separate places where files related to
 GNUstep are installed: these places are called "domains".  These four
@@ -83,7 +87,7 @@ filesystem layout is now the FHS (Unix) layout rooted in
 @file{/usr/local}.
 
 @node The System Domain, The Local Domain, Top, Top
-@section The System Domain
+@chapter The System Domain
 
 The System domain contains all files which were included in the
 default GNUstep installation or distribution.  These files are
@@ -105,7 +109,7 @@ the @file{System} folder of the GNUstep installation.
 
 
 @node The Local Domain, The Network Domain, The System Domain, Top
-@section The Local Domain
+@chapter The Local Domain
 
 The Local domain is meant as the location for installing software
 which was not included with your GNUstep distribution and which you or
@@ -125,7 +129,7 @@ In the GNUstep filesystem layout the entire Local domain is installed
 as the @file{Local} folder of your GNUstep installation.
 
 @node The Network Domain, The Users Domain, The Local Domain, Top
-@section The Network Domain
+@chapter The Network Domain
 
 The @file{Network} domain is optional and is usually coalesced with
 the @file{Local} domain by default; this is particularly appropriate
@@ -151,7 +155,7 @@ domain, in which case the entire Network domain is installed as the
 
 
 @node The Users Domain, Structure of a Domain, The Network Domain, Top
-@section The Users Domain
+@chapter The Users Domain
 
 The main purpose of the Users domain is to hold GNUstep related files
 which shall not be available to other users on the system but only to
@@ -167,7 +171,7 @@ User domain is completely contained in a subdirectory of the user's
 home directory called @file{GNUstep}.
 
 @node Structure of a Domain, Configuration, The Users Domain, Top
-@section Structure of a Domain
+@chapter Structure of a Domain
 
 In this section we examine the interesting locations in a domain.  We
 will enumerate the locations, and discuss what should be installed in
@@ -192,7 +196,7 @@ GNUstep filesystem layout and in a general filesystem layout.
 @end menu
 
 @node The GNUstep Filesystem Layout, Accessing Domain Locations, Structure of a Domain, Structure of a Domain
-@subsection The GNUstep Filesystem Layout
+@section The GNUstep Filesystem Layout
 
 We quickly present the GNUstep filesystem layout for a domain first
 because it is an essential reference for all discussions on the
@@ -234,7 +238,7 @@ point for all discussions.  For example, every domain must have a
 'Library' location.
 
 @node Accessing Domain Locations, Applications, The GNUstep Filesystem Layout, Structure of a Domain
-@subsection Accessing Domain Locations
+@section Accessing Domain Locations
 
 In order to install and run software that uses some resources, you
 need to be able to install the resources in the appropriate location,
@@ -277,7 +281,7 @@ that can be used to access them.
 
 
 @node Applications, Admin Applications , Accessing Domain Locations, Structure of a Domain
-@subsection Applications
+@section Applications
 
 The @file{Applications} location contains applications. Applications
 are programs that typically have a GUI interface and contain
@@ -306,7 +310,7 @@ using the @code{NSApplicationDirectory} directory key for
 
 
 @node Admin Applications, Web Applications, Applications, Structure of a Domain
-@subsection Admin Applications
+@section Admin Applications
 
 The @file{Admin Applications} location contains applications that are
 only useful to the system administrator.  A normal user wouldn't have
@@ -326,7 +330,7 @@ by using the @code{NSAdminApplicationDirectory} directory key for
 
 
 @node Web Applications, Tools, Admin Applications, Structure of a Domain
-@subsection Web Applications
+@section Web Applications
 
 The @file{Web Applications} location contains web applications that
 were created using GSWeb or SOPE.  These are programs contained with
@@ -347,7 +351,7 @@ by using the @code{GSWebApplicationDirectory} directory key for
 
 
 @node Tools, Admin Tools, Web Applications, Structure of a Domain
-@subsection Tools
+@section Tools
 
 The @file{Tools} location contains tools and executable scripts. Tools
 are programs which generally have a command-line interface. Most are
@@ -376,7 +380,7 @@ In gnustep-base, the @file{Tools} locations are available by using the
 
 
 @node Admin Tools, Library, Tools, Structure of a Domain
-@subsection Admin Tools
+@section Admin Tools
 
 The @file{Admin Tools} location contains tools and executable scripts
 that are only useful to the system administrator.  A normal user
@@ -397,7 +401,7 @@ using the @code{GSAdminToolsDirectory} directory key for
 
 
 @node Library, Headers, Admin Tools, Structure of a Domain
-@subsection Library
+@section Library
 
 The @file{Library} location contains most of the resources that are
 located and loaded at runtime.  These resources are organized in
@@ -435,7 +439,7 @@ using the @code{NSLibraryDirectory} directory key for
 
 
 @node Headers, Libraries, Library, Structure of a Domain
-@subsection Headers
+@section Headers
 
 The @code{Headers} location contains header files associated with a
 library located in @code{Libraries}.
@@ -453,7 +457,7 @@ available.
 
 
 @node Libraries, Documentation, Headers, Structure of a Domain
-@subsection Libraries
+@section Libraries
 
 The @code{Libraries} location contains libraries (shared/static object
 files that are linked into programs).  (NOTE: In the GNUstep
@@ -481,7 +485,7 @@ the @code{GSLibrariesDirectory} directory key for
 
 
 @node Documentation, Documentation (Info), Libraries, Structure of a Domain
-@subsection Documentation
+@section Documentation
 
 The @code{Documentation} location contains documentation for
 libraries, applications, etc.
@@ -499,7 +503,7 @@ using the @code{NSDocumentationDirectory} directory key for
 
 
 @node Documentation (Info), Documentation (Man Pages), Documentation, Structure of a Domain
-@subsection Documentation (Info)
+@section Documentation (Info)
 
 The @code{Documentation (Info)} location contains documentation in
 info format.
@@ -517,7 +521,7 @@ currently available.
 
 
 @node Documentation (Man Pages), Folders inside Library, Documentation (Info), Structure of a Domain
-@subsection Documentation (Man Pages)
+@section Documentation (Man Pages)
 
 
 The @code{Documentation (Man Pages)} location contains Unix man pages.
@@ -535,7 +539,7 @@ currently available.
 
 
 @node Folders inside Library, , Documentation (Man Pages), Structure of a Domain
-@subsection Folders inside Library
+@section Folders inside Library
 
 In this section we discuss the standard folders that are available
 inside the @code{Library} location.  To find any of these folders,
@@ -570,7 +574,7 @@ All such cases should be documented here.
 @end menu
 
 @node ApplicationSupport, Bundles, Folders inside Library, Folders inside Library
-@subsubsection ApplicationSupport
+@subsection ApplicationSupport
 
 This directory contains bundles and other resources that are provided
 for an application, but that are not specifically distributed with
@@ -595,7 +599,7 @@ by using the @code{NSApplicationSupportDirectory} directory key for
 @code{NSSearchPathForDirectoriesInDomains()}.
 
 @node Bundles, ColorPickers, ApplicationSupport, Folders inside Library
-@subsubsection Bundles
+@subsection Bundles
 
 This directory contains bundles. Bundles are collections of executable
 code and associated resources that may be loaded at runtime by an
@@ -615,7 +619,7 @@ folder inside the @code{Library} location.
 
 
 @node ColorPickers, Colors, Bundles, Folders inside Library
-@subsubsection ColorPickers
+@subsection ColorPickers
 
 This directory contains bundles that are used by the color picking
 system. They may include code that implements picking colors from a
@@ -625,7 +629,7 @@ This folder is accessed as the @code{ColorPickers} folder inside
 @code{Library}.
 
 @node Colors, DTDs, ColorPickers, Folders inside Library
-@subsubsection Colors
+@subsection Colors
 
 This directory contains files that define specific color mappings for
 use within libraries or applications that require color definitions.
@@ -634,7 +638,7 @@ This folder is accessed as the @code{Colors} folder inside
 @code{Library}.
 
 @node DTDs, DocTemplates, Colors, Folders inside Library
-@subsubsection DTDs
+@subsection DTDs
 
 This directory contains any Document Type Definitions
 required for document parsing. 
@@ -643,7 +647,7 @@ This folder is accessed as the @code{DTDs} folder inside
 @code{Library}.
 
 @node DocTemplates, Fonts, DTDs, Folders inside Library
-@subsubsection DocTemplates
+@subsection DocTemplates
 
 This directory contains text templates for automatic documentation, as
 generated by autodoc.  Any additional documentation template types
@@ -657,7 +661,7 @@ This folder is accessed as the @code{DocTemplates} folder inside
 @code{Library}.
 
 @node Fonts, Frameworks, DocTemplates, Folders inside Library
-@subsubsection Fonts
+@subsection Fonts
 
 This directory contains fonts and files for organizing font information.
 
@@ -665,7 +669,7 @@ This folder is accessed as the @code{Fonts} folder inside
 @code{Library}.
 
 @node Frameworks, Images, Fonts, Folders inside Library
-@subsubsection Frameworks
+@subsection Frameworks
 
 This directory contains frameworks.  Frameworks are a type of bundle,
 which include, within their directory structure, a shared library
@@ -692,10 +696,10 @@ using the @code{GSFrameworksDirectory} directory key for
 @code{NSSearchPathForDirectoriesInDomains()}.
 
 @node Images, Libraries/Java, Frameworks, Folders inside Library
-@subsubsection Images
+@subsection Images
 
 @node Libraries/Java, Libraries/Resources, Images, Folders inside Library
-@subsubsection Libraries/Java
+@subsection Libraries/Java
 
 This directory contains Java classes.  If you are using Java with
 GNUstep, you probably want to make sure these directories are in your
@@ -712,7 +716,7 @@ In gnustep-base, you can access the @code{Libraries/Java} location as
 the @code{Libraries/Java} folder inside the @code{Library} location.
 
 @node Libraries/Resources, KeyBindings, Libraries/Java, Folders inside Library
-@subsubsection Libraries/Resources
+@subsection Libraries/Resources
 
 This directory contains resources used by shared libraries.  In
 GNUstep a shared library can have an associated resource bundle (a
@@ -736,10 +740,10 @@ library by using the @code{[NSBundle +bundleForLibrary:]} method (it
 is a GNUstep extension).
 
 @node KeyBindings, PostScript, Libraries/Resources, Folders inside Library
-@subsubsection KeyBindings
+@subsection KeyBindings
 
 @node PostScript, Services, KeyBindings, Folders inside Library
-@subsubsection PostScript
+@subsection PostScript
 
 This directory contains directories for specific PostScript document
 types and definitions, allowing applications written using the GNUstep
@@ -750,7 +754,7 @@ This folder is accessed as the @code{PostScript} folder inside
 @code{Library}.
 
 @node Services, Sounds, PostScript, Folders inside Library
-@subsubsection Services
+@subsection Services
 
 This directory contains bundles that are specifically built to provide
 functionality between different programs (for example, spell checking,
@@ -768,12 +772,12 @@ In gnustep-base, you can access the @code{Services} location as a
 folder inside the @code{Library} location.
 
 @node Sounds, Tools/Resources, Services, Folders inside Library
-@subsubsection Sounds
+@subsection Sounds
 
 This directory contains sound files.
 
 @node Tools/Resources,  , Sounds, Folders inside Library
-@subsubsection Tools/Resources
+@subsection Tools/Resources
 
 This directory contains resources used by tools.  In GNUstep a tool
 can have an associated resource bundle (a bundle only composed of
@@ -796,7 +800,7 @@ semantic is a GNUstep extension).
 
 
 @node Configuration,  , Structure of a Domain, Top
-@section Configuration
+@chapter Configuration
 
 GNUstep supports arbitrary filesystem layouts to map the locations in
 the various domains to directories on the filesystem.
@@ -841,7 +845,7 @@ them.
 @end menu
 
 @node File Format, Windows (MINGW), Configuration, Configuration
-@subsection File Format
+@section File Format
 
 By default, the configuration file is called GNUstep.conf; it
 typically exists in /etc/GNUstep or /usr/local/etc/GNUstep (depending
@@ -865,7 +869,7 @@ up-to-date list of all the variables that you can change with
 explanations of what they do.
 
 @node Windows (MINGW), , File Format, Configuration
-@subsection Windows (MINGW)
+@section Windows (MINGW)
 
 On ms-windows, for software development, you are likely to want to have an
 extra configuration file.  This is because of the limitations of the
