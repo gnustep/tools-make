@@ -1769,8 +1769,14 @@ AC_CHECK_PROGS(LATEX2HTML, latex2html)
 #--------------------------------------------------------------------
 # For test framework
 #--------------------------------------------------------------------
-AC_PATH_PROG(SHELLPROG,bash,/bin/sh)
+AC_PATH_PROG(SHELLPROG, bash)
 AC_PATH_PROG(TESTPROG, test)
+if test x"$SHELLPROG" = x""; then
+  AC_MSG_RESULT(failed)
+  echo "Unable to find the bash program (needed for testsuite)."
+  exit 1
+fi
+
 
 #--------------------------------------------------------------------
 # Produce the output files

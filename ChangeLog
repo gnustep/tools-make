@@ -1,3 +1,8 @@
+2023-12-11  Richard Frith-Macdonald <rfm@gnu.org>
+
+	configure.ac: Require bash for test framework
+	configure: Regenerate
+
 2023-12-05  Yavor Doganov  <yavor@gnu.org>
 
 	* Documentation/gnustep-make.texi: Fix PDF generation with

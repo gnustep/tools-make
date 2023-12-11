@@ -4878,11 +4878,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++11 features" >&5
 printf %s "checking for $CXX option to enable C++11 features... " >&6; }
-if test ${ac_cv_prog_cxx_cxx11+y}
+if test ${ac_cv_prog_cxx_11+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_cxx11=no
+  ac_cv_prog_cxx_11=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -4924,11 +4924,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++98 features" >&5
 printf %s "checking for $CXX option to enable C++98 features... " >&6; }
-if test ${ac_cv_prog_cxx_cxx98+y}
+if test ${ac_cv_prog_cxx_98+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_cxx98=no
+  ac_cv_prog_cxx_98=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -7522,12 +7522,12 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc >= 2" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc >= 2" 2>&1`
         else
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc >= 2" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc >= 2" 2>&1`
         fi
-        # Put the nasty error message in config.log where it belongs
-        echo "$libobjc_PKG_ERRORS" >&5
+	# Put the nasty error message in config.log where it belongs
+	echo "$libobjc_PKG_ERRORS" >&5
 
 
             if test -n "$PKG_CONFIG" && \
@@ -7589,14 +7589,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
         else
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
         fi
-        # Put the nasty error message in config.log where it belongs
-        echo "$libobjc_PKG_ERRORS" >&5
+	# Put the nasty error message in config.log where it belongs
+	echo "$libobjc_PKG_ERRORS" >&5
 
-        as_fn_error $? "Package requirements (libobjc) were not met:
+	as_fn_error $? "Package requirements (libobjc) were not met:
 
 $libobjc_PKG_ERRORS
 
@@ -7609,7 +7609,7 @@ See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-        { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
 is in your PATH or set the PKG_CONFIG environment variable to the full
@@ -7622,8 +7622,8 @@ See the pkg-config man page for more details.
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
 See \`config.log' for more details" "$LINENO" 5; }
 else
-        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-        libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+	libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -7694,14 +7694,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
         else
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
         fi
-        # Put the nasty error message in config.log where it belongs
-        echo "$libobjc_PKG_ERRORS" >&5
+	# Put the nasty error message in config.log where it belongs
+	echo "$libobjc_PKG_ERRORS" >&5
 
-        as_fn_error $? "Package requirements (libobjc) were not met:
+	as_fn_error $? "Package requirements (libobjc) were not met:
 
 $libobjc_PKG_ERRORS
 
@@ -7714,7 +7714,7 @@ See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-        { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
 is in your PATH or set the PKG_CONFIG environment variable to the full
@@ -7727,8 +7727,8 @@ See the pkg-config man page for more details.
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
 See \`config.log' for more details" "$LINENO" 5; }
 else
-        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-        libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+	libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -7737,8 +7737,8 @@ fi
 fi
 
 else
-        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-        libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+	libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -9332,6 +9332,7 @@ fi
 
 
 
+
     ac_fn_c_check_func "$LINENO" "__objc_load" "ac_cv_func___objc_load"
 if test "x$ac_cv_func___objc_load" = xyes
 then :
@@ -9409,7 +9410,6 @@ if test $gs_cv_runtime_abi = 'gnustep-2.0'; then
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking which linker is being used" >&5
 printf %s "checking which linker is being used... " >&6; }
 
-  # Write a simple test program to a file.
   echo 'int main() { return 0; }' > conftest.c
 
   # Try compiling with verbose output to capture linker information.
@@ -9986,7 +9986,6 @@ done
   done
 IFS=$as_save_IFS
 
-  test -z "$ac_cv_path_SHELLPROG" && ac_cv_path_SHELLPROG="/bin/sh"
   ;;
 esac
 fi
@@ -10044,6 +10043,13 @@ else
 printf "%s\n" "no" >&6; }
 fi
 
+
+if test x"$SHELLPROG" = x""; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: failed" >&5
+printf "%s\n" "failed" >&6; }
+  echo "Unable to find the bash program (needed for testsuite)."
+  exit 1
+fi
 
 
 #--------------------------------------------------------------------
