@@ -1772,10 +1772,13 @@ AC_CHECK_PROGS(LATEX2HTML, latex2html)
 AC_PATH_PROG(SHELLPROG, bash)
 AC_PATH_PROG(TESTPROG, test)
 if test x"$SHELLPROG" = x""; then
-  AC_MSG_RESULT(failed)
   echo "Unable to find the bash program (needed for testsuite)."
-  exit 1
+  SHELLPROG=/bin/sh
+  MISSINGBASH=YES
+else
+  MISSINGBASH=NO
 fi
+AC_SUBST(MISSINGBASH)
 
 
 #--------------------------------------------------------------------

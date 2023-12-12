@@ -29,6 +29,12 @@
 # oldtests.log and oldtests.sum, available for comparison.
 # The exit value of the script is 0 if there are no failures, 1 otherwise.
 
+if test "@MISSINGBASH@" = "YES"; then
+  echo "gnustep-make unable to fnind bash at configure time."
+  echo "test framework cannot run without bash installed."
+  exit 0
+fi
+
 if test -z "$GNUSTEP_MAKEFILES"; then
   GNUSTEP_MAKEFILES=`gnustep-config --variable=GNUSTEP_MAKEFILES 2>/dev/null`
   if test -z "$GNUSTEP_MAKEFILES"; then
