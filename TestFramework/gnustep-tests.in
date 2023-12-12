@@ -30,8 +30,9 @@
 # The exit value of the script is 0 if there are no failures, 1 otherwise.
 
 if test "@MISSINGBASH@" = "YES"; then
-  echo "gnustep-make unable to fnind bash at configure time."
-  echo "test framework cannot run without bash installed."
+  echo "gnustep-make was unable to find bash at configure time."
+  echo "The test framework cannot run without bash installed."
+  echo "Please install bash and reconfigure/reinstall gnustep-make."
   exit 0
 fi
 
