@@ -672,6 +672,8 @@ endif
 # Example of how this rule will be applied: 
 # gnu/gnustep/base/NSObject.h : gnu/gnustep/base/NSObject.java
 #	javah -o gnu/gnustep/base/NSObject.h gnu.gnustep.base.NSObject
+# or
+#	javac -h -o gnu/gnustep/base/NSObject.h gnu.gnustep.base.NSObject
 %.h : %.java
 	$(ECHO_JAVAHING)$(JAVAH) \
 	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVAHFLAGS)) \

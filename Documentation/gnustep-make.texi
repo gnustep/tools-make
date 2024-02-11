@@ -268,7 +268,7 @@ specified in @code{JAVA_PACKAGE_NAME}.
 
 @defvr {Java project} JAVA_JNI_FILES
 @code{xxx_JAVA_JNI_FILES} is the list of Java source code files for
-which @code{javah} should produce header files for integration with 
+which @code{JAVAH} should produce header files for integration with 
 Objective-C code.
 @strong{xxx} should be replaced with the name of the Java package
 specified in @code{JAVA_PACKAGE_NAME}.

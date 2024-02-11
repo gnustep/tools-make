@@ -1,3 +1,13 @@
+2024-02-11  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/gnustep-make.texi:
+	* common.make:
+	* messages.make:
+	* rules.make:
+	* target.make:
+	Use 'javac -h' if 'javah' does not exist, since the separate tool was
+	removed after version 8.  Update comments to match the change.
+
 2023-12-12  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in: Exit if no bash available

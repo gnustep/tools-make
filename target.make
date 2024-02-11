@@ -1117,7 +1117,7 @@ SHARED_LIBEXT   = .so
 HAVE_BUNDLES    = yes
 BUNDLE_LD       = $(LD)
 #BUNDLE_LDFLAGS  += -shared -mimpure-text
-BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -Wl,-r
+BUNDLE_LDFLAGS  += -nodefaultlibs -Xlinker -Wl,-r -no-pie
 endif
 
 # end Unixware
