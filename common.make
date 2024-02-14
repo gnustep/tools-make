@@ -854,16 +854,10 @@ ifeq ($(JAVAC),)
 endif
 
 #
-# The java header compiler.
-# After Java 8, javah is replaced by javac with the -h flag, so if we don't
-# find the javah executable we assume we are using javac.
+# The java header compiler (if any).  We need to check later.
 #
 ifeq ($(JAVAH),)
- ifeq (, $(shell  $(JAVA_HOME)/bin/javah -version 2>/dev/null))
-  JAVAH = $(JAVA_HOME)/bin/javac -h
- else
   JAVAH = $(JAVA_HOME)/bin/javah
- endif
 endif
 
 #

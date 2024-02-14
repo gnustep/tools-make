@@ -672,12 +672,28 @@ endif
 # Example of how this rule will be applied: 
 # gnu/gnustep/base/NSObject.h : gnu/gnustep/base/NSObject.java
 #	javah -o gnu/gnustep/base/NSObject.h gnu.gnustep.base.NSObject
-# or
-#	javac -h -o gnu/gnustep/base/NSObject.h gnu.gnustep.base.NSObject
+# or, on more recent releases than 8, we have to use javac and move the
+# resulting header file around t the correct location as javac does not
+# provide command line options to control the output file name.
+# NB. javac also fails to produce a header file when a java file does
+# not produce class information, so we catch that and generate an empty
+# header  where necessary.
 %.h : %.java
-	$(ECHO_JAVAHING)$(JAVAH) \
-	         $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVAHFLAGS)) \
-	         $($<_FILE_FLAGS) -o $@ $(subst /,.,$*)$(END_ECHO)
+	$(ECHO_NOTHING)if [ -x $(JAVAH) ]; then \
+	  $(JAVAH) \
+	    $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVAHFLAGS)) \
+	    $($<_FILE_FLAGS) -o $@ $(subst /,.,$*); \
+        else \
+	  JAVA_DST_DIR=`dirname $@`; \
+	  $(JAVAC) -h $$JAVA_DST_DIR -sourcepath `dirname $*` \
+	    $(filter-out $($<_FILE_FILTER_OUT_FLAGS),$(ALL_JAVAHFLAGS)) \
+	    $($<_FILE_FLAGS) $*.java; \
+	  if [ -e $$JAVA_DST_DIR/$(subst /,_,$@) ]; then \
+	    mv $$JAVA_DST_DIR/$(subst /,_,$@) $$JAVA_DST_DIR/`basename $@`; \
+	  else \
+	    touch $$JAVA_DST_DIR/`basename $@`; \
+	  fi \
+	fi$(END_ECHO)
 
 %.c : %.psw
 	pswrap -h $*.h -o $@ $<

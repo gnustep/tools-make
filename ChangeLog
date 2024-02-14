@@ -1,3 +1,13 @@
+2024-02-14  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* common.make:
+	* rules.make:
+	Rewrite 'javac -h' code because its usage turns out to be quite
+	different from that of the javah command it is supposed to replace.
+	Possibly the header generation and class file generation could/should
+	be combined in a single pass, but we can't readily do that without
+	breakign compatibility with older versions of java.
+
 2024-02-11  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/gnustep-make.texi:
