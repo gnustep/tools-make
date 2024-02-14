@@ -10058,7 +10058,7 @@ fi
 #--------------------------------------------------------------------
 # Produce the output files
 #--------------------------------------------------------------------
-ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf GNUstep.sh GNUstep.csh fixpath.sh gnustep-make.spec gnustep-config TestFramework/gnustep-tests filesystem.make filesystem.sh filesystem.csh gnustep-make-ld.so.conf"
+ac_config_files="$ac_config_files config-noarch.make config.make openapp opentool executable.template GNUmakefile GNUstep.conf GNUstep-strict-v2.conf GNUstep.sh GNUstep.csh fixpath.sh GNUstep-reset.sh gnustep-make.spec gnustep-config TestFramework/gnustep-tests filesystem.make filesystem.sh filesystem.csh gnustep-make-ld.so.conf"
 
 ac_config_files="$ac_config_files runtime/$OBJC_RUNTIME_LIB.make:config.make.in"
 
@@ -10786,6 +10786,7 @@ do
     "GNUstep.sh") CONFIG_FILES="$CONFIG_FILES GNUstep.sh" ;;
     "GNUstep.csh") CONFIG_FILES="$CONFIG_FILES GNUstep.csh" ;;
     "fixpath.sh") CONFIG_FILES="$CONFIG_FILES fixpath.sh" ;;
+    "GNUstep-reset.sh") CONFIG_FILES="$CONFIG_FILES GNUstep-reset.sh" ;;
     "gnustep-make.spec") CONFIG_FILES="$CONFIG_FILES gnustep-make.spec" ;;
     "gnustep-config") CONFIG_FILES="$CONFIG_FILES gnustep-config" ;;
     "TestFramework/gnustep-tests") CONFIG_FILES="$CONFIG_FILES TestFramework/gnustep-tests" ;;
