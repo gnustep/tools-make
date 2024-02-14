@@ -86,13 +86,13 @@ function reset_path
   fi
 }
 
-reset_path INFOPATH /Library/Documentation/info
-reset_path GUILE_LOAD_PATH /Library/Libraries/Guile
-reset_path CLASSPATH /Library/Libraries/Java
-reset_path LD_LIBRARY_PATH /Library/Libraries
-reset_path DYLD_LIBRARY_PATH /Library/Libraries
-reset_path DYLD_FRAMEWORK_PATH /Library/Frameworks
-reset_path PATH /Tools
+reset_path INFOPATH @GNUSTEP_LOCAL_DOC_INFO@
+reset_path GUILE_LOAD_PATH @GNUSTEP_LOCAL_LIBRARIES@/Guile
+reset_path CLASSPATH @GNUSTEP_LOCAL_LIBRARIES@/Java
+reset_path LD_LIBRARY_PATH @GNUSTEP_LOCAL_LIBRARIES@
+reset_path DYLD_LIBRARY_PATH @GNUSTEP_LOCAL_LIBRARIES@
+reset_path DYLD_FRAMEWORK_PATH @GNUSTEP_LOCAL_LIBRARY@/Frameworks
+reset_path PATH @GNUSTEP_LOCAL_TOOLS@
 
 # Make sure we destroy the reset_path function after using it - we don't
 # want to pollute the environment with it.

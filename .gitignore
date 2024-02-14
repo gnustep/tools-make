@@ -4,6 +4,7 @@ config.cache
 GNUmakefile
 GNUstep.sh
 GNUstep.csh
+GNUstep-reset.sh
 config.h
 config.status
 openapp
