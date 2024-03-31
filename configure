@@ -1613,7 +1613,7 @@ Optional Features:
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
   --without-PACKAGE       do not use PACKAGE (same as --with-PACKAGE=no)
-  --with-libray-combo     Define the default "library combo". The library
+  --with-library-combo    Define the default "library combo". The library
                           combo is a string of the form aaa-bbb-ccc where
                           'aaa' is the Objective-C runtime library to use
                           (examples are 'gnu' and 'apple'), 'bbb' is the

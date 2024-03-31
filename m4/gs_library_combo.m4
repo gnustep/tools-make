@@ -37,7 +37,7 @@ AC_DEFUN([GS_LIBRARY_COMBO],dnl
   ])
 
     AC_ARG_WITH([library-combo],
-        [AS_HELP_STRING([--with-libray-combo], [
+        [AS_HELP_STRING([--with-library-combo], [
             Define the default "library combo".  The library combo is a string
             of the form aaa-bbb-ccc where 'aaa' is the Objective-C runtime
             library to use (examples are 'gnu' and 'apple'),
