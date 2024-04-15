@@ -4886,11 +4886,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++11 features" >&5
 printf %s "checking for $CXX option to enable C++11 features... " >&6; }
-if test ${ac_cv_prog_cxx_11+y}
+if test ${ac_cv_prog_cxx_cxx11+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_11=no
+  ac_cv_prog_cxx_cxx11=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -4932,11 +4932,11 @@ if test x$ac_prog_cxx_stdcxx = xno
 then :
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $CXX option to enable C++98 features" >&5
 printf %s "checking for $CXX option to enable C++98 features... " >&6; }
-if test ${ac_cv_prog_cxx_98+y}
+if test ${ac_cv_prog_cxx_cxx98+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
-  ac_cv_prog_cxx_98=no
+  ac_cv_prog_cxx_cxx98=no
 ac_save_CXX=$CXX
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
@@ -7542,12 +7542,12 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc >= 2" 2>&1`
+                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc >= 2" 2>&1`
         else
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc >= 2" 2>&1`
+                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc >= 2" 2>&1`
         fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$libobjc_PKG_ERRORS" >&5
+        # Put the nasty error message in config.log where it belongs
+        echo "$libobjc_PKG_ERRORS" >&5
 
 
             if test -n "$PKG_CONFIG" && \
@@ -7609,14 +7609,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
+                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
         else
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
+                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
         fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$libobjc_PKG_ERRORS" >&5
+        # Put the nasty error message in config.log where it belongs
+        echo "$libobjc_PKG_ERRORS" >&5
 
-	as_fn_error $? "Package requirements (libobjc) were not met:
+        as_fn_error $? "Package requirements (libobjc) were not met:
 
 $libobjc_PKG_ERRORS
 
@@ -7629,7 +7629,7 @@ See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+        { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
 is in your PATH or set the PKG_CONFIG environment variable to the full
@@ -7642,8 +7642,8 @@ See the pkg-config man page for more details.
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
 See \`config.log' for more details" "$LINENO" 5; }
 else
-	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-	libobjc_LIBS=$pkg_cv_libobjc_LIBS
+        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+        libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -7714,14 +7714,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
+                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
         else
-	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
+                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
         fi
-	# Put the nasty error message in config.log where it belongs
-	echo "$libobjc_PKG_ERRORS" >&5
+        # Put the nasty error message in config.log where it belongs
+        echo "$libobjc_PKG_ERRORS" >&5
 
-	as_fn_error $? "Package requirements (libobjc) were not met:
+        as_fn_error $? "Package requirements (libobjc) were not met:
 
 $libobjc_PKG_ERRORS
 
@@ -7734,7 +7734,7 @@ See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+        { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
 is in your PATH or set the PKG_CONFIG environment variable to the full
@@ -7747,8 +7747,8 @@ See the pkg-config man page for more details.
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
 See \`config.log' for more details" "$LINENO" 5; }
 else
-	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-	libobjc_LIBS=$pkg_cv_libobjc_LIBS
+        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+        libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -7757,8 +7757,8 @@ fi
 fi
 
 else
-	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-	libobjc_LIBS=$pkg_cv_libobjc_LIBS
+        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+        libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -9192,7 +9192,7 @@ if test x"$USE_ARC" = x"yes"; then
   # What we want to do: set USE_ARC to yes if we can compile
   # something with -fobjc-arc.
   CFLAGS_no_arc="$CFLAGS"
-  CFLAGS="$CFLAGS -fobjc-runtime=gnustep-1.8 -fobjc-arc"
+  CFLAGS="$CFLAGS -fobjc-runtime=gnustep-2.2 -fobjc-arc"
   cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -9363,8 +9363,8 @@ fi
 
 
 
-    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether runtime library supports the gnustep-2.0 ABI" >&5
-printf %s "checking whether runtime library supports the gnustep-2.0 ABI... " >&6; }
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking whether runtime library supports the gnustep-2.x ABI" >&5
+printf %s "checking whether runtime library supports the gnustep-2.x ABI... " >&6; }
 if test ${gs_cv_libobjc_abi_20+y}
 then :
   printf %s "(cached) " >&6
@@ -9387,13 +9387,13 @@ printf "%s\n" "$gs_cv_libobjc_abi_20" >&6; }
 
    case "$OBJC_RUNTIME_LIB" in
         gnu) default_runtime_abi=gcc         ;;
-        ng)  default_runtime_abi=gnustep-1.8 ;;
+        ng)  default_runtime_abi=gnustep-2.2 ;;
         *)   default_runtime_abi="(unknown)" ;;
     esac
     if test ! x"" = x""; then
         default_runtime_abi=""
     elif test x"$OBJC_RUNTIME_LIB" = x"ng" -a x"$libobjc_SUPPORTS_ABI20" = x"yes" -a x"$CLANG_CC" = x"yes" -a "${gs_cv_gcc_major_version}" -ge "8"; then
-        default_runtime_abi=gnustep-2.0
+        default_runtime_abi=gnustep-2.2
     fi
 
 # Check whether --with-runtime-abi was given.
