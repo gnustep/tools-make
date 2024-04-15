@@ -254,7 +254,7 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
 ])
 
 
-# Helper macro for checking gnustep-2.0 ABI support in libobjc via the __objc_load macro
+# Helper macro for checking gnustep-2.x ABI support in libobjc via the __objc_load macro
 AC_DEFUN([_GS_HAVE_OBJC_LOAD], [
     AC_REQUIRE([GS_CHECK_OBJC_RUNTIME])
     AC_CHECK_FUNC([__objc_load])
@@ -266,11 +266,11 @@ AC_DEFUN([_GS_HAVE_OBJC_LOAD], [
 #
 # DESCRIPTION
 # 
-# Checks for support for the gnustep-2.0 ABI in the runtime library. Sets the `libobjc_SUPPORTS_ABI20' variable.
+# Checks for support for the gnustep-2.x ABI in the runtime library. Sets the `libobjc_SUPPORTS_ABI20' variable.
 AC_DEFUN([GS_CHECK_RUNTIME_ABI20_SUPPORT], [
     AC_REQUIRE([GS_CHECK_OBJC_RUNTIME])
     AC_REQUIRE([_GS_HAVE_OBJC_LOAD])
-    AC_CACHE_CHECK([whether runtime library supports the gnustep-2.0 ABI],
+    AC_CACHE_CHECK([whether runtime library supports the gnustep-2.x ABI],
         [gs_cv_libobjc_abi_20], [
             if test x"$libobjc_SUPPORTS_ABI20" = x""; then
                 gs_cv_libobjc_abi_20=$ac_cv_func___objc_load

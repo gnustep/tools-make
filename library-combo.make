@@ -47,7 +47,7 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
     ifneq ($(DEFAULT_OBJC_RUNTIME_ABI),)
       RUNTIME_VERSION=$(DEFAULT_OBJC_RUNTIME_ABI)
    else
-     RUNTIME_VERSION=gnustep-1.8
+     RUNTIME_VERSION=gnustep-2.2
    endif
   endif
   RUNTIME_FLAG = -fobjc-runtime=$(RUNTIME_VERSION) -fblocks
