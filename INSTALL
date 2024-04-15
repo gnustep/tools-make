@@ -61,7 +61,7 @@ Here is an example with the runtime version set to 2.2.
 Please note that we explicitly enable some features such as objc-arc that might
 be infered from the runtime version.
 
-      ./configure
+      ./configure \
 		  --enable-native-objc-exceptions \
   		  --enable-objc-arc \
   		  --with-runtime-abi=gnustep-2.2 \
