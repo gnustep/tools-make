@@ -1298,7 +1298,7 @@ if test x"$USE_ARC" = x"yes"; then
   # What we want to do: set USE_ARC to yes if we can compile
   # something with -fobjc-arc.
   CFLAGS_no_arc="$CFLAGS"
-  CFLAGS="$CFLAGS -fobjc-runtime=gnustep-1.8 -fobjc-arc"
+  CFLAGS="$CFLAGS -fobjc-runtime=gnustep-2.2 -fobjc-arc"
   AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
 /* Note that we never execute this code so it does not really matter
    what it is.  We are testing that the compiler accepts the

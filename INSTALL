@@ -20,7 +20,10 @@ particular operating system and CPU. These instructions come with the
 GNUstep-HOWTO and are also located at the GNUstep web site at
 <http://www.gnustep.org>.
 
-   Quick installation instructions:
+1.1.1 Quick Installation Instructions
+---------------------
+
+To build and install the GNUstep Makefiles, run the following commands:
 
      ./configure
      make
@@ -43,6 +46,27 @@ filesystem layout).
      cd Documentation
      make
      make install
+
+1.1.2 Enabling Modern Objective-C Features
+---------------------
+
+GNUstep supports the legacy GCC runtime, and the modern libobjc2 runtime with
+Objective-C 2.0 Features such as ARC, Blocks (closures),  Synthesised property
+accessors, Efficient support for @synchronized() and more.
+
+   libobjc2 requires building with clang. If you've installed both clang and libobjc2
+you can configure GNUstep Make to use the newer runtime and features.
+Here is an example with the runtime version set to 2.2.
+(Set it to the last libobjc2 version to benefit from possible changes in Clang CodeGen).
+Please note that we explicitly enable some features such as objc-arc that might
+be infered from the runtime version.
+
+      ./configure
+		  --enable-native-objc-exceptions \
+  		  --enable-objc-arc \
+  		  --with-runtime-abi=gnustep-2.2 \
+  		  --with-library-combo=ng-gnu-gnu \
+  	CC="clang" CXX="clang++" CPP="clang -E" LDFLAGS="-fuse-ld=lld"
 
 1.2 Configuration
 =================
