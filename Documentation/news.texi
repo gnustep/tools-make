@@ -9,6 +9,18 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.9.2}
+
+@itemize
+
+@item  Update for newer versions of Java
+
+@item  Various minor bugfixes.
+
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.9.1}
 
 @itemize
@@ -18,8 +30,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item  Various fixes for minor issues introduced in the test framework by parallelisation mof testcase execution.
 
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.9.0}
 
