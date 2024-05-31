@@ -1,3 +1,9 @@
+2024-05-31  Yavor Doganov  <yavor@gnu.org>
+
+	* GNUmakefile.in (install): Remove $(srcdir) from GNUstep-reset.sh
+	since it is now a generated file.  Fixes out-of-tree builds where
+	builddir != srcdir.
+
 2024-05-26  Richard Frith-Macdonald <rfm@gnu.org>
 
         * ANNOUNCE:
