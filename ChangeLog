@@ -1,3 +1,8 @@
+2024-07-31  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* TestFramework/gnustep-tests.in: Fix 'Failed build' detection in
+	Summary.sh by recording build failures in tests.sum and test.log
+
 2024-05-31  Yavor Doganov  <yavor@gnu.org>
 
 	* GNUmakefile.in (install): Remove $(srcdir) from GNUstep-reset.sh

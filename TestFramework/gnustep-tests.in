@@ -399,7 +399,7 @@ build_test ()
   if test $? != 0
   then
     rm -f ./obj/$TESTNAME
-    echo "Failed build:     $1" >&2
+    echo "Failed build:     $1" | tee -a $GSTESTSUM >> $GSTESTLOG
     if test "$GSTESTMODE" = "failfast"
     then
       return 1
