@@ -1,3 +1,8 @@
+2024-08-20  Wolfgang Lux  <wolfgang.lux@gmail.com>
+
+	* TestFramework/gnustep-tests.in: Only return plain files when
+	looking for test cases.
+
 2024-07-31  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* TestFramework/gnustep-tests.in: Fix 'Failed build' detection in

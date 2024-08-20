@@ -571,10 +571,10 @@ do
     if test x"$OBJCXX" = x
     then
       # Only Objective-C (and C)
-      SRCDIRS=`find $TESTDIR -name "*.m" -o -name "*.c" | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+      SRCDIRS=`find $TESTDIR -type f \( -name "*.m" -o -name "*.c" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
     else
       # Objective-C and Objective-C++ (implicitly C and C++ too)
-      SRCDIRS=`find $TESTDIR \( -name "*.m" -o -name "*.mm" -o -name "*.c" -o -name "*.cc" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+      SRCDIRS=`find $TESTDIR -type f \( -name "*.m" -o -name "*.mm" -o -name "*.c" -o -name "*.cc" \) | sed -e 's;/[^/]*$;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
     fi
   else
     SRCDIRS="$TESTDIRS"
@@ -643,10 +643,10 @@ do
         if test x"$OBJCXX" = x
         then
           # Only Objective-C (and C)
-          TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+          TESTS=`find . \( -name . -o -prune \) -type f \( -name "*.m" -o -name "*.c" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
         else
           # Objective-C and Objective-C++ (implicitly C and C++ too)
-          TESTS=`find . \( -name . -o -prune \) \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
+          TESTS=`find . \( -name . -o -prune \) -type f \( -name "*.m" -o -name "*.mm" -name "*.c" -o -name "*.cc" \) | sed -e 's;^.*/;;' | sort -u | sed -e 's/\(^\| \)X[^ ]*//g'`
         fi
       fi
 
