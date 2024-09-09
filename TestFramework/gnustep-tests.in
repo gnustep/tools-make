@@ -55,7 +55,7 @@ GSTESTDIR=`pwd`
 export GSTESTDIR
 
 GSTESTMODE=normal
-
+GSTESTTIMEOUT="30s"
 GSMAKEOPTIONS="debug=yes"
 GSVERBOSECFLAG=
 
@@ -66,6 +66,10 @@ do
   case $1 in
     --clean)
       GSTESTMODE=clean
+      ;;
+    --timeout)
+      GSTESTTIMEOUT=$2
+      shift
       ;;
     --debug)
       GSTESTDBG="$GSTESTDIR/gdb.cmds"
@@ -112,6 +116,7 @@ do
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --documentation' for full details."
       echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
+      echo "Use 'gnustep-tests --timeout <VAL>' to change the default timeout ($GSTESTTIMEOUT)."
       echo "Use 'gnustep-tests --failfast' to stop after the first failure."
       echo "Use 'gnustep-tests --debug' to run gdb/lldb for any failed tests."
       echo "Use 'gnustep-tests --make-debug' to enable make debug output."
@@ -441,32 +446,35 @@ run_test ()
     # Env.sh is deprecated ... we should only use TestInfo to setup for a test
     if test -r ./Env.sh
     then
-      ( . ./Env.sh; $RUN_CMD )
+      ( . ./Env.sh; timeout $GSTESTTIMEOUT $RUN_CMD )
     else
       if test -r ./make-check.env
       then
-        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; $RUN_CMD )
+        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; timeout $GSTESTTIMEOUT $RUN_CMD )
       else
-        ( . ./TestInfo > /dev/null 2>&1; $RUN_CMD )
+        ( . ./TestInfo > /dev/null 2>&1; timeout $GSTESTTIMEOUT $RUN_CMD )
       fi
     fi
 
     result=$?
-    if test $result != 0
-    then
-      if test -r $TESTFILE.abort
-      then
-	echo "Completed file:  $TESTFILE" >&2
-      else
-	echo "Failed file:     $TESTFILE aborted without running all tests!" >&2
-	if test "$GSTESTMODE" = "failfast"
-	then
-	  return 1
-	fi
-      fi
+    if test $result -eq 0; then
+        echo "Completed file:  $TESTFILE" >&2
+    elif test $result -eq 124; then
+        echo "Failed file:  $TESTFILE did time out!" >&2
+        if test "$GSTESTMODE" = "failfast"; then
+            return 1
+        fi
     else
-      echo "Completed file:  $TESTFILE" >&2
+        if test -r $TESTFILE.abort; then
+            echo "Completed file:  $TESTFILE" >&2
+        else
+            echo "Failed file:  $TESTFILE aborted without running all tests!" >&2
+            if test "$GSTESTMODE" = "failfast"; then
+                return 1
+            fi
+        fi
     fi
+
   else
     echo "Skipped (not built) file:  $TESTFILE" >&2
   fi
