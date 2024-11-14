@@ -94,15 +94,14 @@ static void test_alloc(NSString *CN)
   PASS_EXCEPTION([obj0 description], NSInvalidArgumentException, \
     "raises NSInvalidArgumentException in description") \
 \
-  PASS_EXCEPTION(if([obj0 init]==nil)[NSException raise: NSInvalidArgumentException format: @""], \
+  PASS_EXCEPTION(if((obj0=[obj0 init])==nil)[NSException raise: NSInvalidArgumentException format: @""], \
     NSInvalidArgumentException, \
     "returns nil or raises NSInvalidArgumentException in init") \
 \
-  PASS_EXCEPTION(if([theClass new]==nil)[NSException raise: NSInvalidArgumentException format: @""], \
+  PASS_EXCEPTION(if((obj0=[theClass new])==nil)[NSException raise: NSInvalidArgumentException format: @""], \
     NSInvalidArgumentException, \
     "returns nil or raises NSInvalidArgumentException in new") \
 \
-  DESTROY(obj0); \
   obj1 = [theClass allocWithZone: testZone]; \
   PASS([obj1 isKindOfClass: theClass],"%s has working allocWithZone",prefix); \
   DESTROY(obj1); \
