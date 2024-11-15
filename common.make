@@ -769,10 +769,16 @@ ifeq ($(GNUSTEP_TARGET_OS), windows)
   endif
 endif
 
-# Sanitization must be enabled explicitly and shall _not_ be used in production,
-# as it may leak sensitive info or result in privilege escalation due to unchecked
-# use of variables (https://www.openwall.com/lists/oss-security/2016/02/17/9).
+# Sanitization must be enabled explicitly and shall _not_ be used in
+# production, as it may leak sensitive info or result in privilege
+# escalation due to unchecked use of variables
+# (https://www.openwall.com/lists/oss-security/2016/02/17/9).
 
+# Enable using '-asan yes' in command line or GS_WITH_ASAN=1 in environment.
+
+ifeq ($(GS_WITH_ASAN), 1)
+  asan = yes
+endif
 ifeq ($(asan), yes)
   ADDITIONAL_FLAGS += -fsanitize=address
   # We use the clang or gcc to drive the linking process. The driver will
@@ -780,7 +786,7 @@ ifeq ($(asan), yes)
   INTERNAL_LDFLAGS += -fsanitize=address
 
   # Not omitting the frame pointer results in more readable stack traces
-  ifneq ($(filter -fno-omit-frame-pointer, $(ADDTIONAL_FLAGS)), -fno-omit-frame-pointer)
+  ifneq ($(filter -fno-omit-frame-pointer, $(ADDITIONAL_FLAGS)), -fno-omit-frame-pointer)
     ADDITIONAL_FLAGS += -fno-omit-frame-pointer
   endif
 endif
