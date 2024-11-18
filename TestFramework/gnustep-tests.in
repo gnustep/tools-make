@@ -54,9 +54,18 @@ export GSTESTTOP
 GSTESTDIR=`pwd`
 export GSTESTDIR
 
-GSTESTMODE=normal
-GSTESTTIMEOUT="30s"
-GSMAKEOPTIONS="debug=yes"
+if test x"$GSTESTMODE" = x
+then
+  GSTESTMODE=normal
+fi
+if test x"$GSTESTTIMEOUT" = x
+then
+  GSTESTTIMEOUT="30s"
+fi
+if test x"$GSMAKEOPTIONS" = x
+then
+  GSMAKEOPTIONS="debug=yes"
+fi
 GSVERBOSECFLAG=
 
 # Argument checking
@@ -458,23 +467,23 @@ run_test ()
 
     result=$?
     if test $result -eq 0; then
-        echo "Completed file:  $TESTFILE" >&2
+      echo "Completed file:  $TESTFILE" >&2
     elif test $result -eq 124; then
-        echo "Failed file:  $TESTFILE did time out!" >&2
-        if test "$GSTESTMODE" = "failfast"; then
-            return 1
-        fi
+      now=`date`
+      echo "Failed file:  $TESTFILE timed out at $now!" >&2
+      if test "$GSTESTMODE" = "failfast"; then
+	return 1
+      fi
     else
-        if test -r $TESTFILE.abort; then
-            echo "Completed file:  $TESTFILE" >&2
-        else
-            echo "Failed file:  $TESTFILE aborted without running all tests!" >&2
-            if test "$GSTESTMODE" = "failfast"; then
-                return 1
-            fi
-        fi
+      if test -r $TESTFILE.abort; then
+	echo "Completed file:  $TESTFILE" >&2
+      else
+	echo "Failed file:  $TESTFILE aborted without running all tests!" >&2
+	if test "$GSTESTMODE" = "failfast"; then
+	  return 1
+	fi
+      fi
     fi
-
   else
     echo "Skipped (not built) file:  $TESTFILE" >&2
   fi
