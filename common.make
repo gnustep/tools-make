@@ -780,7 +780,9 @@ ifeq ($(GS_WITH_ASAN), 1)
   asan = yes
 endif
 ifeq ($(asan), yes)
-  ADDITIONAL_FLAGS += -fsanitize=address
+  # We tell the complier to build with the sanitiser and define a preprocessor
+  # flag so that the compuked code can conditionally handle that specially.
+  ADDITIONAL_FLAGS += -fsanitize=address -DGS_WITH_ASAN=1
   # We use the clang or gcc to drive the linking process. The driver will
   # add the required runtime libraries for address sanitizer.
   INTERNAL_LDFLAGS += -fsanitize=address
