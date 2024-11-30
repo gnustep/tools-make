@@ -774,15 +774,16 @@ endif
 # escalation due to unchecked use of variables
 # (https://www.openwall.com/lists/oss-security/2016/02/17/9).
 
-# Enable using '-asan yes' in command line or GS_WITH_ASAN=1 in environment.
+# Enable using '-asan yes' in command line or GNUSTEP_WITH_ASAN=1 in
+# in the environment.
 
-ifeq ($(GS_WITH_ASAN), 1)
+ifeq ($(GNUSTEP_WITH_ASAN), 1)
   asan = yes
 endif
 ifeq ($(asan), yes)
   # We tell the complier to build with the sanitiser and define a preprocessor
   # flag so that the compuked code can conditionally handle that specially.
-  ADDITIONAL_FLAGS += -fsanitize=address -DGS_WITH_ASAN=1
+  ADDITIONAL_FLAGS += -fsanitize=address -DGNUSTEP_WITH_ASAN=1
   # We use the clang or gcc to drive the linking process. The driver will
   # add the required runtime libraries for address sanitizer.
   INTERNAL_LDFLAGS += -fsanitize=address

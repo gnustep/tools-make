@@ -60,7 +60,7 @@ then
 fi
 if test x"$GSTESTTIMEOUT" = x
 then
-  GSTESTTIMEOUT="30s"
+  GSTESTTIMEOUT="300s"
 fi
 if test x"$GSMAKEOPTIONS" = x
 then
@@ -468,6 +468,12 @@ run_test ()
     result=$?
     if test $result -eq 0; then
       echo "Completed file:  $TESTFILE" >&2
+    elif test $result -eq 23; then
+      # https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer
+      echo "Failed file:  $TESTFILE leaked memory!" >&2
+      if test "$GSTESTMODE" = "failfast"; then
+	return 1
+      fi
     elif test $result -eq 124; then
       now=`date`
       echo "Failed file:  $TESTFILE timed out at $now!" >&2

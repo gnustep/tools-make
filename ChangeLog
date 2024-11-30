@@ -1,8 +1,8 @@
 2024-11-20  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: when building with the address/leak sanitizer
-	(-asan=yes on command line or GS_WITH_ASAN=1 in the environment)
-	we add -DGS_WITH_ASAN=1 for the preprocessor so that compiled
+	(-asan=yes on command line or GNUSTEP_WITH_ASAN=1 in the environment)
+	we add -DGNUSTEP_WITH_ASAN=1 for the preprocessor so that compiled
 	code can take this into account.
 
 2024-08-20  Wolfgang Lux  <wolfgang.lux@gmail.com>
