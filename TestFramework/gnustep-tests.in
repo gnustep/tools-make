@@ -73,6 +73,10 @@ while test $# != 0
 do
   gs_option=
   case $1 in
+    --asan)
+      GNUSTEP_WITH_ASAN=1
+      export GNUSTEP_WITH_ASAN
+      ;;
     --clean)
       GSTESTMODE=clean
       ;;
@@ -124,6 +128,7 @@ do
       echo "Runs the specified tests, or any in subdirectories of the"
       echo "current directory if no arguments are given."
       echo "Use 'gnustep-tests --documentation' for full details."
+      echo "Use 'gnustep-tests --asan' to build using GNUSTEP_WITH_ASAN=1 set."
       echo "Use 'gnustep-tests --clean' to remove old logs and leftover files."
       echo "Use 'gnustep-tests --timeout <VAL>' to change the default timeout ($GSTESTTIMEOUT)."
       echo "Use 'gnustep-tests --failfast' to stop after the first failure."
@@ -157,6 +162,18 @@ GSTESTLOG=$GSTESTDIR/tests.log
 export GSTESTLOG
 GSTESTSUM=$GSTESTDIR/tests.sum
 export GSTESTSUM
+
+if test x"$GNUSTEP_WITH_ASAN" = x1
+then
+  # When testing with address sanitizer (and leak sanitizer) we normally
+  # want the option to have memory leaks be signalled by the test ending
+  # with a well known exit code.
+  if test x"$LSAN_OPTIONS" = x
+  then
+    LSAN_OPTIONS=exitcode=23
+    export LSAN_OPTIONS
+  fi
+fi
 
 # We assume that the C compiler supports ObjC
 if test x"$CC" = x
