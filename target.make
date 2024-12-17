@@ -724,8 +724,13 @@ SHARED_LIBEXT   = .so
 
 HAVE_BUNDLES    = yes
 BUNDLE_LD	= $(LD)
+ifeq ($(CLANG_CC), yes)
+BUNDLE_LDFLAGS  += -shared -fPIC -lc++abi
+ADDITIONAL_LDFLAGS += -Wl,-E -lc++abi
+else
 BUNDLE_LDFLAGS  += -shared -fPIC
 ADDITIONAL_LDFLAGS += -Wl,-E
+endif
 STATIC_LDFLAGS += -static
 
 # nm on OpenBSD is rather like on Darwin
