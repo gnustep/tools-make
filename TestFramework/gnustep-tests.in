@@ -173,7 +173,10 @@ then
     LSAN_OPTIONS=exitcode=23
     export LSAN_OPTIONS
   fi
+else
+  GNUSTEP_WITH_ASAN=0
 fi
+export GNUSTEP_WITH_ASAN
 
 # We assume that the C compiler supports ObjC
 if test x"$CC" = x
@@ -452,17 +455,24 @@ run_test ()
 
   if test -x $RUN_CMD
   then
-    # We want aggressive memory checking.
 
-    # Tell glibc to check for malloc errors, and to crash if it detects
-    # any.
+    # Tell glibc to check for malloc errors, and to crash if it detects any.
     MALLOC_CHECK_=2
     export MALLOC_CHECK_
 
-    # Tell GNUstep-base to check for messages sent to deallocated objects
-    # and crash if it happens.
-    NSZombieEnabled=YES
-    CRASH_ON_ZOMBIE=YES
+    if test x"$GNUSTEP_WITH_ASAN" = x1
+    then
+      # With ASAN/LSAN keeping objects in existence as zombies may give us
+      # false negatives when looking for leaks.
+      When running without ASAN leak checking we want basic memory checking.
+      NSZombieEnabled=NO
+      CRASH_ON_ZOMBIE=NO
+    else
+      # Tell GNUstep-base to check for messages sent to deallocated objects
+      # and crash if it happens.
+      NSZombieEnabled=YES
+      CRASH_ON_ZOMBIE=YES
+    fi
     export NSZombieEnabled CRASH_ON_ZOMBIE
 
     echo Running $dir/$TESTFILE...
