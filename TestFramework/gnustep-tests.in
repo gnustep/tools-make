@@ -464,7 +464,7 @@ run_test ()
     then
       # With ASAN/LSAN keeping objects in existence as zombies may give us
       # false negatives when looking for leaks.
-      When running without ASAN leak checking we want basic memory checking.
+      # When running without ASAN leak checking we want basic memory checking.
       NSZombieEnabled=NO
       CRASH_ON_ZOMBIE=NO
     else
@@ -482,13 +482,13 @@ run_test ()
     # Env.sh is deprecated ... we should only use TestInfo to setup for a test
     if test -r ./Env.sh
     then
-      ( . ./Env.sh; timeout $GSTESTTIMEOUT $RUN_CMD )
+      ( . ./Env.sh; time timeout $GSTESTTIMEOUT $RUN_CMD )
     else
       if test -r ./make-check.env
       then
-        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; timeout $GSTESTTIMEOUT $RUN_CMD )
+        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; time timeout $GSTESTTIMEOUT $RUN_CMD )
       else
-        ( . ./TestInfo > /dev/null 2>&1; timeout $GSTESTTIMEOUT $RUN_CMD )
+        ( . ./TestInfo > /dev/null 2>&1; time timeout $GSTESTTIMEOUT $RUN_CMD )
       fi
     fi
 
