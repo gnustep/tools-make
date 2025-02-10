@@ -147,11 +147,12 @@ sanitization using https://github.com/google/sanitizers/wiki/addresssanitizer
 
 Unfortunately, AddressSanitizer/LeakSanitizer is not particularly portable and
 is available on a limited selection of hardware and operating systems, so
-turnign it on in GNUstep-make may not actually work on your system.
+turning it on in GNUstep-make may not actually work on your system.  It is
+however very good with modern GCC or Clang on the most popular platforms.
 
 The following command illustrates how to tell the Makefile Package to pass
 the appropriate flags to the compiler so that sanitization is put into the
-binary fnd so that the preprocessor can be used to change code behavior when
+binary and so that the preprocessor can be used to change code behaviour when
 it is built for sanitization (-fsanitize=address and -DGNUSTEP_WITH_ASAN=1).
 
 @smallexample

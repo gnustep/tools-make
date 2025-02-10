@@ -1,3 +1,13 @@
+2025-01-10  Richard Frith-Macdonald <rfm@gnu.org>
+
+        * ANNOUNCE:
+	* NEWS:
+	* RELEASENOTES:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Update announcement and release notes for 2.9.3.
+	* Version: Bump version to 2.9.3.
+
 2024-11-20  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* common.make: when building with the address/leak sanitizer
