@@ -462,7 +462,7 @@ with_timeout()
     wait $child
     result=$?
     kill -9 $waiter
-    $?=$result
+    (exit $result)
   )
 }
 
