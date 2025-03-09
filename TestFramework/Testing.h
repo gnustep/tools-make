@@ -154,7 +154,7 @@ static void pass(int passed, const char *format, ...)
     {
       NSDateFormatter	*f = [[NSDateFormatter alloc] init];
       [f setLocale: [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"]];
-      [f setDateFormat: @"yyyy-MM-dd HH:mm:ssZZZZZ"];
+      [f setDateFormat: @"(yyyy-MM-dd HH:mm:ss.SSS z) "];
       [f setTimeZone: [NSTimeZone systemTimeZone]];
       ts = [[f stringFromDate: [NSDate date]] UTF8String];
       [f release];
