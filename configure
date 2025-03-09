@@ -618,8 +618,8 @@ ac_default_prefix=NONE
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
 MISSINGBASH
-TESTPROG
 SHELLPROG
+TESTPROG
 LATEX2HTML
 clean_target_vendor
 clean_target_cpu
@@ -830,6 +830,7 @@ enable_native_objc_exceptions
 enable_debug_by_default
 enable_strip_makefiles
 enable_parallel_building
+with_bash_path
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1657,8 +1658,9 @@ Optional Packages:
 
 
 --with-libdir=FILE
-   Set the variant of the /lib directory to use.  This is useful on systems which support
-   more than one binary format requiring separate libraries.  The default is lib.
+   Set the variant of the /lib directory to use.  This is useful on systems
+   which support more than one binary format requiring separate libraries.
+   The default is lib.
    Example: --with-libdir=lib64
 
 
@@ -1717,6 +1719,12 @@ Optional Packages:
 
   --with-runtime-abi      When using the ng runtime library, allows control
                           over the -fobjc-runtime= flag passed to clang.
+
+--with-bash-path=PATH
+   Set the path to the bash executable to use.  This is useful on systems
+   which do not have a reasonably recent version of bash in their path.
+   Example: --with-bash-path=/opt/homebrew/bin/bash
+
 
 Some influential environment variables:
   CC          C compiler command
@@ -7542,12 +7550,12 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc >= 2" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc >= 2" 2>&1`
         else
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc >= 2" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc >= 2" 2>&1`
         fi
-        # Put the nasty error message in config.log where it belongs
-        echo "$libobjc_PKG_ERRORS" >&5
+	# Put the nasty error message in config.log where it belongs
+	echo "$libobjc_PKG_ERRORS" >&5
 
 
             if test -n "$PKG_CONFIG" && \
@@ -7609,14 +7617,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
         else
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
         fi
-        # Put the nasty error message in config.log where it belongs
-        echo "$libobjc_PKG_ERRORS" >&5
+	# Put the nasty error message in config.log where it belongs
+	echo "$libobjc_PKG_ERRORS" >&5
 
-        as_fn_error $? "Package requirements (libobjc) were not met:
+	as_fn_error $? "Package requirements (libobjc) were not met:
 
 $libobjc_PKG_ERRORS
 
@@ -7629,7 +7637,7 @@ See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-        { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
 is in your PATH or set the PKG_CONFIG environment variable to the full
@@ -7642,8 +7650,8 @@ See the pkg-config man page for more details.
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
 See \`config.log' for more details" "$LINENO" 5; }
 else
-        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-        libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+	libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -7714,14 +7722,14 @@ else
         _pkg_short_errors_supported=no
 fi
         if test $_pkg_short_errors_supported = yes; then
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --short-errors --print-errors --cflags --libs "libobjc" 2>&1`
         else
-                libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
+	        libobjc_PKG_ERRORS=`$PKG_CONFIG --print-errors --cflags --libs "libobjc" 2>&1`
         fi
-        # Put the nasty error message in config.log where it belongs
-        echo "$libobjc_PKG_ERRORS" >&5
+	# Put the nasty error message in config.log where it belongs
+	echo "$libobjc_PKG_ERRORS" >&5
 
-        as_fn_error $? "Package requirements (libobjc) were not met:
+	as_fn_error $? "Package requirements (libobjc) were not met:
 
 $libobjc_PKG_ERRORS
 
@@ -7734,7 +7742,7 @@ See the pkg-config man page for more details." "$LINENO" 5
 elif test $pkg_failed = untried; then
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
 printf "%s\n" "no" >&6; }
-        { { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
+	{ { printf "%s\n" "$as_me:${as_lineno-$LINENO}: error: in \`$ac_pwd':" >&5
 printf "%s\n" "$as_me: error: in \`$ac_pwd':" >&2;}
 as_fn_error $? "The pkg-config script could not be found or is too old.  Make sure it
 is in your PATH or set the PKG_CONFIG environment variable to the full
@@ -7747,8 +7755,8 @@ See the pkg-config man page for more details.
 To get pkg-config, see <http://pkg-config.freedesktop.org/>.
 See \`config.log' for more details" "$LINENO" 5; }
 else
-        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-        libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+	libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -7757,8 +7765,8 @@ fi
 fi
 
 else
-        libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
-        libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
+	libobjc_LIBS=$pkg_cv_libobjc_LIBS
         { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf "%s\n" "yes" >&6; }
 
@@ -9974,51 +9982,6 @@ done
 #--------------------------------------------------------------------
 # For test framework
 #--------------------------------------------------------------------
-# Extract the first word of "bash", so it can be a program name with args.
-set dummy bash; ac_word=$2
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-printf %s "checking for $ac_word... " >&6; }
-if test ${ac_cv_path_SHELLPROG+y}
-then :
-  printf %s "(cached) " >&6
-else $as_nop
-  case $SHELLPROG in
-  [\\/]* | ?:[\\/]*)
-  ac_cv_path_SHELLPROG="$SHELLPROG" # Let the user override the test with a path.
-  ;;
-  *)
-  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  case $as_dir in #(((
-    '') as_dir=./ ;;
-    */) ;;
-    *) as_dir=$as_dir/ ;;
-  esac
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
-    ac_cv_path_SHELLPROG="$as_dir$ac_word$ac_exec_ext"
-    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-  ;;
-esac
-fi
-SHELLPROG=$ac_cv_path_SHELLPROG
-if test -n "$SHELLPROG"; then
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SHELLPROG" >&5
-printf "%s\n" "$SHELLPROG" >&6; }
-else
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf "%s\n" "no" >&6; }
-fi
-
-
 # Extract the first word of "test", so it can be a program name with args.
 set dummy test; ac_word=$2
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -10064,12 +10027,98 @@ printf "%s\n" "no" >&6; }
 fi
 
 
+
+
+# Check whether --with-bash-path was given.
+if test ${with_bash_path+y}
+then :
+  withval=$with_bash_path; SHELLPROG="$withval"
+else $as_nop
+  SHELLPROG=
+fi
+
+if test x"$SHELLPROG" = x""; then
+  # Extract the first word of "bash", so it can be a program name with args.
+set dummy bash; ac_word=$2
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+printf %s "checking for $ac_word... " >&6; }
+if test ${ac_cv_path_SHELLPROG+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  case $SHELLPROG in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_SHELLPROG="$SHELLPROG" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  case $as_dir in #(((
+    '') as_dir=./ ;;
+    */) ;;
+    *) as_dir=$as_dir/ ;;
+  esac
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir$ac_word$ac_exec_ext"; then
+    ac_cv_path_SHELLPROG="$as_dir$ac_word$ac_exec_ext"
+    printf "%s\n" "$as_me:${as_lineno-$LINENO}: found $as_dir$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+SHELLPROG=$ac_cv_path_SHELLPROG
+if test -n "$SHELLPROG"; then
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $SHELLPROG" >&5
+printf "%s\n" "$SHELLPROG" >&6; }
+else
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: no" >&5
+printf "%s\n" "no" >&6; }
+fi
+
+
+else
+  if test ! -x $SHELLPROG
+  then
+    echo "Unable to find executable bash program at $SHELLPROG."
+    SHELLPROG=
+  fi
+fi
 if test x"$SHELLPROG" = x""; then
   echo "Unable to find the bash program (needed for testsuite)."
   SHELLPROG=/bin/sh
   MISSINGBASH=YES
 else
   MISSINGBASH=NO
+  BVER=`$SHELLPROG -c 'echo $BASH_VERSION'`
+  BMAJ=`echo $BVER | sed -e 's/\..*//'`
+  BMIN=`echo $BVER | sed -e 's/^[0-9]\+\.\([0-9]\+\).*/\1/'`
+  if test ${BMAJ} -lt 4
+  then
+    MISSINGBASH=YES
+  else
+    if test ${BMAJ} -eq 4 -a ${BMIN} -lt 3
+    then
+      MISSINGBASH=YES
+    fi
+  fi
+  if test ${MISSINGBASH} = "YES"
+  then
+    echo "The bash progrem version is too old (needed for testsuite)."
+    SHELLPROG=/bin/sh
+  fi
+fi
+if test ${MISSINGBASH} = "YES"
+then
+  echo "Please configure using --with-bash-path= to specify a modernish"
+  echo "bash program (version 4.3 or later)."
+  SHELLPROG=/bin/sh
 fi
 
 

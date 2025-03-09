@@ -396,8 +396,9 @@ fi
 AC_MSG_CHECKING([for architecture-specific lib path])
 AC_ARG_WITH(libdir,[
 --with-libdir=FILE
-   Set the variant of the /lib directory to use.  This is useful on systems which support
-   more than one binary format requiring separate libraries.  The default is lib.
+   Set the variant of the /lib directory to use.  This is useful on systems
+   which support more than one binary format requiring separate libraries.
+   The default is lib.
    Example: --with-libdir=lib64
 ],
   LIBDIR="$withval",LIBDIR="lib")
@@ -1778,14 +1779,53 @@ AC_CHECK_PROGS(LATEX2HTML, latex2html)
 #--------------------------------------------------------------------
 # For test framework
 #--------------------------------------------------------------------
-AC_PATH_PROG(SHELLPROG, bash)
 AC_PATH_PROG(TESTPROG, test)
+
+AC_ARG_WITH(bash-path,[
+--with-bash-path=PATH
+   Set the path to the bash executable to use.  This is useful on systems
+   which do not have a reasonably recent version of bash in their path.
+   Example: --with-bash-path=/opt/homebrew/bin/bash
+],
+  SHELLPROG="$withval",SHELLPROG=)
+if test x"$SHELLPROG" = x""; then
+  AC_PATH_PROG(SHELLPROG, bash)
+else
+  if test ! -x $SHELLPROG
+  then
+    echo "Unable to find executable bash program at $SHELLPROG."
+    SHELLPROG=
+  fi
+fi
 if test x"$SHELLPROG" = x""; then
   echo "Unable to find the bash program (needed for testsuite)."
   SHELLPROG=/bin/sh
   MISSINGBASH=YES
 else
   MISSINGBASH=NO
+  BVER=`$SHELLPROG -c 'echo $BASH_VERSION'`
+  BMAJ=`echo $BVER | sed -e 's/\..*//'`
+  BMIN=`echo $BVER | sed -e 's/^[[0-9]]\+\.\([[0-9]]\+\).*/\1/'`
+  if test ${BMAJ} -lt 4
+  then
+    MISSINGBASH=YES
+  else
+    if test ${BMAJ} -eq 4 -a ${BMIN} -lt 3
+    then
+      MISSINGBASH=YES
+    fi
+  fi
+  if test ${MISSINGBASH} = "YES"
+  then
+    echo "The bash progrem version is too old (needed for testsuite)."
+    SHELLPROG=/bin/sh
+  fi
+fi
+if test ${MISSINGBASH} = "YES"
+then
+  echo "Please configure using --with-bash-path= to specify a modernish"
+  echo "bash program (version 4.3 or later)."
+  SHELLPROG=/bin/sh
 fi
 AC_SUBST(MISSINGBASH)
 
