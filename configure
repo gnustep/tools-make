@@ -10098,7 +10098,7 @@ else
   MISSINGBASH=NO
   BVER=`$SHELLPROG -c 'echo $BASH_VERSION'`
   BMAJ=`echo $BVER | sed -e 's/\..*//'`
-  BMIN=`echo $BVER | sed -e 's/^[0-9]\+\.\([0-9]\+\).*/\1/'`
+  BMIN=`echo $BVER | sed -e 's/^[0-9][0-9]*\.\([0-9][0-9]*\).*/\1/'`
   if test ${BMAJ} -lt 4
   then
     MISSINGBASH=YES
