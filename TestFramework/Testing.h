@@ -669,5 +669,7 @@ if (__value != __object) \
 #define RECREATE_AUTORELEASE_POOL(X)  \
   if (X == nil) \
     (X) = [NSAutoreleasePool new]
+#define ENTER_POOL	@autoreleasepool{
+#define LEAVE_POOL      } 
 #endif
 
