@@ -442,6 +442,30 @@ build_test ()
   return 0
 }
 
+# Function to run a test case with a timeout by starting it in the background
+# and having a subshell monitor it and kill it if it runs too long.
+# If the test completes before the timeout, the waiting subshell is killed.
+# The result of the function is the exit status of the test case.
+with_timeout()
+{ 
+  timeout="$1"; cmd="$2";
+
+  ( 
+    eval "$cmd" &
+    child=$!
+    trap -- "" SIGTERM 
+    (       
+      sleep $timeout
+      kill $child 2> /dev/null 
+    ) &     
+    waiter=$!
+    wait $child
+    result=$?
+    kill -9 $waiter
+    $?=$result
+  )
+}
+
 run_test ()
 {
   # Remove the extension, if there is one. If there is no extension, add
@@ -482,13 +506,13 @@ run_test ()
     # Env.sh is deprecated ... we should only use TestInfo to setup for a test
     if test -r ./Env.sh
     then
-      ( . ./Env.sh; time timeout $GSTESTTIMEOUT $RUN_CMD )
+      ( . ./Env.sh; time with_timeout $GSTESTTIMEOUT $RUN_CMD )
     else
       if test -r ./make-check.env
       then
-        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; time timeout $GSTESTTIMEOUT $RUN_CMD )
+        ( . ./make-check.env; . ./TestInfo > /dev/null 2>&1; time with_timeout $GSTESTTIMEOUT $RUN_CMD )
       else
-        ( . ./TestInfo > /dev/null 2>&1; time timeout $GSTESTTIMEOUT $RUN_CMD )
+        ( . ./TestInfo > /dev/null 2>&1; time with_timeout $GSTESTTIMEOUT $RUN_CMD )
       fi
     fi
 
