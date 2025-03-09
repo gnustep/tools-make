@@ -9433,7 +9433,7 @@ fi
 
 
 # If we determined that the user wants the gnustep-2.0 ABI, check for potential linker problems.
-if test $gs_cv_runtime_abi = 'gnustep-2.0'; then
+if test "$gs_cv_runtime_abi" = "gnustep-2.0"; then
 
   { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking which linker is being used" >&5
 printf %s "checking which linker is being used... " >&6; }
