@@ -25,13 +25,7 @@
 #include <stdarg.h>
 #include <string.h>
 
-#import <Foundation/NSAutoreleasePool.h>
-#import <Foundation/NSCalendarDate.h>
-#import <Foundation/NSException.h>
-#import <Foundation/NSObjCRuntime.h>
-#import <Foundation/NSObject.h>
-#import <Foundation/NSRegularExpression.h>
-#import <Foundation/NSString.h>
+#import <Foundation/Foundation.h>
 
 #if defined(__OBJC__) && defined(__clang__) && defined(_MSC_VER)
 /* Work around Clang bug on Windows MSVC when tests contain no
@@ -158,10 +152,12 @@ static void pass(int passed, const char *format, ...)
 
   if (testTimestamps)
     {
-      NSCalendarDate    *d = [NSCalendarDate date];
-
-      [d setCalendarFormat: @"(%Y-%m-%d %H:%M:%S.%F %z) "];
-      ts = [[d description] cString];
+      NSDateFormatter	*f = [[NSDateFormatter alloc] init];
+      [f setLocale: [NSLocale localeWithLocaleIdentifier: @"en_US_POSIX"]];
+      [f setDateFormat: @"yyyy-MM-dd HH:mm:ssZZZZZ"];
+      [f setTimeZone: [NSTimeZone systemTimeZone]];
+      ts = [[f stringFromDate: [NSDate date]] UTF8String];
+      [f release];
     }
   if (passed)
     {
