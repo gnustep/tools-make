@@ -446,6 +446,8 @@ build_test ()
 # and having a subshell monitor it and kill it if it runs too long.
 # If the test completes before the timeout, the waiting subshell is killed.
 # The result of the function is the exit status of the test case.
+# To avoid dependency on the external command 'sleep' we use coproc with
+# 'read -t' and 'wait' to implement a sleep for $timeout seconds.
 with_timeout()
 { 
   timeout="$1"; cmd="$2";
@@ -455,7 +457,7 @@ with_timeout()
     child=$!
     trap -- "" SIGTERM 
     (       
-      sleep $timeout
+      coproc read -t $timeout && wait "$!" || true
       kill $child 2> /dev/null 
     ) &     
     waiter=$!
