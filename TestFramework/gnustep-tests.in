@@ -60,7 +60,7 @@ then
 fi
 if test x"$GSTESTTIMEOUT" = x
 then
-  GSTESTTIMEOUT="300s"
+  GSTESTTIMEOUT="300"
 fi
 if test x"$GSMAKEOPTIONS" = x
 then
