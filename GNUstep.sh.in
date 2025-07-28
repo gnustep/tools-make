@@ -409,6 +409,17 @@ IFS=:
         fi
         export LD_LIBRARY_PATH;;
 
+      *haiku*)
+        if [ -z "$LIBRARY_PATH" ]; then
+          LIBRARY_PATH="$path_fragment"
+        else
+          if ( echo ":${LIBRARY_PATH}:"\
+	    |grep -v ":${path_fragment}:" >/dev/null ); then
+	    LIBRARY_PATH="$path_fragment:$LIBRARY_PATH"
+          fi
+        fi
+        export LIBRARY_PATH;;
+
       *)
         if [ -z "$LD_LIBRARY_PATH" ]; then
           LD_LIBRARY_PATH="$path_fragment"
