@@ -418,7 +418,9 @@ IFS=:
 	    LIBRARY_PATH="$path_fragment:$LIBRARY_PATH"
           fi
         fi
-        export LIBRARY_PATH;;
+	export LIBBE_DEBUG=1
+	export LIBRARY_PATH;;
+        
 
       *)
         if [ -z "$LD_LIBRARY_PATH" ]; then
