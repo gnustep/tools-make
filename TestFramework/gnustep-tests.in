@@ -463,7 +463,7 @@ with_timeout()
     waiter=$!
     wait $child
     result=$?
-    kill -9 $waiter
+    { kill -9 $waiter && wait $waiter; } 2>/dev/null
     (exit $result)
   )
 }
