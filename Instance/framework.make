@@ -668,7 +668,7 @@ internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
                       $(GNUSTEP_LIBRARIES)/$(GNUSTEP_TARGET_LDIR) \
                       $(GNUSTEP_HEADERS) shared-instance-pkgconfig-install
 	$(ECHO_INSTALLING)(cd $(GNUSTEP_BUILD_DIR); \
-	  $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list \
+	  $(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list \
 	    $(FRAMEWORK_DIR_NAME)) \
 	    | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
@@ -710,7 +710,7 @@ else
 
 internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR)
 	$(ECHO_INSTALLING)rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
-	(cd $(GNUSTEP_BUILD_DIR); $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	(cd $(GNUSTEP_BUILD_DIR); $(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME)$(END_ECHO)
 endif
@@ -729,7 +729,7 @@ internal-framework-install_:: $(FRAMEWORK_INSTALL_DIR) \
 	$(ECHO_INSTALLING)\
 	rm -rf $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_DIR_NAME); \
 	(cd $(GNUSTEP_BUILD_DIR);\
-	 $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list \
+	 $(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list \
 	        $(FRAMEWORK_DIR_NAME)) | (cd $(FRAMEWORK_INSTALL_DIR); \
 	                                  $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
@@ -744,7 +744,7 @@ endif
 	fi; \
         $(MKINSTALLDIRS) $(HEADER_FILES_INSTALL_DIR); \
 	cd $(FRAMEWORK_INSTALL_DIR)/$(FRAMEWORK_VERSION_DIR_NAME)/Headers ; \
-          $(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list . | (cd  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR); \
+          $(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list . | (cd  $(GNUSTEP_HEADERS)/$(HEADER_FILES_INSTALL_DIR); \
           $(TAR) xf - ); \
 	$(END_ECHO)
 ifneq ($(CHOWN_TO),)

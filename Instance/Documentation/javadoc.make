@@ -76,7 +76,7 @@ ifneq ($(JAVADOC_FILES),)
 
 internal-doc-install_:: 
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \
-	$(TAR) cfX - $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_INSTANCE) |  \
+	$(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_INSTANCE) |  \
 	  (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
