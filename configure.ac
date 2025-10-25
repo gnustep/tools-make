@@ -228,25 +228,7 @@ if test "x$target" != "x$host"; then
   AC_CHECK_PROG(DLLTOOL, "${targetArgument}-dlltool", dnl
                          "${targetArgument}-dlltool", dlltool)
 else
-  if test "$OBJC_RUNTIME_LIB" = ng; then
-    #
-    # Detect compiler support for Blocks; perhaps someday -fblocks won't be
-    # required, in which case we'll need to change this.
-    #
-    saveCFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS -fblocks"
-    AC_LANG_PUSH(C)
-    AC_COMPILE_IFELSE([AC_LANG_PROGRAM([],[(void)^{int i; i = 0; }();])], [
-      ac_cv_blocks="yes"
-    ], [
-      ac_cv_blocks="no"
-    ])
-    CFLAGS="$saveCFLAGS"
-    AC_LANG_POP(C)
-    if test "$ac_cv_blocks" = no; then
-      AC_MSG_ERROR([Your compiler doesn't appear to support blocks. To fix this use the CC environment varibale to specify a different compiler (or use a different library-combo)]);
-    fi
-  fi
+
   AC_CHECK_PROG(AR,      ar,      ar)
   AC_CHECK_PROG(DLLTOOL, dlltool, dlltool)
   AC_PROG_RANLIB
@@ -1147,7 +1129,7 @@ fi
 
 
 GS_CHECK_OBJC_RUNTIME()
-
+GS_BLOCKS_SUPPORT()
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------

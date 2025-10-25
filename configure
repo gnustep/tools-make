@@ -645,6 +645,7 @@ OBJ_MERGE_CMD_FLAG
 USE_ARC
 ac_cv_objc_threaded
 objc_threaded
+BLOCKS_LIBS
 libobjc_LIBS
 libobjc_CFLAGS
 PKG_CONFIG_LIBDIR
@@ -5824,53 +5825,7 @@ fi
 
 
 else
-  if test "$OBJC_RUNTIME_LIB" = ng; then
-    #
-    # Detect compiler support for Blocks; perhaps someday -fblocks won't be
-    # required, in which case we'll need to change this.
-    #
-    saveCFLAGS="$CFLAGS"
-    CFLAGS="$CFLAGS -fblocks"
-    ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
-
-cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main (void)
-{
-(void)^{int i; i = 0; }();
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-
-      ac_cv_blocks="yes"
-
-else $as_nop
-
-      ac_cv_blocks="no"
-
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-    CFLAGS="$saveCFLAGS"
-    ac_ext=c
-ac_cpp='$CPP $CPPFLAGS'
-ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-ac_compiler_gnu=$ac_cv_c_compiler_gnu
-
-    if test "$ac_cv_blocks" = no; then
-      as_fn_error $? "Your compiler doesn't appear to support blocks. To fix this use the CC environment varibale to specify a different compiler (or use a different library-combo)" "$LINENO" 5;
-    fi
-  fi
   # Extract the first word of "ar", so it can be a program name with args.
 set dummy ar; ac_word=$2
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
@@ -8152,7 +8107,7 @@ printf "%s\n" "$gs_cv_libobjc_domain_ng" >&6; }
 
         if test ! x"$libobjc_LIBS" = x""; then
         OBJC_CPPFLAGS=$libobjc_CFLAGS
-        OBCJ_LDFLAGS=""
+        OBJC_LDFLAGS=""
         OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
         elif test ! x"$gs_cv_libobjc_domain_ng" = x""; then
         if test x"$gs_cv_libobjc_domain_ng" = x"SYSTEM"; then
@@ -8219,7 +8174,8 @@ printf "%s\n" "$gs_cv_libobjc_domain_ng" >&6; }
 
 
 
-      ac_fn_c_check_func "$LINENO" "objc_test_capability" "ac_cv_func_objc_test_capability"
+
+ac_fn_c_check_func "$LINENO" "objc_test_capability" "ac_cv_func_objc_test_capability"
 if test "x$ac_cv_func_objc_test_capability" = xyes
 then :
 
@@ -8666,7 +8622,7 @@ printf "%s\n" "$gs_cv_libobjc_domain_dflt" >&6; }
 
         if test ! x"$libobjc_LIBS" = x""; then
         OBJC_CPPFLAGS=$libobjc_CFLAGS
-        OBCJ_LDFLAGS=""
+        OBJC_LDFLAGS=""
         OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
         elif test ! x"$gs_cv_libobjc_domain_dflt" = x""; then
         if test x"$gs_cv_libobjc_domain_dflt" = x"SYSTEM"; then
@@ -8728,6 +8684,122 @@ printf "%s\n" "$gs_cv_libobjc_domain_dflt" >&6; }
     OBJCRT="$OBJC_FINAL_LIB_FLAG"
 
 
+
+
+
+
+    BLOCKS_LIBS=""
+    if test "$OBJC_RUNTIME_LIB" = ng; then
+    #
+    # Detect compiler support for Blocks; perhaps someday -fblocks won't be
+    # required, in which case we'll need to change this.
+    #
+    saveCFLAGS="$CFLAGS"
+    CFLAGS="$CFLAGS -fblocks"
+
+    ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for blocks support in compiler" >&5
+printf %s "checking for blocks support in compiler... " >&6; }
+    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+int
+main (void)
+{
+(void)^{int i; i = 0; }();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_compile "$LINENO"
+then :
+
+      ac_cv_blocks="yes"
+
+else $as_nop
+
+      ac_cv_blocks="no"
+
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
+    { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_blocks" >&5
+printf "%s\n" "$ac_cv_blocks" >&6; }
+    CFLAGS="$saveCFLAGS"
+    if test "$ac_cv_blocks" = yes; then
+      saveLIBS="$LIBS"
+      LIBS="$LIBS $OBJC_FINAL_LIB_FLAG"
+      ac_fn_c_check_func "$LINENO" "_Block_copy" "ac_cv_func__Block_copy"
+if test "x$ac_cv_func__Block_copy" = xyes
+then :
+
+fi
+
+      LIBS="$saveLIBS"
+      if test "$ac_cv_func__Block_copy" = no; then
+        { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for _Block_copy in -lBlocksRuntime" >&5
+printf %s "checking for _Block_copy in -lBlocksRuntime... " >&6; }
+if test ${ac_cv_lib_BlocksRuntime__Block_copy+y}
+then :
+  printf %s "(cached) " >&6
+else $as_nop
+  ac_check_lib_save_LIBS=$LIBS
+LIBS="-lBlocksRuntime  $LIBS"
+cat confdefs.h - <<_ACEOF >conftest.$ac_ext
+/* end confdefs.h.  */
+
+/* Override any GCC internal prototype to avoid an error.
+   Use char because int might match the return type of a GCC
+   builtin and then its argument prototype would still apply.  */
+char _Block_copy ();
+int
+main (void)
+{
+return _Block_copy ();
+  ;
+  return 0;
+}
+_ACEOF
+if ac_fn_c_try_link "$LINENO"
+then :
+  ac_cv_lib_BlocksRuntime__Block_copy=yes
+else $as_nop
+  ac_cv_lib_BlocksRuntime__Block_copy=no
+fi
+rm -f core conftest.err conftest.$ac_objext conftest.beam \
+    conftest$ac_exeext conftest.$ac_ext
+LIBS=$ac_check_lib_save_LIBS
+fi
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_BlocksRuntime__Block_copy" >&5
+printf "%s\n" "$ac_cv_lib_BlocksRuntime__Block_copy" >&6; }
+if test "x$ac_cv_lib_BlocksRuntime__Block_copy" = xyes
+then :
+  printf "%s\n" "#define HAVE_LIBBLOCKSRUNTIME 1" >>confdefs.h
+
+  LIBS="-lBlocksRuntime $LIBS"
+
+fi
+
+        if test "$ac_cv_lib_BlocksRuntime__Block_copy" = yes; then
+          BLOCKS_LIBS="-lBlocksRuntime"
+        else
+          as_fn_error $? "Your compiler supports blocks, but the symbols required for blocks support are found neither in libobjc nor in libBlocksRuntime. To fix this, recompile libobjc2 with an embedded blocks runtime, or install libBlocksRuntime/libdispatch with private headers." "$LINENO" 5
+        fi
+      fi
+    else
+      as_fn_error $? "Your compiler doesn't appear to support blocks. To fix this use the CC environment varibale to specify a different compiler (or use a different library-combo)" "$LINENO" 5;
+    fi
+    ac_ext=c
+ac_cpp='$CPP $CPPFLAGS'
+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ac_compiler_gnu=$ac_cv_c_compiler_gnu
+
+  fi
 
 
 #--------------------------------------------------------------------

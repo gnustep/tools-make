@@ -164,7 +164,7 @@ AC_DEFUN([GS_OBJC_LIB_FLAG], [
 # Configure the installed Objective-C runtime, if it is installed. This sets up CFLAGS/LDFLAGS/LD_LIBRARY_PATH 
 # as required. Additionally, following variables are set after execution of this macro:
 # * OBJC_CPPFLAGS
-# * OBCJ_LDFLAGS
+# * OBJC_LDFLAGS
 # * OBJC_FINAL_LIB_FLAG
 # * OBJCRT
 #
@@ -185,7 +185,7 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
     dnl pkg-config makes it easy for us to configure the flags
     if test ! x"$libobjc_LIBS" = x""; then
         OBJC_CPPFLAGS=$libobjc_CFLAGS
-        OBCJ_LDFLAGS=""
+        OBJC_LDFLAGS=""
         OBJC_FINAL_LIB_FLAG=$libobjc_LIBS
     dnl we need to invest more smarts if
     elif test ! x"$gs_cv_libobjc_domain" = x""; then
