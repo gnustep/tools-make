@@ -82,6 +82,9 @@ AC_PROG_CXX
 # Similarly for the ObjC++ compiler...
 AC_PROG_OBJCXX
 
+# The test framework uses grep
+AC_PROG_GREP
+
 # We may use egrep for some tests further down below
 AC_PROG_EGREP
 
