@@ -11359,7 +11359,7 @@ printf "%s\n" "$as_me: executing $ac_file commands" >&6;}
 
 
   case $ac_file$ac_mode in
-    "default":C) chmod a+x openapp opentool fixpath.sh executable.template ;;
+    "default":C) chmod a+x openapp opentool fixpath.sh executable.template TestFramework/gnustep-tests ;;
 
   esac
 done # for ac_tag

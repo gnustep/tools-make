@@ -1823,6 +1823,6 @@ gnustep-make.spec gnustep-config TestFramework/gnustep-tests
 filesystem.make filesystem.sh filesystem.csh gnustep-make-ld.so.conf])
 AC_CONFIG_FILES([runtime/$OBJC_RUNTIME_LIB.make:config.make.in])
 AC_CONFIG_COMMANDS([default],
-	[[chmod a+x openapp opentool fixpath.sh executable.template]],
+	[[chmod a+x openapp opentool fixpath.sh executable.template TestFramework/gnustep-tests]],
 	[[]])
 AC_OUTPUT
