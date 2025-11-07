@@ -284,22 +284,23 @@ static void testStart()
       if (0 == _cond) \
 	{ \
           NSString  *s = [_obj description]; \
+          NSString  *e = [_exp description]; \
           if ([s length] == 1) \
             { \
               fprintf(stderr, \
-		"Expected '%s' and got '%s' (unicode codepoint %d)\n", \
-                [[_exp description] UTF8String], [s UTF8String], \
-		[s characterAtIndex: 0]); \
+		"Expected '%s' and got '%s' (unicode codepoint %u)\n", \
+                [e UTF8String], [s UTF8String], \
+		(unsigned)[s characterAtIndex: 0]); \
             } \
 	  else if (nil == s) \
 	    { \
 	      fprintf(stderr, "Expected '%s' and got (nil)\n", \
-                [[_exp description] UTF8String]); \
+                [e UTF8String]); \
 	    } \
 	  else \
 	    { \
 	      fprintf(stderr, "Expected '%s' and got '%s'\n", \
-                [[_exp description] UTF8String], [s UTF8String]); \
+                [e UTF8String], [s UTF8String]); \
 	    } \
 	} \
     } \
@@ -355,9 +356,9 @@ static void testStart()
           if ([_dsc length] == 1) \
             { \
               fprintf(stderr, \
-		"Expected '%s' and got '%s' (unicode codepoint %d)\n", \
+		"Expected '%s' and got '%s' (unicode codepoint %u)\n", \
                 [[_pat description] UTF8String], [_dsc UTF8String], \
-		[_dsc characterAtIndex: 0]); \
+		(unsigned)[_dsc characterAtIndex: 0]); \
             } \
 	  else if (nil == _dsc) \
 	    { \
