@@ -172,7 +172,7 @@ then
   # with a well known exit code.
   if test x"$LSAN_OPTIONS" = x
   then
-    LSAN_OPTIONS=exitcode=23
+    LSAN_OPTIONS=exitcode=23,suppressions=$GNUSTEP_MAKEFILES/lsan-suppressions
     export LSAN_OPTIONS
   fi
 else

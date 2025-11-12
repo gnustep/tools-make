@@ -1,0 +1,3 @@
+# GCC runtime known leaks to suppress
+leak:__objc_exec_class
+leak:class_addMethod

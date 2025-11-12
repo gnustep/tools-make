@@ -792,6 +792,10 @@ ifeq ($(asan), yes)
   ifneq ($(filter -fno-omit-frame-pointer, $(ADDITIONAL_FLAGS)), -fno-omit-frame-pointer)
     ADDITIONAL_FLAGS += -fno-omit-frame-pointer
   endif
+export GNUSTEP_WITH_ASAN=1
+  ifeq ($(LSAN_OPTIONS),)
+    export LSAN_OPTIONS=suppressions=$GNUSTEP_MAKEFILES/lsan-suppressions
+  endif
 endif
 
 ifeq ($(warn), no)
