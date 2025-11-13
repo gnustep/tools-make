@@ -512,7 +512,7 @@ debian_dist/gnustep-make_$(DEB_TARBALL_VERSION)_any.deb:
 	cd debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/ && debuild $(DEBUILD_ARGS) -b
 
 debfiles: debian_dist/gnustep-make_$(DEB_TARBALL_VERSION).orig.tar.gz
-	cd debian_dist && tar xfz gnustep-make_$(DEB_TARBALL_VERSION).orig.tar.gz
+	cd debian_dist && tar -xfz gnustep-make_$(DEB_TARBALL_VERSION).orig.tar.gz
 	PACKAGE_NAME="gnustep-make" VERSION=$(DEB_TARBALL_VERSION) DEB_MAINTAINER="GNUstep Developers <gnustep-dev@gnu.org>" DEB_ARCHITECTURE=any /bin/bash bake_debian_files.sh debian_dist/gnustep-make-$(DEB_TARBALL_VERSION)/
 
 # Manual export is required to permit user to override .orig.tar.gz during the build process.
