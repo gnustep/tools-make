@@ -794,7 +794,7 @@ ifeq ($(asan), yes)
   endif
 export GNUSTEP_WITH_ASAN=1
   ifeq ($(LSAN_OPTIONS),)
-    export LSAN_OPTIONS=suppressions=$GNUSTEP_MAKEFILES/lsan-suppressions
+    export LSAN_OPTIONS=suppressions=$(GNUSTEP_MAKEFILES)/lsan-suppressions
   endif
 endif
 
