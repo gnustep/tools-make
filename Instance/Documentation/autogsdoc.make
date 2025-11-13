@@ -33,6 +33,16 @@ INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
+# If AGSDOC_FLAGS does not already contain the flags for generating relative
+# links, add default values.
+ifeq (,$(findstring -InstallationDomain,$(AGSDOC_FLAGS)))
+INTERNAL_AGSDOCFLAGS += -InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)"
+endif
+ifeq (,$(findstring -InstallDir,$(AGSDOC_FLAGS)))
+INTERNAL_AGSDOCFLAGS += -InstallDir "$(DOC_INSTALL_DIR)"
+endif
+
+
 internal-doc-all_:: $(GNUSTEP_INSTANCE)/dependencies
 
 # Only include (and implicitly automatically rebuild if needed) the
