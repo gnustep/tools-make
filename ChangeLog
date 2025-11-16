@@ -1,3 +1,12 @@
+2025-11-16  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/Documentation/autogsdoc.make:
+	* Instance/documentation.make:
+	Add AGSDOC_RELOCATABLE=yes environment variable or make setting to
+	tell autogsdoc to generate relocatable html output for web servers
+	etc.  The cross references in this documentation will work when the
+	documentation is installed, but not until it is installed.
+
 2025-01-10  Richard Frith-Macdonald <rfm@gnu.org>
 
         * ANNOUNCE:

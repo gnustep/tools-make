@@ -33,6 +33,12 @@ INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
+ifeq ($(AGSDOC_RELOCATABLE), yes)
+# If AGSDOC_RELOCATABLE is yes, we ensure that flags are supplied so that
+# autogsdoc generates relative links between installed projects: documentation
+# may then be relocated simply by copying from the installed locations as
+# long as the directory hierarchy is maintained.
+#
 # If AGSDOC_FLAGS does not already contain the flags for generating relative
 # links, add default values.
 ifeq (,$(findstring -InstallationDomain,$(AGSDOC_FLAGS)))
@@ -40,6 +46,7 @@ INTERNAL_AGSDOCFLAGS += -InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)"
 endif
 ifeq (,$(findstring -InstallDir,$(AGSDOC_FLAGS)))
 INTERNAL_AGSDOCFLAGS += -InstallDir "$(DOC_INSTALL_DIR)"
+endif
 endif
 
 

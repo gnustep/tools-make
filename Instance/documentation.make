@@ -43,6 +43,10 @@ endif
 # The GSDoc files that needs pre-processing are in xxx_GSDOC_FILES
 # The files for processing by autogsdoc are in xxx_AGSDOC_FILES
 # The options for controlling autogsdoc are in xxx_AGSDOC_FLAGS
+# The AGSDOC_RELOCATABLE=yes option may be defined (usually as an environment
+#   variable) to generate html documents with inter-project references which
+#   are relative to the installation location, so the installed documentation
+#   may be copied without breaking links.
 #
 # Javadoc support: 
 # The Java classes and packages that needs documenting using javadoc
