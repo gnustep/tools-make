@@ -45,7 +45,7 @@ ifeq (,$(findstring -InstallationDomain,$(AGSDOC_FLAGS)))
 INTERNAL_AGSDOCFLAGS += -InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)"
 endif
 ifeq (,$(findstring -InstallDir,$(AGSDOC_FLAGS)))
-INTERNAL_AGSDOCFLAGS += -InstallDir "$(DOC_INSTALL_DIR)"
+INTERNAL_AGSDOCFLAGS += -InstallDir "$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)"
 endif
 endif
 
