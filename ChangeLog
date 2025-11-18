@@ -1,4 +1,4 @@
-2025-11-16  Richard Frith-Macdonald <rfm@gnu.org>
+2025-11-18  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/autogsdoc.make:
 	* Instance/documentation.make:
@@ -6,6 +6,11 @@
 	tell autogsdoc to generate relocatable html output for web servers
 	etc.  The cross references in this documentation will work when the
 	documentation is installed, but not until it is installed.
+	When generating documentation using autogsdoc, make DOC_INSTALL_DIR
+	default to Developer (since documentation genmerated from source code
+  	is almost certainly developer documentation).  For direct installation
+	to the top level documentation directory, set DOC_INSTALL_DIR=. to
+	override the new default.
 
 2025-01-10  Richard Frith-Macdonald <rfm@gnu.org>
 

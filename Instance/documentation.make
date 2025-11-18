@@ -67,6 +67,11 @@ endif
 #
 #	Where xxx is the name of the document
 #
+# xxx_DOC_INSTALL_DIR defaults to Developer, so documentation is usually
+# installed to the Developer subdirectory (for user documentation you should
+# use 'User').  To install directly to the documentation directory rather
+# than a subdirectory, set xxx_DOC_INSTALL_DIR=.
+#
 
 TEXI_FILES = $($(GNUSTEP_INSTANCE)_TEXI_FILES)
 GSDOC_FILES = $($(GNUSTEP_INSTANCE)_GSDOC_FILES)

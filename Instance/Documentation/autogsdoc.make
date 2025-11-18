@@ -33,6 +33,13 @@ INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
+# If there was no installation subdirectory use Developer by default.
+# The make file can specify xxx_DOC_INSTALL_DIR=. to use the top level
+# documentation directory by default.
+ifeq ($(DOC_INSTALL_DIR),)
+DOC_INSTALL_DIR = Developer
+endif
+
 ifeq ($(AGSDOC_RELOCATABLE), yes)
 # If AGSDOC_RELOCATABLE is yes, we ensure that flags are supplied so that
 # autogsdoc generates relative links between installed projects: documentation
