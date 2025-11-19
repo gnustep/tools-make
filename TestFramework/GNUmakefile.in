@@ -17,6 +17,9 @@ ADDITIONAL_LDFLAGS += -ftest-coverage -fprofile-arcs
 ADDITIONAL_TOOL_LIBS+=-lgcov
 endif
 
+ADDITIONAL_OBJCFLAGS += -Wno-deprecated
+ADDITIONAL_OBJCCFLAGS += -Wno-deprecated
+
 @TESTRULES@
 
 -include GNUmakefile.preamble
