@@ -1,3 +1,15 @@
+2025-11-19  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Instance/Documentation/autogsdoc.make:
+	Add new variable xxx_DOC_INSTALL_BUNDLE to allow the name (within the
+	install directory) of a folder in which the autogsdoc generated files
+	are stored.  This allows make files to override the default, which is
+	the name of the project/instance.
+	For instance, the gnustep-base library defines
+	Base_DOC_INSTALL_DIR=Developer/Base and
+	Base_DOC_INSTALL_BUNDLE=Reference to have the library reference
+	documentation installed in Developer/Base/Reference
+
 2025-11-18  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/autogsdoc.make:
@@ -6,10 +18,10 @@
 	tell autogsdoc to generate relocatable html output for web servers
 	etc.  The cross references in this documentation will work when the
 	documentation is installed, but not until it is installed.
-	When generating documentation using autogsdoc, make DOC_INSTALL_DIR
+	When generating documentation using autogsdoc, make xxx_DOC_INSTALL_DIR
 	default to Developer (since documentation genmerated from source code
   	is almost certainly developer documentation).  For direct installation
-	to the top level documentation directory, set DOC_INSTALL_DIR=. to
+	to the top level documentation directory, set xxx_DOC_INSTALL_DIR=. to
 	override the new default.
 
 2025-01-10  Richard Frith-Macdonald <rfm@gnu.org>

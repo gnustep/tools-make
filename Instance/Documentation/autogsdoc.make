@@ -40,6 +40,13 @@ ifeq ($(DOC_INSTALL_DIR),)
 DOC_INSTALL_DIR = Developer
 endif
 
+# The autogsdoc oputput bundle is a directory within DOC_INSTALL_DIR
+# If unspoecified, default to using the project name.
+DOC_INSTALL_BUNDLE = $($(GNUSTEP_INSTANCE)_DOC_INSTALL_BUNDLE)
+ifeq ($(DOC_INSTALL_BUNDLE),)
+DOC_INSTALL_BUNDLE = $(GNUSTEP_INSTANCE)
+endif
+
 ifeq ($(AGSDOC_RELOCATABLE), yes)
 # If AGSDOC_RELOCATABLE is yes, we ensure that flags are supplied so that
 # autogsdoc generates relative links between installed projects: documentation
@@ -52,7 +59,7 @@ ifeq (,$(findstring -InstallationDomain,$(AGSDOC_FLAGS)))
 INTERNAL_AGSDOCFLAGS += -InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)"
 endif
 ifeq (,$(findstring -InstallDir,$(AGSDOC_FLAGS)))
-INTERNAL_AGSDOCFLAGS += -InstallDir "$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)"
+INTERNAL_AGSDOCFLAGS += -InstallDir "$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE)"
 endif
 endif
 
@@ -70,16 +77,18 @@ $(GNUSTEP_INSTANCE)/dependencies:
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -MakeDependencies $(GNUSTEP_INSTANCE)/dependencies $(AGSDOC_FILES)$(END_ECHO)
 
 internal-doc-install_:: 
-	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE); \
-	$(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list $(GNUSTEP_INSTANCE) | \
-	  (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR); $(TAR) xf -)$(END_ECHO)
+	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
+	$(MKDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
+	$(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list \
+	$(GNUSTEP_INSTANCE)/* | \
+	  (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); $(TAR) xf -)$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
 	      $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 endif
 
 internal-doc-uninstall_:: 
-	-$(ECHO_UNINSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+	-$(ECHO_UNINSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE)$(END_ECHO)
 
 internal-doc-clean::
 	-$(ECHO_NOTHING)rm -Rf $(GNUSTEP_INSTANCE)$(END_ECHO)
