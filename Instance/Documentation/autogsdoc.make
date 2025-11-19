@@ -79,7 +79,7 @@ ifneq ($(CHOWN_TO),)
 endif
 
 internal-doc-uninstall_:: 
-	-$(ECHO_UNINSTALLING)rm -f $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+	-$(ECHO_UNINSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
 
 internal-doc-clean::
 	-$(ECHO_NOTHING)rm -Rf $(GNUSTEP_INSTANCE)$(END_ECHO)
