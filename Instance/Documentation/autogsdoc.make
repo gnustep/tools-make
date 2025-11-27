@@ -30,8 +30,18 @@ endif
 AGSDOC_FLAGS = $($(GNUSTEP_INSTANCE)_AGSDOC_FLAGS)
 
 INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
-INTERNAL_AGSDOCFLAGS += -DocumentationDirectory $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
+
+# The autogsdoc output location may be specified with DOC_LOCAL_DIR
+# If unspecified, default to using the project name.
+DOC_LOCAL_DIR = $($(GNUSTEP_INSTANCE)_DOC_LOCAL_DIR)
+ifeq ($(DOC_LOCAL_DIR),)
+DOC_LOCAL_DIR = $(GNUSTEP_INSTANCE)
+endif
+
+ifeq (,$(findstring -DocumentationDirectory,$(AGSDOC_FLAGS)))
+INTERNAL_AGSDOCFLAGS += -DocumentationDirectory "$(DOC_LOCAL_DIR)"
+endif
 
 # If there was no installation subdirectory use Developer by default.
 # The make file can specify xxx_DOC_INSTALL_DIR=. to use the top level
@@ -40,8 +50,8 @@ ifeq ($(DOC_INSTALL_DIR),)
 DOC_INSTALL_DIR = Developer
 endif
 
-# The autogsdoc oputput bundle is a directory within DOC_INSTALL_DIR
-# If unspoecified, default to using the project name.
+# The autogsdoc output bundle is a directory within DOC_INSTALL_DIR
+# If unspecified, default to using the project name.
 DOC_INSTALL_BUNDLE = $($(GNUSTEP_INSTANCE)_DOC_INSTALL_BUNDLE)
 ifeq ($(DOC_INSTALL_BUNDLE),)
 DOC_INSTALL_BUNDLE = $(GNUSTEP_INSTANCE)
@@ -79,9 +89,10 @@ $(GNUSTEP_INSTANCE)/dependencies:
 internal-doc-install_:: 
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
 	$(MKDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
-	$(TAR) cf - -X $(GNUSTEP_MAKEFILES)/tar-exclude-list \
-	$(GNUSTEP_INSTANCE)/* | \
-	  (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); $(TAR) xf -)$(END_ECHO)
+	(cd $(DOC_LOCAL_DIR); $(TAR) cf - -X \
+	$(GNUSTEP_MAKEFILES)/tar-exclude-list \
+	* | (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
+	$(TAR) xf -))$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
 	      $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)

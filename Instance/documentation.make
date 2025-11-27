@@ -72,6 +72,10 @@ endif
 # use 'User').  To install directly to the documentation directory rather
 # than a subdirectory, set xxx_DOC_INSTALL_DIR=.
 #
+# Documentation generated from source code by autogsdoc is installed in a
+# subdirectory of xxx_DOC_INSTALL_DIR called xxx_DOC_INSTALL_BUNDLE, whose
+# value defaults to $(GNUSTEP_INSTANCE).
+#
 
 TEXI_FILES = $($(GNUSTEP_INSTANCE)_TEXI_FILES)
 GSDOC_FILES = $($(GNUSTEP_INSTANCE)_GSDOC_FILES)
