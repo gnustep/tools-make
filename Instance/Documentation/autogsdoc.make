@@ -27,9 +27,17 @@ ifeq ($(AUTOGSDOC),)
   AUTOGSDOC = autogsdoc
 endif
 
+ifeq ($(PACKAGE_VERSION),)
+  PACKAGE_VERSION = $(VERSION)
+  # Use a default of 0.0.1 if nothing better is provided.
+  ifeq ($(PACKAGE_VERSION),)
+    PACKAGE_VERSION = 0.0.1
+  endif
+endif
+
 AGSDOC_FLAGS = $($(GNUSTEP_INSTANCE)_AGSDOC_FLAGS)
 
-INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
+INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE) -Version $(PACKAGE_VERSION)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
 # The autogsdoc output location may be specified with AGSDOC_LOCAL_DIR
