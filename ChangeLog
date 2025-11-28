@@ -1,13 +1,13 @@
 2025-11-19  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/autogsdoc.make:
-	Add new variable xxx_DOC_INSTALL_BUNDLE to allow the name (within the
+	Add variable xxx_AGSDOC_INSTALL_BUNDLE to allow the name (within the
 	install directory) of a folder in which the autogsdoc generated files
 	are stored.  This allows make files to override the default, which is
 	the name of the project/instance.
 	For instance, the gnustep-base library defines
 	Base_DOC_INSTALL_DIR=Developer/Base and
-	Base_DOC_INSTALL_BUNDLE=Reference to have the library reference
+	Base_AGSDOC_INSTALL_BUNDLE=Reference to have the library reference
 	documentation installed in Developer/Base/Reference
 
 2025-11-18  Richard Frith-Macdonald <rfm@gnu.org>

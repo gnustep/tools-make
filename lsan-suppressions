@@ -1,3 +1,5 @@
-# GCC runtime known leaks to suppress
-leak:__objc_exec_class
-leak:class_addMethod
+# GCC runtime has known leaks to suppress for all objc programs
+leak:libobjc.so
+
+# libfontconfig has known leaks to suppress for GUI software
+leak:libfontconfig.so

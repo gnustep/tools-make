@@ -32,16 +32,13 @@ AGSDOC_FLAGS = $($(GNUSTEP_INSTANCE)_AGSDOC_FLAGS)
 INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
-# The autogsdoc output location may be specified with DOC_LOCAL_DIR
-# If unspecified, default to using the project name.
-DOC_LOCAL_DIR = $($(GNUSTEP_INSTANCE)_DOC_LOCAL_DIR)
-ifeq ($(DOC_LOCAL_DIR),)
-DOC_LOCAL_DIR = $(GNUSTEP_INSTANCE)
+# The autogsdoc output location may be specified with AGSDOC_LOCAL_DIR
+# If unspecified, this defaults to using the project name (GNUSTEP_INSTANCE).
+AGSDOC_LOCAL_DIR = $($(GNUSTEP_INSTANCE)_AGSDOC_LOCAL_DIR)
+ifeq ($(AGSDOC_LOCAL_DIR),)
+AGSDOC_LOCAL_DIR = $(GNUSTEP_INSTANCE)
 endif
-
-ifeq (,$(findstring -DocumentationDirectory,$(AGSDOC_FLAGS)))
-INTERNAL_AGSDOCFLAGS += -DocumentationDirectory "$(DOC_LOCAL_DIR)"
-endif
+INTERNAL_AGSDOCFLAGS += -DocumentationDirectory "$(AGSDOC_LOCAL_DIR)"
 
 # If there was no installation subdirectory use Developer by default.
 # The make file can specify xxx_DOC_INSTALL_DIR=. to use the top level
@@ -50,11 +47,11 @@ ifeq ($(DOC_INSTALL_DIR),)
 DOC_INSTALL_DIR = Developer
 endif
 
-# The autogsdoc output bundle is a directory within DOC_INSTALL_DIR
-# If unspecified, default to using the project name.
-DOC_INSTALL_BUNDLE = $($(GNUSTEP_INSTANCE)_DOC_INSTALL_BUNDLE)
-ifeq ($(DOC_INSTALL_BUNDLE),)
-DOC_INSTALL_BUNDLE = $(GNUSTEP_INSTANCE)
+# The autogsdoc output bundle is a directory within AGSDOC_INSTALL_DIR
+# If unspecified, thes defaults to using the project name (GNUSTEP_INSTANCE).
+AGSDOC_INSTALL_BUNDLE = $($(GNUSTEP_INSTANCE)_AGSDOC_INSTALL_BUNDLE)
+ifeq ($(AGSDOC_INSTALL_BUNDLE),)
+AGSDOC_INSTALL_BUNDLE = $(GNUSTEP_INSTANCE)
 endif
 
 ifeq ($(AGSDOC_RELOCATABLE), yes)
@@ -69,7 +66,7 @@ ifeq (,$(findstring -InstallationDomain,$(AGSDOC_FLAGS)))
 INTERNAL_AGSDOCFLAGS += -InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)"
 endif
 ifeq (,$(findstring -InstallDir,$(AGSDOC_FLAGS)))
-INTERNAL_AGSDOCFLAGS += -InstallDir "$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE)"
+INTERNAL_AGSDOCFLAGS+=-InstallDir "$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE)"
 endif
 endif
 
@@ -87,11 +84,11 @@ $(GNUSTEP_INSTANCE)/dependencies:
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -MakeDependencies $(GNUSTEP_INSTANCE)/dependencies $(AGSDOC_FILES)$(END_ECHO)
 
 internal-doc-install_:: 
-	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
-	$(MKDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
-	(cd $(DOC_LOCAL_DIR); $(TAR) cf - -X \
+	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE); \
+	$(MKDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE); \
+	(cd $(AGSDOC_LOCAL_DIR); $(TAR) cf - -X \
 	$(GNUSTEP_MAKEFILES)/tar-exclude-list \
-	* | (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE); \
+	* | (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE); \
 	$(TAR) xf -))$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
@@ -99,7 +96,7 @@ ifneq ($(CHOWN_TO),)
 endif
 
 internal-doc-uninstall_:: 
-	-$(ECHO_UNINSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(DOC_INSTALL_BUNDLE)$(END_ECHO)
+	-$(ECHO_UNINSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE)$(END_ECHO)
 
 internal-doc-clean::
 	-$(ECHO_NOTHING)rm -Rf $(GNUSTEP_INSTANCE)$(END_ECHO)
