@@ -35,9 +35,12 @@ ifeq ($(PACKAGE_VERSION),)
   endif
 endif
 
+INTERNAL_AGSDOCFLAGS = \
+	-Project $(GNUSTEP_INSTANCE) \
+	-Version $(PACKAGE_VERSION) \
+
 AGSDOC_FLAGS = $($(GNUSTEP_INSTANCE)_AGSDOC_FLAGS)
 
-INTERNAL_AGSDOCFLAGS = -Project $(GNUSTEP_INSTANCE) -Version $(PACKAGE_VERSION)
 INTERNAL_AGSDOCFLAGS += $(AGSDOC_FLAGS)
 
 # The autogsdoc output location may be specified with AGSDOC_LOCAL_DIR
@@ -61,50 +64,51 @@ AGSDOC_INSTALL_BUNDLE = $($(GNUSTEP_INSTANCE)_AGSDOC_INSTALL_BUNDLE)
 ifeq ($(AGSDOC_INSTALL_BUNDLE),)
 AGSDOC_INSTALL_BUNDLE = $(GNUSTEP_INSTANCE)
 endif
+AGSDOC_INSTALL_DIR = $(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE)
+
+INTERNAL_AGSDOCFLAGS += \
+	-InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)" \
+	-InstallDir "$(AGSDOC_INSTALL_DIR)" \
+
+ifeq ($(AGSDOC_INDEXING),yes)
+INTERNAL_AGSDOCFLAGS += -GenerateHtml NO
+endif
 
 ifeq ($(AGSDOC_RELOCATABLE), yes)
-# If AGSDOC_RELOCATABLE is yes, we ensure that flags are supplied so that
-# autogsdoc generates relative links between installed projects: documentation
-# may then be relocated simply by copying from the installed locations as
-# long as the directory hierarchy is maintained.
-#
-# If AGSDOC_FLAGS does not already contain the flags for generating relative
-# links, add default values.
-ifeq (,$(findstring -InstallationDomain,$(AGSDOC_FLAGS)))
-INTERNAL_AGSDOCFLAGS += -InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)"
-endif
-ifeq (,$(findstring -InstallDir,$(AGSDOC_FLAGS)))
-INTERNAL_AGSDOCFLAGS+=-InstallDir "$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE)"
-endif
+INTERNAL_AGSDOCFLAGS += -RelocatableHtml YES
 endif
 
 
-internal-doc-all_:: $(GNUSTEP_INSTANCE)/dependencies
+internal-doc-all_:: \
+	$(AGSDOC_LOCAL_DIR)/dependencies \
+	$(AGSDOC_LOCAL_DIR)/dependencies_html \
 
 # Only include (and implicitly automatically rebuild if needed) the
 # dependencies file when we are compiling.  Ignore it when cleaning or
 # installing.
 ifeq ($(GNUSTEP_OPERATION), all)
--include $(GNUSTEP_INSTANCE)/dependencies
+-include $(AGSDOC_LOCAL_DIR)/dependencies
+-include $(AGSDOC_LOCAL_DIR)/dependencies_html
 endif
 
-$(GNUSTEP_INSTANCE)/dependencies:
-	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -MakeDependencies $(GNUSTEP_INSTANCE)/dependencies $(AGSDOC_FILES)$(END_ECHO)
+$(AGSDOC_LOCAL_DIR)/dependencies:
+$(AGSDOC_LOCAL_DIR)/dependencies_html:
+	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -MakeDependencies $(AGSDOC_LOCAL_DIR)/dependencies $(AGSDOC_FILES)$(END_ECHO)
 
 internal-doc-install_:: 
-	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE); \
-	$(MKDIRS) $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE); \
+	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(AGSDOC_INSTALL_DIR); \
+	$(MKDIRS) $(GNUSTEP_DOC)/$(AGSDOC_INSTALL_DIR); \
 	(cd $(AGSDOC_LOCAL_DIR); $(TAR) cf - -X \
 	$(GNUSTEP_MAKEFILES)/tar-exclude-list \
-	* | (cd $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE); \
+	* | (cd $(GNUSTEP_DOC)/$(AGSDOC_INSTALL_DIR); \
 	$(TAR) xf -))$(END_ECHO)
 ifneq ($(CHOWN_TO),)
 	$(ECHO_CHOWNING)$(CHOWN) -R $(CHOWN_TO) \
-	      $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(GNUSTEP_INSTANCE)$(END_ECHO)
+	      $(GNUSTEP_DOC)/$(AGSDOC_INSTALL_DIR)$(END_ECHO)
 endif
 
 internal-doc-uninstall_:: 
-	-$(ECHO_UNINSTALLING)rm -rf $(GNUSTEP_DOC)/$(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE)$(END_ECHO)
+	-$(ECHO_UNINSTALLING)rm -rf $(GNUSTEP_DOC)/$(AGSDOC_INSTALL_DIR)$(END_ECHO)
 
 internal-doc-clean::
 	-$(ECHO_NOTHING)rm -Rf $(GNUSTEP_INSTANCE)$(END_ECHO)
