@@ -69,31 +69,45 @@ AGSDOC_INSTALL_DIR = $(DOC_INSTALL_DIR)/$(AGSDOC_INSTALL_BUNDLE)
 INTERNAL_AGSDOCFLAGS += \
 	-InstallationDomain "$(GNUSTEP_INSTALLATION_DOMAIN)" \
 	-InstallDir "$(AGSDOC_INSTALL_DIR)" \
-
-ifeq ($(AGSDOC_INDEXING),yes)
-INTERNAL_AGSDOCFLAGS += -GenerateHtml NO
-endif
+	-MakeDependencies YES
 
 ifeq ($(AGSDOC_RELOCATABLE), yes)
 INTERNAL_AGSDOCFLAGS += -RelocatableHtml YES
 endif
 
-
+# When indexing, we turn off HTML generation (which requires us to turn off
+# the dependency on html output being generated).
+ifeq ($(AGSDOC_INDEXING),yes)
+INTERNAL_AGSDOCFLAGS += -GenerateHtml NO
 internal-doc-all_:: \
-	$(AGSDOC_LOCAL_DIR)/dependencies \
-	$(AGSDOC_LOCAL_DIR)/dependencies_html \
+	$(AGSDOC_LOCAL_DIR)/stamp
+else
+INTERNAL_AGSDOCFLAGS += -GenerateHtml YES
+internal-doc-all_:: \
+	$(AGSDOC_LOCAL_DIR)/stamp \
+	$(AGSDOC_LOCAL_DIR)/stamp_html
+endif
+
 
 # Only include (and implicitly automatically rebuild if needed) the
 # dependencies file when we are compiling.  Ignore it when cleaning or
 # installing.
 ifeq ($(GNUSTEP_OPERATION), all)
 -include $(AGSDOC_LOCAL_DIR)/dependencies
--include $(AGSDOC_LOCAL_DIR)/dependencies_html
+  ifeq ($(AGSDOC_INDEXING),yes)
+  -include $(AGSDOC_LOCAL_DIR)/dependencies_html
+  endif
 endif
 
-$(AGSDOC_LOCAL_DIR)/dependencies:
-$(AGSDOC_LOCAL_DIR)/dependencies_html:
-	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) -MakeDependencies $(AGSDOC_LOCAL_DIR)/dependencies $(AGSDOC_FILES)$(END_ECHO)
+# The following rules to rebuild the project and the stamp files are mostly
+# redundant because the dependencies and dependencies_html files generated
+# by autogsdoc include more specific rules to dop the same thng.
+# However, first time round on a clean/empty project those dependency files
+# don't exist, so we can't remove the rules here.
+# NB. The '&:' operation requires version 4.3 of GNU Make or later.
+$(AGSDOC_LOCAL_DIR)/stamp \
+$(AGSDOC_LOCAL_DIR)/stamp_html &:
+	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
 
 internal-doc-install_:: 
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(AGSDOC_INSTALL_DIR); \
