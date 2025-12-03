@@ -88,14 +88,21 @@ internal-doc-all_:: \
 	$(AGSDOC_LOCAL_DIR)/stamp_html
 endif
 
-
 # Only include (and implicitly automatically rebuild if needed) the
 # dependencies file when we are compiling.  Ignore it when cleaning or
 # installing.
+did_include_dependencies=no
+did_include_dependencies_html=no
 ifeq ($(GNUSTEP_OPERATION), all)
--include $(AGSDOC_LOCAL_DIR)/dependencies
-  ifeq ($(AGSDOC_INDEXING),yes)
-  -include $(AGSDOC_LOCAL_DIR)/dependencies_html
+  ifneq ("$(wildcard (AGSDOC_LOCAL_DIR)/dependencies)","")
+    include $(AGSDOC_LOCAL_DIR)/dependencies
+    did_include_dependencies=yes
+  endif
+  ifneq ($(AGSDOC_INDEXING),yes)
+    ifneq ("$(wildcard (AGSDOC_LOCAL_DIR)/dependencies_html)","")
+      include $(AGSDOC_LOCAL_DIR)/dependencies_html
+      did_include_dependencies_html=yes
+    endif
   endif
 endif
 
@@ -105,9 +112,24 @@ endif
 # However, first time round on a clean/empty project those dependency files
 # don't exist, so we can't remove the rules here.
 # NB. The '&:' operation requires version 4.3 of GNU Make or later.
+ifeq ($(did_include_dependencies),no)
+  ifeq ($(did_include_dependencies_html),no)
+    ifeq ($(AGSDOC_INDEXING),yes)
+$(AGSDOC_LOCAL_DIR)/stamp :
+	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
+    else
 $(AGSDOC_LOCAL_DIR)/stamp \
 $(AGSDOC_LOCAL_DIR)/stamp_html &:
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
+    endif
+  endif
+else
+  ifneq ($(AGSDOC_INDEXING),yes)
+$(AGSDOC_LOCAL_DIR)/stamp \
+$(AGSDOC_LOCAL_DIR)/stamp_html &:
+	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
+  endif
+endif
 
 internal-doc-install_:: 
 	$(ECHO_INSTALLING)rm -rf $(GNUSTEP_DOC)/$(AGSDOC_INSTALL_DIR); \
