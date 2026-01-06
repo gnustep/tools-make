@@ -92,16 +92,20 @@ endif
 # dependencies file when we are compiling.  Ignore it when cleaning or
 # installing.
 did_have_dependencies=no
+ifneq ("$(wildcard $(AGSDOC_LOCAL_DIR)/dependencies)","")
+  did_have_dependencies=yes
+endif
 did_have_dependencies_html=no
+ifneq ("$(wildcard $(AGSDOC_LOCAL_DIR)/dependencies_html)","")
+  did_have_dependencies_html=yes
+endif
 ifeq ($(GNUSTEP_OPERATION), all)
-  -include $(AGSDOC_LOCAL_DIR)/dependencies
-  ifneq ("$(wildcard (AGSDOC_LOCAL_DIR)/dependencies)","")
-    did_have_dependencies=yes
+  ifeq ($(did_have_dependencies),yes)
+    include $(AGSDOC_LOCAL_DIR)/dependencies
   endif
   ifneq ($(AGSDOC_INDEXING),yes)
-    -include $(AGSDOC_LOCAL_DIR)/dependencies_html
-    ifneq ("$(wildcard (AGSDOC_LOCAL_DIR)/dependencies_html)","")
-      did_have_dependencies_html=yes
+    ifeq ($(did_have_dependencies_html),yes)
+      include $(AGSDOC_LOCAL_DIR)/dependencies_html
     endif
   endif
 endif
@@ -124,10 +128,11 @@ $(AGSDOC_LOCAL_DIR)/stamp_html &:
     endif
   endif
 else
-  ifneq ($(AGSDOC_INDEXING),yes)
-$(AGSDOC_LOCAL_DIR)/stamp \
-$(AGSDOC_LOCAL_DIR)/stamp_html &:
+  ifeq ($(did_have_dependencies_html),no)
+    ifneq ($(AGSDOC_INDEXING),yes)
+$(AGSDOC_LOCAL_DIR)/stamp_html :
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
+    endif
   endif
 endif
 
