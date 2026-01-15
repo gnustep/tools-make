@@ -116,21 +116,20 @@ endif
 # However, first time round on a clean/empty project those dependency files
 # don't exist, so we can't remove the rules here.
 # NB. The '&:' operation requires version 4.3 of GNU Make or later.
-ifeq ($(did_have_dependencies),no)
-  ifeq ($(did_have_dependencies_html),no)
-    ifeq ($(AGSDOC_INDEXING),yes)
+ifeq ($(AGSDOC_INDEXING),yes)
+  ifeq ($(did_have_dependencies),no)
 $(AGSDOC_LOCAL_DIR)/stamp :
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
-    else
+  endif
+else
+  ifeq ($(did_have_dependencies),no)
 $(AGSDOC_LOCAL_DIR)/stamp \
 $(AGSDOC_LOCAL_DIR)/stamp_html &:
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
-    endif
-  endif
-else
-  ifeq ($(did_have_dependencies_html),no)
-    ifneq ($(AGSDOC_INDEXING),yes)
-$(AGSDOC_LOCAL_DIR)/stamp_html :
+  else
+    ifeq ($(did_have_dependencies_html),no)
+$(AGSDOC_LOCAL_DIR)/stamp \
+$(AGSDOC_LOCAL_DIR)/stamp_html &:
 	$(ECHO_AUTOGSDOC)$(AUTOGSDOC) $(INTERNAL_AGSDOCFLAGS) $(AGSDOC_FILES)$(END_ECHO)
     endif
   endif
