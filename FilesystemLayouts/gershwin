@@ -1,0 +1,88 @@
+#
+# Gershwin filesystem layout
+#
+# This is the layout for the Gershwin Desktop Environment. It is similar
+# to the GNUstep layout but with key differences to support packaging
+# and a client-server computing model.
+#
+# The prefix is designed to be the root of the filesystem while being
+# entirely self-contained. Each domain has distinct user directories
+# to distinguish between Local, Network, and System users.
+#
+# Tools are placed under Library (e.g., /System/Library/Tools) for
+# consistency across domains and to support installation of GNUstep
+# applications outside the operating system's packaging facilities.
+#
+# To use gnustep-make in this environment, source GNUstep.sh or use
+# 'export GNUSTEP_MAKEFILES=/System/Library/Makefiles'.
+#
+
+GNUSTEP_DEFAULT_PREFIX=/
+
+GNUSTEP_SYSTEM_USERS_DIR=/System/Users
+GNUSTEP_NETWORK_USERS_DIR=/Network/Users
+GNUSTEP_LOCAL_USERS_DIR=/Local/Users
+
+GNUSTEP_MAKEFILES=/System/Library/Makefiles
+
+GNUSTEP_SYSTEM_APPS=/System/Applications
+GNUSTEP_SYSTEM_ADMIN_APPS=/System/Applications/Admin
+GNUSTEP_SYSTEM_UTILITIES=/System/Applications/Utilities
+GNUSTEP_SYSTEM_WEB_APPS=/System/Library/WebApplications
+GNUSTEP_SYSTEM_TOOLS=/System/Library/Tools
+GNUSTEP_SYSTEM_ADMIN_TOOLS=/System/Library/Tools/Admin
+GNUSTEP_SYSTEM_LIBRARY=/System/Library
+GNUSTEP_SYSTEM_HEADERS=/System/Library/Headers
+GNUSTEP_SYSTEM_LIBRARIES=/System/Library/Libraries
+GNUSTEP_SYSTEM_DOC=/System/Library/Documentation
+GNUSTEP_SYSTEM_DOC_MAN=/System/Library/Documentation/man
+GNUSTEP_SYSTEM_DOC_INFO=/System/Library/Documentation/info
+GNUSTEP_SYSTEM_CORE_SERVICES=/System/Library/CoreServices
+GNUSTEP_SYSTEM_CORE_SERVICES_APPS=/System/Library/CoreServices/Applications
+
+GNUSTEP_NETWORK_APPS=/Network/Applications
+GNUSTEP_NETWORK_ADMIN_APPS=/Network/Applications/Admin
+GNUSTEP_NETWORK_UTILITIES=/Network/Applications/Utilities
+GNUSTEP_NETWORK_WEB_APPS=/Network/Library/WebApplications
+GNUSTEP_NETWORK_TOOLS=/Network/Library/Tools
+GNUSTEP_NETWORK_ADMIN_TOOLS=/Network/Library/Tools/Admin
+GNUSTEP_NETWORK_LIBRARY=/Network/Library
+GNUSTEP_NETWORK_HEADERS=/Network/Library/Headers
+GNUSTEP_NETWORK_LIBRARIES=/Network/Library/Libraries
+GNUSTEP_NETWORK_DOC=/Network/Library/Documentation
+GNUSTEP_NETWORK_DOC_MAN=/Network/Library/Documentation/man
+GNUSTEP_NETWORK_DOC_INFO=/Network/Library/Documentation/info
+GNUSTEP_NETWORK_CORE_SERVICES=/Network/Library/CoreServices
+GNUSTEP_NETWORK_CORE_SERVICES_APPS=/Network/Library/CoreServices/Applications
+
+GNUSTEP_LOCAL_APPS=/Local/Applications
+GNUSTEP_LOCAL_ADMIN_APPS=/Local/Applications/Admin
+GNUSTEP_LOCAL_UTILITIES=/Local/Applications/Utilities
+GNUSTEP_LOCAL_WEB_APPS=/Local/Library/WebApplications
+GNUSTEP_LOCAL_TOOLS=/Local/Library/Tools
+GNUSTEP_LOCAL_ADMIN_TOOLS=/Local/Library/Tools/Admin
+GNUSTEP_LOCAL_LIBRARY=/Local/Library
+GNUSTEP_LOCAL_HEADERS=/Local/Library/Headers
+GNUSTEP_LOCAL_LIBRARIES=/Local/Library/Libraries
+GNUSTEP_LOCAL_DOC=/Local/Library/Documentation
+GNUSTEP_LOCAL_DOC_MAN=/Local/Library/Documentation/man
+GNUSTEP_LOCAL_DOC_INFO=/Local/Library/Documentation/info
+GNUSTEP_LOCAL_CORE_SERVICES=/Local/Library/CoreServices
+GNUSTEP_LOCAL_CORE_SERVICES_APPS=/Local/Library/CoreServices/Applications
+
+GNUSTEP_USER_DIR_APPS=Applications
+GNUSTEP_USER_DIR_ADMIN_APPS=Applications/Admin
+GNUSTEP_USER_DIR_UTILITIES=Applications/Utilities
+GNUSTEP_USER_DIR_WEB_APPS=Library/WebApplications
+GNUSTEP_USER_DIR_TOOLS=Library/Tools
+GNUSTEP_USER_DIR_ADMIN_TOOLS=Library/Tools/Admin
+GNUSTEP_USER_DIR_LIBRARY=Library
+GNUSTEP_USER_DIR_HEADERS=Library/Headers
+GNUSTEP_USER_DIR_LIBRARIES=Library/Libraries
+GNUSTEP_USER_DIR_DOC=Library/Documentation
+GNUSTEP_USER_DIR_DOC_MAN=Library/Documentation/man
+GNUSTEP_USER_DIR_DOC_INFO=Library/Documentation/info
+GNUSTEP_USER_DIR_CORE_SERVICES=Library/CoreServices
+GNUSTEP_USER_DIR_CORE_SERVICES_APPS=Library/CoreServices/Applications
+GNUSTEP_USER_CONFIG_FILE=Library/Preferences/GNUstep.conf
+GNUSTEP_USER_DEFAULTS_DIR=Library/Preferences
