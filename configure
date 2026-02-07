@@ -657,7 +657,6 @@ GNUSTEP_SYSTEM_ROOT
 GNUSTEP_LOCAL_USERS_DIR
 GNUSTEP_NETWORK_USERS_DIR
 GNUSTEP_SYSTEM_USERS_DIR
-GNUSTEP_USER_DIR_CORE_SERVICES_APPS
 GNUSTEP_USER_DIR_CORE_SERVICES
 GNUSTEP_USER_DIR_DOC_MAN
 GNUSTEP_USER_DIR_DOC_INFO
@@ -668,10 +667,8 @@ GNUSTEP_USER_DIR_LIBRARY
 GNUSTEP_USER_DIR_ADMIN_TOOLS
 GNUSTEP_USER_DIR_TOOLS
 GNUSTEP_USER_DIR_WEB_APPS
-GNUSTEP_USER_DIR_UTILITIES
 GNUSTEP_USER_DIR_ADMIN_APPS
 GNUSTEP_USER_DIR_APPS
-GNUSTEP_LOCAL_CORE_SERVICES_APPS
 GNUSTEP_LOCAL_CORE_SERVICES
 GNUSTEP_LOCAL_DOC_MAN
 GNUSTEP_LOCAL_DOC_INFO
@@ -682,10 +679,8 @@ GNUSTEP_LOCAL_LIBRARY
 GNUSTEP_LOCAL_ADMIN_TOOLS
 GNUSTEP_LOCAL_TOOLS
 GNUSTEP_LOCAL_WEB_APPS
-GNUSTEP_LOCAL_UTILITIES
 GNUSTEP_LOCAL_ADMIN_APPS
 GNUSTEP_LOCAL_APPS
-GNUSTEP_NETWORK_CORE_SERVICES_APPS
 GNUSTEP_NETWORK_CORE_SERVICES
 GNUSTEP_NETWORK_DOC_MAN
 GNUSTEP_NETWORK_DOC_INFO
@@ -696,10 +691,8 @@ GNUSTEP_NETWORK_LIBRARY
 GNUSTEP_NETWORK_ADMIN_TOOLS
 GNUSTEP_NETWORK_TOOLS
 GNUSTEP_NETWORK_WEB_APPS
-GNUSTEP_NETWORK_UTILITIES
 GNUSTEP_NETWORK_ADMIN_APPS
 GNUSTEP_NETWORK_APPS
-GNUSTEP_SYSTEM_CORE_SERVICES_APPS
 GNUSTEP_SYSTEM_CORE_SERVICES
 GNUSTEP_SYSTEM_DOC_MAN
 GNUSTEP_SYSTEM_DOC_INFO
@@ -710,7 +703,6 @@ GNUSTEP_SYSTEM_LIBRARY
 GNUSTEP_SYSTEM_ADMIN_TOOLS
 GNUSTEP_SYSTEM_TOOLS
 GNUSTEP_SYSTEM_WEB_APPS
-GNUSTEP_SYSTEM_UTILITIES
 GNUSTEP_SYSTEM_ADMIN_APPS
 GNUSTEP_SYSTEM_APPS
 GNUSTEP_IS_FLATTENED
@@ -6659,7 +6651,6 @@ GNUSTEP_MAKEFILES="$GNUSTEP_PREFIX$GNUSTEP_MAKEFILES"
 
 GNUSTEP_SYSTEM_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_APPS" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_SYSTEM_ADMIN_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_ADMIN_APPS" | sed "s/@libdir@/$LIBDIR/g")
-GNUSTEP_SYSTEM_UTILITIES=$(echo "$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_UTILITIES" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_SYSTEM_WEB_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_WEB_APPS" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_SYSTEM_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_TOOLS"
 GNUSTEP_SYSTEM_ADMIN_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_ADMIN_TOOLS"
@@ -6670,11 +6661,9 @@ GNUSTEP_SYSTEM_DOC="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_DOC"
 GNUSTEP_SYSTEM_DOC_MAN="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_DOC_MAN"
 GNUSTEP_SYSTEM_DOC_INFO="$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_DOC_INFO"
 GNUSTEP_SYSTEM_CORE_SERVICES=$(echo "$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_CORE_SERVICES" | sed "s/@libdir@/$LIBDIR/g")
-GNUSTEP_SYSTEM_CORE_SERVICES_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_SYSTEM_CORE_SERVICES_APPS" | sed "s/@libdir@/$LIBDIR/g")
 
 GNUSTEP_NETWORK_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_NETWORK_APPS" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_NETWORK_ADMIN_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_NETWORK_ADMIN_APPS" | sed "s/@libdir@/$LIBDIR/g")
-GNUSTEP_NETWORK_UTILITIES=$(echo "$GNUSTEP_PREFIX$GNUSTEP_NETWORK_UTILITIES" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_NETWORK_WEB_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_NETWORK_WEB_APPS" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_NETWORK_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_TOOLS"
 GNUSTEP_NETWORK_ADMIN_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_ADMIN_TOOLS"
@@ -6685,11 +6674,9 @@ GNUSTEP_NETWORK_DOC="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_DOC"
 GNUSTEP_NETWORK_DOC_MAN="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_DOC_MAN"
 GNUSTEP_NETWORK_DOC_INFO="$GNUSTEP_PREFIX$GNUSTEP_NETWORK_DOC_INFO"
 GNUSTEP_NETWORK_CORE_SERVICES=$(echo "$GNUSTEP_PREFIX$GNUSTEP_NETWORK_CORE_SERVICES" | sed "s/@libdir@/$LIBDIR/g")
-GNUSTEP_NETWORK_CORE_SERVICES_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_NETWORK_CORE_SERVICES_APPS" | sed "s/@libdir@/$LIBDIR/g")
 
 GNUSTEP_LOCAL_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_LOCAL_APPS" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_LOCAL_ADMIN_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_LOCAL_ADMIN_APPS" | sed "s/@libdir@/$LIBDIR/g")
-GNUSTEP_LOCAL_UTILITIES=$(echo "$GNUSTEP_PREFIX$GNUSTEP_LOCAL_UTILITIES" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_LOCAL_WEB_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_LOCAL_WEB_APPS" | sed "s/@libdir@/$LIBDIR/g")
 GNUSTEP_LOCAL_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_TOOLS"
 GNUSTEP_LOCAL_ADMIN_TOOLS="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_ADMIN_TOOLS"
@@ -6700,7 +6687,6 @@ GNUSTEP_LOCAL_DOC="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOC"
 GNUSTEP_LOCAL_DOC_MAN="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOC_MAN"
 GNUSTEP_LOCAL_DOC_INFO="$GNUSTEP_PREFIX$GNUSTEP_LOCAL_DOC_INFO"
 GNUSTEP_LOCAL_CORE_SERVICES=$(echo "$GNUSTEP_PREFIX$GNUSTEP_LOCAL_CORE_SERVICES" | sed "s/@libdir@/$LIBDIR/g")
-GNUSTEP_LOCAL_CORE_SERVICES_APPS=$(echo "$GNUSTEP_PREFIX$GNUSTEP_LOCAL_CORE_SERVICES_APPS" | sed "s/@libdir@/$LIBDIR/g")
 
 #---------------------------------------------------------------------
 # Location of the GNUstep.conf config file (--with-config-file)
@@ -6970,11 +6956,6 @@ printf %s "checking for System Admin Applications directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_SYSTEM_ADMIN_APPS" >&5
 printf "%s\n" "$GNUSTEP_SYSTEM_ADMIN_APPS" >&6; }
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for System Utilities directory" >&5
-printf %s "checking for System Utilities directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_SYSTEM_UTILITIES" >&5
-printf "%s\n" "$GNUSTEP_SYSTEM_UTILITIES" >&6; }
-
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for System Web Applications directory" >&5
 printf %s "checking for System Web Applications directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_SYSTEM_WEB_APPS" >&5
@@ -7025,11 +7006,6 @@ printf %s "checking for System CoreServices directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_SYSTEM_CORE_SERVICES" >&5
 printf "%s\n" "$GNUSTEP_SYSTEM_CORE_SERVICES" >&6; }
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for System CoreServices Applications directory" >&5
-printf %s "checking for System CoreServices Applications directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_SYSTEM_CORE_SERVICES_APPS" >&5
-printf "%s\n" "$GNUSTEP_SYSTEM_CORE_SERVICES_APPS" >&6; }
-
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Network Applications directory" >&5
 printf %s "checking for Network Applications directory... " >&6; }
@@ -7040,11 +7016,6 @@ printf "%s\n" "$GNUSTEP_NETWORK_APPS" >&6; }
 printf %s "checking for Network Admin Applications directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_NETWORK_ADMIN_APPS" >&5
 printf "%s\n" "$GNUSTEP_NETWORK_ADMIN_APPS" >&6; }
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Network Utilities directory" >&5
-printf %s "checking for Network Utilities directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_NETWORK_UTILITIES" >&5
-printf "%s\n" "$GNUSTEP_NETWORK_UTILITIES" >&6; }
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Network Web Applications directory" >&5
 printf %s "checking for Network Web Applications directory... " >&6; }
@@ -7096,11 +7067,6 @@ printf %s "checking for Network CoreServices directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_NETWORK_CORE_SERVICES" >&5
 printf "%s\n" "$GNUSTEP_NETWORK_CORE_SERVICES" >&6; }
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Network CoreServices Applications directory" >&5
-printf %s "checking for Network CoreServices Applications directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_NETWORK_CORE_SERVICES_APPS" >&5
-printf "%s\n" "$GNUSTEP_NETWORK_CORE_SERVICES_APPS" >&6; }
-
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Local Applications directory" >&5
 printf %s "checking for Local Applications directory... " >&6; }
@@ -7111,11 +7077,6 @@ printf "%s\n" "$GNUSTEP_LOCAL_APPS" >&6; }
 printf %s "checking for Local Admin Applications directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_LOCAL_ADMIN_APPS" >&5
 printf "%s\n" "$GNUSTEP_LOCAL_ADMIN_APPS" >&6; }
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Local Utilities directory" >&5
-printf %s "checking for Local Utilities directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_LOCAL_UTILITIES" >&5
-printf "%s\n" "$GNUSTEP_LOCAL_UTILITIES" >&6; }
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Local Web Applications directory" >&5
 printf %s "checking for Local Web Applications directory... " >&6; }
@@ -7167,11 +7128,6 @@ printf %s "checking for Local CoreServices directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_LOCAL_CORE_SERVICES" >&5
 printf "%s\n" "$GNUSTEP_LOCAL_CORE_SERVICES" >&6; }
 
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for Local CoreServices Applications directory" >&5
-printf %s "checking for Local CoreServices Applications directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_LOCAL_CORE_SERVICES_APPS" >&5
-printf "%s\n" "$GNUSTEP_LOCAL_CORE_SERVICES_APPS" >&6; }
-
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for User Applications directory" >&5
 printf %s "checking for User Applications directory... " >&6; }
@@ -7182,11 +7138,6 @@ printf "%s\n" "$GNUSTEP_USER_DIR_APPS" >&6; }
 printf %s "checking for User Admin Applications directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_USER_DIR_ADMIN_APPS" >&5
 printf "%s\n" "$GNUSTEP_USER_DIR_ADMIN_APPS" >&6; }
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for User Utilities directory" >&5
-printf %s "checking for User Utilities directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_USER_DIR_UTILITIES" >&5
-printf "%s\n" "$GNUSTEP_USER_DIR_UTILITIES" >&6; }
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for User Web Applications directory" >&5
 printf %s "checking for User Web Applications directory... " >&6; }
@@ -7237,11 +7188,6 @@ printf "%s\n" "$GNUSTEP_USER_DIR_DOC_MAN" >&6; }
 printf %s "checking for User CoreServices directory... " >&6; }
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_USER_DIR_CORE_SERVICES" >&5
 printf "%s\n" "$GNUSTEP_USER_DIR_CORE_SERVICES" >&6; }
-
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for User CoreServices Applications directory" >&5
-printf %s "checking for User CoreServices Applications directory... " >&6; }
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $GNUSTEP_USER_DIR_CORE_SERVICES_APPS" >&5
-printf "%s\n" "$GNUSTEP_USER_DIR_CORE_SERVICES_APPS" >&6; }
 
 
 { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for System User directory" >&5
