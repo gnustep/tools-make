@@ -78,9 +78,6 @@ endif
 if ( ! ${?GNUSTEP_SYSTEM_DOC_INFO} ) then
   setenv GNUSTEP_SYSTEM_DOC_INFO "@GNUSTEP_SYSTEM_DOC_INFO@"
 endif
-if ( ! ${?GNUSTEP_SYSTEM_CORE_SERVICES} ) then
-  setenv GNUSTEP_SYSTEM_CORE_SERVICES "@GNUSTEP_SYSTEM_CORE_SERVICES@"
-endif
 
 #
 # NETWORK domain
@@ -117,9 +114,6 @@ if ( ! ${?GNUSTEP_NETWORK_DOC_MAN} ) then
 endif
 if ( ! ${?GNUSTEP_NETWORK_DOC_INFO} ) then
   setenv GNUSTEP_NETWORK_DOC_INFO "@GNUSTEP_NETWORK_DOC_INFO@"
-endif
-if ( ! ${?GNUSTEP_NETWORK_CORE_SERVICES} ) then
-  setenv GNUSTEP_NETWORK_CORE_SERVICES "@GNUSTEP_NETWORK_CORE_SERVICES@"
 endif
 
 #
@@ -158,9 +152,6 @@ endif
 if ( ! ${?GNUSTEP_LOCAL_DOC_INFO} ) then
   setenv GNUSTEP_LOCAL_DOC_INFO "@GNUSTEP_LOCAL_DOC_INFO@"
 endif
-if ( ! ${?GNUSTEP_LOCAL_CORE_SERVICES} ) then
-  setenv GNUSTEP_LOCAL_CORE_SERVICES "@GNUSTEP_LOCAL_CORE_SERVICES@"
-endif
 
 #
 # USER domain
@@ -198,9 +189,6 @@ endif
 if ( ! ${?GNUSTEP_USER_DIR_DOC_INFO} ) then
   setenv GNUSTEP_USER_DIR_DOC_INFO "@GNUSTEP_USER_DIR_DOC_INFO@"
 endif
-if ( ! ${?GNUSTEP_USER_DIR_CORE_SERVICES} ) then
-  setenv GNUSTEP_USER_DIR_CORE_SERVICES "@GNUSTEP_USER_DIR_CORE_SERVICES@"
-endif
 
 #
 # Now, for all the GNUSTEP_USER_DIR_xxx variables above, replace:
@@ -226,8 +214,7 @@ switch ("${GNUSTEP_USER_DIR_APPS}\
  ${GNUSTEP_USER_DIR_LIBRARIES}\
  ${GNUSTEP_USER_DIR_DOC}\
  ${GNUSTEP_USER_DIR_DOC_MAN}\
- ${GNUSTEP_USER_DIR_DOC_INFO}\
- ${GNUSTEP_USER_DIR_CORE_SERVICES}")
+ ${GNUSTEP_USER_DIR_DOC_INFO}")
   case *%i*:
     # ... and if so, do the replacement.
     setenv GNUSTEP__USERID `id -u`
@@ -242,7 +229,6 @@ switch ("${GNUSTEP_USER_DIR_APPS}\
     setenv GNUSTEP_USER_DIR_DOC         `echo ${GNUSTEP_USER_DIR_DOC}         | sed -e "s/%i/${GNUSTEP__USERID}/g"`
     setenv GNUSTEP_USER_DIR_DOC_MAN     `echo ${GNUSTEP_USER_DIR_DOC_MAN}     | sed -e "s/%i/${GNUSTEP__USERID}/g"`
     setenv GNUSTEP_USER_DIR_DOC_INFO    `echo ${GNUSTEP_USER_DIR_DOC_INFO}    | sed -e "s/%i/${GNUSTEP__USERID}/g"`
-    setenv GNUSTEP_USER_DIR_CORE_SERVICES `echo ${GNUSTEP_USER_DIR_CORE_SERVICES} | sed -e "s/%i/${GNUSTEP__USERID}/g"`
     unsetenv GNUSTEP__USERID
     breaksw
 endsw
@@ -258,8 +244,7 @@ switch ("${GNUSTEP_USER_DIR_APPS}\
  ${GNUSTEP_USER_DIR_LIBRARIES}\
  ${GNUSTEP_USER_DIR_DOC}\
  ${GNUSTEP_USER_DIR_DOC_MAN}\
- ${GNUSTEP_USER_DIR_DOC_INFO}\
- ${GNUSTEP_USER_DIR_CORE_SERVICES}")
+ ${GNUSTEP_USER_DIR_DOC_INFO}")
   case *%u*:
     # ... and if so, do the replacement.
     setenv GNUSTEP__USERNAME `id -u -n`
@@ -274,7 +259,6 @@ switch ("${GNUSTEP_USER_DIR_APPS}\
     setenv GNUSTEP_USER_DIR_DOC         `echo ${GNUSTEP_USER_DIR_DOC}         | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
     setenv GNUSTEP_USER_DIR_DOC_MAN     `echo ${GNUSTEP_USER_DIR_DOC_MAN}     | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
     setenv GNUSTEP_USER_DIR_DOC_INFO    `echo ${GNUSTEP_USER_DIR_DOC_INFO}    | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
-    setenv GNUSTEP_USER_DIR_CORE_SERVICES `echo ${GNUSTEP_USER_DIR_CORE_SERVICES} | sed -e "s/%u/${GNUSTEP__USERNAME}/g"`
     unsetenv GNUSTEP__USERNAME
     breaksw
 endsw
@@ -290,8 +274,7 @@ switch ("${GNUSTEP_USER_DIR_APPS}\
  ${GNUSTEP_USER_DIR_LIBRARIES}\
  ${GNUSTEP_USER_DIR_DOC}\
  ${GNUSTEP_USER_DIR_DOC_MAN}\
- ${GNUSTEP_USER_DIR_DOC_INFO}\
- ${GNUSTEP_USER_DIR_CORE_SERVICES}")
+ ${GNUSTEP_USER_DIR_DOC_INFO}")
   case *%%*:
     # ... and if so, replace %% with %
     setenv GNUSTEP_USER_DIR_APPS        `echo ${GNUSTEP_USER_DIR_APPS}        | sed -e 's/%%/%/g'`
@@ -305,7 +288,6 @@ switch ("${GNUSTEP_USER_DIR_APPS}\
     setenv GNUSTEP_USER_DIR_DOC         `echo ${GNUSTEP_USER_DIR_DOC}         | sed -e 's/%%/%/g'`
     setenv GNUSTEP_USER_DIR_DOC_MAN     `echo ${GNUSTEP_USER_DIR_DOC_MAN}     | sed -e 's/%%/%/g'`
     setenv GNUSTEP_USER_DIR_DOC_INFO    `echo ${GNUSTEP_USER_DIR_DOC_INFO}    | sed -e 's/%%/%/g'`
-    setenv GNUSTEP_USER_DIR_CORE_SERVICES `echo ${GNUSTEP_USER_DIR_CORE_SERVICES} | sed -e 's/%%/%/g'`
     breaksw
 endsw
 
@@ -408,15 +390,6 @@ switch ("${GNUSTEP_USER_DIR_DOC_INFO}")
    breaksw
 endsw
 
-switch ("${GNUSTEP_USER_DIR_CORE_SERVICES}")
- case /*:
-   setenv GNUSTEP_USER_CORE_SERVICES "${GNUSTEP_USER_DIR_CORE_SERVICES}"
-   breaksw
- default:
-   setenv GNUSTEP_USER_CORE_SERVICES "${GNUSTEP_HOME}/${GNUSTEP_USER_DIR_CORE_SERVICES}"
-   breaksw
-endsw
-
 unsetenv GNUSTEP_USER_DIR_APPS 
 unsetenv GNUSTEP_USER_DIR_ADMIN_APPS 
 unsetenv GNUSTEP_USER_DIR_WEB_APPS 
@@ -428,4 +401,3 @@ unsetenv GNUSTEP_USER_DIR_LIBRARIES
 unsetenv GNUSTEP_USER_DIR_DOC 
 unsetenv GNUSTEP_USER_DIR_DOC_MAN
 unsetenv GNUSTEP_USER_DIR_DOC_INFO
-unsetenv GNUSTEP_USER_DIR_CORE_SERVICES
