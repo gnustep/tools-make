@@ -291,10 +291,10 @@ else
   NONAME=no
 fi
 
-TEMP=`echo *`
+# Check for all possible test directories in the current directory.
 TESTS=
 TESTDIRS=
-for file in $TEMP
+for file in `echo *`
 do
   if test -d $file -a $file != CVS -a $file != obj
   then
