@@ -183,7 +183,7 @@ create-desktop-file:
 package-appimage:
 	$(APPIMAGE_TOOL) $(APPIMAGE_APPDIR) $(APPIMAGE_NAME)
 
-after-appimage:
+after-appimage::
 
 
 # Clean target for appimage build artifacts
