@@ -39,6 +39,7 @@ case "$1" in
   --objc-libs)  ;;
   --base-libs)  ;;
   --gui-libs)   ;;
+  --uikit-libs) ;;
   --host-dir) ;;
   --host-ldir) ;;
   --installation-domain-for=*) ;;
@@ -103,6 +104,8 @@ if [ "$1" = "--help" ]; then
     echo
     echo "--gui-libs: prints all the flags required to link a GUI ObjC program"
     echo 
+    echo "--uikit-libs: prints all the flags required to link a UIKit ObjC program"
+    echo
     echo "--host-dir: prints the host architecture name"
     echo 
     echo "--host-ldir: prints the host architecture and library combo name"
@@ -203,6 +206,8 @@ case "$1" in
   --base-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
               exit 0;;
   --gui-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
+              exit 0;;
+  --uikit-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-uikit-libs quiet=yes 2>/dev/null
               exit 0;;
   --host-dir) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-host-dir quiet=yes 2>/dev/null
               exit 0;;
