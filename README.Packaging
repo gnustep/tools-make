@@ -120,6 +120,13 @@ standard Unix directories such as /usr/bin and /usr/lib.  This blends
 very well with the native Unix filesystem, but you lose the special
 allure of the GNUstep layout.
 
+In some cases, GNU/Linux systems use different library directories with
+the FHS.  To avoid having a separate layout file for each operating system,
+the configure script provides the --with-libdir=... option to override the
+default library directory name 'lib', so you can do something like:
+
+ ./configure --with-layout=fhs --with-libdir=lib64
+
 We don't have a particular recommendation on what filesystem to use;
 you should pick the one that best suits your system's philosophy.  If
 it's a GNUstep-based system, you are likely to want to use the GNUstep
@@ -140,6 +147,9 @@ refer to the gnustep-make documentation.
 
 Once you pick a filesystem layout and configure gnustep-make using it,
 all of the GNUstep software will automatically use it.
+
+The configuration process creates a GNUstep Configuration File incorporating
+the selected filesystem layoutr (see below).
 
 
 2. FLATTENED AND MULTI-PLATFORM
@@ -174,13 +184,18 @@ library is the GNUstep runtime for ObjectiveC-2, and also means that
 the latest language features are expected with the compiler.
 To use this you must ship the GNUstep runtime and clang-3.1 or later.
 
+
 4. CONFIGURATION FILE
 =====================
 
 GNUstep has a system-wide configuration file that is used by both
 gnustep-make and gnustep-base to learn about the current filesystem
-layout in the system and locate the various resources.  By default,
-this configuration file is installed by gnustep-make into
+layout in the system and locate the various resources.
+
+For information about the file format and how this is used at runtime,
+see the gnustep-base documentation section on the GNUstep Configuration File.
+
+By default, this configuration file is installed by gnustep-make into
 
  /etc/GNUstep/GNUstep.conf
 
