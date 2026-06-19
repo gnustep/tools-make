@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 @c A FAQ for GNUstep Users
 
-@node Top, GNUstep General Information, (dir), (dir)
+@node Top, GNUstep General Information, , 
 @chapter GNUstep Frequently Asked Questions for Users
 
 Last updated @today{}.

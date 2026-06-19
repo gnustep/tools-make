@@ -1,5 +1,5 @@
 
-@node Top, Introduction, (dir), (dir)
+@node Top, Introduction, , 
 @chapter GNUstep makefile package installation
 
 @menu

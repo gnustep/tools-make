@@ -51,7 +51,8 @@ any later version published by the Free Software Foundation.
 
 @include version.texi
 
-@node Top, Introduction, (dir), (dir)
+@node Top, Introduction, , 
+@top Gnustep HOWTO
 
 @menu
 * Introduction::                
