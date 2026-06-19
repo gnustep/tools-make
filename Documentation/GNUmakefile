@@ -83,7 +83,9 @@ else
 # normal gnustep-make GNUmakefile for documentation.
 
 # We normally install into System
-GNUSTEP_INSTALLATION_DOMAIN = LOCAL
+ifeq ($(GNUSTEP_INSTALLATION_DOMAIN),)
+  GNUSTEP_INSTALLATION_DOMAIN = SYSTEM
+endif
 
 include $(GNUSTEP_MAKEFILES)/common.make
 
