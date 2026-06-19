@@ -7,6 +7,12 @@ configure your gnustep-make.
 A filesystem layout describes how the GNUstep installation domains
 (System, Network, Local, User) map to directories on disk.
 
+When you configure gnustep-make, the filesystem layout chosen is used to
+generate the GNUstep Configuration File used by gnustep-make to determine
+where things are installed, and used by gnustep-base to determine where
+programs will find installed resources at run time.  See the gnustep-base
+documentation for full details about the GNUstep Configuration File.
+
 Every file in this directory is a filesystem layout that you can use
 in gnustep-make's ./configure (technical note: the files are shell
 files that are directly included by ./configure and that should set the
@@ -15,6 +21,9 @@ specified variables).  For example:
 ./configure --with-layout=fhs
 
 ./configure --with-layout=fhs-system
+
+The text @libdir@ in a filesystem layout will be replaced by the configure
+script (see the --with-libdir= option of configure).
 
 By default, the 'fhs' layout is used except on Apple when building
 using the apple-apple-apple combo.
