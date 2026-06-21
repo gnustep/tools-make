@@ -59,11 +59,12 @@ You can obtain a copy of the OpenStep standard from the GNUstep web site
 @node What platforms does GNUstep run on?, Does GNUstep run on Windows?, What is the OpenStep standard?, GNUstep General Information
 @subsection What platforms does GNUstep run on?
 
-See the list of supported platforms at
-@url{machines_toc.html} for
-information on what machines GNUstep builds on and what the status of
-the ports is. Probably a few days porting to any other UNIX system where
-current gcc compilers and gdb debugger work.
+GNUstep is designed both to be easily portable to different operating systems
+and hardware architectures, and to enable you to develop software which will,
+without modification, run on all those systems.  In general you can expect it
+to run on any UNIX like system, as well as on Windows.
+Contributions to port to new systems are always welcome (and usually porting
+effort is small because the code is already so portable).
 
 @node Does GNUstep run on Windows?, What is GNUstep's position towards KDE and the GNOME project?, What platforms does GNUstep run on?, GNUstep General Information
 @subsection  Does GNUstep run on Windows?
@@ -100,7 +101,7 @@ strings to distributed objects.
 
 Many distributions include packaged versions of GNUstep (Debian,
 etc). To compile from sratch, download the GNUstep Startup package or
-get the HOWTO from @url{gnustep-howto_toc.html}. Get the latest releases
+get the HOWTO from @url{index.html}. Get the latest releases
 from @url{ftp://ftp.gnustep.org/pub/gnustep/core}.
 
 @node How do you run GNUstep?, Is there a web site?, How can I get GNUstep?, GNUstep General Information
