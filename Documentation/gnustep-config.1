@@ -7,7 +7,7 @@ gnustep-config \- prints information about the current gnustep installation.
 .SH SYNOPSIS
 .BR gnustep-config " ["
 .BI \-\-variable= variable
-.RB | \-\-objc-flags | \-\-objc-libs | \-\-base-libs | \-\-gui-libs " ]"
+.RB | \-\-objc-flags | \-\-objc-libs | \-\-base-libs | \-\-gui-libs | \-\-uikit-libs " ]"
 .SH DESCRIPTION
 .B gnustep-config
 can print information about the currently installed GNUstep system. Output
@@ -73,6 +73,10 @@ prints all the flags required to link a command-line ObjC program (no gui)
 .TP
 .B \-\-gui-libs
 prints all the flags required to link a GUI ObjC program
+
+.TP
+.B \-\-uikit-libs
+prints all the flags required to link a UIKit ObjC program
 .SH BUGS
 None known
 .SH SEE ALSO

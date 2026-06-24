@@ -772,6 +772,7 @@ endif
         print-gnustep-make-objc-libs \
         print-gnustep-make-base-libs \
         print-gnustep-make-gui-libs \
+        print-gnustep-make-uikit-libs \
         print-gnustep-make-installation-domain \
         print-gnustep-make-host-dir \
         print-gnustep-make-host-ldir \
@@ -814,6 +815,10 @@ print-gnustep-make-base-libs:
 # Flags used when linking against Foundation and GUI
 print-gnustep-make-gui-libs:
 	@(echo $(ALL_LDFLAGS) $(CC_LDFLAGS) $(ALL_LIB_DIRS) $(ADDITIONAL_GUI_LIBS) $(AUXILIARY_GUI_LIBS) $(GUI_LIBS) $(BACKEND_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
+
+# Flags used when linking against Foundation and UIKit
+print-gnustep-make-uikit-libs:
+	@(echo $(ALL_LDFLAGS) $(CC_LDFLAGS) $(ALL_LIB_DIRS) $(UIKIT_LIBS) $(ADDITIONAL_TOOL_LIBS) $(AUXILIARY_TOOL_LIBS) $(FND_LIBS) $(ADDITIONAL_OBJC_LIBS) $(AUXILIARY_OBJC_LIBS) $(OBJC_LIBS) $(SYSTEM_LIBS) $(TARGET_SYSTEM_LIBS))
 
 print-gnustep-make-installation-domain:
 	@(echo $(GNUSTEP_INSTALLATION_DOMAIN))
