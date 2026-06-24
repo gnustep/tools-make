@@ -116,7 +116,7 @@ MAKE_FILES = aggregate.make application.make bundle.make service.make \
 	objc.make test-application.make test-tool.make subproject.make \
 	palette.make gswapp.make gswbundle.make clibrary.make \
 	documentation.make java-tool.make framework.make \
-	native-library.make spec-rules.template \
+	native-library.make spec-rules.template appimage.make \
         tar-exclude-list gnustep-make-help
 
 MASTER_MAKE_FILES = \
@@ -126,7 +126,7 @@ MASTER_MAKE_FILES = \
         library.make nsis.make deb.make objc.make java.make java-tool.make palette.make \
 	parallel-subdirectories.make resource-set.make serial-subdirectories.make \
 	service.make subproject.make test-application.make \
-        test-library.make test-tool.make tool.make
+        test-library.make test-tool.make tool.make appimage.make
 
 INSTANCE_MAKE_FILES = \
         rules.make \

@@ -1,0 +1,12 @@
+#!/bin/sh
+HERE="$(dirname "$(readlink -f "${0}")")"
+export GNUSTEP_PREFIX="$HERE/usr"
+export GNUSTEP_SYSTEM_ROOT="$HERE/usr/system"
+export GNUSTEP_LOCAL_ROOT="$HERE/usr/local"
+export GNUSTEP_NETWORK_ROOT="$HERE/usr/network"
+export GNUSTEP_CONFIG_FILE="$HERE/usr/etc/GNUstep/GNUstep.conf"
+export GNUSTEP_SYSTEM_LIBRARIES="$HERE/usr/lib"
+export GNUSTEP_LOCAL_LIBRARIES="$HERE/usr/local/lib"
+export LD_LIBRARY_PATH="$HERE/usr/lib:$HERE/usr/local/lib:$LD_LIBRARY_PATH"
+export PATH="$HERE/usr/local/bin:$HERE/usr/bin:$PATH"
+exec "$HERE/%S"
