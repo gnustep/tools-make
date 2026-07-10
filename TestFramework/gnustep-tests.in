@@ -175,6 +175,11 @@ then
     LSAN_OPTIONS=exitcode=23,suppressions=$GNUSTEP_MAKEFILES/lsan-suppressions
     export LSAN_OPTIONS
   fi
+  if test x"$ASAN_OPTIONS" = x
+  then
+    ASAN_OPTIONS=exitcode=24
+    export ASAN_OPTIONS
+  fi
 else
   GNUSTEP_WITH_ASAN=0
 fi
@@ -525,7 +530,13 @@ run_test ()
       echo "Completed file:  $TESTFILE" >&2
     elif test $result -eq 23; then
       # https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer
-      echo "Failed file:  $TESTFILE leaked memory!" >&2
+      echo "Failed file:  $TESTFILE leaked memory detected by LSAN!" >&2
+      if test "$GSTESTMODE" = "failfast"; then
+	return 1
+      fi
+    elif test $result -eq 24; then
+      # https://github.com/google/sanitizers/wiki/AddressSanitizerLeakSanitizer
+      echo "Failed file:  $TESTFILE memory error detected by ASAN!" >&2
       if test "$GSTESTMODE" = "failfast"; then
 	return 1
       fi
