@@ -177,7 +177,9 @@ then
   fi
   if test x"$ASAN_OPTIONS" = x
   then
-    ASAN_OPTIONS=exitcode=24
+    # fast_unwind_on_malloc=0 turns off a performance optimisation in favour
+    # of more reliable stack traces.
+    ASAN_OPTIONS=fast_unwind_on_malloc=0:exitcode=24
     export ASAN_OPTIONS
   fi
 else
