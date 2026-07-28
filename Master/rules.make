@@ -455,3 +455,8 @@ include $(GNUSTEP_MAKEFILES)/Master/rpm.make
 # 
 #include $(GNUSTEP_MAKEFILES)/Master/deb.make <TODO>
 
+#
+# Rules for building AppImages
+#
+include $(GNUSTEP_MAKEFILES)/Master/appimage.make
+
