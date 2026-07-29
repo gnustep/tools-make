@@ -94,7 +94,7 @@ directory (eg, ./configure --with-layout=gnustep).
 This option controls where GNUstep applications, tools, libraries, and
 everything else GNUstep is installed.
 
-There are two major options here:
+There are three major options here:
 
  1. ./configure --with-layout=gnustep
 
@@ -126,6 +126,16 @@ the configure script provides the --with-libdir=... option to override the
 default library directory name 'lib', so you can do something like:
 
  ./configure --with-layout=fhs --with-libdir=lib64
+
+ 3. ./configure --with-layout=standalone
+
+A special layout where everything is within a single directory.  This is useful
+for distributing applications along with all their dependencies in a single
+unit for use on a platform which typically does not have any other GNUstep
+tools/applications to integrate with.  It's also useful when you want your
+distribution to be independent of other people's.  This was originally
+developed for packaging standalone applications for MS-Windows.
+
 
 We don't have a particular recommendation on what filesystem to use;
 you should pick the one that best suits your system's philosophy.  If
