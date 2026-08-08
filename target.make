@@ -1230,7 +1230,7 @@ endif
 ifeq ($(findstring android, $(GNUSTEP_TARGET_OS)), android)
 HAVE_SHARED_LIBS        = yes
 SHARED_LIB_LINK_CMD     = \
-        $(LD) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIBRARY_FILE) \
+        $(LD) $(SHARED_LD_PREFLAGS) -shared -Wl,-soname,$(LIB_LINK_SONAME_FILE) \
            $(ALL_LDFLAGS) -o $(LIB_LINK_OBJ_DIR)/$(LIB_LINK_VERSION_FILE) $^ \
 	   $(INTERNAL_LIBRARIES_DEPEND_UPON) \
 	   $(SHARED_LD_POSTFLAGS) \
