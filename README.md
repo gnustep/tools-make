@@ -1,10 +1,8 @@
-1 GNUstep makefile package
-**************************
+# 1 GNUstep makefile package
 
 Here is some introductory info to get you started:
 
-1.1 What is the GNUstep makefile package?
-=========================================
+## 1.1 What is the GNUstep makefile package?
 
 The makefile package is a simple, powerful and extensible way to write
 makefiles for a GNUstep-based project.  It allows the user to write a
@@ -12,8 +10,7 @@ project without having to deal with the complex issues associated with
 configuration, building, installation, and packaging.  It also allows
 the user to easily create cross-compiled binaries.
 
-1.2 Information
-===============
+## 1.2 Information
 
 The file 'NEWS' has this packages feature history.
 
@@ -25,8 +22,7 @@ and various machine specific READMEs in the Documentation directory.
 of the Makefile system and how to write your own makefiles that work
 with it.
 
-1.3 License
-===========
+## 1.3 License
 
 The GNUstep libraries are covered under the GNU Lesser Public License.
 This means you can use these libraries in any program (even non-free
@@ -41,8 +37,7 @@ as well.  You should read the COPYING file for more information.
 
    The GNUstep make package is licensed under the GNU GPL.
 
-1.4 History
-===========
+## 1.4 History
 
 The GNUstep makefile package was designed by Scott Christley and Ovidiu
 Predescu.
@@ -58,8 +53,7 @@ procedures to increase the speed of the package by over a factor of 7.
 He also rewrote much of the rest of the system to make it simpler and
 more effective.
 
-1.5 How can you help?
-=====================
+## 1.5 How can you help?
 
    * Give us feedback!  Tell us what you like; tell us what you think
      could be better.  Send bug reports to <bug-gnustep@gnu.org>.
