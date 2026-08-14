@@ -50,7 +50,7 @@ ifeq ($(OBJC_RUNTIME_LIB), ng)
      RUNTIME_VERSION=gnustep-2.2
    endif
   endif
-  RUNTIME_FLAG = -fobjc-runtime=$(RUNTIME_VERSION) -fblocks
+  RUNTIME_FLAG = -fobjc-runtime=$(RUNTIME_VERSION) -fblocks -fobjc-weak
   RUNTIME_DEFINE = -DGNUSTEP_RUNTIME=1 -D_NONFRAGILE_ABI=1
 endif
 
