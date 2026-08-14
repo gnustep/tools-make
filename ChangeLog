@@ -1,3 +1,29 @@
+2026-08-14  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* Documentation/gnustep-filesystem.texi:
+	* FilesystemLayouts/apple:
+	* FilesystemLayouts/debian:
+	* FilesystemLayouts/fhs:
+	* FilesystemLayouts/fhs-system:
+	* FilesystemLayouts/gershwin:
+	* FilesystemLayouts/gnustep:
+	* FilesystemLayouts/gnustep-with-network:
+	* FilesystemLayouts/mac:
+	* FilesystemLayouts/next:
+	* FilesystemLayouts/standalone:
+	* GNUstep-strict-v2.conf.in:
+	* GNUstep.conf.in:
+	* GNUstep.csh.in:
+	* GNUstep.sh.in:
+	* Instance/tool.make:
+	* configure.ac:
+	* filesystem.csh.in:
+	* filesystem.make.in:
+	* filesystem.sh.in:
+	* gnustep-config.in:
+	* configure:
+	Update non-bundled resource configuration
+
 2025-11-19  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Instance/Documentation/autogsdoc.make:

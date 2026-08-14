@@ -226,7 +226,7 @@ In that case, a domain has the following structure on disk:
         Library/Libraries/Resources/
         Library/Makefiles/   (System domain only)
         Library/Services/
-        Library/Tools/Resources/
+        Library/Resources/
         Library/WebApplications/
         Tools/
         Tools/Admin/
@@ -570,7 +570,7 @@ All such cases should be documented here.
 * PostScript::
 * Services::             
 * Sounds::
-* Tools/Resources::
+* Resources::
 @end menu
 
 @node ApplicationSupport, Bundles, Folders inside Library, Folders inside Library
@@ -771,25 +771,25 @@ locations in the various domains directly by using the variables
 In gnustep-base, you can access the @code{Services} location as a
 folder inside the @code{Library} location.
 
-@node Sounds, Tools/Resources, Services, Folders inside Library
+@node Sounds, Resources, Services, Folders inside Library
 @subsection Sounds
 
 This directory contains sound files.
 
-@node Tools/Resources,  , Sounds, Folders inside Library
-@subsection Tools/Resources
+@node Resources,  , Sounds, Folders inside Library
+@subsection Resources
 
-This directory contains resources used by tools.  In GNUstep a tool
-can have an associated resource bundle (a bundle only composed of
-resources, with no object file), which is then installed into this
-directory.
+This directory contains resources used by tools and standalone resource
+pacakges.  In GNUstep a tool can have an associated resource bundle (a
+bundle only composed of resources, with no object file), which is then
+installed into this directory.
 
 For example, a tool called @code{myTool} will get its resource bundle
 installed into
-@code{GNUSTEP_SYSTEM_LIBRARY/Tools/Resources/myTool}.
+@code{GNUSTEP_SYSTEM_LIBRARY/Resources/myTool}.
 
 In GNUmakefiles, this location is available as the
-@file{Tools/Resources} folder inside the @code{Library} location.
+@file{Resources} folder inside the @code{Library} location.
 
 In gnustep-base, you can access the resource bundle associated with
 your tool by using the @code{[NSBundle +mainBundle]} method (this
