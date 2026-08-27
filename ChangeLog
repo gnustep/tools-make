@@ -1,3 +1,10 @@
+2026-08-27  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* configure:
+	Enable -std=gnu11 to use the C11 standsard with gnu extensions when
+        building GNUstep stuff.
+
 2026-08-14  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* Documentation/gnustep-filesystem.texi:

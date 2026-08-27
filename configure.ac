@@ -1388,6 +1388,35 @@ fi
 # compiler supports native exceptions.
 
 #--------------------------------------------------------------------
+# Check if compiler supports -std=gnu11, and if so, turn it on!
+#--------------------------------------------------------------------
+
+AC_MSG_CHECKING(whether the compiler supports -std=gnu11)
+USE_C11=maybe
+if test x"$USE_C11" = x"maybe"; then
+  CFLAGS_saved="$CFLAGS"
+  CFLAGS="$CFLAGS -std=gnu11"
+  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+#include <objc/objc.h>
+@interface Test { id isa; } @end
+
+int test (Test *o)
+{
+  return 0;
+}
+  ]])], USE_C11=yes, USE_C11=no)
+    if test x"$USE_C11" = x"no"; then
+      AC_MSG_RESULT(no)
+      CFLAGS="$CFLAGS_saved"
+    else
+      AC_MSG_RESULT(yes)
+      OBJCFLAGS="$OBJCFLAGS -std=gnu11"
+    fi
+else
+  AC_MSG_RESULT($USE_C11)
+fi
+
+#--------------------------------------------------------------------
 # Check if GCC supports -fobjc-exceptions, and if so, turn it on!
 #--------------------------------------------------------------------
 
