@@ -2,8 +2,13 @@
 
 	* configure.ac:
 	* configure:
-	Enable -std=gnu11 to use the C11 standsard with gnu extensions when
+	Enable -std=gnu11 to use the C11 standard with gnu extensions when
         building GNUstep stuff.
+	* TestFramework/GNUmakefile.in:
+	Fix to turn off deprecation warnings only on OSX as previously intended.
+	The rationale is that GNUstep aims to maintain APIs after Apple remove
+	them, so we don't want to flag Apple deprecation warnings but we do
+	want to flag GNUstep deprecation warnings.
 
 2026-08-14  Richard Frith-Macdonald <rfm@gnu.org>
 

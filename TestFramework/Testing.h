@@ -66,6 +66,11 @@ static BOOL testPassed __attribute__((unused)) = NO;
  */
 static unsigned testLineNumber __attribute__((unused)) = 0;
 
+/* During execution of a set of tests, this lock exists to serialise
+ * pass/fail output where multiple threads are used.
+ */
+static NSLock	*testLock = nil;
+
 /* A flag indicating whether timestamps should be produced in the output
  * for each testcase.  By default it is set to TEST_TS if defined, but
  * test code may override that default.
@@ -131,17 +136,20 @@ static void (*setEnded)(const char *name, BOOL completed, double duration)
  * include the timestamp of the testcase completion (entry into this function).
  *
  * If there is a better higher-level test macro available, please use
- * that instead.  In particular, please use the PASS_EQUAL() macro wherever
+ * that instead.  Normally that means you should use the PASS() macro.
+ * In particular, please use the PASS_EQUAL() macro wherever
  * you wish to test the equality of a pair of objective-c objects.
  *
- * If you are calling the function directly, please use a format string
+ * If you are calling the function directly, you must use a format string
  * beginning "%s:%d" and pass __FILE__ and __LINE__ as the first two arguments
  * so that this function will print out the location it was called from.
  *
  * This function is the most efficient option for general use, but
- * please don't use it if there is any change that the evaluation of
+ * please don't use it if there is any chance that the evaluation of
  * the expression used as its first argument might cause an exception
  * in any context where that might be a problem.
+ *
+ * In short, don't call this directly.
  */
 static void pass(int passed, const char *format, ...)  __attribute__((unused)) __attribute__ ((format(printf, 2, 3)));
 static void pass(int passed, const char *format, ...)
@@ -159,6 +167,7 @@ static void pass(int passed, const char *format, ...)
       ts = [[f stringFromDate: [NSDate date]] UTF8String];
       [f release];
     }
+  [testLock lock];
   if (passed)
     {
       fprintf(stderr, "Passed test:     %s", ts);
@@ -176,6 +185,7 @@ static void pass(int passed, const char *format, ...)
       fprintf(stderr, "Failed test:     %s", ts);
       testPassed = NO;
     }
+  [testLock unlock];
   testIndent();
   vfprintf(stderr, format, args);
   fprintf(stderr, "\n");
@@ -484,6 +494,7 @@ static void testStart()
     testIndent(); \
     fprintf(stderr, "%s:%d ... %s\n", __FILE__, __LINE__, _save_set); \
     testIndentation++; \
+    testLock = [NSLock new]; \
     NS_DURING \
       NSAutoreleasePool *_setPool = [NSAutoreleasePool new]; \
       {
@@ -545,6 +556,7 @@ static void testStart()
 	} \
     NS_ENDHANDLER \
     SET_TIMER(NO); \
+    DESTROY(testLock); \
     if (0 != setEnded) (*setEnded)(setName, _setSuccess, setDuration); \
     if (strcmp(_save_set, setName) != 0) \
       fprintf(stderr, "Error:      %s:%d ... END(%s) with START(%s).\n", \
