@@ -17,8 +17,13 @@ ADDITIONAL_LDFLAGS += -ftest-coverage -fprofile-arcs
 ADDITIONAL_TOOL_LIBS+=-lgcov
 endif
 
+ifeq ($(OBJC_RUNTIME_LIB), apple)
 ADDITIONAL_OBJCFLAGS += -Wno-deprecated
 ADDITIONAL_OBJCCFLAGS += -Wno-deprecated
+else
+ADDITIONAL_OBJCFLAGS += -Wdeprecated
+ADDITIONAL_OBJCCFLAGS += -Wdeprecated
+endif
 
 @TESTRULES@
 
