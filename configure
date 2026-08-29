@@ -3417,6 +3417,9 @@ else
   defaultng=no;
 fi
 
+# Require gnu11
+CFLAGS="$CFLAGS -std=gnu11"
+
 
 
 
@@ -8147,7 +8150,7 @@ printf '%s\n' "$gs_cv_libobjc_domain_ng" >&6; }
         # The following are needed to compile the test programs
         OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
         OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
-        OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
+        OBJC_FINAL_LIB_FLAG="$OBJC_LDFLAGS $OBJC_LIB_FLAG"
 
         # And the following to execute them
         LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
@@ -8677,7 +8680,7 @@ printf '%s\n' "$gs_cv_libobjc_domain_dflt" >&6; }
         # The following are needed to compile the test programs
         OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
         OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
-        OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
+        OBJC_FINAL_LIB_FLAG="$OBJC_LDFLAGS $OBJC_LIB_FLAG"
 
         # And the following to execute them
         LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
@@ -8836,6 +8839,12 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
   fi
 
+
+
+# Add runtime header directory flags to system preprocessor flags.
+INCLUDES="$OBJC_CPPFLAGS $INCLUDES"
+# Add runtime library directory flags to system link flags.
+LIB_DIR="$OBJC_LDFLAGS $LIB_DIR"
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
@@ -9761,50 +9770,6 @@ printf '%s\n' "$as_me: WARNING: Unable to confirm if the explicitly specified li
 fi
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.
-
-#--------------------------------------------------------------------
-# Check if compiler supports -std=gnu11, and if so, turn it on!
-#--------------------------------------------------------------------
-
-{ printf '%s\n' "$as_me:${as_lineno-$LINENO}: checking whether the compiler supports -std=gnu11" >&5
-printf %s "checking whether the compiler supports -std=gnu11... " >&6; }
-USE_C11=maybe
-if test x"$USE_C11" = x"maybe"; then
-  CFLAGS_saved="$CFLAGS"
-  CFLAGS="$CFLAGS -std=gnu11"
-  cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-#include <objc/objc.h>
-@interface Test { id isa; } @end
-
-int test (Test *o)
-{
-  return 0;
-}
-
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"
-then :
-  USE_C11=yes
-else case e in #(
-  e) USE_C11=no ;;
-esac
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.beam conftest.$ac_ext
-    if test x"$USE_C11" = x"no"; then
-      { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: no" >&5
-printf '%s\n' "no" >&6; }
-      CFLAGS="$CFLAGS_saved"
-    else
-      { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-printf '%s\n' "yes" >&6; }
-      OBJCFLAGS="$OBJCFLAGS -std=gnu11"
-    fi
-else
-  { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: $USE_C11" >&5
-printf '%s\n' "$USE_C11" >&6; }
-fi
 
 #--------------------------------------------------------------------
 # Check if GCC supports -fobjc-exceptions, and if so, turn it on!

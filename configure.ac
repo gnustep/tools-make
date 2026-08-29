@@ -70,6 +70,9 @@ else
   defaultng=no;
 fi
 
+# Require gnu11
+CFLAGS="$CFLAGS -std=gnu11"
+
 AC_PROG_CC
 AC_PROG_CPP
 
@@ -1148,6 +1151,12 @@ fi
 
 GS_CHECK_OBJC_RUNTIME()
 GS_BLOCKS_SUPPORT()
+
+# Add runtime header directory flags to system preprocessor flags.
+INCLUDES="$OBJC_CPPFLAGS $INCLUDES"
+# Add runtime library directory flags to system link flags.
+LIB_DIR="$OBJC_LDFLAGS $LIB_DIR"
+
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.
 #--------------------------------------------------------------------
@@ -1386,35 +1395,6 @@ if test "$gs_cv_runtime_abi" = "gnustep-2.0"; then
 fi
 # Do not restore LIBS and CFLAGS yet as we need to test if the
 # compiler supports native exceptions.
-
-#--------------------------------------------------------------------
-# Check if compiler supports -std=gnu11, and if so, turn it on!
-#--------------------------------------------------------------------
-
-AC_MSG_CHECKING(whether the compiler supports -std=gnu11)
-USE_C11=maybe
-if test x"$USE_C11" = x"maybe"; then
-  CFLAGS_saved="$CFLAGS"
-  CFLAGS="$CFLAGS -std=gnu11"
-  AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
-#include <objc/objc.h>
-@interface Test { id isa; } @end
-
-int test (Test *o)
-{
-  return 0;
-}
-  ]])], USE_C11=yes, USE_C11=no)
-    if test x"$USE_C11" = x"no"; then
-      AC_MSG_RESULT(no)
-      CFLAGS="$CFLAGS_saved"
-    else
-      AC_MSG_RESULT(yes)
-      OBJCFLAGS="$OBJCFLAGS -std=gnu11"
-    fi
-else
-  AC_MSG_RESULT($USE_C11)
-fi
 
 #--------------------------------------------------------------------
 # Check if GCC supports -fobjc-exceptions, and if so, turn it on!

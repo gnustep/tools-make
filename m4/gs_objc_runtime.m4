@@ -215,7 +215,7 @@ AC_DEFUN([GS_CHECK_OBJC_RUNTIME], [
         # The following are needed to compile the test programs
         OBJC_CPPFLAGS="$CPPFLAGS $INCLUDES -I$gs_cv_objc_incdir"
         OBJC_LDFLAGS="$LDFLAGS $LIB_DIR -L$gs_cv_objc_libdir"
-        OBJC_FINAL_LIB_FLAG="$OBJC_LIB_FLAG"
+        OBJC_FINAL_LIB_FLAG="$OBJC_LDFLAGS $OBJC_LIB_FLAG"
 
         # And the following to execute them
         LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$gs_cv_objc_libdir"
