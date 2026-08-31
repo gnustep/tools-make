@@ -3,7 +3,8 @@
 	* configure.ac:
 	* configure:
 	Enable -std=gnu11 to use the C11 standard with gnu extensions when
-        building GNUstep stuff.
+        building GNUstep stuff.  This is the newest standard supported by the
+	oldest compiler that the project currently allows.
 	* TestFramework/GNUmakefile.in:
 	Fix to turn off deprecation warnings only on OSX as previously intended.
 	The rationale is that GNUstep aims to maintain APIs after Apple remove
