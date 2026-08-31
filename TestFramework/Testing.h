@@ -485,6 +485,7 @@ static void testStart()
     BOOL _setSuccess = YES; \
     double _setTiming = [NSDate timeIntervalSinceReferenceDate]; \
     BOOL _save_hopeful = testHopeful; \
+    BOOL _lockCreated = NO; \
     unsigned _save_indentation = testIndentation; \
     int	_save_line = __LINE__; \
     size_t _save_set_size = strlen(setName) + 1; \
@@ -494,7 +495,7 @@ static void testStart()
     testIndent(); \
     fprintf(stderr, "%s:%d ... %s\n", __FILE__, __LINE__, _save_set); \
     testIndentation++; \
-    testLock = [NSLock new]; \
+    if (nil == testLock) { _lockCreated = YES; testLock = [NSLock new]; } \
     NS_DURING \
       NSAutoreleasePool *_setPool = [NSAutoreleasePool new]; \
       {
@@ -556,7 +557,7 @@ static void testStart()
 	} \
     NS_ENDHANDLER \
     SET_TIMER(NO); \
-    DESTROY(testLock); \
+    if (_lockCreated) DESTROY(testLock); \
     if (0 != setEnded) (*setEnded)(setName, _setSuccess, setDuration); \
     if (strcmp(_save_set, setName) != 0) \
       fprintf(stderr, "Error:      %s:%d ... END(%s) with START(%s).\n", \
