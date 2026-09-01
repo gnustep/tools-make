@@ -71,7 +71,7 @@ else
 fi
 
 # Require gnu11
-CFLAGS="$CFLAGS -std=gnu11"
+#CFLAGS="$CFLAGS -std=gnu11"
 
 AC_PROG_CC
 AC_PROG_CPP

@@ -1,3 +1,9 @@
+2026-09-01  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* configure:
+	Revert C11 change in case it is breaking ng build on some platforms.
+
 2026-08-27  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:
