@@ -1153,9 +1153,9 @@ GS_CHECK_OBJC_RUNTIME()
 GS_BLOCKS_SUPPORT()
 
 # Add runtime header directory flags to system preprocessor flags.
-INCLUDES="$OBJC_CPPFLAGS $INCLUDES"
+INCLUDES="$libobjc_CFLAGS $INCLUDES"
 # Add runtime library directory flags to system link flags.
-LIB_DIR="$OBJC_LDFLAGS $LIB_DIR"
+LIB_DIR="$libobjc_LIBDIR $LIB_DIR"
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

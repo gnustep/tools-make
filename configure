@@ -623,6 +623,7 @@ USE_ARC
 ac_cv_objc_threaded
 objc_threaded
 BLOCKS_LIBS
+libobjc_LIBDIR
 libobjc_LIBS
 libobjc_CFLAGS
 PKG_CONFIG_LIBDIR
@@ -832,7 +833,8 @@ PKG_CONFIG
 PKG_CONFIG_PATH
 PKG_CONFIG_LIBDIR
 libobjc_CFLAGS
-libobjc_LIBS'
+libobjc_LIBS
+libobjc_LIBDIR'
 
 
 # Initialize some variables set by options.
@@ -1730,6 +1732,8 @@ Some influential environment variables:
               C compiler flags for libobjc, overriding pkg-config
   libobjc_LIBS
               linker flags for libobjc, overriding pkg-config
+  libobjc_LIBDIR
+              linker directory flags for libobjc, overriding pkg-config
 
 Use these variables to override the choices made by 'configure' or to help
 it to find libraries and programs with nonstandard names/locations.
@@ -7493,6 +7497,23 @@ fi
  else
     pkg_failed=untried
 fi
+if test -n "$libobjc_LIBDIR"; then
+    pkg_cv_libobjc_LIBDIR="$libobjc_LIBDIR"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc >= 2\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libobjc >= 2") 2>&5
+  ac_status=$?
+  printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_libobjc_LIBDIR=`$PKG_CONFIG --libs-only-L "libobjc >= 2" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
 
 
 
@@ -7560,6 +7581,23 @@ fi
  else
     pkg_failed=untried
 fi
+if test -n "$libobjc_LIBDIR"; then
+    pkg_cv_libobjc_LIBDIR="$libobjc_LIBDIR"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libobjc") 2>&5
+  ac_status=$?
+  printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_libobjc_LIBDIR=`$PKG_CONFIG --libs-only-L "libobjc" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
 
 
 
@@ -7608,6 +7646,7 @@ See 'config.log' for more details" "$LINENO" 5; }
 else
 	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
 	libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_LIBDIR=$pkg_cv_libobjc_LIBDIR
         { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf '%s\n' "yes" >&6; }
 
@@ -7665,6 +7704,23 @@ fi
  else
     pkg_failed=untried
 fi
+if test -n "$libobjc_LIBDIR"; then
+    pkg_cv_libobjc_LIBDIR="$libobjc_LIBDIR"
+ elif test -n "$PKG_CONFIG"; then
+    if test -n "$PKG_CONFIG" && \
+    { { printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$PKG_CONFIG --exists --print-errors \"libobjc\""; } >&5
+  ($PKG_CONFIG --exists --print-errors "libobjc") 2>&5
+  ac_status=$?
+  printf '%s\n' "$as_me:${as_lineno-$LINENO}: \$? = $ac_status" >&5
+  test $ac_status = 0; }; then
+  pkg_cv_libobjc_LIBDIR=`$PKG_CONFIG --libs-only-L "libobjc" 2>/dev/null`
+		      test "x$?" != "x0" && pkg_failed=yes
+else
+  pkg_failed=yes
+fi
+ else
+    pkg_failed=untried
+fi
 
 
 
@@ -7713,6 +7769,7 @@ See 'config.log' for more details" "$LINENO" 5; }
 else
 	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
 	libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_LIBDIR=$pkg_cv_libobjc_LIBDIR
         { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf '%s\n' "yes" >&6; }
 
@@ -7723,6 +7780,7 @@ fi
 else
 	libobjc_CFLAGS=$pkg_cv_libobjc_CFLAGS
 	libobjc_LIBS=$pkg_cv_libobjc_LIBS
+	libobjc_LIBDIR=$pkg_cv_libobjc_LIBDIR
         { printf '%s\n' "$as_me:${as_lineno-$LINENO}: result: yes" >&5
 printf '%s\n' "yes" >&6; }
 
@@ -8842,9 +8900,9 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
 # Add runtime header directory flags to system preprocessor flags.
-INCLUDES="$OBJC_CPPFLAGS $INCLUDES"
+INCLUDES="$libobjc_CFLAGS $INCLUDES"
 # Add runtime library directory flags to system link flags.
-LIB_DIR="$OBJC_LDFLAGS $LIB_DIR"
+LIB_DIR="$libobjc_LIBDIR $LIB_DIR"
 
 #--------------------------------------------------------------------
 # Check if libobjc was compiled with thread support.

@@ -1,3 +1,10 @@
+2026-09-04  Richard Frith-Macdonald <rfm@gnu.org>
+
+	* configure.ac:
+	* configure:
+	* aclocal.m4:
+	Another attempt to correctly pass pkginfo resuylts for libobjc2 onwards.
+
 2026-09-01  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:
