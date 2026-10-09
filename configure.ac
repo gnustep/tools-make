@@ -246,6 +246,35 @@ if test "$target_os" = windows -a x"${GCC}" != x"yes" -a x"$gs_cv_cc_is_clang" =
   CFLAGS="-g -O2"
 fi
 
+
+#--------------------------------------------------------------------
+# Is the compiler recent enough
+#--------------------------------------------------------------------
+if test x"${GCC}" = x"yes"; then
+AC_ARG_ENABLE([gcc-version-check],
+    [AS_HELP_STRING([--disable-gcc-version-check],
+                    [don't check that the GCC version is supported by GNUstep.  Currently GNUstep supports GCC 4.9.4 or later, but this option allows you to use an older compiler.  If you do that you will probably have to make source code changes to allow the older compiler to worl.  In general GNUstep maintainers will accept such changes as patches, but will not commit to checking that they continue to work in future releases (maintenance of such code for unsupported compiler versions are your responsibility).])],
+    [],
+    [enable_gcc_version_check=yes])
+
+AS_IF([test "x$enable_gcc_version_check" = "xyes"], [
+    AS_IF([test "x$GCC" = "xyes"], [
+        AC_COMPILE_IFELSE(
+            [AC_LANG_PROGRAM([[
+#if (__GNUC__ < 4) || \
+    (__GNUC__ == 4 && __GNUC_MINOR__ < 9) || \
+    (__GNUC__ == 4 && __GNUC_MINOR__ == 9 && __GNUC_PATCHLEVEL__ < 4)
+#error GCC 4.9.4 or later is required
+#endif
+            ]], [[]])],
+            [AC_MSG_NOTICE([GCC 4.9.4 or later detected])],
+            [AC_MSG_ERROR([GCC 4.9.4 or later is required])]
+        )
+    ])
+])
+
+fi
+
 AC_PROG_INSTALL
 
 AC_MSG_CHECKING([if 'install -p' works])
