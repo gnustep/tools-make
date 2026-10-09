@@ -250,7 +250,7 @@ fi
 #--------------------------------------------------------------------
 # Is the compiler recent enough
 #--------------------------------------------------------------------
-if test x"${GCC}" = x"yes"; then
+if test x"${GCC}" = x"yes" -a x"$gs_cv_cc_is_clang" = x"no"; then
 AC_ARG_ENABLE([gcc-version-check],
     [AS_HELP_STRING([--disable-gcc-version-check],
                     [don't check that the GCC version is supported by GNUstep.  Currently GNUstep supports GCC 4.9.4 or later, but this option allows you to use an older compiler.  If you do that you will probably have to make source code changes to allow the older compiler to worl.  In general GNUstep maintainers will accept such changes as patches, but will not commit to checking that they continue to work in future releases (maintenance of such code for unsupported compiler versions are your responsibility).])],

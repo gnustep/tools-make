@@ -6049,7 +6049,7 @@ fi
 #--------------------------------------------------------------------
 # Is the compiler recent enough
 #--------------------------------------------------------------------
-if test x"${GCC}" = x"yes"; then
+if test x"${GCC}" = x"yes" -a x"$gs_cv_cc_is_clang" = x"no"; then
 # Check whether --enable-gcc-version-check was given.
 if test ${enable_gcc_version_check+y}
 then :
