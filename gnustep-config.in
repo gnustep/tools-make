@@ -171,6 +171,30 @@ fi
 export GNUSTEP_MAKEFILES
 
 #
+# Run gnustep-make to print one of its settings.  We are often run from
+# $(shell ...) inside another make, and since GNU make 4.4 that make passes
+# MAKEFLAGS to us, so clear it and its relatives first.  Otherwise its
+# options and variable overrides reach the make below: 'make -n' prints
+# the echo command instead of the flags, and an override that calls
+# gnustep-config itself never finishes.
+#
+gs_option="$1"
+gs_print_make_value ()
+{
+  if ! command -v @GNUMAKE@ > /dev/null 2>&1; then
+    echo "gnustep-config: '@GNUMAKE@' not found; GNU make is required for $gs_option" >&2
+    exit 1
+  fi
+  MAKEFLAGS= MAKEOVERRIDES= MFLAGS= GNUMAKEFLAGS= \
+    @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" "$@" quiet=yes 2>/dev/null
+  gs_status=$?
+  if [ $gs_status -ne 0 ]; then
+    echo "gnustep-config: '@GNUMAKE@' failed (status $gs_status) for $gs_option; check GNUSTEP_MAKEFILES ($GNUSTEP_MAKEFILES)" >&2
+    exit $gs_status
+  fi
+}
+
+#
 # If all they want to know is GNUSTEP_MAKEFILES or anything that
 # we can compute only using GNUSTEP_MAKEFILES, we can print it out
 #
@@ -195,30 +219,30 @@ case "$1" in
               exit 0;;
   --variable=GNUMAKE) echo "@GNUMAKE@"
               exit 0;;
-  --debug-flags) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes debug=yes 2>/dev/null
+  --debug-flags) gs_print_make_value print-gnustep-make-objc-flags debug=yes
               exit 0;;
-  --objc-flags) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-flags quiet=yes 2>/dev/null
+  --objc-flags) gs_print_make_value print-gnustep-make-objc-flags
               exit 0;;
-  --objc-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-objc-libs quiet=yes 2>/dev/null
+  --objc-libs) gs_print_make_value print-gnustep-make-objc-libs
               exit 0;;
-  --base-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-base-libs quiet=yes 2>/dev/null
+  --base-libs) gs_print_make_value print-gnustep-make-base-libs
               exit 0;;
-  --gui-libs) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-gui-libs quiet=yes 2>/dev/null
+  --gui-libs) gs_print_make_value print-gnustep-make-gui-libs
               exit 0;;
-  --host-dir) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-host-dir quiet=yes 2>/dev/null
+  --host-dir) gs_print_make_value print-gnustep-make-host-dir
               exit 0;;
-  --host-ldir) @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-host-ldir quiet=yes 2>/dev/null
+  --host-ldir) gs_print_make_value print-gnustep-make-host-ldir
               exit 0;;
   --installation-domain-for=*) gs_package_name=`echo "$1" | sed -e 's/--installation-domain-for=//'`
-              @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-installation-domain PACKAGE_NAME="$gs_package_name" quiet=yes 2>/dev/null
+              gs_print_make_value print-gnustep-make-installation-domain PACKAGE_NAME="$gs_package_name"
               exit 0;;
   --target-dir-for=*)
                 gs_target=`echo "$1" | sed -e 's/--target-dir-for=//'`
-                @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-target-dir target="$gs_target" quiet=yes 2>/dev/null
+                gs_print_make_value print-gnustep-make-target-dir target="$gs_target"
               exit 0;;
   --target-ldir-for=*)
                 gs_target=`echo "$1" | sed -e 's/--target-ldir-for=//'`
-                @GNUMAKE@ --no-print-directory -s -f "$GNUSTEP_MAKEFILES/empty.make" print-gnustep-make-target-ldir target="$gs_target" quiet=yes 2>/dev/null
+                gs_print_make_value print-gnustep-make-target-ldir target="$gs_target"
               exit 0;;
 esac
 

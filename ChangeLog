@@ -1,3 +1,12 @@
+2026-11-08  Quin Gillespie <trypsynth@gmail.com>
+
+	* gnustep-config.in:
+	Clear MAKEFLAGS before running make, so the options and overrides of
+	a calling make (GNU make 4.4 or later) no longer reach it.  'make -n'
+	got the echo command instead of the flags, and an override that calls
+	gnustep-config recursed forever.  Report a missing or failing make on
+	stderr with a non-zero exit status instead of printing nothing.
+
 2026-09-30  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:
