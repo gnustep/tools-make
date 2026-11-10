@@ -111,6 +111,18 @@ endif
 # FIXME: determining GNUSTEP_HOME
 GNUSTEP_HOME = $(HOME)
 
+# On Windows, HOME is not set outside a Unix-style shell, and Windows-native
+# "make" can see it as a Windows-style path with backslashes (e.g.
+# C:\Users\me), which the shell strips when flags are echoed.  Fall back to
+# USERPROFILE and use forward slashes.  GNUSTEP_HOST_OS is not set yet at
+# this point, so check the OS environment variable that Windows always sets.
+ifeq ($(OS), Windows_NT)
+ifeq ($(GNUSTEP_HOME),)
+GNUSTEP_HOME = $(USERPROFILE)
+endif
+GNUSTEP_HOME := $(subst \,/,$(GNUSTEP_HOME))
+endif
+
 # Read the user configuration file ... unless it is disabled (ie, set
 # to an empty string)
 ifneq ($(GNUSTEP_USER_CONFIG_FILE),)
