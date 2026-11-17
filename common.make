@@ -769,6 +769,14 @@ ifeq ($(GNUSTEP_TARGET_OS), windows)
   endif
 endif
 
+ifeq ($(GNUSTEP_TARGET_CPU),s390x)
+  ifeq ($(OBJC_RUNTIME_LIB),ng)
+    # On the s390x using clang (implied by the gnustep runtime) we need
+    # a special flag to get the compiler to support stack trace.
+    ADDITIONAL_FLAGS += -mbackchain
+  endif
+endif
+
 # Sanitization must be enabled explicitly and shall _not_ be used in
 # production, as it may leak sensitive info or result in privilege
 # escalation due to unchecked use of variables
