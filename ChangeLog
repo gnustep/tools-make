@@ -7,6 +7,11 @@
 	gnustep-config recursed forever.  Report a missing or failing make on
 	stderr with a non-zero exit status instead of printing nothing.
 
+	* config-noarch.make.in:
+	On Windows, fall back to USERPROFILE when HOME is not set, and use
+	forward slashes in GNUSTEP_HOME.  Windows-native make printed user
+	paths like -IC:Usersme/GNUstep/Library/Headers.
+
 2026-09-30  Richard Frith-Macdonald <rfm@gnu.org>
 
 	* configure.ac:
