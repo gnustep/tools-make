@@ -21,7 +21,7 @@
 #   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 
 AC_INIT
-AC_PREREQ([2.71])
+AC_PREREQ([2.73])
 AC_CONFIG_SRCDIR([application.make])
 AC_CONFIG_MACRO_DIRS([m4])
 
