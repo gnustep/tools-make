@@ -5548,8 +5548,8 @@ then :
   printf %s "(cached) " >&6
 else case e in #(
   e)     _gs_cv_cc_is_clang="no"
-    if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-        _gs_cv_cc_is_clang="yes";
+    if $CC -dM -E - </dev/null 2>/dev/null | grep '__clang__' >/dev/null; then
+      _gs_cv_cc_is_clang=yes
     fi
      ;;
 esac
@@ -6019,10 +6019,12 @@ then :
         cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
+#if !defined(__clang__)
 #if (__GNUC__ < 4) || \
     (__GNUC__ == 4 && __GNUC_MINOR__ < 9) || \
     (__GNUC__ == 4 && __GNUC_MINOR__ == 9 && __GNUC_PATCHLEVEL__ < 4)
 #error GCC 4.9.4 or later is required
+#endif
 #endif
 
 int

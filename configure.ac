@@ -261,10 +261,12 @@ AS_IF([test "x$enable_gcc_version_check" = "xyes"], [
     AS_IF([test "x$GCC" = "xyes"], [
         AC_COMPILE_IFELSE(
             [AC_LANG_PROGRAM([[
+#if !defined(__clang__)
 #if (__GNUC__ < 4) || \
     (__GNUC__ == 4 && __GNUC_MINOR__ < 9) || \
     (__GNUC__ == 4 && __GNUC_MINOR__ == 9 && __GNUC_PATCHLEVEL__ < 4)
 #error GCC 4.9.4 or later is required
+#endif
 #endif
             ]], [[]])],
             [AC_MSG_NOTICE([GCC 4.9.4 or later detected])],

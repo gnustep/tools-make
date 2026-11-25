@@ -14,8 +14,8 @@ AC_DEFUN([GS_CHECK_CC_IS_CLANG],dnl
   [AC_REQUIRE([AC_PROG_CC])
     AC_CACHE_CHECK([whether the compiler is clang],[_gs_cv_cc_is_clang], [dnl
     _gs_cv_cc_is_clang="no"
-    if "${CC}" -v 2>&1 | grep -q 'clang version'; then
-        _gs_cv_cc_is_clang="yes";
+    if $CC -dM -E - </dev/null 2>/dev/null | grep '__clang__' >/dev/null; then
+      _gs_cv_cc_is_clang=yes
     fi
     ])
     AS_VAR_SET([gs_cv_cc_is_clang], [${_gs_cv_cc_is_clang}])
