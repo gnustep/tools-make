@@ -9,6 +9,22 @@
 The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @end ifclear
 
+@section Changes in version @samp{2.9.4}
+
+@itemize
+
+@item  Add a check (controlled by -disable-gcc-version-check) to ensure we are building with a supported (by GNUstep core libraries and tools) version of GCC.
+
+@item  Make resource location for tools more customisable
+
+@item  Added AGSDOC_RELOCATABLE and xxx_AGSDOC_INSTALL_BUNDLE for documentation generation
+
+@item  Various minor bugfixes and updates (autoconf version etc).
+
+@end itemize
+
+@ifclear ANNOUNCE-ONLY
+
 @section Changes in version @samp{2.9.3}
 
 @itemize
@@ -18,8 +34,6 @@ The currently released version is @samp{@value{GNUSTEP-MAKE-VERSION}}.
 @item  Various minor bugfixes.
 
 @end itemize
-
-@ifclear ANNOUNCE-ONLY
 
 @section Changes in version @samp{2.9.2}
 

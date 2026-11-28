@@ -1,3 +1,13 @@
+2026-R11-28 Richard Frith-Macdonald <rfm@gnu.org>
+
+        * ANNOUNCE:
+	* NEWS:
+	* RELEASENOTES:
+	* Documentation/news.texi:
+	* Documentation/releasenotes.texi:
+	Update announcement and release notes for 2.9.4.
+	* Version: Bump version to 2.9.4.
+
 2026-11-08  Quin Gillespie <trypsynth@gmail.com>
 
 	* gnustep-config.in:
@@ -12,7 +22,7 @@
 	* configure.ac:
 	* configure:
 	Add a check for the GCC version so we don't allow unsupported compiler
-	versions unless the new -disable-gcc-version-check Roption is used.
+	versions unless the new -disable-gcc-version-check option is used.
 
 2026-09-04  Richard Frith-Macdonald <rfm@gnu.org>
 

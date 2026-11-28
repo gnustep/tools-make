@@ -4,6 +4,14 @@ The release notes include descriptions of API changes, behavior
 changes and other information that might help developers and users
 migrate to using a newer version of the make system.
 
+@section Version 2.9.4
+
+Addition of a compiler version check to ensure we have a new enough version for GNUstep core.
+
+Addition of some options to allow generation of relocatable collections of documentation (using relative links between documents).
+
+Various minor fixes and updates (autoconf version etc)
+
 @section Version 2.9.3
 
 Addition of the 'asan=yes' option when GNUstep-make is invoked and support

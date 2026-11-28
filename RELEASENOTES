@@ -5,7 +5,18 @@ The release notes include descriptions of API changes, behavior changes
 and other information that might help developers and users migrate to
 using a newer version of the make system.
 
-1.1 Version 2.9.3
+1.1 Version 2.9.4
+=================
+
+Addition of a compiler version check to ensure we have a new enough
+version for GNUstep core.
+
+   Addition of some options to allow generation of relocatable
+collections of documentation (using relative links between documents).
+
+   Various minor fixes and updates (autoconf version etc)
+
+1.2 Version 2.9.3
 =================
 
 Addition of the 'asan=yes' option when GNUstep-make is invoked and
@@ -14,7 +25,7 @@ address and leak sanitisation.
 
    Various minor fixes
 
-1.2 Version 2.9.2
+1.3 Version 2.9.2
 =================
 
 Changes to work around the removal of the javah tool after java version
@@ -28,7 +39,7 @@ behavior.
    Changes to implement .dist-ignore support for the git-dist: make
 target.
 
-1.3 Version 2.9.1
+1.4 Version 2.9.1
 =================
 
 Test framework has workaround for clang issues when building with MSCV.
@@ -43,7 +54,7 @@ header directory to the compiler flags, so testcases can be more
 reliably built by invoking make directly (rather than via the
 gnustep-tests script).
 
-1.4 Version 2.9.0
+1.5 Version 2.9.0
 =================
 
 We have improved support for newer GCC versions (GCC9 and newer).
@@ -61,7 +72,7 @@ project, rather than being first linked into ‘subproject.o’.
 increased the minimum version of autoconf used to 2.65.  (The
 regenerated ‘configure’ file will not handle runstatedir anymore.)
 
-1.5 Version 2.8.0
+1.6 Version 2.8.0
 =================
 
 We now include better library combo and ABI detection: gnustep-make will
@@ -81,7 +92,7 @@ targets.
 
    We have dropped legacy Rhapsody and FreeBSD-out support.
 
-1.6 Version 2.7.0
+1.7 Version 2.7.0
 =================
 
 When building non-flattened, the subdirectory name for
@@ -101,7 +112,7 @@ architecture specific subdirectory.
 
    Various bugfixes and minor improvements.
 
-1.7 Version 2.6.8
+1.8 Version 2.6.8
 =================
 
 Configure option '-with-library-combo=ng-gnu-gnu' to use the 'Next
@@ -129,7 +140,7 @@ you update any old gnustep-make version one makefiles.
 
    Garbage collection support to be removed at the next release.
 
-1.8 Version 2.6.7
+1.9 Version 2.6.7
 =================
 
 Improved package building support
@@ -140,14 +151,14 @@ Improved package building support
 
    Various minor bugfixes, documentation spelling corrections etc.
 
-1.9 Version 2.6.6
-=================
+1.10 Version 2.6.6
+==================
 
 Debian packagge generation support added.
 
    Bug fixes
 
-1.10 Version 2.6.5
+1.11 Version 2.6.5
 ==================
 
 Bugfix for non-fragile ABI test
@@ -158,19 +169,19 @@ Bugfix for non-fragile ABI test
 
    Added minimal test support for .c and .cc files.
 
-1.11 Version 2.6.4
+1.12 Version 2.6.4
 ==================
 
 Test framework enhancement (extended equality tests)
 
    Android build target
 
-1.12 Version 2.6.3
+1.13 Version 2.6.3
 ==================
 
 Bug fixes
 
-1.13 Version 2.6.2
+1.14 Version 2.6.2
 ==================
 
 ‘Added standalone filesystem layout for putting everything in’
@@ -178,12 +189,12 @@ Bug fixes
 
 ‘Other bug fixes’
 
-1.14 Version 2.6.1
+1.15 Version 2.6.1
 ==================
 
 Bug fixes
 
-1.15 Version 2.6.0
+1.16 Version 2.6.0
 ==================
 
 ‘The default filesystem layout is now the 'fhs' layout’
@@ -260,7 +271,7 @@ Bug fixes
      This makes it easier to use GNUstep with the gnu-gnu-gnu library
      combo on Apple Mac OS X.
 
-1.16 Version 2.4.0
+1.17 Version 2.4.0
 ==================
 
 ‘You can enable the use of the non-fragile ivar ABI’
@@ -502,11 +513,11 @@ Bug fixes
 
      If you have a makefile which is affected and you need to support
      older versions of gnustep-make, you could remove 'lib' from the
-     LIBRARY_NAME. That should install resources in the same directory
+     LIBRARY_NAME.  That should install resources in the same directory
      on all gnustep-make versions that support library resources (ie,
      gnustep-make >= 2.0.x).
 
-1.17 Version 2.2.0
+1.18 Version 2.2.0
 ==================
 
 ‘libobjc library’
@@ -531,7 +542,7 @@ Bug fixes
      resources, which means that 'make uninstall' will do a better job
      at removing directories that were created during by 'make install'.
 
-1.18 Version 2.0.7
+1.19 Version 2.0.7
 ==================
 
 ‘default installation’
@@ -572,7 +583,7 @@ Bug fixes
      test-application.make) are now linked against gnustep-gui by
      default.
 
-1.19 Version 2.0.6
+1.20 Version 2.0.6
 ==================
 
 ‘GNUSTEP_ABSOLUTE_INSTALL_PATHS’
@@ -599,7 +610,7 @@ Bug fixes
      the moment is not automatically installed unless you explicitly go
      in that subdirectory and install it.
 
-1.20 Version 2.0.5
+1.21 Version 2.0.5
 ==================
 
 ‘default filesystem layout on apple-apple-apple’
@@ -643,7 +654,7 @@ Bug fixes
      overridden for specific project targets by using the xxx_NEEDS_GUI
      variable (see above).
 
-1.21 Version 2.0.0
+1.22 Version 2.0.0
 ==================
 
 Version 2.0.0 is a new major release of gnustep-make which includes a
